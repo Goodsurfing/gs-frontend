@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@utils": ["./src/utils/*"],
+            "@components": ["./src/components/*"],
+            "@pages": ["./src/pages/*"],
+            "@store": ["./src/store/*"],
+            "@types": ["./src/types/*"],
+            "@assets": ["./src/assets/*"],
+            "@constants": ["./src/constants/*"]
+        },
+        "removeComments": true,
+        "noEmit": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "exclude": ["node_modules", "build"]
+}
