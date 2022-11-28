@@ -1,9 +1,13 @@
 import React, { FC } from "react";
-import { Autoplay, Pagination } from "swiper";
+import { Autoplay, EffectFade, Pagination } from "swiper";
 import "swiper/css";
+import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import Slide from "@/containers/WelcomeContainer/SliderSide/Slide/Slide";
+import { sliderData } from "@/containers/WelcomeContainer/SliderSide/Slider.data";
 
 import styles from "./SliderSide.module.scss";
 
@@ -11,22 +15,18 @@ const SliderSide: FC = () => {
     return (
         <div className={styles.wrapper}>
             <Swiper
-                modules={[Pagination, Autoplay]}
-                className="h-full"
-                spaceBetween={50}
+                modules={[Pagination, Autoplay, EffectFade]}
+                effect={"fade"}
                 slidesPerView={1}
                 autoplay
                 pagination={{ clickable: true }}
             >
-                <SwiperSlide>
-                    <h1>Hi</h1>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <h1>Hi</h1>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <h1>Hi</h1>
-                </SwiperSlide>
+                {sliderData &&
+                    sliderData.map((item, index) => (
+                        <SwiperSlide key={index}>
+                            <Slide {...item} />
+                        </SwiperSlide>
+                    ))}
             </Swiper>
         </div>
     );

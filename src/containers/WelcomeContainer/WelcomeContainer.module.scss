@@ -1,13 +1,22 @@
 .wrapper {
-	display: flex;
+    display: flex;
 
-	height: 100vh;
+    height: 100vh;
 }
 
 .slider {
-	width: 50%;
+    position: relative;
+
+    width: 50%;
+}
+
+.logotype {
+    position: absolute;
+    z-index: 999;
+    top: 25px;
+    left: 50px;
 }
 
 .info {
-	width: 50%;
+    width: 50%;
 }
