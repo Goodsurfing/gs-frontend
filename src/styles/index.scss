@@ -189,3 +189,37 @@ section {
 *::after {
 	font-family: Lato, sans-serif;
 }
+
+body::-webkit-scrollbar {
+	width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+	background: var(--color-white);
+}
+
+body::-webkit-scrollbar-thumb {
+	border-radius: var(--radius);
+	background-color: var(--color-blue);
+}
+
+* {
+	scroll-behavior: smooth;
+}
+
+:root {
+	--color-blue: #3DABF7;
+	--color-white: #FFF;
+	--color-black-primary: #212121;
+	--color-black-secondary: #000;
+	--color-dark-blue: #0E1D27;
+	--color-gray: #82949F;
+	--color-green: #22E0A5;
+	--hover-blue: #197DC2;
+	--hover-green: #00FFB0;
+	--shadow: 0 1px 0 #DFE6EB;
+	--border: 1px solid #DFE6EB;
+	--radius: 2px;
+	--main-transition: all 0.3s ease-in-out;
+	font-size: 16px;
+}
