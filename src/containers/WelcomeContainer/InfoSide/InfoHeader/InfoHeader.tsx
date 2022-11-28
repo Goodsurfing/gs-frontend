@@ -8,7 +8,7 @@ import ruIcon from "@/assets/icons/langs/ru.svg";
 
 import styles from "./InfoHeader.module.scss";
 
-const InfoHeader: FC = (props) => {
+const InfoHeader: FC = () => {
     return (
         <header className={styles.header}>
             <div className={styles.selectLang}>
@@ -20,12 +20,13 @@ const InfoHeader: FC = (props) => {
             </div>
             <div className={styles.link}>
                 <Link to={"/"}>Cообщество</Link>
+                <Arrow isOpen={false} />
             </div>
             <div className={styles.link}>
                 <Link to={"/"}>Вход</Link>
             </div>
             <div className={styles.link}>
-                <Button type={"outlined"} path={"/"}>
+                <Button className={styles.btn} type={"outlined"} path={"/"}>
                     Регистрация
                 </Button>
             </div>

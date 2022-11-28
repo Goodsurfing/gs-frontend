@@ -1,0 +1,27 @@
+.item {
+	display: flex;
+	align-items: flex-end;
+
+	box-sizing: border-box;
+	width: 126px;
+	height: 129px;
+
+	padding: 10px;
+
+	text-decoration: none;
+
+	background-repeat: no-repeat;
+	background-position: center center;
+
+	background-size: cover;
+
+	&:hover {
+		transition: 0.3s ease;
+
+		opacity: 0.8;
+	}
+
+	p {
+		color: var(--color-white);
+	}
+}

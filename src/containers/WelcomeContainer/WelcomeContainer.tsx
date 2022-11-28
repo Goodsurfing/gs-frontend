@@ -7,7 +7,7 @@ import styles from "./WelcomeContainer.module.scss";
 
 interface WelcomeContainerProps {}
 
-const WelcomeContainer: FC<WelcomeContainerProps> = (props) => {
+const WelcomeContainer: FC<WelcomeContainerProps> = () => {
     return (
         <main className={styles.wrapper}>
             <div className={styles.slider}>
