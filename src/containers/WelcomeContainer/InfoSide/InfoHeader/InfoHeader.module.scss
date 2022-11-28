@@ -1,39 +1,39 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-    width: 100%;
+	width: 100%;
 }
 
 .selectLang {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 
-    margin-right: 10%;
+	margin-right: 10%;
 
-    cursor: pointer;
-    gap: 5px;
+	cursor: pointer;
+	gap: 5px;
 }
 
 .link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    a {
-        text-decoration: none;
+	a {
+		text-decoration: none;
 
-        color: var(--color-blue);
+		color: var(--color-blue);
 
-        font-size: 1rem;
-        font-weight: 600;
-        line-height: 19px;
-    }
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 19px;
+	}
 }
 
 .btn {
-    padding: 9px 10px;
+	padding: 9px 10px;
 }
