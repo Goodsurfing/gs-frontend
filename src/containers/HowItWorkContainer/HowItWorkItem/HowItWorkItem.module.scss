@@ -1,0 +1,41 @@
+.item {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	&:nth-child(even) {
+		flex-direction: column-reverse;
+	}
+
+	.text {
+		text-align: center;
+
+		h4 {
+			color: var(--color-dark-blue);
+
+			font-family: var(--ff-r);
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 150%;
+		}
+
+		p {
+			margin-top: 6px;
+
+			opacity: 0.5;
+
+			color: #212121;
+
+			font-size: 0.875rem;
+			line-height: 157%;
+
+			mix-blend-mode: normal;
+		}
+	}
+
+	img {
+		margin: 10px 0;
+	}
+}
