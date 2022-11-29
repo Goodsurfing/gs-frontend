@@ -28,12 +28,12 @@ const MainPage: FC = () => {
             {/*<Section title={"Наши преимущества"}>*/}
             {/*    <BenefitsContainer />*/}
             {/*</Section>*/}
-            <Section title={"Популярные места"}>
-                <PopularPlacesContainer />
-            </Section>
-            {/*<section className={styles.volunteer}>*/}
-            {/*    <VolunteerContainer />*/}
-            {/*</section>*/}
+            {/*<Section title={"Популярные места"}>*/}
+            {/*    <PopularPlacesContainer />*/}
+            {/*</Section>*/}
+            <section className={styles.volunteer}>
+                <VolunteerContainer />
+            </section>
             {/*<section className={styles.reviews}>*/}
             {/*    <ReviewsContainer />*/}
             {/*</section>*/}
