@@ -5,8 +5,6 @@ import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
 
-import ruIcon from "@/assets/icons/langs/ru.svg";
-
 import styles from "./InfoHeader.module.scss";
 
 const InfoHeader: FC = () => {
