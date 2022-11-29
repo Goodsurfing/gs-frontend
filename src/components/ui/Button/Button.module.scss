@@ -4,6 +4,7 @@
 	padding: 14px 50px;
 
 	cursor: pointer;
+	transition: var(--main-transition);
 	text-decoration: none;
 
 	border: 0;
@@ -19,6 +20,10 @@
 
 	color: var(--color-white);
 	background-color: var(--color-blue);
+
+	&:hover {
+		background-color: var(--hover-blue);
+	}
 }
 
 .secondary {
@@ -26,6 +31,10 @@
 
 	color: var(--color-black);
 	background-color: var(--color-green);
+
+	&:hover {
+		background-color: var(--hover-green);
+	}
 }
 
 .outlined {
@@ -34,4 +43,9 @@
 	color: var(--color-blue);
 	border: 1px solid var(--color-blue);
 	background-color: inherit;
+
+	&:hover {
+		color: var(--color-white) !important;
+		background-color: var(--color-blue) !important;
+	}
 }

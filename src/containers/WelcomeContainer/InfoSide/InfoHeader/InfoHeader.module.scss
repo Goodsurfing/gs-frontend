@@ -24,6 +24,7 @@
 	cursor: pointer;
 
 	a {
+		transition: color 0.2s ease-in-out;
 		text-decoration: none;
 
 		color: var(--color-blue);
@@ -31,6 +32,10 @@
 		font-size: 1rem;
 		font-weight: 600;
 		line-height: 19px;
+	}
+
+	a:hover {
+		color: var(--hover-blue);
 	}
 }
 
