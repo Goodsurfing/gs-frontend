@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import Section from "@/components/ui/Section/Section";
 
 import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer";
+import CommunityNewsContainer from "@/containers/CommunityNewsContainer/CommunityNewsContainer";
 import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
@@ -34,6 +35,9 @@ const MainPage: FC = () => {
             <section className={styles.reviews}>
                 <ReviewsContainer />
             </section>
+            <Section title={"Новое из Сообщества"}>
+                <CommunityNewsContainer />
+            </Section>
         </>
     );
 };
