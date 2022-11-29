@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
+import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
 
@@ -11,10 +12,7 @@ import styles from "./InfoHeader.module.scss";
 const InfoHeader: FC = () => {
     return (
         <header className={styles.header}>
-            <div className={styles.selectLang}>
-                <img src={ruIcon} alt="Russian" />
-                <Arrow isOpen={false} />
-            </div>
+            <ChangeLanguage />
             <div className={styles.link}>
                 <Link to={"/"}>Как это работает?</Link>
             </div>

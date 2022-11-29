@@ -5,6 +5,7 @@ import Section from "@/components/ui/Section/Section";
 import BecomeHostContainer from "@/containers/BecomeHostContainer/BecomeHostContainer";
 import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer";
 import CommunityNewsContainer from "@/containers/CommunityNewsContainer/CommunityNewsContainer";
+import Footer from "@/containers/Footer/Footer";
 import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
@@ -42,6 +43,7 @@ const MainPage: FC = () => {
             <section className={styles.host}>
                 <BecomeHostContainer />
             </section>
+            <Footer />
         </>
     );
 };
