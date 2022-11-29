@@ -1,16 +1,16 @@
 .wrapper {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 
-	max-width: 560px;
+    max-width: 560px;
 }
 
 @media screen and (max-width: 1000px) {
-	.wrapper {
-		justify-content: center;
+    .wrapper {
+        justify-content: center;
 
-		width: 100%;
-		max-width: unset;
-	}
+        width: 100%;
+        max-width: unset;
+    }
 }

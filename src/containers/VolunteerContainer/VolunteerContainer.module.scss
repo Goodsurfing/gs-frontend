@@ -1,36 +1,36 @@
 .wrapper {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-	text-align: center;
+    text-align: center;
 
-	.title {
-		color: #DFE6EB;
+    .title {
+        color: #dfe6eb;
 
-		font-size: 1.625rem;
-		font-weight: 400;
-		line-height: 123%;
-	}
+        font-size: 1.625rem;
+        font-weight: 400;
+        line-height: 123%;
+    }
 
-	.description {
-		max-width: 780px;
-		margin-top: 50px;
-		margin-bottom: 60px;
+    .description {
+        max-width: 780px;
+        margin-top: 50px;
+        margin-bottom: 60px;
 
-		color: #82949F;
+        color: #82949f;
 
-		font-size: 0.875rem;
-		line-height: 157%;
-	}
+        font-size: 0.875rem;
+        line-height: 157%;
+    }
 }
 
 .content {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-	width: 1180px;
+    width: 1180px;
 
-	margin-bottom: 60px;
+    margin-bottom: 60px;
 }

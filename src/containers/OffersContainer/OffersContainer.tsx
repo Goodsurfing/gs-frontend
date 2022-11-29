@@ -27,12 +27,16 @@ const OffersContainer: FC = () => {
                     slidesPerView={3}
                     navigation={{ prevEl, nextEl }}
                     breakpoints={{
-                        1100: {
+                        1181: {
                             slidesPerView: 3,
                             spaceBetween: 10,
                         },
-                        768: {
+                        1180: {
                             slidesPerView: 2,
+                            spaceBetween: 10,
+                        },
+                        768: {
+                            slidesPerView: 1,
                         },
                         0: {
                             slidesPerView: 1,

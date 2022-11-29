@@ -1,36 +1,36 @@
 .item {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 
-	cursor: pointer;
+    cursor: pointer;
 
-	.number {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+    .number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-		width: 40px;
-		height: 40px;
+        width: 40px;
+        height: 40px;
 
-		color: #8494A1;
-		border-radius: 50%;
-		background-color: #303A40;
+        color: #8494a1;
+        border-radius: 50%;
+        background-color: #303a40;
 
-		font-size: 1.125rem;
-		font-weight: 600;
-	}
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
 
-	.title {
-		max-width: 90px;
+    .title {
+        max-width: 90px;
 
-		margin-left: 10px;
+        margin-left: 10px;
 
-		text-align: left;
+        text-align: left;
 
-		color: #DFE6EB;
+        color: #dfe6eb;
 
-		font-size: 0.875rem;
-		font-weight: 600;
-		line-height: 129%;
-	}
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 129%;
+    }
 }

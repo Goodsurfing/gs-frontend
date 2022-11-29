@@ -19,12 +19,12 @@ const MainPage: FC = () => {
     return (
         <>
             {/*<WelcomeContainer />*/}
-            <Section title={"Как это работает?"}>
-                <HowItWorkContainer />
-            </Section>
-            {/*<Section title={"Интересные предложения"}>*/}
-            {/*    <OffersContainer />*/}
+            {/*<Section title={"Как это работает?"}>*/}
+            {/*    <HowItWorkContainer />*/}
             {/*</Section>*/}
+            <Section title={"Интересные предложения"}>
+                <OffersContainer />
+            </Section>
             {/*<Section title={"Наши преимущества"}>*/}
             {/*    <BenefitsContainer />*/}
             {/*</Section>*/}
