@@ -6,6 +6,7 @@ import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer"
 import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
+import ReviewsContainer from "@/containers/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
 
@@ -29,6 +30,9 @@ const MainPage: FC = () => {
             </Section>
             <section className={styles.volunteer}>
                 <VolunteerContainer />
+            </section>
+            <section className={styles.reviews}>
+                <ReviewsContainer />
             </section>
         </>
     );

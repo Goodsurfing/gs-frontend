@@ -1,0 +1,34 @@
+.wrapper {
+	max-width: 980px;
+}
+
+.slider {
+	position: relative;
+
+	.arrows {
+		position: absolute;
+		z-index: 999;
+
+		top: 34px;
+		right: 40px;
+
+		display: flex;
+		align-items: center;
+	}
+
+	.arrow {
+		cursor: pointer;
+	}
+
+	.arrow:first-child {
+		margin-right: 15px;
+
+		transform: rotate(180deg);
+	}
+}
+
+.disable {
+	mix-blend-mode: normal;
+
+	opacity: 0.2;
+}
