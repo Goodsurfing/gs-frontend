@@ -34,9 +34,9 @@ const MainPage: FC = () => {
             <section className={styles.volunteer}>
                 <VolunteerContainer />
             </section>
-            {/*<section className={styles.reviews}>*/}
-            {/*    <ReviewsContainer />*/}
-            {/*</section>*/}
+            <section className={styles.reviews}>
+                <ReviewsContainer />
+            </section>
             {/*<Section title={"Новое из Сообщества"}>*/}
             {/*    <CommunityNewsContainer />*/}
             {/*</Section>*/}
