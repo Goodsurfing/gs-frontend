@@ -6,7 +6,10 @@ import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer"
 import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
+import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
+
+import styles from "./MainPage.module.scss";
 
 const MainPage: FC = () => {
     return (
@@ -24,6 +27,9 @@ const MainPage: FC = () => {
             <Section title={"Популярные места"}>
                 <PopularPlacesContainer />
             </Section>
+            <section className={styles.volunteer}>
+                <VolunteerContainer />
+            </section>
         </>
     );
 };
