@@ -39,3 +39,42 @@
 		margin: 10px 0;
 	}
 }
+
+@media screen and (max-width: 992px) {
+	.item {
+		flex-direction: row-reverse;
+		justify-content: space-between;
+
+		width: 450px;
+
+		margin-bottom: 20px;
+
+		&:nth-child(even) {
+			flex-direction: row-reverse;
+		}
+	}
+
+	.text {
+		width: 350px;
+		margin-left: 20px;
+
+		h4 {
+			text-align: left;
+		}
+
+		p {
+			text-align: left;
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.item {
+		width: 320px;
+	}
+
+	.text {
+		width: 250px;
+		margin-left: 10px;
+	}
+}
