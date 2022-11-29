@@ -1,0 +1,38 @@
+.wrapper {
+	max-width: 980px;
+
+	border-radius: 2px;
+	background: rgb(0 0 0 / 0.01%);
+	box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
+}
+
+.slider {
+	position: relative;
+
+	.arrows {
+		position: absolute;
+		z-index: 999;
+
+		top: 34px;
+		right: 40px;
+
+		display: flex;
+		align-items: center;
+	}
+
+	.arrow {
+		cursor: pointer;
+	}
+
+	.arrow:first-child {
+		margin-right: 15px;
+
+		transform: rotate(180deg);
+	}
+}
+
+.disable {
+	mix-blend-mode: normal;
+
+	opacity: 0.2;
+}

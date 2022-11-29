@@ -1,0 +1,38 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.description {
+	margin-top: 30px;
+	margin-bottom: 35px;
+
+	text-align: center;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 100%;
+}
+
+.slider {
+	max-width: 90%;
+}
+
+.arrow {
+	margin-bottom: 100px;
+
+	cursor: pointer;
+
+	&:last-child {
+		img {
+			transform: rotate(180deg);
+		}
+	}
+}

@@ -1,0 +1,34 @@
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 100%;
+}
+
+.link {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	cursor: pointer;
+
+	a {
+		transition: color 0.2s ease-in-out;
+		text-decoration: none;
+
+		color: var(--color-blue);
+
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 19px;
+	}
+
+	a:hover {
+		color: var(--hover-blue);
+	}
+}
+
+.btn {
+	padding: 9px 10px;
+}

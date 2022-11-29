@@ -1,0 +1,48 @@
+.wrapper {
+	display: flex;
+
+	border-radius: var(--radius);
+	background-color: var(--color-white);
+	box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	padding: 30px 20px 20px;
+
+	.title {
+		color: var(--color-black-primary);
+
+		font-size: 1.125rem;
+		font-weight: 500;
+		line-height: 122%;
+	}
+
+	.text {
+		max-width: 420px;
+
+		color: var(--color-black-primary);
+
+		font-size: 0.8125rem;
+		line-height: 146%;
+	}
+
+	.user {
+		display: flex;
+		align-items: center;
+
+		cursor: pointer;
+
+		.author {
+			margin-left: 10px;
+
+			color: var(--color-blue);
+
+			font-size: 0.825rem;
+			font-weight: 600;
+		}
+	}
+}
