@@ -25,21 +25,17 @@ const OffersContainer: FC = () => {
                     modules={[Pagination, Navigation]}
                     spaceBetween={10}
                     slidesPerView={3}
+                    centerInsufficientSlides={true}
                     navigation={{ prevEl, nextEl }}
                     breakpoints={{
-                        1181: {
-                            slidesPerView: 3,
-                            spaceBetween: 10,
+                        320: {
+                            slidesPerView: 1,
+                        },
+                        992: {
+                            slidesPerView: 2,
                         },
                         1180: {
-                            slidesPerView: 2,
-                            spaceBetween: 10,
-                        },
-                        768: {
-                            slidesPerView: 1,
-                        },
-                        0: {
-                            slidesPerView: 1,
+                            slidesPerView: 3,
                         },
                     }}
                 >

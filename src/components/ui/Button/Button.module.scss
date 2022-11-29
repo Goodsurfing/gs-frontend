@@ -1,51 +1,51 @@
 .btn {
-    display: inline-block;
+	display: inline-block;
 
-    padding: 14px 50px;
+	padding: 14px 50px;
 
-    cursor: pointer;
-    transition: var(--main-transition);
-    text-decoration: none;
+	cursor: pointer;
+	transition: var(--main-transition);
+	text-decoration: none;
 
-    border: 0;
-    border-radius: 2px;
-    background: none;
+	border: 0;
+	border-radius: 2px;
+	background: none;
 
-    font-size: 1rem;
-    line-height: 1.375rem;
+	font-size: 1rem;
+	line-height: 1.375rem;
 }
 
 .primary {
-    transition: var(--main-transition);
+	transition: var(--main-transition);
 
-    color: var(--color-white);
-    background-color: var(--color-blue);
+	color: var(--color-white);
+	background-color: var(--color-blue);
 
-    &:hover {
-        background-color: var(--hover-blue);
-    }
+	&:hover {
+		background-color: var(--hover-blue);
+	}
 }
 
 .secondary {
-    transition: var(--main-transition);
+	transition: var(--main-transition);
 
-    color: var(--color-black);
-    background-color: var(--color-green);
+	color: var(--color-black);
+	background-color: var(--color-green);
 
-    &:hover {
-        background-color: var(--hover-green);
-    }
+	&:hover {
+		background-color: var(--hover-green);
+	}
 }
 
 .outlined {
-    transition: var(--main-transition);
+	transition: var(--main-transition);
 
-    color: var(--color-blue);
-    border: 1px solid var(--color-blue);
-    background-color: inherit;
+	color: var(--color-blue);
+	border: 1px solid var(--color-blue);
+	background-color: inherit;
 
-    &:hover {
-        color: var(--color-white) !important;
-        background-color: var(--color-blue) !important;
-    }
+	&:hover {
+		color: var(--color-white) !important;
+		background-color: var(--color-blue) !important;
+	}
 }

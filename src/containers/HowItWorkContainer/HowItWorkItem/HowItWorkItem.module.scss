@@ -1,80 +1,80 @@
 .item {
-    position: relative;
+	position: relative;
 
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 
-    &:nth-child(even) {
-        flex-direction: column-reverse;
-    }
+	&:nth-child(even) {
+		flex-direction: column-reverse;
+	}
 
-    .text {
-        text-align: center;
+	.text {
+		text-align: center;
 
-        h4 {
-            color: var(--color-dark-blue);
+		h4 {
+			color: var(--color-dark-blue);
 
-            font-family: var(--ff-r);
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 150%;
-        }
+			font-family: var(--ff-r);
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 150%;
+		}
 
-        p {
-            margin-top: 6px;
+		p {
+			margin-top: 6px;
 
-            opacity: 0.5;
+			opacity: 0.5;
 
-            color: #212121;
+			color: #212121;
 
-            font-size: 0.875rem;
-            line-height: 157%;
+			font-size: 0.875rem;
+			line-height: 157%;
 
-            mix-blend-mode: normal;
-        }
-    }
+			mix-blend-mode: normal;
+		}
+	}
 
-    img {
-        margin: 10px 0;
-    }
+	img {
+		margin: 10px 0;
+	}
 }
 
 @media screen and (max-width: 992px) {
-    .item {
-        flex-direction: row-reverse;
-        justify-content: space-between;
+	.item {
+		flex-direction: row-reverse;
+		justify-content: space-between;
 
-        width: 450px;
+		width: 450px;
 
-        margin-bottom: 20px;
+		margin-bottom: 20px;
 
-        &:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-    }
+		&:nth-child(even) {
+			flex-direction: row-reverse;
+		}
+	}
 
-    .text {
-        width: 350px;
-        margin-left: 20px;
+	.text {
+		width: 350px;
+		margin-left: 20px;
 
-        h4 {
-            text-align: left;
-        }
+		h4 {
+			text-align: left;
+		}
 
-        p {
-            text-align: left;
-        }
-    }
+		p {
+			text-align: left;
+		}
+	}
 }
 
 @media screen and (max-width: 480px) {
-    .item {
-        width: 320px;
-    }
+	.item {
+		width: 320px;
+	}
 
-    .text {
-        width: 250px;
-        margin-left: 10px;
-    }
+	.text {
+		width: 250px;
+		margin-left: 10px;
+	}
 }

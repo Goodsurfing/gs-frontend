@@ -1,21 +1,21 @@
 .wrapper {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 
-    max-width: 780px;
+	max-width: 780px;
 
-    .text {
-        max-width: 95%;
+	.text {
+		max-width: 95%;
 
-        margin-top: 30px;
-        margin-bottom: 40px;
+		margin-top: 30px;
+		margin-bottom: 40px;
 
-        text-align: center;
+		text-align: center;
 
-        color: var(--color-black-primary);
+		color: var(--color-black-primary);
 
-        font-size: 0.875rem;
-        line-height: 157%;
-    }
+		font-size: 0.875rem;
+		line-height: 157%;
+	}
 }
