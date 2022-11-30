@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
 
@@ -10,6 +11,8 @@ import styles from "./InfoHeader.module.scss";
 
 const InfoHeader: FC = () => {
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+    const [linkIsOpen, setLinkIsOpen] = useState<boolean>(true);
+
     return (
         <>
             <div
@@ -18,11 +21,11 @@ const InfoHeader: FC = () => {
                 })}
             >
                 <div className={styles.link}>
-                    <Link to={"/"}>Как это работает?</Link>
+                    <Link to={"/"}>Как это работает?</Link>a
                 </div>
                 <div className={styles.link}>
                     <Link to={"/"}>Cообщество</Link>
-                    <Arrow isOpen={false} />
+                    <Arrow isOpen={linkIsOpen} />
                 </div>
                 <div className={styles.link}>
                     <Link to={"/"}>Вход</Link>
@@ -31,14 +34,27 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Регистрация</Link>
                 </div>
             </div>
+
             <header className={styles.header}>
                 <ChangeLanguage />
                 <div className={styles.link}>
                     <Link to={"/"}>Как это работает?</Link>
                 </div>
-                <div className={styles.link}>
+                <div
+                    className={styles.link}
+                    onClick={() => setLinkIsOpen(!linkIsOpen)}
+                >
                     <Link to={"/"}>Cообщество</Link>
-                    <Arrow isOpen={false} />
+                    <Arrow isOpen={linkIsOpen} />
+                    <Popup isOpen={linkIsOpen} className={styles.popup}>
+                        <Link to={"/"}>Блог</Link>
+                        <Link to={"/"}>Видео</Link>
+                        <Link to={"/"}>Эксперты</Link>
+                        <Link to={"/"}>Амбассадоры</Link>
+                        <Link to={"/"}>Курсы</Link>
+                        <Link to={"/"}>Клубы</Link>
+                        <Link to={"/"}>Журнал</Link>
+                    </Popup>
                 </div>
                 <div className={styles.link}>
                     <Link to={"/"}>Вход</Link>
