@@ -1,32 +1,32 @@
 .item {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-	width: 32%;
+    width: 32%;
 
-	text-align: center;
+    text-align: center;
 
-	color: var(--color-black-primary);
+    color: var(--color-black-primary);
 
-	h3 {
-		margin-top: 40px;
-		margin-bottom: 20px;
+    h3 {
+        margin-top: 40px;
+        margin-bottom: 20px;
 
-		font-size: 1.125rem;
-		font-weight: 500;
-		line-height: 122%;
-	}
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 122%;
+    }
 
-	p {
-		font-size: 0.875rem;
-		line-height: 157%;
-	}
+    p {
+        font-size: 0.875rem;
+        line-height: 157%;
+    }
 }
 
 @media screen and (max-width: 768px) {
-	.item {
-		width: 100%;
-		margin-bottom: 40px;
-	}
+    .item {
+        width: 100%;
+        margin-bottom: 40px;
+    }
 }
