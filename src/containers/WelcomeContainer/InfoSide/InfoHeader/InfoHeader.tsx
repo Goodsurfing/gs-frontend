@@ -8,6 +8,7 @@ import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
 
 import styles from "./InfoHeader.module.scss";
+import {AppRoutesEnum} from "@/routes/types";
 
 const InfoHeader: FC = () => {
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
@@ -30,7 +31,7 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Вход</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Регистрация</Link>
+                    <Link to={AppRoutesEnum.SIGNUP}>Регистрация</Link>
                 </div>
             </div>
 
@@ -59,7 +60,7 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Вход</Link>
                 </div>
                 <div className={styles.link}>
-                    <Button className={styles.btn} type={"outlined"} path={"/"}>
+                    <Button className={styles.btn} type={"outlined"} path={AppRoutesEnum.SIGNUP}>
                         Регистрация
                     </Button>
                 </div>
