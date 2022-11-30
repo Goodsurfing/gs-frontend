@@ -1,4 +1,4 @@
 export enum AppRoutesEnum {
     HOME = "/",
-    SIGNUP = "/signup"
+    SIGNUP = "signup",
 }
