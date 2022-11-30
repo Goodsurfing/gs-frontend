@@ -23,19 +23,37 @@ const OffersContainer: FC = () => {
             <div className={styles.slider}>
                 <Swiper
                     modules={[Pagination, Navigation]}
-                    spaceBetween={10}
+                    spaceBetween={0}
                     slidesPerView={3}
                     centerInsufficientSlides={true}
                     navigation={{ prevEl, nextEl }}
                     breakpoints={{
-                        320: {
-                            slidesPerView: 1,
+                        1100: {
+                            slidesPerView: 3,
+                            spaceBetween: 10,
+                            slidesOffsetBefore: 0,
+                            slidesOffsetAfter: 0,
+                            centeredSlides: false,
                         },
                         992: {
                             slidesPerView: 2,
+                            slidesOffsetBefore: 40,
+                            slidesOffsetAfter: 10,
+                            centeredSlides: false,
                         },
-                        1180: {
-                            slidesPerView: 3,
+                        480: {
+                            slidesPerView: 1,
+                            slidesOffsetBefore: 40,
+                            centeredSlides: false,
+                        },
+                        400: {
+                            slidesPerView: 1,
+                            slidesOffsetBefore: 20,
+                            centeredSlides: false,
+                        },
+                        0: {
+                            slidesPerView: 1,
+                            slidesOffsetAfter: 120,
                         },
                     }}
                 >

@@ -3,6 +3,8 @@
 	flex-direction: column;
 	justify-content: space-around;
 
+	box-sizing: border-box;
+
 	max-width: 347px;
 	height: 438px;
 	padding: 21px 19px;
@@ -50,5 +52,20 @@
 		margin-left: 6px;
 
 		font-weight: 500;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.item {
+		margin: 0 20px;
+	}
+
+	.info {
+		align-items: flex-start;
+		flex-direction: column;
+
+		span {
+			margin-bottom: 10px;
+		}
 	}
 }
