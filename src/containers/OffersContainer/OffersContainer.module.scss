@@ -8,7 +8,8 @@
 }
 
 .slider {
-	width: 90%;
+	width: 100%;
+	margin-left: 20px;
 }
 
 .arrow {
@@ -18,5 +19,11 @@
 		img {
 			transform: rotate(180deg);
 		}
+	}
+}
+
+@media screen and (max-width: 992px) {
+	.arrow {
+		display: none;
 	}
 }

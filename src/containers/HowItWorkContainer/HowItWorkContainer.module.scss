@@ -17,3 +17,12 @@
 
 	margin-bottom: 80px;
 }
+
+@media screen and (max-width: 992px) {
+	.content {
+		align-items: center;
+		flex-direction: column;
+
+		margin-bottom: 40px;
+	}
+}

@@ -5,3 +5,12 @@
 
 	max-width: 560px;
 }
+
+@media screen and (max-width: 1000px) {
+	.wrapper {
+		justify-content: center;
+
+		width: 100%;
+		max-width: unset;
+	}
+}

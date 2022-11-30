@@ -1,7 +1,7 @@
 .wrapper {
 	display: flex;
 
-	height: 100vh;
+	min-height: 100vh;
 
 	border-bottom: 1px solid #DFE6EB;
 }
@@ -21,4 +21,14 @@
 
 .info {
 	width: 50%;
+}
+
+@media screen and (max-width: 1000px) {
+	.slider {
+		display: none;
+	}
+
+	.info {
+		width: 100%;
+	}
 }

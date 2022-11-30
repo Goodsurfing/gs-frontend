@@ -6,3 +6,9 @@
 
 	margin-top: 50px;
 }
+
+@media screen and (max-width: 1180px) {
+	.wrapper {
+		justify-content: center;
+	}
+}

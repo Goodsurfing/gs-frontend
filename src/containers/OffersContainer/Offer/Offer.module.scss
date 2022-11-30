@@ -3,6 +3,8 @@
 	flex-direction: column;
 	justify-content: space-around;
 
+	box-sizing: border-box;
+
 	max-width: 347px;
 	height: 438px;
 	padding: 21px 19px;
@@ -47,8 +49,44 @@
 	margin-top: 18px;
 
 	span {
-		margin-left: 6px;
+		font-weight: 400;
+	}
 
-		font-weight: 500;
+	.rating {
+		display: flex;
+		align-items: center;
+
+		span {
+			margin-left: 5px;
+		}
+	}
+
+	.reviews {
+		margin-left: 15px;
+	}
+
+	.success {
+		margin-left: 15px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.item {
+		margin: 0 20px;
+	}
+
+	.info {
+		align-items: flex-start;
+		flex-direction: column;
+
+		.reviews {
+			margin-top: 10px;
+			margin-left: 0;
+		}
+
+		.success {
+			margin-top: 10px;
+			margin-left: 0;
+		}
 	}
 }

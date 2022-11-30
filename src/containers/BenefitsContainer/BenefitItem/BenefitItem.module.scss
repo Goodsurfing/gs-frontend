@@ -23,3 +23,10 @@
 		line-height: 157%;
 	}
 }
+
+@media screen and (max-width: 768px) {
+	.item {
+		width: 100%;
+		margin-bottom: 40px;
+	}
+}
