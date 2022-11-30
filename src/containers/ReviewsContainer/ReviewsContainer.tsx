@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import {Autoplay, Navigation} from "swiper";
+import { Autoplay, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -45,7 +45,7 @@ const ReviewsContainer: FC = () => {
                     effect={"fade"}
                     autoplay={{
                         delay: 2000,
-                        pauseOnMouseEnter: true
+                        pauseOnMouseEnter: true,
                     }}
                 >
                     {reviewsData &&

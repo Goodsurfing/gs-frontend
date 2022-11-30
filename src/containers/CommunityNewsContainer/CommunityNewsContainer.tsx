@@ -33,12 +33,28 @@ const CommunityNewsContainer: FC = () => {
                             1100: {
                                 slidesPerView: 3,
                                 spaceBetween: 10,
+                                slidesOffsetBefore: 0,
+                                centeredSlides: false,
                             },
-                            768: {
+                            992: {
                                 slidesPerView: 2,
+                                slidesOffsetBefore: 10,
+                                centeredSlides: false,
+                            },
+                            480: {
+                                slidesPerView: 1,
+                                slidesOffsetBefore: 80,
+                                centeredSlides: false,
+                            },
+                            400: {
+                                slidesPerView: 1,
+                                slidesOffsetBefore: 20,
+                                centeredSlides: false,
                             },
                             0: {
                                 slidesPerView: 1,
+                                slidesOffsetBefore: 0,
+                                centeredSlides: true,
                             },
                         }}
                     >
