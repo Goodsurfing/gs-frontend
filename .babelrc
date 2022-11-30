@@ -8,6 +8,5 @@
             }
         ],
         "@babel/preset-typescript"
-    ],
-    "plugins": ["react-refresh/babel"]
+    ]
 }

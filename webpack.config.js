@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 
 /** @type {import('webpack').Configuration} */
@@ -61,6 +60,18 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'fonts/'
+                        }
+                    }
+                ]
+            }
         ],
     },
     plugins: [
@@ -69,7 +80,6 @@ module.exports = {
             template: "./public/index.html",
         }),
         new ForkTsCheckerWebpackPlugin(),
-        new ReactRefreshWebpackPlugin(),
         new Dotenv(),
     ],
 };
