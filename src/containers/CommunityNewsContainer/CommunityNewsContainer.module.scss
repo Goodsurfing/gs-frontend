@@ -1,44 +1,44 @@
 .wrapper {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-	width: 100%;
+    width: 100%;
 }
 
 .description {
-	margin-top: 30px;
-	margin-bottom: 35px;
+    margin-top: 30px;
+    margin-bottom: 35px;
 
-	text-align: center;
+    text-align: center;
 }
 
 .container {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-	width: 100%;
+    width: 100%;
 }
 
 .slider {
-	max-width: 90%;
+    max-width: 90%;
 }
 
 .arrow {
-	margin-bottom: 100px;
+    margin-bottom: 100px;
 
-	cursor: pointer;
+    cursor: pointer;
 
-	&:last-child {
-		img {
-			transform: rotate(180deg);
-		}
-	}
+    &:last-child {
+        img {
+            transform: rotate(180deg);
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
-	.arrow {
-		display: none;
-	}
+    .arrow {
+        display: none;
+    }
 }

@@ -1,29 +1,29 @@
 .cancel {
-	display: flex;
-	justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 
-	box-sizing: border-box;
+    box-sizing: border-box;
 
-	width: 100%;
+    width: 100%;
 
-	margin-bottom: 115px;
+    margin-bottom: 115px;
 
-	padding: 20px;
+    padding: 20px;
 
-	.btn {
-		color: #8494A1;
-		border: 1px solid #8494A1;
+    .btn {
+        color: #8494a1;
+        border: 1px solid #8494a1;
 
-		&:hover {
-			border: 1px solid var(--color-blue);
-		}
-	}
+        &:hover {
+            border: 1px solid var(--color-blue);
+        }
+    }
 }
 
 @media screen and (max-width: 480px) {
-	.cancel {
-		justify-content: center;
+    .cancel {
+        justify-content: center;
 
-		padding: 20px 0;
-	}
+        padding: 20px 0;
+    }
 }

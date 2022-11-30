@@ -1,29 +1,29 @@
 .wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-	width: 100%;
-	margin-top: 45px;
+    width: 100%;
+    margin-top: 45px;
 }
 
 .slider {
-	width: 100%;
-	margin-left: 20px;
+    width: 100%;
+    margin-left: 20px;
 }
 
 .arrow {
-	cursor: pointer;
+    cursor: pointer;
 
-	&:last-child {
-		img {
-			transform: rotate(180deg);
-		}
-	}
+    &:last-child {
+        img {
+            transform: rotate(180deg);
+        }
+    }
 }
 
 @media screen and (max-width: 992px) {
-	.arrow {
-		display: none;
-	}
+    .arrow {
+        display: none;
+    }
 }

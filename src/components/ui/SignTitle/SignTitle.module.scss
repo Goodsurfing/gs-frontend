@@ -1,0 +1,13 @@
+.title {
+    color: var(--color-black-primary);
+    font-size: 2rem;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+    .title {
+        font-size: 1.5rem;
+    }
+}

@@ -1,32 +1,32 @@
 .section {
-	padding-top: 80px;
+    padding-top: 80px;
 }
 
 .container {
-	width: 1180px;
-	margin: 0 auto;
+    width: 1180px;
+    margin: 0 auto;
 }
 
 @media screen and (max-width: 1180px) {
-	.container {
-		width: 992px;
-	}
+    .container {
+        width: 992px;
+    }
 }
 
 @media screen and (max-width: 992px) {
-	.container {
-		width: 768px;
-	}
+    .container {
+        width: 768px;
+    }
 }
 
 @media screen and (max-width: 768px) {
-	.container {
-		width: 480px;
-	}
+    .container {
+        width: 480px;
+    }
 }
 
 @media screen and (max-width: 480px) {
-	.container {
-		width: 320px;
-	}
+    .container {
+        width: 320px;
+    }
 }
