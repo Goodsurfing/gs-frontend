@@ -65,7 +65,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            favicon: false,
+            favicon: "./public/assets/favicon.png",
             template: "./public/index.html",
         }),
         new ForkTsCheckerWebpackPlugin(),
