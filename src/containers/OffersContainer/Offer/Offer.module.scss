@@ -49,9 +49,24 @@
 	margin-top: 18px;
 
 	span {
-		margin-left: 6px;
+		font-weight: 400;
+	}
 
-		font-weight: 500;
+	.rating {
+		display: flex;
+		align-items: center;
+
+		span {
+			margin-left: 5px;
+		}
+	}
+
+	.reviews {
+		margin-left: 15px;
+	}
+
+	.success {
+		margin-left: 15px;
 	}
 }
 
@@ -64,8 +79,14 @@
 		align-items: flex-start;
 		flex-direction: column;
 
-		span {
-			margin-bottom: 10px;
+		.reviews {
+			margin-top: 10px;
+			margin-left: 0;
+		}
+
+		.success {
+			margin-top: 10px;
+			margin-left: 0;
 		}
 	}
 }

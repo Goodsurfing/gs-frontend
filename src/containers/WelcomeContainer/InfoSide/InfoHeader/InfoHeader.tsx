@@ -11,7 +11,7 @@ import styles from "./InfoHeader.module.scss";
 
 const InfoHeader: FC = () => {
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-    const [linkIsOpen, setLinkIsOpen] = useState<boolean>(true);
+    const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
     return (
         <>
@@ -21,11 +21,10 @@ const InfoHeader: FC = () => {
                 })}
             >
                 <div className={styles.link}>
-                    <Link to={"/"}>Как это работает?</Link>a
+                    <Link to={"/"}>Как это работает?</Link>
                 </div>
                 <div className={styles.link}>
                     <Link to={"/"}>Cообщество</Link>
-                    <Arrow isOpen={linkIsOpen} />
                 </div>
                 <div className={styles.link}>
                     <Link to={"/"}>Вход</Link>
