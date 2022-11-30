@@ -1,14 +1,14 @@
 .wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-    width: 100%;
-    margin-top: 20px;
+	width: 100%;
+	margin-top: 20px;
 }
 
 @media screen and (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-    }
+	.wrapper {
+		flex-direction: column;
+	}
 }

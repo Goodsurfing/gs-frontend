@@ -1,0 +1,39 @@
+.box {
+	position: relative;
+
+	box-sizing: border-box;
+
+	width: 100%;
+
+	input {
+		width: 100%;
+		padding: 15px 0;
+
+		border: none;
+
+		border-bottom: 1px solid #82949F;
+
+		outline: none;
+	}
+
+	label {
+		position: absolute;
+		top: 10px;
+		left: 0;
+
+		pointer-events: none;
+
+		opacity: 0.5;
+
+		color: var(--color-black-primary);
+
+		line-height: 138%;
+		mix-blend-mode: normal;
+	}
+
+	input:focus ~ label {
+		top: -5px;
+
+		font-size: 0.875rem;
+	}
+}

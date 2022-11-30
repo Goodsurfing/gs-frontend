@@ -1,92 +1,92 @@
 .item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 
-    box-sizing: border-box;
+	box-sizing: border-box;
 
-    max-width: 347px;
-    height: 438px;
-    padding: 21px 19px;
+	max-width: 347px;
+	height: 438px;
+	padding: 21px 19px;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    border: var(--border);
-    box-shadow: var(--shadow);
+	border: var(--border);
+	box-shadow: var(--shadow);
 }
 
 .content {
-    .title {
-        height: 44px;
-        margin-top: 25px;
-        margin-bottom: 10px;
+	.title {
+		height: 44px;
+		margin-top: 25px;
+		margin-bottom: 10px;
 
-        font-family: var(--ff-m);
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 122%;
-    }
+		font-family: var(--ff-m);
+		font-size: 1.125rem;
+		font-weight: 500;
+		line-height: 122%;
+	}
 
-    .type {
-        margin-top: 2px;
-    }
+	.type {
+		margin-top: 2px;
+	}
 
-    p {
-        mix-blend-mode: normal;
+	p {
+		mix-blend-mode: normal;
 
-        opacity: 0.5;
-        color: var(--color-black);
+		opacity: 0.5;
+		color: var(--color-black);
 
-        font-size: 0.875rem;
-        line-height: 143%;
-    }
+		font-size: 0.875rem;
+		line-height: 143%;
+	}
 }
 
 .info {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 
-    margin-top: 18px;
+	margin-top: 18px;
 
-    span {
-        font-weight: 400;
-    }
+	span {
+		font-weight: 400;
+	}
 
-    .rating {
-        display: flex;
-        align-items: center;
+	.rating {
+		display: flex;
+		align-items: center;
 
-        span {
-            margin-left: 5px;
-        }
-    }
+		span {
+			margin-left: 5px;
+		}
+	}
 
-    .reviews {
-        margin-left: 15px;
-    }
+	.reviews {
+		margin-left: 15px;
+	}
 
-    .success {
-        margin-left: 15px;
-    }
+	.success {
+		margin-left: 15px;
+	}
 }
 
 @media screen and (max-width: 480px) {
-    .item {
-        margin: 0 20px;
-    }
+	.item {
+		margin: 0 20px;
+	}
 
-    .info {
-        align-items: flex-start;
-        flex-direction: column;
+	.info {
+		align-items: flex-start;
+		flex-direction: column;
 
-        .reviews {
-            margin-top: 10px;
-            margin-left: 0;
-        }
+		.reviews {
+			margin-top: 10px;
+			margin-left: 0;
+		}
 
-        .success {
-            margin-top: 10px;
-            margin-left: 0;
-        }
-    }
+		.success {
+			margin-top: 10px;
+			margin-left: 0;
+		}
+	}
 }
