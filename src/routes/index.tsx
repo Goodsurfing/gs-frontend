@@ -1,9 +1,9 @@
-import {useRoutes} from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 
 import MainPage from "@/pages/MainPage/MainPage";
-
-import {AppRoutesEnum} from "@/routes/types";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
+
+import { AppRoutesEnum } from "@/routes/types";
 
 export const PublicRoutes = () =>
     useRoutes([
@@ -13,6 +13,6 @@ export const PublicRoutes = () =>
         },
         {
             path: AppRoutesEnum.SIGNUP,
-            element: <SignUpPage />
-        }
+            element: <SignUpPage />,
+        },
     ]);
