@@ -7,3 +7,59 @@
 	cursor: pointer;
 	gap: 5px;
 }
+
+.wrapper {
+	position: relative;
+}
+
+.list {
+	position: absolute;
+
+	z-index: 1002;
+	top: 25px;
+	left: -20px;
+
+	visibility: hidden;
+
+	cursor: pointer;
+
+	transition: var(--main-transition);
+
+	opacity: 0;
+	border: 1px solid #DFE6EB;
+
+	background-color: var(--color-white);
+	box-shadow: 0 2px 5px rgb(0 0 0 / 5%);
+
+	.item {
+		display: flex;
+		align-items: center;
+
+		padding: 9px;
+
+		transition: var(--main-transition);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		span {
+			margin-left: 10px;
+
+			color: var(--color-blue);
+
+			font-size: 0.875rem;
+			font-weight: 700;
+		}
+
+		&:hover {
+			background-color: var(--hover-gray);
+		}
+	}
+}
+
+.visible {
+	visibility: visible;
+
+	opacity: 1;
+}
