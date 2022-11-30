@@ -1,15 +1,15 @@
 .wrapper {
-    position: absolute;
+	position: absolute;
 
-    visibility: hidden;
+	visibility: hidden;
 
-    transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 
-    opacity: 0;
+	opacity: 0;
 }
 
 .open {
-    visibility: visible;
+	visibility: visible;
 
-    opacity: 1;
+	opacity: 1;
 }

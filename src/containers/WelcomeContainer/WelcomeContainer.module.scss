@@ -1,34 +1,34 @@
 .wrapper {
-    display: flex;
+	display: flex;
 
-    min-height: 100vh;
+	min-height: 100vh;
 
-    border-bottom: 1px solid #dfe6eb;
+	border-bottom: 1px solid #DFE6EB;
 }
 
 .slider {
-    position: relative;
+	position: relative;
 
-    width: 50%;
+	width: 50%;
 }
 
 .logotype {
-    position: absolute;
-    z-index: 999;
-    top: 25px;
-    left: 50px;
+	position: absolute;
+	z-index: 999;
+	top: 25px;
+	left: 50px;
 }
 
 .info {
-    width: 50%;
+	width: 50%;
 }
 
 @media screen and (max-width: 1000px) {
-    .slider {
-        display: none;
-    }
+	.slider {
+		display: none;
+	}
 
-    .info {
-        width: 100%;
-    }
+	.info {
+		width: 100%;
+	}
 }

@@ -1,48 +1,48 @@
 .wrapper {
-    max-width: 980px;
+	max-width: 980px;
 
-    border-radius: 2px;
-    background: rgb(0 0 0 / 0.01%);
-    box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
+	border-radius: 2px;
+	background: rgb(0 0 0 / 0.01%);
+	box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
 }
 
 .slider {
-    position: relative;
+	position: relative;
 
-    .arrows {
-        position: absolute;
-        z-index: 999;
+	.arrows {
+		position: absolute;
+		z-index: 999;
 
-        top: 34px;
-        right: 40px;
+		top: 34px;
+		right: 40px;
 
-        display: flex;
-        align-items: center;
-    }
+		display: flex;
+		align-items: center;
+	}
 
-    .arrow {
-        cursor: pointer;
-    }
+	.arrow {
+		cursor: pointer;
+	}
 
-    .arrow:first-child {
-        margin-right: 15px;
+	.arrow:first-child {
+		margin-right: 15px;
 
-        transform: rotate(180deg);
-    }
+		transform: rotate(180deg);
+	}
 }
 
 .disable {
-    mix-blend-mode: normal;
+	mix-blend-mode: normal;
 
-    opacity: 0.2;
+	opacity: 0.2;
 }
 
 @media screen and (max-width: 992px) {
-    .wrapper {
-        width: 90%;
-    }
+	.wrapper {
+		width: 90%;
+	}
 
-    .arrow {
-        display: none;
-    }
+	.arrow {
+		display: none;
+	}
 }
