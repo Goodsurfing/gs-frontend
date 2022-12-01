@@ -14,7 +14,7 @@
         "bundle-report": "yarn build && webpack-bundle-analyzer dist/stats.json",
         "stylelint": "stylelint \"**/*.scss\" --fix",
         "eslint": "npx eslint . --fix",
-        "prettier": "npx prettier -w ./src"
+        "prettier": "prettier --write \"**/*.{ts,tsx,js}\""
     },
     "devDependencies": {
         "@babel/core": "^7.14.8",
