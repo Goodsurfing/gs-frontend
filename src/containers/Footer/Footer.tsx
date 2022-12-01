@@ -121,7 +121,7 @@ const Footer: FC = () => {
                 </div>
             </footer>
             <div className={styles.copyright}>
-                <p>© GoodSurfing, 2017-2021</p>
+                <p>© GoodSurfing, 2017-{new Date().getFullYear()}</p>
             </div>
         </>
     );
