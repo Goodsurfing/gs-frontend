@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom";
 
 import MainPage from "@/pages/MainPage/MainPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
 
@@ -19,5 +20,9 @@ export const PublicRoutes = () =>
         {
             path: AppRoutesEnum.SIGNIN,
             element: <SignInPage />,
+        },
+        {
+            path: AppRoutesEnum.RESET,
+            element: <ResetPasswordPage />,
         },
     ]);

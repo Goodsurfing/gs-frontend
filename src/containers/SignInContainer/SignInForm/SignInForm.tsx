@@ -5,6 +5,8 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
 
+import { AppRoutesEnum } from "@/routes/types";
+
 import styles from "./SignInForm.module.scss";
 
 const SignInForm: FC = () => {
@@ -18,7 +20,7 @@ const SignInForm: FC = () => {
 
             <div className={styles.help}>
                 <Checkbox text={"Запомнить меня"} />
-                <Link to={"/"} className={styles.forget}>
+                <Link to={AppRoutesEnum.RESET} className={styles.forget}>
                     Забыли пароль?
                 </Link>
             </div>
