@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom";
 
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
+import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";
 import MainPage from "@/pages/MainPage/MainPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
@@ -29,5 +30,9 @@ export const PublicRoutes = () =>
         {
             path: AppRoutesEnum.CONFIRM_EMAIL,
             element: <ConfirmEmailPage />,
+        },
+        {
+            path: AppRoutesEnum.CONFIRM_EMAIL_SUCCESS,
+            element: <ConfirmEmailSuccessPage />,
         },
     ]);
