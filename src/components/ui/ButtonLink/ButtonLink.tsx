@@ -2,11 +2,11 @@ import cn from "classnames";
 import React, { FC, PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
-import { IButtonProps } from "@/components/ui/Button/Button.interface";
+import { IButtonProps } from "@/components/ui/ButtonLink/ButtonLink.interface";
 
-import styles from "./Button.module.scss";
+import styles from "./ButtonLink.module.scss";
 
-const Button: FC<PropsWithChildren<IButtonProps>> = ({
+const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
     type,
     path,
     className,
@@ -30,4 +30,4 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
     );
 };
 
-export default Button;
+export default ButtonLink;

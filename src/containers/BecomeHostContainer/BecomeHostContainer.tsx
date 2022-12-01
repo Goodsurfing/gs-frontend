@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
 
 import styles from "./BecomeHostContainer.module.scss";
@@ -15,9 +15,9 @@ const BecomeHostContainer: FC = () => {
                 познакомиться с новыми культурами, распространить информацию о
                 вас, получить экспертов по различным направлениям.
             </p>
-            <Button path={"/"} type={"primary"}>
+            <ButtonLink path={"/"} type={"primary"}>
                 Стать хостом
-            </Button>
+            </ButtonLink>
         </div>
     );
 };

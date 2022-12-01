@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from "react";
 
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 import EmptyHeader from "@/components/ui/EmptyHeader/EmptyHeader";
 
 import { AppRoutesEnum } from "@/routes/types";
@@ -21,13 +21,13 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
         <>
             <EmptyHeader />
             <div className={styles.cancel}>
-                <Button
+                <ButtonLink
                     type={"outlined"}
                     className={styles.btn}
                     path={cancelPath}
                 >
                     {cancelText}
-                </Button>
+                </ButtonLink>
             </div>
             <div className={styles.container}>{children}</div>
         </>

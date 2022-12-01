@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { howItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";
 import HowItWorkItem from "@/containers/HowItWorkContainer/HowItWorkItem/HowItWorkItem";
@@ -21,9 +21,9 @@ const HowItWorkContainer: FC = () => {
                         />
                     ))}
             </div>
-            <Button path={"/"} type={"primary"}>
+            <ButtonLink path={"/"} type={"primary"}>
                 Как это работает
-            </Button>
+            </ButtonLink>
         </div>
     );
 };

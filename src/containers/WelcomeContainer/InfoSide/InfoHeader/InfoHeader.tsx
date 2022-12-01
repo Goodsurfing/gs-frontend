@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -61,13 +61,13 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Вход</Link>
                 </div>
                 <div className={styles.link}>
-                    <Button
+                    <ButtonLink
                         className={styles.btn}
                         type={"outlined"}
                         path={AppRoutesEnum.SIGNUP}
                     >
                         Регистрация
-                    </Button>
+                    </ButtonLink>
                 </div>
                 <div
                     className={cn(styles.burger, {
