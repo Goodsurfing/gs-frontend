@@ -17,7 +17,12 @@ const SignUpContainer: FC = () => {
                 Нажимая кнопку «Зарегистрироваться», я принимаю{" "}
                 <Link to={"/"}>Политику конфеденциальности ГудСёрфинга</Link>.
             </div>
-            <SocialAuthContainer />
+            <div className={styles.socials}>
+                <SocialAuthContainer />
+            </div>
+            <p className={styles.attention}>
+                Мы не постим ничего без вашего ведома
+            </p>
         </div>
     );
 };

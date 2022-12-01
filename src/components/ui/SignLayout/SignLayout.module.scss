@@ -18,12 +18,23 @@
 			border: 1px solid var(--color-blue);
 		}
 	}
+
+	.mobileBtn {
+		display: none;
+	}
 }
 
 @media screen and (max-width: 480px) {
 	.cancel {
-		justify-content: center;
+		margin-bottom: 10px;
+		padding: 30px 20px;
 
-		padding: 20px 0;
+		.btn {
+			display: none;
+		}
+
+		.mobileBtn {
+			display: block;
+		}
 	}
 }

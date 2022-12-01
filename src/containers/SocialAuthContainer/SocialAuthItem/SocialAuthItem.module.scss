@@ -39,3 +39,16 @@
 		}
 	}
 }
+
+@media screen and (max-width: 667px) {
+	.item {
+		width: 201px;
+		min-height: 50px;
+
+		margin-bottom: 20px;
+	}
+
+	.icon {
+		min-height: 50px;
+	}
+}

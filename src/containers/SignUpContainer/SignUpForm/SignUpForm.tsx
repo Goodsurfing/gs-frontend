@@ -7,10 +7,12 @@ import styles from "./SignUpForm.module.scss";
 
 const SignUpForm: FC = () => {
     return (
-        <form>
+        <form className={styles.form}>
             <InputField type={"email"} placeholder={"E-mail"} />
             <InputField type={"password"} placeholder={"Пароль"} />
-            <Button type={"primary"}>Зарегистрироваться</Button>
+            <Button type={"primary"} className={styles.btn}>
+                Зарегистрироваться
+            </Button>
         </form>
     );
 };
