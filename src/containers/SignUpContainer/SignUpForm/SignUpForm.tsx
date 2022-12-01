@@ -7,7 +7,7 @@ import styles from "./SignUpForm.module.scss";
 const SignUpForm: FC = () => {
     return (
         <form>
-            <InputField />
+            <InputField type={"email"} placeholder={"E-mail"} />
         </form>
     );
 };

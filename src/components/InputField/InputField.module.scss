@@ -9,17 +9,28 @@
 		width: 100%;
 		padding: 15px 0;
 
+		color: var(--color-black-primary);
+
 		border: none;
 
 		border-bottom: 1px solid #82949F;
 
 		outline: none;
+
+		font-family: Lato;
+		font-size: 1rem;
+		font-weight: 600;
+
+		line-height: 138%;
+		mix-blend-mode: normal;
 	}
 
 	label {
 		position: absolute;
-		top: 10px;
+		top: 15px;
 		left: 0;
+
+		transition: all 0.2s ease-in-out;
 
 		pointer-events: none;
 
@@ -27,12 +38,18 @@
 
 		color: var(--color-black-primary);
 
+		font-size: 1.125rem;
+
+		font-weight: 500;
 		line-height: 138%;
 		mix-blend-mode: normal;
 	}
 
-	input:focus ~ label {
+	input:focus ~ label,
+	.empty {
 		top: -5px;
+
+		opacity: 0.8;
 
 		font-size: 0.875rem;
 	}
