@@ -17,7 +17,11 @@ const InfoSide: FC = () => {
                     <SectionTitle classNames={styles.title}>
                         Найдите путешествие мечты
                     </SectionTitle>
-                    <ButtonLink className={styles.btn} type={"primary"} path={"/"}>
+                    <ButtonLink
+                        className={styles.btn}
+                        type={"primary"}
+                        path={"/"}
+                    >
                         Все предложения
                     </ButtonLink>
                 </div>
