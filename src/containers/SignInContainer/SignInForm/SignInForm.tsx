@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Link } from "react-router-dom";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
@@ -17,6 +18,9 @@ const SignInForm: FC = () => {
 
             <div className={styles.help}>
                 <Checkbox text={"Запомнить меня"} />
+                <Link to={"/"} className={styles.forget}>
+                    Забыли пароль?
+                </Link>
             </div>
         </form>
     );
