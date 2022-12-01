@@ -1,5 +1,6 @@
 import { useRoutes } from "react-router-dom";
 
+import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import MainPage from "@/pages/MainPage/MainPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
@@ -24,5 +25,9 @@ export const PublicRoutes = () =>
         {
             path: AppRoutesEnum.RESET,
             element: <ResetPasswordPage />,
+        },
+        {
+            path: AppRoutesEnum.CONFIRM_EMAIL,
+            element: <ConfirmEmailPage />,
         },
     ]);
