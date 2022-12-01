@@ -29,7 +29,7 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Cообщество</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Вход</Link>
+                    <Link to={AppRoutesEnum.SIGNIN}>Вход</Link>
                 </div>
                 <div className={styles.link}>
                     <Link to={AppRoutesEnum.SIGNUP}>Регистрация</Link>
@@ -58,7 +58,7 @@ const InfoHeader: FC = () => {
                     </Popup>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Вход</Link>
+                    <Link to={AppRoutesEnum.SIGNIN}>Вход</Link>
                 </div>
                 <div className={styles.link}>
                     <ButtonLink
