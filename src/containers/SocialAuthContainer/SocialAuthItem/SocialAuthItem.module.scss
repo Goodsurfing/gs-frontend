@@ -1,0 +1,41 @@
+.item {
+	display: flex;
+	align-items: center;
+	flex: 1;
+
+	max-width: 201px;
+	height: 50px;
+
+	max-height: 50px;
+
+	cursor: pointer;
+
+	transition: var(--main-transition);
+
+	border-radius: 2px;
+
+	&:hover {
+		filter: brightness(0.9);
+	}
+
+	.icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 44px;
+		height: 100%;
+
+		border-right: 1px solid #DFE6EB;
+	}
+
+	.title {
+		margin-left: 19px;
+
+		span {
+			color: var(--color-white);
+
+			line-height: 138%;
+		}
+	}
+}

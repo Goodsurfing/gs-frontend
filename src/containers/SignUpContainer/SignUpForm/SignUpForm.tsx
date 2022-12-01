@@ -2,7 +2,6 @@ import React, { FC } from "react";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import styles from "./SignUpForm.module.scss";
 
