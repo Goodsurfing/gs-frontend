@@ -1,6 +1,5 @@
 import cn from "classnames";
 import React, { FC, PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
 
 import { IButtonProps } from "@/components/ui/Button/Button.interface";
 
@@ -8,13 +7,11 @@ import styles from "./Button.module.scss";
 
 const Button: FC<PropsWithChildren<IButtonProps>> = ({
     type,
-    path,
     className,
     children,
 }) => {
     return (
-        <Link
-            to={path}
+        <button
             className={cn(
                 styles.btn,
                 {
@@ -26,7 +23,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
             )}
         >
             {children}
-        </Link>
+        </button>
     );
 };
 

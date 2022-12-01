@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
 
 import ActivityContainer from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityContainer";
@@ -17,9 +17,13 @@ const InfoSide: FC = () => {
                     <SectionTitle classNames={styles.title}>
                         Найдите путешествие мечты
                     </SectionTitle>
-                    <Button className={styles.btn} type={"primary"} path={"/"}>
+                    <ButtonLink
+                        className={styles.btn}
+                        type={"primary"}
+                        path={"/"}
+                    >
                         Все предложения
-                    </Button>
+                    </ButtonLink>
                 </div>
                 <div className={styles.activity}>
                     <h3 className={styles.activityTitle}>

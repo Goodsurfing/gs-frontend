@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { volunteerData } from "@/containers/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "@/containers/VolunteerContainer/VolunteerItem/VolunteerItem";
@@ -24,9 +24,9 @@ const VolunteerContainer: FC = () => {
                         <VolunteerItem key={item.number} {...item} />
                     ))}
             </div>
-            <Button type={"secondary"} path={"/"}>
+            <ButtonLink type={"secondary"} path={"/"}>
                 Начать сейчас
-            </Button>
+            </ButtonLink>
         </div>
     );
 };

@@ -1,0 +1,40 @@
+.cancel {
+	display: flex;
+	justify-content: flex-end;
+
+	box-sizing: border-box;
+
+	width: 100%;
+
+	margin-bottom: 115px;
+
+	padding: 20px;
+
+	.btn {
+		color: #8494A1;
+		border: 1px solid #8494A1;
+
+		&:hover {
+			border: 1px solid var(--color-blue);
+		}
+	}
+
+	.mobileBtn {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.cancel {
+		margin-bottom: 10px;
+		padding: 30px 20px;
+
+		.btn {
+			display: none;
+		}
+
+		.mobileBtn {
+			display: block;
+		}
+	}
+}

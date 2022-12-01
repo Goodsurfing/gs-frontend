@@ -1,0 +1,41 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	h2 {
+		margin-bottom: 55px;
+	}
+}
+
+.socials {
+	width: 159%;
+
+	margin-bottom: 45px;
+}
+
+.redirect {
+	text-align: center;
+
+	color: var(--color-black-primary);
+
+	line-height: 138%;
+
+	a {
+		color: var(--color-blue);
+
+		font-weight: 600;
+	}
+}
+
+@media screen and (max-width: 667px) {
+	.socials {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.wrapper {
+		flex-direction: column;
+	}
+}

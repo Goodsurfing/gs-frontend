@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
-import Button from "@/components/ui/Button/Button";
+import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
+
+import { AppRoutesEnum } from "@/routes/types";
 
 import styles from "./InfoHeader.module.scss";
 
@@ -27,10 +29,10 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Cообщество</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Вход</Link>
+                    <Link to={AppRoutesEnum.SIGNIN}>Вход</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Регистрация</Link>
+                    <Link to={AppRoutesEnum.SIGNUP}>Регистрация</Link>
                 </div>
             </div>
 
@@ -56,12 +58,16 @@ const InfoHeader: FC = () => {
                     </Popup>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Вход</Link>
+                    <Link to={AppRoutesEnum.SIGNIN}>Вход</Link>
                 </div>
                 <div className={styles.link}>
-                    <Button className={styles.btn} type={"outlined"} path={"/"}>
+                    <ButtonLink
+                        className={styles.btn}
+                        type={"outlined"}
+                        path={AppRoutesEnum.SIGNUP}
+                    >
                         Регистрация
-                    </Button>
+                    </ButtonLink>
                 </div>
                 <div
                     className={cn(styles.burger, {
