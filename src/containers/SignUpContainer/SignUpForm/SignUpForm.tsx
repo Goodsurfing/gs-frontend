@@ -12,10 +12,13 @@ import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import styles from "./SignUpForm.module.scss";
+import {useNavigate} from "react-router-dom";
+import {AppRoutesEnum} from "@/routes/types";
 
 const SignUpForm: FC = () => {
     const [registerUser] = authApi.useRegisterUserMutation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const { control, reset, handleSubmit } = useForm<IAuthFormData>({
         mode: "onChange",
@@ -27,6 +30,7 @@ const SignUpForm: FC = () => {
                 .unwrap()
                 .then((response) => {
                     dispatch(setRegisterUserData(response));
+                    navigate(AppRoutesEnum.CONFIRM_EMAIL);
                 })
                 .catch((error) => {
                     console.log(error);

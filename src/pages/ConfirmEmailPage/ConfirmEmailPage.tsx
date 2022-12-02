@@ -6,15 +6,18 @@ import SignTitle from "@/components/ui/SignTitle/SignTitle";
 import { AppRoutesEnum } from "@/routes/types";
 
 import styles from "./ConfirmEmailPage.module.scss";
+import {useAppSelector} from "@/hooks/redux";
 
 const ConfirmEmailPage: FC = () => {
+    const {email} = useAppSelector(state => state.register);
+
     return (
         <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNUP}>
             <div className={styles.wrapper}>
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        На <span>space-cowboy1982@bk.ru</span> было отправлено
+                        На <span>{email}</span> было отправлено
                         письмо со ссылкой для подтверждения почты.
                     </div>
                     <p>
