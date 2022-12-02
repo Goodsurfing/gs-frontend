@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button/Button";
 import { useAppDispatch } from "@/hooks/redux";
 
 import { authApi } from "@/store/api/authApi";
+import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import styles from "./SignUpForm.module.scss";
 
@@ -21,10 +22,15 @@ const SignUpForm: FC = () => {
     });
 
     const onSubmit: SubmitHandler<IAuthFormData> = async (data) => {
-        console.log("reg data:", data);
         try {
-            const response = await registerUser(data);
-            console.log(response);
+            await registerUser(data)
+                .unwrap()
+                .then((response) => {
+                    dispatch(setRegisterUserData(response));
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } catch (e) {
             console.log(e);
         }

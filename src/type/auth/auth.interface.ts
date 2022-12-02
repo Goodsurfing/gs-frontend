@@ -6,3 +6,8 @@ export interface IAuthFormData {
 export enum AuthApiEndpoints {
     REGISTER = "/register/",
 }
+
+export interface IRegisterResponse {
+    id: string;
+    email: string;
+}
