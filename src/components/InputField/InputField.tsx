@@ -3,12 +3,12 @@ import React, { FC, useState } from "react";
 
 import styles from "./InputField.module.scss";
 
-interface InputFieldProps {
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
-    placeholder: string;
+    text: string;
 }
 
-const InputField: FC<InputFieldProps> = ({ type, placeholder }) => {
+const InputField: FC<InputFieldProps> = ({ type, text, ...rest }) => {
     const [value, setValue] = useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,13 +22,14 @@ const InputField: FC<InputFieldProps> = ({ type, placeholder }) => {
                 required={true}
                 onChange={handleChange}
                 value={value}
+                {...rest}
             />
             <label
                 className={cn({
                     [styles.empty]: !!value,
                 })}
             >
-                {placeholder}
+                {text}
             </label>
         </div>
     );

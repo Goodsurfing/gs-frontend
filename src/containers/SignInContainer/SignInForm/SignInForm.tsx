@@ -12,11 +12,11 @@ import styles from "./SignInForm.module.scss";
 const SignInForm: FC = () => {
     return (
         <form className={styles.form}>
-            <InputField type={"email"} placeholder={"E-mail"} />
+            <InputField type={"email"} text={"E-mail"} />
 
-            <InputField type={"password"} placeholder={"Пароль"} />
+            <InputField type={"password"} text={"Пароль"} />
 
-            <Button type={"primary"}>Войти</Button>
+            <Button variant={"primary"}>Войти</Button>
 
             <div className={styles.help}>
                 <Checkbox text={"Запомнить меня"} />

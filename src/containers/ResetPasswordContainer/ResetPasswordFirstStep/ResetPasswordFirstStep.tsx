@@ -8,9 +8,9 @@ import styles from "./ResetPasswordFirstStep.module.scss";
 const ResetPasswordFirstStep: FC = () => {
     return (
         <form className={styles.form}>
-            <InputField type={"email"} placeholder={"E-mail"} />
+            <InputField type={"email"} text={"E-mail"} />
 
-            <Button type={"primary"}>Отправить</Button>
+            <Button variant={"primary"}>Отправить</Button>
         </form>
     );
 };

@@ -1,4 +1,6 @@
-export interface IButtonProps {
-    type: "primary" | "secondary" | "outlined";
-    className?: string;
+import React from "react";
+
+export interface IButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant: "primary" | "secondary" | "outlined";
 }
