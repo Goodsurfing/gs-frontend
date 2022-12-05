@@ -1,5 +1,7 @@
+import PrivateRoute from "@/hok/PrivateRoute/PrivateRoute";
 import { useRoutes } from "react-router-dom";
 
+import CategoriesPage from "@/pages/CategoriesPage/CategoriesPage";
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";
 import MainPage from "@/pages/MainPage/MainPage";
@@ -34,5 +36,9 @@ export const PublicRoutes = () =>
         {
             path: AppRoutesEnum.CONFIRM_EMAIL_SUCCESS,
             element: <ConfirmEmailSuccessPage />,
+        },
+        {
+            path: AppRoutesEnum.CATEGORIES,
+            element: <PrivateRoute Component={CategoriesPage} />,
         },
     ]);

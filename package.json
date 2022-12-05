@@ -18,6 +18,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.14.8",
+        "@babel/plugin-transform-runtime": "^7.19.6",
         "@babel/preset-env": "^7.14.9",
         "@babel/preset-react": "^7.14.5",
         "@babel/preset-typescript": "^7.14.5",
@@ -63,6 +64,7 @@
         "dotenv-webpack": "^8.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-hook-form": "^7.40.0",
         "react-redux": "^8.0.4",
         "react-router-dom": "^6.4.2",
         "swiper": "^8.4.5"

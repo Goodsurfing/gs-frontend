@@ -1,22 +1,22 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import styles from "./Checkbox.module.scss";
 
 interface CheckboxProps {
     text: string;
+    isChecked: boolean;
+    onChange: () => void;
 }
 
-const Checkbox: FC<CheckboxProps> = ({ text }) => {
-    const [isChecked, setIsChecked] = useState<boolean>(false);
-
+const Checkbox: FC<CheckboxProps> = ({ text, isChecked, onChange }) => {
     return (
         <div className={styles.wrapper}>
             <label>
                 <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() => setIsChecked((prev) => !prev)}
+                    onChange={onChange}
                     className={cn(styles.checkbox, {
                         [styles.checked]: isChecked,
                     })}

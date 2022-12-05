@@ -1,34 +1,35 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import styles from "./InputField.module.scss";
 
-interface InputFieldProps {
+interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
-    placeholder: string;
+    text: string;
 }
 
-const InputField: FC<InputFieldProps> = ({ type, placeholder }) => {
-    const [value, setValue] = useState<string>("");
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    };
-
+const InputField: FC<InputFieldProps> = ({
+    type,
+    text,
+    value,
+    onChange,
+    ...rest
+}) => {
     return (
         <div className={styles.box}>
             <input
                 type={type}
                 required={true}
-                onChange={handleChange}
+                onChange={onChange}
                 value={value}
+                {...rest}
             />
             <label
                 className={cn({
                     [styles.empty]: !!value,
                 })}
             >
-                {placeholder}
+                {text}
             </label>
         </div>
     );

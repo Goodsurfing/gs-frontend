@@ -6,21 +6,23 @@ import { IButtonProps } from "@/components/ui/Button/Button.interface";
 import styles from "./Button.module.scss";
 
 const Button: FC<PropsWithChildren<IButtonProps>> = ({
-    type,
+    variant,
     className,
     children,
+    ...rest
 }) => {
     return (
         <button
             className={cn(
                 styles.btn,
                 {
-                    [styles.primary]: type === "primary",
-                    [styles.secondary]: type === "secondary",
-                    [styles.outlined]: type === "outlined",
+                    [styles.primary]: variant === "primary",
+                    [styles.secondary]: variant === "secondary",
+                    [styles.outlined]: variant === "outlined",
                 },
                 className
             )}
+            onClick={rest.onClick}
         >
             {children}
         </button>

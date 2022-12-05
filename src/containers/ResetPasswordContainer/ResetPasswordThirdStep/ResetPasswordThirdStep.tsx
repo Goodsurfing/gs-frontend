@@ -8,13 +8,10 @@ import styles from "./ResetPasswordThirdStep.module.scss";
 const ResetPasswordThirdStep: FC = () => {
     return (
         <form className={styles.form}>
-            <InputField type={"password"} placeholder={"Новый пароль"} />
-            <InputField
-                type={"password"}
-                placeholder={"Повторите новый пароль"}
-            />
+            <InputField type={"password"} text={"Новый пароль"} />
+            <InputField type={"password"} text={"Повторите новый пароль"} />
 
-            <Button type={"primary"}>Отправить</Button>
+            <Button variant={"primary"}>Отправить</Button>
         </form>
     );
 };
