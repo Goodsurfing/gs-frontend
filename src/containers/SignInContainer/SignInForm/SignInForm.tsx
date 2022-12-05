@@ -1,6 +1,6 @@
 import { IAuthFormData } from "@/type/auth/auth.interface";
 import { taskCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -13,6 +13,7 @@ import { AppRoutesEnum } from "@/routes/types";
 import styles from "./SignInForm.module.scss";
 
 const SignInForm: FC = () => {
+    const [isRemember, setIsRemember] = useState<boolean>(false);
     const { control, reset, handleSubmit } = useForm<IAuthFormData>({
         mode: "onChange",
     });
@@ -20,9 +21,14 @@ const SignInForm: FC = () => {
     const onSubmit: SubmitHandler<IAuthFormData> = (data) => {
         try {
             console.log(data);
+            console.log(isRemember);
         } catch (e) {
             console.log(e);
         }
+    };
+
+    const checkboxHandleClick = () => {
+        setIsRemember(!isRemember);
     };
 
     return (
@@ -60,7 +66,11 @@ const SignInForm: FC = () => {
             </Button>
 
             <div className={styles.help}>
-                <Checkbox text={"Запомнить меня"} />
+                <Checkbox
+                    isChecked={isRemember}
+                    onChange={checkboxHandleClick}
+                    text={"Запомнить меня"}
+                />
                 <Link to={AppRoutesEnum.RESET} className={styles.forget}>
                     Забыли пароль?
                 </Link>
