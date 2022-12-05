@@ -1,9 +1,13 @@
-import { IResetPasswordVerifyData } from "@/type/auth/auth.interface";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
+
+import useQuery from "@/hooks/useQuery";
+
+import { AppRoutesEnum } from "@/routes/types";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
 
@@ -13,12 +17,23 @@ interface IFormData {
 }
 
 const ResetPasswordThirdStep: FC = () => {
+    const navigate = useNavigate();
+    const query = useQuery();
+
     const { control, reset, handleSubmit } = useForm<IFormData>({
         mode: "onChange",
     });
 
+    useEffect(() => {
+        if (!query.get("token")) {
+            navigate(AppRoutesEnum.HOME);
+        }
+    }, []);
+
     const onSubmit = async (data: IFormData) => {
-        console.log(data);
+        const token = query.get("token");
+        console.log(token, data);
+        reset();
     };
 
     return (
