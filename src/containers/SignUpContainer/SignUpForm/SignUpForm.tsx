@@ -27,7 +27,7 @@ const SignUpForm: FC = () => {
 
     const onSubmit: SubmitHandler<IAuthFormData> = async (data) => {
         try {
-            await registerUser(data)
+            await registerUser({...data, locale: "ru"})
                 .unwrap()
                 .then((response) => {
                     dispatch(setRegisterUserData(response));
