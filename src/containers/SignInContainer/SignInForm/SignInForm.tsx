@@ -12,7 +12,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { AppRoutesEnum } from "@/routes/types";
 
 import { authApi } from "@/store/api/authApi";
-import { loginSlice, setLoginUserData } from "@/store/reducers/loginSlice";
+import { setLoginUserData } from "@/store/reducers/loginSlice";
 
 import styles from "./SignInForm.module.scss";
 
@@ -35,6 +35,8 @@ const SignInForm: FC = () => {
                     if (isRemember) {
                         localStorage.setItem("token", response.token);
                     }
+                    navigate(AppRoutesEnum.HOME);
+                    reset();
                 })
                 .catch((error) => {
                     console.log(error);
