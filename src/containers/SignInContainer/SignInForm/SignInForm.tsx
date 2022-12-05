@@ -1,27 +1,44 @@
-import { IAuthFormData } from "@/type/auth/auth.interface";
-import { taskCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
+import { IAuthLoginData } from "@/type/auth/auth.interface";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
 
+import { useAppDispatch } from "@/hooks/redux";
+
 import { AppRoutesEnum } from "@/routes/types";
+
+import { authApi } from "@/store/api/authApi";
+import { loginSlice, setLoginUserData } from "@/store/reducers/loginSlice";
 
 import styles from "./SignInForm.module.scss";
 
 const SignInForm: FC = () => {
+    const [loginUser] = authApi.useLoginUserMutation();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const [isRemember, setIsRemember] = useState<boolean>(false);
-    const { control, reset, handleSubmit } = useForm<IAuthFormData>({
+    const { control, reset, handleSubmit } = useForm<IAuthLoginData>({
         mode: "onChange",
     });
 
-    const onSubmit: SubmitHandler<IAuthFormData> = (data) => {
+    const onSubmit: SubmitHandler<IAuthLoginData> = async (data) => {
         try {
-            console.log(data);
-            console.log(isRemember);
+            await loginUser(data)
+                .unwrap()
+                .then((response) => {
+                    dispatch(setLoginUserData(response));
+                    if (isRemember) {
+                        localStorage.setItem("token", response.token);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } catch (e) {
             console.log(e);
         }
@@ -35,7 +52,7 @@ const SignInForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"email"}
+                name={"username"}
                 defaultValue={""}
                 render={({ field }) => (
                     <InputField

@@ -11,7 +11,7 @@ export interface IAuthLoginData {
 
 export enum AuthApiEndpoints {
     REGISTER = "/register/",
-    LOGIN = "/login_check"
+    LOGIN = "/login_check",
 }
 
 export interface IRegisterResponse {
