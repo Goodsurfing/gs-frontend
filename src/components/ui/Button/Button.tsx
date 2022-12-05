@@ -9,6 +9,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
     variant,
     className,
     children,
+    ...rest
 }) => {
     return (
         <button
@@ -21,6 +22,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                 },
                 className
             )}
+            onClick={rest.onClick}
         >
             {children}
         </button>
