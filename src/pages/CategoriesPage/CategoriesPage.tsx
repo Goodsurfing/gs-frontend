@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 
-interface CategoriesPageProps {}
-
-const CategoriesPage: FC<CategoriesPageProps> = () => {
+const CategoriesPage: FC = () => {
     return <div>Категории, приватный роут</div>;
 };
 

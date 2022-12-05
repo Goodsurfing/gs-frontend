@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 
 import SignTitle from "@/components/ui/SignTitle/SignTitle";
 
 import ResetPasswordFirstStep from "@/containers/ResetPasswordContainer/ResetPasswordFirstStep/ResetPasswordFirstStep";
 import ResetPasswordSecondStep from "@/containers/ResetPasswordContainer/ResetPasswordSecondStep/ResetPasswordSecondStep";
-import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
 
 import styles from "./ResetPasswordContainer.module.scss";
 
@@ -24,8 +23,6 @@ const ResetPasswordContainer: FC = () => {
                 <ResetPasswordFirstStep changeStep={onChangeStep} />
             ) : currentStep === 2 ? (
                 <ResetPasswordSecondStep email={email} />
-            ) : currentStep === 3 ? (
-                <ResetPasswordThirdStep />
             ) : (
                 ""
             )}
