@@ -3,13 +3,14 @@ import React, { FC } from "react";
 import SignLayout from "@/components/ui/SignLayout/SignLayout";
 import SignTitle from "@/components/ui/SignTitle/SignTitle";
 
+import { useAppSelector } from "@/hooks/redux";
+
 import { AppRoutesEnum } from "@/routes/types";
 
 import styles from "./ConfirmEmailPage.module.scss";
-import {useAppSelector} from "@/hooks/redux";
 
 const ConfirmEmailPage: FC = () => {
-    const {email} = useAppSelector(state => state.register);
+    const { email } = useAppSelector((state) => state.register);
 
     return (
         <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNUP}>
@@ -17,8 +18,8 @@ const ConfirmEmailPage: FC = () => {
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        На <span>{email}</span> было отправлено
-                        письмо со ссылкой для подтверждения почты.
+                        На <span>{email}</span> было отправлено письмо со
+                        ссылкой для подтверждения почты.
                     </div>
                     <p>
                         Если вы не видите письмо, проверьте, не попало ли оно в

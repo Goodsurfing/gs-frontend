@@ -1,4 +1,7 @@
+import { IAuthFormData } from "@/type/auth/auth.interface";
+import { taskCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
 import React, { FC } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
@@ -10,13 +13,51 @@ import { AppRoutesEnum } from "@/routes/types";
 import styles from "./SignInForm.module.scss";
 
 const SignInForm: FC = () => {
+    const { control, reset, handleSubmit } = useForm<IAuthFormData>({
+        mode: "onChange",
+    });
+
+    const onSubmit: SubmitHandler<IAuthFormData> = (data) => {
+        try {
+            console.log(data);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     return (
-        <form className={styles.form}>
-            <InputField type={"email"} text={"E-mail"} />
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <Controller
+                control={control}
+                name={"email"}
+                defaultValue={""}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type={"email"}
+                        text={"E-mail"}
+                    />
+                )}
+            />
 
-            <InputField type={"password"} text={"Пароль"} />
+            <Controller
+                control={control}
+                name={"password"}
+                defaultValue={""}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type={"password"}
+                        text={"Пароль"}
+                    />
+                )}
+            />
 
-            <Button variant={"primary"}>Войти</Button>
+            <Button type={"submit"} variant={"primary"}>
+                Войти
+            </Button>
 
             <div className={styles.help}>
                 <Checkbox text={"Запомнить меня"} />

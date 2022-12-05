@@ -2,18 +2,19 @@ import { IAuthFormData } from "@/type/auth/auth.interface";
 import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
 
 import { useAppDispatch } from "@/hooks/redux";
 
+import { AppRoutesEnum } from "@/routes/types";
+
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import styles from "./SignUpForm.module.scss";
-import {useNavigate} from "react-router-dom";
-import {AppRoutesEnum} from "@/routes/types";
 
 const SignUpForm: FC = () => {
     const [registerUser] = authApi.useRegisterUserMutation();
