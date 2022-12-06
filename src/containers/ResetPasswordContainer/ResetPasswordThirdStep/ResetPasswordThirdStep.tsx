@@ -9,6 +9,8 @@ import useQuery from "@/hooks/useQuery";
 
 import { AppRoutesEnum } from "@/routes/types";
 
+import { authApi } from "@/store/api/authApi";
+
 import styles from "./ResetPasswordThirdStep.module.scss";
 
 interface IFormData {
@@ -19,6 +21,7 @@ interface IFormData {
 const ResetPasswordThirdStep: FC = () => {
     const navigate = useNavigate();
     const query = useQuery();
+    const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
 
     const { control, reset, handleSubmit } = useForm<IFormData>({
         mode: "onChange",
@@ -32,8 +35,22 @@ const ResetPasswordThirdStep: FC = () => {
 
     const onSubmit = async (data: IFormData) => {
         const token = query.get("token");
-        console.log(token, data);
-        reset();
+        if (!token) {
+            return;
+        }
+        if (data.password !== data.confirmPassword) {
+            alert("Пароли не совпадают");
+            return;
+        }
+        await resetPasswordVerify({
+            token: token,
+            plainPassword: data.password,
+        })
+            .unwrap()
+            .then(() => {
+                navigate(AppRoutesEnum.SIGNIN);
+                reset();
+            });
     };
 
     return (

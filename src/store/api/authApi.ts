@@ -7,6 +7,8 @@ import {
     IRegisterResponse,
     IResetPasswordRequestFormData,
     IResetPasswordRequestResponse,
+    IResetPasswordVerifyData,
+    IResetPasswordVerifyResponse,
 } from "@/type/auth/auth.interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -34,6 +36,16 @@ export const authApi = createApi({
         >({
             query: (data: IResetPasswordRequestFormData) => ({
                 url: AuthApiEndpoints.RESET_PASSWORD_REQUEST,
+                method: "POST",
+                body: data,
+            }),
+        }),
+        resetPasswordVerify: build.mutation<
+            IResetPasswordVerifyResponse,
+            IResetPasswordVerifyData
+        >({
+            query: (data: IResetPasswordVerifyData) => ({
+                url: AuthApiEndpoints.RESET_PASSWORD,
                 method: "POST",
                 body: data,
             }),
