@@ -1,6 +1,6 @@
 import PrivateRoute from "@/hok/PrivateRoute/PrivateRoute";
 import React from "react";
-import { useRoutes } from "react-router-dom";
+import {Outlet, useRoutes} from "react-router-dom";
 
 import CategoriesPage from "@/pages/CategoriesPage/CategoriesPage";
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
