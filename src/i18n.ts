@@ -9,7 +9,7 @@ i18n.use(Backend)
     .init({
         keySeparator: ".",
         backend: {
-            loadPath: "locales/{{lng}}/translation.json"
+            loadPath: "locales/{{lng}}/translation.json",
         },
         fallbackLng: "ru",
         supportedLngs: ["ru", "en", "es"],
@@ -20,7 +20,7 @@ i18n.use(Backend)
         interpolation: {
             escapeValue: false,
         },
-        debug: true
+        debug: true,
     });
 
 export default i18n;

@@ -1,19 +1,19 @@
 import { ILanguage } from "@/type/languages";
 import cn from "classnames";
 import React, { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";
 
 import styles from "./ChangeLanguage.module.scss";
-import {useTranslation} from "react-i18next";
 
 interface ChangeLanguageProps {
     className?: string;
 }
 
 const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
-    const {t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
@@ -7,10 +8,9 @@ import ActivityContainer from "@/containers/WelcomeContainer/InfoSide/ActivityCo
 import InfoHeader from "@/containers/WelcomeContainer/InfoSide/InfoHeader/InfoHeader";
 
 import styles from "./InfoSide.module.scss";
-import {useTranslation} from "react-i18next";
 
 const InfoSide: FC = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <div className={styles.wrapper}>
@@ -18,19 +18,19 @@ const InfoSide: FC = () => {
             <div className={styles.content}>
                 <div className={styles.info}>
                     <SectionTitle classNames={styles.title}>
-                        Найдите путешествие мечты
+                        {t("main.welcome.title")}
                     </SectionTitle>
                     <ButtonLink
                         className={styles.btn}
                         type={"primary"}
                         path={"/"}
                     >
-                        {t("main.welcome.header.how-it-work")}
+                        {t("main.welcome.offers-btn")}
                     </ButtonLink>
                 </div>
                 <div className={styles.activity}>
                     <h3 className={styles.activityTitle}>
-                        Или выберите вид деятельности
+                        {t("main.welcome.activity-title")}
                     </h3>
                     <ActivityContainer />
                 </div>
