@@ -1,4 +1,4 @@
-import PrivateRoute from "@/hok/PrivateRoute/PrivateRoute";
+import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React from "react";
 import {Outlet, useRoutes} from "react-router-dom";
 
