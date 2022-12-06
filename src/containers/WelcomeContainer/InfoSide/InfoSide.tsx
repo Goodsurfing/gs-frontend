@@ -25,7 +25,7 @@ const InfoSide: FC = () => {
                         type={"primary"}
                         path={"/"}
                     >
-                        {t("main.welcome.header.offers-btn")}
+                        {t("main.welcome.header.how-it-work")}
                     </ButtonLink>
                 </div>
                 <div className={styles.activity}>

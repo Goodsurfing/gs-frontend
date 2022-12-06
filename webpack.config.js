@@ -2,6 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -81,5 +83,10 @@ module.exports = {
         }),
         new ForkTsCheckerWebpackPlugin(),
         new Dotenv(),
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: "./public/locales", to: "locales/"}
+            ]
+        })
     ],
 };

@@ -13,7 +13,7 @@ const root = createRoot(document.getElementById("root")!);
 const store = setupStore();
 
 const Root = (
-    <Suspense fallback={<div>Loading</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
         <Provider store={store}>
             <App />
         </Provider>
