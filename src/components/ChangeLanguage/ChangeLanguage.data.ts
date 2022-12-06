@@ -7,19 +7,19 @@ import engIcon from "@/assets/icons/langs/uk.svg";
 export const changeLanguageData: ILanguage[] = [
     {
         id: "1",
-        code: "RU",
+        code: "ru",
         name: "Русский",
         icon: ruIcon,
     },
     {
         id: "2",
-        code: "UK",
+        code: "en",
         name: "English",
         icon: engIcon,
     },
     {
         id: "3",
-        code: "ES",
+        code: "es",
         name: "Español",
         icon: spIcon,
     },

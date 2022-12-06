@@ -1,0 +1,25 @@
+{
+  "main": {
+    "welcome": {
+      "header": {
+        "how-it-work": "How it work?",
+        "community": {
+          "title": "Community",
+          "blog": "Blog",
+          "video": "Video",
+          "experts": "Experts",
+          "ambassadors": "Ambassadors",
+          "courses": "Courses",
+          "clubs": "Clubs",
+          "journal": "Journal"
+        },
+        "sign-in": "Sign In",
+        "sign-up": "Sign Up",
+        "exit": "Exit"
+      },
+      "title": "Find the dream journey",
+      "offers-btn": "All offers",
+      "activity-title": "Or choose a type of activity"
+    }
+  }
+}

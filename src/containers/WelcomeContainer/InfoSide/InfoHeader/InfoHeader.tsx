@@ -15,8 +15,11 @@ import { AppRoutesEnum } from "@/routes/types";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
+import {useTranslation} from "react-i18next";
 
 const InfoHeader: FC = () => {
+    const {t} = useTranslation();
+
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
@@ -38,7 +41,7 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>Как это работает?</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>Cообщество</Link>
+                    <Link to={"/"}>{t("main.welcome.header.community.title")}</Link>
                 </div>
                 <div className={styles.link}>
                     {token ? (
