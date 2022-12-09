@@ -7,6 +7,7 @@ import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.d
 import Arrow from "@/components/ui/Arrow/Arrow";
 
 import styles from "./ChangeLanguage.module.scss";
+import {useLocation, useNavigate} from "react-router-dom";
 
 interface ChangeLanguageProps {
     className?: string;
@@ -14,6 +15,8 @@ interface ChangeLanguageProps {
 
 const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
     const { i18n } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
@@ -24,6 +27,7 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
         i18n.changeLanguage(item.code);
         setCurrentLanguage(item);
         setIsOpen(false);
+        navigate(`/${item.code}/${location.pathname.substr(4)}`, {replace: true})
     };
 
     return (

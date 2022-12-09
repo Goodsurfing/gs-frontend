@@ -28,6 +28,7 @@ function RoutesByLanguage() {
                     element={<Navigate to={`/${i18n.language}/home`} />}
                 />
                 <Route path={"home"} element={<MainPage />} />
+
                 <Route path={"signup"} element={<SignUpPage />} />
                 <Route path={"signin"} element={<SignInPage />} />
             </>
