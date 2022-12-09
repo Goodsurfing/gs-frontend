@@ -1,11 +1,12 @@
-import { PublicRoutes } from "@/routes";
 import React, { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
+
+import RoutesByLanguage from "@/routes/routesByLang";
 
 const App: FC = () => {
     return (
         <BrowserRouter>
-            <PublicRoutes />
+            <RoutesByLanguage />
         </BrowserRouter>
     );
 };

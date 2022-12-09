@@ -14,7 +14,7 @@ const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
 }) => {
     return (
         <Link
-            to={path}
+            to={`../${path}`}
             className={cn(
                 styles.btn,
                 {

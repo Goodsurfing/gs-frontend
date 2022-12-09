@@ -8,9 +8,6 @@ i18n.use(Backend)
     .use(initReactI18next)
     .init({
         keySeparator: ".",
-        backend: {
-            loadPath: "locales/{{lng}}/translation.json",
-        },
         fallbackLng: "ru",
         supportedLngs: ["ru", "en", "es"],
         detection: {

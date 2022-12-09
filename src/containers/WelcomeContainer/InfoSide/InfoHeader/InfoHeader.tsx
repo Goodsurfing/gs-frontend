@@ -102,7 +102,7 @@ const InfoHeader: FC = () => {
                     {token ? (
                         <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
                     ) : (
-                        <Link to={AppRoutesEnum.SIGNIN}>
+                        <Link to={`../${AppRoutesEnum.SIGNIN}`}>
                             {t("main.welcome.header.sign-in")}
                         </Link>
                     )}
