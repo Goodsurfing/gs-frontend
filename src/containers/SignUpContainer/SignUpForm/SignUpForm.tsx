@@ -1,4 +1,5 @@
 import { IAuthFormData } from "@/type/auth/auth.interface";
+import i18n from "i18next";
 import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
@@ -31,7 +32,10 @@ const SignUpForm: FC = () => {
                 .unwrap()
                 .then((response) => {
                     dispatch(setRegisterUserData(response));
-                    navigate(AppRoutesEnum.CONFIRM_EMAIL);
+                    navigate(
+                        `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
+                        { replace: true }
+                    );
                 })
                 .catch((error) => {
                     console.log(error);

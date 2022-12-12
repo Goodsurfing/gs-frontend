@@ -1,11 +1,10 @@
 import cn from "classnames";
 import React, { FC, PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
 
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { IButtonProps } from "@/components/ui/ButtonLink/ButtonLink.interface";
 
 import styles from "./ButtonLink.module.scss";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
     type,

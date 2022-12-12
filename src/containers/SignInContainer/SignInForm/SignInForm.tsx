@@ -1,10 +1,12 @@
 import { IAuthLoginData } from "@/type/auth/auth.interface";
+import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import Button from "@/components/ui/Button/Button";
 
 import { useAppDispatch } from "@/hooks/redux";
@@ -35,7 +37,7 @@ const SignInForm: FC = () => {
                     if (isRemember) {
                         localStorage.setItem("token", response.token);
                     }
-                    navigate(AppRoutesEnum.HOME);
+                    navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
                     reset();
                 })
                 .catch((error) => {
@@ -90,9 +92,9 @@ const SignInForm: FC = () => {
                     onChange={checkboxHandleClick}
                     text={"Запомнить меня"}
                 />
-                <Link to={AppRoutesEnum.RESET} className={styles.forget}>
+                <LocaleLink to={AppRoutesEnum.RESET} className={styles.forget}>
                     Забыли пароль?
-                </Link>
+                </LocaleLink>
             </div>
         </form>
     );

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
 
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import SignTitle from "@/components/ui/SignTitle/SignTitle";
 
 import SignInForm from "@/containers/SignInContainer/SignInForm/SignInForm";
@@ -21,7 +21,10 @@ const SignInContainer: FC = () => {
 
             <div className={styles.redirect}>
                 Не зарегистрированы на Гудсерфинге?{" "}
-                <Link to={AppRoutesEnum.SIGNUP}>Зарегистрироваться</Link>.
+                <LocaleLink to={AppRoutesEnum.SIGNUP}>
+                    Зарегистрироваться
+                </LocaleLink>
+                .
             </div>
         </div>
     );

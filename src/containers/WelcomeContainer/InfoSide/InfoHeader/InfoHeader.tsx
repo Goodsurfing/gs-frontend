@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
@@ -16,7 +17,6 @@ import { AppRoutesEnum } from "@/routes/types";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
