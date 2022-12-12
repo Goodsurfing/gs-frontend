@@ -16,6 +16,7 @@ import { AppRoutesEnum } from "@/routes/types";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
@@ -102,9 +103,9 @@ const InfoHeader: FC = () => {
                     {token ? (
                         <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
                     ) : (
-                        <Link to={`../${AppRoutesEnum.SIGNIN}`}>
+                        <LocaleLink to={AppRoutesEnum.SIGNIN}>
                             {t("main.welcome.header.sign-in")}
-                        </Link>
+                        </LocaleLink>
                     )}
                 </div>
                 {token ? (
