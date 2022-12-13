@@ -81,11 +81,11 @@ module.exports = {
                         loader: "file-loader",
                         options: {
                             name: "[name].json",
-                            outputPath: "locales/"
-                        }
-                    }
-                ]
-            }
+                            outputPath: "locales/",
+                        },
+                    },
+                ],
+            },
         ],
     },
     plugins: [
