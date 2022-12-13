@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
 
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -12,9 +12,9 @@ import styles from "./EmptyHeader.module.scss";
 const EmptyHeader: FC = () => {
     return (
         <header className={styles.header}>
-            <Link to={AppRoutesEnum.HOME}>
+            <LocaleLink to={AppRoutesEnum.HOME}>
                 <img src={logoIcon} alt="Logotype" />
-            </Link>
+            </LocaleLink>
             <ChangeLanguage />
         </header>
     );

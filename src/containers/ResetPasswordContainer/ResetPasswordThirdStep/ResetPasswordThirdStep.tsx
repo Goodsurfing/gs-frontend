@@ -1,3 +1,4 @@
+import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +30,7 @@ const ResetPasswordThirdStep: FC = () => {
 
     useEffect(() => {
         if (!query.get("token")) {
-            navigate(AppRoutesEnum.HOME);
+            navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
         }
     }, []);
 

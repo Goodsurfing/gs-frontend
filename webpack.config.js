@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -11,6 +12,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "js/[name].[contenthash].js",
         chunkFilename: "js/[name].[contenthash].js",
+        // publicPath: "/",
     },
     resolve: {
         extensions: [".js", ".ts", ".jsx", ".tsx", ".css", ".scss"],
@@ -72,6 +74,18 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.json$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].json",
+                            outputPath: "locales/"
+                        }
+                    }
+                ]
+            }
         ],
     },
     plugins: [
@@ -81,5 +95,8 @@ module.exports = {
         }),
         new ForkTsCheckerWebpackPlugin(),
         new Dotenv(),
+        new CopyWebpackPlugin({
+            patterns: [{ from: "./public/locales", to: "locales/" }],
+        }),
     ],
 };

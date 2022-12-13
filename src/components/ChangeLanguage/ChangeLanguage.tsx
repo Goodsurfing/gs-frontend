@@ -1,9 +1,13 @@
 import { ILanguage } from "@/type/languages";
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";
+
+import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
 
 import styles from "./ChangeLanguage.module.scss";
 
@@ -12,15 +16,31 @@ interface ChangeLanguageProps {
 }
 
 const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
+    const { i18n } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
         changeLanguageData[0]
     );
 
-    const changeLanguageHandleClick = (item: ILanguage) => {
-        setCurrentLanguage(item);
+    const changeLanguageHandleClick = (lang: ILanguage) => {
+        i18n.changeLanguage(lang.code);
+        navigate(createUrlWithLanguageCode(lang.code, location.pathname), {
+            replace: true,
+        });
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        const currentLang = changeLanguageData.filter((item) => {
+            if (item.code === i18n.language) {
+                return item;
+            }
+        });
+        setCurrentLanguage(currentLang[0]);
+    }, [i18n.language]);
 
     return (
         <div className={styles.wrapper}>

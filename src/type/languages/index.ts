@@ -1,4 +1,4 @@
-export type LanguagesCodes = "RU" | "UK" | "ES";
+export type LanguagesCodes = "ru" | "en" | "es";
 export type LanguagesNames = "Русский" | "English" | "Español";
 
 export interface ILanguage {

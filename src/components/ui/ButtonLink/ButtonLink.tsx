@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
 
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { IButtonProps } from "@/components/ui/ButtonLink/ButtonLink.interface";
 
 import styles from "./ButtonLink.module.scss";
@@ -13,7 +13,7 @@ const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
     children,
 }) => {
     return (
-        <Link
+        <LocaleLink
             to={path}
             className={cn(
                 styles.btn,
@@ -26,7 +26,7 @@ const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
             )}
         >
             {children}
-        </Link>
+        </LocaleLink>
     );
 };
 

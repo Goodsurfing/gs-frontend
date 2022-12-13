@@ -1,6 +1,5 @@
-import PrivateRoute from "@/hok/PrivateRoute/PrivateRoute";
 import React from "react";
-import { useRoutes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import CategoriesPage from "@/pages/CategoriesPage/CategoriesPage";
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
@@ -11,40 +10,26 @@ import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswo
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
 
-import { AppRoutesEnum } from "@/routes/types";
-
-export const PublicRoutes = () =>
-    useRoutes([
-        {
-            path: AppRoutesEnum.HOME,
-            element: <MainPage />,
-        },
-        {
-            path: AppRoutesEnum.SIGNUP,
-            element: <SignUpPage />,
-        },
-        {
-            path: AppRoutesEnum.SIGNIN,
-            element: <SignInPage />,
-        },
-        {
-            path: AppRoutesEnum.RESET,
-            element: <ResetPasswordPage />,
-        },
-        {
-            path: AppRoutesEnum.CONFIRM_EMAIL,
-            element: <ConfirmEmailPage />,
-        },
-        {
-            path: AppRoutesEnum.CONFIRM_EMAIL_SUCCESS,
-            element: <ConfirmEmailSuccessPage />,
-        },
-        {
-            path: AppRoutesEnum.RESET_PASSWORD_VERIFY,
-            element: <ResetPasswordVerifyPage />,
-        },
-        {
-            path: AppRoutesEnum.CATEGORIES,
-            element: <PrivateRoute Component={CategoriesPage} />,
-        },
-    ]);
+export const AppRoutes = () => {
+    return (
+        <Routes>
+            <Route path={"/:ln"} element={<MainPage />} />
+            <Route path={"/:ln/signup"} element={<SignUpPage />} />
+            <Route path={"/:ln/signin"} element={<SignInPage />} />
+            <Route
+                path={"/:ln/reset-password"}
+                element={<ResetPasswordPage />}
+            />
+            <Route
+                path={"/:ln/reset-password-verify"}
+                element={<ResetPasswordVerifyPage />}
+            />
+            <Route path={"/:ln/confirm-email"} element={<ConfirmEmailPage />} />
+            <Route
+                path={"/:ln/confirm-email-success"}
+                element={<ConfirmEmailSuccessPage />}
+            />
+            <Route path={"/:ln/categories"} element={<CategoriesPage />} />
+        </Routes>
+    );
+};
