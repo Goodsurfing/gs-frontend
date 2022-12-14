@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";

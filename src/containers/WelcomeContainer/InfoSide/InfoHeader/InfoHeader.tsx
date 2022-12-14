@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button/Button";
 import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -30,6 +31,14 @@ const InfoHeader: FC = () => {
     const handleLogout = () => {
         dispatch(logout());
     };
+
+    const ref = useRef(null);
+
+    const handleClickOutside = () => {
+        setLinkIsOpen(false);
+    };
+
+    useOnClickOutside(ref, handleClickOutside);
 
     return (
         <>
@@ -68,12 +77,11 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div
+                    ref={ref}
                     className={styles.link}
                     onClick={() => setLinkIsOpen(!linkIsOpen)}
                 >
-                    <p>
-                        {t("main.welcome.header.community.title")}
-                    </p>
+                    <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={linkIsOpen} />
                     <Popup isOpen={linkIsOpen} className={styles.popup}>
                         <Link to={"/"}>
