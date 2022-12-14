@@ -71,9 +71,9 @@ const InfoHeader: FC = () => {
                     className={styles.link}
                     onClick={() => setLinkIsOpen(!linkIsOpen)}
                 >
-                    <Link to={"/"}>
+                    <p>
                         {t("main.welcome.header.community.title")}
-                    </Link>
+                    </p>
                     <Arrow isOpen={linkIsOpen} />
                     <Popup isOpen={linkIsOpen} className={styles.popup}>
                         <Link to={"/"}>
