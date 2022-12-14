@@ -26,13 +26,13 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
         changeLanguageData[0]
     );
 
-    const ref = useRef(null);
+    const menuRef = useRef(null);
 
     const handleClickOutside = () => {
         setIsOpen(false);
     };
 
-    useOnClickOutside(ref, handleClickOutside);
+    useOnClickOutside(menuRef, handleClickOutside);
 
     const changeLanguageHandleClick = (lang: ILanguage) => {
         i18n.changeLanguage(lang.code);
@@ -52,7 +52,7 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
     }, [i18n.language]);
 
     return (
-        <div ref={ref} className={styles.wrapper}>
+        <div ref={menuRef} className={styles.wrapper}>
             <div
                 className={cn(styles.selectLang, className)}
                 onClick={() => setIsOpen(!isOpen)}

@@ -32,13 +32,13 @@ const InfoHeader: FC = () => {
         dispatch(logout());
     };
 
-    const ref = useRef(null);
+    const communityRef = useRef(null);
 
     const handleClickOutside = () => {
         setLinkIsOpen(false);
     };
 
-    useOnClickOutside(ref, handleClickOutside);
+    useOnClickOutside(communityRef, handleClickOutside);
 
     return (
         <>
@@ -77,7 +77,7 @@ const InfoHeader: FC = () => {
                     <Link to={"/"}>{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div
-                    ref={ref}
+                    ref={communityRef}
                     className={styles.link}
                     onClick={() => setLinkIsOpen(!linkIsOpen)}
                 >
