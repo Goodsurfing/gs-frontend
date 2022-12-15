@@ -37,7 +37,7 @@ const SignInForm: FC = () => {
                     if (isRemember) {
                         localStorage.setItem("token", response.token);
                     }
-                    navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
+                    navigate(`/${i18n.language}/`);
                     reset();
                 })
                 .catch((error) => {
@@ -92,7 +92,10 @@ const SignInForm: FC = () => {
                     onChange={checkboxHandleClick}
                     text={"Запомнить меня"}
                 />
-                <LocaleLink to={AppRoutesEnum.RESET} className={styles.forget}>
+                <LocaleLink
+                    to={AppRoutesEnum.RESET_PASSWORD}
+                    className={styles.forget}
+                >
                     Забыли пароль?
                 </LocaleLink>
             </div>
