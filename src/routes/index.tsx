@@ -1,10 +1,11 @@
+import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import CategoriesPage from "@/pages/CategoriesPage/CategoriesPage";
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";
 import MainPage from "@/pages/MainPage/MainPage";
+import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
@@ -29,7 +30,12 @@ export const AppRoutes = () => {
                 path={"/:ln/confirm-email-success"}
                 element={<ConfirmEmailSuccessPage />}
             />
-            <Route path={"/:ln/categories"} element={<CategoriesPage />} />
+            <Route path={"/:ln/profile"}>
+                <Route
+                    path={"info"}
+                    element={<PrivateRoute Component={ProfileInfoPage} />}
+                />
+            </Route>
         </Routes>
     );
 };

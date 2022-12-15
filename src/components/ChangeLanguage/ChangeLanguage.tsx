@@ -1,16 +1,17 @@
 import { ILanguage } from "@/type/languages";
 import cn from "classnames";
-import React, {FC, useEffect, useRef, useState} from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";
 
+import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+
 import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
 
 import styles from "./ChangeLanguage.module.scss";
-import {useOnClickOutside} from "@/hooks/useOnClickOutside";
 
 interface ChangeLanguageProps {
     className?: string;
