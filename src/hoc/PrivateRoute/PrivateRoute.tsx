@@ -1,9 +1,8 @@
+import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAppSelector } from "@/hooks/redux";
-
-import { AppRoutesEnum } from "@/routes/types";
 
 interface PrivateRouteProps {
     Component: FC;
@@ -15,7 +14,7 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ Component }) => {
 
     useEffect(() => {
         if (!token) {
-            return navigate(AppRoutesEnum.SIGNIN);
+            return navigate(`/${i18n.language}`, { replace: true });
         }
     }, [token, navigate]);
 
