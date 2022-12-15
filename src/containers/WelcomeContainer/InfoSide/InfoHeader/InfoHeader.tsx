@@ -1,10 +1,10 @@
-import cn from "classnames";
 import React, { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
@@ -42,35 +42,9 @@ const InfoHeader: FC = () => {
 
     return (
         <>
-            <div
-                className={cn(styles.menu, {
-                    [styles.active]: menuIsOpen,
-                })}
-            >
-                <div className={styles.link}>
-                    <Link to={"/"}>{t("main.welcome.header.how-it-work")}</Link>
-                </div>
-                <div className={styles.link}>
-                    <Link to={"/"}>
-                        {t("main.welcome.header.community.title")}
-                    </Link>
-                </div>
-                <div className={styles.link}>
-                    {token ? (
-                        <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
-                    ) : (
-                        <Link to={AppRoutesEnum.SIGNIN}>
-                            {t("main.welcome.header.sign-in")}
-                        </Link>
-                    )}
-                </div>
-                <div className={styles.link}>
-                    <Link to={AppRoutesEnum.SIGNUP}>
-                        {t("main.welcome.header.sign-up")}
-                    </Link>
-                </div>
+            <div className={styles.mobile__header__wrapper}>
+                <MobileHeader />
             </div>
-
             <header className={styles.header}>
                 <ChangeLanguage />
                 <div className={styles.link}>
@@ -137,16 +111,6 @@ const InfoHeader: FC = () => {
                         </ButtonLink>
                     </div>
                 )}
-                <div
-                    className={cn(styles.burger, {
-                        [styles.open]: menuIsOpen,
-                    })}
-                    onClick={() => setMenuIsOpen(!menuIsOpen)}
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
             </header>
         </>
     );
