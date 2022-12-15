@@ -13,7 +13,7 @@ import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 
 import { logout } from "@/store/reducers/loginSlice";
 
@@ -22,7 +22,6 @@ import styles from "./InfoHeader.module.scss";
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
 
-    const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
     const { token } = useAppSelector((state) => state.login);
@@ -81,35 +80,40 @@ const InfoHeader: FC = () => {
                         </Link>
                     </Popup>
                 </div>
-                <div className={styles.link}>
-                    {token ? (
-                        <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
-                    ) : (
-                        <LocaleLink to={AppRoutesEnum.SIGNIN}>
-                            {t("main.welcome.header.sign-in")}
-                        </LocaleLink>
-                    )}
-                </div>
                 {token ? (
-                    <div className={styles.link}>
-                        <Button
-                            onClick={() => handleLogout()}
-                            className={styles.btn}
-                            variant={"outlined"}
-                        >
-                            {t("main.welcome.header.exit")}
-                        </Button>
-                    </div>
+                    <>
+                        <div className={styles.link}>
+                            <Link to={ProfileRoutesEnum.INFO}>
+                                Личный кабинет
+                            </Link>
+                        </div>
+                        <div className={styles.link}>
+                            <Button
+                                onClick={() => handleLogout()}
+                                className={styles.btn}
+                                variant={"outlined"}
+                            >
+                                {t("main.welcome.header.exit")}
+                            </Button>
+                        </div>
+                    </>
                 ) : (
-                    <div className={styles.link}>
-                        <ButtonLink
-                            className={styles.btn}
-                            type={"outlined"}
-                            path={AppRoutesEnum.SIGNUP}
-                        >
-                            {t("main.welcome.header.sign-up")}
-                        </ButtonLink>
-                    </div>
+                    <>
+                        <div className={styles.link}>
+                            <LocaleLink to={AppRoutesEnum.SIGNIN}>
+                                {t("main.welcome.header.sign-in")}
+                            </LocaleLink>
+                        </div>
+                        <div className={styles.link}>
+                            <ButtonLink
+                                className={styles.btn}
+                                type={"outlined"}
+                                path={AppRoutesEnum.SIGNUP}
+                            >
+                                {t("main.welcome.header.sign-up")}
+                            </ButtonLink>
+                        </div>
+                    </>
                 )}
             </header>
         </>

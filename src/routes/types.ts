@@ -11,5 +11,5 @@ export enum AppRoutesEnum {
 
 export enum ProfileRoutesEnum {
     MAIN = "profile",
-    INFO = "info",
+    INFO = "profile/info",
 }
