@@ -1,4 +1,3 @@
-import App from "@/app/App";
 import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
@@ -11,8 +10,6 @@ import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
-
-import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 
 export const AppRoutes = () => {
     return (
