@@ -12,7 +12,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "js/[name].[contenthash].js",
         chunkFilename: "js/[name].[contenthash].js",
-        // publicPath: "/",
+        publicPath: "/",
     },
     resolve: {
         extensions: [".js", ".ts", ".jsx", ".tsx", ".css", ".scss"],
@@ -81,11 +81,11 @@ module.exports = {
                         loader: "file-loader",
                         options: {
                             name: "[name].json",
-                            outputPath: "locales/"
-                        }
-                    }
-                ]
-            }
+                            outputPath: "locales/",
+                        },
+                    },
+                ],
+            },
         ],
     },
     plugins: [
