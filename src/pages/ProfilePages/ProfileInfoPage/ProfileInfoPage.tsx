@@ -1,9 +1,13 @@
 import React, { FC } from "react";
 
-interface ProfileInfoPageProps {}
+import MainHeader from "@/components/MainHeader/MainHeader";
 
-const ProfileInfoPage: FC<ProfileInfoPageProps> = () => {
-    return <div>Profile page</div>;
+const ProfileInfoPage: FC = () => {
+    return (
+        <>
+            <MainHeader />
+        </>
+    );
 };
 
 export default ProfileInfoPage;
