@@ -1,0 +1,18 @@
+.sidebar {
+	position: fixed;
+	z-index: -3;
+	top: 0;
+	left: 0;
+
+	box-sizing: border-box;
+	width: 100%;
+
+	max-width: 320px;
+
+	min-height: 100%;
+	padding: 120px 50px;
+
+	color: var(--color-white);
+
+	background-color: var(--color-dark-blue);
+}
