@@ -12,6 +12,7 @@ const InputField: FC<InputFieldProps> = ({
     type,
     text,
     value,
+    defaultValue,
     onChange,
     ...rest
 }) => {
@@ -22,11 +23,12 @@ const InputField: FC<InputFieldProps> = ({
                 required={true}
                 onChange={onChange}
                 value={value}
+                defaultValue={defaultValue}
                 {...rest}
             />
             <label
                 className={cn({
-                    [styles.empty]: !!value,
+                    [styles.empty]: !!value || !!defaultValue,
                 })}
             >
                 {text}
