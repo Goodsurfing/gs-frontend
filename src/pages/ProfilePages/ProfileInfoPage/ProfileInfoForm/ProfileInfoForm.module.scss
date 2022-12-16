@@ -1,6 +1,7 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
+	gap: 32px;
 
 	padding-top: 40px;
 }
@@ -15,4 +16,19 @@
 	.name {
 		flex-basis: 80%;
 	}
+}
+
+.contacts {
+	display: flex;
+	justify-content: space-between;
+
+	width: 70%;
+
+	div {
+		flex-basis: 45%;
+	}
+}
+
+.button {
+	align-self: flex-start;
 }
