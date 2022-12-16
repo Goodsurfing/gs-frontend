@@ -6,7 +6,11 @@ import Button from "@/components/ui/Button/Button";
 
 import styles from "./ProfileInfoForm.module.scss";
 
-const ProfileInfoForm: FC = () => {
+interface ProfileInfoFormProps {
+    isLocked: boolean;
+}
+
+const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     return (
         <form className={styles.wrapper}>
             <div className={styles.general}>
@@ -15,11 +19,13 @@ const ProfileInfoForm: FC = () => {
                         text={"Имя"}
                         type={"text"}
                         defaultValue={"Владислав"}
+                        disabled={isLocked}
                     />
                     <InputField
                         text={"Фамилия"}
                         type={"text"}
                         defaultValue={"Александров"}
+                        disabled={isLocked}
                     />
                 </div>
                 <div className={styles.avatar}>
@@ -31,11 +37,13 @@ const ProfileInfoForm: FC = () => {
                     text={"E-mail"}
                     type={"text"}
                     defaultValue={"space-cowboy1982@bk.ru"}
+                    disabled={isLocked}
                 />
                 <InputField
                     text={"Телефон"}
                     type={"text"}
                     defaultValue={"+79827922680"}
+                    disabled={isLocked}
                 />
             </div>
             <div className={styles.about}>
@@ -46,7 +54,7 @@ const ProfileInfoForm: FC = () => {
                 />
             </div>
             <Button variant={"primary"} className={styles.button}>
-                Дальше
+                Сохранить
             </Button>
         </form>
     );
