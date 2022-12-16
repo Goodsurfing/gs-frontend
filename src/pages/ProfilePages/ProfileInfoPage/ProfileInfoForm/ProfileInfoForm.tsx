@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
@@ -11,21 +12,45 @@ interface ProfileInfoFormProps {
 }
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
+    const { control, reset, handleSubmit } = useForm({
+        mode: "onChange",
+    });
+
+    const onSubmit: SubmitHandler<any> = (data) => {
+        console.log(data);
+    };
+
     return (
-        <form className={styles.wrapper}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
             <div className={styles.general}>
                 <div className={styles.name}>
-                    <InputField
-                        text={"Имя"}
-                        type={"text"}
+                    <Controller
+                        control={control}
+                        name={"name"}
                         defaultValue={"Владислав"}
-                        disabled={isLocked}
+                        render={({ field }) => (
+                            <InputField
+                                onChange={(e) => field.onChange(e)}
+                                value={field.value}
+                                text={"Имя"}
+                                type={"text"}
+                                disabled={isLocked}
+                            />
+                        )}
                     />
-                    <InputField
-                        text={"Фамилия"}
-                        type={"text"}
+                    <Controller
+                        control={control}
+                        name={"surname"}
                         defaultValue={"Александров"}
-                        disabled={isLocked}
+                        render={({ field }) => (
+                            <InputField
+                                onChange={(e) => field.onChange(e)}
+                                value={field.value}
+                                text={"Фамилия"}
+                                type={"text"}
+                                disabled={isLocked}
+                            />
+                        )}
                     />
                 </div>
                 <div className={styles.avatar}>
@@ -33,27 +58,56 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                 </div>
             </div>
             <div className={styles.contacts}>
-                <InputField
-                    text={"E-mail"}
-                    type={"text"}
-                    defaultValue={"space-cowboy1982@bk.ru"}
-                    disabled={isLocked}
+                <Controller
+                    control={control}
+                    name={"email"}
+                    defaultValue={"space-cowboy@gmail.com"}
+                    render={({ field }) => (
+                        <InputField
+                            onChange={(e) => field.onChange(e)}
+                            value={field.value}
+                            text={"E-mail"}
+                            type={"text"}
+                            disabled={isLocked}
+                        />
+                    )}
                 />
-                <InputField
-                    text={"Телефон"}
-                    type={"text"}
+                <Controller
+                    control={control}
+                    name={"phoneNumber"}
                     defaultValue={"+79827922680"}
-                    disabled={isLocked}
+                    render={({ field }) => (
+                        <InputField
+                            onChange={(e) => field.onChange(e)}
+                            value={field.value}
+                            text={"Телефон"}
+                            type={"phone"}
+                            disabled={isLocked}
+                        />
+                    )}
                 />
             </div>
             <div className={styles.about}>
-                <InputField
-                    text={"Расскажите о себе"}
-                    type={"text"}
-                    defaultValue={"Веселый, добрый"}
+                <Controller
+                    control={control}
+                    name={"about"}
+                    defaultValue={"Расскажите о себе"}
+                    render={({ field }) => (
+                        <InputField
+                            onChange={(e) => field.onChange(e)}
+                            value={field.value}
+                            text={"Расскажите о себе"}
+                            type={"text"}
+                            disabled={isLocked}
+                        />
+                    )}
                 />
             </div>
-            <Button variant={"primary"} className={styles.button}>
+            <Button
+                type={"submit"}
+                variant={"primary"}
+                className={styles.button}
+            >
                 Сохранить
             </Button>
         </form>
