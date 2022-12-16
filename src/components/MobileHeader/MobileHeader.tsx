@@ -13,9 +13,7 @@ import mobileLogotype from "@/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
 
-interface MobileHeaderProps {}
-
-const MobileHeader: FC<MobileHeaderProps> = () => {
+const MobileHeader: FC = () => {
     const { t } = useTranslation();
     const { token } = useAppSelector((state) => state.login);
 

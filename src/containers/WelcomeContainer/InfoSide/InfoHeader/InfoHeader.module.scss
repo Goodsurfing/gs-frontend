@@ -12,7 +12,8 @@
 
 	cursor: pointer;
 
-	a, p {
+	a,
+	p {
 		margin-right: 7px;
 
 		transition: color 0.2s ease-in-out;
@@ -66,8 +67,9 @@
 }
 
 .mobile__header__wrapper {
-	width: 100%;
 	display: none;
+
+	width: 100%;
 }
 
 @media screen and (max-width: 1280px) and (min-width: 1000px) {

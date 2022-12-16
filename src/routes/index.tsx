@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";
 import MainPage from "@/pages/MainPage/MainPage";
-import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
+import ProfilePage from "@/pages/ProfilePages/ProfilePage/ProfilePage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
@@ -33,7 +33,7 @@ export const AppRoutes = () => {
             <Route path={"/:ln/profile"}>
                 <Route
                     path={"info"}
-                    element={<PrivateRoute Component={ProfileInfoPage} />}
+                    element={<PrivateRoute Component={ProfilePage} />}
                 />
             </Route>
         </Routes>
