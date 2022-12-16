@@ -1,51 +1,51 @@
 .support {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 
-  max-width: 242px;
+	max-width: 242px;
 
-  padding: 20px;
+	padding: 20px;
 
-  border: 1px solid #8494A1;
+	border: 1px solid #8494A1;
 
-  img {
-    border-radius: 50%;
-  }
+	img {
+		border-radius: 50%;
+	}
 
-  .name {
-    margin-top: 15px;
+	.name {
+		margin-top: 15px;
 
-    text-align: center;
+		text-align: center;
 
-    font-weight: 700;
-    line-height: 162%;
-  }
+		font-weight: 700;
+		line-height: 162%;
+	}
 
-  .description {
-    margin-top: 3px;
-    margin-bottom: 20px;
+	.description {
+		margin-top: 3px;
+		margin-bottom: 20px;
 
-    text-align: center;
+		text-align: center;
 
-    font-size: 0.875rem;
-    line-height: 157%;
-  }
+		font-size: 0.875rem;
+		line-height: 157%;
+	}
 
-  .email {
-    display: flex;
-    align-items: center;
+	.email {
+		display: flex;
+		align-items: center;
 
-    margin-top: 20px;
+		margin-top: 20px;
 
-    font-size: 0.875rem;
+		font-size: 0.875rem;
 
-    .address {
-      margin-left: 2px;
+		.address {
+			margin-left: 2px;
 
-      text-decoration: none;
+			text-decoration: none;
 
-      color: var(--color-blue);
-    }
-  }
+			color: var(--color-blue);
+		}
+	}
 }

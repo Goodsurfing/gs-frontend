@@ -1,7 +1,6 @@
 .sidebar {
 	position: fixed;
-	z-index: -3;
-	top: 0;
+	z-index: 0;
 	left: 0;
 
 	box-sizing: border-box;
@@ -11,10 +10,7 @@
 	height: 100%;
 
 	min-height: 100%;
-	padding-top: 120px;
-	padding-right: 25px;
-	padding-bottom: 70px;
-	padding-left: 50px;
+	padding: 45px 25px 125px 50px;
 
 	color: var(--color-white);
 

@@ -1,0 +1,27 @@
+.menuLink {
+	display: flex;
+	align-items: center;
+
+	margin-bottom: 15px;
+
+	cursor: pointer;
+	text-decoration: none;
+
+	&:hover {
+		.text {
+			color: var(--color-white);
+		}
+	}
+
+	.text {
+		margin-left: 20px;
+
+		transition: all 0.2s ease-in-out;
+
+		color: #DFE6EB;
+
+		font-size: 1.125rem;
+		font-weight: 400;
+		line-height: 144%;
+	}
+}
