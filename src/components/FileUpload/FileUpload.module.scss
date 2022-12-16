@@ -1,0 +1,40 @@
+.inputFile {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 187px;
+	height: 187px;
+
+	cursor: pointer;
+
+	border-radius: 50%;
+
+	background-color: var(--color-blue);
+}
+
+.inputFile span {
+	width: 100%;
+	height: 100%;
+
+	transition: background-color 0.2s;
+}
+
+.inputFile input[type="file"] {
+	position: absolute;
+	z-index: -1;
+
+	display: block;
+
+	width: 0;
+	height: 0;
+
+	opacity: 0;
+}
+
+/* Focus */
+.inputFile input[type="file"]:focus + span {
+	box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}

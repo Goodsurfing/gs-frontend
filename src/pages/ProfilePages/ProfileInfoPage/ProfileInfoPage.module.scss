@@ -1,0 +1,29 @@
+.main {
+	width: 100%;
+}
+
+.title {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+
+	width: 100%;
+
+	h2 {
+		color: var(--color-black-primary);
+
+		font-size: 1.625rem;
+		font-weight: 400;
+	}
+
+	.link {
+		color: var(--color-blue);
+
+		font-weight: 600;
+		text-decoration-line: underline;
+	}
+}
+
+.form {
+	width: 100%;
+}

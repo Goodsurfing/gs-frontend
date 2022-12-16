@@ -4,6 +4,7 @@ import MainHeader from "@/components/MainHeader/MainHeader";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import SidebarContent from "@/components/Sidebar/SidebarContent/SidebarContent";
 
+import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SidebarNavigationLinksData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 
 import styles from "./ProfilePage.module.scss";
@@ -19,7 +20,7 @@ const ProfilePage: FC = () => {
                     />
                 </Sidebar>
                 <div className={styles.content}>
-                    <h1>content</h1>
+                    <ProfileInfoPage />
                 </div>
             </div>
         </>
