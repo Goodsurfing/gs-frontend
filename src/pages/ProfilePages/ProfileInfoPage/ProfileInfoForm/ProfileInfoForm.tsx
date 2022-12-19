@@ -6,6 +6,12 @@ import InputField from "@/components/InputField/InputField";
 import SelectField from "@/components/SelectField/SelectField";
 import Button from "@/components/ui/Button/Button";
 
+import {
+    days,
+    months,
+    years,
+} from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
+
 import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
@@ -16,29 +22,6 @@ interface IOption {
     value: string;
     label: string;
 }
-
-const options: IOption[] = [
-    {
-        value: "1",
-        label: "1",
-    },
-    {
-        value: "2",
-        label: "2",
-    },
-    {
-        value: "3",
-        label: "3",
-    },
-    {
-        value: "4",
-        label: "4",
-    },
-    {
-        value: "5",
-        label: "5",
-    },
-];
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     const { control, handleSubmit } = useForm({
@@ -89,15 +72,49 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             <div className={styles.dateOfBirth}>
                 <Controller
                     control={control}
-                    name={"monthOfBirth"}
-                    defaultValue={"12"}
+                    name={"dayOfBirth"}
+                    defaultValue={"1"}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
-                            placeholder={"в"}
+                            placeholder={""}
                             text={"Дата рождения"}
                             name={name}
-                            options={options}
-                            value={options.find((item) => item.value === value)}
+                            options={days}
+                            value={days.find((item) => item.value === value)}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            isDisabled={isLocked}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name={"monthOfBirth"}
+                    defaultValue={"1"}
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            placeholder={""}
+                            name={name}
+                            options={months}
+                            value={months.find((item) => item.value === value)}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            isDisabled={isLocked}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name={"yearOfBirth"}
+                    defaultValue={"1992"}
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            placeholder={""}
+                            name={name}
+                            options={years}
+                            value={years.find((item) => item.value === value)}
                             onChange={(selectedOption) => {
                                 onChange((selectedOption as IOption).value);
                             }}

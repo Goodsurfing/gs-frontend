@@ -1,13 +1,9 @@
+import { IOption } from "@/type/select";
 import cn from "classnames";
 import React, { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
 
 import "./SelectField.scss";
-
-interface IOption {
-    value: string;
-    label: string;
-}
 
 interface Group extends GroupBase<IOption> {}
 
