@@ -65,6 +65,10 @@
 	}
 }
 
+.react-select__indicators {
+	justify-content: flex-end;
+}
+
 .react-select__control {
 	cursor: pointer !important;
 }
