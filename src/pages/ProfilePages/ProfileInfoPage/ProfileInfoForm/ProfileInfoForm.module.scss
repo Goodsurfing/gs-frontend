@@ -29,6 +29,13 @@
 	}
 }
 
+.gender {
+	display: flex;
+	justify-content: space-between;
+
+	width: 35%;
+}
+
 .contacts {
 	display: flex;
 	justify-content: space-between;
