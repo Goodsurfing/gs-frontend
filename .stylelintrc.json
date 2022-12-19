@@ -6,6 +6,8 @@
     "plugins": ["stylelint-order"],
     "rules": {
         "indentation": "tab",
-        "color-hex-case": "upper"
+        "color-hex-case": "upper",
+        "selector-class-pattern": null,
+        "no-descending-specificity": null
     }
 }
