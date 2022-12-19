@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Select from "react-select";
 
 import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
@@ -10,6 +11,22 @@ import styles from "./ProfileInfoForm.module.scss";
 interface ProfileInfoFormProps {
     isLocked: boolean;
 }
+
+interface IOption {
+    value: string;
+    label: string;
+}
+
+const options: IOption[] = [
+    {
+        value: "1",
+        label: "1",
+    },
+    {
+        value: "2",
+        label: "2",
+    },
+];
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     const { control, reset, handleSubmit } = useForm({
@@ -56,6 +73,23 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                 <div className={styles.avatar}>
                     <FileUpload />
                 </div>
+            </div>
+            <div className={styles.dateOfBirth}>
+                <Controller
+                    control={control}
+                    name={"dayOfBirth"}
+                    defaultValue={"12"}
+                    render={({ field: { onChange, value, name } }) => (
+                        <Select
+                            name={name}
+                            options={options}
+                            value={options.find((item) => item.value === value)}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                        />
+                    )}
+                />
             </div>
             <div className={styles.contacts}>
                 <Controller
