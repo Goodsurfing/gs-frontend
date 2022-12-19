@@ -1,9 +1,11 @@
+import { IOption } from "@/type/select";
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
 import SelectField from "@/components/SelectField/SelectField";
+import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch";
 import Button from "@/components/ui/Button/Button";
 
 import {
@@ -16,11 +18,6 @@ import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
-}
-
-interface IOption {
-    value: string;
-    label: string;
 }
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
@@ -119,6 +116,45 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                                 onChange((selectedOption as IOption).value);
                             }}
                             isDisabled={isLocked}
+                        />
+                    )}
+                />
+            </div>
+            <div className={styles.gender}>
+                <Controller
+                    control={control}
+                    name={"gender"}
+                    render={({ field: { onChange, name } }) => (
+                        <ToggleSwitch
+                            label={"Мужчина"}
+                            text={"Пол"}
+                            name={name}
+                            value={"male"}
+                            onChange={(e) => onChange(e)}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name={"gender"}
+                    render={({ field: { onChange, name } }) => (
+                        <ToggleSwitch
+                            label={"Женщина"}
+                            name={name}
+                            value={"female"}
+                            onChange={(e) => onChange(e)}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name={"gender"}
+                    render={({ field: { onChange, name } }) => (
+                        <ToggleSwitch
+                            label={"Другой"}
+                            name={name}
+                            value={"other"}
+                            onChange={(e) => onChange(e)}
                         />
                     )}
                 />

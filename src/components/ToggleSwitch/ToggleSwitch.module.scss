@@ -1,0 +1,46 @@
+.box {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	box-sizing: border-box;
+
+	width: 100%;
+	min-height: 49px;
+
+	margin-bottom: 25px;
+
+	.wrapper {
+		display: flex;
+		align-items: center;
+
+		width: 100%;
+
+		input {
+			margin-right: 10px;
+		}
+	}
+
+	label {
+		position: absolute;
+
+		top: -5px;
+		left: 0;
+
+		transition: all 0.2s ease-in-out;
+
+		pointer-events: none;
+
+		opacity: 0.8;
+
+		color: var(--color-black-primary);
+
+		font-size: 0.875rem;
+
+		font-weight: 500;
+		line-height: 138%;
+		mix-blend-mode: normal;
+	}
+}
