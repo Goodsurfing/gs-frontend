@@ -46,6 +46,29 @@
 	mix-blend-mode: normal;
 }
 
+.react-select__menu {
+	border: 1px solid #DFE6EB;
+	background-color: var(--color-white);
+	box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+}
+
+.react-select__option {
+	padding: 5px 10px;
+
+	cursor: pointer !important;
+
+	color: var(--color-black-primary);
+	background-color: var(--color-white);
+
+	&:hover {
+		background-color: var(--hover-gray);
+	}
+}
+
+.react-select__control {
+	cursor: pointer !important;
+}
+
 .select-disabled {
 	background-color: rgb(239 239 239 / 30%);
 }
