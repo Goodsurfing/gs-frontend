@@ -93,12 +93,15 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     defaultValue={"12"}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
+                            placeholder={"в"}
+                            text={"Дата рождения"}
                             name={name}
                             options={options}
                             value={options.find((item) => item.value === value)}
                             onChange={(selectedOption) => {
                                 onChange((selectedOption as IOption).value);
                             }}
+                            isDisabled={isLocked}
                         />
                     )}
                 />
