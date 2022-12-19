@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Select from "react-select";
 
 import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
+import SelectField from "@/components/SelectField/SelectField";
 import Button from "@/components/ui/Button/Button";
 
 import styles from "./ProfileInfoForm.module.scss";
@@ -26,10 +26,22 @@ const options: IOption[] = [
         value: "2",
         label: "2",
     },
+    {
+        value: "3",
+        label: "3",
+    },
+    {
+        value: "4",
+        label: "4",
+    },
+    {
+        value: "5",
+        label: "5",
+    },
 ];
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
-    const { control, reset, handleSubmit } = useForm({
+    const { control, handleSubmit } = useForm({
         mode: "onChange",
     });
 
@@ -77,10 +89,10 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             <div className={styles.dateOfBirth}>
                 <Controller
                     control={control}
-                    name={"dayOfBirth"}
+                    name={"monthOfBirth"}
                     defaultValue={"12"}
                     render={({ field: { onChange, value, name } }) => (
-                        <Select
+                        <SelectField
                             name={name}
                             options={options}
                             value={options.find((item) => item.value === value)}
