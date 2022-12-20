@@ -12,7 +12,6 @@ interface SidebarContentProps {
 }
 
 const SidebarContent: FC<PropsWithChildren<SidebarContentProps>> = ({
-    children,
     navigationLink,
     withSupportWidget = true,
 }) => {
