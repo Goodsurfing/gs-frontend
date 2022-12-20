@@ -1,0 +1,10 @@
+.dateOfBirth {
+	display: flex;
+	justify-content: space-between;
+
+	width: 50%;
+
+	div {
+		flex-basis: 30%;
+	}
+}

@@ -1,0 +1,11 @@
+.general {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 100%;
+
+	.name {
+		flex-basis: 80%;
+	}
+}
