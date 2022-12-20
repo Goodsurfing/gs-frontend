@@ -26,6 +26,7 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
                 </defs>
             </svg>
         ),
+        to: "profile/info",
         text: "Обо мне",
     },
     {
@@ -53,6 +54,7 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
                 </defs>
             </svg>
         ),
+        to: "profile/preferences",
         text: "Предпочтения",
     },
     {
@@ -83,6 +85,7 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
                 </defs>
             </svg>
         ),
+        to: "profile/reset-password",
         text: "Пароль",
     },
     {
@@ -113,6 +116,7 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
                 </defs>
             </svg>
         ),
+        to: "profile/private",
         text: "Приватность",
     },
 ];
