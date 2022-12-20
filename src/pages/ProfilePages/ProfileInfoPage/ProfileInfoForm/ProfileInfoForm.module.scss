@@ -36,6 +36,30 @@
 	width: 35%;
 }
 
+.location {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 80%;
+
+	.address {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		width: 75%;
+
+		div {
+			flex-basis: 45%;
+		}
+	}
+
+	.language {
+		width: 20%;
+	}
+}
+
 .contacts {
 	display: flex;
 	justify-content: space-between;
