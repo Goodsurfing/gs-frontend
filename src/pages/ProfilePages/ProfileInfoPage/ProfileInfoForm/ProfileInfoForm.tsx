@@ -129,6 +129,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     name={"gender"}
                     render={({ field: { onChange, name } }) => (
                         <ToggleSwitch
+                            disabled={isLocked}
                             label={"Мужчина"}
                             name={name}
                             value={"male"}
@@ -141,6 +142,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     name={"gender"}
                     render={({ field: { onChange, name } }) => (
                         <ToggleSwitch
+                            disabled={isLocked}
                             label={"Женщина"}
                             name={name}
                             value={"female"}
@@ -153,6 +155,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     name={"gender"}
                     render={({ field: { onChange, name } }) => (
                         <ToggleSwitch
+                            disabled={isLocked}
                             label={"Другой"}
                             name={name}
                             value={"other"}
