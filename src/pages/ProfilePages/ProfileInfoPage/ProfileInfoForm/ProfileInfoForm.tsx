@@ -13,6 +13,7 @@ import {
     months,
     years,
 } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
+import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
 
 import styles from "./ProfileInfoForm.module.scss";
 
@@ -66,7 +67,10 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     <FileUpload />
                 </div>
             </div>
-            <div className={styles.dateOfBirth}>
+            <ProfileInfoFormGroup
+                title={"Дата рождения"}
+                className={styles.dateOfBirth}
+            >
                 <Controller
                     control={control}
                     name={"dayOfBirth"}
@@ -74,7 +78,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             placeholder={""}
-                            text={"Дата рождения"}
                             name={name}
                             options={days}
                             value={days.find((item) => item.value === value)}
@@ -119,15 +122,14 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                         />
                     )}
                 />
-            </div>
-            <div className={styles.gender}>
+            </ProfileInfoFormGroup>
+            <ProfileInfoFormGroup title={"Пол"} className={styles.gender}>
                 <Controller
                     control={control}
                     name={"gender"}
                     render={({ field: { onChange, name } }) => (
                         <ToggleSwitch
                             label={"Мужчина"}
-                            text={"Пол"}
                             name={name}
                             value={"male"}
                             onChange={(e) => onChange(e)}
@@ -158,7 +160,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                         />
                     )}
                 />
-            </div>
+            </ProfileInfoFormGroup>
             <div className={styles.contacts}>
                 <Controller
                     control={control}
