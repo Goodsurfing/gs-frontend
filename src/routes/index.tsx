@@ -35,6 +35,10 @@ export const AppRoutes = () => {
                     path={"info"}
                     element={<PrivateRoute Component={ProfilePage} />}
                 />
+                <Route
+                    path={"reset-password"}
+                    element={<PrivateRoute Component={ProfilePage} />}
+                />
             </Route>
         </Routes>
     );
