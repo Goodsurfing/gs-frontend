@@ -1,0 +1,10 @@
+.contacts {
+	display: flex;
+	justify-content: space-between;
+
+	width: 60%;
+
+	div {
+		flex-basis: 45%;
+	}
+}
