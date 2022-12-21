@@ -10,6 +10,8 @@ import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoFor
 import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
 import LocationFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/LocationFormGroup/LocationFormGroup";
 
+import { userInfoApi } from "@/store/api/userInfoApi";
+
 import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
@@ -17,6 +19,8 @@ interface ProfileInfoFormProps {
 }
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
+    const { data: userInfo, isLoading } = userInfoApi.useGetUserInfoQuery();
+
     const { control, handleSubmit } = useForm({
         mode: "onChange",
     });
@@ -25,13 +29,21 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         console.log(data);
     };
 
+    if (isLoading) {
+        return <h1>Data loading...</h1>;
+    }
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
             <GeneralFormGroup control={control} isLocked={isLocked} />
             <DateOfBirthFormGroup control={control} isLocked={isLocked} />
             <GenderFormGroup control={control} isLocked={isLocked} />
             <LocationFormGroup control={control} isLocked={isLocked} />
-            <ContactsFormGroup control={control} isLocked={isLocked} />
+            <ContactsFormGroup
+                data={{ email: userInfo!.email, phoneNumber: null }}
+                control={control}
+                isLocked={isLocked}
+            />
             <AboutFormGroup control={control} isLocked={isLocked} />
             <Button
                 type={"submit"}

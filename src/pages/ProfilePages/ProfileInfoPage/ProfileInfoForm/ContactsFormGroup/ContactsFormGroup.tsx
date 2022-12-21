@@ -5,21 +5,28 @@ import InputField from "@/components/InputField/InputField";
 
 import styles from "./ContactsFormGroup.module.scss";
 
+interface IFields {
+    email: string | null;
+    phoneNumber: string | null;
+}
+
 interface ContactsFormGroupProps {
     control: Control;
     isLocked: boolean;
+    data: IFields;
 }
 
 const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
     control,
     isLocked,
+    data,
 }) => {
     return (
         <div className={styles.contacts}>
             <Controller
                 control={control}
                 name={"email"}
-                defaultValue={"space-cowboy@gmail.com"}
+                defaultValue={data.email}
                 render={({ field }) => (
                     <InputField
                         onChange={(e) => field.onChange(e)}
@@ -33,7 +40,7 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
             <Controller
                 control={control}
                 name={"phoneNumber"}
-                defaultValue={"+79827922680"}
+                defaultValue={data.phoneNumber}
                 render={({ field }) => (
                     <InputField
                         onChange={(e) => field.onChange(e)}
