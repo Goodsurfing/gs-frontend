@@ -49,7 +49,7 @@ const ResetPasswordThirdStep: FC = () => {
         })
             .unwrap()
             .then(() => {
-                navigate(AppRoutesEnum.SIGNIN);
+                navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
                 reset();
             });
     };

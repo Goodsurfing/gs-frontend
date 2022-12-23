@@ -11,7 +11,13 @@ export const RouterLanguageController = ({ children }: any) => {
     const [isReady, setIsReady] = useState<boolean>(false);
 
     useEffect(() => {
-        navigate(createUrlWithLanguageCode(i18n.language, location.pathname));
+        console.log(location);
+        navigate(
+            createUrlWithLanguageCode(
+                i18n.language,
+                `${location.pathname}${location.search}`
+            )
+        );
         setIsReady(true);
     }, [i18n.language]);
 

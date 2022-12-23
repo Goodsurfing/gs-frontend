@@ -17,18 +17,22 @@ interface IResetPasswordFormFields {
 
 const ProfileResetPasswordForm: FC = () => {
     const { token } = useAppSelector((state) => state.login);
+    const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
 
     const { control, handleSubmit } = useForm<IResetPasswordFormFields>({
         mode: "onChange",
     });
 
-    const onSubmit: SubmitHandler<IResetPasswordFormFields> = ({
+    const onSubmit: SubmitHandler<IResetPasswordFormFields> = async ({
         newPassword,
         confirmNewPassword,
     }) => {
         if (newPassword && confirmNewPassword && token) {
             if (newPassword === confirmNewPassword) {
-                console.log("ok");
+                await resetPasswordVerify({
+                    token: token,
+                    plainPassword: newPassword,
+                });
             }
         }
     };
