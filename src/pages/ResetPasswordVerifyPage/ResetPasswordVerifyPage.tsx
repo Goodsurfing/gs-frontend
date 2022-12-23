@@ -11,7 +11,7 @@ import styles from "./ResetPasswordVerifyPage.module.scss";
 
 const ResetPasswordVerifyPage: FC = () => {
     return (
-        <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNIN}>
+        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNIN}>
             <div className={styles.wrapper}>
                 <div className={styles.container}>
                     <SignTitle>Восстановление пароля</SignTitle>

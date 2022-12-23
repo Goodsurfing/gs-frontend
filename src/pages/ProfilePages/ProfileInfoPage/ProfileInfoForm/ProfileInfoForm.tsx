@@ -45,11 +45,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                 isLocked={isLocked}
             />
             <AboutFormGroup control={control} isLocked={isLocked} />
-            <Button
-                type={"submit"}
-                variant={"primary"}
-                className={styles.button}
-            >
+            <Button type="submit" variant="primary" className={styles.button}>
                 Сохранить
             </Button>
         </form>

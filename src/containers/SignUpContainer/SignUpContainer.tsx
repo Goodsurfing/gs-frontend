@@ -15,7 +15,7 @@ const SignUpContainer: FC = () => {
             <SignUpForm />
             <div className={styles.confirm}>
                 Нажимая кнопку «Зарегистрироваться», я принимаю{" "}
-                <Link to={"/"}>Политику конфеденциальности ГудСёрфинга</Link>.
+                <Link to="/">Политику конфеденциальности ГудСёрфинга</Link>.
             </div>
             <div className={styles.socials}>
                 <SocialAuthContainer />

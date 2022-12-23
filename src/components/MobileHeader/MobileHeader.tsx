@@ -15,7 +15,9 @@ import styles from "./MobileHeader.module.scss";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = useAppSelector((state) => {
+        return state.login;
+    });
 
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
@@ -32,11 +34,13 @@ const MobileHeader: FC = () => {
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
-                    onClick={() => setMenuIsOpen(!menuIsOpen)}
+                    onClick={() => {
+                        return setMenuIsOpen(!menuIsOpen);
+                    }}
                 >
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span />
+                    <span />
+                    <span />
                 </div>
             </header>
 
@@ -46,10 +50,10 @@ const MobileHeader: FC = () => {
                 })}
             >
                 <div className={styles.link}>
-                    <Link to={"/"}>{t("main.welcome.header.how-it-work")}</Link>
+                    <Link to="/">{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to={"/"}>
+                    <Link to="/">
                         {t("main.welcome.header.community.title")}
                     </Link>
                 </div>

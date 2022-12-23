@@ -9,9 +9,9 @@ const BenefitsContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
             {benefitsData &&
-                benefitsData.map((item, index) => (
-                    <BenefitItem key={index} {...item} />
-                ))}
+                benefitsData.map((item, index) => {
+                    return <BenefitItem key={index} {...item} />;
+                })}
         </div>
     );
 };

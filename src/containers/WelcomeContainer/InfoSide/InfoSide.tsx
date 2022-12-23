@@ -20,11 +20,7 @@ const InfoSide: FC = () => {
                     <SectionTitle classNames={styles.title}>
                         {t("main.welcome.title")}
                     </SectionTitle>
-                    <ButtonLink
-                        className={styles.btn}
-                        type={"primary"}
-                        path={"/"}
-                    >
+                    <ButtonLink className={styles.btn} type="primary" path="/">
                         {t("main.welcome.offers-btn")}
                     </ButtonLink>
                 </div>

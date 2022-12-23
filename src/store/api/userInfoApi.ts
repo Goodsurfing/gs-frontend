@@ -9,8 +9,7 @@ export const userInfoApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: API_USER_BASE_URL,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).login.token;
-            console.log(token);
+            const { token } = (getState() as RootState).login;
             if (token) {
                 headers.set("Authorization", `Bearer ${token}`);
             }
@@ -18,11 +17,15 @@ export const userInfoApi = createApi({
             return headers;
         },
     }),
-    endpoints: (build) => ({
-        getUserInfo: build.query<IGenericUserDataResponse, void>({
-            query: () => ({
-                url: "/profile/",
+    endpoints: (build) => {
+        return {
+            getUserInfo: build.query<IGenericUserDataResponse, void>({
+                query: () => {
+                    return {
+                        url: "/profile/",
+                    };
+                },
             }),
-        }),
-    }),
+        };
+    },
 });

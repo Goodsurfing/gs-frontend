@@ -14,10 +14,13 @@ const SupportWidget: FC = () => {
             <p className={styles.description}>
                 Ваш персональный помощник по работе с системой
             </p>
-            <Button variant={"outlined"}>Написать</Button>
+            <Button variant="outlined">Написать</Button>
             <div className={styles.email}>
                 <p>E-mail</p>
-                <a href="#" className={styles.address}>
+                <a
+                    href="mailto:support@goodsurfing.org"
+                    className={styles.address}
+                >
                     support@goodsurfing.org
                 </a>
             </div>

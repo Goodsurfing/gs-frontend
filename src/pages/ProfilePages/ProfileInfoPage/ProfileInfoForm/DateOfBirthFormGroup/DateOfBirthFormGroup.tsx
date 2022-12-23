@@ -24,59 +24,71 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
 }) => {
     return (
         <ProfileInfoFormGroup
-            title={"Дата рождения"}
+            title="Дата рождения"
             className={styles.dateOfBirth}
         >
             <Controller
                 control={control}
-                name={"dayOfBirth"}
-                defaultValue={"1"}
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectField
-                        placeholder={""}
-                        name={name}
-                        options={days}
-                        value={days.find((item) => item.value === value)}
-                        onChange={(selectedOption) => {
-                            onChange((selectedOption as IOption).value);
-                        }}
-                        isDisabled={isLocked}
-                    />
-                )}
+                name="dayOfBirth"
+                defaultValue="1"
+                render={({ field: { onChange, value, name } }) => {
+                    return (
+                        <SelectField
+                            placeholder=""
+                            name={name}
+                            options={days}
+                            value={days.find((item) => {
+                                return item.value === value;
+                            })}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            isDisabled={isLocked}
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"monthOfBirth"}
-                defaultValue={"1"}
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectField
-                        placeholder={""}
-                        name={name}
-                        options={months}
-                        value={months.find((item) => item.value === value)}
-                        onChange={(selectedOption) => {
-                            onChange((selectedOption as IOption).value);
-                        }}
-                        isDisabled={isLocked}
-                    />
-                )}
+                name="monthOfBirth"
+                defaultValue="1"
+                render={({ field: { onChange, value, name } }) => {
+                    return (
+                        <SelectField
+                            placeholder=""
+                            name={name}
+                            options={months}
+                            value={months.find((item) => {
+                                return item.value === value;
+                            })}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            isDisabled={isLocked}
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"yearOfBirth"}
-                defaultValue={"1992"}
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectField
-                        placeholder={""}
-                        name={name}
-                        options={years}
-                        value={years.find((item) => item.value === value)}
-                        onChange={(selectedOption) => {
-                            onChange((selectedOption as IOption).value);
-                        }}
-                        isDisabled={isLocked}
-                    />
-                )}
+                name="yearOfBirth"
+                defaultValue="1992"
+                render={({ field: { onChange, value, name } }) => {
+                    return (
+                        <SelectField
+                            placeholder=""
+                            name={name}
+                            options={years}
+                            value={years.find((item) => {
+                                return item.value === value;
+                            })}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            isDisabled={isLocked}
+                        />
+                    );
+                }}
             />
         </ProfileInfoFormGroup>
     );

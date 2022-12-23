@@ -14,29 +14,26 @@ import SignUpPage from "@/pages/SignUpPage/SignUpPage";
 export const AppRoutes = () => {
     return (
         <Routes>
-            <Route path={"/:ln"} element={<MainPage />} />
-            <Route path={"/:ln/signup"} element={<SignUpPage />} />
-            <Route path={"/:ln/signin"} element={<SignInPage />} />
+            <Route path="/:ln" element={<MainPage />} />
+            <Route path="/:ln/signup" element={<SignUpPage />} />
+            <Route path="/:ln/signin" element={<SignInPage />} />
+            <Route path="/:ln/reset-password" element={<ResetPasswordPage />} />
             <Route
-                path={"/:ln/reset-password"}
-                element={<ResetPasswordPage />}
-            />
-            <Route
-                path={"/:ln/reset-password-verify"}
+                path="/:ln/reset-password-verify"
                 element={<ResetPasswordVerifyPage />}
             />
-            <Route path={"/:ln/confirm-email"} element={<ConfirmEmailPage />} />
+            <Route path="/:ln/confirm-email" element={<ConfirmEmailPage />} />
             <Route
-                path={"/:ln/confirm-email-success"}
+                path="/:ln/confirm-email-success"
                 element={<ConfirmEmailSuccessPage />}
             />
-            <Route path={"/:ln/profile"}>
+            <Route path="/:ln/profile">
                 <Route
-                    path={"info"}
+                    path="info"
                     element={<PrivateRoute Component={ProfilePage} />}
                 />
                 <Route
-                    path={"reset-password"}
+                    path="reset-password"
                     element={<PrivateRoute Component={ProfilePage} />}
                 />
             </Route>

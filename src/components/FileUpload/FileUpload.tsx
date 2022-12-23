@@ -5,7 +5,7 @@ import fileUploadIcon from "@/assets/icons/profile/photo-camera.svg";
 import styles from "./FileUpload.module.scss";
 
 const FileUpload: FC = () => {
-    const [fileName, setFileName] = useState<string>("Выберите файл");
+    const [, setFileName] = useState<string>("Выберите файл");
     const inputFile = useRef<HTMLInputElement | null>(null);
 
     const setInputFileName = () => {
@@ -15,11 +15,14 @@ const FileUpload: FC = () => {
     };
 
     return (
-        <label className={styles.inputFile}>
+        <label htmlFor="main" className={styles.inputFile}>
             <input
+                name="main"
                 type="file"
                 ref={inputFile}
-                onChange={() => setInputFileName()}
+                onChange={() => {
+                    return setInputFileName();
+                }}
             />
             <img src={fileUploadIcon} alt="Загрузить фото" />
         </label>

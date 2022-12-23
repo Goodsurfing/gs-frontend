@@ -16,7 +16,9 @@ interface IResetPasswordFormFields {
 }
 
 const ProfileResetPasswordForm: FC = () => {
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = useAppSelector((state) => {
+        return state.login;
+    });
     const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
 
     const { control, handleSubmit } = useForm<IResetPasswordFormFields>({
@@ -30,7 +32,7 @@ const ProfileResetPasswordForm: FC = () => {
         if (newPassword && confirmNewPassword && token) {
             if (newPassword === confirmNewPassword) {
                 await resetPasswordVerify({
-                    token: token,
+                    token,
                     plainPassword: newPassword,
                 });
             }
@@ -41,31 +43,39 @@ const ProfileResetPasswordForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"newPassword"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Новый пароль"}
-                        type={"text"}
-                    />
-                )}
+                name="newPassword"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            text="Новый пароль"
+                            type="text"
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"confirmNewPassword"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Подтвердите пароль"}
-                        type={"text"}
-                    />
-                )}
+                name="confirmNewPassword"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            text="Подтвердите пароль"
+                            type="text"
+                        />
+                    );
+                }}
             />
-            <Button type={"submit"} variant={"primary"}>
+            <Button type="submit" variant="primary">
                 Сохранить
             </Button>
         </form>

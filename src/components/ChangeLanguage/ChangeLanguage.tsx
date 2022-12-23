@@ -48,6 +48,8 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
             if (item.code === i18n.language) {
                 return item;
             }
+
+            return false;
         });
         setCurrentLanguage(currentLang[0]);
     }, [i18n.language]);
@@ -56,7 +58,9 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
         <div ref={menuRef} className={styles.wrapper}>
             <div
                 className={cn(styles.selectLang, className)}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                    return setIsOpen(!isOpen);
+                }}
             >
                 <img src={currentLanguage.icon} alt={currentLanguage.name} />
                 <Arrow isOpen={isOpen} />
@@ -67,16 +71,20 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
                 })}
             >
                 {changeLanguageData &&
-                    changeLanguageData.map((item) => (
-                        <div
-                            key={item.id}
-                            className={styles.item}
-                            onClick={() => changeLanguageHandleClick(item)}
-                        >
-                            <img src={item.icon} alt={item.name} />
-                            <span>{item.name}</span>
-                        </div>
-                    ))}
+                    changeLanguageData.map((item) => {
+                        return (
+                            <div
+                                key={item.id}
+                                className={styles.item}
+                                onClick={() => {
+                                    return changeLanguageHandleClick(item);
+                                }}
+                            >
+                                <img src={item.icon} alt={item.name} />
+                                <span>{item.name}</span>
+                            </div>
+                        );
+                    })}
             </div>
         </div>
     );

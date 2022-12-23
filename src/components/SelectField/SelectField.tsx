@@ -18,13 +18,14 @@ const SelectField: FC<SelectFieldProps> = ({ text, isDisabled, ...rest }) => {
             <Select
                 {...rest}
                 isDisabled={isDisabled}
-                unstyled={true}
+                unstyled
                 className={cn("react-select-container", {
                     "select-disabled": isDisabled,
                 })}
                 classNamePrefix="react-select"
+                name="main"
             />
-            <label>{text}</label>
+            <label htmlFor="main">{text}</label>
         </div>
     );
 };

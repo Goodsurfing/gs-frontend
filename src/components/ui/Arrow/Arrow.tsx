@@ -14,7 +14,7 @@ const Arrow: FC<ArrowProps> = ({ className, isOpen }) => {
             className={cn(styles.arrow, className, {
                 [styles.open]: isOpen,
             })}
-        ></div>
+        />
     );
 };
 

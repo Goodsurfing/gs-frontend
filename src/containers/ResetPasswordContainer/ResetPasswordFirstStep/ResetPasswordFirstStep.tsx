@@ -41,18 +41,22 @@ const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"email"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        type={"email"}
-                        text={"E-mail"}
-                    />
-                )}
+                name="email"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            type="email"
+                            text="E-mail"
+                        />
+                    );
+                }}
             />
-            <Button type={"submit"} variant={"primary"}>
+            <Button type="submit" variant="primary">
                 Отправить
             </Button>
         </form>

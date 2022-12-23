@@ -10,7 +10,7 @@ import styles from "./ResetPasswordPage.module.scss";
 
 const ResetPasswordPage: FC = () => {
     return (
-        <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNIN}>
+        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNIN}>
             <div className={styles.wrapper}>
                 <ResetPasswordContainer />
             </div>

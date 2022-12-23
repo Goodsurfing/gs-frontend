@@ -9,9 +9,9 @@ const SocialAuthContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
             {socialAuthData &&
-                socialAuthData.map((item, index) => (
-                    <SocialAuthItem key={index} {...item} />
-                ))}
+                socialAuthData.map((item, index) => {
+                    return <SocialAuthItem key={index} {...item} />;
+                })}
         </div>
     );
 };

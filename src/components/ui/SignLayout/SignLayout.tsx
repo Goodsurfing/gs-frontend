@@ -25,7 +25,7 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
             <EmptyHeader />
             <div className={styles.cancel}>
                 <ButtonLink
-                    type={"outlined"}
+                    type="outlined"
                     className={styles.btn}
                     path={cancelPath}
                 >

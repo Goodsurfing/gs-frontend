@@ -15,40 +15,50 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({ baseUrl: API_PUBLIC_BASE_URL }),
-    endpoints: (build) => ({
-        registerUser: build.mutation<IRegisterResponse, IAuthFormData>({
-            query: (data: IAuthFormData) => ({
-                url: AuthApiEndpoints.REGISTER,
-                method: "POST",
-                body: data,
+    endpoints: (build) => {
+        return {
+            registerUser: build.mutation<IRegisterResponse, IAuthFormData>({
+                query: (data: IAuthFormData) => {
+                    return {
+                        url: AuthApiEndpoints.REGISTER,
+                        method: "POST",
+                        body: data,
+                    };
+                },
             }),
-        }),
-        loginUser: build.mutation<ILoginResponse, IAuthLoginData>({
-            query: (data: IAuthLoginData) => ({
-                url: AuthApiEndpoints.LOGIN,
-                method: "POST",
-                body: data,
+            loginUser: build.mutation<ILoginResponse, IAuthLoginData>({
+                query: (data: IAuthLoginData) => {
+                    return {
+                        url: AuthApiEndpoints.LOGIN,
+                        method: "POST",
+                        body: data,
+                    };
+                },
             }),
-        }),
-        resetPasswordRequest: build.mutation<
-            IResetPasswordRequestResponse,
-            IResetPasswordRequestFormData
-        >({
-            query: (data: IResetPasswordRequestFormData) => ({
-                url: AuthApiEndpoints.RESET_PASSWORD_REQUEST,
-                method: "POST",
-                body: data,
+            resetPasswordRequest: build.mutation<
+                IResetPasswordRequestResponse,
+                IResetPasswordRequestFormData
+            >({
+                query: (data: IResetPasswordRequestFormData) => {
+                    return {
+                        url: AuthApiEndpoints.RESET_PASSWORD_REQUEST,
+                        method: "POST",
+                        body: data,
+                    };
+                },
             }),
-        }),
-        resetPasswordVerify: build.mutation<
-            IResetPasswordVerifyResponse,
-            IResetPasswordVerifyData
-        >({
-            query: (data: IResetPasswordVerifyData) => ({
-                url: AuthApiEndpoints.RESET_PASSWORD,
-                method: "POST",
-                body: data,
+            resetPasswordVerify: build.mutation<
+                IResetPasswordVerifyResponse,
+                IResetPasswordVerifyData
+            >({
+                query: (data: IResetPasswordVerifyData) => {
+                    return {
+                        url: AuthApiEndpoints.RESET_PASSWORD,
+                        method: "POST",
+                        body: data,
+                    };
+                },
             }),
-        }),
-    }),
+        };
+    },
 });

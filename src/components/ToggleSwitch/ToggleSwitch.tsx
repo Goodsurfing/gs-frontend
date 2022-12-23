@@ -12,10 +12,10 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({ text, label, ...rest }) => {
     return (
         <div className={styles.box}>
             <div className={styles.wrapper}>
-                <input type="radio" {...rest} />
+                <input name="main" type="radio" {...rest} />
                 <span>{label}</span>
             </div>
-            <label>{text}</label>
+            <label htmlFor="main">{text}</label>
         </div>
     );
 };

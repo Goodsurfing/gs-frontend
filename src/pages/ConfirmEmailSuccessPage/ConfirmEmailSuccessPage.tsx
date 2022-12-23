@@ -10,7 +10,7 @@ import styles from "./ConfirmEmailSuccessPage.module.scss";
 
 const ConfirmEmailSuccessPage: FC = () => {
     return (
-        <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNUP}>
+        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNUP}>
             <div className={styles.wrapper}>
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
@@ -21,7 +21,7 @@ const ConfirmEmailSuccessPage: FC = () => {
                     <ButtonLink
                         className={styles.btn}
                         path={AppRoutesEnum.SIGNIN}
-                        type={"outlined"}
+                        type="outlined"
                     >
                         Войти в свой аккаунт
                     </ButtonLink>
