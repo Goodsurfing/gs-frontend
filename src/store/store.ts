@@ -5,12 +5,14 @@ import { userInfoApi } from "@/store/api/userInfoApi";
 
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
+import { localeApi } from "./api/localeApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,
     login: loginReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,
+    [localeApi.reducerPath]: localeApi.reducer
 });
 
 export const setupStore = () => {
@@ -20,6 +22,7 @@ export const setupStore = () => {
             return getDefaultMiddleware().concat([
                 authApi.middleware,
                 userInfoApi.middleware,
+                localeApi.middleware,
             ]);
         },
     });
