@@ -19,16 +19,16 @@ const MainPage: FC = () => {
     return (
         <>
             <WelcomeContainer />
-            <Section title={"Как это работает?"}>
+            <Section title="Как это работает?">
                 <HowItWorkContainer />
             </Section>
-            <Section title={"Интересные предложения"}>
+            <Section title="Интересные предложения">
                 <OffersContainer />
             </Section>
-            <Section title={"Наши преимущества"}>
+            <Section title="Наши преимущества">
                 <BenefitsContainer />
             </Section>
-            <Section title={"Популярные места"}>
+            <Section title="Популярные места">
                 <PopularPlacesContainer />
             </Section>
             <section className={styles.volunteer}>
@@ -37,7 +37,7 @@ const MainPage: FC = () => {
             <section className={styles.reviews}>
                 <ReviewsContainer />
             </section>
-            <Section title={"Новое из Сообщества"}>
+            <Section title="Новое из Сообщества">
                 <CommunityNewsContainer />
             </Section>
             <section className={styles.host}>

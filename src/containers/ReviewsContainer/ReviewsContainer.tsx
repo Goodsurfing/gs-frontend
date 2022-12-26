@@ -21,13 +21,17 @@ const ReviewsContainer: FC = () => {
             <div className={styles.slider}>
                 <div className={styles.arrows}>
                     <img
-                        ref={(node) => setPrevEl(node)}
+                        ref={(node) => {
+                            return setPrevEl(node);
+                        }}
                         src={arrowIcon}
                         alt="Prev"
                         className={styles.arrow}
                     />
                     <img
-                        ref={(node) => setNextEl(node)}
+                        ref={(node) => {
+                            return setNextEl(node);
+                        }}
                         src={arrowIcon}
                         alt="Next"
                         className={styles.arrow}
@@ -42,18 +46,20 @@ const ReviewsContainer: FC = () => {
                         nextEl,
                         disabledClass: styles.disable,
                     }}
-                    effect={"fade"}
+                    effect="fade"
                     autoplay={{
                         delay: 2000,
                         pauseOnMouseEnter: true,
                     }}
                 >
-                    {reviewsData &&
-                        reviewsData.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <ReviewItem {...item} />
-                            </SwiperSlide>
-                        ))}
+                    {reviewsData
+                        && reviewsData.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <ReviewItem {...item} />
+                                </SwiperSlide>
+                            );
+                        })}
                 </Swiper>
             </div>
         </div>

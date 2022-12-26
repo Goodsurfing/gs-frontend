@@ -19,12 +19,12 @@ const VolunteerContainer: FC = () => {
                 мир по-настоящему. Готовы к своему новому приключению?
             </p>
             <div className={styles.content}>
-                {volunteerData &&
-                    volunteerData.map((item) => (
-                        <VolunteerItem key={item.number} {...item} />
-                    ))}
+                {volunteerData
+                    && volunteerData.map((item) => {
+                        return <VolunteerItem key={item.number} {...item} />;
+                    })}
             </div>
-            <ButtonLink type={"secondary"} path={"/"}>
+            <ButtonLink type="secondary" path="/">
                 Начать сейчас
             </ButtonLink>
         </div>

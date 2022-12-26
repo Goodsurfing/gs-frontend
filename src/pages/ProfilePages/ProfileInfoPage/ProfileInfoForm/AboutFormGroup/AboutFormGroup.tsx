@@ -13,17 +13,21 @@ const AboutFormGroup: FC<AboutFormGroupProps> = ({ control, isLocked }) => {
         <div>
             <Controller
                 control={control}
-                name={"about"}
-                defaultValue={"Расскажите о себе"}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Расскажите о себе"}
-                        type={"text"}
-                        disabled={isLocked}
-                    />
-                )}
+                name="about"
+                defaultValue="Расскажите о себе"
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            text="Расскажите о себе"
+                            type="text"
+                            disabled={isLocked}
+                        />
+                    );
+                }}
             />
         </div>
     );

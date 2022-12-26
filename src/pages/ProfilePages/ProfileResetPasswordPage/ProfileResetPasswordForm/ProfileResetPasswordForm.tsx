@@ -1,52 +1,29 @@
 import React, { FC } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-
-import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
 
-import styles from "./ProfileResetPasswordForm.module.scss";
+import { authApi } from "@/store/api/authApi";
+import { userInfoApi } from "@/store/api/userInfoApi";
 
 const ProfileResetPasswordForm: FC = () => {
-    const { control, handleSubmit } = useForm({
-        mode: "onChange",
-    });
+    const [resetPasswordRequest, { isSuccess }] = authApi.useResetPasswordRequestMutation();
+    const { data: userInfo, isSuccess: userInfoSuccess } = userInfoApi.useGetUserInfoQuery();
 
-    const onSubmit: SubmitHandler<any> = (data) => {
-        console.log(data);
+    const onSubmit: React.MouseEventHandler<HTMLButtonElement> = async () => {
+        if (userInfoSuccess && userInfo) {
+            await resetPasswordRequest({ email: userInfo.email });
+        }
     };
 
+    if (isSuccess) {
+        return (
+            <h1>Заявка на восстановления пароля отправлена на почту!</h1>
+        );
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            <Controller
-                control={control}
-                name={"oldPassword"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Старый пароль"}
-                        type={"text"}
-                    />
-                )}
-            />
-            <Controller
-                control={control}
-                name={"newPassword"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Новый пароль"}
-                        type={"text"}
-                    />
-                )}
-            />
-            <Button type={"submit"} variant={"primary"}>
-                Сохранить
-            </Button>
-        </form>
+        <Button onClick={onSubmit} type="submit" variant="primary">
+            Запросить ссылку
+        </Button>
     );
 };
 

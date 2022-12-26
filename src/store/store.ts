@@ -16,11 +16,12 @@ const rootReducer = combineReducers({
 export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
-        middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat([
+        middleware: (getDefaultMiddleware) => {
+            return getDefaultMiddleware().concat([
                 authApi.middleware,
                 userInfoApi.middleware,
-            ]),
+            ]);
+        },
     });
 };
 

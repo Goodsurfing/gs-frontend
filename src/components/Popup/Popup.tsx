@@ -20,7 +20,7 @@ const Popup: FC<PropsWithChildren<PopupProps>> = ({
                 {
                     [styles.open]: isOpen,
                 },
-                className
+                className,
             )}
         >
             {children}

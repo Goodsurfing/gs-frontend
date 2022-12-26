@@ -20,7 +20,8 @@ const SignInContainer: FC = () => {
             </div>
 
             <div className={styles.redirect}>
-                Не зарегистрированы на Гудсерфинге?{" "}
+                Не зарегистрированы на Гудсерфинге?
+                {" "}
                 <LocaleLink to={AppRoutesEnum.SIGNUP}>
                     Зарегистрироваться
                 </LocaleLink>

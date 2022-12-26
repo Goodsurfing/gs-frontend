@@ -1,8 +1,8 @@
-import { IAuthLoginData } from "@/type/auth/auth.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { IAuthLoginData } from "@/type/auth/auth.interface";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
@@ -56,33 +56,41 @@ const SignInForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"username"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        type={"email"}
-                        text={"E-mail"}
-                    />
-                )}
+                name="username"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            type="email"
+                            text="E-mail"
+                        />
+                    );
+                }}
             />
 
             <Controller
                 control={control}
-                name={"password"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        type={"password"}
-                        text={"Пароль"}
-                    />
-                )}
+                name="password"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            type="password"
+                            text="Пароль"
+                        />
+                    );
+                }}
             />
 
-            <Button type={"submit"} variant={"primary"}>
+            <Button type="submit" variant="primary">
                 Войти
             </Button>
 
@@ -90,7 +98,7 @@ const SignInForm: FC = () => {
                 <Checkbox
                     isChecked={isRemember}
                     onChange={checkboxHandleClick}
-                    text={"Запомнить меня"}
+                    text="Запомнить меня"
                 />
                 <LocaleLink
                     to={AppRoutesEnum.RESET_PASSWORD}

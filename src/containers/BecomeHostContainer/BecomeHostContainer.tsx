@@ -15,7 +15,7 @@ const BecomeHostContainer: FC = () => {
                 познакомиться с новыми культурами, распространить информацию о
                 вас, получить экспертов по различным направлениям.
             </p>
-            <ButtonLink path={"/"} type={"primary"}>
+            <ButtonLink path="/" type="primary">
                 Стать хостом
             </ButtonLink>
         </div>

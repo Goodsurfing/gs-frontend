@@ -25,31 +25,39 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
         <div className={styles.contacts}>
             <Controller
                 control={control}
-                name={"email"}
+                name="email"
                 defaultValue={data.email}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"E-mail"}
-                        type={"text"}
-                        disabled={isLocked}
-                    />
-                )}
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            text="E-mail"
+                            type="text"
+                            disabled={isLocked}
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"phoneNumber"}
+                name="phoneNumber"
                 defaultValue={data.phoneNumber}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        text={"Телефон"}
-                        type={"phone"}
-                        disabled={isLocked}
-                    />
-                )}
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            text="Телефон"
+                            type="phone"
+                            disabled={isLocked}
+                        />
+                    );
+                }}
             />
         </div>
     );

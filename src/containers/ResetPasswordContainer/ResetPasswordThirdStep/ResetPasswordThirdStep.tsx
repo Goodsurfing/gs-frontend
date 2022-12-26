@@ -32,7 +32,7 @@ const ResetPasswordThirdStep: FC = () => {
         if (!query.get("token")) {
             navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
         }
-    }, []);
+    }, [navigate, query]);
 
     const onSubmit = async (data: IFormData) => {
         const token = query.get("token");
@@ -44,12 +44,12 @@ const ResetPasswordThirdStep: FC = () => {
             return;
         }
         await resetPasswordVerify({
-            token: token,
+            token,
             plainPassword: data.password,
         })
             .unwrap()
             .then(() => {
-                navigate(AppRoutesEnum.SIGNIN);
+                navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
                 reset();
             });
     };
@@ -58,32 +58,36 @@ const ResetPasswordThirdStep: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"password"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={field.onChange}
-                        value={field.value}
-                        type={"password"}
-                        text={"Новый пароль"}
-                    />
-                )}
+                name="password"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={field.onChange}
+                            value={field.value}
+                            type="password"
+                            text="Новый пароль"
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"confirmPassword"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={field.onChange}
-                        value={field.value}
-                        type={"password"}
-                        text={"Повторите новый пароль"}
-                    />
-                )}
+                name="confirmPassword"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={field.onChange}
+                            value={field.value}
+                            type="password"
+                            text="Повторите новый пароль"
+                        />
+                    );
+                }}
             />
 
-            <Button type={"submit"} variant={"primary"}>
+            <Button type="submit" variant="primary">
                 Отправить
             </Button>
         </form>

@@ -21,7 +21,7 @@ function useEventListener<K extends keyof WindowEventMap>(
 // Element Event based useEventListener interface
 function useEventListener<
     K extends keyof HTMLElementEventMap,
-    T extends HTMLElement = HTMLDivElement
+    T extends HTMLElement = HTMLDivElement,
 >(
     eventName: K,
     handler: (event: HTMLElementEventMap[K]) => void,
@@ -41,18 +41,18 @@ function useEventListener<
     KW extends keyof WindowEventMap,
     KH extends keyof HTMLElementEventMap,
     KM extends keyof MediaQueryListEventMap,
-    T extends HTMLElement | MediaQueryList | void = void
+    T extends HTMLElement | MediaQueryList | void = void,
 >(
     eventName: KW | KH | KM,
     handler: (
         event:
-            | WindowEventMap[KW]
-            | HTMLElementEventMap[KH]
-            | MediaQueryListEventMap[KM]
-            | Event
+        | WindowEventMap[KW]
+        | HTMLElementEventMap[KH]
+        | MediaQueryListEventMap[KM]
+        | Event
     ) => void,
     element?: RefObject<T>,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
 ) {
     // Create a ref that stores handler
     const savedHandler = useRef(handler);
@@ -68,7 +68,9 @@ function useEventListener<
         if (!(targetElement && targetElement.addEventListener)) return;
 
         // Create event listener that calls handler function stored in ref
-        const listener: typeof handler = (event) => savedHandler.current(event);
+        const listener: typeof handler = (event) => {
+            return savedHandler.current(event);
+        };
 
         targetElement.addEventListener(eventName, listener, options);
 

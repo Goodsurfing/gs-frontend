@@ -13,14 +13,16 @@ interface SidebarNavigationProps {
 const SidebarNavigation: FC<SidebarNavigationProps> = ({ navigationLinks }) => {
     return (
         <nav className={styles.menu}>
-            {navigationLinks.map((link, index) => (
-                <SidebarLink
-                    to={link.to}
-                    key={index}
-                    icon={link.icon}
-                    text={link.text}
-                />
-            ))}
+            {navigationLinks.map((link, index) => {
+                return (
+                    <SidebarLink
+                        to={link.to}
+                        key={index}
+                        icon={link.icon}
+                        text={link.text}
+                    />
+                );
+            })}
         </nav>
     );
 };

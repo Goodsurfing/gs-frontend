@@ -16,17 +16,19 @@ const SliderSide: FC = () => {
         <div className={styles.wrapper}>
             <Swiper
                 modules={[Pagination, Autoplay, EffectFade]}
-                effect={"fade"}
+                effect="fade"
                 slidesPerView={1}
                 autoplay
                 pagination={{ clickable: true }}
             >
-                {sliderData &&
-                    sliderData.map((item, index) => (
-                        <SwiperSlide key={index}>
-                            <Slide {...item} />
-                        </SwiperSlide>
-                    ))}
+                {sliderData
+                    && sliderData.map((item, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <Slide {...item} />
+                            </SwiperSlide>
+                        );
+                    })}
             </Swiper>
         </div>
     );

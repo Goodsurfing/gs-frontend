@@ -10,15 +10,21 @@ import { AppRoutesEnum } from "@/routes/types";
 import styles from "./ConfirmEmailPage.module.scss";
 
 const ConfirmEmailPage: FC = () => {
-    const { email } = useAppSelector((state) => state.register);
+    const { email } = useAppSelector((state) => {
+        return state.register;
+    });
 
     return (
-        <SignLayout cancelText={"Отменить"} cancelPath={AppRoutesEnum.SIGNUP}>
+        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNUP}>
             <div className={styles.wrapper}>
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        На <span>{email}</span> было отправлено письмо со
+                        На
+                        {" "}
+                        <span>{email}</span>
+                        {" "}
+                        было отправлено письмо со
                         ссылкой для подтверждения почты.
                     </div>
                     <p>

@@ -20,13 +20,15 @@ const InputField: FC<InputFieldProps> = ({
         <div className={styles.box}>
             <input
                 type={type}
-                required={true}
+                required
                 onChange={onChange}
                 value={value}
                 defaultValue={defaultValue}
+                name="main"
                 {...rest}
             />
             <label
+                htmlFor="main"
                 className={cn({
                     [styles.empty]: !!value || !!defaultValue,
                 })}

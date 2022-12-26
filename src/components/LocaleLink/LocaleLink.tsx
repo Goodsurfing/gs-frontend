@@ -12,11 +12,19 @@ const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
     className,
     children,
 }) => {
-    if (to === "/") {
-        to = "";
-    }
+    const adaptiveLink = (link: string) => {
+        if (link === "/") {
+            return "";
+        }
+
+        return link;
+    };
     return (
-        <Link className={className} to={`/${i18n.language}/${to}`} replace>
+        <Link
+            className={className}
+            to={`/${i18n.language}/${adaptiveLink(to)}`}
+            replace
+        >
             {children}
         </Link>
     );

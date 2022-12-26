@@ -20,7 +20,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                     [styles.secondary]: variant === "secondary",
                     [styles.outlined]: variant === "outlined",
                 },
-                className
+                className,
             )}
             onClick={rest.onClick}
         >

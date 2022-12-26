@@ -17,7 +17,12 @@ const OffersContainer: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div ref={(node) => setPrevEl(node)} className={styles.arrow}>
+            <div
+                ref={(node) => {
+                    return setPrevEl(node);
+                }}
+                className={styles.arrow}
+            >
                 <img src={arrowSliderIcon} alt="Previous" />
             </div>
             <div className={styles.slider}>
@@ -25,7 +30,7 @@ const OffersContainer: FC = () => {
                     modules={[Pagination, Navigation]}
                     spaceBetween={0}
                     slidesPerView={3}
-                    centerInsufficientSlides={true}
+                    centerInsufficientSlides
                     navigation={{ prevEl, nextEl }}
                     breakpoints={{
                         1100: {
@@ -57,15 +62,22 @@ const OffersContainer: FC = () => {
                         },
                     }}
                 >
-                    {offersData &&
-                        offersData.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <Offer {...item} />
-                            </SwiperSlide>
-                        ))}
+                    {offersData
+                        && offersData.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <Offer {...item} />
+                                </SwiperSlide>
+                            );
+                        })}
                 </Swiper>
             </div>
-            <div ref={(node) => setNextEl(node)} className={styles.arrow}>
+            <div
+                ref={(node) => {
+                    return setNextEl(node);
+                }}
+                className={styles.arrow}
+            >
                 <img src={arrowSliderIcon} alt="Next" />
             </div>
         </div>

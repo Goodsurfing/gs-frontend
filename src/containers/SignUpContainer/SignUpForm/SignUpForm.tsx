@@ -1,9 +1,8 @@
-import { IAuthFormData } from "@/type/auth/auth.interface";
 import i18n from "i18next";
 import React, { FC } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Controller } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { IAuthFormData } from "@/type/auth/auth.interface";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
@@ -34,7 +33,7 @@ const SignUpForm: FC = () => {
                     dispatch(setRegisterUserData(response));
                     navigate(
                         `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
-                        { replace: true }
+                        { replace: true },
                     );
                 })
                 .catch((error) => {
@@ -50,31 +49,39 @@ const SignUpForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             <Controller
                 control={control}
-                name={"email"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        type={"email"}
-                        text={"E-mail"}
-                    />
-                )}
+                name="email"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            type="email"
+                            text="E-mail"
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
-                name={"password"}
-                defaultValue={""}
-                render={({ field }) => (
-                    <InputField
-                        onChange={(e) => field.onChange(e)}
-                        value={field.value}
-                        type={"password"}
-                        text={"Пароль"}
-                    />
-                )}
+                name="password"
+                defaultValue=""
+                render={({ field }) => {
+                    return (
+                        <InputField
+                            onChange={(e) => {
+                                return field.onChange(e);
+                            }}
+                            value={field.value}
+                            type="password"
+                            text="Пароль"
+                        />
+                    );
+                }}
             />
-            <Button type={"submit"} variant={"primary"} className={styles.btn}>
+            <Button type="submit" variant="primary" className={styles.btn}>
                 Зарегистрироваться
             </Button>
         </form>

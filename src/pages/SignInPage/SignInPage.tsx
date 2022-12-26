@@ -10,7 +10,7 @@ import styles from "./SignInPage.module.scss";
 
 const SignInPage: FC = () => {
     return (
-        <SignLayout cancelPath={AppRoutesEnum.HOME} cancelText={"Отменить"}>
+        <SignLayout cancelPath={AppRoutesEnum.HOME} cancelText="Отменить">
             <div className={styles.wrapper}>
                 <SignInContainer />
             </div>

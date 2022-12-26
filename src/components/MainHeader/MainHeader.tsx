@@ -17,17 +17,17 @@ const MainHeader: FC = () => {
         <>
             <header className={styles.header}>
                 <div className={styles.left}>
-                    <LocaleLink to={"/"} className={styles.logo}>
+                    <LocaleLink to="/" className={styles.logo}>
                         <img src={logotypeIcon} alt="GoodSurfing" />
                     </LocaleLink>
                     <ChangeLanguage />
                 </div>
                 <div className={styles.right}>
                     <div className={styles.icons}>
-                        <LocaleLink to={"/"} className={styles.icon}>
+                        <LocaleLink to="/" className={styles.icon}>
                             <img src={heartIcon} alt="Favorites" />
                         </LocaleLink>
-                        <LocaleLink to={"/"} className={styles.icon}>
+                        <LocaleLink to="/" className={styles.icon}>
                             <img src={messagesIcon} alt="Messages" />
                         </LocaleLink>
                     </div>

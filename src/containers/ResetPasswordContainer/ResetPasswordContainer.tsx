@@ -9,11 +9,13 @@ import styles from "./ResetPasswordContainer.module.scss";
 
 const ResetPasswordContainer: FC = () => {
     const [currentStep, setCurrentStep] = useState<number>(1);
-    const [email, setEmail] = useState<string>("");
+    const [userEmail, setUserEmail] = useState<string>("");
 
     const onChangeStep = (email: string) => {
-        setCurrentStep((prev) => prev + 1);
-        setEmail(email);
+        setCurrentStep((prev) => {
+            return prev + 1;
+        });
+        setUserEmail(email);
     };
 
     return (
@@ -21,11 +23,10 @@ const ResetPasswordContainer: FC = () => {
             <SignTitle>Восстановление пароля</SignTitle>
             {currentStep === 1 ? (
                 <ResetPasswordFirstStep changeStep={onChangeStep} />
-            ) : currentStep === 2 ? (
-                <ResetPasswordSecondStep email={email} />
-            ) : (
-                ""
-            )}
+            ) : null}
+            {currentStep === 2 ? (
+                <ResetPasswordSecondStep email={userEmail} />
+            ) : null}
         </div>
     );
 };

@@ -16,11 +16,11 @@ import styles from "./ProfilePage.module.scss";
 const ProfilePage: FC = () => {
     const { pathname } = useLocation();
 
-    const createContent = (pathname: string) => {
-        if (isMatchUrlEndpoint(pathname, "info")) {
+    const createContent = (path: string) => {
+        if (isMatchUrlEndpoint(path, "info")) {
             return <ProfileInfoPage />;
         }
-        if (isMatchUrlEndpoint(pathname, "reset-password")) {
+        if (isMatchUrlEndpoint(path, "reset-password")) {
             return <ProfileResetPasswordPage />;
         }
     };

@@ -24,7 +24,9 @@ const InfoHeader: FC = () => {
 
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = useAppSelector((state) => {
+        return state.login;
+    });
     const dispatch = useAppDispatch();
 
     const handleLogout = () => {
@@ -47,35 +49,37 @@ const InfoHeader: FC = () => {
             <header className={styles.header}>
                 <ChangeLanguage />
                 <div className={styles.link}>
-                    <Link to={"/"}>{t("main.welcome.header.how-it-work")}</Link>
+                    <Link to="/">{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div
                     ref={communityRef}
                     className={styles.link}
-                    onClick={() => setLinkIsOpen(!linkIsOpen)}
+                    onClick={() => {
+                        return setLinkIsOpen(!linkIsOpen);
+                    }}
                 >
                     <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={linkIsOpen} />
                     <Popup isOpen={linkIsOpen} className={styles.popup}>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.blog")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.video")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.experts")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.ambassadors")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.courses")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.clubs")}
                         </Link>
-                        <Link to={"/"}>
+                        <Link to="/">
                             {t("main.welcome.header.community.journal")}
                         </Link>
                     </Popup>
@@ -89,9 +93,11 @@ const InfoHeader: FC = () => {
                         </div>
                         <div className={styles.link}>
                             <Button
-                                onClick={() => handleLogout()}
+                                onClick={() => {
+                                    return handleLogout();
+                                }}
                                 className={styles.btn}
-                                variant={"outlined"}
+                                variant="outlined"
                             >
                                 {t("main.welcome.header.exit")}
                             </Button>
@@ -107,7 +113,7 @@ const InfoHeader: FC = () => {
                         <div className={styles.link}>
                             <ButtonLink
                                 className={styles.btn}
-                                type={"outlined"}
+                                type="outlined"
                                 path={AppRoutesEnum.SIGNUP}
                             >
                                 {t("main.welcome.header.sign-up")}

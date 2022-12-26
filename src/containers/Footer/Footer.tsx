@@ -26,23 +26,40 @@ const Footer: FC = () => {
                             <ChangeLanguage />
                         </div>
                         <div className={styles.socials}>
-                            <a href="https://vk.com/" target={"_blank"}>
+                            <a
+                                href="https://vk.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 <img src={instaIcon} alt="Instagram" />
                             </a>
-                            <a href="https://vk.com/" target={"_blank"}>
+                            <a
+                                href="https://vk.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 <img src={tgIcon} alt="Telegram" />
                             </a>
-                            <a href="https://vk.com/" target={"_blank"}>
+                            <a
+                                href="https://vk.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 <img src={vkIcon} alt="VK" />
                             </a>
-                            <a href="https://vk.com/" target={"_blank"}>
+                            <a
+                                href="https://vk.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 <img src={fbIcon} alt="Facebook" />
                             </a>
                         </div>
                         <a
                             className={styles.write}
                             href="https://vk.com/"
-                            target={"_blank"}
+                            target="_blank"
+                            rel="noreferrer"
                         >
                             Напишите нам
                         </a>
@@ -52,25 +69,25 @@ const Footer: FC = () => {
                         <div className={styles.menu__item}>
                             <h4 className={styles.menu__title}>Сообщество</h4>
                             <div className={styles.menu__content}>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Блог
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Видео
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Эксперты
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Амбассадоры
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Курсы
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Клубы
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Журнал
                                 </Link>
                             </div>
@@ -78,22 +95,22 @@ const Footer: FC = () => {
                         <div className={styles.menu__item}>
                             <h4 className={styles.menu__title}>О проекте</h4>
                             <div className={styles.menu__content}>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     О НКО
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Наша команда
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Как это работает
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Правила
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Политика конфиденциальности
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Новости
                                 </Link>
                             </div>
@@ -103,16 +120,16 @@ const Footer: FC = () => {
                                 Для организаторов
                             </h4>
                             <div className={styles.menu__content}>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Стать хостом
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Как это работае
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Правила
                                 </Link>
-                                <Link className={styles.link} to={"/"}>
+                                <Link className={styles.link} to="/">
                                     Курсы для организаторов
                                 </Link>
                             </div>
@@ -121,7 +138,10 @@ const Footer: FC = () => {
                 </div>
             </footer>
             <div className={styles.copyright}>
-                <p>© GoodSurfing, 2017-{new Date().getFullYear()}</p>
+                <p>
+                    © GoodSurfing, 2017-
+                    {new Date().getFullYear()}
+                </p>
             </div>
         </>
     );

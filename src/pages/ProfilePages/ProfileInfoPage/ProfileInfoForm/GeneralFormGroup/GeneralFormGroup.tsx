@@ -17,31 +17,39 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({ control, isLocked }) => {
             <div className={styles.name}>
                 <Controller
                     control={control}
-                    name={"name"}
-                    defaultValue={"Владислав"}
-                    render={({ field }) => (
-                        <InputField
-                            onChange={(e) => field.onChange(e)}
-                            value={field.value}
-                            text={"Имя"}
-                            type={"text"}
-                            disabled={isLocked}
-                        />
-                    )}
+                    name="name"
+                    defaultValue="Владислав"
+                    render={({ field }) => {
+                        return (
+                            <InputField
+                                onChange={(e) => {
+                                    return field.onChange(e);
+                                }}
+                                value={field.value}
+                                text="Имя"
+                                type="text"
+                                disabled={isLocked}
+                            />
+                        );
+                    }}
                 />
                 <Controller
                     control={control}
-                    name={"surname"}
-                    defaultValue={"Александров"}
-                    render={({ field }) => (
-                        <InputField
-                            onChange={(e) => field.onChange(e)}
-                            value={field.value}
-                            text={"Фамилия"}
-                            type={"text"}
-                            disabled={isLocked}
-                        />
-                    )}
+                    name="surname"
+                    defaultValue="Александров"
+                    render={({ field }) => {
+                        return (
+                            <InputField
+                                onChange={(e) => {
+                                    return field.onChange(e);
+                                }}
+                                value={field.value}
+                                text="Фамилия"
+                                type="text"
+                                disabled={isLocked}
+                            />
+                        );
+                    }}
                 />
             </div>
             <div className={styles.avatar}>

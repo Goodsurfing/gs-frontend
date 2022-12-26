@@ -10,7 +10,7 @@ import styles from "./SignUpPage.module.scss";
 
 const SignUpPage: FC = () => {
     return (
-        <SignLayout cancelPath={AppRoutesEnum.HOME} cancelText={"Отменить"}>
+        <SignLayout cancelPath={AppRoutesEnum.HOME} cancelText="Отменить">
             <div className={styles.wrapper}>
                 <SignUpContainer />
             </div>

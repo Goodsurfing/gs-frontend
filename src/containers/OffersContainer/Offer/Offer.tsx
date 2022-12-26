@@ -37,10 +37,16 @@ const Offer: FC<OfferProps> = ({
                     <span>{rating}</span>
                 </div>
                 <div className={styles.reviews}>
-                    <span>Отзывов: {reviewsCount}</span>
+                    <span>
+                        Отзывов:
+                        {reviewsCount}
+                    </span>
                 </div>
                 <div className={styles.success}>
-                    <span>Отправилось: {sentCount}</span>
+                    <span>
+                        Отправилось:
+                        {sentCount}
+                    </span>
                 </div>
             </div>
         </div>

@@ -10,7 +10,9 @@ interface PrivateRouteProps {
 
 const PrivateRoute: FC<PrivateRouteProps> = ({ Component }) => {
     const navigate = useNavigate();
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = useAppSelector((state) => {
+        return state.login;
+    });
 
     useEffect(() => {
         if (!token) {

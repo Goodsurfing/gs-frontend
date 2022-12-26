@@ -1,7 +1,7 @@
-import { IOption } from "@/type/select";
 import cn from "classnames";
 import React, { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
+import { IOption } from "@/type/select";
 
 import "./SelectField.scss";
 
@@ -18,13 +18,14 @@ const SelectField: FC<SelectFieldProps> = ({ text, isDisabled, ...rest }) => {
             <Select
                 {...rest}
                 isDisabled={isDisabled}
-                unstyled={true}
+                unstyled
                 className={cn("react-select-container", {
                     "select-disabled": isDisabled,
                 })}
                 classNamePrefix="react-select"
+                name="main"
             />
-            <label>{text}</label>
+            <label htmlFor="main">{text}</label>
         </div>
     );
 };
