@@ -14,6 +14,7 @@ import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
 
 import styles from "./ChangeLanguage.module.scss";
+import { localeApi } from "@/store/api/localeApi";
 
 interface ChangeLanguageProps {
     className?: string;
@@ -23,6 +24,8 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
     const { i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [changeLocale] = localeApi.useChangeLocaleMutation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
@@ -37,8 +40,11 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
 
     useOnClickOutside(menuRef, handleClickOutside);
 
-    const changeLanguageHandleClick = (lang: ILanguage) => {
+    const changeLanguageHandleClick = async (lang: ILanguage) => {
         i18n.changeLanguage(lang.code);
+        await changeLocale({
+            locale: lang.code,
+        });
         navigate(createUrlWithLanguageCode(lang.code, location.pathname), {
             replace: true,
         });
