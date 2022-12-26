@@ -7,3 +7,7 @@ export interface ILanguage {
     name: LanguagesNames;
     icon: string;
 }
+
+export interface IChangeLocaleBody {
+    locale: LanguagesCodes;
+}
