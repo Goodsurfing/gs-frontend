@@ -8,8 +8,8 @@ import styles from "./SocialAuthContainer.module.scss";
 const SocialAuthContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
-            {socialAuthData &&
-                socialAuthData.map((item, index) => {
+            {socialAuthData
+                && socialAuthData.map((item, index) => {
                     return <SocialAuthItem key={index} {...item} />;
                 })}
         </div>

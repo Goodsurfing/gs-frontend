@@ -8,8 +8,8 @@ import styles from "./PopularPlacesContainer.module.scss";
 const PopularPlacesContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
-            {popularPlacesData &&
-                popularPlacesData.map((item, index) => {
+            {popularPlacesData
+                && popularPlacesData.map((item, index) => {
                     return <PopularPlaceItem key={index} {...item} />;
                 })}
         </div>

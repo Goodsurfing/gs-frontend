@@ -1,8 +1,8 @@
-import { IAuthLoginData } from "@/type/auth/auth.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { IAuthLoginData } from "@/type/auth/auth.interface";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";

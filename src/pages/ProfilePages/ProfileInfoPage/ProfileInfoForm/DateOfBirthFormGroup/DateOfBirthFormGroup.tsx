@@ -1,6 +1,6 @@
-import { IOption } from "@/type/select";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
+import { IOption } from "@/type/select";
 
 import SelectField from "@/components/SelectField/SelectField";
 

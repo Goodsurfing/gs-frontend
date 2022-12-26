@@ -11,8 +11,8 @@ const HowItWorkContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
-                {howItWorkData &&
-                    howItWorkData.map((item, index) => {
+                {howItWorkData
+                    && howItWorkData.map((item, index) => {
                         return (
                             <HowItWorkItem
                                 title={item.title}

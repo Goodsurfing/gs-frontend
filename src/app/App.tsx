@@ -1,6 +1,6 @@
-import { AppRoutes } from "@/routes";
 import React, { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "@/routes";
 
 import { RouterLanguageController } from "@/routes/RouterLanguageController";
 

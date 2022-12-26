@@ -9,7 +9,7 @@ interface ProfileInfoFormGroupProps {
 }
 
 const ProfileInfoFormGroup: FC<
-    PropsWithChildren<ProfileInfoFormGroupProps>
+PropsWithChildren<ProfileInfoFormGroupProps>
 > = ({ title, className, children }) => {
     return (
         <div className={styles.wrapper}>

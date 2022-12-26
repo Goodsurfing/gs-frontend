@@ -22,7 +22,7 @@ const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
                     [styles.secondary]: type === "secondary",
                     [styles.outlined]: type === "outlined",
                 },
-                className
+                className,
             )}
         >
             {children}

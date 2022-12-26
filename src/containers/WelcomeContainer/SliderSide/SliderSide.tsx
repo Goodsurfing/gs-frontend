@@ -21,8 +21,8 @@ const SliderSide: FC = () => {
                 autoplay
                 pagination={{ clickable: true }}
             >
-                {sliderData &&
-                    sliderData.map((item, index) => {
+                {sliderData
+                    && sliderData.map((item, index) => {
                         return (
                             <SwiperSlide key={index}>
                                 <Slide {...item} />

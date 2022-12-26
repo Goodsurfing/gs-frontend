@@ -14,8 +14,8 @@ export const RouterLanguageController = ({ children }: any) => {
         navigate(
             createUrlWithLanguageCode(
                 i18n.language,
-                `${location.pathname}${location.search}`
-            )
+                `${location.pathname}${location.search}`,
+            ),
         );
         setIsReady(true);
     }, [location.pathname, location.search, navigate]);

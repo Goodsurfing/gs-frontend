@@ -1,6 +1,6 @@
-import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";

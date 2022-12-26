@@ -1,8 +1,10 @@
-import { ILanguage } from "@/type/languages";
 import cn from "classnames";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ILanguage } from "@/type/languages";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";
@@ -24,7 +26,7 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
-        changeLanguageData[0]
+        changeLanguageData[0],
     );
 
     const menuRef = useRef(null);
@@ -70,8 +72,8 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
                     [styles.visible]: isOpen,
                 })}
             >
-                {changeLanguageData &&
-                    changeLanguageData.map((item) => {
+                {changeLanguageData
+                    && changeLanguageData.map((item) => {
                         return (
                             <div
                                 key={item.id}

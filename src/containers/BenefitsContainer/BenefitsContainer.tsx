@@ -8,8 +8,8 @@ import styles from "./BenefitsContainer.module.scss";
 const BenefitsContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
-            {benefitsData &&
-                benefitsData.map((item, index) => {
+            {benefitsData
+                && benefitsData.map((item, index) => {
                     return <BenefitItem key={index} {...item} />;
                 })}
         </div>

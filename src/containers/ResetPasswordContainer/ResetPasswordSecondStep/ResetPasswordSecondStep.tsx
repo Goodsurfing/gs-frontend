@@ -12,7 +12,11 @@ const ResetPasswordSecondStep: FC<ResetPasswordSecondStepProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.notification}>
-                На <span>{email}</span> было отправлено письмо со ссылкой для
+                На
+                {" "}
+                <span>{email}</span>
+                {" "}
+                было отправлено письмо со ссылкой для
                 восстановления пароля.
             </div>
             <p>

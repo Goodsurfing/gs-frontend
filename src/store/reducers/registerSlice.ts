@@ -1,5 +1,5 @@
-import { IRegisterResponse } from "@/type/auth/auth.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { IRegisterResponse } from "@/type/auth/auth.interface";
 
 const initialState: IRegisterResponse = {
     id: "",
@@ -12,7 +12,7 @@ export const registerSlice = createSlice({
     reducers: {
         setRegisterUserData: (
             state: IRegisterResponse,
-            action: PayloadAction<IRegisterResponse>
+            action: PayloadAction<IRegisterResponse>,
         ) => {
             return {
                 id: action.payload.id,

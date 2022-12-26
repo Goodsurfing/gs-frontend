@@ -20,7 +20,11 @@ const ConfirmEmailPage: FC = () => {
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        На <span>{email}</span> было отправлено письмо со
+                        На
+                        {" "}
+                        <span>{email}</span>
+                        {" "}
+                        было отправлено письмо со
                         ссылкой для подтверждения почты.
                     </div>
                     <p>
