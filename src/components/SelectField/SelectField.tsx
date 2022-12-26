@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
-import { IOption } from "@/type/select";
+import { IOption } from "@/types/select";
 
 import "./SelectField.scss";
 
