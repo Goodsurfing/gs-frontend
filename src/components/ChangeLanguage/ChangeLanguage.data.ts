@@ -1,4 +1,4 @@
-import { ILanguage } from "@/type/languages";
+import { ILanguage } from "@/types/languages";
 
 import ruIcon from "@/assets/icons/langs/ru.svg";
 import spIcon from "@/assets/icons/langs/spain.svg";

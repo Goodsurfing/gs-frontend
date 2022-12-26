@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     login: loginReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,
-    [localeApi.reducerPath]: localeApi.reducer
+    [localeApi.reducerPath]: localeApi.reducer,
 });
 
 export const setupStore = () => {

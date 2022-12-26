@@ -4,7 +4,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ILanguage } from "@/type/languages";
+import { ILanguage } from "@/types/languages";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";

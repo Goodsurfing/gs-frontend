@@ -10,7 +10,7 @@ import {
     IResetPasswordRequestResponse,
     IResetPasswordVerifyData,
     IResetPasswordVerifyResponse,
-} from "@/type/auth/auth.interface";
+} from "@/types/auth/auth.interface";
 
 export const authApi = createApi({
     reducerPath: "authApi",

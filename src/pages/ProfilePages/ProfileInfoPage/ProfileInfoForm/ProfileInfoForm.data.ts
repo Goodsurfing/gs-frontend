@@ -1,4 +1,4 @@
-import { IOption } from "@/type/select";
+import { IOption } from "@/types/select";
 
 export const days: IOption[] = [
     {
