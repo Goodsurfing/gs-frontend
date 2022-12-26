@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_USER_BASE_URL } from "@/constants/api";
 
-import { IGenericUserDataResponse } from "@/store/api/api.types";
+import { IGenericUserDataResponse } from "@/types/api/userInfo/index";
 import { RootState } from "@/store/store";
 
 export const userInfoApi = createApi({
