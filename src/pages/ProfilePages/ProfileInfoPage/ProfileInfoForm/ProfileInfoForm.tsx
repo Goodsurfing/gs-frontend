@@ -19,12 +19,20 @@ interface ProfileInfoFormProps {
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     const { data: userInfo, isLoading } = userInfoApi.useGetUserInfoQuery();
 
-    const { control, handleSubmit } = useForm<IUserInfo>({
+    const { control, handleSubmit, formState } = useForm<IUserInfo>({
         mode: "onChange",
     });
 
-    const onSubmit: SubmitHandler<any> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<IUserInfo> = (data: IUserInfo) => {
+        const prepareData: Partial<IUserInfo> = {};
+
+        Object.keys(data).forEach((key) => {
+            if (formState.dirtyFields[key as keyof IUserInfo] === true) {
+                prepareData[key as keyof IUserInfo] = data[key as keyof Partial<IUserInfo>]?.toString();
+            }
+        });
+
+        console.log(prepareData);
     };
 
     if (isLoading) {

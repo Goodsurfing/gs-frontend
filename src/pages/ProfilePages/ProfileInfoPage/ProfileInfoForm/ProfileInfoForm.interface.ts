@@ -2,8 +2,8 @@ export interface IUserInfo {
     id: string;
     locale: string;
     email: string;
-    firstName: string | number | readonly string[] | undefined;
-    lastName: string | number | readonly string[] | undefined;
+    firstName: string | number | undefined;
+    lastName: string | number | undefined;
     gender: string | null;
     birthDate: string | null;
 }
