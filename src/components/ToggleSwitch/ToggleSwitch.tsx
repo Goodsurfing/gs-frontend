@@ -1,22 +1,39 @@
-import React, { FC } from "react";
-
+import React, { FC, useState } from "react";
+import cn from "classnames";
 import styles from "./ToggleSwitch.module.scss";
 
 interface ToggleSwitchProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
-    text?: string;
     label: string;
 }
 
-const ToggleSwitch: FC<ToggleSwitchProps> = ({ text, label, ...rest }) => {
+const ToggleSwitch: FC<ToggleSwitchProps> = ({ label, onChange, ...rest }) => {
+    const [switchState, setSwitchState] = useState<boolean>(false);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.checked);
+        setSwitchState(!switchState);
+        if (event && onChange) {
+            onChange(event);
+        }
+    };
+
     return (
-        <div className={styles.box}>
-            <div className={styles.wrapper}>
-                <input name="main" type="radio" {...rest} />
-                <span>{label}</span>
-            </div>
-            <label htmlFor="main">{text}</label>
-        </div>
+        <label
+            htmlFor="checkbox"
+            className={cn(styles.wrapper, {
+                [styles.checked]: switchState,
+            })}
+        >
+            <span>{label}</span>
+            <input
+                checked={switchState}
+                type="checkbox"
+                id="checkbox"
+                onChange={(e) => { return handleChange(e); }}
+                {...rest}
+            />
+        </label>
     );
 };
 
