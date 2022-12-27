@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import ToggleSwitch from "@/components/ToggleSwitch/ToggleSwitch";
-
 import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
 
 import styles from "./GenderFormGroup.module.scss";
+import SelectField from "@/components/SelectField/SelectField";
+import { IOption } from "@/types/select";
+import { genderOptions } from "./GenderFormGroup.data";
 
 interface GenderFormGroupProps {
     control: Control;
@@ -17,51 +18,21 @@ const GenderFormGroup: FC<GenderFormGroupProps> = ({ control, isLocked }) => {
         <ProfileInfoFormGroup title="Пол" className={styles.gender}>
             <Controller
                 control={control}
-                name="gender"
-                render={({ field: { onChange, name } }) => {
+                name="yearOfBirth"
+                defaultValue="1992"
+                render={({ field: { onChange, value, name } }) => {
                     return (
-                        <ToggleSwitch
-                            disabled={isLocked}
-                            label="Мужчина"
+                        <SelectField
+                            placeholder=""
                             name={name}
-                            value="male"
-                            onChange={(e) => {
-                                return onChange(e);
+                            options={genderOptions}
+                            value={genderOptions.find((item) => {
+                                return item.value === value;
+                            })}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
                             }}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="gender"
-                render={({ field: { onChange, name } }) => {
-                    return (
-                        <ToggleSwitch
-                            disabled={isLocked}
-                            label="Женщина"
-                            name={name}
-                            value="female"
-                            onChange={(e) => {
-                                return onChange(e);
-                            }}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="gender"
-                render={({ field: { onChange, name } }) => {
-                    return (
-                        <ToggleSwitch
-                            disabled={isLocked}
-                            label="Другой"
-                            name={name}
-                            value="other"
-                            onChange={(e) => {
-                                return onChange(e);
-                            }}
+                            isDisabled={isLocked}
                         />
                     );
                 }}
