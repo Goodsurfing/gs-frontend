@@ -19,21 +19,23 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({ label, onChange, ...rest }) => {
     };
 
     return (
-        <label
-            htmlFor="checkbox"
-            className={cn(styles.wrapper, {
-                [styles.checked]: switchState,
-            })}
-        >
+        <div className={styles.box}>
+            <label
+                htmlFor="checkbox"
+                className={cn(styles.wrapper, {
+                    [styles.checked]: switchState,
+                })}
+            >
+                <input
+                    checked={switchState}
+                    type="checkbox"
+                    id="checkbox"
+                    onChange={(e) => { return handleChange(e); }}
+                    {...rest}
+                />
+            </label>
             <span>{label}</span>
-            <input
-                checked={switchState}
-                type="checkbox"
-                id="checkbox"
-                onChange={(e) => { return handleChange(e); }}
-                {...rest}
-            />
-        </label>
+        </div>
     );
 };
 

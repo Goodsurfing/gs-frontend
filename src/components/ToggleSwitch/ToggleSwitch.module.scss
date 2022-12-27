@@ -1,3 +1,18 @@
+.box {
+	display: flex;
+	align-items: center;
+
+	span {
+		margin-left: 12.25px;
+
+		color: var(--color-black-primary);
+
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 143%;
+	}
+}
+
 .wrapper {
 	position: relative;
 
@@ -15,8 +30,10 @@
 
 	&::after {
 		position: absolute;
-		top: 0.5px;
+		top: 1.38px;
 		left: 1.38px;
+
+		box-sizing: border-box;
 
 		width: 19.25px;
 		height: 19.25px;
