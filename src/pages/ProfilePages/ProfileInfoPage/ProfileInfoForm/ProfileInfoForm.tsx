@@ -7,10 +7,12 @@ import ContactsFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoF
 import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
 
+import { getChangedFieldsOnly } from "@/utils/common/getChangedFieldsOnly";
+
 import { userInfoApi } from "@/store/api/userInfoApi";
 
-import styles from "./ProfileInfoForm.module.scss";
 import { IUserInfo } from "./ProfileInfoForm.interface";
+import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -24,14 +26,10 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     });
 
     const onSubmit: SubmitHandler<IUserInfo> = (data: IUserInfo) => {
-        const prepareData: Partial<IUserInfo> = {};
-
-        Object.keys(data).forEach((key) => {
-            if (formState.dirtyFields[key as keyof IUserInfo] === true) {
-                prepareData[key as keyof IUserInfo] = data[key as keyof Partial<IUserInfo>]?.toString();
-            }
-        });
-
+        const prepareData: Partial<IUserInfo> = getChangedFieldsOnly(
+            data,
+            formState.dirtyFields,
+        );
         console.log(prepareData);
     };
 

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+
 import Button from "@/components/ui/Button/Button";
 
 import { authApi } from "@/store/api/authApi";
@@ -15,9 +16,7 @@ const ProfileResetPasswordForm: FC = () => {
     };
 
     if (isSuccess) {
-        return (
-            <h1>Заявка на восстановления пароля отправлена на почту!</h1>
-        );
+        return <h1>Заявка на восстановления пароля отправлена на почту!</h1>;
     }
 
     return (

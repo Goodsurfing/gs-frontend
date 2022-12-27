@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
 import { IRegisterResponse } from "@/types/api/auth/register.interface";
 
 const initialState: IRegisterResponse = {

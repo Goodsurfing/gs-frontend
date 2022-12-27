@@ -1,8 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_PUBLIC_BASE_URL } from "@/constants/api";
-import { IAuthFormData, IRegisterResponse } from "@/types/api/auth/register.interface";
+
 import { AuthApiEndpoints } from "@/types/api/auth";
-import { IAuthLoginData, ILoginResponse } from "@/types/api/auth/login.interface";
+import {
+    IAuthLoginData,
+    ILoginResponse,
+} from "@/types/api/auth/login.interface";
+import {
+    IAuthFormData,
+    IRegisterResponse,
+} from "@/types/api/auth/register.interface";
 import {
     IResetPasswordRequestFormData,
     IResetPasswordRequestResponse,

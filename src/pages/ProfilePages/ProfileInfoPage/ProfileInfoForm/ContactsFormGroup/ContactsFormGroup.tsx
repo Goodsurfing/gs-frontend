@@ -3,8 +3,8 @@ import { Control, Controller } from "react-hook-form";
 
 import InputField from "@/components/InputField/InputField";
 
-import styles from "./ContactsFormGroup.module.scss";
 import { IContactsFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
+import styles from "./ContactsFormGroup.module.scss";
 
 interface ContactsFormGroupProps {
     control: Control<IUserInfo>;

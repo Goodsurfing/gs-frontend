@@ -1,4 +1,5 @@
 import { getUrlWithoutLanguageCode } from "@/utils/language/getUrlWithoutLanguageCode";
+
 import { checkingOfTheLocalizationContentPath } from "./checkingOfTheLocalizationContentPath";
 
 export const createUrlWithLanguageCode = (code: string, path: string) => {

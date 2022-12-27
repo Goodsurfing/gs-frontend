@@ -4,8 +4,8 @@ import { Control, Controller } from "react-hook-form";
 import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
 
-import styles from "./GeneralFormGroup.module.scss";
 import { IUserInfo } from "../ProfileInfoForm.interface";
+import styles from "./GeneralFormGroup.module.scss";
 
 interface IFields {
     firstName: string | null;
@@ -18,7 +18,11 @@ interface GeneralFormGroupProps {
     data: IFields;
 }
 
-const GeneralFormGroup: FC<GeneralFormGroupProps> = ({ data, control, isLocked }) => {
+const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
+    data,
+    control,
+    isLocked,
+}) => {
     return (
         <div className={styles.general}>
             <div className={styles.name}>

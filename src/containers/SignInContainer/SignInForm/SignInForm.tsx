@@ -2,7 +2,6 @@ import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
@@ -15,6 +14,8 @@ import { AppRoutesEnum } from "@/routes/types";
 
 import { authApi } from "@/store/api/authApi";
 import { setLoginUserData } from "@/store/reducers/loginSlice";
+
+import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
 
