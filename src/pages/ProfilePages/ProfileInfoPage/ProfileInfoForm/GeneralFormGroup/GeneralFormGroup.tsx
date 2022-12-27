@@ -5,20 +5,27 @@ import FileUpload from "@/components/FileUpload/FileUpload";
 import InputField from "@/components/InputField/InputField";
 
 import styles from "./GeneralFormGroup.module.scss";
+import { IUserInfo } from "../ProfileInfoForm.interface";
 
-interface GeneralFormGroupProps {
-    control: Control;
-    isLocked: boolean;
+interface IFields {
+    firstName: string | null;
+    lastName: string | null;
 }
 
-const GeneralFormGroup: FC<GeneralFormGroupProps> = ({ control, isLocked }) => {
+interface GeneralFormGroupProps {
+    control: Control<IUserInfo>;
+    isLocked: boolean;
+    data: IFields;
+}
+
+const GeneralFormGroup: FC<GeneralFormGroupProps> = ({ data, control, isLocked }) => {
     return (
         <div className={styles.general}>
             <div className={styles.name}>
                 <Controller
                     control={control}
-                    name="name"
-                    defaultValue="Владислав"
+                    name="firstName"
+                    defaultValue={data.firstName!}
                     render={({ field }) => {
                         return (
                             <InputField
@@ -35,8 +42,8 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({ control, isLocked }) => {
                 />
                 <Controller
                     control={control}
-                    name="surname"
-                    defaultValue="Александров"
+                    name="lastName"
+                    defaultValue={data.lastName!}
                     render={({ field }) => {
                         return (
                             <InputField
