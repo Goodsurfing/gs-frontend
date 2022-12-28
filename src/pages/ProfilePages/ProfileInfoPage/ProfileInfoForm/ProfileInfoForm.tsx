@@ -7,8 +7,6 @@ import ContactsFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoF
 import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
 
-import { getChangedFieldsOnly } from "@/utils/common/getChangedFieldsOnly";
-
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { IUserInfo } from "./ProfileInfoForm.interface";
@@ -19,49 +17,47 @@ interface ProfileInfoFormProps {
 }
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
-    const { data: userInfo, isLoading } = userInfoApi.useGetUserInfoQuery();
+    const { data: userInfo, isLoading, isSuccess } = userInfoApi.useGetUserInfoQuery();
     const [updateUserInfo] = userInfoApi.usePutUserInfoMutation();
 
-    const { control, handleSubmit, formState } = useForm<IUserInfo>({
+    const { control, handleSubmit } = useForm<IUserInfo>({
         mode: "onChange",
     });
 
     const onSubmit: SubmitHandler<IUserInfo> = async (data: IUserInfo) => {
-        const prepareData: Partial<IUserInfo> = getChangedFieldsOnly(
-            data,
-            formState.dirtyFields,
-        );
-        if (Object.keys(prepareData).length !== 0) {
-            await updateUserInfo(prepareData);
-        }
+        await (updateUserInfo(data));
     };
 
     if (isLoading) {
         return <h1>Data loading...</h1>;
     }
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
-            <GeneralFormGroup
-                data={{ firstName: "rav", lastName: "shar" }}
-                control={control}
-                isLocked={isLocked}
-            />
-            <GenderFormGroup
-                data={{ gender: "male" }}
-                control={control}
-                isLocked={isLocked}
-            />
-            <ContactsFormGroup
-                data={{ email: userInfo!.email }}
-                control={control}
-                isLocked={isLocked}
-            />
-            <Button type="submit" variant="primary" className={styles.button}>
-                Сохранить
-            </Button>
-        </form>
-    );
+    if (isSuccess && userInfo) {
+        return (
+            <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+                <GeneralFormGroup
+                    data={{ firstName: userInfo.firstName, lastName: userInfo.lastName }}
+                    control={control}
+                    isLocked={isLocked}
+                />
+                <GenderFormGroup
+                    data={{ gender: userInfo.gender }}
+                    control={control}
+                    isLocked={isLocked}
+                />
+                <ContactsFormGroup
+                    data={{ email: userInfo.email }}
+                    control={control}
+                    isLocked={isLocked}
+                />
+                <Button type="submit" variant="primary" className={styles.button}>
+                    Сохранить
+                </Button>
+            </form>
+        );
+    }
+
+    return null;
 };
 
 export default ProfileInfoForm;

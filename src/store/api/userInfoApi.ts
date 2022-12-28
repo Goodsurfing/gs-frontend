@@ -18,6 +18,7 @@ export const userInfoApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ["userInfo"],
     endpoints: (build) => {
         return {
             getUserInfo: build.query<IUserInfo, void>({
@@ -26,6 +27,7 @@ export const userInfoApi = createApi({
                         url: "/profile/",
                     };
                 },
+                providesTags: ["userInfo"],
             }),
             putUserInfo: build.mutation<IUserInfo, Partial<IUserInfo>>({
                 query: (data: Partial<IUserInfo>) => {
@@ -35,6 +37,7 @@ export const userInfoApi = createApi({
                         body: data,
                     };
                 },
+                invalidatesTags: ["userInfo"],
             }),
         };
     },

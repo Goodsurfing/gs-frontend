@@ -2,10 +2,10 @@ export interface IUserInfo {
     id: string;
     locale: string;
     email: string;
-    firstName: string | number | undefined;
-    lastName: string | number | undefined;
-    gender: string | null;
-    birthDate: string | null;
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthDate: string;
 }
 
 export interface IGeneralFormGroup
