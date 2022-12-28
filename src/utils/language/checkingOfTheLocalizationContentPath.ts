@@ -1,6 +1,6 @@
 export const checkingOfTheLocalizationContentPath = (path: string): boolean => {
-    const substring = path.substring(0, 4);
-    if (substring !== "/en/" && substring !== "/ru/" && substring !== "/es/") {
+    const substring = path.substring(0, 3);
+    if (substring !== "/en" && substring !== "/ru" && substring !== "/es") {
         return true;
     }
 
