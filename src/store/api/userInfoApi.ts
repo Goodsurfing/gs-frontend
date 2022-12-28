@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_USER_BASE_URL } from "@/constants/api";
 
-import { IGenericUserDataResponse } from "@/types/api/userInfo/index";
+import { IUserInfo } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
+
 import { RootState } from "@/store/store";
 
 export const userInfoApi = createApi({
@@ -17,14 +18,26 @@ export const userInfoApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ["userInfo"],
     endpoints: (build) => {
         return {
-            getUserInfo: build.query<IGenericUserDataResponse, void>({
+            getUserInfo: build.query<IUserInfo, void>({
                 query: () => {
                     return {
                         url: "/profile/",
                     };
                 },
+                providesTags: ["userInfo"],
+            }),
+            putUserInfo: build.mutation<IUserInfo, Partial<IUserInfo>>({
+                query: (data: Partial<IUserInfo>) => {
+                    return {
+                        url: "/profile/",
+                        method: "PUT",
+                        body: data,
+                    };
+                },
+                invalidatesTags: ["userInfo"],
             }),
         };
     },

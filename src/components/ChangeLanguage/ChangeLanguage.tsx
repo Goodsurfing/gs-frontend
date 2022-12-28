@@ -4,7 +4,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ILanguage } from "@/types/languages";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import Arrow from "@/components/ui/Arrow/Arrow";
@@ -13,8 +12,11 @@ import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
 import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
 
-import styles from "./ChangeLanguage.module.scss";
 import { localeApi } from "@/store/api/localeApi";
+
+import { ILanguage } from "@/types/languages";
+
+import styles from "./ChangeLanguage.module.scss";
 
 interface ChangeLanguageProps {
     className?: string;

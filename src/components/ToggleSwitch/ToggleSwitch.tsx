@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
 import cn from "classnames";
+import React, { FC, useState } from "react";
+
 import styles from "./ToggleSwitch.module.scss";
 
 interface ToggleSwitchProps
@@ -8,7 +9,10 @@ interface ToggleSwitchProps
 }
 
 const ToggleSwitch: FC<ToggleSwitchProps> = ({
-    label, name, onChange, ...rest
+    label,
+    name,
+    onChange,
+    ...rest
 }) => {
     const [switchState, setSwitchState] = useState<boolean>(false);
 

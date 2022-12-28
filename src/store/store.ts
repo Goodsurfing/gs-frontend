@@ -3,9 +3,9 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { authApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 
+import { localeApi } from "./api/localeApi";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
-import { localeApi } from "./api/localeApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,

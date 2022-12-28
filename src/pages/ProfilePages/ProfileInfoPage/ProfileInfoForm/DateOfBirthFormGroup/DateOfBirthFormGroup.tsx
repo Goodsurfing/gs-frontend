@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
-import { IOption } from "@/types/select";
 
 import SelectField from "@/components/SelectField/SelectField";
 
@@ -10,6 +9,8 @@ import {
     years,
 } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
+
+import { IOption } from "@/types/select";
 
 import styles from "./DateOfBirthFormGroup.module.scss";
 

@@ -3,17 +3,13 @@ import { Control, Controller } from "react-hook-form";
 
 import InputField from "@/components/InputField/InputField";
 
+import { IContactsFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
 import styles from "./ContactsFormGroup.module.scss";
 
-interface IFields {
-    email: string | null;
-    phoneNumber: string | null;
-}
-
 interface ContactsFormGroupProps {
-    control: Control;
+    control: Control<IUserInfo>;
     isLocked: boolean;
-    data: IFields;
+    data: IContactsFormGroup;
 }
 
 const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
@@ -41,10 +37,10 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
                     );
                 }}
             />
-            <Controller
+            {/* <Controller
                 control={control}
                 name="phoneNumber"
-                defaultValue={data.phoneNumber}
+                defaultValue={data.email}
                 render={({ field }) => {
                     return (
                         <InputField
@@ -58,7 +54,7 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
                         />
                     );
                 }}
-            />
+            /> */}
         </div>
     );
 };

@@ -2,7 +2,6 @@ import i18n from "i18next";
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
@@ -13,6 +12,8 @@ import { AppRoutesEnum } from "@/routes/types";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
+
+import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
 
