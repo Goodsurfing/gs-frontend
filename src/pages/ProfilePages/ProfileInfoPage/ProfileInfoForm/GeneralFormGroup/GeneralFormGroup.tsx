@@ -59,7 +59,11 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                 />
             </div>
             <div className={styles.avatar}>
-                <FileUpload />
+                <FileUpload
+                    id="profilePicture"
+                    disabled={isLocked}
+                    name="profilePicture"
+                />
             </div>
         </div>
     );
