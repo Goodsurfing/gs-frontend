@@ -1,3 +1,4 @@
+import cn from "classnames";
 import React, { FC, useState } from "react";
 
 import photoCameraIcon from "@/assets/icons/profile/photo-camera.svg";
@@ -19,7 +20,12 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
 
     return (
         <div className={styles.wrapper}>
-            <label htmlFor={id} className={styles.label}>
+            <label
+                htmlFor={id}
+                className={cn(styles.label, {
+                    [styles.disabled]: disabled,
+                })}
+            >
                 {selectedImage && (
                     <img
                         src={URL.createObjectURL(selectedImage)}
