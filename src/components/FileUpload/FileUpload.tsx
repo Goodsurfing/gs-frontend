@@ -1,34 +1,38 @@
-import React, { FC, useRef, useState } from "react";
-
-import fileUploadIcon from "@/assets/icons/profile/photo-camera.svg";
+import React, { FC, useState } from "react";
 
 import { FileUploadProps } from "./FileUpload.interface";
 import styles from "./FileUpload.module.scss";
 
 const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
-    const [, setFileName] = useState<string>("Выберите файл");
-    const inputFile = useRef<HTMLInputElement | null>(null);
+    const [selectedImage, setSelectedImage] = useState<Blob | MediaSource>();
 
-    const setInputFileName = () => {
-        if (inputFile && inputFile.current && inputFile.current.files) {
-            setFileName(inputFile.current.files[0].name);
-        }
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedImage(event.target.files![0]);
+        console.log(event.target.files![0]);
     };
 
     return (
-        <label htmlFor="main" className={styles.inputFile}>
-            <input
-                id={id}
-                name={name}
-                type="file"
-                ref={inputFile}
-                disabled={disabled}
-                onChange={() => {
-                    return setInputFileName();
-                }}
-            />
-            <img src={fileUploadIcon} alt="Загрузить фото" />
-        </label>
+        <div className={styles.wrapper}>
+            <label htmlFor={id} className={styles.label}>
+                {selectedImage && (
+                    <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Some alt attribute"
+                        className={styles.innerImage}
+                    />
+                )}
+
+                <input
+                    type="file"
+                    name={name}
+                    id={id}
+                    disabled={disabled}
+                    onChange={(event) => {
+                        handleInputChange(event);
+                    }}
+                />
+            </label>
+        </div>
     );
 };
 
