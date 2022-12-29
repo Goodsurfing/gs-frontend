@@ -1,14 +1,20 @@
 import React, { FC, useState } from "react";
 
+import photoCameraIcon from "@/assets/icons/profile/photo-camera.svg";
+
 import { FileUploadProps } from "./FileUpload.interface";
 import styles from "./FileUpload.module.scss";
 
 const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
-    const [selectedImage, setSelectedImage] = useState<Blob | MediaSource>();
+    const [selectedImage, setSelectedImage] = useState<File | undefined>();
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedImage(event.target.files![0]);
         console.log(event.target.files![0]);
+    };
+
+    const handleImageDelete = () => {
+        setSelectedImage(undefined);
     };
 
     return (
@@ -22,6 +28,14 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
                     />
                 )}
 
+                {!selectedImage && (
+                    <img
+                        src={photoCameraIcon}
+                        alt="Upload"
+                        className={styles.defaultImage}
+                    />
+                )}
+
                 <input
                     type="file"
                     name={name}
@@ -32,6 +46,14 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
                     }}
                 />
             </label>
+            {selectedImage && (
+                <button
+                    className={styles.removeImage}
+                    onClick={handleImageDelete}
+                >
+                    Удалить фото
+                </button>
+            )}
         </div>
     );
 };
