@@ -18,6 +18,10 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
         setSelectedImage(undefined);
     };
 
+    const handleConfirm = () => {
+        console.log(selectedImage);
+    };
+
     return (
         <div className={styles.wrapper}>
             <label
@@ -52,14 +56,24 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
                     }}
                 />
             </label>
-            {selectedImage && (
-                <button
-                    className={styles.removeImage}
-                    onClick={handleImageDelete}
-                >
-                    Удалить фото
-                </button>
-            )}
+            <div className={styles.options}>
+                {selectedImage && (
+                    <button
+                        className={styles.confirmImage}
+                        onClick={handleConfirm}
+                    >
+                        Подтвердить
+                    </button>
+                )}
+                {selectedImage && (
+                    <button
+                        className={styles.removeImage}
+                        onClick={handleImageDelete}
+                    >
+                        Удалить фото
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
