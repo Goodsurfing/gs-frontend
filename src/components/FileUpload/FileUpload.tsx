@@ -5,13 +5,21 @@ import photoCameraIcon from "@/assets/icons/profile/photo-camera.svg";
 
 import { FileUploadProps } from "./FileUpload.interface";
 import styles from "./FileUpload.module.scss";
+import { validImageFileTypes } from "@/constants/files";
 
 const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
-    const [selectedImage, setSelectedImage] = useState<File | undefined>();
+    const [selectedImage, setSelectedImage] = useState<File | null>();
+    const [error, setError] = useState<string>("");
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedImage(event.target.files![0]);
-        console.log(event.target.files![0]);
+        const file = event.target.files![0];
+        if (file) {
+            if (!validImageFileTypes.find((type) => { return type === file.type; })) {
+                setError("Данный тип файла не поддерживается");
+                return;
+            }
+        }
+        setSelectedImage(file);
     };
 
     const handleImageDelete = () => {
@@ -19,7 +27,12 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
     };
 
     const handleConfirm = () => {
-        console.log(selectedImage);
+        if (!selectedImage) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("avatar", selectedImage);
     };
 
     return (
@@ -57,6 +70,11 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
                 />
             </label>
             <div className={styles.options}>
+                {
+                    error && (
+                        <p>{error}</p>
+                    )
+                }
                 {selectedImage && (
                     <button
                         className={styles.confirmImage}
