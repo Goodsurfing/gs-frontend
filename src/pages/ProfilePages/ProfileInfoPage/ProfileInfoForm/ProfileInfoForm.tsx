@@ -36,7 +36,11 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
                 <GeneralFormGroup
-                    data={{ firstName: userInfo.firstName, lastName: userInfo.lastName }}
+                    data={{
+                        firstName: userInfo.firstName,
+                        lastName: userInfo.lastName,
+                        image: userInfo.image
+                    }}
                     control={control}
                     isLocked={isLocked}
                 />

@@ -7,10 +7,14 @@ import { ImageUploadProps } from "./ImageUpload.interface";
 import styles from "./ImageUpload.module.scss";
 import { validImageFileTypes } from "@/constants/files";
 import { useUploadFile } from "@/hooks/files/useUploadFile";
+import { userInfoApi } from "@/store/api/userInfoApi";
 
-const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
+const ImageUpload: FC<ImageUploadProps> = ({
+    id, name, disabled, defaultImage,
+}) => {
     const [selectedImage, setSelectedImage] = useState<File | null>();
     const [error, setError] = useState<string>("");
+    const [updateUserInfo] = userInfoApi.usePutUserInfoMutation();
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files![0];
@@ -24,11 +28,13 @@ const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
         setError("");
     };
 
+    console.log(defaultImage?.url);
+
     const handleImageDelete = () => {
         setSelectedImage(undefined);
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (!selectedImage) {
             return;
         }
@@ -36,7 +42,11 @@ const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
         const formData = new FormData();
         formData.append("avatar", selectedImage);
 
-        useUploadFile(selectedImage.name, formData);
+        const imageUuid = await useUploadFile(selectedImage.name, formData);
+        await (updateUserInfo({
+            gender: "male",
+            imageUuid,
+        }));
     };
 
     return (
@@ -47,15 +57,21 @@ const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
                     [styles.disabled]: disabled,
                 })}
             >
-                {selectedImage && (
+                {selectedImage ? (
                     <img
                         src={URL.createObjectURL(selectedImage)}
                         alt="Some alt attribute"
                         className={styles.innerImage}
                     />
+                ) : (
+                    <img
+                        src={defaultImage?.url}
+                        alt="Some alt attribute"
+                        className={styles.innerImage}
+                    />
                 )}
 
-                {!selectedImage && (
+                {(!selectedImage && !defaultImage) && (
                     <img
                         src={photoCameraIcon}
                         alt="Upload"
@@ -100,6 +116,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
                 }
             </div>
         </div>
+
     );
 };
 

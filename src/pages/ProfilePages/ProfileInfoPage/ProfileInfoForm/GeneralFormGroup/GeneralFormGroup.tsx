@@ -63,6 +63,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     id="profilePicture"
                     disabled={isLocked}
                     name="profilePicture"
+                    defaultImage={data.image}
                 />
             </div>
         </div>
