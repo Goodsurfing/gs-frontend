@@ -3,11 +3,12 @@ import React, { FC, useState } from "react";
 
 import photoCameraIcon from "@/assets/icons/profile/photo-camera.svg";
 
-import { FileUploadProps } from "./FileUpload.interface";
-import styles from "./FileUpload.module.scss";
+import { ImageUploadProps } from "./ImageUpload.interface";
+import styles from "./ImageUpload.module.scss";
 import { validImageFileTypes } from "@/constants/files";
+import { useUploadFile } from "@/hooks/files/useUploadFile";
 
-const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
+const ImageUpload: FC<ImageUploadProps> = ({ id, name, disabled }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>();
     const [error, setError] = useState<string>("");
 
@@ -20,6 +21,7 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
             }
         }
         setSelectedImage(file);
+        setError("");
     };
 
     const handleImageDelete = () => {
@@ -33,6 +35,8 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
 
         const formData = new FormData();
         formData.append("avatar", selectedImage);
+
+        useUploadFile(selectedImage.name, formData);
     };
 
     return (
@@ -71,29 +75,32 @@ const FileUpload: FC<FileUploadProps> = ({ id, name, disabled }) => {
             </label>
             <div className={styles.options}>
                 {
-                    error && (
-                        <p>{error}</p>
-                    )
+                    error
+                        ? (<p className={styles.error}>{error}</p>)
+                        : (
+                            <>
+                                {selectedImage && (
+                                    <button
+                                        className={styles.confirmImage}
+                                        onClick={handleConfirm}
+                                    >
+                                        Подтвердить
+                                    </button>
+                                )}
+                                {selectedImage && (
+                                    <button
+                                        className={styles.removeImage}
+                                        onClick={handleImageDelete}
+                                    >
+                                        Удалить фото
+                                    </button>
+                                )}
+                            </>
+                        )
                 }
-                {selectedImage && (
-                    <button
-                        className={styles.confirmImage}
-                        onClick={handleConfirm}
-                    >
-                        Подтвердить
-                    </button>
-                )}
-                {selectedImage && (
-                    <button
-                        className={styles.removeImage}
-                        onClick={handleImageDelete}
-                    >
-                        Удалить фото
-                    </button>
-                )}
             </div>
         </div>
     );
 };
 
-export default FileUpload;
+export default ImageUpload;

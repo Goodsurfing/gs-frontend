@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import FileUpload from "@/components/FileUpload/FileUpload";
+import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import InputField from "@/components/InputField/InputField";
 
 import { IGeneralFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
@@ -59,7 +59,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                 />
             </div>
             <div className={styles.avatar}>
-                <FileUpload
+                <ImageUpload
                     id="profilePicture"
                     disabled={isLocked}
                     name="profilePicture"
