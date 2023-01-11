@@ -1,6 +1,6 @@
-import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
 import { validImageFileTypes } from "@/constants/files";
+import cn from "classnames";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 import { useUploadFile } from "@/hooks/files/useUploadFile";
 
@@ -20,6 +20,19 @@ const ImageUpload: FC<ImageUploadProps> = ({
     onChange,
     ...rest
 }) => {
+    const [selectedImage, setSelectedImage] = useState<File | null>();
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files![0];
+        if (file) {
+            setSelectedImage(file);
+        }
+
+        if (event && onChange) {
+            onChange(event);
+        }
+    };
+
     return (
         <div className={styles.wrapper}>
             <label
@@ -28,13 +41,20 @@ const ImageUpload: FC<ImageUploadProps> = ({
                     [styles.disabled]: disabled,
                 })}
             >
+                {selectedImage && (
+                    <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Some alt attribute"
+                        className={styles.innerImage}
+                    />
+                )}
                 <input
                     type="file"
                     name={name}
                     id={id}
                     value={value}
                     disabled={disabled}
-                    onChange={onChange}
+                    onChange={handleChange}
                     {...rest}
                 />
             </label>
