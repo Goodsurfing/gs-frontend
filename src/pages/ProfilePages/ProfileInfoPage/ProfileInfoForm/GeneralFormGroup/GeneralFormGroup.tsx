@@ -18,6 +18,11 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
     control,
     isLocked,
 }) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files![0];
+        console.log(file);
+        return file;
+    };
     return (
         <div className={styles.general}>
             <div className={styles.name}>
@@ -59,11 +64,24 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                 />
             </div>
             <div className={styles.avatar}>
-                <ImageUpload
-                    id="profilePicture"
-                    disabled={isLocked}
-                    name="profilePicture"
-                    defaultImage={data.image}
+                <Controller
+                    control={control}
+                    name="image"
+                    defaultValue={[]}
+                    render={({ field }) => {
+                        return (
+                            <ImageUpload
+                                onChange={(e) => {
+                                    return field.onChange(e.target.files);
+                                }}
+                                value={field.value.filename}
+                                id="profilePicture"
+                                disabled={isLocked}
+                                name="profilePicture"
+                                defaultImage={data.image}
+                            />
+                        );
+                    }}
                 />
             </div>
         </div>

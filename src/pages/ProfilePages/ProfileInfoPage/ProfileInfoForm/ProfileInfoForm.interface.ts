@@ -15,7 +15,7 @@ export interface IUserInfo {
     gender: string;
     birthDate: string;
     imageUuid?: string;
-    image?: IUserInfoImage
+    image?: any
 }
 
 export interface IGeneralFormGroup

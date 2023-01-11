@@ -17,7 +17,11 @@ interface ProfileInfoFormProps {
 }
 
 const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
-    const { data: userInfo, isLoading, isSuccess } = userInfoApi.useGetUserInfoQuery();
+    const {
+        data: userInfo,
+        isLoading,
+        isSuccess,
+    } = userInfoApi.useGetUserInfoQuery();
     const [updateUserInfo] = userInfoApi.usePutUserInfoMutation();
 
     const { control, handleSubmit } = useForm<IUserInfo>({
@@ -25,7 +29,8 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     });
 
     const onSubmit: SubmitHandler<IUserInfo> = async (data: IUserInfo) => {
-        await (updateUserInfo(data));
+        console.log(data);
+        // await updateUserInfo(data);
     };
 
     if (isLoading) {
@@ -39,7 +44,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     data={{
                         firstName: userInfo.firstName,
                         lastName: userInfo.lastName,
-                        image: userInfo.image
+                        image: userInfo.image,
                     }}
                     control={control}
                     isLocked={isLocked}
@@ -54,7 +59,11 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
-                <Button type="submit" variant="primary" className={styles.button}>
+                <Button
+                    type="submit"
+                    variant="primary"
+                    className={styles.button}
+                >
                     Сохранить
                 </Button>
             </form>
