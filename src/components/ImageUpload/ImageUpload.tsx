@@ -1,6 +1,8 @@
-import { validImageFileTypes } from "@/constants/files";
 import cn from "classnames";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
+import { validImageFileTypes } from "@/constants/files";
 
 import { useUploadFile } from "@/hooks/files/useUploadFile";
 
@@ -45,6 +47,13 @@ const ImageUpload: FC<ImageUploadProps> = ({
                     <img
                         src={URL.createObjectURL(selectedImage)}
                         alt="Some alt attribute"
+                        className={styles.innerImage}
+                    />
+                )}
+                {!selectedImage && defaultImage && (
+                    <img
+                        src={defaultImage.url}
+                        alt={defaultImage.name}
                         className={styles.innerImage}
                     />
                 )}

@@ -7,6 +7,8 @@ import ContactsFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoF
 import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
 
+import { useUploadFile } from "@/hooks/files/useUploadFile";
+
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { IUserInfo } from "./ProfileInfoForm.interface";
@@ -28,9 +30,27 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         mode: "onChange",
     });
 
+    const convertToBlob = (file: File) => {
+        return new Blob([file]);
+    };
+
     const onSubmit: SubmitHandler<IUserInfo> = async (data: IUserInfo) => {
         console.log(data);
-        // await updateUserInfo(data);
+        const image = data.image[0];
+
+        if (!image) {
+            const dataForUpdate: IUserInfo = (({ image, ...other }) => { return other; })(
+                data,
+            );
+            return updateUserInfo(dataForUpdate);
+        }
+
+        const blob = new Blob([image]);
+        const imageUuid = await useUploadFile(image.name, blob);
+        console.log(`Image Uuid: ${imageUuid}`);
+        const dataForUpdate: IUserInfo = (({ image, ...other }) => { return other; })(data);
+        dataForUpdate.imageUuid = imageUuid;
+        await updateUserInfo(dataForUpdate);
     };
 
     if (isLoading) {
