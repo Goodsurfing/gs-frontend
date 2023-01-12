@@ -18,11 +18,6 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
     control,
     isLocked,
 }) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files![0];
-        console.log(file);
-        return file;
-    };
     return (
         <div className={styles.general}>
             <div className={styles.name}>

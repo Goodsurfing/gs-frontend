@@ -8,7 +8,6 @@ const sendRequestForGenerateUploadLink = async (fileName: string) => {
     const token = localStorage.getItem("token");
 
     try {
-        console.log(token);
         const response = await fetch(
             `${API_MEDIA_BASE_URL}/generate-upload-link`,
             {
@@ -50,7 +49,6 @@ export const useUploadFile = async (fileName: string, data: any) => {
     const generateLinkResponse = await sendRequestForGenerateUploadLink(
         fileName,
     );
-    console.log(generateLinkResponse);
     await uploadFileMutation(
         generateLinkResponse.url,
         data,

@@ -1,14 +1,5 @@
 import cn from "classnames";
-import React, {
-    FC, useEffect, useRef, useState,
-} from "react";
-import { validImageFileTypes } from "@/constants/files";
-
-import { useUploadFile } from "@/hooks/files/useUploadFile";
-
-import { userInfoApi } from "@/store/api/userInfoApi";
-
-import photoCameraIcon from "@/assets/icons/profile/photo-camera.svg";
+import React, { FC, useState } from "react";
 
 import { ImageUploadProps } from "./ImageUpload.interface";
 import styles from "./ImageUpload.module.scss";

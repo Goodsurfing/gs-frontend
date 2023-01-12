@@ -9,6 +9,8 @@ import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoFo
 
 import { useUploadFile } from "@/hooks/files/useUploadFile";
 
+import { convertFileToBinary } from "@/utils/files/convertFileToBinary";
+
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { IUserInfo } from "./ProfileInfoForm.interface";
@@ -30,27 +32,29 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         mode: "onChange",
     });
 
-    const convertToBlob = (file: File) => {
-        return new Blob([file]);
+    const updateUserInfoData = async (data: IUserInfo) => {
+        if (data) {
+            const profileImage = data.image[0];
+            const dataForUpdate: IUserInfo = (({ image, ...other }) => {
+                return other;
+            })(data);
+
+            if (!profileImage) {
+                return updateUserInfo(dataForUpdate);
+            }
+
+            const binaryImage = convertFileToBinary(profileImage);
+            const imageUuid = await useUploadFile(
+                profileImage.name,
+                binaryImage,
+            );
+            dataForUpdate.imageUuid = imageUuid;
+            return updateUserInfo(dataForUpdate);
+        }
     };
 
     const onSubmit: SubmitHandler<IUserInfo> = async (data: IUserInfo) => {
-        console.log(data);
-        const image = data.image[0];
-
-        if (!image) {
-            const dataForUpdate: IUserInfo = (({ image, ...other }) => { return other; })(
-                data,
-            );
-            return updateUserInfo(dataForUpdate);
-        }
-
-        const blob = new Blob([image]);
-        const imageUuid = await useUploadFile(image.name, blob);
-        console.log(`Image Uuid: ${imageUuid}`);
-        const dataForUpdate: IUserInfo = (({ image, ...other }) => { return other; })(data);
-        dataForUpdate.imageUuid = imageUuid;
-        await updateUserInfo(dataForUpdate);
+        updateUserInfoData(data);
     };
 
     if (isLoading) {
