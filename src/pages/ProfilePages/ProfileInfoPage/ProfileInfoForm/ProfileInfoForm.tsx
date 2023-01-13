@@ -40,6 +40,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             })(data);
 
             if (!profileImage) {
+                dataForUpdate.imageUuid = userInfo?.image.id;
                 return updateUserInfo(dataForUpdate);
             }
 
