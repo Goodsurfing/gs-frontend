@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button/Button";
@@ -26,37 +26,39 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         isLoading,
         isSuccess,
     } = userInfoApi.useGetUserInfoQuery();
+
     const [updateUserInfo] = userInfoApi.usePutUserInfoMutation();
 
     const { control, handleSubmit } = useForm<IUserInfo>({
         mode: "onChange",
     });
 
-    const updateUserInfoData = async (data: IUserInfo) => {
-        if (data) {
-            const profileImage = data.image[0];
-            const dataForUpdate: IUserInfo = (({ image, ...other }) => {
-                return other;
-            })(data);
+    const [data, setData] = useState<IUserInfo | null>(null);
 
-            if (!profileImage) {
-                dataForUpdate.imageUuid = userInfo?.image.id;
-                return updateUserInfo(dataForUpdate);
+    const onSubmit: SubmitHandler<IUserInfo> = async (data) => {
+        setData(data);
+    };
+
+    useEffect(() => {
+        async function handleUpdateUserInfo() {
+            const profileImage = data?.image[0];
+            if (!data) return;
+            const { image, ...otherData } = data;
+            if (!image) {
+                otherData.imageUuid = userInfo?.image.id;
+                return updateUserInfo(otherData);
             }
 
             const binaryImage = convertFileToBinary(profileImage);
             const imageUuid = await useUploadFile(
-                profileImage.name,
-                binaryImage,
+                profileImage?.name,
+                binaryImage
             );
-            dataForUpdate.imageUuid = imageUuid;
-            return updateUserInfo(dataForUpdate);
+            otherData.imageUuid = imageUuid;
+            return updateUserInfo(otherData);
         }
-    };
-
-    const onSubmit: SubmitHandler<IUserInfo> = async (data: IUserInfo) => {
-        updateUserInfoData(data);
-    };
+        handleUpdateUserInfo();
+    }, [data]);
 
     if (isLoading) {
         return <h1>Data loading...</h1>;
