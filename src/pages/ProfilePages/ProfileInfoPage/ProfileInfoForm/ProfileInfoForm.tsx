@@ -7,7 +7,8 @@ import ContactsFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoF
 import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
 
-import { useUploadFile } from "@/hooks/files/useUploadFile";
+import useUploadFile from "@/hooks/files/useUploadFile";
+import { useAppSelector } from "@/hooks/redux";
 
 import { convertFileToBinary } from "@/utils/files/convertFileToBinary";
 
@@ -39,24 +40,28 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         setData(data);
     };
 
-    useEffect(() => {
-        async function handleUpdateUserInfo() {
-            const profileImage = data?.image[0];
-            if (!data) return;
-            const { image, ...otherData } = data;
-            if (!image) {
-                otherData.imageUuid = userInfo?.image.id;
-                return updateUserInfo(otherData);
-            }
+    const { token } = useAppSelector((state) => { return state.login; });
 
-            const binaryImage = convertFileToBinary(profileImage);
-            const imageUuid = await useUploadFile(
-                profileImage?.name,
-                binaryImage
-            );
-            otherData.imageUuid = imageUuid;
+    async function handleUpdateUserInfo() {
+        const profileImage = data?.image[0];
+        if (!data) return;
+        const { image, ...otherData } = data;
+        if (!image) {
+            otherData.imageUuid = userInfo?.image.id;
             return updateUserInfo(otherData);
         }
+
+        const binaryImage = convertFileToBinary(profileImage);
+        const imageUuid = await useUploadFile(
+            profileImage?.name,
+            binaryImage,
+            token,
+        );
+        otherData.imageUuid = imageUuid;
+        return updateUserInfo(otherData);
+    }
+
+    useEffect(() => {
         handleUpdateUserInfo();
     }, [data]);
 
