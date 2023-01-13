@@ -37,16 +37,19 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     const [data, setData] = useState<IUserInfo | null>(null);
 
     const onSubmit: SubmitHandler<IUserInfo> = async (data) => {
+        console.log(data);
         setData(data);
     };
 
-    const { token } = useAppSelector((state) => { return state.login; });
+    const { token } = useAppSelector((state) => {
+        return state.login;
+    });
 
     async function handleUpdateUserInfo() {
         const profileImage = data?.image[0];
         if (!data) return;
         const { image, ...otherData } = data;
-        if (!image) {
+        if (!profileImage) {
             otherData.imageUuid = userInfo?.image.id;
             return updateUserInfo(otherData);
         }
@@ -55,7 +58,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         const imageUuid = await useUploadFile(
             profileImage?.name,
             binaryImage,
-            token,
+            token
         );
         otherData.imageUuid = imageUuid;
         return updateUserInfo(otherData);
