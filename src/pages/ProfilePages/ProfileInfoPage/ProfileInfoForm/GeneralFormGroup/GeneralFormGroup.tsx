@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import FileUpload from "@/components/FileUpload/FileUpload";
+import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import InputField from "@/components/InputField/InputField";
 
 import { IGeneralFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
@@ -59,7 +59,25 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                 />
             </div>
             <div className={styles.avatar}>
-                <FileUpload />
+                <Controller
+                    control={control}
+                    name="image"
+                    defaultValue={[]}
+                    render={({ field }) => {
+                        return (
+                            <ImageUpload
+                                onChange={(e) => {
+                                    return field.onChange(e.target.files);
+                                }}
+                                value={field.value.filename}
+                                id="profilePicture"
+                                disabled={isLocked}
+                                name="profilePicture"
+                                defaultImage={data.image}
+                            />
+                        );
+                    }}
+                />
             </div>
         </div>
     );
