@@ -13,7 +13,7 @@ export interface IUserInfo {
     firstName: string;
     lastName: string;
     gender: string;
-    birthDate: string;
+    birthDate: Date | null;
     imageUuid?: string;
     image?: any
 }

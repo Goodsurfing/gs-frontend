@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import InputField from "../InputField/InputField";
 
-const DatePicker = () => {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+interface DatePickerProps {
+    value: Date | null;
+    onChange: (date: Date | null) => void;
+    CustomInputElement?: React.ReactNode;
+}
+
+const DatePicker: FC<DatePickerProps> = ({
+    value,
+    onChange,
+    CustomInputElement,
+}) => {
     return (
         <ReactDatePicker
-            selected={selectedDate}
-            onChange={(date: Date) => { return setSelectedDate(date); }}
-            customInput={<InputField type="text" />}
-            dateFormat="dd/MM/yyyy"
+            selected={value}
+            onChange={(date) => onChange(date)}
+            customInput={CustomInputElement}
+            dateFormat="dd.MM.yyyy"
+            showYearDropdown={true}
         />
     );
 };

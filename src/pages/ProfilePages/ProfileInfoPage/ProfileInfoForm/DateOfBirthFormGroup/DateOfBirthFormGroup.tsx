@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
 
 import DatePicker from "@/components/DatePicker/DatePicker";
+import InputField from "@/components/InputField/InputField";
 import SelectField from "@/components/SelectField/SelectField";
 
 import {
@@ -27,12 +28,6 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     control,
     isLocked,
 }) => {
-    const [startDate, setStartDate] = useState<Date>(new Date());
-    const handleChange = (date: Date) => {
-        console.log(i18n.language);
-        setStartDate(date);
-    };
-
     return (
         <ProfileInfoFormGroup
             title="Дата рождения"
@@ -42,7 +37,13 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                 control={control}
                 name="birthDate"
                 render={({ field }) => {
-                    return <DatePicker />;
+                    return (
+                        <DatePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            CustomInputElement={<input type="text" />}
+                        />
+                    );
                 }}
             />
         </ProfileInfoFormGroup>
