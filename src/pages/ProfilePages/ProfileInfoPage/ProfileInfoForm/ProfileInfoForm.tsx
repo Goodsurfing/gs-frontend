@@ -3,10 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button/Button";
 
-import ContactsFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ContactsFormGroup/ContactsFormGroup";
-import GenderFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GenderFormGroup/GenderFormGroup";
-import GeneralFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/GeneralFormGroup/GeneralFormGroup";
-
 import useUploadFile from "@/hooks/files/useUploadFile";
 import { useAppSelector } from "@/hooks/redux";
 
@@ -14,6 +10,10 @@ import { convertFileToBinary } from "@/utils/files/convertFileToBinary";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
 
+import ContactsFormGroup from "./ContactsFormGroup/ContactsFormGroup";
+import DateOfBirthFormGroup from "./DateOfBirthFormGroup/DateOfBirthFormGroup";
+import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
+import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
 import { IUserInfo } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
 
@@ -58,7 +58,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         const imageUuid = await useUploadFile(
             profileImage?.name,
             binaryImage,
-            token
+            token,
         );
         otherData.imageUuid = imageUuid;
         return updateUserInfo(otherData);
@@ -89,6 +89,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
+                <DateOfBirthFormGroup control={control} isLocked={isLocked} />
                 <ContactsFormGroup
                     data={{ email: userInfo.email }}
                     control={control}

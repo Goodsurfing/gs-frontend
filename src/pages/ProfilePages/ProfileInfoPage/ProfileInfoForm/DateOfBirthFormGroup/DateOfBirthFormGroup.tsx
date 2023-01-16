@@ -1,6 +1,9 @@
-import React, { FC } from "react";
+import i18n from "@/i18n";
+import React, { FC, useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
 
+import DatePicker from "@/components/DatePicker/DatePicker";
 import SelectField from "@/components/SelectField/SelectField";
 
 import {
@@ -12,10 +15,11 @@ import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileIn
 
 import { IOption } from "@/types/select";
 
+import { IUserInfo } from "../ProfileInfoForm.interface";
 import styles from "./DateOfBirthFormGroup.module.scss";
 
 interface DateOfBirthFormGroupProps {
-    control: Control;
+    control: Control<IUserInfo>;
     isLocked: boolean;
 }
 
@@ -23,6 +27,12 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     control,
     isLocked,
 }) => {
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const handleChange = (date: Date) => {
+        console.log(i18n.language);
+        setStartDate(date);
+    };
+
     return (
         <ProfileInfoFormGroup
             title="Дата рождения"
@@ -30,65 +40,9 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
         >
             <Controller
                 control={control}
-                name="dayOfBirth"
-                defaultValue="1"
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={days}
-                            value={days.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="monthOfBirth"
-                defaultValue="1"
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={months}
-                            value={months.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="yearOfBirth"
-                defaultValue="1992"
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={years}
-                            value={years.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
+                name="birthDate"
+                render={({ field }) => {
+                    return <DatePicker />;
                 }}
             />
         </ProfileInfoFormGroup>

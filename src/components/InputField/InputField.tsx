@@ -5,7 +5,7 @@ import styles from "./InputField.module.scss";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
-    text: string;
+    text?: string;
 }
 
 const InputField: FC<InputFieldProps> = ({
