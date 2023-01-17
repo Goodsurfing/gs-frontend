@@ -4,11 +4,11 @@ import { Control, Controller } from "react-hook-form";
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import InputField from "@/components/InputField/InputField";
 
-import { IGeneralFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
+import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import styles from "./GeneralFormGroup.module.scss";
 
 interface GeneralFormGroupProps {
-    control: Control<IUserInfo>;
+    control: Control<IUserInfoForm>;
     isLocked: boolean;
     data: IGeneralFormGroup;
 }

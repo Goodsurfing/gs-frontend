@@ -1,27 +1,27 @@
 import React, { FC } from "react";
+import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
 
-import SelectField from "@/components/SelectField/SelectField";
+import DatePicker from "@/components/DatePicker/DatePicker";
 
-import {
-    days,
-    months,
-    years,
-} from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
 
-import { IOption } from "@/types/select";
-
+import {
+    IDateOfBirthFormGroup,
+    IUserInfoForm,
+} from "../ProfileInfoForm.interface";
 import styles from "./DateOfBirthFormGroup.module.scss";
 
 interface DateOfBirthFormGroupProps {
-    control: Control;
+    control: Control<IUserInfoForm>;
     isLocked: boolean;
+    data: IDateOfBirthFormGroup;
 }
 
 const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     control,
     isLocked,
+    data,
 }) => {
     return (
         <ProfileInfoFormGroup
@@ -30,63 +30,15 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
         >
             <Controller
                 control={control}
-                name="dayOfBirth"
-                defaultValue="1"
-                render={({ field: { onChange, value, name } }) => {
+                name="birthDate"
+                render={({ field }) => {
                     return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={days}
-                            value={days.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="monthOfBirth"
-                defaultValue="1"
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={months}
-                            value={months.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="yearOfBirth"
-                defaultValue="1992"
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            placeholder=""
-                            name={name}
-                            options={years}
-                            value={years.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
+                        <DatePicker
+                            data={data}
+                            isLocked={isLocked}
+                            value={field.value}
+                            onChange={field.onChange}
+                            CustomInputElement={<input type="text" />}
                         />
                     );
                 }}
