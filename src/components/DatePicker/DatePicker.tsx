@@ -1,10 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { IDateOfBirthFormGroup } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
-
-import InputField from "../InputField/InputField";
 
 interface DatePickerProps {
     value: Date | null;

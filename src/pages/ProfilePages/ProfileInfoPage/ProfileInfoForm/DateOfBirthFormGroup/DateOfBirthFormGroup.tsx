@@ -1,20 +1,10 @@
-import i18n from "@/i18n";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
 
 import DatePicker from "@/components/DatePicker/DatePicker";
-import InputField from "@/components/InputField/InputField";
-import SelectField from "@/components/SelectField/SelectField";
 
-import {
-    days,
-    months,
-    years,
-} from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
-
-import { IOption } from "@/types/select";
 
 import {
     IDateOfBirthFormGroup,
