@@ -7,12 +7,12 @@ import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileIn
 
 import { IOption } from "@/types/select";
 
-import { IGenderFormGroup, IUserInfo } from "../ProfileInfoForm.interface";
+import { IGenderFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import { genderOptions } from "./GenderFormGroup.data";
 import styles from "./GenderFormGroup.module.scss";
 
 interface GenderFormGroupProps {
-    control: Control<IUserInfo>;
+    control: Control<IUserInfoForm>;
     isLocked: boolean;
     data: IGenderFormGroup;
 }

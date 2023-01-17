@@ -16,17 +16,22 @@ import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileIn
 
 import { IOption } from "@/types/select";
 
-import { IUserInfo } from "../ProfileInfoForm.interface";
+import {
+    IDateOfBirthFormGroup,
+    IUserInfoForm,
+} from "../ProfileInfoForm.interface";
 import styles from "./DateOfBirthFormGroup.module.scss";
 
 interface DateOfBirthFormGroupProps {
-    control: Control<IUserInfo>;
+    control: Control<IUserInfoForm>;
     isLocked: boolean;
+    data: IDateOfBirthFormGroup;
 }
 
 const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     control,
     isLocked,
+    data,
 }) => {
     return (
         <ProfileInfoFormGroup
@@ -39,6 +44,8 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                 render={({ field }) => {
                     return (
                         <DatePicker
+                            data={data}
+                            isLocked={isLocked}
                             value={field.value}
                             onChange={field.onChange}
                             CustomInputElement={<input type="text" />}

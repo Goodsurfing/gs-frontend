@@ -14,7 +14,7 @@ import ContactsFormGroup from "./ContactsFormGroup/ContactsFormGroup";
 import DateOfBirthFormGroup from "./DateOfBirthFormGroup/DateOfBirthFormGroup";
 import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
-import { IUserInfo } from "./ProfileInfoForm.interface";
+import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
@@ -30,15 +30,19 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
 
     const [updateUserInfo] = userInfoApi.usePutUserInfoMutation();
 
-    const { control, handleSubmit } = useForm<IUserInfo>({
+    const { control, handleSubmit } = useForm<IUserInfoForm>({
         mode: "onChange",
     });
 
     const [data, setData] = useState<IUserInfo | null>(null);
 
-    const onSubmit: SubmitHandler<IUserInfo> = async (data) => {
-        console.log(data);
-        setData(data);
+    const onSubmit: SubmitHandler<IUserInfoForm> = async (data) => {
+        const prepareData: IUserInfo = {
+            ...data,
+            birthDate: data.birthDate?.toISOString().split("T")[0],
+        };
+        console.log(prepareData);
+        setData(prepareData);
     };
 
     const { token } = useAppSelector((state) => {
@@ -89,7 +93,11 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
-                <DateOfBirthFormGroup control={control} isLocked={isLocked} />
+                <DateOfBirthFormGroup
+                    data={{ birthDate: new Date(userInfo.birthDate) }}
+                    control={control}
+                    isLocked={isLocked}
+                />
                 <ContactsFormGroup
                     data={{ email: userInfo.email }}
                     control={control}
