@@ -13,7 +13,7 @@ const SideMenu: FC<ISideMenu> = ({ theme, children }) => {
     });
 
     return (
-        <div
+        <aside
             style={{ backgroundColor: theme }}
             className={cn(classname, {
                 [styles.open]: isOpen,
@@ -21,7 +21,7 @@ const SideMenu: FC<ISideMenu> = ({ theme, children }) => {
         >
             {children}
             <SideMenuArrow theme={theme} opened={isOpen} setOpened={setOpen} />
-        </div>
+        </aside>
     );
 };
 
