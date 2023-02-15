@@ -1,0 +1,19 @@
+.sideMenu {
+    position: relative;
+    width: 100px;
+    height: 100vh;
+}
+
+.open {
+    width: 330px;
+}
+
+.dark {
+    color: var(--color-white);
+    background-color: var(--color-black);
+}
+
+.light {
+    background-color: var(--color-white);
+    color: var(--color-black-tertiary);
+}

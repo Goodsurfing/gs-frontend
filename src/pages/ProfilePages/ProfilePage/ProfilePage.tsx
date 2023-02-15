@@ -12,32 +12,34 @@ import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordP
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
+import SideMenu from "@/components/SideMenu/SideMenu";
 
 const ProfilePage: FC = () => {
-    const { pathname } = useLocation();
+    return (<SideMenu theme='DARK' />)
+    // const { pathname } = useLocation();
 
-    const createContent = (path: string) => {
-        if (isMatchUrlEndpoint(path, "info")) {
-            return <ProfileInfoPage />;
-        }
-        if (isMatchUrlEndpoint(path, "reset-password")) {
-            return <ProfileResetPasswordPage />;
-        }
-    };
+    // const createContent = (path: string) => {
+    //     if (isMatchUrlEndpoint(path, "info")) {
+    //         return <ProfileInfoPage />;
+    //     }
+    //     if (isMatchUrlEndpoint(path, "reset-password")) {
+    //         return <ProfileResetPasswordPage />;
+    //     }
+    // };
 
-    return (
-        <>
-            <MainHeader />
-            <div className={styles.wrapper}>
-                <Sidebar>
-                    <SidebarContent
-                        navigationLink={SidebarNavigationLinksData}
-                    />
-                </Sidebar>
-                <div className={styles.content}>{createContent(pathname)}</div>
-            </div>
-        </>
-    );
+    // return (
+    //     <>
+    //         <MainHeader />
+    //         <div className={styles.wrapper}>
+    //             <Sidebar>
+    //                 <SidebarContent
+    //                     navigationLink={SidebarNavigationLinksData}
+    //                 />
+    //             </Sidebar>
+    //             <div className={styles.content}>{createContent(pathname)}</div>
+    //         </div>
+    //     </>
+    // );
 };
 
 export default ProfilePage;

@@ -1,0 +1,35 @@
+.box {
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    border: 1px solid var(--color-gray);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.opened, .closed {
+    moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.opened {
+    transform: rotate(0deg);
+}
+
+.closed {
+    transform: rotate(180deg);
+}
+
+.dark {
+    background-color: var(--color-black);
+}
+
+.light {
+    background-color: var(--color-white);
+}
