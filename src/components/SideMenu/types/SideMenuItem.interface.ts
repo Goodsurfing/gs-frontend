@@ -1,7 +1,9 @@
 import { Theme } from "./SideMenu.interface";
 
-export interface ISideMenuArrow {
+export interface ISideMenuItem {
     opened: boolean;
     theme: Theme;
-    setOpened: (opened: boolean) => void;
+    route: string;
+    icon: string;
+    text: string;
 }

@@ -1,11 +1,13 @@
 .sideMenu {
-    position: relative;
-    width: 100px;
+    position: fixed;
+    width: 6.25rem;
     height: 100vh;
+    transition: all 600ms ease;
 }
 
 .open {
-    width: 330px;
+    transform: translate();
+    width: 20.625rem;
 }
 
 .dark {
@@ -13,7 +15,8 @@
     background-color: var(--color-black);
 }
 
-.light {
+.white {
     background-color: var(--color-white);
     color: var(--color-black-tertiary);
+    box-shadow: 3px 0px 8px rgba(0, 0, 0, 0.03);
 }

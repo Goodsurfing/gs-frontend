@@ -1,0 +1,42 @@
+.li {
+    width: 100%;
+    list-style-type: none;
+}
+
+.img {
+    width: 40px;
+    margin: 0 auto;
+    
+}
+
+.link {
+    height: 3.75rem;
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.openedLink img {
+    margin: 0 .875rem;
+}
+
+.text {
+    display: none;
+    margin-right: auto;
+    text-align: left;
+}
+
+.opened {
+    margin-left: 1.5rem;
+    display: block;
+}
+
+.dark {
+    background-color: inherit;
+    color: var(--color-white);
+}
+
+.light {
+    color: var(--color-black-thirdary);
+}   

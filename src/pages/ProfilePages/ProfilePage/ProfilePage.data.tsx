@@ -1,6 +1,12 @@
 import React from "react";
 
+import { SideMenuContent } from "@/components/SideMenu/types/SideMenu.interface";
 import { SidebarLinkProps } from "@/components/Sidebar/SidebarNavigation/SidebarLink/SidebarLink";
+
+import aboutIcon from "@/assets/icons/navbar/user.svg";
+import lockIcon from "@/assets/icons/navbar/lock.svg";
+import shieldIcon from "@/assets/icons/navbar/shield.svg";
+import checkIcon from "@/assets/icons/navbar/check.svg";
 
 export const SidebarNavigationLinksData: SidebarLinkProps[] = [
     {
@@ -120,5 +126,28 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
         ),
         to: "profile/private",
         text: "Приватность",
+    },
+];
+
+export const SideMenuData: SideMenuContent[] = [
+    {
+        text: "Обо мне",
+        icon: aboutIcon,
+        route: "/profile/info",
+    },
+    {
+        text: "Предпочтения",
+        icon: checkIcon,
+        route: "/profile/info",
+    },
+    {
+        text: "Пароль",
+        icon: lockIcon,
+        route: "/profile/info",
+    },
+    {
+        text: "Приватность",
+        icon: shieldIcon,
+        route: "/profile/info",
     },
 ];
