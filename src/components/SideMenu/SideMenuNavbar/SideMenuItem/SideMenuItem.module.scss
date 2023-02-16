@@ -1,42 +1,47 @@
 .li {
-    width: 100%;
-    list-style-type: none;
+	width: 100%;
+
+	list-style-type: none;
 }
 
 .img {
-    width: 40px;
-    margin: 0 auto;
-    
+	min-width: 40px;
 }
 
 .link {
-    height: 3.75rem;
-    text-decoration: none;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+
+	height: 3.75rem;
+
+	text-decoration: none;
+
+	font-weight: 700;
 }
 
 .openedLink img {
-    margin: 0 .875rem;
+	margin: 0 0.875rem;
 }
 
 .text {
-    display: none;
-    margin-right: auto;
-    text-align: left;
+	display: none;
+
+	margin-right: auto;
+
+	text-align: left;
 }
 
 .opened {
-    margin-left: 1.5rem;
-    display: block;
+	display: block;
+
+	margin-left: 1.5rem;
 }
 
 .dark {
-    background-color: inherit;
-    color: var(--color-white);
+	color: var(--color-white);
+	background-color: inherit;
 }
 
 .light {
-    color: var(--color-black-thirdary);
-}   
+	color: var(--color-black-thirdary);
+}

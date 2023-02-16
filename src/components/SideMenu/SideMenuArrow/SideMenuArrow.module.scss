@@ -1,35 +1,39 @@
 .box {
-    position: absolute;
-    top: 10px;
-    right: -10px;
-    border: 1px solid var(--color-gray);
-    border-radius: 8px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: -10px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 32px;
+	height: 32px;
+
+	cursor: pointer;
+
+	border: 1px solid var(--color-gray);
+	border-radius: 8px;
 }
 
-.opened, .closed {
-    moz-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
+.opened,
+.closed {
+	user-select: none;
+	user-select: none;
 }
 
 .opened {
-    transform: rotate(0deg);
+	transform: rotate(0deg);
 }
 
 .closed {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .dark {
-    background-color: var(--color-black);
+	background-color: var(--color-black);
 }
 
 .light {
-    background-color: var(--color-white);
+	background-color: var(--color-white);
 }

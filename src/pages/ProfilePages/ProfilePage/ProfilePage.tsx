@@ -17,7 +17,7 @@ import styles from "./ProfilePage.module.scss";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 
 const ProfilePage: FC = () => {
-    return (<SideMenu theme='DARK' content={SideMenuData} />)
+    return (<SideMenu theme='LIGHT' content={SideMenuData} />)
 
     // const { pathname } = useLocation();
 

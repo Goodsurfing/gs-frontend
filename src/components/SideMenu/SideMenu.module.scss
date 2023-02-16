@@ -1,22 +1,25 @@
 .sideMenu {
-    position: fixed;
-    width: 6.25rem;
-    height: 100vh;
-    transition: all 600ms ease;
+	position: fixed;
+
+	width: 6.25rem;
+	height: 100vh;
+
+	transition: all 600ms ease;
 }
 
 .open {
-    transform: translate();
-    width: 20.625rem;
+	width: 20.625rem;
+
+	transform: translate();
 }
 
 .dark {
-    color: var(--color-white);
-    background-color: var(--color-black);
+	color: var(--color-white);
+	background-color: var(--color-black);
 }
 
 .white {
-    background-color: var(--color-white);
-    color: var(--color-black-tertiary);
-    box-shadow: 3px 0px 8px rgba(0, 0, 0, 0.03);
+	color: var(--color-black-tertiary);
+	background-color: var(--color-white);
+	box-shadow: 3px 0 8px rgb(0 0 0 / 3%);
 }
