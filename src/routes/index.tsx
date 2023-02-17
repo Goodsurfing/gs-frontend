@@ -30,7 +30,8 @@ export const AppRoutes = () => {
             <Route path="/:ln/profile">
                 <Route
                     path="info"
-                    element={<PrivateRoute Component={ProfilePage} />}
+                    // element={<PrivateRoute Component={ProfilePage} />}
+                    element={<ProfilePage/>}
                 />
                 <Route
                     path="reset-password"

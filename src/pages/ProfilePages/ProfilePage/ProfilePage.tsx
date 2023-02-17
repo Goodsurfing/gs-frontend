@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import MainHeader from "@/components/MainHeader/MainHeader";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import SidebarContent from "@/components/Sidebar/SidebarContent/SidebarContent";
+import SideMenu from "@/components/SideMenu/SideMenu";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SidebarNavigationLinksData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
@@ -13,31 +14,36 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
 
+import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
+import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
+
 const ProfilePage: FC = () => {
-    const { pathname } = useLocation();
+    return (<SideMenu theme={Theme.DARK} content={SideMenuData} />)
 
-    const createContent = (path: string) => {
-        if (isMatchUrlEndpoint(path, "info")) {
-            return <ProfileInfoPage />;
-        }
-        if (isMatchUrlEndpoint(path, "reset-password")) {
-            return <ProfileResetPasswordPage />;
-        }
-    };
+    // const { pathname } = useLocation();
 
-    return (
-        <>
-            <MainHeader />
-            <div className={styles.wrapper}>
-                <Sidebar>
-                    <SidebarContent
-                        navigationLink={SidebarNavigationLinksData}
-                    />
-                </Sidebar>
-                <div className={styles.content}>{createContent(pathname)}</div>
-            </div>
-        </>
-    );
+    // const createContent = (path: string) => {
+    //     if (isMatchUrlEndpoint(path, "info")) {
+    //         return <ProfileInfoPage />;
+    //     }
+    //     if (isMatchUrlEndpoint(path, "reset-password")) {
+    //         return <ProfileResetPasswordPage />;
+    //     }
+    // };
+
+    // return (
+    //     <>
+    //         <MainHeader />
+    //         <div className={styles.wrapper}>
+    //             <Sidebar>
+    //                 <SidebarContent
+    //                     navigationLink={SidebarNavigationLinksData}
+    //                 />
+    //             </Sidebar>
+    //             <div className={styles.content}>{createContent(pathname)}</div>
+    //         </div>
+    //     </>
+    // );
 };
 
 export default ProfilePage;
