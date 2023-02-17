@@ -5,6 +5,7 @@ import arrow from "@/assets/icons/arrow.svg";
 
 import { ISideMenuArrow } from "../types/SideMenuArrow.interface";
 import styles from "./SideMenuArrow.module.scss";
+import { Theme } from "../types/SideMenu.interface";
 
 const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpened, isOpen, theme }) => {
     return (
@@ -16,8 +17,8 @@ const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpened, isOpen, theme }) => {
                     [styles.boxOpened]: isOpen,
                 },
                 {
-                    [styles.dark]: theme === "DARK",
-                    [styles.light]: theme === "LIGHT",
+                    [styles.dark]: theme === Theme.DARK,
+                    [styles.light]: theme === Theme.LIGHT,
                 }
             )}
         >

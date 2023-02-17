@@ -5,6 +5,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { ISideMenuItem } from "../../types/SideMenuItem.interface";
 import styles from "./SideMenuItem.module.scss";
+import { Theme } from "../../types/SideMenu.interface";
 
 const SideMenuItem: FC<ISideMenuItem> = ({
     isOpen,
@@ -18,8 +19,8 @@ const SideMenuItem: FC<ISideMenuItem> = ({
             <LocaleLink
                 to={route}
                 className={cn(styles.link, {
-                    [styles.dark]: theme === "DARK",
-                    [styles.light]: theme === "LIGHT",
+                    [styles.dark]: theme === Theme.DARK,
+                    [styles.light]: theme === Theme.LIGHT,
                 }, {
                    [styles.openedLink]: isOpen
                 })}

@@ -18,32 +18,33 @@ import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data"
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 const ProfilePage: FC = () => {
-    return (<SideMenu theme={Theme.DARK} content={SideMenuData} />)
+    // return (<SideMenu theme={Theme.DARK} content={SideMenuData} />)
 
-    // const { pathname } = useLocation();
+    const { pathname } = useLocation();
 
-    // const createContent = (path: string) => {
-    //     if (isMatchUrlEndpoint(path, "info")) {
-    //         return <ProfileInfoPage />;
-    //     }
-    //     if (isMatchUrlEndpoint(path, "reset-password")) {
-    //         return <ProfileResetPasswordPage />;
-    //     }
-    // };
+    const createContent = (path: string) => {
+        if (isMatchUrlEndpoint(path, "info")) {
+            return <ProfileInfoPage />;
+        }
+        if (isMatchUrlEndpoint(path, "reset-password")) {
+            return <ProfileResetPasswordPage />;
+        }
+    };
 
-    // return (
-    //     <>
-    //         <MainHeader />
-    //         <div className={styles.wrapper}>
-    //             <Sidebar>
-    //                 <SidebarContent
-    //                     navigationLink={SidebarNavigationLinksData}
-    //                 />
-    //             </Sidebar>
-    //             <div className={styles.content}>{createContent(pathname)}</div>
-    //         </div>
-    //     </>
-    // );
+    return (
+        <>
+            <MainHeader />
+            <div className={styles.wrapper}>
+            <SideMenu theme={Theme.DARK} content={SideMenuData} />
+                {/* <Sidebar>
+                    <SidebarContent
+                        navigationLink={SidebarNavigationLinksData}
+                    />
+                </Sidebar> */}
+                <div className={styles.content}>{createContent(pathname)}</div>
+            </div>
+        </>
+    );
 };
 
 export default ProfilePage;
