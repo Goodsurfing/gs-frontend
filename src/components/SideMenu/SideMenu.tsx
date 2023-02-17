@@ -25,11 +25,11 @@ const SideMenu: FC<ISideMenu> = ({ theme, content }) => {
                 <SideMenuNavbar
                     theme={theme}
                     content={content}
-                    opened={isOpen}
+                    isOpen={isOpen}
                 />
                 <SideMenuArrow
                     theme={theme}
-                    opened={isOpen}
+                    isOpen={isOpen}
                     setOpened={setOpen}
                 />
             </nav>

@@ -15,9 +15,10 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 import styles from "./ProfilePage.module.scss";
 
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
+import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 const ProfilePage: FC = () => {
-    return (<SideMenu theme='LIGHT' content={SideMenuData} />)
+    return (<SideMenu theme={Theme.DARK} content={SideMenuData} />)
 
     // const { pathname } = useLocation();
 

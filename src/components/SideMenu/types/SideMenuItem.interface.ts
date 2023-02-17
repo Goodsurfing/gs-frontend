@@ -1,7 +1,7 @@
 import { Theme } from "./SideMenu.interface";
 
 export interface ISideMenuItem {
-    opened: boolean;
+    isOpen: boolean;
     theme: Theme;
     route: string;
     icon: string;

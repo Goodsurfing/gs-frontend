@@ -7,7 +7,7 @@ import { ISideMenuItem } from "../../types/SideMenuItem.interface";
 import styles from "./SideMenuItem.module.scss";
 
 const SideMenuItem: FC<ISideMenuItem> = ({
-    opened,
+    isOpen,
     theme,
     route,
     icon,
@@ -21,13 +21,13 @@ const SideMenuItem: FC<ISideMenuItem> = ({
                     [styles.dark]: theme === "DARK",
                     [styles.light]: theme === "LIGHT",
                 }, {
-                   [styles.openedLink]: opened
+                   [styles.openedLink]: isOpen
                 })}
             >
                 <img className={styles.img} src={icon} alt={text + " icon"} />
                 <span
                     className={cn(styles.text, {
-                        [styles.opened]: opened,
+                        [styles.opened]: isOpen,
                     })}
                 >
                     {text}

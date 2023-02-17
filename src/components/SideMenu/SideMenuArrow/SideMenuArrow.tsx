@@ -6,14 +6,14 @@ import arrow from "@/assets/icons/arrow.svg";
 import { ISideMenuArrow } from "../types/SideMenuArrow.interface";
 import styles from "./SideMenuArrow.module.scss";
 
-const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpened, opened, theme }) => {
+const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpened, isOpen, theme }) => {
     return (
         <div
-            onClick={() => setOpened(!opened)}
+            onClick={() => setOpened(!isOpen)}
             className={cn(
                 styles.box,
                 {
-                    [styles.boxOpened]: opened,
+                    [styles.boxOpened]: isOpen,
                 },
                 {
                     [styles.dark]: theme === "DARK",
@@ -23,8 +23,8 @@ const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpened, opened, theme }) => {
         >
             <img
                 className={cn({
-                    [styles.opened]: opened === true,
-                    [styles.closed]: opened === false,
+                    [styles.opened]: isOpen === true,
+                    [styles.closed]: isOpen === false,
                 })}
                 src={arrow}
                 alt="arrow"

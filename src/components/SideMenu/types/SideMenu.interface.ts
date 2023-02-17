@@ -4,7 +4,10 @@ export type SideMenuContent = {
     text: string;
 }
 
-export type Theme = "DARK" | "LIGHT";
+export enum Theme {
+    DARK = 'DARK',
+    LIGHT = 'LIGHT'
+}
 
 export interface ISideMenu {
     theme: Theme;
