@@ -1,7 +1,8 @@
 import { SideMenuContent, Theme } from "./SideMenu.interface";
 
 export interface ISideMenuNavbar {
-    content: SideMenuContent[];
+    content: SideMenuContent;
     theme: Theme;
     isOpen: boolean;
+    setOpen: (opened: boolean) => void;
 }

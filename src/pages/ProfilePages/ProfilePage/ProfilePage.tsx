@@ -18,8 +18,6 @@ import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data"
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 const ProfilePage: FC = () => {
-    // return (<SideMenu theme={Theme.DARK} content={SideMenuData} />)
-
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
@@ -35,12 +33,12 @@ const ProfilePage: FC = () => {
         <>
             <MainHeader />
             <div className={styles.wrapper}>
-            <SideMenu theme={Theme.DARK} content={SideMenuData} />
-                {/* <Sidebar>
-                    <SidebarContent
-                        navigationLink={SidebarNavigationLinksData}
-                    />
-                </Sidebar> */}
+                <SideMenu theme={Theme.DARK} content={SideMenuData} />
+                    {/* <Sidebar>
+                        <SidebarContent
+                            navigationLink={SidebarNavigationLinksData}
+                        />
+                    </Sidebar> */}
                 <div className={styles.content}>{createContent(pathname)}</div>
             </div>
         </>

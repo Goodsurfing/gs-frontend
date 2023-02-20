@@ -1,9 +1,9 @@
 import { Theme } from "./SideMenu.interface";
 
-export interface ISideMenuItem {
+export interface ISideMenuLink {
     isOpen: boolean;
     theme: Theme;
-    route: string;
-    icon: string;
     text: string;
+    icon: string;
+    route: string;
 }
