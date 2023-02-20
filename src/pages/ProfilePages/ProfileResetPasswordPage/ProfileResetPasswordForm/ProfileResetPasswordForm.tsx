@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button/Button";
 
 import { authApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 const ProfileResetPasswordForm: FC = () => {
     const [resetPasswordRequest, { isSuccess }] = authApi.useResetPasswordRequestMutation();
@@ -20,7 +21,7 @@ const ProfileResetPasswordForm: FC = () => {
     }
 
     return (
-        <Button onClick={onSubmit} type="submit" variant="primary">
+        <Button onClick={onSubmit} type="submit" variant={Variant.PRIMARY}>
             Запросить ссылку
         </Button>
     );

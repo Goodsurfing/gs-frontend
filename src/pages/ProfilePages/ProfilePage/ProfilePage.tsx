@@ -2,8 +2,6 @@ import React, { FC } from "react";
 import { useLocation } from "react-router-dom";
 
 import MainHeader from "@/components/MainHeader/MainHeader";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import SidebarContent from "@/components/Sidebar/SidebarContent/SidebarContent";
 import SideMenu from "@/components/SideMenu/SideMenu";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
@@ -34,11 +32,6 @@ const ProfilePage: FC = () => {
             <MainHeader />
             <div className={styles.wrapper}>
                 <SideMenu theme={Theme.DARK} content={SideMenuData} />
-                    {/* <Sidebar>
-                        <SidebarContent
-                            navigationLink={SidebarNavigationLinksData}
-                        />
-                    </Sidebar> */}
                 <div className={styles.content}>{createContent(pathname)}</div>
             </div>
         </>

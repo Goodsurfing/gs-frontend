@@ -13,6 +13,7 @@ import { AppRoutesEnum } from "@/routes/types";
 import { authApi } from "@/store/api/authApi";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 interface IFormData {
     password: string;
@@ -87,7 +88,7 @@ const ResetPasswordThirdStep: FC = () => {
                 }}
             />
 
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant={Variant.PRIMARY}>
                 Отправить
             </Button>
         </form>

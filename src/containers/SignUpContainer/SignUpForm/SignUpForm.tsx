@@ -16,6 +16,7 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 const SignUpForm: FC = () => {
     const [registerUser] = authApi.useRegisterUserMutation();
@@ -82,7 +83,7 @@ const SignUpForm: FC = () => {
                     );
                 }}
             />
-            <Button type="submit" variant="primary" className={styles.btn}>
+            <Button type="submit" variant={Variant.PRIMARY} className={styles.btn}>
                 Зарегистрироваться
             </Button>
         </form>
