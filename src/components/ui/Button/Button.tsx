@@ -22,7 +22,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                     [styles.outlined]: variant === "OUTLINED",
                 },
                 {
-                    [styles.rounded]: rounded
+                    [styles.rounded]: rounded,
                 },
                 className,
             )}

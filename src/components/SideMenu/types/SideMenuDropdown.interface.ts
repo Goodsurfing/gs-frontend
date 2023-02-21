@@ -1,5 +1,4 @@
-import { DropdownItems } from "./SideMenu.interface";
-import { Theme } from "./SideMenu.interface";
+import { DropdownItem, Theme } from "./SideMenu.interface";
 
 export interface ISideMenuDropdown {
     isOpen: boolean;
@@ -7,5 +6,5 @@ export interface ISideMenuDropdown {
     theme: Theme;
     icon: string;
     text: string;
-    dropdownItems: DropdownItems;
+    dropdownItems: DropdownItem[];
 }

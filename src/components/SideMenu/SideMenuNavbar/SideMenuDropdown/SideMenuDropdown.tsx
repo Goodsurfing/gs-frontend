@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
@@ -18,13 +18,15 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
     const [isDropdownOpened, setDropdownOpen] = useState(false);
 
     const dropdownClickHandler = () => {
-        setOpen(true)
+        setOpen(true);
         setDropdownOpen(!isDropdownOpened);
     };
 
     const canOpen = isDropdownOpened && isOpen;
 
-    useEffect(() => setDropdownOpen(false), [isOpen]);
+    useEffect(() => {
+        setDropdownOpen(false);
+    }, [isOpen]);
 
     return (
         <li onClick={dropdownClickHandler} className={styles.li}>
@@ -37,7 +39,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    }
+                    },
                 )}
             >
                 <img src={icon} alt={text} />
@@ -54,15 +56,17 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                 >
                     <div className={styles.dropdownLine} />
                     <div className={styles.dropdown}>
-                        {dropdownItems.map((item) => (
-                            <LocaleLink
-                                key={item.text}
-                                to={item.route}
-                                className={styles.dropdownItem}
-                            >
-                                {item.text}
-                            </LocaleLink>
-                        ))}
+                        {dropdownItems.map((item) => {
+                            return (
+                                <LocaleLink
+                                    key={item.text}
+                                    to={item.route}
+                                    className={styles.dropdownItem}
+                                >
+                                    {item.text}
+                                </LocaleLink>
+                            );
+                        })}
                     </div>
                 </div>
             )}

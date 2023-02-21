@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 
 import { ISideMenuNavbar } from "../types/SideMenuNavbar.interface";
 import SideMenuDropdown from "./SideMenuDropdown/SideMenuDropdown";
@@ -14,33 +14,31 @@ const SideMenuNavbar: FC<ISideMenuNavbar> = ({
 }) => {
     return (
         <ul className={styles.navbarNav}>
-            <>
-                {content.map((item) =>
-                    item.dropdownItems ? (
-                        <SideMenuDropdown
+            {content.map((item) => {
+                return (item.dropdownItems ? (
+                    <SideMenuDropdown
+                        key={item.text}
+                        isOpen={isOpen}
+                        theme={theme}
+                        icon={item.icon}
+                        text={item.text}
+                        setOpen={setOpen}
+                        dropdownItems={item.dropdownItems}
+                    />
+                ) : (
+                    item.route && (
+                        <SideMenuLink
                             key={item.text}
                             isOpen={isOpen}
                             theme={theme}
                             icon={item.icon}
                             text={item.text}
-                            setOpen={setOpen}
-                            dropdownItems={item.dropdownItems}
+                            route={item.route}
                         />
-                    ) : (
-                        item.route && (
-                            <SideMenuLink
-                                key={item.text}
-                                isOpen={isOpen}
-                                theme={theme}
-                                icon={item.icon}
-                                text={item.text}
-                                route={item.route}
-                            />
-                        )
                     )
-                )}
-                <SideMenuHelp isOpen={isOpen} theme={theme} />
-            </>
+                ));
+            })}
+            <SideMenuHelp isOpen={isOpen} theme={theme} />
         </ul>
     );
 };

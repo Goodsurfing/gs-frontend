@@ -26,7 +26,7 @@ const SupportWidget: FC<ISupportWidget> = ({ theme }) => {
             <p className={styles.description}>
                 Ваш персональный помощник по работе с системой
             </p>
-            <Button rounded={true} variant={Variant.OUTLINED}>Написать</Button>
+            <Button rounded variant={Variant.OUTLINED}>Написать</Button>
             <div className={styles.email}>
                 <p>E-mail</p>
                 <a

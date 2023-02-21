@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC } from "react";
+import React, { FC } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
@@ -26,7 +26,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    }
+                    },
                 )}
             >
                 <img src={icon} alt={text} />

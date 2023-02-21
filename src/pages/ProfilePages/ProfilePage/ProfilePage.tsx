@@ -5,14 +5,13 @@ import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
-import { SidebarNavigationLinksData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
+import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordPage";
 
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
 
-import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 const ProfilePage: FC = () => {

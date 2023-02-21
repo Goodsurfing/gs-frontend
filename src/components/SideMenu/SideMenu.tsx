@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 
 import styles from "./SideMenu.module.scss";
 import SideMenuArrow from "./SideMenuArrow/SideMenuArrow";
@@ -18,7 +18,7 @@ const SideMenu: FC<ISideMenu> = ({ theme, content, children }) => {
                 },
                 {
                     [styles.open]: isOpen,
-                }
+                },
             )}
         >
             <SideMenuNavbar

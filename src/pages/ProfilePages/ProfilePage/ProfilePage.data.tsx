@@ -1,10 +1,12 @@
+import React from "react";
+
 import calendarIcon from "@assets/icons/navbar/calendar.svg";
 import globeIcon from "@assets/icons/navbar/globe.svg";
 import homeIcon from "@assets/icons/navbar/home.svg";
 import mailIcon from "@assets/icons/navbar/mail.svg";
 import cityIcon from "@assets/icons/navbar/city.svg";
 
-import { SideMenuContent } from "@/components/SideMenu/types/SideMenu.interface";
+import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
 import { SidebarLinkProps } from "@/components/Sidebar/SidebarNavigation/SidebarLink/SidebarLink";
 
 export const SidebarNavigationLinksData: SidebarLinkProps[] = [
@@ -128,27 +130,27 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
     },
 ];
 
-export const SideMenuData: SideMenuContent = [
+export const SideMenuData: SideMenuParams[] = [
     {
         text: "Рабочий стол",
         icon: homeIcon,
-        route: '/'
+        route: "/",
     },
     {
         text: "Предложения",
         icon: globeIcon,
-        route: '/'
+        route: "/",
     },
     {
         text: "Заявки",
         icon: mailIcon,
-        route: '/'
+        route: "/",
     },
     {
         text: "Календарь",
         icon: calendarIcon,
-        route: '/'
-        
+        route: "/",
+
     },
     {
         text: "Организация",
