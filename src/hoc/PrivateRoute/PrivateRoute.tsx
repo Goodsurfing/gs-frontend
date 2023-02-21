@@ -15,9 +15,9 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ Component }) => {
     });
 
     useEffect(() => {
-        // if (!token) {
-            // return navigate(`/${i18n.language}`, { replace: true });
-        // }
+        if (!token) {
+            return navigate(`/${i18n.language}`, { replace: true });
+        }
     }, [token, navigate]);
 
     return <Component />;

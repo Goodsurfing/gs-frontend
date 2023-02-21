@@ -7,6 +7,7 @@ import styles from "./Button.module.scss";
 
 const Button: FC<PropsWithChildren<IButtonProps>> = ({
     variant,
+    rounded,
     className,
     children,
     ...rest
@@ -16,9 +17,12 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
             className={cn(
                 styles.btn,
                 {
-                    [styles.primary]: variant === "primary",
-                    [styles.secondary]: variant === "secondary",
-                    [styles.outlined]: variant === "outlined",
+                    [styles.primary]: variant === "PRIMARY",
+                    [styles.secondary]: variant === "SECONDARY",
+                    [styles.outlined]: variant === "OUTLINED",
+                },
+                {
+                    [styles.rounded]: rounded,
                 },
                 className,
             )}

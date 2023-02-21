@@ -18,6 +18,7 @@ import { setLoginUserData } from "@/store/reducers/loginSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 const SignInForm: FC = () => {
     const [loginUser] = authApi.useLoginUserMutation();
@@ -91,7 +92,7 @@ const SignInForm: FC = () => {
                 }}
             />
 
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant={Variant.SECONDARY}>
                 Войти
             </Button>
 

@@ -1,6 +1,14 @@
 import React from "react";
 
+export enum Variant {
+    PRIMARY = "PRIMARY",
+    SECONDARY = "SECONDARY",
+    OUTLINED = "OUTLINED",
+    ROUNDED = "ROUNDED",
+}
+
 export interface IButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant: "primary" | "secondary" | "outlined";
+    variant: Variant;
+    rounded?: boolean;
 }

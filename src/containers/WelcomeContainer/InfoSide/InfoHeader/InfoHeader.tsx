@@ -18,6 +18,7 @@ import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
@@ -97,7 +98,7 @@ const InfoHeader: FC = () => {
                                     return handleLogout();
                                 }}
                                 className={styles.btn}
-                                variant="outlined"
+                                variant={Variant.OUTLINED}
                             >
                                 {t("main.welcome.header.exit")}
                             </Button>

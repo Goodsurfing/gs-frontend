@@ -1,15 +1,14 @@
 .sideMenu {
 	position: fixed;
-
+	left: 0;
 	width: 6.25rem;
-	height: 100vh;
+	height: 91vh;
 
 	transition: all 600ms ease;
 }
 
 .open {
 	width: 20.625rem;
-
 	transform: translate();
 }
 

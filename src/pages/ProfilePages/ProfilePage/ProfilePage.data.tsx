@@ -1,12 +1,13 @@
 import React from "react";
 
-import { SideMenuContent } from "@/components/SideMenu/types/SideMenu.interface";
-import { SidebarLinkProps } from "@/components/Sidebar/SidebarNavigation/SidebarLink/SidebarLink";
+import calendarIcon from "@assets/icons/navbar/calendar.svg";
+import globeIcon from "@assets/icons/navbar/globe.svg";
+import homeIcon from "@assets/icons/navbar/home.svg";
+import mailIcon from "@assets/icons/navbar/mail.svg";
+import cityIcon from "@assets/icons/navbar/city.svg";
 
-import aboutIcon from "@/assets/icons/navbar/user.svg";
-import lockIcon from "@/assets/icons/navbar/lock.svg";
-import shieldIcon from "@/assets/icons/navbar/shield.svg";
-import checkIcon from "@/assets/icons/navbar/check.svg";
+import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
+import { SidebarLinkProps } from "@/components/Sidebar/SidebarNavigation/SidebarLink/SidebarLink";
 
 export const SidebarNavigationLinksData: SidebarLinkProps[] = [
     {
@@ -129,25 +130,52 @@ export const SidebarNavigationLinksData: SidebarLinkProps[] = [
     },
 ];
 
-export const SideMenuData: SideMenuContent[] = [
+export const SideMenuData: SideMenuParams[] = [
     {
-        text: "Обо мне",
-        icon: aboutIcon,
-        route: "/profile/info",
+        text: "Рабочий стол",
+        icon: homeIcon,
+        route: "/",
     },
     {
-        text: "Предпочтения",
-        icon: checkIcon,
-        route: "/profile/info",
+        text: "Предложения",
+        icon: globeIcon,
+        route: "/",
     },
     {
-        text: "Пароль",
-        icon: lockIcon,
-        route: "/profile/info",
+        text: "Заявки",
+        icon: mailIcon,
+        route: "/",
     },
     {
-        text: "Приватность",
-        icon: shieldIcon,
-        route: "/profile/info",
+        text: "Календарь",
+        icon: calendarIcon,
+        route: "/",
+
+    },
+    {
+        text: "Организация",
+        icon: cityIcon,
+        dropdownItems: [
+            {
+                text: "Описание",
+                route: "/",
+            },
+            {
+                text: "Фотогалерея",
+                route: "/",
+            },
+            {
+                text: "Видеогалерея",
+                route: "/",
+            },
+            {
+                text: "Команда",
+                route: "/",
+            },
+            {
+                text: "Отзывы",
+                route: "/",
+            },
+        ],
     },
 ];

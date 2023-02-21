@@ -16,6 +16,7 @@ import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -105,7 +106,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                 />
                 <Button
                     type="submit"
-                    variant="primary"
+                    variant={Variant.PRIMARY}
                     className={styles.button}
                 >
                     Сохранить
