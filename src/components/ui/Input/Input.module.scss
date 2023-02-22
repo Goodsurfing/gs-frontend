@@ -20,4 +20,14 @@
     font-family: Lato;
     font-weight: 400;
     color: var(--color-gray);
+    margin-left: .625rem;
+}
+
+.labelWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    max-width: 18px;
 }
