@@ -1,3 +1,4 @@
+import cn from "classnames";
 import React, { FC, useRef, useState } from "react";
 
 import logoIcon from "@/assets/icons/navbar/home.svg";
@@ -15,15 +16,29 @@ interface InputProps {
     label: string | React.ReactNode;
     placeholder?: string;
     type: InputType;
+    className?: string;
     img?: string;
 }
 
-const Input: FC<InputProps> = ({ label, placeholder, type, img, setInputValue, value }) => {
-
+const Input: FC<InputProps> = ({
+    label,
+    placeholder,
+    type,
+    img,
+    setInputValue,
+    value,
+    className,
+}) => {
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.labelWrapper}>
-                {img && <img className={styles.image} src={logoIcon} alt={`${logoIcon}`} />}    
+                {img && (
+                    <img
+                        className={styles.image}
+                        src={logoIcon}
+                        alt={`${logoIcon}`}
+                    />
+                )}
                 <label className={styles.label}>{label}</label>
             </div>
             <input

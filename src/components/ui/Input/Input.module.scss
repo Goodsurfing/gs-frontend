@@ -1,9 +1,9 @@
 .wrapper {
     width: 100%;
-
-
+}
 
 .input {
+    box-sizing: border-box;
     margin-top: .5rem;
     border: var(--color-gray) 1px solid;
     outline: none;
@@ -13,7 +13,6 @@
     font-weight: 400;
     font-size: 16px;
     padding: 14px;
-    gap: 10px;
 }
 
 .label {
@@ -21,9 +20,6 @@
     font-family: Lato;
     font-weight: 400;
     color: var(--color-gray);
-
-
-}
 }
 
 .labelWrapper {

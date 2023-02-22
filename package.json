@@ -80,6 +80,7 @@
         "react-redux": "^8.0.4",
         "react-router-dom": "^6.4.2",
         "react-select": "^5.7.0",
+        "react-yandex-maps": "^4.6.0",
         "swiper": "^8.4.5",
         "url-loader": "^4.1.1"
     }

@@ -1,3 +1,9 @@
-.container {
+.layout {
+    background-color: var(--color-lightgray);
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+.wrapper {
     padding: 2.25rem 3.125rem 4.125rem 21.875rem;
 }
