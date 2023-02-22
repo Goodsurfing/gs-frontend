@@ -1,0 +1,23 @@
+.wrapper {
+    width: 100%;
+}
+
+.input {
+    margin-top: .5rem;
+    border: var(--color-gray) 1px solid;
+    outline: none;
+    border-radius: .625rem;
+    width: 100%;
+    font-family: Lato;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 14px;
+    gap: 10px;
+}
+
+.label {
+    font-size: 14px;
+    font-family: Lato;
+    font-weight: 400;
+    color: var(--color-gray);
+}
