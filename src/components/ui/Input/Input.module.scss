@@ -1,6 +1,7 @@
 .wrapper {
     width: 100%;
-}
+
+
 
 .input {
     margin-top: .5rem;
@@ -20,12 +21,18 @@
     font-family: Lato;
     font-weight: 400;
     color: var(--color-gray);
-    margin-left: .625rem;
+
+
+}
 }
 
 .labelWrapper {
     display: flex;
     align-items: center;
+
+    :last-child {
+        margin-left: .625rem;
+    }
 }
 
 .image {
