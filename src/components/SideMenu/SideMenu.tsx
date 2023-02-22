@@ -6,8 +6,8 @@ import SideMenuArrow from "./SideMenuArrow/SideMenuArrow";
 import SideMenuNavbar from "./SideMenuNavbar/SideMenuNavbar";
 import { ISideMenu, Theme } from "./types/SideMenu.interface";
 
-const SideMenu: FC<ISideMenu> = ({ theme, content, children }) => {
-    const [isOpen, setOpen] = useState(false);
+const SideMenu: FC<ISideMenu> = React.memo(({theme, content, children}) => {
+        const [isOpen, setOpen] = useState(false);
     return (
         <nav
             className={cn(
@@ -31,6 +31,6 @@ const SideMenu: FC<ISideMenu> = ({ theme, content, children }) => {
             <SideMenuArrow theme={theme} isOpen={isOpen} setOpen={setOpen} />
         </nav>
     );
-};
+})
 
 export default SideMenu;

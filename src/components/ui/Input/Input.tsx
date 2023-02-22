@@ -9,8 +9,6 @@ export enum InputType {
     TEXT = "text",
 }
 
-// e: React.ChangeEvent<HTMLInputElement>
-
 interface InputProps {
     value: string;
     setInputValue: (value: string) => void;
