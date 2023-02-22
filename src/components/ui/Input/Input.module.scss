@@ -29,12 +29,9 @@
 .labelWrapper {
     display: flex;
     align-items: center;
-
-    :last-child {
-        margin-left: .625rem;
-    }
 }
 
 .image {
     max-width: 18px;
+    margin-right: .625rem;
 }
