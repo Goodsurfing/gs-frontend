@@ -10,6 +10,7 @@ import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
+import HostMainInfoPage from "@/pages/HostRegistrationPages/HostMainInfoPage/HostMainInfoPage";
 
 export const AppRoutes = () => {
     return (
@@ -35,6 +36,11 @@ export const AppRoutes = () => {
                 <Route
                     path="reset-password"
                     element={<PrivateRoute Component={ProfilePage} />}
+                />
+            </Route>
+            <Route path="/:ln/host-registration">
+                <Route path="main"
+                    element={<HostMainInfoPage />}
                 />
             </Route>
         </Routes>
