@@ -1,33 +1,26 @@
 import cn from "classnames";
-import React, { FC, useRef, useState } from "react";
+import React, { FC } from "react";
 
 import logoIcon from "@/assets/icons/navbar/home.svg";
 
 import styles from "./Input.module.scss";
 
-export enum InputType {
-    PASSWORD = "password",
-    TEXT = "text",
-}
-
-interface InputProps {
-    value: string;
-    setInputValue: (value: string) => void;
-    label: string | React.ReactNode;
-    placeholder?: string;
-    type: InputType;
-    className?: string;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+    label: string;
     img?: string;
 }
 
 const Input: FC<InputProps> = ({
     label,
-    placeholder,
-    type,
     img,
-    setInputValue,
+    type,
+    required = false,
+    placeholder = "",
     value,
+    defaultValue,
+    onChange,
     className,
+    ...rest
 }) => {
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -42,11 +35,14 @@ const Input: FC<InputProps> = ({
                 <label className={styles.label}>{label}</label>
             </div>
             <input
+                required={required}
                 value={value}
-                onChange={(e) => setInputValue(e.target.value)}
+                defaultValue={defaultValue}
+                onChange={onChange}
                 className={styles.input}
                 type={type}
                 placeholder={placeholder}
+                {...rest}
             />
         </div>
     );

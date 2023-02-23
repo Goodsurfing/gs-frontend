@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 
 import styles from "./HostMainInfoContent.module.scss";
-import RegistrationOfHostMap from "./RegistratoinOfHostMap/RegistrationOfHostMap";
+import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 
 const HostMainInfoContent: FC = () => {
     return (
         <div className={styles.wrapper}>
-            <RegistrationOfHostMap />
+            <YMapWithAddress />
         </div>
     );
 };
