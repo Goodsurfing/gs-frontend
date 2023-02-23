@@ -12,7 +12,7 @@ import defaultAvatarImage from "@/assets/images/default-avatar.jpg";
 
 import styles from "./MainHeader.module.scss";
 
-const MainHeader: FC = React.memo(() => {
+const MainHeader: FC = () => {
     return (
         <>
             <header className={styles.header}>
@@ -47,6 +47,6 @@ const MainHeader: FC = React.memo(() => {
             </div>
         </>
     );
-});
+};
 
-export default MainHeader;
+export default React.memo(MainHeader);

@@ -2,32 +2,17 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
-    "extends": [
-        "airbnb",
-        "airbnb-typescript",
-        "airbnb/hooks"
-    ],
+    "extends": ["airbnb", "airbnb-typescript", "airbnb/hooks"],
     "parserOptions": {
         "project": "./tsconfig.json"
     },
     "rules": {
+        "linebreak-style": ["error", "windows"],
         "no-tabs": 0,
-        "@typescript-eslint/indent": [
-            "error",
-            4
-        ],
-        "react/jsx-indent": [
-            "error",
-            4
-        ],
-        "react/jsx-indent-props": [
-            "error",
-            4
-        ],
-        "arrow-body-style": [
-            "error",
-            "always"
-        ],
+        "@typescript-eslint/indent": ["error", 4],
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "arrow-body-style": ["error", "always"],
         "no-console": "warn",
         "jsx-a11y/click-events-have-key-events": "warn",
         "jsx-a11y/no-noninteractive-element-interactions": "warn",
@@ -47,10 +32,7 @@
                 "unnamedComponents": "arrow-function"
             }
         ],
-        "@typescript-eslint/quotes": [
-            "error",
-            "double"
-        ],
+        "@typescript-eslint/quotes": ["error", "double"],
         "semi": "error",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": 0,

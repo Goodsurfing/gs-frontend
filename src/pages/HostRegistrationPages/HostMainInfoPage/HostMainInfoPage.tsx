@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
