@@ -17,14 +17,11 @@ import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
 import { Variant } from "@/components/ui/Button/Button.interface";
-import {useErrorHandler} from "@/hooks/useErrorHandler";
 
 const SignUpForm: FC = () => {
     const [registerUser] = authApi.useRegisterUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-
-    const [error, handleError, resetError] = useErrorHandler();
 
     const { control, reset, handleSubmit } = useForm<IAuthFormData>({
         mode: "onChange",
@@ -82,7 +79,6 @@ const SignUpForm: FC = () => {
                             value={field.value}
                             type="password"
                             text="Пароль"
-                            required={false}
                         />
                     );
                 }}
