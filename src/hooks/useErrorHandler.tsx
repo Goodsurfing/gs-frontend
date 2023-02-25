@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-export const useErrorHandler = () => {
-    const [error, setError] = useState<string | null>();
+export function useErrorHandler<T = unknown>() {
+    const [error, setError] = useState<T | null>(null);
 
-    function handleError(error: string) {
+    function handleError(error: T) {
         setError(error);
     }
 
@@ -11,5 +11,5 @@ export const useErrorHandler = () => {
         setError(null);
     }
 
-    return [error, handleError, resetError];
-};
+    return [error, handleError, resetError] as const;
+}
