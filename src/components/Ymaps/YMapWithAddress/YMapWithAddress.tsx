@@ -1,8 +1,8 @@
 import { LocationType, ymapsDefaultLocation } from "@/constants/ymaps";
 import React, { FC, useEffect, useState } from "react";
-import { Placemark, YMaps } from "react-yandex-maps";
+import { Placemark } from "react-yandex-maps";
 
-import Hints from "@/components/InputWithHints/Hints";
+import Hints from "@/components/Hints/Hints";
 import Input from "@/components/ui/Input/Input";
 
 import useDebounce from "@/hooks/useDebounce";
@@ -20,17 +20,15 @@ const YMapWithAddress: FC = () => {
     const [ymap, setYmap] = useState<YMapType>(null);
     const [address, setAddress] = useState<string>("");
     const [normalizedCoordinates, setNormalizedCoordinates] =
-        useState<any>(null);
-    const [selectedAddress, setSelectedAddress] = useState<string>("");
+        useState<LocationType>();
+    const [selectedAddresByHint, setSelectedAddressByHint] =
+        useState<boolean>(false);
     const [routesList, setRoutes] = useState<Array<GeoObjectHintType>>([]);
 
-    const handleAddressChange = (address: string) => {
-        setAddress(address);
-    };
     const debouncedAddress = useDebounce(address, 1000);
 
     useEffect(() => {
-        if (ymap && address.length > 1) {
+        if (ymap && address.length > 3) {
             validateCoordinates(ymap, debouncedAddress)
                 .then((res) => getGeocodeByName(ymap, res))
                 .then((res) => getYmapCoordinates(res))
@@ -47,11 +45,17 @@ const YMapWithAddress: FC = () => {
             <Input
                 label="Адрес"
                 type="text"
+                onFocus={() => setSelectedAddressByHint(false)}
                 onChange={(e) => setAddress(e.target.value)}
                 value={address}
             >
                 {routesList?.length > 0 && (
-                    <Hints hints={routesList} setAddress={setSelectedAddress} />
+                    <Hints
+                        hints={routesList}
+                        selectedAddressByHint={selectedAddresByHint}
+                        setAddress={setAddress}
+                        setAddressByHint={setSelectedAddressByHint}
+                    />
                 )}
             </Input>
             <YandexMap
@@ -64,7 +68,6 @@ const YMapWithAddress: FC = () => {
                 modules={[
                     "geocode",
                     "geoObject.addon.hint",
-                    "geoObject.addon.balloon",
                 ]}
             >
                 {normalizedCoordinates && (
@@ -82,6 +85,3 @@ const YMapWithAddress: FC = () => {
 };
 
 export default YMapWithAddress;
-
-
-

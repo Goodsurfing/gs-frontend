@@ -9,15 +9,19 @@ import styles from "./Hints.module.scss";
 interface Hints {
     hints: GeoObjectHintType[];
     setAddress: (value: string) => void;
+    setAddressByHint: (value: boolean) => void;
+    selectedAddressByHint: boolean;
 }
 
-const Hints: FC<Hints> = ({ hints, setAddress }) => {
+const Hints: FC<Hints> = ({ hints, setAddress, setAddressByHint, selectedAddressByHint }) => {
     const [opened, setOpened] = useState<boolean>(false);
     const hintsRef = useRef(null);
 
     useEffect(() => {
-        setOpened(true);
-    }, [hints]);
+        if (!selectedAddressByHint) {
+            setOpened(true);
+        }
+    }, [hints, selectedAddressByHint]);
 
     const handleClickOutside = () => {
         setOpened(false);
@@ -39,6 +43,7 @@ const Hints: FC<Hints> = ({ hints, setAddress }) => {
                             setAddress(
                                 `${item.GeoObject.description}, ${item.GeoObject.name}`
                             );
+                            setAddressByHint(true);
                             setOpened(false);
                         }}
                         key={index}
@@ -58,4 +63,4 @@ const Hints: FC<Hints> = ({ hints, setAddress }) => {
     );
 };
 
-export default React.memo(Hints);
+export default Hints;
