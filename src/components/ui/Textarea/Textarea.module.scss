@@ -1,0 +1,53 @@
+.wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.textarea {
+    width: 100%;
+    resize: none;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+    border: var(--color-gray) 1px solid;
+    outline: none;
+    border-radius: 0.625rem;
+    height: 7.375rem;
+    font-family: Lato;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 0.875rem;
+
+    &::-webkit-scrollbar {
+        cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border: 6px solid transparent;
+        border-radius: 70px;
+        background-color: #D9D9D9;
+        background-clip: content-box;
+    }
+}
+
+.label {
+    font-size: 0.875rem;
+    font-family: Lato;
+    font-weight: 400;
+    color: var(--color-gray);
+}
+
+.labelWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    max-width: 1.125rem;
+    margin-right: 0.625rem;
+}
+
+.description {
+    font-size: 0.625rem;
+    margin-top: 0.5rem;
+    color: var(--color-gray);
+}

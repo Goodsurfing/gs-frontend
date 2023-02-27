@@ -49,4 +49,4 @@ const MainHeader: FC = () => {
     );
 };
 
-export default MainHeader;
+export default React.memo(MainHeader);

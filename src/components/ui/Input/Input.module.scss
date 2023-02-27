@@ -1,0 +1,40 @@
+.wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.input {
+    box-sizing: border-box;
+    margin-top: .5rem;
+    border: var(--color-gray) 1px solid;
+    outline: none;
+    border-radius: .625rem;
+    width: 100%;
+    font-family: Lato;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: .875rem;
+}
+
+.label {
+    font-size: .875rem;
+    font-family: Lato;
+    font-weight: 400;
+    color: var(--color-gray);
+}
+
+.labelWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    max-width: 1.125rem;
+    margin-right: .625rem;
+}
+
+.description {
+    font-size: .625rem;
+    margin-top: .5rem;
+    color: var(--color-gray);
+}
