@@ -16,7 +16,7 @@ const YandexMap: FC<IYandexMap> = ({
     children,
 }) => {
     return (
-        <YMaps query={{ apikey: "32dcfbe4-583a-4e13-be77-83d32a181111" }}>
+        <YMaps query={{ apikey: process.env.REACT_APP_API_YANDEX_KEY }}>
             <YMap
                 modules={modules}
                 state={{ center: location ?? defaultLocation, zoom }}
