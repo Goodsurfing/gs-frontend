@@ -1,5 +1,6 @@
 .li {
 	width: 100%;
+
 	list-style-type: none;
 }
 
@@ -8,11 +9,14 @@
 }
 
 .link {
-	cursor: pointer;
 	display: flex;
 	align-items: center;
+
 	height: 3.75rem;
+
+	cursor: pointer;
 	text-decoration: none;
+
 	font-weight: 700;
 }
 
@@ -22,19 +26,23 @@
 
 .text {
 	display: none;
+
 	margin-right: auto;
+
 	text-align: left;
 }
 
 .opened {
 	display: block;
+
 	margin-left: 1.5rem;
 }
 
 .dropdownContainer {
 	display: flex;
+
 	width: 100%;
-	margin: 0 .875rem;
+	margin: 0 0.875rem;
 }
 
 .dropdown {
@@ -43,14 +51,15 @@
 }
 
 .dropdownItem {
-	margin: 1.25rem 0 1.25rem 0;
+	margin: 1.25rem 0;
 	margin-left: 2.25rem;
 }
 
 .dropdownLine {
-	margin: 0 1.25rem;
 	width: 2px;
 	height: auto;
+	margin: 0 1.25rem;
+
 	background-color: var(--color-gray);
 }
 

@@ -1,37 +1,52 @@
 .fileInputGroup {
-  position: relative;
-  font-size: 1.6rem;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1.35;
+	position: relative;
+
+	font-size: 1.6rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: 1.35;
 }
+
 .fileInputGroup__fileInput {
-  visibility: hidden;
-  opacity: 0;
+	visibility: hidden;
+
+	opacity: 0;
 }
+
 .fileInputGroup__label {
-  display: inline-block;
-  padding: 0.6rem 1.6rem;
-  background: #000;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: opacity 0.15s ease-in-out;
-  &:hover {
-    opacity: 0.8;
-    transition-duration: 0s;
-  }
-  &:active {
-    opacity: 1;
-    transition-duration: 0s;
-  }
-  .fileInputGroup__fileInput:focus-visible + & {
-    outline: 1px solid white;
-  }
+	display: inline-block;
+
+	padding: 0.6rem 1.6rem;
+
+	cursor: pointer;
+	transition: opacity 0.15s ease-in-out;
+
+	border-radius: 0.4rem;
+	background: #000;
+
+	&:hover {
+		transition-duration: 0s;
+
+		opacity: 0.8;
+	}
+
+	&:active {
+		transition-duration: 0s;
+
+		opacity: 1;
+	}
+
+	.fileInputGroup__fileInput:focus-visible + & {
+		outline: 1px solid white;
+	}
 }
+
 .fileInputGroup__label_disabled {
-  cursor: default;
-  opacity: 0.6;
-  &:hover {
-    opacity: 0.6;
-  }
+	cursor: default;
+
+	opacity: 0.6;
+
+	&:hover {
+		opacity: 0.6;
+	}
 }
