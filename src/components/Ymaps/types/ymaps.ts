@@ -14,3 +14,11 @@ export interface IYandexMap {
     height?: string;
     modules?: Array<string>;
 }
+
+export type GeoObjectHintType = {
+    GeoObject: {
+        Point: { pos: Array<string> };
+        description: string;
+        name: string;
+    };
+};

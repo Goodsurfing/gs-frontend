@@ -1,5 +1,10 @@
-import { YMapsApi } from "react-yandex-maps";
+import type { YMapsApi } from "react-yandex-maps";
 
 export default function getYmapCoordinates(ymapGeocodeRequest: YMapsApi) {
-    return ymapGeocodeRequest.geoObjects.get(0).geometry.getCoordinates();
+    try {
+        const res = ymapGeocodeRequest.geoObjects.get(0).geometry.getCoordinates();
+        return res;
+    } catch (e) {
+        console.log(e)
+    }
 }

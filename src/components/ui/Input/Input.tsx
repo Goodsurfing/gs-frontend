@@ -20,6 +20,7 @@ const Input: FC<InputProps> = ({
     defaultValue,
     onChange,
     className,
+    children,
     ...rest
 }) => {
     return (
@@ -44,6 +45,7 @@ const Input: FC<InputProps> = ({
                 placeholder={placeholder}
                 {...rest}
             />
+            {children}
         </div>
     );
 };

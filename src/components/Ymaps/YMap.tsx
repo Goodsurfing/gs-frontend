@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { Map as YMap } from "react-yandex-maps";
+import { Map as YMap, YMaps } from "react-yandex-maps";
 
-import { IYandexMap } from "./types/ymaps";
+import { IYandexMap, YMapType } from "./types/ymaps";
 
 const YandexMap: FC<IYandexMap> = ({
     defaultLocation,
@@ -13,19 +13,21 @@ const YandexMap: FC<IYandexMap> = ({
     setYmap,
     modules,
     className,
-    children
+    children,
 }) => {
     return (
-        <YMap
-            modules={modules}
-            state={{ center: location ?? defaultLocation, zoom }}
-            onLoad={setYmap}
-            width={width}
-            height={height}
-            className={className}
-        >
-            {children}
-        </YMap>
+        <YMaps query={{ apikey: "32dcfbe4-583a-4e13-be77-83d32a181111" }}>
+            <YMap
+                modules={modules}
+                state={{ center: location ?? defaultLocation, zoom }}
+                onLoad={setYmap}
+                width={width}
+                height={height}
+                className={className}
+            >
+                {children}
+            </YMap>
+        </YMaps>
     );
 };
 
