@@ -3,17 +3,15 @@ import React, { FC, useEffect, useRef, useState } from "react";
 
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
-import { GeoObjectHintType } from "../Ymaps/types/ymaps";
 import styles from "./Hints.module.scss";
+import { IHintsProps } from "./Hints.types";
 
-interface Hints {
-    hints: GeoObjectHintType[];
-    setAddress: (value: string) => void;
-    setAddressByHint: (value: boolean) => void;
-    selectedAddressByHint: boolean;
-}
-
-const Hints: FC<Hints> = ({ hints, setAddress, setAddressByHint, selectedAddressByHint }) => {
+const Hints: FC<IHintsProps> = ({
+    hints,
+    setAddress,
+    setAddressByHint,
+    selectedAddressByHint,
+}) => {
     const [opened, setOpened] = useState<boolean>(false);
     const hintsRef = useRef(null);
 

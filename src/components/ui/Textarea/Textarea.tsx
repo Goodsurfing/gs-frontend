@@ -18,11 +18,9 @@ const Textarea: FC<IText> = ({
     className,
     required,
     maxLength = 1000,
-    cols,
     id,
-    rows,
     name,
-    ...rest
+    ...restTextAreaProps
 }) => {
     return (
         <div className={cn(styles.texarea, className)}>
@@ -41,7 +39,7 @@ const Textarea: FC<IText> = ({
                 name={name}
                 id={id}
                 maxLength={maxLength}
-                {...rest}
+                {...restTextAreaProps}
             />
             {description && (
                 <label className={styles.description}>{description}</label>

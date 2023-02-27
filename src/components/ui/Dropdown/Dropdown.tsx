@@ -6,17 +6,9 @@ import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import dropdownIcon from "@/assets/icons/dropdown.svg";
 
 import styles from "./Dropdown.module.scss";
+import { IDropdownProps } from "./Dropdown.types";
 
-interface IDropdown {
-    organizations: Array<string>;
-    label?: string;
-    img?: string;
-    icon?: string;
-    description?: string;
-    className?: string;
-}
-
-const Dropdown: FC<IDropdown> = ({
+const Dropdown: FC<IDropdownProps> = ({
     organizations,
     label,
     description,
@@ -29,8 +21,6 @@ const Dropdown: FC<IDropdown> = ({
         organizations[0]
     );
 
-    console.log(opened);
-
     const dropdownRef = useRef(null);
 
     const handleClickOutside = () => {
@@ -38,8 +28,7 @@ const Dropdown: FC<IDropdown> = ({
     };
 
     const handleDropdownClick = (e: React.MouseEvent, value: string) => {
-        e.stopPropagation()
-        console.log(`value: ${value}, selectedValue: ${selectedValue}`);
+        e.stopPropagation();
         if (value === selectedValue) {
             setOpened(false);
             return;
@@ -51,17 +40,17 @@ const Dropdown: FC<IDropdown> = ({
     useOnClickOutside(dropdownRef, handleClickOutside);
 
     return (
-        <div onClick={() => setOpened(!opened)} className={cn(styles.wrapper, className)}>
+        <div
+            onClick={() => setOpened(!opened)}
+            className={cn(styles.wrapper, className)}
+        >
             <div className={styles.labelWrapper}>
                 {img && (
                     <img className={styles.image} src={img} alt={`${img}`} />
                 )}
                 <label className={styles.label}>{label}</label>
             </div>
-            <div
-                ref={dropdownRef}
-                className={styles.dropdownContainer}
-            >
+            <div ref={dropdownRef} className={styles.dropdownContainer}>
                 <ul
                     className={cn(styles.dropdown, {
                         [styles.opened]: opened === true,
@@ -82,10 +71,7 @@ const Dropdown: FC<IDropdown> = ({
                 </ul>
 
                 {selectedValue}
-                <img
-                    className={styles.arrow}
-                    src={icon}
-                />
+                <img className={styles.arrow} src={icon} />
             </div>
             {description && (
                 <label className={styles.description}>{description}</label>
