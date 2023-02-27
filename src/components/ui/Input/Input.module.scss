@@ -12,12 +12,12 @@
     width: 100%;
     font-family: Lato;
     font-weight: 400;
-    font-size: 16px;
-    padding: 14px;
+    font-size: 1rem;
+    padding: .875rem;
 }
 
 .label {
-    font-size: 14px;
+    font-size: .875rem;
     font-family: Lato;
     font-weight: 400;
     color: var(--color-gray);
@@ -29,6 +29,12 @@
 }
 
 .image {
-    max-width: 18px;
+    max-width: 1.125rem;
     margin-right: .625rem;
+}
+
+.description {
+    font-size: .625rem;
+    margin-top: .5rem;
+    color: var(--color-gray);
 }

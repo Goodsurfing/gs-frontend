@@ -1,48 +1,46 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
-import styles from "./Input.module.scss";
+import styles from "./Textarea.module.scss";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    label: string;
+interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     img?: string;
+    label: string;
     description?: string;
 }
 
-const Input: FC<InputProps> = ({
-    label,
+const Textarea: FC<IText> = ({
     img,
-    type,
-    required = false,
-    placeholder = "",
-    value,
-    id,
-    defaultValue,
-    onChange,
-    className,
+    label,
     description,
     children,
+    placeholder,
+    className,
+    required,
+    maxLength = 1000,
+    cols,
+    id,
+    rows,
+    name,
     ...rest
 }) => {
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={cn(styles.texarea, className)}>
             <div className={styles.labelWrapper}>
                 {img && (
                     <img className={styles.image} src={img} alt={`${img}`} />
                 )}
-                <label htmlFor={id} className={styles.label}>
+                <label className={styles.label} htmlFor={id}>
                     {label}
                 </label>
             </div>
-            <input
-                id={id}
+            <textarea
+                className={styles.textarea}
                 required={required}
-                value={value}
-                defaultValue={defaultValue}
-                onChange={onChange}
-                className={styles.input}
-                type={type}
                 placeholder={placeholder}
+                name={name}
+                id={id}
+                maxLength={maxLength}
                 {...rest}
             />
             {description && (
@@ -53,4 +51,4 @@ const Input: FC<InputProps> = ({
     );
 };
 
-export default Input;
+export default React.memo(Textarea);
