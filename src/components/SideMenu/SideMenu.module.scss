@@ -1,17 +1,20 @@
 .sideMenu {
-	span {
-		white-space: nowrap;
-	}
 	position: fixed;
 	left: 0;
+
 	width: 6.25rem;
 	height: 91vh;
 
 	transition: all 600ms ease;
+
+	span {
+		white-space: nowrap;
+	}
 }
 
 .open {
 	width: 20.625rem;
+
 	transform: translate();
 }
 

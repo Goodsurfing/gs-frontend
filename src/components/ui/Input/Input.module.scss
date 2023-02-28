@@ -1,40 +1,46 @@
 .wrapper {
-    width: 100%;
-    position: relative;
+	position: relative;
+
+	width: 100%;
 }
 
 .input {
-    box-sizing: border-box;
-    margin-top: .5rem;
-    border: var(--color-gray) 1px solid;
-    outline: none;
-    border-radius: .625rem;
-    width: 100%;
-    font-family: Lato;
-    font-weight: 400;
-    font-size: 1rem;
-    padding: .875rem;
+	box-sizing: border-box;
+	width: 100%;
+	margin-top: 0.5rem;
+	padding: 0.875rem;
+
+	border: var(--color-gray) 1px solid;
+	border-radius: 0.625rem;
+	outline: none;
+
+	font-family: Lato;
+	font-size: 1rem;
+	font-weight: 400;
 }
 
 .label {
-    font-size: .875rem;
-    font-family: Lato;
-    font-weight: 400;
-    color: var(--color-gray);
+	color: var(--color-gray);
+
+	font-family: Lato;
+	font-size: 0.875rem;
+	font-weight: 400;
 }
 
 .labelWrapper {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .image {
-    max-width: 1.125rem;
-    margin-right: .625rem;
+	max-width: 1.125rem;
+	margin-right: 0.625rem;
 }
 
 .description {
-    font-size: .625rem;
-    margin-top: .5rem;
-    color: var(--color-gray);
+	margin-top: 0.5rem;
+
+	color: var(--color-gray);
+
+	font-size: 0.625rem;
 }
