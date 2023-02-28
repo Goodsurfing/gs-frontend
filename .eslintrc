@@ -7,7 +7,6 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "linebreak-style": ["error", "windows"],
         "no-tabs": 0,
         "@typescript-eslint/indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
