@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { API_TRANSLATION_BASE_URL } from "@/constants/api";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 import { RootState } from "@/store/store";
 

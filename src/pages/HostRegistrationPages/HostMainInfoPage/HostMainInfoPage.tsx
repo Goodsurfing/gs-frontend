@@ -4,9 +4,9 @@ import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
+import HostMainInfoContent from "./HostMainInfoContent/HostMainInfoContent";
 import styles from "./HostMainInfoPage.module.scss";
 import { HostRegistrationSidebarData } from "./HostMainInfoPages.data";
-import HostMainInfoContent from "./HostMainInfoContent/HostMainInfoContent";
 
 const HostMainInfoPage: FC = () => {
     return (

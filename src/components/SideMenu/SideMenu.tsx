@@ -18,7 +18,7 @@ const SideMenu: FC<ISideMenu> = ({ theme, content }) => {
                 },
                 {
                     [styles.open]: isOpen,
-                },
+                }
             )}
         >
             <SideMenuNavbar

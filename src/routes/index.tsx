@@ -1,16 +1,16 @@
+import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 
 import ConfirmEmailPage from "@/pages/ConfirmEmailPage/ConfirmEmailPage";
 import ConfirmEmailSuccessPage from "@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage";
+import HostMainInfoPage from "@/pages/HostRegistrationPages/HostMainInfoPage/HostMainInfoPage";
 import MainPage from "@/pages/MainPage/MainPage";
 import ProfilePage from "@/pages/ProfilePages/ProfilePage/ProfilePage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
-import HostMainInfoPage from "@/pages/HostRegistrationPages/HostMainInfoPage/HostMainInfoPage";
 
 export const AppRoutes = () => {
     return (
@@ -39,9 +39,7 @@ export const AppRoutes = () => {
                 />
             </Route>
             <Route path="/:ln/host-registration">
-                <Route path="main"
-                    element={<HostMainInfoPage />}
-                />
+                <Route path="main" element={<HostMainInfoPage />} />
             </Route>
         </Routes>
     );

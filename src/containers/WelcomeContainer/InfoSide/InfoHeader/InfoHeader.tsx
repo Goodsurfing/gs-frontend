@@ -8,6 +8,7 @@ import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 import Arrow from "@/components/ui/Arrow/Arrow";
 import Button from "@/components/ui/Button/Button";
+import { Variant } from "@/components/ui/Button/Button.interface";
 import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -18,7 +19,6 @@ import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();

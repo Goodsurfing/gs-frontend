@@ -7,6 +7,7 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import InputField from "@/components/InputField/InputField";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import Button from "@/components/ui/Button/Button";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { useAppDispatch } from "@/hooks/redux";
 
@@ -18,7 +19,6 @@ import { setLoginUserData } from "@/store/reducers/loginSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 const SignInForm: FC = () => {
     const [loginUser] = authApi.useLoginUserMutation();

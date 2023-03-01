@@ -63,8 +63,8 @@ const CommunityNewsContainer: FC = () => {
                             },
                         }}
                     >
-                        {communityNewsData
-                            && communityNewsData.map((item, index) => {
+                        {communityNewsData &&
+                            communityNewsData.map((item, index) => {
                                 return (
                                     <SwiperSlide key={index}>
                                         <CommunityNewsItem {...item} />

@@ -62,8 +62,8 @@ const OffersContainer: FC = () => {
                         },
                     }}
                 >
-                    {offersData
-                        && offersData.map((item, index) => {
+                    {offersData &&
+                        offersData.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
                                     <Offer {...item} />

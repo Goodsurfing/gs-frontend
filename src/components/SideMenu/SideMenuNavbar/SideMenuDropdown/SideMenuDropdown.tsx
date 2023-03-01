@@ -39,7 +39,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    },
+                    }
                 )}
             >
                 <img src={icon} alt={text} />

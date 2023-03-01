@@ -15,7 +15,7 @@ const SideMenuNavbar: FC<ISideMenuNavbar> = ({
     return (
         <ul className={styles.navbarNav}>
             {content.map((item) => {
-                return (item.dropdownItems ? (
+                return item.dropdownItems ? (
                     <SideMenuDropdown
                         key={item.text}
                         isOpen={isOpen}
@@ -36,7 +36,7 @@ const SideMenuNavbar: FC<ISideMenuNavbar> = ({
                             route={item.route}
                         />
                     )
-                ));
+                );
             })}
             <SideMenuHelp isOpen={isOpen} theme={theme} />
         </ul>
