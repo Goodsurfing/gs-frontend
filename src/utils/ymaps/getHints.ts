@@ -6,6 +6,6 @@ export const getHints = async (value: string) => {
     }
     const data = await fetch(makeGeoUrl(value))
         .then((res) => res.json())
-        .then(data => data.response.GeoObjectCollection.featureMember);
+        .then((data) => data.response.GeoObjectCollection.featureMember);
     return data;
-}
+};

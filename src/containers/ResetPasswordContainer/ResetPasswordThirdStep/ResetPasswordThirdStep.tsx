@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 import useQuery from "@/hooks/useQuery";
 
@@ -13,7 +14,6 @@ import { AppRoutesEnum } from "@/routes/types";
 import { authApi } from "@/store/api/authApi";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 interface IFormData {
     password: string;

@@ -1,5 +1,5 @@
-import { AllowedFilesExtensions } from '@/constants/files';
+import { AllowedFilesExtensions } from "@/constants/files";
 
 export const stringifyAllowedExtensions = (array: AllowedFilesExtensions[]) => {
-  return array.join(", ");
-}
+    return array.join(", ");
+};

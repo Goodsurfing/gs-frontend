@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_PUBLIC_BASE_URL } from "@/constants/api";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { AuthApiEndpoints } from "@/types/api/auth";
 import {
@@ -41,8 +41,8 @@ export const authApi = createApi({
                 },
             }),
             resetPasswordRequest: build.mutation<
-            IResetPasswordRequestResponse,
-            IResetPasswordRequestFormData
+                IResetPasswordRequestResponse,
+                IResetPasswordRequestFormData
             >({
                 query: (data: IResetPasswordRequestFormData) => {
                     return {
@@ -53,8 +53,8 @@ export const authApi = createApi({
                 },
             }),
             resetPasswordVerify: build.mutation<
-            IResetPasswordVerifyResponse,
-            IResetPasswordVerifyData
+                IResetPasswordVerifyResponse,
+                IResetPasswordVerifyData
             >({
                 query: (data: IResetPasswordVerifyData) => {
                     return {

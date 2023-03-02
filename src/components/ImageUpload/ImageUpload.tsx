@@ -11,6 +11,7 @@ const ImageUpload: FC<ImageUploadProps> = ({
     defaultImage,
     value,
     onChange,
+    className,
     ...rest
 }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>();
@@ -30,7 +31,7 @@ const ImageUpload: FC<ImageUploadProps> = ({
         <div className={styles.wrapper}>
             <label
                 htmlFor={id}
-                className={cn(styles.label, {
+                className={cn(styles.label, className, {
                     [styles.disabled]: disabled,
                 })}
             >

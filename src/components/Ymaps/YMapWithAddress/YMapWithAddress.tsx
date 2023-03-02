@@ -65,10 +65,7 @@ const YMapWithAddress: FC = () => {
                 zoom={12}
                 defaultLocation={ymapsDefaultLocation}
                 location={normalizedCoordinates}
-                modules={[
-                    "geocode",
-                    "geoObject.addon.hint",
-                ]}
+                modules={["geocode", "geoObject.addon.hint"]}
             >
                 {normalizedCoordinates && (
                     <Placemark

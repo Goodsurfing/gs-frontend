@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button/Button";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 import useUploadFile from "@/hooks/files/useUploadFile";
 import { useAppSelector } from "@/hooks/redux";
@@ -16,7 +17,6 @@ import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -63,7 +63,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         const imageUuid = await useUploadFile(
             profileImage?.name,
             binaryImage,
-            token,
+            token
         );
         otherData.imageUuid = imageUuid;
         return updateUserInfo(otherData);

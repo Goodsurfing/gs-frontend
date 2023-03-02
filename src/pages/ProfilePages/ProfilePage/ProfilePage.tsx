@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
+import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
@@ -11,8 +12,6 @@ import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordP
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
-
-import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 const ProfilePage: FC = () => {
     const { pathname } = useLocation();
