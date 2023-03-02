@@ -41,7 +41,7 @@ const YMapWithAddress: FC = () => {
     }, [address]);
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <Input
                 label="Адрес"
                 type="text"
@@ -77,7 +77,7 @@ const YMapWithAddress: FC = () => {
                     />
                 )}
             </YandexMap>
-        </>
+        </div>
     );
 };
 

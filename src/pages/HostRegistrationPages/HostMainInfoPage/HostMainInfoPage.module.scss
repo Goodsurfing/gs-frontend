@@ -3,6 +3,11 @@
 }
 
 .wrapper {
-	display: flex;
-	padding: 2.25rem 3.125rem 4.125rem 21.875rem;
+	transition: .3s ease-in-out;
+	padding: 2.25rem 3.125rem 4.125rem 10rem;
+}
+
+.opened {
+	transition: .3s ease-in-out;
+	padding-left: 21.875rem;
 }

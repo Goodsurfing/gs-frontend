@@ -4,6 +4,8 @@ export enum Theme {
 }
 
 export interface ISideMenu {
+    isOpen: boolean;
+    setOpen: (isOpen: boolean) => void;
     theme: Theme;
     content: SideMenuParams[];
 }

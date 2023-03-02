@@ -2,4 +2,12 @@
 	width: 100%;
 	height: 10.625rem;
 	margin-top: 1.875rem;
+	box-sizing: border-box;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	box-sizing: content-box;
+	overflow: hidden;
 }

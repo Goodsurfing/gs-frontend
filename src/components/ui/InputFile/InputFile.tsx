@@ -1,9 +1,5 @@
 import cn from "classnames";
-import React, {
-    LabelHTMLAttributes,
-    useCallback,
-    useMemo,
-} from "react";
+import React, { vLabelHTMLAttributes, useCallback, useMemo } from "react";
 
 import { stringifyAllowedExtensions } from "@/utils/files/stringifyAllowedExtensions";
 
