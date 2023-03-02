@@ -1,12 +1,10 @@
 .wrapper {
     padding-left: 4.625rem;
     display: flex;
+    width: 20%;
+    margin-right: auto;
     justify-content: right;
     flex-direction: column;
-}
-
-.wrapper {
-    display: flex;
     .link {
         text-decoration: none;
 
