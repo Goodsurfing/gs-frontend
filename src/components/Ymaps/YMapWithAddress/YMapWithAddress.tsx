@@ -41,7 +41,7 @@ const YMapWithAddress: FC = () => {
     }, [address]);
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <Input
                 label="Адрес"
                 type="text"
@@ -65,10 +65,7 @@ const YMapWithAddress: FC = () => {
                 zoom={12}
                 defaultLocation={ymapsDefaultLocation}
                 location={normalizedCoordinates}
-                modules={[
-                    "geocode",
-                    "geoObject.addon.hint",
-                ]}
+                modules={["geocode", "geoObject.addon.hint"]}
             >
                 {normalizedCoordinates && (
                     <Placemark
@@ -80,7 +77,7 @@ const YMapWithAddress: FC = () => {
                     />
                 )}
             </YandexMap>
-        </>
+        </div>
     );
 };
 

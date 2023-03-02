@@ -15,11 +15,8 @@ const ConfirmEmailSuccessPage: FC = () => {
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        Спасибо! Ваш адрес электронной почты
-                        {" "}
-                        <span>space-cowboy1982@bk.ru</span>
-                        {" "}
-                        был подтверждён.
+                        Спасибо! Ваш адрес электронной почты{" "}
+                        <span>space-cowboy1982@bk.ru</span> был подтверждён.
                     </div>
                     <ButtonLink
                         className={styles.btn}

@@ -26,7 +26,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    },
+                    }
                 )}
             >
                 <img src={icon} alt={text} />

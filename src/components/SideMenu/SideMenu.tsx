@@ -1,13 +1,13 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import styles from "./SideMenu.module.scss";
 import SideMenuArrow from "./SideMenuArrow/SideMenuArrow";
 import SideMenuNavbar from "./SideMenuNavbar/SideMenuNavbar";
 import { ISideMenu, Theme } from "./types/SideMenu.interface";
 
-const SideMenu: FC<ISideMenu> = ({ theme, content }) => {
-    const [isOpen, setOpen] = useState(false);
+const SideMenu: FC<ISideMenu> = ({ isOpen, setOpen, theme, content }) => {
+    // const [isOpen, setOpen] = useState(false);
     return (
         <nav
             className={cn(
@@ -18,7 +18,7 @@ const SideMenu: FC<ISideMenu> = ({ theme, content }) => {
                 },
                 {
                     [styles.open]: isOpen,
-                },
+                }
             )}
         >
             <SideMenuNavbar

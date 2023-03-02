@@ -52,8 +52,8 @@ const ReviewsContainer: FC = () => {
                         pauseOnMouseEnter: true,
                     }}
                 >
-                    {reviewsData
-                        && reviewsData.map((item, index) => {
+                    {reviewsData &&
+                        reviewsData.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
                                     <ReviewItem {...item} />

@@ -78,10 +78,10 @@ module.exports = {
             },
             {
                 test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-                type: 'asset/resource',
+                type: "asset/resource",
                 generator: {
-                    filename: './fonts/[name].[ext]'
-                }
+                    filename: "./fonts/[name].[ext]",
+                },
             },
             {
                 test: /\.json$/i,

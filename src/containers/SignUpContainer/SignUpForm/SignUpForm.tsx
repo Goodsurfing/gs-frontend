@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
+import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { useAppDispatch } from "@/hooks/redux";
 
@@ -16,7 +17,6 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 const SignUpForm: FC = () => {
     const [registerUser] = authApi.useRegisterUserMutation();
@@ -35,7 +35,7 @@ const SignUpForm: FC = () => {
                     dispatch(setRegisterUserData(response));
                     navigate(
                         `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
-                        { replace: true },
+                        { replace: true }
                     );
                 })
                 .catch((error) => {
@@ -83,7 +83,11 @@ const SignUpForm: FC = () => {
                     );
                 }}
             />
-            <Button type="submit" variant={Variant.PRIMARY} className={styles.btn}>
+            <Button
+                type="submit"
+                variant={Variant.PRIMARY}
+                className={styles.btn}
+            >
                 Зарегистрироваться
             </Button>
         </form>

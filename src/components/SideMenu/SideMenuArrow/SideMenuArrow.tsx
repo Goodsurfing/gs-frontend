@@ -10,7 +10,9 @@ import styles from "./SideMenuArrow.module.scss";
 const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpen, isOpen, theme }) => {
     return (
         <div
-            onClick={() => { return setOpen(!isOpen); }}
+            onClick={() => {
+                return setOpen(!isOpen);
+            }}
             className={cn(
                 styles.box,
                 {
@@ -19,7 +21,7 @@ const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpen, isOpen, theme }) => {
                 {
                     [styles.dark]: theme === Theme.DARK,
                     [styles.light]: theme === Theme.LIGHT,
-                },
+                }
             )}
         >
             <img

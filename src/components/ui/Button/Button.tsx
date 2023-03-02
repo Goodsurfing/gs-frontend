@@ -24,7 +24,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                 {
                     [styles.rounded]: rounded,
                 },
-                className,
+                className
             )}
             onClick={rest.onClick}
         >
