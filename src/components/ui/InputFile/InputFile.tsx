@@ -14,7 +14,6 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
     (
         {
             id,
-            maxSize = 2097152,
             className,
             disabled,
             onChange,

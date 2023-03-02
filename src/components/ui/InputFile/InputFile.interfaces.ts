@@ -2,11 +2,7 @@ import { AllowedFilesExtensions } from "@/constants/files";
 import React, { InputHTMLAttributes, MouseEventHandler } from "react";
 
 export type InputFileProps = {
-    // isError: boolean;
-    // setError: (isError: boolean) => void;
-    // setInputValue: (value: string) => void;
     wrapperClassName?: string;
-    maxSize?: number;
     labelClassName?: string;
     labelDisableClassName?: string;
     labelChildren?: React.ReactNode;
