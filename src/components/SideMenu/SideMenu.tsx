@@ -7,7 +7,6 @@ import SideMenuNavbar from "./SideMenuNavbar/SideMenuNavbar";
 import { ISideMenu, Theme } from "./types/SideMenu.interface";
 
 const SideMenu: FC<ISideMenu> = ({ isOpen, setOpen, theme, content }) => {
-    // const [isOpen, setOpen] = useState(false);
     return (
         <nav
             className={cn(

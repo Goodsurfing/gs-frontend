@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import MainHeader from "@/components/MainHeader/MainHeader";
@@ -14,6 +14,7 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 import styles from "./ProfilePage.module.scss";
 
 const ProfilePage: FC = () => {
+    const [isOpen, setOpen] = useState<boolean>(false)
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
@@ -29,7 +30,7 @@ const ProfilePage: FC = () => {
         <>
             <MainHeader />
             <div className={styles.wrapper}>
-                <SideMenu theme={Theme.DARK} content={SideMenuData} />
+                <SideMenu setOpen={setOpen} isOpen={isOpen} theme={Theme.DARK} content={SideMenuData} />
                 <div className={styles.content}>{createContent(pathname)}</div>
             </div>
         </>
