@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "js/[name].[contenthash].js",
-        chunkFilename: "js/[name].[contenthash].js",
+        chunkFilename: "js/[name].[hash:8].js",
         publicPath: "/",
     },
     resolve: {
@@ -67,14 +67,17 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)$/i,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            name: "images/[hash]-[name].[ext]",
-                        },
-                    },
-                ],
+                type: 'asset/resource',
+                generator: {
+                    filename: './images/[contenthash].[ext]',
+                }
+            },
+            {
+                test: /\.(svg)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: './icons/[contenthash].[ext]',
+                }
             },
             {
                 test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,

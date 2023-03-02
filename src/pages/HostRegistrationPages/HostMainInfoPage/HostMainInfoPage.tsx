@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 
 import MainHeader from "@/components/MainHeader/MainHeader";
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
@@ -26,6 +27,7 @@ const HostMainInfoPage: FC = () => {
                 })}
             >
                 <HostMainInfoContent />
+                <ProfileInput route="/profile/info" />
             </div>
         </div>
     );
