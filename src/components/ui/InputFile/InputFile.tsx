@@ -57,7 +57,6 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                     id={id}
                     disabled={disabled}
                     accept={fileInputAccept}
-                    value={value}
                     {...restFileInputProps}
                 />
 
