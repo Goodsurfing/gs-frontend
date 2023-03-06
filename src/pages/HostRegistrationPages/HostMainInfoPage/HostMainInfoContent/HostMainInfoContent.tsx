@@ -10,15 +10,18 @@ import styles from "./HostMainInfoContent.module.scss";
 const HostMainInfoContent: FC = () => {
     return (
         <div className={styles.wrapper}>
-            <YMapWithAddress />
-            <HostMainInfoInputs />
-            <Button
-                className={styles.button}
-                variant={Variant.PRIMARY}
-                rounded={true}
-            >
-                Сохранить
-            </Button>
+            <div className={styles.container}>
+                <YMapWithAddress />
+                <HostMainInfoInputs />
+                <Button
+                    className={styles.button}
+                    variant={Variant.PRIMARY}
+                    rounded={true}
+                >
+                    Сохранить
+                </Button>                
+            </div>
+
         </div>
     );
 };

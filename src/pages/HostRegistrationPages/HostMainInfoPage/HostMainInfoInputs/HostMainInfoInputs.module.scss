@@ -37,3 +37,13 @@
 		margin-top: 1.875rem;
 	}
 }
+
+@media (max-width: 600px) {
+	.socialMedia {
+		grid-template-columns: 1fr;
+
+		.facebook {
+			margin-top: 1.875rem;
+		}
+	}
+}
