@@ -47,7 +47,7 @@ const HostMainInfoInputs = () => {
             />
             <div className={styles.socialMedia}>
                 <Input img={vkLogo} label="Вконтакте" id="vk" />
-                <Input img={facebookLogo} label="Facebook" id="facebook" />
+                <Input className={styles.facebook} img={facebookLogo} label="Facebook" id="facebook" />
                 <Input
                     className={styles.instagram}
                     img={instagramLogo}

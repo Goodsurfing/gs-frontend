@@ -1,19 +1,23 @@
 .wrapper {
-    padding-left: 4.625rem;
+    margin-left: 4.625rem;
+    max-width: 182px;
     display: flex;
     justify-content: right;
     flex-direction: column;
-}
+    margin-right: 50px;
 
-.wrapper {
-    display: flex;
+    .linkWrapper {
+        display: flex;
+        justify-content: right;
+    }
+
     .link {
         text-decoration: none;
-
         color: var(--color-blue);
         font-size: 1rem;
         position: relative;
         font-weight: 600;
+
         &::before {
             content: '';
             position: absolute;
@@ -42,6 +46,7 @@
 }
 
 .labelClassname {
+    display: flex;
     width: 172px;
     height: 172px;
     margin: 0;
@@ -86,4 +91,40 @@
         width: 32.5px;
         height: 26px;
     }
+}
+
+@media (max-width: 1000px) {
+    .wrapper {
+        justify-content: center;
+        margin: 0 0 30px 0;
+        padding-bottom: 1rem;
+
+        .labelClassname {
+            width: 150px;
+            height: 150px;
+        } 
+
+        .linkWrapper {
+            justify-content: center;
+
+            .link {
+                white-space: nowrap;
+            }
+        }
+
+        .fileWrapper {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .wrapper {
+        .labelClassname {
+            width: 100px;
+            height: 100px;
+        }        
+    }
+
 }

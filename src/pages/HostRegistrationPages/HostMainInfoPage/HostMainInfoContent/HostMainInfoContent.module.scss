@@ -1,11 +1,28 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
+	width: calc(100% - 235px);
+}
 
+.container {
 	width: 100%;
 }
 
 .button {
 	max-width: 280px;
 	margin-top: 3.75rem;
+}
+
+@media (max-width: 1000px) {
+	.wrapper {
+		width: 100%;
+	}
+}
+
+@media (max-width: 600px) {
+	.button {
+		padding: 10px 36px;
+		width: 100%;
+		text-align: center;
+	}
 }
