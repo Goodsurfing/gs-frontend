@@ -1,4 +1,5 @@
-import React from "react";
+import React, { FC } from "react";
+import { Controller } from "react-hook-form";
 
 import Dropdown from "@/components/ui/Dropdown/Dropdown";
 import Input from "@/components/ui/Input/Input";
@@ -6,39 +7,98 @@ import Textarea from "@/components/ui/Textarea/Textarea";
 
 import styles from "./HostMainInfoOrganization.module.scss";
 
-const HostMainInfoOrganization = () => {
+interface IHostMainInfoOrganization {
+    control: any;
+}
+
+const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
+    control,
+}) => {
+    // const []
     return (
         <div className={styles.wrapper}>
-            <Input
-                id="organization-name"
-                className={styles.organization}
-                label="Название организации"
+            <Controller
+                control={control}
+                name="organizationName"
+                defaultValue=""
+                render={({ field }) => (
+                    <Input
+                        id="organizationName"
+                        className={styles.organization}
+                        label="Название организации"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e)}
+                    />
+                )}
             />
-            <Textarea
-                className={styles.description}
-                label="Опишите организацию в одно предложение"
+            <Controller
+                control={control}
+                name="organizationDescription"
+                defaultValue=""
+                render={({ field }) => (
+                    <Textarea
+                        className={styles.description}
+                        label="Опишите организацию в одно предложение"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e)}
+                    />
+                )}
             />
             <div className={styles.organizationTypeWrapper}>
-                <Dropdown
-                    label="Тип организации"
-                    organizations={["ООО", "ОАО", "ООПТ"]}
+                <Controller
+                    control={control}
+                    name="organizationDescriptionType"
+                    defaultValue=""
+                    render={({ field }) => (
+                        <Dropdown
+                            label="Тип организации"
+                            organizations={["ООО", "ОАО", "ООПТ"]}
+                        />
+                    )}
                 />
-                <Input
-                    id="organization-other"
-                    className={styles.other}
-                    label="Другое"
+                <Controller
+                    control={control}
+                    name="organizationOther"
+                    defaultValue=""
+                    render={({ field }) => (
+                        <Input
+                            id="organizationOther"
+                            className={styles.other}
+                            label="Другое"
+                            value={field.value}
+                            onChange={(e) => field.onChange(e)}
+                        />
+                    )}
                 />
             </div>
-            <Input
-                label="Сайт организации"
-                className={styles.website}
-                id="organization-website"
+            <Controller
+                control={control}
+                name="organizationWebsite"
+                defaultValue=""
+                render={({ field }) => (
+                    <Input
+                        label="Сайт организации"
+                        className={styles.website}
+                        id="organizationWebsite"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e)}
+                    />
+                )}
             />
-            <Textarea
-                id="organization-website"
-                className={styles.website}
-                description="Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия"
-                label="Сайт организации"
+            <Controller
+                control={control}
+                name="organizationFullDescription"
+                defaultValue=""
+                render={({ field }) => (
+                    <Textarea
+                        id="organizationFullDescription"
+                        className={styles.website}
+                        description="Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия"
+                        label="Расскажите об организации"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e)}
+                    />
+                )}
             />
         </div>
     );
