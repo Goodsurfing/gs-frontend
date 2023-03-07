@@ -4,26 +4,27 @@ import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress"
 import Button from "@/components/ui/Button/Button";
 import { Variant } from "@/components/ui/Button/Button.interface";
 
-import HostMainInfoInputs from "../HostMainInfoInputs/HostMainInfoInputs";
-import styles from "./HostMainInfoContent.module.scss";
+import styles from "./HostMainInfoForm.module.scss";
+import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrganization";
+import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoContent: FC = () => {
     return (
         <div className={styles.wrapper}>
-            <div className={styles.container}>
+            <form className={styles.container}>
                 <YMapWithAddress />
-                <HostMainInfoInputs />
+                <HostMainInfoOrganization />
+                <HostMainInfoSocial />
                 <Button
                     className={styles.button}
                     variant={Variant.PRIMARY}
                     rounded={true}
                 >
                     Сохранить
-                </Button>                
-            </div>
-
+                </Button>
+            </form>
         </div>
     );
 };
 
-export default HostMainInfoContent;
+export default React.memo(HostMainInfoContent);
