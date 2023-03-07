@@ -8,7 +8,7 @@ import styles from "./HostMainInfoForm.module.scss";
 import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrganization";
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
-const HostMainInfoContent: FC = () => {
+const HostMainInfoForm: FC = () => {
     return (
         <div className={styles.wrapper}>
             <form className={styles.container}>
@@ -27,4 +27,4 @@ const HostMainInfoContent: FC = () => {
     );
 };
 
-export default React.memo(HostMainInfoContent);
+export default React.memo(HostMainInfoForm);
