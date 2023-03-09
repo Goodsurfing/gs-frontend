@@ -19,7 +19,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
         <div className={styles.wrapper}>
             <Controller
                 control={control}
-                name="organizationName"
+                name="name"
                 defaultValue=""
                 render={({ field }) => (
                     <Input
@@ -33,7 +33,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             />
             <Controller
                 control={control}
-                name="organizationDescription"
+                name="description"
                 defaultValue=""
                 render={({ field }) => (
                     <Textarea

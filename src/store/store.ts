@@ -6,6 +6,7 @@ import { userInfoApi } from "@/store/api/userInfoApi";
 import { localeApi } from "./api/localeApi";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
+import { organizationApi } from "./api/organizationApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
+    [organizationApi.reducerPath]: organizationApi.reducer
 });
 
 export const setupStore = () => {
@@ -21,6 +23,7 @@ export const setupStore = () => {
         middleware: (getDefaultMiddleware) => {
             return getDefaultMiddleware().concat([
                 authApi.middleware,
+                organizationApi.middleware,
                 userInfoApi.middleware,
                 localeApi.middleware,
             ]);
