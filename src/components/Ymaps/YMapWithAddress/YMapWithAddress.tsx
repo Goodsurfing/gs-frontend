@@ -1,5 +1,6 @@
 import { LocationType, ymapsDefaultLocation } from "@/constants/ymaps";
 import React, { FC, useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 import { Placemark } from "react-yandex-maps";
 
 import Hints from "@/components/Hints/Hints";
@@ -16,7 +17,11 @@ import YandexMap from "../YMap";
 import { GeoObjectHintType, YMapType } from "../types/ymaps";
 import styles from "./YMapWithAddress.module.scss";
 
-const YMapWithAddress: FC = () => {
+interface IYMapWithAddress {
+    control: any;
+}
+
+const YMapWithAddress: FC<IYMapWithAddress> = ({ control }) => {
     const [ymap, setYmap] = useState<YMapType>(null);
     const [address, setAddress] = useState<string>("");
     const [normalizedCoordinates, setNormalizedCoordinates] =
@@ -42,22 +47,30 @@ const YMapWithAddress: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <Input
-                label="Адрес"
-                type="text"
-                onFocus={() => setSelectedAddressByHint(false)}
-                onChange={(e) => setAddress(e.target.value)}
-                value={address}
-            >
-                {routesList?.length > 0 && (
-                    <Hints
-                        hints={routesList}
-                        selectedAddressByHint={selectedAddresByHint}
-                        setAddress={setAddress}
-                        setAddressByHint={setSelectedAddressByHint}
-                    />
+            <Controller
+                control={control}
+                name="address"
+                render={({ field }) => (
+                    <Input
+                        id="address"
+                        label="Адрес"
+                        type="text"
+                        onFocus={() => setSelectedAddressByHint(false)}
+                        onChange={(e) => setAddress(e.target.value)}
+                        value={address}
+                    >
+                        {routesList?.length > 0 && (
+                            <Hints
+                                hints={routesList}
+                                selectedAddressByHint={selectedAddresByHint}
+                                setAddress={setAddress}
+                                setAddressByHint={setSelectedAddressByHint}
+                            />
+                        )}
+                    </Input>
                 )}
-            </Input>
+            />
+
             <YandexMap
                 className={styles.ymap}
                 ymap={ymap}

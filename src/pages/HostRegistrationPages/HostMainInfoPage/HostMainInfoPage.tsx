@@ -6,7 +6,7 @@ import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
-import HostMainInfoContent from "./HostMainInfoContent/HostMainInfoContent";
+import HostMainInfoForm from "./HostMainInfoForm/HostMainInfoForm";
 import styles from "./HostMainInfoPage.module.scss";
 import { HostRegistrationSidebarData } from "./HostMainInfoPages.data";
 
@@ -26,7 +26,7 @@ const HostMainInfoPage: FC = () => {
                     [styles.opened]: isOpen,
                 })}
             >
-                <HostMainInfoContent />
+                <HostMainInfoForm />
                 <ProfileInput route="/profile/info" />
             </div>
         </div>

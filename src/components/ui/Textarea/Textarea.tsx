@@ -22,6 +22,13 @@ const Textarea: FC<IText> = ({
     name,
     ...restTextAreaProps
 }) => {
+    const handleTextAreaChange = (
+        event: React.KeyboardEvent<HTMLTextAreaElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+    };
     return (
         <div className={cn(styles.texarea, className)}>
             <div className={styles.labelWrapper}>
@@ -33,6 +40,7 @@ const Textarea: FC<IText> = ({
                 </label>
             </div>
             <textarea
+                onKeyDown={(e) => handleTextAreaChange(e)}
                 className={styles.textarea}
                 required={required}
                 placeholder={placeholder}
