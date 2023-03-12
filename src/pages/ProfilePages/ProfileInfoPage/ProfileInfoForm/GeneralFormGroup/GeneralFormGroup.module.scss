@@ -2,10 +2,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
 	width: 100%;
 
 	.name {
-		flex-basis: 80%;
+		width: 100%;
+		display: flex;
+		gap: 1.5rem;
 	}
 }

@@ -4,17 +4,19 @@ import ProfileInfoForm from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoFor
 
 import styles from "./ProfileInfoPage.module.scss";
 
-const ProfileInfoPage: FC = () => {
+interface IProfileInfoPage {
+    isOpen: boolean;
+}
+
+const ProfileInfoPage: FC<IProfileInfoPage> = ({ isOpen }) => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
 
     return (
-        <main className={styles.main}>
+        <main className={styles.wrapper}>
             <div className={styles.title}>
                 <h2>Основная информация</h2>
                 <p
-                    onClick={() => {
-                        return setIsLocked(!isLocked);
-                    }}
+                    onClick={() => setIsLocked(!isLocked)}
                     className={styles.link}
                 >
                     {isLocked ? "Редактировать профиль" : "Посмотреть профиль"}

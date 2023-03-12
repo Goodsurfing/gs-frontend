@@ -3,9 +3,11 @@ import { Control, Controller } from "react-hook-form";
 
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import InputField from "@/components/InputField/InputField";
+import Input from "@/components/ui/Input/Input";
 
 import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import styles from "./GeneralFormGroup.module.scss";
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 interface GeneralFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -27,13 +29,11 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     defaultValue={data.firstName!}
                     render={({ field }) => {
                         return (
-                            <InputField
-                                onChange={(e) => {
-                                    return field.onChange(e);
-                                }}
+                            <Input
+                                onChange={(e) => field.onChange(e)}
                                 value={field.value}
-                                text="Имя"
-                                type="text"
+                                label="Имя"
+                                id="firstname"
                                 disabled={isLocked}
                             />
                         );
@@ -45,13 +45,11 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     defaultValue={data.lastName!}
                     render={({ field }) => {
                         return (
-                            <InputField
-                                onChange={(e) => {
-                                    return field.onChange(e);
-                                }}
+                            <Input
+                                onChange={(e) => field.onChange(e)}
                                 value={field.value}
-                                text="Фамилия"
-                                type="text"
+                                label="Фамилия"
+                                id="lastname"
                                 disabled={isLocked}
                             />
                         );
@@ -59,7 +57,8 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                 />
             </div>
             <div className={styles.avatar}>
-                <Controller
+                <ProfileInput route="/" />
+                {/* <Controller
                     control={control}
                     name="image"
                     defaultValue={[]}
@@ -77,7 +76,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                             />
                         );
                     }}
-                />
+                /> */}
             </div>
         </div>
     );

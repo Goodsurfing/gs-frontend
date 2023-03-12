@@ -1,6 +1,12 @@
-.main {
+.wrapper {
 	width: 100%;
 }
+
+.opened {
+	transition: .3s ease-in-out;
+	padding-left: 21.875rem;
+}
+
 
 .title {
 	display: flex;

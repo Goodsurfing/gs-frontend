@@ -10,7 +10,7 @@ import { IOption } from "@/types/select";
 import styles from "./LocationFormGroup.module.scss";
 
 interface LocationFormGroupProps {
-    control: Control;
+    control: any;
     isLocked: boolean;
 }
 

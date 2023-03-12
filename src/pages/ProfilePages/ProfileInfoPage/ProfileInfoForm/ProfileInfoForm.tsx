@@ -17,6 +17,7 @@ import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
+import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -89,13 +90,15 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
-                <GenderFormGroup
-                    data={{ gender: userInfo.gender }}
+                <LocationFormGroup control={control} isLocked={isLocked} />
+
+                {/* <DateOfBirthFormGroup
+                    data={{ birthDate: new Date(userInfo.birthDate) }}
                     control={control}
                     isLocked={isLocked}
                 />
-                <DateOfBirthFormGroup
-                    data={{ birthDate: new Date(userInfo.birthDate) }}
+                <GenderFormGroup
+                    data={{ gender: userInfo.gender }}
                     control={control}
                     isLocked={isLocked}
                 />
@@ -103,11 +106,12 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     data={{ email: userInfo.email }}
                     control={control}
                     isLocked={isLocked}
-                />
+                /> */}
                 <Button
                     type="submit"
                     variant={Variant.PRIMARY}
                     className={styles.button}
+                    rounded
                 >
                     Сохранить
                 </Button>

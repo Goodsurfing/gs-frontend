@@ -9,7 +9,7 @@ import styles from "./Dropdown.module.scss";
 import { IDropdownProps } from "./Dropdown.types";
 
 const Dropdown: FC<IDropdownProps> = ({
-    organizations,
+    options,
     label,
     description,
     className,
@@ -18,7 +18,7 @@ const Dropdown: FC<IDropdownProps> = ({
 }) => {
     const [opened, setOpened] = useState<boolean>(false);
     const [selectedValue, setSelectedValue] = useState<string>(
-        organizations[0]
+        options[0]
     );
 
     const dropdownRef = useRef(null);
@@ -57,11 +57,11 @@ const Dropdown: FC<IDropdownProps> = ({
                         [styles.closed]: opened === false,
                     })}
                 >
-                    {organizations.map((dropdownItem, index) => (
+                    {options.map((dropdownItem, index) => (
                         <li
                             key={index}
                             onClick={(e) =>
-                                handleDropdownClick(e, organizations[index])
+                                handleDropdownClick(e, options[index])
                             }
                             className={styles.dropdownItem}
                         >
