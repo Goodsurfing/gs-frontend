@@ -9,6 +9,8 @@ import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 import HostMainInfoForm from "./HostMainInfoForm/HostMainInfoForm";
 import styles from "./HostMainInfoPage.module.scss";
 import { HostRegistrationSidebarData } from "./HostMainInfoPages.data";
+import HintPopup from "@/components/HintPopup/HintPopup";
+import { HintType } from "@/components/HintPopup/HintPopup.interface";
 
 const HostMainInfoPage: FC = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
