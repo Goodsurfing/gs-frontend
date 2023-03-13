@@ -1,5 +1,24 @@
 import { IOption } from "@/types/select";
 
+export const countries: IOption[] = [
+    {
+        value: "Russia",
+        label: "Россия"
+    },
+    {
+        value: "US",
+        label: "Америка"
+    },
+    {
+        value: "China",
+        label: "Китай"
+    }
+];
+
+// export const citys: IOption[] = [
+
+// ]
+
 export const days: IOption[] = [
     {
         value: "1",

@@ -8,7 +8,7 @@ interface IProfileInfoPage {
     isOpen: boolean;
 }
 
-const ProfileInfoPage: FC<IProfileInfoPage> = ({ isOpen }) => {
+const ProfileInfoPage: FC<IProfileInfoPage> = ({  }) => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
 
     return (

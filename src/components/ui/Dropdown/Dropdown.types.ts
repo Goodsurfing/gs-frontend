@@ -5,4 +5,5 @@ export interface IDropdownProps {
     icon?: string;
     description?: string;
     className?: string;
+    onChange: any
 }

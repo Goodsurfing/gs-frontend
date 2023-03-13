@@ -1,53 +1,57 @@
 import cn from "classnames";
-import React, { FC, useRef } from "react";
+import React, { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
 
 import { IOption } from "@/types/select";
 
-import "./SelectField.scss";
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import styles from "./SelectField.module.scss";
 
 interface Group extends GroupBase<IOption> {}
 
 interface SelectFieldProps extends Props<IOption, boolean, Group> {
     options: IOption[];
     label: string;
-    text?: string;
+    name: string;
+    img?: string;
+    description?: string;
 }
 
-const SelectField: FC<SelectFieldProps> = ({ text, isDisabled, ...rest }) => {
-    const dropdownRef = useRef(null);
-
-    const handleClickOutside = () => {
-        setOpened(false);
-    };
-
-    const handleDropdownClick = (e: React.MouseEvent, value: string) => {
-        e.stopPropagation();
-        if (value === selectedValue) {
-            setOpened(false);
-            return;
-        }
-        setSelectedValue(value);
-        setOpened(false);
-    };
-
-    useOnClickOutside(dropdownRef, handleClickOutside);
-
+const SelectField: FC<SelectFieldProps> = ({
+    isDisabled,
+    name,
+    img,
+    description,
+    label,
+    ...rest
+}) => {
     return (
-        <div className="wrapper">
+        <div className={styles.wrapper}>
+            <div className={styles.labelWrapper}>
+                {img && (
+                    <img className={styles.image} src={img} alt={`${img}`} />
+                )}
+                <label htmlFor={name} className={styles.label}>
+                    {label}
+                </label>
+            </div>
             <Select
                 {...rest}
-                ref={dropdownRef}
                 isDisabled={isDisabled}
-                unstyled
-                className={cn("react-select-container", {
-                    "select-disabled": isDisabled,
+                className={cn(styles.dropdown, {
+                    [styles.disabled]: isDisabled,
                 })}
-                classNamePrefix="react-select"
-                name="main"
+                classNames={{
+                    input: () => styles.input,
+                    indicatorsContainer: () => styles.menuIndicator,
+                    menu: () => styles.menuList,
+                    control: () => styles.control,
+                }}
+                name={name}
+                unstyled
             />
-            <label htmlFor="main">{text}</label>
+            {description && (
+                <label className={styles.description}>{description}</label>
+            )}
         </div>
     );
 };

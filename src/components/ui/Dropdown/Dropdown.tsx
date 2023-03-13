@@ -13,6 +13,7 @@ const Dropdown: FC<IDropdownProps> = ({
     label,
     description,
     className,
+    onChange,
     icon = dropdownIcon,
     img,
 }) => {
@@ -50,6 +51,7 @@ const Dropdown: FC<IDropdownProps> = ({
                 )}
                 <label className={styles.label}>{label}</label>
             </div>
+
             <div ref={dropdownRef} className={styles.dropdownContainer}>
                 <ul
                     className={cn(styles.dropdown, {
@@ -69,10 +71,10 @@ const Dropdown: FC<IDropdownProps> = ({
                         </li>
                     ))}
                 </ul>
-
                 {selectedValue}
                 <img className={styles.arrow} src={icon} />
             </div>
+            
             {description && (
                 <label className={styles.description}>{description}</label>
             )}

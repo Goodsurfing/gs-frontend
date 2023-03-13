@@ -2,8 +2,11 @@ import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
 import SelectField from "@/components/SelectField/SelectField";
+import Dropdown from "@/components/ui/Dropdown/Dropdown";
 
 import { days } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
+
+import { countries } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 
 import { IOption } from "@/types/select";
 
@@ -24,21 +27,19 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
                 <Controller
                     control={control}
                     name="county"
-                    defaultValue="1"
+                    defaultValue="Russia"
                     render={({ field: { onChange, value, name } }) => {
                         return (
                             <SelectField
-                                text="Страна"
-                                placeholder="Россия"
+                                options={countries}
                                 name={name}
-                                options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
+                                label="Страна"
+                                placeholder="Страна"
+                                value={countries.find((country) => country.value === value)}
                                 onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
+                                    onChange((selectedOption as IOption).value)
                                 }}
-                                isDisabled={isLocked}
+                                required
                             />
                         );
                     }}
@@ -50,37 +51,11 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
                     render={({ field: { onChange, value, name } }) => {
                         return (
                             <SelectField
-                                text="Город"
+                                label="Город"
+                                name={name}
                                 placeholder="Казань"
-                                name={name}
                                 options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                isDisabled={isLocked}
-                            />
-                        );
-                    }}
-                />
-            </div>
-            <div className={styles.language}>
-                <Controller
-                    control={control}
-                    name="language"
-                    defaultValue="1"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                text="Язык интерфейса"
-                                placeholder="RU"
-                                name={name}
-                                options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
+                                value={days.find((city) => city.value === value)}
                                 onChange={(selectedOption) => {
                                     onChange((selectedOption as IOption).value);
                                 }}
