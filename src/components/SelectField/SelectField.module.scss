@@ -49,7 +49,7 @@
 	&.disabled {
 		background-color: #EBEBE4;
 		border-radius: inherit;
-		cursor: not-allowed;
+		cursor: not-allowed !important;
 	}
 }
 

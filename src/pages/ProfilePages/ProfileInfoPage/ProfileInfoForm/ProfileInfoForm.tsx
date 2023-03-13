@@ -11,6 +11,7 @@ import { convertFileToBinary } from "@/utils/files/convertFileToBinary";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
 
+import AboutFormGroup from "./AboutFormGroup/AboutFormGroup";
 import ContactsFormGroup from "./ContactsFormGroup/ContactsFormGroup";
 import DateOfBirthFormGroup from "./DateOfBirthFormGroup/DateOfBirthFormGroup";
 import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
@@ -18,7 +19,7 @@ import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
 import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
-import AboutFormGroup from "./AboutFormGroup/AboutFormGroup";
+import SocialFormGroup from "./SocialFormGroup/SocialFormGroup";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -49,7 +50,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     };
 
     const { token } = useAppSelector((state) => {
-        console.log(token);
         return state.login;
     });
 
@@ -57,6 +57,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         const profileImage = data?.image[0];
         if (!data) return;
         const { image, ...otherData } = data;
+        console.log(otherData);
         if (!profileImage) {
             otherData.imageUuid = userInfo?.image.id;
             return updateUserInfo(otherData);
@@ -69,7 +70,8 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             token
         );
         otherData.imageUuid = imageUuid;
-        return updateUserInfo(otherData);
+        // console.log(otherData)
+        // return updateUserInfo(otherData);
     }
 
     useEffect(() => {
@@ -109,6 +111,16 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     isLocked={isLocked}
                 />
                 <AboutFormGroup control={control} isLocked={isLocked} />
+                <SocialFormGroup
+                    data={{
+                        vk: userInfo.vk,
+                        telegram: userInfo.telegram,
+                        instagram: userInfo.instagram,
+                        facebook: userInfo.facebook,
+                    }}
+                    control={control}
+                    isLocked={isLocked}
+                />
                 <Button
                     type="submit"
                     variant={Variant.PRIMARY}

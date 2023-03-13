@@ -1,0 +1,8 @@
+.social {
+    flex-wrap: wrap;
+    display: flex;
+    & > * {
+        width: 48.5%;
+        gap: 1.5rem;
+    }
+}
