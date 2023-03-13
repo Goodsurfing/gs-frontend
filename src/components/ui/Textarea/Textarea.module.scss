@@ -33,6 +33,11 @@
 	}
 }
 
+.textarea:disabled {
+	cursor: not-allowed;
+	background-color: var(--color-disabled);
+}
+
 .label {
 	color: var(--color-gray);
 

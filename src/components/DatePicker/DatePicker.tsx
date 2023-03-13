@@ -23,9 +23,7 @@ const DatePicker: FC<DatePickerProps> = ({
         <ReactDatePicker
             disabled={isLocked}
             selected={value || data.birthDate}
-            onChange={(date) => {
-                return onChange(date);
-            }}
+            onChange={(date) => onChange(date)}
             customInput={CustomInputElement}
             dateFormat="dd.MM.yyyy"
             showYearDropdown

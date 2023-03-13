@@ -13,8 +13,8 @@ const ProfileInfoPage: FC<IProfileInfoPage> = ({  }) => {
 
     return (
         <main className={styles.wrapper}>
-            <div className={styles.title}>
-                <h2>Основная информация</h2>
+            <div className={styles.titleWrapper}>
+                <h2 className={styles.title}>Основная информация</h2>
                 <p
                     onClick={() => setIsLocked(!isLocked)}
                     className={styles.link}

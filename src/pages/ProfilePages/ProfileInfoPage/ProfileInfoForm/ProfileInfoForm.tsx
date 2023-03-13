@@ -15,9 +15,10 @@ import ContactsFormGroup from "./ContactsFormGroup/ContactsFormGroup";
 import DateOfBirthFormGroup from "./DateOfBirthFormGroup/DateOfBirthFormGroup";
 import GenderFormGroup from "./GenderFormGroup/GenderFormGroup";
 import GeneralFormGroup from "./GeneralFormGroup/GeneralFormGroup";
+import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
-import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
+import AboutFormGroup from "./AboutFormGroup/AboutFormGroup";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -48,6 +49,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     };
 
     const { token } = useAppSelector((state) => {
+        console.log(token);
         return state.login;
     });
 
@@ -90,9 +92,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
-                <LocationFormGroup control={control} isLocked={isLocked} />
-
-                {/* <DateOfBirthFormGroup
+                <DateOfBirthFormGroup
                     data={{ birthDate: new Date(userInfo.birthDate) }}
                     control={control}
                     isLocked={isLocked}
@@ -102,11 +102,13 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                     control={control}
                     isLocked={isLocked}
                 />
+                <LocationFormGroup control={control} isLocked={isLocked} />
                 <ContactsFormGroup
-                    data={{ email: userInfo.email }}
+                    data={{ email: userInfo.email, phone: userInfo.phone }}
                     control={control}
                     isLocked={isLocked}
-                /> */}
+                />
+                <AboutFormGroup control={control} isLocked={isLocked} />
                 <Button
                     type="submit"
                     variant={Variant.PRIMARY}

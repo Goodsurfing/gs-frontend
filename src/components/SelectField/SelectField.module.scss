@@ -17,9 +17,12 @@
 	border: var(--color-gray) 1px solid;
 	border-radius: 0.625rem;
 	outline: none;
+
+	pointer-events: all !important;
 }
 
 .menuList {
+	cursor: pointer !important;
 	top: 110%;
 	padding: 0.875rem;
 	border: var(--color-gray) 1px solid;
@@ -37,14 +40,17 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	cursor: pointer !important;
 
 	svg {
 		fill: var(--color-gray) !important;
 	}
-}
 
-.input {
-
+	&.disabled {
+		background-color: #EBEBE4;
+		border-radius: inherit;
+		cursor: not-allowed;
+	}
 }
 
 .menu {

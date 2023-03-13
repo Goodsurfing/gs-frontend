@@ -15,9 +15,35 @@ export const countries: IOption[] = [
     }
 ];
 
-// export const citys: IOption[] = [
+export const cities: IOption[] = [
+    {
+        value: "Kazan",
+        label: "Казань"
+    },
+    {
+        value: "Washington",
+        label: "Вашингтон"
+    },
+    {
+        value: "Pekin",
+        label: "Пекин"
+    },
+];
 
-// ]
+export const languages: IOption[] = [
+    {
+        value: "rus",
+        label: "Русский"
+    },
+    {
+        value: "eng",
+        label: "Английский"
+    },
+    {
+        value: "es",
+        label: "Испанский"
+    },
+];
 
 export const days: IOption[] = [
     {

@@ -11,6 +11,7 @@ import {
     IUserInfoForm,
 } from "../ProfileInfoForm.interface";
 import styles from "./DateOfBirthFormGroup.module.scss";
+import Input from "@/components/ui/Input/Input";
 
 interface DateOfBirthFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -25,7 +26,6 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
 }) => {
     return (
         <ProfileInfoFormGroup
-            title="Дата рождения"
             className={styles.dateOfBirth}
         >
             <Controller
@@ -38,7 +38,7 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                             isLocked={isLocked}
                             value={field.value}
                             onChange={field.onChange}
-                            CustomInputElement={<input type="text" />}
+                            CustomInputElement={<Input label="Дата рождения" id='birthdate' />}
                         />
                     );
                 }}

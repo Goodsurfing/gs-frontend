@@ -23,7 +23,7 @@ const GenderFormGroup: FC<GenderFormGroupProps> = ({
     isLocked,
 }) => {
     return (
-        <ProfileInfoFormGroup title="Пол" className={styles.gender}>
+        <ProfileInfoFormGroup className={styles.gender}>
             <Controller
                 control={control}
                 name="gender"
@@ -31,6 +31,7 @@ const GenderFormGroup: FC<GenderFormGroupProps> = ({
                 render={({ field: { onChange, value, name } }) => {
                     return (
                         <SelectField
+                            label="Пол"
                             placeholder="Укажите ваш пол"
                             name={name}
                             options={genderOptions}

@@ -1,9 +1,19 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	max-width: 1100px;
+	max-width: 854px;
+
+	& > * {
+		margin-top: 1.875rem;
+		gap: 1.5rem;
+	}
+
+	& > *:first-child {
+		margin-top: 0;
+	}
 }
 
 .button {
+	margin-top: 3.75rem;
 	max-width: 17.5rem;
 }

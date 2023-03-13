@@ -1,17 +1,14 @@
 .location {
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 
-	width: 100%;
-
 	.address {
+		width: 100%;
 		display: flex;
+		gap: 1.5rem;
 		align-items: center;
 		justify-content: space-between;
-	}
-
-	.language {
-		// width: 20%;
 	}
 }

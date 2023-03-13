@@ -10,9 +10,11 @@ export interface IUserInfo {
     id: string;
     locale: string;
     email: string;
+    phone: string;
     firstName: string;
     lastName: string;
     gender: string;
+    description: string;
     birthDate: string;
     imageUuid?: string;
     image?: any;
@@ -22,9 +24,11 @@ export interface IUserInfoForm {
     id: string;
     locale: string;
     email: string;
+    phone: string;
     firstName: string;
     lastName: string;
     gender: string;
+    description: string;
     birthDate: Date;
     imageUuid?: string;
     image?: any;
@@ -35,4 +39,4 @@ export interface IGeneralFormGroup
 export interface IDateOfBirthFormGroup
     extends Pick<IUserInfoForm, "birthDate"> {}
 export interface IGenderFormGroup extends Pick<IUserInfoForm, "gender"> {}
-export interface IContactsFormGroup extends Pick<IUserInfoForm, "email"> {}
+export interface IContactsFormGroup extends Pick<IUserInfoForm, "email" | "phone"> {}

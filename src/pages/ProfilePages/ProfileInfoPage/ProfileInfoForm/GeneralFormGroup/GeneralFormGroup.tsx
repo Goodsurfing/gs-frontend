@@ -56,8 +56,8 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     }}
                 />
             </div>
-            <div className={styles.avatar}>
-                <ProfileInput route="/" />
+            {/* <div className={styles.avatar}> */}
+                {/* <ProfileInput route="/" /> */}
                 {/* <Controller
                     control={control}
                     name="image"
@@ -77,7 +77,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                         );
                     }}
                 /> */}
-            </div>
+            {/* </div> */}
         </div>
     );
 };
