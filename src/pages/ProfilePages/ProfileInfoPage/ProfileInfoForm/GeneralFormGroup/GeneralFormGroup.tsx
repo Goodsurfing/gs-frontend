@@ -34,6 +34,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                                     value={field.value}
                                     label="Имя"
                                     id="firstname"
+                                    required
                                     disabled={isLocked}
                                 />
                             );
@@ -48,6 +49,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                                     onChange={(e) => field.onChange(e)}
                                     value={field.value}
                                     label="Фамилия"
+                                    required
                                     id="lastname"
                                     disabled={isLocked}
                                 />

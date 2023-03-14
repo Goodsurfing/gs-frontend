@@ -38,7 +38,7 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                             isLocked={isLocked}
                             value={field.value}
                             onChange={field.onChange}
-                            CustomInputElement={<Input label="Дата рождения" id='birthdate' />}
+                            CustomInputElement={<Input required label="Дата рождения" id='birthdate' />}
                         />
                     );
                 }}
