@@ -1,8 +1,8 @@
 .social {
-    flex-wrap: wrap;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
     & > * {
-        width: 48.5%;
-        gap: 1.5rem;
+        width: 100%;
     }
 }

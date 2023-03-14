@@ -125,6 +125,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                         type="submit"
                         variant={Variant.PRIMARY}
                         className={styles.button}
+                        disabled={isLocked}
                         rounded
                     >
                         Сохранить

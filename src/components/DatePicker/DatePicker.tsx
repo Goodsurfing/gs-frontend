@@ -9,12 +9,14 @@ interface DatePickerProps {
     onChange: (date: Date | null) => void;
     CustomInputElement?: React.ReactNode;
     isLocked: boolean;
+    className?: string;
     data: IDateOfBirthFormGroup;
 }
 
 const DatePicker: FC<DatePickerProps> = ({
     value,
     onChange,
+    className,
     CustomInputElement,
     isLocked,
     data,
@@ -26,6 +28,7 @@ const DatePicker: FC<DatePickerProps> = ({
             onChange={(date) => onChange(date)}
             customInput={CustomInputElement}
             dateFormat="dd.MM.yyyy"
+            className={className}
             showYearDropdown
         />
     );

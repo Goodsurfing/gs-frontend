@@ -1,17 +1,13 @@
 .general {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 	width: 100%;
 
 	.nameWrapper {
 		width: 100%;
-		display: flex;
-		justify-content: space-between;
 	
 		.name {
 			width: 100%;
-			display: flex;
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 			gap: 1.5rem;
 		}
 	}
