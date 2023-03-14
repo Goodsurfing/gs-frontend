@@ -20,6 +20,7 @@ import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
 import SocialFormGroup from "./SocialFormGroup/SocialFormGroup";
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -85,50 +86,53 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     if (isSuccess && userInfo) {
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
-                <GeneralFormGroup
-                    data={{
-                        firstName: userInfo.firstName,
-                        lastName: userInfo.lastName,
-                        image: userInfo.image,
-                    }}
-                    control={control}
-                    isLocked={isLocked}
-                />
-                <DateOfBirthFormGroup
-                    data={{ birthDate: new Date(userInfo.birthDate) }}
-                    control={control}
-                    isLocked={isLocked}
-                />
-                <GenderFormGroup
-                    data={{ gender: userInfo.gender }}
-                    control={control}
-                    isLocked={isLocked}
-                />
-                <LocationFormGroup control={control} isLocked={isLocked} />
-                <ContactsFormGroup
-                    data={{ email: userInfo.email, phone: userInfo.phone }}
-                    control={control}
-                    isLocked={isLocked}
-                />
-                <AboutFormGroup control={control} isLocked={isLocked} />
-                <SocialFormGroup
-                    data={{
-                        vk: userInfo.vk,
-                        telegram: userInfo.telegram,
-                        instagram: userInfo.instagram,
-                        facebook: userInfo.facebook,
-                    }}
-                    control={control}
-                    isLocked={isLocked}
-                />
-                <Button
-                    type="submit"
-                    variant={Variant.PRIMARY}
-                    className={styles.button}
-                    rounded
-                >
-                    Сохранить
-                </Button>
+                <div className={styles.container}>
+                    <GeneralFormGroup
+                        data={{
+                            firstName: userInfo.firstName,
+                            lastName: userInfo.lastName,
+                            image: userInfo.image,
+                        }}
+                        control={control}
+                        isLocked={isLocked}
+                    />
+                    <DateOfBirthFormGroup
+                        data={{ birthDate: new Date(userInfo.birthDate) }}
+                        control={control}
+                        isLocked={isLocked}
+                    />
+                    <GenderFormGroup
+                        data={{ gender: userInfo.gender }}
+                        control={control}
+                        isLocked={isLocked}
+                    />
+                    <LocationFormGroup control={control} isLocked={isLocked} />
+                    <ContactsFormGroup
+                        data={{ email: userInfo.email, phone: userInfo.phone }}
+                        control={control}
+                        isLocked={isLocked}
+                    />
+                    <AboutFormGroup control={control} isLocked={isLocked} />
+                    <SocialFormGroup
+                        data={{
+                            vk: userInfo.vk,
+                            telegram: userInfo.telegram,
+                            instagram: userInfo.instagram,
+                            facebook: userInfo.facebook,
+                        }}
+                        control={control}
+                        isLocked={isLocked}
+                    />
+                    <Button
+                        type="submit"
+                        variant={Variant.PRIMARY}
+                        className={styles.button}
+                        rounded
+                    >
+                        Сохранить
+                    </Button>
+                </div>
+                <ProfileInput classname={styles.profileInput} />
             </form>
         );
     }

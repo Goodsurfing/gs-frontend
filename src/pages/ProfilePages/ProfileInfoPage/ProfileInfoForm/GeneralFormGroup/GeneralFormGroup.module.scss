@@ -4,9 +4,15 @@
 	justify-content: space-between;
 	width: 100%;
 
-	.name {
+	.nameWrapper {
 		width: 100%;
 		display: flex;
-		gap: 1.5rem;
+		justify-content: space-between;
+	
+		.name {
+			width: 100%;
+			display: flex;
+			gap: 1.5rem;
+		}
 	}
 }

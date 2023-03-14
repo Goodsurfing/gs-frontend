@@ -19,7 +19,7 @@ const ProfilePage: FC = () => {
 
     const createContent = (path: string) => {
         if (isMatchUrlEndpoint(path, "info")) {
-            return <ProfileInfoPage isOpen={isOpen} />;
+            return <ProfileInfoPage />;
         }
         if (isMatchUrlEndpoint(path, "reset-password")) {
             return <ProfileResetPasswordPage />;

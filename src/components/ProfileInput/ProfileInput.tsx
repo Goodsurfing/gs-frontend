@@ -9,14 +9,16 @@ import styles from "./ProfileInput.module.scss";
 
 interface IFileInput {
     fileSizeInMB?: string;
-    route: string;
+    route?: string;
     text?: string;
+    classname?: string;
 }
 
 const FileInput: FC<IFileInput> = ({
     fileSizeInMB = "2",
-    route = "/profile",
+    route,
     text = "Посмотреть профиль",
+    classname,
 }) => {
     const [isError, setError] = useState<boolean>(false);
     const [fileImage, setFileImage] = useState<string>();
@@ -35,12 +37,12 @@ const FileInput: FC<IFileInput> = ({
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.linkWrapper}>
+        <div className={cn(classname, styles.wrapper)}>
+            {route && <div className={styles.linkWrapper}>
                 <Link className={styles.link} to={route}>
                     {text}
                 </Link>
-            </div>
+            </div>}
             <InputFile
                 onChange={handleInputChange}
                 id="host-image-upload"

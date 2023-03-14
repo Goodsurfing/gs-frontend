@@ -4,11 +4,7 @@ import ProfileInfoForm from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoFor
 
 import styles from "./ProfileInfoPage.module.scss";
 
-interface IProfileInfoPage {
-    isOpen: boolean;
-}
-
-const ProfileInfoPage: FC<IProfileInfoPage> = ({  }) => {
+const ProfileInfoPage: FC = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
 
     return (

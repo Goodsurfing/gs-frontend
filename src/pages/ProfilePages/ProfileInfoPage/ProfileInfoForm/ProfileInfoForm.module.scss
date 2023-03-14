@@ -1,7 +1,12 @@
 .wrapper {
 	display: flex;
-	flex-direction: column;
+	width: 100%;
+}
+
+.container {
 	max-width: 854px;
+	display: flex;
+	flex-direction: column;
 
 	& > * {
 		margin-top: 1.875rem;
@@ -11,6 +16,12 @@
 	& > *:first-child {
 		margin-top: 0;
 	}
+}
+
+.profileInput {
+	margin-left: 3.875rem;
+	margin-right: 0;
+	margin-top: 0;
 }
 
 .button {
