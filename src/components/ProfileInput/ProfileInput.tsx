@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 import defaultImage from "@/assets/images/default-image-file.png";
 
 import InputFile from "../ui/InputFile/InputFile";
+import { InputFileProps } from "../ui/InputFile/InputFile.interfaces";
 import styles from "./ProfileInput.module.scss";
 
-interface IFileInput {
+interface IFileInput extends InputFileProps {
+    file: File | undefined;
+    setFile: (file: File | undefined) => void;
     fileSizeInMB?: string;
     route?: string;
     text?: string;
@@ -15,10 +18,13 @@ interface IFileInput {
 }
 
 const FileInput: FC<IFileInput> = ({
+    file,
+    setFile,
     fileSizeInMB = "2",
     route,
     text = "Посмотреть профиль",
     classname,
+    ...restInputProps
 }) => {
     const [isError, setError] = useState<boolean>(false);
     const [fileImage, setFileImage] = useState<string>();
@@ -30,22 +36,24 @@ const FileInput: FC<IFileInput> = ({
             return;
         }
         if (e.target.files) {
+            const fileImage = URL.createObjectURL(e.target.files[0]);
+            setFileImage(fileImage);
+            setFile(e.target.files[0]);
             setError(false);
-            const file = URL.createObjectURL(e.target.files[0]);
-            setFileImage(file);
         }
     };
 
     return (
         <div className={cn(classname, styles.wrapper)}>
-            {route && <div className={styles.linkWrapper}>
-                <Link className={styles.link} to={route}>
-                    {text}
-                </Link>
-            </div>}
+            {route && (
+                <div className={styles.linkWrapper}>
+                    <Link className={styles.link} to={route}>
+                        {text}
+                    </Link>
+                </div>
+            )}
             <InputFile
                 onChange={handleInputChange}
-                id="host-image-upload"
                 wrapperClassName={styles.fileWrapper}
                 className={styles.file}
                 labelClassName={cn(styles.labelClassname, {
@@ -54,6 +62,7 @@ const FileInput: FC<IFileInput> = ({
                 labelChildren={
                     <img alt="profile-pic" src={fileImage || defaultImage} />
                 }
+                {...restInputProps}
             />
             <span
                 className={cn(styles.size, {

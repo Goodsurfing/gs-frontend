@@ -10,7 +10,6 @@ export const organizationApi = createApi({
         baseUrl: API_ORGANIZATIONS_BASE_URL, 
         prepareHeaders(headers, { getState }) {
             const token = (getState() as RootState).login.token;
-            console.log(token);
 
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);

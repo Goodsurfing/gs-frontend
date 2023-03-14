@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import Button from "@/components/ui/Button/Button";
 import { Variant } from "@/components/ui/Button/Button.interface";
 
@@ -20,7 +21,6 @@ import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
 import SocialFormGroup from "./SocialFormGroup/SocialFormGroup";
-import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -50,29 +50,27 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         setData(prepareData);
     };
 
+    const [file, setFile] = useState<File | undefined>();
+
     const { token } = useAppSelector((state) => {
         return state.login;
     });
 
     async function handleUpdateUserInfo() {
-        const profileImage = data?.image[0];
         if (!data) return;
-        const { image, ...otherData } = data;
-        console.log(otherData);
-        if (!profileImage) {
+        const {...otherData} = data;
+        console.log(otherData)
+        if (!file) {
             otherData.imageUuid = userInfo?.image.id;
             return updateUserInfo(otherData);
         }
-
-        const binaryImage = convertFileToBinary(profileImage);
-        const imageUuid = await useUploadFile(
-            profileImage?.name,
-            binaryImage,
-            token
-        );
-        otherData.imageUuid = imageUuid;
-        // console.log(otherData)
-        // return updateUserInfo(otherData);
+        
+        if (file) {
+            const preparedFile = convertFileToBinary(file);
+            const imageUuid = await useUploadFile(file.name, preparedFile, token);
+            otherData.imageUuid = imageUuid;
+            return updateUserInfo(otherData)
+        }
     }
 
     useEffect(() => {
@@ -132,7 +130,26 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                         Сохранить
                     </Button>
                 </div>
-                <ProfileInput classname={styles.profileInput} />
+                <Controller
+                    control={control}
+                    name="image"
+                    render={({
+                        field: { onChange, onBlur, value, name },
+                        formState,
+                        fieldState,
+                    }) => {
+                        return (
+                            <ProfileInput
+                                file={file}
+                                setFile={setFile}
+                                disabled={isLocked}
+                                id={name}
+                                name={name}
+                                classname={styles.profileInput}
+                            />
+                        );
+                    }}
+                />
             </form>
         );
     }

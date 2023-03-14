@@ -11,6 +11,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         const body = {
             fileName,
         };
+        console.log(body)
         try {
             const response = await fetch(
                 `${API_MEDIA_BASE_URL}/generate-upload-link`,
@@ -23,6 +24,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                 }
             );
             const data = await response.json();
+            console.log(data);
             return data;
         } catch (error) {
             console.log(error);
@@ -45,6 +47,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         const generateLinkResponse: GenerateLinkResponse =
             await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
+            console.log(generateLinkResponse)
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.uuid;
         }

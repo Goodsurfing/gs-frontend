@@ -17,8 +17,6 @@ import { IOrganizationRegistrationFormData } from "@/types/api/organization/orga
 
 const HostMainInfoForm: FC = () => {
     const [registerOrganization] = organizationApi.useRegisterOrganizationMutation();
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<IOrganizationRegistrationFormData> = async (data) => {
         const preparedData: IOrganizationRegistrationFormData = {
