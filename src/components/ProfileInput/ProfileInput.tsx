@@ -12,6 +12,7 @@ interface IFileInput extends InputFileProps {
     file: File | undefined;
     setFile: (file: File | undefined) => void;
     fileSizeInMB?: string;
+    fileClassname?: string;
     route?: string;
     text?: string;
     classname?: string;
@@ -24,6 +25,7 @@ const FileInput: FC<IFileInput> = ({
     route,
     text = "Посмотреть профиль",
     classname,
+    fileClassname,
     ...restInputProps
 }) => {
     const [isError, setError] = useState<boolean>(false);
@@ -54,7 +56,7 @@ const FileInput: FC<IFileInput> = ({
             )}
             <InputFile
                 onChange={handleInputChange}
-                wrapperClassName={styles.fileWrapper}
+                wrapperClassName={cn(fileClassname, styles.fileWrapper)}
                 className={styles.file}
                 labelClassName={cn(styles.labelClassname, {
                     [styles.labelClassnameActive]: fileImage,

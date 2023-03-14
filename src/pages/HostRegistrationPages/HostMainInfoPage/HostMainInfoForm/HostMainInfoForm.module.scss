@@ -1,11 +1,25 @@
 .wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.container {
 	display: flex;
 	flex-direction: column;
 	width: calc(100% - 235px);
 }
 
-.container {
-	width: 100%;
+.file {
+	margin-left: 20px;
+	width: 187px;
+	height: 187px;
+	background-color: lightblue;
+	border-radius: 50%;
+}
+
+.fileInput {
+	margin-top: 2.8rem;
 }
 
 .button {
@@ -15,9 +29,17 @@
 
 @media (max-width: 1000px) {
 	.wrapper {
-		width: 100%;
+		flex-direction: column-reverse;
+		align-items: center;
+		margin: 0 auto;
+		padding-right: 3rem;
+		justify-content: center;
+		.container {
+			width: 100%;
+		}
 	}
 }
+
 
 @media (max-width: 600px) {
 	.button {

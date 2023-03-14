@@ -27,7 +27,6 @@ const HostMainInfoPage: FC = () => {
                 })}
             >
                 <HostMainInfoForm />
-                <ProfileInput id="asd" route="/profile/info" />
             </div>
         </div>
     );
