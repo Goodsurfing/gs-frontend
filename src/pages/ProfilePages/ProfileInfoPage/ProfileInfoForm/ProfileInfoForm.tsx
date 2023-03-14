@@ -61,15 +61,16 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
         const {...otherData} = data;
         console.log(otherData)
         if (!file) {
-            otherData.imageUuid = userInfo?.image.id;
+            otherData.imageUuid = userInfo?.imageUuid;
             return updateUserInfo(otherData);
         }
-        
+
         if (file) {
             const preparedFile = convertFileToBinary(file);
             const imageUuid = await useUploadFile(file.name, preparedFile, token);
             otherData.imageUuid = imageUuid;
-            return updateUserInfo(otherData)
+            console.log(otherData)
+            // return updateUserInfo(otherData)
         }
     }
 
@@ -89,7 +90,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                         data={{
                             firstName: userInfo.firstName,
                             lastName: userInfo.lastName,
-                            image: userInfo.image,
                         }}
                         control={control}
                         isLocked={isLocked}
@@ -132,11 +132,9 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
                 </div>
                 <Controller
                     control={control}
-                    name="image"
+                    name="imageUuid"
                     render={({
-                        field: { onChange, onBlur, value, name },
-                        formState,
-                        fieldState,
+                        field: { name }
                     }) => {
                         return (
                             <ProfileInput

@@ -21,7 +21,6 @@ export interface IUserInfo {
     facebook: string;
     birthDate: string;
     imageUuid?: string;
-    image?: any;
 }
 
 export interface IUserInfoForm {
@@ -39,11 +38,10 @@ export interface IUserInfoForm {
     facebook: string;
     birthDate: Date;
     imageUuid?: string;
-    image?: any;
 }
 
 export interface IGeneralFormGroup
-    extends Pick<IUserInfoForm, "firstName" | "lastName" | "image"> {}
+    extends Pick<IUserInfoForm, "firstName" | "lastName"> {}
 export interface IDateOfBirthFormGroup
     extends Pick<IUserInfoForm, "birthDate"> {}
 export interface IGenderFormGroup extends Pick<IUserInfoForm, "gender"> {}
