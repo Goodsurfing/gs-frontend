@@ -9,16 +9,17 @@ import styles from "./Dropdown.module.scss";
 import { IDropdownProps } from "./Dropdown.types";
 
 const Dropdown: FC<IDropdownProps> = ({
-    organizations,
+    options,
     label,
     description,
     className,
+    onChange,
     icon = dropdownIcon,
     img,
 }) => {
     const [opened, setOpened] = useState<boolean>(false);
     const [selectedValue, setSelectedValue] = useState<string>(
-        organizations[0]
+        options[0]
     );
 
     const dropdownRef = useRef(null);
@@ -50,6 +51,7 @@ const Dropdown: FC<IDropdownProps> = ({
                 )}
                 <label className={styles.label}>{label}</label>
             </div>
+
             <div ref={dropdownRef} className={styles.dropdownContainer}>
                 <ul
                     className={cn(styles.dropdown, {
@@ -57,11 +59,11 @@ const Dropdown: FC<IDropdownProps> = ({
                         [styles.closed]: opened === false,
                     })}
                 >
-                    {organizations.map((dropdownItem, index) => (
+                    {options.map((dropdownItem, index) => (
                         <li
                             key={index}
                             onClick={(e) =>
-                                handleDropdownClick(e, organizations[index])
+                                handleDropdownClick(e, options[index])
                             }
                             className={styles.dropdownItem}
                         >
@@ -69,10 +71,10 @@ const Dropdown: FC<IDropdownProps> = ({
                         </li>
                     ))}
                 </ul>
-
                 {selectedValue}
                 <img className={styles.arrow} src={icon} />
             </div>
+            
             {description && (
                 <label className={styles.description}>{description}</label>
             )}

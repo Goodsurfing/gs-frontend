@@ -24,11 +24,14 @@ const MobileHeader: FC = () => {
     return (
         <>
             <header className={styles.header}>
-                <img
-                    src={mobileLogotype}
-                    alt="GoodSurfing"
-                    className={styles.logo}
-                />
+                <Link to='/'>
+                    <img
+                        src={mobileLogotype}
+                        alt="GoodSurfing"
+                        className={styles.logo}
+                    />
+                </Link>
+
                 <ChangeLanguage />
                 <div
                     className={cn(styles.burger, {

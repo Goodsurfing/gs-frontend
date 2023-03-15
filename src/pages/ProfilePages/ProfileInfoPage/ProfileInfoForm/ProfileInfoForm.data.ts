@@ -1,5 +1,50 @@
 import { IOption } from "@/types/select";
 
+export const countries: IOption[] = [
+    {
+        value: "Russia",
+        label: "Россия"
+    },
+    {
+        value: "US",
+        label: "Америка"
+    },
+    {
+        value: "China",
+        label: "Китай"
+    }
+];
+
+export const cities: IOption[] = [
+    {
+        value: "Kazan",
+        label: "Казань"
+    },
+    {
+        value: "Washington",
+        label: "Вашингтон"
+    },
+    {
+        value: "Pekin",
+        label: "Пекин"
+    },
+];
+
+export const languages: IOption[] = [
+    {
+        value: "rus",
+        label: "Русский"
+    },
+    {
+        value: "eng",
+        label: "Английский"
+    },
+    {
+        value: "es",
+        label: "Испанский"
+    },
+];
+
 export const days: IOption[] = [
     {
         value: "1",

@@ -3,14 +3,18 @@ import { Control, Controller } from "react-hook-form";
 
 import SelectField from "@/components/SelectField/SelectField";
 
-import { days } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
+import {
+    cities,
+    countries,
+    languages,
+} from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 
 import { IOption } from "@/types/select";
 
 import styles from "./LocationFormGroup.module.scss";
 
 interface LocationFormGroupProps {
-    control: Control;
+    control: any;
     isLocked: boolean;
 }
 
@@ -24,70 +28,61 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
                 <Controller
                     control={control}
                     name="county"
-                    defaultValue="1"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                text="Страна"
-                                placeholder="Россия"
-                                name={name}
-                                options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                isDisabled={isLocked}
-                            />
-                        );
-                    }}
+                    defaultValue="Russia"
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            isDisabled={isLocked}
+                            options={countries}
+                            name={name}
+                            label="Страна"
+                            placeholder="Страна"
+                            value={countries.find(
+                                (country) => country.value === value
+                            )}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            required
+                        />
+                    )}
                 />
                 <Controller
                     control={control}
                     name="city"
-                    defaultValue="1"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                text="Город"
-                                placeholder="Казань"
-                                name={name}
-                                options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                isDisabled={isLocked}
-                            />
-                        );
-                    }}
+                    defaultValue="Kazan"
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            isDisabled={isLocked}
+                            label="Город"
+                            name={name}
+                            placeholder="Казань"
+                            options={cities}
+                            value={cities.find((city) => city.value === value)}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            required
+                        />
+                    )}
                 />
-            </div>
-            <div className={styles.language}>
                 <Controller
                     control={control}
                     name="language"
-                    defaultValue="1"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                text="Язык интерфейса"
-                                placeholder="RU"
-                                name={name}
-                                options={days}
-                                value={days.find((item) => {
-                                    return item.value === value;
-                                })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                isDisabled={isLocked}
-                            />
-                        );
-                    }}
+                    defaultValue="rus"
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            isDisabled={isLocked}
+                            label="Город"
+                            name={name}
+                            placeholder="Русский"
+                            options={languages}
+                            value={languages.find((language) => language.value === value)}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value);
+                            }}
+                            required
+                        />
+                    )}
                 />
             </div>
         </div>

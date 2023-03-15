@@ -6,6 +6,9 @@ import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
 
 import styles from "./HostMainInfoOrganization.module.scss";
+import SelectField from "@/components/SelectField/SelectField";
+import { organizations } from "./HostMainInfoOrganization.data";
+import { IOption } from "@/types/select";
 
 interface IHostMainInfoOrganization {
     control: any;
@@ -14,7 +17,6 @@ interface IHostMainInfoOrganization {
 const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
     control,
 }) => {
-    // const []
     return (
         <div className={styles.wrapper}>
             <Controller
@@ -48,11 +50,17 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 <Controller
                     control={control}
                     name="organizationDescriptionType"
-                    defaultValue=""
-                    render={({ field }) => (
-                        <Dropdown
+                    render={({ field: { onChange, value, name } }) => (
+                        <SelectField
+                            name={name}
+                            options={organizations} 
+                            value={organizations.find((organization) => {
+                                return organization.value === value;
+                            })}
+                            onChange={(selectedOption) => {
+                                onChange((selectedOption as IOption).value)
+                            }}
                             label="Тип организации"
-                            organizations={["ООО", "ОАО", "ООПТ"]}
                         />
                     )}
                 />

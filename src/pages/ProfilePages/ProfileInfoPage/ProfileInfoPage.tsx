@@ -8,13 +8,11 @@ const ProfileInfoPage: FC = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);
 
     return (
-        <main className={styles.main}>
-            <div className={styles.title}>
-                <h2>Основная информация</h2>
+        <main className={styles.wrapper}>
+            <div className={styles.titleWrapper}>
+                <h2 className={styles.title}>Основная информация</h2>
                 <p
-                    onClick={() => {
-                        return setIsLocked(!isLocked);
-                    }}
+                    onClick={() => setIsLocked(!isLocked)}
                     className={styles.link}
                 >
                     {isLocked ? "Редактировать профиль" : "Посмотреть профиль"}

@@ -1,35 +1,33 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import InputField from "@/components/InputField/InputField";
+import Textarea from "@/components/ui/Textarea/Textarea";
+import { IUserInfoForm } from "../ProfileInfoForm.interface";
 
 interface AboutFormGroupProps {
-    control: Control;
+    control: Control<IUserInfoForm>;
     isLocked: boolean;
 }
 
 const AboutFormGroup: FC<AboutFormGroupProps> = ({ control, isLocked }) => {
     return (
-        <div>
-            <Controller
-                control={control}
-                name="about"
-                defaultValue="Расскажите о себе"
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            text="Расскажите о себе"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-        </div>
+        <Controller
+            control={control}
+            name="description"
+            render={({ field }) => {
+                return (
+                    <Textarea
+                        id="description"
+                        onChange={(e) => {
+                            return field.onChange(e);
+                        }}
+                        value={field.value}
+                        label="Расскажите о себе"
+                        disabled={isLocked}
+                    />
+                );
+            }}
+        />
     );
 };
 

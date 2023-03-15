@@ -8,13 +8,13 @@ import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordPage";
-
+import cn from 'classnames';
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
 
 const ProfilePage: FC = () => {
-    const [isOpen, setOpen] = useState<boolean>(false)
+    const [isOpen, setOpen] = useState<boolean>(false);
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
@@ -27,13 +27,20 @@ const ProfilePage: FC = () => {
     };
 
     return (
-        <>
+        <div className={styles.layout}>
             <MainHeader />
-            <div className={styles.wrapper}>
-                <SideMenu setOpen={setOpen} isOpen={isOpen} theme={Theme.DARK} content={SideMenuData} />
-                <div className={styles.content}>{createContent(pathname)}</div>
+            <SideMenu
+                setOpen={setOpen}
+                isOpen={isOpen}
+                theme={Theme.LIGHT}
+                content={SideMenuData}
+            />
+            <div className={cn(styles.wrapper, {
+                [styles.opened]: isOpen
+            })}>
+                {createContent(pathname)}
             </div>
-        </>
+        </div>
     );
 };
 

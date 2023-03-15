@@ -1,10 +1,6 @@
 .contacts {
-	display: flex;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 
-	width: 60%;
-
-	div {
-		flex-basis: 45%;
-	}
+	width: 100%;
 }

@@ -19,8 +19,6 @@ import { IAuthFormData } from "@/types/api/auth/register.interface";
 import styles from "./SignUpForm.module.scss";
 
 const SignUpForm: FC = () => {
-    console.log(process.env.REACT_APP_API_BASE_URL)
-    // console.log(process.env.API_BASE_URL)
     const [registerUser] = authApi.useRegisterUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

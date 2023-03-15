@@ -3,6 +3,8 @@ import { Control, Controller } from "react-hook-form";
 
 import ImageUpload from "@/components/ImageUpload/ImageUpload";
 import InputField from "@/components/InputField/InputField";
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
+import Input from "@/components/ui/Input/Input";
 
 import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import styles from "./GeneralFormGroup.module.scss";
@@ -20,64 +22,43 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
 }) => {
     return (
         <div className={styles.general}>
-            <div className={styles.name}>
-                <Controller
-                    control={control}
-                    name="firstName"
-                    defaultValue={data.firstName!}
-                    render={({ field }) => {
-                        return (
-                            <InputField
-                                onChange={(e) => {
-                                    return field.onChange(e);
-                                }}
-                                value={field.value}
-                                text="Имя"
-                                type="text"
-                                disabled={isLocked}
-                            />
-                        );
-                    }}
-                />
-                <Controller
-                    control={control}
-                    name="lastName"
-                    defaultValue={data.lastName!}
-                    render={({ field }) => {
-                        return (
-                            <InputField
-                                onChange={(e) => {
-                                    return field.onChange(e);
-                                }}
-                                value={field.value}
-                                text="Фамилия"
-                                type="text"
-                                disabled={isLocked}
-                            />
-                        );
-                    }}
-                />
-            </div>
-            <div className={styles.avatar}>
-                <Controller
-                    control={control}
-                    name="image"
-                    defaultValue={[]}
-                    render={({ field }) => {
-                        return (
-                            <ImageUpload
-                                onChange={(e) => {
-                                    return field.onChange(e.target.files);
-                                }}
-                                value={field.value.filename}
-                                id="profilePicture"
-                                disabled={isLocked}
-                                name="profilePicture"
-                                defaultImage={data.image}
-                            />
-                        );
-                    }}
-                />
+            <div className={styles.nameWrapper}>
+                <div className={styles.name}>
+                    <Controller
+                        control={control}
+                        name="firstName"
+                        defaultValue=""
+                        render={({ field }) => {
+                            return (
+                                <Input
+                                    onChange={(e) => field.onChange(e)}
+                                    value={field.value}
+                                    label="Имя"
+                                    id="firstname"
+                                    required
+                                    disabled={isLocked}
+                                />
+                            );
+                        }}
+                    />
+                    <Controller
+                        control={control}
+                        name="lastName"
+                        defaultValue=""
+                        render={({ field }) => {
+                            return (
+                                <Input
+                                    onChange={(e) => field.onChange(e)}
+                                    value={field.value}
+                                    label="Фамилия"
+                                    required
+                                    id="lastname"
+                                    disabled={isLocked}
+                                />
+                            );
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );
