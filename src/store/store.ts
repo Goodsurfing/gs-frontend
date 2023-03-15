@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { authApi } from "@/store/api/authApi";
+import { authApi, reauthApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { localeApi } from "./api/localeApi";
@@ -14,7 +14,8 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
-    [organizationApi.reducerPath]: organizationApi.reducer
+    [organizationApi.reducerPath]: organizationApi.reducer,
+    [reauthApi.reducerPath]: authApi.reducer,
 });
 
 export const setupStore = () => {

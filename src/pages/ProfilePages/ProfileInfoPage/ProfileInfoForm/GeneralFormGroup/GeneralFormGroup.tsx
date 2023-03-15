@@ -27,6 +27,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     <Controller
                         control={control}
                         name="firstName"
+                        defaultValue=""
                         render={({ field }) => {
                             return (
                                 <Input
@@ -43,6 +44,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     <Controller
                         control={control}
                         name="lastName"
+                        defaultValue=""
                         render={({ field }) => {
                             return (
                                 <Input

@@ -43,6 +43,7 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
             <Controller
                 control={control}
                 name="phone"
+                defaultValue={data.phone || ''}
                 render={({ field }) => {
                     return (
                         <Input

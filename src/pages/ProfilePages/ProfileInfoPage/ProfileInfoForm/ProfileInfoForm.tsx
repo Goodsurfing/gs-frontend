@@ -46,7 +46,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             ...data,
             birthDate: data.birthDate?.toISOString().split("T")[0],
         };
-        console.log(prepareData);
         setData(prepareData);
     };
 
@@ -59,7 +58,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
     async function handleUpdateUserInfo() {
         if (!data) return;
         const {...otherData} = data;
-        console.log(otherData)
         if (!file) {
             otherData.imageUuid = userInfo?.imageUuid;
             return updateUserInfo(otherData);
@@ -69,7 +67,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             const preparedFile = convertFileToBinary(file);
             const imageUuid = await useUploadFile(file.name, preparedFile, token);
             otherData.imageUuid = imageUuid;
-            console.log(otherData)
+            alert(JSON.stringify(otherData))
             // return updateUserInfo(otherData)
         }
     }

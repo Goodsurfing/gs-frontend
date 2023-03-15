@@ -68,7 +68,7 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
                 <Controller
                     control={control}
                     name="language"
-                    defaultValue="Русский"
+                    defaultValue="rus"
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             isDisabled={isLocked}
