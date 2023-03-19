@@ -5,6 +5,7 @@ export enum Variant {
     SECONDARY = "SECONDARY",
     OUTLINED = "OUTLINED",
     ROUNDED = "ROUNDED",
+    GREEN = "GREEN"
 }
 
 export interface IButtonProps

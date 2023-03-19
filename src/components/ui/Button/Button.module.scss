@@ -45,6 +45,18 @@
 	}
 }
 
+.green {
+	transition: var(--main-transition);
+	color: var(--color-white);
+	background-color: var(--hover-green);
+	border: 1px solid var(--color-green);
+
+	&:hover {
+		background-color: var(--hover-white);
+		color: var(--color-green);
+	}
+}
+
 .outlined {
 	transition: var(--main-transition);
 

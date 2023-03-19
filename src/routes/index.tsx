@@ -11,6 +11,8 @@ import ResetPasswordPage from "@/pages/ResetPasswordPage/ResetPasswordPage";
 import ResetPasswordVerifyPage from "@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import SignUpPage from "@/pages/SignUpPage/SignUpPage";
+import HostPage from "@/pages/HostRegistrationPages/HostPage/HostPage";
+import HostDashboardPage from "@/pages/HostRegistrationPages/HostDashboardPage/HostDashboardPage";
 
 export const AppRoutes = () => {
     return (
@@ -38,9 +40,18 @@ export const AppRoutes = () => {
                     element={<PrivateRoute Component={ProfilePage} />}
                 />
             </Route>
-            <Route path="/:ln/host-registration">
-                <Route path="main" element={<HostMainInfoPage />} />
+            <Route path="/:ln/host" element={<HostPage />}>
+               <Route 
+                    path="registration"
+                    element={<PrivateRoute Component={HostMainInfoPage} />}
+                />
+                <Route
+                    path="dashboard"
+                    element={<PrivateRoute Component={HostDashboardPage} />}
+                />
+            <Route/> 
             </Route>
+            
         </Routes>
     );
 };
