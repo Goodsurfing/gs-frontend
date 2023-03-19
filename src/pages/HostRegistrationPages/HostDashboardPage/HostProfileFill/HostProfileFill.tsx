@@ -1,10 +1,11 @@
 import React, { FC } from "react";
 
+import DashboardDoughnut from "@/components/DashboardDoughnut/DashboardDoughnut";
 import Button from "@/components/ui/Button/Button";
 import { Variant } from "@/components/ui/Button/Button.interface";
 
-import styles from "./HostProfileFill.module.scss";
 import { ProfileFillItems } from "./HostProfileFill.data";
+import styles from "./HostProfileFill.module.scss";
 
 const HostProfileFill: FC = () => {
     return (
@@ -14,19 +15,33 @@ const HostProfileFill: FC = () => {
             </div>
             <div className={styles.statsWrapper}>
                 <ul className={styles.stats}>
-                {ProfileFillItems.map((item) => {
-                  return (
-                    <li className={styles.statsItem}>
-                      <div style={{backgroundColor: item.color}} className={styles.circle} />
-                      <span className={styles.statsItemText}>{item.text}</span>
-                    </li>
-                    )
-                })} 
+                    {ProfileFillItems.map((item) => {
+                        return (
+                            <li className={styles.statsItem}>
+                                <div
+                                    style={{
+                                        backgroundColor: `${
+                                            item.completed
+                                                ? "#22E0A5"
+                                                : "#DFE6EB"
+                                        }`,
+                                    }}
+                                    className={styles.circle}
+                                />
+                                <span className={styles.statsItemText}>
+                                    {item.text}
+                                </span>
+                            </li>
+                        );
+                    })}
                 </ul>
-                <Button className={styles.btn} variant={Variant.GREEN} rounded>
-                    Создать организацию
-                </Button>
+                <div className={styles.doughnut}>
+                    <DashboardDoughnut />
+                </div>
             </div>
+            <Button className={styles.btn} variant={Variant.GREEN} rounded>
+                Создать организацию
+            </Button>
         </div>
     );
 };

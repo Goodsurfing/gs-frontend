@@ -1,27 +1,26 @@
-interface IProfileFillItem {
-    text: string;
-    color?: string;
-}
+import { IChartDoughnut } from "@/utils/chartJS";
+
+export interface IProfileFillItem extends IChartDoughnut {}
 
 export const ProfileFillItems: IProfileFillItem[] = [
     {
         text: "Описание",
-        color: "green",
+        completed: true,
     },
     {
         text: "Фотографии",
-        color: "lightblue",
+        completed: true,
     },
     {
         text: "Видео",
-        color: "red",
+        completed: true,
     },
     {
         text: "Предложения",
-        color: "yellow",
+        completed: true,
     },
     {
         text: "Отзывы",
-        color: "pink",
+        completed: false,
     },
 ];

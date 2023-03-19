@@ -19,6 +19,8 @@
 
 .statsWrapper {
     padding: 22px 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .stats {
@@ -43,6 +45,10 @@
   border-radius: 50%;
   background-color: #DFE6EB;
   margin-bottom: 2px;
+}
+
+.doughnut {
+
 }
 
 .btn {
