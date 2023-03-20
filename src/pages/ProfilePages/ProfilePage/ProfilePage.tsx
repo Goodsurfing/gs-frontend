@@ -1,14 +1,15 @@
+import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
+import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
 import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordPage";
-import cn from 'classnames';
+
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import styles from "./ProfilePage.module.scss";
@@ -35,9 +36,11 @@ const ProfilePage: FC = () => {
                 theme={Theme.LIGHT}
                 content={SideMenuData}
             />
-            <div className={cn(styles.wrapper, {
-                [styles.opened]: isOpen
-            })}>
+            <div
+                className={cn(styles.wrapper, {
+                    [styles.opened]: isOpen,
+                })}
+            >
                 {createContent(pathname)}
             </div>
         </div>

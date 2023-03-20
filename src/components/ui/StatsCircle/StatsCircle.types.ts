@@ -7,6 +7,7 @@ export type DatasetsType = {
 };
 
 export interface IStatsCircle {
+    className?: string;
     degrees: Array<number>;
     setDegrees: (degrees: Array<number>) => void;
     width?: string;

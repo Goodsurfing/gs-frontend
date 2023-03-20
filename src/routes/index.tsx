@@ -1,4 +1,5 @@
 import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
+import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -51,7 +52,8 @@ export const AppRoutes = () => {
                             element={<PrivateRoute Component={HostDashboardPage} />}
                         />
                 </Route>
-            </Routes>
+                <Route path="*" element={<NotFoundPage/>} />
+                </Routes>
         </Suspense>
     );
 };

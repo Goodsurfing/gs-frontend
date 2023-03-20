@@ -1,0 +1,38 @@
+.cardWrapper {
+    padding: .875rem;
+    border: 1px solid var(--dark-theme-color);
+}
+
+.image {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: var(--dark-theme-color);
+}
+
+.cardHead {
+    position: relative;
+    display: flex;
+}
+
+.name {
+    font-size: 'Lato';
+    font-weight: 500;
+    color: var(--color-black);
+}
+
+.location {
+    margin-top: 8px;
+    color: var(--color-gray);
+    font-size: 12px;
+}
+
+.notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.link {
+    color: var(--color-blue);
+}

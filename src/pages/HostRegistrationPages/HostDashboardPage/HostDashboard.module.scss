@@ -2,3 +2,11 @@
   width: 100%;
   padding-right: 50px;
 }
+
+.columns {
+  min-height: 100%;
+  padding: 1.875rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.875rem;
+}

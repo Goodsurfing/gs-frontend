@@ -6,7 +6,6 @@
 }
 
 .titleWrapper {
-    width: 100%;
     padding: 0.875rem 1.25rem;
     box-sizing: border-box;
     border-bottom: 1px solid #d8d8d8;
@@ -18,39 +17,67 @@
 }
 
 .statsWrapper {
-    padding: 22px 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
 .stats {
-    list-style-type: none;
-    display: flex;
-    gap: 30px;
-}
-
-.statsItem {
+  margin-top: 20px;
+  list-style-type: none;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-}
-
-.statsItemText {
-  font-weight: 700;
-  margin-left: 10px;
-}
-
-.circle {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #DFE6EB;
-  margin-bottom: 2px;
+  gap: 30px;
 }
 
 .doughnut {
-
+  display: flex;
+  justify-content: flex-start;
+  margin-right: auto;
+  margin-left: 107px;
+  max-width: 110px;
 }
 
 .btn {
   margin-top: 35px;
+}
+
+.statsContainer {
+  width: 100%;
+  padding: 16px 0 23px 20px;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.doughnutInner {
+  position: relative;
+}
+
+.percents {
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+}
+
+@media (max-width: 1108px) {
+  .statsWrapper {
+    .stats {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media (max-width: 850px) {
+  .statsContainer {
+    flex-wrap: wrap-reverse;
+    
+    .doughnut {
+      margin: 24px auto;
+    }
+  }
+
 }

@@ -1,0 +1,37 @@
+.wrapper {
+    width: 100%;
+    max-width: 486px;
+}
+
+.titleWrapper {
+    padding: 14px 20px;
+    border-bottom: var(--dark-theme-color) 2px solid;
+    background-color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: 'Lato', sans-serif;
+}
+
+.requests {
+    color: var(--color-blue);
+}
+
+.requestsCount {
+    margin-left: 6px;
+}
+
+.requestsItems {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-white);
+}
+
+
+
+

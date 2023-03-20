@@ -5,9 +5,14 @@ import { ProfileFillItems } from "@/pages/HostRegistrationPages/HostDashboardPag
 
 import StatsCircle from "../ui/StatsCircle/StatsCircle";
 
-const DashboardDoughnut: FC = () => {
-    const [degrees, setDegrees] = useState<Array<number>>([360, 0]);
+interface IDashboardDoughnut {
+    className?: string;
+    text?: string;
+    degrees: Array<number>;
+    setDegrees: (degrees: Array<number>) => void;
+}
 
+const DashboardDoughnut: FC<IDashboardDoughnut> = ({ className, degrees, setDegrees, text, children, ...restDoughnutProps }) => {
     const chartData: ChartData<"doughnut", number[], string> = {
         labels: ["Завершено", "Не завершено"],
         datasets: [
@@ -20,21 +25,36 @@ const DashboardDoughnut: FC = () => {
     };
 
     const options = {
+        responsive: true,
+        elements: {
+            center: {
+                text: text || '',
+                color: 'green',
+                sidePadding: 50,
+                minFontSize: 26,
+                lineHeight: 25,
+                ...restDoughnutProps
+            }
+        },
         plugins: {
             legend: { display: false },
         },
     };
 
     return (
-        <StatsCircle
-            pointsData={ProfileFillItems}
-            degrees={degrees}
-            setDegrees={setDegrees}
-            options={options}
-            width="110px"
-            height="110px"
-            data={chartData}
-        />
+        <div className={className}>
+            <StatsCircle
+                pointsData={ProfileFillItems}
+                degrees={degrees}
+                setDegrees={setDegrees}
+                options={options}
+                width="110px"
+                height="110px"
+                data={chartData}
+            />        
+            {children}
+        </div>
+
     );
 };
 
