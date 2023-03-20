@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, Suspense, useState } from "react";
 
 import styles from './HostDashboard.module.scss';
 import HostProfileFill from "./HostProfileFill/HostProfileFill";

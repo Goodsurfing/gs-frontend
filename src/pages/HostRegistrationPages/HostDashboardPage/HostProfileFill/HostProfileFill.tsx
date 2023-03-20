@@ -17,7 +17,7 @@ const HostProfileFill: FC = () => {
                 <ul className={styles.stats}>
                     {ProfileFillItems.map((item) => {
                         return (
-                            <li className={styles.statsItem}>
+                            <li key={item.text} className={styles.statsItem}>
                                 <div
                                     style={{
                                         backgroundColor: `${
