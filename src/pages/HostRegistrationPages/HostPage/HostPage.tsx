@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, Suspense, useState } from "react";
+import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import SideMenu from "@/components/SideMenu/SideMenu";
@@ -10,8 +10,6 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import HostDashboardPage from "../HostDashboardPage/HostDashboardPage";
 import HostMainInfoPage from "../HostMainInfoPage/HostMainInfoPage";
-// import HostDashboardPage = import("../HostDashboardPage/HostDashboardPage");
-// import HostMainInfoPage =  import("../HostMainInfoPage/HostMainInfoPage");
 import { HostPagesSidebarData } from "./HostPages.data";
 import styles from "./HostPages.module.scss";
 

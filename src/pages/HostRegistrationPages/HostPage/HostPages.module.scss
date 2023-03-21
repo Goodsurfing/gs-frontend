@@ -1,14 +1,14 @@
 .layout {
 	background-color: var(--color-lightgray);
+	min-height: 100vh;
 }
 
 .wrapper {
 	display: flex;
-	align-content: stretch;
 	justify-content: space-between;
+	min-height: 100%;
 	transition: .3s ease-in-out;
-	padding: 2.25rem 3.125rem 4.125rem 10rem;
-	overflow: hidden;
+	padding: 2.25rem 3.125rem 0 10rem;
 }
 
 .opened {

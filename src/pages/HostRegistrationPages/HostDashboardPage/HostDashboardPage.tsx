@@ -1,8 +1,10 @@
-import React, { FC, Suspense, useState } from "react";
+import React, { FC } from "react";
 
 import styles from './HostDashboard.module.scss';
 import HostDashboardRequest from "./HostDashboardRequest/HostDashboardRequest";
 import HostProfileFill from "./HostProfileFill/HostProfileFill";
+import HostDashboardCalendar from "./HostDashboardCalendar/HostDashboardCalendar";
+import HostDashboardNotifications from "./HostDashboardNotifications/HostDashboardNotifications";
 
 const HostDashboardPage: FC = () => {
     return (
@@ -10,8 +12,8 @@ const HostDashboardPage: FC = () => {
             <HostProfileFill />
             <div className={styles.columns}>
                 <HostDashboardRequest />
-                <HostDashboardRequest />
-                <HostDashboardRequest />
+                <HostDashboardCalendar />
+                <HostDashboardNotifications />
             </div>
         </div>
     );

@@ -1,17 +1,4 @@
-.layout {
-	background-color: var(--color-lightgray);
-}
-
 .wrapper {
-	display: flex;
-	align-content: stretch;
-	justify-content: space-between;
-	transition: .3s ease-in-out;
-	padding: 2.25rem 3.125rem 4.125rem 10rem;
-	overflow: hidden;
-}
-
-.opened {
-	transition: .3s ease-in-out;
-	padding-left: 21.875rem;
+	padding-bottom: 4.125rem;
+	width: 100%;
 }

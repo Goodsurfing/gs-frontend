@@ -36,7 +36,6 @@ const SignInForm: FC = () => {
             await authUser(data)
             .unwrap()
             .then((res) => {
-                // console.log(res)
                 dispatch(setLoginUserData(res));
                 if (isRemember) {
                     localStorage.setItem("token", res.token);
@@ -44,19 +43,6 @@ const SignInForm: FC = () => {
                 navigate(`/${i18n.language}/`);
                 reset();
             })
-            // await loginUser(data)
-            //     .unwrap()
-            //     .then((response) => {
-            //         dispatch(setLoginUserData(response));
-            //         if (isRemember) {
-            //             localStorage.setItem("token", response.token);
-            //         }
-            //         navigate(`/${i18n.language}/`);
-            //         reset();
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
         } catch (e) {
             console.log(e);
         }

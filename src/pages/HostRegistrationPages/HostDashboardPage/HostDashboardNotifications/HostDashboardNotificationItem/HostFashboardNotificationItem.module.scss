@@ -1,0 +1,25 @@
+.wrapper {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--color-blue);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.date {
+  color: var(--color-gray);
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.content {
+  margin-top: 3px;
+  color: #212121;
+  font-size: 12px;
+  line-height: 1rem;
+}

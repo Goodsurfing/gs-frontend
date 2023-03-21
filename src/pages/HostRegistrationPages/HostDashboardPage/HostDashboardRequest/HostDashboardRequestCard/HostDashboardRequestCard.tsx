@@ -1,44 +1,38 @@
+import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./HostDashboardRequestCard.module.scss";
+import { IHostDashboardRequestCard } from "./types";
 
-export interface IRequestUser {
-    name: string;
-    location: string;
-    image: string;
-}
-
-export enum RequestNotification {
-    NEW = 'new',
-    COMPLETED = 'completed',
-    REJECTED = 'rejected'
-}
-
-export interface IRequestNotification {
-    status: RequestNotification;
-}
-
-interface IHostDashboardRequestCard {
-    user: IRequestUser;
-    notification: IRequestNotification;
-    article: string;
-}
-
-const HostDashboardRequestCard: FC = () => {
+const HostDashboardRequestCard: FC<IHostDashboardRequestCard> = ({
+    user,
+    notification,
+    article,
+}) => {
     return (
         <div className={styles.cardWrapper}>
             <div className={styles.cardHead}>
-                <div className={styles.notification}>Статус</div>
-                {/* Данные картинку получаем из объекта, которого пока что нет, так что костыль */}
-                {false ? <img src="" alt="" className={styles.image} /> : <div className={styles.image}></div>}
+                <div className={cn(styles.notification, {
+                    [styles.new]: notification === 'новая',
+                    [styles.rejected]: notification === 'отклонена',
+                    [styles.completed]: notification === 'принята',
+                })}>{notification}</div>
+                {user.image ? (
+                    <img src={user.image} alt="" className={styles.image} />
+                ) : (
+                    <div className={styles.image}></div>
+                )}
                 <div className={styles.text}>
-                    <p className={styles.name}>Станислав <br /> Старовойтов</p>
-                    <p className={styles.location}>Санкт-Петербург, Россия</p>                    
+                    <p className={styles.name}>{user.name}</p>
+                    <p className={styles.location}>{user.location}</p>
                 </div>
-
             </div>
-            <Link className={styles.link} to='/'>Опушкинская археологическая экспедиция в Крыму: сезон-2020</Link>
+            <div className={styles.linkWrapper}>
+                <Link className={styles.link} to="/">
+                   {article}
+                </Link>
+            </div>
         </div>
     );
 };

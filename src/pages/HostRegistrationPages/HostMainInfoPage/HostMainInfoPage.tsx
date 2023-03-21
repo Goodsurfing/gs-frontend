@@ -4,7 +4,11 @@ import HostMainInfoForm from "./HostMainInfoForm/HostMainInfoForm";
 import styles from "./HostMainInfoPage.module.scss";
 
 const HostMainInfoPage: FC = () => {
-    return <HostMainInfoForm />;
+    return (
+        <div className={styles.wrapper}>
+            <HostMainInfoForm />
+        </div>
+    );
 };
 
 export default HostMainInfoPage;
