@@ -1,5 +1,5 @@
 .cardWrapper {
-    padding: .875rem;
+    padding: 0.875rem;
     border: 1px solid var(--dark-theme-color);
 }
 
@@ -16,7 +16,7 @@
 }
 
 .name {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-size: 14px;
     font-weight: 500;
     color: #212121;
@@ -28,7 +28,7 @@
 
 .location {
     margin-top: 8px;
-    color: #8494A1;
+    color: #8494a1;
     font-size: 12px;
 }
 
@@ -39,18 +39,18 @@
     position: absolute;
     top: 0;
     right: 0;
+}
 
-    .new {
-        background-color: var(--color-blue);
-    }
+.new {
+    background-color: var(--color-blue);
+}
 
-    .rejected {
-        background-color: var(--color-pink);
-    }
+.rejected {
+    background-color: var(--color-pink);
+}
 
-    .completed {
-        background-color: var(--color-green);
-    }
+.completed {
+    background-color: var(--color-green);
 }
 
 .linkWrapper {
