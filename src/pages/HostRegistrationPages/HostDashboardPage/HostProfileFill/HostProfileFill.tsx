@@ -7,9 +7,12 @@ import { Variant } from "@/components/ui/Button/Button.interface";
 import { ProfileFillItems } from "./HostProfileFill.data";
 import styles from "./HostProfileFill.module.scss";
 import HostProfileFillPoint from "./HostProfileFillPoint/HostProfileFillPoint";
+import { useNavigate } from "react-router-dom";
 
 const HostProfileFill: FC = () => {
     const [degrees, setDegrees] = useState<Array<number>>([360, 0]);
+
+    const navigate = useNavigate();
 
     return (
         <div className={styles.container}>
@@ -36,6 +39,9 @@ const HostProfileFill: FC = () => {
                             className={styles.btn}
                             variant={Variant.GREEN}
                             rounded
+                            onClick={() => {
+                                navigate('/host/registration')
+                            }}
                         >
                             Создать организацию
                         </Button>

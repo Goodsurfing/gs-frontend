@@ -64,10 +64,29 @@
 }
 
 @media (max-width: 1108px) {
+  .statsContainer {
+    flex-wrap: wrap-reverse;
+    display: flex;
+    justify-content: center;
+
+    .btnWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .doughnut {
+      margin: 24px auto;
+    }
+  }
   .statsWrapper {
     .stats {
       flex-wrap: wrap;
     }
+  }
+
+  .doughnut {
+    margin-left: 60px;
   }
 }
 

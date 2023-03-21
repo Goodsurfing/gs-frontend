@@ -4,8 +4,6 @@ import { Variant } from "@/components/ui/Button/Button.interface";
 
 import styles from "./HostDashboardCalendar.module.scss";
 
-import 'react-calendar/dist/Calendar.css';
-
 import CalendarComponent from "@/components/ui/CalendarComponent/CalendarComponent";
 
 const HostDashboardCalendar = () => {
