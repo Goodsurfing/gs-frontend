@@ -19,8 +19,6 @@ import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 const HostMainInfoForm: FC = () => {
     const [registerOrganization] = organizationApi.useRegisterOrganizationMutation();
 
-    console.log(registerOrganization)
-
     const [file, setFile] = useState<File>();
 
     const onSubmit: SubmitHandler<IOrganizationRegistrationFormData> = async (
