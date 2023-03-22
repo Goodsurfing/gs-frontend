@@ -41,6 +41,7 @@ const SelectField: FC<SelectFieldProps> = ({
                     [styles.disabled]: isDisabled,
                 })}
                 classNames={{
+                    option: () => styles.option,
                     input: () => styles.input,
                     indicatorsContainer: () => styles.menuIndicator,
                     menuList: () => styles.menuWrapper,

@@ -9,7 +9,6 @@ const HintPopup: FC<IHintPopup> = ({
     text,
     className,
     type,
-    inProp,
     timeout = 3000,
 }) => {
     const [isActive, setActive] = useState(false);

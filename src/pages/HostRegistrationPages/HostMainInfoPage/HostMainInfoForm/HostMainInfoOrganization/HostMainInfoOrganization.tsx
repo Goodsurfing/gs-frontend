@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 
-import Dropdown from "@/components/ui/Dropdown/Dropdown";
 import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
 
@@ -50,7 +49,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 <Controller
                     control={control}
                     name="organizationDescriptionType"
-                    defaultValue=""
+                    defaultValue={organizations[0]}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             name={name}
