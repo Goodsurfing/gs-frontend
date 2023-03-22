@@ -14,7 +14,7 @@ export const HostPagesSidebarData: SideMenuParams[] = [
     },
     {
         route: "/",
-        text: "Предлложения",
+        text: "Предложения",
         icon: globeIcon,
     },
     {
@@ -28,13 +28,13 @@ export const HostPagesSidebarData: SideMenuParams[] = [
         icon: calendarIcon,
     },
     {
-        route: "/",
+        route: "host",
         text: "Организация",
         icon: cityIcon,
         dropdownItems: [
             {
                 text: "Описание",
-                route: "",
+                route: "registration",
             },
             {
                 text: "Фотогалерея",

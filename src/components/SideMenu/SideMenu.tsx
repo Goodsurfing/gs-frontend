@@ -5,8 +5,10 @@ import styles from "./SideMenu.module.scss";
 import SideMenuArrow from "./SideMenuArrow/SideMenuArrow";
 import SideMenuNavbar from "./SideMenuNavbar/SideMenuNavbar";
 import { ISideMenu, Theme } from "./types/SideMenu.interface";
+import { useLocation } from "react-router-dom";
 
 const SideMenu: FC<ISideMenu> = ({ isOpen, setOpen, theme, content }) => {
+    const { pathname } = useLocation();
     return (
         <nav
             className={cn(
@@ -21,6 +23,7 @@ const SideMenu: FC<ISideMenu> = ({ isOpen, setOpen, theme, content }) => {
             )}
         >
             <SideMenuNavbar
+                pathname={pathname}
                 theme={theme}
                 content={content}
                 isOpen={isOpen}

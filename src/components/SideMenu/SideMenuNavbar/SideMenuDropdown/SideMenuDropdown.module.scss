@@ -70,23 +70,34 @@
 }
 
 .dark {
-	color: var(--color-white);
 	background-color: inherit;
-
+	color: var(--white-theme-color);
 	.dropdownItem {
 		text-decoration: none;
-
 		color: var(--dark-theme-color);
+	}
+
+	.matchRoute {
+		text-decoration: underline;
+		color: white;
 	}
 }
 
 .light {
-	color: var(--color-black-thirdary);
 	background-color: inherit;
+	color: var(--white-theme-color);
 
 	.dropdownItem {
 		text-decoration: none;
-
 		color: var(--white-theme-color);
+	}	
+
+	.activeRouteDropdown {
+		color: var(--color-black-tertiary);
+	}
+
+	.matchRoute {
+		color: var(--color-black-tertiary);
+		text-decoration: underline;
 	}
 }

@@ -13,7 +13,7 @@ export interface ISideMenu {
 export interface SideMenuParams {
     text: string;
     icon: string;
-    route?: string;
+    route: string;
     dropdownItems?: DropdownItem[];
 }
 

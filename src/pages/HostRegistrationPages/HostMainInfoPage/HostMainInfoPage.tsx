@@ -4,6 +4,7 @@ import HostMainInfoForm from "./HostMainInfoForm/HostMainInfoForm";
 import styles from "./HostMainInfoPage.module.scss";
 
 const HostMainInfoPage: FC = () => {
+
     return (
         <div className={styles.wrapper}>
             <HostMainInfoForm />

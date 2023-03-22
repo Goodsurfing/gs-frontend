@@ -7,6 +7,7 @@ import SideMenuLink from "./SideMenuLink/SideMenuLink";
 import styles from "./SideMenuNavbar.module.scss";
 
 const SideMenuNavbar: FC<ISideMenuNavbar> = ({
+    pathname,
     theme,
     content,
     isOpen,
@@ -17,6 +18,8 @@ const SideMenuNavbar: FC<ISideMenuNavbar> = ({
             {content.map((item) => {
                 return item.dropdownItems ? (
                     <SideMenuDropdown
+                        pathname={pathname}
+                        route={item.route}
                         key={item.text}
                         isOpen={isOpen}
                         theme={theme}
@@ -28,6 +31,7 @@ const SideMenuNavbar: FC<ISideMenuNavbar> = ({
                 ) : (
                     item.route && (
                         <SideMenuLink
+                            pathname={pathname}
                             key={item.text}
                             isOpen={isOpen}
                             theme={theme}
