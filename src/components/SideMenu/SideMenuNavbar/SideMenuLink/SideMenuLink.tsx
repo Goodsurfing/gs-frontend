@@ -21,7 +21,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
     return (
         <li className={styles.li}>
             <LocaleLink
-                to={route}
+                to={`${route}`}
                 className={cn(
                     styles.link,
                     {
@@ -41,7 +41,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
                             [styles.opened]: isOpen,
                         },
                         {
-                            [styles.isMatch]: isMatchRoute,
+                            [styles.isMatchRoute]: isMatchRoute,
                         }
                     )}
                 >

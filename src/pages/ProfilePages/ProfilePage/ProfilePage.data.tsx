@@ -1,58 +1,35 @@
-import calendarIcon from "@assets/icons/navbar/calendar.svg";
-import cityIcon from "@assets/icons/navbar/city.svg";
-import globeIcon from "@assets/icons/navbar/globe.svg";
-import homeIcon from "@assets/icons/navbar/home.svg";
-import mailIcon from "@assets/icons/navbar/mail.svg";
-import React from "react";
+import aboutMeIcon from "@assets/icons/navbar/user-icon.svg";
+import successIcon from "@assets/icons/navbar/success-icon.svg";
+import roleIcon from "@assets/icons/navbar/role-icon.svg";
+import shieldIcon from "@assets/icons/navbar/shield-icon.svg";
+import lockIcon from "@assets/icons/navbar/lock-icon.svg";
 
 import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
 
 export const SideMenuData: SideMenuParams[] = [
     {
-        text: "Рабочий стол",
-        icon: homeIcon,
+        text: "Обо мне",
+        icon: aboutMeIcon,
+        route: "profile/info",
+    },
+    {
+        text: "Предпочтения",
+        icon: successIcon,
         route: "/",
     },
     {
-        text: "Предложения",
-        icon: globeIcon,
+        text: "Роль",
+        icon: roleIcon,
         route: "/",
     },
     {
-        text: "Заявки",
-        icon: mailIcon,
+        text: "Пароль",
+        icon: lockIcon,
         route: "/",
     },
     {
-        text: "Календарь",
-        icon: calendarIcon,
         route: "/",
-    },
-    {
-        route: "",
-        text: "Организация",
-        icon: cityIcon,
-        dropdownItems: [
-            {
-                text: "Описание",
-                route: "/",
-            },
-            {
-                text: "Фотогалерея",
-                route: "/",
-            },
-            {
-                text: "Видеогалерея",
-                route: "/",
-            },
-            {
-                text: "Команда",
-                route: "/",
-            },
-            {
-                text: "Отзывы",
-                route: "/",
-            },
-        ],
+        text: "Приватность",
+        icon: shieldIcon,
     },
 ];

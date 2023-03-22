@@ -80,7 +80,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                             return (
                                 <LocaleLink
                                     key={item.text}
-                                    to={item.route}
+                                    to={`${route}${item.route}`}
                                     className={cn(styles.dropdownItem, {
                                         [styles.activeRouteDropdown]:
                                             isMatchDropdownRoute,

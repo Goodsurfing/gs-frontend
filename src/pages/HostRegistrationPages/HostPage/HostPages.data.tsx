@@ -34,7 +34,7 @@ export const HostPagesSidebarData: SideMenuParams[] = [
         dropdownItems: [
             {
                 text: "Описание",
-                route: "registration",
+                route: "/registration",
             },
             {
                 text: "Фотогалерея",
