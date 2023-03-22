@@ -1,0 +1,16 @@
+.pointWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    border-radius: 50%;
+    margin-bottom: 2px;
+    background-color: #02CC9B;
+}
+
+.text {
+    font-family: 'Lato', sans-serif;
+    color: var(--color-black);
+    margin-left: 0.625rem;
+}

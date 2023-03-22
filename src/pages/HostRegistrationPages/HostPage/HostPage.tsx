@@ -6,24 +6,23 @@ import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
-import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
-import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
-import ProfileResetPasswordPage from "@/pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordPage";
-
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
-import styles from "./ProfilePage.module.scss";
+import HostDashboardPage from "../HostDashboardPage/HostDashboardPage";
+import HostMainInfoPage from "../HostMainInfoPage/HostMainInfoPage";
+import { HostPagesSidebarData } from "./HostPages.data";
+import styles from "./HostPages.module.scss";
 
-const ProfilePage: FC = () => {
+const HostPage: FC = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
-        if (isMatchUrlEndpoint(path, "info")) {
-            return <ProfileInfoPage />;
+        if (isMatchUrlEndpoint(path, "/dashboard")) {
+            return <HostDashboardPage />;
         }
-        if (isMatchUrlEndpoint(path, "reset-password")) {
-            return <ProfileResetPasswordPage />;
+        if (isMatchUrlEndpoint(path, "/registration")) {
+            return <HostMainInfoPage />;
         }
     };
 
@@ -31,10 +30,10 @@ const ProfilePage: FC = () => {
         <div className={styles.layout}>
             <MainHeader />
             <SideMenu
-                setOpen={setOpen}
                 isOpen={isOpen}
+                setOpen={setOpen}
                 theme={Theme.LIGHT}
-                content={SideMenuData}
+                content={HostPagesSidebarData}
             />
             <div
                 className={cn(styles.wrapper, {
@@ -47,4 +46,4 @@ const ProfilePage: FC = () => {
     );
 };
 
-export default ProfilePage;
+export default HostPage;

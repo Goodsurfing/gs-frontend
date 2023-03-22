@@ -1,0 +1,63 @@
+.cardWrapper {
+    padding: 0.875rem;
+    border: 1px solid var(--dark-theme-color);
+}
+
+.image {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: var(--dark-theme-color);
+}
+
+.cardHead {
+    position: relative;
+    display: flex;
+}
+
+.name {
+    font-family: "Lato";
+    font-size: 14px;
+    font-weight: 500;
+    color: #212121;
+}
+
+.text {
+    margin-left: 8px;
+}
+
+.location {
+    margin-top: 8px;
+    color: #8494a1;
+    font-size: 12px;
+}
+
+.notification {
+    font-size: 10px;
+    padding: 2px 6px;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.new {
+    background-color: var(--color-blue);
+}
+
+.rejected {
+    background-color: var(--color-pink);
+}
+
+.completed {
+    background-color: var(--color-green);
+}
+
+.linkWrapper {
+    margin-top: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: var(--color-blue);
+}

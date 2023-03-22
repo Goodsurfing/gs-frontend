@@ -20,6 +20,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                     [styles.primary]: variant === "PRIMARY",
                     [styles.secondary]: variant === "SECONDARY",
                     [styles.outlined]: variant === "OUTLINED",
+                    [styles.green]: variant === "GREEN",
                 },
                 {
                     [styles.rounded]: rounded,

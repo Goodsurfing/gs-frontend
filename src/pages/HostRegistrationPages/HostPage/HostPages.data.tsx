@@ -6,7 +6,7 @@ import globeIcon from "@/assets/icons/navbar/globe.svg";
 import houseIcon from "@/assets/icons/navbar/home.svg";
 import mailIcon from "@/assets/icons/navbar/mail.svg";
 
-export const HostRegistrationSidebarData: SideMenuParams[] = [
+export const HostPagesSidebarData: SideMenuParams[] = [
     {
         route: "/",
         text: "Рабочий стол",
