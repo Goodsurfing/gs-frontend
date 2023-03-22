@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 import Button from "@/components/ui/Button/Button";
