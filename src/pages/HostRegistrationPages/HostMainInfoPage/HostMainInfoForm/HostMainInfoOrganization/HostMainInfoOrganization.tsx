@@ -50,6 +50,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 <Controller
                     control={control}
                     name="organizationDescriptionType"
+                    defaultValue=""
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             name={name}
