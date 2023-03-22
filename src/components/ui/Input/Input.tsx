@@ -2,12 +2,13 @@ import cn from "classnames";
 import React, { FC } from "react";
 
 import styles from "./Input.module.scss";
-import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
     img?: string;
     description?: string;
+    isDirty?: boolean;
+    isValid?: boolean;
     id: string;
 }
 
@@ -26,7 +27,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         className,
         description,
         children,
-        ...rest
+        ...restInputProps
     }, inputRef ) => {
         return (
             <div className={cn(styles.wrapper, className)}>
@@ -52,7 +53,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     className={styles.input}
                     type={type}
                     placeholder={placeholder}
-                    {...rest}
+                    {...restInputProps}
                 />
                 {description && (
                     <label className={styles.description}>{description}</label>

@@ -1,9 +1,10 @@
+import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import MainHeader from "@/components/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
+import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";
@@ -14,7 +15,7 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 import styles from "./ProfilePage.module.scss";
 
 const ProfilePage: FC = () => {
-    const [isOpen, setOpen] = useState<boolean>(false)
+    const [isOpen, setOpen] = useState<boolean>(false);
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
@@ -27,13 +28,22 @@ const ProfilePage: FC = () => {
     };
 
     return (
-        <>
+        <div className={styles.layout}>
             <MainHeader />
-            <div className={styles.wrapper}>
-                <SideMenu setOpen={setOpen} isOpen={isOpen} theme={Theme.DARK} content={SideMenuData} />
-                <div className={styles.content}>{createContent(pathname)}</div>
+            <SideMenu
+                setOpen={setOpen}
+                isOpen={isOpen}
+                theme={Theme.LIGHT}
+                content={SideMenuData}
+            />
+            <div
+                className={cn(styles.wrapper, {
+                    [styles.opened]: isOpen,
+                })}
+            >
+                {createContent(pathname)}
             </div>
-        </>
+        </div>
     );
 };
 

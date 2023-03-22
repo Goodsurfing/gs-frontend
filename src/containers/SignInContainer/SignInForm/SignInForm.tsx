@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
-import { authApi } from "@/store/api/authApi";
+import { authApi, reauthApi } from "@/store/api/authApi";
 import { setLoginUserData } from "@/store/reducers/loginSlice";
 
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
@@ -22,6 +22,7 @@ import styles from "./SignInForm.module.scss";
 
 const SignInForm: FC = () => {
     const [loginUser] = authApi.useLoginUserMutation();
+    const [authUser] = reauthApi.useAuthUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -32,19 +33,16 @@ const SignInForm: FC = () => {
 
     const onSubmit: SubmitHandler<IAuthLoginData> = async (data) => {
         try {
-            await loginUser(data)
-                .unwrap()
-                .then((response) => {
-                    dispatch(setLoginUserData(response));
-                    if (isRemember) {
-                        localStorage.setItem("token", response.token);
-                    }
-                    navigate(`/${i18n.language}/`);
-                    reset();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            await authUser(data)
+            .unwrap()
+            .then((res) => {
+                dispatch(setLoginUserData(res));
+                if (isRemember) {
+                    localStorage.setItem("token", res.token);
+                }
+                navigate(`/${i18n.language}/`);
+                reset();
+            })
         } catch (e) {
             console.log(e);
         }

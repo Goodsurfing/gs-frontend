@@ -1,13 +1,12 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import InputField from "@/components/InputField/InputField";
-
 import {
     IContactsFormGroup,
     IUserInfoForm,
 } from "../ProfileInfoForm.interface";
 import styles from "./ContactsFormGroup.module.scss";
+import Input from "@/components/ui/Input/Input";
 
 interface ContactsFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -28,36 +27,40 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
                 defaultValue={data.email}
                 render={({ field }) => {
                     return (
-                        <InputField
+                        <Input
+                            id="e-mail"
                             onChange={(e) => {
                                 return field.onChange(e);
                             }}
                             value={field.value}
-                            text="E-mail"
+                            label="E-mail"
                             type="text"
                             disabled={isLocked}
                         />
                     );
                 }}
             />
-            {/* <Controller
+            <Controller
                 control={control}
-                name="phoneNumber"
-                defaultValue={data.email}
+                name="phone"
+                defaultValue={data.phone || ''}
                 render={({ field }) => {
                     return (
-                        <InputField
+                        <Input
+                            id="phone"
                             onChange={(e) => {
                                 return field.onChange(e);
                             }}
                             value={field.value}
-                            text="Телефон"
+                            label="Телефон"
+                            name={"phone"}
+                            placeholder="+(x)-xxx-xxx-xx-xx"
                             type="phone"
                             disabled={isLocked}
                         />
                     );
                 }}
-            /> */}
+            />
         </div>
     );
 };

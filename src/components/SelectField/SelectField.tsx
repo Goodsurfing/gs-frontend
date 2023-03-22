@@ -4,29 +4,57 @@ import Select, { GroupBase, Props } from "react-select";
 
 import { IOption } from "@/types/select";
 
-import "./SelectField.scss";
+import styles from "./SelectField.module.scss";
 
 interface Group extends GroupBase<IOption> {}
 
 interface SelectFieldProps extends Props<IOption, boolean, Group> {
     options: IOption[];
-    text?: string;
+    label: string;
+    name: string;
+    img?: string;
+    description?: string;
 }
 
-const SelectField: FC<SelectFieldProps> = ({ text, isDisabled, ...rest }) => {
+const SelectField: FC<SelectFieldProps> = ({
+    isDisabled,
+    name,
+    img,
+    description,
+    label,
+    ...rest
+}) => {
     return (
-        <div className="wrapper">
+        <div className={styles.wrapper}>
+            <div className={styles.labelWrapper}>
+                {img && (
+                    <img className={styles.image} src={img} alt={`${img}`} />
+                )}
+                <label htmlFor={name} className={styles.label}>
+                    {label}
+                </label>
+            </div>
             <Select
                 {...rest}
                 isDisabled={isDisabled}
-                unstyled
-                className={cn("react-select-container", {
-                    "select-disabled": isDisabled,
+                className={cn(styles.dropdown, {
+                    [styles.disabled]: isDisabled,
                 })}
-                classNamePrefix="react-select"
-                name="main"
+                classNames={{
+                    input: () => styles.input,
+                    indicatorsContainer: () => styles.menuIndicator,
+                    menuList: () => styles.menuWrapper,
+                    menu: () => styles.menuList,
+                    control: (state) => {
+                        return state.isDisabled ? cn(styles.control, styles.disabled) : styles.control
+                    }
+                }}
+                name={name}
+                unstyled
             />
-            <label htmlFor="main">{text}</label>
+            {description && (
+                <label className={styles.description}>{description}</label>
+            )}
         </div>
     );
 };

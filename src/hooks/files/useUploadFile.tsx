@@ -45,6 +45,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         const generateLinkResponse: GenerateLinkResponse =
             await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
+            console.log(generateLinkResponse)
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.uuid;
         }

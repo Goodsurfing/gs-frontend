@@ -1,11 +1,41 @@
 .wrapper {
 	display: flex;
-	flex-direction: column;
-	gap: 32px;
+	justify-content: space-between;
+}
 
-	padding-top: 40px;
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
+	& > * {
+		margin-top: 1.875rem;
+		gap: 1.5rem;
+	}
+
+	& > *:first-child {
+		margin-top: 0;
+	}
+}
+
+.profileInput {
+	margin-left: 3.875rem;
+	margin-right: 0;
+	margin-top: 0;
 }
 
 .button {
-	align-self: flex-start;
+	margin-top: 3.75rem;
+	max-width: 17.5rem;
+}
+
+@media (max-width: 1000px) {
+	.wrapper {
+		display: flex;
+		flex-direction: column-reverse;
+
+		.profileInput {
+			margin: 0 auto;
+		}
+	}	
 }

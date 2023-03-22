@@ -1,36 +1,4 @@
-.layout {
-	background-color: var(--color-lightgray);
-}
-
 .wrapper {
-	display: flex;
-	align-content: stretch;
-	justify-content: space-between;
-	transition: .3s ease-in-out;
-	padding: 2.25rem 3.125rem 4.125rem 10rem;
-	overflow: hidden;
-}
-
-
-@media (max-width: 1000px) {
-	.wrapper {
-		flex-wrap: wrap-reverse;
-		margin: 0 auto;
-		padding-right: 3rem;
-		justify-content: center;
-	}
-}
-
-.opened {
-	transition: .3s ease-in-out;
-	padding-left: 21.875rem;
-}
-
-.file {
-	border: 1px solid blue;
-  	margin-left: 20px;
-  	width: 187px;
-  	height: 187px;
-  	background-color: lightblue;
-  	border-radius: 50%;
+	padding-bottom: 4.125rem;
+	width: 100%;
 }
