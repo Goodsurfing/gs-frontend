@@ -1,0 +1,69 @@
+.wrapper {
+    position: absolute;
+    width: 15vh;
+    left: 50%;
+    right: 50%;
+    z-index: 30;
+    top: 10%;
+    color: var(--color-white);
+    font-family: 'Lato';
+    font-weight: 500;
+    letter-spacing: .6px;
+}
+
+.popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    border-radius: 30px;
+    background-position: right !important;
+    background-size: 200% 100% !important;
+    box-shadow: 6px 8px 16px 0px rgba(34, 60, 80, 0.2);
+
+    &.success {
+      background: linear-gradient(to left, lightgreen 50%, #62eb50 50%) right; 
+    }
+
+    &.error {
+      background: linear-gradient(to left, rgb(218, 90, 90) 50%, #F4444E 50%) right;   
+    }
+  }
+
+.text {
+    color: var(--color-white);
+    cursor: pointer;
+    user-select: none;
+}
+
+.appear {
+  background-size: 200% 100% !important;
+  background-position: left !important;
+}
+
+.enterActive {
+    background-size: 200% 100% !important;
+    background-position: left !important;
+    transition: 3s all ease-in-out;
+}
+
+.exitDone {
+  display: none;
+}
+
+// @keyframes changeBG {
+//     0% {
+//       background-position: right;
+//       background-size: 200% 100%;
+//     }
+
+//     100% {
+//         background-size: 200% 100%;
+//         background-position: left;
+//     }
+// }
+
+
+
+
