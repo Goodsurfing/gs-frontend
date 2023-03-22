@@ -48,7 +48,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <div className={styles.organizationTypeWrapper}>
                 <Controller
                     control={control}
-                    name="organizationDescriptionType"
+                    name="type"
                     defaultValue={organizations[0]}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
@@ -66,11 +66,12 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 />
                 <Controller
                     control={control}
-                    name="organizationOther"
+                    name="otherType"
                     defaultValue=""
                     render={({ field }) => (
                         <Input
-                            id="organizationOther"
+                            id="otherType"
+                            name={field.name}
                             className={styles.other}
                             label="Другое"
                             value={field.value}
@@ -81,13 +82,13 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             </div>
             <Controller
                 control={control}
-                name="organizationWebsite"
+                name="website"
                 defaultValue=""
                 render={({ field }) => (
                     <Input
                         label="Сайт организации"
                         className={styles.website}
-                        id="organizationWebsite"
+                        id="website"
                         value={field.value}
                         onChange={(e) => field.onChange(e)}
                     />

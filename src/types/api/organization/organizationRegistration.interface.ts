@@ -1,4 +1,4 @@
-export interface IOrganizationRegistrationFormData{
+export interface IOrganizationRegistrationFormData {
     name: string;
     description: string;
 }
