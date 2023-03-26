@@ -68,6 +68,7 @@
 	background-color: inherit;
 	.isMatchRoute {
 		color: var(--dark-theme-color);
+		text-decoration: underline;
 	}
 }
 
@@ -75,5 +76,6 @@
 	color: var(--white-theme-color);
 	.isMatchRoute {
 		color: var(--color-black-tertiary);
+		text-decoration: underline;
 	}
 }

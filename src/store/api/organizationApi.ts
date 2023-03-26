@@ -3,6 +3,7 @@ import { IOrganizationRegistrationData, OrganizationApiEndpoints } from "@/types
 import { IOrganizationRegistrationResponse, IOrganizationRegistrationFormData } from "@/types/api/organization/organizationRegistration.interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import { IOrganizationBuildData } from "@/types/api/organization/organizationBuild.interface";
 
 export const organizationApi = createApi({
     reducerPath: "organizationApi",
@@ -33,6 +34,18 @@ export const organizationApi = createApi({
                 query: () => ({
                     url: OrganizationApiEndpoints.GET_ALL,
                 })
+            }),
+            bindOrganization: build.mutation<unknown, IOrganizationBuildData>({
+                query: (data: IOrganizationBuildData) => {
+                    return {
+                        url: `${OrganizationApiEndpoints.REGISTER}${data.uuid}${OrganizationApiEndpoints.JOIN}`,
+                        method: "PUT",
+                        body: {
+                            name: data.name,
+                            description: data.description
+                        },
+                    }
+                }
             })
         }
     },

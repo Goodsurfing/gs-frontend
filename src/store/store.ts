@@ -7,10 +7,13 @@ import { localeApi } from "./api/localeApi";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
 import { organizationApi } from "./api/organizationApi";
+import toastReducer from './reducers/toastSlice';
+import { rtkQueryErrorLogger } from "./middleware";
 
 const rootReducer = combineReducers({
     register: registerReducer,
     login: loginReducer,
+    toast: toastReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
@@ -24,6 +27,7 @@ export const setupStore = () => {
         middleware: (getDefaultMiddleware) => {
             return getDefaultMiddleware().concat([
                 authApi.middleware,
+                rtkQueryErrorLogger,
                 organizationApi.middleware,
                 userInfoApi.middleware,
                 localeApi.middleware,

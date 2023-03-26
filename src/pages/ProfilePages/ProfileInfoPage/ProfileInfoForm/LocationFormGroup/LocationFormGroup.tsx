@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Control, Controller } from "react-hook-form";
 
 import SelectField from "@/components/SelectField/SelectField";
@@ -6,7 +6,7 @@ import SelectField from "@/components/SelectField/SelectField";
 import {
     cities,
     countries,
-    languages,
+    preparedLanguageData,
 } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 
 import { IOption } from "@/types/select";
@@ -68,17 +68,18 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
                 <Controller
                     control={control}
                     name="language"
-                    defaultValue="rus"
+                    defaultValue={preparedLanguageData}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             isDisabled={isLocked}
-                            label="Город"
+                            label="Язык"
                             name={name}
                             placeholder="Русский"
-                            options={languages}
-                            value={languages.find((language) => language.value === value)}
+                            defaultValue={preparedLanguageData}
+                            options={preparedLanguageData}
+                            value={preparedLanguageData.find((language) => language.value === value)}
                             onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
+                                onChange((selectedOption as IOption));
                             }}
                             required
                         />

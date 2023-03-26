@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { FC, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
@@ -18,10 +18,10 @@ const HostPage: FC = () => {
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
-        if (isMatchUrlEndpoint(path, "/dashboard")) {
+        if (isMatchUrlEndpoint(path, "/host")) {
             return <HostDashboardPage />;
         }
-        if (isMatchUrlEndpoint(path, "/registration")) {
+        if (isMatchUrlEndpoint(path, "/organization/registration")) {
             return <HostMainInfoPage />;
         }
     };
