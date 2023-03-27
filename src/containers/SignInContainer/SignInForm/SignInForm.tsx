@@ -19,12 +19,16 @@ import { setLoginUserData } from "@/store/reducers/loginSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
+import HintPopup from "@/components/HintPopup/HintPopup";
+import { HintType } from "@/components/HintPopup/HintPopup.interface";
 
 const SignInForm: FC = () => {
     const [loginUser] = authApi.useLoginUserMutation();
     const [authUser] = reauthApi.useAuthUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const [error, setError] = useState<any>();
 
     const [isRemember, setIsRemember] = useState<boolean>(false);
     const { control, reset, handleSubmit } = useForm<IAuthLoginData>({
@@ -44,6 +48,7 @@ const SignInForm: FC = () => {
                 reset();
             })
         } catch (e) {
+            setError(e);
             console.log(e);
         }
     };
@@ -54,6 +59,7 @@ const SignInForm: FC = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            {error && <HintPopup type={HintType.Error} text="Произошла ошибка" />}
             <Controller
                 control={control}
                 name="username"

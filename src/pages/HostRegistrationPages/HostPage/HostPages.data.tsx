@@ -8,13 +8,13 @@ import mailIcon from "@/assets/icons/navbar/mail.svg";
 
 export const HostPagesSidebarData: SideMenuParams[] = [
     {
-        route: "/",
+        route: "host",
         text: "Рабочий стол",
         icon: houseIcon,
     },
     {
         route: "/",
-        text: "Предлложения",
+        text: "Предложения",
         icon: globeIcon,
     },
     {
@@ -28,13 +28,13 @@ export const HostPagesSidebarData: SideMenuParams[] = [
         icon: calendarIcon,
     },
     {
-        route: "/",
+        route: "organization",
         text: "Организация",
         icon: cityIcon,
         dropdownItems: [
             {
                 text: "Описание",
-                route: "",
+                route: "/registration",
             },
             {
                 text: "Фотогалерея",

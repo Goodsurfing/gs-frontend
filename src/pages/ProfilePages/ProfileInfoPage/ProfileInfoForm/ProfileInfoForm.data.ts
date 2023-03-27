@@ -1,4 +1,14 @@
+import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 import { IOption } from "@/types/select";
+
+export const preparedLanguageData: IOption[] = [];
+    
+changeLanguageData.forEach(element => {
+    preparedLanguageData.push({
+        label: element.name,
+        value: element.code,
+    })
+});
 
 export const countries: IOption[] = [
     {
@@ -27,21 +37,6 @@ export const cities: IOption[] = [
     {
         value: "Pekin",
         label: "Пекин"
-    },
-];
-
-export const languages: IOption[] = [
-    {
-        value: "rus",
-        label: "Русский"
-    },
-    {
-        value: "eng",
-        label: "Английский"
-    },
-    {
-        value: "es",
-        label: "Испанский"
     },
 ];
 

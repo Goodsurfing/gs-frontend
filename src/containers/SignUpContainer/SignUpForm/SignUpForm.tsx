@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import InputField from "@/components/InputField/InputField";
 import Button from "@/components/ui/Button/Button";
 import { Variant } from "@/components/ui/Button/Button.interface";
 
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -17,9 +17,15 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
+import HintPopup from "@/components/HintPopup/HintPopup";
 
 const SignUpForm: FC = () => {
-    const [registerUser] = authApi.useRegisterUserMutation();
+    const [registerUser, { error }] = authApi.useRegisterUserMutation();
+
+    const toast = useAppSelector((state) => { 
+        return state.toast
+    })
+
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -38,17 +44,20 @@ const SignUpForm: FC = () => {
                         { replace: true }
                     );
                 })
-                .catch((error) => {
-                    console.log(error);
+                .catch(() => {
+                    console.log()
                 });
         } catch (e) {
-            console.log(e);
+            console.log();
         }
         reset();
     };
 
+    console.log(error)
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            {error && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 control={control}
                 name="email"

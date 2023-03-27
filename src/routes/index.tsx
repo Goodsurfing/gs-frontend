@@ -1,7 +1,7 @@
 import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import React, { Suspense, lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 const ConfirmEmailPage = lazy(() => import("@/pages/ConfirmEmailPage/ConfirmEmailPage"));
 const ConfirmEmailSuccessPage = lazy(() => import("@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage"));
@@ -42,16 +42,11 @@ export const AppRoutes = () => {
                         element={<PrivateRoute Component={ProfilePage} />}
                     />
                 </Route>
-                <Route path="/:ln/host" element={<HostPage />}>
-                        <Route
-                            path="registration"
-                            element={<PrivateRoute Component={HostMainInfoPage} />}
-                        />
-                        <Route
-                            path="dashboard"
-                            element={<PrivateRoute Component={HostDashboardPage} />}
-                        />
-                </Route>
+                <Route path="/:ln/host" element={<PrivateRoute Component={HostPage} />} />
+                <Route
+                    path="/:ln/organization/registration"
+                    element={<PrivateRoute Component={HostPage} />}
+                />
                 <Route path="*" element={<NotFoundPage/>} />
                 </Routes>
         </Suspense>

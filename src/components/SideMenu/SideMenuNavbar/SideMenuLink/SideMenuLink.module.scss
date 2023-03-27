@@ -66,8 +66,16 @@
 .dark {
 	color: var(--color-white);
 	background-color: inherit;
+	.isMatchRoute {
+		color: var(--dark-theme-color);
+		text-decoration: underline;
+	}
 }
 
 .light {
-	color: var(--color-black-thirdary);
+	color: var(--white-theme-color);
+	.isMatchRoute {
+		color: var(--color-black-tertiary);
+		text-decoration: underline;
+	}
 }

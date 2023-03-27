@@ -1,13 +1,17 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 import { ISideMenuDropdown } from "@/components/SideMenu/types/SideMenuDropdown.interface";
 
+import compareRoutes from "@/utils/routes/compareRoutes";
+
 import styles from "./SideMenuDropdown.module.scss";
 
 const SideMenuDropdown: FC<ISideMenuDropdown> = ({
+    pathname,
+    route,
     icon,
     isOpen,
     setOpen,
@@ -16,6 +20,8 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
     theme,
 }) => {
     const [isDropdownOpened, setDropdownOpen] = useState(false);
+
+    const isMatchRoute = compareRoutes(pathname, route);
 
     const dropdownClickHandler = () => {
         setOpen(true);
@@ -43,7 +49,17 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                 )}
             >
                 <img src={icon} alt={text} />
-                <span className={cn(styles.text, { [styles.opened]: isOpen })}>
+                <span
+                    className={cn(
+                        styles.text,
+                        {
+                            [styles.opened]: isOpen,
+                        },
+                        {
+                            [styles.matchRoute]: isMatchRoute,
+                        }
+                    )}
+                >
                     {text}
                 </span>
             </div>
@@ -57,11 +73,18 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                     <div className={styles.dropdownLine} />
                     <div className={styles.dropdown}>
                         {dropdownItems.map((item) => {
+                            const isMatchDropdownRoute = compareRoutes(
+                                pathname,
+                                item.route
+                            );
                             return (
                                 <LocaleLink
                                     key={item.text}
-                                    to={item.route}
-                                    className={styles.dropdownItem}
+                                    to={`${route}${item.route}`}
+                                    className={cn(styles.dropdownItem, {
+                                        [styles.activeRouteDropdown]:
+                                            isMatchDropdownRoute,
+                                    })}
                                 >
                                     {item.text}
                                 </LocaleLink>

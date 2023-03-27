@@ -67,8 +67,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             const preparedFile = convertFileToBinary(file);
             const imageUuid = await useUploadFile(file.name, preparedFile, token);
             otherData.imageUuid = imageUuid;
-            alert(JSON.stringify(otherData))
-            // return updateUserInfo(otherData)
+            return updateUserInfo(otherData)
         }
     }
 

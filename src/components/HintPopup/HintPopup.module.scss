@@ -1,8 +1,8 @@
 .wrapper {
-    position: absolute;
-    width: 15vh;
-    left: 50%;
-    right: 50%;
+    position: fixed;
+    min-width: 20vh;
+    left: (calc(50% - 20vh));
+    right: (calc(50% - 20vh));
     z-index: 30;
     top: 10%;
     color: var(--color-white);
@@ -51,18 +51,6 @@
 .exitDone {
   display: none;
 }
-
-// @keyframes changeBG {
-//     0% {
-//       background-position: right;
-//       background-size: 200% 100%;
-//     }
-
-//     100% {
-//         background-size: 200% 100%;
-//         background-position: left;
-//     }
-// }
 
 
 

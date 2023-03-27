@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 
-import Dropdown from "@/components/ui/Dropdown/Dropdown";
 import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
 
@@ -49,7 +48,8 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <div className={styles.organizationTypeWrapper}>
                 <Controller
                     control={control}
-                    name="organizationDescriptionType"
+                    name="type"
+                    defaultValue={organizations[0]}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             name={name}
@@ -66,11 +66,12 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 />
                 <Controller
                     control={control}
-                    name="organizationOther"
+                    name="otherType"
                     defaultValue=""
                     render={({ field }) => (
                         <Input
-                            id="organizationOther"
+                            id="otherType"
+                            name={field.name}
                             className={styles.other}
                             label="Другое"
                             value={field.value}
@@ -81,13 +82,13 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             </div>
             <Controller
                 control={control}
-                name="organizationWebsite"
+                name="website"
                 defaultValue=""
                 render={({ field }) => (
                     <Input
                         label="Сайт организации"
                         className={styles.website}
-                        id="organizationWebsite"
+                        id="website"
                         value={field.value}
                         onChange={(e) => field.onChange(e)}
                     />

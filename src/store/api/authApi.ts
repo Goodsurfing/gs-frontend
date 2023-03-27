@@ -16,7 +16,6 @@ import {
     IResetPasswordVerifyResponse,
 } from "@/types/api/auth/resetPassword.interface";
 import { logout, setLoginUserData } from "../reducers/loginSlice";
-import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 const baseQuery = fetchBaseQuery({ baseUrl: API_PUBLIC_BASE_URL });
 

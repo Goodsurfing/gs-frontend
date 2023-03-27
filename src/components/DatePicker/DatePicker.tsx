@@ -14,7 +14,7 @@ interface DatePickerProps {
 }
 
 const DatePicker: FC<DatePickerProps> = ({
-    value,
+    value=new Date,
     onChange,
     className,
     CustomInputElement,

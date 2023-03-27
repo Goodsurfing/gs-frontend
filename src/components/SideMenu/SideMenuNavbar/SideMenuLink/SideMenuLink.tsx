@@ -3,21 +3,25 @@ import React, { FC } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
+import useCompareRoutes from "@/utils/routes/compareRoutes";
+
 import { Theme } from "../../types/SideMenu.interface";
 import { ISideMenuLink } from "../../types/SideMenuLink.interface";
 import styles from "./SideMenuLink.module.scss";
 
 const SideMenuLink: FC<ISideMenuLink> = ({
+    pathname,
     isOpen,
     theme,
     text,
     icon,
     route,
 }) => {
+    const isMatchRoute = useCompareRoutes(pathname, route);
     return (
         <li className={styles.li}>
             <LocaleLink
-                to={route}
+                to={`${route}`}
                 className={cn(
                     styles.link,
                     {
@@ -31,9 +35,15 @@ const SideMenuLink: FC<ISideMenuLink> = ({
             >
                 <img src={icon} alt={text} />
                 <span
-                    className={cn(styles.text, {
-                        [styles.opened]: isOpen,
-                    })}
+                    className={cn(
+                        styles.text,
+                        {
+                            [styles.opened]: isOpen,
+                        },
+                        {
+                            [styles.isMatchRoute]: isMatchRoute,
+                        }
+                    )}
                 >
                     {text}
                 </span>

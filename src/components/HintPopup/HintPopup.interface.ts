@@ -7,6 +7,5 @@ export interface IHintPopup {
   type: HintType;
   text: string;
   className?: string;
-  inProp: boolean;
   timeout?: number;
 }

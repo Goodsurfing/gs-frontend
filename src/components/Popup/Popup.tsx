@@ -5,7 +5,7 @@ import styles from "./Popup.module.scss";
 
 interface PopupProps {
     isOpen?: boolean;
-    className: string;
+    className?: string;
 }
 
 const Popup: FC<PropsWithChildren<PopupProps>> = ({
