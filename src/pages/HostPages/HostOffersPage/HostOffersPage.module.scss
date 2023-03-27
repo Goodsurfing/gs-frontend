@@ -1,0 +1,27 @@
+.wrapper {
+  min-height: 100vh;
+}
+
+.abilities, .draftsTitle {
+  font-family: Lato;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.draftsTitle {
+  margin-top: 40px;
+}
+
+.cards {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.btn {
+  margin-top: 50px;
+}

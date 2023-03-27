@@ -13,7 +13,7 @@ export const HostPagesSidebarData: SideMenuParams[] = [
         icon: houseIcon,
     },
     {
-        route: "/",
+        route: "/offers",
         text: "Предложения",
         icon: globeIcon,
     },

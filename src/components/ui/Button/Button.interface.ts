@@ -4,7 +4,8 @@ export enum Variant {
     PRIMARY = "PRIMARY",
     SECONDARY = "SECONDARY",
     OUTLINED = "OUTLINED",
-    ROUNDED = "ROUNDED",
+    GRAY = "GRAY",
+    BLACK = "BLACK",
     GREEN = "GREEN"
 }
 
