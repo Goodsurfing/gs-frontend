@@ -43,13 +43,19 @@ const HostMainInfoForm: FC = () => {
                     name: organization.name,
                     description: organization.description,
                 }).catch((error) => {
-                    setHint({text: "Не удалось привязать организацию", type: HintType.Error})
-                    console.error("Не удалось привязать организацию")}
-                );
+                    setHint({
+                        text: "Не удалось привязать организацию",
+                        type: HintType.Error,
+                    });
+                    console.error("Не удалось привязать организацию");
+                });
             })
             .catch((reason) => {
-                console.error("Не удалось создать организацию")
-                setHint({text: "Не удалось создать организацию", type: HintType.Error})
+                console.error("Не удалось создать организацию");
+                setHint({
+                    text: "Не удалось создать организацию",
+                    type: HintType.Error,
+                });
             });
     };
 
@@ -61,7 +67,9 @@ const HostMainInfoForm: FC = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
             {isError && hint && <HintPopup type={hint.type} text={hint.text} />}
-            {isSuccess && hint && <HintPopup type={HintType.Success} text={'Успешно!'} />}
+            {isSuccess && hint && (
+                <HintPopup type={HintType.Success} text={"Успешно!"} />
+            )}
             <div className={styles.container}>
                 <YMapWithAddress control={control} />
                 <HostMainInfoOrganization control={control} />

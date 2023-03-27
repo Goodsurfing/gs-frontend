@@ -8,7 +8,6 @@ import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
 import { organizationApi } from "./api/organizationApi";
 import toastReducer from './reducers/toastSlice';
-import { rtkQueryErrorLogger } from "./middleware";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -27,7 +26,6 @@ export const setupStore = () => {
         middleware: (getDefaultMiddleware) => {
             return getDefaultMiddleware().concat([
                 authApi.middleware,
-                rtkQueryErrorLogger,
                 organizationApi.middleware,
                 userInfoApi.middleware,
                 localeApi.middleware,
