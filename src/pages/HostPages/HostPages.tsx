@@ -8,8 +8,9 @@ import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
-import HostDashboardPage from "../HostDashboardPage/HostDashboardPage";
-import HostMainInfoPage from "../HostMainInfoPage/HostMainInfoPage";
+import HostDashboardPage from "./HostDashboardPage/HostDashboardPage";
+import HostMainInfoPage from "./HostMainInfoPage/HostMainInfoPage";
+import HostOffersPage from "./HostOffersPage/HostOffersPage";
 import { HostPagesSidebarData } from "./HostPages.data";
 import styles from "./HostPages.module.scss";
 
@@ -23,6 +24,9 @@ const HostPage: FC = () => {
         }
         if (isMatchUrlEndpoint(path, "/organization/registration")) {
             return <HostMainInfoPage />;
+        }
+        if (isMatchUrlEndpoint(path, "/offers")) {
+            return <HostOffersPage />;
         }
     };
 
