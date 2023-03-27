@@ -1,8 +1,8 @@
 .wrapper {
-    position: absolute;
-    min-width: 30vh;
-    left: 50%;
-    right: 50%;
+    position: fixed;
+    min-width: 20vh;
+    left: (calc(50% - 20vh));
+    right: (calc(50% - 20vh));
     z-index: 30;
     top: 10%;
     color: var(--color-white);

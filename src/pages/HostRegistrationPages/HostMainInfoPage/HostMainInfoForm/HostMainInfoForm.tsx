@@ -2,7 +2,10 @@ import React, { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
+import {
+    HintType,
+    IHintPopup,
+} from "@/components/HintPopup/HintPopup.interface";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 import Button from "@/components/ui/Button/Button";
@@ -17,8 +20,12 @@ import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrg
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
-    const [registerOrganization] = organizationApi.useRegisterOrganizationMutation();
+    const [registerOrganization, { isError }] =
+        organizationApi.useRegisterOrganizationMutation();
+    const [bindOrganization, { isSuccess }] =
+        organizationApi.useBindOrganizationMutation();
 
+    const [hint, setHint] = useState<Pick<IHintPopup, "text" | "type">>();
     const [file, setFile] = useState<File>();
 
     const onSubmit: SubmitHandler<IOrganizationRegistrationFormData> = async (
@@ -28,18 +35,22 @@ const HostMainInfoForm: FC = () => {
             name: data.name,
             description: data.description,
         };
-        try {
-            await registerOrganization(preparedData)
-                .unwrap()
-                .then((response) => {
-                    console.log(response);
-                });
-        } catch (e) {
-            console.log(e);
-            if (e instanceof Error) {
-                console.log(e.message);
-            }
-        }
+        registerOrganization(preparedData)
+            .unwrap()
+            .then((organization) => {
+                bindOrganization({
+                    uuid: organization.id,
+                    name: organization.name,
+                    description: organization.description,
+                }).catch((error) => {
+                    setHint({text: "Не удалось привязать организацию", type: HintType.Error})
+                    console.error("Не удалось привязать организацию")}
+                );
+            })
+            .catch((reason) => {
+                console.error("Не удалось создать организацию")
+                setHint({text: "Не удалось создать организацию", type: HintType.Error})
+            });
     };
 
     const { control, handleSubmit } =
@@ -49,7 +60,8 @@ const HostMainInfoForm: FC = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
-            {/* {isSuccess && <HintPopup type={isSuccess ? HintType.Success : HintType.Error} text="Работает" />} */}
+            {isError && hint && <HintPopup type={hint.type} text={hint.text} />}
+            {isSuccess && hint && <HintPopup type={HintType.Success} text={'Успешно!'} />}
             <div className={styles.container}>
                 <YMapWithAddress control={control} />
                 <HostMainInfoOrganization control={control} />
