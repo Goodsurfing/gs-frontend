@@ -71,6 +71,31 @@
 	}
 }
 
+.gray {
+	transition: var(--main-transition);
+	color: var(--white-theme-color);
+	border: var(--white-theme-color) 1px solid;
+
+	&:hover {
+		background-color: var(--white-theme-color);
+		transition: var(--main-transition);
+		color: white;
+	}
+}
+
+.black {
+	transition: var(--main-transition);
+	color: var(--color-black-primary);
+	border: var(--color-black-primary) 1px solid;
+
+	&:hover {
+		background-color: var(--color-black-primary);
+		color: white;
+		transition: var(--main-transition);
+	}
+}
+
+
 .rounded {
 	border-radius: 10px;
 }

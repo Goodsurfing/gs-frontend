@@ -1,7 +1,7 @@
 import { ChartData } from "chart.js";
 import Raect, { FC, useState } from "react";
 
-import { ProfileFillItems } from "@/pages/HostRegistrationPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
+import { ProfileFillItems } from "@/pages/HostPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
 
 import StatsCircle from "../ui/StatsCircle/StatsCircle";
 
