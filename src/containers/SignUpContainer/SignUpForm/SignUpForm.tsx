@@ -18,13 +18,13 @@ import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
 import HintPopup from "@/components/HintPopup/HintPopup";
+import { IToast } from "@/store/reducers/toastSlice";
+import { HintType } from "@/components/HintPopup/HintPopup.interface";
 
 const SignUpForm: FC = () => {
-    const [registerUser, { error }] = authApi.useRegisterUserMutation();
+    const [registerUser, { isError }] = authApi.useRegisterUserMutation();
 
-    const toast = useAppSelector((state) => { 
-        return state.toast
-    })
+    const [toast, setToast] = useState<IToast>();
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -44,8 +44,13 @@ const SignUpForm: FC = () => {
                         { replace: true }
                     );
                 })
-                .catch(() => {
-                    console.log()
+                .catch((err) => {
+                    console.error('error')
+                    setToast({
+                        text: 'Некорректно введены данные',
+                        type: HintType.Error
+                    })
+                    
                 });
         } catch (e) {
             console.log();
@@ -53,11 +58,10 @@ const SignUpForm: FC = () => {
         reset();
     };
 
-    console.log(error)
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            {error && <HintPopup text={toast.text} type={toast.type} />}
+            {isError && toast && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 control={control}
                 name="email"

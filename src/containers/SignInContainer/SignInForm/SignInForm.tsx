@@ -4,6 +4,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
+import HintPopup from "@/components/HintPopup/HintPopup";
+import { HintType } from "@/components/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import Button from "@/components/ui/Button/Button";
@@ -13,22 +15,21 @@ import { useAppDispatch } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
-import { authApi, reauthApi } from "@/store/api/authApi";
+import { authApi } from "@/store/api/authApi";
 import { setLoginUserData } from "@/store/reducers/loginSlice";
+import { IToast } from "@/store/reducers/toastSlice";
 
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import HintPopup from "@/components/HintPopup/HintPopup";
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
+import tokenStorage from "@/utils/storage/TokenStorage";
 
 const SignInForm: FC = () => {
-    const [loginUser] = authApi.useLoginUserMutation();
-    const [authUser] = reauthApi.useAuthUserMutation();
+    const [loginUser, { isError }] = authApi.useLoginUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [error, setError] = useState<any>();
+    const [toast, setToast] = useState<IToast>();
 
     const [isRemember, setIsRemember] = useState<boolean>(false);
     const { control, reset, handleSubmit } = useForm<IAuthLoginData>({
@@ -36,21 +37,21 @@ const SignInForm: FC = () => {
     });
 
     const onSubmit: SubmitHandler<IAuthLoginData> = async (data) => {
-        try {
-            await authUser(data)
+        loginUser(data)
             .unwrap()
             .then((res) => {
                 dispatch(setLoginUserData(res));
-                if (isRemember) {
-                    localStorage.setItem("token", res.token);
-                }
+                tokenStorage.setToken(res.token);                
                 navigate(`/${i18n.language}/`);
                 reset();
             })
-        } catch (e) {
-            setError(e);
-            console.log(e);
-        }
+            .catch((err) => {
+                console.error('Неверные данные');
+                setToast({
+                    text: "Неверный логин или пароль",
+                    type: HintType.Error,
+                });
+            });
     };
 
     const checkboxHandleClick = () => {
@@ -59,7 +60,9 @@ const SignInForm: FC = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            {error && <HintPopup type={HintType.Error} text="Произошла ошибка" />}
+            {isError && toast && (
+                <HintPopup type={HintType.Error} text="Произошла ошибка" />
+            )}
             <Controller
                 control={control}
                 name="username"

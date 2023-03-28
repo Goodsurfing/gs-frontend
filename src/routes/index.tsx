@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
+const OfferCreatePages = lazy(() => import("@/pages/OfferCreatePages/OfferCreatePages"));
 
 const ConfirmEmailPage = lazy(
     () => import("@/pages/ConfirmEmailPage/ConfirmEmailPage")
@@ -69,6 +70,9 @@ export const AppRoutes = () => {
                     path="/:ln/offers"
                     element={<PrivateRoute Component={HostPage} />}
                 />
+                <Route path="/:ln/offers-welcome"
+                    element={<PrivateRoute Component={OfferCreatePages} />}
+                ></Route>
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Suspense>
