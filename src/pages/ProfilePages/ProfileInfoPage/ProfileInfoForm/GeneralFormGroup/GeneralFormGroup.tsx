@@ -27,14 +27,14 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     <Controller
                         control={control}
                         name="firstName"
-                        defaultValue=""
+                        defaultValue={data.firstName}
                         render={({ field }) => {
                             return (
                                 <Input
                                     onChange={(e) => field.onChange(e)}
                                     value={field.value}
                                     label="Имя"
-                                    id="firstname"
+                                    id="firstName"
                                     required
                                     disabled={isLocked}
                                 />
@@ -44,7 +44,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                     <Controller
                         control={control}
                         name="lastName"
-                        defaultValue=""
+                        defaultValue={data.lastName}
                         render={({ field }) => {
                             return (
                                 <Input
@@ -52,7 +52,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                                     value={field.value}
                                     label="Фамилия"
                                     required
-                                    id="lastname"
+                                    id="lastName"
                                     disabled={isLocked}
                                 />
                             );
