@@ -6,5 +6,12 @@ export enum OrganizationApiEndpoints {
 
 export interface IOrganizationRegistrationData {
     name: string;
+    address: string;
+    type: string;
+    website: string;
     description: string;
+    vk: string;
+    facebook: string;
+    telegram: string;
+    instagram: string;
 }

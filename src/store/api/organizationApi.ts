@@ -1,6 +1,6 @@
 import { API_ORGANIZATIONS_BASE_URL } from "@/constants/api";
 import { IOrganizationRegistrationData, OrganizationApiEndpoints } from "@/types/api/organization";
-import { IOrganizationRegistrationResponse, IOrganizationRegistrationFormData } from "@/types/api/organization/organizationRegistration.interface";
+import { IOrganizationRegistrationResponse } from "@/types/api/organization/organizationRegistration.interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { IOrganizationBuildData } from "@/types/api/organization/organizationBuild.interface";
@@ -21,7 +21,7 @@ export const organizationApi = createApi({
     
     endpoints: (build) => {
         return {
-            registerOrganization: build.mutation<IOrganizationRegistrationResponse, IOrganizationRegistrationFormData>({
+            registerOrganization: build.mutation<IOrganizationRegistrationResponse, IOrganizationRegistrationData>({
                 query: (data: IOrganizationRegistrationData) => {
                     return {
                         url: OrganizationApiEndpoints.REGISTER,

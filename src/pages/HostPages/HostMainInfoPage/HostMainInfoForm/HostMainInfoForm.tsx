@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
@@ -15,7 +15,7 @@ import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 import { userOrganizationInfoApi } from "@/store/api/userOrganizationInfoApi";
 
-import { IOrganizationRegistrationFormData } from "@/types/api/organization/organizationRegistration.interface";
+import { IOrganizationRegistrationData } from "@/types/api/organization/organizationRegistration.interface";
 
 import { IHostInfoForm } from "./HostMainInfoForm.interface";
 import styles from "./HostMainInfoForm.module.scss";
@@ -43,9 +43,16 @@ const HostMainInfoForm: FC = () => {
     const [file, setFile] = useState<File>();
 
     const onSubmit: SubmitHandler<IHostInfoForm> = async (data) => {
-        const preparedData: IOrganizationRegistrationFormData = {
+        const preparedData: IOrganizationRegistrationData = {
             name: data.name,
             description: data.description,
+            address: data.address,
+            vk: data.vk,
+            instagram: data.instagram,
+            facebook: data.facebook,
+            telegram: data.telegram,
+            type: data.type,
+            website: data.website
         };
         registerOrganization(preparedData)
             .unwrap()
@@ -54,6 +61,13 @@ const HostMainInfoForm: FC = () => {
                     uuid: organization.id,
                     name: organization.name,
                     description: organization.description,
+                    address: organization.address,
+                    vk: organization.vk,
+                    instagram: organization.instagram,
+                    facebook: organization.facebook,
+                    telegram: organization.telegram,
+                    type: organization.type,
+                    website: organization.website
                 }).catch((error) => {
                     setHint({
                         text: "Не удалось привязать организацию",
@@ -76,7 +90,7 @@ const HostMainInfoForm: FC = () => {
     });
 
     if (!userOrganizationInfo) {
-        return <div>Data is loading...</div>
+        return <div>Data is loading...</div>;
     }
 
     return (
