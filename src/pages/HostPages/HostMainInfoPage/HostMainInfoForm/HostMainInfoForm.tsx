@@ -12,6 +12,8 @@ import Button from "@/components/ui/Button/Button";
 import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { organizationApi } from "@/store/api/organizationApi";
+import { userInfoApi } from "@/store/api/userInfoApi";
+import { userOrganizationInfoApi } from "@/store/api/userOrganizationInfoApi";
 
 import { IOrganizationRegistrationFormData } from "@/types/api/organization/organizationRegistration.interface";
 
@@ -20,6 +22,11 @@ import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrg
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
+    const {data: userInfo} = userInfoApi.useGetUserInfoQuery();
+    console.log(userInfo)
+    // const [getUserOrganizationInfo] =
+    // userOrganizationInfoApi.useGetUserOrganizationInfoQuery('asd');
+
     const [registerOrganization, { isError }] =
         organizationApi.useRegisterOrganizationMutation();
     const [bindOrganization, { isSuccess }] =
