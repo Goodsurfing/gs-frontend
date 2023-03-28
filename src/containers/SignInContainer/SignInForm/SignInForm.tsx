@@ -30,7 +30,7 @@ const SignInForm: FC = () => {
 
     const [error, setError] = useState<any>();
 
-    const [isRemember, setIsRemember] = useState<boolean>(false);
+    const [isRemember, setIsRemember] = useState<boolean>(true);
     const { control, reset, handleSubmit } = useForm<IAuthLoginData>({
         mode: "onChange",
     });
