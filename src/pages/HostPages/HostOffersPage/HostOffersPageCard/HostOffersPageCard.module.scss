@@ -121,3 +121,15 @@
   letter-spacing: 0px;
   text-align: center;
 }
+
+@media (max-width: 1200px) {
+  .cardWrapper {
+    flex-wrap: wrap;
+    .btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}

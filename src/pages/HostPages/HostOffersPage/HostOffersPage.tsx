@@ -7,8 +7,10 @@ import image from "@/assets/images/default-offer-image.svg";
 
 import styles from "./HostOffersPage.module.scss";
 import HostOffersPageCard from "./HostOffersPageCard/HostOffersPageCard";
+import { useNavigate } from "react-router-dom";
 
 const HostOffersPage = () => {
+    const navigate = useNavigate();
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.abilities}>Мои возможности</h2>
@@ -65,7 +67,9 @@ const HostOffersPage = () => {
             </div>
 
             <div className={styles.btn}>
-                <Button variant={Variant.PRIMARY} rounded>
+                <Button variant={Variant.PRIMARY} rounded onClick={() => {
+                    return navigate('/add-offer/where');
+                }}>
                     Добавить предложение
                 </Button>
             </div>
