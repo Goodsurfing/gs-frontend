@@ -98,7 +98,7 @@ const InfoHeader: FC = () => {
                                     return handleLogout();
                                 }}
                                 className={styles.btn}
-                                variant={Variant.OUTLINED}
+                                variant={Variant.PRIMARY}
                             >
                                 {t("main.welcome.header.exit")}
                             </Button>
