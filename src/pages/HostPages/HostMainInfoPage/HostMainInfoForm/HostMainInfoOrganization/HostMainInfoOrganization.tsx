@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 import Input from "@/components/ui/Input/Input";
 import Textarea from "@/components/ui/Textarea/Textarea";
@@ -8,20 +8,23 @@ import styles from "./HostMainInfoOrganization.module.scss";
 import SelectField from "@/components/SelectField/SelectField";
 import { organizations } from "./HostMainInfoOrganization.data";
 import { IOption } from "@/types/select";
+import { IHostInfoForm, IHostMainInfoOrganizationForm } from "../HostMainInfoForm.interface";
 
 interface IHostMainInfoOrganization {
-    control: any;
+    control: Control<IHostInfoForm>;
+    data: IHostMainInfoOrganizationForm
 }
 
 const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
     control,
+    data,
 }) => {
     return (
         <div className={styles.wrapper}>
             <Controller
                 control={control}
                 name="name"
-                defaultValue=""
+                defaultValue={data.name || ''}
                 render={({ field }) => (
                     <Input
                         id="organizationName"
@@ -35,7 +38,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <Controller
                 control={control}
                 name="description"
-                defaultValue=""
+                defaultValue={data.description || ''}
                 render={({ field }) => (
                     <Textarea
                         className={styles.description}
@@ -49,7 +52,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 <Controller
                     control={control}
                     name="type"
-                    defaultValue={organizations[0]}
+                    defaultValue={data.type || ''}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             name={name}
@@ -83,7 +86,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <Controller
                 control={control}
                 name="website"
-                defaultValue=""
+                defaultValue={data.website || ''}
                 render={({ field }) => (
                     <Input
                         label="Сайт организации"

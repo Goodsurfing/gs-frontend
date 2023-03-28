@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 import Input from "@/components/ui/Input/Input";
 
@@ -9,18 +9,20 @@ import telegramLogo from "@/assets/icons/social-icons/telegram-mini-logo.svg";
 import vkLogo from "@/assets/icons/social-icons/vk-mini-logo.svg";
 
 import styles from "./HostMainInfoSocial.module.scss";
+import { IHostInfoForm, IHostMainInfoSocialForm } from "../HostMainInfoForm.interface";
 
 interface HostMainInfoSocial {
-    control: any;
+    control: Control<IHostInfoForm>;
+    data: IHostMainInfoSocialForm
 }
 
-const HostMainInfoSocial: FC<HostMainInfoSocial> = ({ control }) => {
+const HostMainInfoSocial: FC<HostMainInfoSocial> = ({ control, data }) => {
     return (
         <div className={styles.socialMedia}>
             <Controller
                 control={control}
                 name="vk"
-                defaultValue=""
+                defaultValue={data.vk || ''}
                 render={({ field }) => (
                     <Input
                         className={styles.vk}
@@ -35,7 +37,7 @@ const HostMainInfoSocial: FC<HostMainInfoSocial> = ({ control }) => {
             <Controller
                 control={control}
                 name="facebook"
-                defaultValue=""
+                defaultValue={data.facebook || ''}
                 render={({ field }) => (
                     <Input
                         className={styles.facebook}
@@ -50,7 +52,7 @@ const HostMainInfoSocial: FC<HostMainInfoSocial> = ({ control }) => {
             <Controller
                 control={control}
                 name="instagram"
-                defaultValue=""
+                defaultValue={data.instagram || ''}
                 render={({ field }) => (
                     <Input
                         className={styles.instagram}
@@ -65,7 +67,7 @@ const HostMainInfoSocial: FC<HostMainInfoSocial> = ({ control }) => {
             <Controller
                 control={control}
                 name="telegram"
-                defaultValue=""
+                defaultValue={data.telegram || ''}
                 render={({ field }) => (
                     <Input
                         className={styles.telegram}

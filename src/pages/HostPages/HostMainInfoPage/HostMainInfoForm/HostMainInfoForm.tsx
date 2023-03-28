@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
@@ -17,15 +17,22 @@ import { userOrganizationInfoApi } from "@/store/api/userOrganizationInfoApi";
 
 import { IOrganizationRegistrationFormData } from "@/types/api/organization/organizationRegistration.interface";
 
+import { IHostInfoForm } from "./HostMainInfoForm.interface";
 import styles from "./HostMainInfoForm.module.scss";
 import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrganization";
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
-    const {data: userInfo} = userInfoApi.useGetUserInfoQuery();
-    console.log(userInfo)
-    // const [getUserOrganizationInfo] =
-    // userOrganizationInfoApi.useGetUserOrganizationInfoQuery('asd');
+    const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
+    const { data: userOrganizationInfo } =
+        userOrganizationInfoApi.useGetUserOrganizationInfoQuery(
+            userInfo?.organizations[0].id!,
+            { skip: userInfo?.organizations[0].id ? false : true }
+        );
+
+    if (userOrganizationInfo) {
+        console.log(userOrganizationInfo);
+    }
 
     const [registerOrganization, { isError }] =
         organizationApi.useRegisterOrganizationMutation();
@@ -35,9 +42,7 @@ const HostMainInfoForm: FC = () => {
     const [hint, setHint] = useState<Pick<IHintPopup, "text" | "type">>();
     const [file, setFile] = useState<File>();
 
-    const onSubmit: SubmitHandler<IOrganizationRegistrationFormData> = async (
-        data
-    ) => {
+    const onSubmit: SubmitHandler<IHostInfoForm> = async (data) => {
         const preparedData: IOrganizationRegistrationFormData = {
             name: data.name,
             description: data.description,
@@ -66,10 +71,13 @@ const HostMainInfoForm: FC = () => {
             });
     };
 
-    const { control, handleSubmit } =
-        useForm<IOrganizationRegistrationFormData>({
-            mode: "onChange",
-        });
+    const { control, handleSubmit } = useForm<IHostInfoForm>({
+        mode: "onChange",
+    });
+
+    if (!userOrganizationInfo) {
+        return <div>Data is loading...</div>
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
@@ -78,9 +86,30 @@ const HostMainInfoForm: FC = () => {
                 <HintPopup type={HintType.Success} text={"Успешно!"} />
             )}
             <div className={styles.container}>
-                <YMapWithAddress control={control} />
-                <HostMainInfoOrganization control={control} />
-                <HostMainInfoSocial control={control} />
+                <YMapWithAddress
+                    data={{
+                        address: userOrganizationInfo.address,
+                    }}
+                    control={control}
+                />
+                <HostMainInfoOrganization
+                    data={{
+                        name: userOrganizationInfo.name,
+                        description: userOrganizationInfo.description,
+                        type: userOrganizationInfo.type,
+                        website: userOrganizationInfo.website,
+                    }}
+                    control={control}
+                />
+                <HostMainInfoSocial
+                    data={{
+                        vk: userOrganizationInfo.vk,
+                        facebook: userOrganizationInfo.facebook,
+                        telegram: userOrganizationInfo.telegram,
+                        instagram: userOrganizationInfo.instagram,
+                    }}
+                    control={control}
+                />
                 <Button
                     className={styles.button}
                     variant={Variant.PRIMARY}

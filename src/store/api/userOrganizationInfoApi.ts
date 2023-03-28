@@ -1,11 +1,11 @@
-import { API_USER_BASE_URL } from "@/constants/api";
+import { API_ORGANIZATIONS_BASE_URL} from "@/constants/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "@/store/store";
 
 export const userOrganizationInfoApi = createApi({
     reducerPath: "userOrganizationInfoApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: API_USER_BASE_URL,
+        baseUrl: API_ORGANIZATIONS_BASE_URL,
         prepareHeaders: (headers, { getState }) => {
             const { token } = (getState() as RootState).login;
             if (token) {

@@ -1,9 +1,6 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import ImageUpload from "@/components/ImageUpload/ImageUpload";
-import InputField from "@/components/InputField/InputField";
-import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import Input from "@/components/ui/Input/Input";
 
 import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
