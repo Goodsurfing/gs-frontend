@@ -27,7 +27,7 @@ const LocationFormGroup: FC<LocationFormGroupProps> = ({
             <div className={styles.address}>
                 <Controller
                     control={control}
-                    name="county"
+                    name="country"
                     defaultValue="Russia"
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
