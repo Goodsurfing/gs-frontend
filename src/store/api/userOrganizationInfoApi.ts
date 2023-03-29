@@ -1,6 +1,7 @@
 import { API_ORGANIZATIONS_BASE_URL} from "@/constants/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "@/store/store";
+import { IGetOrganizationInfo } from "@/types/api/organization/organizationInfo.interface";
 
 export const userOrganizationInfoApi = createApi({
     reducerPath: "userOrganizationInfoApi",
@@ -19,8 +20,9 @@ export const userOrganizationInfoApi = createApi({
     tagTypes: ["userOrganizationInfo"],
     endpoints: (build) => {
         return {       
-            getUserOrganizationInfo: build.query({
-                query: (id: string) => {
+            getUserOrganizationInfo: build.query<IGetOrganizationInfo, string>({
+                query: (id) => {
+                console.log(id)
                     return {
                         url: `/organization/${id}`,
                         method: "GET",
