@@ -23,6 +23,7 @@ import { IHostInfoForm } from "./HostMainInfoForm.interface";
 import styles from "./HostMainInfoForm.module.scss";
 import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrganization";
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
+import Preloader from "@/components/Preloader/Preloader";
 
 const HostMainInfoForm: FC = () => {
     const [getInfo, userResults] = userInfoApi.useLazyGetUserInfoQuery();
@@ -129,9 +130,7 @@ const HostMainInfoForm: FC = () => {
 
     if (organizationResults.isLoading) {
         return (
-            <div>
-                <p>Data is loading...</p>
-            </div>
+            <Preloader />
         );
     }
 

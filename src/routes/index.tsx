@@ -3,6 +3,7 @@ import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
+import Preloader from "@/components/Preloader/Preloader";
 const OfferCreatePages = lazy(() => import("@/pages/OfferCreatePages/OfferCreatePages"));
 
 const ConfirmEmailPage = lazy(
@@ -27,7 +28,7 @@ const SignUpPage = lazy(() => import("@/pages/SignUpPage/SignUpPage"));
 
 export const AppRoutes = () => {
     return (
-        <Suspense fallback={<div>Загрузка...</div>}>
+        <Suspense fallback={<Preloader />}>
             <Routes>
                 <Route path="/:ln" element={<MainPage />} />
                 <Route path="/:ln/signup" element={<SignUpPage />} />
@@ -73,6 +74,7 @@ export const AppRoutes = () => {
                 <Route path="/:ln/offers-welcome"
                     element={<PrivateRoute Component={OfferCreatePages} />}
                 ></Route>
+                <Route path="/:ln/preloader" element={<Preloader />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Suspense>
