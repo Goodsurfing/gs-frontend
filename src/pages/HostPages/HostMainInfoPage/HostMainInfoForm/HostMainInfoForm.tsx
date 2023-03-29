@@ -33,12 +33,6 @@ const HostMainInfoForm: FC = () => {
         useState<OrganizationType>();
 
     useEffect(() => {
-        if (userResults && userResults.data) {
-            console.log(userResults.data);
-        }
-    }, [userResults]);
-
-    useEffect(() => {
         getInfo().then((userInfo) => {
             if (
                 userInfo.data?.organizations &&
@@ -46,7 +40,6 @@ const HostMainInfoForm: FC = () => {
             ) {
                 const organizationId = userInfo.data.organizations[0].id;
                 getOrganization(organizationId).then((res) => {
-                    console.log(res.data);
                     if (res.data) {
                         const savedData: OrganizationType = {
                             name: res.data.name,
@@ -78,9 +71,6 @@ const HostMainInfoForm: FC = () => {
             }
         });
     }, []);
-
-    console.log(organizationResults)
-    console.log(savedOrganizationData);
 
     const [registerOrganization, { isError }] =
         organizationApi.useRegisterOrganizationMutation();
