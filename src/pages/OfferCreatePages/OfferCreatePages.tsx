@@ -10,14 +10,15 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
 import { SideMenuData } from "./OfferCreatePages.data";
 import styles from "./OfferCreatePages.module.scss";
+import OfferWelcome from "./OfferWelcome/OfferWelcome";
 
 const OfferCreatePages = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { pathname } = useLocation();
 
     const createContent = (path: string) => {
-        if (isMatchUrlEndpoint(path, "info")) {
-            return <></>;
+        if (isMatchUrlEndpoint(path, "offers-welcome")) {
+            return <OfferWelcome />;
         }
         if (isMatchUrlEndpoint(path, "reset-password")) {
             return <></>;

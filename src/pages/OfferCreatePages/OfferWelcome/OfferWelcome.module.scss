@@ -1,0 +1,24 @@
+.description, .hint {
+    font-family: 'Lato';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: var(--color-black-primary);
+    max-width: 720px;
+}
+
+.description {
+    margin-top: 40px;
+}
+
+.hint {
+    margin-top: 20px;
+}
+
+.btn {
+    margin-top: 60px;
+    padding: 12px 100px;
+}
+

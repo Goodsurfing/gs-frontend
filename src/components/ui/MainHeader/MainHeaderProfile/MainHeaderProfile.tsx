@@ -53,7 +53,7 @@ const MainHeaderProfile = () => {
             <Popup className={styles.popup} isOpen={isProfileOpened}>
                 <Link to="/profile/info">Моя страница</Link>
                 <Link to="/profile/info">Обо мне</Link>
-                <Link to="/host/dashboard">Дашборд хоста</Link>
+                <Link to="/host">Дашборд хоста</Link>
                 <Link to="/">Стать волонтёром</Link>
                 <a onClick={handleLogout}>Выйти</a>
             </Popup>
