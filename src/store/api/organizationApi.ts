@@ -4,6 +4,7 @@ import { IOrganizationRegistrationResponse, IOrganizationRegistrationParams } fr
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { IOrganizationBuildData } from "@/types/api/organization/organizationBuild.interface";
+import { IOrganizationUpdateData } from "@/types/api/organization/organizationUpdate.interface";
 
 export const organizationApi = createApi({
     reducerPath: "organizationApi",
@@ -44,6 +45,15 @@ export const organizationApi = createApi({
                             name: data.name,
                             description: data.description
                         },
+                    }
+                }
+            }),
+            updateOrganization: build.mutation<unknown, IOrganizationUpdateData>({
+                query: (data: IOrganizationUpdateData) => {
+                    return {
+                        url: OrganizationApiEndpoints.UPDATE,
+                        method: "PUT",
+                        body: data
                     }
                 }
             })
