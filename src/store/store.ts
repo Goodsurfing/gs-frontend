@@ -8,6 +8,7 @@ import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
 import { organizationApi } from "./api/organizationApi";
 import toastReducer from './reducers/toastSlice';
+import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     [userInfoApi.reducerPath]: userInfoApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
-    [reauthApi.reducerPath]: authApi.reducer,
+    [reauthApi.reducerPath]: reauthApi.reducer,
+    [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
 });
 
 export const setupStore = () => {
@@ -28,6 +30,7 @@ export const setupStore = () => {
                 authApi.middleware,
                 organizationApi.middleware,
                 userInfoApi.middleware,
+                userOrganizationInfoApi.middleware,
                 localeApi.middleware,
             ]);
         },

@@ -4,7 +4,14 @@ export enum OrganizationApiEndpoints {
     GET_ALL = '/select/',
 }
 
-export interface IOrganizationRegistrationData {
+export interface OrganizationType {
     name: string;
+    address: string;
+    type: string;
+    website: string;
     description: string;
+    vk: string;
+    facebook: string;
+    telegram: string;
+    instagram: string;
 }

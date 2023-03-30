@@ -6,6 +6,11 @@ export interface IUserInfoImage {
     url: string;
 }
 
+export interface IUserOrganization {
+    id: string;
+    name: string;
+}
+
 export interface IUserInfo {
     id: string;
     locale: string;
@@ -21,23 +26,11 @@ export interface IUserInfo {
     facebook: string;
     birthDate: string;
     imageUuid?: string;
+    organizations: [] | IUserOrganization[]
 }
 
-export interface IUserInfoForm {
-    id: string;
-    locale: string;
-    email: string;
-    phone: string;
-    firstName: string;
-    lastName: string;
-    gender: string;
-    description: string;
-    vk: string;
-    telegram: string;
-    instagram: string;
-    facebook: string;
+export interface IUserInfoForm extends Omit<IUserInfo, "birthDate"> {
     birthDate: Date;
-    imageUuid?: string;
 }
 
 export interface IGeneralFormGroup

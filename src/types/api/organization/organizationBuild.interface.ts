@@ -1,5 +1,5 @@
-import { IOrganizationRegistrationFormData } from "./organizationRegistration.interface";
+import { OrganizationType } from "./index";
 
-export interface IOrganizationBuildData extends IOrganizationRegistrationFormData {
+export interface IOrganizationBuildData extends OrganizationType {
   uuid: string;
 }

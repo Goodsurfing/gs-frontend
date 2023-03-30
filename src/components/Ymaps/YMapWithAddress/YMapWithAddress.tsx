@@ -1,6 +1,6 @@
 import { LocationType, ymapsDefaultLocation } from "@/constants/ymaps";
 import React, { FC, useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldValue, FieldValues } from "react-hook-form";
 import { Placemark } from "react-yandex-maps";
 
 import Hints from "@/components/Hints/Hints";
@@ -16,12 +16,14 @@ import validateCoordinates from "@/utils/ymaps/normalizeCoordinates";
 import YandexMap from "../YMap";
 import { GeoObjectHintType, YMapType } from "../types/ymaps";
 import styles from "./YMapWithAddress.module.scss";
+import { IHostInfoForm, YMapWithAddressForm } from "@/pages/HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoForm.interface";
 
 interface IYMapWithAddress {
-    control: any;
+    control: Control<IHostInfoForm>;
+    data: YMapWithAddressForm
 }
 
-const YMapWithAddress: FC<IYMapWithAddress> = ({ control }) => {
+const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
     const [ymap, setYmap] = useState<YMapType>(null);
     const [address, setAddress] = useState<string>("");
     const [normalizedCoordinates, setNormalizedCoordinates] =
@@ -50,6 +52,7 @@ const YMapWithAddress: FC<IYMapWithAddress> = ({ control }) => {
             <Controller
                 control={control}
                 name="address"
+                defaultValue={data.address || ''}
                 render={({ field }) => (
                     <Input
                         id="address"

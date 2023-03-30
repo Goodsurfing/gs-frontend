@@ -1,0 +1,25 @@
+.layout {
+	background-color: var(--color-lightgray);
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	padding: 2.25rem 3.125rem 4.125rem 10rem;
+	overflow-x: hidden;
+	transition: .3s ease-in-out;
+}
+
+@media (max-width: 1000px) {
+	.wrapper {
+		flex-wrap: wrap-reverse;
+		margin: 0 auto;
+		padding-right: 3rem;
+		justify-content: center;
+	}
+}
+
+.opened {
+	transition: .3s ease-in-out;
+	padding-left: 21.875rem;
+}

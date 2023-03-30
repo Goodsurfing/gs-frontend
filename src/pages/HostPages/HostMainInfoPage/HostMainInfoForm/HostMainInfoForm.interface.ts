@@ -12,6 +12,6 @@ export interface IHostInfoForm {
   organizationFullDescription: string;
 }
 
-export interface YMapWithAddress extends Pick<IHostInfoForm, "address"> {};
-export interface IHostMainInfoOrganization extends Pick<IHostInfoForm, "name" | "description" | "type" | "otherType"> {};
-export interface IHostMainInfoSocial extends Pick<IHostInfoForm, "address"> {};
+export interface YMapWithAddressForm extends Pick<IHostInfoForm, "address"> {};
+export interface IHostMainInfoOrganizationForm extends Pick<IHostInfoForm, "name" | "description" | "type" | "website"> {};
+export interface IHostMainInfoSocialForm extends Pick<IHostInfoForm, "vk" | "telegram" | "instagram" | "facebook"> {};
