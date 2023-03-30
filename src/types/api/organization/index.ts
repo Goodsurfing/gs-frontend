@@ -1,5 +1,6 @@
 export enum OrganizationApiEndpoints {
     REGISTER = '/organization/',
+    UPDATE = '/organization/',
     JOIN = '/join/',
     GET_ALL = '/select/',
 }
