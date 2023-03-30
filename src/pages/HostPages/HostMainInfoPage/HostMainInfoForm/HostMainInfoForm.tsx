@@ -135,7 +135,14 @@ const HostMainInfoForm: FC = () => {
                         telegram: organization.telegram,
                         type: organization.type,
                         website: organization.website,
-                    }).catch((error) => {
+                    }).then((res) => {
+                        console.log('success creating otganization')
+                        setHint({
+                            text: "Организация успешно создана",
+                            type: HintType.Success,
+                        })
+                    })
+                    .catch((error) => {
                         setHint({
                             text: "Не удалось привязать организацию",
                             type: HintType.Error,
@@ -176,7 +183,7 @@ const HostMainInfoForm: FC = () => {
                     <HintPopup type={hint.type} text={hint.text} />
                 )}
                 {isSuccess && hint && (
-                    <HintPopup type={HintType.Success} text={"Успешно!"} />
+                    <HintPopup type={HintType.Success} text={hint.text} />
                 )}
                 {isUpdateSuccess && hint && (
                     <HintPopup type={hint.type} text={hint.text} />
