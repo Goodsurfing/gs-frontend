@@ -9,7 +9,7 @@ const OfferWherePage = () => {
   return (
     <div className={styles.wrapper}>
         <div className={styles.ymaps}>
-            <YMapWithAddress />
+            {/* <YMapWithAddress /> */}
         </div>
         <Button variant={Variant.PRIMARY} rounded className={styles.btn}>
             Сохранить
