@@ -51,7 +51,7 @@ export const organizationApi = createApi({
             updateOrganization: build.mutation<unknown, IOrganizationUpdateData>({
                 query: (data: IOrganizationUpdateData) => {
                     return {
-                        url: OrganizationApiEndpoints.UPDATE,
+                        url: `${OrganizationApiEndpoints.UPDATE}${data.id}`,
                         method: "PUT",
                         body: data
                     }
