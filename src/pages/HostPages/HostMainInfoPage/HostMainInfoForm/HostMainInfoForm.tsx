@@ -17,7 +17,7 @@ import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 import { userOrganizationInfoApi } from "@/store/api/userOrganizationInfoApi";
 
-import { OrganizationType } from "@/types/api/organization";
+import { OrganizationResponseType, OrganizationType } from "@/types/api/organization";
 import { IOrganizationRegistrationParams } from "@/types/api/organization/organizationRegistration.interface";
 
 import { IHostInfoForm } from "./HostMainInfoForm.interface";
@@ -31,7 +31,7 @@ const HostMainInfoForm: FC = () => {
         userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
 
     const [savedOrganizationData, setSavedOrganizationData] =
-        useState<OrganizationType>();
+        useState<OrganizationResponseType>();
 
     const [isOrganizationExists, setOrganizationExists] =
         useState<boolean>(false);
@@ -46,7 +46,8 @@ const HostMainInfoForm: FC = () => {
                 getOrganization(organizationId)
                     .then((res) => {
                         if (res.data) {
-                            const savedData: OrganizationType = {
+                            const savedData: OrganizationResponseType = {
+                                id: res.data.id,
                                 name: res.data.name,
                                 description: res.data.description,
                                 address: res.data.address,
@@ -63,7 +64,8 @@ const HostMainInfoForm: FC = () => {
                     })
                     .catch((res) => console.log(res));
             } else {
-                const savedData: OrganizationType = {
+                const savedData: OrganizationResponseType = {
+                    id: "",
                     name: "",
                     description: "",
                     address: "",
@@ -79,6 +81,8 @@ const HostMainInfoForm: FC = () => {
             }
         });
     }, []);
+
+    console.log(savedOrganizationData)
 
     const [registerOrganization, { isError }] =
         organizationApi.useRegisterOrganizationMutation();
@@ -105,7 +109,7 @@ const HostMainInfoForm: FC = () => {
 
         if (isOrganizationExists && savedOrganizationData) {
             console.log("exists");
-            updateOrganization(savedOrganizationData)
+            updateOrganization({...savedOrganizationData})
                 .unwrap()
                 .then((res) => {
                     setHint({
