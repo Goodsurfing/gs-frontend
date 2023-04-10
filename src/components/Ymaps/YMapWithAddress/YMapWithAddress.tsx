@@ -47,20 +47,23 @@ const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
         getHints(address).then((hints) => setRoutes(hints));
     }, [address]);
 
+
     return (
         <div className={styles.wrapper}>
             <Controller
                 control={control}
                 name="address"
                 defaultValue={data.address || ''}
-                render={({ field }) => (
-                    <Input
+                render={({ field }) => {
+                    return <Input
                         id="address"
                         label="Адрес"
                         type="text"
                         onFocus={() => setSelectedAddressByHint(false)}
-                        onChange={(e) => setAddress(e.target.value)}
-                        value={address}
+                        onChange={(e) => {
+                            field.onChange(e.target.value)
+                            setAddress(e.target.value)}}
+                        value={field.value}
                     >
                         {routesList?.length > 0 && (
                             <Hints
@@ -71,7 +74,7 @@ const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
                             />
                         )}
                     </Input>
-                )}
+                }}
             />
 
             <YandexMap
