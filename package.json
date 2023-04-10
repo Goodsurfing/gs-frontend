@@ -77,6 +77,7 @@
         "react": "^18.2.0",
         "react-calendar": "^4.0.0",
         "react-chartjs-2": "^5.2.0",
+        "react-content-loader": "^6.2.1",
         "react-datepicker": "^4.8.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.40.0",

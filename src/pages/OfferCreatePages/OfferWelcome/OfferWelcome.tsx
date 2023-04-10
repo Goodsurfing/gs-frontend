@@ -25,7 +25,7 @@ const OfferWelcome: FC = () => {
             <Button
                 variant={Variant.PRIMARY}
                 rounded
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/offers-where')}
                 className={styles.btn}
             >
                 Начать

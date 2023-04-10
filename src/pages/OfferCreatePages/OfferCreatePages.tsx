@@ -11,6 +11,9 @@ import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 import { SideMenuData } from "./OfferCreatePages.data";
 import styles from "./OfferCreatePages.module.scss";
 import OfferWelcome from "./OfferWelcome/OfferWelcome";
+import OfferWherePage from "./OfferWhere/OfferWherePage";
+import OfferWhenPage from "./OfferWhen/OfferWhenPage";
+
 
 const OfferCreatePages = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -20,8 +23,11 @@ const OfferCreatePages = () => {
         if (isMatchUrlEndpoint(path, "offers-welcome")) {
             return <OfferWelcome />;
         }
-        if (isMatchUrlEndpoint(path, "reset-password")) {
-            return <></>;
+        if (isMatchUrlEndpoint(path, "offers-where")) {
+            return <OfferWherePage />;
+        }
+        if (isMatchUrlEndpoint(path, "offers-when")) {
+            return <OfferWhenPage />;
         }
     };
 

@@ -68,7 +68,7 @@ const HostOffersPage = () => {
 
             <div className={styles.btn}>
                 <Button variant={Variant.PRIMARY} rounded onClick={() => {
-                    return navigate('/add-offer/where');
+                    return navigate('/offers-where');
                 }}>
                     Добавить предложение
                 </Button>

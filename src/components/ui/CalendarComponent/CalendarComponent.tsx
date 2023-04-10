@@ -8,11 +8,15 @@ import styles from "./CalendarComponent.module.scss";
 
 interface ICalendarComponent {
     className?: string;
+    value?: Date;
+    onValueChange?: (value: Date) => void;
 }
 
-const CalendarComponent: FC<ICalendarComponent> = ({ className }) => {
+const CalendarComponent: FC<ICalendarComponent> = ({ className, value, onValueChange }) => {
     return (
         <Calendar
+            onChange={onValueChange}
+            defaultValue={new Date()}
             tileClassName={styles.tile}
             className={cn(className, styles.calendar)}
         />

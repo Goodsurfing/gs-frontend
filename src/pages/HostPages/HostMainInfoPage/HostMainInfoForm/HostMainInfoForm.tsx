@@ -26,7 +26,7 @@ import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrg
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
-    const [getInfo, userResults] = userInfoApi.useLazyGetUserInfoQuery();
+    const [getInfo] = userInfoApi.useLazyGetUserInfoQuery();
     const [getOrganization, organizationResults] =
         userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
 
@@ -84,8 +84,10 @@ const HostMainInfoForm: FC = () => {
         organizationApi.useRegisterOrganizationMutation();
     const [bindOrganization, { isSuccess }] =
         organizationApi.useBindOrganizationMutation();
-    const [updateOrganization, { isError: isUpdateError, isSuccess: isUpdateSuccess }] =
-        organizationApi.useUpdateOrganizationMutation();
+    const [
+        updateOrganization,
+        { isError: isUpdateError, isSuccess: isUpdateSuccess },
+    ] = organizationApi.useUpdateOrganizationMutation();
 
     const [hint, setHint] = useState<Pick<IHintPopup, "text" | "type">>();
     const [file, setFile] = useState<File>();
@@ -104,7 +106,6 @@ const HostMainInfoForm: FC = () => {
         };
 
         if (isOrganizationExists && savedOrganizationData) {
-            console.log("exists");
             updateOrganization(savedOrganizationData)
                 .unwrap()
                 .then((res) => {
@@ -135,20 +136,21 @@ const HostMainInfoForm: FC = () => {
                         telegram: organization.telegram,
                         type: organization.type,
                         website: organization.website,
-                    }).then((res) => {
-                        console.log('success creating otganization')
-                        setHint({
-                            text: "Организация успешно создана",
-                            type: HintType.Success,
-                        })
                     })
-                    .catch((error) => {
-                        setHint({
-                            text: "Не удалось привязать организацию",
-                            type: HintType.Error,
+                        .then((res) => {
+                            console.log("success creating otganization");
+                            setHint({
+                                text: "Организация успешно создана",
+                                type: HintType.Success,
+                            });
+                        })
+                        .catch((error) => {
+                            setHint({
+                                text: "Не удалось привязать организацию",
+                                type: HintType.Error,
+                            });
+                            console.error("Не удалось привязать организацию");
                         });
-                        console.error("Не удалось привязать организацию");
-                    });
                 })
                 .catch((reason) => {
                     console.error("Не удалось создать организацию");
@@ -193,6 +195,7 @@ const HostMainInfoForm: FC = () => {
                 )}
                 <div className={styles.container}>
                     <YMapWithAddress
+                        height="300px"
                         data={{
                             address: savedOrganizationData.address,
                         }}
