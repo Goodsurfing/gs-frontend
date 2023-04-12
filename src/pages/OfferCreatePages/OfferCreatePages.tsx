@@ -13,7 +13,7 @@ import styles from "./OfferCreatePages.module.scss";
 import OfferWelcome from "./OfferWelcome/OfferWelcome";
 import OfferWherePage from "./OfferWhere/OfferWherePage";
 import OfferWhenPage from "./OfferWhen/OfferWhenPage";
-
+import OfferWhoNeedsPage from "./OfferWhoNeeds/OfferWhoNeedsPage";
 
 const OfferCreatePages = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -28,6 +28,9 @@ const OfferCreatePages = () => {
         }
         if (isMatchUrlEndpoint(path, "offers-when")) {
             return <OfferWhenPage />;
+        }
+        if (isMatchUrlEndpoint(path, "offers-who-needs")) {
+            return <OfferWhoNeedsPage />;
         }
     };
 

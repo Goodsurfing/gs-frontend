@@ -8,6 +8,8 @@ import OffersWhenCalendar from "./OffersWhenCalendar/OffersWhenCalendar";
 import plusIcon from '@assets/icons/plus-icon.svg';
 import Checkbox from "@/components/Checkbox/Checkbox";
 import OffersWhenCheckboxes from "./OffersWhenCheckboxes/OffersWhenCheckboxes";
+import OffersWhenSlider from "./OffersWhenSlider/OffersWhenSlider";
+import SwitchComponent from "@/components/mui/Switch/Switch";
 
 interface IOfferWhenForm {
     startDates: Array<Date>;
@@ -48,6 +50,7 @@ const OfferWhenPage = () => {
                 <div className={styles.datesCheckboxes}>
                     <OffersWhenCheckboxes />
                 </div>
+                <OffersWhenSlider />
                 <Button className={styles.btn} rounded variant={Variant.PRIMARY}>
                     Сохранить
                 </Button>
