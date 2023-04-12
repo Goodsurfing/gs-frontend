@@ -8,11 +8,33 @@
 }
 
 .form {
-    display: flex;
+    margin-top: 40px;
 }
 
 .btn {
     margin-top: 60px;
+    padding: 12px 100px;
+}
+
+.addBtn {
+    border: 1px solid #82949F;
+    background-color: #F1F9FD;
+    font-size: 14px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-left: 60px;
+    display: flex;
+    color: #8494A1;
+    align-items: center;
+    cursor: pointer;
+}
+
+.plus {
+    margin-right: 15px;
+}
+
+.dates {
+    display: flex;
 }
 
 .wrapper {

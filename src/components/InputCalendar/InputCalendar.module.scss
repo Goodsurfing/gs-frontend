@@ -1,0 +1,43 @@
+.inputWrapper {
+    display: flex;
+    position: relative;
+}
+
+.inputContainer {
+    background-color: var(--color-white);
+    border: 1px solid #82949F;
+    border-radius: 10px;
+    padding: 14px 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    cursor: pointer;
+
+    &.focused {
+        border: 1px solid black;
+    }
+
+    outline: none;
+}
+
+.input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: #B0B0B0;
+}
+
+.calendar {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 30%;
+    z-index: 20;
+}
+
+.activeCalendar {
+    display: block;
+}
