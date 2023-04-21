@@ -1,8 +1,7 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
+import SectionTitle from "@/UI/SectionTitle/SectionTitle";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
-import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
 
 import ActivityContainer from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityContainer";
 import InfoHeader from "@/containers/WelcomeContainer/InfoSide/InfoHeader/InfoHeader";

@@ -1,9 +1,9 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import styles from "./OfferWherePage.module.scss";
 

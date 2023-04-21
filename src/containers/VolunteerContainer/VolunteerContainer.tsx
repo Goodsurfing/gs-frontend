@@ -1,6 +1,5 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
 import React, { FC } from "react";
-
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { volunteerData } from "@/containers/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "@/containers/VolunteerContainer/VolunteerItem/VolunteerItem";

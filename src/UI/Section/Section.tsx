@@ -1,6 +1,5 @@
+import SectionTitle from "@/UI/SectionTitle/SectionTitle";
 import React, { FC, PropsWithChildren } from "react";
-
-import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
 
 import styles from "./Section.module.scss";
 

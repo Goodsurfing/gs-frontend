@@ -3,7 +3,7 @@ import Raect, { FC, useState } from "react";
 
 import { ProfileFillItems } from "@/pages/HostPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
 
-import StatsCircle from "../ui/StatsCircle/StatsCircle";
+import StatsCircle from "../../UI/StatsCircle/StatsCircle";
 
 interface IDashboardDoughnut {
     className?: string;

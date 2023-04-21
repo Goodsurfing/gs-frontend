@@ -1,8 +1,8 @@
+import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
+import Input from "@/UI/Input/Input";
 import React, { useRef, useState } from "react";
 
 import InputCalendar from "@/components/InputCalendar/InputCalendar";
-import CalendarComponent from "@/components/ui/CalendarComponent/CalendarComponent";
-import Input from "@/components/ui/Input/Input";
 
 import styles from "./OffersWhenCalendar.module.scss";
 

@@ -1,10 +1,9 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
+import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
 import React from "react";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import styles from "./HostDashboardCalendar.module.scss";
-
-import CalendarComponent from "@/components/ui/CalendarComponent/CalendarComponent";
 
 const HostDashboardCalendar = () => {
     return (
@@ -15,9 +14,13 @@ const HostDashboardCalendar = () => {
             <div className={styles.calendarWrapper}>
                 <CalendarComponent />
                 <div className={styles.btnWrapper}>
-                    <Button className={styles.btn} variant={Variant.PRIMARY} rounded>
+                    <Button
+                        className={styles.btn}
+                        variant={Variant.PRIMARY}
+                        rounded
+                    >
                         Посмотреть все
-                    </Button>                    
+                    </Button>
                 </div>
             </div>
         </div>

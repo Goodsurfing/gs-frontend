@@ -1,11 +1,13 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import HintPopup from "@/components/HintPopup/HintPopup";
+import { HintType } from "@/components/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
@@ -13,13 +15,11 @@ import { AppRoutesEnum } from "@/routes/types";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
+import { IToast } from "@/store/reducers/toastSlice";
 
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
-import HintPopup from "@/components/HintPopup/HintPopup";
-import { IToast } from "@/store/reducers/toastSlice";
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
 
 const SignUpForm: FC = () => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();
@@ -45,12 +45,11 @@ const SignUpForm: FC = () => {
                     );
                 })
                 .catch((err) => {
-                    console.error('error')
+                    console.error("error");
                     setToast({
-                        text: 'Некорректно введены данные',
-                        type: HintType.Error
-                    })
-                    
+                        text: "Некорректно введены данные",
+                        type: HintType.Error,
+                    });
                 });
         } catch (e) {
             console.log();
@@ -58,10 +57,11 @@ const SignUpForm: FC = () => {
         reset();
     };
 
-
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            {isError && toast && <HintPopup text={toast.text} type={toast.type} />}
+            {isError && toast && (
+                <HintPopup text={toast.text} type={toast.type} />
+            )}
             <Controller
                 control={control}
                 name="email"

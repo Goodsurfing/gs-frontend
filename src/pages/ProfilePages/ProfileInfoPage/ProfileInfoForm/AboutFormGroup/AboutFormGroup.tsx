@@ -1,7 +1,7 @@
+import Textarea from "@/UI/Textarea/Textarea";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import Textarea from "@/components/ui/Textarea/Textarea";
 import { IUserInfoForm } from "../ProfileInfoForm.interface";
 
 interface AboutFormGroupProps {

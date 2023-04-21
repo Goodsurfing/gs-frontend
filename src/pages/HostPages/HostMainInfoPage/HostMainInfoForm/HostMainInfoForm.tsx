@@ -1,3 +1,5 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,8 +12,6 @@ import {
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";

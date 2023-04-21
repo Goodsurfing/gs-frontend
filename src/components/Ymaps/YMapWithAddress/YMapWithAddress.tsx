@@ -1,10 +1,10 @@
+import Input from "@/UI/Input/Input";
 import { LocationType, ymapsDefaultLocation } from "@/constants/ymaps";
 import React, { FC, useEffect, useState } from "react";
 import { Control, Controller, FieldValue, FieldValues } from "react-hook-form";
 import { Placemark } from "react-yandex-maps";
 
 import Hints from "@/components/Hints/Hints";
-import Input from "@/components/ui/Input/Input";
 
 import useDebounce from "@/hooks/useDebounce";
 

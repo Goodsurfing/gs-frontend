@@ -1,3 +1,4 @@
+import Input from "@/UI/Input/Input";
 import React, { FC } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
@@ -11,7 +12,6 @@ import {
     IUserInfoForm,
 } from "../ProfileInfoForm.interface";
 import styles from "./DateOfBirthFormGroup.module.scss";
-import Input from "@/components/ui/Input/Input";
 
 interface DateOfBirthFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -25,9 +25,7 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     data,
 }) => {
     return (
-        <ProfileInfoFormGroup
-            className={styles.dateOfBirth}
-        >
+        <ProfileInfoFormGroup className={styles.dateOfBirth}>
             <Controller
                 control={control}
                 name="birthDate"
@@ -38,7 +36,13 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                             isLocked={isLocked}
                             value={field.value}
                             onChange={field.onChange}
-                            CustomInputElement={<Input required label="Дата рождения" id='birthdate' />}
+                            CustomInputElement={
+                                <Input
+                                    required
+                                    label="Дата рождения"
+                                    id="birthdate"
+                                />
+                            }
                         />
                     );
                 }}

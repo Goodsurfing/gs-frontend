@@ -1,6 +1,5 @@
+import SignLayout from "@/UI/SignLayout/SignLayout";
 import React, { FC } from "react";
-
-import SignLayout from "@/components/ui/SignLayout/SignLayout";
 
 import SignUpContainer from "@/containers/SignUpContainer/SignUpContainer";
 

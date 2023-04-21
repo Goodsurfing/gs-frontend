@@ -1,8 +1,8 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
 import React, { FC, PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
-import EmptyHeader from "@/components/ui/EmptyHeader/EmptyHeader";
+import EmptyHeader from "@/UI/EmptyHeader/EmptyHeader";
 
 import { AppRoutesEnum } from "@/routes/types";
 

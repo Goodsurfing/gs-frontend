@@ -1,7 +1,6 @@
+import { IButtonProps } from "@/UI/Button/Button.interface";
 import cn from "classnames";
 import React, { FC, PropsWithChildren } from "react";
-
-import { IButtonProps } from "@/components/ui/Button/Button.interface";
 
 import styles from "./Button.module.scss";
 
@@ -27,7 +26,7 @@ const Button: FC<PropsWithChildren<IButtonProps>> = ({
                 {
                     [styles.rounded]: rounded,
                 },
-                className,
+                className
             )}
             {...restBtnProps}
             onClick={restBtnProps.onClick}

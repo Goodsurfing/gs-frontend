@@ -1,7 +1,6 @@
+import SignLayout from "@/UI/SignLayout/SignLayout";
+import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
-
-import SignLayout from "@/components/ui/SignLayout/SignLayout";
-import SignTitle from "@/components/ui/SignTitle/SignTitle";
 
 import { useAppSelector } from "@/hooks/redux";
 

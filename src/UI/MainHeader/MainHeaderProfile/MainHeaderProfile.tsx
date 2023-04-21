@@ -31,10 +31,10 @@ const MainHeaderProfile = () => {
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
-    let username: string = userInfo ? userInfo.firstName : 'Анон';
+    let username: string = userInfo ? userInfo.firstName : "Анон";
 
     if (username === null) {
-        username = 'Анон'
+        username = "Анон";
     }
 
     return (

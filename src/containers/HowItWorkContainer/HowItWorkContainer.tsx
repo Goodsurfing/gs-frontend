@@ -1,6 +1,5 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
 import React, { FC } from "react";
-
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { howItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";
 import HowItWorkItem from "@/containers/HowItWorkContainer/HowItWorkItem/HowItWorkItem";

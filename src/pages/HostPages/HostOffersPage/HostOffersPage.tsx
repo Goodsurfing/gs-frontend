@@ -1,13 +1,12 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import React from "react";
-
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
+import { useNavigate } from "react-router-dom";
 
 import image from "@/assets/images/default-offer-image.svg";
 
 import styles from "./HostOffersPage.module.scss";
 import HostOffersPageCard from "./HostOffersPageCard/HostOffersPageCard";
-import { useNavigate } from "react-router-dom";
 
 const HostOffersPage = () => {
     const navigate = useNavigate();
@@ -50,7 +49,7 @@ const HostOffersPage = () => {
                 />
             </div>
             <div className={styles.drafts}>
-              <h2 className={styles.draftsTitle}>Черновики</h2>
+                <h2 className={styles.draftsTitle}>Черновики</h2>
                 <div className={styles.cards}>
                     <HostOffersPageCard
                         title="Работа в заповеднике Лен. область"
@@ -67,9 +66,13 @@ const HostOffersPage = () => {
             </div>
 
             <div className={styles.btn}>
-                <Button variant={Variant.PRIMARY} rounded onClick={() => {
-                    return navigate('/offers-where');
-                }}>
+                <Button
+                    variant={Variant.PRIMARY}
+                    rounded
+                    onClick={() => {
+                        return navigate("/offers-where");
+                    }}
+                >
                     Добавить предложение
                 </Button>
             </div>

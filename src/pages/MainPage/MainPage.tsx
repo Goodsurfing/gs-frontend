@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import Section from "@/components/ui/Section/Section";
+import Section from "@/UI/Section/Section";
 
 import BecomeHostContainer from "@/containers/BecomeHostContainer/BecomeHostContainer";
 import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer";

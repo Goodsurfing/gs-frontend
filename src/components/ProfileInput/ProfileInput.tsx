@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 import defaultImage from "@/assets/images/default-image-file.png";
 
-import InputFile from "../ui/InputFile/InputFile";
-import { InputFileProps } from "../ui/InputFile/InputFile.interfaces";
+import InputFile from "../../UI/InputFile/InputFile";
+import { InputFileProps } from "../../UI/InputFile/InputFile.interfaces";
 import styles from "./ProfileInput.module.scss";
 
 interface IFileInput extends InputFileProps {
