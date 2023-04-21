@@ -3,16 +3,15 @@ import React, { FC } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-import './CalendarComponent.scss';
 import styles from "./CalendarComponent.module.scss";
+import "./CalendarComponent.scss";
+import { ICalendarComponent } from "./types";
 
-interface ICalendarComponent {
-    className?: string;
-    value?: Date;
-    onValueChange?: (value: Date) => void;
-}
-
-const CalendarComponent: FC<ICalendarComponent> = ({ className, value, onValueChange }) => {
+const CalendarComponent: FC<ICalendarComponent> = ({
+    className,
+    value,
+    onValueChange,
+}) => {
     return (
         <Calendar
             onChange={onValueChange}

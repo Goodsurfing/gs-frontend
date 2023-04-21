@@ -1,3 +1,4 @@
+import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
 import calendarIcon from "@assets/icons/calendar.svg";
 import cn from "classnames";
 import React, {
@@ -9,22 +10,12 @@ import React, {
     useRef,
     useState,
 } from "react";
-import Calendar from "react-calendar";
 
 import filterInputDate from "@/utils/date/filterInputDate";
 import { setComponentRefs } from "@/utils/refs/setComponentRefs";
 
 import styles from "./InputCalendar.module.scss";
-
-interface IInputCalendar extends React.InputHTMLAttributes<HTMLInputElement> {
-    wrapperClassName?: string;
-    containerClassName?: string;
-    inputClassName?: string;
-    imgClassName?: string;
-    calendarClassName?: string;
-    onValueChange?: (value: Date) => void;
-    nextInputRef?: RefObject<HTMLInputElement>;
-}
+import { IInputCalendar } from "./types";
 
 const InputCalendar = React.forwardRef<HTMLInputElement, IInputCalendar>(
     (
@@ -58,9 +49,10 @@ const InputCalendar = React.forwardRef<HTMLInputElement, IInputCalendar>(
             [inputValue, prevInputValue]
         );
 
-        const onInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            
-        }, [nextInputRef]);
+        const onInputChange = useCallback(
+            (e: React.ChangeEvent<HTMLInputElement>) => {},
+            [nextInputRef]
+        );
 
         const onCalendarValueChange = (value: Date) => {
             const normalizedDate = value.toISOString().split("T")[0];
@@ -97,13 +89,13 @@ const InputCalendar = React.forwardRef<HTMLInputElement, IInputCalendar>(
                     />
                 </div>
                 {isOpen && (
-                    <Calendar
-                        onChange={(value: Date) => onCalendarValueChange(value)}
-                        defaultValue={new Date()}
-                        tileClassName={styles.tile}
-                        className={cn(calendarClassName, styles.calendar, {
-                            [styles.activeCalendar]: isOpen,
-                        })}
+                    <CalendarComponent
+                    // onChange={(value: Date) => onCalendarValueChange(value)}
+                    // defaultValue={new Date()}
+                    // tileClassName={styles.tile}
+                    // className={cn(calendarClassName, styles.calendar, {
+                    //     [styles.activeCalendar]: isOpen,
+                    // })}
                     />
                 )}
             </div>

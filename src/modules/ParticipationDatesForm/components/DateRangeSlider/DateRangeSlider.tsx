@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import RangeSlider from "@/components/mui/RangeSlider/RangeSlider";
 
-const OffersWhenSlider = () => {
+const DateRangeSlider = () => {
     return (
         <Box sx={{ mt: "33px", display: "flex", flexDirection: "column" }}>
             <Typography
@@ -51,4 +51,4 @@ const OffersWhenSlider = () => {
     );
 };
 
-export default OffersWhenSlider;
+export default DateRangeSlider;

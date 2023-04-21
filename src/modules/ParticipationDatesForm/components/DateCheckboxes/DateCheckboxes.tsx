@@ -5,7 +5,7 @@ import React from "react";
 
 import SwitchComponent from "@/components/mui/Switch/Switch";
 
-const OffersWhenCheckboxes = () => {
+const DateCheckboxes = () => {
     return (
         <Box sx={{display: 'flex', mt: '30px'}}>
             <FormControlLabel
@@ -42,4 +42,4 @@ const OffersWhenCheckboxes = () => {
     );
 };
 
-export default OffersWhenCheckboxes;
+export default DateCheckboxes;

@@ -1,12 +1,10 @@
-import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
-import Input from "@/UI/Input/Input";
 import React, { useRef, useState } from "react";
 
 import InputCalendar from "@/components/InputCalendar/InputCalendar";
 
-import styles from "./OffersWhenCalendar.module.scss";
+import styles from "./DateInputs.module.scss";
 
-const OffersWhenCalendar = () => {
+const DateInputs = () => {
     const [value, setValue] = useState<Date>();
 
     const onValueChange = () => {};
@@ -26,4 +24,4 @@ const OffersWhenCalendar = () => {
     );
 };
 
-export default OffersWhenCalendar;
+export default DateInputs;
