@@ -3,7 +3,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography/Typography";
 import React from "react";
 
-import SwitchComponent from "@/components/mui/Switch/Switch";
+import SwitchComponent from "@/UI/Switch/Switch";
 
 const DateCheckboxes = () => {
     return (
