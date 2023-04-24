@@ -7,7 +7,7 @@ import SwitchComponent from "@/components/mui/Switch/Switch";
 
 const DateCheckboxes = () => {
     return (
-        <Box sx={{display: 'flex', mt: '30px'}}>
+        <Box sx={{ display: "flex", mt: "30px" }}>
             <FormControlLabel
                 label={
                     <Typography
