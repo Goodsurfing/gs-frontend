@@ -1,29 +1,16 @@
-import plusIcon from "@assets/icons/plus-icon.svg";
-import Box from "@mui/material/Box/Box";
-import Button from "@mui/material/Button/Button";
-import React, { FC, useRef, useState } from "react";
-
-import InputCalendar from "@/components/InputCalendar/InputCalendar";
+import React, { FC, useState } from "react";
 
 import styles from "./DateInputs.module.scss";
 import { IDateInputs } from "./type";
+import DatePickerCalendar from "@/components/DatePickerCalendar/DatePickerCalendar";
 
-const DateInputs: FC<IDateInputs> = ({ close }) => {
-    const [value, setValue] = useState<Date>();
-
-    const onValueChange = () => {};
-
-    const fromDateRef = useRef<HTMLInputElement>(null);
-    const toDateRef = useRef<HTMLInputElement>(null);
+const DateInputs: FC<IDateInputs> = ({ close, from, to }) => {
+    const [date, setDate] = useState<Date>(new Date);
 
     return (
         <div className={styles.wrapper}>
-            <InputCalendar
-                containerClassName={styles.from}
-                nextInputRef={fromDateRef}
-                ref={toDateRef}
-            />
-            <InputCalendar containerClassName={styles.to} ref={fromDateRef} />
+            <DatePickerCalendar inputClassName={styles.leftCalendar} onChange={setDate} min={from} value={date} />
+            <DatePickerCalendar inputClassName={styles.rightCalendar} onChange={setDate} max={to} value={date} />
             {close}
         </div>
     );

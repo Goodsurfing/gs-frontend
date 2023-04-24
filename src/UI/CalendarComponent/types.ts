@@ -1,5 +1,6 @@
-export interface ICalendarComponent {
-    className?: string;
-    value?: Date;
-    onValueChange?: (value: Date) => void;
+import { CalendarProps } from "react-calendar";
+
+export interface ICalendarComponent extends CalendarProps {
+    value: Date;
+    onChange: (value: Date) => void;
 }

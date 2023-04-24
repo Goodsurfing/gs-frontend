@@ -10,11 +10,12 @@ import { ICalendarComponent } from "./types";
 const CalendarComponent: FC<ICalendarComponent> = ({
     className,
     value,
-    onValueChange,
+    onChange,
 }) => {
     return (
         <Calendar
-            onChange={onValueChange}
+            value={value}
+            onChange={(value: Date) => onChange(value)}
             defaultValue={new Date()}
             tileClassName={styles.tile}
             className={cn(className, styles.calendar)}

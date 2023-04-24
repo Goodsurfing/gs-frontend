@@ -12,7 +12,7 @@ const HostDashboardCalendar = () => {
                 <h3 className={styles.title}>Календарь</h3>
             </div>
             <div className={styles.calendarWrapper}>
-                <CalendarComponent />
+                <CalendarComponent onChange={() => {}} value={new Date} />
                 <div className={styles.btnWrapper}>
                     <Button
                         className={styles.btn}

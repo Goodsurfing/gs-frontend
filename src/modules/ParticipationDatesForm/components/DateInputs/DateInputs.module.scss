@@ -5,10 +5,16 @@
     position: relative;
 }
 
-.from {
-    border-radius: 10px 0px 0px 10px;
+.leftCalendar, .rightCalendar {
+    padding: 14px 10px;
+    border: 1px solid var(--color-gray);
 }
 
-.to {
+.leftCalendar {
+    border-radius: 10px 0px 0px 10px;
+    border-right: none;
+}
+
+.rightCalendar {
     border-radius: 0px 10px 10px 0px;
 }

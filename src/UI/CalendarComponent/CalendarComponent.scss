@@ -1,3 +1,8 @@
 .react-calendar__tile--now {
-  background-color: inherit !important;
+  background-color: inherit;
+}
+
+.react-calendar__tile--active {
+  background-color: #006edc;
+  color: white;
 }
