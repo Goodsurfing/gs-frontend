@@ -20,24 +20,22 @@ const DatePeriods = () => {
     };
 
     const onCloseBtnClick = (index: number) => {
+        if (index === 0) return;
         setAddButtons(addButtons.filter((_, i) => i !== index));
     };
 
     return (
         <Box sx={{ display: "flex" }}>
             <Box>
-                {addButtons.map((_, index) => (
+                {addButtons.map((_, index) => (                   
                     <DateInputs
+                        sx={index > 0 ? { mt: "24px" } : {}}
                         key={index}
                         close={
-                            index > 0 ? (
-                                <DateCloseButton
-                                    onClick={() => {
-                                        onCloseBtnClick(index);
-                                    }}
-                                    sx={{ ml: 3 }}
-                                />
-                            ) : null
+                            <DateCloseButton
+                                sx={{ ml: "12px" }}
+                                onClick={() => onCloseBtnClick(index)}
+                            />
                         }
                     />
                 ))}

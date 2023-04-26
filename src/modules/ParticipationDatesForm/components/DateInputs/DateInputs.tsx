@@ -1,19 +1,31 @@
-import React, { FC, useState } from "react";
+import { Box } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import { unstable_styleFunctionSx as styleFunctionSx } from "@mui/system";
+import React, { FC } from "react";
 
+import DateInput from "../DateInput/DateInput";
 import styles from "./DateInputs.module.scss";
-import { IDateInputs } from "./type";
-import DatePickerCalendar from "@/components/DatePickerCalendar/DatePickerCalendar";
+import { DateInputsProps } from "./type";
 
-const DateInputs: FC<IDateInputs> = ({ close, from, to }) => {
-    const [date, setDate] = useState<Date>(new Date);
-
+const DateInputs: FC<DateInputsProps> = ({
+    close,
+    min,
+    max,
+    ...restBoxProps
+}) => {
     return (
-        <div className={styles.wrapper}>
-            <DatePickerCalendar inputClassName={styles.leftCalendar} onChange={setDate} min={from} value={date} />
-            <DatePickerCalendar inputClassName={styles.rightCalendar} onChange={setDate} max={to} value={date} />
+        <Box
+            {...restBoxProps}
+            sx={{
+                display: "flex",
+                alignItems: "center",
+            }}
+        >
+            <DateInput className={styles.leftInput} />
+            <DateInput className={styles.rightInput} />
             {close}
-        </div>
+        </Box>
     );
 };
 
-export default DateInputs;
+export default styled(DateInputs)(styleFunctionSx);

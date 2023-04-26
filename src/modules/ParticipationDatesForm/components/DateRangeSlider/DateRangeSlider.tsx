@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React from "react";
 
 import RangeSlider from "@/UI/RangeSlider/RangeSlider";
 
