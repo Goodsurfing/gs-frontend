@@ -5,13 +5,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import DateCheckboxes from "../DateCheckboxes/DateCheckboxes";
 import DateEndRequests from "../DateEndRequests/DateEndRequests";
-import DateInputs from "../DateInput/DateInput";
 import DatePeriods from "../DatePeriods/DatePeriods";
 import DateRangeSlider from "../DateRangeSlider/DateRangeSlider";
 import styles from "./ParticipationDatesForm.module.scss";
 import { IParticipationDatesForm } from "./types";
 
-const ParticipationDatesForm = () => {
+export const ParticipationDatesForm = () => {
     const onSubmit: SubmitHandler<IParticipationDatesForm> = async (data) => {
         console.log(data);
     };
@@ -26,11 +25,14 @@ const ParticipationDatesForm = () => {
             <DateCheckboxes />
             <DateRangeSlider />
             <DateEndRequests />
-            <Button className={styles.btn} rounded variant={Variant.PRIMARY}>
+            <Button
+                onClick={() => {}}
+                className={styles.btn}
+                rounded
+                variant={Variant.PRIMARY}
+            >
                 Сохранить
             </Button>
         </form>
     );
 };
-
-export default ParticipationDatesForm;

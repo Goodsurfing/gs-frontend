@@ -1,10 +1,11 @@
 import { ButtonBase } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { unstable_styleFunctionSx as styleFunctionSx } from "@mui/system";
 import React, { FC } from "react";
-import {unstable_styleFunctionSx as styleFunctionSx} from "@mui/system";
-import { IDateCloseButton } from "./type";
 
-const DateCloseButton: FC<IDateCloseButton> = ({
+import { CloseButtonProps } from "./types";
+
+const CloseButton: FC<CloseButtonProps> = ({
     width = 36,
     height = 36,
     onClick = () => {},
@@ -17,7 +18,6 @@ const DateCloseButton: FC<IDateCloseButton> = ({
 
     return (
         <ButtonBase
-            {...restBtnProps}
             sx={{
                 width: width,
                 height: height,
@@ -30,6 +30,7 @@ const DateCloseButton: FC<IDateCloseButton> = ({
                 color: "#82949F",
                 fontFamily: "sans-serif",
             }}
+            {...restBtnProps}
             onClick={onBtnClick}
         >
             ✖
@@ -37,5 +38,4 @@ const DateCloseButton: FC<IDateCloseButton> = ({
     );
 };
 
-export default styled(DateCloseButton)(styleFunctionSx);
-
+export default styled(CloseButton)(styleFunctionSx);

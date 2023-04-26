@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 
-import DateAddButton from "../DateAddButton/DateAddButton";
-import DateCloseButton from "../DateCloseButton/DateCloseButton";
+import AddButton from "@/UI/AddButton/AddButton";
+import CloseButton from "@/UI/CloseButton/CloseButton";
+
 import DateInputs from "../DateInputs/DateInputs";
 
 const DatePeriods = () => {
@@ -29,10 +30,10 @@ const DatePeriods = () => {
             <Box>
                 {addButtons.map((_, index) => (                   
                     <DateInputs
-                        sx={index > 0 ? { mt: "24px" } : {}}
+                        sx={{ mt: index > 0 ? "24px" : "" }}
                         key={index}
                         close={
-                            <DateCloseButton
+                            <CloseButton
                                 sx={{ ml: "12px" }}
                                 onClick={() => onCloseBtnClick(index)}
                             />
@@ -41,9 +42,9 @@ const DatePeriods = () => {
                 ))}
             </Box>
             <Box sx={{ ml: 6 }}>
-                <DateAddButton onClick={onAddBtnClick}>
+                <AddButton onClick={onAddBtnClick}>
                     Добавить период
-                </DateAddButton>
+                </AddButton>
             </Box>
         </Box>
     );

@@ -10,7 +10,7 @@ interface Group extends GroupBase<IOption> {}
 
 interface SelectFieldProps extends Props<IOption, boolean, Group> {
     options: IOption[];
-    label: string;
+    label?: string;
     name: string;
     img?: string;
     description?: string;
@@ -22,6 +22,7 @@ const SelectField: FC<SelectFieldProps> = ({
     img,
     description,
     label,
+    placeholder = "",
     ...rest
 }) => {
     return (
@@ -36,6 +37,7 @@ const SelectField: FC<SelectFieldProps> = ({
             </div>
             <Select
                 {...rest}
+                placeholder={placeholder}
                 isDisabled={isDisabled}
                 className={cn(styles.dropdown, {
                     [styles.disabled]: isDisabled,

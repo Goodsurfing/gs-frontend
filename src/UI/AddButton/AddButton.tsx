@@ -1,11 +1,13 @@
-import plusIcon from "@assets/icons/plus-icon.svg";
-import cn from "classnames";
 import React, { FC } from "react";
 
-import styles from "./DateAddButton.module.scss";
-import { IDateAddButton } from "./types";
+import plusIcon from "@assets/icons/plus-icon.svg";
+import cn from "classnames";
 
-const DateAddButton: FC<IDateAddButton> = ({
+import { AddButtonProps } from "./types";
+
+import styles from "./AddButton.module.scss";
+
+const AddButton: FC<AddButtonProps> = ({
     className,
     children,
     onClick = () => {},
@@ -28,4 +30,4 @@ const DateAddButton: FC<IDateAddButton> = ({
     );
 };
 
-export default DateAddButton;
+export default React.memo(AddButton);

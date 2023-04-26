@@ -4,12 +4,12 @@ import React, { FC } from "react";
 import styles from "./Input.module.scss";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    label: string;
+    label?: string;
     img?: string;
     description?: string;
     isDirty?: boolean;
     isValid?: boolean;
-    id: string;
+    id?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
