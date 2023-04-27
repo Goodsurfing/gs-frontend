@@ -1,16 +1,17 @@
+import React, { useState } from "react";
+
 import AddButton from "@/UI/AddButton/AddButton";
 import CloseButton from "@/UI/CloseButton/CloseButton";
 import Switch from "@/UI/Switch/Switch";
-import { FormControlLabel, Typography } from "@mui/material";
-import React, { useState } from "react";
 
 import Languages from "../Languages/Languages";
-import styles from "./LanguagesGroup.module.scss";
 import ExtraControls from "../ExtraControls/ExtraControls";
+
+import styles from "./LanguagesGroup.module.scss";
 
 const LanguagesGroup = () => {
     const [languagesCount, setLanguagesCount] = useState([0]);
-
+    
     const onCloseBtnClick = (index: number) => {
         if (index === 0) return;
         setLanguagesCount(languagesCount.filter((_, i) => i !== index));

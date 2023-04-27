@@ -1,10 +1,13 @@
+import React from "react";
+
 import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
-import React from "react";
 
 import Age from "../Age/Age";
 import Gender from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
+import Location from "../Location/Location";
+
 import styles from "./WhoNeedsForm.module.scss";
 
 export const WhoNeedsForm = () => {
@@ -13,8 +16,9 @@ export const WhoNeedsForm = () => {
             <Gender />
             <Age />
             <LanguagesGroup />
+            <Location />
             <Button
-                onClick={() => {}}
+            onClick={() => {}}
                 className={styles.btn}
                 rounded
                 variant={Variant.PRIMARY}
