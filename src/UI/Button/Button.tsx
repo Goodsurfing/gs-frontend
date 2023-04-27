@@ -6,7 +6,7 @@ import styles from "./Button.module.scss";
 
 const Button: FC<PropsWithChildren<IButtonProps>> = ({
     variant,
-    rounded,
+    rounded=true,
     className,
     children,
     ...restBtnProps
