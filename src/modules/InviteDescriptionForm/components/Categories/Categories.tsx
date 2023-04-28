@@ -6,14 +6,22 @@ import ToggleButtonGroupComponent from '@/components/ToggleButtonGroup/ToggleBut
 
 import { tags } from './Categories.data'; 
 
+import styles from './Categories.module.scss';
+
 const Categories = () => {
   return (
-    <div>
-        <ToggleButtonGroupComponent>
-          {tags.map((item, index) => {
-            return <ToggleButtonComponent backgroundcolor={item.color} key={index} value={item.value}>{item.text}</ToggleButtonComponent>
-          })}
-        </ToggleButtonGroupComponent>
+    <div className={styles.wrapper}>
+      <p className={styles.title}>Категория приглашения</p>
+      <div className={styles.container}>
+          <ToggleButtonGroupComponent sx={{ display: 'flex', gap: '30px' }}>
+            {tags.map((item, index) => {
+              return <ToggleButtonComponent sx={{
+                mt: '14px',
+              }} backgroundcolor={item.color} key={index} value={item.value}>{item.text}</ToggleButtonComponent>
+            })}
+          </ToggleButtonGroupComponent>        
+      </div>
+
     </div>
   )
 }

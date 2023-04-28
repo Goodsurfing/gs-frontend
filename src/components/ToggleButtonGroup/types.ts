@@ -1,3 +1,7 @@
-import { ToggleButtonGroupProps } from "@mui/material";
+import { SxProps, ToggleButtonGroupProps } from "@mui/material";
 
-export interface ToggleButtonGroupComponentProps extends ToggleButtonGroupProps {}
+export interface ToggleButtonGroupComponentProps extends StyledToggleButtonGroupProps {}
+
+export interface StyledToggleButtonGroupProps extends ToggleButtonGroupProps {
+    sx?: SxProps;
+}

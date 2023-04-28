@@ -1,6 +1,5 @@
 import { InviteCategoryType } from "./type";
 
-
 export const tags: InviteCategoryType[] = [{
     value: 'red',
     color: 'red',

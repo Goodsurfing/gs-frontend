@@ -1,9 +1,11 @@
-import { SxProps, ToggleButton } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import React, { FC, useState } from "react";
 
-import styles from "./ToggleButtonComponent.module.scss";
+import { SxProps, ToggleButton } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 import { ToggleButtonProps } from "./types";
+
+import styles from "./ToggleButtonComponent.module.scss";
 
 interface StyledToggleButtonProps extends ToggleButtonProps {
     backgroundcolor?: string;

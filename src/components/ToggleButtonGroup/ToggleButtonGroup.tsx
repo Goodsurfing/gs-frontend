@@ -1,10 +1,15 @@
 import { ToggleButtonGroup } from "@mui/material";
 import React, { FC, useState } from "react";
 
-import { ToggleButtonGroupComponentProps } from "./types";
+import { ToggleButtonGroupComponentProps, StyledToggleButtonGroupProps } from "./types";
+
+import { styled } from "@mui/material/styles";
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)<StyledToggleButtonGroupProps>(({ theme }) => ({}));
 
 const ToggleButtonGroupComponent: FC<ToggleButtonGroupComponentProps> = ({
     onChange = () => {},
+    sx,
     defaultValue = "",
     children,
 }) => {
@@ -20,7 +25,7 @@ const ToggleButtonGroupComponent: FC<ToggleButtonGroupComponentProps> = ({
         onChange(event, newItems);
     };
 
-    return <ToggleButtonGroup value={selectedItems} onChange={onBtnToggleChange}>{children}</ToggleButtonGroup>;
+    return <StyledToggleButtonGroup value={selectedItems} onChange={onBtnToggleChange} sx={sx} >{children}</StyledToggleButtonGroup>;
 };
 
 export default ToggleButtonGroupComponent;
