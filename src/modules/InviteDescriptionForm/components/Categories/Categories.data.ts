@@ -1,15 +1,15 @@
 import { InviteCategoryType } from "./type";
 
 export const tags: InviteCategoryType[] = [{
-    value: 'red',
-    color: 'red',
-    text: 'red',
+    value: 'Хостелы',
+    color: '#E0EBC6',
+    text: 'Хостелы',
 }, {
-    value: 'green',
-    color: 'green',
-    text: 'green',
+    value: 'Заповедники и парки',
+    color: '#C3A3E9',
+    text: 'Заповедники и парки',
 }, {
-    value: 'blue',
-    color: 'blue',
-    text: 'blue',
+    value: 'Ферма',
+    color: '#C6E7E6',
+    text: 'Ферма',
 }];

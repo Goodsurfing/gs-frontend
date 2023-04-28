@@ -1,39 +1,33 @@
 import React, { FC, useState } from "react";
 
-import { SxProps, ToggleButton } from "@mui/material";
+import { SxProps, ToggleButton, ToggleButtonProps as MuiToggleButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
-import { ToggleButtonProps } from "./types";
 
 import styles from "./ToggleButtonComponent.module.scss";
 
-interface StyledToggleButtonProps extends ToggleButtonProps {
-    backgroundcolor?: string;
-    activebackgroundcolor?: string;
+interface StyledToggleButtonProps extends Pick<MuiToggleButtonProps, "onChange" | "selected"> {
+    btncolor?: string;
     sx?: SxProps;
 }
 
 const StyledToggleButton = styled(ToggleButton)<StyledToggleButtonProps>(
-    ({ theme, backgroundcolor, activebackgroundcolor }) => ({
-        backgroundColor: backgroundcolor ?? "white",
+    ({ theme, btncolor }) => ({
         "&.Mui-selected": {
-            backgroundColor:
-                activebackgroundcolor ?? theme.palette.primary.main,
+            backgroundColor: btncolor ?? theme.palette.primary.main,
+        },
+        "&.Mui-selected:hover": {
+            backgroundColor: btncolor ?? theme.palette.primary.main,
         },
     })
 );
 
-export const ToggleButtonComponent: FC<StyledToggleButtonProps> = ({
+export const ToggleButtonComponent: FC<MuiToggleButtonProps & StyledToggleButtonProps> = ({
     value,
     className,
-    checkedClassName,
-    notCheckedClassName,
     onChange = () => {},
-    children,
-    backgroundcolor,
-    color,
-    activebackgroundcolor,
+    btncolor,
     sx,
+    children,
     ...restToggleButtonProps
 }) => {
     const [checked, setChecked] = useState(false);
@@ -50,8 +44,7 @@ export const ToggleButtonComponent: FC<StyledToggleButtonProps> = ({
         <StyledToggleButton
             value={value}
             onChange={onBtnToggle}
-            backgroundcolor={backgroundcolor}
-            activebackgroundcolor={activebackgroundcolor}
+            btncolor={btncolor}
             sx={sx}
             {...restToggleButtonProps}
         >
