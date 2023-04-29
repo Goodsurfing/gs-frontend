@@ -1,6 +1,7 @@
+import React, { useCallback, useState } from "react";
+
 import Input from "@/UI/Input/Input";
 import { Box, Typography } from "@mui/material";
-import React, { useCallback, useState } from "react";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from '../../constants';
 

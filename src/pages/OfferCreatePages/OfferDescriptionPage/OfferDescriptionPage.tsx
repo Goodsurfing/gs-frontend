@@ -1,7 +1,8 @@
 import React from 'react';
 
-import styles from './OfferDescriptionPage.module.scss';
 import {InviteDescriptionForm} from '@/modules/InviteDescriptionForm';
+
+import styles from './OfferDescriptionPage.module.scss';
 
 const OfferDescriptionPage = () => {
   return (

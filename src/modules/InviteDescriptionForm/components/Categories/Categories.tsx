@@ -14,17 +14,18 @@ const Categories = () => {
             <p className={styles.title}>Категория приглашения</p>
             <div className={styles.container}>
                 <ToggleButtonGroupComponent
-                    sx={{ display: "flex", gap: "30px" }}
+                    sx={{ display: "flex", flexWrap: 'wrap', maxWidth: '624px', gap: "10px", mt: '14px' }}
                 >
                     {tags.map((item, index) => (
                         <ToggleButtonComponent
                             sx={{
-                                mt: "14px",
+                                maxHeight: '35px',
                                 padding: "10px 15px",
                                 border: item.color,
                                 borderRadius: '26px', 
                                 borderWidth: '2px',
                                 borderStyle: 'solid',
+                                boxSizing: 'content-box',
                                 textTransform: 'none',
                                 color: '#212121',
                                 fontSize: '14px',
