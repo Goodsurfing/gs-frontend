@@ -1,6 +1,7 @@
+import React, { FC, useState } from "react";
+
 import InputFile from "@/UI/InputFile/InputFile";
 import cn from "classnames";
-import React, { FC, useCallback, useState } from "react";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
@@ -11,6 +12,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     setFile,
     id,
     description,
+    extraWrapperClassName,
     labelChildren,
     wrapperClassName,
     labelClassName,
@@ -25,13 +27,12 @@ const ImageInput: FC<ImageInputComponentProps> = ({
             const file = fileList[0];
             try {
                 const size = await checkWidthAndHeight(file);
-                console.log(size)
                 if (size.width < 1920 || size.height < 1080) {
                     setError(true);
                     return;
                 }
                 const url = URL.createObjectURL(file);
-                
+                setError(false);
                 setFile(file);
                 setImageURL(url)
             } catch (e) {
@@ -54,7 +55,10 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 id={id}
                 {...restInputProps}
             />
-            {description}
+            <div className={cn(extraWrapperClassName, styles.extraWrapper)}>
+                {error && <span className={styles.error}>Неверный формат файла</span>}
+                {description}
+            </div>
         </>
     );
 };
