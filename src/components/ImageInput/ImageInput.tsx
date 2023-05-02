@@ -44,7 +44,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     };
 
     return (
-        <>
+        <div className={styles.main}>
             <InputFile
                 onChange={handleFileChange}
                 imageURL={imageURL}
@@ -59,7 +59,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 {error && <span className={styles.error}>Неверный формат файла</span>}
                 {description}
             </div>
-        </>
+        </div>
     );
 };
 

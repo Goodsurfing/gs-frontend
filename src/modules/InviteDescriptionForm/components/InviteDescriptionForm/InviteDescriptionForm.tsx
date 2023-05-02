@@ -1,15 +1,17 @@
 import React from "react";
 
-import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/UI/Button/Button";
 
 import EventName from "../EventName/EventName";
 import Categories from "../Categories/Categories";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import FullDescription from "../FullDescription/FullDescription";
 
+import ImageUpload from "../ImageUpload/ImageUpload";
+import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
+
 import styles from './InviteDescriptionForm.module.scss';
-import InputFile from "../ImageUpload/ImageUpload";
 
 export const InviteDescriptionForm = () => {
     const onSubmit = () => {};
@@ -20,7 +22,8 @@ export const InviteDescriptionForm = () => {
                 <Categories />
                 <ShortDescription />
                 <FullDescription />
-                <InputFile />
+                <ImageUpload />
+                <ExtraImagesUpload />
             </div>
             <Button className={styles.btn} rounded variant={Variant.PRIMARY}>Сохранить</Button>
         </form>
