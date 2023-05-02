@@ -1,0 +1,21 @@
+.wrapper {
+    box-sizing: border-box;
+}
+
+.label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #ECF1F4;
+    border-radius: 0;
+    border: 1px dashed var(--white-theme-color);
+}
+
+.uploadedImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

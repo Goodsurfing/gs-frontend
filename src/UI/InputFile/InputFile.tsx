@@ -10,11 +10,13 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
     (
         {
             id,
+            imageURL,
             className,
             disabled,
             onChange,
             value,
             wrapperClassName,
+            uploadedImageClassName,
             labelClassName,
             labelDisableClassName,
             labelChildren,
@@ -55,7 +57,7 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                     accept={fileInputAccept}
                     {...restFileInputProps}
                 />
-
+                {imageURL && <img className={cn(uploadedImageClassName, styles.uploadedImage)} src={imageURL} alt="Uploaded" />}
                 <label
                     className={cn(
                         styles.fileInputGroup__label,
