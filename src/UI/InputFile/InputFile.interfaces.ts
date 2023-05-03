@@ -2,7 +2,7 @@ import { AllowedFilesExtensions } from "@/constants/files";
 import React, { InputHTMLAttributes, MouseEventHandler } from "react";
 
 export type InputFileProps = {
-    imageURL?: string;
+    imageURL?: string | null;
     uploadedImageClassName?: string;
     wrapperClassName?: string;
     labelClassName?: string;

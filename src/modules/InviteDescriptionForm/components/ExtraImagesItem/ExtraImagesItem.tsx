@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import ImageInput from "@/components/ImageInput/ImageInput";
 
@@ -9,8 +9,7 @@ import { ExtraImagesItemProps } from "./types";
 
 import styles from "./ExtraImagesItem.module.scss";
 
-const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ id, closeBtn }) => {
-    const [file, setFile] = useState<File | null>(null);
+const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ img, setImg, id, closeBtn }) => {
     
     const onBtnClick = () => {}
 
@@ -18,12 +17,12 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ id, closeBtn }) => {
         <div className={styles.wrapper}>
             <ImageInput
                 id={id}
-                file={file}
-                setFile={setFile}
+                img={img}
+                setImg={setImg}
                 className={styles.main}
                 wrapperClassName={styles.background}
                 labelClassName={styles.label}
-                labelChildren={<ExtraImagesItemBackground />}
+                labelChildren={!img && <ExtraImagesItemBackground />}
             />            
             {closeBtn && <ExtraImagesItemButton className={styles.closeBtn} onClick={onBtnClick} />}
         </div>
@@ -31,4 +30,4 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ id, closeBtn }) => {
     );
 };
 
-export default ExtraImagesItem;
+export default React.memo(ExtraImagesItem);

@@ -6,12 +6,12 @@ import ImageInput from "@/components/ImageInput/ImageInput";
 import styles from "./ImageUpload.module.scss";
 
 const ImageUpload: FC = () => {
-    const [file, setFile] = useState<File | null>(null);
+    const [img, setImg] = useState<string | null>(null);
 
     return (
         <ImageInput
-            file={file}
-            setFile={setFile}
+            img={img}
+            setImg={setImg}
             wrapperClassName={styles.input}
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground />}

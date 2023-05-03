@@ -8,8 +8,8 @@ import { ImageInputComponentProps } from "./types";
 import { checkWidthAndHeight } from "@/utils/files/checkWidthAndHeight";
 
 const ImageInput: FC<ImageInputComponentProps> = ({
-    file,
-    setFile,
+    img,
+    setImg,
     id,
     description,
     extraWrapperClassName,
@@ -19,7 +19,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
-    const [imageURL, setImageURL] = useState<string>();
+    // const [imageURL, setImageURL] = useState<string>();
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;
@@ -33,8 +33,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 }
                 const url = URL.createObjectURL(file);
                 setError(false);
-                setFile(file);
-                setImageURL(url)
+                setImg(url);
             } catch (e) {
                 setError(true);
                 console.log("Error ", e);
@@ -47,7 +46,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
         <div className={styles.main}>
             <InputFile
                 onChange={handleFileChange}
-                imageURL={imageURL}
+                imageURL={img}
                 uploadedImageClassName={styles.uploadedImg}
                 wrapperClassName={cn(styles.wrapper, wrapperClassName)}
                 labelClassName={cn(styles.label, labelClassName)}

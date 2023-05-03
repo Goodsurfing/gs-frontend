@@ -5,3 +5,18 @@
     grid-template-rows: 130px;
     gap: 1.25rem;
 }
+
+.imgItem {
+    width: 130px;
+}
+
+
+.closeBtn {
+    position: absolute;
+    top: 8%;
+    right: 5%;
+    z-index: 5;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+}
