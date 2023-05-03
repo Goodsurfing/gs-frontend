@@ -1,11 +1,11 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import useQuery from "@/hooks/useQuery";
 

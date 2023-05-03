@@ -1,0 +1,13 @@
+.wrapper {
+    margin-top: 30px;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.from, .to {
+    max-width: 150px;
+}

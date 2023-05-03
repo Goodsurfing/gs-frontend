@@ -1,10 +1,10 @@
+import Input from "@/UI/Input/Input";
 import { LocationType, ymapsDefaultLocation } from "@/constants/ymaps";
 import React, { FC, useEffect, useState } from "react";
 import { Control, Controller, FieldValue, FieldValues } from "react-hook-form";
 import { Placemark } from "react-yandex-maps";
 
 import Hints from "@/components/Hints/Hints";
-import Input from "@/components/ui/Input/Input";
 
 import useDebounce from "@/hooks/useDebounce";
 
@@ -16,14 +16,21 @@ import validateCoordinates from "@/utils/ymaps/normalizeCoordinates";
 import YandexMap from "../YMap";
 import { GeoObjectHintType, YMapType } from "../types/ymaps";
 import styles from "./YMapWithAddress.module.scss";
-import { IHostInfoForm, YMapWithAddressForm } from "@/pages/HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoForm.interface";
 
-interface IYMapWithAddress {
-    control: Control<IHostInfoForm>;
-    data: YMapWithAddressForm
+interface IYMapWithAddress<
+    ControlType extends FieldValues,
+    DataType extends { address: string }
+> {
+    control: Control<ControlType>;
+    data: DataType;
+    width?: string;
+    height?: string;
 }
 
-const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
+export default function YMapWithAddress<
+    ControlType extends FieldValues,
+    DataType extends { address: string }
+>({ control, data, width, height }: IYMapWithAddress<ControlType, DataType>) {
     const [ymap, setYmap] = useState<YMapType>(null);
     const [address, setAddress] = useState<string>("");
     const [normalizedCoordinates, setNormalizedCoordinates] =
@@ -50,31 +57,36 @@ const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
     return (
         <div className={styles.wrapper}>
             <Controller
-                control={control}
+                control={control as unknown as Control<FieldValues>}
                 name="address"
-                defaultValue={data.address || ''}
-                render={({ field }) => (
-                    <Input
-                        id="address"
-                        label="Адрес"
-                        type="text"
-                        onFocus={() => setSelectedAddressByHint(false)}
-                        onChange={(e) => setAddress(e.target.value)}
-                        value={address}
-                    >
-                        {routesList?.length > 0 && (
-                            <Hints
-                                hints={routesList}
-                                selectedAddressByHint={selectedAddresByHint}
-                                setAddress={setAddress}
-                                setAddressByHint={setSelectedAddressByHint}
-                            />
-                        )}
-                    </Input>
-                )}
+                defaultValue={data.address || ""}
+                render={({ field }) => {
+                    return (
+                        <Input
+                            id="address"
+                            label="Адрес"
+                            type="text"
+                            onFocus={() => setSelectedAddressByHint(false)}
+                            onChange={(e) => {
+                                field.onChange(e.target.value);
+                                setAddress(e.target.value);
+                            }}
+                            value={field.value}
+                        >
+                            {routesList?.length > 0 && (
+                                <Hints
+                                    hints={routesList}
+                                    selectedAddressByHint={selectedAddresByHint}
+                                    setAddress={setAddress}
+                                    setAddressByHint={setSelectedAddressByHint}
+                                />
+                            )}
+                        </Input>
+                    );
+                }}
             />
-
             <YandexMap
+                height={height}
                 className={styles.ymap}
                 ymap={ymap}
                 setYmap={setYmap}
@@ -95,6 +107,4 @@ const YMapWithAddress: FC<IYMapWithAddress> = ({ control, data }) => {
             </YandexMap>
         </div>
     );
-};
-
-export default YMapWithAddress;
+}

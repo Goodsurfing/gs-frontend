@@ -1,3 +1,4 @@
+import Input from "@/UI/Input/Input";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
@@ -6,7 +7,6 @@ import {
     IUserInfoForm,
 } from "../ProfileInfoForm.interface";
 import styles from "./ContactsFormGroup.module.scss";
-import Input from "@/components/ui/Input/Input";
 
 interface ContactsFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -43,7 +43,7 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
             <Controller
                 control={control}
                 name="phone"
-                defaultValue={data.phone || ''}
+                defaultValue={data.phone || ""}
                 render={({ field }) => {
                     return (
                         <Input

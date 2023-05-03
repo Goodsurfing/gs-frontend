@@ -1,3 +1,7 @@
+import Arrow from "@/UI/Arrow/Arrow";
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
 import React, { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -6,10 +10,6 @@ import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
-import Arrow from "@/components/ui/Arrow/Arrow";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";

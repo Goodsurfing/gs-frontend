@@ -1,10 +1,10 @@
+import MainHeader from "@/UI/MainHeader/MainHeader";
 import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
-import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
 import ProfileInfoPage from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import { SideMenuData } from "@/pages/ProfilePages/ProfilePage/ProfilePage.data";

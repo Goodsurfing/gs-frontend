@@ -1,7 +1,6 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
+import SectionTitle from "@/UI/SectionTitle/SectionTitle";
 import React, { FC } from "react";
-
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
-import SectionTitle from "@/components/ui/SectionTitle/SectionTitle";
 
 import styles from "./BecomeHostContainer.module.scss";
 

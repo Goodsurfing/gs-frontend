@@ -1,10 +1,10 @@
+import MainHeader from "@/UI/MainHeader/MainHeader";
 import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
-import MainHeader from "@/components/ui/MainHeader/MainHeader";
 
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 

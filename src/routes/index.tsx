@@ -2,9 +2,13 @@ import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import Preloader from "@/components/Preloader/Preloader";
-const OfferCreatePages = lazy(() => import("@/pages/OfferCreatePages/OfferCreatePages"));
+
+import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
+
+const OfferCreatePages = lazy(
+    () => import("@/pages/OfferCreatePages/OfferCreatePages")
+);
 
 const ConfirmEmailPage = lazy(
     () => import("@/pages/ConfirmEmailPage/ConfirmEmailPage")
@@ -31,6 +35,7 @@ export const AppRoutes = () => {
         <Suspense fallback={<Preloader />}>
             <Routes>
                 <Route path="/:ln" element={<MainPage />} />
+                {/* Auth */}
                 <Route path="/:ln/signup" element={<SignUpPage />} />
                 <Route path="/:ln/signin" element={<SignInPage />} />
                 <Route
@@ -49,6 +54,7 @@ export const AppRoutes = () => {
                     path="/:ln/confirm-email-success"
                     element={<ConfirmEmailSuccessPage />}
                 />
+                {/* Profile */}
                 <Route path="/:ln/profile">
                     <Route
                         path="info"
@@ -59,6 +65,7 @@ export const AppRoutes = () => {
                         element={<PrivateRoute Component={ProfilePage} />}
                     />
                 </Route>
+                {/* Host */}
                 <Route
                     path="/:ln/host"
                     element={<PrivateRoute Component={HostPage} />}
@@ -67,13 +74,32 @@ export const AppRoutes = () => {
                     path="/:ln/organization/registration"
                     element={<PrivateRoute Component={HostPage} />}
                 />
+                {/* Offers pages */}
                 <Route
                     path="/:ln/offers"
                     element={<PrivateRoute Component={HostPage} />}
                 />
-                <Route path="/:ln/offers-welcome"
+                <Route
+                    path="/:ln/offers-welcome"
                     element={<PrivateRoute Component={OfferCreatePages} />}
-                ></Route>
+                />
+                <Route
+                    path="/:ln/offers-where"
+                    element={<PrivateRoute Component={OfferCreatePages} />}
+                />
+                <Route
+                    path="/:ln/offers-when"
+                    element={<PrivateRoute Component={OfferCreatePages} />}
+                />
+                <Route
+                    path="/:ln/offers-who-needs"
+                    element={<PrivateRoute Component={OfferCreatePages} />}
+                />
+                <Route
+                    path="/:ln/offers-description"
+                    element={<PrivateRoute Component={OfferCreatePages} />}
+                />
+                {/* Preloader */}
                 <Route path="/:ln/preloader" element={<Preloader />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>

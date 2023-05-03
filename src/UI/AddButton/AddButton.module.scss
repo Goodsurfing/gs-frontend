@@ -1,0 +1,23 @@
+.btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 8px;
+
+    white-space: nowrap;
+
+    background: #F1F9FD;
+    border: 1px solid #82949F;
+    border-radius: 10px;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 100%;
+
+    color: #8494A1;
+
+    cursor: pointer;
+}

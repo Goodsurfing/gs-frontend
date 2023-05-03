@@ -1,10 +1,10 @@
+import Arrow from "@/UI/Arrow/Arrow";
 import cn from "classnames";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
-import Arrow from "@/components/ui/Arrow/Arrow";
 
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 

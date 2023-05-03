@@ -1,7 +1,6 @@
+import Input from "@/UI/Input/Input";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
-
-import Input from "@/components/ui/Input/Input";
 
 import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import styles from "./GeneralFormGroup.module.scss";

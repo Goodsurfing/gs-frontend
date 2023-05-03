@@ -1,3 +1,5 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,8 +12,6 @@ import {
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
@@ -26,7 +26,7 @@ import HostMainInfoOrganization from "./HostMainInfoOrganization/HostMainInfoOrg
 import HostMainInfoSocial from "./HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
-    const [getInfo, userResults] = userInfoApi.useLazyGetUserInfoQuery();
+    const [getInfo] = userInfoApi.useLazyGetUserInfoQuery();
     const [getOrganization, organizationResults] =
         userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
 
@@ -88,8 +88,10 @@ const HostMainInfoForm: FC = () => {
         organizationApi.useRegisterOrganizationMutation();
     const [bindOrganization, { isSuccess }] =
         organizationApi.useBindOrganizationMutation();
-    const [updateOrganization, { isError: isUpdateError, isSuccess: isUpdateSuccess }] =
-        organizationApi.useUpdateOrganizationMutation();
+    const [
+        updateOrganization,
+        { isError: isUpdateError, isSuccess: isUpdateSuccess },
+    ] = organizationApi.useUpdateOrganizationMutation();
 
     const [hint, setHint] = useState<Pick<IHintPopup, "text" | "type">>();
     const [file, setFile] = useState<File>();
@@ -108,8 +110,7 @@ const HostMainInfoForm: FC = () => {
         };
 
         if (isOrganizationExists && savedOrganizationData) {
-            console.log("exists");
-            updateOrganization({...savedOrganizationData})
+            updateOrganization(savedOrganizationData)
                 .unwrap()
                 .then((res) => {
                     setHint({
@@ -139,20 +140,21 @@ const HostMainInfoForm: FC = () => {
                         telegram: organization.telegram,
                         type: organization.type,
                         website: organization.website,
-                    }).then((res) => {
-                        console.log('success creating otganization')
-                        setHint({
-                            text: "Организация успешно создана",
-                            type: HintType.Success,
-                        })
                     })
-                    .catch((error) => {
-                        setHint({
-                            text: "Не удалось привязать организацию",
-                            type: HintType.Error,
+                        .then((res) => {
+                            console.log("success creating otganization");
+                            setHint({
+                                text: "Организация успешно создана",
+                                type: HintType.Success,
+                            });
+                        })
+                        .catch((error) => {
+                            setHint({
+                                text: "Не удалось привязать организацию",
+                                type: HintType.Error,
+                            });
+                            console.error("Не удалось привязать организацию");
                         });
-                        console.error("Не удалось привязать организацию");
-                    });
                 })
                 .catch((reason) => {
                     console.error("Не удалось создать организацию");
@@ -197,6 +199,7 @@ const HostMainInfoForm: FC = () => {
                 )}
                 <div className={styles.container}>
                     <YMapWithAddress
+                        height="300px"
                         data={{
                             address: savedOrganizationData.address,
                         }}

@@ -1,3 +1,5 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -8,12 +10,12 @@ import HintPopup from "@/components/HintPopup/HintPopup";
 import { HintType } from "@/components/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { useAppDispatch } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
+
+import tokenStorage from "@/utils/storage/TokenStorage";
 
 import { authApi } from "@/store/api/authApi";
 import { setLoginUserData } from "@/store/reducers/loginSlice";
@@ -22,7 +24,6 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import tokenStorage from "@/utils/storage/TokenStorage";
 
 const SignInForm: FC = () => {
     const [loginUser, { isError }] = authApi.useLoginUserMutation();
@@ -41,12 +42,12 @@ const SignInForm: FC = () => {
             .unwrap()
             .then((res) => {
                 dispatch(setLoginUserData(res));
-                tokenStorage.setToken(res.token);                
+                tokenStorage.setToken(res.token);
                 navigate(`/${i18n.language}/`);
                 reset();
             })
             .catch((err) => {
-                console.error('Неверные данные');
+                console.error("Неверные данные");
                 setToast({
                     text: "Неверный логин или пароль",
                     type: HintType.Error,

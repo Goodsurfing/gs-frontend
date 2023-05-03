@@ -1,0 +1,35 @@
+.link {
+    white-space: nowrap;
+    display: inline-block;
+
+
+    cursor: pointer;
+    transition: var(--main-transition);
+    text-decoration: none;
+
+    border-radius: 10px;
+    padding: 12px 100px;
+    background: none;
+
+    font-size: 1rem;
+    line-height: 1.375rem;
+}
+
+.link:disabled {
+    filter: brightness(90%);
+
+    &:hover {
+        cursor: not-allowed;
+    }
+    
+}
+
+.blue {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+
+    &:hover {
+        filter: brightness(90%);
+        cursor: pointer;
+    }
+}

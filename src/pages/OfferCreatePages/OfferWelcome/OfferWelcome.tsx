@@ -1,10 +1,9 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC } from "react";
-
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./OfferWelcome.module.scss";
-import { useNavigate } from "react-router-dom";
 
 const OfferWelcome: FC = () => {
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const OfferWelcome: FC = () => {
             <Button
                 variant={Variant.PRIMARY}
                 rounded
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/offers-where")}
                 className={styles.btn}
             >
                 Начать

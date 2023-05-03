@@ -1,13 +1,13 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import DashboardDoughnut from "@/components/DashboardDoughnut/DashboardDoughnut";
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import { ProfileFillItems } from "./HostProfileFill.data";
 import styles from "./HostProfileFill.module.scss";
 import HostProfileFillPoint from "./HostProfileFillPoint/HostProfileFillPoint";
-import { useNavigate } from "react-router-dom";
 
 const HostProfileFill: FC = () => {
     const [degrees, setDegrees] = useState<Array<number>>([360, 0]);
@@ -40,7 +40,7 @@ const HostProfileFill: FC = () => {
                             variant={Variant.GREEN}
                             rounded
                             onClick={() => {
-                                navigate('/host/registration')
+                                navigate("/host/registration");
                             }}
                         >
                             Создать организацию
@@ -48,7 +48,11 @@ const HostProfileFill: FC = () => {
                     </div>
                 </div>
                 <div className={styles.doughnut}>
-                    <DashboardDoughnut className={styles.doughnutInner} degrees={degrees} setDegrees={setDegrees}>
+                    <DashboardDoughnut
+                        className={styles.doughnutInner}
+                        degrees={degrees}
+                        setDegrees={setDegrees}
+                    >
                         <div className={styles.percents}>{degrees[0]}%</div>
                     </DashboardDoughnut>
                 </div>

@@ -1,7 +1,6 @@
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC } from "react";
-
-import Button from "@/components/ui/Button/Button";
-import { Variant } from "@/components/ui/Button/Button.interface";
 
 import like from "@/assets/icons/offers/like.svg";
 import star from "@/assets/icons/offers/star.svg";

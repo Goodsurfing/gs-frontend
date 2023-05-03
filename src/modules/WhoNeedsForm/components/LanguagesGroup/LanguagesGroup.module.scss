@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.closeBtn {
+    min-width: 36px;
+    min-height: 36px;
+    margin-bottom: 8px;
+}
+
+.langsWrapper {
+    display: flex;
+    flex-direction: column;
+}

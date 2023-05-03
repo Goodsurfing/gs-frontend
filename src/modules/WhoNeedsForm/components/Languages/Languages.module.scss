@@ -1,0 +1,15 @@
+.wrapper {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+}
+
+.all, .levels {
+    max-width: 300px;
+}
+
+.levels {
+    margin-left: 24px;
+}

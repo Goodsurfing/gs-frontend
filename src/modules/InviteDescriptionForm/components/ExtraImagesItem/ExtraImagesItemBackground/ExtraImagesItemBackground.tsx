@@ -1,0 +1,17 @@
+import React, { FC } from 'react';
+
+import plusIcon from '@assets/icons/offer-create/plus.svg';
+
+import styles from './ExtraImagesItemBackground.module.scss';
+
+
+const ExtraImagesItemBackground: FC = () => {
+  return (
+    <div className={styles.backgroundWrapper}>
+        <img className={styles.backgroundImg} src={plusIcon} alt="photo" />
+        <p className={styles.backgroundText}>Добавить фото</p>
+    </div>
+  )
+}
+
+export default ExtraImagesItemBackground

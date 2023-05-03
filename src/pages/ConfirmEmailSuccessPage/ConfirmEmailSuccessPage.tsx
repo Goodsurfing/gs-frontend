@@ -1,8 +1,7 @@
+import ButtonLink from "@/UI/ButtonLink/ButtonLink";
+import SignLayout from "@/UI/SignLayout/SignLayout";
+import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
-
-import ButtonLink from "@/components/ui/ButtonLink/ButtonLink";
-import SignLayout from "@/components/ui/SignLayout/SignLayout";
-import SignTitle from "@/components/ui/SignTitle/SignTitle";
 
 import { AppRoutesEnum } from "@/routes/types";
 

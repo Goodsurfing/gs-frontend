@@ -1,18 +1,22 @@
+import Input from "@/UI/Input/Input";
+import Textarea from "@/UI/Textarea/Textarea";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import Input from "@/components/ui/Input/Input";
-import Textarea from "@/components/ui/Textarea/Textarea";
-
-import styles from "./HostMainInfoOrganization.module.scss";
 import SelectField from "@/components/SelectField/SelectField";
-import { organizations } from "./HostMainInfoOrganization.data";
+
 import { IOption } from "@/types/select";
-import { IHostInfoForm, IHostMainInfoOrganizationForm } from "../HostMainInfoForm.interface";
+
+import {
+    IHostInfoForm,
+    IHostMainInfoOrganizationForm,
+} from "../HostMainInfoForm.interface";
+import { organizations } from "./HostMainInfoOrganization.data";
+import styles from "./HostMainInfoOrganization.module.scss";
 
 interface IHostMainInfoOrganization {
     control: Control<IHostInfoForm>;
-    data: IHostMainInfoOrganizationForm
+    data: IHostMainInfoOrganizationForm;
 }
 
 const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
@@ -24,7 +28,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <Controller
                 control={control}
                 name="name"
-                defaultValue={data.name || ''}
+                defaultValue={data.name || ""}
                 render={({ field }) => (
                     <Input
                         id="organizationName"
@@ -38,7 +42,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <Controller
                 control={control}
                 name="description"
-                defaultValue={data.description || ''}
+                defaultValue={data.description || ""}
                 render={({ field }) => (
                     <Textarea
                         className={styles.description}
@@ -52,16 +56,16 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
                 <Controller
                     control={control}
                     name="type"
-                    defaultValue={data.type || ''}
+                    defaultValue={data.type || ""}
                     render={({ field: { onChange, value, name } }) => (
                         <SelectField
                             name={name}
-                            options={organizations} 
+                            options={organizations}
                             value={organizations.find((organization) => {
                                 return organization.value === value;
                             })}
                             onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value)
+                                onChange((selectedOption as IOption).value);
                             }}
                             label="Тип организации"
                         />
@@ -86,7 +90,7 @@ const HostMainInfoOrganization: FC<IHostMainInfoOrganization> = ({
             <Controller
                 control={control}
                 name="website"
-                defaultValue={data.website || ''}
+                defaultValue={data.website || ""}
                 render={({ field }) => (
                     <Input
                         label="Сайт организации"

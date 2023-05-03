@@ -1,0 +1,27 @@
+.calendar {
+    z-index: 10;
+    min-width: 300px;
+    top: 120%;
+    left: 5%;
+    position: absolute;
+}
+
+.wrapper {
+    position: relative;
+}
+
+.date {
+    font-size: 24px;
+}
+
+.invalid {
+    border: 1px solid red;
+    color: red;
+}
+
+.img {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    right: 2%;
+}
