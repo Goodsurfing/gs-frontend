@@ -8,20 +8,20 @@ WORKDIR /app
 
 # 
 COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY package-lock.json /app/package-lock.json
 
-RUN yarn install
+RUN npm install --legacy-peer-deps
 
 COPY . /app
 
 ENV CI=true
 ENV PORT=3000
 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]
 
 FROM development AS build
 
-RUN yarn run build
+RUN npm run build
 
 
 FROM development as dev-envs
@@ -33,7 +33,7 @@ RUN useradd -s /bin/bash -m vscode; \
 
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]
 
 # 2. For Nginx setup
 FROM nginx:alpine

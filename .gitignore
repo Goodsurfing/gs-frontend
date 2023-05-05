@@ -4,4 +4,3 @@ dist/
 coverage
 http-requests
 .env
-yarn-error.log
