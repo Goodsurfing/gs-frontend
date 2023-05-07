@@ -8,10 +8,10 @@
         "start": "webpack serve --mode development",
         "clean": "rm -rf dist",
         "bootstrap": "mkdir dist",
-        "build": "yarn clean && yarn bootstrap && webpack --progress --mode production --profile --json > dist/stats.json",
+        "build": "npm run clean && npm run bootstrap && webpack --progress --mode production --profile --json > dist/stats.json",
         "test": "jest --watch",
         "test:coverage": "jest --coverage",
-        "bundle-report": "yarn build && webpack-bundle-analyzer dist/stats.json",
+        "bundle-report": "npm run build && webpack-bundle-analyzer dist/stats.json",
         "stylelint": "stylelint \"**/*.scss\" --fix",
         "eslint": "npx eslint ./src --fix",
         "prettier": "prettier --write \"**/*.{ts,tsx,js}\""
