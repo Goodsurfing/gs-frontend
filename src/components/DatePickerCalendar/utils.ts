@@ -1,17 +1,17 @@
-export const daysOfTheWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+export const daysOfTheWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const VISIBLE_CELLS_AMOUNT = 7 * 6;
@@ -29,7 +29,7 @@ export interface DateCellItem {
   date: number;
   month: number;
   year: number;
-  type: 'next' | 'prev' | 'current';
+  type: "next" | "prev" | "current";
 }
 
 export const getDaysAmountInAMonth = (year: number, month: number) => {
@@ -53,15 +53,14 @@ export const getPreviousMonthDays = (year: number, month: number) => {
 
   const dateCells: DateCellItem[] = [];
 
-  const [cellYear, cellMonth] =
-    month === 0 ? [year - 1, 11] : [year, month - 1];
+  const [cellYear, cellMonth] = month === 0 ? [year - 1, 11] : [year, month - 1];
 
   for (let i = prevMonthCellsAmount - 1; i >= 0; i--) {
     dateCells.push({
       year: cellYear,
       month: cellMonth,
       date: daysAmountInPrevMonth - i,
-      type: 'prev',
+      type: "prev",
     });
   }
 
@@ -74,11 +73,9 @@ export const getNextMonthDays = (year: number, month: number) => {
 
   const daysAmount = getDaysAmountInAMonth(year, month);
 
-  const nextMonthDays =
-    VISIBLE_CELLS_AMOUNT - daysAmount - prevMonthCellsAmount;
+  const nextMonthDays = VISIBLE_CELLS_AMOUNT - daysAmount - prevMonthCellsAmount;
 
-  const [cellYear, cellMonth] =
-    month === 11 ? [year + 1, 0] : [year, month + 1];
+  const [cellYear, cellMonth] = month === 11 ? [year + 1, 0] : [year, month + 1];
 
   const dateCells: DateCellItem[] = [];
 
@@ -87,7 +84,7 @@ export const getNextMonthDays = (year: number, month: number) => {
       year: cellYear,
       month: cellMonth,
       date: i,
-      type: 'next',
+      type: "next",
     });
   }
 
@@ -97,7 +94,7 @@ export const getNextMonthDays = (year: number, month: number) => {
 export const getCurrentMothDays = (
   year: number,
   month: number,
-  numberOfDays: number
+  numberOfDays: number,
 ) => {
   const dateCells: DateCellItem[] = [];
 
@@ -106,7 +103,7 @@ export const getCurrentMothDays = (
       year,
       month,
       date: i,
-      type: 'current',
+      type: "current",
     });
   }
 
@@ -134,7 +131,7 @@ export const getDateFromInputValue = (inputValue: string) => {
     return;
   }
 
-  const [date, month, year] = inputValue.split('-').map(v => parseInt(v, 10));
+  const [date, month, year] = inputValue.split("-").map((v) => parseInt(v, 10));
 
   const dateObj = new Date(year, month - 1, date);
 
@@ -147,7 +144,7 @@ export const isValidDateString = (value: string) => {
   if (!validValueRegex.test(value)) {
     return false;
   }
-  const [date, month, year] = value.split('-').map(v => parseInt(v, 10));
+  const [date, month, year] = value.split("-").map((v) => parseInt(v, 10));
 
   if (month < 1 || month > 12 || date < 1) {
     return false;
@@ -164,9 +161,9 @@ export const isValidDateString = (value: string) => {
 
 export function isToday(cell: DateCellItem, todayDate: Date) {
   return (
-    todayDate.getFullYear() === cell.year &&
-    todayDate.getMonth() === cell.month &&
-    todayDate.getDate() === cell.date
+    todayDate.getFullYear() === cell.year
+    && todayDate.getMonth() === cell.month
+    && todayDate.getDate() === cell.date
   );
 }
 

@@ -9,23 +9,21 @@ interface PopupProps {
 }
 
 const Popup: FC<PropsWithChildren<PopupProps>> = ({
-    isOpen,
-    className,
-    children,
-}) => {
-    return (
-        <div
-            className={cn(
-                styles.wrapper,
-                {
-                    [styles.open]: isOpen,
-                },
-                className
-            )}
-        >
-            {children}
-        </div>
-    );
-};
+  isOpen,
+  className,
+  children,
+}) => (
+    <div
+        className={cn(
+          styles.wrapper,
+          {
+            [styles.open]: isOpen,
+          },
+          className,
+        )}
+    >
+        {children}
+    </div>
+);
 
 export default Popup;

@@ -1,0 +1,9 @@
+{
+ "i18n-ally.localesPaths": [
+  "public/locales",
+  "src/types/languages",
+  "src/store/utils/language",
+  "src/types/api/locales",
+  "src/shared/assets/icons/langs"
+ ]
+}

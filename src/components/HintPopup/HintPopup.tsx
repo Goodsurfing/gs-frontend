@@ -6,43 +6,43 @@ import { IHintPopup } from "./HintPopup.interface";
 import styles from "./HintPopup.module.scss";
 
 const HintPopup: FC<IHintPopup> = ({
-    text,
-    className,
-    type,
-    timeout = 3000,
+  text,
+  className,
+  type,
+  timeout = 3000,
 }) => {
-    const [isActive, setActive] = useState(false);
+  const [isActive, setActive] = useState(false);
 
-    useEffect(() => {
-        setActive(true);
-        const timer = setTimeout(() => setActive(false), timeout);
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
+  useEffect(() => {
+    setActive(true);
+    const timer = setTimeout(() => setActive(false), timeout);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
-    return (
-        <div className={cn(styles.wrapper, className)}>
-            <CSSTransition
-                in={isActive}
-                timeout={timeout}
-                classNames={{
-                    enterActive: styles.enterActive,
-                    exitDone: styles.exitDone,
-                    exit: styles.exitDone,
-                }}
-            >
-                <div
-                    className={cn(styles.popup, {
-                        [styles.error]: type === "error",
-                        [styles.success]: type === "success",
-                    })}
-                >
-                    {text}
-                </div>
-            </CSSTransition>
-        </div>
-    );
+  return (
+      <div className={cn(styles.wrapper, className)}>
+          <CSSTransition
+              in={isActive}
+              timeout={timeout}
+              classNames={{
+                enterActive: styles.enterActive,
+                exitDone: styles.exitDone,
+                exit: styles.exitDone,
+              }}
+          >
+              <div
+                  className={cn(styles.popup, {
+                    [styles.error]: type === "error",
+                    [styles.success]: type === "success",
+                  })}
+              >
+                  {text}
+              </div>
+          </CSSTransition>
+      </div>
+  );
 };
 
 export default HintPopup;

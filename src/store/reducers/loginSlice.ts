@@ -1,30 +1,28 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { ILoginResponse } from "@/types/api/auth/login.interface";
+import { ILoginResponse } from "types/api/auth/login.interface";
 
 const initialState: ILoginResponse = {
-    token: localStorage.getItem("token") || "",
+  token: localStorage.getItem("token") || "",
 };
 
 export const loginSlice = createSlice({
-    name: "register",
-    initialState,
-    reducers: {
-        setLoginUserData: (
-            state: ILoginResponse,
-            action: PayloadAction<ILoginResponse>
-        ) => {
-            return {
-                token: action.payload.token,
-            };
-        },
-        logout: () => {
-            localStorage.removeItem("token");
-            return {
-                token: "",
-            };
-        },
+  name: "register",
+  initialState,
+  reducers: {
+    setLoginUserData: (
+      state: ILoginResponse,
+      action: PayloadAction<ILoginResponse>,
+    ) => ({
+      token: action.payload.token,
+    }),
+    logout: () => {
+      localStorage.removeItem("token");
+      return {
+        token: "",
+      };
     },
+  },
 });
 
 export const { setLoginUserData, logout } = loginSlice.actions;

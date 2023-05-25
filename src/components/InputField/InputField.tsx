@@ -9,34 +9,32 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputField: FC<InputFieldProps> = ({
-    type,
-    text,
-    value,
-    defaultValue,
-    onChange,
-    ...rest
-}) => {
-    return (
-        <div className={styles.box}>
-            <input
-                type={type}
-                required
-                onChange={onChange}
-                value={value}
-                defaultValue={defaultValue}
-                name="main"
-                {...rest}
-            />
-            <label
-                htmlFor="main"
-                className={cn({
-                    [styles.empty]: !!value || !!defaultValue,
-                })}
-            >
-                {text}
-            </label>
-        </div>
-    );
-};
+  type,
+  text,
+  value,
+  defaultValue,
+  onChange,
+  ...rest
+}) => (
+    <div className={styles.box}>
+        <input
+            type={type}
+            required
+            onChange={onChange}
+            value={value}
+            defaultValue={defaultValue}
+            name="main"
+            {...rest}
+        />
+        <label
+            htmlFor="main"
+            className={cn({
+              [styles.empty]: !!value || !!defaultValue,
+            })}
+        >
+            {text}
+        </label>
+    </div>
+);
 
 export default InputField;
