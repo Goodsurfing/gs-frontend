@@ -1,7 +1,7 @@
 import SignTitle from "shared/ui/SignTitle/SignTitle";
 import React, { FC } from "react";
 
-import LocaleLink from "shared/ui/LocaleLink/LocaleLink";
+import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
 
 import SignInForm from "widgets/SignInContainer/SignInForm/SignInForm";
 import SocialAuthContainer from "widgets/SocialAuthContainer/SocialAuthContainer";

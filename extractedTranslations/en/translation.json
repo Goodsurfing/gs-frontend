@@ -1,0 +1,27 @@
+{
+  "main": {
+    "welcome": {
+      "activity-title": "activity-title",
+      "header": {
+        "community": {
+          "ambassadors": "ambassadors",
+          "blog": "blog",
+          "clubs": "clubs",
+          "courses": "courses",
+          "experts": "experts",
+          "journal": "journal",
+          "title": "title",
+          "video": "video"
+        },
+        "exit": "exit",
+        "how-it-work": "how-it-work",
+        "sign-in": "sign-in",
+        "sign-up": "sign-up"
+      },
+      "offers-btn": "offers-btn",
+      "title": "title"
+    }
+  },
+  "Произошла непредвиденная ошибка": "Произошла непредвиденная ошибка",
+  "Произошла ошибка": "Произошла ошибка"
+}

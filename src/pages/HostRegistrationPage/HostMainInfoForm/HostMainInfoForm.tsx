@@ -1,8 +1,8 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { OrganizationResponseType, OrganizationType } from "types/api/organization";
+import { IOrganizationRegistrationParams } from "types/api/organization/organizationRegistration.interface";
 
 import HintPopup from "components/HintPopup/HintPopup";
 import {
@@ -10,20 +10,21 @@ import {
   IHintPopup,
 } from "components/HintPopup/HintPopup.interface";
 import Preloader from "components/Preloader/Preloader";
-import ProfileInput from "widgets/ProfileInput/ProfileInput";
 import YMapWithAddress from "components/Ymaps/YMapWithAddress/YMapWithAddress";
-
 import { organizationApi } from "store/api/organizationApi";
 import { userInfoApi } from "store/api/userInfoApi";
 import { userOrganizationInfoApi } from "store/api/userOrganizationInfoApi";
 
-import { OrganizationResponseType, OrganizationType } from "types/api/organization";
-import { IOrganizationRegistrationParams } from "types/api/organization/organizationRegistration.interface";
+import ProfileInput from "widgets/ProfileInput/ProfileInput";
+
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
+
+import HostMainInfoOrganization from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoOrganization/HostMainInfoOrganization";
+import HostMainInfoSocial from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoSocial/HostMainInfoSocial";
 
 import { IHostInfoForm } from "./HostMainInfoForm.interface";
 import styles from "./HostMainInfoForm.module.scss";
-import HostMainInfoOrganization from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoOrganization/HostMainInfoOrganization";
-import HostMainInfoSocial from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
   const [getInfo] = userInfoApi.useLazyGetUserInfoQuery();

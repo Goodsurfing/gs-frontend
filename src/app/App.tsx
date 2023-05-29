@@ -1,9 +1,9 @@
 import { FC } from "react";
 
+import { AppRouter } from "app/router";
 import ScrollToTop from "components/ScrollToTop/ScrollToTop";
 
-import { AppRouter } from "app/providers/Router";
-import { LanguageProvider } from "app/providers/LanguageProvider";
+import { LanguageProvider } from "./providers/LanguageProvider";
 
 const App: FC = () => (
     <LanguageProvider>

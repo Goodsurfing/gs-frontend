@@ -1,27 +1,23 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
+import { useAppDispatch } from "hooks/redux";
 import i18n from "i18next";
+import tokenStorage from "lib/storage/TokenStorage";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { AppRoutesEnum } from "routes/types";
+import { IAuthLoginData } from "types/api/auth/login.interface";
 
 import Checkbox from "components/Checkbox/Checkbox";
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
 import InputField from "components/InputField/InputField";
-import LocaleLink from "shared/ui/LocaleLink/LocaleLink";
-
-import { useAppDispatch } from "hooks/redux";
-
-import { AppRoutesEnum } from "routes/types";
-
-import tokenStorage from "utils/storage/TokenStorage";
-
 import { authApi } from "store/api/authApi";
 import { setLoginUserData } from "store/reducers/loginSlice";
 import { IToast } from "store/reducers/toastSlice";
 
-import { IAuthLoginData } from "types/api/auth/login.interface";
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
+import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
 
 import styles from "./SignInForm.module.scss";
 

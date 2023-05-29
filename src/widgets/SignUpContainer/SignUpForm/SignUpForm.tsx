@@ -1,23 +1,20 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
+import { useAppDispatch, useAppSelector } from "hooks/redux";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { AppRoutesEnum } from "routes/types";
+import { IAuthFormData } from "types/api/auth/register.interface";
 
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
 import InputField from "components/InputField/InputField";
-
-import { useAppDispatch, useAppSelector } from "hooks/redux";
-
-import { AppRoutesEnum } from "routes/types";
-
 import { authApi } from "store/api/authApi";
 import { setRegisterUserData } from "store/reducers/registerSlice";
 import { IToast } from "store/reducers/toastSlice";
 
-import { IAuthFormData } from "types/api/auth/register.interface";
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import styles from "./SignUpForm.module.scss";
 

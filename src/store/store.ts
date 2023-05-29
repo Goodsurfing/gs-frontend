@@ -4,11 +4,11 @@ import { authApi, reauthApi } from "store/api/authApi";
 import { userInfoApi } from "store/api/userInfoApi";
 
 import { localeApi } from "./api/localeApi";
+import { organizationApi } from "./api/organizationApi";
+import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
-import { organizationApi } from "./api/organizationApi";
 import toastReducer from "./reducers/toastSlice";
-import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 
 const rootReducer = combineReducers({
   register: registerReducer,

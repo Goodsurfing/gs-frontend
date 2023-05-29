@@ -1,23 +1,19 @@
-import React, { useState } from "react";
-
 import cn from "classnames";
-
+import SideMenu from "components/SideMenu/SideMenu";
+import { Theme } from "components/SideMenu/types/SideMenu.interface";
+import { isMatchUrlEndpoint } from "lib/url/isMatchUrlEndpoint";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Theme } from "components/SideMenu/types/SideMenu.interface";
-
-import { isMatchUrlEndpoint } from "utils/url/isMatchUrlEndpoint";
-
-import SideMenu from "components/SideMenu/SideMenu";
 import MainHeader from "shared/ui/MainHeader/MainHeader";
-import { SideMenuData } from "./OfferCreatePages.data";
 
+import OfferDescriptionPage from "../OfferDescriptionPage/OfferDescriptionPage";
 import OfferWelcome from "../OfferWelcomePage/ui/OfferWelcome";
 import OfferWhenPage from "../OfferWhenPage/OfferWhenPage";
 import OfferWherePage from "../OfferWherePage/OfferWherePage";
 import OfferWhoNeedsPage from "../OfferWhoNeedsPage/ui/OfferWhoNeedsPage";
-import OfferDescriptionPage from "../OfferDescriptionPage/OfferDescriptionPage";
 
+import { SideMenuData } from "./OfferCreatePages.data";
 import styles from "./OfferCreatePages.module.scss";
 
 const OfferCreatePages = () => {

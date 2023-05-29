@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ToggleButtonComponent } from "shared/ui/ToggleButton/ToggleButtonComponent";
+import { ToggleButtonComponent } from "shared/ui/ToggleButton/ui/ToggleButtonComponent";
 
 import ToggleButtonGroupComponent from "components/ToggleButtonGroup/ToggleButtonGroup";
 

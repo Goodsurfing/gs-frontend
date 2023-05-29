@@ -1,7 +1,7 @@
 import React from "react";
 
 import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import Age from "../Age/Age";
 import Gender from "../Gender/Gender";

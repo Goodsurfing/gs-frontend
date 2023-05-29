@@ -1,10 +1,9 @@
 import { FC } from "react";
-
 import { useTranslation } from "react-i18next";
 
 import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
-import { Variant } from "shared/ui/Button/Button.interface";
 import styles from "./PageError.module.scss";
 
 export const PageError: FC = () => {

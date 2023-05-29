@@ -1,4 +1,3 @@
-import CalendarComponent from "shared/ui/CalendarComponent/CalendarComponent";
 import cn from "classnames";
 import React, {
   FC,
@@ -9,16 +8,18 @@ import React, {
   useState,
 } from "react";
 
-import calendarIcon from "@/assets/icons/calendar.svg";
+import CalendarComponent from "shared/ui/CalendarComponent/CalendarComponent";
 
 import styles from "./DatePickerCalendar.module.scss";
-import { DatePickerCalendarProps } from "./type";
-import { useLatest } from "./useLatest";
 import {
   getDateFromInputValue,
   getInputValueFromDate,
   isInRange,
-} from "./utils";
+} from "./lib";
+import { DatePickerCalendarProps } from "./type";
+import { useLatest } from "./useLatest";
+
+import calendarIcon from "@/assets/icons/calendar.svg";
 
 const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
   value,

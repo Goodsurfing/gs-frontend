@@ -1,9 +1,10 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import DashboardDoughnut from "components/DashboardDoughnut/DashboardDoughnut";
+
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import { ProfileFillItems } from "./HostProfileFill.data";
 import styles from "./HostProfileFill.module.scss";

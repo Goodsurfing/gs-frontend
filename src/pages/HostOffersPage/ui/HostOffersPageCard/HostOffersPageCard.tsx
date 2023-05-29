@@ -1,10 +1,9 @@
+import like from "assets/icons/offers/like.svg";
+import star from "assets/icons/offers/star.svg";
 import { FC } from "react";
 
 import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
-
-import like from "assets/icons/offers/like.svg";
-import star from "assets/icons/offers/star.svg";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import styles from "./HostOffersPageCard.module.scss";
 

@@ -1,9 +1,9 @@
+import cn from "classnames";
+import { checkWidthAndHeight } from "lib/files/checkWidthAndHeight";
 import React, { FC, useState } from "react";
 
 import InputFile from "shared/ui/InputFile/InputFile";
-import cn from "classnames";
 
-import { checkWidthAndHeight } from "utils/files/checkWidthAndHeight";
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
 

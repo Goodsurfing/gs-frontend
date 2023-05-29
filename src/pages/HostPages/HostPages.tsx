@@ -1,12 +1,11 @@
-import MainHeader from "shared/ui/MainHeader/MainHeader";
 import cn from "classnames";
+import SideMenu from "components/SideMenu/SideMenu";
+import { Theme } from "components/SideMenu/types/SideMenu.interface";
+import { isMatchUrlEndpoint } from "lib/url/isMatchUrlEndpoint";
 import React, { FC, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import SideMenu from "components/SideMenu/SideMenu";
-import { Theme } from "components/SideMenu/types/SideMenu.interface";
-
-import { isMatchUrlEndpoint } from "utils/url/isMatchUrlEndpoint";
+import MainHeader from "shared/ui/MainHeader/MainHeader";
 
 import HostDashboardPage from "./HostDashboardPage/HostDashboardPage";
 import HostMainInfoPage from "./HostMainInfoPage/HostMainInfoPage";

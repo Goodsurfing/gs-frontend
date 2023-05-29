@@ -1,5 +1,5 @@
 import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 import { useNavigate } from "react-router-dom";
 
 import image from "assets/images/default-offer-image.svg";

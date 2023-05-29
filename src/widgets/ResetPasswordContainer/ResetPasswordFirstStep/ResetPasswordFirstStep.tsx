@@ -1,13 +1,12 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { IResetPasswordRequestFormData } from "types/api/auth/resetPassword.interface";
 
 import InputField from "components/InputField/InputField";
-
 import { authApi } from "store/api/authApi";
 
-import { IResetPasswordRequestFormData } from "types/api/auth/resetPassword.interface";
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import styles from "./ResetPasswordFirstStep.module.scss";
 

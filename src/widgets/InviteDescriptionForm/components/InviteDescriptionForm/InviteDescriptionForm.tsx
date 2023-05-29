@@ -1,15 +1,14 @@
 import React from "react";
 
-import { Variant } from "shared/ui/Button/Button.interface";
 import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
-import EventName from "../EventName/EventName";
 import Categories from "../Categories/Categories";
-import ShortDescription from "../ShortDescription/ShortDescription";
-import FullDescription from "../FullDescription/FullDescription";
-
-import ImageUpload from "../ImageUpload/ImageUpload";
+import EventName from "../EventName/EventName";
 import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
+import FullDescription from "../FullDescription/FullDescription";
+import ImageUpload from "../ImageUpload/ImageUpload";
+import ShortDescription from "../ShortDescription/ShortDescription";
 
 import styles from "./InviteDescriptionForm.module.scss";
 

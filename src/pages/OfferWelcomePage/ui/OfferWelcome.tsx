@@ -1,7 +1,8 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
 import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import styles from "./OfferWelcome.module.scss";
 

@@ -5,15 +5,15 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
+import cn from "classnames";
+import { createDoughnutData } from "lib/chartJS";
 import React, { FC, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 
 import { ProfileFillItems } from "pages/HostPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
 
-import { createDoughnutData } from "utils/chartJS";
-import cn from "classnames";
-import { IStatsCircle } from "./StatsCircle.types";
 import styles from "./StatsCircle.module.scss";
+import { IStatsCircle } from "./StatsCircle.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

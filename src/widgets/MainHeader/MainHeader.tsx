@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 import ChangeLanguage from "widgets/ChangeLanguage/ChangeLanguage";
-import LocaleLink from "shared/ui/LocaleLink/LocaleLink";
+import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
 import MobileHeader from "components/MobileHeader/MobileHeader";
 
 import heartIcon from "assets/icons/heart-icon.svg";

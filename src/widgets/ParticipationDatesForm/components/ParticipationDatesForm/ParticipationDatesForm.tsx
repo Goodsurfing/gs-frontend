@@ -1,12 +1,14 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import DateCheckboxes from "../DateCheckboxes/DateCheckboxes";
 import DateEndRequests from "../DateEndRequests/DateEndRequests";
 import DatePeriods from "../DatePeriods/DatePeriods";
 import DateRangeSlider from "../DateRangeSlider/DateRangeSlider";
+
 import styles from "./ParticipationDatesForm.module.scss";
 import { IParticipationDatesForm } from "./types";
 

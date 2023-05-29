@@ -1,4 +1,4 @@
-import SwitchComponent from "shared/ui/Switch/Switch";
+import SwitchComponent from "shared/ui/Switch/ui/Switch";
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
 

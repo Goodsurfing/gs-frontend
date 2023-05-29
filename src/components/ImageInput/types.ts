@@ -1,4 +1,4 @@
-import { InputFileProps } from "shared/ui/InputFile/InputFile.interfaces";
+import { InputFileProps } from "shared/ui/InputFile/ui/InputFile.interfaces";
 
 export interface ImageInputComponentProps extends InputFileProps {
     img: string | null;

@@ -1,7 +1,8 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
-import CalendarComponent from "shared/ui/CalendarComponent/CalendarComponent";
 import React from "react";
+
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
+import CalendarComponent from "shared/ui/CalendarComponent/CalendarComponent";
 
 import styles from "./HostDashboardCalendar.module.scss";
 

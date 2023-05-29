@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import AddButton from "shared/ui/AddButton/AddButton";
-import CloseButton from "shared/ui/CloseButton/CloseButton";
-import Switch from "shared/ui/Switch/Switch";
+import CloseButton from "shared/ui/CloseButton/ui/CloseButton";
+import Switch from "shared/ui/Switch/ui/Switch";
 
 import Languages from "../Languages/Languages";
 import ExtraControls from "../ExtraControls/ExtraControls";

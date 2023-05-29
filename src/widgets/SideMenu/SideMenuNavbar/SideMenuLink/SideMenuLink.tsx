@@ -1,12 +1,12 @@
 import cn from "classnames";
+import useCompareRoutes from "lib/routes/compareRoutes";
 import React, { FC } from "react";
 
-import LocaleLink from "shared/ui/LocaleLink/LocaleLink";
-
-import useCompareRoutes from "utils/routes/compareRoutes";
+import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
 
 import { Theme } from "../../types/SideMenu.interface";
 import { ISideMenuLink } from "../../types/SideMenuLink.interface";
+
 import styles from "./SideMenuLink.module.scss";
 
 const SideMenuLink: FC<ISideMenuLink> = ({

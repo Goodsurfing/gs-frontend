@@ -1,11 +1,12 @@
-import Button from "shared/ui/Button/Button";
+import supportImage from "assets/images/supportImage.jpg";
 import cn from "classnames";
 import React, { FC } from "react";
 
-import supportImage from "assets/images/supportImage.jpg";
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
-import { Variant } from "shared/ui/Button/Button.interface";
 import { Theme } from "../../components/SideMenu/types/SideMenu.interface";
+
 import styles from "./SupportWidget.module.scss";
 
 interface ISupportWidget {

@@ -1,17 +1,16 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/Button.interface";
+import useUploadFile from "hooks/files/useUploadFile";
+import { useAppSelector } from "hooks/redux";
+import { convertFileToBinary } from "lib/files/convertFileToBinary";
 import React, { FC, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import Preloader from "components/Preloader/Preloader";
+import { userInfoApi } from "store/api/userInfoApi";
+
 import ProfileInput from "widgets/ProfileInput/ProfileInput";
 
-import useUploadFile from "hooks/files/useUploadFile";
-import { useAppSelector } from "hooks/redux";
-
-import { convertFileToBinary } from "utils/files/convertFileToBinary";
-
-import { userInfoApi } from "store/api/userInfoApi";
+import Button from "shared/ui/Button/Button";
+import { Variant } from "shared/ui/Button/ui/Button.interface";
 
 import AboutFormGroup from "./AboutFormGroup/AboutFormGroup";
 import ContactsFormGroup from "./ContactsFormGroup/ContactsFormGroup";

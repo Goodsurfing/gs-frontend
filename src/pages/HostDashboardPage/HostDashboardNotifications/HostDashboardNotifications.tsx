@@ -1,9 +1,8 @@
+import NotificationDateStorage from "lib/storage/NotificationDateStorage";
 import React, { useEffect } from "react";
 
-import NotificationDateStorage from "utils/storage/NotificationDateStorage";
-
-import styles from "./HostDashboardNotifications.module.scss";
 import HostDashboardNotificationItem from "./HostDashboardNotificationItem/HostFashboardNotificationItem";
+import styles from "./HostDashboardNotifications.module.scss";
 
 const HostDashboardNotifications = () => {
   const notificationDateStorage = new NotificationDateStorage();
