@@ -1,15 +1,15 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import { FC, ReactNode } from "react";
 
 import styles from "./Checkbox.module.scss";
 
 interface CheckboxProps {
-    text: string;
+    children: ReactNode;
     isChecked: boolean;
     onChange: () => void;
 }
 
-const Checkbox: FC<CheckboxProps> = ({ text, isChecked, onChange }) => (
+export const Checkbox: FC<CheckboxProps> = ({ children, isChecked, onChange }) => (
     <div className={styles.wrapper}>
         <label htmlFor="main">
             <input
@@ -21,9 +21,7 @@ const Checkbox: FC<CheckboxProps> = ({ text, isChecked, onChange }) => (
                   [styles.checked]: isChecked,
                 })}
             />
-            <span>{text}</span>
+            <span>{children}</span>
         </label>
     </div>
 );
-
-export default Checkbox;

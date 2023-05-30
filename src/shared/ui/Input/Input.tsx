@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React from "react";
 
 import styles from "./Input.module.scss";
 
@@ -43,6 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               </label>
           </div>
           <input
+              name={name}
               ref={inputRef}
               id={id}
               required={required}

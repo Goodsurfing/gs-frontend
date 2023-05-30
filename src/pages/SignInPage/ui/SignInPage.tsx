@@ -1,9 +1,8 @@
-import SignLayout from "shared/ui/SignLayout/SignLayout";
 import React, { FC } from "react";
 
 import SignInContainer from "widgets/SignInContainer/SignInContainer";
 
-import { AppRoutesEnum } from "routes/types";
+import SignLayout from "shared/ui/SignLayout/SignLayout";
 
 import styles from "./SignInPage.module.scss";
 

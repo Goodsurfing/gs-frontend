@@ -1,4 +1,3 @@
-import { API_PUBLIC_BASE_URL } from "shared/api";
 import {
   BaseQueryFn, createApi, FetchArgs, FetchBaseQueryError, fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
@@ -17,6 +16,9 @@ import {
   IResetPasswordVerifyData,
   IResetPasswordVerifyResponse,
 } from "types/api/auth/resetPassword.interface";
+
+import { API_PUBLIC_BASE_URL } from "shared/api";
+
 import { logout, setLoginUserData } from "../reducers/loginSlice";
 
 const baseQuery = fetchBaseQuery({ baseUrl: API_PUBLIC_BASE_URL });
@@ -27,7 +29,6 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result: any = await baseQuery(args, api, extraOptions);
-  console.log(result.data.token);
   if (result.error && result.error.status === 401) {
     const refreshResult: any = await baseQuery(args, api, extraOptions);
     if (refreshResult.data) {

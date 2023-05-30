@@ -5,7 +5,7 @@ import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import InputField from "components/InputField/InputField";
+import InputField from "shared/ui/InputField/ui/InputField";
 
 import useQuery from "hooks/useQuery";
 

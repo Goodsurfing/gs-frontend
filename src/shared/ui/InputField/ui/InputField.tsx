@@ -8,7 +8,7 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     text?: string;
 }
 
-const InputField: FC<InputFieldProps> = ({
+export const InputField: FC<InputFieldProps> = ({
   type,
   text,
   value,
@@ -18,8 +18,8 @@ const InputField: FC<InputFieldProps> = ({
 }) => (
     <div className={styles.box}>
         <input
-            type={type}
             required
+            type={type}
             onChange={onChange}
             value={value}
             defaultValue={defaultValue}
@@ -36,5 +36,3 @@ const InputField: FC<InputFieldProps> = ({
         </label>
     </div>
 );
-
-export default InputField;

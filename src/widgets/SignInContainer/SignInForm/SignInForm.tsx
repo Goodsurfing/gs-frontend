@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutesEnum } from "routes/types";
 import { IAuthLoginData } from "types/api/auth/login.interface";
 
-import Checkbox from "components/Checkbox/Checkbox";
+import Checkbox from "shared/ui/Checkbox/ui/Checkbox";
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
-import InputField from "components/InputField/InputField";
+import InputField from "shared/ui/InputField/ui/InputField";
 import { authApi } from "store/api/authApi";
 import { setLoginUserData } from "store/reducers/loginSlice";
 import { IToast } from "store/reducers/toastSlice";

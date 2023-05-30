@@ -8,7 +8,7 @@ import { IAuthFormData } from "types/api/auth/register.interface";
 
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
-import InputField from "components/InputField/InputField";
+import InputField from "shared/ui/InputField/ui/InputField";
 import { authApi } from "store/api/authApi";
 import { setRegisterUserData } from "store/reducers/registerSlice";
 import { IToast } from "store/reducers/toastSlice";

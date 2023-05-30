@@ -71,7 +71,7 @@ module.exports = {
         patterns: [
           {
             message: PRIVATE_IMPORT_MESSAGE,
-            group: ["app/*/**"],
+            group: ["app/*/*/**"],
           },
           {
             message: PRIVATE_IMPORT_MESSAGE,
@@ -127,23 +127,23 @@ module.exports = {
         rules: [
           {
             from: "app",
-            allow: ["pages", "widgets", "features", "entities", "shared"],
+            allow: ["pages", "pages/router", "widgets", "features", "entities", "shared"],
           },
           {
             from: "pages",
-            allow: ["widgets", "features", "entities", "shared"],
+            allow: ["pages/router", "widgets", "features", "entities", "shared"],
           },
           {
             from: "widgets",
-            allow: ["features", "entities", "shared"],
+            allow: ["pages/router", "features", "entities", "shared"],
           },
           {
             from: "features",
-            allow: ["entities", "shared"],
+            allow: ["pages/router", "entities", "shared"],
           },
           {
             from: "entities",
-            allow: ["shared"],
+            allow: ["pages/router", "shared"],
           },
           {
             from: "shared",

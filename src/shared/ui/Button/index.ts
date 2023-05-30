@@ -1,1 +1,1 @@
-export { MemoButton as Button } from "./ui/Button";
+export { MemoButton as Button, Variant } from "./ui/Button";

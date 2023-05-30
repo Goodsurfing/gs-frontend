@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { IResetPasswordRequestFormData } from "types/api/auth/resetPassword.interface";
 
-import InputField from "components/InputField/InputField";
+import InputField from "shared/ui/InputField/ui/InputField";
 import { authApi } from "store/api/authApi";
 
 import Button from "shared/ui/Button/Button";
