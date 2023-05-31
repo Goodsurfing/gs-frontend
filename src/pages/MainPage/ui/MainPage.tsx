@@ -11,7 +11,7 @@ import ReviewsContainer from "widgets/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "widgets/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "widgets/WelcomeContainer/WelcomeContainer";
 
-import Section from "shared/ui/Section/Section";
+import { Section } from "shared/ui/Section";
 
 import styles from "./MainPage.module.scss";
 
