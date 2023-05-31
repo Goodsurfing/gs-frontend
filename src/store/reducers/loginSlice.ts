@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ILoginResponse } from "types/api/auth/login.interface";
+
+import { ILoginResponse } from "shared/types/api/auth/login.interface";
 
 const initialState: ILoginResponse = {
   token: localStorage.getItem("token") || "",

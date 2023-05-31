@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 
-import Section from "shared/ui/Section/Section";
-
 import BecomeHostContainer from "widgets/BecomeHostContainer/BecomeHostContainer";
 import BenefitsContainer from "widgets/BenefitsContainer/BenefitsContainer";
 import CommunityNewsContainer from "widgets/CommunityNewsContainer/CommunityNewsContainer";
@@ -12,6 +10,8 @@ import PopularPlacesContainer from "widgets/PopularPlacesContainer/PopularPlaces
 import ReviewsContainer from "widgets/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "widgets/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "widgets/WelcomeContainer/WelcomeContainer";
+
+import Section from "shared/ui/Section/Section";
 
 import styles from "./MainPage.module.scss";
 

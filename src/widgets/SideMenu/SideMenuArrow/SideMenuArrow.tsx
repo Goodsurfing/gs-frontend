@@ -1,10 +1,10 @@
+import arrow from "assets/icons/arrow.svg";
 import cn from "classnames";
 import React, { FC } from "react";
 
-import arrow from "assets/icons/arrow.svg";
-
 import { Theme } from "../types/SideMenu.interface";
 import { ISideMenuArrow } from "../types/SideMenuArrow.interface";
+
 import styles from "./SideMenuArrow.module.scss";
 
 const SideMenuArrow: FC<ISideMenuArrow> = ({ setOpen, isOpen, theme }) => (

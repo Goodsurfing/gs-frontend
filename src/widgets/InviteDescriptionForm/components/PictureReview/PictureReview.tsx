@@ -1,10 +1,8 @@
+import cn from "classnames";
 import React, { FC } from "react";
 
-import cn from "classnames";
-
-import { PictureReviewProps } from "./types";
-
 import styles from "./PictureReview.module.scss";
+import { PictureReviewProps } from "./types";
 
 const PictureReview: FC<PictureReviewProps> = ({ close, className, img }) => (
     <div className={cn(styles.wrapper, className)}>

@@ -1,4 +1,4 @@
-import { IChartDoughnut } from "lib/chartJS";
+import { IChartDoughnut } from "shared/lib/chartJS";
 
 export interface IProfileFillItem extends IChartDoughnut {}
 

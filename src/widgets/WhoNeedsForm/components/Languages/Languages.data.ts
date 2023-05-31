@@ -1,4 +1,4 @@
-import { IOption } from "types/select";
+import { IOption } from "shared/types/select";
 
 export const allLangs: IOption[] = [
   {

@@ -3,8 +3,7 @@ import React, { FC } from "react";
 import { authApi } from "store/api/authApi";
 import { userInfoApi } from "store/api/userInfoApi";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 const ProfileResetPasswordForm: FC = () => {
   const [resetPasswordRequest, { isSuccess }] = authApi.useResetPasswordRequestMutation();

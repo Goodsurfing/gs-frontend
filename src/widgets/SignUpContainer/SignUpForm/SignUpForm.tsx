@@ -1,20 +1,19 @@
-import { useAppDispatch, useAppSelector } from "hooks/redux";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { AppRoutesEnum } from "routes/types";
-import { IAuthFormData } from "types/api/auth/register.interface";
 
+import { AppRoutes } from "app/router";
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
-import InputField from "shared/ui/InputField/ui/InputField";
 import { authApi } from "store/api/authApi";
 import { setRegisterUserData } from "store/reducers/registerSlice";
 import { IToast } from "store/reducers/toastSlice";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { useAppDispatch } from "shared/hooks/redux";
+import { IAuthFormData } from "shared/types/api/auth/register.interface";
+import { Button, Variant } from "shared/ui/Button";
+import { InputField } from "shared/ui/InputField";
 
 import styles from "./SignUpForm.module.scss";
 
@@ -37,11 +36,11 @@ const SignUpForm: FC = () => {
         .then((response) => {
           dispatch(setRegisterUserData(response));
           navigate(
-            `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
+            `/${i18n.language}/${AppRoutes.CONFIRM_EMAIL}`,
             { replace: true },
           );
         })
-        .catch((err) => {
+        .catch(() => {
           console.error("error");
           setToast({
             text: "Некорректно введены данные",

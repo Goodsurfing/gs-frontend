@@ -1,14 +1,14 @@
-import SignLayout from "shared/ui/SignLayout/SignLayout";
 import React, { FC } from "react";
 
-import ResetPasswordContainer from "widgets/ResetPasswordContainer/ResetPasswordContainer";
+import { AppRoutes } from "app/router";
 
-import { AppRoutesEnum } from "routes/types";
+import ResetPasswordContainer from "widgets/ResetPasswordContainer/ResetPasswordContainer";
+import SignLayout from "widgets/SignLayout/SignLayout";
 
 import styles from "./ResetPasswordPage.module.scss";
 
 const ResetPasswordPage: FC = () => (
-    <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNIN}>
+    <SignLayout cancelText="Отменить" cancelPath={AppRoutes.SIGN_IN}>
         <div className={styles.wrapper}>
             <ResetPasswordContainer />
         </div>

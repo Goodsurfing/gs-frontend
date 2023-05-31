@@ -1,4 +1,3 @@
-import Input from "shared/ui/Input/Input";
 import facebookLogo from "@assets/icons/social-icons/facebook-mini-logo.svg";
 import instaLogo from "@assets/icons/social-icons/instagram-mini-logo.svg";
 import telegramLogo from "@assets/icons/social-icons/telegram-mini-logo.svg";
@@ -6,7 +5,10 @@ import vkLogo from "@assets/icons/social-icons/vk-mini-logo.svg";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
+import Input from "shared/ui/Input/ui/Input";
+
 import { ISoicalFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
+
 import styles from "./SocialFormGroup.module.scss";
 
 interface ISocialFormGroup {

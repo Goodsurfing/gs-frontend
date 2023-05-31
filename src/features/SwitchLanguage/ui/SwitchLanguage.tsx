@@ -4,14 +4,13 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ILanguage } from "types/languages";
-
-import { localeApi } from "store/api/localeApi";
 
 import { changeLanguageData } from "";
+import { localeApi } from "store/api/localeApi";
 
 import { useOnClickOutside } from "shared/hooks/useOnClickOutside";
 import { createUrlWithLanguageCode } from "shared/lib/language";
+import { ILanguage } from "shared/types/languages";
 import { Arrow } from "shared/ui/Arrow";
 
 import styles from "./SwitchLanguage.module.scss";

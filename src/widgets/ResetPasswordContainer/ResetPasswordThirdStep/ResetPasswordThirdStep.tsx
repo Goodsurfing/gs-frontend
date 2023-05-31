@@ -1,17 +1,14 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
 import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import InputField from "shared/ui/InputField/ui/InputField";
-
-import useQuery from "hooks/useQuery";
-
-import { AppRoutesEnum } from "routes/types";
-
+import { AppRoutes } from "app/router";
 import { authApi } from "store/api/authApi";
+
+import useQuery from "shared/hooks/useQuery";
+import { Button, Variant } from "shared/ui/Button";
+import { InputField } from "shared/ui/InputField";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
 
@@ -31,7 +28,7 @@ const ResetPasswordThirdStep: FC = () => {
 
   useEffect(() => {
     if (!query.get("token")) {
-      navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
+      navigate(`/${i18n.language}/${AppRoutes.MAIN}`);
     }
   }, [navigate, query]);
 
@@ -50,7 +47,7 @@ const ResetPasswordThirdStep: FC = () => {
     })
       .unwrap()
       .then(() => {
-        navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
+        navigate(`/${i18n.language}/${AppRoutes.MAIN}`);
         reset();
       });
   };

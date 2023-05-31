@@ -1,8 +1,8 @@
 import React from "react";
 
-import { InviteDescriptionForm } from "@/modules/InviteDescriptionForm";
-
 import styles from "./OfferDescriptionPage.module.scss";
+
+import { InviteDescriptionForm } from "@/modules/InviteDescriptionForm";
 
 const OfferDescriptionPage = () => (
     <div className={styles.wrapper}>

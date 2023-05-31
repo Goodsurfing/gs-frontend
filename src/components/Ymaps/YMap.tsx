@@ -3,8 +3,8 @@ import React, { FC, useState } from "react";
 import ContentLoader from "react-content-loader";
 import { Map as YMap, YMaps } from "react-yandex-maps";
 
-import styles from "./YMap.module.scss";
 import { IYandexMap, YMapType } from "./types/ymaps";
+import styles from "./YMap.module.scss";
 
 const YandexMap: FC<IYandexMap> = ({
   defaultLocation,

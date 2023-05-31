@@ -1,4 +1,5 @@
 {
+  "forgot-password": "forgot-password",
   "main": {
     "welcome": {
       "activity-title": "activity-title",
@@ -22,6 +23,8 @@
       "title": "title"
     }
   },
+  "remember-me": "remember-me",
+  "sign-in": "sign-in",
   "Произошла непредвиденная ошибка": "Произошла непредвиденная ошибка",
   "Произошла ошибка": "Произошла ошибка"
 }

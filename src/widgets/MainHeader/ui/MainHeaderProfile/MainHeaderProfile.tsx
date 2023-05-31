@@ -1,27 +1,23 @@
+import defaultAvatarImage from "assets/images/default-avatar.jpg";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Popup from "components/Popup/Popup";
-
-import { useAppDispatch } from "hooks/redux";
-import { useOnClickOutside } from "hooks/useOnClickOutside";
-
 import { userInfoApi } from "store/api/userInfoApi";
 import { logout } from "store/reducers/loginSlice";
 
-import defaultAvatarImage from "assets/images/default-avatar.jpg";
+import { useAppDispatch } from "shared/hooks/redux";
+import { useOnClickOutside } from "shared/hooks/useOnClickOutside";
+import { Arrow } from "shared/ui/Arrow";
 
-import Arrow from "../../Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 
-const MainHeaderProfile = () => {
+export const MainHeaderProfile = () => {
   const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
 
   const profileRef = useRef(null);
 
   const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
-
-  console.log(userInfo);
 
   const dispatch = useAppDispatch();
 
@@ -54,11 +50,9 @@ const MainHeaderProfile = () => {
               <Link to="profile/info">Моя страница</Link>
               <Link to="profile/info">Обо мне</Link>
               <Link to="host">Дашборд хоста</Link>
-              <Link to="">Стать волонтёром</Link>
-              <a onClick={handleLogout}>Выйти</a>
+              <Link to="/">Стать волонтёром</Link>
+              <button type="button" onClick={handleLogout}>Выйти</button>
           </Popup>
       </div>
   );
 };
-
-export default MainHeaderProfile;

@@ -1,7 +1,7 @@
 import cn from "classnames";
-import useCompareRoutes from "lib/routes/compareRoutes";
 import React, { FC } from "react";
 
+import useCompareRoutes from "shared/lib/routes/compareRoutes";
 import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
 
 import { Theme } from "../../types/SideMenu.interface";

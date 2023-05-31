@@ -1,11 +1,11 @@
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
-import SectionTitle from "shared/ui/SectionTitle/SectionTitle";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import ActivityContainer from "widgets/WelcomeContainer/InfoSide/ActivityContainer/ActivityContainer";
-import InfoHeader from "widgets/WelcomeContainer/InfoSide/InfoHeader/InfoHeader";
+import { ButtonLink } from "shared/ui/ButtonLink";
+import { SectionTitle } from "shared/ui/SectionTitle";
 
+import { ActivityContainer } from "./ActivityContainer/ActivityContainer";
+import { InfoHeader } from "./InfoHeader/InfoHeader";
 import styles from "./InfoSide.module.scss";
 
 const InfoSide: FC = () => {

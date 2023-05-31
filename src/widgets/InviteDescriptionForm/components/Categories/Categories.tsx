@@ -1,11 +1,10 @@
 import React from "react";
 
-import { ToggleButtonComponent } from "shared/ui/ToggleButton/ui/ToggleButtonComponent";
-
 import ToggleButtonGroupComponent from "components/ToggleButtonGroup/ToggleButtonGroup";
 
-import { tags } from "./Categories.data";
+import { ToggleButtonComponent } from "shared/ui/ToggleButton/ui/ToggleButtonComponent";
 
+import { tags } from "./Categories.data";
 import styles from "./Categories.module.scss";
 
 const Categories = () => (

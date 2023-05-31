@@ -1,11 +1,11 @@
+import defaultImage from "assets/images/default-image-file.png";
 import cn from "classnames";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
-import defaultImage from "assets/images/default-image-file.png";
+import { InputFile } from "shared/ui/InputFile";
+import { InputFileProps } from "shared/ui/InputFile/ui/InputFile.interfaces";
 
-import InputFile from "../../UI/InputFile/InputFile";
-import { InputFileProps } from "../../UI/InputFile/InputFile.interfaces";
 import styles from "./ProfileInput.module.scss";
 
 interface IFileInput extends InputFileProps {
@@ -19,7 +19,6 @@ interface IFileInput extends InputFileProps {
 }
 
 const FileInput: FC<IFileInput> = ({
-  file,
   setFile,
   fileSizeInMB = "2",
   route,
@@ -55,6 +54,7 @@ const FileInput: FC<IFileInput> = ({
           </div>
           )}
           <InputFile
+              id="asd"
               onChange={handleInputChange}
               wrapperClassName={cn(fileClassname, styles.fileWrapper)}
               className={styles.file}
@@ -72,9 +72,7 @@ const FileInput: FC<IFileInput> = ({
               })}
           >
               Максимальный размер
-              {" "}
               {fileSizeInMB}
-              {" "}
               Мб
           </span>
       </div>

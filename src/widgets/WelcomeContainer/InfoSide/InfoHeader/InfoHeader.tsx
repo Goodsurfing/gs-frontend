@@ -2,25 +2,24 @@ import React, { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+import { AppRoutes } from "app/router";
 import Popup from "components/Popup/Popup";
 import { logout } from "store/reducers/loginSlice";
 
-import ChangeLanguage from "widgets/ChangeLanguage/ChangeLanguage";
-import MobileHeader from "widgets/MobileHeader/MobileHeader";
+import { MobileHeader } from "widgets/MobileHeader";
 
-import { AppRoutes } from "shared/config/RouteConfig/RouteConfig";
+import { SwitchLanguage } from "features/SwitchLanguage";
+
 import { useAppDispatch, useAppSelector } from "shared/hooks/redux";
 import { useOnClickOutside } from "shared/hooks/useOnClickOutside";
-import Arrow from "shared/ui/Arrow/Arrow";
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
-
-import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
+import { Arrow } from "shared/ui/Arrow";
+import { Button, Variant } from "shared/ui/Button";
+import { ButtonLink } from "shared/ui/ButtonLink";
+import { LocaleLink } from "shared/ui/LocaleLink";
 
 import styles from "./InfoHeader.module.scss";
 
-const InfoHeader: FC = () => {
+export const InfoHeader: FC = () => {
   const { t } = useTranslation();
 
   const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
@@ -46,9 +45,9 @@ const InfoHeader: FC = () => {
               <MobileHeader />
           </div>
           <header className={styles.header}>
-              <ChangeLanguage />
+              <SwitchLanguage />
               <div className={styles.link}>
-                  <Link to="">{t("main.welcome.header.how-it-work")}</Link>
+                  <Link to={AppRoutes.MAIN}>{t("main.welcome.header.how-it-work")}</Link>
               </div>
               <div
                   ref={communityRef}
@@ -120,5 +119,3 @@ const InfoHeader: FC = () => {
       </>
   );
 };
-
-export default InfoHeader;

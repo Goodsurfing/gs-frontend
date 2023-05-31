@@ -1,6 +1,7 @@
-import SwitchComponent from "shared/ui/Switch/ui/Switch";
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
+
+import { SwitchComponent } from "shared/ui/Switch";
 
 const Gender = () => {
   const [woman, setWoman] = useState<boolean>(true);

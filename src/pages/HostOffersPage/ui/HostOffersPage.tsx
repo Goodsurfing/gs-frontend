@@ -1,8 +1,7 @@
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import image from "assets/images/default-offer-image.svg";
 import { useNavigate } from "react-router-dom";
 
-import image from "assets/images/default-offer-image.svg";
+import { Button, Variant } from "shared/ui/Button";
 
 import styles from "./HostOffersPage.module.scss";
 import HostOffersPageCard from "./HostOffersPageCard/HostOffersPageCard";

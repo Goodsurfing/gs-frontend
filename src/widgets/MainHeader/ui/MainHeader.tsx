@@ -1,15 +1,16 @@
-import React, { FC } from "react";
-
-import ChangeLanguage from "widgets/ChangeLanguage/ChangeLanguage";
-import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
-import MobileHeader from "components/MobileHeader/MobileHeader";
-
 import heartIcon from "assets/icons/heart-icon.svg";
 import logotypeIcon from "assets/icons/logo-black.svg";
 import messagesIcon from "assets/icons/message_icon.svg";
+import React, { FC, memo } from "react";
+
+import { MobileHeader } from "widgets/MobileHeader";
+
+import { SwitchLanguage } from "features/SwitchLanguage";
+
+import { LocaleLink } from "shared/ui/LocaleLink";
 
 import styles from "./MainHeader.module.scss";
-import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
+import { MainHeaderProfile } from "./MainHeaderProfile/MainHeaderProfile";
 
 const MainHeader: FC = () => (
     <>
@@ -18,7 +19,7 @@ const MainHeader: FC = () => (
                 <LocaleLink to="" className={styles.logo}>
                     <img src={logotypeIcon} alt="GoodSurfing" />
                 </LocaleLink>
-                <ChangeLanguage />
+                <SwitchLanguage />
             </div>
             <div className={styles.right}>
                 <div className={styles.icons}>
@@ -38,4 +39,4 @@ const MainHeader: FC = () => (
     </>
 );
 
-export default React.memo(MainHeader);
+export const MemoMainHeader = memo(MainHeader);

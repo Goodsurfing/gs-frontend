@@ -1,8 +1,8 @@
-import { ILanguage } from "types/languages";
-
 import ruIcon from "assets/icons/langs/ru.svg";
 import spIcon from "assets/icons/langs/spain.svg";
 import engIcon from "assets/icons/langs/uk.svg";
+
+import { ILanguage } from "shared/types/languages";
 
 export const changeLanguageData: ILanguage[] = [
   {

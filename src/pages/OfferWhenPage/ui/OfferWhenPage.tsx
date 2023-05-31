@@ -1,6 +1,6 @@
+import { ParticipationDatesForm } from "modules/ParticipationDatesForm";
 import React from "react";
 
-import { ParticipationDatesForm } from "modules/ParticipationDatesForm";
 import styles from "./OfferWhenPage.module.scss";
 
 const OfferWhenPage = () => (

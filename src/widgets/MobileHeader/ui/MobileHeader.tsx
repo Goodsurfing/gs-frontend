@@ -1,19 +1,18 @@
+import mobileLogotype from "assets/icons/mobile-header-logo.svg";
 import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import ChangeLanguage from "widgets/ChangeLanguage/ChangeLanguage";
+import { AppRoutes } from "app/router";
 
-import { useAppSelector } from "hooks/redux";
+import { SwitchLanguage } from "features/SwitchLanguage";
 
-import { AppRoutesEnum } from "routes/types";
-
-import mobileLogotype from "assets/icons/mobile-header-logo.svg";
+import { useAppSelector } from "shared/hooks/redux";
 
 import styles from "./MobileHeader.module.scss";
 
-const MobileHeader: FC = () => {
+export const MobileHeader: FC = () => {
   const { t } = useTranslation();
   const { token } = useAppSelector((state) => state.login);
 
@@ -30,7 +29,7 @@ const MobileHeader: FC = () => {
                   />
               </Link>
 
-              <ChangeLanguage />
+              <SwitchLanguage />
               <div
                   className={cn(styles.burger, {
                     [styles.open]: menuIsOpen,
@@ -49,24 +48,24 @@ const MobileHeader: FC = () => {
               })}
           >
               <div className={styles.link}>
-                  <Link to="">{t("main.welcome.header.how-it-work")}</Link>
+                  <Link to={AppRoutes.MAIN}>{t("main.welcome.header.how-it-work")}</Link>
               </div>
               <div className={styles.link}>
-                  <Link to="">
+                  <Link to={AppRoutes.MAIN}>
                       {t("main.welcome.header.community.title")}
                   </Link>
               </div>
               <div className={styles.link}>
                   {token ? (
-                      <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
+                      <Link to={AppRoutes.MAIN}>Категории</Link>
                   ) : (
-                      <Link to={AppRoutesEnum.SIGNIN}>
+                      <Link to={AppRoutes.SIGN_IN}>
                           {t("main.welcome.header.sign-in")}
                       </Link>
                   )}
               </div>
               <div className={styles.link}>
-                  <Link to={AppRoutesEnum.SIGNUP}>
+                  <Link to={AppRoutes.SIGN_UP}>
                       {t("main.welcome.header.sign-up")}
                   </Link>
               </div>
@@ -74,5 +73,3 @@ const MobileHeader: FC = () => {
       </>
   );
 };
-
-export default MobileHeader;

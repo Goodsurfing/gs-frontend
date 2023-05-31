@@ -1,3 +1,4 @@
+import arrowSliderIcon from "assets/icons/slider-arrow.svg";
 import React, { FC, useState } from "react";
 import { Navigation, Pagination } from "swiper";
 import "swiper/css";
@@ -6,8 +7,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import Offer from "widgets/OffersContainer/Offer/Offer";
 import { offersData } from "widgets/OffersContainer/Offers.data";
-
-import arrowSliderIcon from "assets/icons/slider-arrow.svg";
 
 import styles from "./OffersContainer.module.scss";
 

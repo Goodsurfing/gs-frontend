@@ -1,5 +1,6 @@
-import { AllowedFilesExtensions } from "constants/files";
 import React, { InputHTMLAttributes, MouseEventHandler } from "react";
+
+import { AllowedFilesExtensions } from "shared/constants/files";
 
 export type InputFileProps = {
     imageURL?: string | null;

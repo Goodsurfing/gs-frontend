@@ -1,16 +1,17 @@
-import Input from "shared/ui/Input/Input";
-import Textarea from "shared/ui/Textarea/Textarea";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
 
 import SelectField from "components/SelectField/SelectField";
 
-import { IOption } from "types/select";
+import { IOption } from "shared/types/select";
+import Input from "shared/ui/Input/ui/Input";
+import Textarea from "shared/ui/Textarea/Textarea";
 
 import {
   IHostInfoForm,
   IHostMainInfoOrganizationForm,
 } from "../../../../HostMainInfoPage/HostMainInfoForm/HostMainInfoForm.interface";
+
 import { organizations } from "./HostMainInfoOrganization.data";
 import styles from "./HostMainInfoOrganization.module.scss";
 

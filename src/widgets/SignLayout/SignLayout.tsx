@@ -1,17 +1,16 @@
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
-import React, { FC, PropsWithChildren } from "react";
+import cancelIcon from "assets/icons/mobile-cancel.svg";
+import { FC, PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
-import EmptyHeader from "shared/ui/EmptyHeader/EmptyHeader";
+import { AppRoutes } from "app/router";
 
-import { AppRoutesEnum } from "routes/types";
-
-import cancelIcon from "assets/icons/mobile-cancel.svg";
+import { ButtonLink } from "shared/ui/ButtonLink";
+import { EmptyHeader } from "shared/ui/EmptyHeader";
 
 import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
-    cancelPath: AppRoutesEnum;
+    cancelPath: AppRoutes | string;
     cancelText: string;
 }
 

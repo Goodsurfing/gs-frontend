@@ -1,8 +1,8 @@
-import { RefObject } from "react";
+import { MouseEvent, RefObject } from "react";
 
-import useEventListener from "hooks/useEventListener";
+import useEventListener from "shared/hooks/useEventListener";
 
-type Handler = (event: MouseEvent) => void;
+type Handler = (event: MouseEvent | Event | MediaQueryListEvent) => void;
 
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-import AddButton from "shared/ui/AddButton/AddButton";
-import CloseButton from "shared/ui/CloseButton/ui/CloseButton";
-import Switch from "shared/ui/Switch/ui/Switch";
+import { AddButton } from "shared/ui/AddButton";
+import { CloseButton } from "shared/ui/CloseButton";
 
-import Languages from "../Languages/Languages";
 import ExtraControls from "../ExtraControls/ExtraControls";
+import Languages from "../Languages/Languages";
 
 import styles from "./LanguagesGroup.module.scss";
 
@@ -40,7 +39,7 @@ const LanguagesGroup = () => {
               <ExtraControls />
               )}
           </div>
-          <div className="">
+          <div>
               <AddButton
                   onClick={() => setLanguagesCount((prev) => [...prev, 0])}
               >

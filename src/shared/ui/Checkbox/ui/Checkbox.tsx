@@ -4,7 +4,7 @@ import { FC, ReactNode } from "react";
 import styles from "./Checkbox.module.scss";
 
 interface CheckboxProps {
-    children: ReactNode;
+    children?: ReactNode;
     isChecked: boolean;
     onChange: () => void;
 }

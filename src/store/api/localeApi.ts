@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { IChangeLocaleBody } from "types/api/locales/index";
 
+// eslint-disable-next-line import/no-cycle
 import { RootState } from "store/store";
 
-import { API_TRANSLATION_BASE_URL } from "shared/api";
+import { API_TRANSLATION_BASE_URL } from "shared/constants/api";
+import { IChangeLocaleBody } from "shared/types/api/locales/index";
 
 export const localeApi = createApi({
   reducerPath: "localeApi",

@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import type { RootState } from "app/providers/StoreProvider";
 
-import { API_TRANSLATION_BASE_URL } from "shared/api";
+import { API_TRANSLATION_BASE_URL } from "shared/constants/api";
 
 import { ChangeLocaleBody } from "../../types/languages";
 
-const localeApi = createApi({
+export const localeApi = createApi({
   reducerPath: "localeApi",
   baseQuery: fetchBaseQuery({
     baseUrl: API_TRANSLATION_BASE_URL,

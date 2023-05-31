@@ -1,9 +1,15 @@
-import { API_ORGANIZATIONS_BASE_URL } from "shared/api";
-import { OrganizationApiEndpoints } from "types/api/organization";
-import { IOrganizationRegistrationResponse, IOrganizationRegistrationParams } from "types/api/organization/organizationRegistration.interface";
+/* eslint-disable import/no-cycle */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IOrganizationBuildData } from "types/api/organization/organizationBuild.interface";
-import { IOrganizationUpdateData } from "types/api/organization/organizationUpdate.interface";
+
+import { API_ORGANIZATIONS_BASE_URL } from "shared/constants/api";
+import { OrganizationApiEndpoints } from "shared/types/api/organization";
+import { IOrganizationBuildData } from "shared/types/api/organization/organizationBuild.interface";
+import {
+  IOrganizationRegistrationResponse,
+  IOrganizationRegistrationParams,
+} from "shared/types/api/organization/organizationRegistration.interface";
+import { IOrganizationUpdateData } from "shared/types/api/organization/organizationUpdate.interface";
+
 import { RootState } from "../store";
 
 export const organizationApi = createApi({

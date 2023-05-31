@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Controller } from "react-hook-form";
 
 import SelectField from "components/SelectField/SelectField";
 
@@ -7,9 +7,9 @@ import {
   cities,
   countries,
   preparedLanguageData,
-} from "pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
+} from "pages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.data";
 
-import { IOption } from "types/select";
+import { IOption } from "shared/types/select";
 
 import styles from "./LocationFormGroup.module.scss";
 

@@ -1,8 +1,9 @@
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
 import React, { FC } from "react";
 
 import { volunteerData } from "widgets/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "widgets/VolunteerContainer/VolunteerItem/VolunteerItem";
+
+import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./VolunteerContainer.module.scss";
 

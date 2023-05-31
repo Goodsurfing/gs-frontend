@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 import { DashboardRequestData } from "./HostDashboardRequest.data";
 import styles from "./HostDashboardRequest.module.scss";

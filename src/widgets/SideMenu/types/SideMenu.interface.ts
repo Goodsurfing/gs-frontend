@@ -3,11 +3,9 @@ export enum Theme {
     LIGHT = "LIGHT",
 }
 
-export interface ISideMenu {
-    isOpen: boolean;
-    setOpen: (isOpen: boolean) => void;
-    theme: Theme;
-    content: SideMenuParams[];
+export interface DropdownItem {
+    text: string;
+    route: string;
 }
 
 export interface SideMenuParams {
@@ -17,7 +15,9 @@ export interface SideMenuParams {
     dropdownItems?: DropdownItem[];
 }
 
-export interface DropdownItem {
-    text: string;
-    route: string;
+export interface ISideMenu {
+    isOpen: boolean;
+    setOpen: (isOpen: boolean) => void;
+    theme: Theme;
+    content: SideMenuParams[];
 }

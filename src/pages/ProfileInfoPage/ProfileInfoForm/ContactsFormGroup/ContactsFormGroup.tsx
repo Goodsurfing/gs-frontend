@@ -1,11 +1,13 @@
-import Input from "shared/ui/Input/Input";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
+
+import { Input } from "shared/ui/Input";
 
 import {
   IContactsFormGroup,
   IUserInfoForm,
 } from "../ProfileInfoForm.interface";
+
 import styles from "./ContactsFormGroup.module.scss";
 
 interface ContactsFormGroupProps {

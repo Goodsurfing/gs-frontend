@@ -1,10 +1,6 @@
 import Storage from "./Storage";
 
 class TokenStorage extends Storage<"token"> {
-  constructor() {
-    super();
-  }
-
   public getToken() {
     return this.get("token");
   }

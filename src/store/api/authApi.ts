@@ -1,23 +1,23 @@
 import {
   BaseQueryFn, createApi, FetchArgs, FetchBaseQueryError, fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { AuthApiEndpoints } from "types/api/auth";
+
+import { API_PUBLIC_BASE_URL } from "shared/constants/api";
+import { AuthApiEndpoints } from "shared/types/api/auth";
 import {
   IAuthLoginData,
   ILoginResponse,
-} from "types/api/auth/login.interface";
+} from "shared/types/api/auth/login.interface";
 import {
   IAuthFormData,
   IRegisterResponse,
-} from "types/api/auth/register.interface";
+} from "shared/types/api/auth/register.interface";
 import {
   IResetPasswordRequestFormData,
   IResetPasswordRequestResponse,
   IResetPasswordVerifyData,
   IResetPasswordVerifyResponse,
-} from "types/api/auth/resetPassword.interface";
-
-import { API_PUBLIC_BASE_URL } from "shared/api";
+} from "shared/types/api/auth/resetPassword.interface";
 
 import { logout, setLoginUserData } from "../reducers/loginSlice";
 

@@ -1,23 +1,22 @@
-import { useAppDispatch } from "hooks/redux";
 import i18n from "i18next";
-import tokenStorage from "lib/storage/TokenStorage";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { AppRoutesEnum } from "routes/types";
-import { IAuthLoginData } from "types/api/auth/login.interface";
 
-import Checkbox from "shared/ui/Checkbox/ui/Checkbox";
+import { AppRoutes } from "app/router";
 import HintPopup from "components/HintPopup/HintPopup";
 import { HintType } from "components/HintPopup/HintPopup.interface";
-import InputField from "shared/ui/InputField/ui/InputField";
 import { authApi } from "store/api/authApi";
 import { setLoginUserData } from "store/reducers/loginSlice";
 import { IToast } from "store/reducers/toastSlice";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
-import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
+import { useAppDispatch } from "shared/hooks/redux";
+import tokenStorage from "shared/lib/storage/TokenStorage";
+import { IAuthLoginData } from "shared/types/api/auth/login.interface";
+import { Button, Variant } from "shared/ui/Button";
+import { Checkbox } from "shared/ui/Checkbox";
+import { InputField } from "shared/ui/InputField";
+import { LocaleLink } from "shared/ui/LocaleLink";
 
 import styles from "./SignInForm.module.scss";
 
@@ -42,7 +41,7 @@ const SignInForm: FC = () => {
         navigate(`/${i18n.language}/`);
         reset();
       })
-      .catch((err) => {
+      .catch(() => {
         console.error("Неверные данные");
         setToast({
           text: "Неверный логин или пароль",
@@ -96,10 +95,12 @@ const SignInForm: FC = () => {
               <Checkbox
                   isChecked={isRemember}
                   onChange={checkboxHandleClick}
-                  text="Запомнить меня"
-              />
+              >
+                  Запомнить меня
+
+              </Checkbox>
               <LocaleLink
-                  to={AppRoutesEnum.RESET_PASSWORD}
+                  to={AppRoutes.RESET_PASSWORD}
                   className={styles.forget}
               >
                   Забыли пароль?

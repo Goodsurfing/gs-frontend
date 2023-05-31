@@ -1,12 +1,12 @@
 import cn from "classnames";
 import { Theme } from "components/SideMenu/types/SideMenu.interface";
 import { ISideMenuDropdown } from "components/SideMenu/types/SideMenuDropdown.interface";
-import compareRoutes from "lib/routes/compareRoutes";
 import React, {
-  FC, useEffect, useMemo, useState,
+  FC, useEffect, useState,
 } from "react";
 
-import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
+import compareRoutes from "shared/lib/routes/compareRoutes";
+import { LocaleLink } from "shared/ui/LocaleLink";
 
 import styles from "./SideMenuDropdown.module.scss";
 

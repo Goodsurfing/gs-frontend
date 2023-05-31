@@ -1,7 +1,6 @@
 import React from "react";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";

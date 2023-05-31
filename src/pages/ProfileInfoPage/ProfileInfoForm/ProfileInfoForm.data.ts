@@ -1,5 +1,6 @@
 import { changeLanguageData } from "widgets/ChangeLanguage/ui/ChangeLanguage.data";
-import { IOption } from "types/select";
+
+import { IOption } from "shared/types/select";
 
 export const preparedLanguageData: IOption[] = [];
 

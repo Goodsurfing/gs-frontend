@@ -1,16 +1,17 @@
-import Input from "shared/ui/Input/Input";
-import React, { FC } from "react";
-import { Control, Controller } from "react-hook-form";
-
 import facebookLogo from "assets/icons/social-icons/facebook-mini-logo.svg";
 import instagramLogo from "assets/icons/social-icons/instagram-mini-logo.svg";
 import telegramLogo from "assets/icons/social-icons/telegram-mini-logo.svg";
 import vkLogo from "assets/icons/social-icons/vk-mini-logo.svg";
+import React, { FC } from "react";
+import { Control, Controller } from "react-hook-form";
+
+import { Input } from "shared/ui/Input";
 
 import {
   IHostInfoForm,
   IHostMainInfoSocialForm,
-} from "../../../../HostMainInfoPage/HostMainInfoForm/HostMainInfoForm.interface";
+} from "../../HostMainInfoPage/HostMainInfoForm/HostMainInfoForm.interface";
+
 import styles from "./HostMainInfoSocial.module.scss";
 
 interface HostMainInfoSocial {

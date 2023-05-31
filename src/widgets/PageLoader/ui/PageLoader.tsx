@@ -1,6 +1,5 @@
-import { FC } from "react";
-
 import classNames from "classnames";
+import { FC } from "react";
 
 import Loader from "shared/ui/Loader/Loader";
 

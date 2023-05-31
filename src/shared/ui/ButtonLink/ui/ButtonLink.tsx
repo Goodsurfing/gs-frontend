@@ -11,7 +11,6 @@ export interface IButtonProps {
   className?: string;
 }
 
-
 export const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
   type,
   path,

@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface ExtraImagesItemButtonProps {
     className?: string;
     imgClassName?: string;

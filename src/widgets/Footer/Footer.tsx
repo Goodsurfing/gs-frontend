@@ -1,13 +1,14 @@
-import React, { FC } from "react";
-import { Link } from "react-router-dom";
-
-import ChangeLanguage from "widgets/ChangeLanguage/ChangeLanguage";
-
 import fbIcon from "assets/icons/footer/fb.svg";
 import instaIcon from "assets/icons/footer/instagram.svg";
 import footerLogo from "assets/icons/footer/logo.svg";
 import tgIcon from "assets/icons/footer/telegram.svg";
 import vkIcon from "assets/icons/footer/vk.svg";
+import React, { FC } from "react";
+import { Link } from "react-router-dom";
+
+import { AppRoutes } from "app/router";
+
+import { SwitchLanguage } from "features/SwitchLanguage";
 
 import styles from "./Footer.module.scss";
 
@@ -22,7 +23,7 @@ const Footer: FC = () => (
                             src={footerLogo}
                             alt="GoodSurfing"
                         />
-                        <ChangeLanguage />
+                        <SwitchLanguage />
                     </div>
                     <div className={styles.socials}>
                         <Link
@@ -68,25 +69,25 @@ const Footer: FC = () => (
                     <div className={styles.menu__item}>
                         <h4 className={styles.menu__title}>Сообщество</h4>
                         <div className={styles.menu__content}>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Блог
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Видео
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Эксперты
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Амбассадоры
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Курсы
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Клубы
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Журнал
                             </Link>
                         </div>
@@ -94,22 +95,22 @@ const Footer: FC = () => (
                     <div className={styles.menu__item}>
                         <h4 className={styles.menu__title}>О проекте</h4>
                         <div className={styles.menu__content}>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 О НКО
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Наша команда
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Как это работает
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Правила
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Политика конфиденциальности
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Новости
                             </Link>
                         </div>
@@ -119,16 +120,16 @@ const Footer: FC = () => (
                             Для организаторов
                         </h4>
                         <div className={styles.menu__content}>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Стать хостом
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Как это работае
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Правила
                             </Link>
-                            <Link className={styles.link} to="">
+                            <Link className={styles.link} to={AppRoutes.MAIN}>
                                 Курсы для организаторов
                             </Link>
                         </div>

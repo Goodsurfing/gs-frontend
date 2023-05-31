@@ -1,5 +1,6 @@
-import NotificationDateStorage from "lib/storage/NotificationDateStorage";
 import React, { useEffect } from "react";
+
+import NotificationDateStorage from "shared/lib/storage/NotificationDateStorage";
 
 import HostDashboardNotificationItem from "./HostDashboardNotificationItem/HostFashboardNotificationItem";
 import styles from "./HostDashboardNotifications.module.scss";

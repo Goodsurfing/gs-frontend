@@ -1,9 +1,10 @@
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
+import React, { FC } from "react";
 import SignLayout from "sharead/ui/SignLayout/SignLayout";
 import SignTitle from "sharted/ui/SignTitle/SignTitle";
-import React, { FC } from "react";
 
-import { AppRoutesEnum } from "routes/types";
+import { AppRoutes } from "app/router";
+
+import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 

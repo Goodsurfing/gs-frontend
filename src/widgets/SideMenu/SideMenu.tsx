@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
-
 import { useLocation } from "react-router-dom";
+
 import styles from "./SideMenu.module.scss";
 import SideMenuArrow from "./SideMenuArrow/SideMenuArrow";
 import SideMenuNavbar from "./SideMenuNavbar/SideMenuNavbar";

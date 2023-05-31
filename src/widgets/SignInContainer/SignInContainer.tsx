@@ -1,12 +1,12 @@
-import SignTitle from "shared/ui/SignTitle/SignTitle";
 import React, { FC } from "react";
 
-import LocaleLink from "shared/ui/LocaleLink/ui/LocaleLink";
+import { AppRoutes } from "app/router";
 
 import SignInForm from "widgets/SignInContainer/SignInForm/SignInForm";
+import SignTitle from "widgets/SignTitle/SignTitle";
 import SocialAuthContainer from "widgets/SocialAuthContainer/SocialAuthContainer";
 
-import { AppRoutesEnum } from "routes/types";
+import { LocaleLink } from "shared/ui/LocaleLink";
 
 import styles from "./SignInContainer.module.scss";
 
@@ -20,8 +20,7 @@ const SignInContainer: FC = () => (
 
         <div className={styles.redirect}>
             Не зарегистрированы на Гудсерфинге?
-            {" "}
-            <LocaleLink to={AppRoutesEnum.SIGNUP}>
+            <LocaleLink to={AppRoutes.SIGNUP}>
                 Зарегистрироваться
             </LocaleLink>
             .

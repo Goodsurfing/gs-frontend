@@ -1,4 +1,4 @@
-import { LanguagesCodes } from "types/languages";
+import { LanguagesCodes } from "shared/types/languages";
 
 export interface IChangeLocaleBody {
     locale: LanguagesCodes;

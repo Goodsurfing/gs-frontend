@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import { authApi, reauthApi } from "store/api/authApi";

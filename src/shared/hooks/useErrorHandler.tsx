@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export function useErrorHandler<T = unknown>() {
   const [error, setError] = useState<T | null>(null);

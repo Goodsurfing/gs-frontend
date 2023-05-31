@@ -1,8 +1,8 @@
-import { FC } from "react";
 import cn from "classnames";
+import { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
 
-import { IOption } from "types/select";
+import { IOption } from "shared/types/select";
 
 import styles from "./SelectField.module.scss";
 

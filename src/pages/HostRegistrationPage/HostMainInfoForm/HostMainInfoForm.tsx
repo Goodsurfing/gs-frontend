@@ -1,8 +1,5 @@
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { OrganizationResponseType, OrganizationType } from "types/api/organization";
-import { IOrganizationRegistrationParams } from "types/api/organization/organizationRegistration.interface";
 
 import HintPopup from "components/HintPopup/HintPopup";
 import {
@@ -17,8 +14,9 @@ import { userOrganizationInfoApi } from "store/api/userOrganizationInfoApi";
 
 import ProfileInput from "widgets/ProfileInput/ProfileInput";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { OrganizationResponseType, OrganizationType } from "shared/types/api/organization";
+import { IOrganizationRegistrationParams } from "shared/types/api/organization/organizationRegistration.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 import HostMainInfoOrganization from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoOrganization/HostMainInfoOrganization";
 import HostMainInfoSocial from "../../HostPages/HostMainInfoPage/HostMainInfoForm/HostMainInfoSocial/HostMainInfoSocial";
@@ -108,13 +106,13 @@ const HostMainInfoForm: FC = () => {
     if (isOrganizationExists && savedOrganizationData) {
       updateOrganization(savedOrganizationData)
         .unwrap()
-        .then((res) => {
+        .then(() => {
           setHint({
             type: HintType.Success,
             text: "Организация успешно обновлена",
           });
         })
-        .catch((res) => {
+        .catch(() => {
           setHint({
             type: HintType.Error,
             text: "Не удалось обновить организацию",
@@ -137,14 +135,14 @@ const HostMainInfoForm: FC = () => {
             type: organization.type,
             website: organization.website,
           })
-            .then((res) => {
+            .then(() => {
               console.log("success creating otganization");
               setHint({
                 text: "Организация успешно создана",
                 type: HintType.Success,
               });
             })
-            .catch((error) => {
+            .catch(() => {
               setHint({
                 text: "Не удалось привязать организацию",
                 type: HintType.Error,
@@ -152,7 +150,7 @@ const HostMainInfoForm: FC = () => {
               console.error("Не удалось привязать организацию");
             });
         })
-        .catch((reason) => {
+        .catch(() => {
           console.error("Не удалось создать организацию");
           setHint({
             text: "Не удалось создать организацию",

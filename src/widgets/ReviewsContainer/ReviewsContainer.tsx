@@ -1,3 +1,4 @@
+import arrowIcon from "assets/images/reviews/arrow.svg";
 import React, { FC, useState } from "react";
 import { Autoplay, Navigation } from "swiper";
 import "swiper/css";
@@ -7,8 +8,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import ReviewItem from "widgets/ReviewsContainer/ReviewItem/ReviewItem";
 import { reviewsData } from "widgets/ReviewsContainer/Reviews.data";
-
-import arrowIcon from "assets/images/reviews/arrow.svg";
 
 import styles from "./ReviewsContainer.module.scss";
 

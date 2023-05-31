@@ -1,7 +1,7 @@
+import { Typography } from "@mui/material";
 import React, { useCallback, useState } from "react";
 
-import Input from "shared/ui/Input/Input";
-import { Box, Typography } from "@mui/material";
+import { Input } from "shared/ui/Input";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 
@@ -22,7 +22,7 @@ const Age = () => {
     } else {
       setMinAge(+e.target.value);
     }
-  }, [minAge, maxAge]);
+  }, [maxAge]);
 
   const onFromMaxAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
@@ -35,7 +35,7 @@ const Age = () => {
     } else {
       setMaxAge(+e.target.value);
     }
-  }, [minAge, maxAge]);
+  }, [minAge]);
 
   return (
       <div className={styles.wrapper}>
@@ -50,8 +50,20 @@ const Age = () => {
               Возраст
           </Typography>
           <div className={styles.inputWrapper}>
-              <Input className={styles.from} value={minAge} onChange={onFromMinAgeChange} type="number" placeholder="от" />
-              <Input className={styles.to} value={maxAge} onChange={onFromMaxAgeChange} type="number" placeholder="до" />
+              <Input
+                  className={styles.from}
+                  value={minAge}
+                  onChange={onFromMinAgeChange}
+                  type="number"
+                  placeholder="от"
+              />
+              <Input
+                  className={styles.to}
+                  value={maxAge}
+                  onChange={onFromMaxAgeChange}
+                  type="number"
+                  placeholder="до"
+              />
           </div>
       </div>
   );

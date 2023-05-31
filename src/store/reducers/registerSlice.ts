@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IRegisterResponse } from "types/api/auth/register.interface";
+
+import { IRegisterResponse } from "shared/types/api/auth/register.interface";
 
 const initialState: IRegisterResponse = {
   id: "",
@@ -21,4 +22,6 @@ export const registerSlice = createSlice({
 });
 
 export const { actions: registerActions } = registerSlice;
+export const { setRegisterUserData } = registerSlice.actions;
 export const { reducer: registerReducers } = registerSlice;
+export default registerSlice.reducer;

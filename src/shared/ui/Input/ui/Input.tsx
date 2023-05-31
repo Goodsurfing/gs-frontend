@@ -12,7 +12,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     id?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({
     label,
     img,
@@ -62,5 +62,3 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       </div>
   ),
 );
-
-export default Input;

@@ -2,8 +2,7 @@ import supportImage from "assets/images/supportImage.jpg";
 import cn from "classnames";
 import React, { FC } from "react";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 import { Theme } from "../../components/SideMenu/types/SideMenu.interface";
 

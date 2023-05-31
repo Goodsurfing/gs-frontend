@@ -1,7 +1,9 @@
-import SignTitle from "shared/ui/SignTitle/SignTitle";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
+import { AppRoutes } from "app/router";
+
+import { SignInTitle as SignTitle } from "widgets/SignIn/ui/SignInTitle/SignInTitle";
 import SignUpForm from "widgets/SignUpContainer/SignUpForm/SignUpForm";
 import SocialAuthContainer from "widgets/SocialAuthContainer/SocialAuthContainer";
 
@@ -13,8 +15,7 @@ const SignUpContainer: FC = () => (
         <SignUpForm />
         <div className={styles.confirm}>
             Нажимая кнопку «Зарегистрироваться», я принимаю
-            {" "}
-            <Link to="">Политику конфеденциальности ГудСёрфинга</Link>
+            <Link to={AppRoutes.MAIN}>Политику конфеденциальности ГудСёрфинга</Link>
             .
         </div>
         <div className={styles.socials}>

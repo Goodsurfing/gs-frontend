@@ -1,10 +1,9 @@
-import { SideMenuParams } from "components/SideMenu/types/SideMenu.interface";
-
 import calendarIcon from "assets/icons/navbar/calendar.svg";
 import cityIcon from "assets/icons/navbar/city.svg";
 import globeIcon from "assets/icons/navbar/globe.svg";
 import houseIcon from "assets/icons/navbar/home.svg";
 import mailIcon from "assets/icons/navbar/mail.svg";
+import { SideMenuParams } from "components/SideMenu/types/SideMenu.interface";
 
 export const HostPagesSidebarData: SideMenuParams[] = [
   {

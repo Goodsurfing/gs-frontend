@@ -1,8 +1,9 @@
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
 import React, { FC } from "react";
 
 import { howItWorkData } from "widgets/HowItWorkContainer/HowItWork.data";
 import HowItWorkItem from "widgets/HowItWorkContainer/HowItWorkItem/HowItWorkItem";
+
+import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./HowItWorkContainer.module.scss";
 

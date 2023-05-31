@@ -1,9 +1,9 @@
 import React, { FC, useState } from "react";
 
 import ImageInput from "components/ImageInput/ImageInput";
-import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 
 import styles from "./ImageUpload.module.scss";
+import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 
 const ImageUpload: FC = () => {
   const [img, setImg] = useState<string | null>(null);
@@ -15,8 +15,11 @@ const ImageUpload: FC = () => {
           wrapperClassName={styles.input}
           labelClassName={styles.label}
           labelChildren={<ImageUploadBackground />}
-          description={<span className={styles.description}>Ширина фотографии для обложки не меньше 1920 пикселей</span>}
-
+          description={(
+              <span className={styles.description}>
+                  Ширина фотографии для обложки не меньше 1920 пикселей
+              </span>
+          )}
           id="image-wrapper"
       />
   );

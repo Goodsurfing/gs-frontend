@@ -1,10 +1,5 @@
 import { LocationType, ymapsDefaultLocation } from "constants/ymaps";
 
-import useDebounce from "hooks/useDebounce";
-import getGeocodeByName from "lib/ymaps/getGeocodeByName";
-import { getHints } from "lib/ymaps/getHints";
-import getYmapCoordinates from "lib/ymaps/getYmapCoordinates";
-import validateCoordinates from "lib/ymaps/normalizeCoordinates";
 import React, { FC, useEffect, useState } from "react";
 import {
   Control, Controller, FieldValue, FieldValues,
@@ -13,7 +8,12 @@ import { Placemark } from "react-yandex-maps";
 
 import Hints from "widgets/Hints/Hints";
 
-import Input from "shared/ui/Input/Input";
+import useDebounce from "shared/hooks/useDebounce";
+import getGeocodeByName from "shared/lib/ymaps/getGeocodeByName";
+import { getHints } from "shared/lib/ymaps/getHints";
+import getYmapCoordinates from "shared/lib/ymaps/getYmapCoordinates";
+import validateCoordinates from "shared/lib/ymaps/normalizeCoordinates";
+import Input from "shared/ui/Input/ui/Input";
 
 import { GeoObjectHintType, YMapType } from "../types/ymaps";
 import YandexMap from "../YMap";

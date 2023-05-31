@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 
-import HostDashboardRequest from "../HostDashboardRequest/HostDashboardRequest";
-import HostProfileFill from "../HostProfileFill/HostProfileFill";
 import HostDashboardCalendar from "../HostDashboardCalendar/HostDashboardCalendar";
 import HostDashboardNotifications from "../HostDashboardNotifications/HostDashboardNotifications";
+import HostDashboardRequest from "../HostDashboardRequest/HostDashboardRequest";
+import HostProfileFill from "../HostProfileFill/HostProfileFill";
 
 import styles from "./HostDashboard.module.scss";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import Input from "shared/ui/Input/Input";
+import { Input } from "shared/ui/Input";
 
 const EventName = () => (
     <Input label="Название мероприятия" />

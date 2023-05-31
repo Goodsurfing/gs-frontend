@@ -1,11 +1,10 @@
+import arrowSliderIcon from "assets/icons/slider-arrow.svg";
 import React, { FC, useState } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { communityNewsData } from "widgets/CommunityNewsContainer/CommunityNews.data";
 import CommunityNewsItem from "widgets/CommunityNewsContainer/CommunityNewsItem/CommunityNewsItem";
-
-import arrowSliderIcon from "assets/icons/slider-arrow.svg";
 
 import styles from "./CommunityNewsContainer.module.scss";
 

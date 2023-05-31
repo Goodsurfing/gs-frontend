@@ -33,7 +33,8 @@
       // import React from 'react';
       "allowSyntheticDefaultImports": true,
       // CSS modules
-      "plugins": [{ "name": "typescript-plugin-css-modules" }]
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
+      "strictFunctionTypes": false,
     },
     "ts-node": {
       "compilerOptions": {

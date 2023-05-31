@@ -1,8 +1,8 @@
 import React from "react";
 
-import { WhoNeedsForm } from "@/modules/WhoNeedsForm";
-
 import styles from "./OfferWhoNeedsPage.module.scss";
+
+import { WhoNeedsForm } from "@/modules/WhoNeedsForm";
 
 const OffersWhoNeedsPage = () => (
     <div className={styles.wrapper}>

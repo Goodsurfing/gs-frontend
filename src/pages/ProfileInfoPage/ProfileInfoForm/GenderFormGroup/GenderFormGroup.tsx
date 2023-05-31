@@ -5,9 +5,10 @@ import SelectField from "components/SelectField/SelectField";
 
 import ProfileInfoFormGroup from "pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
 
-import { IOption } from "types/select";
+import { IOption } from "shared/types/select";
 
 import { IGenderFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
+
 import { genderOptions } from "./GenderFormGroup.data";
 import styles from "./GenderFormGroup.module.scss";
 

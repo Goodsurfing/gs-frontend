@@ -1,5 +1,6 @@
-import Switch from "shared/ui/Switch/ui/Switch";
 import { FormControlLabel, Typography } from "@mui/material";
+
+import { SwitchComponent as Switch } from "shared/ui/Switch";
 
 import styles from "./Location.module.scss";
 

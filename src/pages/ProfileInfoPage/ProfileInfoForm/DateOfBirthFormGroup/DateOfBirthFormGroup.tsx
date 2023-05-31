@@ -1,4 +1,5 @@
-import Input from "shared/ui/Input/Input";
+import Input from "shared/ui/Input/ui/Input";
+
 import React, { FC } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
@@ -11,6 +12,7 @@ import {
   IDateOfBirthFormGroup,
   IUserInfoForm,
 } from "../ProfileInfoForm.interface";
+
 import styles from "./DateOfBirthFormGroup.module.scss";
 
 interface DateOfBirthFormGroupProps {

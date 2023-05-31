@@ -1,5 +1,5 @@
-const PRIVATE_IMPORT_MESSAGE = "Private imports are prohibited, use public imports instead";
-const ABSOLUTE_IMPORT_MESSAGE = "Prefer absolute imports instead of relatives (for root modules)";
+// const PRIVATE_IMPORT_MESSAGE = "Private imports are prohibited, use public imports instead";
+// const ABSOLUTE_IMPORT_MESSAGE = "Prefer absolute imports instead of relatives (for root modules)";
 
 module.exports = {
   extends: [
@@ -48,6 +48,9 @@ module.exports = {
       tabWidth: 2,
       code: 110,
     }],
+    "no-redeclare": "off",
+    "react/no-array-index-key": "off",
+    "arrow-body-style": ["error", "as-needed"],
     "import/order": [
       "error",
       {
@@ -65,93 +68,94 @@ module.exports = {
       },
     ],
     "import/no-cycle": [2, { maxDepth: 2 }],
-    "no-restricted-imports": [
-      "error",
-      {
-        patterns: [
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["app/*/*/**"],
-          },
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["pages/*/**"],
-          },
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["widgets/*/**"],
-          },
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["features/*/**"],
-          },
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["entities/*/**"],
-          },
-          {
-            message: PRIVATE_IMPORT_MESSAGE,
-            group: ["shared/*/*/**"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/app"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/pages"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/widgets"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/features"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/entities"],
-          },
-          {
-            message: ABSOLUTE_IMPORT_MESSAGE,
-            group: ["../**/shared"],
-          },
-        ],
-      },
-    ],
-    "boundaries/element-types": [
-      "warn",
-      {
-        default: "disallow",
-        rules: [
-          {
-            from: "app",
-            allow: ["pages", "pages/router", "widgets", "features", "entities", "shared"],
-          },
-          {
-            from: "pages",
-            allow: ["pages/router", "widgets", "features", "entities", "shared"],
-          },
-          {
-            from: "widgets",
-            allow: ["pages/router", "features", "entities", "shared"],
-          },
-          {
-            from: "features",
-            allow: ["pages/router", "entities", "shared"],
-          },
-          {
-            from: "entities",
-            allow: ["pages/router", "shared"],
-          },
-          {
-            from: "shared",
-            allow: ["shared"],
-          },
-        ],
-      },
-    ],
+    // enable after full migration
+    // "no-restricted-imports": [
+    //   "error",
+    //   {
+    //     patterns: [
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["app/*/*/**"],
+    //       },
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["pages/*/**"],
+    //       },
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["widgets/*/**"],
+    //       },
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["features/*/**"],
+    //       },
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["entities/*/**"],
+    //       },
+    //       {
+    //         message: PRIVATE_IMPORT_MESSAGE,
+    //         group: ["shared/*/*/**"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/app"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/pages"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/widgets"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/features"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/entities"],
+    //       },
+    //       {
+    //         message: ABSOLUTE_IMPORT_MESSAGE,
+    //         group: ["../**/shared"],
+    //       },
+    //     ],
+    //   },
+    // ],
+    // "boundaries/element-types": [
+    //   "warn",
+    //   {
+    //     default: "disallow",
+    //     rules: [
+    //       {
+    //         from: "app",
+    //         allow: ["pages", "pages/router", "widgets", "features", "entities", "shared"],
+    //       },
+    //       {
+    //         from: "pages",
+    //         allow: ["pages/router", "widgets", "features", "entities", "shared"],
+    //       },
+    //       {
+    //         from: "widgets",
+    //         allow: ["pages/router", "features", "entities", "shared"],
+    //       },
+    //       {
+    //         from: "features",
+    //         allow: ["pages/router", "entities", "shared"],
+    //       },
+    //       {
+    //         from: "entities",
+    //         allow: ["pages/router", "shared"],
+    //       },
+    //       {
+    //         from: "shared",
+    //         allow: ["shared"],
+    //       },
+    //     ],
+    //   },
+    // ],
     "react/jsx-indent": [2, 4],
     "react/jsx-indent-props": [2, 4],
     "react/jsx-filename-extension": [2, {
@@ -174,21 +178,15 @@ module.exports = {
     "linebreak-style": ["error", "windows"],
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/label-has-associated-control": "off",
-    "i18next/no-literal-string": ["error", {
-      markupOnly: true,
-      ignoreAttribute: ["data-testid", "to"],
-    }],
     "jsx-a11y/no-static-element-interactions": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "no-param-reassign": "off",
+    "i18next/no-literal-string": "off",
   },
   globals: {
     __IS_DEV__: true,
   },
   overrides: [{
     files: ["**/src/**/*.test.{ts,tsx}"],
-    rules: {
-      "i18next/no-literal-string": "off",
-    },
   }],
 };

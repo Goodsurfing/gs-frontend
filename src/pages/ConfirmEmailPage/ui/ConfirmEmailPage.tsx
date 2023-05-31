@@ -1,10 +1,10 @@
 import { FC } from "react";
+
 import SignLayout from "widgets/SignLayout/SignLayout";
 import SignTitle from "widgets/SignTitle/SignTitle";
 
-import { useAppSelector } from "shared/hooks/redux";
-
 import { AppRoutes } from "shared/config/RouteConfig";
+import { useAppSelector } from "shared/hooks/redux";
 
 import styles from "./ConfirmEmailPage.module.scss";
 

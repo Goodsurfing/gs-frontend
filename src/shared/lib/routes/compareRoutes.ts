@@ -14,7 +14,9 @@ const сompareRoutes = (fullRoute: string, comparableRoute: string): boolean => 
       if (secondaryRoute === route) {
         isMatch = true;
       }
+      return false;
     });
+    return false;
   });
 
   return isMatch;

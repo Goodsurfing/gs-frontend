@@ -1,7 +1,10 @@
-import { API_ORGANIZATIONS_BASE_URL } from "shared/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+// eslint-disable-next-line import/no-cycle
 import { RootState } from "store/store";
-import { IGetOrganizationInfo } from "types/api/organization/organizationInfo.interface";
+
+import { API_ORGANIZATIONS_BASE_URL } from "shared/constants/api";
+import { IGetOrganizationInfo } from "shared/types/api/organization/organizationInfo.interface";
 
 export const userOrganizationInfoApi = createApi({
   reducerPath: "userOrganizationInfoApi",

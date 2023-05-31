@@ -1,16 +1,16 @@
 import {
   ArcElement,
-  ChartData,
   Chart as ChartJS,
   Legend,
   Tooltip,
 } from "chart.js";
 import cn from "classnames";
-import { createDoughnutData } from "lib/chartJS";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 
-import { ProfileFillItems } from "pages/HostPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
+import { ProfileFillItems } from "pages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
+
+import { createDoughnutData } from "shared/lib/chartJS";
 
 import styles from "./StatsCircle.module.scss";
 import { IStatsCircle } from "./StatsCircle.types";
@@ -31,7 +31,7 @@ const StatsCircle: FC<IStatsCircle> = ({
       createdDegrees.completedPercent,
       createdDegrees.uncompletedPercent,
     ]);
-  }, []);
+  }, [setDegrees]);
 
   return (
       <Doughnut

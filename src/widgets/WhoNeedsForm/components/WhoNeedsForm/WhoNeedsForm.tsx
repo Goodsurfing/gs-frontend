@@ -1,7 +1,6 @@
-import React from "react";
+import { useTranslation } from "react-i18next";
 
-import Button from "shared/ui/Button/Button";
-import { Variant } from "shared/ui/Button/ui/Button.interface";
+import { Button, Variant } from "shared/ui/Button";
 
 import Age from "../Age/Age";
 import Gender from "../Gender/Gender";
@@ -10,19 +9,22 @@ import Location from "../Location/Location";
 
 import styles from "./WhoNeedsForm.module.scss";
 
-export const WhoNeedsForm = () => (
-    <form className={styles.wrapper}>
-        <Gender />
-        <Age />
-        <LanguagesGroup />
-        <Location />
-        <Button
-            onClick={() => {}}
-            className={styles.btn}
-            rounded
-            variant={Variant.PRIMARY}
-        >
-            Сохранить
-        </Button>
-    </form>
-);
+export const WhoNeedsForm = () => {
+  const { t } = useTranslation();
+  return (
+      <form className={styles.wrapper}>
+          <Gender />
+          <Age />
+          <LanguagesGroup />
+          <Location />
+          <Button
+              onClick={() => {}}
+              className={styles.btn}
+              rounded
+              variant={Variant.PRIMARY}
+          >
+              {t("save")}
+          </Button>
+      </form>
+  );
+};
