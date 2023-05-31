@@ -4,7 +4,8 @@ import React, { FC, useState } from "react";
 import ResetPasswordFirstStep from "widgets/ResetPasswordContainer/ResetPasswordFirstStep/ResetPasswordFirstStep";
 // eslint-disable-next-line max-len
 import ResetPasswordSecondStep from "widgets/ResetPasswordContainer/ResetPasswordSecondStep/ResetPasswordSecondStep";
-import SignTitle from "widgets/SignTitle/SignTitle";
+
+import SignTitle from "shared/ui/SignTitle/SignTitle";
 
 import styles from "./ResetPasswordContainer.module.scss";
 

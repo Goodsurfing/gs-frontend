@@ -11,6 +11,7 @@ const ExtraCloseButton: FC<ExtraCloseButtonProps> = ({
   ...restBtnProps
 }) => (
     <button
+        type="button"
         onClick={onClick}
         className={cn(styles.btn, className)}
         {...restBtnProps}

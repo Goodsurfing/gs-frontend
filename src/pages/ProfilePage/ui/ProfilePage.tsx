@@ -8,8 +8,9 @@ import { SideMenuData } from "pages/ProfilePage/ui/ProfilePage.data";
 import ProfileInfoPage from "pages/ProfilePages/ProfileInfoPage/ProfileInfoPage";
 import ProfileResetPasswordPage from "pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordPage";
 
+import { MainHeader } from "widgets/MainHeader";
+
 import { isMatchUrlEndpoint } from "shared/lib/url/isMatchUrlEndpoint";
-import MainHeader from "shared/ui/MainHeader/MainHeader";
 
 import styles from "./ProfilePage.module.scss";
 

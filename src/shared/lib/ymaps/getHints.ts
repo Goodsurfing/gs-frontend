@@ -2,7 +2,7 @@ import { makeGeoUrl } from "../url/ymapUrlHelpers";
 
 export const getHints = async (value: string) => {
   if (value.length < 3) {
-    return;
+    return undefined;
   }
   const data = await fetch(makeGeoUrl(value))
     .then((res) => res.json())

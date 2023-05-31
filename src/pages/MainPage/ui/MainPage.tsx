@@ -3,13 +3,13 @@ import React, { FC } from "react";
 import BecomeHostContainer from "widgets/BecomeHostContainer/BecomeHostContainer";
 import BenefitsContainer from "widgets/BenefitsContainer/BenefitsContainer";
 import CommunityNewsContainer from "widgets/CommunityNewsContainer/CommunityNewsContainer";
-import Footer from "widgets/Footer/Footer";
-import HowItWorkContainer from "widgets/HowItWorkContainer/HowItWorkContainer";
-import OffersContainer from "widgets/OffersContainer/OffersContainer";
-import PopularPlacesContainer from "widgets/PopularPlacesContainer/PopularPlacesContainer";
-import ReviewsContainer from "widgets/ReviewsContainer/ReviewsContainer";
-import VolunteerContainer from "widgets/VolunteerContainer/VolunteerContainer";
-import WelcomeContainer from "widgets/WelcomeContainer/WelcomeContainer";
+import { Footer } from "widgets/Footer";
+import { HowItWorkContainer } from "widgets/HowItWorkContainer";
+import { OffersContainer } from "widgets/OffersContainer";
+import { PopularPlacesContainer } from "widgets/PopularPlacesContainer";
+import { ReviewsContainer } from "widgets/ReviewsContainer";
+import { VolunteerContainer } from "widgets/VolunteerContainer";
+import { WelcomeContainer } from "widgets/WelcomeContainer";
 
 import { Section } from "shared/ui/Section";
 

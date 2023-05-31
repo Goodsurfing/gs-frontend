@@ -1,8 +1,9 @@
+/* eslint-disable import/no-cycle */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { RootState } from "store/store";
 
-import { IUserInfo } from "pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
+import { IUserInfo } from "pages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
 
 import { API_USER_BASE_URL } from "shared/constants/api";
 

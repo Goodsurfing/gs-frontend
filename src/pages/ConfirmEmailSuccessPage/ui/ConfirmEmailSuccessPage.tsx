@@ -1,28 +1,27 @@
 import React, { FC } from "react";
-import SignLayout from "sharead/ui/SignLayout/SignLayout";
-import SignTitle from "sharted/ui/SignTitle/SignTitle";
 
 import { AppRoutes } from "app/router";
 
-import ButtonLink from "shared/ui/ButtonLink/ButtonLink";
+import { SignLayout } from "widgets/SignLayout";
+
+import { ButtonLink } from "shared/ui/ButtonLink";
+import { SignTitle } from "shared/ui/SignTitle";
 
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 
 const ConfirmEmailSuccessPage: FC = () => (
-    <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNUP}>
+    <SignLayout cancelText="Отменить" cancelPath={AppRoutes.SIGN_UP}>
         <div className={styles.wrapper}>
             <SignTitle>Регистрация пользователя</SignTitle>
             <div className={styles.content}>
                 <div className={styles.notification}>
                     Спасибо! Ваш адрес электронной почты
-                    {" "}
                     <span>space-cowboy1982@bk.ru</span>
-                    {" "}
                     был подтверждён.
                 </div>
                 <ButtonLink
                     className={styles.btn}
-                    path={AppRoutesEnum.SIGNIN}
+                    path={AppRoutes.SIGN_IN}
                     type="outlined"
                 >
                     Войти в свой аккаунт

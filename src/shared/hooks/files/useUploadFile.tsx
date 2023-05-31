@@ -28,6 +28,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
       return error;
     }
   };
+  // eslint-disable-next-line consistent-return
   const uploadFileMutation = async (link: GenerateLinkResponse) => {
     try {
       await fetch(link!.url, {

@@ -9,4 +9,5 @@ export default function getYmapCoordinates(ymapGeocodeRequest: YMapsApi) {
   } catch (e) {
     console.log(e);
   }
+  return undefined;
 }
