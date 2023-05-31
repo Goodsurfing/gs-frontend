@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+import { loginReducer } from "features/AuthByEmail";
 import { localeApi } from "features/SwitchLanguage";
 
 import { organizationReducer } from "entities/Organization";
@@ -10,6 +11,7 @@ import { StateSchema } from "./StateSchema";
 const rootReducers = combineReducers<StateSchema>({
   organization: organizationReducer,
   user: userReducer,
+  loginForm: loginReducer,
   [localeApi.reducerPath]: localeApi.reducer,
 });
 
