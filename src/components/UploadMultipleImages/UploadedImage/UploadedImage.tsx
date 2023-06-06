@@ -1,20 +1,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { FC, useCallback } from "react";
 
+import closeBtnImg from "@/assets/icons/delete.svg";
+
 import styles from "./UploadedImage.module.scss";
 
 interface UploadedImageProps {
     img: string;
-    onBtnClick?: () => void;
+    onCloseClick?: () => void;
     onImageClick?: () => void;
 }
 
-const UploadedImage: FC<UploadedImageProps> = ({ img, onBtnClick, onImageClick }) => {
-    const onEscapeClick = useCallback((e: React.KeyboardEvent) => {
-        if (e.key === "Escape") {
-            onBtnClick?.();
+const UploadedImage: FC<UploadedImageProps> = ({ img, onCloseClick, onImageClick }) => {
+    const onEnterClick = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            onImageClick?.();
         }
-    }, [onBtnClick]);
+    }, [onImageClick]);
 
     return (
         <div className={styles.wrapper}>
@@ -23,14 +25,14 @@ const UploadedImage: FC<UploadedImageProps> = ({ img, onBtnClick, onImageClick }
                 src={img}
                 alt="your upload"
                 onClick={onImageClick}
-                onKeyDown={onEscapeClick}
+                onKeyDown={onEnterClick}
             />
             <button
                 className={styles.closeBtn}
-                onClick={onBtnClick}
+                onClick={onCloseClick}
                 type="button"
             >
-                x
+                <img src={closeBtnImg} alt="close" />
             </button>
         </div>
     );

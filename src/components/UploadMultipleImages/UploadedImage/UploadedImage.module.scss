@@ -1,0 +1,29 @@
+.wrapper {
+    position: relative;
+}
+
+.img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.closeBtn {
+    position: absolute;
+    border: none;
+    background: none;
+    top: 9px;
+    right: 8px;
+    outline: none;
+
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background-color: white;
+        cursor: pointer;
+    }
+}

@@ -1,6 +1,6 @@
 import React, {
     ChangeEvent,
-    FC, useCallback,
+    FC, useCallback, useState,
 } from "react";
 
 import plusIcon from "@/assets/icons/plus-icon.svg";
@@ -11,30 +11,28 @@ import styles from "./UploadButton.module.scss";
 
 interface UploadButtonProps {
     id: string;
-    imageUrl: string | undefined;
-    onUpload?: (img: string | undefined) => void;
+    onUpload?: (img: string) => void;
 }
 
-const UploadButton: FC<UploadButtonProps> = ({ id, onUpload, imageUrl }) => {
+const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
+    const [img, setImg] = useState<string>();
+
     const handleUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
-            console.log(file);
             const url = URL.createObjectURL(file);
+            setImg(url);
             onUpload?.(url);
         }
-        onUpload?.(e.target.value);
     }, [onUpload]);
-
-    // const [img, setImg] = useState<string | null>(null);
 
     return (
         <InputFile
             onChange={handleUpload}
-            onClick={() => { return console.log("click"); }}
-            imageURL={imageUrl}
+            imageURL={img}
             id={id}
+            uploadedImageClassName={styles.hiddenImg}
             labelClassName={styles.btn}
             labelChildren={(
                 <div className={styles.innerWrapper}>

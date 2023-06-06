@@ -38,7 +38,7 @@ export const HostPagesSidebarData: SideMenuParams[] = [
             },
             {
                 text: "Фотогалерея",
-                route: "",
+                route: "/gallery",
             },
             {
                 text: "Видеогалерея",

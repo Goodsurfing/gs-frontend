@@ -11,38 +11,44 @@ import styles from "./LanguagesGroup.module.scss";
 
 const LanguagesGroup = () => {
     const [languagesCount, setLanguagesCount] = useState([0]);
-    
+
     const onCloseBtnClick = (index: number) => {
         if (index === 0) return;
-        setLanguagesCount(languagesCount.filter((_, i) => i !== index));
+        setLanguagesCount(languagesCount.filter((_, i) => { return i !== index; }));
     };
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.langsWrapper}>
-                {languagesCount.map((_, index) => (
-                    <Languages
-                        key={index}
-                        close={
-                            <CloseButton
-                                sx={{
-                                    minWidth: "36px",
-                                    minHeight: "36px",
-                                    mb: "8px",
-                                }}
-                                className={styles.closeBtn}
-                                onClick={() => onCloseBtnClick(index)}
-                            />
-                        }
-                    />
-                ))}
+                {languagesCount.map((_, index) => {
+                    return (
+                        <Languages
+                            key={index}
+                            close={(
+                                <CloseButton
+                                    sx={{
+                                        minWidth: "36px",
+                                        minHeight: "36px",
+                                        mb: "8px",
+                                    }}
+                                    className={styles.closeBtn}
+                                    onClick={() => { return onCloseBtnClick(index); }}
+                                />
+                            )}
+                        />
+                    );
+                })}
                 {languagesCount.length > 1 && (
                     <ExtraControls />
                 )}
             </div>
             <div className="">
                 <AddButton
-                    onClick={() => setLanguagesCount((prev) => [...prev, 0])}
+                    onClick={() => {
+                        return setLanguagesCount((prev) => {
+                            return [...prev, 0];
+                        });
+                    }}
                 >
                     Добавить язык
                 </AddButton>
