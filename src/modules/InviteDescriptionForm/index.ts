@@ -1,1 +1,1 @@
-export { InviteDescriptionForm } from './components/InviteDescriptionForm/InviteDescriptionForm';
+export { InviteDescriptionForm } from "./components/InviteDescriptionForm/InviteDescriptionForm";

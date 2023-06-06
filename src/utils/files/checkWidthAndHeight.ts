@@ -25,7 +25,7 @@ export const checkWidthAndHeight = (file: File): Promise<{ width: number, height
             reject(new Error("Error reading file"));
         };
 
-        reader.readAsDataURL(file);        
+        reader.readAsDataURL(file);
     });
 
 }

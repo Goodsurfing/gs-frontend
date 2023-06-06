@@ -6,6 +6,8 @@ import Preloader from "@/components/Preloader/Preloader";
 
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 
+import { HostGalleryPage } from "@/pages/HostGalleryPage"; 
+
 const OfferCreatePages = lazy(
     () => import("@/pages/OfferCreatePages/OfferCreatePages")
 );
@@ -73,6 +75,10 @@ export const AppRoutes = () => {
                 <Route
                     path="/:ln/organization/registration"
                     element={<PrivateRoute Component={HostPage} />}
+                />
+                <Route
+                    path="/:ln/organization/gallery"
+                    element={<HostGalleryPage />}
                 />
                 {/* Offers pages */}
                 <Route

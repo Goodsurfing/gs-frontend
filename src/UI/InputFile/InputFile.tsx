@@ -12,7 +12,7 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             id,
             imageURL,
             className,
-            disabled,
+            disabled = false,
             onChange,
             value,
             wrapperClassName,
@@ -23,25 +23,24 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             onLabelClick,
             accept,
             allowedExtensions,
-            ...restFileInputProps
         }: InputFileProps,
-        fileInputRef
+        fileInputRef,
     ) => {
         const onLabelClickHandler = useCallback<
-            NonNullable<LabelHTMLAttributes<HTMLLabelElement>["onClick"]>
+        NonNullable<LabelHTMLAttributes<HTMLLabelElement>["onClick"]>
         >(
             (e) => {
                 if (disabled) return e.preventDefault();
                 onLabelClick?.(e);
             },
-            [disabled, onLabelClick]
+            [disabled, onLabelClick],
         );
 
         const fileInputAccept = useMemo(() => {
             if (accept) return accept;
             return (
-                allowedExtensions &&
-                stringifyAllowedExtensions(allowedExtensions)
+                allowedExtensions
+                && stringifyAllowedExtensions(allowedExtensions)
             );
         }, [accept, allowedExtensions]);
 
@@ -51,11 +50,11 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                     ref={fileInputRef}
                     className={cn(styles.fileInputGroup__fileInput, className)}
                     onChange={onChange}
+                    value={value}
                     type="file"
                     id={id}
                     disabled={disabled}
                     accept={fileInputAccept}
-                    {...restFileInputProps}
                 />
                 {imageURL && <img className={cn(uploadedImageClassName, styles.uploadedImage)} src={imageURL} alt="Uploaded" />}
                 <label
@@ -63,14 +62,15 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
                         styles.fileInputGroup__label,
                         labelClassName,
                         disabled && styles.fileInputGroup__label_disabled,
-                        disabled && labelDisableClassName
+                        disabled && labelDisableClassName,
                     )}
                     onClick={onLabelClickHandler}
                     htmlFor={id}
-                    children={labelChildren}
-                />
+                >
+                    {labelChildren}
+                </label>
             </div>
         );
-    }
+    },
 );
-export default React.memo(InputFile);
+export default InputFile;

@@ -1,0 +1,26 @@
+.layout {
+	background-color: var(--color-lightgray);
+	min-height: 100vh;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	min-height: 100%;
+	transition: .3s ease-in-out;
+	padding: 2.25rem 3.125rem 0 10rem;
+}
+
+.innerWrapper {
+	min-height: 100vh;
+	padding-bottom: 36px;
+}
+
+.opened {
+	transition: .3s ease-in-out;
+	padding-left: 21.875rem;
+}
+
+.btn {
+	border: none;
+}

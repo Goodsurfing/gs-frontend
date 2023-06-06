@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
-import InputFile from "@/UI/InputFile/InputFile";
 import cn from "classnames";
+import InputFile from "@/UI/InputFile/InputFile";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
@@ -19,7 +19,6 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
-    // const [imageURL, setImageURL] = useState<string>();
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;
@@ -38,7 +37,6 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 setError(true);
                 console.log("Error ", e);
             }
-            
         }
     };
 

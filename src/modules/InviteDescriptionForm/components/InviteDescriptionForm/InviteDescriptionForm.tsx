@@ -11,7 +11,7 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
 
-import styles from './InviteDescriptionForm.module.scss';
+import styles from "./InviteDescriptionForm.module.scss";
 
 export const InviteDescriptionForm = () => {
     const onSubmit = () => {};
@@ -29,4 +29,3 @@ export const InviteDescriptionForm = () => {
         </form>
     );
 };
-

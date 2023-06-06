@@ -3,7 +3,7 @@ import { Variant } from "@/UI/Button/Button.interface";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
+// import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 
 import styles from "./OfferWherePage.module.scss";
 
@@ -24,12 +24,12 @@ const OfferWherePage = () => {
         <div className={styles.wrapper}>
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
                 <div className={styles.ymaps}>
-                    <YMapWithAddress
+                    {/* <YMapWithAddress
                         width="300px"
                         height="300px"
                         data={{ address: "" }}
                         control={control}
-                    />
+                    /> */}
                 </div>
                 <Button
                     rounded

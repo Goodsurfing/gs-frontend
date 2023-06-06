@@ -16,7 +16,6 @@ const ImageUpload: FC = () => {
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground />}
             description={<span className={styles.description}>Ширина фотографии для обложки не меньше 1920 пикселей</span>}
-            
             id="image-wrapper"
         />
     );

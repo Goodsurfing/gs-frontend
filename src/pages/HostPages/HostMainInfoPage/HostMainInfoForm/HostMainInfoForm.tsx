@@ -11,7 +11,7 @@ import {
 } from "@/components/HintPopup/HintPopup.interface";
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
-import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
+// import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 
 import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
@@ -198,13 +198,13 @@ const HostMainInfoForm: FC = () => {
                     <HintPopup type={hint.type} text={hint.text} />
                 )}
                 <div className={styles.container}>
-                    <YMapWithAddress
+                    {/* <YMapWithAddress
                         height="300px"
                         data={{
                             address: savedOrganizationData.address,
                         }}
                         control={control}
-                    />
+                    /> */}
                     <HostMainInfoOrganization
                         data={{
                             name: savedOrganizationData.name,
