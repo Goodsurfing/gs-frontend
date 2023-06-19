@@ -1,4 +1,4 @@
-import { ChartData } from "chart.js";
+import { ChartData } from 'chart.js';
 
 export type DatasetsType = {
     label: string;
@@ -12,7 +12,7 @@ export interface IStatsCircle {
     setDegrees: (degrees: Array<number>) => void;
     width?: string;
     height?: string;
-    data: ChartData<"doughnut", number[], unknown>;
+    data: ChartData<'doughnut', number[], unknown>;
     options: any;
     pointsData: any;
 }

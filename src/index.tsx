@@ -1,23 +1,29 @@
-import App from "@/app/App";
-import React, { Suspense } from "react";
-import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { setupStore } from 'store/store';
 
-import { setupStore } from "@/store/store";
+import App from 'app/App';
 
-import "./i18n";
-import "./styles/index.scss";
+import { ErrorBoundary } from 'app/providers/ErrorBoundary/ui/ErrorBoundary';
 
-const root = createRoot(document.getElementById("root")!);
+import './i18n';
+
+import './styles/index.scss';
+
+const root = createRoot(document.getElementById('root')!);
 
 const store = setupStore();
 
 const Root = (
-    <Suspense fallback={<div>Loading...</div>}>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </Suspense>
+    <Provider store={store}>
+        <BrowserRouter>
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
+        </BrowserRouter>
+    </Provider>
 );
 
 root.render(Root);

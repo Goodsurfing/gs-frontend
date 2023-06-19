@@ -1,42 +1,38 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { authApi, reauthApi } from "@/store/api/authApi";
-import { userInfoApi } from "@/store/api/userInfoApi";
+import { authApi, reauthApi } from 'store/api/authApi';
+import { userInfoApi } from 'store/api/userInfoApi';
 
-import { localeApi } from "./api/localeApi";
-import loginReducer from "./reducers/loginSlice";
-import registerReducer from "./reducers/registerSlice";
-import { organizationApi } from "./api/organizationApi";
+import { localeApi } from './api/localeApi';
+import loginReducer from './reducers/loginSlice';
+import registerReducer from './reducers/registerSlice';
+import { organizationApi } from './api/organizationApi';
 import toastReducer from './reducers/toastSlice';
-import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
+import { userOrganizationInfoApi } from './api/userOrganizationInfoApi';
 
 const rootReducer = combineReducers({
-    register: registerReducer,
-    login: loginReducer,
-    toast: toastReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userInfoApi.reducerPath]: userInfoApi.reducer,
-    [localeApi.reducerPath]: localeApi.reducer,
-    [organizationApi.reducerPath]: organizationApi.reducer,
-    [reauthApi.reducerPath]: reauthApi.reducer,
-    [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
+  register: registerReducer,
+  login: loginReducer,
+  toast: toastReducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userInfoApi.reducerPath]: userInfoApi.reducer,
+  [localeApi.reducerPath]: localeApi.reducer,
+  [organizationApi.reducerPath]: organizationApi.reducer,
+  [reauthApi.reducerPath]: reauthApi.reducer,
+  [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
 });
 
-export const setupStore = () => {
-    return configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => {
-            return getDefaultMiddleware().concat([
-                authApi.middleware,
-                organizationApi.middleware,
-                userInfoApi.middleware,
-                userOrganizationInfoApi.middleware,
-                localeApi.middleware,
-            ]);
-        },
-    });
-};
+export const setupStore = () => configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
+    authApi.middleware,
+    organizationApi.middleware,
+    userInfoApi.middleware,
+    userOrganizationInfoApi.middleware,
+    localeApi.middleware,
+  ]),
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore["dispatch"];
+export type AppDispatch = AppStore['dispatch'];

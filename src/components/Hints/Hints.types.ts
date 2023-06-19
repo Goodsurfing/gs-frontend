@@ -1,4 +1,4 @@
-import { GeoObjectHintType } from "../Ymaps/types/ymaps";
+import { GeoObjectHintType } from '../Ymaps/types/ymaps';
 
 export interface IHintsProps {
     hints: GeoObjectHintType[];

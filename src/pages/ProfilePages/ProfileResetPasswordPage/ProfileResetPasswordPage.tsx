@@ -1,20 +1,18 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import ProfileResetPasswordForm from "@/pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordForm/ProfileResetPasswordForm";
+import ProfileResetPasswordForm from 'pages/ProfilePages/ProfileResetPasswordPage/ProfileResetPasswordForm/ProfileResetPasswordForm';
 
-import styles from "./ProfileResetPasswordPage.module.scss";
+import styles from './ProfileResetPasswordPage.module.scss';
 
-const ProfileResetPasswordPage: FC = () => {
-    return (
-        <main className={styles.main}>
-            <div className={styles.title}>
-                <h2>Изменение пароля</h2>
-            </div>
-            <div className={styles.form}>
-                <ProfileResetPasswordForm />
-            </div>
-        </main>
-    );
-};
+const ProfileResetPasswordPage: FC = () => (
+    <main className={styles.main}>
+        <div className={styles.title}>
+            <h2>Изменение пароля</h2>
+        </div>
+        <div className={styles.form}>
+            <ProfileResetPasswordForm />
+        </div>
+    </main>
+);
 
 export default ProfileResetPasswordPage;

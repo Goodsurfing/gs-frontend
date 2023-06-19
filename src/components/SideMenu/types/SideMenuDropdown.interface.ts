@@ -1,4 +1,4 @@
-import { DropdownItem, Theme } from "./SideMenu.interface";
+import { DropdownItem, Theme } from './SideMenu.interface';
 
 export interface ISideMenuDropdown {
     pathname: string;

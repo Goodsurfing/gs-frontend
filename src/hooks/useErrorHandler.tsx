@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export function useErrorHandler<T = unknown>() {
-    const [error, setError] = useState<T | null>(null);
+  const [error, setError] = useState<T | null>(null);
 
-    function handleError(error: T) {
-        setError(error);
-    }
+  function handleError(error: T) {
+    setError(error);
+  }
 
-    function resetError() {
-        setError(null);
-    }
+  function resetError() {
+    setError(null);
+  }
 
-    return [error, handleError, resetError] as const;
+  return [error, handleError, resetError] as const;
 }

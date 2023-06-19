@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import styles from "./Slide.module.scss";
+import styles from './Slide.module.scss';
 
 interface SlideProps {
     title: string;
@@ -8,18 +8,16 @@ interface SlideProps {
     image: string;
 }
 
-const Slide: FC<SlideProps> = ({ text, title, image }) => {
-    return (
-        <div
-            className={styles.slide}
-            style={{ backgroundImage: `url(${image})` }}
-        >
-            <div className={styles.content}>
-                <h1>{title}</h1>
-                <p>{text}</p>
-            </div>
+const Slide: FC<SlideProps> = ({ text, title, image }) => (
+    <div
+        className={styles.slide}
+        style={{ backgroundImage: `url(${image})` }}
+    >
+        <div className={styles.content}>
+            <h1>{title}</h1>
+            <p>{text}</p>
         </div>
-    );
-};
+    </div>
+);
 
 export default Slide;

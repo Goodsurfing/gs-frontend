@@ -1,15 +1,12 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import HostMainInfoForm from "./HostMainInfoForm/HostMainInfoForm";
-import styles from "./HostMainInfoPage.module.scss";
+import HostMainInfoForm from './HostMainInfoForm/HostMainInfoForm';
+import styles from './HostMainInfoPage.module.scss';
 
-const HostMainInfoPage: FC = () => {
-
-    return (
-        <div className={styles.wrapper}>
-            <HostMainInfoForm />
-        </div>
-    );
-};
+const HostMainInfoPage: FC = () => (
+    <div className={styles.wrapper}>
+        <HostMainInfoForm />
+    </div>
+);
 
 export default HostMainInfoPage;

@@ -1,4 +1,4 @@
-import { Theme } from "./SideMenu.interface";
+import { Theme } from './SideMenu.interface';
 
 export interface ISideMenuLink {
     pathname: string;

@@ -1,13 +1,7 @@
 {
-    "extends": [
-        "stylelint-config-standard-scss",
-        "stylelint-order-config-standard"
-    ],
-    "plugins": ["stylelint-order"],
-    "rules": {
-        "indentation": "tab",
-        "color-hex-case": "upper",
-        "selector-class-pattern": null,
-        "no-descending-specificity": null
-    }
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "indentation": [4],
+    "selector-class-pattern": null
+  }
 }

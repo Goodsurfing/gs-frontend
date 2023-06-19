@@ -1,15 +1,15 @@
-import React, { FC } from "react";
-import { Control, Controller } from "react-hook-form";
+import React, { FC } from 'react';
+import { Control, Controller } from 'react-hook-form';
 
-import SelectField from "@/components/SelectField/SelectField";
+import SelectField from 'components/SelectField/SelectField';
 
-import ProfileInfoFormGroup from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup";
+import ProfileInfoFormGroup from 'pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoFormGroup/ProfileInfoFormGroup';
 
-import { IOption } from "@/types/select";
+import { IOption } from 'types/select';
 
-import { IGenderFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
-import { genderOptions } from "./GenderFormGroup.data";
-import styles from "./GenderFormGroup.module.scss";
+import { IGenderFormGroup, IUserInfoForm } from '../ProfileInfoForm.interface';
+import { genderOptions } from './GenderFormGroup.data';
+import styles from './GenderFormGroup.module.scss';
 
 interface GenderFormGroupProps {
     control: Control<IUserInfoForm>;
@@ -18,36 +18,30 @@ interface GenderFormGroupProps {
 }
 
 const GenderFormGroup: FC<GenderFormGroupProps> = ({
-    data,
-    control,
-    isLocked,
-}) => {
-    return (
-        <ProfileInfoFormGroup className={styles.gender}>
-            <Controller
-                control={control}
-                name="gender"
-                defaultValue={data.gender}
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            label="Пол"
-                            placeholder="Укажите ваш пол"
-                            name={name}
-                            options={genderOptions}
-                            value={genderOptions.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-        </ProfileInfoFormGroup>
-    );
-};
+  data,
+  control,
+  isLocked,
+}) => (
+    <ProfileInfoFormGroup className={styles.gender}>
+        <Controller
+            control={control}
+            name="gender"
+            defaultValue={data.gender}
+            render={({ field: { onChange, value, name } }) => (
+                <SelectField
+                    label="Пол"
+                    placeholder="Укажите ваш пол"
+                    name={name}
+                    options={genderOptions}
+                    value={genderOptions.find((item) => item.value === value)}
+                    onChange={(selectedOption) => {
+                      onChange((selectedOption as IOption).value);
+                    }}
+                    isDisabled={isLocked}
+                />
+            )}
+        />
+    </ProfileInfoFormGroup>
+);
 
 export default GenderFormGroup;

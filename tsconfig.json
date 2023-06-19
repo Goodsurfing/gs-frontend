@@ -1,31 +1,25 @@
 {
     "compilerOptions": {
+        "outDir": "./dist",
         "target": "es5",
         "module": "commonjs",
+        "moduleResolution": "node",
         "allowJs": true,
         "jsx": "react-jsx",
         "sourceMap": true,
-        "outDir": "./dist",
+        "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"],
-            "@utils": ["./src/utils/*"],
-            "@components": ["./src/components/*"],
-            "@pages": ["./src/pages/*"],
-            "@store": ["./src/store/*"],
-            "@types": ["./src/types/*"],
-            "@assets": ["./src/assets/*"],
-            "@constants": ["./src/constants/*"]
+            "*": ["./src/*"],
         },
         "removeComments": true,
-        "noEmit": true,
-        "strict": true,
         "noImplicitAny": true,
-        "strictNullChecks": true,
-        "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
+        "strictNullChecks": true,
         "esModuleInterop": true,
+        "plugins": [{ "name": "typescript-plugin-css-modules" }],
         "skipLibCheck": true,
         "resolveJsonModule": true
     },
+    "include": ["./src/**/*"],
     "exclude": ["node_modules", "build"]
 }

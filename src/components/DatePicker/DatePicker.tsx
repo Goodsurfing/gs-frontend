@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { FC } from 'react';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import { IDateOfBirthFormGroup } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
+import { IDateOfBirthFormGroup } from 'pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface';
 
 interface DatePickerProps {
     value: Date | null;
@@ -14,24 +14,22 @@ interface DatePickerProps {
 }
 
 const DatePicker: FC<DatePickerProps> = ({
-    value=new Date,
-    onChange,
-    className,
-    CustomInputElement,
-    isLocked,
-    data,
-}) => {
-    return (
-        <ReactDatePicker
-            disabled={isLocked}
-            selected={value || data.birthDate}
-            onChange={(date) => onChange(date)}
-            customInput={CustomInputElement}
-            dateFormat="dd.MM.yyyy"
-            className={className}
-            showYearDropdown
-        />
-    );
-};
+  value = new Date(),
+  onChange,
+  className,
+  CustomInputElement,
+  isLocked,
+  data,
+}) => (
+    <ReactDatePicker
+        disabled={isLocked}
+        selected={value || data.birthDate}
+        onChange={(date) => onChange(date)}
+        customInput={CustomInputElement}
+        dateFormat="dd.MM.yyyy"
+        className={className}
+        showYearDropdown
+    />
+);
 
 export default DatePicker;

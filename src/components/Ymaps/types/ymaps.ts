@@ -1,5 +1,5 @@
-import { LocationType } from "@/constants/ymaps";
-import { YMapsApi } from "react-yandex-maps";
+import { YMapsApi } from 'react-yandex-maps';
+import { LocationType } from 'constants/ymaps';
 
 export type YMapType = YMapsApi | null;
 

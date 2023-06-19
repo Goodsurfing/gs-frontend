@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import styles from "./BenefitItem.module.scss";
+import styles from './BenefitItem.module.scss';
 
 interface BenefitItemProps {
     title: string;
@@ -8,14 +8,12 @@ interface BenefitItemProps {
     image: string;
 }
 
-const BenefitItem: FC<BenefitItemProps> = ({ title, text, image }) => {
-    return (
-        <div className={styles.item}>
-            <img src={image} alt={title} />
-            <h3>{title}</h3>
-            <p>{text}</p>
-        </div>
-    );
-};
+const BenefitItem: FC<BenefitItemProps> = ({ title, text, image }) => (
+    <div className={styles.item}>
+        <img src={image} alt={title} />
+        <h3>{title}</h3>
+        <p>{text}</p>
+    </div>
+);
 
 export default BenefitItem;

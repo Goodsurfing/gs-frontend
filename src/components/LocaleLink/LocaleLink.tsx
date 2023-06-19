@@ -1,6 +1,6 @@
-import i18n from "i18next";
-import React, { FC, PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
+import i18n from 'i18next';
+import React, { FC, PropsWithChildren } from 'react';
+import { Link } from 'react-router-dom';
 
 interface LocaleLinkProps {
     to: string;
@@ -8,26 +8,26 @@ interface LocaleLinkProps {
 }
 
 const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
-    to,
-    className,
-    children,
+  to,
+  className,
+  children,
 }) => {
-    const adaptiveLink = (link: string) => {
-        if (link === "/") {
-            return "";
-        }
+  const adaptiveLink = (link: string) => {
+    if (link === '/') {
+      return '';
+    }
 
-        return link;
-    };
-    return (
-        <Link
-            className={className}
-            to={`/${i18n.language}/${adaptiveLink(to)}`}
-            replace
-        >
-            {children}
-        </Link>
-    );
+    return link;
+  };
+  return (
+      <Link
+          className={className}
+          to={`/${i18n.language}/${adaptiveLink(to)}`}
+          replace
+      >
+          {children}
+      </Link>
+  );
 };
 
 export default LocaleLink;

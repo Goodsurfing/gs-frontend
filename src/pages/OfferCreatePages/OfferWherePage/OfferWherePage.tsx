@@ -1,12 +1,11 @@
-import Button from '@/components/ui/Button/Button';
-import { Variant } from '@/components/ui/Button/Button.interface';
-import YMapWithAddress from '@/components/Ymaps/YMapWithAddress/YMapWithAddress';
-import React from 'react'
+import React from 'react';
+import Button from 'components/ui/Button/Button';
+import { Variant } from 'components/ui/Button/Button.interface';
+import YMapWithAddress from 'components/Ymaps/YMapWithAddress/YMapWithAddress';
 
 import styles from './OfferWherePage.module.scss';
 
-const OfferWherePage = () => {
-  return (
+const OfferWherePage = () => (
     <div className={styles.wrapper}>
         <div className={styles.ymaps}>
             {/* <YMapWithAddress /> */}
@@ -15,7 +14,6 @@ const OfferWherePage = () => {
             Сохранить
         </Button>
     </div>
-  )
-}
+);
 
-export default OfferWherePage
+export default OfferWherePage;

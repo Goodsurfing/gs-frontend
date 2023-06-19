@@ -1,17 +1,15 @@
-import cn from "classnames";
-import React, { FC, PropsWithChildren } from "react";
+import cn from 'classnames';
+import React, { FC, PropsWithChildren } from 'react';
 
-import styles from "./SignTitle.module.scss";
+import styles from './SignTitle.module.scss';
 
 interface SignTitleProps {
     className?: string;
 }
 
 const SignTitle: FC<PropsWithChildren<SignTitleProps>> = ({
-    className,
-    children,
-}) => {
-    return <h2 className={cn(styles.title, className)}>{children}</h2>;
-};
+  className,
+  children,
+}) => <h2 className={cn(styles.title, className)}>{children}</h2>;
 
 export default SignTitle;

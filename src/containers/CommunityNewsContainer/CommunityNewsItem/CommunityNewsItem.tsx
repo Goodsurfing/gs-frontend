@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import styles from "./CommunityNewsItem.module.scss";
+import styles from './CommunityNewsItem.module.scss';
 
 interface CommunityNewsItemProps {
     title: string;
@@ -9,17 +9,15 @@ interface CommunityNewsItemProps {
 }
 
 const CommunityNewsItem: FC<CommunityNewsItemProps> = ({
-    title,
-    date,
-    image,
-}) => {
-    return (
-        <div className={styles.wrapper}>
-            <img src={image} alt={title} className={styles.image} />
-            <p className={styles.date}>{date}</p>
-            <h3 className={styles.title}>{title}</h3>
-        </div>
-    );
-};
+  title,
+  date,
+  image,
+}) => (
+    <div className={styles.wrapper}>
+        <img src={image} alt={title} className={styles.image} />
+        <p className={styles.date}>{date}</p>
+        <h3 className={styles.title}>{title}</h3>
+    </div>
+);
 
 export default CommunityNewsItem;

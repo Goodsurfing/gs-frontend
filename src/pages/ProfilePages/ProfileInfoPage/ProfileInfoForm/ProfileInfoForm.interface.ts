@@ -29,14 +29,14 @@ export interface IUserInfo {
     organizations: [] | IUserOrganization[]
 }
 
-export interface IUserInfoForm extends Omit<IUserInfo, "birthDate"> {
+export interface IUserInfoForm extends Omit<IUserInfo, 'birthDate'> {
     birthDate: Date;
 }
 
 export interface IGeneralFormGroup
-    extends Pick<IUserInfoForm, "firstName" | "lastName"> {}
+    extends Pick<IUserInfoForm, 'firstName' | 'lastName'> {}
 export interface IDateOfBirthFormGroup
-    extends Pick<IUserInfoForm, "birthDate"> {}
-export interface IGenderFormGroup extends Pick<IUserInfoForm, "gender"> {}
-export interface ISoicalFormGroup extends Pick<IUserInfoForm, "vk" | "telegram" | "instagram" | "facebook"> {}
-export interface IContactsFormGroup extends Pick<IUserInfoForm, "email" | "phone"> {}
+    extends Pick<IUserInfoForm, 'birthDate'> {}
+export interface IGenderFormGroup extends Pick<IUserInfoForm, 'gender'> {}
+export interface ISoicalFormGroup extends Pick<IUserInfoForm, 'vk' | 'telegram' | 'instagram' | 'facebook'> {}
+export interface IContactsFormGroup extends Pick<IUserInfoForm, 'email' | 'phone'> {}

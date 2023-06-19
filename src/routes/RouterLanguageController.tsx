@@ -1,28 +1,28 @@
-import i18n from "i18next";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import i18n from 'i18next';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
+import { createUrlWithLanguageCode } from 'shared/utils/language/createUrlWithLanguageCode';
 
 export const RouterLanguageController = ({ children }: any) => {
-    const location = useLocation();
-    const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const [isReady, setIsReady] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
 
-    useEffect(() => {
-        navigate(
-            createUrlWithLanguageCode(
-                i18n.language,
-                `${location.pathname}${location.search}`
-            )
-        );
-        setIsReady(true);
-    }, [location.pathname, location.search, navigate]);
+  useEffect(() => {
+    navigate(
+      createUrlWithLanguageCode(
+        i18n.language,
+        `${location.pathname}${location.search}`,
+      ),
+    );
+    setIsReady(true);
+  }, [location.pathname, location.search, navigate]);
 
-    if (isReady) {
-        return children;
-    }
+  if (isReady) {
+    return children;
+  }
 
-    return null;
+  return null;
 };

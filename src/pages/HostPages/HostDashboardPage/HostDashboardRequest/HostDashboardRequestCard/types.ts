@@ -5,9 +5,9 @@ export interface IRequestUser {
 }
 
 export enum RequestNotification {
-  NEW = "новая",
-  COMPLETED = "принята",
-  REJECTED = "отклонена",
+  NEW = 'новая',
+  COMPLETED = 'принята',
+  REJECTED = 'отклонена',
 }
 
 export interface IHostDashboardRequestCard {

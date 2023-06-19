@@ -1,4 +1,4 @@
-import { SideMenuParams, Theme } from "./SideMenu.interface";
+import { SideMenuParams, Theme } from './SideMenu.interface';
 
 export interface ISideMenuNavbar {
     pathname: string;

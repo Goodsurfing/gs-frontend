@@ -1,26 +1,24 @@
-import i18n from "i18next";
-import React, { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import i18n from 'i18next';
+import React, { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from 'hooks/redux';
 
 interface PrivateRouteProps {
     Component: FC;
 }
 
 const PrivateRoute: FC<PrivateRouteProps> = ({ Component }) => {
-    const navigate = useNavigate();
-    const { token } = useAppSelector((state) => {
-        return state.login;
-    });
+  const navigate = useNavigate();
+  const { token } = useAppSelector((state) => state.login);
 
-    useEffect(() => {
-        if (!token) {
-            return navigate(`/${i18n.language}`, { replace: true });
-        }
-    }, [token, navigate]);
+  useEffect(() => {
+    if (!token) {
+      return navigate(`/${i18n.language}`, { replace: true });
+    }
+  }, [token, navigate]);
 
-    return <Component />;
+  return <Component />;
 };
 
 export default PrivateRoute;

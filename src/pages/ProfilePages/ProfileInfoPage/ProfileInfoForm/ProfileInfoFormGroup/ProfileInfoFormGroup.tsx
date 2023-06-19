@@ -1,7 +1,7 @@
-import cn from "classnames";
-import React, { FC, PropsWithChildren } from "react";
+import cn from 'classnames';
+import React, { FC, PropsWithChildren } from 'react';
 
-import styles from "./ProfileInfoFormGroup.module.scss";
+import styles from './ProfileInfoFormGroup.module.scss';
 
 interface ProfileInfoFormGroupProps {
     className: string;
@@ -9,12 +9,10 @@ interface ProfileInfoFormGroupProps {
 
 const ProfileInfoFormGroup: FC<
     PropsWithChildren<ProfileInfoFormGroupProps>
-> = ({ className, children }) => {
-    return (
-        <div className={styles.wrapper}>
-            <div className={cn(styles.content, className)}>{children}</div>
-        </div>
-    );
-};
+> = ({ className, children }) => (
+    <div className={styles.wrapper}>
+        <div className={cn(styles.content, className)}>{children}</div>
+    </div>
+);
 
 export default ProfileInfoFormGroup;
