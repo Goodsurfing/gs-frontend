@@ -8,6 +8,8 @@ import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 
 import { HostGalleryPage } from "@/pages/HostGalleryPage"; 
 
+import { HostVideoPage } from "@/pages/HostVideoPage";
+
 const OfferCreatePages = lazy(
     () => import("@/pages/OfferCreatePages/OfferCreatePages")
 );
@@ -79,6 +81,10 @@ export const AppRoutes = () => {
                 <Route
                     path="/:ln/organization/gallery"
                     element={<HostGalleryPage />}
+                />
+                <Route
+                    path="/:ln/organization/video"
+                    element={<HostVideoPage />}
                 />
                 {/* Offers pages */}
                 <Route
