@@ -1,5 +1,5 @@
-import { API_USER_BASE_URL } from "@/constants/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_USER_BASE_URL } from "@/constants/api";
 import { IUserInfo } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
 import { RootState } from "@/store/store";
 

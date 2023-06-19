@@ -12,7 +12,7 @@ export const loginSlice = createSlice({
     reducers: {
         setLoginUserData: (
             state: ILoginResponse,
-            action: PayloadAction<ILoginResponse>
+            action: PayloadAction<ILoginResponse>,
         ) => {
             return {
                 token: action.payload.token,

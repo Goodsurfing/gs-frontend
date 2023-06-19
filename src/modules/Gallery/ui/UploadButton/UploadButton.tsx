@@ -11,7 +11,7 @@ import styles from "./UploadButton.module.scss";
 
 interface UploadButtonProps {
     id: string;
-    onUpload?: (img: string) => void;
+    onUpload?: (img: File) => void;
 }
 
 const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
@@ -21,9 +21,10 @@ const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
+            // console.log(file);
             const url = URL.createObjectURL(file);
             setImg(url);
-            onUpload?.(url);
+            onUpload?.(file);
         }
     }, [onUpload]);
 

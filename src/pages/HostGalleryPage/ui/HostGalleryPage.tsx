@@ -9,9 +9,10 @@ import { HostPageLayout } from "@/widgets/HostPageLayout";
 import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
 
-import { UploadMultipleImages } from "@/components/UploadMultipleImages";
+import { UploadMultipleImages } from "@/modules/Gallery";
 
 const HostGalleryPage: FC = () => {
+
     return (
         <HostPageLayout>
             <HostGalleryTitle />

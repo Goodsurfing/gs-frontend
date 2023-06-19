@@ -1,5 +1,5 @@
-import { API_ORGANIZATIONS_BASE_URL} from "@/constants/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_ORGANIZATIONS_BASE_URL } from "@/constants/api";
 import { RootState } from "@/store/store";
 import { IGetOrganizationInfo } from "@/types/api/organization/organizationInfo.interface";
 
@@ -19,18 +19,17 @@ export const userOrganizationInfoApi = createApi({
     }),
     tagTypes: ["userOrganizationInfo"],
     endpoints: (build) => {
-        return {       
+        return {
             getUserOrganizationInfo: build.query<IGetOrganizationInfo, string>({
                 query: (id) => {
-                console.log(id)
+                    console.log(id);
                     return {
                         url: `/organization/${id}`,
                         method: "GET",
-                    }
+                    };
                 },
-                providesTags: ["userOrganizationInfo"]
+                providesTags: ["userOrganizationInfo"],
             }),
         };
     },
 });
-

@@ -33,6 +33,8 @@
         ],
         "@typescript-eslint/quotes": ["error", "double"],
         "semi": "error",
+        "no-param-reassign": 0,
+        "linebreak-style": ["warn", "unix"],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/semi": ["error"],

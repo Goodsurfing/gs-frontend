@@ -1,9 +1,9 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/UI/Button/Button";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
 import { HintType } from "@/components/HintPopup/HintPopup.interface";
@@ -41,7 +41,7 @@ const SignUpForm: FC = () => {
                     dispatch(setRegisterUserData(response));
                     navigate(
                         `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
-                        { replace: true }
+                        { replace: true },
                     );
                 })
                 .catch((err) => {
@@ -52,7 +52,7 @@ const SignUpForm: FC = () => {
                     });
                 });
         } catch (e) {
-            console.log();
+            console.log(e);
         }
         reset();
     };
