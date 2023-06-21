@@ -9,9 +9,10 @@ import styles from "./PageLayout.module.scss";
 interface PageLayoutProps {
     children: ReactNode;
     sidebarContent: SideMenuParams[];
+    wrapperClassName?: string;
 }
 
-export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent }) => {
+export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent, wrapperClassName }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     return (
         <div className={styles.layout}>
@@ -27,7 +28,7 @@ export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent }) =>
                     [styles.opened]: isOpen,
                 })}
             >
-                <div className={styles.innerWrapper}>
+                <div className={cn(styles.innerWrapper, wrapperClassName)}>
                     {children}
                 </div>
             </div>

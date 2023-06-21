@@ -1,12 +1,12 @@
-import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "@/hoc/PrivateRoute/PrivateRoute";
 
 import Preloader from "@/components/Preloader/Preloader";
 
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 
-import { HostGalleryPage } from "@/pages/HostGalleryPage"; 
+import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
 
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
@@ -14,28 +14,28 @@ import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
 
 const OfferCreatePages = lazy(
-    () => import("@/pages/OfferCreatePages/OfferCreatePages")
+    () => { return import("@/pages/OfferCreatePages/OfferCreatePages"); },
 );
 
 const ConfirmEmailPage = lazy(
-    () => import("@/pages/ConfirmEmailPage/ConfirmEmailPage")
+    () => { return import("@/pages/ConfirmEmailPage/ConfirmEmailPage"); },
 );
 const ConfirmEmailSuccessPage = lazy(
-    () => import("@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage")
+    () => { return import("@/pages/ConfirmEmailSuccessPage/ConfirmEmailSuccessPage"); },
 );
-const HostPage = lazy(() => import("@/pages/HostPages/HostPages"));
-const MainPage = lazy(() => import("@/pages/MainPage/MainPage"));
+const HostPage = lazy(() => { return import("@/pages/HostPages/HostPages"); });
+const MainPage = lazy(() => { return import("@/pages/MainPage/MainPage"); });
 const ProfilePage = lazy(
-    () => import("@/pages/ProfilePages/ProfilePage/ProfilePage")
+    () => { return import("@/pages/ProfilePage/ProfilePage"); },
 );
 const ResetPasswordPage = lazy(
-    () => import("@/pages/ResetPasswordPage/ResetPasswordPage")
+    () => { return import("@/pages/ResetPasswordPage/ResetPasswordPage"); },
 );
 const ResetPasswordVerifyPage = lazy(
-    () => import("@/pages/ResetPasswordVerifyPage/ResetPasswordVerifyPage")
+    () => { return import("@/pages/ResetPasswordVerifyPage/ui/ResetPasswordVerifyPage"); },
 );
-const SignInPage = lazy(() => import("@/pages/SignInPage/SignInPage"));
-const SignUpPage = lazy(() => import("@/pages/SignUpPage/SignUpPage"));
+const SignInPage = lazy(() => { return import("@/pages/SignInPage/SignInPage"); });
+const SignUpPage = lazy(() => { return import("@/pages/SignUpPage/SignUpPage"); });
 
 export const AppRoutes = () => {
     return (
