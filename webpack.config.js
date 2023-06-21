@@ -24,6 +24,7 @@ module.exports = {
             "@store": path.resolve(__dirname, "src/store"),
             "@types": path.resolve(__dirname, "src/types"),
             "@assets": path.resolve(__dirname, "src/assets"),
+            "@shared": path.resolve(__dirname, "src/shared"),
             "@constants": path.resolve(__dirname, "src/constants"),
         },
     },

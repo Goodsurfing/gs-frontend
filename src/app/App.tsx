@@ -1,19 +1,16 @@
-import { AppRoutes } from "@/routes";
 import React, { FC } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { AppRouter } from "@/routes/AppRouter/AppRouter";
 
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 
-import { RouterLanguageController } from "@/routes/RouterLanguageController";
+import { RouterLanguageController } from "@/routes/RouterLanguageController/RouterLanguageController";
 
 const App: FC = () => {
     return (
-        <BrowserRouter>
-            <RouterLanguageController>
-                <ScrollToTop />
-                    <AppRoutes />
-            </RouterLanguageController>
-        </BrowserRouter>
+        <RouterLanguageController>
+            <ScrollToTop />
+            <AppRouter />
+        </RouterLanguageController>
     );
 };
 
