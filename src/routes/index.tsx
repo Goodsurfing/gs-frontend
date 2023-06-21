@@ -7,8 +7,11 @@ import Preloader from "@/components/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 
 import { HostGalleryPage } from "@/pages/HostGalleryPage"; 
-
 import { HostVideoPage } from "@/pages/HostVideoPage";
+
+import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
+import { HostDashboardPage } from "@/pages/HostDashboardPage";
+import { HostOffersPage } from "@/pages/HostOffersPage";
 
 const OfferCreatePages = lazy(
     () => import("@/pages/OfferCreatePages/OfferCreatePages")

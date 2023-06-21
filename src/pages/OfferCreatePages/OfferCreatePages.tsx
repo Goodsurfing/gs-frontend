@@ -17,7 +17,7 @@ import OfferWelcome from "./OfferWelcome/OfferWelcome";
 import OfferWhenPage from "./OfferWhen/OfferWhenPage";
 import OfferWherePage from "./OfferWhere/OfferWherePage";
 import OfferWhoNeedsPage from "./OfferWhoNeeds/OfferWhoNeedsPage";
-import OfferDescriptionPage from "./OfferDescriptionPage/OfferDescriptionPage";
+import OfferDescriptionPage from "../OfferDescriptionPage/OfferDescriptionPage";
 
 import styles from "./OfferCreatePages.module.scss";
 

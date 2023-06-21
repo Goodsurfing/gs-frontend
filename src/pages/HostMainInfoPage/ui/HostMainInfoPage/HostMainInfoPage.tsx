@@ -1,19 +1,18 @@
 import React, { FC } from "react";
 
+import HostMainInfoForm from "../HostMainInfoForm/HostMainInfoForm";
+import styles from "./HostMainInfoPage.module.scss";
 import { PageLayout } from "@/widgets/PageLayout";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
-import { VideoForm } from "@/modules/VideoForm";
 
-import styles from "./HostVideoPage.module.scss";
-
-const HostVideoPage: FC = () => {
+const HostMainInfoPage: FC = () => {
     return (
         <PageLayout sidebarContent={HostPagesSidebarData}>
             <div className={styles.wrapper}>
-                <VideoForm />
+                <HostMainInfoForm />
             </div>
         </PageLayout>
     );
 };
 
-export default HostVideoPage;
+export default HostMainInfoPage;

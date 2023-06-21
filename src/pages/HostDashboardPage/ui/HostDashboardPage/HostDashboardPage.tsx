@@ -5,11 +5,12 @@ import HostDashboardRequest from "../HostDashboardRequest/HostDashboardRequest";
 import HostProfileFill from "../HostProfileFill/HostProfileFill";
 import HostDashboardCalendar from "../HostDashboardCalendar/HostDashboardCalendar";
 import HostDashboardNotifications from "../HostDashboardNotifications/HostDashboardNotifications";
-import { HostPageLayout } from "@/widgets/HostPageLayout";
+import { PageLayout } from "@/widgets/PageLayout";
+import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
 const HostDashboardPage: FC = () => {
     return (
-        <HostPageLayout>
+        <PageLayout sidebarContent={HostPagesSidebarData}>
             <div className={styles.dashboard}>
                 <HostProfileFill />
                 <div className={styles.columns}>
@@ -18,7 +19,7 @@ const HostDashboardPage: FC = () => {
                     <HostDashboardNotifications />
                 </div>
             </div>
-        </HostPageLayout>
+        </PageLayout>
     );
 };
 
