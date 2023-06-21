@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React from "react";
 
 import styles from "./Input.module.scss";
 
@@ -28,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         description,
         children,
         ...restInputProps
-    }, inputRef ) => {
+    }, inputRef) => {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <div className={styles.labelWrapper}>
@@ -61,7 +61,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 {children}
             </div>
         );
-    }
+    },
 );
 
 export default Input;

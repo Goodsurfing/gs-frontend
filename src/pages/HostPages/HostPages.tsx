@@ -8,7 +8,7 @@ import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 
 import { isMatchUrlEndpoint } from "@/utils/url/isMatchUrlEndpoint";
 
-import HostDashboardPage from "./HostDashboardPage/HostDashboardPage";
+import HostDashboardPage from "../HostDashboardPage/ui/HostDashboardPage/HostDashboardPage";
 import HostMainInfoPage from "./HostMainInfoPage/HostMainInfoPage";
 import HostOffersPage from "./HostOffersPage/HostOffersPage";
 import { HostPagesSidebarData } from "./HostPages.data";

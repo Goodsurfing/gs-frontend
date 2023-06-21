@@ -1,20 +1,19 @@
+import React, { FC } from "react";
 import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
-import React, { FC } from "react";
 
 import { DashboardRequestData } from "./HostDashboardRequest.data";
 import styles from "./HostDashboardRequest.module.scss";
 import HostDashboardRequestCard from "./HostDashboardRequestCard/HostDashboardRequestCard";
 
-interface IHostDashboardRequest {}
-
-const HostDashboardRequest: FC<IHostDashboardRequest> = () => {
+const HostDashboardRequest: FC = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.titleWrapper}>
                 <h3 className={styles.title}>Заявки</h3>
                 <p className={styles.requests}>
-                    Новых заявок:{" "}
+                    Новых заявок:
+                    {" "}
                     <span className={styles.requestsCount}>
                         {DashboardRequestData.length}
                     </span>

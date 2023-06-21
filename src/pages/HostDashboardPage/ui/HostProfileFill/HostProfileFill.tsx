@@ -7,7 +7,7 @@ import DashboardDoughnut from "@/components/DashboardDoughnut/DashboardDoughnut"
 
 import { ProfileFillItems } from "./HostProfileFill.data";
 import styles from "./HostProfileFill.module.scss";
-import HostProfileFillPoint from "./HostProfileFillPoint/HostProfileFillPoint";
+import HostProfileFillPoint from "../../../HostDashboardPage/ui/HostProfileFill/HostProfileFillPoint/HostProfileFillPoint";
 
 const HostProfileFill: FC = () => {
     const [degrees, setDegrees] = useState<Array<number>>([360, 0]);

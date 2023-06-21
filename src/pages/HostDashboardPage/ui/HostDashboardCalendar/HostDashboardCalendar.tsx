@@ -1,7 +1,7 @@
+import React from "react";
 import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
 import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
-import React from "react";
 
 import styles from "./HostDashboardCalendar.module.scss";
 
@@ -12,7 +12,7 @@ const HostDashboardCalendar = () => {
                 <h3 className={styles.title}>Календарь</h3>
             </div>
             <div className={styles.calendarWrapper}>
-                <CalendarComponent onChange={() => {}} value={new Date} />
+                <CalendarComponent onChange={() => {}} value={new Date()} />
                 <div className={styles.btnWrapper}>
                     <Button
                         className={styles.btn}

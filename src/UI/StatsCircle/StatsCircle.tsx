@@ -9,7 +9,7 @@ import React, { FC, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import styles from './StatsCircle.module.scss';
 
-import { ProfileFillItems } from "@/pages/HostPages/HostDashboardPage/HostProfileFill/HostProfileFill.data";
+import { ProfileFillItems } from "@/pages/HostDashboardPage/ui/HostProfileFill/HostProfileFill.data";
 
 import { IStatsCircle } from "./StatsCircle.types";
 import { createDoughnutData } from "@/utils/chartJS";
