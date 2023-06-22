@@ -4,7 +4,7 @@ import styles from "./VideoInput.module.scss";
 import Input from "@/UI/Input/Input";
 import AddButton from "@/UI/AddButton/AddButton";
 
-export interface VideoInputProps {
+ export interface VideoInputProps {
     inputValue: string;
     onInputChange: (value: string) => void;
 }

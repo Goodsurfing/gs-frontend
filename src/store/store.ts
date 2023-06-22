@@ -10,13 +10,11 @@ import { organizationApi } from "./api/organizationApi";
 import toastReducer from "./reducers/toastSlice";
 import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import { galleryApi, galleryReducer } from "@/modules/Gallery";
-import { userReducer } from "@/entities/User";
 
 const rootReducer = combineReducers({
     register: registerReducer,
     login: loginReducer,
     toast: toastReducer,
-    user: userReducer,
     gallery: galleryReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userInfoApi.reducerPath]: userInfoApi.reducer,

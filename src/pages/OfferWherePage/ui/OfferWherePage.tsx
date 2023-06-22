@@ -7,6 +7,7 @@ import { PageLayout } from "@/widgets/PageLayout";
 // import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 
 import styles from "./OfferWherePage.module.scss";
+import YMap from "@/components/YMap/YMap";
 
 export interface IOfferWherePageForm {
     address: string;
@@ -32,6 +33,7 @@ const OfferWherePage = () => {
                         data={{ address: "" }}
                         control={control}
                     /> */}
+                        <YMap />
                     </div>
                     <Button
                         rounded
