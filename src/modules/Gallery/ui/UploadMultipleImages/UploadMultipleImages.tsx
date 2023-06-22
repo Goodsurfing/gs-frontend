@@ -23,7 +23,10 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
 }) => {
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
 
-    const [generateLink, { data, isLoading, isSuccess }] = galleryApi.useGenerateLinkMutation();
+    const [generateLink,
+        {
+            data, isLoading, isSuccess, isError,
+        }] = galleryApi.useGenerateLinkMutation();
 
     const dispatch = useAppDispatch();
 
@@ -49,17 +52,22 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
     }, []);
 
     return (
-        <div className={cn(className, styles.wrapper)}>
-            {uploadedImg.map((img, index) => {
-                return (
-                    <UploadedImage
-                        onCloseClick={() => { return handleDeleteImg(index); }}
-                        key={img}
-                        img={img}
-                    />
-                );
-            })}
-            <UploadButton onUpload={handleUpdateImages} id={id} />
-        </div>
+        <>
+            <div className={cn(className, styles.wrapper)}>
+                <div className={styles.images}>
+                    {uploadedImg.map((img, index) => {
+                        return (
+                            <UploadedImage
+                                onCloseClick={() => { return handleDeleteImg(index); }}
+                                key={img}
+                                img={img}
+                            />
+                        );
+                    })}
+                    <UploadButton onUpload={handleUpdateImages} id={id} />
+                </div>
+            </div>
+            {isError && <p className={styles.error}>Произошла ошибка при загрузке изображения</p>}
+        </>
     );
 };

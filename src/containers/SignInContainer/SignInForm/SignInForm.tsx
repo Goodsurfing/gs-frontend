@@ -24,6 +24,7 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
+import { AppRoutes } from "@/routes/config/RouterConfig";
 
 const SignInForm: FC = () => {
     const [loginUser, { isError }] = authApi.useLoginUserMutation();
@@ -100,7 +101,7 @@ const SignInForm: FC = () => {
                 }}
             />
 
-            <Button type="submit" variant={Variant.SECONDARY}>
+            <Button type="submit" variant={Variant.PRIMARY}>
                 Войти
             </Button>
 
@@ -111,7 +112,7 @@ const SignInForm: FC = () => {
                     text="Запомнить меня"
                 />
                 <LocaleLink
-                    to={AppRoutesEnum.RESET_PASSWORD}
+                    to={AppRoutes.RESET_PASSWORD}
                     className={styles.forget}
                 >
                     Забыли пароль?

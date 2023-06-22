@@ -30,7 +30,7 @@ const InputField: FC<InputFieldProps> = ({
             <label
                 htmlFor="main"
                 className={cn({
-                    [styles.empty]: !!value || !!defaultValue,
+                    [styles.empty]: value || defaultValue,
                 })}
             >
                 {text}

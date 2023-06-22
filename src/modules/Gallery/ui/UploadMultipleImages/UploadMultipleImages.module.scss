@@ -1,4 +1,12 @@
 .wrapper {
     display: flex;
+}
+
+.images {
+    display: flex;
     gap: 14px;
+}
+
+.error {
+    color: var(--color-error);
 }

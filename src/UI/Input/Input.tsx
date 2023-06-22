@@ -47,8 +47,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     ref={inputRef}
                     id={id}
                     required={required}
-                    value={value}
-                    defaultValue={defaultValue}
+                    value={value || ""}
+                    defaultValue={defaultValue || ""}
                     onChange={onChange}
                     className={styles.input}
                     type={type}
@@ -56,7 +56,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     {...restInputProps}
                 />
                 {description && (
-                    <label className={styles.description}>{description}</label>
+                    <label htmlFor={id} className={styles.description}>{description}</label>
                 )}
                 {children}
             </div>

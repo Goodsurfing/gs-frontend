@@ -1,6 +1,6 @@
-import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import SignTitle from "@/UI/SignTitle/SignTitle";
 
 import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
@@ -13,8 +13,9 @@ const SignUpContainer: FC = () => {
             <SignTitle>Регистрация пользователя</SignTitle>
             <SignUpForm />
             <div className={styles.confirm}>
-                Нажимая кнопку «Зарегистрироваться», я принимаю{" "}
-                <Link to="/">Политику конфеденциальности ГудСёрфинга</Link>.
+                Нажимая кнопку «Зарегистрироваться», я принимаю
+                <Link to="/">Политику конфеденциальности ГудСёрфинга</Link>
+                .
             </div>
             <div className={styles.socials}>
                 <SocialAuthContainer />

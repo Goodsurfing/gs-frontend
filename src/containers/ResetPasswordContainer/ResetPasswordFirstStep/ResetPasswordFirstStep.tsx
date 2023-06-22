@@ -1,7 +1,7 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Button from "@/UI/Button/Button";
+import { Variant } from "@/UI/Button/Button.interface";
 
 import InputField from "@/components/InputField/InputField";
 
@@ -18,15 +18,14 @@ interface ResetPasswordFirstStepProps {
 const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
     changeStep,
 }) => {
-    const { control, reset, handleSubmit } =
-        useForm<IResetPasswordRequestFormData>({
-            mode: "onChange",
-        });
+    const { control, reset, handleSubmit } = useForm<IResetPasswordRequestFormData>({
+        mode: "onChange",
+    });
 
     const [resetPasswordRequest] = authApi.useResetPasswordRequestMutation();
 
     const onSubmit: SubmitHandler<IResetPasswordRequestFormData> = async (
-        data
+        data,
     ) => {
         await resetPasswordRequest(data)
             .unwrap()

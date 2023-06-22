@@ -7,7 +7,6 @@ export interface RequireAuthProps {
 }
 
 export const RequireAuth: FC<RequireAuthProps> = ({ children }) => {
-  
     const location = useLocation();
     // if (!auth) {
     //     return <Navigate to={RoutePath.main} state={{ from: location }} replace />;

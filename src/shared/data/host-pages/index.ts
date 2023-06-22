@@ -28,7 +28,7 @@ export const HostPagesSidebarData: SideMenuParams[] = [
         icon: calendarIcon,
     },
     {
-        route: "organization",
+        route: "host",
         text: "Организация",
         icon: cityIcon,
         dropdownItems: [

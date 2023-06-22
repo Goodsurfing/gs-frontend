@@ -1,5 +1,5 @@
-import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
+import SignTitle from "@/UI/SignTitle/SignTitle";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
@@ -18,9 +18,8 @@ const SignInContainer: FC = () => {
             <div className={styles.socials}>
                 <SocialAuthContainer />
             </div>
-
             <div className={styles.redirect}>
-                Не зарегистрированы на Гудсерфинге?{" "}
+                Не зарегистрированы на Гудсерфинге?
                 <LocaleLink to={AppRoutesEnum.SIGNUP}>
                     Зарегистрироваться
                 </LocaleLink>

@@ -31,7 +31,7 @@ export type AppRoutesProps = RouteProps & {
 export enum AppRoutes {
     MAIN = "main",
     SIGN_UP = "sign_up",
-    SIGN_IN = "sing_in",
+    SIGN_IN = "sign_in",
     RESET_PASSWORD = "reset_password",
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
@@ -53,16 +53,16 @@ export enum AppRoutes {
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: "/:ln",
-    [AppRoutes.CONFIRM_EMAIL]: "/:ln/signup",
-    [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/:ln/singin",
+    [AppRoutes.CONFIRM_EMAIL]: "/:ln/confirm-email",
+    [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/:ln/confirm-email-success",
     [AppRoutes.RESET_PASSWORD]: "/:ln/reset-password",
     [AppRoutes.RESET_PASSWORD_VERIFY]: ":/ln/reset-password-verify",
     [AppRoutes.PROFILE_INFO]: "/:ln/profile/info",
     [AppRoutes.PROFILE_RESET_PASSWORD]: "/:ln/profile/reset-password",
     [AppRoutes.HOST]: "/:ln/host",
-    [AppRoutes.HOST_REGISTRATION]: "/:ln/offers/registration",
-    [AppRoutes.HOST_GALLERY]: "/:ln/gallery",
-    [AppRoutes.HOST_VIDEO]: "/:ln/video",
+    [AppRoutes.HOST_REGISTRATION]: "/:ln/host/registration",
+    [AppRoutes.HOST_GALLERY]: "/:ln/host/gallery",
+    [AppRoutes.HOST_VIDEO]: "/:ln/host/video",
     [AppRoutes.OFFERS]: "/:ln/offers",
     [AppRoutes.OFFERS_WELCOME]: "/:ln/offers-welcome",
     [AppRoutes.OFFERS_WHERE]: "/:ln/offers-where",
@@ -80,7 +80,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         element: <MainPage />,
     },
     [AppRoutes.SIGN_UP]: {
-        path: RoutePath.sing_in,
+        path: RoutePath.sign_in,
         element: <SignInPage />,
     },
     [AppRoutes.SIGN_IN]: {
@@ -106,6 +106,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.PROFILE_INFO]: {
         path: RoutePath.profile_info,
         element: <ProfileInfoPage />,
+        authOnly: true,
     },
     [AppRoutes.PROFILE_RESET_PASSWORD]: {
         path: RoutePath.reset_password,
@@ -114,42 +115,52 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.HOST]: {
         path: RoutePath.host,
         element: <HostDashboardPage />,
+        authOnly: true,
     },
     [AppRoutes.HOST_REGISTRATION]: {
         path: RoutePath.offers_registration,
         element: <HostMainInfoPage />,
+        authOnly: true,
     },
     [AppRoutes.HOST_GALLERY]: {
         path: RoutePath.host_gallery,
         element: <HostGalleryPage />,
+        authOnly: true,
     },
     [AppRoutes.HOST_VIDEO]: {
         path: RoutePath.host_video,
         element: <HostVideoPage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS]: {
         path: RoutePath.offers,
         element: <HostOffersPage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS_WELCOME]: {
         path: RoutePath.offers_welcome,
         element: <OfferWelcomePage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS_WHERE]: {
         path: RoutePath.offers_where,
         element: <OfferWherePage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS_WHEN]: {
         path: RoutePath.offers_when,
         element: <OfferWhenPage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS_WHO_NEEDS]: {
         path: RoutePath.offers_who_needs,
         element: <OfferWhoNeedsPage />,
+        authOnly: true,
     },
     [AppRoutes.OFFERS_DESCRIPTION]: {
         path: RoutePath.offers_description,
         element: <OfferDescriptionPage />,
+        authOnly: true,
     },
     [AppRoutes.NOT_FOUND]: {
         path: RoutePath.not_found,
