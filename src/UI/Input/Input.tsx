@@ -48,7 +48,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     id={id}
                     required={required}
                     value={value || ""}
-                    defaultValue={defaultValue || ""}
                     onChange={onChange}
                     className={styles.input}
                     type={type}
