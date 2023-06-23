@@ -8,6 +8,9 @@ import Button from "@/UI/Button/Button";
 import { Variant } from "@/UI/Button/Button.interface";
 import { YMap, YmapType, GeoObjectHintType } from "@/entities/Map";
 import useDebounce from "@/hooks/useDebounce";
+import { getGeocodeByName } from "../model/utils/getGeocodeByName";
+import {} from "../model/utils/getYmapCoordinates";
+import { findCoordinates } from "../model/utils/findCoordinates";
 
 interface MapWithAddressProps {}
 
@@ -18,6 +21,8 @@ export const MapWithAddress: FC<MapWithAddressProps> = () => {
     const [isHintsLoading, setHintsLoading] = useState(false);
 
     const [hints, setHints] = useState<Array<GeoObjectHintType>>([]);
+
+    const [coordinates, setCoordinates] = useState<[number, number]>([55, 47]);
 
     const [address, setAddress] = useState("");
 
@@ -30,7 +35,7 @@ export const MapWithAddress: FC<MapWithAddressProps> = () => {
     useEffect(() => {
         if (debouncedAddress && ymap) {
             setHintsLoading(true);
-            
+            findCoordinates(ymap, debouncedAddress).then((res) => { return setCoordinates(res); });
             setHintsLoading(false);
         } else {
             setHints([]);
@@ -40,8 +45,10 @@ export const MapWithAddress: FC<MapWithAddressProps> = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
-                <Input onChange={handleAddressUpdate} value={address} />
+                <Input placeholder="Начните вводить адрес" onChange={handleAddressUpdate} value={address} />
                 <YMap
+                    defaultState={{ center: coordinates, zoom: 9 }}
+                    className={styles.map}
                     query={{
                         ns: "use-load-option",
                         load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
@@ -50,9 +57,11 @@ export const MapWithAddress: FC<MapWithAddressProps> = () => {
                     setLoading={setLoading}
                 />
             </div>
-            <Button variant={Variant.PRIMARY}>
-                Сохранить
-            </Button>
+            <div>
+                <Button variant={Variant.PRIMARY}>
+                    Сохранить
+                </Button>
+            </div>
         </div>
     );
 };

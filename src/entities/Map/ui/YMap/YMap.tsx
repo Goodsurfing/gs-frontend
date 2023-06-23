@@ -58,8 +58,8 @@ export const YMap: FC<MapProps> = ({
                     setLoading?.(true);
                     setYmap?.(ymap);
                 }}
+                state={defaultState}
                 className={classNames(styles.map, className)}
-                defaultState={defaultState}
             >
                 {children}
             </Map>

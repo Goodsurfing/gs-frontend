@@ -7,7 +7,7 @@ export default async function validateCoordinates(
 ) {
     if (address?.length > minimumLength) {
         address = address.trim();
-        if (isNaN(+address[0])) {
+        if (Number.isNaN(+address[0])) {
             return address;
         }
         try {

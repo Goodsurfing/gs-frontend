@@ -5,7 +5,7 @@ export const getGeocodeByName = async (value: string) => {
         return;
     }
     const data = await fetch(makeGeoUrl(value))
-        .then((res) => res.json())
-        .then((data) => data.response.GeoObjectCollection.featureMember);
+        .then((res) => { return res.json(); })
+        .then((data) => { return data.response.GeoObjectCollection.featureMember; });
     return data;
 };
