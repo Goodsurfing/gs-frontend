@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Offer from "@/containers/OffersContainer/Offer/Offer";
 import { offersData } from "@/containers/OffersContainer/Offers.data";
 
-import arrowSliderIcon from "@/assets/icons/slider-arrow.svg";
+import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 
 import styles from "./OffersContainer.module.scss";
 
@@ -62,8 +62,8 @@ const OffersContainer: FC = () => {
                         },
                     }}
                 >
-                    {offersData &&
-                        offersData.map((item, index) => {
+                    {offersData
+                        && offersData.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
                                     <Offer {...item} />

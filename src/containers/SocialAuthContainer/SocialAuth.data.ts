@@ -1,6 +1,6 @@
-import fbIcon from "@/assets/icons/social-auth/fb-soc-icon.svg";
-import googleIcon from "@/assets/icons/social-auth/google-soc-icon.svg";
-import vkIcon from "@/assets/icons/social-auth/vk-cos-icon.svg";
+import fbIcon from "@/shared/assets/icons/social-auth/fb-soc-icon.svg";
+import googleIcon from "@/shared/assets/icons/social-auth/google-soc-icon.svg";
+import vkIcon from "@/shared/assets/icons/social-auth/vk-cos-icon.svg";
 
 export const socialAuthData = [
     {

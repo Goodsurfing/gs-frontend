@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 
 import cn from "classnames";
-import InputFile from "@/UI/InputFile/InputFile";
+import InputFile from "@/shared/ui/InputFile/InputFile";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
-import { checkWidthAndHeight } from "@/utils/files/checkWidthAndHeight";
+import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,

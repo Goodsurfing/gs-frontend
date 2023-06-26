@@ -3,9 +3,9 @@ import React, {
 } from "react";
 
 import styles from "./MapWithAddress.module.scss";
-import Input from "@/UI/Input/Input";
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Input from "@/shared/ui/Input/Input";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 import { YMap, YmapType, GeoObjectHintType } from "@/entities/Map";
 import useDebounce from "@/hooks/useDebounce";
 import { getGeocodeByName } from "../model/utils/getGeocodeByName";

@@ -1,10 +1,10 @@
-import Button from "@/UI/Button/Button";
 import cn from "classnames";
 import React, { FC } from "react";
 
-import supportImage from "@/assets/images/supportImage.jpg";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import supportImage from "@/shared/assets/images/supportImage.jpg";
 
-import { Variant } from "../../UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
 import { Theme } from "../SideMenu/types/SideMenu.interface";
 import styles from "./SupportWidget.module.scss";
 

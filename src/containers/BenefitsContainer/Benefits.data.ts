@@ -1,6 +1,6 @@
-import benefitImage1 from "@/assets/images/benefits/benefit1.png";
-import benefitImage2 from "@/assets/images/benefits/benefit2.png";
-import benefitImage3 from "@/assets/images/benefits/benefit3.png";
+import benefitImage1 from "@/shared/assets/images/benefits/benefit1.png";
+import benefitImage2 from "@/shared/assets/images/benefits/benefit2.png";
+import benefitImage3 from "@/shared/assets/images/benefits/benefit3.png";
 
 export const benefitsData = [
     {

@@ -1,6 +1,6 @@
-import Input from "@/UI/Input/Input";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
+import Input from "@/shared/ui/Input/Input";
 
 import { IGeneralFormGroup, IUserInfoForm } from "../ProfileInfoForm.interface";
 import styles from "./GeneralFormGroup.module.scss";
@@ -27,7 +27,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                         render={({ field }) => {
                             return (
                                 <Input
-                                    onChange={(e) => field.onChange(e)}
+                                    onChange={(e) => { return field.onChange(e); }}
                                     value={field.value}
                                     label="Имя"
                                     id="firstName"
@@ -44,7 +44,7 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
                         render={({ field }) => {
                             return (
                                 <Input
-                                    onChange={(e) => field.onChange(e)}
+                                    onChange={(e) => { return field.onChange(e); }}
                                     value={field.value}
                                     label="Фамилия"
                                     required

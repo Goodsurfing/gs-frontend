@@ -1,13 +1,13 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import DashboardDoughnut from "@/components/DashboardDoughnut/DashboardDoughnut";
 
 import { ProfileFillItems } from "./HostProfileFill.data";
 import styles from "./HostProfileFill.module.scss";
-import HostProfileFillPoint from "../../../HostDashboardPage/ui/HostProfileFill/HostProfileFillPoint/HostProfileFillPoint";
+import HostProfileFillPoint from "./HostProfileFillPoint/HostProfileFillPoint";
 
 const HostProfileFill: FC = () => {
     const [degrees, setDegrees] = useState<Array<number>>([360, 0]);
@@ -53,7 +53,10 @@ const HostProfileFill: FC = () => {
                         degrees={degrees}
                         setDegrees={setDegrees}
                     >
-                        <div className={styles.percents}>{degrees[0]}%</div>
+                        <div className={styles.percents}>
+                            {degrees[0]}
+                            %
+                        </div>
                     </DashboardDoughnut>
                 </div>
             </div>

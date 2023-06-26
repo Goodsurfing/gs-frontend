@@ -1,4 +1,4 @@
-import { API_TRANSLATION_BASE_URL } from "@/constants/api";
+import { API_TRANSLATION_BASE_URL } from "@/shared/constants/api";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 import { RootState } from "@/store/store";

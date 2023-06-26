@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import InputField from "@/components/InputField/InputField";
 

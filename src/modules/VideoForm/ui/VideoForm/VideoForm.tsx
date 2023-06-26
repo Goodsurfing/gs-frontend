@@ -2,8 +2,8 @@ import React from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import styles from "./VideoForm.module.scss";
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 import { Text } from "../Text/Text";
 import { VideoInput } from "../VideoInput/VideoInput";
 

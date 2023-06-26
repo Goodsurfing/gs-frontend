@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
-import Input from "@/UI/Input/Input";
-import Textarea from "@/UI/Textarea/Textarea";
+import Input from "@/shared/ui/Input/Input";
+import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import SelectField from "@/components/SelectField/SelectField";
 

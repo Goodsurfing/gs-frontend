@@ -1,12 +1,12 @@
-import Textarea from '@/UI/Textarea/Textarea';
-import React, { FC } from 'react';
+import React, { FC } from "react";
+import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { FullDescriptionProps } from './types';
+import { FullDescriptionProps } from "./types";
 
 const ShortDescription: FC<FullDescriptionProps> = () => {
-  return (
-    <Textarea label='Полное описание' description='Не более 3000 знаков' maxLength={3000} />
-  );
+    return (
+        <Textarea label="Полное описание" description="Не более 3000 знаков" maxLength={3000} />
+    );
 };
 
 export default ShortDescription;

@@ -1,6 +1,6 @@
-import Textarea from "@/UI/Textarea/Textarea";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
+import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { IUserInfoForm } from "../ProfileInfoForm.interface";
 

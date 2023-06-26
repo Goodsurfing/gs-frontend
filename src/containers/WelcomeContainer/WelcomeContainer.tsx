@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import InfoSide from "@/containers/WelcomeContainer/InfoSide/InfoSide";
 import SliderSide from "@/containers/WelcomeContainer/SliderSide/SliderSide";
 
-import LogotypeIcon from "@/assets/icons/logo.svg";
+import LogotypeIcon from "@/shared/assets/icons/logo.svg";
 
 import styles from "./WelcomeContainer.module.scss";
 

@@ -3,9 +3,9 @@ import React, {
     FC, useCallback, useState,
 } from "react";
 
-import plusIcon from "@/assets/icons/plus-icon.svg";
+import plusIcon from "@/shared/assets/icons/plus-icon.svg";
 
-import InputFile from "@/UI/InputFile/InputFile";
+import InputFile from "@/shared/ui/InputFile/InputFile";
 
 import styles from "./UploadButton.module.scss";
 

@@ -1,5 +1,5 @@
-import avatar from "@/assets/images/reviews/author.png";
-import reviewPhoto from "@/assets/images/reviews/review-photo-1.png";
+import avatar from "@/shared/assets/images/reviews/author.png";
+import reviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
 
 export const reviewsData = [
     {

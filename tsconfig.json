@@ -8,14 +8,14 @@
         "outDir": "./dist",
         "paths": {
             "@/*": ["./src/*"],
-            "@utils": ["./src/utils/*"],
+            "@utils": ["./src/shared/utils/*"],
             "@components": ["./src/components/*"],
             "@pages": ["./src/pages/*"],
             "@store": ["./src/store/*"],
             "@types": ["./src/types/*"],
-            "@assets": ["./src/assets/*"],
+            "@assets": ["./src/shared/assets/*"],
             "@shared": ["./src/shared"],
-            "@constants": ["./src/constants/*"]
+            "@constants": ["./src/shared/constants/*"]
         },
         "removeComments": true,
         "noEmit": true,

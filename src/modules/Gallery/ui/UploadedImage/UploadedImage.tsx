@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { FC, useCallback } from "react";
 
-import closeBtnImg from "@/assets/icons/delete.svg";
+import closeBtnImg from "@/shared/assets/icons/delete.svg";
 
 import styles from "./UploadedImage.module.scss";
 

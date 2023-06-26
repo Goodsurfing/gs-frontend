@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
-import Input from "@/UI/Input/Input";
+import Input from "@/shared/ui/Input/Input";
 
-import facebookLogo from "@/assets/icons/social-icons/facebook-mini-logo.svg";
-import instagramLogo from "@/assets/icons/social-icons/instagram-mini-logo.svg";
-import telegramLogo from "@/assets/icons/social-icons/telegram-mini-logo.svg";
-import vkLogo from "@/assets/icons/social-icons/vk-mini-logo.svg";
+import facebookLogo from "@/shared/assets/icons/social-icons/facebook-mini-logo.svg";
+import instagramLogo from "@/shared/assets/icons/social-icons/instagram-mini-logo.svg";
+import telegramLogo from "@/shared/assets/icons/social-icons/telegram-mini-logo.svg";
+import vkLogo from "@/shared/assets/icons/social-icons/vk-mini-logo.svg";
 
 import {
     IHostInfoForm,

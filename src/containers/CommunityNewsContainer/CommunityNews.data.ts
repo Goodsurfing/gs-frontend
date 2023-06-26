@@ -1,6 +1,6 @@
-import image1 from "@/assets/images/community-news/news-pic-1.png";
-import image2 from "@/assets/images/community-news/news-pic-2.png";
-import image3 from "@/assets/images/community-news/news-pic-3.png";
+import image1 from "@/shared/assets/images/community-news/news-pic-1.png";
+import image2 from "@/shared/assets/images/community-news/news-pic-2.png";
+import image3 from "@/shared/assets/images/community-news/news-pic-3.png";
 
 export const communityNewsData = [
     {

@@ -1,9 +1,9 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
 import HintPopup from "@/components/HintPopup/HintPopup";
@@ -15,7 +15,7 @@ import { useAppDispatch } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
-import tokenStorage from "@/utils/storage/TokenStorage";
+import tokenStorage from "@/shared/utils/storage/TokenStorage";
 
 import { authApi } from "@/store/api/authApi";
 import { setLoginUserData } from "@/store/reducers/loginSlice";

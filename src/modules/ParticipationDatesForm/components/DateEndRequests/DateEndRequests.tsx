@@ -1,6 +1,6 @@
-import Switch from "@/UI/Switch/Switch";
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React from "react";
+import Switch from "@/shared/ui/Switch/Switch";
 
 import DateInput from "../DateInput/DateInput";
 
@@ -29,7 +29,7 @@ const DateEndRequests = () => {
                     sx={{
                         ml: "60px",
                     }}
-                    label={
+                    label={(
                         <Typography
                             sx={{
                                 fontFamily: "Lato",
@@ -40,7 +40,7 @@ const DateEndRequests = () => {
                         >
                             Нет даты окончания
                         </Typography>
-                    }
+                    )}
                     control={<Switch />}
                 />
             </Box>

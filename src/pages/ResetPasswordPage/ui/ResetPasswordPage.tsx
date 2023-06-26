@@ -1,5 +1,5 @@
-import SignLayout from "@/UI/SignLayout/SignLayout";
 import React, { FC } from "react";
+import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import ResetPasswordContainer from "@/containers/ResetPasswordContainer/ResetPasswordContainer";
 

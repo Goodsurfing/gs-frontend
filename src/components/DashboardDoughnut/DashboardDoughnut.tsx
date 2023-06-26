@@ -1,9 +1,8 @@
 import { ChartData } from "chart.js";
 import Raect, { FC, useState } from "react";
 
+import StatsCircle from "@/shared/ui/StatsCircle/StatsCircle";
 import { ProfileFillItems } from "@/pages/HostDashboardPage/ui/HostProfileFill/HostProfileFill.data";
-
-import StatsCircle from "../../UI/StatsCircle/StatsCircle";
 
 interface IDashboardDoughnut {
     className?: string;
@@ -12,7 +11,9 @@ interface IDashboardDoughnut {
     setDegrees: (degrees: Array<number>) => void;
 }
 
-const DashboardDoughnut: FC<IDashboardDoughnut> = ({ className, degrees, setDegrees, text, children, ...restDoughnutProps }) => {
+const DashboardDoughnut: FC<IDashboardDoughnut> = ({
+    className, degrees, setDegrees, text, children, ...restDoughnutProps
+}) => {
     const chartData: ChartData<"doughnut", number[], string> = {
         labels: ["Завершено", "Не завершено"],
         datasets: [
@@ -28,13 +29,13 @@ const DashboardDoughnut: FC<IDashboardDoughnut> = ({ className, degrees, setDegr
         responsive: true,
         elements: {
             center: {
-                text: text || '',
-                color: 'green',
+                text: text || "",
+                color: "green",
                 sidePadding: 50,
                 minFontSize: 26,
                 lineHeight: 25,
-                ...restDoughnutProps
-            }
+                ...restDoughnutProps,
+            },
         },
         plugins: {
             legend: { display: false },
@@ -51,7 +52,7 @@ const DashboardDoughnut: FC<IDashboardDoughnut> = ({ className, degrees, setDegr
                 width="110px"
                 height="110px"
                 data={chartData}
-            />        
+            />
             {children}
         </div>
 

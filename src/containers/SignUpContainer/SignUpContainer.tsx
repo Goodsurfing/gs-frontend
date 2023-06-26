@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import SignTitle from "@/UI/SignTitle/SignTitle";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 

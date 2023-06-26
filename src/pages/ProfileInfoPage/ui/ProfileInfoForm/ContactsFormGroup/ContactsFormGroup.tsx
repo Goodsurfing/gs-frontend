@@ -1,6 +1,6 @@
-import Input from "@/UI/Input/Input";
 import React, { FC } from "react";
 import { Control, Controller } from "react-hook-form";
+import Input from "@/shared/ui/Input/Input";
 
 import {
     IContactsFormGroup,
@@ -53,7 +53,7 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
                             }}
                             value={field.value}
                             label="Телефон"
-                            name={"phone"}
+                            name="phone"
                             placeholder="+(x)-xxx-xxx-xx-xx"
                             type="phone"
                             disabled={isLocked}

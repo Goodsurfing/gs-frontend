@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import Input from "@/UI/Input/Input";
+import Input from "@/shared/ui/Input/Input";
 
 const EventName = () => {
-  return (
-      <Input label='Название мероприятия' />
-  )
-}
+    return (
+        <Input label="Название мероприятия" />
+    );
+};
 
-export default EventName
+export default EventName;

@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { communityNewsData } from "@/containers/CommunityNewsContainer/CommunityNews.data";
 import CommunityNewsItem from "@/containers/CommunityNewsContainer/CommunityNewsItem/CommunityNewsItem";
 
-import arrowSliderIcon from "@/assets/icons/slider-arrow.svg";
+import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 
 import styles from "./CommunityNewsContainer.module.scss";
 

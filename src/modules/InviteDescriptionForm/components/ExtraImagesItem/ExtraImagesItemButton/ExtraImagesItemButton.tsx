@@ -2,9 +2,9 @@ import React, { FC } from "react";
 
 import cn from "classnames";
 
-import closeIcon from "@assets/icons/offer-create/delete.svg";
+import closeIcon from "@/shared/assets/icons/offer-create/delete.svg";
 
-import ExtraCloseButton from "@/UI/ExtraCloseButton/ExtraCloseButton";
+import ExtraCloseButton from "@/shared/ui/ExtraCloseButton/ExtraCloseButton";
 
 import { ExtraImagesItemButtonProps } from "./types";
 

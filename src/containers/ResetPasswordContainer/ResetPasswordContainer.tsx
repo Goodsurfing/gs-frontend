@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import SignTitle from "@/UI/SignTitle/SignTitle";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import ResetPasswordFirstStep from "@/containers/ResetPasswordContainer/ResetPasswordFirstStep/ResetPasswordFirstStep";
 import ResetPasswordSecondStep from "@/containers/ResetPasswordContainer/ResetPasswordSecondStep/ResetPasswordSecondStep";

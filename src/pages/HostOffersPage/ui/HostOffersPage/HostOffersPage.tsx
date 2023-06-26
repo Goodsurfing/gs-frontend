@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
-import image from "@/assets/images/default-offer-image.svg";
+import image from "@/shared/assets/images/default-offer-image.svg";
 
 import styles from "./HostOffersPage.module.scss";
 import { PageLayout } from "@/widgets/PageLayout";

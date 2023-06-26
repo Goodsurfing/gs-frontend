@@ -1,4 +1,4 @@
-import { API_MEDIA_BASE_URL } from "@/constants/api";
+import { API_MEDIA_BASE_URL } from "@/shared/constants/api";
 
 interface GenerateLinkResponse {
     url: string;

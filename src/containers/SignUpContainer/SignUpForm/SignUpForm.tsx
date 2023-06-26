@@ -2,8 +2,8 @@ import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Variant } from "@/UI/Button/Button.interface";
-import Button from "@/UI/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
 import { HintType } from "@/components/HintPopup/HintPopup.interface";

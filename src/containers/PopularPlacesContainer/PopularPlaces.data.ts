@@ -1,9 +1,9 @@
-import image1 from "@/assets/images/popular-places/1.png";
-import image2 from "@/assets/images/popular-places/2.png";
-import image3 from "@/assets/images/popular-places/3.png";
-import image4 from "@/assets/images/popular-places/4.png";
-import image5 from "@/assets/images/popular-places/5.png";
-import image6 from "@/assets/images/popular-places/6.png";
+import image1 from "@/shared/assets/images/popular-places/1.png";
+import image2 from "@/shared/assets/images/popular-places/2.png";
+import image3 from "@/shared/assets/images/popular-places/3.png";
+import image4 from "@/shared/assets/images/popular-places/4.png";
+import image5 from "@/shared/assets/images/popular-places/5.png";
+import image6 from "@/shared/assets/images/popular-places/6.png";
 
 export const popularPlacesData = [
     {

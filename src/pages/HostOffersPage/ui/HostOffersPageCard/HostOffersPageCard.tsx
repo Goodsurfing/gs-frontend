@@ -1,9 +1,9 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC } from "react";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
-import like from "@/assets/icons/offers/like.svg";
-import star from "@/assets/icons/offers/star.svg";
+import like from "@/shared/assets/icons/offers/like.svg";
+import star from "@/shared/assets/icons/offers/star.svg";
 
 import styles from "./HostOffersPageCard.module.scss";
 
@@ -54,9 +54,15 @@ const HostOffersPageCard: FC<IHostOffersPageCard> = ({
                     </div>
                     <div className={styles.extraInfo}>
                         <span className={styles.review}>
-                            Отзывов: {reviews}
+                            Отзывов:
+                            {" "}
+                            {reviews}
                         </span>
-                        <span className={styles.went}>Отправились: {went}</span>
+                        <span className={styles.went}>
+                            Отправились:
+                            {" "}
+                            {went}
+                        </span>
                     </div>
                 </div>
                 <p className={styles.description}>

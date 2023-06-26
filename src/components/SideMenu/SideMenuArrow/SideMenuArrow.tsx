@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
-import arrow from "@/assets/icons/arrow.svg";
+import arrow from "@/shared/assets/icons/arrow.svg";
 
 import { Theme } from "../types/SideMenu.interface";
 import { ISideMenuArrow } from "../types/SideMenuArrow.interface";
