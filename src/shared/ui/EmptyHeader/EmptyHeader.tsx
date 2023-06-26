@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { AppRoutesEnum } from "@/routes/types";
