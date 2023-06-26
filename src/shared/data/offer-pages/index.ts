@@ -1,11 +1,11 @@
-import backIcon from "@assets/icons/navbar/offers/back.svg";
-import calendarIcon from "@assets/icons/navbar/offers/calendar.svg";
-import checklistIcon from "@assets/icons/navbar/offers/checklist.svg";
-import pinIcon from "@assets/icons/navbar/offers/pin.svg";
-import rightUserIcon from "@assets/icons/navbar/offers/right-user.svg";
-import viewListIcon from "@assets/icons/navbar/offers/view-list.svg";
-import writeIcon from "@assets/icons/navbar/offers/writing-fluently.svg";
-import listCheckboxIcon from "@assets/icons/navbar/offers/list-checkbox.svg";
+import backIcon from "@/shared/assets/icons/navbar/offers/back.svg";
+import calendarIcon from "@/shared/assets/icons/navbar/offers/calendar.svg";
+import checklistIcon from "@/shared/assets/icons/navbar/offers/checklist.svg";
+import pinIcon from "@/shared/assets/icons/navbar/offers/pin.svg";
+import rightUserIcon from "@/shared/assets/icons/navbar/offers/right-user.svg";
+import viewListIcon from "@/shared/assets/icons/navbar/offers/view-list.svg";
+import writeIcon from "@/shared/assets/icons/navbar/offers/writing-fluently.svg";
+import listCheckboxIcon from "@/shared/assets/icons/navbar/offers/list-checkbox.svg";
 
 import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
 

@@ -1,8 +1,8 @@
-import image1 from "@/assets/images/how-it-work/img1.png";
-import image2 from "@/assets/images/how-it-work/img2.png";
-import image3 from "@/assets/images/how-it-work/img3.png";
-import image4 from "@/assets/images/how-it-work/img4.png";
-import image5 from "@/assets/images/how-it-work/img5.png";
+import image1 from "@/shared/assets/images/how-it-work/img1.png";
+import image2 from "@/shared/assets/images/how-it-work/img2.png";
+import image3 from "@/shared/assets/images/how-it-work/img3.png";
+import image4 from "@/shared/assets/images/how-it-work/img4.png";
+import image5 from "@/shared/assets/images/how-it-work/img5.png";
 
 export const howItWorkData = [
     {

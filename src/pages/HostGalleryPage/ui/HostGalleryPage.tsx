@@ -6,8 +6,8 @@ import styles from "./HostGalleryPage.module.scss";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import { UploadMultipleImages } from "@/modules/Gallery";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";

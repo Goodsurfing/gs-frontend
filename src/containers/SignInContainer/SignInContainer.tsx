@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import SignTitle from "@/UI/SignTitle/SignTitle";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 

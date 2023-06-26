@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_ORGANIZATIONS_BASE_URL } from "@/constants/api";
+import { API_ORGANIZATIONS_BASE_URL } from "@/shared/constants/api";
 import { RootState } from "@/store/store";
 import { IGetOrganizationInfo } from "@/types/api/organization/organizationInfo.interface";
 

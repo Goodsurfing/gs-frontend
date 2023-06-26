@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
+import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWithLanguageCode";
 
 export const RouterLanguageController = ({ children }: any) => {
     const location = useLocation();

@@ -1,4 +1,4 @@
-import { API_ORGANIZATIONS_BASE_URL } from "@/constants/api";
+import { API_ORGANIZATIONS_BASE_URL } from "@/shared/constants/api";
 import { OrganizationApiEndpoints } from "@/types/api/organization";
 import { IOrganizationRegistrationResponse, IOrganizationRegistrationParams } from "@/types/api/organization/organizationRegistration.interface";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";

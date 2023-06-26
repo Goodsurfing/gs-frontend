@@ -2,10 +2,9 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
-import defaultImage from "@/assets/images/default-image-file.png";
-
-import InputFile from "../../UI/InputFile/InputFile";
-import { InputFileProps } from "../../UI/InputFile/InputFile.interfaces";
+import InputFile from "@shared/ui/InputFile/InputFile";
+import { InputFileProps } from "@shared/ui/InputFile/InputFile.interfaces";
+import defaultImage from "@/shared/assets/images/default-image-file.png";
 import styles from "./ProfileInput.module.scss";
 
 interface IFileInput extends InputFileProps {
@@ -71,7 +70,11 @@ const FileInput: FC<IFileInput> = ({
                     [styles.error]: isError,
                 })}
             >
-                Максимальный размер {fileSizeInMB} Мб
+                Максимальный размер
+                {" "}
+                {fileSizeInMB}
+                {" "}
+                Мб
             </span>
         </div>
     );

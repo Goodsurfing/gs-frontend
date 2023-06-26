@@ -1,15 +1,13 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC } from "react";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import { authApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 const ProfileResetPasswordForm: FC = () => {
-    const [resetPasswordRequest, { isSuccess }] =
-        authApi.useResetPasswordRequestMutation();
-    const { data: userInfo, isSuccess: userInfoSuccess } =
-        userInfoApi.useGetUserInfoQuery();
+    const [resetPasswordRequest, { isSuccess }] = authApi.useResetPasswordRequestMutation();
+    const { data: userInfo, isSuccess: userInfoSuccess } = userInfoApi.useGetUserInfoQuery();
 
     const onSubmit: React.MouseEventHandler<HTMLButtonElement> = async () => {
         if (userInfoSuccess && userInfo) {

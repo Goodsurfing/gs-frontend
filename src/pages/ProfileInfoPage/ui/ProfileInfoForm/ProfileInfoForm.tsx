@@ -1,7 +1,7 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import React, { FC, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
@@ -9,7 +9,7 @@ import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import useUploadFile from "@/hooks/files/useUploadFile";
 import { useAppSelector } from "@/hooks/redux";
 
-import { convertFileToBinary } from "@/utils/files/convertFileToBinary";
+import { convertFileToBinary } from "@/shared/utils/files/convertFileToBinary";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
 
@@ -69,7 +69,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             const imageUuid = await useUploadFile(
                 file.name,
                 preparedFile,
-                token
+                token,
             );
             otherData.imageUuid = imageUuid;
             return updateUserInfo(otherData);

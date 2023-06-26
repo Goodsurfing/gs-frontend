@@ -1,11 +1,13 @@
 import cn from "classnames";
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, {
+    FC, useEffect, useMemo, useState,
+} from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { Theme } from "@/components/SideMenu/types/SideMenu.interface";
 import { ISideMenuDropdown } from "@/components/SideMenu/types/SideMenuDropdown.interface";
 
-import compareRoutes from "@/utils/routes/compareRoutes";
+import compareRoutes from "@/shared/utils/routes/compareRoutes";
 
 import styles from "./SideMenuDropdown.module.scss";
 
@@ -45,7 +47,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    }
+                    },
                 )}
             >
                 <img src={icon} alt={text} />
@@ -57,7 +59,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                         },
                         {
                             [styles.matchRoute]: isMatchRoute,
-                        }
+                        },
                     )}
                 >
                     {text}
@@ -75,7 +77,7 @@ const SideMenuDropdown: FC<ISideMenuDropdown> = ({
                         {dropdownItems.map((item) => {
                             const isMatchDropdownRoute = compareRoutes(
                                 pathname,
-                                item.route
+                                item.route,
                             );
                             return (
                                 <LocaleLink

@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useState } from "react";
 import cn from "classnames";
-import MainHeader from "@/UI/MainHeader/MainHeader";
+import MainHeader from "@/shared/ui/MainHeader/MainHeader";
 import SideMenu from "@/components/SideMenu/SideMenu";
 import { SideMenuParams, Theme } from "@/components/SideMenu/types/SideMenu.interface";
 

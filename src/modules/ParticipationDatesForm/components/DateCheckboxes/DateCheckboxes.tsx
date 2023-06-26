@@ -3,13 +3,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography/Typography";
 import React from "react";
 
-import SwitchComponent from "@/UI/Switch/Switch";
+import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 const DateCheckboxes = () => {
     return (
         <Box sx={{ display: "flex", mt: "30px" }}>
             <FormControlLabel
-                label={
+                label={(
                     <Typography
                         sx={{
                             fontFamily: "Lato",
@@ -20,11 +20,11 @@ const DateCheckboxes = () => {
                     >
                         Принимаю круглый год
                     </Typography>
-                }
+                )}
                 control={<SwitchComponent />}
             />
             <FormControlLabel
-                label={
+                label={(
                     <Typography
                         sx={{
                             fontFamily: "Lato",
@@ -35,7 +35,7 @@ const DateCheckboxes = () => {
                     >
                         Принимаю в последний момент
                     </Typography>
-                }
+                )}
                 control={<SwitchComponent />}
             />
         </Box>

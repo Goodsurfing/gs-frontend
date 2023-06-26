@@ -1,4 +1,4 @@
-import ButtonLink from "@/UI/ButtonLink/ButtonLink";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import React, { FC } from "react";
 
 import { howItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";

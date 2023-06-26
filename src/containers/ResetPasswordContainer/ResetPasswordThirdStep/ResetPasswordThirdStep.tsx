@@ -1,5 +1,5 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";

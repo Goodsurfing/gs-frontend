@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
-import useCompareRoutes from "@/utils/routes/compareRoutes";
+import useCompareRoutes from "@/shared/utils/routes/compareRoutes";
 
 import { Theme } from "../../types/SideMenu.interface";
 import { ISideMenuLink } from "../../types/SideMenuLink.interface";
@@ -30,7 +30,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
                     },
                     {
                         [styles.openedLink]: isOpen,
-                    }
+                    },
                 )}
             >
                 <img src={icon} alt={text} />
@@ -42,7 +42,7 @@ const SideMenuLink: FC<ISideMenuLink> = ({
                         },
                         {
                             [styles.isMatchRoute]: isMatchRoute,
-                        }
+                        },
                     )}
                 >
                     {text}

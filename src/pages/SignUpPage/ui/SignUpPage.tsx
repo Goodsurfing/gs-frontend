@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import SignLayout from "@/UI/SignLayout/SignLayout";
+import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import SignUpContainer from "@/containers/SignUpContainer/SignUpContainer";
 

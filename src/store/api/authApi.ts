@@ -1,4 +1,4 @@
-import { API_PUBLIC_BASE_URL } from "@/constants/api";
+import { API_PUBLIC_BASE_URL } from "@/shared/constants/api";
 import { BaseQueryFn, createApi, FetchArgs, FetchBaseQueryError, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AuthApiEndpoints } from "@/types/api/auth";
 import {

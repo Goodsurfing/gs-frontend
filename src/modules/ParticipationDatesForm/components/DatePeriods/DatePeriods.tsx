@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 
-import AddButton from "@/UI/AddButton/AddButton";
-import CloseButton from "@/UI/CloseButton/CloseButton";
+import AddButton from "@/shared/ui/AddButton/AddButton";
+import CloseButton from "@/shared/ui/CloseButton/CloseButton";
 
 import DateInputs from "../DateInputs/DateInputs";
 

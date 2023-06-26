@@ -1,6 +1,6 @@
-import offerImage1 from "@/assets/images/offers/1.jpg";
-import offerImage2 from "@/assets/images/offers/2.jpg";
-import offerImage3 from "@/assets/images/offers/3.jpg";
+import offerImage1 from "@/shared/assets/images/offers/1.jpg";
+import offerImage2 from "@/shared/assets/images/offers/2.jpg";
+import offerImage3 from "@/shared/assets/images/offers/3.jpg";
 
 export const offersData = [
     {

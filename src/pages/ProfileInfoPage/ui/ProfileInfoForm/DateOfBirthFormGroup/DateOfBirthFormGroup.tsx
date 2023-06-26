@@ -1,4 +1,4 @@
-import Input from "@/UI/Input/Input";
+import Input from "@/shared/ui/Input/Input";
 import React, { FC } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control, Controller } from "react-hook-form";
@@ -36,13 +36,13 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
                             isLocked={isLocked}
                             value={field.value}
                             onChange={field.onChange}
-                            CustomInputElement={
+                            CustomInputElement={(
                                 <Input
                                     required
                                     label="Дата рождения"
                                     id="birthdate"
                                 />
-                            }
+                            )}
                         />
                     );
                 }}

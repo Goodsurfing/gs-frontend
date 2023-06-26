@@ -1,6 +1,6 @@
 import React from "react";
 
-import photoDarkIcon from "@assets/icons/offer-create/photo-camera-dark.svg";
+import photoDarkIcon from "@/shared/assets/icons/offer-create/photo-camera-dark.svg";
 
 import styles from "./ImageUploadBackground.module.scss";
 

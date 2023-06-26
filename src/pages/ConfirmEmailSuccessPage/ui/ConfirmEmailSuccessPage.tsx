@@ -1,7 +1,7 @@
-import ButtonLink from "@/UI/ButtonLink/ButtonLink";
-import SignLayout from "@/UI/SignLayout/SignLayout";
-import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import SignLayout from "@/shared/ui/SignLayout/SignLayout";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -15,7 +15,9 @@ const ConfirmEmailSuccessPage: FC = () => {
                 <div className={styles.content}>
                     <div className={styles.notification}>
                         Спасибо! Ваш адрес электронной почты
-                        <span>space-cowboy1982@bk.ru</span> был подтверждён.
+                        <span>space-cowboy1982@bk.ru</span>
+                        {" "}
+                        был подтверждён.
                     </div>
                     <ButtonLink
                         className={styles.btn}

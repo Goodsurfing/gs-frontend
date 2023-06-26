@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ReviewItem from "@/containers/ReviewsContainer/ReviewItem/ReviewItem";
 import { reviewsData } from "@/containers/ReviewsContainer/Reviews.data";
 
-import arrowIcon from "@/assets/images/reviews/arrow.svg";
+import arrowIcon from "@/shared/assets/images/reviews/arrow.svg";
 
 import styles from "./ReviewsContainer.module.scss";
 
@@ -52,8 +52,8 @@ const ReviewsContainer: FC = () => {
                         pauseOnMouseEnter: true,
                     }}
                 >
-                    {reviewsData &&
-                        reviewsData.map((item, index) => {
+                    {reviewsData
+                        && reviewsData.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
                                     <ReviewItem {...item} />

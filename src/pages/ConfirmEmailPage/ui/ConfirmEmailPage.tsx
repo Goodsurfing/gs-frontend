@@ -1,6 +1,6 @@
-import SignLayout from "@/UI/SignLayout/SignLayout";
-import SignTitle from "@/UI/SignTitle/SignTitle";
 import React, { FC } from "react";
+import SignLayout from "@/shared/ui/SignLayout/SignLayout";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { useAppSelector } from "@/hooks/redux";
 
@@ -19,7 +19,11 @@ const ConfirmEmailPage: FC = () => {
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        На <span>{email}</span> было отправлено письмо со
+                        На
+                        {" "}
+                        <span>{email}</span>
+                        {" "}
+                        было отправлено письмо со
                         ссылкой для подтверждения почты.
                     </div>
                     <p>

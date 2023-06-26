@@ -2,7 +2,7 @@ import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import RangeSlider from "@/UI/RangeSlider/RangeSlider";
+import RangeSlider from "@/shared/ui/RangeSlider/RangeSlider";
 
 const DateRangeSlider = () => {
     return (

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import starIcon from "@/assets/icons/star.svg";
+import starIcon from "@/shared/assets/icons/star.svg";
 
 import styles from "./Offer.module.scss";
 

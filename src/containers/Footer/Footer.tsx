@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
 
-import fbIcon from "@/assets/icons/footer/fb.svg";
-import instaIcon from "@/assets/icons/footer/instagram.svg";
-import footerLogo from "@/assets/icons/footer/logo.svg";
-import tgIcon from "@/assets/icons/footer/telegram.svg";
-import vkIcon from "@/assets/icons/footer/vk.svg";
+import fbIcon from "@/shared/assets/icons/footer/fb.svg";
+import instaIcon from "@/shared/assets/icons/footer/instagram.svg";
+import footerLogo from "@/shared/assets/icons/footer/logo.svg";
+import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
+import vkIcon from "@/shared/assets/icons/footer/vk.svg";
 
 import styles from "./Footer.module.scss";
 

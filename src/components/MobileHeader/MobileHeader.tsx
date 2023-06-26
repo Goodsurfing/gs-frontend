@@ -9,7 +9,7 @@ import { useAppSelector } from "@/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
-import mobileLogotype from "@/assets/icons/mobile-header-logo.svg";
+import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
 

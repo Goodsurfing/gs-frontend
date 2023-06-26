@@ -1,8 +1,8 @@
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import React, { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/components/HintPopup/HintPopup";
 import {
@@ -22,25 +22,22 @@ import { IOrganizationRegistrationParams } from "@/types/api/organization/organi
 
 import { IHostInfoForm } from "./HostMainInfoForm.interface";
 import styles from "./HostMainInfoForm.module.scss";
-import HostMainInfoOrganization from "../../../HostMainInfoPage/ui/HostMainInfoOrganization/HostMainInfoOrganization";
-import HostMainInfoSocial from "../../../HostMainInfoPage/ui/HostMainInfoSocial/HostMainInfoSocial";
+import HostMainInfoOrganization from "../HostMainInfoOrganization/HostMainInfoOrganization";
+import HostMainInfoSocial from "../HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
     const [getInfo] = userInfoApi.useLazyGetUserInfoQuery();
-    const [getOrganization, organizationResults] =
-        userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
+    const [getOrganization, organizationResults] = userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
 
-    const [savedOrganizationData, setSavedOrganizationData] =
-        useState<OrganizationResponseType>();
+    const [savedOrganizationData, setSavedOrganizationData] = useState<OrganizationResponseType>();
 
-    const [isOrganizationExists, setOrganizationExists] =
-        useState<boolean>(false);
+    const [isOrganizationExists, setOrganizationExists] = useState<boolean>(false);
 
     useEffect(() => {
         getInfo().then((userInfo) => {
             if (
-                userInfo.data?.organizations &&
-                userInfo.data.organizations.length > 0
+                userInfo.data?.organizations
+                && userInfo.data.organizations.length > 0
             ) {
                 const organizationId = userInfo.data.organizations[0].id;
                 getOrganization(organizationId)
@@ -62,7 +59,7 @@ const HostMainInfoForm: FC = () => {
                             setSavedOrganizationData(savedData);
                         }
                     })
-                    .catch((res) => console.log(res));
+                    .catch((res) => { return console.log(res); });
             } else {
                 const savedData: OrganizationResponseType = {
                     id: "",
@@ -82,12 +79,10 @@ const HostMainInfoForm: FC = () => {
         });
     }, []);
 
-    console.log(savedOrganizationData)
+    console.log(savedOrganizationData);
 
-    const [registerOrganization, { isError }] =
-        organizationApi.useRegisterOrganizationMutation();
-    const [bindOrganization, { isSuccess }] =
-        organizationApi.useBindOrganizationMutation();
+    const [registerOrganization, { isError }] = organizationApi.useRegisterOrganizationMutation();
+    const [bindOrganization, { isSuccess }] = organizationApi.useBindOrganizationMutation();
     const [
         updateOrganization,
         { isError: isUpdateError, isSuccess: isUpdateSuccess },
@@ -226,7 +221,7 @@ const HostMainInfoForm: FC = () => {
                     <Button
                         className={styles.button}
                         variant={Variant.PRIMARY}
-                        rounded={true}
+                        rounded
                         type="submit"
                     >
                         Сохранить

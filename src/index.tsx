@@ -8,7 +8,7 @@ import App from "@/app/App";
 import { setupStore } from "@/store/store";
 
 import "./i18n";
-import "./styles/index.scss";
+import "@/app/styles/index.scss";
 
 const root = createRoot(document.getElementById("root")!);
 

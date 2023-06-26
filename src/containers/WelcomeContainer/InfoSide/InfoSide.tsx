@@ -1,5 +1,5 @@
-import ButtonLink from "@/UI/ButtonLink/ButtonLink";
-import SectionTitle from "@/UI/SectionTitle/SectionTitle";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import SectionTitle from "@/shared/ui/SectionTitle/SectionTitle";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import SignLayout from "@/UI/SignLayout/SignLayout";
-import SignTitle from "@/UI/SignTitle/SignTitle";
+import SignLayout from "@/shared/ui/SignLayout/SignLayout";
+import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
 

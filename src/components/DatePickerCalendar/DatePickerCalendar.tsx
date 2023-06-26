@@ -1,4 +1,4 @@
-import CalendarComponent from "@/UI/CalendarComponent/CalendarComponent";
+import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 import cn from "classnames";
 import React, {
     FC,
@@ -9,7 +9,7 @@ import React, {
     useState,
 } from "react";
 
-import calendarIcon from '@/assets/icons/calendar.svg';
+import calendarIcon from '@/shared/assets/icons/calendar.svg';
 
 import styles from "./DatePickerCalendar.module.scss";
 import { DatePickerCalendarProps } from "./type";

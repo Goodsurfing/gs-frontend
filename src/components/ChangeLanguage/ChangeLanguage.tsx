@@ -1,14 +1,16 @@
-import Arrow from "@/UI/Arrow/Arrow";
 import cn from "classnames";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
 
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
-import { createUrlWithLanguageCode } from "@/utils/language/createUrlWithLanguageCode";
+import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWithLanguageCode";
 
 import { localeApi } from "@/store/api/localeApi";
 
@@ -29,7 +31,7 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
-        changeLanguageData[0]
+        changeLanguageData[0],
     );
 
     const menuRef = useRef(null);
@@ -78,8 +80,8 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
                     [styles.visible]: isOpen,
                 })}
             >
-                {changeLanguageData &&
-                    changeLanguageData.map((item) => {
+                {changeLanguageData
+                    && changeLanguageData.map((item) => {
                         return (
                             <div
                                 key={item.id}

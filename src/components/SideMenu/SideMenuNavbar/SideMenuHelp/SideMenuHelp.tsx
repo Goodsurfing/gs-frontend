@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import SupportWidget from "@/components/SupportWidget/SupportWidget";
 
-import helpIcon from "@/assets/icons/navbar/help.svg";
+import helpIcon from "@/shared/assets/icons/navbar/help.svg";
 
 import { ISideMenuHelp } from "../../types/SideMenuHelp.interface";
 import styles from "./SideMenuHelp.module.scss";

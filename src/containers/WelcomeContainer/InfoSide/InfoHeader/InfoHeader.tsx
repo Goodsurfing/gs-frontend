@@ -1,7 +1,7 @@
-import Arrow from "@/UI/Arrow/Arrow";
-import Button from "@/UI/Button/Button";
-import { Variant } from "@/UI/Button/Button.interface";
-import ButtonLink from "@/UI/ButtonLink/ButtonLink";
+import Arrow from "@/shared/ui/Arrow/Arrow";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import React, { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
