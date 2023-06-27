@@ -1,12 +1,13 @@
-import React, {
-    useEffect, useRef, useState, memo,
-} from "react";
 import cn from "classnames";
+
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
+
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import Arrow from "@/shared/ui/Arrow/Arrow";
 
-import { changeLanguageData } from "@/widgets/ChangeLanguage/model/data/ChangeLanguage.data";
+import { changeLanguageData } from "../model/data/ChangeLanguage.data";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
@@ -16,13 +17,15 @@ import { localeApi } from "@/store/api/localeApi";
 
 import { ILanguage } from "@/types/languages";
 
+import Arrow from "@/shared/ui/Arrow/Arrow";
+
 import styles from "./ChangeLanguage.module.scss";
 
 interface ChangeLanguageProps {
     className?: string;
 }
 
-export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
+const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
     const { i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -80,8 +83,8 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                     [styles.visible]: isOpen,
                 })}
             >
-                {changeLanguageData
-                    && changeLanguageData.map((item) => {
+                {changeLanguageData && (
+                    changeLanguageData.map((item) => {
                         return (
                             <div
                                 key={item.id}
@@ -94,8 +97,10 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                                 <span>{item.name}</span>
                             </div>
                         );
-                    })}
+                    }))}
             </div>
         </div>
     );
-});
+};
+
+export default ChangeLanguage;
