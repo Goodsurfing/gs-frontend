@@ -1,29 +1,10 @@
 import React, { FC } from "react";
 import { Map, YMaps } from "@pbe/react-yandex-maps";
-import ymaps from "yandex-maps";
 import classNames from "classnames";
+import { MapDefaultState, YmapQueryType, YmapType } from "../../model/types/map";
 
 import styles from "./Ymap.module.scss";
 
-export type MapDefaultState = {
-    center: [number, number];
-    zoom: number;
-};
-
-export type GeoObjectHintType = {
-    GeoObject: {
-        Point: { pos: Array<string> };
-        description: string;
-        name: string;
-    };
-};
-
-export type YmapType = typeof ymaps;
-
-export type YmapQueryType = {
-    ns: string;
-    load: string;
-};
 
 export interface MapProps {
     defaultState?: MapDefaultState;

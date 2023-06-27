@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, useEffect, useRef, useState,
+    useEffect, useRef, useState, memo,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ interface ChangeLanguageProps {
     className?: string;
 }
 
-const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
+export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
     const { i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
@@ -98,6 +98,4 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
             </div>
         </div>
     );
-};
-
-export default ChangeLanguage;
+});
