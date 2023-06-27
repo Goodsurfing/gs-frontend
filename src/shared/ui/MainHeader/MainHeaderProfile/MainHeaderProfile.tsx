@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
-import { useAppDispatch } from "@/hooks/redux";
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useAppDispatch } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
 import { logout } from "@/store/reducers/loginSlice";

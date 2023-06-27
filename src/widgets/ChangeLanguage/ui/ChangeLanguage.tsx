@@ -8,7 +8,7 @@ import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { changeLanguageData } from "@/widgets/ChangeLanguage/model/data/ChangeLanguage.data";
 
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWithLanguageCode";
 

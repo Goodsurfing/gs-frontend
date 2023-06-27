@@ -6,7 +6,7 @@ import UploadButton from "../UploadButton/UploadButton";
 import styles from "./UploadMultipleImages.module.scss";
 import UploadedImage from "../UploadedImage/UploadedImage";
 import { galleryApi } from "../../model/services/galleryApi";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getGalleryImages } from "../../model/selectors/getGalleryImages/getGalleryImages";
 import { galleryActions } from "../../model/slice/gallerySlice";
 

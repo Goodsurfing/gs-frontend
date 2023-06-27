@@ -6,8 +6,8 @@ import { Variant } from "@/shared/ui/Button/Button.interface";
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
-import useUploadFile from "@/hooks/files/useUploadFile";
-import { useAppSelector } from "@/hooks/redux";
+import useUploadFile from "@/shared/hooks/files/useUploadFile";
+import { useAppSelector } from "@/shared/hooks/redux";
 
 import { convertFileToBinary } from "@/shared/utils/files/convertFileToBinary";
 

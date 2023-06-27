@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import { useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/shared/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 

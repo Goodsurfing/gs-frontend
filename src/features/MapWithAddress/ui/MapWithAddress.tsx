@@ -7,7 +7,7 @@ import Input from "@/shared/ui/Input/Input";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import { YMap, YmapType, GeoObjectHintType } from "@/entities/Map";
-import useDebounce from "@/hooks/useDebounce";
+import useDebounce from "@/shared/hooks/useDebounce";
 import { getGeocodeByName } from "../model/utils/getGeocodeByName";
 import {} from "../model/utils/getYmapCoordinates";
 import { findCoordinates } from "../model/utils/findCoordinates";

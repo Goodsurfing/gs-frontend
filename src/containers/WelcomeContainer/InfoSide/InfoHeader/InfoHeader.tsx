@@ -11,8 +11,8 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 

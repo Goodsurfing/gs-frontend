@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, useEffect, useRef, useState } from "react";
 
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./Hints.module.scss";
 import { IHintsProps } from "./Hints.types";
