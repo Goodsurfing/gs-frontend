@@ -9,7 +9,7 @@ import HintPopup from "@/components/HintPopup/HintPopup";
 import { HintType } from "@/components/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 

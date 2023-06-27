@@ -1,18 +1,18 @@
+import React, { FC, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import React, { FC, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
-import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
 

@@ -3,9 +3,9 @@ import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import ChangeLanguage from "@/components/ChangeLanguage/ChangeLanguage";
+import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import { useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/shared/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
@@ -24,7 +24,7 @@ const MobileHeader: FC = () => {
     return (
         <>
             <header className={styles.header}>
-                <Link to='/'>
+                <Link to="/">
                     <img
                         src={mobileLogotype}
                         alt="GoodSurfing"
