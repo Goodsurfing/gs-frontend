@@ -1,42 +1,42 @@
-import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
+import { changeLanguageData } from "@/widgets/ChangeLanguage/model/data/ChangeLanguage.data";
 import { IOption } from "@/types/select";
 
 export const preparedLanguageData: IOption[] = [];
-    
-changeLanguageData.forEach(element => {
+
+changeLanguageData.forEach((element) => {
     preparedLanguageData.push({
         label: element.name,
         value: element.code,
-    })
+    });
 });
 
 export const countries: IOption[] = [
     {
         value: "Russia",
-        label: "Россия"
+        label: "Россия",
     },
     {
         value: "US",
-        label: "Америка"
+        label: "Америка",
     },
     {
         value: "China",
-        label: "Китай"
-    }
+        label: "Китай",
+    },
 ];
 
 export const cities: IOption[] = [
     {
         value: "Kazan",
-        label: "Казань"
+        label: "Казань",
     },
     {
         value: "Washington",
-        label: "Вашингтон"
+        label: "Вашингтон",
     },
     {
         value: "Pekin",
-        label: "Пекин"
+        label: "Пекин",
     },
 ];
 

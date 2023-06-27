@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, useRef, useState } from "react";
 
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import dropdownIcon from "@/shared/assets/icons/dropdown.svg";
 

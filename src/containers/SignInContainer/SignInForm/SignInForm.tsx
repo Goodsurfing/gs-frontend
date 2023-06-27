@@ -11,7 +11,7 @@ import { HintType } from "@/components/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch } from "@/shared/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 

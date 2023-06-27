@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
-import { changeLanguageData } from "@/components/ChangeLanguage/ChangeLanguage.data";
+import { changeLanguageData } from "../model/data/ChangeLanguage.data";
 
-import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWithLanguageCode";
 

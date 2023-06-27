@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import InputField from "@/components/InputField/InputField";
 
-import useQuery from "@/hooks/useQuery";
+import useQuery from "@/shared/hooks/useQuery";
 
 import { AppRoutesEnum } from "@/routes/types";
 

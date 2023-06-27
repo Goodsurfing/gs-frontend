@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import { useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/shared/hooks/redux";
 
 import { AppRoutesEnum } from "@/routes/types";
 
