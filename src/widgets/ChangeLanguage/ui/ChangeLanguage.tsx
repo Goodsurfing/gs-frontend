@@ -1,11 +1,10 @@
 import cn from "classnames";
-
 import React, {
     FC, useEffect, useRef, useState,
 } from "react";
-
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { changeLanguageData } from "../model/data/ChangeLanguage.data";
 
@@ -16,8 +15,6 @@ import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWith
 import { localeApi } from "@/store/api/localeApi";
 
 import { ILanguage } from "@/types/languages";
-
-import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import styles from "./ChangeLanguage.module.scss";
 
@@ -83,8 +80,8 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
                     [styles.visible]: isOpen,
                 })}
             >
-                {changeLanguageData && (
-                    changeLanguageData.map((item) => {
+                {changeLanguageData
+                    && changeLanguageData.map((item) => {
                         return (
                             <div
                                 key={item.id}
@@ -97,7 +94,7 @@ const ChangeLanguage: FC<ChangeLanguageProps> = ({ className }) => {
                                 <span>{item.name}</span>
                             </div>
                         );
-                    }))}
+                    })}
             </div>
         </div>
     );
