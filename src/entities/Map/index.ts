@@ -1,6 +1,6 @@
 export { YMap } from "./ui/YMap/YMap";
 
-export {
+export type {
     FeatureMember,
     GeoObject,
     GeoObjectCollection,

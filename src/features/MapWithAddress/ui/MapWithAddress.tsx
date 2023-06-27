@@ -1,77 +1,108 @@
 import React, {
-    ChangeEvent, FC, useCallback, useEffect, useState,
+    ChangeEvent, FC, useCallback, useEffect, useMemo, useState,
 } from "react";
 
 import cn from "classnames";
 
 import { YMap, YmapType, GeoObject } from "@/entities/Map";
 
-import Input from "@/shared/ui/Input/Input";
-
-import { getGeocodeByName } from "../model/utils/getGeocodeByName";
-import { findCoordinates } from "../model/utils/findCoordinates";
-
 import useDebounce from "@/shared/hooks/useDebounce";
 
-import styles from "./MapWithAddress.module.scss";
 import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
+
+import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
+
+import styles from "./MapWithAddress.module.scss";
 
 interface MapWithAddressProps {
     className?: string;
-    onAddressChange?: (value: string) => void;
 }
 
-export const MapWithAddress: FC<MapWithAddressProps> = ({ className, onAddressChange }) => {
-    const [loading, setLoading] = useState(false);
-
+export const MapWithAddress: FC<MapWithAddressProps> = ({ className }) => {
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
+    const [loaded, setLoaded] = useState(false);
 
-    const [isHintsLoading, setHintsLoading] = useState(false);
+    const [value, setValue] = useState<GeoObject | null>(null);
+    const [options, setOptions] = useState<GeoObject[]>([]);
+    const [inputValue, setInputValue] = useState("");
 
-    const [hints, setHints] = useState<GeoObject[]>([]);
+    const debouncedAddress = useDebounce(inputValue, 300);
 
-    const [coordinates, setCoordinates] = useState<[number, number]>([55, 47]);
+    const data = useMemo(
+        () => getGeoObjectCollection(debouncedAddress)
+            .then((res) => res),
+        [debouncedAddress],
+    );
 
-    const [address, setAddress] = useState("");
-
-    const handleAddressUpdate = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setAddress(e.target.value);
-    }, []);
-
-    const debouncedAddress = useDebounce(address, 500);
+    const handleValueChange = useCallback((newValue: GeoObject | null) => {
+        setOptions(newValue ? [newValue, ...options] : options);
+        setValue(newValue);
+    }, [options]);
 
     useEffect(() => {
-        (async () => {
-            if (debouncedAddress && ymap) {
-                setHintsLoading(true);
-                const data = await getGeoObjectCollection(debouncedAddress);
-                if (data && data.featureMember.length) {
-                    setHintsLoading(false);
-                    setHints(data.featureMember.map((item) => {
-                        return item.GeoObject;
-                    }));
-                } else {
-                    setHints([]);
-                }
+        let active = true;
+
+        if (!ymap) {
+            return undefined;
+        }
+
+        if (debouncedAddress === "") {
+            setOptions(value ? [value] : []);
+            return undefined;
+        }
+
+        if (active) {
+            let newOptions: readonly GeoObject[] = [];
+            if (value) {
+                newOptions = [value];
             }
-        })();
-    }, [debouncedAddress, ymap]);
+            if (results) {
+                
+                // newOptions = [...newOptions, ...data];
+            }
+        }
+
+        return () => {
+            active = false;
+        };
+    }, [value, ymap, debouncedAddress]);
+
+    // useEffect(() => {
+    //     if (address === "") {
+    //         return undefined;
+    //     }
+    //     (async () => {
+    //         if (debouncedAddress && ymap) {
+    //             setHintsLoading(true);
+    //             const data = await getGeoObjectCollection(debouncedAddress);
+    //             if (data && data.featureMember.length) {
+    //                 setHints(data.featureMember.map((item) => item.GeoObject.name));
+    //                 setHintsLoading(false);
+    //             } else {
+    //                 setHintsLoading(false);
+    //                 setHints([]);
+    //             }
+    //         }
+    //     })();
+    // }, [debouncedAddress, ymap]);
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.content}>
-                <Input placeholder="Начните вводить адрес" onChange={handleAddressUpdate} value={address} />
+                <AutoComplete
+                    onChange={handleValueChange}
+                    options={options}
+                    noOptionsText="Точек на карте не найдено"
+                    labelText="Введите адрес"
+                />
                 <YMap
-                    defaultState={{ center: coordinates, zoom: 9 }}
                     className={styles.map}
                     query={{
                         ns: "use-load-option",
                         load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
                     }}
-                    setYmap={(ymaps) => {
-                        return setYmap(ymaps);
-                    }}
-                    setLoading={setLoading}
+                    setYmap={(ymaps) => setYmap(ymaps)}
+                    setLoading={setLoaded}
                 />
             </div>
         </div>

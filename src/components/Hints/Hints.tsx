@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
@@ -39,7 +41,7 @@ const Hints: FC<IHintsProps> = ({
                     <li
                         onClick={() => {
                             setAddress(
-                                `${item.GeoObject.description}, ${item.GeoObject.name}`
+                                `${item.GeoObject.description}, ${item.GeoObject.name}`,
                             );
                             setAddressByHint(true);
                             setOpened(false);
