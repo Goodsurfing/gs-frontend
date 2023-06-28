@@ -8,6 +8,7 @@ import { Placemark } from "@pbe/react-yandex-maps";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { Control, Controller } from "react-hook-form";
 import { YMap, YmapType, GeoObject } from "@/entities/Map";
 
 import locationIcon from "@/shared/assets/icons/location.svg";
@@ -23,9 +24,17 @@ import { validateCoordinates } from "../model/utils/validateCoordinates";
 
 interface MapWithAddressProps {
     className?: string;
+    data: { address: string };
+    control: Control<{ address: string }>;
 }
 
-export const MapWithAddress = memo(({ className }: MapWithAddressProps) => {
+const MapWithAddress = (
+    {
+        className,
+        data,
+        control,
+    }: MapWithAddressProps,
+) => {
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
@@ -73,32 +82,40 @@ export const MapWithAddress = memo(({ className }: MapWithAddressProps) => {
         };
     }, [value, ymap, debouncedAddress]);
 
-    console.log(loading);
-
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.content}>
-                <AutoComplete
-                    value={value}
-                    inputValue={inputValue}
-                    onChange={handleValueChange}
-                    onInputChange={(inputVal) => setInputValue(inputVal)}
-                    options={options}
-                    getOptionLabel={(option) => option.name}
-                    noOptionsText="Точек на карте не найдено"
-                    labelText="Введите адрес"
-                    renderOption={(props, option) => (
-                        <li {...props}>
-                            <Grid item sx={{ display: "flex", width: 30 }}>
-                                <img src={locationIcon} alt="location" />
-                            </Grid>
-                            <Grid item sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}>
-                                <Box component="span">{option.name}</Box>
-                                <Typography variant="body2">
-                                    {option.description}
-                                </Typography>
-                            </Grid>
-                        </li>
+                <Controller
+                    name="address"
+                    defaultValue={data.address || ""}
+                    control={control}
+                    render={({ field }) => (
+                        <AutoComplete
+                            value={value}
+                            inputValue={field.value}
+                            onChange={handleValueChange}
+                            onInputChange={(inputVal) => {
+                                field.onChange(inputVal);
+                                setInputValue(inputVal);
+                            }}
+                            options={options}
+                            getOptionLabel={(option) => option.name}
+                            noOptionsText="Точек на карте не найдено"
+                            labelText="Введите адрес"
+                            renderOption={(props, option) => (
+                                <li key={option.name} {...props}>
+                                    <Grid item sx={{ display: "flex", width: 30 }}>
+                                        <img src={locationIcon} alt="location" />
+                                    </Grid>
+                                    <Grid item sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}>
+                                        <Box component="span">{option.name}</Box>
+                                        <Typography variant="body2">
+                                            {option.description}
+                                        </Typography>
+                                    </Grid>
+                                </li>
+                            )}
+                        />
                     )}
                 />
                 <YMap
@@ -123,4 +140,6 @@ export const MapWithAddress = memo(({ className }: MapWithAddressProps) => {
             </div>
         </div>
     );
-});
+};
+
+export const MemoMapWithAddress = memo(MapWithAddress);
