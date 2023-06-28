@@ -31,6 +31,6 @@ export type YmapQueryType = {
 };
 
 export type MapDefaultState = {
-    center: [number, number];
-    zoom: number;
+    center?: [number, number];
+    zoom?: number;
 };
