@@ -6,7 +6,7 @@ import App from "@/app/App";
 
 import { setupStore } from "@/store/store";
 
-import "./i18n";
+import "./shared/config/i18n/i18n";
 import "@/app/styles/index.scss";
 
 const root = createRoot(document.getElementById("root")!);

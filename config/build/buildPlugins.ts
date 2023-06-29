@@ -4,6 +4,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import Dotenv from "dotenv-webpack";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { BuildOptions } from "./types/config";
 
 export function buildPlugins({
@@ -24,6 +25,7 @@ export function buildPlugins({
             __PROJECT__: JSON.stringify(project),
         }),
         new Dotenv(),
+        new ForkTsCheckerWebpackPlugin(),
     ];
 
     if (isDev) {
