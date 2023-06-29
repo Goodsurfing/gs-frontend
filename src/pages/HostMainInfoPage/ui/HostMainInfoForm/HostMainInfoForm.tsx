@@ -1,5 +1,6 @@
-import { skipToken } from "@reduxjs/toolkit/dist/query";
-import React, { FC, useEffect, useState } from "react";
+import {
+    FC, memo, useEffect, useState,
+} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
@@ -11,13 +12,12 @@ import {
 } from "@/components/HintPopup/HintPopup.interface";
 import Preloader from "@/components/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
-// import YMapWithAddress from "@/components/Ymaps/YMapWithAddress/YMapWithAddress";
 
 import { organizationApi } from "@/store/api/organizationApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 import { userOrganizationInfoApi } from "@/store/api/userOrganizationInfoApi";
 
-import { OrganizationResponseType, OrganizationType } from "@/types/api/organization";
+import { OrganizationResponseType } from "@/types/api/organization";
 import { IOrganizationRegistrationParams } from "@/types/api/organization/organizationRegistration.interface";
 
 import { IHostInfoForm } from "./HostMainInfoForm.interface";
@@ -27,7 +27,10 @@ import HostMainInfoSocial from "../HostMainInfoSocial/HostMainInfoSocial";
 
 const HostMainInfoForm: FC = () => {
     const [getInfo] = userInfoApi.useLazyGetUserInfoQuery();
-    const [getOrganization, organizationResults] = userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
+    const [
+        getOrganization,
+        organizationResults,
+    ] = userOrganizationInfoApi.useLazyGetUserOrganizationInfoQuery();
 
     const [savedOrganizationData, setSavedOrganizationData] = useState<OrganizationResponseType>();
 
@@ -59,7 +62,7 @@ const HostMainInfoForm: FC = () => {
                             setSavedOrganizationData(savedData);
                         }
                     })
-                    .catch((res) => { return console.log(res); });
+                    .catch((res) => console.log(res));
             } else {
                 const savedData: OrganizationResponseType = {
                     id: "",
@@ -193,13 +196,6 @@ const HostMainInfoForm: FC = () => {
                     <HintPopup type={hint.type} text={hint.text} />
                 )}
                 <div className={styles.container}>
-                    {/* <YMapWithAddress
-                        height="300px"
-                        data={{
-                            address: savedOrganizationData.address,
-                        }}
-                        control={control}
-                    /> */}
                     <HostMainInfoOrganization
                         data={{
                             name: savedOrganizationData.name,
@@ -242,4 +238,4 @@ const HostMainInfoForm: FC = () => {
     return null;
 };
 
-export default React.memo(HostMainInfoForm);
+export default memo(HostMainInfoForm);

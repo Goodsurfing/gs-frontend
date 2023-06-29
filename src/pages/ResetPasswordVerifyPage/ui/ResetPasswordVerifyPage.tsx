@@ -5,19 +5,17 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
 
 import styles from "./ResetPasswordVerifyPage.module.scss";
-import { AppRoutes } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/config/RouterConfig";
 
-const ResetPasswordVerifyPage: FC = () => {
-    return (
-        <SignLayout cancelText="Отменить" cancelPath={AppRoutes.SIGN_IN}>
-            <div className={styles.wrapper}>
-                <div className={styles.container}>
-                    <SignTitle>Восстановление пароля</SignTitle>
-                    <ResetPasswordThirdStep />
-                </div>
+const ResetPasswordVerifyPage: FC = () => (
+    <SignLayout cancelText="Отменить" cancelPath={RoutePath.sign_in}>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <SignTitle>Восстановление пароля</SignTitle>
+                <ResetPasswordThirdStep />
             </div>
-        </SignLayout>
-    );
-};
+        </div>
+    </SignLayout>
+);
 
 export default ResetPasswordVerifyPage;

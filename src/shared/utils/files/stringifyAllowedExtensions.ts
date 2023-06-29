@@ -1,5 +1,3 @@
-import { AllowedFilesExtensions } from "@/constants/files";
+import { AllowedFilesExtensions } from "@/shared/constants/files";
 
-export const stringifyAllowedExtensions = (array: AllowedFilesExtensions[]) => {
-    return array.join(", ");
-};
+export const stringifyAllowedExtensions = (array: AllowedFilesExtensions[]) => array.join(", ");

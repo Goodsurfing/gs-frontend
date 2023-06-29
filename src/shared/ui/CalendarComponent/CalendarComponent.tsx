@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import { FC, useCallback } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -12,15 +12,17 @@ const CalendarComponent: FC<ICalendarComponent> = ({
     value,
     onChange,
 }) => {
+    const onDatePick = useCallback((date: Date) => {
+        onChange?.(date);
+    }, [onChange]);
     return (
         <Calendar
             value={value}
-            onChange={(value: Date) => onChange(value)}
+            onChange={(date) => onDatePick(date as Date)}
             defaultValue={new Date()}
             tileClassName={styles.tile}
             className={cn(className, styles.calendar)}
         />
     );
 };
-
 export default CalendarComponent;

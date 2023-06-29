@@ -129,8 +129,8 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 <CalendarComponent
                     className={cn(calendarClassName, styles.calendar)}
                     value={inputValueDate}
-                    onChange={(value: Date) => {
-                        handleChange(value);
+                    onChange={(date: Date) => {
+                        handleChange(date);
                     }}
                     minDate={min}
                     maxDate={max}

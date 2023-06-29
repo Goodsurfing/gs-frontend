@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { IDateOfBirthFormGroup } from "@/pages/ProfilePages/ProfileInfoPage/ProfileInfoForm/ProfileInfoForm.interface";
+import { IDateOfBirthFormGroup } from "@/pages/ProfileInfoPage/ui/ProfileInfoForm/ProfileInfoForm.interface";
 
 interface DatePickerProps {
     value: Date | null;
@@ -20,18 +20,16 @@ const DatePicker: FC<DatePickerProps> = ({
     CustomInputElement,
     isLocked,
     data,
-}) => {
-    return (
-        <ReactDatePicker
-            disabled={isLocked}
-            selected={value || data.birthDate}
-            onChange={(date) => onChange(date)}
-            customInput={CustomInputElement}
-            dateFormat="dd.MM.yyyy"
-            className={className}
-            showYearDropdown
-        />
-    );
-};
+}) => (
+    <ReactDatePicker
+        disabled={isLocked}
+        selected={value || data.birthDate}
+        onChange={(date) => onChange(date)}
+        customInput={CustomInputElement}
+        dateFormat="dd.MM.yyyy"
+        className={className}
+        showYearDropdown
+    />
+);
 
 export default DatePicker;

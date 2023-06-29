@@ -6,7 +6,7 @@ import closeBtnImg from "@/shared/assets/icons/delete.svg";
 import styles from "./UploadedImage.module.scss";
 
 interface UploadedImageProps {
-    img: File;
+    img: string;
     onCloseClick?: () => void;
     onImageClick?: () => void;
 }

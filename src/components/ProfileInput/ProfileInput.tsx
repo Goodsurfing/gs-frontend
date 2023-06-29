@@ -2,8 +2,8 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
-import InputFile from "@shared/ui/InputFile/InputFile";
-import { InputFileProps } from "@shared/ui/InputFile/InputFile.interfaces";
+import InputFile from "@/shared/ui/InputFile/InputFile";
+import { InputFileProps } from "@/shared/ui/InputFile/InputFile.interfaces";
 import defaultImage from "@/shared/assets/images/default-image-file.png";
 import styles from "./ProfileInput.module.scss";
 
@@ -37,8 +37,8 @@ const FileInput: FC<IFileInput> = ({
             return;
         }
         if (e.target.files) {
-            const fileImage = URL.createObjectURL(e.target.files[0]);
-            setFileImage(fileImage);
+            const image = URL.createObjectURL(e.target.files[0]);
+            setFileImage(image);
             setFile(e.target.files[0]);
             setError(false);
         }
@@ -71,9 +71,7 @@ const FileInput: FC<IFileInput> = ({
                 })}
             >
                 Максимальный размер
-                {" "}
                 {fileSizeInMB}
-                {" "}
                 Мб
             </span>
         </div>

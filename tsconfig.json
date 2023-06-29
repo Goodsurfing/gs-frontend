@@ -7,18 +7,19 @@
         "sourceMap": true,
         "outDir": "./dist",
         "paths": {
-            "@/*": ["./src/*"],
-            "@utils": ["./src/shared/utils/*"],
-            "@components": ["./src/components/*"],
-            "@pages": ["./src/pages/*"],
-            "@store": ["./src/store/*"],
-            "@types": ["./src/types/*"],
-            "@assets": ["./src/shared/assets/*"],
-            "@shared": ["./src/shared"],
-            "@constants": ["./src/shared/constants/*"]
+            "@/*": ["src/*"],
+            "@utils": ["src/shared/utils/*"],
+            "@components": ["src/components/*"],
+            "@pages": ["src/pages/*"],
+            "@store": ["src/store/*"],
+            "@types": ["src/types/*"],
+            "@assets": ["src/shared/assets/*"],
+            "@shared": ["src/shared"],
+            "@constants": ["src/shared/constants/*"]
         },
+        "baseUrl": ".",
         "removeComments": true,
-        "noEmit": true,
+        "noEmit": false,
         "strict": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -26,7 +27,7 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
     },
     "exclude": ["node_modules", "build"]
 }

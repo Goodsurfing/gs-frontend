@@ -1,5 +1,5 @@
 import { ChartData } from "chart.js";
-import Raect, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import StatsCircle from "@/shared/ui/StatsCircle/StatsCircle";
 import { ProfileFillItems } from "@/pages/HostDashboardPage/ui/HostProfileFill/HostProfileFill.data";
@@ -9,6 +9,7 @@ interface IDashboardDoughnut {
     text?: string;
     degrees: Array<number>;
     setDegrees: (degrees: Array<number>) => void;
+    children: React.ReactNode;
 }
 
 const DashboardDoughnut: FC<IDashboardDoughnut> = ({

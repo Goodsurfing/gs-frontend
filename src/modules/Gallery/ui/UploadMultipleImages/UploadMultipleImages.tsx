@@ -37,33 +37,24 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
         generateLink({ fileName: image.name }).unwrap().then((res) => {
             dispatch(galleryActions.addImage(res.url));
         });
-        // setUploadedImg((prev) => {
-        //     return [...prev, img];
-        // });
-        onUpload?.(image);
+        onUpload?.(image.name);
     }, [generateLink, onUpload, dispatch]);
 
     const handleDeleteImg = useCallback((index: number) => {
-        setUploadedImg((items) => {
-            return items.filter((_, i) => {
-                return i !== index;
-            });
-        });
+        setUploadedImg((items) => items.filter((_, i) => i !== index));
     }, []);
 
     return (
         <>
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.images}>
-                    {uploadedImg.map((img, index) => {
-                        return (
-                            <UploadedImage
-                                onCloseClick={() => { return handleDeleteImg(index); }}
-                                key={img}
-                                img={img}
-                            />
-                        );
-                    })}
+                    {uploadedImg.map((img, index) => (
+                        <UploadedImage
+                            onCloseClick={() => handleDeleteImg(index)}
+                            key={img}
+                            img={img}
+                        />
+                    ))}
                     <UploadButton onUpload={handleUpdateImages} id={id} />
                 </div>
             </div>

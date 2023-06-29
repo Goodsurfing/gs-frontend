@@ -1,5 +1,5 @@
-import { AllowedFilesExtensions } from "@/constants/files";
 import React, { InputHTMLAttributes, MouseEventHandler, ReactNode } from "react";
+import { AllowedFilesExtensions } from "@/shared/constants/files";
 
 export type InputFileProps = {
     imageURL?: string | null;
@@ -11,4 +11,4 @@ export type InputFileProps = {
     onLabelClick?: MouseEventHandler<HTMLLabelElement>;
     allowedExtensions?: AllowedFilesExtensions[];
 } & Required<Pick<InputHTMLAttributes<HTMLInputElement>, "id">> &
-    Omit<InputHTMLAttributes<HTMLInputElement>, "id" | "type">;
+Omit<InputHTMLAttributes<HTMLInputElement>, "id" | "type">;

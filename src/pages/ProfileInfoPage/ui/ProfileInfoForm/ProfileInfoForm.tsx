@@ -52,9 +52,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
 
     const [file, setFile] = useState<File | undefined>();
 
-    const { token } = useAppSelector((state) => {
-        return state.login;
-    });
+    const { token } = useAppSelector((state) => state.login);
 
     async function handleUpdateUserInfo() {
         if (!data) return;
@@ -144,18 +142,16 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             <Controller
                 control={control}
                 name="imageUuid"
-                render={({ field: { name } }) => {
-                    return (
-                        <ProfileInput
-                            file={file}
-                            setFile={setFile}
-                            disabled={isLocked}
-                            id={name}
-                            name={name}
-                            classname={styles.profileInput}
-                        />
-                    );
-                }}
+                render={({ field: { name } }) => (
+                    <ProfileInput
+                        file={file}
+                        setFile={setFile}
+                        disabled={isLocked}
+                        id={name}
+                        name={name}
+                        classname={styles.profileInput}
+                    />
+                )}
             />
         </form>
     );
