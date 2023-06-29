@@ -1,67 +1,145 @@
 import React, {
-    ChangeEvent, FC, useCallback, useEffect, useState,
+    memo, useCallback, useEffect, useState,
 } from "react";
 
-import styles from "./MapWithAddress.module.scss";
-import Input from "@/shared/ui/Input/Input";
-import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
-import { YMap, YmapType, GeoObjectHintType } from "@/entities/Map";
+import cn from "classnames";
+
+import { Placemark } from "@pbe/react-yandex-maps";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { Control, Controller } from "react-hook-form";
+import { YMap, YmapType, GeoObject } from "@/entities/Map";
+
+import locationIcon from "@/shared/assets/icons/location.svg";
+
 import useDebounce from "@/shared/hooks/useDebounce";
-import { getGeocodeByName } from "../model/utils/getGeocodeByName";
-import {} from "../model/utils/getYmapCoordinates";
-import { findCoordinates } from "../model/utils/findCoordinates";
 
-interface MapWithAddressProps {}
+import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 
-export const MapWithAddress: FC<MapWithAddressProps> = () => {
-    const [loading, setLoading] = useState(false);
+import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
+
+import styles from "./MapWithAddress.module.scss";
+import { validateCoordinates } from "../model/utils/validateCoordinates";
+
+interface MapWithAddressProps {
+    className?: string;
+    data: { address: string };
+    control: Control<{ address: string }>;
+}
+
+const MapWithAddress = (
+    {
+        className,
+        data,
+        control,
+    }: MapWithAddressProps,
+) => {
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
+    const [loading, setLoading] = useState(false);
 
-    const [isHintsLoading, setHintsLoading] = useState(false);
+    const [value, setValue] = useState<GeoObject | null>(null);
+    const [options, setOptions] = useState<readonly GeoObject[]>([]);
+    const [inputValue, setInputValue] = useState("");
 
-    const [hints, setHints] = useState<Array<GeoObjectHintType>>([]);
+    const debouncedAddress = useDebounce(inputValue, 300);
 
-    const [coordinates, setCoordinates] = useState<[number, number]>([55, 47]);
-
-    const [address, setAddress] = useState("");
-
-    const handleAddressUpdate = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setAddress(e.target.value);
-    }, []);
-
-    const debouncedAddress = useDebounce(address, 500);
+    const handleValueChange = useCallback((newValue: GeoObject | null) => {
+        setOptions(newValue ? [newValue, ...options] : options);
+        setValue(newValue);
+    }, [options]);
 
     useEffect(() => {
-        if (debouncedAddress && ymap) {
-            setHintsLoading(true);
-            findCoordinates(ymap, debouncedAddress).then((res) => { return setCoordinates(res); });
-            setHintsLoading(false);
-        } else {
-            setHints([]);
+        let active = true;
+
+        if (!ymap) {
+            return undefined;
         }
-    }, [debouncedAddress, ymap]);
+
+        if (debouncedAddress === "") {
+            setOptions(value ? [value] : []);
+            return undefined;
+        }
+
+        if (active) {
+            let newOptions: readonly GeoObject[] = [];
+            if (value) {
+                newOptions = [value];
+            }
+            getGeoObjectCollection(debouncedAddress).then((res) => {
+                if (res?.featureMember.length) {
+                    newOptions = [
+                        ...newOptions,
+                        ...res.featureMember.map((item) => item.GeoObject),
+                    ];
+                    setOptions(newOptions);
+                }
+            });
+        }
+
+        return () => {
+            active = false;
+        };
+    }, [value, ymap, debouncedAddress]);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.content}>
-                <Input placeholder="Начните вводить адрес" onChange={handleAddressUpdate} value={address} />
+                <Controller
+                    name="address"
+                    defaultValue={data.address || ""}
+                    control={control}
+                    render={({ field }) => (
+                        <AutoComplete
+                            value={value}
+                            inputValue={field.value}
+                            onChange={handleValueChange}
+                            onInputChange={(inputVal) => {
+                                field.onChange(inputVal);
+                                setInputValue(inputVal);
+                            }}
+                            options={options}
+                            getOptionLabel={(option) => option.name}
+                            noOptionsText="Точек на карте не найдено"
+                            labelText="Введите адрес"
+                            renderOption={(props, option) => (
+                                <li key={option.name} {...props}>
+                                    <Grid item sx={{ display: "flex", width: 30 }}>
+                                        <img src={locationIcon} alt="location" />
+                                    </Grid>
+                                    <Grid item sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}>
+                                        <Box component="span">{option.name}</Box>
+                                        <Typography variant="body2">
+                                            {option.description}
+                                        </Typography>
+                                    </Grid>
+                                </li>
+                            )}
+                        />
+                    )}
+                />
                 <YMap
-                    defaultState={{ center: coordinates, zoom: 9 }}
-                    className={styles.map}
+                    mapState={{
+                        center: validateCoordinates(value?.Point.pos),
+                        zoom: 10,
+                    }}
+                    className={cn(styles.map, {
+                        [styles.loading]: !loading,
+                    })}
                     query={{
                         ns: "use-load-option",
                         load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
                     }}
-                    setYmap={(ymaps) => { return setYmap(ymaps); }}
+                    setYmap={(ymaps) => setYmap(ymaps)}
                     setLoading={setLoading}
-                />
-            </div>
-            <div>
-                <Button variant={Variant.PRIMARY}>
-                    Сохранить
-                </Button>
+                >
+                    <Placemark
+                        geometry={validateCoordinates(value?.Point.pos)}
+                    />
+                </YMap>
             </div>
         </div>
     );
 };
+
+export const MemoMapWithAddress = memo(MapWithAddress);

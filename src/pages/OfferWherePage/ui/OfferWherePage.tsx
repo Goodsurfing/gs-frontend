@@ -3,24 +3,15 @@ import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 
 import styles from "./OfferWherePage.module.scss";
-import { MapWithAddress } from "@/features/MapWithAddress/ui/MapWithAddress";
+import { AddressForm } from "@/widgets/AddressForm";
 
-export interface IOfferWherePageForm {
-    address: string;
-}
-
-const OfferWherePage = () => {
-    return (
-        <PageLayout sidebarContent={SideMenuData}>
-            <div className={styles.wrapper}>
-                <form>
-                    <div className={styles.ymaps}>
-                        <MapWithAddress />
-                    </div>
-                </form>
-            </div>
-        </PageLayout>
-    );
-};
+const OfferWherePage = () => (
+    <PageLayout sidebarContent={SideMenuData}>
+        <div className={styles.wrapper}>
+            <h1 className={styles.title}>Где вы находитесь или будете приниать волонтеров</h1>
+            <AddressForm className={styles.form} />
+        </div>
+    </PageLayout>
+);
 
 export default OfferWherePage;

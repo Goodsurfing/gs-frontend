@@ -1,1 +1,1 @@
-export { MapWithAddress } from "./ui/MapWithAddress";
+export { MemoMapWithAddress as MapWithAddress } from "./ui/MapWithAddress";

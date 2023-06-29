@@ -3,3 +3,4 @@ export const API_ORGANIZATIONS_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}
 export const API_USER_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}api/v1/user`;
 export const API_TRANSLATION_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}api/v1/translation`;
 export const API_MEDIA_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}api/v1/media`;
+export const API_YANDEX_BASE_URL = "https://geocode-maps.yandex.ru/1.x/";
