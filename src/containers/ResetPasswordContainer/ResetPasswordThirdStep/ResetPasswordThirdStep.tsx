@@ -1,15 +1,15 @@
-import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 import i18n from "i18next";
 import React, { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Variant } from "@/shared/ui/Button/Button.interface";
+import Button from "@/shared/ui/Button/Button";
 
 import InputField from "@/components/InputField/InputField";
 
 import useQuery from "@/shared/hooks/useQuery";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/config/RouterConfig";
 
 import { authApi } from "@/store/api/authApi";
 
@@ -31,7 +31,7 @@ const ResetPasswordThirdStep: FC = () => {
 
     useEffect(() => {
         if (!query.get("token")) {
-            navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
+            navigate(`/${i18n.language}/${RoutePath.main}`);
         }
     }, [navigate, query]);
 
@@ -50,7 +50,7 @@ const ResetPasswordThirdStep: FC = () => {
         })
             .unwrap()
             .then(() => {
-                navigate(`/${i18n.language}/${AppRoutesEnum.HOME}`);
+                navigate(`/${i18n.language}/${RoutePath.main}`);
                 reset();
             });
     };
@@ -61,31 +61,27 @@ const ResetPasswordThirdStep: FC = () => {
                 control={control}
                 name="password"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={field.onChange}
-                            value={field.value}
-                            type="password"
-                            text="Новый пароль"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={field.onChange}
+                        value={field.value}
+                        type="password"
+                        text="Новый пароль"
+                    />
+                )}
             />
             <Controller
                 control={control}
                 name="confirmPassword"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={field.onChange}
-                            value={field.value}
-                            type="password"
-                            text="Повторите новый пароль"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={field.onChange}
+                        value={field.value}
+                        type="password"
+                        text="Повторите новый пароль"
+                    />
+                )}
             />
 
             <Button type="submit" variant={Variant.PRIMARY}>

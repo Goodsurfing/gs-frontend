@@ -13,7 +13,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/config/RouterConfig";
 
 import tokenStorage from "@/shared/utils/storage/TokenStorage";
 
@@ -24,7 +24,6 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import { AppRoutes } from "@/routes/config/RouterConfig";
 
 const SignInForm: FC = () => {
     const [loginUser, { isError }] = authApi.useLoginUserMutation();
@@ -112,7 +111,7 @@ const SignInForm: FC = () => {
                     text="Запомнить меня"
                 />
                 <LocaleLink
-                    to={AppRoutes.RESET_PASSWORD}
+                    to={RoutePath.reset_password}
                     className={styles.forget}
                 >
                     Забыли пароль?
