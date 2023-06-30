@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import logoIcon from "@/shared/assets/icons/logo-black.svg";
 

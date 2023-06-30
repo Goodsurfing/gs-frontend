@@ -3,7 +3,7 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import SignInContainer from "@/containers/SignInContainer/SignInContainer";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./SignInPage.module.scss";
 

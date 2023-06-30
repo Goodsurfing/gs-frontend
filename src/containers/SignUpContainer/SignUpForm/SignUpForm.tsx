@@ -11,7 +11,7 @@ import InputField from "@/components/InputField/InputField";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";

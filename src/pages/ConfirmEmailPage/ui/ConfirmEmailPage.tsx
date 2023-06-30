@@ -4,7 +4,7 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { useAppSelector } from "@/shared/hooks/redux";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./ConfirmEmailPage.module.scss";
 

@@ -14,7 +14,7 @@ import Popup from "@/components/Popup/Popup";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import { logout } from "@/store/reducers/loginSlice";
 

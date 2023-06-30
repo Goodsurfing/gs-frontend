@@ -1,15 +1,12 @@
 import React, { FC } from "react";
-import { AppRouter } from "@/routes/AppRouter/AppRouter";
 
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
-
-import { RouterLanguageController } from "@/routes/RouterLanguageController/RouterLanguageController";
+import { Outlet } from "react-router-dom";
 
 const App: FC = () => (
-    <RouterLanguageController>
-        <ScrollToTop />
-        <AppRouter />
-    </RouterLanguageController>
+    <div>
+        <Outlet />
+    </div>
 );
 
 export default App;

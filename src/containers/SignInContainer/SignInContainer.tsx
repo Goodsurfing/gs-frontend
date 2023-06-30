@@ -6,7 +6,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import SignInForm from "@/containers/SignInContainer/SignInForm/SignInForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./SignInContainer.module.scss";
 

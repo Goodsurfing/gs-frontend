@@ -1,5 +1,3 @@
-import React from "react";
-
 import { RouteProps } from "react-router-dom";
 import { HostVideoPage } from "@/pages/HostVideoPage";
 import { HostGalleryPage } from "@/pages/HostGalleryPage";
@@ -15,13 +13,13 @@ import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
 import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
 import { OfferWhenPage } from "@/pages/OfferWhenPage";
+import { OfferWherePage } from "@/pages/OfferWherePage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
-import { OfferWherePage } from "@/pages/OfferWherePage";
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -52,25 +50,25 @@ export enum AppRoutes {
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.MAIN]: "/:ln",
-    [AppRoutes.CONFIRM_EMAIL]: "/:ln/confirm-email",
-    [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/:ln/confirm-email-success",
-    [AppRoutes.RESET_PASSWORD]: "/:ln/reset-password",
-    [AppRoutes.RESET_PASSWORD_VERIFY]: ":/ln/reset-password-verify",
-    [AppRoutes.PROFILE_INFO]: "/:ln/profile/info",
-    [AppRoutes.PROFILE_RESET_PASSWORD]: "/:ln/profile/reset-password",
-    [AppRoutes.HOST]: "/:ln/host",
-    [AppRoutes.HOST_REGISTRATION]: "/:ln/host/registration",
-    [AppRoutes.HOST_GALLERY]: "/:ln/host/gallery",
-    [AppRoutes.HOST_VIDEO]: "/:ln/host/video",
-    [AppRoutes.OFFERS]: "/:ln/offers",
-    [AppRoutes.OFFERS_WELCOME]: "/:ln/offers-welcome",
-    [AppRoutes.OFFERS_WHERE]: "/:ln/offers-where",
-    [AppRoutes.OFFERS_WHEN]: "/:ln/offers-when",
-    [AppRoutes.OFFERS_WHO_NEEDS]: "/:ln/offers-who-needs",
-    [AppRoutes.OFFERS_DESCRIPTION]: "/:ln/offers-description",
-    [AppRoutes.SIGN_UP]: "/:ln/signup",
-    [AppRoutes.SIGN_IN]: "/:ln/signin",
+    [AppRoutes.MAIN]: "/",
+    [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
+    [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
+    [AppRoutes.RESET_PASSWORD]: "/reset-password",
+    [AppRoutes.RESET_PASSWORD_VERIFY]: "/reset-password-verify",
+    [AppRoutes.PROFILE_INFO]: "/profile/info",
+    [AppRoutes.PROFILE_RESET_PASSWORD]: "/profile/reset-password",
+    [AppRoutes.HOST]: "/host",
+    [AppRoutes.HOST_REGISTRATION]: "/host/registration",
+    [AppRoutes.HOST_GALLERY]: "/host/gallery",
+    [AppRoutes.HOST_VIDEO]: "/host/video",
+    [AppRoutes.OFFERS]: "/offers",
+    [AppRoutes.OFFERS_WELCOME]: "/offers-welcome",
+    [AppRoutes.OFFERS_WHERE]: "/offers-where",
+    [AppRoutes.OFFERS_WHEN]: "/offers-when",
+    [AppRoutes.OFFERS_WHO_NEEDS]: "/offers-who-needs",
+    [AppRoutes.OFFERS_DESCRIPTION]: "/offers-description",
+    [AppRoutes.SIGN_UP]: "/signup",
+    [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",
 };
 

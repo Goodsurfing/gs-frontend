@@ -3,7 +3,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 

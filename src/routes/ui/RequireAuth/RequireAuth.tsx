@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { RoutePath } from "../../config/RouterConfig";
+import { RoutePath } from "../../model/config/RouterConfig";
 
 export interface RequireAuthProps {
     children: JSX.Element;

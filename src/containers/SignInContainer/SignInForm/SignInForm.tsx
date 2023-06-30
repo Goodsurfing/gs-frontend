@@ -13,7 +13,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import tokenStorage from "@/shared/utils/storage/TokenStorage";
 

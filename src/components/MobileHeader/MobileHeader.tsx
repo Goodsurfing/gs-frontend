@@ -10,7 +10,7 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();

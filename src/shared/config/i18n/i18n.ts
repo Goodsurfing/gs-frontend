@@ -11,15 +11,23 @@ i18n.use(Backend)
         fallbackLng: "ru",
         supportedLngs: ["ru", "en", "es"],
         detection: {
-            order: ["querystring", "cookie", "path", "navigator"],
-            caches: ["cookie"],
+            order: ["customLocalStorageDetector", "navigator"],
+            caches: [],
         },
         interpolation: {
             escapeValue: false,
         },
         backend: {
-            loadPath: "/locales/{{lng}}/{{ns}}.json",
+            loadPath: "/public/locales/{{lng}}/{{ns}}.json",
 
+        },
+        react: {
+            bindI18n: "languageChanged",
+            bindI18nStore: "",
+            transEmptyNodeValue: "",
+            transSupportBasicHtmlNodes: true,
+            transKeepBasicHtmlNodesFor: ["br", "strong", "i"],
+            useSuspense: false,
         },
     });
 
