@@ -3,22 +3,20 @@ import { Route, Routes } from "react-router-dom";
 import { AppRoutesProps, routeConfig } from "../config/RouterConfig";
 import { RequireAuth } from "../RequireAuth/RequireAuth";
 
-import Preloader from "@/components/Preloader/Preloader";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 export const AppRouter = () => {
-    const renderWithWrapper = useCallback((route: AppRoutesProps) => {
-        return (
-            <Route
-                key={route.path}
-                path={route.path}
-                element={
-                    route.authOnly
-                        ? <RequireAuth>{route.element}</RequireAuth>
-                        : route.element
-                }
-            />
-        );
-    }, []);
+    const renderWithWrapper = useCallback((route: AppRoutesProps) => (
+        <Route
+            key={route.path}
+            path={route.path}
+            element={
+                route.authOnly
+                    ? <RequireAuth>{route.element}</RequireAuth>
+                    : route.element
+            }
+        />
+    ), []);
     return (
         <Suspense fallback={<Preloader />}>
             <Routes>
