@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import {
     Route, Routes, useLocation, useNavigate,
 } from "react-router-dom";
-import { getDefaultLanguage } from "../../model/services/RoutingHelpers/RoutingHelpers";
 import { getMainPageUrl } from "../../model/services/AppUrls/AppUrls";
 import { RouteWithChildrenProps } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
@@ -20,13 +19,14 @@ export const LocaleContext = createContext({
     setLocale: (newLocale: string) => {},
 });
 
+export const defaultLocale = "ru";
+export const availableLocales = ["ru", "en", "es"];
+
 export const LangRouter = () => {
     const { i18n } = useTranslation();
     const { pathname, search, hash } = useLocation();
-    const navigate = useNavigate();
-    const availableLocales = ["ru", "en", "es"];
-    const defaultLocale = "ru";
     const pathnameLocale = pathname.substring(1, 3).toLowerCase();
+    const navigate = useNavigate();
     const [locale, setLocale] = useState(defaultLocale);
     const loaderTimerRef = useRef<any>();
     const [isLoading, setLoading] = useState(true);
@@ -39,7 +39,6 @@ export const LangRouter = () => {
     });
 
     const setLanguageHandler = (lang: string) => {
-        // set language attribute on HTML element
         document.documentElement.setAttribute("lang", lang);
 
         if (lang === "ru") {

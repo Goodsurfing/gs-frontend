@@ -43,8 +43,6 @@ const InfoHeader: FC = () => {
         setLinkIsOpen(false);
     };
 
-    console.log(getMainPageUrl(locale))
-
     useOnClickOutside(communityRef, handleClickOutside);
 
     return (
@@ -97,7 +95,7 @@ const InfoHeader: FC = () => {
                         </div>
                         <div className={styles.link}>
                             <Button
-                                onClick={() => handleLogout()}
+                                onClick={handleLogout}
                                 className={styles.btn}
                                 variant={Variant.PRIMARY}
                             >

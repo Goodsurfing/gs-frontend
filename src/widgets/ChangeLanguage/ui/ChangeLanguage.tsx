@@ -2,15 +2,11 @@ import cn from "classnames";
 import React, {
     useEffect, useRef, useState, memo, useContext,
 } from "react";
-import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { changeLanguageData } from "../model/data/ChangeLanguage.data";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
-import { createUrlWithLanguageCode } from "@/shared/utils/language/createUrlWithLanguageCode";
 
 import { localeApi } from "@/store/api/localeApi";
 
@@ -24,18 +20,11 @@ interface ChangeLanguageProps {
 }
 
 export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
-    const { i18n } = useTranslation();
-    const navigate = useNavigate();
-    const location = useLocation();
-
     const { locale, setLocale } = useContext(LocaleContext);
 
     const [changeLocale] = localeApi.useChangeLocaleMutation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    // const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
-    //     changeLanguageData[0],
-    // );
 
     const [language, setLanguage] = useState(locale);
 
@@ -49,9 +38,9 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
         setLocale(lang.code);
-        // await changeLocale({
-        //     locale: lang.code,
-        // });
+        await changeLocale({
+            locale: lang.code,
+        });
         setIsOpen(false);
     };
 
