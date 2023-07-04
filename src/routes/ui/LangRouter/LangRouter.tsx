@@ -1,5 +1,6 @@
 import {
     createContext, useCallback, useEffect, useMemo, useRef, useState,
+    Suspense,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,6 +16,7 @@ import { allRoutes } from "../../model/config/RoutesConfig";
 
 export const LocaleContext = createContext({
     locale: "",
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setLocale: (newLocale: string) => {},
 });
 
@@ -23,11 +25,12 @@ export const LangRouter = () => {
     const { pathname, search, hash } = useLocation();
     const navigate = useNavigate();
     const availableLocales = ["ru", "en", "es"];
-    const defaultLocale = (
-        getDefaultLanguage() === "ru" || getDefaultLanguage() === "en" || getDefaultLanguage() === "es" ? getDefaultLanguage() : "ru"
-    ) as string;
+    // const defaultLocale = (
+    //     getDefaultLanguage() === "ru" || getDefaultLanguage() === "en" || getDefaultLanguage() === "es" ? getDefaultLanguage() : "ru"
+    // ) as string;
+    const defaultLocale = "ru";
     const pathnameLocale = pathname.substring(1, 3).toLowerCase();
-
+    console.log(pathnameLocale);
     const [locale, setLocale] = useState(defaultLocale);
     const loaderTimerRef = useRef<any>();
     const [isLoading, setLoading] = useState(true);
@@ -40,14 +43,16 @@ export const LangRouter = () => {
         }, 300);
     });
 
+    // console.log(locale, defaultLocale);
+
     const setLanguageHandler = (lang: string) => {
         // set language attribute on HTML element
         document.documentElement.setAttribute("lang", lang);
 
-        if (lang === "en") {
-            i18n.changeLanguage("en-US");
+        if (lang === "ru") {
+            i18n.changeLanguage("ru");
         } else {
-            i18n.changeLanguage("ar-SA");
+            i18n.changeLanguage("en");
         }
     };
 
@@ -73,8 +78,19 @@ export const LangRouter = () => {
                 navigate(`${newPath}${hash}${search}`);
             }
             setLocale(newLocale);
+        } else if (newPath === `/${newLocale}/` || newPath === `/${newLocale}` || pathname === "/") {
+            navigate(getMainPageUrl(newLocale));
         }
     }, [hash, locale, navigate, pathname, search]);
+
+    useEffect(() => {
+        if (availableLocales.includes(pathnameLocale)) {
+            updateLocale(pathnameLocale);
+        } else if (pathname === "/") {
+            updateLocale(defaultLocale);
+        }
+        // eslint-disable-next-line
+      }, [pathname]);
 
     const renderRouteWithChildren = (
         routes: RouteWithChildrenProps[],
@@ -92,16 +108,16 @@ export const LangRouter = () => {
         );
     }
 
-    console.log(locale);
-
     return (
         <LocaleContext.Provider value={value}>
-            <Routes>
-                <Route path={`/${locale}`} element={<App />}>
-                    {renderRouteWithChildren(allRoutes)}
-                </Route>
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Suspense fallback>
+                <Routes>
+                    <Route path={`/${locale}`} element={<App />}>
+                        {renderRouteWithChildren(allRoutes)}
+                    </Route>
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </Suspense>
         </LocaleContext.Provider>
     );
 };

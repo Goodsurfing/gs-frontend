@@ -3,8 +3,31 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
+import translationEn from "../../../../public/locales/en/translation.json";
+import translationRu from "../../../../public/locales/ru/translation.json";
+
+import { LANGUAGE_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import LocalStorageManager from "@/shared/lib/localstorage/LocalStorageManager";
+
+const resources = {
+    ru: {
+        translation: translationRu,
+    },
+    en: {
+        translation: translationEn,
+    },
+};
+
+const languageDetector = new LanguageDetector();
+languageDetector.addDetector({
+    name: "customLocalStorageDetector",
+    lookup() {
+        return LocalStorageManager.getItem(LANGUAGE_LOCALSTORAGE_KEY);
+    },
+});
+
 i18n.use(Backend)
-    .use(LanguageDetector)
+    .use(languageDetector)
     .use(initReactI18next)
     .init({
         keySeparator: ".",
@@ -14,6 +37,7 @@ i18n.use(Backend)
             order: ["customLocalStorageDetector", "navigator"],
             caches: [],
         },
+        resources,
         interpolation: {
             escapeValue: false,
         },

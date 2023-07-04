@@ -101,7 +101,7 @@ const InfoHeader: FC = () => {
                 ) : (
                     <>
                         <div className={styles.link}>
-                            <LocaleLink to={RoutePath.sign_in}>
+                            <LocaleLink replace to={RoutePath.sign_in}>
                                 {t("main.welcome.header.sign-in")}
                             </LocaleLink>
                         </div>

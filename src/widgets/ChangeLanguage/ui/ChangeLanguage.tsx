@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    useEffect, useRef, useState, memo,
+    useEffect, useRef, useState, memo, useContext,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import { localeApi } from "@/store/api/localeApi";
 import { ILanguage } from "@/types/languages";
 
 import styles from "./ChangeLanguage.module.scss";
+import { LocaleContext } from "@/routes";
 
 interface ChangeLanguageProps {
     className?: string;
@@ -26,6 +27,8 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
     const { i18n } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const { locale, setLocale } = useContext(LocaleContext);
 
     const [changeLocale] = localeApi.useChangeLocaleMutation();
 
@@ -43,7 +46,7 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
     useOnClickOutside(menuRef, handleClickOutside);
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
-        i18n.changeLanguage(lang.code);
+        setLocale(lang.code);
         await changeLocale({
             locale: lang.code,
         });
@@ -68,9 +71,7 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
         <div ref={menuRef} className={styles.wrapper}>
             <div
                 className={cn(styles.selectLang, className)}
-                onClick={() => {
-                    return setIsOpen(!isOpen);
-                }}
+                onClick={() => setIsOpen(!isOpen)}
             >
                 <img src={currentLanguage.icon} alt={currentLanguage.name} />
                 <Arrow isOpen={isOpen} />
@@ -81,20 +82,16 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                 })}
             >
                 {changeLanguageData
-                    && changeLanguageData.map((item) => {
-                        return (
-                            <div
-                                key={item.id}
-                                className={styles.item}
-                                onClick={() => {
-                                    return changeLanguageHandleClick(item);
-                                }}
-                            >
-                                <img src={item.icon} alt={item.name} />
-                                <span>{item.name}</span>
-                            </div>
-                        );
-                    })}
+                    && changeLanguageData.map((item) => (
+                        <div
+                            key={item.id}
+                            className={styles.item}
+                            onClick={() => changeLanguageHandleClick(item)}
+                        >
+                            <img src={item.icon} alt={item.name} />
+                            <span>{item.name}</span>
+                        </div>
+                    ))}
             </div>
         </div>
     );

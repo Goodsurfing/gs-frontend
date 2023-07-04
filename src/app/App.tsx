@@ -1,12 +1,14 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
-import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 import { Outlet } from "react-router-dom";
 
-const App: FC = () => (
-    <div>
-        <Outlet />
-    </div>
-);
+const App: FC = () => {
+    console.log("App");
+    return (
+        <div className="app">
+            <Outlet />
+        </div>
+    );
+};
 
 export default App;

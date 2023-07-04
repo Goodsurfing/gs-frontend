@@ -50,7 +50,7 @@ export enum AppRoutes {
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-    [AppRoutes.MAIN]: "/",
+    [AppRoutes.MAIN]: "/main",
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
     [AppRoutes.RESET_PASSWORD]: "/reset-password",

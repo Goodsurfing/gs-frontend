@@ -8,7 +8,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { BuildOptions } from "./types/config";
 
 export function buildPlugins({
-    paths, isDev, apiUrl, project,
+    paths, analyze, isDev, apiUrl, project,
 }: BuildOptions): webpack.WebpackPluginInstance[] {
     const plugins = [
         new HtmlWebpackPlugin({
@@ -31,6 +31,9 @@ export function buildPlugins({
     if (isDev) {
         plugins.push(new ReactRefreshWebpackPlugin());
         plugins.push(new webpack.HotModuleReplacementPlugin());
+    }
+
+    if (analyze) {
         plugins.push(new BundleAnalyzerPlugin({
             openAnalyzer: false,
         }));

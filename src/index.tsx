@@ -6,10 +6,9 @@ import { I18nextProvider } from "react-i18next";
 
 import { setupStore } from "@/store/store";
 
-import "./shared/config/i18n/i18n";
+import i18n from "@/shared/config/i18n/i18n";
 import "@/app/styles/index.scss";
 import { LangRouter } from "@/routes";
-import i18n from "@/shared/config/i18n/i18n";
 
 const root = createRoot(document.getElementById("root")!);
 

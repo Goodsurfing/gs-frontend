@@ -18,7 +18,6 @@ import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 
-
 import {
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
