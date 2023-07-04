@@ -1,4 +1,6 @@
-import React, { FC, useRef, useState } from "react";
+import React, {
+    FC, useRef, useState, useContext,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -14,20 +16,21 @@ import Popup from "@/components/Popup/Popup";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { AppRoutesEnum, ProfileRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
+import { LocaleContext, getMainPageUrl, getProfileInfoPageUrl } from "@/routes";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
 
+    const { locale } = useContext(LocaleContext);
+
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
-    const { token } = useAppSelector((state) => {
-        return state.login;
-    });
+    const { token } = useAppSelector((state) => state.login);
     const dispatch = useAppDispatch();
 
     const handleLogout = () => {
@@ -55,14 +58,12 @@ const InfoHeader: FC = () => {
                 <div
                     ref={communityRef}
                     className={styles.link}
-                    onClick={() => {
-                        return setLinkIsOpen(!linkIsOpen);
-                    }}
+                    onClick={() => setLinkIsOpen(!linkIsOpen)}
                 >
                     <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={linkIsOpen} />
                     <Popup isOpen={linkIsOpen} className={styles.popup}>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
                         <Link to="/">
@@ -88,15 +89,13 @@ const InfoHeader: FC = () => {
                 {token ? (
                     <>
                         <div className={styles.link}>
-                            <Link to={ProfileRoutesEnum.INFO}>
+                            <Link to={getProfileInfoPageUrl(locale)}>
                                 Личный кабинет
                             </Link>
                         </div>
                         <div className={styles.link}>
                             <Button
-                                onClick={() => {
-                                    return handleLogout();
-                                }}
+                                onClick={handleLogout}
                                 className={styles.btn}
                                 variant={Variant.PRIMARY}
                             >
@@ -107,7 +106,7 @@ const InfoHeader: FC = () => {
                 ) : (
                     <>
                         <div className={styles.link}>
-                            <LocaleLink to={AppRoutesEnum.SIGNIN}>
+                            <LocaleLink replace to={RoutePath.sign_in}>
                                 {t("main.welcome.header.sign-in")}
                             </LocaleLink>
                         </div>
@@ -115,7 +114,7 @@ const InfoHeader: FC = () => {
                             <ButtonLink
                                 className={styles.btn}
                                 type="outlined"
-                                path={AppRoutesEnum.SIGNUP}
+                                path={RoutePath.sign_up}
                             >
                                 {t("main.welcome.header.sign-up")}
                             </ButtonLink>

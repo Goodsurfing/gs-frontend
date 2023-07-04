@@ -3,18 +3,16 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import ResetPasswordContainer from "@/containers/ResetPasswordContainer/ResetPasswordContainer";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./ResetPasswordPage.module.scss";
 
-const ResetPasswordPage: FC = () => {
-    return (
-        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNIN}>
-            <div className={styles.wrapper}>
-                <ResetPasswordContainer />
-            </div>
-        </SignLayout>
-    );
-};
+const ResetPasswordPage: FC = () => (
+    <SignLayout cancelText="Отменить" cancelPath={RoutePath.sign_in}>
+        <div className={styles.wrapper}>
+            <ResetPasswordContainer />
+        </div>
+    </SignLayout>
+);
 
 export default ResetPasswordPage;

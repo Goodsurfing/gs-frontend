@@ -3,18 +3,16 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import SignUpContainer from "@/containers/SignUpContainer/SignUpContainer";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./SignUpPage.module.scss";
 
-const SignUpPage: FC = () => {
-    return (
-        <SignLayout cancelPath={AppRoutesEnum.HOME} cancelText="Отменить">
-            <div className={styles.wrapper}>
-                <SignUpContainer />
-            </div>
-        </SignLayout>
-    );
-};
+const SignUpPage: FC = () => (
+    <SignLayout cancelPath={RoutePath.main} cancelText="Отменить">
+        <div className={styles.wrapper}>
+            <SignUpContainer />
+        </div>
+    </SignLayout>
+);
 
 export default SignUpPage;

@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 interface LocaleLinkProps {
     to: string;
     className?: string;
+    replace?: boolean;
 }
 
 const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
     to,
+    replace,
     className,
     children,
 }) => {
@@ -21,9 +23,9 @@ const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
     };
     return (
         <Link
+            replace={replace}
             className={className}
             to={`/${i18n.language}/${adaptiveLink(to)}`}
-            replace
         >
             {children}
         </Link>

@@ -15,7 +15,7 @@ import Arrow from "../../Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);

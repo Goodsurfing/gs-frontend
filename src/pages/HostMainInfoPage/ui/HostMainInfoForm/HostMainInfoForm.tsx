@@ -10,7 +10,7 @@ import {
     HintType,
     IHintPopup,
 } from "@/components/HintPopup/HintPopup.interface";
-import Preloader from "@/components/Preloader/Preloader";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 import { organizationApi } from "@/store/api/organizationApi";

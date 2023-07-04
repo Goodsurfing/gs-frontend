@@ -13,6 +13,7 @@ export default (env: BuildEnv) => {
     const mode = env.mode || "development";
     const isDev = mode === "development";
     const PORT = env.port || 3000;
+    const analyze = env.analyze || false;
     const apiUrl = env.apiUrl || "https://gudsurfing.ru/";
 
     const config: webpack.Configuration = buildWebpackConfig({
@@ -20,6 +21,7 @@ export default (env: BuildEnv) => {
         paths,
         isDev,
         apiUrl,
+        analyze,
         port: PORT,
         project: "frontend",
     });

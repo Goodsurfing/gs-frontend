@@ -4,17 +4,15 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { useAppSelector } from "@/shared/hooks/redux";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import styles from "./ConfirmEmailPage.module.scss";
 
 const ConfirmEmailPage: FC = () => {
-    const { email } = useAppSelector((state) => {
-        return state.register;
-    });
+    const { email } = useAppSelector((state) => state.register);
 
     return (
-        <SignLayout cancelText="Отменить" cancelPath={AppRoutesEnum.SIGNUP}>
+        <SignLayout cancelText="Отменить" cancelPath={RoutePath.sign_up}>
             <div className={styles.wrapper}>
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>

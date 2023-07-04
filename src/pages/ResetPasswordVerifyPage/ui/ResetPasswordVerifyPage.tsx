@@ -5,7 +5,7 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
 
 import styles from "./ResetPasswordVerifyPage.module.scss";
-import { RoutePath } from "@/routes/config/RouterConfig";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 const ResetPasswordVerifyPage: FC = () => (
     <SignLayout cancelText="Отменить" cancelPath={RoutePath.sign_in}>

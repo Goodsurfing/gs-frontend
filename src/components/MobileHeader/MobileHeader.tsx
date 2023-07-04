@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -7,17 +7,14 @@ import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
 import { useAppSelector } from "@/shared/hooks/redux";
 
-import { AppRoutesEnum } from "@/routes/types";
-
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
-    const { token } = useAppSelector((state) => {
-        return state.login;
-    });
+    const { token } = useAppSelector((state) => state.login);
 
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
@@ -37,9 +34,7 @@ const MobileHeader: FC = () => {
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
-                    onClick={() => {
-                        return setMenuIsOpen(!menuIsOpen);
-                    }}
+                    onClick={() => setMenuIsOpen(!menuIsOpen)}
                 >
                     <span />
                     <span />
@@ -62,15 +57,15 @@ const MobileHeader: FC = () => {
                 </div>
                 <div className={styles.link}>
                     {token ? (
-                        <Link to={AppRoutesEnum.CATEGORIES}>Категории</Link>
+                        <Link to={RoutePath.main}>Категории</Link>
                     ) : (
-                        <Link to={AppRoutesEnum.SIGNIN}>
+                        <Link to={RoutePath.sign_in}>
                             {t("main.welcome.header.sign-in")}
                         </Link>
                     )}
                 </div>
                 <div className={styles.link}>
-                    <Link to={AppRoutesEnum.SIGNUP}>
+                    <Link to={RoutePath.sign_up}>
                         {t("main.welcome.header.sign-up")}
                     </Link>
                 </div>

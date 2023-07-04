@@ -11,7 +11,7 @@ import InputField from "@/components/InputField/InputField";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { AppRoutesEnum } from "@/routes/types";
+import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
@@ -40,7 +40,7 @@ const SignUpForm: FC = () => {
                 .then((response) => {
                     dispatch(setRegisterUserData(response));
                     navigate(
-                        `/${i18n.language}/${AppRoutesEnum.CONFIRM_EMAIL}`,
+                        `/${i18n.language}/${RoutePath.confirm_email}`,
                         { replace: true },
                     );
                 })
@@ -66,35 +66,27 @@ const SignUpForm: FC = () => {
                 control={control}
                 name="email"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            type="email"
-                            text="E-mail"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type="email"
+                        text="E-mail"
+                    />
+                )}
             />
             <Controller
                 control={control}
                 name="password"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            type="password"
-                            text="Пароль"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type="password"
+                        text="Пароль"
+                    />
+                )}
             />
             <Button
                 type="submit"
