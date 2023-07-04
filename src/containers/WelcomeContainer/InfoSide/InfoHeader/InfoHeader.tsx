@@ -1,4 +1,6 @@
-import React, { FC, useRef, useState } from "react";
+import React, {
+    FC, useRef, useState, useContext,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -19,9 +21,12 @@ import { RoutePath } from "@/routes/model/config/RouterConfig";
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
+import { LocaleContext, getMainPageUrl, getProfileInfoPageUrl } from "@/routes";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
+
+    const { locale } = useContext(LocaleContext);
 
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
@@ -37,6 +42,8 @@ const InfoHeader: FC = () => {
     const handleClickOutside = () => {
         setLinkIsOpen(false);
     };
+
+    console.log(getMainPageUrl(locale))
 
     useOnClickOutside(communityRef, handleClickOutside);
 
@@ -58,7 +65,7 @@ const InfoHeader: FC = () => {
                     <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={linkIsOpen} />
                     <Popup isOpen={linkIsOpen} className={styles.popup}>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
                         <Link to="/">
@@ -84,7 +91,7 @@ const InfoHeader: FC = () => {
                 {token ? (
                     <>
                         <div className={styles.link}>
-                            <Link to={RoutePath.profile_info}>
+                            <Link to={getProfileInfoPageUrl(locale)}>
                                 Личный кабинет
                             </Link>
                         </div>

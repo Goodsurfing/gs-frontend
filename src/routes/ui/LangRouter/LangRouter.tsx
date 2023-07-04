@@ -25,14 +25,11 @@ export const LangRouter = () => {
     const { pathname, search, hash } = useLocation();
     const navigate = useNavigate();
     const availableLocales = ["ru", "en", "es"];
-    const defaultLocale = (
-        getDefaultLanguage() === "ru" || getDefaultLanguage() === "en" || getDefaultLanguage() === "es" ? getDefaultLanguage() : "ru"
-    ) as string;
+    const defaultLocale = "ru";
     const pathnameLocale = pathname.substring(1, 3).toLowerCase();
     const [locale, setLocale] = useState(defaultLocale);
     const loaderTimerRef = useRef<any>();
     const [isLoading, setLoading] = useState(true);
-    document.body.dir = i18n.dir(i18n.language);
 
     useEffect(() => {
         loaderTimerRef.current = setTimeout(() => {
@@ -40,8 +37,6 @@ export const LangRouter = () => {
             clearTimeout(loaderTimerRef.current);
         }, 300);
     });
-
-    // console.log(locale, defaultLocale);
 
     const setLanguageHandler = (lang: string) => {
         // set language attribute on HTML element

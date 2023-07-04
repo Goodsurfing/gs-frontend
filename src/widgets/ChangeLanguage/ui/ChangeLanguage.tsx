@@ -33,9 +33,11 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
     const [changeLocale] = localeApi.useChangeLocaleMutation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
-        changeLanguageData[0],
-    );
+    // const [currentLanguage, setCurrentLanguage] = useState<ILanguage>(
+    //     changeLanguageData[0],
+    // );
+
+    const [language, setLanguage] = useState(locale);
 
     const menuRef = useRef(null);
 
@@ -47,25 +49,15 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
         setLocale(lang.code);
-        await changeLocale({
-            locale: lang.code,
-        });
-        navigate(createUrlWithLanguageCode(lang.code, location.pathname), {
-            replace: true,
-        });
+        // await changeLocale({
+        //     locale: lang.code,
+        // });
         setIsOpen(false);
     };
 
     useEffect(() => {
-        const currentLang = changeLanguageData.filter((item) => {
-            if (item.code === i18n.language) {
-                return item;
-            }
-
-            return false;
-        });
-        setCurrentLanguage(currentLang[0]);
-    }, [i18n.language]);
+        setLanguage(locale);
+    }, [locale]);
 
     return (
         <div ref={menuRef} className={styles.wrapper}>
@@ -73,7 +65,8 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                 className={cn(styles.selectLang, className)}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <img src={currentLanguage.icon} alt={currentLanguage.name} />
+                <p>{language}</p>
+                {/* <img src={currentLanguage.icon} alt={currentLanguage.name} /> */}
                 <Arrow isOpen={isOpen} />
             </div>
             <div

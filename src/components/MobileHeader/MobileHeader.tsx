@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -14,9 +14,7 @@ import { RoutePath } from "@/routes/model/config/RouterConfig";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
-    const { token } = useAppSelector((state) => {
-        return state.login;
-    });
+    const { token } = useAppSelector((state) => state.login);
 
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
@@ -36,9 +34,7 @@ const MobileHeader: FC = () => {
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
-                    onClick={() => {
-                        return setMenuIsOpen(!menuIsOpen);
-                    }}
+                    onClick={() => setMenuIsOpen(!menuIsOpen)}
                 >
                     <span />
                     <span />

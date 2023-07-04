@@ -1,4 +1,4 @@
-export { AppRoutes, routeConfig } from "./model/config/RouterConfig";
+export { AppRoutes, RoutePath } from "./model/config/RouterConfig";
 export { LangRouter, LocaleContext } from "./ui/LangRouter/LangRouter";
 export {
     getConfirmEmailPageUrl,
@@ -15,7 +15,7 @@ export {
     getOffersWherePageUrl,
     getOffersWhoNeedsPageUrl,
     getProfileInfoPageUrl,
-    getProfileResetPasswordPageUrl,
+    getProfileResetPasswordPageUrl, 
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
