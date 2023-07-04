@@ -25,12 +25,10 @@ export const LangRouter = () => {
     const { pathname, search, hash } = useLocation();
     const navigate = useNavigate();
     const availableLocales = ["ru", "en", "es"];
-    // const defaultLocale = (
-    //     getDefaultLanguage() === "ru" || getDefaultLanguage() === "en" || getDefaultLanguage() === "es" ? getDefaultLanguage() : "ru"
-    // ) as string;
-    const defaultLocale = "ru";
+    const defaultLocale = (
+        getDefaultLanguage() === "ru" || getDefaultLanguage() === "en" || getDefaultLanguage() === "es" ? getDefaultLanguage() : "ru"
+    ) as string;
     const pathnameLocale = pathname.substring(1, 3).toLowerCase();
-    console.log(pathnameLocale);
     const [locale, setLocale] = useState(defaultLocale);
     const loaderTimerRef = useRef<any>();
     const [isLoading, setLoading] = useState(true);
@@ -110,7 +108,7 @@ export const LangRouter = () => {
 
     return (
         <LocaleContext.Provider value={value}>
-            <Suspense fallback>
+            <Suspense fallback={<Preloader />}>
                 <Routes>
                     <Route path={`/${locale}`} element={<App />}>
                         {renderRouteWithChildren(allRoutes)}
