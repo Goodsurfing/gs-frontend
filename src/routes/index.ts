@@ -1,5 +1,6 @@
 export { AppRoutes, RoutePath } from "./model/config/RouterConfig";
 export { LangRouter, LocaleContext } from "./ui/LangRouter/LangRouter";
+export { useLocale } from "./ui/useLocale/useLocale";
 export {
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,

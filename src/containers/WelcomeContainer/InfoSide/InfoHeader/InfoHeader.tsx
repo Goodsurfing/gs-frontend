@@ -16,17 +16,17 @@ import Popup from "@/components/Popup/Popup";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
-
 import { logout } from "@/store/reducers/loginSlice";
 
 import styles from "./InfoHeader.module.scss";
-import { LocaleContext, getMainPageUrl, getProfileInfoPageUrl } from "@/routes";
+import {
+    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl, useLocale,
+} from "@/routes";
 
 const InfoHeader: FC = () => {
     const { t } = useTranslation();
 
-    const { locale } = useContext(LocaleContext);
+    const { locale } = useLocale();
 
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
@@ -53,7 +53,7 @@ const InfoHeader: FC = () => {
             <header className={styles.header}>
                 <ChangeLanguage />
                 <div className={styles.link}>
-                    <Link to="/">{t("main.welcome.header.how-it-work")}</Link>
+                    <Link to={getMainPageUrl(locale)}>{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div
                     ref={communityRef}
@@ -66,22 +66,22 @@ const InfoHeader: FC = () => {
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.video")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.experts")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.ambassadors")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.courses")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.clubs")}
                         </Link>
-                        <Link to="/">
+                        <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.journal")}
                         </Link>
                     </Popup>
@@ -106,7 +106,7 @@ const InfoHeader: FC = () => {
                 ) : (
                     <>
                         <div className={styles.link}>
-                            <LocaleLink replace to={RoutePath.sign_in}>
+                            <LocaleLink to={getSignInPageUrl(locale)}>
                                 {t("main.welcome.header.sign-in")}
                             </LocaleLink>
                         </div>
@@ -114,7 +114,7 @@ const InfoHeader: FC = () => {
                             <ButtonLink
                                 className={styles.btn}
                                 type="outlined"
-                                path={RoutePath.sign_up}
+                                path={getMainPageUrl(locale)}
                             >
                                 {t("main.welcome.header.sign-up")}
                             </ButtonLink>

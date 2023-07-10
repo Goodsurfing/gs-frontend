@@ -7,22 +7,20 @@ import LogotypeIcon from "@/shared/assets/icons/logo.svg";
 
 import styles from "./WelcomeContainer.module.scss";
 
-const WelcomeContainer: FC = () => {
-    return (
-        <main className={styles.wrapper}>
-            <div className={styles.slider}>
-                <img
-                    src={LogotypeIcon}
-                    alt="Logotype"
-                    className={styles.logotype}
-                />
-                <SliderSide />
-            </div>
-            <div className={styles.info}>
-                <InfoSide />
-            </div>
-        </main>
-    );
-};
+const WelcomeContainer: FC = () => (
+    <main className={styles.wrapper}>
+        <div className={styles.slider}>
+            <img
+                src={LogotypeIcon}
+                alt="Logotype"
+                className={styles.logotype}
+            />
+            <SliderSide />
+        </div>
+        <div className={styles.info}>
+            <InfoSide />
+        </div>
+    </main>
+);
 
 export default WelcomeContainer;

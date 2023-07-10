@@ -6,25 +6,27 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import SignInForm from "@/containers/SignInContainer/SignInForm/SignInForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
-
 import styles from "./SignInContainer.module.scss";
+import { getSignUpPageUrl, useLocale } from "@/routes";
 
-const SignInContainer: FC = () => (
-    <div className={styles.wrapper}>
-        <SignTitle>Вход</SignTitle>
-        <SignInForm />
-        <div className={styles.socials}>
-            <SocialAuthContainer />
+const SignInContainer: FC = () => {
+    const { locale } = useLocale();
+    return (
+        <div className={styles.wrapper}>
+            <SignTitle>Вход</SignTitle>
+            <SignInForm />
+            <div className={styles.socials}>
+                <SocialAuthContainer />
+            </div>
+            <div className={styles.redirect}>
+                Не зарегистрированы на Гудсерфинге?
+                <LocaleLink to={getSignUpPageUrl(locale)}>
+                    Зарегистрироваться
+                </LocaleLink>
+                .
+            </div>
         </div>
-        <div className={styles.redirect}>
-            Не зарегистрированы на Гудсерфинге?
-            <LocaleLink to={RoutePath.sign_up}>
-                Зарегистрироваться
-            </LocaleLink>
-            .
-        </div>
-    </div>
-);
+    );
+};
 
 export default SignInContainer;

@@ -10,18 +10,20 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
-import { RoutePath } from "@/routes/model/config/RouterConfig";
+import {
+    getMainPageUrl, getSignInPageUrl, getSignUpPageUrl, useLocale,
+} from "@/routes";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
     const { token } = useAppSelector((state) => state.login);
-
+    const { locale } = useLocale();
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
     return (
         <>
             <header className={styles.header}>
-                <Link to="/">
+                <Link to={getMainPageUrl(locale)}>
                     <img
                         src={mobileLogotype}
                         alt="GoodSurfing"
@@ -48,24 +50,24 @@ const MobileHeader: FC = () => {
                 })}
             >
                 <div className={styles.link}>
-                    <Link to="/">{t("main.welcome.header.how-it-work")}</Link>
+                    <Link to={getMainPageUrl(locale)}>{t("main.welcome.header.how-it-work")}</Link>
                 </div>
                 <div className={styles.link}>
-                    <Link to="/">
+                    <Link to={getMainPageUrl(locale)}>
                         {t("main.welcome.header.community.title")}
                     </Link>
                 </div>
                 <div className={styles.link}>
                     {token ? (
-                        <Link to={RoutePath.main}>Категории</Link>
+                        <Link to={getMainPageUrl(locale)}>Категории</Link>
                     ) : (
-                        <Link to={RoutePath.sign_in}>
+                        <Link to={getSignInPageUrl(locale)}>
                             {t("main.welcome.header.sign-in")}
                         </Link>
                     )}
                 </div>
                 <div className={styles.link}>
-                    <Link to={RoutePath.sign_up}>
+                    <Link to={getSignUpPageUrl(locale)}>
                         {t("main.welcome.header.sign-up")}
                     </Link>
                 </div>

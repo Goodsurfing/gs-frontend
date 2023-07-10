@@ -73,9 +73,7 @@ const HostOffersPage = () => {
                     <Button
                         variant={Variant.PRIMARY}
                         rounded
-                        onClick={() => {
-                            return navigate("/offers-where");
-                        }}
+                        onClick={() => navigate("/offers-where")}
                     >
                         Добавить предложение
                     </Button>
