@@ -1,0 +1,39 @@
+.wrapper {
+	width: 100%;
+	list-style-type: none;
+}
+
+.img {
+	min-width: 40px;
+}
+
+.link {
+	display: flex;
+	align-items: center;
+	height: 3.75rem;
+	cursor: pointer;
+	text-decoration: none;
+	font-weight: 700;
+
+	color: var(--white-theme-color);
+	.isActive {
+		color: var(--color-black-tertiary);
+		text-decoration: underline;
+	}
+}
+
+.openedLink img {
+	margin: 0 0.875rem;
+}
+
+.text {
+	display: none;
+	margin-right: auto;
+	text-align: left;
+}
+
+.opened {
+	display: block;
+
+	margin-left: 1.5rem;
+}

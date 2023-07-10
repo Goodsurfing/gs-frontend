@@ -5,14 +5,12 @@ import styles from "./HostMainInfoPage.module.scss";
 import { PageLayout } from "@/widgets/PageLayout";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
-const HostMainInfoPage: FC = () => {
-    return (
-        <PageLayout sidebarContent={HostPagesSidebarData}>
-            <div className={styles.wrapper}>
-                <HostMainInfoForm />
-            </div>
-        </PageLayout>
-    );
-};
+const HostMainInfoPage: FC = () => (
+    <PageLayout sidebarContent={HostPagesSidebarData}>
+        <div className={styles.wrapper}>
+            <HostMainInfoForm />
+        </div>
+    </PageLayout>
+);
 
 export default HostMainInfoPage;

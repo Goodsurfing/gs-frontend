@@ -10,7 +10,7 @@ export const SideMenuData: SideMenuParams[] = [
     {
         text: "Обо мне",
         icon: aboutMeIcon,
-        route: "profile/info",
+        route: "/profile/info",
     },
     {
         text: "Предпочтения",

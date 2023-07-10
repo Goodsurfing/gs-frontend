@@ -22,10 +22,11 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import { getResetPasswordPageUrl } from "@/routes";
+import { getMainPageUrl, getResetPasswordPageUrl, useLocale } from "@/routes";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const SignInForm: FC = () => {
-    const [loginUser, { isError }] = authApi.useLoginUserMutation();
+    const [loginUser, { isError, isLoading }] = authApi.useLoginUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { locale } = useLocale();
@@ -43,7 +44,7 @@ const SignInForm: FC = () => {
             .then((res) => {
                 dispatch(setLoginUserData(res));
                 tokenStorage.setToken(res.token);
-                navigate(`/${i18n.language}/`);
+                navigate(getMainPageUrl(locale));
                 reset();
             })
             .catch((err) => {
@@ -63,6 +64,9 @@ const SignInForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
             {isError && toast && (
                 <HintPopup type={HintType.Error} text="Произошла ошибка" />
+            )}
+            {isLoading && (
+                <Preloader className={styles.loader} />
             )}
             <Controller
                 control={control}
@@ -92,7 +96,7 @@ const SignInForm: FC = () => {
                 )}
             />
 
-            <Button type="submit" variant={Variant.PRIMARY}>
+            <Button disabled={isLoading} type="submit" variant={Variant.PRIMARY}>
                 Войти
             </Button>
 

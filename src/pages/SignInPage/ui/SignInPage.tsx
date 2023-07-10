@@ -3,16 +3,18 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import SignInContainer from "@/containers/SignInContainer/SignInContainer";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
-
 import styles from "./SignInPage.module.scss";
+import { getMainPageUrl, useLocale } from "@/routes";
 
-const SignInPage: FC = () => (
-    <SignLayout cancelPath={RoutePath.main} cancelText="Отменить">
-        <div className={styles.wrapper}>
-            <SignInContainer />
-        </div>
-    </SignLayout>
-);
+const SignInPage: FC = () => {
+    const { locale } = useLocale();
+    return (
+        <SignLayout cancelPath={getMainPageUrl(locale)} cancelText="Отменить">
+            <div className={styles.wrapper}>
+                <SignInContainer />
+            </div>
+        </SignLayout>
+    );
+};
 
 export default SignInPage;
