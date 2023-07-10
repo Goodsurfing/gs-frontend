@@ -21,7 +21,7 @@ CMD [ "npm", "start" ]
 
 FROM development AS build
 
-RUN npm run build
+RUN npm run build:prod
 
 
 FROM development as dev-envs
