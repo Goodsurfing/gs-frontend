@@ -47,7 +47,7 @@ export const SidebarDropdown = memo(({
                         {dropdownItems.map((item) => (
                             <NavLink
                                 key={item.text}
-                                to={`${locale}/${item.route}`}
+                                to={`/${locale}${route}${item.route}`}
                                 replace
                                 className={({ isActive }) => cn(styles.dropdownItem, {
                                     [styles.activeDropdownItem]: isActive,
