@@ -16,7 +16,7 @@ const ProfileInfoPage: FC = () => {
                 <div className={styles.titleWrapper}>
                     <h2 className={styles.title}>Основная информация</h2>
                     <p
-                        onClick={() => { return setIsLocked(!isLocked); }}
+                        onClick={() => setIsLocked(!isLocked)}
                         className={styles.link}
                     >
                         {isLocked ? "Редактировать профиль" : "Посмотреть профиль"}

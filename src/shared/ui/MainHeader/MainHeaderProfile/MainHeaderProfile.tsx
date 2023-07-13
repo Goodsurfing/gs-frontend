@@ -16,11 +16,16 @@ import styles from "./MainHeaderProfile.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import { RoutePath } from "@/routes/model/config/RouterConfig";
+import {
+    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl, useLocale,
+} from "@/routes";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
 
     const profileRef = useRef(null);
+
+    const { locale } = useLocale();
 
     const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
 
@@ -30,13 +35,11 @@ const MainHeaderProfile = () => {
         dispatch(logout());
     };
 
-    useOnClickOutside(profileRef, () => { return setProfileOpened(false); });
+    useOnClickOutside(profileRef, () => setProfileOpened(false));
 
     const handleCloseDropdown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Escape") {
-            setProfileOpened((prev) => {
-                return !prev;
-            });
+            setProfileOpened((prev) => !prev);
         }
     }, []);
 
@@ -49,7 +52,7 @@ const MainHeaderProfile = () => {
     return (
         <div
             ref={profileRef}
-            onClick={() => { return setProfileOpened(!isProfileOpened); }}
+            onClick={() => setProfileOpened(!isProfileOpened)}
             onKeyDown={handleCloseDropdown}
             className={styles.info}
         >
@@ -63,7 +66,7 @@ const MainHeaderProfile = () => {
             <Popup className={styles.popup} isOpen={isProfileOpened}>
                 <Link
                     className={styles.dropdownLink}
-                    to={`${RoutePath.profile_info}`}
+                    to={getProfileInfoPageUrl(locale)}
                     replace
                 >
                     Моя страница
@@ -78,7 +81,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={`${RoutePath.host}`}
+                    to={getHostPageUrl(locale)}
                     replace
                 >
                     Дашборд хоста
@@ -86,7 +89,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to="/"
+                    to={getMainPageUrl(locale)}
                 >
                     Стать волонтёром
 

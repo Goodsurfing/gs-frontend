@@ -6,15 +6,17 @@ import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 
 import styles from "./SignUpContainer.module.scss";
+import { getMainPageUrl, useLocale } from "@/routes";
 
 const SignUpContainer: FC = () => {
+    const { locale } = useLocale();
     return (
         <div className={styles.wrapper}>
             <SignTitle>Регистрация пользователя</SignTitle>
             <SignUpForm />
             <div className={styles.confirm}>
                 Нажимая кнопку «Зарегистрироваться», я принимаю
-                <Link to="/">Политику конфеденциальности ГудСёрфинга</Link>
+                <Link to={getMainPageUrl(locale)}>Политику конфеденциальности ГудСёрфинга</Link>
                 .
             </div>
             <div className={styles.socials}>

@@ -13,8 +13,6 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
-
 import tokenStorage from "@/shared/utils/storage/TokenStorage";
 
 import { authApi } from "@/store/api/authApi";
@@ -24,11 +22,14 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
+import { getMainPageUrl, getResetPasswordPageUrl, useLocale } from "@/routes";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const SignInForm: FC = () => {
-    const [loginUser, { isError }] = authApi.useLoginUserMutation();
+    const [loginUser, { isError, isLoading }] = authApi.useLoginUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { locale } = useLocale();
 
     const [toast, setToast] = useState<IToast>();
 
@@ -43,7 +44,7 @@ const SignInForm: FC = () => {
             .then((res) => {
                 dispatch(setLoginUserData(res));
                 tokenStorage.setToken(res.token);
-                navigate(`/${i18n.language}/`);
+                navigate(getMainPageUrl(locale));
                 reset();
             })
             .catch((err) => {
@@ -64,43 +65,38 @@ const SignInForm: FC = () => {
             {isError && toast && (
                 <HintPopup type={HintType.Error} text="Произошла ошибка" />
             )}
+            {isLoading && (
+                <Preloader className={styles.loader} />
+            )}
             <Controller
                 control={control}
                 name="username"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            type="email"
-                            text="E-mail"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type="email"
+                        text="E-mail"
+                    />
+                )}
             />
 
             <Controller
                 control={control}
                 name="password"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            type="password"
-                            text="Пароль"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type="password"
+                        text="Пароль"
+                    />
+                )}
             />
 
-            <Button type="submit" variant={Variant.PRIMARY}>
+            <Button disabled={isLoading} type="submit" variant={Variant.PRIMARY}>
                 Войти
             </Button>
 
@@ -111,7 +107,7 @@ const SignInForm: FC = () => {
                     text="Запомнить меня"
                 />
                 <LocaleLink
-                    to={RoutePath.reset_password}
+                    to={getResetPasswordPageUrl(locale)}
                     className={styles.forget}
                 >
                     Забыли пароль?

@@ -8,27 +8,27 @@ import mailIcon from "@/shared/assets/icons/navbar/mail.svg";
 
 export const HostPagesSidebarData: SideMenuParams[] = [
     {
-        route: "host",
+        route: "/host",
         text: "Рабочий стол",
         icon: houseIcon,
     },
     {
-        route: "offers",
+        route: "/offers",
         text: "Предложения",
         icon: globeIcon,
     },
     {
-        route: "notes",
+        route: "/notes",
         text: "Заявки",
         icon: mailIcon,
     },
     {
-        route: "calendar",
+        route: "/calendar",
         text: "Календарь",
         icon: calendarIcon,
     },
     {
-        route: "host",
+        route: "/host",
         text: "Организация",
         icon: cityIcon,
         dropdownItems: [

@@ -11,23 +11,21 @@ const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
     path,
     className,
     children,
-}) => {
-    return (
-        <LocaleLink
-            to={path}
-            className={cn(
-                styles.btn,
-                {
-                    [styles.primary]: type === "primary",
-                    [styles.secondary]: type === "secondary",
-                    [styles.outlined]: type === "outlined",
-                },
-                className,
-            )}
-        >
-            {children}
-        </LocaleLink>
-    );
-};
+}) => (
+    <LocaleLink
+        to={path}
+        className={cn(
+            styles.btn,
+            {
+                [styles.primary]: type === "primary",
+                [styles.secondary]: type === "secondary",
+                [styles.outlined]: type === "outlined",
+            },
+            className,
+        )}
+    >
+        {children}
+    </LocaleLink>
+);
 
 export default ButtonLink;
