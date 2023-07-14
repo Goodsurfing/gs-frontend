@@ -1,0 +1,17 @@
+.help {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 100%;
+	margin-top: 25px;
+	margin-bottom: 65px;
+
+	.forget {
+		opacity: 0.5;
+		color: var(--color-dark-blue);
+
+		line-height: 138%;
+		mix-blend-mode: normal;
+	}
+}

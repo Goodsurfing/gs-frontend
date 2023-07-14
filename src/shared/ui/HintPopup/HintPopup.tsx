@@ -19,7 +19,7 @@ const HintPopup: FC<IHintPopup> = ({
         return () => {
             clearTimeout(timer);
         };
-    }, []);
+    }, [timeout]);
 
     return (
         <div className={cn(styles.wrapper, className)}>

@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
 
-import HintPopup from "@/components/HintPopup/HintPopup";
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 
 import { useAppDispatch } from "@/shared/hooks/redux";

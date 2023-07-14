@@ -6,8 +6,8 @@ import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
-import HintPopup from "@/components/HintPopup/HintPopup";
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 

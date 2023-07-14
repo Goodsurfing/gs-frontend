@@ -5,16 +5,18 @@ import styles from "./Checkbox.module.scss";
 
 interface CheckboxProps {
     text: string;
+    id?: string;
     isChecked: boolean;
     onChange: () => void;
 }
 
-const Checkbox: FC<CheckboxProps> = ({ text, isChecked, onChange }) => {
+const Checkbox: FC<CheckboxProps> = ({ text, isChecked, onChange, id = "checkbox" }) => {
     return (
         <div className={styles.wrapper}>
-            <label htmlFor="main">
+            <label htmlFor={id}>
                 <input
                     name="main"
+                    id={id}
                     type="checkbox"
                     checked={isChecked}
                     onChange={onChange}
