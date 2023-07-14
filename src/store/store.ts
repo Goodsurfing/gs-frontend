@@ -4,7 +4,7 @@ import { authApi, reauthApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { localeApi } from "./api/localeApi";
-import { loginApi, loginReducers } from "@/features/AuthByEmail";
+import { loginApi } from "@/features/AuthByEmail";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
 import { organizationApi } from "./api/organizationApi";
@@ -16,7 +16,6 @@ import { userReducer } from "@/entities/User";
 const rootReducer = combineReducers({
     register: registerReducer,
     login: loginReducer,
-    auth: loginReducers,
     toast: toastReducer,
     gallery: galleryReducer,
     user: userReducer,

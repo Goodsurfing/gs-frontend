@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
-import { logout } from "@/store/reducers/loginSlice";
+import { userActions } from "@/entities/User";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
@@ -31,9 +31,12 @@ const MainHeaderProfile = () => {
 
     const dispatch = useAppDispatch();
 
-    const handleLogout = () => {
-        dispatch(logout());
-    };
+    const navigate = useNavigate();
+
+    const handleLogout = useCallback(() => {
+        dispatch(userActions.logout());
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, locale, navigate]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 

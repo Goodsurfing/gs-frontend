@@ -155,8 +155,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             />
         </form>
     );
-
-    return null;
 };
 
 export default ProfileInfoForm;

@@ -41,6 +41,7 @@ import {
 } from "../services/AppUrls/AppUrls";
 
 import { RouteWithChildrenProps } from "../types/langRouter";
+import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 
 const publicRoutes: RouteWithChildrenProps[] = [
     {
@@ -159,7 +160,9 @@ const publicRoutes: RouteWithChildrenProps[] = [
     },
     {
         element: (
-            <ProfileInfoPage />
+            <PrivateRouteGuard>
+                <ProfileInfoPage />
+            </PrivateRouteGuard>
         ),
         path: (locale: string) => getProfileInfoPageUrl(locale),
     },
