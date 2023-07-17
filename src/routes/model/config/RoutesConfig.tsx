@@ -38,7 +38,7 @@ import {
     getProfileResetPasswordPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
-} from "../services/AppUrls/AppUrls";
+} from "@/shared/config/routes/AppUrls";
 
 import { RouteWithChildrenProps } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";

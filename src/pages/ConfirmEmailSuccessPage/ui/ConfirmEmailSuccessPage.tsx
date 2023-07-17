@@ -1,17 +1,19 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
+import { getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const ConfirmEmailSuccessPage: FC = () => {
+    const { locale } = useLocale();
     const { email } = useAppSelector((state) => state.register);
     return (
-        <SignLayout cancelText="Отменить" cancelPath={RoutePath.sign_up}>
+        <SignLayout cancelText="Отменить" cancelPath={getSignUpPageUrl(locale)}>
             <div className={styles.wrapper}>
                 <SignTitle>Регистрация пользователя</SignTitle>
                 <div className={styles.content}>

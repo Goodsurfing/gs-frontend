@@ -27,7 +27,7 @@ const ProfileInfoPage: FC = () => {
                     </button>
                 </div>
                 <div className={styles.form}>
-                    <ProfileInfoForm isLocked={isLocked} />
+                    <ProfileInfoForm onSuccess={handleReadonlyChange} isLocked={isLocked} />
                 </div>
             </main>
         </PageLayout>

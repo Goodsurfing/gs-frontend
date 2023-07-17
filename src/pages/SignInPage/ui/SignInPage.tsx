@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
-// import SignInContainer from "@/containers/SignInContainer/SignInContainer";
 
-import { getMainPageUrl, useLocale } from "@/routes";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { AuthByEmail } from "@/features/AuthByEmail";
 

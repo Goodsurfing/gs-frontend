@@ -1,4 +1,4 @@
-import { RoutePath } from "../../config/RouterConfig";
+import { RoutePath } from "./RouterConfig";
 
 type RoutePathFunction = (locale: string) => string;
 

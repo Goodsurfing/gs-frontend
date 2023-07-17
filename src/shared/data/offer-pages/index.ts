@@ -7,9 +7,9 @@ import viewListIcon from "@/shared/assets/icons/navbar/offers/view-list.svg";
 import writeIcon from "@/shared/assets/icons/navbar/offers/writing-fluently.svg";
 import listCheckboxIcon from "@/shared/assets/icons/navbar/offers/list-checkbox.svg";
 
-import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
+import { SidebarContentProps } from "@/widgets/Sidebar";
 
-export const SideMenuData: SideMenuParams[] = [
+export const SideMenuData: SidebarContentProps[] = [
     {
         text: "К предложениям",
         icon: backIcon,

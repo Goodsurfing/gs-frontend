@@ -11,8 +11,10 @@ import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 
 import styles from "./MobileHeader.module.scss";
 import {
-    getMainPageUrl, getSignInPageUrl, getSignUpPageUrl, useLocale,
-} from "@/routes";
+    getMainPageUrl, getSignInPageUrl, getSignUpPageUrl,
+} from "@/shared/config/routes/AppUrls";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();

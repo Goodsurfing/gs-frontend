@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfileInfoPageUrl, getSignUpPageUrl, useLocale } from "@/routes";
-
+import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./AuthByEmail.module.scss";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";

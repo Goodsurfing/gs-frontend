@@ -11,7 +11,7 @@ import InputField from "@/components/InputField/InputField";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
+import { getConfirmEmailPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
@@ -20,10 +20,12 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const SignUpForm: FC = () => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();
 
+    const { locale } = useLocale();
     const [toast, setToast] = useState<IToast>();
 
     const dispatch = useAppDispatch();
@@ -39,10 +41,7 @@ const SignUpForm: FC = () => {
                 .unwrap()
                 .then((response) => {
                     dispatch(setRegisterUserData(response));
-                    navigate(
-                        `/${i18n.language}/${RoutePath.confirm_email}`,
-                        { replace: true },
-                    );
+                    navigate(getConfirmEmailPageUrl(locale));
                 })
                 .catch((err) => {
                     console.error("error");

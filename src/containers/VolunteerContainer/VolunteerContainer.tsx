@@ -5,7 +5,8 @@ import { volunteerData } from "@/containers/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "@/containers/VolunteerContainer/VolunteerItem/VolunteerItem";
 
 import styles from "./VolunteerContainer.module.scss";
-import { getHostPageUrl, getSignInPageUrl, useLocale } from "@/routes";
+import { getHostPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 

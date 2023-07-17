@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import InfoSide from "@/containers/WelcomeContainer/InfoSide/InfoSide";
 import SliderSide from "@/containers/WelcomeContainer/SliderSide/SliderSide";

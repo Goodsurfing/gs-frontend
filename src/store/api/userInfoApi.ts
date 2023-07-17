@@ -8,10 +8,9 @@ export const userInfoApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: API_USER_BASE_URL,
         prepareHeaders: (headers) => {
-            const data = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
-            console.log(data);
-            if (data) {
-                headers.set("Authorization", `Bearer ${JSON.parse(data.)}`);
+            const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
+            if (token) {
+                headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
             headers.set("Content-Type", "application/json");
 

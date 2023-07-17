@@ -18,8 +18,9 @@ import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./InfoHeader.module.scss";
 import {
-    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl, useLocale,
-} from "@/routes";
+    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import { userActions } from "@/entities/User";
 
 const InfoHeader = memo(() => {

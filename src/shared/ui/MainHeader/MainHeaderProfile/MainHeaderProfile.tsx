@@ -15,10 +15,11 @@ import Arrow from "../../Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
-import { RoutePath } from "@/routes/model/config/RouterConfig";
 import {
-    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl, useLocale,
-} from "@/routes";
+    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl,
+} from "@/shared/config/routes/AppUrls";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
@@ -76,7 +77,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={`/${RoutePath.profile_info}`}
+                    to={`/${getProfileInfoPageUrl(locale)}`}
                     replace
                 >
                     Обо мне

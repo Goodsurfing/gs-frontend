@@ -1,6 +1,6 @@
 import cn from "classnames";
-import React, {
-    useEffect, useRef, useState, memo, useContext,
+import {
+    useEffect, useRef, useState, memo,
 } from "react";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
@@ -13,14 +13,14 @@ import { localeApi } from "@/store/api/localeApi";
 import { ILanguage } from "@/types/languages";
 
 import styles from "./ChangeLanguage.module.scss";
-import { LocaleContext } from "@/routes";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface ChangeLanguageProps {
     className?: string;
 }
 
 export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
-    const { locale, setLocale } = useContext(LocaleContext);
+    const { locale, updateLocale } = useLocale();
 
     const [changeLocale] = localeApi.useChangeLocaleMutation();
 
@@ -37,7 +37,7 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
     useOnClickOutside(menuRef, handleClickOutside);
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
-        setLocale(lang.code);
+        updateLocale(lang.code);
         await changeLocale({
             locale: lang.code,
         });
