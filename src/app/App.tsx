@@ -1,14 +1,23 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
-import { Outlet } from "react-router-dom";
 import { SidebarProvider } from "@/widgets/Sidebar";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { getUserInited, userActions } from "@/entities/User";
+import { LangRouter } from "@/routes";
 
-const App: FC = () => (
-    <div className="app">
-        <SidebarProvider initialValue={{ isOpen: true }}>
-            <Outlet />
-        </SidebarProvider>
-    </div>
-);
+export const App: FC = () => {
+    const dispatch = useAppDispatch();
+    const inited = useAppSelector(getUserInited);
 
-export default App;
+    useEffect(() => {
+        dispatch(userActions.initAuthData());
+    }, [dispatch]);
+
+    return (
+        <div className="app">
+            <SidebarProvider initialValue={{ isOpen: true }}>
+                {inited && <LangRouter />}
+            </SidebarProvider>
+        </div>
+    );
+};

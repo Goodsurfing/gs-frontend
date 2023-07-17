@@ -3,7 +3,7 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import ResetPasswordContainer from "@/containers/ResetPasswordContainer/ResetPasswordContainer";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
+import { useLocale } from "@/app/";
 
 import styles from "./ResetPasswordPage.module.scss";
 

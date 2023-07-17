@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
@@ -25,9 +25,10 @@ import SocialFormGroup from "./SocialFormGroup/SocialFormGroup";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
+    onSuccess?: () => void;
 }
 
-const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
+const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked, onSuccess }) => {
     const {
         data: userInfo,
         isLoading,
@@ -48,6 +49,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             birthDate: data.birthDate?.toISOString().split("T")[0],
         };
         setData(prepareData);
+        onSuccess?.();
     };
 
     const [file, setFile] = useState<File | undefined>();
@@ -76,7 +78,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
 
     useEffect(() => {
         handleUpdateUserInfo();
-    }, [data]);
+    }, [data, handleUpdateUserInfo]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
@@ -155,8 +157,6 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked }) => {
             />
         </form>
     );
-
-    return null;
 };
 
 export default ProfileInfoForm;

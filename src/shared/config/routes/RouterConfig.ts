@@ -34,7 +34,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
     [AppRoutes.RESET_PASSWORD]: "/reset-password",
     [AppRoutes.RESET_PASSWORD_VERIFY]: "/reset-password-verify",
-    [AppRoutes.PROFILE_INFO]: "/profile/info",
+    [AppRoutes.PROFILE_INFO]: "/profile",
     [AppRoutes.PROFILE_RESET_PASSWORD]: "/profile/reset-password",
     [AppRoutes.HOST]: "/host",
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",

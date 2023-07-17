@@ -4,7 +4,7 @@ import cn from "classnames";
 import { NavLink } from "react-router-dom";
 import styles from "./SidebarLink.module.scss";
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
-import { useLocale } from "@/routes";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface SidebarLinkProps {
     text: string;

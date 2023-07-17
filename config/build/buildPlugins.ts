@@ -1,11 +1,15 @@
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import webpack from "webpack";
+import webpack, { WebpackError } from "webpack";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import CircularDependencyPlugin from "circular-dependency-plugin";
 import Dotenv from "dotenv-webpack";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { BuildOptions } from "./types/config";
+
+const MAX_CYCLES = 5;
+let numCyclesDetected = 0;
 
 export function buildPlugins({
     paths, analyze, isDev, apiUrl, project,
@@ -31,6 +35,22 @@ export function buildPlugins({
     if (isDev) {
         plugins.push(new ReactRefreshWebpackPlugin());
         plugins.push(new webpack.HotModuleReplacementPlugin());
+        plugins.push(new CircularDependencyPlugin({
+            onStart({ compilation }) {
+                numCyclesDetected = 0;
+            },
+            onDetected({ module: webpackModuleRecord, paths, compilation }) {
+                numCyclesDetected++;
+                compilation.warnings.push(new WebpackError(paths.join(" -> ")));
+            },
+            onEnd({ compilation }) {
+                if (numCyclesDetected > MAX_CYCLES) {
+                    compilation.errors.push(new WebpackError(
+                        `Detected ${numCyclesDetected} cycles which exceeds configured limit of ${MAX_CYCLES}`,
+                    ));
+                }
+            },
+        }));
     }
 
     if (analyze) {

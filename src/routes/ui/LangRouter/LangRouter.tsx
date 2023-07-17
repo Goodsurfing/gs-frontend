@@ -1,88 +1,30 @@
 import {
-    createContext, useCallback, useEffect, useMemo, useRef, useState,
-    Suspense,
+    Suspense, useState, useEffect, useRef,
 } from "react";
-import { useTranslation } from "react-i18next";
-import {
-    Route, Routes, useLocation, useNavigate,
-} from "react-router-dom";
-import { getMainPageUrl } from "../../model/services/AppUrls/AppUrls";
+import { Outlet, Route, Routes } from "react-router-dom";
+
 import { RouteWithChildrenProps } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
-import App from "@/app/App";
 import { allRoutes } from "../../model/config/RoutesConfig";
-
-export const LocaleContext = createContext({
-    locale: "",
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setLocale: (newLocale: string) => {},
-});
+// import { MainPage } from "@/pages/MainPage";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const defaultLocale = "ru";
 export const availableLocales = ["ru", "en", "es"];
 
 export const LangRouter = () => {
-    const { i18n } = useTranslation();
-    const { pathname, search, hash } = useLocation();
-    const pathnameLocale = pathname.substring(1, 3).toLowerCase();
-    const navigate = useNavigate();
-    const [locale, setLocale] = useState(defaultLocale);
+    const { locale } = useLocale();
+    const [isLoading, setIsLoading] = useState(true);
+
     const loaderTimerRef = useRef<any>();
-    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
         loaderTimerRef.current = setTimeout(() => {
-            setLoading(false);
+            setIsLoading(false);
             clearTimeout(loaderTimerRef.current);
         }, 300);
-    });
-
-    const setLanguageHandler = (lang: string) => {
-        document.documentElement.setAttribute("lang", lang);
-
-        if (lang === "ru") {
-            i18n.changeLanguage("ru");
-        } else {
-            i18n.changeLanguage("en");
-        }
-    };
-
-    useEffect(() => {
-        let lang = defaultLocale;
-
-        if (availableLocales.includes(pathnameLocale)) {
-            lang = pathnameLocale;
-            setLanguageHandler(lang);
-        } else if (pathname === "/") {
-            setLanguageHandler(lang);
-        }
-        // eslint-disable-next-line
-      }, [locale]);
-
-    const updateLocale = useCallback((newLocale: string) => {
-        const newPath = `/${newLocale}${pathname.substring(3)}`;
-
-        if (locale !== newLocale) {
-            if (newPath === `/${newLocale}/` || newPath === `/${newLocale}` || pathname === "/") {
-                navigate(getMainPageUrl(newLocale));
-            } else {
-                navigate(`${newPath}${hash}${search}`);
-            }
-            setLocale(newLocale);
-        } else if (newPath === `/${newLocale}/` || newPath === `/${newLocale}` || pathname === "/") {
-            navigate(getMainPageUrl(newLocale));
-        }
-    }, [hash, locale, navigate, pathname, search]);
-
-    useEffect(() => {
-        if (availableLocales.includes(pathnameLocale)) {
-            updateLocale(pathnameLocale);
-        } else if (pathname === "/") {
-            updateLocale(defaultLocale);
-        }
-        // eslint-disable-next-line
-      }, [pathname]);
+    }, []);
 
     const renderRouteWithChildren = (
         routes: RouteWithChildrenProps[],
@@ -92,24 +34,18 @@ export const LangRouter = () => {
         </Route>
     ));
 
-    const value = useMemo(() => ({ locale, setLocale: updateLocale }), [locale, updateLocale]);
-
     if (isLoading) {
-        return (
-            <Preloader />
-        );
+        return <Preloader />;
     }
 
     return (
-        <LocaleContext.Provider value={value}>
-            <Suspense fallback={<Preloader />}>
-                <Routes>
-                    <Route path={`/${locale}`} element={<App />}>
-                        {renderRouteWithChildren(allRoutes)}
-                    </Route>
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </Suspense>
-        </LocaleContext.Provider>
+        <Suspense fallback={<Preloader />}>
+            <Routes>
+                <Route path={`/${locale}`} element={<Outlet />}>
+                    {renderRouteWithChildren(allRoutes)}
+                </Route>
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+        </Suspense>
     );
 };

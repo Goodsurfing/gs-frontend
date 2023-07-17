@@ -1,5 +1,5 @@
-import React, {
-    FC, useRef, useState, useContext,
+import {
+    useRef, useState, memo,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -16,14 +16,14 @@ import Popup from "@/components/Popup/Popup";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { logout } from "@/store/reducers/loginSlice";
-
 import styles from "./InfoHeader.module.scss";
 import {
-    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl, useLocale,
-} from "@/routes";
+    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { userActions } from "@/entities/User";
 
-const InfoHeader: FC = () => {
+const InfoHeader = memo(() => {
     const { t } = useTranslation();
 
     const { locale } = useLocale();
@@ -34,7 +34,7 @@ const InfoHeader: FC = () => {
     const dispatch = useAppDispatch();
 
     const handleLogout = () => {
-        dispatch(logout());
+        dispatch(userActions.logout());
     };
 
     const communityRef = useRef(null);
@@ -124,6 +124,6 @@ const InfoHeader: FC = () => {
             </header>
         </>
     );
-};
+});
 
 export default InfoHeader;

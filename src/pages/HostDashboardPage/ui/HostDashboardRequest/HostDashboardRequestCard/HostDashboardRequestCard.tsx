@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 import styles from "./HostDashboardRequestCard.module.scss";
 import { IHostDashboardRequestCard } from "./types";
-import { getMainPageUrl, useLocale } from "@/routes";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const HostDashboardRequestCard: FC<IHostDashboardRequestCard> = ({
     user,

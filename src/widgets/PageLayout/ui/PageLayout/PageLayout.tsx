@@ -1,14 +1,13 @@
 import { FC, ReactNode } from "react";
 import cn from "classnames";
 import MainHeader from "@/shared/ui/MainHeader/MainHeader";
-import { Sidebar, useSidebarContext } from "@/widgets/Sidebar";
-import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
+import { Sidebar, useSidebarContext, type SidebarContentProps } from "@/widgets/Sidebar";
 
 import styles from "./PageLayout.module.scss";
 
 interface PageLayoutProps {
     children: ReactNode;
-    sidebarContent: SideMenuParams[];
+    sidebarContent: SidebarContentProps[];
     wrapperClassName?: string;
 }
 

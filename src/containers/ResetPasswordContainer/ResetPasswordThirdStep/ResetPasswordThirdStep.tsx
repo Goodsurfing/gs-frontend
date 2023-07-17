@@ -9,11 +9,11 @@ import InputField from "@/components/InputField/InputField";
 
 import useQuery from "@/shared/hooks/useQuery";
 
-import { RoutePath } from "@/routes/model/config/RouterConfig";
-
 import { authApi } from "@/store/api/authApi";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface IFormData {
     password: string;
@@ -24,6 +24,8 @@ const ResetPasswordThirdStep: FC = () => {
     const navigate = useNavigate();
     const query = useQuery();
     const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
+
+    const { locale } = useLocale();
 
     const { control, reset, handleSubmit } = useForm<IFormData>({
         mode: "onChange",
@@ -50,7 +52,7 @@ const ResetPasswordThirdStep: FC = () => {
         })
             .unwrap()
             .then(() => {
-                navigate(`/${i18n.language}/${RoutePath.main}`);
+                navigate(getMainPageUrl(locale));
                 reset();
             });
     };

@@ -6,7 +6,7 @@ import { useSidebarContext } from "../SidebarContext/SidebarContext";
 import compareRoutes from "@/shared/utils/routes/compareRoutes";
 
 import styles from "./SidebarDropdown.module.scss";
-import { useLocale } from "@/routes";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface SidebarDropdownProps {
     route: string;

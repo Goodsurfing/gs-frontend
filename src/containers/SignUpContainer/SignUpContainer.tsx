@@ -6,7 +6,8 @@ import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 
 import styles from "./SignUpContainer.module.scss";
-import { getMainPageUrl, useLocale } from "@/routes";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const SignUpContainer: FC = () => {
     const { locale } = useLocale();

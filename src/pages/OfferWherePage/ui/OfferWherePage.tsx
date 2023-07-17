@@ -1,4 +1,3 @@
-import React from "react";
 import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 

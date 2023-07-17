@@ -10,7 +10,8 @@ import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 
 import styles from "./MainHeader.module.scss";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
-import { getMainPageUrl, useLocale } from "@/routes";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();

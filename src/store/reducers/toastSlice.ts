@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { HintType } from "@/components/HintPopup/HintPopup.interface";
-import { IHintPopup } from "@/components/HintPopup/HintPopup.interface";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { IHintPopup } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 export interface IToast extends Pick<IHintPopup, 'text' | "type"> {}
 

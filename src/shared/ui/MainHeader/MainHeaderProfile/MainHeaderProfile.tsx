@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import { userInfoApi } from "@/store/api/userInfoApi";
-import { logout } from "@/store/reducers/loginSlice";
+import { userActions } from "@/entities/User";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
@@ -15,10 +15,11 @@ import Arrow from "../../Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
-import { RoutePath } from "@/routes/model/config/RouterConfig";
 import {
-    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl, useLocale,
-} from "@/routes";
+    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl,
+} from "@/shared/config/routes/AppUrls";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
@@ -31,9 +32,12 @@ const MainHeaderProfile = () => {
 
     const dispatch = useAppDispatch();
 
-    const handleLogout = () => {
-        dispatch(logout());
-    };
+    const navigate = useNavigate();
+
+    const handleLogout = useCallback(() => {
+        dispatch(userActions.logout());
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, locale, navigate]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
@@ -73,7 +77,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={`/${RoutePath.profile_info}`}
+                    to={`/${getProfileInfoPageUrl(locale)}`}
                     replace
                 >
                     Обо мне

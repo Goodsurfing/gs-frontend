@@ -1,16 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_USER_BASE_URL } from "@/shared/constants/api";
 import { IUserInfo } from "@/pages/ProfileInfoPage/ui/ProfileInfoForm/ProfileInfoForm.interface";
-import { RootState } from "@/store/store";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 export const userInfoApi = createApi({
     reducerPath: "userInfoApi",
     baseQuery: fetchBaseQuery({
         baseUrl: API_USER_BASE_URL,
-        prepareHeaders: (headers, { getState }) => {
-            const { token } = (getState() as RootState).login;
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
             if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
             headers.set("Content-Type", "application/json");
 

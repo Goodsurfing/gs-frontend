@@ -4,13 +4,13 @@ import roleIcon from "@/shared/assets/icons/navbar/role-icon.svg";
 import shieldIcon from "@/shared/assets/icons/navbar/shield-icon.svg";
 import lockIcon from "@/shared/assets/icons/navbar/lock-icon.svg";
 
-import { SideMenuParams } from "@/components/SideMenu/types/SideMenu.interface";
+import { SidebarContentProps } from "@/widgets/Sidebar";
 
-export const SideMenuData: SideMenuParams[] = [
+export const SideMenuData: SidebarContentProps[] = [
     {
         text: "Обо мне",
         icon: aboutMeIcon,
-        route: "/profile/info",
+        route: "/profile",
     },
     {
         text: "Предпочтения",

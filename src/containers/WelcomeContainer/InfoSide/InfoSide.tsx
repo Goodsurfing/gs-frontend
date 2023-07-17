@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SectionTitle from "@/shared/ui/SectionTitle/SectionTitle";
@@ -6,8 +6,10 @@ import SectionTitle from "@/shared/ui/SectionTitle/SectionTitle";
 import ActivityContainer from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityContainer";
 import InfoHeader from "@/containers/WelcomeContainer/InfoSide/InfoHeader/InfoHeader";
 
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+
 import styles from "./InfoSide.module.scss";
-import { getMainPageUrl, useLocale } from "@/routes";
 
 const InfoSide: FC = () => {
     const { t } = useTranslation();

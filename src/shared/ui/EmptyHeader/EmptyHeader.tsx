@@ -6,7 +6,8 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import logoIcon from "@/shared/assets/icons/logo-black.svg";
 
 import styles from "./EmptyHeader.module.scss";
-import { getMainPageUrl, useLocale } from "@/routes";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const EmptyHeader: FC = () => {
     const { locale } = useLocale();

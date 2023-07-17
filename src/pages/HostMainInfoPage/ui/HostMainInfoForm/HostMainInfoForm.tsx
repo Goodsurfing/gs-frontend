@@ -5,11 +5,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
 
-import HintPopup from "@/components/HintPopup/HintPopup";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     IHintPopup,
-} from "@/components/HintPopup/HintPopup.interface";
+} from "@/shared/ui/HintPopup/HintPopup.interface";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
