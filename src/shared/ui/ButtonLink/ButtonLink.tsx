@@ -1,31 +1,36 @@
 import cn from "classnames";
-import React, { FC, PropsWithChildren } from "react";
-import { IButtonProps } from "@/shared/ui/ButtonLink/ButtonLink.interface";
+import { PropsWithChildren, memo } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import styles from "./ButtonLink.module.scss";
 
-const ButtonLink: FC<PropsWithChildren<IButtonProps>> = ({
+export interface ButtonLinkProps {
+    type: "primary" | "secondary" | "outlined";
+    path: string;
+    className?: string;
+}
+
+const ButtonLink = memo(({
     type,
     path,
     className,
     children,
-}) => (
+}: PropsWithChildren<ButtonLinkProps>) => (
     <LocaleLink
         to={path}
         className={cn(
+            className,
             styles.btn,
             {
                 [styles.primary]: type === "primary",
                 [styles.secondary]: type === "secondary",
                 [styles.outlined]: type === "outlined",
             },
-            className,
         )}
     >
         {children}
     </LocaleLink>
-);
+));
 
 export default ButtonLink;

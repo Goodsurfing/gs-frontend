@@ -7,7 +7,6 @@ import { RouteWithChildrenProps } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";
-// import { MainPage } from "@/pages/MainPage";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const defaultLocale = "ru";
@@ -23,7 +22,7 @@ export const LangRouter = () => {
         loaderTimerRef.current = setTimeout(() => {
             setIsLoading(false);
             clearTimeout(loaderTimerRef.current);
-        }, 300);
+        }, 400);
     }, []);
 
     const renderRouteWithChildren = (

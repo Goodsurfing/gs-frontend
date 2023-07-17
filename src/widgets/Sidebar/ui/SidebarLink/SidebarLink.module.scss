@@ -16,9 +16,21 @@
 	font-weight: 700;
 
 	color: var(--white-theme-color);
-	.isActive {
-		color: var(--color-black-tertiary);
-		text-decoration: underline;
+
+	&.isActive {
+		.text {
+			position: relative;
+			color: var(--color-black-tertiary);
+		}
+		.text::before {
+				display: block;
+				content: "";
+				position: absolute;
+				top: 85%;
+				background-color: var(--color-black-tertiary);
+				width: 100%;
+				height: 2px;
+		}
 	}
 }
 

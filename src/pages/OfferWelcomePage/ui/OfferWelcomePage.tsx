@@ -6,9 +6,12 @@ import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 
 import styles from "./OfferWelcomePage.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const OfferWelcome: FC = () => {
-    const navigate = useNavigate();
+    const { locale } = useLocale();
 
     return (
         <PageLayout sidebarContent={SideMenuData}>
@@ -24,14 +27,13 @@ const OfferWelcome: FC = () => {
                     растущему сообществу гудсерферов. Нам не терпится взглянуть, чем
                     вы нас обрадуете.
                 </p>
-                <Button
-                    variant={Variant.PRIMARY}
-                    rounded
-                    onClick={() => { return navigate("/offers-where"); }}
+                <ButtonLink
+                    type="primary"
+                    path={getOffersWherePageUrl(locale)}
                     className={styles.btn}
                 >
                     Начать
-                </Button>
+                </ButtonLink>
             </div>
         </PageLayout>
     );

@@ -126,10 +126,6 @@ const MapWithAddress = (
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
-                    query={{
-                        ns: "use-load-option",
-                        load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
-                    }}
                     setYmap={(ymaps) => setYmap(ymaps)}
                     setLoading={setLoading}
                 >
