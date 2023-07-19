@@ -32,7 +32,6 @@ export const OfferWhenPeriods = memo(() => {
             <Box>
                 {addButtons.map((_, index) => (
                     <DateInputs
-                        sx={{ mt: index > 0 ? "24px" : "" }}
                         key={index}
                         close={index !== 0 && (
                             <CloseButton
