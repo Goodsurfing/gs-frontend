@@ -8,7 +8,7 @@ import { AddButtonProps } from "./types";
 
 import styles from "./AddButton.module.scss";
 
-const AddButton: FC<AddButtonProps> = ({
+export const AddButton: FC<AddButtonProps> = ({
     className,
     children,
     onClick = () => {},
@@ -33,5 +33,3 @@ const AddButton: FC<AddButtonProps> = ({
         </button>
     );
 };
-
-export default React.memo(AddButton);

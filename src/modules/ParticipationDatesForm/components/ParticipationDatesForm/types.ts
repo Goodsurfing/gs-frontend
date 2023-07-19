@@ -5,4 +5,4 @@ export interface IParticipationDatesForm {
     lastMomentAccept: boolean;
     participationPeriod: Array<[Date, Date]>;
     deadlineDate: Date;
-} 
+}

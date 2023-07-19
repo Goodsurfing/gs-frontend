@@ -1,41 +1,28 @@
 import { ButtonBase } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { unstable_styleFunctionSx as styleFunctionSx } from "@mui/system";
-import React, { FC } from "react";
+import { memo } from "react";
+import cn from "classnames";
 
-import { CloseButtonProps } from "./types";
+import styles from "./CloseButton.module.scss";
 
-const CloseButton: FC<CloseButtonProps> = ({
-    width = 36,
-    height = 36,
-    onClick = () => {},
-    ...restBtnProps
-}) => {
-    const onBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+interface CloseButtonProps {
+    onClick: () => void;
+    className: string;
+}
+
+export const CloseButton = memo(({ onClick, className }: CloseButtonProps) => {
+    const onBtnClick = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
         e.preventDefault();
-        onClick(e);
+        onClick?.();
     };
 
     return (
         <ButtonBase
-            sx={{
-                width: width,
-                height: height,
-                borderWidth: 1,
-                borderStyle: "solid",
-                borderColor: "#82949F",
-                borderRadius: "5px",
-                display: "flex",
-                alignItems: "center",
-                color: "#82949F",
-                fontFamily: "sans-serif",
-            }}
-            {...restBtnProps}
+            className={cn(styles.btn, className)}
             onClick={onBtnClick}
         >
             ✖
         </ButtonBase>
     );
-};
-
-export default styled(CloseButton)(styleFunctionSx);
+});

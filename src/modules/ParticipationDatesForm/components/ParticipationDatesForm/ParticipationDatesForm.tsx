@@ -15,7 +15,7 @@ export const ParticipationDatesForm = () => {
         console.log(data);
     };
 
-    const { handleSubmit, control } = useForm({
+    const { handleSubmit, control } = useForm<IParticipationDatesForm>({
         mode: "onChange",
     });
 
@@ -26,7 +26,7 @@ export const ParticipationDatesForm = () => {
             <DateRangeSlider />
             <DateEndRequests />
             <Button
-                onClick={() => {}}
+                onClick={handleSubmit(onSubmit)}
                 className={styles.btn}
                 rounded
                 variant={Variant.PRIMARY}
