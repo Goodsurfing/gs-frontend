@@ -1,0 +1,43 @@
+.wrapper {
+  margin-top: 33px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  max-width: 125px;
+}
+
+.helpText {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--white-theme-color);
+}
+
+.innerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.dates {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date {
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.sliderWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.slider :global .MuiSlider-markLabel {
+  font-size: 10px;
+  font-family: 'Lato';
+}

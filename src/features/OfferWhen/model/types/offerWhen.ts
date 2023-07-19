@@ -1,5 +1,5 @@
 import { OfferWhen } from "@/entities/Offer";
 
-interface CreateOfferWhen {
+export interface CreateOfferWhen {
     data: OfferWhen;
 }

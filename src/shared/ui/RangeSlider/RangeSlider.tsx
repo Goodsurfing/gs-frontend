@@ -1,57 +1,56 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import { Slider } from "@mui/material";
 import { SliderProps } from "@mui/material/Slider";
 
 import { formatMonthDay } from "@/shared/utils/date/formatMonthDay";
 
-type IRangeSlider = {
+export type Mark = {
+    value: number;
+    label: string;
+};
+
+type RangeSliderProps = {
     minDistanсe?: number;
     value?: number[];
     min?: number;
     max?: number;
-    onValueChange?: (value?: number | number[]) => void;
+    track?: boolean;
+    marks?: Mark[];
+    onValueChange?: (value: number[]) => void;
 } & SliderProps;
 
-export const RangeSlider: FC<IRangeSlider> = ({
+export const RangeSlider: FC<RangeSliderProps> = ({
     minDistanсe = 10,
     value,
     onValueChange,
+    track,
+    marks,
     min = 0,
     max = 0,
     ...restRangeSliderProps
 }) => {
-    const [sliderValue, setSliderValue] = useState<number[]>([14, 28]);
-
     const handleChange = useCallback(
         (e: Event, newValue: number | number[], activeThumb: number) => {
-            if (!Array.isArray(newValue)) {
+            if (!Array.isArray(newValue) || !value) {
                 return;
             }
 
             if (activeThumb === 0) {
-                setSliderValue([
-                    Math.min(newValue[0], sliderValue[1] - minDistanсe),
-                    sliderValue[1],
-                ]);
+                onValueChange?.([Math.min(newValue[0], value[1] - minDistanсe), value[1]]);
             } else {
-                setSliderValue([
-                    sliderValue[0],
-                    Math.max(newValue[1], sliderValue[0] + minDistanсe),
-                ]);
-            }
-
-            if (onValueChange) {
-                onValueChange(sliderValue);
+                onValueChange?.([value[0], Math.max(newValue[1], value[0] + minDistanсe)]);
             }
         },
-        [minDistanсe, onValueChange, sliderValue]
+        [minDistanсe, onValueChange, value],
     );
 
     return (
         <Slider
             getAriaLabel={() => "Minimum distance shift"}
-            value={sliderValue}
+            value={value}
+            track={track}
             onChange={handleChange}
+            marks={marks}
             min={min}
             max={max}
             valueLabelDisplay="on"

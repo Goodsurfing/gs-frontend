@@ -1,5 +1,7 @@
-import { ParticipationDatesForm } from "@/features/CreateOfferWhere";
 import { SideMenuData } from "@/shared/data/offer-pages";
+
+import { OfferWhenForm } from "@/features/OfferWhen";
+
 import { PageLayout } from "@/widgets/PageLayout";
 
 import styles from "./OfferWhenPage.module.scss";
@@ -10,7 +12,7 @@ const OfferWhenPage = () => (
             <h1 className={styles.title}>
                 Укажите на какой срок или сроки вам нужен волонтер
             </h1>
-            <ParticipationDatesForm />
+            <OfferWhenForm />
         </div>
     </PageLayout>
 );

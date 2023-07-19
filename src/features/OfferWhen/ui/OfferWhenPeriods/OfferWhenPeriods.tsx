@@ -34,7 +34,7 @@ export const OfferWhenPeriods = memo(() => {
                     <DateInputs
                         sx={{ mt: index > 0 ? "24px" : "" }}
                         key={index}
-                        close={(
+                        close={index !== 0 && (
                             <CloseButton
                                 className={styles.btn}
                                 onClick={() => handleCloseBtnClick(index)}
