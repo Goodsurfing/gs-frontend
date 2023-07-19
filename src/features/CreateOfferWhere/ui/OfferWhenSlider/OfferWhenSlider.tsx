@@ -1,9 +1,10 @@
+import { memo } from "react";
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography";
 
 import { RangeSlider } from "@/shared/ui/RangeSlider/RangeSlider";
 
-const DateRangeSlider = () => (
+export const OfferWhenSlider = memo(() => (
     <Box sx={{ mt: "33px", display: "flex", flexDirection: "column" }}>
         <Typography
             sx={{
@@ -46,6 +47,4 @@ const DateRangeSlider = () => (
             </Box>
         </Box>
     </Box>
-);
-
-export default DateRangeSlider;
+));

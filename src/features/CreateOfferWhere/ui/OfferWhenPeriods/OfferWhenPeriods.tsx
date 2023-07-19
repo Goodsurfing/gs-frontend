@@ -1,14 +1,14 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 
 import { Box } from "@mui/material";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 
-import DateInputs from "../DateInputs/DateInputs";
+import DateInputs from "@/shared/ui/DateInputs/DateInputs";
 
-import styles from "./DatePeriods.module.scss";
+import styles from "./OfferWhenPeriods.module.scss";
 
-const DatePeriods = () => {
+export const OfferWhenPeriods = memo(() => {
     const [addButtons, setAddButtons] = useState<Array<number>>([0]);
 
     const onAddBtnClick = (
@@ -48,6 +48,4 @@ const DatePeriods = () => {
             </Box>
         </Box>
     );
-};
-
-export default DatePeriods;
+});

@@ -1,4 +1,4 @@
-import { ParticipationDatesForm } from "@/modules/ParticipationDatesForm";
+import { ParticipationDatesForm } from "@/features/CreateOfferWhere";
 import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 

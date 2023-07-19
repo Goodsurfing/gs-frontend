@@ -1,13 +1,18 @@
-import { Box } from "@mui/material";
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import { Box } from "@mui/material";
+import { FC, useState } from "react";
 
 import DatePickerCalendar from "@/components/DatePickerCalendar/DatePickerCalendar";
 
 import styles from "./DateInputs.module.scss";
-import { IDateInput } from "./type";
 
-const DateInput: FC<IDateInput> = ({ min, max, className }) => {
+export interface DateInputProps {
+    min?: Date;
+    max?: Date;
+    className?: string;
+}
+
+const DateInput: FC<DateInputProps> = ({ min, max, className }) => {
     const [date, setDate] = useState<Date>(new Date());
 
     return (
