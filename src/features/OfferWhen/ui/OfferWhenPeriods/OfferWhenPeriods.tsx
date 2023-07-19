@@ -29,7 +29,7 @@ export const OfferWhenPeriods = memo(() => {
 
     return (
         <Box sx={{ display: "flex" }}>
-            <Box>
+            <Box className={styles.dateWrapper}>
                 {addButtons.map((_, index) => (
                     <DateInputs
                         key={index}
