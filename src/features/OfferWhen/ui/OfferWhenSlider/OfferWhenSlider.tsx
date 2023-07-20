@@ -1,5 +1,5 @@
 import {
-    memo, useState, useCallback, ChangeEvent,
+    memo, useCallback, ChangeEvent,
 } from "react";
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography";
@@ -8,8 +8,6 @@ import { Mark, RangeSlider } from "@/shared/ui/RangeSlider/RangeSlider";
 import Input from "@/shared/ui/Input/Input";
 
 import styles from "./OfferWhenSlider.module.scss";
-
-const initialDate: number[] = [7, 186];
 
 const marks: Mark[] = [{
     value: 1,
@@ -40,24 +38,26 @@ const marks: Mark[] = [{
     label: "6 месяцев",
 }];
 
-export const OfferWhenSlider = memo(() => {
-    const [sliderValue, setSliderValue] = useState(initialDate);
+interface OfferWhenSliderProps {
+    onChange?: (value: number[]) => void;
+    value: number[];
+}
 
+export const OfferWhenSlider = memo(({ onChange, value }: OfferWhenSliderProps) => {
     const handleStartDateChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.target.value < 1 || +e.target.value >= sliderValue[1]) {
-            return false;
+        if (!value || +e.target.value < 1 || +e.target.value >= value[1]) {
+            return;
         }
 
-        setSliderValue((prev) => [+e.target.value, prev[1]]);
-    }, [sliderValue]);
+        onChange?.([+e.target.value, value[1]]);
+    }, [onChange, value]);
 
     const handleEndDateChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.target.value < 2 || +e.target.value <= sliderValue[0]) {
-            return false;
+        if (!value || +e.target.value < 2 || +e.target.value <= value[0]) {
+            return null;
         }
-
-        setSliderValue((prev) => [prev[0], +e.target.value]);
-    }, [sliderValue]);
+        onChange?.([value[0], +e.target.value]);
+    }, [onChange, value]);
 
     return (
         <Box className={styles.wrapper}>
@@ -65,18 +65,18 @@ export const OfferWhenSlider = memo(() => {
                 Срок участия (от-до)
             </Typography>
             <Box className={styles.innerWrapper}>
-                <Input onChange={handleStartDateChange} value={sliderValue[0]} type="number" className={styles.input} placeholder="от" />
+                <Input onChange={handleStartDateChange} value={value[0]} type="number" className={styles.input} placeholder="от" />
                 <Box className={styles.sliderWrapper}>
                     <RangeSlider
                         className={styles.slider}
-                        onValueChange={setSliderValue}
-                        value={sliderValue}
+                        onValueChange={onChange}
+                        value={value}
                         marks={marks}
                         min={1}
                         max={190}
                     />
                 </Box>
-                <Input value={sliderValue[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder="до" />
+                <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder="до" />
             </Box>
         </Box>
     );

@@ -1,5 +1,7 @@
-import { memo } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { memo, useCallback } from "react";
+import {
+    Controller, DefaultValues, SubmitHandler, useForm,
+} from "react-hook-form";
 
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
@@ -9,13 +11,19 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 
-import { OfferWhen } from "@/entities/Offer";
+import { type OfferWhen } from "@/entities/Offer";
 
 import styles from "./OfferWhenForm.module.scss";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
 }
+
+const initialSliderValue: number[] = [7, 186];
+
+const defaultValues: DefaultValues<OfferWhen> = {
+    participationPeriod: initialSliderValue,
+};
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit: SubmitHandler<OfferWhen> = async (data) => {
@@ -25,13 +33,29 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     const { handleSubmit, control } = useForm<OfferWhen>({
         mode: "onChange",
+        defaultValues,
     });
 
     return (
         <form className={styles.form}>
-            <OfferWhenPeriods />
+            <Controller
+                name="periods"
+                control={control}
+                render={({ field }) => (
+                    <OfferWhenPeriods />
+                )}
+            />
             <OfferWhenTimeSettings />
-            <OfferWhenSlider />
+            <Controller
+                name="participationPeriod"
+                control={control}
+                render={({ field }) => (
+                    <OfferWhenSlider
+                        value={field.value}
+                        onChange={(value) => field.onChange(value)}
+                    />
+                )}
+            />
             <OfferWhenRequests />
             <Button
                 onClick={handleSubmit(onSubmit)}

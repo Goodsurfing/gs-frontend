@@ -8,7 +8,11 @@ import DateInputs from "@/shared/ui/DateInputs/DateInputs";
 
 import styles from "./OfferWhenPeriods.module.scss";
 
-export const OfferWhenPeriods = memo(() => {
+interface OfferWhenPeriodsProps {
+    a: any;
+}
+
+export const OfferWhenPeriods = memo(({a}: OfferWhenPeriodsProps) => {
     const [addButtons, setAddButtons] = useState<Array<number>>([0]);
 
     const onAddBtnClick = (

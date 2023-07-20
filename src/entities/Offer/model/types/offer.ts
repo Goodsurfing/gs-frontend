@@ -9,7 +9,7 @@ interface OfferWhenPeriods {
 
 export interface OfferWhen {
     periods?: OfferWhenPeriods;
-    participationPeriod?: string;
+    participationPeriod?: number[];
     closingDate?: string;
 }
 
