@@ -1,5 +1,4 @@
-import i18n from "i18next";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Variant } from "@/shared/ui/Button/Button.interface";
@@ -33,9 +32,9 @@ const ResetPasswordThirdStep: FC = () => {
 
     useEffect(() => {
         if (!query.get("token")) {
-            navigate(`/${i18n.language}/${RoutePath.main}`);
+            navigate(getMainPageUrl(locale));
         }
-    }, [navigate, query]);
+    }, [navigate, query, locale]);
 
     const onSubmit = async (data: IFormData) => {
         const token = query.get("token");

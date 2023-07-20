@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SectionTitle from "@/shared/ui/SectionTitle/SectionTitle";
@@ -11,7 +11,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import styles from "./InfoSide.module.scss";
 
-const InfoSide: FC = () => {
+const InfoSide: FC = memo(() => {
     const { t } = useTranslation();
 
     const { locale } = useLocale();
@@ -37,6 +37,6 @@ const InfoSide: FC = () => {
             </div>
         </div>
     );
-};
+});
 
 export default InfoSide;
