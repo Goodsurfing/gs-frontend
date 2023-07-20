@@ -1,4 +1,3 @@
-import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 import cn from "classnames";
 import React, {
     FC,
@@ -8,8 +7,9 @@ import React, {
     useRef,
     useState,
 } from "react";
+import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 
-import calendarIcon from '@/shared/assets/icons/calendar.svg';
+import calendarIcon from "@/shared/assets/icons/calendar.svg";
 
 import styles from "./DatePickerCalendar.module.scss";
 import { DatePickerCalendarProps } from "./type";
@@ -66,7 +66,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
         }
 
         const onDocumentClick = (e: MouseEvent) => {
-            const target = e.target;
+            const { target } = e;
 
             if (!(target instanceof Node)) {
                 return;
@@ -77,8 +77,6 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             }
 
             setShowPopup(false);
-
-            latestUpdateValueFromInput.current;
         };
 
         document.addEventListener("click", onDocumentClick);
@@ -88,8 +86,8 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
         };
     }, [latestUpdateValueFromInput]);
 
-    const handleChange = (value: Date) => {
-        onChange(value);
+    const handleChange = (val: Date) => {
+        onChange(val);
         setShowPopup(false);
     };
 
@@ -114,17 +112,20 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     }, [inputValue, min, max]);
 
     return (
-        <div className={cn(wrapperClassName, styles.wrapper)} ref={elementRef}>
+        <div
+            onClick={onInputClick}
+            className={cn(wrapperClassName, styles.wrapper)}
+            ref={elementRef}
+        >
             <input
                 type="text"
-                onClick={onInputClick}
                 value={inputValue}
                 onChange={onInputValueChange}
                 className={cn(inputClassName, styles.input, {
                     [styles.invalid]: !isValueDate,
                 })}
             />
-            <img className={styles.img} src={calendarIcon} alt="" />
+            <img className={styles.img} src={calendarIcon} alt="calendar" />
             {showPopup && inputValueDate && (
                 <CalendarComponent
                     className={cn(calendarClassName, styles.calendar)}
