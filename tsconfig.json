@@ -9,9 +9,21 @@
       "allowJs": true,
       "moduleResolution": "node",
       "baseUrl": ".",
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
       "paths": {
-        "*": ["./src/*"],
+        "@/*": ["src/*"],
+        "@utils": ["src/shared/utils/*"],
+        "@components": ["src/components/*"],
+        "@pages": ["src/pages/*"],
+        "@store": ["src/store/*"],
+        "@types": ["src/types/*"],
+        "@assets": ["src/shared/assets/*"],
+        "@shared": ["src/shared"],
+        "@constants": ["src/shared/constants/*"]
       },
+      "removeComments": true,
+      "skipLibCheck": true,
+      "strictNullChecks": true,
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
     },
@@ -20,5 +32,6 @@
         "module": "CommonJS",
       }
     },
-    "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./src/**/*"]
+    "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./src/**/*"],
+    "exclude": ["node_modules", "dist"]
   }

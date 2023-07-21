@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
-import AddButton from "@/shared/ui/AddButton/AddButton";
-import CloseButton from "@/shared/ui/CloseButton/CloseButton";
+import { AddButton } from "@/shared/ui/AddButton/AddButton";
+import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import Switch from "@/shared/ui/Switch/Switch";
 
 import Languages from "../Languages/Languages";

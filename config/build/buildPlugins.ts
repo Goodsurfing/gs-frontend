@@ -53,8 +53,6 @@ export function buildPlugins({
         }));
     }
 
-    console.log(`..................................................................analyze = ${analyze}..........................`)
-
     if (analyze) {
         plugins.push(new BundleAnalyzerPlugin({
             openAnalyzer: true,

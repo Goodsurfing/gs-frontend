@@ -1,2 +1,2 @@
 export { OfferWhenForm } from "./ui/OfferWhenForm/OfferWhenForm";
-export { CreateOfferWhen } from "./model/types/offerWhen";
+export type { CreateOfferWhen } from "./model/types/offerWhen";
