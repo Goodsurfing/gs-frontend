@@ -18,13 +18,13 @@ const StyledToggleButton = styled(ToggleButton)<StyledToggleButtonProps>(
         "&.Mui-selected:hover": {
             backgroundColor: btncolor ?? theme.palette.primary.main,
         },
-    })
+    }),
 );
 
 export const ToggleButtonComponent: FC<MuiToggleButtonProps & StyledToggleButtonProps> = ({
     value,
     className,
-    onChange = () => {},
+    onChange,
     btncolor,
     sx,
     children,
@@ -37,7 +37,7 @@ export const ToggleButtonComponent: FC<MuiToggleButtonProps & StyledToggleButton
         value: any
     ) => {
         setChecked(!checked);
-        onChange(event, value);
+        onChange?.(event, value);
     };
 
     return (

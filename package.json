@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "tsc --watch",
         "start": "webpack serve --env port=3000",
-        "start:analyze": "concurrently \"npm run start\" --env analyze=true",
+        "start:analyze": "concurrently \"npm run start --env analyze=true\"",
         "build:prod": "webpack --env mode=production",
         "clean": "rm -rf dist",
         "bootstrap": "mkdir dist",
@@ -75,9 +75,9 @@
         "webpack-dev-server": "^4.15.1"
     },
     "dependencies": {
-        "@emotion/react": "^11.11.0",
+        "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
-        "@mui/material": "^5.13.3",
+        "@mui/material": "^5.14.1",
         "@pbe/react-yandex-maps": "^1.2.4",
         "@reduxjs/toolkit": "^1.9.5",
         "axios": "^1.4.0",

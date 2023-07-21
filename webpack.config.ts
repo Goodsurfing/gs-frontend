@@ -14,6 +14,7 @@ export default (env: BuildEnv) => {
     const isDev = mode === "development";
     const PORT = env.port || 3000;
     const analyze = env.analyze || false;
+    console.log(analyze);
     const apiUrl = env.apiUrl || "https://gudsurfing.ru/";
 
     const config: webpack.Configuration = buildWebpackConfig({

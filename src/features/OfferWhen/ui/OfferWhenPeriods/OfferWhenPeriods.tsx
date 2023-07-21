@@ -9,13 +9,14 @@ import DateInputs from "@/shared/ui/DateInputs/DateInputs";
 import styles from "./OfferWhenPeriods.module.scss";
 
 interface OfferWhenPeriodsProps {
-    a: any;
+    value: number[];
+    onChange?: () => void;
 }
 
-export const OfferWhenPeriods = memo(({a}: OfferWhenPeriodsProps) => {
-    const [addButtons, setAddButtons] = useState<Array<number>>([0]);
+export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps) => {
+    const [addButtons, setAddButtons] = useState<number[]>([0]);
 
-    const onAddBtnClick = (
+    const onAddBtnClick = useCallback((
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
         e.preventDefault();
@@ -24,7 +25,7 @@ export const OfferWhenPeriods = memo(({a}: OfferWhenPeriodsProps) => {
         }
 
         setAddButtons((prev) => [...prev, 0]);
-    };
+    }, [addButtons.length]);
 
     const handleCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;

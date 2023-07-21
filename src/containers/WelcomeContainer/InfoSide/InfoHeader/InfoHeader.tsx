@@ -17,7 +17,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
-import { userActions } from "@/entities/User";
+import { getUserAuthData, userActions } from "@/entities/User";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
@@ -34,7 +34,8 @@ const InfoHeader = memo(() => {
 
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
-    const isAuth = useAppSelector((state) => state.user.authData);
+    const isAuth = useAppSelector(getUserAuthData);
+
     const dispatch = useAppDispatch();
 
     const handleLogout = useCallback(() => {

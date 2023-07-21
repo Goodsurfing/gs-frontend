@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import {
     Controller, DefaultValues, SubmitHandler, useForm,
 } from "react-hook-form";
@@ -42,7 +42,10 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 name="periods"
                 control={control}
                 render={({ field }) => (
-                    <OfferWhenPeriods />
+                    <OfferWhenPeriods
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
                 )}
             />
             <OfferWhenTimeSettings />
@@ -52,7 +55,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 render={({ field }) => (
                     <OfferWhenSlider
                         value={field.value}
-                        onChange={(value) => field.onChange(value)}
+                        onChange={field.onChange}
                     />
                 )}
             />
