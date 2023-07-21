@@ -6,7 +6,7 @@ import styles from "./CloseButton.module.scss";
 
 interface CloseButtonProps {
     onClick: () => void;
-    className: string;
+    className?: string;
 }
 
 export const CloseButton = memo(({ onClick, className }: CloseButtonProps) => {

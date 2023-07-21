@@ -2,14 +2,14 @@ export interface OfferWhere {
     address?: string;
 }
 
-interface OfferWhenPeriods {
+export interface OfferWhenPeriods {
     from: string;
     to: string;
 }
 
 export interface OfferWhen {
     periods?: OfferWhenPeriods[];
-    participationPeriod?: number[];
+    participationPeriod: number[];
     closingDate?: string;
 }
 

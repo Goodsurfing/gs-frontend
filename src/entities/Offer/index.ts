@@ -1,1 +1,1 @@
-export type { Offer, OfferWhen } from "./model/types/offer";
+export type { Offer, OfferWhen, OfferWhenPeriods } from "./model/types/offer";

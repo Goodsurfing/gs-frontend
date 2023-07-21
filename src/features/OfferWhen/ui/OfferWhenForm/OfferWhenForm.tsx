@@ -11,7 +11,7 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 
-import { type OfferWhen } from "@/entities/Offer";
+import type { DatePeriods, OfferWhenFields } from "../../model/types/offerWhen";
 
 import styles from "./OfferWhenForm.module.scss";
 
@@ -20,18 +20,23 @@ interface OfferWhenFormProps {
 }
 
 const initialSliderValue: number[] = [7, 186];
+const initialPeriods: DatePeriods[] = [
+    { from: new Date(), to: new Date() }
+];
 
-const defaultValues: DefaultValues<OfferWhen> = {
+
+const defaultValues: DefaultValues<OfferWhenFields> = {
     participationPeriod: initialSliderValue,
+    periods: initialPeriods,
 };
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
-    const onSubmit: SubmitHandler<OfferWhen> = async (data) => {
+    const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
         console.log(data);
         onComplete?.();
     };
 
-    const { handleSubmit, control } = useForm<OfferWhen>({
+    const { handleSubmit, control } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
     });

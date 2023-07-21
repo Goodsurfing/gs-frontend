@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { Box } from "@mui/material";
-import { memo, useState } from "react";
+import { memo, useCallback } from "react";
 
 import DatePickerCalendar from "@/components/DatePickerCalendar/DatePickerCalendar";
 
@@ -10,21 +10,24 @@ export interface DateInputProps {
     min?: Date;
     max?: Date;
     className?: string;
+    value?: Date;
+    onDateChange?: (value: Date) => void;
 }
 
-const DateInput = memo(({ min, max, className }: DateInputProps) => {
-    const [date, setDate] = useState<Date>(new Date());
-
+const DateInput = memo(({ min, max, className, onDateChange, value = new Date() }: DateInputProps) => {
+    const handleDateChange = useCallback((date: Date) => {
+        onDateChange?.(date);
+    }, [onDateChange]);
     return (
         <Box
             sx={{ display: "flex", alignItems: "center", position: "relative" }}
         >
             <DatePickerCalendar
                 inputClassName={cn(styles.input, className)}
-                onChange={setDate}
+                onChange={handleDateChange}
                 min={min}
                 max={max}
-                value={date}
+                value={value}
             />
         </Box>
     );
