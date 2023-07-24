@@ -14,26 +14,25 @@ export interface DateInputsProps {
     close: ReactNode;
     min?: Date;
     max?: Date;
-    value?: DatesType;
-    onDateChange?: (periods: DatesType) => void;
+    value: DatesType;
+    onDateChange: (periods: DatesType) => void;
     className?: string;
 }
 
 const DateInputs: FC<DateInputsProps> = ({
     className,
     close,
-    value = { start: new Date(), end: new Date() },
+    value,
     onDateChange,
     min,
     max,
 }) => {
-    console.log(value);
     const handleFromDateChange = useCallback((date: Date) => {
-        onDateChange?.({ ...value, start: date });
+        onDateChange({ ...value, start: date });
     }, [onDateChange, value]);
 
     const handleToDateChange = useCallback((date: Date) => {
-        onDateChange?.({ ...value, end: date });
+        onDateChange({ ...value, end: date });
     }, [onDateChange, value]);
 
     return (
@@ -41,13 +40,13 @@ const DateInputs: FC<DateInputsProps> = ({
             <DateInput
                 className={styles.leftInput}
                 onDateChange={handleFromDateChange}
-                value={value.start}
+                value={value?.start}
                 min={min}
             />
             <DateInput
                 className={styles.rightInput}
                 onDateChange={handleToDateChange}
-                value={value.end}
+                value={value?.end}
                 max={max}
             />
             {close}
