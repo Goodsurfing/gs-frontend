@@ -1,4 +1,6 @@
-import { memo } from "react";
+import cn from "classnames";
+
+import { memo, useCallback } from "react";
 
 import { Box } from "@mui/material";
 
@@ -20,17 +22,17 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
         if (value) {
             onChange(value.map((period, i) => {
                 if (i === index) {
-                    return { start: periods.start, end: periods.end };
+                    return periods;
                 }
                 return period;
             }));
         }
     };
 
-    const handleDeleteInputClick = (index: number) => {
+    const handleDeleteInputClick = useCallback((index: number) => {
         if (index === 0) return;
         onChange(value.filter((_, i) => i !== index));
-    };
+    }, [onChange, value]);
 
     const onAddBtnClick = () => {
         if (value.length > 4) {
@@ -47,9 +49,11 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
                         key={index}
                         onDateChange={(periods) => handlePeriodsChange(periods, index)}
                         value={dates}
-                        close={index !== 0 && (
+                        close={(
                             <CloseButton
-                                className={styles.btn}
+                                className={cn(styles.btn, {
+                                    [styles.active]: index > 0,
+                                })}
                                 onClick={() => handleDeleteInputClick(index)}
                             />
                         )}
@@ -57,7 +61,7 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
                 ))}
             </Box>
             <Box className={styles.add}>
-                <AddButton onClick={onAddBtnClick}>Добавить период</AddButton>
+                <AddButton text="Добавить период" onClick={onAddBtnClick} />
             </Box>
         </Box>
     );

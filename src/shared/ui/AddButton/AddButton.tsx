@@ -6,12 +6,14 @@ import plusWhiteIcon from "@/shared/assets/icons/plus-white-icon.svg";
 
 import styles from "./AddButton.module.scss";
 
-interface AddButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
+interface AddButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    text?: string;
+}
 
 export const AddButton = memo(({
     className,
-    children,
     onClick,
+    text,
     disabled,
     ...restBtnProps
 }: AddButtonProps) => {
@@ -25,11 +27,12 @@ export const AddButton = memo(({
             className={cn(styles.btn, className, {
                 [styles.disabled]: disabled,
             })}
+            type="button"
             onClick={onBtnClick}
             {...restBtnProps}
         >
-            <img src={disabled ? plusIcon : plusWhiteIcon} alt="add" />
-            {children}
+            <img src={disabled ? plusWhiteIcon : plusIcon} alt="add" />
+            <span className={styles.text}>{text}</span>
         </button>
     );
 });

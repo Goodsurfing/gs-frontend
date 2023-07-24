@@ -9,8 +9,13 @@ export interface OfferWhenPeriods {
 
 export interface OfferWhen {
     periods?: OfferWhenPeriods[];
-    participationPeriod: number[];
     closingDate?: string;
+    isFullYearAcceptable: boolean;
+    isApplicableAtTheEnd: boolean;
+    durationMinDays: number;
+    durationMaxDays: number;
+    applicationEndDate?: string;
+    isWithoutApplicationEndDate: boolean;
 }
 
 type Gender = "woman" | "man" | "other";

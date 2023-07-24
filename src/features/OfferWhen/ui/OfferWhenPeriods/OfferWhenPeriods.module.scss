@@ -11,6 +11,14 @@
     &:hover {
         background-color: rgb(236, 233, 233);
     }
+
+    opacity: 0;
+    user-select: none;
+    cursor: default;
+    &.active {
+        opacity: 1;
+        cursor: pointer;
+    }
 }
 
 .dateWrapper {
@@ -20,5 +28,5 @@
 }
 
 .add {
-    margin-left: 6px;
+
 }
