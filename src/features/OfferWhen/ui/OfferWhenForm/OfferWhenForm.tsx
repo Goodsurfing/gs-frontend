@@ -20,10 +20,7 @@ interface OfferWhenFormProps {
 }
 
 const initialSliderValue: number[] = [7, 186];
-const initialPeriods: DatePeriods[] = [
-    { from: new Date(), to: new Date() }
-];
-
+const initialPeriods: DatePeriods[] = [];
 
 const defaultValues: DefaultValues<OfferWhenFields> = {
     participationPeriod: initialSliderValue,

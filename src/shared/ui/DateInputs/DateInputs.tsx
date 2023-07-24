@@ -1,12 +1,14 @@
 import cn from "classnames";
-import { FC, ReactNode, useCallback, useState } from "react";
+import {
+    FC, ReactNode, useCallback,
+} from "react";
 import { Box } from "@mui/material";
 
 import DateInput from "../DateInput/DateInput";
 
 import styles from "./DateInputs.module.scss";
 
-type DatesType = { from: Date, to: Date };
+type DatesType = { start: Date, end: Date };
 
 export interface DateInputsProps {
     close: ReactNode;
@@ -20,35 +22,37 @@ export interface DateInputsProps {
 const DateInputs: FC<DateInputsProps> = ({
     className,
     close,
-    value = { from: new Date(), to: new Date() },
+    value = { start: new Date(), end: new Date() },
     onDateChange,
     min,
     max,
 }) => {
+    console.log(value);
     const handleFromDateChange = useCallback((date: Date) => {
-        onDateChange?.({ ...value, from: date });
+        onDateChange?.({ ...value, start: date });
     }, [onDateChange, value]);
 
     const handleToDateChange = useCallback((date: Date) => {
-        onDateChange?.({ ...value, to: date });
+        onDateChange?.({ ...value, end: date });
     }, [onDateChange, value]);
 
     return (
-    <Box className={cn(className, styles.wrapper)}>
-        <DateInput
-            className={styles.leftInput}
-            onDateChange={handleFromDateChange}
-            value={value.from}
-            min={min}
-        />
-        <DateInput
-            className={styles.rightInput}
-            onDateChange={handleToDateChange}
-            value={value.to}
-            max={max}
-        />
-        {close}
-    </Box>
-)};
+        <Box className={cn(className, styles.wrapper)}>
+            <DateInput
+                className={styles.leftInput}
+                onDateChange={handleFromDateChange}
+                value={value.start}
+                min={min}
+            />
+            <DateInput
+                className={styles.rightInput}
+                onDateChange={handleToDateChange}
+                value={value.end}
+                max={max}
+            />
+            {close}
+        </Box>
+    );
+};
 
 export default DateInputs;

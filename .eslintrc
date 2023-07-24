@@ -4,12 +4,13 @@
     "extends": ["airbnb", "airbnb-typescript", "airbnb/hooks"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "project": ["./tsconfig.json"],
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
     "rules": {
         "no-tabs": 0,
         "no-underscore-dangle": "off",
@@ -26,7 +27,7 @@
         "jsx-a11y/label-has-associated-control": "warn",
         "react/no-array-index-key": "off",
         "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-        "react/button-has-type": true,
+        "react/button-has-type": "warn",
         "react/jsx-props-no-spreading": "off",
         "react/require-default-props": "off",
         "consistent-return": "off",
@@ -45,13 +46,7 @@
         "linebreak-style": ["warn", "unix"],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/semi": ["error"],
-        "@typescript-eslint/no-empty-interface": [
-            "error",
-            {
-                "allowSingleExtends": true
-            }
-        ]
+        "@typescript-eslint/semi": ["error"]
     },
     "env": {
         "browser": true,

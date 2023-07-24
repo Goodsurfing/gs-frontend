@@ -3,8 +3,8 @@ export interface OfferWhere {
 }
 
 export interface OfferWhenPeriods {
-    from: string;
-    to: string;
+    start: string;
+    end: string;
 }
 
 export interface OfferWhen {
