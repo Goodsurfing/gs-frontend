@@ -20,7 +20,7 @@ import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection
 import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
 
 import styles from "./MapWithAddress.module.scss";
-import { validateCoordinates } from "../model/utils/validateCoordinates";
+import { validateCoordinates } from "../model/lib/validateCoordinates";
 
 interface MapWithAddressProps {
     className?: string;
@@ -126,10 +126,6 @@ const MapWithAddress = (
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
-                    query={{
-                        ns: "use-load-option",
-                        load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
-                    }}
                     setYmap={(ymaps) => setYmap(ymaps)}
                     setLoading={setLoading}
                 >

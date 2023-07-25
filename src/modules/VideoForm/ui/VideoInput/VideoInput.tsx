@@ -1,8 +1,8 @@
-import React, { memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 
-import styles from "./VideoInput.module.scss";
 import Input from "@/shared/ui/Input/Input";
-import AddButton from "@/shared/ui/AddButton/AddButton";
+import { AddButton } from "@/shared/ui/AddButton/AddButton";
+import styles from "./VideoInput.module.scss";
 
 export interface VideoInputProps {
     inputValue: string;

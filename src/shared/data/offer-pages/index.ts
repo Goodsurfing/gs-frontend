@@ -13,40 +13,40 @@ export const SideMenuData: SidebarContentProps[] = [
     {
         text: "К предложениям",
         icon: backIcon,
-        route: "offers",
+        route: "/offers",
     },
     {
         text: "Где",
         icon: pinIcon,
-        route: "offers-where",
+        route: "/offers-where",
     },
     {
         text: "Когда",
         icon: calendarIcon,
-        route: "offers-when",
+        route: "/offers-when",
     },
     {
         text: "Кто нужен",
         icon: rightUserIcon,
-        route: "offers-who-needs",
+        route: "/offers-who-needs",
     },
     {
         text: "Описание",
         icon: checklistIcon,
-        route: "offers-description",
+        route: "/offers-description",
     },
     {
         text: "Что делать",
         icon: viewListIcon,
-        route: "offers-what-to-do",
+        route: "/offers-what-to-do",
     },
     {
-        route: "rules",
+        route: "/rules",
         text: "Условия",
         icon: listCheckboxIcon,
     },
     {
-        route: "last",
+        route: "/last",
         text: "Последние штрихи",
         icon: writeIcon,
     },

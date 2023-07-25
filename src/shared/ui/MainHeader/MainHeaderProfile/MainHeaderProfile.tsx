@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
@@ -32,12 +32,9 @@ const MainHeaderProfile = () => {
 
     const dispatch = useAppDispatch();
 
-    const navigate = useNavigate();
-
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-        navigate(getMainPageUrl(locale));
-    }, [dispatch, locale, navigate]);
+    }, [dispatch]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
@@ -53,10 +50,14 @@ const MainHeaderProfile = () => {
         username = "Анон";
     }
 
+    const handleProfileOpen = useCallback(() => {
+        setProfileOpened(!isProfileOpened);
+    }, [isProfileOpened]);
+
     return (
         <div
             ref={profileRef}
-            onClick={() => setProfileOpened(!isProfileOpened)}
+            onClick={handleProfileOpen}
             onKeyDown={handleCloseDropdown}
             className={styles.info}
         >

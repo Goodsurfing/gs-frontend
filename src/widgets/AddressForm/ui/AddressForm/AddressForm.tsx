@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { MapWithAddress } from "@/features/MapWithAddress";
 import type { AddressFormFormFields } from "../../model/types/addressForm";

@@ -12,9 +12,13 @@ import image from "@/shared/assets/images/default-offer-image.svg";
 import styles from "./HostOffersPage.module.scss";
 import { PageLayout } from "@/widgets/PageLayout";
 import { SidebarProvider } from "@/widgets/Sidebar";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersWelcomePageUrl } from "@/shared/config/routes/AppUrls";
 
 const HostOffersPage = () => {
     const navigate = useNavigate();
+    const { locale } = useLocale();
     return (
         <SidebarProvider initialValue={{ isOpen: true }}>
             <PageLayout sidebarContent={HostPagesSidebarData}>
@@ -71,14 +75,14 @@ const HostOffersPage = () => {
                             />
                         </div>
                     </div>
-                    <div className={styles.btn}>
-                        <Button
-                            variant={Variant.PRIMARY}
-                            rounded
-                            onClick={() => navigate("/offers-where")}
+                    <div className={styles.btnWrapper}>
+                        <ButtonLink
+                            type="primary"
+                            path={getOffersWelcomePageUrl(locale)}
+                            className={styles.btn}
                         >
                             Добавить предложение
-                        </Button>
+                        </ButtonLink>
                     </div>
                 </div>
             </PageLayout>

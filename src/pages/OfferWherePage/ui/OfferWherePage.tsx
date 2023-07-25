@@ -1,8 +1,9 @@
 import { SideMenuData } from "@/shared/data/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 
-import styles from "./OfferWherePage.module.scss";
 import { AddressForm } from "@/widgets/AddressForm";
+
+import styles from "./OfferWherePage.module.scss";
 
 const OfferWherePage = () => (
     <PageLayout sidebarContent={SideMenuData}>

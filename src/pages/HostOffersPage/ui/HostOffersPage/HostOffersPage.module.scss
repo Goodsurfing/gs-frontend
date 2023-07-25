@@ -23,6 +23,9 @@
   gap: 20px;
 }
 
-.btn {
+.btnWrapper {
   margin-top: 50px;
+  .btn {
+    padding: 12px 100px;
+  }
 }

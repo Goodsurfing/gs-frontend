@@ -22,9 +22,8 @@ export const SidebarLink = memo(({
             <NavLink
                 to={`/${locale}${route}`}
                 replace
-                className={({ isActive }) => (cn(styles.link, {
-                    [styles.openedLink]: isOpen,
-                    [styles.activeLink]: isActive,
+                className={({ isActive }) => (cn(styles.link, { [styles.openedLink]: isOpen }, {
+                    [styles.isActive]: isActive,
                 }))}
             >
                 <img className={styles.img} src={icon} alt={text} />
