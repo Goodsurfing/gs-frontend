@@ -32,6 +32,7 @@ import {
     getOffersWhenPageUrl,
     getOffersWherePageUrl,
     getOffersWhoNeedsPageUrl,
+    getOffersWhatToDoPageUrl,
     getProfileInfoPageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
@@ -42,6 +43,7 @@ import {
 
 import { RouteWithChildrenProps } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
+import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 
 const publicRoutes: RouteWithChildrenProps[] = [
     {
@@ -127,6 +129,12 @@ const publicRoutes: RouteWithChildrenProps[] = [
             <OfferWhoNeedsPage />
         ),
         path: (locale: string) => getOffersWhoNeedsPageUrl(locale),
+    },
+    {
+        element: (
+            <OfferWhatToDoPage />
+        ),
+        path: (locale: string) => getOffersWhatToDoPageUrl(locale),
     },
     {
         element: (

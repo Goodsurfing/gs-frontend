@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.btn {
+  border: 1px solid var(--bg-accent);
+  border-radius: 1.25rem;
+  background-color: var(--bg-accent);
+  
+  &:hover {
+    border-color: var(--text-caption);
+  }
+
+  &.active {
+    background-color: var(--bg-button-1);
+  }
+}
+
+.text {
+  color: var(--text-secondary-2);
+}
