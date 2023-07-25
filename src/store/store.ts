@@ -7,9 +7,9 @@ import { localeApi } from "./api/localeApi";
 import { loginApi } from "@/features/AuthByEmail";
 import loginReducer from "./reducers/loginSlice";
 import registerReducer from "./reducers/registerSlice";
-import { organizationApi } from "./api/organizationApi";
 import toastReducer from "./reducers/toastSlice";
 import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
+import { organizationApi } from "./api/organizationApi";
 import { galleryApi, galleryReducer } from "@/modules/Gallery";
 import { userReducer } from "@/entities/User";
 

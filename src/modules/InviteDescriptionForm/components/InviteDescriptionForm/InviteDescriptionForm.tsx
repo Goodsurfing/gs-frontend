@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
 

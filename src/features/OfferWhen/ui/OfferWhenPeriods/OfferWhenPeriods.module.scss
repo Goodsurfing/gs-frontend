@@ -1,0 +1,32 @@
+.wrapper {
+    display: flex;
+}
+
+.btn {
+    margin-left: 12px;
+    border: 1px solid var(--white-theme-color);
+    padding: 6px 10px;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgb(236, 233, 233);
+    }
+
+    opacity: 0;
+    user-select: none;
+    cursor: default;
+    &.active {
+        opacity: 1;
+        cursor: pointer;
+    }
+}
+
+.dateWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add {
+
+}

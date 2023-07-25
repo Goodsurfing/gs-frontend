@@ -1,33 +1,37 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "allowJs": true,
-        "jsx": "react-jsx",
-        "sourceMap": true,
-        "outDir": "./dist",
-        "paths": {
-            "@/*": ["src/*"],
-            "@utils": ["src/shared/utils/*"],
-            "@components": ["src/components/*"],
-            "@pages": ["src/pages/*"],
-            "@store": ["src/store/*"],
-            "@types": ["src/types/*"],
-            "@assets": ["src/shared/assets/*"],
-            "@shared": ["src/shared"],
-            "@constants": ["src/shared/constants/*"]
-        },
-        "baseUrl": ".",
-        "removeComments": true,
-        "noEmit": false,
-        "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "resolveJsonModule": true,
+      "outDir": "./dist/",
+      "strict": true,
+      "noImplicitAny": true,
+      "module": "ESNext",
+      "target": "es5",
+      "jsx": "react-jsx",
+      "allowJs": true,
+      "moduleResolution": "node",
+      "baseUrl": ".",
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
+      "paths": {
+        "@/*": ["src/*"],
+        "@utils": ["src/shared/utils/*"],
+        "@components": ["src/components/*"],
+        "@pages": ["src/pages/*"],
+        "@store": ["src/store/*"],
+        "@types": ["src/types/*"],
+        "@assets": ["src/shared/assets/*"],
+        "@shared": ["src/shared"],
+        "@constants": ["src/shared/constants/*"]
+      },
+      "removeComments": true,
+      "skipLibCheck": true,
+      "strictNullChecks": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
     },
-    "exclude": ["node_modules", "build"]
-}
+    "ts-node": {
+      "compilerOptions": {
+        "module": "CommonJS",
+      }
+    },
+    "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./src/**/*"],
+    "exclude": ["node_modules", "dist"]
+  }

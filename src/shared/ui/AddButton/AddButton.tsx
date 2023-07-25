@@ -1,23 +1,25 @@
-import React, { FC } from "react";
+import { memo, ButtonHTMLAttributes } from "react";
 
 import cn from "classnames";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
 import plusWhiteIcon from "@/shared/assets/icons/plus-white-icon.svg";
 
-import { AddButtonProps } from "./types";
-
 import styles from "./AddButton.module.scss";
 
-const AddButton: FC<AddButtonProps> = ({
+interface AddButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    text?: string;
+}
+
+export const AddButton = memo(({
     className,
-    children,
-    onClick = () => {},
+    onClick,
+    text,
     disabled,
     ...restBtnProps
-}) => {
+}: AddButtonProps) => {
     const onBtnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        onClick(e);
+        onClick?.(e);
     };
 
     return (
@@ -25,13 +27,12 @@ const AddButton: FC<AddButtonProps> = ({
             className={cn(styles.btn, className, {
                 [styles.disabled]: disabled,
             })}
+            type="button"
             onClick={onBtnClick}
             {...restBtnProps}
         >
-            <img src={disabled ? plusIcon : plusWhiteIcon} alt="+" />
-            {children}
+            <img src={disabled ? plusWhiteIcon : plusIcon} alt="add" />
+            <span className={styles.text}>{text}</span>
         </button>
     );
-};
-
-export default React.memo(AddButton);
+});

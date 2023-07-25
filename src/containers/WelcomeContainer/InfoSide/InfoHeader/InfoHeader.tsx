@@ -1,47 +1,53 @@
 import {
-    useRef, useState, memo,
+    useRef, useState, memo, useCallback,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import {
+    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl,
+} from "@/shared/config/routes/AppUrls";
 
-import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
-import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import { getUserAuthData, userActions } from "@/entities/User";
+
+import { ChangeLanguage } from "@/widgets/ChangeLanguage";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 import styles from "./InfoHeader.module.scss";
-import {
-    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl,
-} from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { userActions } from "@/entities/User";
 
 const InfoHeader = memo(() => {
     const { t } = useTranslation();
 
     const { locale } = useLocale();
 
+    const navigate = useNavigate();
+
     const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
 
-    const { token } = useAppSelector((state) => state.login);
+    const isAuth = useAppSelector(getUserAuthData);
+
     const dispatch = useAppDispatch();
 
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-    };
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, locale, navigate]);
 
     const communityRef = useRef(null);
 
-    const handleClickOutside = () => {
+    const handleClickOutside = useCallback(() => {
         setLinkIsOpen(false);
-    };
+    }, []);
 
     useOnClickOutside(communityRef, handleClickOutside);
 
@@ -86,7 +92,7 @@ const InfoHeader = memo(() => {
                         </Link>
                     </Popup>
                 </div>
-                {token ? (
+                {isAuth ? (
                     <>
                         <div className={styles.link}>
                             <Link to={getProfileInfoPageUrl(locale)}>

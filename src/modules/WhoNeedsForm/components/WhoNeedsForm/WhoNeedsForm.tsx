@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
@@ -10,7 +10,7 @@ import Location from "../Location/Location";
 
 import styles from "./WhoNeedsForm.module.scss";
 
-export const WhoNeedsForm = () => {
+export const WhoNeedsForm = memo(() => {
     return (
         <form className={styles.wrapper}>
             <Gender />
@@ -27,4 +27,4 @@ export const WhoNeedsForm = () => {
             </Button>
         </form>
     );
-};
+});

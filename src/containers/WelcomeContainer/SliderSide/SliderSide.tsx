@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { Autoplay, EffectFade, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -11,7 +11,7 @@ import { sliderData } from "@/containers/WelcomeContainer/SliderSide/Slider.data
 
 import styles from "./SliderSide.module.scss";
 
-const SliderSide: FC = () => {
+const SliderSide: FC = memo(() => {
     return (
         <div className={styles.wrapper}>
             <Swiper
@@ -32,6 +32,6 @@ const SliderSide: FC = () => {
             </Swiper>
         </div>
     );
-};
+});
 
 export default SliderSide;

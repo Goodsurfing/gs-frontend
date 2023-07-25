@@ -55,7 +55,8 @@ export function buildPlugins({
 
     if (analyze) {
         plugins.push(new BundleAnalyzerPlugin({
-            openAnalyzer: false,
+            openAnalyzer: true,
+            analyzerPort: 3001,
         }));
     }
 
