@@ -9,7 +9,6 @@ export interface OfferWhenPeriods {
 
 export interface OfferWhen {
     periods?: OfferWhenPeriods[];
-    closingDate?: string;
     isFullYearAcceptable: boolean;
     isApplicableAtTheEnd: boolean;
     durationMinDays: number;

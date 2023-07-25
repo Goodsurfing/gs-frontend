@@ -11,7 +11,9 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 
-import type { DatePeriods, OfferWhenFields } from "../../model/types/offerWhen";
+import type {
+    DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
+} from "../../model/types/offerWhen";
 
 import styles from "./OfferWhenForm.module.scss";
 import { offerWhenFormAdapter } from "../../model/lib/offerWhenFormAdapter";
@@ -22,10 +24,20 @@ interface OfferWhenFormProps {
 
 const initialSliderValue: number[] = [7, 186];
 const initialPeriods: DatePeriods[] = [{ start: new Date(), end: new Date() }];
+const endSettings: EndSettings = {
+    applicationEndDate: new Date(),
+    isWithoutApplicationDate: false,
+};
+const timeSettings: TimeSettingsControls = {
+    isApplicableAtTheEnd: false,
+    isFullYearAcceptable: false,
+};
 
 const defaultValues: DefaultValues<OfferWhenFields> = {
     participationPeriod: initialSliderValue,
     periods: initialPeriods,
+    endSettings,
+    timeSettings,
 };
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {

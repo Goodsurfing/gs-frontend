@@ -8,7 +8,6 @@ export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen 
         participationPeriod,
         periods,
         timeSettings,
-        closingDate,
     } = offerWhenForm;
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
@@ -25,7 +24,6 @@ export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen 
         periods: offerWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
-        closingDate,
         isWithoutApplicationEndDate: isWithoutApplicationDate,
         applicationEndDate: formattedEndDate,
         isFullYearAcceptable,
