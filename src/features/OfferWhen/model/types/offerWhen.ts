@@ -16,7 +16,7 @@ export type EndSettings = {
     isWithoutApplicationDate: boolean;
 };
 
-export type OfferWhenFields = Omit<OfferWhen, "periods" | "participationPeriod" | "durationMinDays" | "durationMaxDays" | "isFullYearAcceptable" | "isApplicableAtTheEnd"> & {
+export type OfferWhenFields = Omit<OfferWhen, "periods" | "participationPeriod" | "durationMinDays" | "durationMaxDays" | "isFullYearAcceptable" | "isApplicableAtTheEnd" | "applicationEndDate" | "isWithoutApplicationEndDate"> & {
     periods: DatePeriods[];
     participationPeriod: number[];
     applicationEndDate: string | boolean;

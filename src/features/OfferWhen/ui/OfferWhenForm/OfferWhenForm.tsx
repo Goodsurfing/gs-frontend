@@ -14,8 +14,7 @@ import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSet
 import type { DatePeriods, OfferWhenFields } from "../../model/types/offerWhen";
 
 import styles from "./OfferWhenForm.module.scss";
-import { OfferWhen } from "@/entities/Offer";
-import { formatToW3CDate } from "../../model/lib/formatToW3CDate";
+import { offerWhenFormAdapter } from "../../model/lib/offerWhenFormAdapter";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -31,21 +30,7 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
-        const w3cPeriods = data.periods.map((period) => ({
-            start: formatToW3CDate(period.start),
-            end: formatToW3CDate(period.end),
-        }));
-
-        const preparedData: OfferWhen = {
-            periods: w3cPeriods,
-            durationMinDays: data.participationPeriod[0],
-            durationMaxDays: data.participationPeriod[1],
-            closingDate: data.closingDate,
-            isApplicableAtTheEnd: data.timeSettings.isApplicableAtTheEnd,
-            isFullYearAcceptable: data.timeSettings.isFullYearAcceptable,
-            applicationEndDate: data.applicationEndDate,
-            isWithoutApplicationEndDate: data.isWithoutApplicationEndDate,
-        };
+        const preparedData = offerWhenFormAdapter(data);
         console.log(preparedData);
         onComplete?.();
     };
