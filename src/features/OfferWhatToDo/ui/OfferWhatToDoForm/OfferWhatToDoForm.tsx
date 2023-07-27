@@ -19,8 +19,10 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
 
     return (
         <form className={styles.wrapper}>
-            {skillsData.map((item) => (
+            {skillsData.map((item, i) => (
                 <IconButtonComponent
+                    key={i}
+                    className={styles.icon}
                     text={item.text}
                     size="large"
                     onClick={onIconClick}
