@@ -11,6 +11,13 @@
   
   &:hover {
     border-color: var(--text-caption);
+    &.checked {
+      background-color: var(--bg-button-1);
+    }
+  }
+
+  &.checked {
+    background-color: var(--bg-button-1);
   }
 
   &.active {
@@ -20,4 +27,40 @@
 
 .text {
   color: var(--text-secondary-2);
+}
+
+.checked {
+  fill: white !important;
+  stroke: none !important;
+}
+
+.rounded {
+  border-radius: 50%;
+}
+
+.small {
+  width: 20px;
+  height: 20px;
+  &.icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.medium {
+  width: 32px;
+  height: 32px;
+  &.icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.large {
+  width: 40px;
+  height: 40px;
+  &.icon {
+    width: 20px;
+    height: 20px;
+  }
 }
