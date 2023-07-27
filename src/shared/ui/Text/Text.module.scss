@@ -1,5 +1,18 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  
+  .title {
+    &.X {
+      font-size: 26px;
+    }
+
+  } 
+  .text {
+    &.M {
+      font-size: 14px;
+    }
+  }
+
+  
 }

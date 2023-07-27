@@ -28,9 +28,9 @@ export const Text = memo(({
 }: TextProps) => (
     <div
         style={{ gap }}
-        className={cn(styles.wrapper, className, styles[textSize], styles[titleSize])}
+        className={cn(styles.wrapper, className)}
     >
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.text}>{text}</p>
+        <h3 className={cn(styles.title, styles[titleSize])}>{title}</h3>
+        <p className={cn(styles.text, styles[textSize])}>{text}</p>
     </div>
 ));

@@ -80,9 +80,7 @@ const HostMainInfoForm: FC = () => {
                 setSavedOrganizationData(savedData);
             }
         });
-    }, []);
-
-    console.log(savedOrganizationData);
+    }, [getInfo, getOrganization]);
 
     const [registerOrganization, { isError }] = organizationApi.useRegisterOrganizationMutation();
     const [bindOrganization, { isSuccess }] = organizationApi.useBindOrganizationMutation();

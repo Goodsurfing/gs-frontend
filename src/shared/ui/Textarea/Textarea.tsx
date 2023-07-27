@@ -50,7 +50,7 @@ const Textarea: FC<IText> = ({
                 {...restTextAreaProps}
             />
             {description && (
-                <label className={styles.description}>{description}</label>
+                <label htmlFor={id} className={styles.description}>{description}</label>
             )}
             {children}
         </div>

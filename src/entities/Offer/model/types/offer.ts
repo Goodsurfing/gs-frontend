@@ -46,7 +46,7 @@ type Skill = string;
 
 type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-type TimeType = "week" | "mounth";
+export type TimeType = "week" | "mounth";
 
 export interface OfferWhatToDo {
     skills: Skill[];

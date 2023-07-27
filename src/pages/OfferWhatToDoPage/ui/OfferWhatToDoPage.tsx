@@ -9,8 +9,11 @@ export const OfferWhatToDoPage = () => {
     return (
         <PageLayout sidebarContent={SideMenuData}>
             <Text
-                title={t("Чем вы готовы обеспечить волонтёра")}
-                text={t("Волонтёр помогает вам и будет делать это лучше, если ему будет комфортно. Создавая лучшие условия вы привлекаете лучших волонтёров.")}
+                gap={40}
+                titleSize="X"
+                textSize="M"
+                title={t("Расскажите, чем нужно будет заниматься")}
+                text={t("Подробно опишите, чем нужно будет заниматься — чем больше информации, тем лучше.")}
             />
             <OfferWhatToDoForm />
         </PageLayout>
