@@ -4,7 +4,7 @@ import { memo } from "react";
 interface IconProps extends Omit<Props, "icon"> {
     icon: string;
     alt?: string;
-    id?: string; 
+    id?: string;
     className?: string;
 }
 

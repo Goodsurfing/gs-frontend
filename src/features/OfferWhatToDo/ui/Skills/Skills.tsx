@@ -1,10 +1,10 @@
-import cn from "classnames";
 import { memo, useCallback } from "react";
 
-import styles from "./Skills.module.scss";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { skillsData } from "@/shared/data/skills";
 import { OfferWhatToDoSkillType } from "@/entities/Offer";
+
+import styles from "./Skills.module.scss";
 
 interface Props {
     className?: string;
@@ -22,11 +22,11 @@ export const Skills = memo(({ className, onChange, value }: Props) => {
         }
     }, [onChange, value]);
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={className}>
             {skillsData.map((skill) => (
                 <IconButtonComponent
-                    key={skill.id}
                     className={styles.icon}
+                    key={skill.id}
                     size="large"
                     text={skill.text}
                     icon={skill.icon}

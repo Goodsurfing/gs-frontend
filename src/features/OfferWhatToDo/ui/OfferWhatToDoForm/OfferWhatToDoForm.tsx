@@ -9,7 +9,7 @@ import styles from "./OfferWhatToDoForm.module.scss";
 import { Skills } from "../Skills/Skills";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import Textarea from "@/shared/ui/Textarea/Textarea";
-import { Text } from "@/shared/ui/Text/Text";
+import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -35,8 +35,8 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+            <p className={styles.skillsText}>{t("Навыки, которыми должен обладать волонтер")}</p>
             <div className={styles.skillsWrapper}>
-                <p className={styles.skillsText}>{t("Навыки, которыми должен обладать волонтер")}</p>
                 <Controller
                     name="skills"
                     control={control}
@@ -49,6 +49,16 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                     )}
                 />
             </div>
+            <Controller
+                name="additionalSkills"
+                control={control}
+                render={({ field }) => (
+                    <AdditionalSkills
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
             <Controller
                 name="extraInfo"
                 control={control}

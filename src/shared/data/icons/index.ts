@@ -13,6 +13,7 @@ import musicIcon from "@/shared/assets/icons/skills/music.svg";
 import photographyIcon from "@/shared/assets/icons/skills/photography.svg";
 import nightJobIcon from "@/shared/assets/icons/skills/night_job.svg";
 import sportIcon from "@/shared/assets/icons/skills/sport.svg";
+import successIcon from "@/shared/assets/icons/skills/success.svg";
 
 export {
     adminIcon,
@@ -30,4 +31,5 @@ export {
     sportIcon,
     tourismIcon,
     videoIcon,
+    successIcon,
 };
