@@ -42,20 +42,30 @@ export interface OfferDescription {
     images: string;
 }
 
-type Skill = "admin" | "cooking" | "driving" | "housing" | "decor"
+export type OfferWhatToDoSkillType =
+| "admin" | "cooking" | "driving" | "housing" | "decor"
 | "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
 | "music" | "photo" | "night_job" | "sport";
 
-type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type OfferWhatToDoSkill = {
+    id: number;
+    text: OfferWhatToDoSkillType;
+};
 
-export type TimeType = "week" | "month";
+export type DayOff = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type TimeType = "week" | "day";
+
+export type WorkSettings = {
+    hours: number;
+    timeType: TimeType;
+    dayOff: DayOff;
+};
 
 export interface OfferWhatToDo {
-    skills: Skill[];
+    skills: OfferWhatToDoSkill[];
     additionalSkills?: string[];
-    workingHours: {
-        
-    };
+    workingHours: WorkSettings;
     extraInfo?: string;
 }
 

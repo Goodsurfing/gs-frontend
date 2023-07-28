@@ -1,31 +1,38 @@
 import cn from "classnames";
-import { memo, useCallback } from "react";
+import { memo } from "react";
 
 import styles from "./Skills.module.scss";
-import { skillsData } from "@/shared/data/skills";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
+import { skillsData } from "@/shared/data/skills";
+import { OfferWhatToDoSkillType } from "@/entities/Offer";
 
 interface Props {
     className?: string;
-    value: any;
-    onChange: any;
+    value: OfferWhatToDoSkillType[];
+    onChange: (value: OfferWhatToDoSkillType[]) => void;
 }
 
-export const Skills = memo(({ className }: Props) => {
-    const handleStatusChange = useCallback(() => {
-
-    }, []);
+export const Skills = memo(({ className, onChange, value }: Props) => {
+    console.log(value);
+    const handleIconStateChange = (id: OfferWhatToDoSkillType) => {
+        const isActive = value.find((item) => item === id);
+        if (isActive) {
+            onChange(value.filter((skill) => skill !== id));
+        } else {
+            onChange([...value, id]);
+        }
+    };
     return (
         <div className={cn(styles.wrapper, className)}>
-            {skillsData.map((item, i) => (
+            {skillsData.map((skill) => (
                 <IconButtonComponent
-                    key={i}
+                    key={skill.id}
                     className={styles.icon}
-                    text={item.text}
                     size="large"
-                    onClick={onIconClick}
-                    checked={checked}
-                    icon={item.icon}
+                    text={skill.text}
+                    icon={skill.icon}
+                    checked={!!value.find((item) => item === skill.id)}
+                    onClick={() => handleIconStateChange(skill.id)}
                 />
             ))}
         </div>

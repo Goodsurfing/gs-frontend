@@ -3,11 +3,9 @@ import { memo } from "react";
 
 import styles from "./Text.module.scss";
 
-export type TextSize = "XL" | "X" | "M";
+export type TextSize = "primary" | "secondary";
 
-export type TitleSize = "XL" | "X" | "M";
-
-export type TextStyle = "default";
+export type TitleSize = "h1" | "h2" | "h3";
 
 interface TextProps {
     gap?: string | number;
@@ -23,8 +21,8 @@ export const Text = memo(({
     text,
     gap,
     title,
-    titleSize = "M",
-    textSize = "M",
+    titleSize = "h1",
+    textSize = "primary",
 }: TextProps) => (
     <div
         style={{ gap }}

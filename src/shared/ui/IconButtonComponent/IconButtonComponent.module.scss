@@ -11,13 +11,13 @@
   
   &:hover {
     border-color: var(--text-caption);
-    &.checked {
-      background-color: var(--bg-button-1);
-    }
+    // &.checked {
+    //   background-color: var(--accent-color);
+    // }
   }
 
   &.checked {
-    background-color: var(--bg-button-1);
+    background-color: var(--accent-color);
   }
 
   &.active {
@@ -26,12 +26,14 @@
 }
 
 .text {
+  font: var(--font-secondary);
   color: var(--text-secondary-2);
+  cursor: pointer;
 }
 
 .checked {
-  fill: white !important;
-  stroke: none !important;
+  fill: white;
+  stroke: none;
 }
 
 .rounded {

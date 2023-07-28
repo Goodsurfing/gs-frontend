@@ -1,56 +1,47 @@
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+    Controller, DefaultValues, SubmitHandler, useForm,
+} from "react-hook-form";
 import styles from "./OfferWhatToDoForm.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { Skills } from "../Skills/Skills";
-import { OfferWhatToDo } from "../../model/types/offerWhatToDo";
+import { OfferWhatToDo } from "@/entities/Offer";
+import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
 }
 
-export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) => {
-    const { t } = useLocale();
+const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
+    skills: [],
+};
 
-    const { handleSubmit, reset, control } = useForm<OfferWhatToDo>({
+export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) => {
+    const { handleSubmit, control } = useForm<OfferWhatToDoFormFields>({
         mode: "onChange",
+        defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferWhatToDo> = (data) => {
+    const { t } = useTranslation();
+
+    const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = (data) => {
         console.log(data);
     };
-
-    const handleSkillsChange = () => {};
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
             <Controller
-                name=""
+                name="skills"
                 control={control}
                 render={({ field }) => (
-                    <Skills value={field.value} onChange={field.onChange} />
+                    <Skills
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
                 )}
-            />
-            <Controller
-                name=""
-                control={control}
-            />
-            <Controller
-                name=""
-                control={control}
-                // render={({ field }) => (
-
-                // )}
-            /> 
-            <Controller
-                name=""
-                control={control}
-                // render={({ field }) => (
-
-                // )}
             />
             <Controller
                 name="extraInfo"

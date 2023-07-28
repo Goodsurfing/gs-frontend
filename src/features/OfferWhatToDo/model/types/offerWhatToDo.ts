@@ -1,18 +1,21 @@
+import type {
+    OfferWhatToDoSkill,
+    OfferWhatToDoSkillType,
+    WorkSettings,
+} from "@/entities/Offer";
+
 export type ExtraSkill = { skill: string };
+
+export type OfferWhatToDoFormSkill = OfferWhatToDoSkill;
 
 export type WorkingHours = {
     hours: number;
     timeType: "week" | "day" | "mounth";
 };
 
-export type Skill = {
-    id: number;
-    text: string;
-};
-
-export interface OfferWhatToDo {
-    skills: Skill[];
-    extraSkills?: ExtraSkill[];
-    workingHours: WorkingHours[];
+export interface OfferWhatToDoFormFields {
+    skills: OfferWhatToDoSkillType[];
+    additionalSkills?: string[];
+    workingHours: WorkSettings;
     extraInfo?: string;
 }

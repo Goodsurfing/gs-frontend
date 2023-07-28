@@ -10,8 +10,8 @@ export const OfferWhatToDoPage = () => {
         <PageLayout sidebarContent={SideMenuData}>
             <Text
                 gap={40}
-                titleSize="X"
-                textSize="M"
+                titleSize="h2"
+                textSize="primary"
                 title={t("Расскажите, чем нужно будет заниматься")}
                 text={t("Подробно опишите, чем нужно будет заниматься — чем больше информации, тем лучше.")}
             />

@@ -15,6 +15,7 @@ interface IconButtonComponentProps {
     rounded?: boolean;
     disabled?: boolean;
     checked: boolean;
+    id?: string;
     onClick?: () => void;
 }
 
@@ -23,6 +24,7 @@ const IconButtonComponent = memo(({
     text,
     icon,
     disabled,
+    id,
     rounded = true,
     size = "medium",
     checked = false,
@@ -33,6 +35,7 @@ const IconButtonComponent = memo(({
             disabled={disabled}
             onClick={onClick}
             size={size}
+            id={id}
             disableFocusRipple
             className={cn(
                 styles.btn,
@@ -43,7 +46,14 @@ const IconButtonComponent = memo(({
         >
             <IconComponent className={cn(styles.icon, styles[size])} icon={icon} />
         </IconButton>
-        <span className={styles.text}>{text}</span>
+        <label
+            onClick={onClick}
+            htmlFor={id}
+            className={styles.text}
+        >
+            {text}
+
+        </label>
     </div>
 ));
 

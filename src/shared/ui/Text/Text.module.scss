@@ -3,14 +3,26 @@
   flex-direction: column;
   
   .title {
-    &.X {
-      font-size: 26px;
+    &.h1 {
+      font: var(--font-h1);
+    }
+
+    &.h2 {
+      font: var(--font-h2)
+    }
+
+    &.h3 {
+      font: var(--font-h3);
     }
 
   } 
   .text {
-    &.M {
-      font-size: 14px;
+    &.primary {
+      font: var(--font-primary);
+    }
+
+    &.secondary {
+      font: var(--font-secondary);
     }
   }
 
