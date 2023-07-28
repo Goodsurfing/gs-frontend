@@ -11,9 +11,6 @@
   
   &:hover {
     border-color: var(--text-caption);
-    // &.checked {
-    //   background-color: var(--accent-color);
-    // }
   }
 
   &.checked {
@@ -26,7 +23,7 @@
 }
 
 .text {
-  font: var(--font-secondary);
+  font: var(--font-label);
   color: var(--text-secondary-2);
   cursor: pointer;
 }

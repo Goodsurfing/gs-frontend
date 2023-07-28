@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -18,15 +19,17 @@ const root = createRoot(document.getElementById("root")!);
 const store = setupStore();
 
 const Root = (
-    <BrowserRouter>
-        <Provider store={store}>
-            <StyledEngineProvider injectFirst>
-                <LocaleProvider>
-                    <App />
-                </LocaleProvider>
-            </StyledEngineProvider>
-        </Provider>
-    </BrowserRouter>
+    <StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <StyledEngineProvider injectFirst>
+                    <LocaleProvider>
+                        <App />
+                    </LocaleProvider>
+                </StyledEngineProvider>
+            </Provider>
+        </BrowserRouter>
+    </StrictMode>
 );
 
 root.render(Root);

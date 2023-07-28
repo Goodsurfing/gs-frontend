@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 import styles from "./Skills.module.scss";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
@@ -13,15 +13,14 @@ interface Props {
 }
 
 export const Skills = memo(({ className, onChange, value }: Props) => {
-    console.log(value);
-    const handleIconStateChange = (id: OfferWhatToDoSkillType) => {
+    const handleIconStateChange = useCallback((id: OfferWhatToDoSkillType) => {
         const isActive = value.find((item) => item === id);
         if (isActive) {
             onChange(value.filter((skill) => skill !== id));
         } else {
             onChange([...value, id]);
         }
-    };
+    }, [onChange, value]);
     return (
         <div className={cn(styles.wrapper, className)}>
             {skillsData.map((skill) => (
