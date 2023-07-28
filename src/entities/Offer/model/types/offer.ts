@@ -42,18 +42,21 @@ export interface OfferDescription {
     images: string;
 }
 
-type Skill = string;
+type Skill = "admin" | "cooking" | "driving" | "housing" | "decor"
+| "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
+| "music" | "photo" | "night_job" | "sport";
 
 type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export type TimeType = "week" | "mounth";
+export type TimeType = "week" | "month";
 
 export interface OfferWhatToDo {
     skills: Skill[];
-    workingHours: string;
-    timeType: TimeType;
-    dayOffs: Day;
-    additional?: string;
+    additionalSkills?: string[];
+    workingHours: {
+        
+    };
+    extraInfo?: string;
 }
 
 type Housing = "house" | "room" | "bed" | "tent" | "tent-place";

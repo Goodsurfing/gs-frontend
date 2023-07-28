@@ -37,9 +37,6 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
             <Controller
                 name=""
                 control={control}
-                // render={({ field }) => (
-
-                // )}
             />
             <Controller
                 name=""

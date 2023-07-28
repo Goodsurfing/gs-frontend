@@ -1,0 +1,107 @@
+@font-face {
+	font-family: "Lato";
+	src:
+		local("Lato Regular"),
+		local("Lato-Regular"),
+		url("@/shared/assets/fonts/lato/Lato-Regular.ttf") format("truetype");
+
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Lato";
+	src:
+		local("Lato Medium"),
+		local("Lato-Medium"),
+		url("@/shared/assets/fonts/lato/Lato-Medium.ttf") format("truetype");
+
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Lato";
+	src:
+		local("Lato Semibold"),
+		local("Lato-Semibold"),
+		url("@/shared/assets/fonts/lato/Lato-Semibold.ttf") format("truetype");
+
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Lato";
+	src:
+		local("Lato Bold"),
+		local("Lato Bold"),
+		url("@/shared/assets/fonts/lato/Lato-Bold.ttf") format("truetype");
+
+	font-weight: 700;
+	font-style: normal;
+}
+
+:root {
+  --font-family-main: "Lato", sans-serif;
+  // h1
+  --font-size-h1: 40px;
+  --font-weight-h1: 600;
+  --font-line-height-h1: 120%;
+  --font-h1: var(--font-size-h1) / var(--font-weight-h1) / var(--font-family-main) --font-line-height-h1;
+  // h2
+  --font-size-h2: 26px;
+  --font-weight-h2: 400;
+  --font-line-height-h2: 120%;
+  --font-h2: var(--font-size-h1) / var(--font-weight-h2) / var(--font-family-main) --font-line-height-h2;
+  // h3
+  --font-size-h3: 18px;
+  --font-weight-h3: 500;
+  --font-line-height-h3: 120%;
+  --font-h3: var(--font-size-h1) / var(--font-weight-h3) / var(--font-family-main) --font-line-height-h3;
+  // primary
+  --font-size-primary: 14px;
+  --font-weight-primary: 500;
+  --font-line-height-primary: 120%;
+  --font-primary: var(--font-size-primary) / var(--font-weight-primary) / var(--font-family-main) --font-line-height-primary;
+  // label
+  --font-size-label: 16px;
+  --font-weight-label: 400;
+  --font-line-height-label: 120%;
+  --font-label: var(--font-size-label) / var(--font-weight-label) / var(--font-family-main) --font-line-height-label;
+  // field
+  --font-size-field: 16px;
+  --font-weight-field: 400;
+  --font-line-height-field: 125%;
+  --font-field: var(--font-size-field) / var(--font-weight-field) / var(--font-family-main) --font-line-height-field;
+  // sidebar
+  --font-size-sidebar: 18px;
+  --font-weight-sidebar: 400;
+  --font-line-height-sidebar: 120%;
+  --font-sidebar: var(--font-size-sidebar) / var(--font-weight-sidebar) / var(--font-family-main) --font-line-height-sidebar;
+  // lang-switch
+  --font-size-lang-switch: 14px;
+  --font-weight-lang-switch: 600;
+  --font-line-height-lang-switch: 100%;
+  --font-lang-switch: var(--font-size-lang-switch) / var(--font-weight-lang-switch) / var(--font-family-main) --font-line-height-lang-switch;
+  // secondary
+  --font-size-secondary: 14px;
+  --font-weight-secondary: 400;
+  --font-line-height-secondary: 100%;
+  --font-secondary: var(--font-size-secondary) / var(--font-weight-secondary) / var(--font-family-main) --font-line-height-secondary;
+  // count
+  --font-size-count: 14px;
+  --font-weight-count: 700;
+  --font-line-height-count: 130%;
+  --font-count: var(--font-size-count) / var(--font-weight-count) / var(--font-family-main) --font-line-height-count;
+  // caption
+  --font-size-count: 12px;
+  --font-weight-count: 500;
+  --font-line-height-count: 120%;
+  --font-count: var(--font-size-count) / var(--font-weight-count) / var(--font-family-main) --font-line-height-count;
+  // note
+  --font-size-note: 10px;
+  --font-weight-note: 400;
+  --font-line-height-note: 120%;
+  --font-note: var(--font-size-note) / var(--font-weight-note) / var(--font-family-main) --font-line-height-note;
+}
