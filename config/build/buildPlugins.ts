@@ -30,6 +30,7 @@ export function buildPlugins({
         }),
         new Dotenv(),
         new ForkTsCheckerWebpackPlugin(),
+        new webpack.ids.HashedModuleIdsPlugin(),
     ];
 
     if (isDev) {

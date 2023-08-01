@@ -1,6 +1,7 @@
 import { memo, ChangeEvent } from "react";
 
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem } from "@mui/material";
+import Select from "@/shared/ui/Select/Select";
 import styles from "./WorkingHoursField.module.scss";
 import Input from "@/shared/ui/Input/Input";
 import { WorkingHours } from "../../model/types/offerWhatToDo";
@@ -22,7 +23,6 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
         }
     };
     const handleTimeIntervalChange = (timeType: TimeType) => {
-        console.log(timeType);
         onChange({ ...value, timeType });
     };
     const handleDayOffChange = (dayOffs: number) => {
@@ -31,23 +31,35 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
 
     return (
         <div className={styles.wrapper}>
-            <Input type="number" onChange={handleHoursChange} value={value.hours} />
-            <Select
-                onChange={(e) => handleTimeIntervalChange(e.target.value as TimeType)}
-                value={value.timeType}
-            >
-                {TimeTypeOptions.map((item) => (
-                    <MenuItem key={item} value={item}>{item}</MenuItem>
-                ))}
-            </Select>
-            <Select
-                onChange={(e) => handleDayOffChange(+e.target.value)}
-                value={value.dayOffs}
-            >
-                {DayOffOptions.map((item) => (
-                    <MenuItem key={item} value={item}>{item}</MenuItem>
-                ))}
-            </Select>
+            <div className={styles.workingHoursWrapper}>
+                <p className={styles.workingHoursText}>Количество рабочих часов</p>
+                <div className={styles.workingHours}>
+                    <Input
+                        inputClassName={styles.inputClassName}
+                        type="number"
+                        onChange={handleHoursChange}
+                        value={value.hours}
+                    />
+                    <Select
+                        onChange={(e) => handleTimeIntervalChange(e.target.value as TimeType)}
+                        value={value.timeType}
+                    >
+                        {TimeTypeOptions.map((item) => (
+                            <MenuItem key={item} value={item}>{item}</MenuItem>
+                        ))}
+                    </Select>
+                </div>
+            </div>
+            <div className={styles.dayOffs}>
+                <Select
+                    onChange={(e) => handleDayOffChange(+e.target.value)}
+                    value={value.dayOffs}
+                >
+                    {DayOffOptions.map((item) => (
+                        <MenuItem key={item} value={item}>{item}</MenuItem>
+                    ))}
+                </Select>
+            </div>
         </div>
     );
 });

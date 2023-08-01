@@ -7,6 +7,7 @@ import { buildPlugins } from "./buildPlugins";
 import { buildLoaders } from "./buildLoaders";
 import { buildResolvers } from "./buildResolvers";
 import { buildDevServer } from "./buildDevServer";
+import { buildOptimizations } from "./buildOptimizations";
 
 interface Configuration extends WebpackConfiguration {
     devServer?: WebpackDevServerConfiguration;
@@ -32,6 +33,7 @@ export function buildWebpackConfig(options: BuildOptions): Configuration {
         watchOptions: {
             ignored: /node_modules/,
         },
+        optimization: buildOptimizations(options) as any,
         resolve: buildResolvers(options),
         devtool: isDev ? "inline-source-map" : undefined,
         devServer: isDev ? buildDevServer(options) : undefined,

@@ -11,7 +11,7 @@ export const galleryApi = createApi({
     reducerPath: "galleryApi",
     baseQuery: fetchBaseQuery({
         credentials: "same-origin",
-        baseUrl: `${process.env.REACT_APP_API_BASE_URL}api/v1`,
+        baseUrl: `${process.env._BASE_URL}api/v1`,
         prepareHeaders: (headers, { getState }) => {
             const { token } = (getState() as RootState).login;
             if (token) {

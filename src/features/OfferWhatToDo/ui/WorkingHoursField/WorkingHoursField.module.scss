@@ -1,4 +1,28 @@
 .wrapper {
     display: flex;
+    gap: 30px;
+}
+
+.workingHours {
+    max-width: 307px;
+    display: flex;
     gap: 14px;
+}
+
+.inputClassName {
+    max-width: 83px;
+}
+
+.dayOffs {
+    width: 245px;
+}
+
+.workingHoursWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.workingHoursText {
+    color: var(--text-caption);
 }

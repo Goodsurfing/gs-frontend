@@ -4,6 +4,13 @@ import styles from "./Select.module.scss";
 
 interface SelectComponentProps extends SelectProps {}
 
-export const SelectComponent = ({ children, ...restSelectProps }: SelectComponentProps) => (
-    <Select className={styles.select} {...restSelectProps}>{children}</Select>
-);
+export const SelectComponent = (props: SelectComponentProps) => {
+    const { children, ...restSelectProps } = props;
+    return (
+        <div className={styles.wrapper}>
+            <Select className={styles.select} {...restSelectProps}>
+                {children}
+            </Select>
+        </div>
+    );
+};
