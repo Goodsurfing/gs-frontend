@@ -26,6 +26,7 @@ export const Skills = memo(({ className, onChange, value }: Props) => {
             {skillsData.map((skill) => (
                 <IconButtonComponent
                     className={styles.icon}
+                    activeClassName={styles.active}
                     key={skill.id}
                     size="large"
                     text={skill.text}

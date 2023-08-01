@@ -10,6 +10,7 @@ import { Skills } from "../Skills/Skills";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
+import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -18,7 +19,7 @@ interface OfferWhatToDoFormProps {
 const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
     skills: [],
     additionalSkills: [],
-    workingHours: { dayOff: 2, hours: 6, timeType: "week" },
+    workingHours: { dayOffs: 2, hours: 6, timeType: "week" },
 };
 
 export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) => {
@@ -31,6 +32,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
 
     const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = (data) => {
         console.log(data);
+        onSuccess?.();
     };
 
     return (
@@ -49,7 +51,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                     )}
                 />
             </div>
-            <Controller
+            {/* <Controller
                 name="additionalSkills"
                 control={control}
                 render={({ field }) => (
@@ -57,6 +59,13 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                         value={field.value}
                         onChange={field.onChange}
                     />
+                )}
+            /> */}
+            <Controller
+                name="workingHours"
+                control={control}
+                render={({ field }) => (
+                    <WorkingHoursField value={field.value} onChange={field.onChange} />
                 )}
             />
             <Controller

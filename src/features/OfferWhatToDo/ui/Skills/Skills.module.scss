@@ -1,4 +1,7 @@
 .icon {
-    width: 40px;
-    height: 40px;
+    fill: var(--text-caption);
+}
+
+.active {
+    fill: var(--text-secondary-1);
 }

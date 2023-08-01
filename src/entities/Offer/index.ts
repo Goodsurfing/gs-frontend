@@ -6,4 +6,5 @@ export type {
     OfferWhatToDoSkill,
     OfferWhatToDoSkillType,
     WorkSettings,
+    TimeType,
 } from "./model/types/offer";

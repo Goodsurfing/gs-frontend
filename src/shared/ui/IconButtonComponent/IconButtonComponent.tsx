@@ -10,6 +10,7 @@ type IconButtonSize = "small" | "medium" | "large";
 interface IconButtonComponentProps {
     icon: string;
     className?: string;
+    activeClassName?: string;
     text?: string;
     size?: IconButtonSize;
     rounded?: boolean;
@@ -21,6 +22,7 @@ interface IconButtonComponentProps {
 
 const IconButtonComponent = memo(({
     className,
+    activeClassName,
     text,
     icon,
     disabled,
@@ -40,7 +42,7 @@ const IconButtonComponent = memo(({
             className={cn(
                 styles.btn,
                 className,
-                { [styles.checked]: checked },
+                { [cn(styles.checked, activeClassName)]: checked },
                 { [styles.rounded]: rounded },
             )}
         >

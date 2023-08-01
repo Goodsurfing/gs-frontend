@@ -15,8 +15,9 @@ export const AdditionalSkills = memo(({ className, onChange, value }: Props) => 
     const onSkillsChange = () => {};
     return (
         <div className={styles.wrapper}>
-            <IconButtonComponent className={styles.icon} icon={successIcon} />
-            <AddButton text="Добавить навык" />
+            {value.map((item) => <p>{item}</p>)}
+            <IconButtonComponent checked={false} className={styles.icon} icon={successIcon} />
+            <AddButton className={styles.input} text="Добавить навык" />
         </div>
     );
 });
