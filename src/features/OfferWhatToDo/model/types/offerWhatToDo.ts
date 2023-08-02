@@ -13,9 +13,14 @@ export type WorkingHours = {
     dayOffs: number;
 };
 
+export type AdditionalSkillsType = {
+    text: string;
+    checked: boolean;
+};
+
 export interface OfferWhatToDoFormFields {
     skills: OfferWhatToDoSkillType[];
-    additionalSkills?: string[];
+    additionalSkills: AdditionalSkillsType[];
     workingHours: WorkingHours;
     extraInfo?: string;
 }

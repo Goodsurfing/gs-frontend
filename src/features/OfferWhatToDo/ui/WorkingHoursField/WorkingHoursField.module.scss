@@ -1,11 +1,13 @@
 .wrapper {
     display: flex;
+    align-items: flex-end;
     gap: 30px;
 }
 
 .workingHours {
     max-width: 307px;
     display: flex;
+    align-items: flex-end;
     gap: 14px;
 }
 
@@ -15,6 +17,9 @@
 
 .dayOffs {
     width: 245px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .workingHoursWrapper {
@@ -23,6 +28,15 @@
     gap: 8px;
 }
 
-.workingHoursText {
+.workingHoursText, .dayOffsText {
+    font: var(--font-secondary);
     color: var(--text-caption);
+}
+
+.timeType {
+    width: 210px;
+}
+
+.dayOffsSelect {
+    width: 100%;
 }

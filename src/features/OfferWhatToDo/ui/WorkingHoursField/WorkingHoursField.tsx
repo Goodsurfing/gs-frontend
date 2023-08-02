@@ -1,11 +1,12 @@
 import { memo, ChangeEvent } from "react";
 
 import { MenuItem } from "@mui/material";
-import Select from "@/shared/ui/Select/Select";
+import { SelectComponent } from "@/shared/ui/Select/Select";
 import styles from "./WorkingHoursField.module.scss";
 import Input from "@/shared/ui/Input/Input";
 import { WorkingHours } from "../../model/types/offerWhatToDo";
 import { TimeType } from "@/entities/Offer";
+import { convertStringToWord } from "../../model/lib/convertDateStringToWord/convertDateStringToWord";
 
 interface Props {
     value: WorkingHours;
@@ -40,25 +41,28 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
                         onChange={handleHoursChange}
                         value={value.hours}
                     />
-                    <Select
+                    <SelectComponent
+                        className={styles.timeType}
                         onChange={(e) => handleTimeIntervalChange(e.target.value as TimeType)}
                         value={value.timeType}
                     >
                         {TimeTypeOptions.map((item) => (
-                            <MenuItem key={item} value={item}>{item}</MenuItem>
+                            <MenuItem key={item} value={item}>{convertStringToWord(item)}</MenuItem>
                         ))}
-                    </Select>
+                    </SelectComponent>
                 </div>
             </div>
             <div className={styles.dayOffs}>
-                <Select
+                <p className={styles.dayOffsText}>Количество выходных дней в неделю</p>
+                <SelectComponent
+                    className={styles.dayOffsSelect}
                     onChange={(e) => handleDayOffChange(+e.target.value)}
                     value={value.dayOffs}
                 >
                     {DayOffOptions.map((item) => (
                         <MenuItem key={item} value={item}>{item}</MenuItem>
                     ))}
-                </Select>
+                </SelectComponent>
             </div>
         </div>
     );

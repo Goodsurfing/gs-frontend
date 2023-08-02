@@ -44,18 +44,21 @@ const IconButtonComponent = memo(({
                 className,
                 { [cn(styles.checked, activeClassName)]: checked },
                 { [styles.rounded]: rounded },
+                { [styles.disabled]: disabled },
             )}
         >
             <IconComponent className={cn(styles.icon, styles[size])} icon={icon} />
         </IconButton>
-        <label
-            onClick={onClick}
-            htmlFor={id}
-            className={styles.text}
-        >
-            {text}
+        {text && (
+            <label
+                onClick={onClick}
+                htmlFor={id}
+                className={styles.text}
+            >
+                {text}
 
-        </label>
+            </label>
+        )}
     </div>
 ));
 

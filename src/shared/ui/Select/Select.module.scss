@@ -1,3 +1,28 @@
 .select {
-    border: var(--bg-accent) 2px solid;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font: var(--font-label);
+    max-height: 44px;
+
+    &:hover {
+        fieldset {
+            border: var(--text-caption) 2px solid !important;
+        }
+    }
+}
+
+.select:global.MuiOutlinedInput-root {
+    .MuiOutlinedInput-notchedOutline {
+        border: var(--text-caption) 1px solid;
+    }
+}
+
+.select:global.MuiSelect-select {
+    min-height: auto;
+    padding: 14px;
+}
+
+.input {
+    border: none;
 }

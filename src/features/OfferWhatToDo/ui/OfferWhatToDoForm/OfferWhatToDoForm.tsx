@@ -51,7 +51,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                     )}
                 />
             </div>
-            {/* <Controller
+            <Controller
                 name="additionalSkills"
                 control={control}
                 render={({ field }) => (
@@ -60,7 +60,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                         onChange={field.onChange}
                     />
                 )}
-            /> */}
+            />
             <Controller
                 name="workingHours"
                 control={control}

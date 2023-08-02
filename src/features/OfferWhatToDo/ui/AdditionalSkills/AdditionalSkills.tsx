@@ -1,23 +1,33 @@
 import { memo } from "react";
+import { successIcon } from "@/shared/data/icons/skills";
+import { plusIcon } from "@/shared/data/icons/helpIcons";
 
 import styles from "./AdditionalSkills.module.scss";
-import { successIcon } from "@/shared/data/icons";
-import { AddButton } from "@/shared/ui/AddButton/AddButton";
-import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
+import { AdditionalSkillsType } from "../../model/types/offerWhatToDo";
+import { InputWithButton } from "@/shared/ui/InputWithButton/InputWithButton";
 
 interface Props {
     className?: string;
-    value: string[];
-    onChange: (value: string[]) => void;
+    value: AdditionalSkillsType[];
+    onChange: (value: AdditionalSkillsType[]) => void;
 }
 
 export const AdditionalSkills = memo(({ className, onChange, value }: Props) => {
-    const onSkillsChange = () => {};
+    const onSkillsChange = (value: string) => {};
+
+    const onSkillSubmit = (value: string) => {};
+
     return (
         <div className={styles.wrapper}>
-            {value.map((item) => <p>{item}</p>)}
-            <IconButtonComponent checked={false} className={styles.icon} icon={successIcon} />
-            <AddButton className={styles.input} text="Добавить навык" />
+            <InputWithButton
+                className={styles.addSkill}
+                iconButtonClassName={styles.icon}
+                inputButtonClassName={styles.inputIcon}
+                onSubmit={onSkillSubmit}
+                icon={successIcon}
+                inputButtonIcon={plusIcon}
+                placeholder="Добавить навык"
+            />
         </div>
     );
 });

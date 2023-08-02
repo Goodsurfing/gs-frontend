@@ -14,7 +14,7 @@ import {
     sportIcon,
     tourismIcon,
     videoIcon,
-} from "../icons";
+} from "../icons/skills";
 
 type SkillsData = {
     id:

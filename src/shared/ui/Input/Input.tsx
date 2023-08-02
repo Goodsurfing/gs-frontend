@@ -32,18 +32,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ...restInputProps
     }, inputRef) => (
         <div className={cn(styles.wrapper, className)}>
-            <div className={styles.labelWrapper}>
-                {img && (
-                    <img
-                        className={styles.image}
-                        src={img}
-                        alt={`${img}`}
-                    />
-                )}
-                <label htmlFor={id} className={styles.label}>
-                    {label}
-                </label>
-            </div>
+            {(label || img) && (
+                <div className={styles.labelWrapper}>
+                    {img && (
+                        <img
+                            className={styles.image}
+                            src={img}
+                            alt={img}
+                        />
+                    )}
+                    <label htmlFor={id} className={styles.label}>
+                        {label}
+                    </label>
+                </div>
+            )}
             <input
                 ref={inputRef}
                 id={id}

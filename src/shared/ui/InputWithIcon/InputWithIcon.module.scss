@@ -1,0 +1,20 @@
+.wrapper {
+    position: relative;
+}
+
+.input {
+    border-radius: 10px;
+    font: var(--font-secondary);
+    border: 1px solid var(--text-caption);
+    outline: none;
+    padding: 12px 20px 12px 42px;
+    max-height: 44px;
+    background-color: var(--bg-field);
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+}

@@ -28,6 +28,10 @@
   cursor: pointer;
 }
 
+.disabled {
+  cursor: not-allowed;
+}
+
 .checked {
   fill: white;
   stroke: none;
