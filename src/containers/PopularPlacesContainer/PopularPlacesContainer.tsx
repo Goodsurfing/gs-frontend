@@ -5,15 +5,11 @@ import { popularPlacesData } from "@/containers/PopularPlacesContainer/PopularPl
 
 import styles from "./PopularPlacesContainer.module.scss";
 
-const PopularPlacesContainer: FC = () => {
-    return (
-        <div className={styles.wrapper}>
-            {popularPlacesData &&
-                popularPlacesData.map((item, index) => {
-                    return <PopularPlaceItem key={index} {...item} />;
-                })}
-        </div>
-    );
-};
+const PopularPlacesContainer: FC = () => (
+    <div className={styles.wrapper}>
+        {popularPlacesData
+                && popularPlacesData.map((item, index) => <PopularPlaceItem key={index} {...item} />)}
+    </div>
+);
 
 export default PopularPlacesContainer;

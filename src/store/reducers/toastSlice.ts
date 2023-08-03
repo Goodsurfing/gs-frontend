@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { IHintPopup } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { HintType, IHintPopup } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-export interface IToast extends Pick<IHintPopup, 'text' | "type"> {}
+export interface IToast extends Pick<IHintPopup, "text" | "type"> {}
 
 const initialState: IToast = {
     text: "",
@@ -11,17 +10,15 @@ const initialState: IToast = {
 };
 
 export const toastSlice = createSlice({
-  name: "toast",
-  initialState,
-  reducers: {
-    setToast: (state: IHintPopup, action: PayloadAction<IToast>) => {
-      return {
-        text: action.payload.text,
-        type: action.payload.type
-      }
-    }
-  },
+    name: "toast",
+    initialState,
+    reducers: {
+        setToast: (state: IHintPopup, action: PayloadAction<IToast>) => ({
+            text: action.payload.text,
+            type: action.payload.type,
+        }),
+    },
 });
 
-export const { setToast } = toastSlice.actions
+export const { setToast } = toastSlice.actions;
 export default toastSlice.reducer;

@@ -34,7 +34,7 @@ export const ToggleButtonComponent: FC<MuiToggleButtonProps & StyledToggleButton
 
     const onBtnToggle = (
         event: React.MouseEvent<HTMLElement, MouseEvent>,
-        value: any
+        value: any,
     ) => {
         setChecked(!checked);
         onChange?.(event, value);

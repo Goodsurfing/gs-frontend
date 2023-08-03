@@ -15,49 +15,43 @@ const GeneralFormGroup: FC<GeneralFormGroupProps> = ({
     data,
     control,
     isLocked,
-}) => {
-    return (
-        <div className={styles.general}>
-            <div className={styles.nameWrapper}>
-                <div className={styles.name}>
-                    <Controller
-                        control={control}
-                        name="firstName"
-                        defaultValue={data.firstName}
-                        render={({ field }) => {
-                            return (
-                                <Input
-                                    onChange={(e) => { return field.onChange(e); }}
-                                    value={field.value}
-                                    label="Имя"
-                                    id="firstName"
-                                    required
-                                    disabled={isLocked}
-                                />
-                            );
-                        }}
-                    />
-                    <Controller
-                        control={control}
-                        name="lastName"
-                        defaultValue={data.lastName}
-                        render={({ field }) => {
-                            return (
-                                <Input
-                                    onChange={(e) => { return field.onChange(e); }}
-                                    value={field.value}
-                                    label="Фамилия"
-                                    required
-                                    id="lastName"
-                                    disabled={isLocked}
-                                />
-                            );
-                        }}
-                    />
-                </div>
+}) => (
+    <div className={styles.general}>
+        <div className={styles.nameWrapper}>
+            <div className={styles.name}>
+                <Controller
+                    control={control}
+                    name="firstName"
+                    defaultValue={data.firstName}
+                    render={({ field }) => (
+                        <Input
+                            onChange={(e) => field.onChange(e)}
+                            value={field.value}
+                            label="Имя"
+                            id="firstName"
+                            required
+                            disabled={isLocked}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name="lastName"
+                    defaultValue={data.lastName}
+                    render={({ field }) => (
+                        <Input
+                            onChange={(e) => field.onChange(e)}
+                            value={field.value}
+                            label="Фамилия"
+                            required
+                            id="lastName"
+                            disabled={isLocked}
+                        />
+                    )}
+                />
             </div>
         </div>
-    );
-};
+    </div>
+);
 
 export default GeneralFormGroup;

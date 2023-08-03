@@ -1,0 +1,37 @@
+.wrapper {
+    position: relative;
+}
+
+.input {
+    cursor: pointer;
+    padding: 15px 20px;
+    font: var(--font-field);
+    color: var(--text-secondary-2);
+    &:hover, &:focus {
+        box-shadow: none;
+    }
+}
+
+.activeIcon {
+    fill: white !important;
+}
+
+.isEditing {
+    cursor: text;
+    border: var(--page-color) 2px solid;
+}
+
+.defaultInput {
+    border: 2px solid var(--page-color);
+    background-color: var(--page-color);
+}
+
+.closeBtnIcon {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    fill: var(--text-caption);
+    top: 0;
+    right: 0;
+}

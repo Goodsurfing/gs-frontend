@@ -21,79 +21,71 @@ interface LocationFormGroupProps {
 const LocationFormGroup: FC<LocationFormGroupProps> = ({
     control,
     isLocked,
-}) => {
-    return (
-        <div className={styles.location}>
-            <div className={styles.address}>
-                <Controller
-                    control={control}
-                    name="country"
-                    defaultValue="Russia"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                isDisabled={isLocked}
-                                options={countries}
-                                name={name}
-                                label="Страна"
-                                placeholder="Страна"
-                                value={countries.find(
-                                    (country) => { return country.value === value; },
-                                )}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                required
-                            />
-                        );
-                    }}
-                />
-                <Controller
-                    control={control}
-                    name="city"
-                    defaultValue="Kazan"
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                isDisabled={isLocked}
-                                label="Город"
-                                name={name}
-                                placeholder="Казань"
-                                options={cities}
-                                value={cities.find((city) => { return city.value === value; })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption).value);
-                                }}
-                                required
-                            />
-                        );
-                    }}
-                />
-                <Controller
-                    control={control}
-                    name="language"
-                    defaultValue={preparedLanguageData}
-                    render={({ field: { onChange, value, name } }) => {
-                        return (
-                            <SelectField
-                                isDisabled={isLocked}
-                                label="Язык"
-                                name={name}
-                                placeholder="Русский"
-                                defaultValue={preparedLanguageData}
-                                options={preparedLanguageData}
-                                value={preparedLanguageData.find((language) => { return language.value === value; })}
-                                onChange={(selectedOption) => {
-                                    onChange((selectedOption as IOption));
-                                }}
-                                required
-                            />
-                        );
-                    }}
-                />
-            </div>
+}) => (
+    <div className={styles.location}>
+        <div className={styles.address}>
+            <Controller
+                control={control}
+                name="country"
+                defaultValue="Russia"
+                render={({ field: { onChange, value, name } }) => (
+                    <SelectField
+                        isDisabled={isLocked}
+                        options={countries}
+                        name={name}
+                        label="Страна"
+                        placeholder="Страна"
+                        value={countries.find(
+                            (country) => country.value === value,
+                        )}
+                        onChange={(selectedOption) => {
+                            onChange((selectedOption as IOption).value);
+                        }}
+                        required
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="city"
+                defaultValue="Kazan"
+                render={({ field: { onChange, value, name } }) => (
+                    <SelectField
+                        isDisabled={isLocked}
+                        label="Город"
+                        name={name}
+                        placeholder="Казань"
+                        options={cities}
+                        value={cities.find((city) => city.value === value)}
+                        onChange={(selectedOption) => {
+                            onChange((selectedOption as IOption).value);
+                        }}
+                        required
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="language"
+                defaultValue={preparedLanguageData}
+                render={({ field: { onChange, value, name } }) => (
+                    <SelectField
+                        isDisabled={isLocked}
+                        label="Язык"
+                        name={name}
+                        placeholder="Русский"
+                        defaultValue={preparedLanguageData}
+                        options={preparedLanguageData}
+                        value={preparedLanguageData.find((language) => language.value === value)}
+                        onChange={(selectedOption) => {
+                            onChange((selectedOption as IOption));
+                        }}
+                        required
+                    />
+                )}
+            />
         </div>
-    );
-};
+    </div>
+);
 
 export default LocationFormGroup;

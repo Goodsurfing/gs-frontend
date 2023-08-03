@@ -15,7 +15,6 @@ export type WorkingHours = {
 
 export type AdditionalSkillsType = {
     text: string;
-    checked: boolean;
 };
 
 export interface OfferWhatToDoFormFields {

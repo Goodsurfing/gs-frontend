@@ -23,7 +23,7 @@ const Textarea: FC<IText> = ({
     ...restTextAreaProps
 }) => {
     const handleTextAreaChange = (
-        event: React.KeyboardEvent<HTMLTextAreaElement>
+        event: React.KeyboardEvent<HTMLTextAreaElement>,
     ) => {
         if (event.key === "Enter") {
             event.preventDefault();

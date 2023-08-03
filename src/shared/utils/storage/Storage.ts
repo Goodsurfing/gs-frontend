@@ -1,28 +1,29 @@
 interface IStorage {
-  getItem(key: string): string | null;
-  setItem(key: string, value: string): void;
-  removeItem(key: string): void; 
+    getItem(key: string): string | null;
+    setItem(key: string, value: string): void;
+    removeItem(key: string): void;
 }
 
 export default abstract class Storage<T extends string> {
-  private readonly storage: IStorage;
-  constructor(getStorage = (): IStorage => window.localStorage) {
-    this.storage = getStorage();
-  }
+    private readonly storage: IStorage;
 
-  protected get(key: T): string | null {
-    return this.storage.getItem(key);
-  }
+    constructor(getStorage = (): IStorage => window.localStorage) {
+        this.storage = getStorage();
+    }
 
-  protected set(key: T, value: string): void {
-    this.storage.setItem(key, value);
-  }
+    protected get(key: T): string | null {
+        return this.storage.getItem(key);
+    }
 
-  protected clearItem(key: T): void {
-    this.storage.removeItem(key);
-  }
+    protected set(key: T, value: string): void {
+        this.storage.setItem(key, value);
+    }
 
-  protected clearItems(keys: T[]): void {
-    keys.forEach((key) => this.clearItem(key));
-  }
+    protected clearItem(key: T): void {
+        this.storage.removeItem(key);
+    }
+
+    protected clearItems(keys: T[]): void {
+        keys.forEach((key) => this.clearItem(key));
+    }
 }

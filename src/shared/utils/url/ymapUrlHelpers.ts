@@ -1,4 +1,4 @@
-let API_KEY = "32dcfbe4-583a-4e13-be77-83d32a181111";
+const API_KEY = "32dcfbe4-583a-4e13-be77-83d32a181111";
 export const makeGeoUrl = (geocode: string) => {
     const url = new URL("https://geocode-maps.yandex.ru/1.x");
     const format = "json";

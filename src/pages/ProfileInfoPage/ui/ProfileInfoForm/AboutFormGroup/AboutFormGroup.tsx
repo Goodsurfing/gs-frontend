@@ -9,26 +9,20 @@ interface AboutFormGroupProps {
     isLocked: boolean;
 }
 
-const AboutFormGroup: FC<AboutFormGroupProps> = ({ control, isLocked }) => {
-    return (
-        <Controller
-            control={control}
-            name="description"
-            render={({ field }) => {
-                return (
-                    <Textarea
-                        id="description"
-                        onChange={(e) => {
-                            return field.onChange(e);
-                        }}
-                        value={field.value}
-                        label="Расскажите о себе"
-                        disabled={isLocked}
-                    />
-                );
-            }}
-        />
-    );
-};
+const AboutFormGroup: FC<AboutFormGroupProps> = ({ control, isLocked }) => (
+    <Controller
+        control={control}
+        name="description"
+        render={({ field }) => (
+            <Textarea
+                id="description"
+                onChange={(e) => field.onChange(e)}
+                value={field.value}
+                label="Расскажите о себе"
+                disabled={isLocked}
+            />
+        )}
+    />
+);
 
 export default AboutFormGroup;

@@ -29,7 +29,7 @@ export function calculatePrecentage(itemsCount: number, completed: number) {
 export function createDoughnutData(points: IChartDoughnut[]) {
     const total = points.length;
     const completedPoints = points.filter(
-        (element) => element.completed === true
+        (element) => element.completed === true,
     );
     if (completedPoints) {
         const percents = calculatePrecentage(total, completedPoints.length);

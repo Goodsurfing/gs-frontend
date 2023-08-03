@@ -11,14 +11,16 @@ const CustomLink: FC<ILinkProps> = ({
     children,
     className,
     ...restLinkProps
-}) => {
-    return (
-        <Link className={cn(className, styles.link, {
-            [styles.blue]: variant === 'BLUE'
-        })} to={to} {...restLinkProps}>
-            {children}
-        </Link>
-    );
-};
+}) => (
+    <Link
+        className={cn(className, styles.link, {
+            [styles.blue]: variant === "BLUE",
+        })}
+        to={to}
+        {...restLinkProps}
+    >
+        {children}
+    </Link>
+);
 
 export default CustomLink;

@@ -15,7 +15,7 @@ interface IconButtonComponentProps {
     size?: IconButtonSize;
     rounded?: boolean;
     disabled?: boolean;
-    checked: boolean;
+    checked?: boolean;
     id?: string;
     onClick?: () => void;
 }

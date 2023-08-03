@@ -11,9 +11,7 @@ const ResetPasswordContainer: FC = () => {
     const [userEmail, setUserEmail] = useState<string>("");
 
     const onChangeStep = (email: string) => {
-        setCurrentStep((prev) => {
-            return prev + 1;
-        });
+        setCurrentStep((prev) => prev + 1);
         setUserEmail(email);
     };
 

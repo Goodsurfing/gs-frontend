@@ -7,15 +7,13 @@ interface SectionProps {
     title?: string;
 }
 
-const Section: FC<PropsWithChildren<SectionProps>> = ({ title, children }) => {
-    return (
-        <section className={styles.section}>
-            <div className={styles.container}>
-                {title && <SectionTitle>{title}</SectionTitle>}
-                <div className={styles.content}>{children}</div>
-            </div>
-        </section>
-    );
-};
+const Section: FC<PropsWithChildren<SectionProps>> = ({ title, children }) => (
+    <section className={styles.section}>
+        <div className={styles.container}>
+            {title && <SectionTitle>{title}</SectionTitle>}
+            <div className={styles.content}>{children}</div>
+        </div>
+    </section>
+);
 
 export default Section;

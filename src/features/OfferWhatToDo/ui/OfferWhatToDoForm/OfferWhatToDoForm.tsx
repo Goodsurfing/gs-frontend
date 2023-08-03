@@ -11,6 +11,8 @@ import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
+import Button from "@/shared/ui/Button/Button";
+import { Variant } from "@/shared/ui/Button/Button.interface";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -71,6 +73,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
             <Controller
                 name="extraInfo"
                 control={control}
+                rules={{ required: true, maxLength: 1000 }}
                 render={({ field }) => (
                     <Textarea
                         value={field.value}
@@ -80,6 +83,9 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                     />
                 )}
             />
+            <div>
+                <Button variant={Variant.PRIMARY} type="submit">Сохранить</Button>
+            </div>
         </form>
     );
 });

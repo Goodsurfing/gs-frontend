@@ -44,18 +44,14 @@ const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
                 control={control}
                 name="email"
                 defaultValue=""
-                render={({ field }) => {
-                    return (
-                        <InputField
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            type="email"
-                            text="E-mail"
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <InputField
+                        onChange={(e) => field.onChange(e)}
+                        value={field.value}
+                        type="email"
+                        text="E-mail"
+                    />
+                )}
             />
             <Button type="submit" variant={Variant.PRIMARY}>
                 Отправить

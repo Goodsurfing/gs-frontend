@@ -18,7 +18,7 @@ const ExtraImagesUpload: FC = () => {
     };
 
     const handleCloseBtnClick = (index: number) => {
-        setImagesArray((prev) => { return [...prev.filter((item, i) => { return i !== index; })]; });
+        setImagesArray((prev) => [...prev.filter((item, i) => i !== index)]);
     };
 
     return (
@@ -28,21 +28,19 @@ const ExtraImagesUpload: FC = () => {
                 setImg={handleImageUpload}
                 id="asd"
             />
-            {imagesArray.map((image, index) => {
-                return (
-                    <PictureReview
-                        className={styles.imgItem}
-                        key={index}
-                        img={image}
-                        close={(
-                            <ExtraImagesItemButton
-                                className={styles.closeBtn}
-                                onClick={() => { return handleCloseBtnClick(index); }}
-                            />
-                        )}
-                    />
-                );
-            })}
+            {imagesArray.map((image, index) => (
+                <PictureReview
+                    className={styles.imgItem}
+                    key={index}
+                    img={image}
+                    close={(
+                        <ExtraImagesItemButton
+                            className={styles.closeBtn}
+                            onClick={() => handleCloseBtnClick(index)}
+                        />
+                    )}
+                />
+            ))}
         </div>
     );
 };

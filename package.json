@@ -15,7 +15,8 @@
         "test:coverage": "jest --coverage",
         "bundle-report": "npm run build && webpack-bundle-analyzer dist/stats.json",
         "stylelint": "stylelint \"**/*.scss\" --fix",
-        "eslint": "npx eslint ./src --fix",
+        "lint:ts": "npx eslint ./src --fix",
+        "lint:scss": "npx stylelint ./src --fix",
         "prettier": "prettier --write \"**/*.{ts,tsx,js}\""
     },
     "devDependencies": {

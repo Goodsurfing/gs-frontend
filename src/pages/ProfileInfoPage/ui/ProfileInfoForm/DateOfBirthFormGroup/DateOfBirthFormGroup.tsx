@@ -23,32 +23,28 @@ const DateOfBirthFormGroup: FC<DateOfBirthFormGroupProps> = ({
     control,
     isLocked,
     data,
-}) => {
-    return (
-        <ProfileInfoFormGroup className={styles.dateOfBirth}>
-            <Controller
-                control={control}
-                name="birthDate"
-                render={({ field }) => {
-                    return (
-                        <DatePicker
-                            data={data}
-                            isLocked={isLocked}
-                            value={field.value}
-                            onChange={field.onChange}
-                            CustomInputElement={(
-                                <Input
-                                    required
-                                    label="Дата рождения"
-                                    id="birthdate"
-                                />
-                            )}
+}) => (
+    <ProfileInfoFormGroup className={styles.dateOfBirth}>
+        <Controller
+            control={control}
+            name="birthDate"
+            render={({ field }) => (
+                <DatePicker
+                    data={data}
+                    isLocked={isLocked}
+                    value={field.value}
+                    onChange={field.onChange}
+                    CustomInputElement={(
+                        <Input
+                            required
+                            label="Дата рождения"
+                            id="birthdate"
                         />
-                    );
-                }}
-            />
-        </ProfileInfoFormGroup>
-    );
-};
+                    )}
+                />
+            )}
+        />
+    </ProfileInfoFormGroup>
+);
 
 export default DateOfBirthFormGroup;

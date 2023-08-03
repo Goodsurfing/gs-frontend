@@ -10,8 +10,6 @@ interface SectionTitleProps {
 const SectionTitle: FC<PropsWithChildren<SectionTitleProps>> = ({
     classNames,
     children,
-}) => {
-    return <h2 className={cn(styles.title, classNames)}>{children}</h2>;
-};
+}) => <h2 className={cn(styles.title, classNames)}>{children}</h2>;
 
 export default SectionTitle;

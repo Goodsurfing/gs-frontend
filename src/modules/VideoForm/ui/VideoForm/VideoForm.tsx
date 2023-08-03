@@ -9,7 +9,7 @@ import { VideoInput } from "../VideoInput/VideoInput";
 import styles from "./VideoForm.module.scss";
 
 export const VideoForm = () => {
-    const { control, handleSubmit } = useForm({ mode: "onChange" });
+    const { control } = useForm({ mode: "onChange" });
     return (
         <div className={styles.wrapper}>
             <Text />

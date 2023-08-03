@@ -1,3 +1,1 @@
-export const getUrlWithoutLanguageCode = (path: string) => {
-    return path.substr(4);
-};
+export const getUrlWithoutLanguageCode = (path: string) => path.substr(4);

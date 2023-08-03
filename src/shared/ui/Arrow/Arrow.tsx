@@ -8,14 +8,12 @@ interface ArrowProps {
     className?: string;
 }
 
-const Arrow: FC<ArrowProps> = ({ className, isOpen }) => {
-    return (
-        <div
-            className={cn(styles.arrow, className, {
-                [styles.open]: isOpen,
-            })}
-        />
-    );
-};
+const Arrow: FC<ArrowProps> = ({ className, isOpen }) => (
+    <div
+        className={cn(styles.arrow, className, {
+            [styles.open]: isOpen,
+        })}
+    />
+);
 
 export default Arrow;

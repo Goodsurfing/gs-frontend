@@ -1,6 +1,5 @@
 import { memo, InputHTMLAttributes } from "react";
 import cn from "classnames";
-import { plusIcon } from "@/shared/data/icons/helpIcons";
 
 import styles from "./InputWithIcon.module.scss";
 import IconComponent from "../IconComponent/IconComponent";
@@ -21,7 +20,7 @@ export const InputButton = memo((props: InputButtonProps) => {
         iconClassName,
         value,
         onChange,
-        icon = plusIcon,
+        icon,
         ...restInputProps
     } = props;
     return (
@@ -34,11 +33,13 @@ export const InputButton = memo((props: InputButtonProps) => {
                 type="text"
                 {...restInputProps}
             />
-            <IconComponent
-                className={cn(iconClassName, styles.icon)}
-                icon={icon}
-                alt="add"
-            />
+            {icon && (
+                <IconComponent
+                    className={cn(iconClassName, styles.icon)}
+                    icon={icon}
+                    alt="add"
+                />
+            )}
         </div>
     );
 });

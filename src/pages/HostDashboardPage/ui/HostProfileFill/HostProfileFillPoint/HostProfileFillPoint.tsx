@@ -15,20 +15,18 @@ const HostProfileFillPoint: FC<IHostProfileFillPoint> = ({
     circleColor,
     circleWidth = "12px",
     className,
-}) => {
-    return (
-        <li className={cn(styles.pointWrapper, className)}>
-            <div
-                style={{
-                    backgroundColor: circleColor,
-                    width: circleWidth,
-                    height: circleWidth,
-                }}
-                className={styles.circle}
-            />
-            <label className={styles.text}>{text}</label>
-        </li>
-    );
-};
+}) => (
+    <li className={cn(styles.pointWrapper, className)}>
+        <div
+            style={{
+                backgroundColor: circleColor,
+                width: circleWidth,
+                height: circleWidth,
+            }}
+            className={styles.circle}
+        />
+        <label className={styles.text}>{text}</label>
+    </li>
+);
 
 export default React.memo(HostProfileFillPoint);

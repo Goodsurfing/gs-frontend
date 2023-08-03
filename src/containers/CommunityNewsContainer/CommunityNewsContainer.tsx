@@ -21,9 +21,7 @@ const CommunityNewsContainer: FC = () => {
             </p>
             <div className={styles.container}>
                 <div
-                    ref={(node) => {
-                        return setPrevEl(node);
-                    }}
+                    ref={(node) => setPrevEl(node)}
                     className={styles.arrow}
                 >
                     <img src={arrowSliderIcon} alt="Previous" />
@@ -63,20 +61,16 @@ const CommunityNewsContainer: FC = () => {
                             },
                         }}
                     >
-                        {communityNewsData &&
-                            communityNewsData.map((item, index) => {
-                                return (
-                                    <SwiperSlide key={index}>
-                                        <CommunityNewsItem {...item} />
-                                    </SwiperSlide>
-                                );
-                            })}
+                        {communityNewsData
+                            && communityNewsData.map((item, index) => (
+                                <SwiperSlide key={index}>
+                                    <CommunityNewsItem {...item} />
+                                </SwiperSlide>
+                            ))}
                     </Swiper>
                 </div>
                 <div
-                    ref={(node) => {
-                        return setNextEl(node);
-                    }}
+                    ref={(node) => setNextEl(node)}
                     className={styles.arrow}
                 >
                     <img src={arrowSliderIcon} alt="Next" />
