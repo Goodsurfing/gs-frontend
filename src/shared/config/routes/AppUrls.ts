@@ -22,6 +22,10 @@ export const getHostGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}$
 
 export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_video}`;
 
+export const getHostDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.dashboard}`;
+
+export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}/${RoutePath.my_offers}}`;
+
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
 
 export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_welcome}`;
@@ -34,7 +38,7 @@ export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${local
 
 export const getOffersDescriptionPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_description}`;
 
-export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}/${RoutePath.offers_what_to_do}`;
+export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_what_to_do}`;
 
 export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_in}`;
 

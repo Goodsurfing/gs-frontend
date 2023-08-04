@@ -3,7 +3,7 @@ import {
 } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 
-import { RouteWithChildrenProps } from "../../model/types/langRouter";
+import { RouteType, RouteWithChildrenProps } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";
@@ -26,12 +26,19 @@ export const LangRouter = () => {
     }, []);
 
     const renderRouteWithChildren = (
-        routes: RouteWithChildrenProps[],
-    ) => routes.map((route, index) => (
-        <Route key={index} path={route.path(locale)} element={route.element}>
-            {route.children && renderRouteWithChildren(route.children)}
-        </Route>
-    ));
+        routes: RouteType[],
+    ) => routes.map((route, index) => {
+        if (route.index) {
+            return (
+                <Route index path={route.path(locale)} element={route.element} />
+            );
+        }
+        return (
+            <Route key={index} path={route.path(locale)} element={route.element}>
+                {route.children && renderRouteWithChildren(route.children)}
+            </Route>
+        );
+    });
 
     if (isLoading) {
         return <Preloader />;

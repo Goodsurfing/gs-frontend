@@ -1,14 +1,22 @@
 import { ReactNode } from "react";
 
-interface RouteProps {
+interface RouteBaseProps {
     element: ReactNode;
     path: (locale: string) => string;
     label?: string;
 }
 
-export interface RouteWithChildrenProps extends RouteProps {
+export interface RouteWithChildrenProps extends Omit<RouteBaseProps, "index"> {
+    index?: never;
     children?: RouteWithChildrenProps[];
 }
+
+export interface RouteWithIndexProps extends Omit<RouteBaseProps, "children"> {
+    index: true;
+    children?: undefined,
+}
+
+export type RouteType = RouteWithChildrenProps | RouteWithIndexProps;
 
 export interface RestrictedRouteProps {
     requiredPermissions: string[] | string;

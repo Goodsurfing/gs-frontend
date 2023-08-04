@@ -3,17 +3,22 @@ import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
+
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
+
+import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
 import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
 import { OfferWhenPage } from "@/pages/OfferWhenPage";
 import { OfferWherePage } from "@/pages/OfferWherePage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
+import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
+
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
@@ -22,7 +27,6 @@ import {
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
     getHostGalleryPageUrl,
-    getHostPageUrl,
     getHostRegistrationUrl,
     getHostVideoPageUrl,
     getMainPageUrl,
@@ -39,11 +43,11 @@ import {
     getProfileResetPasswordPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getHostDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteWithChildrenProps } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
-import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 
 const publicRoutes: RouteWithChildrenProps[] = [
     {
@@ -80,7 +84,7 @@ const publicRoutes: RouteWithChildrenProps[] = [
         element: (
             <HostDashboardPage />
         ),
-        path: (locale: string) => getHostPageUrl(locale),
+        path: (locale: string) => getHostDashboardPageUrl(locale),
     },
     {
         element: (
@@ -102,39 +106,47 @@ const publicRoutes: RouteWithChildrenProps[] = [
     },
     {
         element: (
-            <OfferWelcomePage />
+            <OfferLayoutPage />
         ),
-        path: (locale: string) => getOffersWelcomePageUrl(locale),
-    },
-    {
-        element: (
-            <OfferDescriptionPage />
-        ),
-        path: (locale: string) => getOffersDescriptionPageUrl(locale),
-    },
-    {
-        element: (
-            <OfferWhenPage />
-        ),
-        path: (locale: string) => getOffersWhenPageUrl(locale),
-    },
-    {
-        element: (
-            <OfferWherePage />
-        ),
-        path: (locale: string) => getOffersWherePageUrl(locale),
-    },
-    {
-        element: (
-            <OfferWhoNeedsPage />
-        ),
-        path: (locale: string) => getOffersWhoNeedsPageUrl(locale),
-    },
-    {
-        element: (
-            <OfferWhatToDoPage />
-        ),
-        path: (locale: string) => getOffersWhatToDoPageUrl(locale),
+        path: (locale: string) => getOffersPageUrl(locale),
+        children: [
+            {
+                element: (
+                    <OfferWelcomePage />
+                ),
+                path: (locale: string) => getOffersWelcomePageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferDescriptionPage />
+                ),
+                path: (locale: string) => getOffersDescriptionPageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferWhenPage />
+                ),
+                path: (locale: string) => getOffersWhenPageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferWherePage />
+                ),
+                path: (locale: string) => getOffersWherePageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferWhoNeedsPage />
+                ),
+                path: (locale: string) => getOffersWhoNeedsPageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferWhatToDoPage />
+                ),
+                path: (locale: string) => getOffersWhatToDoPageUrl(locale),
+            },
+        ],
     },
     {
         element: (
