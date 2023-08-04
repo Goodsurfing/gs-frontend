@@ -1,0 +1,27 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+}
+
+.skillIcon {
+    fill: var(--text-caption);
+    width: 46px;
+    height: 46px;
+}
+
+.skills {
+    display: flex;
+}
+
+.icon {
+    width: 46px;
+    height: 46px;
+    gap: 0;
+}
+
+.inputIcon {
+    max-width: 14px;
+    max-height: 14px;
+}

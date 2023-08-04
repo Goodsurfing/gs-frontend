@@ -12,14 +12,12 @@ const CommunityNewsItem: FC<CommunityNewsItemProps> = ({
     title,
     date,
     image,
-}) => {
-    return (
-        <div className={styles.wrapper}>
-            <img src={image} alt={title} className={styles.image} />
-            <p className={styles.date}>{date}</p>
-            <h3 className={styles.title}>{title}</h3>
-        </div>
-    );
-};
+}) => (
+    <div className={styles.wrapper}>
+        <img src={image} alt={title} className={styles.image} />
+        <p className={styles.date}>{date}</p>
+        <h3 className={styles.title}>{title}</h3>
+    </div>
+);
 
 export default CommunityNewsItem;

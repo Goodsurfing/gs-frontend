@@ -20,7 +20,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                         Authorization: `Bearer ${token}`,
                     }),
                     body: JSON.stringify(body),
-                }
+                },
             );
             const data = await response.json();
             return data;
@@ -42,10 +42,9 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         }
     };
     if (fileName && data) {
-        const generateLinkResponse: GenerateLinkResponse =
-            await sendRequestForGenerateUploadLink();
+        const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
-            console.log(generateLinkResponse)
+            console.log(generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.uuid;
         }

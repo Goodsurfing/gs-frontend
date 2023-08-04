@@ -1,8 +1,8 @@
 export enum OrganizationApiEndpoints {
-    REGISTER = '/organization/',
-    UPDATE = '/organization/',
-    JOIN = '/join/',
-    GET_ALL = '/select/',
+    REGISTER = "/organization/",
+    UPDATE = "/organization/",
+    JOIN = "/join/",
+    GET_ALL = "/select/",
 }
 
 export interface OrganizationType {

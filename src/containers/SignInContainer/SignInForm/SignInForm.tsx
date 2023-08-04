@@ -1,5 +1,4 @@
-import i18n from "i18next";
-import React, { FC, useState } from "react";
+import { useState, memo } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Variant } from "@/shared/ui/Button/Button.interface";
@@ -22,10 +21,11 @@ import { IToast } from "@/store/reducers/toastSlice";
 import { IAuthLoginData } from "@/types/api/auth/login.interface";
 
 import styles from "./SignInForm.module.scss";
-import { getMainPageUrl, getResetPasswordPageUrl, useLocale } from "@/routes";
+import { getMainPageUrl, getResetPasswordPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
-const SignInForm: FC = () => {
+const SignInForm = memo(() => {
     const [loginUser, { isError, isLoading }] = authApi.useLoginUserMutation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -115,6 +115,6 @@ const SignInForm: FC = () => {
             </div>
         </form>
     );
-};
+});
 
 export default SignInForm;

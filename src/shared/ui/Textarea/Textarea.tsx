@@ -23,7 +23,7 @@ const Textarea: FC<IText> = ({
     ...restTextAreaProps
 }) => {
     const handleTextAreaChange = (
-        event: React.KeyboardEvent<HTMLTextAreaElement>
+        event: React.KeyboardEvent<HTMLTextAreaElement>,
     ) => {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -50,7 +50,7 @@ const Textarea: FC<IText> = ({
                 {...restTextAreaProps}
             />
             {description && (
-                <label className={styles.description}>{description}</label>
+                <label htmlFor={id} className={styles.description}>{description}</label>
             )}
             {children}
         </div>

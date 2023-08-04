@@ -16,20 +16,18 @@ const ReviewItem: FC<ReviewItemProps> = ({
     image,
     avatar,
     author,
-}) => {
-    return (
-        <div className={styles.wrapper}>
-            <img src={image} alt={title} className={styles.image} />
-            <div className={styles.info}>
-                <h3 className={styles.title}>{title}</h3>
-                <p className={styles.text}>{text}</p>
-                <div className={styles.user}>
-                    <img src={avatar} alt={author} className={styles.avatar} />
-                    <p className={styles.author}>{author}</p>
-                </div>
+}) => (
+    <div className={styles.wrapper}>
+        <img src={image} alt={title} className={styles.image} />
+        <div className={styles.info}>
+            <h3 className={styles.title}>{title}</h3>
+            <p className={styles.text}>{text}</p>
+            <div className={styles.user}>
+                <img src={avatar} alt={author} className={styles.avatar} />
+                <p className={styles.author}>{author}</p>
             </div>
         </div>
-    );
-};
+    </div>
+);
 
 export default ReviewItem;

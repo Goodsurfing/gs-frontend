@@ -21,17 +21,13 @@ const ReviewsContainer: FC = () => {
             <div className={styles.slider}>
                 <div className={styles.arrows}>
                     <img
-                        ref={(node) => {
-                            return setPrevEl(node);
-                        }}
+                        ref={(node) => setPrevEl(node)}
                         src={arrowIcon}
                         alt="Prev"
                         className={styles.arrow}
                     />
                     <img
-                        ref={(node) => {
-                            return setNextEl(node);
-                        }}
+                        ref={(node) => setNextEl(node)}
                         src={arrowIcon}
                         alt="Next"
                         className={styles.arrow}
@@ -53,13 +49,11 @@ const ReviewsContainer: FC = () => {
                     }}
                 >
                     {reviewsData
-                        && reviewsData.map((item, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <ReviewItem {...item} />
-                                </SwiperSlide>
-                            );
-                        })}
+                        && reviewsData.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <ReviewItem {...item} />
+                            </SwiperSlide>
+                        ))}
                 </Swiper>
             </div>
         </div>

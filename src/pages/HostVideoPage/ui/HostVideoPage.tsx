@@ -6,14 +6,12 @@ import { VideoForm } from "@/modules/VideoForm";
 
 import styles from "./HostVideoPage.module.scss";
 
-const HostVideoPage: FC = () => {
-    return (
-        <PageLayout sidebarContent={HostPagesSidebarData}>
-            <div className={styles.wrapper}>
-                <VideoForm />
-            </div>
-        </PageLayout>
-    );
-};
+const HostVideoPage: FC = () => (
+    <PageLayout sidebarContent={HostPagesSidebarData}>
+        <div className={styles.wrapper}>
+            <VideoForm />
+        </div>
+    </PageLayout>
+);
 
 export default HostVideoPage;

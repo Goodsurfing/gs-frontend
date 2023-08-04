@@ -21,33 +21,27 @@ const GenderFormGroup: FC<GenderFormGroupProps> = ({
     data,
     control,
     isLocked,
-}) => {
-    return (
-        <ProfileInfoFormGroup className={styles.gender}>
-            <Controller
-                control={control}
-                name="gender"
-                defaultValue={data.gender}
-                render={({ field: { onChange, value, name } }) => {
-                    return (
-                        <SelectField
-                            label="Пол"
-                            placeholder="Укажите ваш пол"
-                            name={name}
-                            options={genderOptions}
-                            value={genderOptions.find((item) => {
-                                return item.value === value;
-                            })}
-                            onChange={(selectedOption) => {
-                                onChange((selectedOption as IOption).value);
-                            }}
-                            isDisabled={isLocked}
-                        />
-                    );
-                }}
-            />
-        </ProfileInfoFormGroup>
-    );
-};
+}) => (
+    <ProfileInfoFormGroup className={styles.gender}>
+        <Controller
+            control={control}
+            name="gender"
+            defaultValue={data.gender}
+            render={({ field: { onChange, value, name } }) => (
+                <SelectField
+                    label="Пол"
+                    placeholder="Укажите ваш пол"
+                    name={name}
+                    options={genderOptions}
+                    value={genderOptions.find((item) => item.value === value)}
+                    onChange={(selectedOption) => {
+                        onChange((selectedOption as IOption).value);
+                    }}
+                    isDisabled={isLocked}
+                />
+            )}
+        />
+    </ProfileInfoFormGroup>
+);
 
 export default GenderFormGroup;

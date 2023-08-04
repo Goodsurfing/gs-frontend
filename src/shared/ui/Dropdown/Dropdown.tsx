@@ -42,7 +42,7 @@ const Dropdown: FC<IDropdownProps> = ({
 
     return (
         <div
-            onClick={() => { return setOpened(!opened); }}
+            onClick={() => setOpened(!opened)}
             className={cn(styles.wrapper, className)}
         >
             <div className={styles.labelWrapper}>
@@ -59,17 +59,15 @@ const Dropdown: FC<IDropdownProps> = ({
                         [styles.closed]: opened === false,
                     })}
                 >
-                    {options.map((dropdownItem, index) => {
-                        return (
-                            <li
-                                key={index}
-                                onClick={(e) => { return handleDropdownClick(e, options[index]); }}
-                                className={styles.dropdownItem}
-                            >
-                                {dropdownItem}
-                            </li>
-                        );
-                    })}
+                    {options.map((dropdownItem, index) => (
+                        <li
+                            key={index}
+                            onClick={(e) => handleDropdownClick(e, options[index])}
+                            className={styles.dropdownItem}
+                        >
+                            {dropdownItem}
+                        </li>
+                    ))}
                 </ul>
                 {selectedValue}
                 <img className={styles.arrow} src={icon} />

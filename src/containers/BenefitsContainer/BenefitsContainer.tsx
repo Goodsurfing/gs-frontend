@@ -5,15 +5,11 @@ import { benefitsData } from "@/containers/BenefitsContainer/Benefits.data";
 
 import styles from "./BenefitsContainer.module.scss";
 
-const BenefitsContainer: FC = () => {
-    return (
-        <div className={styles.wrapper}>
-            {benefitsData &&
-                benefitsData.map((item, index) => {
-                    return <BenefitItem key={index} {...item} />;
-                })}
-        </div>
-    );
-};
+const BenefitsContainer: FC = () => (
+    <div className={styles.wrapper}>
+        {benefitsData
+                && benefitsData.map((item, index) => <BenefitItem key={index} {...item} />)}
+    </div>
+);
 
 export default BenefitsContainer;

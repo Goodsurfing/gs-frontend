@@ -10,8 +10,6 @@ interface SignTitleProps {
 const SignTitle: FC<PropsWithChildren<SignTitleProps>> = ({
     className,
     children,
-}) => {
-    return <h2 className={cn(styles.title, className)}>{children}</h2>;
-};
+}) => <h2 className={cn(styles.title, className)}>{children}</h2>;
 
 export default SignTitle;

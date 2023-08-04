@@ -10,21 +10,19 @@ import Location from "../Location/Location";
 
 import styles from "./WhoNeedsForm.module.scss";
 
-export const WhoNeedsForm = memo(() => {
-    return (
-        <form className={styles.wrapper}>
-            <Gender />
-            <Age />
-            <LanguagesGroup />
-            <Location />
-            <Button
+export const WhoNeedsForm = memo(() => (
+    <form className={styles.wrapper}>
+        <Gender />
+        <Age />
+        <LanguagesGroup />
+        <Location />
+        <Button
             onClick={() => {}}
-                className={styles.btn}
-                rounded
-                variant={Variant.PRIMARY}
-            >
-                Сохранить
-            </Button>
-        </form>
-    );
-});
+            className={styles.btn}
+            rounded
+            variant={Variant.PRIMARY}
+        >
+            Сохранить
+        </Button>
+    </form>
+));

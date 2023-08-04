@@ -36,9 +36,7 @@ const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     type="radio"
                     name={name}
                     id={name}
-                    onChange={(e) => {
-                        return handleChange(e);
-                    }}
+                    onChange={(e) => handleChange(e)}
                     {...rest}
                 />
             </label>

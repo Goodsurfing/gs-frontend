@@ -16,7 +16,7 @@ import type {
 } from "../../model/types/offerWhen";
 
 import styles from "./OfferWhenForm.module.scss";
-import { offerWhenFormAdapter } from "../../model/lib/offerWhenFormAdapter";
+import { offerWhenFormAdapter } from "../../lib/offerWhenFormAdapter";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;

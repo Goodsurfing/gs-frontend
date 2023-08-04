@@ -21,7 +21,7 @@ export const App: FC = () => {
             load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
         }}
         >
-            <div className="app">
+            <div className="app app_default_theme">
                 <SidebarProvider initialValue={{ isOpen: true }}>
                     {inited && <LangRouter />}
                 </SidebarProvider>

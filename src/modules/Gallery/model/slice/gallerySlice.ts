@@ -14,7 +14,7 @@ export const gallerySlice = createSlice({
             state.galleryData?.images.push(action.payload);
         },
         deleteImage: (state, action) => {
-            state.galleryData?.images.filter((item) => { return item !== action.payload; });
+            state.galleryData?.images.filter((item) => item !== action.payload);
         },
     },
 });

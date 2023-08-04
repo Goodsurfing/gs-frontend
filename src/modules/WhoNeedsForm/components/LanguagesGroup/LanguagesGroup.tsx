@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-import Switch from "@/shared/ui/Switch/Switch";
 
 import Languages from "../Languages/Languages";
 import ExtraControls from "../ExtraControls/ExtraControls";
@@ -25,11 +24,6 @@ const LanguagesGroup = () => {
                         key={index}
                         close={(
                             <CloseButton
-                                sx={{
-                                    minWidth: "36px",
-                                    minHeight: "36px",
-                                    mb: "8px",
-                                }}
                                 className={styles.closeBtn}
                                 onClick={() => onCloseBtnClick(index)}
                             />

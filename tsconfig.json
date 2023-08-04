@@ -25,6 +25,7 @@
       "skipLibCheck": true,
       "strictNullChecks": true,
       "esModuleInterop": true,
+      "resolveJsonModule": true,
       "allowSyntheticDefaultImports": true,
     },
     "ts-node": {

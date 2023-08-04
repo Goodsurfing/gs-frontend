@@ -7,13 +7,11 @@ interface VolunteerItemProps {
     title: string;
 }
 
-const VolunteerItem: FC<VolunteerItemProps> = ({ title, number }) => {
-    return (
-        <div className={styles.item}>
-            <div className={styles.number}>{number}</div>
-            <span className={styles.title}>{title}</span>
-        </div>
-    );
-};
+const VolunteerItem: FC<VolunteerItemProps> = ({ title, number }) => (
+    <div className={styles.item}>
+        <div className={styles.number}>{number}</div>
+        <span className={styles.title}>{title}</span>
+    </div>
+);
 
 export default VolunteerItem;

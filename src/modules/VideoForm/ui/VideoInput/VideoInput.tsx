@@ -20,9 +20,7 @@ export const VideoInput = memo(({ inputValue, onInputChange }: VideoInputProps) 
             <div className={styles.contentWrapper}>
                 <Input
                     id="input"
-                    onChange={(e) => {
-                        return handleInputChange(e.target.value);
-                    }}
+                    onChange={(e) => handleInputChange(e.target.value)}
                     value={inputValue}
                     placeholder="Ссылка на видео"
                 />

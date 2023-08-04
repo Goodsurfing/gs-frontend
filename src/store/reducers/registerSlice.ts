@@ -13,13 +13,11 @@ export const registerSlice = createSlice({
     reducers: {
         setRegisterUserData: (
             state: IRegisterResponse,
-            action: PayloadAction<IRegisterResponse>
-        ) => {
-            return {
-                id: action.payload.id,
-                email: action.payload.email,
-            };
-        },
+            action: PayloadAction<IRegisterResponse>,
+        ) => ({
+            id: action.payload.id,
+            email: action.payload.email,
+        }),
     },
 });
 

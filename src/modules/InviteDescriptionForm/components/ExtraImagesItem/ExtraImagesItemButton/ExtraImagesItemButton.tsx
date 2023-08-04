@@ -14,12 +14,10 @@ const ExtraImagesItemButton: FC<ExtraImagesItemButtonProps> = ({
     className,
     imgClassName,
     onClick,
-}) => {
-    return (
-        <ExtraCloseButton className={cn(className, styles.btn)} onClick={onClick}>
-            <img className={styles.icon} src={closeIcon} alt="close" />
-        </ExtraCloseButton>
-    );
-};
+}) => (
+    <ExtraCloseButton className={cn(className, styles.btn)} onClick={onClick}>
+        <img className={styles.icon} src={closeIcon} alt="close" />
+    </ExtraCloseButton>
+);
 
 export default ExtraImagesItemButton;

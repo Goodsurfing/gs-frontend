@@ -8,19 +8,17 @@ import HostDashboardNotifications from "../HostDashboardNotifications/HostDashbo
 import { PageLayout } from "@/widgets/PageLayout";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
-const HostDashboardPage: FC = () => {
-    return (
-        <PageLayout sidebarContent={HostPagesSidebarData}>
-            <div className={styles.dashboard}>
-                <HostProfileFill />
-                <div className={styles.columns}>
-                    <HostDashboardRequest />
-                    <HostDashboardCalendar />
-                    <HostDashboardNotifications />
-                </div>
+const HostDashboardPage: FC = () => (
+    <PageLayout sidebarContent={HostPagesSidebarData}>
+        <div className={styles.dashboard}>
+            <HostProfileFill />
+            <div className={styles.columns}>
+                <HostDashboardRequest />
+                <HostDashboardCalendar />
+                <HostDashboardNotifications />
             </div>
-        </PageLayout>
-    );
-};
+        </div>
+    </PageLayout>
+);
 
 export default HostDashboardPage;

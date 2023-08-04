@@ -15,99 +15,81 @@ interface ISocialFormGroup {
     data: ISoicalFormGroup;
 }
 
-const SocialFormGroup: FC<ISocialFormGroup> = ({ control, isLocked, data }) => {
-    return (
-        <div className={styles.social}>
-            <Controller
-                control={control}
-                name="vk"
-                defaultValue="https://vk.com/"
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="vk-profile"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="Вконтакте"
-                            img={vkLogo}
-                            name={field.name}
-                            placeholder="https://vk.com/"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="facebook"
-                defaultValue="https://facebook.com/"
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="facebook-profile"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="Facebook"
-                            img={facebookLogo}
-                            name={field.name}
-                            placeholder="https://facebook.com/"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="instagram"
-                defaultValue="https://instagram.com/"
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="facebook-profile"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="Instagram"
-                            img={instaLogo}
-                            name={field.name}
-                            placeholder="https://instagram.com/"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="telegram"
-                defaultValue="https://t.me/"
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="facebook-profile"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="Telegram"
-                            img={telegramLogo}
-                            name={field.name}
-                            placeholder="https://t.me/kuro_mukade"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-        </div>
-    );
-};
+const SocialFormGroup: FC<ISocialFormGroup> = ({ control, isLocked, data }) => (
+    <div className={styles.social}>
+        <Controller
+            control={control}
+            name="vk"
+            defaultValue="https://vk.com/"
+            render={({ field }) => (
+                <Input
+                    id="vk-profile"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="Вконтакте"
+                    img={vkLogo}
+                    name={field.name}
+                    placeholder="https://vk.com/"
+                    type="text"
+                    disabled={isLocked}
+                />
+            )}
+        />
+        <Controller
+            control={control}
+            name="facebook"
+            defaultValue="https://facebook.com/"
+            render={({ field }) => (
+                <Input
+                    id="facebook-profile"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="Facebook"
+                    img={facebookLogo}
+                    name={field.name}
+                    placeholder="https://facebook.com/"
+                    type="text"
+                    disabled={isLocked}
+                />
+            )}
+        />
+        <Controller
+            control={control}
+            name="instagram"
+            defaultValue="https://instagram.com/"
+            render={({ field }) => (
+                <Input
+                    id="facebook-profile"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="Instagram"
+                    img={instaLogo}
+                    name={field.name}
+                    placeholder="https://instagram.com/"
+                    type="text"
+                    disabled={isLocked}
+                />
+            )}
+        />
+        <Controller
+            control={control}
+            name="telegram"
+            defaultValue="https://t.me/"
+            render={({ field }) => (
+                <Input
+                    id="facebook-profile"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="Telegram"
+                    img={telegramLogo}
+                    name={field.name}
+                    placeholder="https://t.me/kuro_mukade"
+                    type="text"
+                    disabled={isLocked}
+                />
+            )}
+        />
+    </div>
+);
 
 export default SocialFormGroup;

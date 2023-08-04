@@ -9,9 +9,10 @@ import { ExtraImagesItemProps } from "./types";
 
 import styles from "./ExtraImagesItem.module.scss";
 
-const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ img, setImg, id, closeBtn }) => {
-    
-    const onBtnClick = () => {}
+const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
+    img, setImg, id, closeBtn,
+}) => {
+    const onBtnClick = () => {};
 
     return (
         <div className={styles.wrapper}>
@@ -23,7 +24,7 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({ img, setImg, id, closeBtn }
                 wrapperClassName={styles.background}
                 labelClassName={styles.label}
                 labelChildren={!img && <ExtraImagesItemBackground />}
-            />            
+            />
             {closeBtn && <ExtraImagesItemButton className={styles.closeBtn} onClick={onBtnClick} />}
         </div>
 

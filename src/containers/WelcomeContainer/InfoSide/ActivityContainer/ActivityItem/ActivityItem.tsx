@@ -9,16 +9,14 @@ interface ActivityItemProps {
     path: string;
 }
 
-const ActivityItem: FC<ActivityItemProps> = ({ path, title, image }) => {
-    return (
-        <Link
-            className={styles.item}
-            to={path}
-            style={{ backgroundImage: `url(${image})` }}
-        >
-            <p>{title}</p>
-        </Link>
-    );
-};
+const ActivityItem: FC<ActivityItemProps> = ({ path, title, image }) => (
+    <Link
+        className={styles.item}
+        to={path}
+        style={{ backgroundImage: `url(${image})` }}
+    >
+        <p>{title}</p>
+    </Link>
+);
 
 export default ActivityItem;

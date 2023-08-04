@@ -8,14 +8,12 @@ interface BenefitItemProps {
     image: string;
 }
 
-const BenefitItem: FC<BenefitItemProps> = ({ title, text, image }) => {
-    return (
-        <div className={styles.item}>
-            <img src={image} alt={title} />
-            <h3>{title}</h3>
-            <p>{text}</p>
-        </div>
-    );
-};
+const BenefitItem: FC<BenefitItemProps> = ({ title, text, image }) => (
+    <div className={styles.item}>
+        <img src={image} alt={title} />
+        <h3>{title}</h3>
+        <p>{text}</p>
+    </div>
+);
 
 export default BenefitItem;

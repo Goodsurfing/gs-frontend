@@ -13,11 +13,9 @@ export const loginSlice = createSlice({
         setLoginUserData: (
             state: ILoginResponse,
             action: PayloadAction<ILoginResponse>,
-        ) => {
-            return {
-                token: action.payload.token,
-            };
-        },
+        ) => ({
+            token: action.payload.token,
+        }),
         logout: () => {
             localStorage.removeItem("token");
             return {

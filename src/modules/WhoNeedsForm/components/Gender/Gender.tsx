@@ -1,6 +1,6 @@
-import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React, { useState } from "react";
+import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 const Gender = () => {
     const [woman, setWoman] = useState<boolean>(true);
@@ -28,7 +28,7 @@ const Gender = () => {
     return (
         <Box sx={{ display: "flex", mt: "30px" }}>
             <FormControlLabel
-                label={
+                label={(
                     <Typography
                         sx={{
                             fontFamily: "Lato",
@@ -39,13 +39,13 @@ const Gender = () => {
                     >
                         Женщина
                     </Typography>
-                }
+                )}
                 control={
                     <SwitchComponent checked={woman} onClick={onWomanChange} />
                 }
             />
             <FormControlLabel
-                label={
+                label={(
                     <Typography
                         sx={{
                             fontFamily: "Lato",
@@ -56,13 +56,13 @@ const Gender = () => {
                     >
                         Мужчина
                     </Typography>
-                }
+                )}
                 control={
                     <SwitchComponent checked={man} onClick={onManChange} />
                 }
             />
             <FormControlLabel
-                label={
+                label={(
                     <Typography
                         sx={{
                             fontFamily: "Lato",
@@ -73,7 +73,7 @@ const Gender = () => {
                     >
                         Другой
                     </Typography>
-                }
+                )}
                 control={
                     <SwitchComponent checked={other} onClick={onOtherChange} />
                 }

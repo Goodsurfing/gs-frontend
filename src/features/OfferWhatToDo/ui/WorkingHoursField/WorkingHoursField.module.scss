@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+.workingHours {
+    max-width: 307px;
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+}
+
+.inputClassName {
+    max-width: 83px;
+}
+
+.dayOffs {
+    width: 245px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.workingHoursWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.workingHoursText, .dayOffsText {
+    font: var(--font-secondary);
+    color: var(--text-caption);
+}
+
+.timeType {
+    width: 210px;
+}
+
+.dayOffsSelect {
+    width: 100%;
+}

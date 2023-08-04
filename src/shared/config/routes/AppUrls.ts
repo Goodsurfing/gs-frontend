@@ -34,6 +34,8 @@ export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${local
 
 export const getOffersDescriptionPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_description}`;
 
+export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}/${RoutePath.offers_what_to_do}`;
+
 export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_in}`;
 
 export const getSignUpPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_up}`;

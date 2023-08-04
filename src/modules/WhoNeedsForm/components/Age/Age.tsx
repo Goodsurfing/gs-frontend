@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 
-import Input from "@/shared/ui/Input/Input";
 import { Box, Typography } from "@mui/material";
+import Input from "@/shared/ui/Input/Input";
 
-import { MINIMAL_AGE_FOR_VOLUNTEER } from '../../constants';
+import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 
 import styles from "./Age.module.scss";
 
@@ -13,7 +13,7 @@ const Age = () => {
 
     const onFromMinAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
-            return
+            return;
         }
 
         if (+e.target.value >= maxAge) {
@@ -26,15 +26,14 @@ const Age = () => {
 
     const onFromMaxAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
-            return
+            return;
         }
 
         if (+e.target.value < minAge) {
             setMinAge(+e.target.value);
             setMaxAge(+e.target.value);
-            return;
         } else {
-            setMaxAge(+e.target.value);            
+            setMaxAge(+e.target.value);
         }
     }, [minAge, maxAge]);
 

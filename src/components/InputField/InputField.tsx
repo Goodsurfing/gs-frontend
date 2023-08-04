@@ -15,28 +15,26 @@ const InputField: FC<InputFieldProps> = ({
     defaultValue,
     onChange,
     ...rest
-}) => {
-    return (
-        <div className={styles.box}>
-            <input
-                type={type}
-                required
-                onChange={onChange}
-                value={value}
-                defaultValue={defaultValue}
-                name="main"
-                {...rest}
-            />
-            <label
-                htmlFor="main"
-                className={cn({
-                    [styles.empty]: value || defaultValue,
-                })}
-            >
-                {text}
-            </label>
-        </div>
-    );
-};
+}) => (
+    <div className={styles.box}>
+        <input
+            type={type}
+            required
+            onChange={onChange}
+            value={value}
+            defaultValue={defaultValue}
+            name="main"
+            {...rest}
+        />
+        <label
+            htmlFor="main"
+            className={cn({
+                [styles.empty]: value || defaultValue,
+            })}
+        >
+            {text}
+        </label>
+    </div>
+);
 
 export default InputField;

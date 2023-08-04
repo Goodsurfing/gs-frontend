@@ -18,9 +18,7 @@ const OffersContainer: FC = () => {
     return (
         <div className={styles.wrapper}>
             <div
-                ref={(node) => {
-                    return setPrevEl(node);
-                }}
+                ref={(node) => setPrevEl(node)}
                 className={styles.arrow}
             >
                 <img src={arrowSliderIcon} alt="Previous" />
@@ -63,19 +61,15 @@ const OffersContainer: FC = () => {
                     }}
                 >
                     {offersData
-                        && offersData.map((item, index) => {
-                            return (
-                                <SwiperSlide key={index}>
-                                    <Offer {...item} />
-                                </SwiperSlide>
-                            );
-                        })}
+                        && offersData.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <Offer {...item} />
+                            </SwiperSlide>
+                        ))}
                 </Swiper>
             </div>
             <div
-                ref={(node) => {
-                    return setNextEl(node);
-                }}
+                ref={(node) => setNextEl(node)}
                 className={styles.arrow}
             >
                 <img src={arrowSliderIcon} alt="Next" />

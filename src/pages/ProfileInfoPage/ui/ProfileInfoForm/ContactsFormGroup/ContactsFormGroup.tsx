@@ -18,51 +18,41 @@ const ContactsFormGroup: FC<ContactsFormGroupProps> = ({
     control,
     isLocked,
     data,
-}) => {
-    return (
-        <div className={styles.contacts}>
-            <Controller
-                control={control}
-                name="email"
-                defaultValue={data.email}
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="e-mail"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="E-mail"
-                            type="text"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-            <Controller
-                control={control}
-                name="phone"
-                defaultValue={data.phone || ""}
-                render={({ field }) => {
-                    return (
-                        <Input
-                            id="phone"
-                            onChange={(e) => {
-                                return field.onChange(e);
-                            }}
-                            value={field.value}
-                            label="Телефон"
-                            name="phone"
-                            placeholder="+(x)-xxx-xxx-xx-xx"
-                            type="phone"
-                            disabled={isLocked}
-                        />
-                    );
-                }}
-            />
-        </div>
-    );
-};
+}) => (
+    <div className={styles.contacts}>
+        <Controller
+            control={control}
+            name="email"
+            defaultValue={data.email}
+            render={({ field }) => (
+                <Input
+                    id="e-mail"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="E-mail"
+                    type="text"
+                    disabled={isLocked}
+                />
+            )}
+        />
+        <Controller
+            control={control}
+            name="phone"
+            defaultValue={data.phone || ""}
+            render={({ field }) => (
+                <Input
+                    id="phone"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                    label="Телефон"
+                    name="phone"
+                    placeholder="+(x)-xxx-xxx-xx-xx"
+                    type="phone"
+                    disabled={isLocked}
+                />
+            )}
+        />
+    </div>
+);
 
 export default ContactsFormGroup;

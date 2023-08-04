@@ -1,6 +1,6 @@
 import { formatToW3CDate } from "@/shared/lib/formatToW3CDate";
 import { OfferWhenPeriods, OfferWhen } from "@/entities/Offer";
-import { OfferWhenFields } from "../types/offerWhen";
+import { OfferWhenFields } from "../model/types/offerWhen";
 
 export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen {
     const {

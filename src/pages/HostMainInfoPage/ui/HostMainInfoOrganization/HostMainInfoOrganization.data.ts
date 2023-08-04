@@ -7,6 +7,6 @@ export const organizations: IOption[] = [
     },
     {
         value: "oao",
-        label: 'oao',
-    }
+        label: "oao",
+    },
 ];

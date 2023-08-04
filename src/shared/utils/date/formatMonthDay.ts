@@ -32,4 +32,4 @@ export function formatMonthDay(value: number) {
     return `${mounthsCount} ${mounths}${daysCount ? "," : ""} ${
         daysCount === 0 ? "" : daysCount
     } ${days}`;
-} 
+}

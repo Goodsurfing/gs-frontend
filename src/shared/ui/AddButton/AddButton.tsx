@@ -24,7 +24,7 @@ export const AddButton = memo(({
 
     return (
         <button
-            className={cn(styles.btn, className, {
+            className={cn(className, styles.btn, {
                 [styles.disabled]: disabled,
             })}
             type="button"

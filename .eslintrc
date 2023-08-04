@@ -44,6 +44,9 @@
         "semi": "error",
         "no-param-reassign": 0,
         "linebreak-style": ["warn", "unix"],
+        "no-plusplus": ["error", {
+            "allowForLoopAfterthoughts": true
+        }],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/semi": ["error"]

@@ -9,16 +9,14 @@ const ExtraCloseButton: FC<ExtraCloseButtonProps> = ({
     onClick,
     children,
     ...restBtnProps
-}) => {
-    return (
-        <button
-            onClick={onClick}
-            className={cn(styles.btn, className)}
-            {...restBtnProps}
-        >
-            {children}
-        </button>
-    );
-};
+}) => (
+    <button
+        onClick={onClick}
+        className={cn(styles.btn, className)}
+        {...restBtnProps}
+    >
+        {children}
+    </button>
+);
 
 export default ExtraCloseButton;
