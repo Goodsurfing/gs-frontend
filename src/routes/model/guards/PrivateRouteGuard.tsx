@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react";
+import { memo } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
@@ -8,7 +8,7 @@ import { getUserAuthData } from "@/entities/User";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface PrivateRouteGuardProps {
-    children: ReactNode;
+    children: JSX.Element;
 }
 
 export const PrivateRouteGuard = memo(({ children }: PrivateRouteGuardProps) => {

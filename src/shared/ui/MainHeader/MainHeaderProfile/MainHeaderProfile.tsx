@@ -16,6 +16,7 @@ import styles from "./MainHeaderProfile.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Variant } from "@/shared/ui/Button/Button.interface";
 import {
+    getHostDashboardPageUrl,
     getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
@@ -86,7 +87,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={getHostPageUrl(locale)}
+                    to={getHostDashboardPageUrl(locale)}
                     replace
                 >
                     Дашборд хоста
