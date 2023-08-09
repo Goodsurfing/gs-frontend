@@ -41,9 +41,9 @@ export const SideMenuData: SidebarContentProps[] = [
         route: "/offers/what-to-do",
     },
     {
-        route: "/offers/rules",
         text: "Условия",
         icon: listCheckboxIcon,
+        route: "/offers/conditions",
     },
     {
         route: "/offers/last",
