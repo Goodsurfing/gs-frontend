@@ -37,6 +37,7 @@ export type {
     Currency,
     ExtraFeatures,
     Facilities,
+    Travel,
     Housing,
     Nutrition,
     Payment,

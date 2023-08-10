@@ -1,5 +1,5 @@
-import { memo } from "react";
 import cn from "classnames";
+import { memo } from "react";
 import {
     Controller,
     DefaultValues,
@@ -11,6 +11,7 @@ import { OfferConditionsFormFields } from "../../model/types/offerConditions";
 import { ConditionsHousing } from "../ConditionsHousing/ConditionsHousing";
 
 import styles from "./OfferConditionsForm.module.scss";
+import { ConditionsNutrition } from "../ConditionsNutrition/ConditionsNutrition";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -20,6 +21,10 @@ interface OfferConditionsFormProps {
 const defaultValues: DefaultValues<OfferConditionsFormFields> = {
     housing: {
         switchState: true,
+    },
+    nutrition: {
+        switchState: true,
+        nutrition: [],
     },
 };
 
@@ -44,6 +49,16 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 control={control}
                 render={({ field }) => (
                     <ConditionsHousing
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
+            <Controller
+                name="nutrition"
+                control={control}
+                render={({ field }) => (
+                    <ConditionsNutrition
                         value={field.value}
                         onChange={field.onChange}
                     />
