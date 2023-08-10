@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggleWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.toggleText {
+    font: var(--font-secondary);
+    color: var(--text-caption);
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toggleSpan {
+    font: var(--text-label);
+    color: var(--text-secondary-2);
+}
+
+.conditions {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}

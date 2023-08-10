@@ -1,6 +1,10 @@
 import { Housing } from "@/entities/Offer";
 
-export interface OfferConditionsForm {
-    housing: Housing[];
-    
+export type HousingFields = {
+    switchState: boolean;
+    housing: Housing;
+};
+
+export interface OfferConditionsFormFields {
+    housing: HousingFields;
 }

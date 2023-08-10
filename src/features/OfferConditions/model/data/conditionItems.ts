@@ -26,18 +26,23 @@ import {
 export const liveItems = [{
     text: "Отдельный дом",
     icon: houseIcon,
+    id: "house",
 }, {
     text: "Комната",
     icon: roomIcon,
+    id: "room",
 }, {
     text: "Койко-место",
     icon: bedIcon,
+    id: "bed",
 }, {
     text: "Палатка",
     icon: campingTentIcon,
+    id: "tent",
 }, {
     text: "Место под палатку",
     icon: pickupIcon,
+    id: "tent-place",
 }];
 
 export const foodItems = [{

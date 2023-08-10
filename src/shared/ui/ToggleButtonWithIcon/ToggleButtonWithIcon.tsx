@@ -8,8 +8,7 @@ interface ToggleButtonProps {
     onToggle?: () => void;
     checked?: boolean;
     className?: string;
-    iconClassName?: string;
-    activeIconClassName?: string;
+    activeClassName?: string;
     text: string;
     icon: string;
     alt?: string;
@@ -19,16 +18,21 @@ export const ToggleButtonWithIcon = ({
     checked,
     text,
     icon,
-    iconClassName,
-    activeIconClassName,
+    activeClassName,
     alt,
     onToggle,
     className,
 }: ToggleButtonProps) => (
-    <button onClick={onToggle} type="button" className={cn(styles.button, className)}>
+    <button
+        onClick={onToggle}
+        type="button"
+        className={cn(styles.button, className, {
+            [activeClassName || ""]: checked,
+        })}
+    >
         <IconComponent
-            className={cn(iconClassName, {
-                [cn(styles.iconActive, activeIconClassName)]: checked,
+            className={cn({
+                [styles.iconActive]: checked,
             })}
             icon={icon}
             alt={alt}
