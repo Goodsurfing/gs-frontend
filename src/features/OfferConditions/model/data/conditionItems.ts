@@ -22,8 +22,11 @@ import {
     vegetarianIcon,
     wiFiIcon,
 } from "@/shared/data/icons/conditions";
+import {
+    ExtraAvailiablesItems, FoodItems, GoodsItems, LiveItems, PayedRideItems,
+} from "../types/conditionsData";
 
-export const liveItems = [{
+export const liveItems: LiveItems[] = [{
     text: "Отдельный дом",
     icon: houseIcon,
     id: "house",
@@ -45,7 +48,7 @@ export const liveItems = [{
     id: "tent-place",
 }];
 
-export const foodItems = [{
+export const foodItems: FoodItems[] = [{
     text: "Полный пансион",
     icon: fullIcon,
     id: "full",
@@ -63,68 +66,68 @@ export const foodItems = [{
     id: "vegetarian",
 }];
 
-export const payedRideItems = [{
+export const payedRideItems: PayedRideItems[] = [{
     text: "Полная оплата проезда",
     icon: fullIcon,
-    id: "",
+    id: "full",
 }, {
     text: "Компенсация строимостри проезда",
     icon: breakfastIcon,
-    id: "",
+    id: "partial",
 }, {
     text: "Частичная компенсация затрат",
     icon: partPaymentIcon,
-    id: "",
+    id: "reimbursement",
 }, {
     text: "Заброска из пункта сбора",
     icon: placeIcon,
-    id: "",
+    id: "pick-up",
 }, {
     text: "Трансфер из/в аэропорта/вокзала",
     icon: transferIcon,
-    id: "",
+    id: "transfer",
 }];
 
-export const goodsItems = [{
+export const goodsItems: GoodsItems[] = [{
     text: "Горячая вода",
     icon: hotWaterIcon,
-    id: "",
+    id: "hot-water",
 }, {
     text: "Интернет и wi-fi",
     icon: wiFiIcon,
-    id: "",
+    id: "wi-fi",
 }, {
     text: "Электричество",
     icon: electricityIcon,
-    id: "",
+    id: "electicity",
 }, {
     text: "Кондиционер",
     icon: airConditioningIcon,
-    id: "",
+    id: "conditioner",
 }, {
     text: "Баня/сауна",
     icon: bathIcon,
-    id: "",
+    id: "bath",
 }];
 
-export const extraAvailiablesItems = [{
+export const extraAvailiablesItems: ExtraAvailiablesItems[] = [{
     text: "Мастер-классы/ обучающие курсы",
     icon: classIcon,
-    id: "",
+    id: "master-class",
 }, {
     text: "Экскурсии",
     icon: excursionsIcon,
-    id: "",
+    id: "excursions",
 }, {
     text: "Катание на лошадях",
     icon: horsingIcon,
-    id: "",
+    id: "horses",
 }, {
     text: "Языковые уроки",
     icon: languageIcon,
-    id: "",
+    id: "languages",
 }, {
     text: "Другое",
     icon: otherIcon,
-    id: "",
+    id: "additional",
 }];

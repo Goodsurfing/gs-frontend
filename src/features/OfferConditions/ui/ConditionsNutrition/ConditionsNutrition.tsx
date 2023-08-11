@@ -34,18 +34,26 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         onChange({ ...value, switchState: !value.switchState });
     };
 
+    const onCancelClick = () => {
+        onChange({ ...value, switchState: false });
+    };
+
+    const onApplyClick = () => {
+        onChange({ ...value, switchState: true });
+    };
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.toggleWrapper}>
-                <label className={styles.toggleText} htmlFor="housing">Питание</label>
+                <p className={styles.toggleText}>Питание</p>
                 <div className={styles.toggle}>
-                    <span className={styles.toggleSpan}>Нет</span>
+                    <span onClick={onCancelClick} className={styles.toggleSpan}>Нет</span>
                     <SwitchComponent
                         id="nutrition"
                         checked={value.switchState}
                         onClick={onSwitchChange}
                     />
-                    <span className={styles.toggleSpan}>Да</span>
+                    <span onClick={onApplyClick} className={styles.toggleSpan}>Да</span>
                 </div>
             </div>
             <div className={styles.conditions}>
@@ -53,7 +61,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
                     <ConditionsItem
                         checked={!!value.nutrition?.find((val) => val === item.id)}
                         icon={item.icon}
-                        onToggle={() => onToggleCondition(item.id as Nutrition)}
+                        onToggle={() => onToggleCondition(item.id)}
                         text={item.text}
                         key={item.id}
                     />

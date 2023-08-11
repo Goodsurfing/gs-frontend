@@ -1,0 +1,12 @@
+.title {
+    font: var(--font-secondary);
+    color: var(--text-caption);
+}
+
+.conditions {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 160px);
+    grid-template-rows: 1fr;
+    grid-column-gap: 20px;
+}

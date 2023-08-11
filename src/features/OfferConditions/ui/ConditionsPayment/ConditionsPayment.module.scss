@@ -1,0 +1,20 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.content {
+    display: flex;
+    gap: 14px;
+}
+
+.dropdown {
+    padding: 14px;
+    font: var(--font-primary);
+}
+
+.title {
+    font: var(--font-secondary);
+    color: var(--text-caption);
+}

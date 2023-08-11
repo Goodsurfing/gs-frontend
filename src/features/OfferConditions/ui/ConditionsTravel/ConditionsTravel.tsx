@@ -1,35 +1,34 @@
-import { memo, useCallback } from "react";
-import { HousingFields } from "../../model/types/offerConditions";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
+import { TravelFields } from "../../model/types/offerConditions";
 
-import styles from "./ConditionsHousing.module.scss";
+import styles from "./ConditionsTravel.module.scss";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
-import { liveItems } from "../../model/data/conditionItems";
-import { Housing } from "@/entities/Offer";
+import { Travel } from "@/entities/Offer";
+import { payedRideItems } from "../../model/data/conditionItems";
 
-export interface ConditionsHousingProps {
-    value: HousingFields;
-    onChange: (value: HousingFields) => void;
+interface ConditionsTravelProps {
+    value: TravelFields;
+    onChange: (value: TravelFields) => void;
 }
 
-export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
+export const ConditionsTravel = (props: ConditionsTravelProps) => {
     const { onChange, value } = props;
 
-    const onSwitchChange = useCallback(() => {
+    const onSwitchChange = () => {
         onChange({ ...value, switchState: !value.switchState });
-    }, [value, onChange]);
+    };
 
-    const onToggleCondition = (conditionId: Housing) => {
-        const activeIndex = value.housing.findIndex((item) => item === conditionId);
+    const onToggleCondition = (conditionId: Travel) => {
+        const activeIndex = value.travel.findIndex((item) => item === conditionId);
         if (activeIndex !== -1) {
             onChange({
                 ...value,
-                housing: [...value.housing.filter((val) => val !== conditionId)],
+                travel: [...value.travel.filter((val) => val !== conditionId)],
             });
         } else {
             onChange({
                 ...value,
-                housing: [...value.housing, conditionId],
+                travel: [...value.travel, conditionId],
             });
         }
     };
@@ -37,11 +36,11 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.toggleWrapper}>
-                <label className={styles.toggleText} htmlFor="housing">Жилье</label>
+                <p className={styles.toggleText}>Оплачиваемый проезд</p>
                 <div className={styles.toggle}>
                     <span className={styles.toggleSpan}>Нет</span>
                     <SwitchComponent
-                        id="housing"
+                        id="travel"
                         checked={value.switchState}
                         onClick={onSwitchChange}
                     />
@@ -49,16 +48,16 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
                 </div>
             </div>
             <div className={styles.conditions}>
-                {liveItems.map((item) => (
+                {payedRideItems.map((item) => (
                     <ConditionsItem
-                        checked={!!value.housing?.find((val) => val === item.id)}
-                        key={item.id}
-                        text={item.text}
+                        checked={!!value.travel?.find((val) => val === item.id)}
                         icon={item.icon}
                         onToggle={() => onToggleCondition(item.id)}
+                        text={item.text}
+                        key={item.id}
                     />
                 ))}
             </div>
         </div>
     );
-});
+};
