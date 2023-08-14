@@ -52,10 +52,10 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
                 {liveItems.map((item) => (
                     <ConditionsItem
                         checked={!!value.housing?.find((val) => val === item.id)}
+                        onToggle={() => onToggleCondition(item.id)}
                         key={item.id}
                         text={item.text}
                         icon={item.icon}
-                        onToggle={() => onToggleCondition(item.id)}
                     />
                 ))}
             </div>

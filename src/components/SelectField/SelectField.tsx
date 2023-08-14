@@ -28,7 +28,7 @@ const SelectField: FC<SelectFieldProps> = ({
     <div className={styles.wrapper}>
         <div className={styles.labelWrapper}>
             {img && (
-                <img className={styles.image} src={img} alt={`${img}`} />
+                <img className={styles.image} src={img} alt={img} />
             )}
             <label htmlFor={name} className={styles.label}>
                 {label}

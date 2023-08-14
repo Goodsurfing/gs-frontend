@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 
 import styles from "./HostDashboardCalendar.module.scss";
@@ -15,8 +14,9 @@ const HostDashboardCalendar = () => (
             <div className={styles.btnWrapper}>
                 <Button
                     className={styles.btn}
-                    variant={Variant.PRIMARY}
-                    rounded
+                    color="BLUE"
+                    variant="FILL"
+                    size="MEDIUM"
                 >
                     Посмотреть все
                 </Button>

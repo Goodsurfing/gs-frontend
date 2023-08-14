@@ -2,7 +2,7 @@ import {
     FC, memo, useEffect, useState,
 } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -214,8 +214,9 @@ const HostMainInfoForm: FC = () => {
                     />
                     <Button
                         className={styles.button}
-                        variant={Variant.PRIMARY}
-                        rounded
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
                         type="submit"
                     >
                         Сохранить

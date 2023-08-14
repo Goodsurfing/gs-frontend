@@ -1,7 +1,7 @@
 import React, { FC, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 
 import DashboardDoughnut from "@/components/DashboardDoughnut/DashboardDoughnut";
 
@@ -43,8 +43,9 @@ const HostProfileFill: FC = () => {
                     <div className={styles.btnWrapper}>
                         <Button
                             className={styles.btn}
-                            variant={Variant.GREEN}
-                            rounded
+                            color="GREEN"
+                            variant="FILL"
+                            size="MEDIUM"
                             onClick={handleCreateOrganizationClick}
                         >
                             Создать организацию

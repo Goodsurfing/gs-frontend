@@ -23,7 +23,11 @@ import {
     wiFiIcon,
 } from "@/shared/data/icons/conditions";
 import {
-    ExtraAvailiablesItems, FoodItems, GoodsItems, LiveItems, PayedRideItems,
+    ExtraAvailiablesItems,
+    FoodItems,
+    GoodsItems,
+    LiveItems,
+    PayedRideItems,
 } from "../types/conditionsData";
 
 export const liveItems: LiveItems[] = [{

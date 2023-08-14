@@ -12,7 +12,6 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -84,7 +83,15 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
                 )}
             />
             <div>
-                <Button variant={Variant.PRIMARY} type="submit">Сохранить</Button>
+                <Button
+                    variant="FILL"
+                    color="BLUE"
+                    size="MEDIUM"
+                    type="submit"
+                >
+                    Сохранить
+
+                </Button>
             </div>
         </form>
     );

@@ -6,47 +6,29 @@ import {
     SubmitHandler,
     useForm,
 } from "react-hook-form";
-import { OfferConditionsFormFields } from "../../model/types/offerConditions";
-import { ConditionsHousing } from "../ConditionsHousing/ConditionsHousing";
 
-import styles from "./OfferConditionsForm.module.scss";
+import type { OfferConditionsFormFields } from "../../model/types/offerConditions";
+
+import { defaultFormFields } from "../../model/data/defaultFormFields";
+
+import { ConditionsHousing } from "../ConditionsHousing/ConditionsHousing";
 import { ConditionsNutrition } from "../ConditionsNutrition/ConditionsNutrition";
 import { ConditionsTravel } from "../ConditionsTravel/ConditionsTravel";
 import { ConditionsFacilities } from "../ConditionsFacilities/ConditionsFacilities";
 import { ConditionsExtraFeatures } from "../ConditionsExtraFeatures/ConditionsExtraFeatures";
 import { ConditionsPayment } from "../ConditionsPayment/ConditionsPayment";
+
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
+import styles from "./OfferConditionsForm.module.scss";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
     className?: string;
 }
 
-const defaultValues: DefaultValues<OfferConditionsFormFields> = {
-    housing: {
-        switchState: true,
-        housing: [],
-    },
-    nutrition: {
-        switchState: true,
-        nutrition: [],
-    },
-    travel: {
-        switchState: true,
-        travel: [],
-    },
-    facilities: {
-        facilities: [],
-    },
-    extraFeatures: {
-        extraFeatures: [],
-    },
-    payment: {
-        currency: "RUB",
-    },
-};
+const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormFields;
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
@@ -131,7 +113,13 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 )}
             />
             <div>
-                <Button variant={Variant.PRIMARY}>Сохранить</Button>
+                <Button
+                    variant="FILL"
+                    color="BLUE"
+                    size="MEDIUM"
+                >
+                    Сохранить
+                </Button>
             </div>
         </form>
     );

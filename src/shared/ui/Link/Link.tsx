@@ -2,7 +2,7 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
-import { ILinkProps, LinkVariant } from "./Link.interface";
+import { ILinkProps } from "./Link.interface";
 import styles from "./Link.module.scss";
 
 const CustomLink: FC<ILinkProps> = ({

@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import Button from "@/shared/ui/Button/Button";
 
 import InputField from "@/components/InputField/InputField";
@@ -85,7 +85,12 @@ const ResetPasswordThirdStep: FC = () => {
                 )}
             />
 
-            <Button type="submit" variant={Variant.PRIMARY}>
+            <Button
+                type="submit"
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Отправить
             </Button>
         </form>

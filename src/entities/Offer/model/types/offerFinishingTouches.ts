@@ -1,4 +1,4 @@
-export type ExtraConditions = "allow-kids" | "allow-pets" | "couples" | "students" | "vegeterian" | "adult-only";
+export type ExtraConditions = "allow-kids" | "allow-pets" | "couples" | "students" | "vegetarian" | "adult-only";
 
 export interface OfferFinishingTouches {
     extraConditions?: ExtraConditions;

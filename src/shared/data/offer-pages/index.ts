@@ -46,7 +46,7 @@ export const SideMenuData: SidebarContentProps[] = [
         route: "/offers/conditions",
     },
     {
-        route: "/offers/last",
+        route: "/offers/finishing-touches",
         text: "Последние штрихи",
         icon: writeIcon,
     },

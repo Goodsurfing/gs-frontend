@@ -1,6 +1,5 @@
 import {
     ArcElement,
-    ChartData,
     Chart as ChartJS,
     Legend,
     Tooltip,
@@ -31,7 +30,7 @@ const StatsCircle: FC<IStatsCircle> = ({
             createdDegrees.completedPercent,
             createdDegrees.uncompletedPercent,
         ]);
-    }, []);
+    }, [setDegrees]);
 
     return (
         <Doughnut

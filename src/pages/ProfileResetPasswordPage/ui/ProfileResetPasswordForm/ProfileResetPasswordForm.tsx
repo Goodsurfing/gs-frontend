@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import { authApi } from "@/store/api/authApi";
 import { userInfoApi } from "@/store/api/userInfoApi";
@@ -20,7 +19,13 @@ const ProfileResetPasswordForm: FC = () => {
     }
 
     return (
-        <Button onClick={onSubmit} type="submit" variant={Variant.PRIMARY}>
+        <Button
+            onClick={onSubmit}
+            type="submit"
+            color="BLUE"
+            variant="FILL"
+            size="MEDIUM"
+        >
             Запросить ссылку
         </Button>
     );

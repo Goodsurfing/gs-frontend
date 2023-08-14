@@ -19,6 +19,7 @@ import { OfferWherePage } from "@/pages/OfferWherePage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
+import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
@@ -46,6 +47,7 @@ import {
     getSignInPageUrl,
     getSignUpPageUrl,
     getHostDashboardPageUrl,
+    getOffersFinishingTouchesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteWithChildrenProps } from "../types/langRouter";
@@ -153,6 +155,12 @@ const publicRoutes: RouteWithChildrenProps[] = [
                     <OfferConditionsPage />
                 ),
                 path: (locale: string) => getOffersConditionsPageUrl(locale),
+            },
+            {
+                element: (
+                    <OfferFinishingTouchesPage />
+                ),
+                path: (locale: string) => getOffersFinishingTouchesPageUrl(locale),
             },
         ],
     },

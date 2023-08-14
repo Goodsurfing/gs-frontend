@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
@@ -133,10 +132,11 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked, onSuccess }) => {
                 )}
                 <Button
                     type="submit"
-                    variant={Variant.PRIMARY}
+                    color="BLUE"
+                    size="MEDIUM"
+                    variant="FILL"
                     className={styles.button}
                     disabled={isLocked}
-                    rounded
                 >
                     Сохранить
                 </Button>

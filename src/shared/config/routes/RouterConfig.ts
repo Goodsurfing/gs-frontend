@@ -29,6 +29,7 @@ export enum AppRoutes {
     OFFERS_DESCRIPTION = "offers_description",
     OFFERS_WHAT_TO_DO = "offers_what_to_do",
     OFFERS_CONDITIONS = "offers_conditions",
+    OFFER_FINISHING_TOUCHES = "offers_finishing_touches",
     NOT_FOUND = "not_found",
 }
 
@@ -54,6 +55,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFERS_DESCRIPTION]: "/offers/description",
     [AppRoutes.OFFERS_WHAT_TO_DO]: "/offers/what-to-do",
     [AppRoutes.OFFERS_CONDITIONS]: "/offers/conditions",
+    [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/finishing-touches",
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",
