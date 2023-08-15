@@ -3,7 +3,7 @@ import React from "react";
 
 import styles from "./Input.module.scss";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     img?: string;
     description?: string;

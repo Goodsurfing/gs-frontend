@@ -18,7 +18,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = useAppSelector((state) => state.);
     const { locale } = useLocale();
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 

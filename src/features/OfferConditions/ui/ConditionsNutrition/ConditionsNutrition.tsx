@@ -20,7 +20,6 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
     const { onChange, value } = props;
 
     const onToggleCondition = (nutrition: Nutrition[]) => {
-        console.log(nutrition);
         onChange({ ...value, nutrition });
     };
 
