@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import { DashboardRequestData } from "./HostDashboardRequest.data";
 import styles from "./HostDashboardRequest.module.scss";
@@ -27,7 +26,11 @@ const HostDashboardRequest: FC = () => (
                     article={card.article}
                 />
             ))}
-            <Button variant={Variant.PRIMARY} rounded>
+            <Button
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Посмотреть все
             </Button>
         </div>

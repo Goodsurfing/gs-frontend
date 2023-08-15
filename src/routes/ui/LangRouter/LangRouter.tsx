@@ -3,7 +3,7 @@ import {
 } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 
-import { RouteType, RouteWithChildrenProps } from "../../model/types/langRouter";
+import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";

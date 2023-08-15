@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import InputField from "@/components/InputField/InputField";
 
@@ -53,7 +52,12 @@ const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
                     />
                 )}
             />
-            <Button type="submit" variant={Variant.PRIMARY}>
+            <Button
+                type="submit"
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Отправить
             </Button>
         </form>

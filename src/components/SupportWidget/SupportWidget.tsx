@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import supportImage from "@/shared/assets/images/supportImage.jpg";
 
 import Button from "@/shared/ui/Button/Button";
@@ -24,7 +24,7 @@ const SupportWidget: FC<ISupportWidget> = ({ theme }) => (
         <p className={styles.description}>
             Ваш персональный помощник по работе с системой
         </p>
-        <Button rounded variant={Variant.OUTLINED}>
+        <Button  ={.OUTLINED}>
             Написать
         </Button>
         <div className={styles.email}>

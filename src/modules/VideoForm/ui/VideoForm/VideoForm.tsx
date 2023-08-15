@@ -2,7 +2,7 @@ import React from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import { Text } from "../Text/Text";
 import { VideoInput } from "../VideoInput/VideoInput";
 
@@ -23,7 +23,12 @@ export const VideoForm = () => {
                     );
                 }}
             />
-            <Button className={styles.btn} variant={Variant.PRIMARY}>
+            <Button
+                className={styles.btn}
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Сохранить
             </Button>
         </div>

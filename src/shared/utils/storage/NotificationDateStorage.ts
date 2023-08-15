@@ -1,10 +1,6 @@
 import Storage from "./Storage";
 
 export default class NotificationDateStorage extends Storage<"firstNotificationDate"> {
-    constructor() {
-        super();
-    }
-
     public getSavedDate() {
         return this.get("firstNotificationDate")!;
     }

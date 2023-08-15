@@ -15,7 +15,7 @@ interface Props {
 
 const TimeTypeOptions: TimeType[] = ["week", "day"];
 
-const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6, 7];
+const DayOffOptions: number[] = [1, 2, 3, 4, 5];
 
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {

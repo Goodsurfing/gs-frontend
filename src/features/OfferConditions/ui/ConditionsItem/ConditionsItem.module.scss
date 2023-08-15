@@ -1,0 +1,24 @@
+.toggleButton {
+    padding: 8px 16px;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    fill: var(--text-caption);
+    background-color: var(--bg-primary-1);
+    border: var(--text-caption) 1px solid;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    svg {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.active {
+    color: var(--text-secondary-1);
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    fill: var(--text-secondary-1);
+}

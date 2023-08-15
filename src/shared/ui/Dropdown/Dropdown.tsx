@@ -47,7 +47,7 @@ const Dropdown: FC<IDropdownProps> = ({
         >
             <div className={styles.labelWrapper}>
                 {img && (
-                    <img className={styles.image} src={img} alt={`${img}`} />
+                    <img className={styles.image} src={img} alt={img} />
                 )}
                 <label className={styles.label}>{label}</label>
             </div>

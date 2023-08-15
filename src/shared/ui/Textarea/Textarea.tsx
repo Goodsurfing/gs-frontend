@@ -33,7 +33,7 @@ const Textarea: FC<IText> = ({
         <div className={cn(styles.texarea, className)}>
             <div className={styles.labelWrapper}>
                 {img && (
-                    <img className={styles.image} src={img} alt={`${img}`} />
+                    <img className={styles.image} src={img} alt={img} />
                 )}
                 <label className={styles.label} htmlFor={id}>
                     {label}

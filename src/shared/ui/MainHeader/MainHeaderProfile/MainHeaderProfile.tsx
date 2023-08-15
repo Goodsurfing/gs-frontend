@@ -13,11 +13,10 @@ import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import Arrow from "../../Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
-import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 import {
     getHostDashboardPageUrl,
-    getHostPageUrl, getMainPageUrl, getProfileInfoPageUrl,
+    getMainPageUrl,
+    getProfileInfoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -100,13 +99,13 @@ const MainHeaderProfile = () => {
                     Стать волонтёром
 
                 </Link>
-                <Button
-                    variant={Variant.CLEAR}
+                <button
+                    type="button"
                     className={styles.dropdownLink}
                     onClick={handleLogout}
                 >
                     Выйти
-                </Button>
+                </button>
             </Popup>
         </div>
     );

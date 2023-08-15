@@ -1,4 +1,6 @@
-export const checkWidthAndHeight = (file: File): Promise<{ width: number, height: number }> => new Promise((resolve, reject) => {
+export const checkWidthAndHeight = (file: File): Promise<
+{ width: number, height: number }
+> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target && e.target.result) {

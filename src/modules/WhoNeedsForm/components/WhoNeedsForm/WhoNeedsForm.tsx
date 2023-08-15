@@ -1,7 +1,6 @@
 import { memo } from "react";
 
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import Age from "../Age/Age";
 import Gender from "../Gender/Gender";
@@ -19,8 +18,10 @@ export const WhoNeedsForm = memo(() => (
         <Button
             onClick={() => {}}
             className={styles.btn}
-            rounded
-            variant={Variant.PRIMARY}
+
+            variant="FILL"
+            color="BLUE"
+            size="MEDIUM"
         >
             Сохранить
         </Button>

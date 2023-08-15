@@ -2,7 +2,7 @@ import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -89,7 +89,9 @@ const SignUpForm: FC = () => {
             />
             <Button
                 type="submit"
-                variant={Variant.PRIMARY}
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
                 className={styles.btn}
             >
                 Зарегистрироваться

@@ -1,6 +1,5 @@
-import React, { FC } from "react";
+import { memo } from "react";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -19,7 +18,7 @@ interface IHostOffersPageCard {
     description: string;
 }
 
-const HostOffersPageCard: FC<IHostOffersPageCard> = ({
+const HostOffersPageCard = memo(({
     image,
     title,
     location,
@@ -29,7 +28,7 @@ const HostOffersPageCard: FC<IHostOffersPageCard> = ({
     reviews,
     went,
     description,
-}) => (
+}: IHostOffersPageCard) => (
     <div className={styles.cardWrapper}>
         <div className={styles.imageWrapper}>
             <img src={image} alt="travel-img" />
@@ -73,23 +72,30 @@ const HostOffersPageCard: FC<IHostOffersPageCard> = ({
         <div className={styles.btns}>
             <Button
                 className={styles.green}
-                variant={Variant.GREEN}
-                rounded
+                variant="FILL"
+                color="GREEN"
+                size="SMALL"
             >
                 Редактировать
             </Button>
-            <Button className={styles.gray} variant={Variant.GRAY} rounded>
+            <Button
+                color="GRAY"
+                variant="OUTLINE"
+                size="SMALL"
+                className={styles.gray}
+            >
                 Закрыть
             </Button>
             <Button
                 className={styles.black}
-                variant={Variant.BLACK}
-                rounded
+                variant="FILL"
+                color="BLACK"
+                size="SMALL"
             >
                 Стать «всегда открытым»
             </Button>
         </div>
     </div>
-);
+));
 
 export default HostOffersPageCard;

@@ -11,7 +11,7 @@ import { userActions } from "@/entities/User";
 import styles from "./AuthByEmailForm.module.scss";
 import InputField from "@/components/InputField/InputField";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import { LoginByEmailProps } from "../../model/types/login";
 import { AuthByEmailHelp } from "../AuthByEmailHelp/AuthByEmailHelp";
 
@@ -80,7 +80,13 @@ export const AuthByEmailForm = memo(({
                     />
                 )}
             />
-            <Button disabled={isLoading} type="submit" variant={Variant.PRIMARY}>
+            <Button
+                disabled={isLoading}
+                type="submit"
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Войти
             </Button>
             <AuthByEmailHelp />
