@@ -1,0 +1,17 @@
+.wrapper {
+    width: 100%;
+    border-bottom: 1px solid var(--text-caption);
+    padding: 8px 0;
+}
+
+.innerWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.navItem {
+    color: var(--bg-accent);
+}
