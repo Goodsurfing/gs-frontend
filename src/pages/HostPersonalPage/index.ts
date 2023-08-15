@@ -1,1 +1,1 @@
-export { HostPersonalPageAsync as HostPersonalPage } from "./ui/HostPersonalPage.async";
+export { HostPersonalPageAsync as HostPersonalPage } from "./ui/HostPersonalPage/HostPersonalPage.async";
