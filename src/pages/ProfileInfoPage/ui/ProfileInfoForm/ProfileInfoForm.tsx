@@ -21,6 +21,7 @@ import LocationFormGroup from "./LocationFormGroup/LocationFormGroup";
 import { IUserInfo, IUserInfoForm } from "./ProfileInfoForm.interface";
 import styles from "./ProfileInfoForm.module.scss";
 import SocialFormGroup from "./SocialFormGroup/SocialFormGroup";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 interface ProfileInfoFormProps {
     isLocked: boolean;
@@ -53,7 +54,7 @@ const ProfileInfoForm: FC<ProfileInfoFormProps> = ({ isLocked, onSuccess }) => {
 
     const [file, setFile] = useState<File | undefined>();
 
-    const { token } = useAppSelector((state) => state.login);
+    const { token } = JSON.parse(localStorage.getItem(TOKEN_LOCALSTORAGE_KEY));
 
     async function handleUpdateUserInfo() {
         if (!data) return;

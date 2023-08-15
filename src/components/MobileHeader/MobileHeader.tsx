@@ -18,7 +18,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
-    const { token } = useAppSelector((state) => state.);
+    const authData = useAppSelector((state) => state.user.authData);
     const { locale } = useLocale();
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
@@ -60,7 +60,7 @@ const MobileHeader: FC = () => {
                     </Link>
                 </div>
                 <div className={styles.link}>
-                    {token ? (
+                    {authData ? (
                         <Link to={getMainPageUrl(locale)}>Категории</Link>
                     ) : (
                         <Link to={getSignInPageUrl(locale)}>
