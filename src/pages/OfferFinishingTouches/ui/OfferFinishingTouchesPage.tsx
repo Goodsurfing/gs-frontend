@@ -11,8 +11,8 @@ export const OfferFinishingTouchesPage = memo(() => {
     const { t } = useTranslation("finishing-touches");
     return (
         <div className={styles.wrapper}>
-            <Text titleSize="h1" title={t("Требования к участнику")} />
-            <OfferFinishingTouchesForm />
+            <Text titleSize="h2" title={t("Требования к участнику")} />
+            <OfferFinishingTouchesForm className={styles.form} />
         </div>
     );
 });

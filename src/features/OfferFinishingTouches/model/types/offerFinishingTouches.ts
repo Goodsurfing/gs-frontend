@@ -1,24 +1,16 @@
 import { ExtraConditions } from "@/entities/Offer";
 
-export interface ExtraConditionsFormFields {
-    extraConditions: ExtraConditions;
-}
+export type ExtraConditionsFormFields = ExtraConditions[];
 
-export interface WelcomeMessageFields {
-    welcomeMessage: string;
-}
+export type WelcomeMessageFields = string;
 
-export interface RulesInfoFields {
-    rules: string;
-}
+export type RulesInfoFields = string;
 
-export interface FaqFields {
-    faq: string;
-}
+export type FaqFields = string;
 
 export interface OfferFinishingTouchesFormFields {
     extraConditions: ExtraConditionsFormFields;
     welcomeMessage: WelcomeMessageFields;
     rules: RulesInfoFields;
-    raq: FaqFields;
+    faq: FaqFields;
 }

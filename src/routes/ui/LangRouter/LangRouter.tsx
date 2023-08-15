@@ -47,7 +47,7 @@ export const LangRouter = () => {
     return (
         <Suspense fallback={<Preloader />}>
             <Routes>
-                <Route path={`/${locale}`} element={<Outlet />}>
+                <Route path={`/${locale}`}>
                     {renderRouteWithChildren(allRoutes)}
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />
