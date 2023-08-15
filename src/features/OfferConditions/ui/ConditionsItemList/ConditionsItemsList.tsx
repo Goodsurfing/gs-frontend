@@ -3,18 +3,18 @@ import cn from "classnames";
 
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 
-import { ConditionItems, ConditionIds } from "../../model/types/conditionsData";
+import { ConditionItems } from "../../model/types/conditionsData";
 
 import styles from "./ConditionsItemsList.module.scss";
 
-interface ConditionsItemsListProps<T extends ConditionIds> {
+interface ConditionsItemsListProps {
     className?: string;
     items: ConditionItems[];
-    value: PartOfIds<T>[];
-    onChange: (value: PartOfIds<T>[]) => void;
+    value: any[]; // Todo: types issue.
+    onChange: (value: any[]) => void;
 }
 
-export const ConditionsItemsList = memo((props: ConditionsItemsListProps<ConditionIds>) => {
+export const ConditionsItemsList = memo((props: ConditionsItemsListProps) => {
     const {
         className,
         items,
@@ -22,7 +22,7 @@ export const ConditionsItemsList = memo((props: ConditionsItemsListProps<Conditi
         onChange,
     } = props;
 
-    const onToggleCondition = (id: ConditionIds) => {
+    const onToggleCondition = (id: string) => {
         const activeIndex = value.findIndex((item) => item === id);
         if (activeIndex !== -1) {
             onChange([...value.filter((val) => val !== id)]);

@@ -2,12 +2,10 @@ import {
     Housing, Nutrition, Travel, Facilities, ExtraFeatures,
 } from "@/entities/Offer";
 
-export type ConditionIds = Housing | Nutrition | Travel | Facilities | ExtraFeatures;
-
 export interface ConditionItems {
     text: string;
     icon: string;
-    id: ConditionIds;
+    id: Housing | Nutrition | Travel | Facilities | ExtraFeatures;
 }
 
 export interface LiveItems extends ConditionItems {
