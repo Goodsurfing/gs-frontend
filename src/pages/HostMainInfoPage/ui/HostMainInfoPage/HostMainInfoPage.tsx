@@ -1,18 +1,31 @@
-import React, { FC } from "react";
+import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
-import HostMainInfoForm from "../HostMainInfoForm/HostMainInfoForm";
-import styles from "./HostMainInfoPage.module.scss";
-import { PageLayout } from "@/widgets/PageLayout";
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
+
 import { HostDescriptionForm } from "@/features/HostDescription";
 
-const HostMainInfoPage: FC = () => (
-    <PageLayout sidebarContent={HostPagesSidebarData}>
-        <div className={styles.wrapper}>
-            {/* <HostMainInfoForm /> */}
-            <HostDescriptionForm />
-        </div>
-    </PageLayout>
-);
+import { PageLayout } from "@/widgets/PageLayout";
+
+import styles from "./HostMainInfoPage.module.scss";
+import { useGetHostInfo } from "@/features/HostDescription/lib/useGetHostInfo";
+
+const HostMainInfoPage: FC = () => {
+    const {t} = useTranslation();
+
+    const hostData = useGetHostInfo();
+
+    return (
+        <PageLayout sidebarContent={HostPagesSidebarData}>
+            <div className={styles.wrapper}>
+                <HostDescriptionForm
+                    host={hostData?.host}
+                    isLoading={hostData.isLoading}
+                    error={hostData?.error}
+                />
+            </div>
+        </PageLayout>
+    );
+};
 
 export default HostMainInfoPage;

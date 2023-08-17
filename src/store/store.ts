@@ -15,6 +15,7 @@ import { galleryApi, galleryReducer } from "@/modules/Gallery";
 import registerReducer from "./reducers/registerSlice";
 import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import { organizationApi } from "./api/organizationApi";
+import { hostApi } from "@/entities/Host";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     [organizationApi.reducerPath]: organizationApi.reducer,
     [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
     [galleryApi.reducerPath]: galleryApi.reducer,
+    [hostApi.reducerPath]: hostApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -40,6 +42,8 @@ export const setupStore = () => configureStore({
         userInfoApi.middleware,
         userOrganizationInfoApi.middleware,
         localeApi.middleware,
+        profileApi.middleware,
+        hostApi.middleware,
         galleryApi.middleware,
     ]),
 });

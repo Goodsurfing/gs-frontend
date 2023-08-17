@@ -5,14 +5,11 @@ export type HostDescriptionTypeFields = {
     otherOrganizationType?: string;
 };
 
-export type HostDescriptionExtraInfoFields = {
-    website?: string;
-    aboutInfo: string;
-};
-
 export type HostDescriptionMainInfoFields = {
-    organization: string;
-    shortOrganization: string;
+    organization?: string;
+    shortOrganization?: string;
+    website?: string;
+    aboutInfo?: string;
 };
 
 export type HostDescriptionSocialFields = {
@@ -23,9 +20,9 @@ export type HostDescriptionSocialFields = {
 };
 
 export interface HostDescriptionFormFields {
-    address: string;
-    avatar: string;
-    type: HostDescriptionTypeFields;
-    mainInfo: HostDescriptionMainInfoFields;
-    socicalMedia: HostDescriptionSocialFields;
+    address?: string;
+    avatar?: string;
+    mainInfo?: HostDescriptionMainInfoFields;
+    type?: HostDescriptionTypeFields;
+    socicalMedia?: HostDescriptionSocialFields;
 }

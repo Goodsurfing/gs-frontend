@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import cn from "classnames";
 
@@ -17,33 +17,31 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
 
     const { control } = useFormContext();
 
-    const data = useWatch({ control });
-    console.log(data);
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.name}>
                 <InputControl
                     control={control}
-                    name="organization"
+                    name="mainInfo.organization"
                 />
             </div>
             <div className={styles.oneSentence}>
                 <TextAreaControl
                     label="Название организации"
-                    name="shortOrganization"
+                    name="mainInfo.shortOrganization"
                     control={control}
                 />
             </div>
             <div className={styles.type} />
             <div className={styles.website}>
                 <InputControl
-                    name="organizationType"
+                    name="mainInfo.website"
                     control={control}
                 />
             </div>
             <div className={styles.about}>
                 <TextAreaControl
-                    name="aboutInfo"
+                    name="mainInfo.aboutInfo"
                     label="Расскажите об организации"
                     description="Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия"
                     control={control}

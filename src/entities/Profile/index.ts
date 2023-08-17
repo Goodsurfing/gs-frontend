@@ -10,3 +10,5 @@ export {
 export {
     profileApi,
 } from "./model/services/profileApi/profileApi";
+
+export { useUser } from "./lib/useUser";

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
@@ -27,14 +27,15 @@ const MainHeaderProfile = () => {
     const profileRef = useRef(null);
 
     const { locale } = useLocale();
-
+    const navigate = useNavigate();
     const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
 
     const dispatch = useAppDispatch();
 
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-    }, [dispatch]);
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, navigate, locale]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
