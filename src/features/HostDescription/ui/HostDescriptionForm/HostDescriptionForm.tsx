@@ -22,7 +22,7 @@ interface HostDescriptionFormProps {
 
 export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
-        className, host, error, isLoading,
+        className, host, error, isLoading = true,
     } = props;
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = (data) => {};
@@ -55,7 +55,10 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     return (
         <FormProvider {...form}>
-            <form className={cn(styles.form, className)} onSubmit={handleSubmit(onSubmit)}>
+            <form
+                className={cn(styles.form, className)}
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <HostDescriptionFormContent />
             </form>
         </FormProvider>

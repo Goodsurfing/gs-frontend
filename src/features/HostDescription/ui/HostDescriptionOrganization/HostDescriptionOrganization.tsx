@@ -1,12 +1,17 @@
 import { memo } from "react";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import cn from "classnames";
 
+import { MenuItem } from "@mui/material";
+
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
+import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
+import { SelectComponent } from "@/shared/ui/Select/Select";
+
+import { organizationTypeData } from "../../model/data/organizationTypeData";
 
 import styles from "./HostDescriptionOrganization.module.scss";
-import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 
 interface HostDescriptionOrganizationProps {
     className?: string;
@@ -32,9 +37,33 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     control={control}
                 />
             </div>
-            <div className={styles.type} />
+            <div className={styles.type}>
+                <Controller
+                    name="type.organizationType"
+                    control={control}
+                    defaultValue={organizationTypeData[0].id}
+                    render={({ field }) => (
+                        <SelectComponent
+                            className={styles.dropdown}
+                            onChange={field.onChange}
+                            value={field.value}
+                            label="Тип организации"
+                        >
+                            {organizationTypeData.map((item) => (
+                                <MenuItem value={item.id} key={item.id}>{item.id}</MenuItem>
+                            ))}
+                        </SelectComponent>
+                    )}
+                />
+                <InputControl
+                    label="Другое"
+                    name="type.otherOrganizationType"
+                    control={control}
+                />
+            </div>
             <div className={styles.website}>
                 <InputControl
+                    label="Сайт организации"
                     name="mainInfo.website"
                     control={control}
                 />

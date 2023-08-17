@@ -3,15 +3,14 @@ import { useTranslation } from "react-i18next";
 
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
-import { HostDescriptionForm } from "@/features/HostDescription";
+import { HostDescriptionForm, useGetHostInfo } from "@/features/HostDescription";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
 import styles from "./HostMainInfoPage.module.scss";
-import { useGetHostInfo } from "@/features/HostDescription/lib/useGetHostInfo";
 
 const HostMainInfoPage: FC = () => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const hostData = useGetHostInfo();
 
@@ -19,6 +18,7 @@ const HostMainInfoPage: FC = () => {
         <PageLayout sidebarContent={HostPagesSidebarData}>
             <div className={styles.wrapper}>
                 <HostDescriptionForm
+                    className={styles.className}
                     host={hostData?.host}
                     isLoading={hostData.isLoading}
                     error={hostData?.error}
