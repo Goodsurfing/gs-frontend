@@ -1,3 +1,4 @@
+import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
 import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
@@ -48,12 +49,14 @@ import {
     getSignUpPageUrl,
     getHostDashboardPageUrl,
     getOffersFinishingTouchesPageUrl,
+    getMyOffersPageUrl,
+    getHostPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
-import { RouteWithChildrenProps } from "../types/langRouter";
+import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 
-const publicRoutes: RouteWithChildrenProps[] = [
+const publicRoutes: RouteType[] = [
     {
         element: (
             <MainPage />
@@ -107,6 +110,45 @@ const publicRoutes: RouteWithChildrenProps[] = [
             <HostOffersPage />
         ),
         path: (locale: string) => getOffersPageUrl(locale),
+    },
+    {
+        element: (
+            <HostsLayoutPage />
+        ),
+        path: (locale: string) => getHostPageUrl(locale),
+        children: [
+            {
+                element: (
+                    <HostDashboardPage />
+                ),
+                index: true,
+                path: (locale) => getHostDashboardPageUrl(locale),
+            },
+            {
+                element: (
+                    <HostOffersPage />
+                ),
+                path: (locale) => getMyOffersPageUrl(locale),
+            },
+            {
+                element: (
+                    <HostMainInfoPage />
+                ),
+                path: (locale) => getHostRegistrationUrl(locale),
+            },
+            {
+                element: (
+                    <HostGalleryPage />
+                ),
+                path: (locale) => getHostGalleryPageUrl(locale),
+            },
+            {
+                element: (
+                    <HostVideoPage />
+                ),
+                path: (locale) => getHostGalleryPageUrl(locale),
+            },
+        ],
     },
     {
         element: (

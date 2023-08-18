@@ -19,7 +19,7 @@ export interface Profile {
     facebook?: string;
     instagram?: string;
     telegram?: string;
-    organizations?: Host[];
+    organizations?: Host[] | [];
 }
 
 export interface ProfileSchema {

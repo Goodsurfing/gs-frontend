@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import { HostPagesSidebarData } from "@/shared/data/host-pages";
+import { HostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
 
 import { HostDescriptionForm, useGetHostInfo } from "@/features/HostDescription";
 

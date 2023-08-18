@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { Profile } from "../../types/profile";
+import { Profile } from "../model/types/profile";
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery,
-    tagTypes: ["profile"],
+    tagTypes: ["profile", "host"],
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
@@ -21,6 +21,13 @@ export const profileApi = createApi({
                 body: profileData,
             }),
             invalidatesTags: ["profile"],
+        }),
+        joinToHost: build.mutation<Profile, string>({
+            query: (organizationId) => ({
+                url: `organization/${organizationId}/join/`,
+                method: "PUT",
+            }),
+            invalidatesTags: ["host"],
         }),
     }),
 });

@@ -4,6 +4,7 @@ import { Host, hostApi } from "@/entities/Host";
 export function useGetHostInfo() {
     const [getHostInfo, { error, isLoading }] = hostApi.useLazyGetHostsQuery();
     const [hostData, setHostData] = useState<Host[]>();
+
     useEffect(() => {
         getHostInfo().then((res) => {
             if (res.data && res.data.list) {

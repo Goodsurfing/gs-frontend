@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { SideMenuData } from "@/shared/data/offer-pages";
+import { SideMenuData } from "@/shared/data/sidebar/offer-pages";
 import { PageLayout } from "@/widgets/PageLayout";
 
 export const OfferLayoutPage = () => (

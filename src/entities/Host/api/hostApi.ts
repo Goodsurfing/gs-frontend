@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
-import { Host } from "../types/host";
+import { Host } from "../model/types/host";
 
 interface UpdateHostParams {
     body: Partial<Host>;
@@ -27,12 +27,20 @@ export const hostApi = createApi({
                 url: `/organization/${id}`,
                 method: "GET",
             }),
+            providesTags: ["host"],
         }),
-        getHosts: build.query<GetHostsResponse, void>({
+        getHosts: build.query<Host, void>({
             query: () => ({
                 url: "/organization",
                 method: "GET",
             }),
+            transformResponse: (response: GetHostsResponse) => {
+                if (response?.list) {
+                    if (response.list?.length) {
+                        return response.list[0];
+                    }
+                }
+            },
             providesTags: ["host"],
         }),
         createHost: build.mutation<CreateHostResponse, Host>({
@@ -48,6 +56,7 @@ export const hostApi = createApi({
                 url: `/organization/${uuid}`,
                 body,
             }),
+            invalidatesTags: ["host"],
         }),
     }),
 });

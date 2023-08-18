@@ -8,22 +8,22 @@ import { SidebarContentProps } from "@/widgets/Sidebar";
 
 export const HostPagesSidebarData: SidebarContentProps[] = [
     {
-        route: "/host",
+        route: "/host/host-dashboard",
         text: "Рабочий стол",
         icon: houseIcon,
     },
     {
-        route: "/offers",
+        route: "/host/my-offers",
         text: "Предложения",
         icon: globeIcon,
     },
     {
-        route: "/notes",
+        route: "/host/notes",
         text: "Заявки",
         icon: mailIcon,
     },
     {
-        route: "/calendar",
+        route: "/host/calendar",
         text: "Календарь",
         icon: calendarIcon,
     },

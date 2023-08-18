@@ -9,7 +9,7 @@ import { PageLayout } from "@/widgets/PageLayout";
 import Button from "@/shared/ui/Button/Button";
 
 import { UploadMultipleImages } from "@/modules/Gallery";
-import { HostPagesSidebarData } from "@/shared/data/host-pages";
+import { HostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
 
 const HostGalleryPage: FC = () => (
     <PageLayout sidebarContent={HostPagesSidebarData}>

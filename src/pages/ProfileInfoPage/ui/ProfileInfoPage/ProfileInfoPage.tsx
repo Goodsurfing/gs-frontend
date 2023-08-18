@@ -5,7 +5,7 @@ import ProfileInfoForm from "../ProfileInfoForm/ProfileInfoForm";
 import styles from "./ProfileInfoPage.module.scss";
 import { PageLayout } from "@/widgets/PageLayout";
 
-import { SideMenuData } from "@/shared/data/profile-pages";
+import { SideMenuData } from "@/shared/data/sidebar/profile-pages";
 
 const ProfileInfoPage: FC = () => {
     const [isLocked, setIsLocked] = useState<boolean>(true);

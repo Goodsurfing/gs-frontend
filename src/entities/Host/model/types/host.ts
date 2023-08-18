@@ -11,5 +11,5 @@ export interface Host {
 }
 
 export interface HostSchema {
-    data: Host;
+    data?: Host;
 }

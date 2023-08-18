@@ -9,6 +9,6 @@ export {
 } from "./model/slice/profileSlice";
 export {
     profileApi,
-} from "./model/services/profileApi/profileApi";
+} from "./api/profileApi";
 
 export { useUser } from "./lib/useUser";
