@@ -15,13 +15,12 @@ import { galleryApi, galleryReducer } from "@/modules/Gallery";
 import registerReducer from "./reducers/registerSlice";
 import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import { organizationApi } from "./api/organizationApi";
-import { hostApi, hostReducer } from "@/entities/Host";
+import { hostApi } from "@/entities/Host";
 
 const rootReducer = combineReducers({
     register: registerReducer,
     profile: profileReducer,
     gallery: galleryReducer,
-    host: hostReducer,
     user: userReducer,
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,

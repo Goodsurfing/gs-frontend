@@ -24,5 +24,5 @@ export interface HostDescriptionFormFields {
     avatar?: string;
     mainInfo?: HostDescriptionMainInfoFields;
     type?: HostDescriptionTypeFields;
-    socicalMedia?: HostDescriptionSocialFields;
+    socialMedia?: HostDescriptionSocialFields;
 }

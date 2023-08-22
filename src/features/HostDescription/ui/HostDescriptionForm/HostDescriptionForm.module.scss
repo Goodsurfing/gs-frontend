@@ -1,5 +1,10 @@
 .form {
     width: 100%;
     display: flex;
-	justify-content: space-between;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
 }

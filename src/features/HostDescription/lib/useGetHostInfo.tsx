@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Host, hostApi } from "@/entities/Host";
 
-export function useGetHostInfo() {
+export function useGetUserHostInfo() {
     const [getHostInfo, { error, isLoading }] = hostApi.useLazyGetHostsQuery();
     const [hostData, setHostData] = useState<Host[]>();
 

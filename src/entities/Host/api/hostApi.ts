@@ -29,23 +29,16 @@ export const hostApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        getHosts: build.query<Host, void>({
+        getHosts: build.query<GetHostsResponse | { list: [] }, void>({
             query: () => ({
                 url: "/organization",
                 method: "GET",
             }),
-            transformResponse: (response: GetHostsResponse) => {
-                if (response?.list) {
-                    if (response.list?.length) {
-                        return response.list[0];
-                    }
-                }
-            },
             providesTags: ["host"],
         }),
-        createHost: build.mutation<CreateHostResponse, Host>({
+        createHost: build.mutation<CreateHostResponse, Partial<Host>>({
             query: (body) => ({
-                url: "/organization",
+                url: "/organization/",
                 method: "POST",
                 body,
             }),

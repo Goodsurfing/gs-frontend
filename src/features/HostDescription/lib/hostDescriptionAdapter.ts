@@ -11,7 +11,7 @@ const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО
 
 const isOrganizationType = (x: any): x is OrganizationType => organizationType.includes(x);
 
-export const hostDescriptionAdapter = (data?: Host): Partial<HostDescriptionFormFields> => {
+export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescriptionFormFields> => {
     if (!data) {
         return {};
     }
@@ -38,6 +38,18 @@ export const hostDescriptionAdapter = (data?: Host): Partial<HostDescriptionForm
     return {
         mainInfo: hostInfoFields,
         type: hostTypeFields,
-        socicalMedia: hostSocialFields,
+        socialMedia: hostSocialFields,
+    };
+};
+
+export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Partial<Host> => {
+    const { address, avatar, mainInfo, socialMedia, type } = data;
+    return {
+        name: mainInfo?.organization,
+        type: type?.organizationType,
+        description: mainInfo?.shortOrganization,
+        address,
+        // wip backend avatar,
+        ...socialMedia,
     };
 };

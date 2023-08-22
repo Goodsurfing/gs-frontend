@@ -1,30 +1,31 @@
 import { Outlet } from "react-router-dom";
 
 import { useCallback } from "react";
-import { HostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
 
-import { useGetHostInfo } from "@/features/HostDescription";
+import { HostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import { useUser } from "@/entities/Profile";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
 import { fillSidebarData } from "../lib/fillSidebarData";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 export const HostsLayoutPage = () => {
-    const { host, isLoading, error } = useGetHostInfo();
+    const { profile, isLoading, error } = useUser();
 
-    const sidebarContent = useCallback(() => {
-        if (!isLoading && host) {
-            return fillSidebarData(HostPagesSidebarData);
+    const hostSidebarContent = useCallback(() => {
+        if (!isLoading && profile?.organizations.length) {
+            return HostPagesSidebarData;
         }
-        return HostPagesSidebarData;
-    }, [host, isLoading]);
-
+        return fillSidebarData(HostPagesSidebarData);
+    }, [profile, isLoading]);
+    console.log(hostSidebarContent());
     return (
         <>
             {isLoading && (<Preloader />)}
-            {!isLoading && host && sidebarContent() && (
-                <PageLayout sidebarContent={sidebarContent()}>
+            {!isLoading && profile && (
+                <PageLayout sidebarContent={hostSidebarContent()}>
                     <Outlet />
                 </PageLayout>
 
