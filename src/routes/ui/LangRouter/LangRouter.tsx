@@ -27,14 +27,14 @@ export const LangRouter = () => {
 
     const renderRouteWithChildren = (
         routes: RouteType[],
-    ) => routes.map((route, index) => {
+    ) => routes.map((route) => {
         if (route.index) {
             return (
-                <Route index path={route.path(locale)} element={route.element} />
+                <Route key={route.label} index path={route.path(locale)} element={route.element} />
             );
         }
         return (
-            <Route key={index} path={route.path(locale)} element={route.element}>
+            <Route key={route.label} path={route.path(locale)} element={route.element}>
                 {route.children && renderRouteWithChildren(route.children)}
             </Route>
         );
