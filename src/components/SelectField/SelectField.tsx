@@ -47,7 +47,11 @@ const SelectField: FC<SelectFieldProps> = ({
                 indicatorsContainer: () => styles.menuIndicator,
                 menuList: () => styles.menuWrapper,
                 menu: () => styles.menuList,
-                control: (state) => (state.isDisabled ? cn(styles.control, styles.disabled) : styles.control),
+                control: (state) => (
+                    state.isDisabled
+                        ? cn(styles.control, styles.disabled)
+                        : styles.control
+                ),
             }}
             name={name}
             unstyled

@@ -11,4 +11,9 @@ export {
     profileApi,
 } from "./api/profileApi";
 
+export type {
+    Profile,
+} from "./model/types/profile";
+
 export { useUser } from "./lib/useUser";
+export { useGetUserHostInfo } from "./lib/useGetHostInfo";

@@ -10,8 +10,6 @@ interface HostDescriptionAddressProps {
 export const HostDescriptionAddress = memo((props: HostDescriptionAddressProps) => {
     const { className } = props;
     return (
-        <div className={cn(styles.wrapper, className)}>
-            
-        </div>
-    )
+        <div className={cn(styles.wrapper, className)} />
+    );
 });

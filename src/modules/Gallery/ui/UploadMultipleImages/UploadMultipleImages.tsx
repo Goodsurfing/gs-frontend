@@ -23,10 +23,9 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
 }) => {
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
 
-    const [generateLink,
-        {
-            data, isLoading, isSuccess, isError,
-        }] = galleryApi.useGenerateLinkMutation();
+    const [generateLink, {
+        data, isLoading, isSuccess, isError,
+    }] = galleryApi.useGenerateLinkMutation();
 
     const dispatch = useAppDispatch();
 

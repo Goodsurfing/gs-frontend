@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Controller } from "react-hook-form";
 
 import SelectField from "@/components/SelectField/SelectField";
 

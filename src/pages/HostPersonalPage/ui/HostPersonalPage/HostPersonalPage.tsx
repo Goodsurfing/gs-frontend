@@ -9,10 +9,9 @@ export const HostPersonalPage = () => {
     const { t } = useTranslation();
     return (
         <div className={styles.wrapper}>
-            
+
             <Submenu className={styles.navMenu} items={SubmenuItems} />
             <Footer />
         </div>
     );
 };
- 

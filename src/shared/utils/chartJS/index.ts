@@ -1,4 +1,4 @@
-export interface IChartDoughnut {
+export interface ChartDoughnut {
     text: string;
     color?: string;
     completed: boolean;
@@ -26,7 +26,7 @@ export function calculatePrecentage(itemsCount: number, completed: number) {
  * @returns
  */
 
-export function createDoughnutData(points: IChartDoughnut[]) {
+export function createDoughnutData(points: ChartDoughnut[]) {
     const total = points.length;
     const completedPoints = points.filter(
         (element) => element.completed === true,

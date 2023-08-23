@@ -4,7 +4,9 @@ import React, { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { ToggleButtonGroupComponentProps, StyledToggleButtonGroupProps } from "./types";
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)<StyledToggleButtonGroupProps>(({ theme }) => ({}));
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)<StyledToggleButtonGroupProps>(({
+    theme,
+}) => ({}));
 
 const ToggleButtonGroupComponent: FC<ToggleButtonGroupComponentProps> = ({
     onChange = () => {},
@@ -24,7 +26,15 @@ const ToggleButtonGroupComponent: FC<ToggleButtonGroupComponentProps> = ({
         onChange(event, newItems);
     };
 
-    return <StyledToggleButtonGroup value={selectedItems} onChange={onBtnToggleChange} sx={sx}>{children}</StyledToggleButtonGroup>;
+    return (
+        <StyledToggleButtonGroup
+            value={selectedItems}
+            onChange={onBtnToggleChange}
+            sx={sx}
+        >
+            {children}
+        </StyledToggleButtonGroup>
+    );
 };
 
 export default ToggleButtonGroupComponent;

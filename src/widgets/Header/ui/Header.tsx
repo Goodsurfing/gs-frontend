@@ -25,7 +25,7 @@ export const Header = memo((props: HeaderProps) => {
     const authData = useAppSelector(getUserAuthData);
 
     if (authData) {
-        
+
     }
 
     return (
@@ -38,9 +38,7 @@ export const Header = memo((props: HeaderProps) => {
                     <li className={styles.navItem}>{t("О проекте")}</li>
                 </ul>
             </nav>
-            <div className={styles.auth}>
-                
-            </div>
+            <div className={styles.auth} />
         </header>
     );
 });

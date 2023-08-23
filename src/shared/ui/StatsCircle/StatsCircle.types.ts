@@ -8,8 +8,8 @@ export type DatasetsType = {
 
 export interface IStatsCircle {
     className?: string;
-    degrees: Array<number>;
-    setDegrees: (degrees: Array<number>) => void;
+    degrees: [number, number];
+    setDegrees: (degrees: [number, number]) => void;
     width?: string;
     height?: string;
     data: ChartData<"doughnut", number[], unknown>;

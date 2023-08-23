@@ -43,7 +43,9 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
 };
 
 export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Partial<Host> => {
-    const { address, avatar, mainInfo, socialMedia, type } = data;
+    const {
+        address, avatar, mainInfo, socialMedia, type,
+    } = data;
     return {
         name: mainInfo?.organization,
         type: type?.organizationType,

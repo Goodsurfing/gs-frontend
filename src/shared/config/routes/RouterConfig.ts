@@ -1,38 +1,10 @@
 import { RouteProps } from "react-router-dom";
+import { AppRoutes } from "./AppRoutes";
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
     element: JSX.Element;
 };
-
-export enum AppRoutes {
-    MAIN = "main",
-    SIGN_UP = "sign_up",
-    SIGN_IN = "sign_in",
-    RESET_PASSWORD = "reset_password",
-    RESET_PASSWORD_VERIFY = "reset_password_verify",
-    CONFIRM_EMAIL = "confirm_email",
-    CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
-    PROFILE_INFO = "profile_info",
-    PROFILE_RESET_PASSWORD = "profile_reset_password",
-    HOST = "host",
-    HOST_DASHBOARD = "dashboard",
-    HOST_REGISTRATION = "offers_registration",
-    HOST_GALLERY = "host_gallery",
-    HOST_PERSONAL = "host_personal",
-    HOST_VIDEO = "host_video",
-    OFFERS = "offers",
-    MY_OFFERS = "my_offers",
-    OFFERS_WELCOME = "offers_welcome",
-    OFFERS_WHERE = "offers_where",
-    OFFERS_WHEN = "offers_when",
-    OFFERS_WHO_NEEDS = "offers_who_needs",
-    OFFERS_DESCRIPTION = "offers_description",
-    OFFERS_WHAT_TO_DO = "offers_what_to_do",
-    OFFERS_CONDITIONS = "offers_conditions",
-    OFFER_FINISHING_TOUCHES = "offers_finishing_touches",
-    NOT_FOUND = "not_found",
-}
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: "/",

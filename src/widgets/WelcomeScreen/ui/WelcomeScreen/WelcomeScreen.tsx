@@ -9,11 +9,7 @@ interface WelcomeScreenProps {
 export const WelcomeScreen = memo((props: WelcomeScreenProps) => {
     const { className, hostId } = props;
 
-
-
     return (
-        <div className={cn(className, styles.wrapper)}>
-            
-        </div>
+        <div className={cn(className, styles.wrapper)} />
     );
 });

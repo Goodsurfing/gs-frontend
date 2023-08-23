@@ -8,7 +8,9 @@ interface SelectComponentProps extends SelectProps {
 }
 
 export const SelectComponent = (props: SelectComponentProps) => {
-    const { children, label, className, id, ...restSelectProps } = props;
+    const {
+        children, label, className, id, ...restSelectProps
+    } = props;
     return (
         <div className={styles.wrapper}>
             {label && (
