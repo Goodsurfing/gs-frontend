@@ -26,13 +26,13 @@ export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
                 disabled={isLocked}
                 label="Имя"
                 control={control}
-                name="about."
+                name="about.firstName"
             />
             <InputControl
                 disabled={isLocked}
                 label="Фамилия"
                 control={control}
-                name=""
+                name="name.lastName"
             />
         </div>
     );
