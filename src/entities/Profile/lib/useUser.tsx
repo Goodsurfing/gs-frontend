@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+
 import { useAppSelector } from "@/shared/hooks/redux";
+
 import { profileApi } from "../api/profileApi";
-import { getProfileData } from "../model/selectors/profileSelectors/profileSelectors";
+import { getProfileData } from "../model/selectors/profileSelectors";
 import { Profile } from "../model/types/profile";
 
 export function useUser() {

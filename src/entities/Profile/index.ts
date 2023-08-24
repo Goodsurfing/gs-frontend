@@ -2,7 +2,7 @@ export {
     getProfileData,
     getProfileForm,
     getProfileReadonly,
-} from "./model/selectors/profileSelectors/profileSelectors";
+} from "./model/selectors/profileSelectors";
 export {
     profileActions,
     profileReducer,
@@ -13,6 +13,7 @@ export {
 
 export type {
     Profile,
+    Gender,
 } from "./model/types/profile";
 
 export { useUser } from "./lib/useUser";

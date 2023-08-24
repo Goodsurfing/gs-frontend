@@ -46,7 +46,6 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         const preparedData = hostDescriptionApiAdapter(data);
-        console.log(preparedData);
         if (!host) {
             const createHostResponse = await createHost(preparedData).unwrap();
             if (createHostResponse.id) {

@@ -1,6 +1,6 @@
 import { Host } from "@/entities/Host";
 
-type Gender = "male" | "female";
+export type Gender = "male" | "female" | "other";
 
 export interface Profile {
     id: string;
