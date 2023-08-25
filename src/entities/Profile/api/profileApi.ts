@@ -16,7 +16,7 @@ export const profileApi = createApi({
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "/profile",
+                url: "/user/profile/",
                 method: "PUT",
                 body: profileData,
             }),

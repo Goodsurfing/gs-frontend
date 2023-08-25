@@ -1,0 +1,29 @@
+.text {
+    color: var(--text-caption);
+    font: var(--font-secondary);
+}
+
+.wrapper {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 19% 48% 27%;
+    width: 50%;
+    gap: 14px;
+}
+
+.dayDropdown {
+    width: 100%;
+}
+
+.mounthDropdown {
+    width: 100%;
+}
+
+.yearDropdown {
+    width: 100%;
+}

@@ -37,3 +37,7 @@
     font: var(--font-secondary);
     color: var(--text-caption);
 }
+
+.disabled {
+    background-color: var(--color-disabled);
+}

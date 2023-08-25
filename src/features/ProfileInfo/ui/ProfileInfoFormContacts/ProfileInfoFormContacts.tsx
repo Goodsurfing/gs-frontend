@@ -20,8 +20,8 @@ export const ProfileInfoFormContacts = memo((props: ProfileInfoFormContactsProps
     const isLocked = useAppSelector(getProfileReadonly);
     return (
         <div className={cn(className, styles.wrapper)}>
-            <InputControl disabled={isLocked} control={control} name="" label="E-mail" />
-            <InputControl disabled={isLocked} control={control} name="" label="Телефон" />
+            <InputControl disabled={isLocked} control={control} name="contacts.email" label="E-mail" />
+            <InputControl disabled={isLocked} control={control} name="contacts.profile" label="Телефон" />
         </div>
     );
 });

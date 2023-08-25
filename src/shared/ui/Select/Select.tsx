@@ -9,7 +9,7 @@ interface SelectComponentProps extends SelectProps {
 
 export const SelectComponent = (props: SelectComponentProps) => {
     const {
-        children, label, className, id, ...restSelectProps
+        children, label, className, id, disabled, ...restSelectProps
     } = props;
     return (
         <div className={styles.wrapper}>
@@ -23,7 +23,8 @@ export const SelectComponent = (props: SelectComponentProps) => {
                     nativeInput: styles.input,
                     select: styles.select,
                 }}
-                className={cn(className, styles.select)}
+                disabled={disabled}
+                className={cn(className, styles.select, { [styles.disabled]: disabled })}
                 {...restSelectProps}
             >
                 {children}

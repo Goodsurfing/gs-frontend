@@ -17,11 +17,11 @@ export type ProfileGender = Gender;
 export interface ProfileLocale {
     country?: string;
     city?: string;
-    language: Locale;
+    language?: Locale;
 }
 
 export interface ProfileContacts {
-    email: string;
+    email?: string;
     phone?: number;
 }
 
@@ -36,11 +36,11 @@ export interface ProfileSocial {
 
 export interface ProfileInfoFields {
     about: ProfileAbout;
-    birthDate: ProfileDateOfBirth;
+    birthDate?: ProfileDateOfBirth;
     gender?: ProfileGender;
     locale: ProfileLocale;
     contacts: ProfileContacts;
-    aboutMe: ProfileAboutMe;
+    aboutMe?: ProfileAboutMe;
     social: ProfileSocial;
-    profileAvatar: string;
+    profileAvatar?: string;
 }

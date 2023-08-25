@@ -32,7 +32,7 @@ export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
                 disabled={isLocked}
                 label="Фамилия"
                 control={control}
-                name="name.lastName"
+                name="about.lastName"
             />
         </div>
     );

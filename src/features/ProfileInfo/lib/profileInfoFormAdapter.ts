@@ -14,6 +14,10 @@ export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields
             telegram: profileData?.telegram,
             vk: profileData?.vk,
         },
+        contacts: {
+            email: profileData?.email,
+            phone: profileData?.phone,
+        },
         gender: profileData?.gender,
         locale: {
             language: profileData?.locale as unknown as Locale, // backend issue. todo

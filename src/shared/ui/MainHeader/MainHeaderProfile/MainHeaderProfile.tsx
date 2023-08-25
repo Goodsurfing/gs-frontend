@@ -20,6 +20,7 @@ import {
 } from "@/shared/config/routes/AppUrls";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { profileApi } from "@/entities/Profile";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const MainHeaderProfile = () => {
 
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
+    const { data: userInfo } = profileApi.useGetProfileInfoQuery();
 
     const dispatch = useAppDispatch();
 
@@ -45,12 +46,6 @@ const MainHeaderProfile = () => {
         }
     }, []);
 
-    let username: string = userInfo ? userInfo.firstName : "Анон";
-
-    if (username === null) {
-        username = "Анон";
-    }
-
     const handleProfileOpen = useCallback(() => {
         setProfileOpened(!isProfileOpened);
     }, [isProfileOpened]);
@@ -62,7 +57,7 @@ const MainHeaderProfile = () => {
             onKeyDown={handleCloseDropdown}
             className={styles.info}
         >
-            <p className={styles.name}>{username}</p>
+            <p className={styles.name}>{userInfo?.firstName || "Анон"}</p>
             <img
                 src={defaultAvatarImage}
                 alt="NAME"
