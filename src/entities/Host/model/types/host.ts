@@ -1,4 +1,5 @@
 export interface Host {
+    id: string;
     name: string;
     address: string;
     type: string;

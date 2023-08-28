@@ -31,3 +31,9 @@ export const profileApi = createApi({
         }),
     }),
 });
+
+export const {
+    useGetProfileInfoQuery,
+    useJoinToHostMutation,
+    useUpdateProfileInfoMutation,
+} = profileApi;

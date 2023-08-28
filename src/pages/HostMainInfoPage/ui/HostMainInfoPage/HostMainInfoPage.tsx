@@ -14,6 +14,7 @@ const HostMainInfoPage: FC = () => {
 
     return (
         <div className={styles.wrapper}>
+            <h2 className={styles.title}>Основная информация</h2>
             <HostDescriptionForm
                 className={styles.className}
                 host={profile?.organizations?.[0]}

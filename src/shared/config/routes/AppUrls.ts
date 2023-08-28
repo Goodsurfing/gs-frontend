@@ -34,7 +34,7 @@ export const getHostDashboardPageUrl: RoutePathFunction = (locale) => `/${locale
 
 export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_personal}`;
 
-export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.my_offers}}`;
+export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.my_offers}`;
 
 // Host / organization pages
 

@@ -4,7 +4,6 @@ import { Host } from "../model/types/host";
 
 interface UpdateHostParams {
     body: Partial<Host>;
-    uuid: string;
 }
 
 interface CreateHostResponse {
@@ -45,11 +44,19 @@ export const hostApi = createApi({
             invalidatesTags: ["host"],
         }),
         updateHost: build.mutation<unknown, UpdateHostParams>({
-            query: ({ uuid, body }) => ({
-                url: `/organization/${uuid}`,
-                body,
+            query: (data) => ({
+                url: `/organization/${data.body.id}`,
+                method: "PUT",
+                body: data.body,
             }),
             invalidatesTags: ["host"],
         }),
     }),
 });
+
+export const {
+    useCreateHostMutation,
+    useGetHostByIdQuery,
+    useGetHostsQuery,
+    useUpdateHostMutation,
+} = hostApi;

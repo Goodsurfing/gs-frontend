@@ -32,6 +32,7 @@ import {
     getHostGalleryPageUrl,
     getHostRegistrationUrl,
     getHostVideoPageUrl,
+    getHostPersonalPageUrl,
     getMainPageUrl,
     getOffersDescriptionPageUrl,
     getOffersPageUrl,
@@ -55,6 +56,7 @@ import {
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -201,6 +203,13 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getOffersFinishingTouchesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "host-personal",
+        element: (
+            <HostPersonalPage />
+        ),
+        path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
         label: "reset-password",

@@ -1,22 +1,26 @@
 import { memo, useEffect } from "react";
-
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import cn from "classnames";
 
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import Button from "@/shared/ui/Button/Button";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import {
+    Host,
+    useUpdateHostMutation,
+    useCreateHostMutation,
+} from "@/entities/Host";
+
+import { useJoinToHostMutation } from "@/entities/Profile";
 
 import type { HostDescriptionFormFields } from "../../model/types/hostDescription";
-
-import { HostDescriptionFormContent } from "../HostDescriptionFormContent/HostDescriptionFormContent";
-
-import styles from "./HostDescriptionForm.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { Host, hostApi } from "@/entities/Host";
 import {
     hostDescriptionFormAdapter,
     hostDescriptionApiAdapter,
 } from "../../lib/hostDescriptionAdapter";
-import Button from "@/shared/ui/Button/Button";
-import { profileApi } from "@/entities/Profile";
+import { HostDescriptionFormContent } from "../HostDescriptionFormContent/HostDescriptionFormContent";
+
+import styles from "./HostDescriptionForm.module.scss";
 
 interface HostDescriptionFormProps {
     className?: string;
@@ -32,17 +36,19 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const [createHost, {
         isLoading: isCreateHostLoading,
         error: createHostError,
-    }] = hostApi.useCreateHostMutation();
+    }] = useCreateHostMutation();
 
     const [joinToOrganization, {
         isLoading: isJoinLoading,
         error: joinError,
-    }] = profileApi.useJoinToHostMutation();
+    }] = useJoinToHostMutation();
 
     const [updateHost, {
         isLoading: isHostUpdateLoading,
         error: hostUpdateError,
-    }] = hostApi.useUpdateHostMutation();
+    }] = useUpdateHostMutation();
+
+    console.log(host);
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         const preparedData = hostDescriptionApiAdapter(data);
@@ -52,6 +58,9 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 const res = await joinToOrganization(createHostResponse.id);
                 console.log(res);
             }
+        }
+        if (host) {
+            updateHost({ body: { ...preparedData, id: host.id } });
         }
     };
 
