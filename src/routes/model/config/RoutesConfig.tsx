@@ -205,7 +205,7 @@ const publicRoutes: RouteType[] = [
         ],
     },
     {
-        label: "host-personal",
+        label: "offer-personal",
         element: (
             <OfferPersonalPage />
         ),

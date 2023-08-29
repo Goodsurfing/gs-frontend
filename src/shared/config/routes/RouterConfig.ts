@@ -15,7 +15,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.PROFILE_INFO]: "/profile",
     [AppRoutes.PROFILE_RESET_PASSWORD]: "/profile/reset-password",
     [AppRoutes.HOST]: "/host",
-    [AppRoutes.HOST_PERSONAL]: "/host/host-personal",
+    [AppRoutes.OFFER_PERSONAL]: "/offer-personal", // :id
     [AppRoutes.HOST_DASHBOARD]: "/host/host-dashboard",
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",

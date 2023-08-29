@@ -8,7 +8,7 @@ import thirdImg from "@/shared/assets/icons/hostPersonal/third-img.svg";
 import fourthImg from "@/shared/assets/icons/hostPersonal/fourth-img.svg";
 import dots from "@/shared/assets/icons/hostPersonal/dots.svg";
 
-import styles from "./HostPersonalCardImageBlock.module.scss";
+import styles from "./OfferPersonalCardImageBlock.module.scss";
 
 interface OfferPersonalCardImageBlockProps {
     className?: string;
