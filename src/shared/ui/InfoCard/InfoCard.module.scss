@@ -2,5 +2,23 @@
     background-color: var(--text-caption);
     border-radius: 10px;
     display: flex;
+    padding: 16px 30px;
     gap: 30px;
+}
+
+.infoCardItem {
+    font: var(--font-label);
+    color: var(--text-secondary-2);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title {
+    font: var(--font-caption);
+    color: var(--text-caption);
+}
+
+.text {
+    font: var(--font);
 }

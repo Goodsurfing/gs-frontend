@@ -1,10 +1,11 @@
-import { memo } from 'react';
+import { memo } from "react";
 
-import cn from 'classnames';
+import cn from "classnames";
 
-import { Offer } from '../../model/types/offer';
+import { Offer } from "../../model/types/offer";
 
-import styles from './OfferInfoCard.module.scss';
+import styles from "./OfferInfoCard.module.scss";
+import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -12,9 +13,10 @@ interface HostInfoCardProps {
 }
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
-    const { className } = props;
+    const { className, offer } = props;
     return (
-       <div className={cn(className, styles.wrapper)}>
-       </div>
+        <div className={cn(className, styles.wrapper)}>
+            <OfferWhenCard offerWhen={offer.when} />
+        </div>
     );
 });
