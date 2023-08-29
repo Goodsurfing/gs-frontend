@@ -11,18 +11,17 @@ import dots from "@/shared/assets/icons/hostPersonal/dots.svg";
 import styles from "./HostPersonalCardImageBlock.module.scss";
 
 interface HostPersonalCardImageBlockProps {
-    className?: string
+    className?: string;
+    onImagesClick: () => void;
 }
 
 export const HostPersonalCardImageBlock = memo((props: HostPersonalCardImageBlockProps) => {
-    const { className } = props;
+    const { className, onImagesClick } = props;
     return (
-        <div className={cn(className, styles.wrapper)}>
-            <div className={styles.imageBlock}>
-                <div className={styles.overlay}>
-                    <img src={dots} alt="show more" />
-                    <span className={styles.dotsText}>Все фотографии</span>
-                </div>
+        <div onClick={onImagesClick} className={cn(className, styles.wrapper)}>
+            <div className={styles.overlay}>
+                <img className={styles.dots} src={dots} alt="show more" />
+                <span className={styles.dotsText}>Все фотографии</span>
             </div>
             <img className={styles.imageItem} src={firstImg} alt="first" />
             <img className={styles.imageItem} src={secondImg} alt="second" />

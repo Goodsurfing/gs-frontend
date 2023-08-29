@@ -11,9 +11,11 @@ export const HostPersonalPage = () => {
     const { t } = useTranslation();
     return (
         <div className={styles.wrapper}>
-            <HostPersonalCard />
-            <Submenu className={styles.navMenu} items={SubmenuItems} />
-            <Footer />
+            <div className={styles.content}>
+                <HostPersonalCard />
+            </div>
+            {/* <Submenu className={styles.navMenu} items={SubmenuItems} /> */}
+            {/* <Footer /> */}
         </div>
     );
 };

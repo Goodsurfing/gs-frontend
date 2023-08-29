@@ -1,8 +1,12 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .content {
-    padding: 36px 50px 36px 180px;
+    padding: 36px 50px 180px 36px;
+    height: 1000px;
+    display: flex;
+    justify-content: center;
 }
