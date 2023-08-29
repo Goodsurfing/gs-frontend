@@ -32,8 +32,6 @@ export const getHostPageUrl: RoutePathFunction = (locale) => `/${locale}${RouteP
 
 export const getHostDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.dashboard}`;
 
-export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_personal}`;
-
 export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.my_offers}`;
 
 // Host / organization pages
@@ -63,3 +61,5 @@ export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${local
 export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_conditions}`;
 
 export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}`;
+
+export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offer_personal}/:id`;

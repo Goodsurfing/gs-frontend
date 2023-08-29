@@ -2,13 +2,13 @@ import { memo } from "react";
 
 import cn from "classnames";
 
-import styles from "./HostPersonalCardCategory.module.scss";
+import styles from "./OfferPersonalCardCategory.module.scss";
 
-interface HostPersonalCardCategoryProps {
+interface OfferPersonalCardCategoryProps {
     className?: string
 }
 
-export const HostPersonalCardCategory = memo((props: HostPersonalCardCategoryProps) => {
+export const OfferPersonalCardCategory = memo((props: OfferPersonalCardCategoryProps) => {
     const { className } = props;
     return (
         <div className={cn(className, styles.category)}>

@@ -48,3 +48,5 @@ export type {
     ExtraConditions,
     OfferFinishingTouches,
 } from "./model/types/offerFinishingTouches";
+
+export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";

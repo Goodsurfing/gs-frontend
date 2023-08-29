@@ -10,12 +10,12 @@ import dots from "@/shared/assets/icons/hostPersonal/dots.svg";
 
 import styles from "./HostPersonalCardImageBlock.module.scss";
 
-interface HostPersonalCardImageBlockProps {
+interface OfferPersonalCardImageBlockProps {
     className?: string;
     onImagesClick: () => void;
 }
 
-export const HostPersonalCardImageBlock = memo((props: HostPersonalCardImageBlockProps) => {
+export const OfferPersonalCardImageBlock = memo((props: OfferPersonalCardImageBlockProps) => {
     const { className, onImagesClick } = props;
     return (
         <div onClick={onImagesClick} className={cn(className, styles.wrapper)}>

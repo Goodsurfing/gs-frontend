@@ -5,8 +5,14 @@
 }
 
 .content {
-    padding: 36px 50px 180px 36px;
-    height: 1000px;
+    padding: 36px 50px 0 36px;
+    min-height: 500px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+}
+
+.navMenu {
+    margin-top: 55px;
 }

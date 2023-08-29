@@ -21,6 +21,7 @@ import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
+import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
@@ -32,8 +33,8 @@ import {
     getHostGalleryPageUrl,
     getHostRegistrationUrl,
     getHostVideoPageUrl,
-    getHostPersonalPageUrl,
     getMainPageUrl,
+    getOfferPersonalPageUrl,
     getOffersDescriptionPageUrl,
     getOffersPageUrl,
     getOffersWelcomePageUrl,
@@ -56,7 +57,6 @@ import {
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
-import { HostPersonalPage } from "@/pages/HostPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -207,9 +207,9 @@ const publicRoutes: RouteType[] = [
     {
         label: "host-personal",
         element: (
-            <HostPersonalPage />
+            <OfferPersonalPage />
         ),
-        path: (locale: string) => getHostPersonalPageUrl(locale),
+        path: (locale: string) => getOfferPersonalPageUrl(locale),
     },
     {
         label: "reset-password",

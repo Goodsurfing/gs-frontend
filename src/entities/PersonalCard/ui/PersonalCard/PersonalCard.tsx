@@ -31,7 +31,16 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
     } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
-            <img className={styles.backgroundImage} src={image} alt={title} />
+            <div
+                className={styles.backgroundImage}
+                style={{
+                    background: `
+                    linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%,
+                    rgba(0, 0, 0, 0.50) 100%),
+                    lightgray 50% / cover no-repeat
+                    url(${image})`,
+                }}
+            />
             <div className={styles.content}>
                 <div className={styles.left}>
                     <div className={styles.topPart}>
@@ -51,7 +60,8 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                 </div>
                 <div className={styles.right}>
                     <div className={styles.medals}>
-                        {medals}MEDALS
+                        {medals}
+                        MEDALS
                     </div>
                     <Button size="SMALL" variant="FILL" color="BLUE">
                         Редактировать
