@@ -1,3 +1,29 @@
+// .btn {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 14px 20px;
+//     gap: 8px;
+
+//     white-space: nowrap;
+
+//     background-color: var(--color-gray-light);
+//     color: var(--white-theme-color);
+    
+//     border: 1px solid var(--white-theme-color);
+//     border-radius: 10px;
+
+//     font-family: 'Lato';
+//     font-style: normal;
+//     font-weight: 400;
+//     font-size: .875rem;
+
+//     text-align: center;
+//     line-height: normal;
+
+//     cursor: pointer;
+// }
+
 .btn {
     display: flex;
     justify-content: center;
@@ -7,10 +33,10 @@
 
     white-space: nowrap;
 
-    background-color: var(--color-gray-light);
-    color: var(--white-theme-color);
+    background-color: var(--color-blue);
+    color: var(--color-white);
     
-    border: 1px solid var(--white-theme-color);
+    border: none;
     border-radius: 10px;
 
     font-family: 'Lato';

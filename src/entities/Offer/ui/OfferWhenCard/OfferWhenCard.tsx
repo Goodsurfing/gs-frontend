@@ -6,7 +6,7 @@ import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { OfferWhen } from "../../model/types/offerWhen";
 
-import styles from "./OfferWhen.module.scss";
+// import styles from "./OfferWhen.module.scss";
 
 interface OfferWhenProps {
     className?: string;

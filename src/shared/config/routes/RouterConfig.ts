@@ -20,6 +20,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_VIDEO]: "/host/video",
+    [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",
     [AppRoutes.OFFERS]: "/offers",
     [AppRoutes.OFFERS_WELCOME]: "/offers/welcome",

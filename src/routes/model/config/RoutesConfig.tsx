@@ -53,10 +53,12 @@ import {
     getOffersFinishingTouchesPageUrl,
     getMyOffersPageUrl,
     getHostPageUrl,
+    getHostTeamPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
+import { HostTeamPage } from "@/pages/HostTeamPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -136,6 +138,13 @@ const publicRoutes: RouteType[] = [
                     <HostVideoPage />
                 ),
                 path: (locale) => getHostVideoPageUrl(locale),
+            },
+            {
+                label: "host-team",
+                element: (
+                    <HostTeamPage />
+                ),
+                path: (locale) => getHostTeamPageUrl(locale),
             },
         ],
     },
