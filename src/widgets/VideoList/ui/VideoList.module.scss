@@ -1,6 +1,15 @@
 .wrapper {
     width: 100%;
+    min-height: 200px;
     display: flex;
     column-gap: 20px;
     flex-wrap: wrap;
+    
+}
+
+.listEmpty{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
