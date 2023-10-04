@@ -6,7 +6,7 @@ import { VideoListProps } from "@/widgets/VideoList";
 
 export const VideoList:React.FC<VideoListProps> = ({ videosURL }) => {
     const renderVideoList = (videos:string[]) => videos.map((videoURL:string) => <ReactPlayer width="400px" url={videoURL} />);
-    
+
     return (
         <div className={styles.wrapper}>
             {videosURL.length ? renderVideoList(videosURL)
