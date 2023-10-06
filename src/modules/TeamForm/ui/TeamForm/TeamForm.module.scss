@@ -1,4 +1,12 @@
+.containerList {
+    display: flex;
+    column-gap: 30px;
+    row-gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
 .btn {
     margin-top: 60px;
     padding: 12px 100px;
-  }
+}
