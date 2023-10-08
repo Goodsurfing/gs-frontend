@@ -1,27 +1,30 @@
-import React, { useState } from "react";
-
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactPlayer from "react-player";
+
+import { VideoList } from "@/widgets/VideoList/ui/VideoList";
+
 import Button from "@/shared/ui/Button/Button";
 
+import { VideoFormImplementation } from "../../model/types/videoForm";
 import { Text } from "../Text/Text";
 import { VideoInput } from "../VideoInput/VideoInput";
-
 import styles from "./VideoForm.module.scss";
-import { VideoList } from "@/widgets/VideoList/ui/VideoList";
-import { IForm } from "../../model/types/videoForm";
 
 export const VideoForm = () => {
-    const { control, handleSubmit, reset } = useForm<IForm>();
+    const { control, handleSubmit, reset } = useForm<VideoFormImplementation>();
     const [videos, setVideos] = useState<string[]>([]);
 
-    const addVideo = (newVideo: IForm) => {
-        // If ReactPlayer can`t play the video from url then do nothing
-        if (!ReactPlayer.canPlay(newVideo.video)) return;
+    const addVideo = useCallback(
+        (newVideo: VideoFormImplementation) => {
+            // If ReactPlayer can`t play the video from url then do nothing
+            if (!ReactPlayer.canPlay(newVideo.video)) return;
 
-        setVideos((prev) => [...prev, newVideo.video]);
-        reset();
-    };
+            setVideos((prev) => [...prev, newVideo.video]);
+            reset();
+        },
+        [setVideos, reset]
+    );
 
     return (
         <div className={styles.wrapper}>

@@ -1,3 +1,3 @@
-export interface IForm {
-    video:string;
+export interface VideoFormImplementation {
+    video: string;
 }
