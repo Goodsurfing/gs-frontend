@@ -3,6 +3,7 @@ import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
+import { HostReviewPage } from "@/pages/HostReviewPage";
 
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
@@ -48,6 +49,7 @@ import {
     getSignUpPageUrl,
     getHostDashboardPageUrl,
     getOffersFinishingTouchesPageUrl,
+    getHostReviewPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteWithChildrenProps } from "../types/langRouter";
@@ -95,6 +97,12 @@ const publicRoutes: RouteWithChildrenProps[] = [
             <HostGalleryPage />
         ),
         path: (locale: string) => getHostGalleryPageUrl(locale),
+    },
+    {
+        element: (
+            <HostReviewPage />
+        ),
+        path: (locale: string) => getHostReviewPageUrl(locale),
     },
     {
         element: (
