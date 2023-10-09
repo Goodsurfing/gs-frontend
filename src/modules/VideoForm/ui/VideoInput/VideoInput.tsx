@@ -6,10 +6,10 @@ import {
 import Input from "@/shared/ui/Input/Input";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import styles from "./VideoInput.module.scss";
-import { IForm } from "../../model/types/videoForm";
+import { VideoFormImplementation } from "../../model/types/videoForm";
 
 export interface VideoInputProps {
-    control: Control<IForm>;
+    control: Control<VideoFormImplementation>;
     addVideo: () => void;
 }
 
