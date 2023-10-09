@@ -1,7 +1,8 @@
 .wrapper {
     position: relative;
-    max-width: 280px;
-    min-height: 35px;
+    overflow: hidden;
+    width: 100%;
+    min-height: 50px;
     display: flex;
     column-gap: 5px;
     padding: 14px;
@@ -24,8 +25,10 @@
 .avatar {
     border-radius: 50%;
     width: 55px;
+    max-height: 55px;
     object-fit: cover;
     object-position: center center;
+    flex-shrink: 0;
 }
 
 .avatarNoImg {
@@ -39,12 +42,14 @@
     color: var(--bg-primary-1);
     font-weight: 600;
     font-size: 18px;
+    flex-shrink: 0;
 }
 
 .userInfo {
     display: flex;
     flex-direction: column;
     row-gap: 8px;
+    flex-wrap: wrap;
 }
 
 .role {

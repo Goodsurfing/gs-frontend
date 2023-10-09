@@ -13,7 +13,7 @@ import styles from "./TeamForm.module.scss";
 export const TeamForm = () => {
     const { control } = useForm({ mode: "onChange" });
 
-    //fake data for test
+    // fake data for test
     const [teamUsers, setTeamUsers] = useState<TeamUser[]>([
         {
             id: 1,
@@ -45,12 +45,29 @@ export const TeamForm = () => {
             country: "Россия",
             role: "Участник",
         },
+        {
+            id: 4,
+            name: "Владислав",
+            surname: "Краснопольский",
+            avatar: defaultAvatarImage,
+            email: "example@gmail.com",
+            city: "Казань",
+            country: "Россия",
+            role: "Организатор",
+        },
+        {
+            id: 5,
+            name: "Владислав",
+            surname: "Краснопольский",
+            avatar: defaultAvatarImage,
+            email: "example@gmail.com",
+            city: "Казань",
+            country: "Россия",
+            role: "Организатор",
+        },
     ]);
 
-    const renderTeamUsers = (teamUsers: TeamUser[]) =>
-        teamUsers.map((teamUser) => {
-            return <TeamCard key={teamUser.id} teamUser={teamUser} />;
-        });
+    const renderTeamUsers = (teamUsers: TeamUser[]) => teamUsers.map((teamUser) => <TeamCard key={teamUser.id} teamUser={teamUser} />);
 
     return (
         <div className={styles.wrapper}>
@@ -64,6 +81,7 @@ export const TeamForm = () => {
                         <TeamInput
                             inputValue={field.value}
                             onInputChange={field.onChange}
+                            teamUsers={teamUsers}
                         />
                     );
                 }}

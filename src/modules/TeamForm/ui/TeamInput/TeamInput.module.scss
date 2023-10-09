@@ -1,4 +1,4 @@
-.text {
+  .text {
     font-size: 14px;
     color: var(--white-theme-color);
   }
@@ -6,4 +6,59 @@
   .contentWrapper {
     display: flex;
     gap: 20px;
+  }
+
+  .dropdown{
+    position: absolute;
+    top:100%;
+    z-index: 10;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    width: 100%;
+    max-height: 220px;
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: var(--color-white);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      border-radius: var(--radius);
+      background-color: var(--color-blue);
+    }
+
+    &:empty{
+      border: none;
+    }
+  }
+
+  .input{
+    border-bottom-left-radius: 0.625rem;
+    border-bottom-right-radius: 0.625rem;
+  }
+
+  .dropdown:empty ~ .input {
+    border-radius: 0px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  .wrapperCard{
+    cursor: pointer;
+  }
+  
+  .inputContainer{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }

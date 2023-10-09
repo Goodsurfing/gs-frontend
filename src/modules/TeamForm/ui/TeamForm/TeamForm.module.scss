@@ -1,8 +1,8 @@
 .containerList {
-    display: flex;
-    column-gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     row-gap: 15px;
-    flex-wrap: wrap;
+    column-gap: 45px;
     margin-top: 40px;
 }
 
