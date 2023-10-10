@@ -18,7 +18,6 @@ export const Title = () => (
                 }}
             />
             <span className={styles.ratingNum}>4.4</span>
-
         </div>
     </div>
 );
