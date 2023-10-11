@@ -28,6 +28,29 @@
     }
 }
 
+.middle{
+    display: flex;
+    column-gap: 24px;
+}
+
+.btnOffers {
+    background-color: var(--text-primary-1);
+    border-radius: 10px;
+    font-size: 16px;
+    color: var();
+    box-sizing: border-box;
+    padding: 9px 20px;
+
+    &:hover{
+        background-color: rgb(102, 191, 255);
+    }
+}
+
+.searchIcn{
+    margin-left: 12px;
+    font-size: 16px;
+}
+
 .right {
     display: flex;
     align-items: center;

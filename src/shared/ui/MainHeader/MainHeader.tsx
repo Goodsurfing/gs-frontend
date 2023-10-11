@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 
+import IconButton from "@mui/material/IconButton";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import MobileHeader from "@/components/MobileHeader/MobileHeader";
@@ -8,10 +9,12 @@ import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 
-import styles from "./MainHeader.module.scss";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import searchIcn from "@/shared/assets/icons/search-icon.svg";
+
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
@@ -23,6 +26,14 @@ const MainHeader: FC = () => {
                         <img src={logotypeIcon} alt="GoodSurfing" />
                     </LocaleLink>
                     <ChangeLanguage />
+                </div>
+                <div className={styles.middle}>
+                    <IconButton className={styles.btnOffers}>
+                        Все вакансии
+                        <img className={styles.searchIcn} src={searchIcn} alt="SEARCHICN" />
+                    </IconButton>
+                    <div>Сообщество</div>
+                    <div>О проекте</div>
                 </div>
                 <div className={styles.right}>
                     <div className={styles.icons}>
