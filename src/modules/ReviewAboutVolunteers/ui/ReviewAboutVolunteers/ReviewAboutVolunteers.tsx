@@ -5,11 +5,12 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
 import { ReviewFullCard } from "../ReviewFullCard/ReviewFullCard";
 import { ReviewMiniCard } from "../ReviewMiniCard/ReviewMiniCard";
-import styles from "./ReviewAboutVolunteers.module.scss";
 import {
     userCardFullInfo,
     userCardInfo,
 } from "./model/types/reviewAboutVolunteers";
+
+import styles from "./ReviewAboutVolunteers.module.scss";
 
 export const ReviewAboutVolunteers: FC = () => {
     const [fakeData] = useState<userCardInfo[]>([
@@ -105,15 +106,21 @@ export const ReviewAboutVolunteers: FC = () => {
     ]);
     return (
         <div className={styles.wrapper}>
-            <h4>Отзывы про волонтёров</h4>
-            <p>Волонтёры, которых вы недавно принимали</p>
+            <h3 className={styles.h3}>Отзывы про волонтёров</h3>
+            <p className={styles.description}>Волонтёры, которых вы недавно принимали</p>
             <VerticalSlider
+                className={styles.slider}
                 data={fakeData}
                 renderItem={(item: userCardInfo) => (
                     <ReviewMiniCard data={item} />
                 )}
             />
-            <ReviewFullCard data={fakeUserData[0]} />
+            <div className={styles.fullCardContainer}>
+                <ReviewFullCard data={fakeUserData[0]} />
+                <ReviewFullCard data={fakeUserData[0]} />
+                <ReviewFullCard data={fakeUserData[0]} />
+
+            </div>
         </div>
     );
 };
