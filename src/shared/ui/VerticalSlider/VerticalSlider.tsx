@@ -5,7 +5,7 @@ import { Swiper, SwiperRef, SwiperSlide, useSwiper } from "swiper/react";
 import sliderArrow from "@/shared/assets/icons/slider-arrow.svg";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
-import styles from "./VerticalSlide.module.scss";
+import styles from "./VerticalSlider.module.scss";
 
 interface VerticalMultiplySliderProps<T> {
     data: T[];
