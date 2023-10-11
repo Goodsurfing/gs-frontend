@@ -7,11 +7,13 @@ import { userCardFullInfo } from "../ReviewAboutVolunteers/model/types/reviewAbo
 import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
-    data: userCardFullInfo;
+    review: userCardFullInfo;
 }
 
-export const ReviewFullCard: FC<ReviewFullCardProps> = ({ data }) => {
-    const { avatar, city, country, name, surname, textReview } = data;
+export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {
+    const {
+        avatar, city, country, name, surname, textReview,
+    } = review;
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
@@ -23,10 +25,14 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = ({ data }) => {
                     />
                     <div className={styles.userInfoContainer}>
                         <span className={styles.name}>
-                            {name} {surname}
+                            {name}
+                            {" "}
+                            {surname}
                         </span>
                         <span className={styles.address}>
-                            {country} {city}
+                            {country}
+                            {" "}
+                            {city}
                         </span>
                     </div>
                 </div>

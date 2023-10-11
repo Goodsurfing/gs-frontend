@@ -1,5 +1,4 @@
 import React, { FC, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
@@ -104,6 +103,9 @@ export const ReviewAboutVolunteers: FC = () => {
                 "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
         },
     ]);
+
+    const renderFullCards = (reviews:userCardFullInfo[]) => reviews.map((review) => <ReviewFullCard review={review} />);
+
     return (
         <div className={styles.wrapper}>
             <h3 className={styles.h3}>Отзывы про волонтёров</h3>
@@ -116,10 +118,7 @@ export const ReviewAboutVolunteers: FC = () => {
                 )}
             />
             <div className={styles.fullCardContainer}>
-                <ReviewFullCard data={fakeUserData[0]} />
-                <ReviewFullCard data={fakeUserData[0]} />
-                <ReviewFullCard data={fakeUserData[0]} />
-
+                {renderFullCards(fakeUserData)}
             </div>
         </div>
     );

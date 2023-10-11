@@ -1,9 +1,7 @@
-.wrapper {
-    max-width: 820px;
+.wrapper{
+    border: 1px solid var(--bg-accent);
     height: 100vh;
     overflow: scroll;
-    background-color: var(--bg-primary-1);
-    border: 1px solid var(--bg-accent);
     padding: 20px;
 
     &::-webkit-scrollbar {
@@ -20,17 +18,9 @@
     }
 }
 
-.description{
-    margin-top: 30px;
-}
-
-.slider{
-    margin-top: 20px;
-}
-
-.fullCardContainer{
+.cardContainer{
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
+    row-gap: 30px;
     margin-top: 30px;
 }
