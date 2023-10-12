@@ -28,29 +28,6 @@
     }
 }
 
-.middle{
-    display: flex;
-    column-gap: 24px;
-}
-
-.btnOffers {
-    background-color: var(--text-primary-1);
-    border-radius: 10px;
-    font-size: 16px;
-    color: var();
-    box-sizing: border-box;
-    padding: 9px 20px;
-
-    &:hover{
-        background-color: rgb(102, 191, 255);
-    }
-}
-
-.searchIcn{
-    margin-left: 12px;
-    font-size: 16px;
-}
-
 .right {
     display: flex;
     align-items: center;
@@ -64,6 +41,23 @@
         a {
             margin-left: 20px;
         }
+    }
+}
+
+.membership {
+    background-color: var(--button-1);
+    color: var(--text-secondary-1);
+    padding: 5px 15px;
+    font-weight: 400;
+    font-size: 16px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: Lato;
+    text-transform: none;
+    margin-left: 24px;
+
+    &:hover {
+        background-color: #2fd8ae;
     }
 }
 

@@ -1,25 +1,52 @@
 {
-  "main": {
-    "welcome": {
-      "header": {
-        "how-it-work": "Как это работает?",
-        "community": {
-          "title": "Сообщество",
-          "blog": "Блог",
-          "video": "Видео",
-          "experts": "Эксперты",
-          "ambassadors": "Амбассадоры",
-          "courses": "Курсы",
-          "clubs": "Клубы",
-          "journal": "Журналы"
-        },
-        "sign-in": "Вход",
-        "sign-up": "Регистрация",
-        "exit": "Выход"
-      },
-      "title": "Найдите путешествие мечты",
-      "offers-btn": "Все предложения",
-      "activity-title": "Или выберите вид деятельности"
+    "main": {
+        "welcome": {
+            "header": {
+                "how-it-work": "Как это работает?",
+                "community": {
+                    "title": "Сообщество",
+                    "blog": "Блог",
+                    "video": "Видео",
+                    "experts": "Эксперты",
+                    "ambassadors": "Амбассадоры",
+                    "courses": "Курсы",
+                    "clubs": "Клубы",
+                    "journal": "Журналы"
+                },
+                "offers": {
+                    "title": "Все вакансии",
+                    "popular-places": "Популярные места",
+                    "latin-america": "Латинская Америка",
+                    "europe": "Европа",
+                    "asia": "Азия",
+                    "africa": "Африка",
+                    "france": "Франция",
+                    "germany": "Германия",
+                    "across-russia": "По России",
+                    "altai": "Алтай",
+                    "kamchatka": "Камчатка",
+                    "crimea": "Крым",
+                    "caucasus": "Кавказ",
+                    "ural": "Урал",
+                    "baikal": "Байкал",
+                    "view-all": "Посмотреть все"
+                },
+                "about-project": {
+                    "title": "О проекте",
+                    "about-npo": "О НКО",
+                    "our-team": "Наша команда",
+                    "how-it-works": "Как это работает",
+                    "rules": "Правила",
+                    "privacy-policy": "Политика конфиденциальности",
+                    "news": "Новости"
+                },
+                "sign-in": "Вход",
+                "sign-up": "Регистрация",
+                "exit": "Выход"
+            },
+            "title": "Найдите путешествие мечты",
+            "offers-btn": "Все предложения",
+            "activity-title": "Или выберите вид деятельности"
+        }
     }
-  }
 }
