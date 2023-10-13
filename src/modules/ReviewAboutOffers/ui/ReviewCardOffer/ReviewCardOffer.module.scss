@@ -19,18 +19,17 @@
     row-gap: 8px;
 }
 
-.title{
+.title {
     font-size: 18px;
     color: var(--text-secondary-2);
     font-weight: 500;
-    
 }
 .date {
     color: var(--text-caption);
     font-size: 12px;
 }
 
-.titleImg{
+.titleImg {
     display: flex;
     justify-content: space-between;
     column-gap: 5px;
@@ -54,12 +53,12 @@
     font-weight: 500;
 }
 
-.ratingUserContainer{
+.ratingUserContainer {
     display: flex;
     align-items: center;
 }
 
-.avatarInfoUser{
+.avatarInfoUser {
     display: flex;
     // justify-content: center;
     align-items: center;
@@ -76,8 +75,4 @@
 .avatar {
     max-width: 22px;
     max-height: 22px;
-}
-
-.userName{
-
 }
