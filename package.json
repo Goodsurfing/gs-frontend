@@ -4,7 +4,7 @@
     "license": "ISC",
     "author": "kuromukade",
     "scripts": {
-        "lint": "tsc --watch",
+        "lint": "yarn eslint && yarn stylelint",
         "start": "webpack serve --env port=3000",
         "start:analyze": "concurrently \"npm run start --env analyze=true\"",
         "build:prod": "webpack --env mode=production",
@@ -15,6 +15,7 @@
         "test:coverage": "jest --coverage",
         "bundle-report": "npm run build && webpack-bundle-analyzer dist/stats.json",
         "stylelint": "stylelint \"**/*.scss\" --fix",
+        "actionsLint": "concurrently \"npx eslint ./src\" \"npx stylelint ./src\"",
         "lint:ts": "npx eslint ./src --fix",
         "lint:scss": "npx stylelint ./src --fix",
         "prettier": "prettier --write \"**/*.{ts,tsx,js}\""

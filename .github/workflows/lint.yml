@@ -1,0 +1,14 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install node_modules
+        run: npm install; npm install node-sass
+      - name: eslint
+        run: npm run lint
