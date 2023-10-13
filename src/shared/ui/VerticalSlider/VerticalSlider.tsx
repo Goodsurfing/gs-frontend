@@ -1,14 +1,16 @@
+import cn from "classnames";
 import React, { ReactNode, useRef, useState } from "react";
 import SwiperCore from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import cn from "classnames";
 
 import styles from "./VerticalSlider.module.scss";
 
 interface VerticalMultiplySliderProps<T> {
     data: T[];
     renderItem: (item: T) => ReactNode;
-    className?:string;
+    className?: string;
+    classNameWrapper?: string;
+    classNameSlide?: string;
 }
 
 interface btnNavState {
@@ -17,8 +19,21 @@ interface btnNavState {
 }
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
+/**Slider for vertical scrolling of components
+ *
+ * Usage example
+ *
+ * ```tsx
+ * <VerticalSlider
+ *      data={data} //array of objects
+ *      renderItem={(item: IUserPost)=> (<UserPost item={IUserPost} />)}
+ * />
+ * ```
+ */
 export const VerticalSlider = <T,>({
     className,
+    classNameWrapper,
+    classNameSlide,
     data,
     renderItem,
 }: VerticalMultiplySliderProps<T>) => {
@@ -28,12 +43,18 @@ export const VerticalSlider = <T,>({
         canSwipeNext: true,
     });
 
-    const renderSlides = (sliderData: T[]) => sliderData.map((item, index) => <SwiperSlide key={index}>{renderItem(item)}</SwiperSlide>);
+    const renderSlides = (sliderData: T[]) =>
+        sliderData.map((item, index) => (
+            <SwiperSlide className={cn(classNameSlide)} key={index}>
+                {renderItem(item)}
+            </SwiperSlide>
+        ));
 
     return (
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.swiperWrapper}>
                 <Swiper
+                    wrapperClass={cn(classNameWrapper)}
                     style={{ height: "90%" }}
                     setWrapperSize={false}
                     onSlideChange={(swiper) => {

@@ -4,121 +4,38 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
 import { ReviewFullCard } from "../ReviewFullCard/ReviewFullCard";
 import { ReviewMiniCard } from "../ReviewMiniCard/ReviewMiniCard";
+import styles from "./ReviewAboutVolunteers.module.scss";
+import { fakeData, fakeReviewData } from "./model/slice/data";
 import {
     userCardFullInfo,
     userCardInfo,
 } from "./model/types/reviewAboutVolunteers";
 
-import styles from "./ReviewAboutVolunteers.module.scss";
-
 export const ReviewAboutVolunteers: FC = () => {
-    const [fakeData] = useState<userCardInfo[]>([
-        {
-            id: 1,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 2,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 3,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 4,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 5,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 6,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-        {
-            id: 7,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-        },
-    ]);
+    const [data] = useState<userCardInfo[]>(fakeData);
 
-    const [fakeUserData] = useState<userCardFullInfo[]>([
-        {
-            id: 1,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-            textReview:
-                "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
-        },
-        {
-            id: 2,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-            textReview:
-                "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
-        },
-        {
-            id: 3,
-            name: "Семён",
-            surname: "Володарский",
-            avatar: "",
-            city: "Москва",
-            country: "Россия",
-            textReview:
-                "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
-        },
-    ]);
+    const [reveiwData] = useState<userCardFullInfo[]>(fakeReviewData);
 
-    const renderFullCards = (reviews:userCardFullInfo[]) => reviews.map((review) => <ReviewFullCard review={review} />);
+    const renderFullCards = (reviews: userCardFullInfo[]) =>
+        reviews.map((review) => <ReviewFullCard review={review} />);
 
     return (
         <div className={styles.wrapper}>
             <h3 className={styles.h3}>Отзывы про волонтёров</h3>
-            <p className={styles.description}>Волонтёры, которых вы недавно принимали</p>
+            <p className={styles.description}>
+                Волонтёры, которых вы недавно принимали
+            </p>
             <VerticalSlider
+                classNameSlide={styles.swiperSlide}
+                classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
-                data={fakeData}
+                data={data}
                 renderItem={(item: userCardInfo) => (
                     <ReviewMiniCard data={item} />
                 )}
             />
             <div className={styles.fullCardContainer}>
-                {renderFullCards(fakeUserData)}
+                {renderFullCards(reveiwData)}
             </div>
         </div>
     );
