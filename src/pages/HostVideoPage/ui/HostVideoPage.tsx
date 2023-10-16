@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { VideoForm } from "@/modules/VideoForm";
+import { VideoForm } from "@/features/VideoForm";
 
 import styles from "./HostVideoPage.module.scss";
 

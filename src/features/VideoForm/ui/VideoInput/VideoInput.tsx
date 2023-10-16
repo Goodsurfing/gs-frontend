@@ -21,7 +21,7 @@ export const VideoInput = memo(({
         <Controller
             name="video"
             control={control}
-            rules={{ pattern: { value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i, message: "Введите корректный URL" } }}
+            rules={{ pattern: { value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.com/i, message: "Введите корректный URL" } }}
             render={({ field, fieldState }) => (
                 <div className={styles.contentWrapper}>
                     <div className={styles.inputContent}>

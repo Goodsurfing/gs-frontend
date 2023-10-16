@@ -23,7 +23,7 @@ export const VideoForm = () => {
             setVideos((prev) => [...prev, newVideo.video]);
             reset();
         },
-        [setVideos, reset]
+        [setVideos, reset],
     );
 
     return (
