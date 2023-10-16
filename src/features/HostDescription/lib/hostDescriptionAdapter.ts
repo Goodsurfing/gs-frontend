@@ -44,6 +44,7 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
 
 export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Partial<Host> => {
     const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         address, avatar, mainInfo, socialMedia, type,
     } = data;
     return {

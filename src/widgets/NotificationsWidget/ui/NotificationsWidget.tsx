@@ -2,6 +2,8 @@ import { memo } from "react";
 import cn from "classnames";
 
 import styles from "./NotificationsWidget.module.scss";
+import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
+import Button from "@/shared/ui/Button/Button";
 
 interface NotificationsWidgetProps {
     className?: string;

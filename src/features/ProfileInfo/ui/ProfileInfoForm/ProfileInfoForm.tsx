@@ -5,7 +5,9 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import Button from "@/shared/ui/Button/Button";
 
-import { Profile, getProfileReadonly, profileActions, profileApi } from "@/entities/Profile";
+import {
+    Profile, getProfileReadonly, profileActions, profileApi,
+} from "@/entities/Profile";
 
 import { ProfileInfoFormContent } from "../ProfileInfoFormContent/ProfileInfoFormContent";
 import type { ProfileInfoFields } from "../../model/types/profileInfo";
@@ -40,7 +42,6 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     };
 
     const isLocked = useAppSelector(getProfileReadonly);
-
 
     const onReadonlyChange = () => {
         dispatch(profileActions.setReadonly(!isLocked));

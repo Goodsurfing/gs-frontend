@@ -11,6 +11,7 @@ interface OfferPageContentProps {
 }
 
 export const OfferPageContent = memo((props: OfferPageContentProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { className, id } = props;
     return (
         <div className={cn(className, styles.wrapper)}>

@@ -13,6 +13,7 @@ interface OfferPersonalCardProps {
 }
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { onImagesClick, id } = props;
     return (
         <PersonalCard

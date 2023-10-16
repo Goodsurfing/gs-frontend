@@ -1,5 +1,4 @@
 import { memo } from "react";
-import cn from "classnames";
 
 import {
     HostDescriptionOrganization,
@@ -19,6 +18,7 @@ interface HostDescriptionFormContentProps {
 }
 
 export const HostDescriptionFormContent = memo((props: HostDescriptionFormContentProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { className } = props;
 
     return (

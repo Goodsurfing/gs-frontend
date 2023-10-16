@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 
 import cn from "classnames";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
-
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import { Logotype } from "@/widgets/Loogtype";
 
@@ -20,10 +18,10 @@ export const Header = memo((props: HeaderProps) => {
     const { className } = props;
 
     const { t } = useTranslation();
-    const { locale } = useLocale();
 
     const authData = useAppSelector(getUserAuthData);
 
+    // eslint-disable-next-line no-empty
     if (authData) {
 
     }

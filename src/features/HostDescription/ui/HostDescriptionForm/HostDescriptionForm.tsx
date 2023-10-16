@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useEffect } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import cn from "classnames";

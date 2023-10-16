@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 
 import { HostDescriptionForm } from "@/features/HostDescription";
 
@@ -8,8 +7,6 @@ import { useUser } from "@/entities/Profile";
 import styles from "./HostMainInfoPage.module.scss";
 
 const HostMainInfoPage: FC = () => {
-    const { t } = useTranslation();
-
     const { profile, error, isLoading } = useUser();
 
     return (

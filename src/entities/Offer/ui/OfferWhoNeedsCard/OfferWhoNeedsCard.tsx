@@ -18,7 +18,6 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
         <div className={cn(className, styles.wrapper)}>
             <Text title="Кто нужен" titleSize="h3" />
             <div className={styles.cards}>
-                
                 {whoNeeds.gender}
             </div>
         </div>

@@ -12,6 +12,7 @@ interface ProfileInfoFormAvatarProps {
 
 export const ProfileInfoFormAvatar = memo((props: ProfileInfoFormAvatarProps) => {
     const { className } = props;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isLocked = useAppSelector(getProfileReadonly);
 
     return (

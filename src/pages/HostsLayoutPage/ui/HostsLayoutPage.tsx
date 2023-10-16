@@ -12,10 +12,10 @@ import { PageLayout } from "@/widgets/PageLayout";
 import { fillSidebarData } from "../lib/fillSidebarData";
 
 export const HostsLayoutPage = () => {
-    const { profile, isLoading, error } = useUser();
+    const { profile, isLoading } = useUser();
 
     const hostSidebarContent = useCallback(() => {
-        if (!isLoading && profile?.organizations.length) {
+        if (!isLoading && profile?.organizations?.length) {
             return HostPagesSidebarData;
         }
         return fillSidebarData(HostPagesSidebarData);

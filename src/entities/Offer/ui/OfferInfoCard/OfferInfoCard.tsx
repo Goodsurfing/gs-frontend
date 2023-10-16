@@ -6,6 +6,7 @@ import { Offer } from "../../model/types/offer";
 
 import styles from "./OfferInfoCard.module.scss";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
+import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -17,7 +18,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <OfferWhenCard offerWhen={offer.when} />
-            <OfferWhoNeedsCard offerWhoNeeds={offer.whoNeeds} />
+            <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
         </div>
     );
 });

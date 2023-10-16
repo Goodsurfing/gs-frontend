@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 

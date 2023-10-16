@@ -190,6 +190,8 @@ export function isInRange(value: Date, min?: Date, max?: Date) {
     return true;
 }
 
+const validValueRegex = /^\d{2}-\d{2}-\d{4}$/;
+
 export const isValidDateString = (value: string) => {
     if (!validValueRegex.test(value)) {
         return false;
@@ -220,5 +222,3 @@ export const getDateFromInputValue = (inputValue: string) => {
 
     return dateObj;
 };
-
-const validValueRegex = /^\d{2}-\d{2}-\d{4}$/;

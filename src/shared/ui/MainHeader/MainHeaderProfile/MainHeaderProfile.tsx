@@ -6,7 +6,6 @@ import Popup from "@/components/Popup/Popup";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { userInfoApi } from "@/store/api/userInfoApi";
 import { userActions } from "@/entities/User";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
