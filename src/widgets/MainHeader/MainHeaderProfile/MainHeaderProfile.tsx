@@ -1,7 +1,7 @@
-import Popup from "@/components/Popup/Popup";
-import { userInfoApi } from "@/store/api/userInfoApi";
 import React, { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import Popup from "@/components/Popup/Popup";
+import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -16,7 +16,7 @@ import {
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import Arrow from "../../Arrow/Arrow";
+import Arrow from "@/shared/ui/Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 
 const MainHeaderProfile = () => {
@@ -42,7 +42,7 @@ const MainHeaderProfile = () => {
                 setProfileOpened((prev) => !prev);
             }
         },
-        []
+        [],
     );
 
     let username: string = userInfo ? userInfo.firstName : "Анон";

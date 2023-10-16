@@ -1,16 +1,16 @@
-import Popup from "@/components/Popup/Popup";
 import { IconButton } from "@mui/material";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import searchIcn from "@/shared/assets/icons/search-icon.svg";
+import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import Arrow from "../../Arrow/Arrow";
+import Arrow from "@/shared/ui/Arrow/Arrow";
 import styles from "./MainHeaderNav.module.scss";
 
 interface DropdownState {
@@ -29,48 +29,48 @@ export const MainHeaderNav = () => {
 
     const { t } = useTranslation();
 
-    const [dropDownOpened, setdropDownOpened] = useState<DropdownState>({
+    const [dropdownOpened, setDropdownOpened] = useState<DropdownState>({
         isCommunityOpened: false,
         isAboutProjectOpened: false,
         isOffersOpened: false,
     });
 
-    useOnClickOutside(communityRef, () =>
-        setdropDownOpened((prev) => ({ ...prev, isCommunityOpened: false }))
+    useOnClickOutside(
+        communityRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isCommunityOpened: false })),
     );
-    useOnClickOutside(aboutProjectRef, () =>
-        setdropDownOpened((prev) => ({ ...prev, isAboutProjectOpened: false }))
+    useOnClickOutside(
+        aboutProjectRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
     );
-    useOnClickOutside(offersRef, () =>
-        setdropDownOpened((prev) => ({ ...prev, isOffersOpened: false }))
+    useOnClickOutside(
+        offersRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isOffersOpened: false })),
     );
 
-    const handleOpenDropdown = useCallback(
-        (type: ButtonNav) => {
-            setdropDownOpened((prev) => {
-                switch (type) {
-                    case "COMMUNITY":
-                        return {
-                            ...prev,
-                            isCommunityOpened: !prev.isCommunityOpened,
-                        };
-                    case "ABOUT":
-                        return {
-                            ...prev,
-                            isAboutProjectOpened: !prev.isAboutProjectOpened,
-                        };
-                    case "OFFERS":
-                        return {
-                            ...prev,
-                            isOffersOpened: !prev.isOffersOpened,
-                        };
-                    default:
-                        return prev;
-                }
-            });
-        },
-        [dropDownOpened]
-    );
+    const handleOpenDropdown = (type: ButtonNav) => {
+        setDropdownOpened((prev) => {
+            switch (type) {
+                case "COMMUNITY":
+                    return {
+                        ...prev,
+                        isCommunityOpened: !prev.isCommunityOpened,
+                    };
+                case "ABOUT":
+                    return {
+                        ...prev,
+                        isAboutProjectOpened: !prev.isAboutProjectOpened,
+                    };
+                case "OFFERS":
+                    return {
+                        ...prev,
+                        isOffersOpened: !prev.isOffersOpened,
+                    };
+                default:
+                    return prev;
+            }
+        });
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -83,13 +83,13 @@ export const MainHeaderNav = () => {
                     {t("main.welcome.header.offers.title")}
                     <img
                         className={styles.searchIcn}
-                        src={searchIcn}
-                        alt="SEARCHICN"
+                        src={searchIcon}
+                        alt="SEARCH ICON"
                     />
                 </IconButton>
                 <Popup
                     className={styles.popup}
-                    isOpen={dropDownOpened.isOffersOpened}
+                    isOpen={dropdownOpened.isOffersOpened}
                 >
                     <div className={styles.offersContainer}>
                         <div className={styles.famousContainer}>
@@ -190,11 +190,11 @@ export const MainHeaderNav = () => {
                     className={styles.btnNav}
                 >
                     {t("main.welcome.header.community.title")}
-                    <Arrow isOpen={dropDownOpened.isCommunityOpened} />
+                    <Arrow isOpen={dropdownOpened.isCommunityOpened} />
                 </div>
                 <Popup
                     className={styles.popup}
-                    isOpen={dropDownOpened.isCommunityOpened}
+                    isOpen={dropdownOpened.isCommunityOpened}
                 >
                     <Link
                         className={styles.dropdownLink}
@@ -247,11 +247,11 @@ export const MainHeaderNav = () => {
                     className={styles.btnNav}
                 >
                     {t("main.welcome.header.about-project.title")}
-                    <Arrow isOpen={dropDownOpened.isAboutProjectOpened} />
+                    <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
                 </div>
                 <Popup
                     className={styles.popup}
-                    isOpen={dropDownOpened.isAboutProjectOpened}
+                    isOpen={dropdownOpened.isAboutProjectOpened}
                 >
                     <Link
                         className={styles.dropdownLink}
