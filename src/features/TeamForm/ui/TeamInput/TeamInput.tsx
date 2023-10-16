@@ -1,4 +1,6 @@
-import { memo, useCallback } from "react";
+import {
+    memo, useCallback, useRef,
+} from "react";
 
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Input from "@/shared/ui/Input/Input";
@@ -15,34 +17,35 @@ export interface TeamInputProps {
 
 export const TeamInput = memo(
     ({ inputValue, onInputChange, teamUsers }: TeamInputProps) => {
+        const dropwownRef = useRef(null);
+
         const handleInputChange = useCallback(
             (value: string) => {
                 onInputChange(value);
             },
-            [onInputChange]
+            [onInputChange],
         );
 
-        const onClickCard = (searchTerm: string) => {
+        const onClickCard = useCallback((searchTerm: string) => {
             onInputChange(searchTerm);
-        };
+        }, [onInputChange]);
 
-        const renderUsers = (users: TeamUser[]) =>
-            users
-                .filter((user) => {
-                    const searchTerm = inputValue?.toLowerCase();
-                    const userEmail = user.email.toLowerCase();
+        const renderUsers = useCallback((users: TeamUser[]) => users
+            .filter((user) => {
+                const searchTerm = inputValue?.toLowerCase();
+                const userEmail = user.email.toLowerCase();
 
-                    return inputValue && userEmail.startsWith(searchTerm);
-                })
-                .map((user) => (
-                    <div onClick={() => onClickCard(user.email)}>
-                        <TeamCard
-                            teamUser={user}
-                            key={user.id}
-                            disableDeleteIcn
-                        />
-                    </div>
-                ));
+                return inputValue && userEmail.startsWith(searchTerm);
+            })
+            .map((user) => (
+                <button type="button" onClick={() => onClickCard(user.email)} className={styles.wrapperCard}>
+                    <TeamCard
+                        teamUser={user}
+                        key={user.id}
+                        disableDeleteIcn
+                    />
+                </button>
+            )), [inputValue, onClickCard]);
 
         return (
             <div className={styles.wrapper}>
@@ -52,12 +55,16 @@ export const TeamInput = memo(
                 <div className={styles.contentWrapper}>
                     <div className={styles.inputContainer}>
                         <Input
+                            inputMode="url"
                             id="input"
                             onChange={(e) => handleInputChange(e.target.value)}
                             value={inputValue}
                             inputClassName={styles.input}
                         />
-                        <div className={styles.dropdown}>
+                        <div
+                            ref={dropwownRef}
+                            className={styles.dropdown}
+                        >
                             {renderUsers(teamUsers)}
                         </div>
                     </div>
@@ -68,5 +75,5 @@ export const TeamInput = memo(
                 </div>
             </div>
         );
-    }
+    },
 );

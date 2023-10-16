@@ -1,5 +1,5 @@
-import type { RootState } from "@/store/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import type { RootState } from "@/store/store";
 
 import { API_ORGANIZATIONS_BASE_URL } from "@/shared/constants/api";
 

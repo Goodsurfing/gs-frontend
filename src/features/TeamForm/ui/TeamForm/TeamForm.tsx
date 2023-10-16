@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import Button from "@/shared/ui/Button/Button";
 
-import { fakeUserData } from "../../model/slice/data";
+import { fakeUserData } from "../../model/data/mockedUserData";
 import { TeamUser } from "../../model/types/team";
 import { TeamCard } from "../TeamCard/TeamCard";
 import { TeamInput } from "../TeamInput/TeamInput";
@@ -15,12 +14,11 @@ export const TeamForm = () => {
     const { control } = useForm({ mode: "onChange" });
 
     // fake data for test
-    const [teamUsers, setTeamUsers] = useState<TeamUser[]>(fakeUserData);
+    const [teamUsers] = useState<TeamUser[]>(fakeUserData);
 
-    const renderTeamUsers = (teamUsers: TeamUser[]) =>
-        teamUsers.map((teamUser) => (
-            <TeamCard key={teamUser.id} teamUser={teamUser} />
-        ));
+    const renderTeamUsers = (users: TeamUser[]) => users.map((teamUser) => (
+        <TeamCard key={teamUser.id} teamUser={teamUser} />
+    ));
 
     return (
         <div className={styles.wrapper}>
@@ -28,16 +26,13 @@ export const TeamForm = () => {
             <Controller
                 control={control}
                 name="team"
-                render={({ field }) => {
-                    console.log(field.value);
-                    return (
-                        <TeamInput
-                            inputValue={field.value}
-                            onInputChange={field.onChange}
-                            teamUsers={teamUsers}
-                        />
-                    );
-                }}
+                render={({ field }) => (
+                    <TeamInput
+                        inputValue={field.value}
+                        onInputChange={field.onChange}
+                        teamUsers={teamUsers}
+                    />
+                )}
             />
             <div className={styles.containerList}>
                 {renderTeamUsers(teamUsers)}
