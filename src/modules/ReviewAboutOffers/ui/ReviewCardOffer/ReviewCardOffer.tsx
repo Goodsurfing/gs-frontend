@@ -7,7 +7,7 @@ import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import styles from "./ReviewCardOffer.module.scss";
 
 interface ReviewCardOfferProps {
-    reviewOffer:ReviewOffer
+    reviewOffer: ReviewOffer
 }
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
@@ -22,7 +22,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
                     <img
                         className={styles.img}
                         src={defaultReviewPhoto}
-                        alt="IMG"
+                        alt="offer"
                     />
                 </div>
                 <span className={styles.date}>24 мая 2020</span>

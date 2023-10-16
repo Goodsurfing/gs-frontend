@@ -1,4 +1,4 @@
-export interface userCardInfo {
+export interface UserCardInfo {
     id: number;
     avatar: string;
     name: string;
@@ -7,6 +7,6 @@ export interface userCardInfo {
     city: string;
 }
 
-export interface userCardFullInfo extends userCardInfo {
+export interface UserCardFullInfo extends UserCardInfo {
     textReview: string;
 }

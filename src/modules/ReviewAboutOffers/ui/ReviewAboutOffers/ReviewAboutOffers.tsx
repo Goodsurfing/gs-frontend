@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 
-import { fakeRevewData } from "../../model/slice/data";
+import { fakeRevewData } from "../../model/data/mockedReviewData";
 import { ReviewOffer } from "../../model/types/reviewAboutOffers";
 import { ReviewCardOffer } from "../ReviewCardOffer/ReviewCardOffer";
 import styles from "./ReviewAboutOffers.module.scss";
@@ -8,8 +8,8 @@ import styles from "./ReviewAboutOffers.module.scss";
 export const ReviewAboutOffers: FC = () => {
     const [data] = useState<ReviewOffer[]>(fakeRevewData);
 
-    const renderCardOffers = (reviewOffers: ReviewOffer[]) =>
-        reviewOffers.map((reviewOffer) => (
+    const renderCardOffers = (reviewOffers: ReviewOffer[]) => reviewOffers
+        .map((reviewOffer) => (
             <ReviewCardOffer reviewOffer={reviewOffer} />
         ));
 
