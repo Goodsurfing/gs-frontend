@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import cn from "classnames";
-import MainHeader from "@/shared/ui/MainHeader/MainHeader";
+import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Sidebar, useSidebarContext, type SidebarContentProps } from "@/widgets/Sidebar";
 
 import styles from "./PageLayout.module.scss";

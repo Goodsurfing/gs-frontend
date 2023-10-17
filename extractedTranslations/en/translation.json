@@ -4,6 +4,16 @@
     "welcome": {
       "activity-title": "activity-title",
       "header": {
+        "about-project": {
+          "about-npo": "about-npo",
+          "how-it-works": "how-it-works",
+          "news": "news",
+          "our-team": "our-team",
+          "out-team": "out-team",
+          "privacy-policy": "privacy-policy",
+          "rules": "rules",
+          "title": "title"
+        },
         "community": {
           "ambassadors": "ambassadors",
           "blog": "blog",
@@ -16,6 +26,24 @@
         },
         "exit": "exit",
         "how-it-work": "how-it-work",
+        "offers": {
+          "across-russia": "across-russia",
+          "africa": "africa",
+          "altai": "altai",
+          "asia": "asia",
+          "baikal": "baikal",
+          "caucasus": "caucasus",
+          "crimea": "crimea",
+          "europe": "europe",
+          "france": "france",
+          "germany": "germany",
+          "kamchatka": "kamchatka",
+          "latin-america": "latin-america",
+          "popular-places": "popular-places",
+          "title": "title",
+          "ural": "ural",
+          "view-all": "view-all"
+        },
         "sign-in": "sign-in",
         "sign-up": "sign-up"
       },

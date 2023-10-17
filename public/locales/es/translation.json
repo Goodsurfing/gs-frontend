@@ -1,26 +1,53 @@
 {
-  "main": {
-    "welcome": {
-      "header": {
-        "how-it-work": "O elija un tipo de actividad?",
-        "community": {
-          "title": "Comunidad",
-          "blog": "Blog",
-          "video": "Vídeo",
-          "experts": "Expertos",
-          "ambassadors": "Embajadores",
-          "courses": "Cursos",
-          "clubs": "Clubes",
-          "journal": "Revista"
-        },
-        "sign-in": "Iniciar sesión",
-        "sign-up": "Inscribirse",
-        "exit": "Salida"
-      },
-      "title": "Encontrar el viaje soñado",
-      "offers-btn": "Todas las ofertas",
-      "activity-title": "O elija un tipo de actividad"
-    }
-  },
-  "test": "ТТТТЕЕЕЕЕСССССТТТТ!!!"
+    "main": {
+        "welcome": {
+            "header": {
+                "how-it-work": "O elija un tipo de actividad?",
+                "community": {
+                    "title": "Comunidad",
+                    "blog": "Blog",
+                    "video": "Vídeo",
+                    "experts": "Expertos",
+                    "ambassadors": "Embajadores",
+                    "courses": "Cursos",
+                    "clubs": "Clubes",
+                    "journal": "Revista"
+                },
+                "offers": {
+                    "title": "Vacantes",
+                    "popular-places": "Lugares populares",
+                    "latin-america": "América Latina",
+                    "europe": "Europa",
+                    "asia": "Asia",
+                    "africa": "África",
+                    "france": "Francia",
+                    "germany": "Alemania",
+                    "across-russia": "En toda Rusia",
+                    "altai": "Altai",
+                    "kamchatka": "Kamchatka",
+                    "crimea": "Crimea",
+                    "caucasus": "Cáucaso",
+                    "ural": "Urales",
+                    "baikal": "Baikal",
+                    "view-all": "Ver todo"
+                },
+                "about-project": {
+                    "title": "Sobre el proyecto",
+                    "about-npo": "Sobre las OSFL",
+                    "our-team": "nuestro equipo",
+                    "how-it-works": "Cómo funciona",
+                    "rules": "Normas",
+                    "privacy-policy": "Política de Privacidad",
+                    "news": "Noticias"
+                },
+                "sign-in": "Iniciar sesión",
+                "sign-up": "Inscribirse",
+                "exit": "Salida"
+            },
+            "title": "Encontrar el viaje soñado",
+            "offers-btn": "Todas las ofertas",
+            "activity-title": "O elija un tipo de actividad"
+        }
+    },
+    "test": "ТТТТЕЕЕЕЕСССССТТТТ!!!"
 }
