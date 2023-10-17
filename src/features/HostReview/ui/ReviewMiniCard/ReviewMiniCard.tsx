@@ -13,6 +13,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
     data,
 }: ReviewMiniCardProps) => {
     const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         avatar, name, surname, country, city,
     } = data;
 

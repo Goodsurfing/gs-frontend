@@ -13,6 +13,7 @@ interface ReviewFullCardProps {
 export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {
     const {
         userInfo: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             avatar, city, country, name, surname,
         }, textReview,
     } = review;

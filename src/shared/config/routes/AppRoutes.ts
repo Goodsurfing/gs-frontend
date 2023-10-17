@@ -15,6 +15,7 @@ export enum AppRoutes {
     OFFER_PERSONAL = "offer_personal", // offer id
     HOST_VIDEO = "host_video",
     HOST_TEAM = "host_team",
+    HOST_REVIEW = "host_review",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",

@@ -13,13 +13,13 @@ interface VerticalMultiplySliderProps<T> {
     classNameSlide?: string;
 }
 
-interface btnNavState {
+interface BtnNavState {
     canSwipeNext: boolean;
     canSwipePrev: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-/**Slider for vertical scrolling of components
+/** Slider for vertical scrolling of components
  *
  * Usage example
  *
@@ -30,6 +30,7 @@ interface btnNavState {
  * />
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/comma-dangle
 export const VerticalSlider = <T,>({
     className,
     classNameWrapper,
@@ -38,17 +39,16 @@ export const VerticalSlider = <T,>({
     renderItem,
 }: VerticalMultiplySliderProps<T>) => {
     const swiperRef = useRef<SwiperCore | null>(null);
-    const [btnNav, setBtnNav] = useState<btnNavState>({
+    const [btnNav, setBtnNav] = useState<BtnNavState>({
         canSwipePrev: false,
         canSwipeNext: true,
     });
 
-    const renderSlides = (sliderData: T[]) =>
-        sliderData.map((item, index) => (
-            <SwiperSlide className={cn(classNameSlide)} key={index}>
-                {renderItem(item)}
-            </SwiperSlide>
-        ));
+    const renderSlides = (sliderData: T[]) => sliderData.map((item, index) => (
+        <SwiperSlide className={cn(classNameSlide)} key={index}>
+            {renderItem(item)}
+        </SwiperSlide>
+    ));
 
     return (
         <div className={cn(className, styles.wrapper)}>

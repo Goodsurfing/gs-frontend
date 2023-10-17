@@ -12,6 +12,7 @@ interface ReviewCardOfferProps {
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
     const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         author, authorAvatar, date, rating, textReview, title,
     } = reviewOffer;
     return (
