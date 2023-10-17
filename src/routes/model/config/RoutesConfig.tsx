@@ -4,6 +4,7 @@ import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
+import { HostReviewPage } from "@/pages/HostReviewPage";
 
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
@@ -51,6 +52,7 @@ import {
     getSignUpPageUrl,
     getHostDashboardPageUrl,
     getOffersFinishingTouchesPageUrl,
+    getHostReviewPageUrl,
     getMyOffersPageUrl,
     getHostPageUrl,
     getHostTeamPageUrl,
@@ -145,6 +147,12 @@ const publicRoutes: RouteType[] = [
                     <HostTeamPage />
                 ),
                 path: (locale) => getHostTeamPageUrl(locale),
+            }, {
+                label: "host-review",
+                element: (
+                    <HostReviewPage />
+                ),
+                path: (locale: string) => getHostReviewPageUrl(locale),
             },
         ],
     },
