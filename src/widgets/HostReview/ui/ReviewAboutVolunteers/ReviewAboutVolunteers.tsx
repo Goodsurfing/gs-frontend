@@ -6,7 +6,7 @@ import { ReviewFullCard, ReviewMiniCard } from "@/features/HostReview/";
 import {
     UserCardFullInfo,
     UserCardInfo,
-} from "@/features/HostReview/"
+} from "@/features/HostReview/model/types/hostReview";
 
 import { fakeData, fakeReviewData } from "../../model/data/mockedUsersData";
 import styles from "./ReviewAboutVolunteers.module.scss";

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 import { fakeRevewData } from "../../model/data/mockedReviewData";
-import { ReviewOffer } from "@/features/HostReview/";
+import { ReviewOffer } from "@/features/HostReview/model/types/hostReview";
 import { ReviewCardOffer } from "@/features/HostReview/";
 import styles from "./ReviewAboutOffers.module.scss";
 
