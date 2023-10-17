@@ -8,7 +8,7 @@ interface RouteBaseProps {
 
 export interface RouteWithChildrenProps extends Omit<RouteBaseProps, "index"> {
     index?: never;
-    children?: RouteWithChildrenProps[];
+    children?: RouteType[];
 }
 
 export interface RouteWithIndexProps extends Omit<RouteBaseProps, "children"> {

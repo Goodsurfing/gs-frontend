@@ -4,33 +4,34 @@ import {
     Legend,
     Tooltip,
 } from "chart.js";
-import React, { FC, useEffect } from "react";
+import { memo, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import cn from "classnames";
 import styles from "./StatsCircle.module.scss";
-
-import { ProfileFillItems } from "@/pages/HostDashboardPage/ui/HostProfileFill/HostProfileFill.data";
 
 import { IStatsCircle } from "./StatsCircle.types";
 import { createDoughnutData } from "@/shared/utils/chartJS";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const StatsCircle: FC<IStatsCircle> = ({
-    className,
-    width = "100px",
-    height = "100px",
-    setDegrees,
-    data,
-    options,
-}) => {
+const StatsCircle = memo((props: IStatsCircle) => {
+    const {
+        className,
+        width = "100px",
+        height = "100px",
+        setDegrees,
+        data,
+        pointsData,
+        options,
+    } = props;
+
     useEffect(() => {
-        const createdDegrees = createDoughnutData(ProfileFillItems);
+        const createdDegrees = createDoughnutData(pointsData);
         setDegrees([
             createdDegrees.completedPercent,
             createdDegrees.uncompletedPercent,
         ]);
-    }, [setDegrees]);
+    }, [setDegrees, pointsData]);
 
     return (
         <Doughnut
@@ -41,6 +42,6 @@ const StatsCircle: FC<IStatsCircle> = ({
             options={options}
         />
     );
-};
+});
 
 export default StatsCircle;

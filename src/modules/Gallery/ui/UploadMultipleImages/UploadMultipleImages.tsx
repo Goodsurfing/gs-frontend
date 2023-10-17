@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 
@@ -23,10 +24,9 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
 }) => {
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
 
-    const [generateLink,
-        {
-            data, isLoading, isSuccess, isError,
-        }] = galleryApi.useGenerateLinkMutation();
+    const [generateLink, {
+        data, isLoading, isSuccess, isError,
+    }] = galleryApi.useGenerateLinkMutation();
 
     const dispatch = useAppDispatch();
 

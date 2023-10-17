@@ -1,21 +1,23 @@
-import React, { useCallback, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import Popup from "@/components/Popup/Popup";
-import { userInfoApi } from "@/store/api/userInfoApi";
+import React, { useRef, useState, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
+import Popup from "@/components/Popup/Popup";
 
 import { userActions } from "@/entities/User";
 
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import {
     getHostDashboardPageUrl,
     getMainPageUrl,
     getProfileInfoPageUrl,
 } from "@/shared/config/routes/AppUrls";
+
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { profileApi } from "@/entities/Profile";
+
+import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
 
@@ -25,14 +27,15 @@ const MainHeaderProfile = () => {
     const profileRef = useRef(null);
 
     const { locale } = useLocale();
-
-    const { data: userInfo } = userInfoApi.useGetUserInfoQuery();
+    const navigate = useNavigate();
+    const { data: userInfo } = profileApi.useGetProfileInfoQuery();
 
     const dispatch = useAppDispatch();
 
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-    }, [dispatch]);
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, navigate, locale]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
@@ -45,12 +48,6 @@ const MainHeaderProfile = () => {
         [],
     );
 
-    let username: string = userInfo ? userInfo.firstName : "Анон";
-
-    if (username === null) {
-        username = "Анон";
-    }
-
     const handleProfileOpen = useCallback(() => {
         setProfileOpened(!isProfileOpened);
     }, [isProfileOpened]);
@@ -62,7 +59,7 @@ const MainHeaderProfile = () => {
             onKeyDown={handleCloseDropdown}
             className={styles.info}
         >
-            <p className={styles.name}>{username}</p>
+            <p className={styles.name}>{userInfo?.firstName || "Анон"}</p>
             <img
                 src={defaultAvatarImage}
                 alt="NAME"

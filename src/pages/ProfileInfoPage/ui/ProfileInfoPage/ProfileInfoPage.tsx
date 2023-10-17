@@ -1,37 +1,22 @@
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 
-import ProfileInfoForm from "../ProfileInfoForm/ProfileInfoForm";
+import { SideMenuData } from "@/shared/data/sidebar/profile-pages";
 
-import styles from "./ProfileInfoPage.module.scss";
+import { ProfileInfoForm } from "@/features/ProfileInfo";
+
 import { PageLayout } from "@/widgets/PageLayout";
 
-import { SideMenuData } from "@/shared/data/profile-pages";
+import styles from "./ProfileInfoPage.module.scss";
 
-const ProfileInfoPage: FC = () => {
-    const [isLocked, setIsLocked] = useState<boolean>(true);
-
-    const handleReadonlyChange = useCallback(() => {
-        setIsLocked(!isLocked);
-    }, [isLocked]);
-
-    return (
-        <PageLayout wrapperClassName={styles.layout} sidebarContent={SideMenuData}>
-            <main className={styles.wrapper}>
-                <div className={styles.titleWrapper}>
-                    <h2 className={styles.title}>Основная информация</h2>
-                    <button
-                        onClick={handleReadonlyChange}
-                        className={styles.link}
-                    >
-                        {isLocked ? "Редактировать профиль" : "Посмотреть профиль"}
-                    </button>
-                </div>
-                <div className={styles.form}>
-                    <ProfileInfoForm onSuccess={handleReadonlyChange} isLocked={isLocked} />
-                </div>
-            </main>
-        </PageLayout>
-    );
-};
+const ProfileInfoPage: FC = () => (
+    <PageLayout wrapperClassName={styles.layout} sidebarContent={SideMenuData}>
+        <main className={styles.wrapper}>
+            <div className={styles.titleWrapper}>
+                <h2 className={styles.title}>Основная информация</h2>
+            </div>
+            <ProfileInfoForm />
+        </main>
+    </PageLayout>
+);
 
 export default ProfileInfoPage;

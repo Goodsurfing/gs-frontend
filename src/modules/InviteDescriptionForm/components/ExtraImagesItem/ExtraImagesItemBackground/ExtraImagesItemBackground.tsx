@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { FC } from "react";
 
 import plusIcon from "@/shared/assets/icons/offer-create/plus.svg";

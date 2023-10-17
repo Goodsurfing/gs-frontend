@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+}
+
+.SMALL, .MEDIUM, .LARGE {
+    border-radius: 50%;
+}
+
+.SMALL {
+    width: 30px;
+    height: 30px;
+}
+
+.MEDIUM {
+    width: 56px;
+    height: 56px;
+}
+
+.LARGE {
+    width: 70px;
+    height: 70px;
+}

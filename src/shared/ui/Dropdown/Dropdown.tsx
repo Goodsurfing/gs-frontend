@@ -13,7 +13,6 @@ const Dropdown: FC<IDropdownProps> = ({
     label,
     description,
     className,
-    onChange,
     icon = dropdownIcon,
     img,
 }) => {
@@ -70,7 +69,7 @@ const Dropdown: FC<IDropdownProps> = ({
                     ))}
                 </ul>
                 {selectedValue}
-                <img className={styles.arrow} src={icon} />
+                <img className={styles.arrow} src={icon} alt="icon arrow" />
             </div>
 
             {description && (

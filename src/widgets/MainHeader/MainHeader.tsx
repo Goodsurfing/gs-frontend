@@ -1,8 +1,7 @@
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import MobileHeader from "@/components/MobileHeader/MobileHeader";
-import { Button } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import React, { FC } from "react";
+import { Button } from "@mui/material";
+import MobileHeader from "@/components/MobileHeader/MobileHeader";
+import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 

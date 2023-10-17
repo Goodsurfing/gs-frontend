@@ -1,3 +1,9 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .select {
     border: none;
     border-radius: 10px;
@@ -25,4 +31,13 @@
 
 .input {
     border: none;
+}
+
+.label {
+    font: var(--font-secondary);
+    color: var(--text-caption);
+}
+
+.disabled {
+    background-color: var(--color-disabled);
 }

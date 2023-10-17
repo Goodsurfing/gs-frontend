@@ -16,6 +16,7 @@
 
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 1rem;
         min-width: 120px;
 
@@ -24,6 +25,10 @@
         background-image: url("data:image/svg+xml,%3Csvg width='169' height='260' viewBox='0 0 169 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 7H169V260H0V7Z' fill='%23ECF1F4'/%3E%3Cpath d='M24 0L30.0622 7.5H17.9378L24 0Z' fill='%23ECF1F4'/%3E%3C/svg%3E%0A");
 
         .dropdownLink {
+            margin: 0;
+            padding: 0;
+            border: none;
+            text-align: left;
             position: relative;
             width: 100%;
             text-decoration: none;

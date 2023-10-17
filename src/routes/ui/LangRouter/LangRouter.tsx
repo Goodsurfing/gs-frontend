@@ -1,7 +1,7 @@
 import {
     Suspense, useState, useEffect, useRef,
 } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
@@ -27,14 +27,14 @@ export const LangRouter = () => {
 
     const renderRouteWithChildren = (
         routes: RouteType[],
-    ) => routes.map((route, index) => {
+    ) => routes.map((route) => {
         if (route.index) {
             return (
-                <Route index path={route.path(locale)} element={route.element} />
+                <Route key={route.label} index path={route.path(locale)} element={route.element} />
             );
         }
         return (
-            <Route key={index} path={route.path(locale)} element={route.element}>
+            <Route key={route.label} path={route.path(locale)} element={route.element}>
                 {route.children && renderRouteWithChildren(route.children)}
             </Route>
         );

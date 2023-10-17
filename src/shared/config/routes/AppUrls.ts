@@ -2,7 +2,11 @@ import { RoutePath } from "./RouterConfig";
 
 type RoutePathFunction = (locale: string) => string;
 
+// Main page
+
 export const getMainPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.main}`);
+
+// Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email}`;
 
@@ -12,9 +16,25 @@ export const getResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale
 
 export const getResetPasswordVerifyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.reset_password_verify}`;
 
+export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_in}`;
+
+export const getSignUpPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_up}`;
+
+export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
+
+// About me pages
+
 export const getProfileInfoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_info}`;
 
+// Host pages
+
 export const getHostPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host}`;
+
+export const getHostDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.dashboard}`;
+
+export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.my_offers}`;
+
+// Host / organization pages
 
 export const getHostRegistrationUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_registration}`;
 
@@ -22,9 +42,9 @@ export const getHostGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}$
 
 export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_video}`;
 
-export const getHostDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.dashboard}`;
+export const getHostTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_team}`;
 
-export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}/${RoutePath.my_offers}}`;
+// Offers pages
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
 
@@ -44,8 +64,4 @@ export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${loc
 
 export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}`;
 
-export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_in}`;
-
-export const getSignUpPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_up}`;
-
-export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
+export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offer_personal}/:id`;
