@@ -44,6 +44,23 @@
     }
 }
 
+.membership {
+    background-color: var(--button-1);
+    color: var(--text-secondary-1);
+    padding: 5px 15px;
+    font-weight: 400;
+    font-size: 16px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: Lato;
+    text-transform: none;
+    margin-left: 24px;
+
+    &:hover {
+        background-color: #2fd8ae;
+    }
+}
+
 .mobile {
     display: none;
     position: sticky;

@@ -3,23 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Popup from "@/components/Popup/Popup";
 
-import { useAppDispatch } from "@/shared/hooks/redux";
-import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
 import { userActions } from "@/entities/User";
 
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
-
-import Arrow from "../../Arrow/Arrow";
-import styles from "./MainHeaderProfile.module.scss";
 import {
     getHostDashboardPageUrl,
     getMainPageUrl,
     getProfileInfoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
+import { useAppDispatch } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { profileApi } from "@/entities/Profile";
+
+import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
+import Arrow from "@/shared/ui/Arrow/Arrow";
+import styles from "./MainHeaderProfile.module.scss";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
@@ -39,11 +39,14 @@ const MainHeaderProfile = () => {
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
-    const handleCloseDropdown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Escape") {
-            setProfileOpened((prev) => !prev);
-        }
-    }, []);
+    const handleCloseDropdown = useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === "Escape") {
+                setProfileOpened((prev) => !prev);
+            }
+        },
+        [],
+    );
 
     const handleProfileOpen = useCallback(() => {
         setProfileOpened(!isProfileOpened);
@@ -77,7 +80,6 @@ const MainHeaderProfile = () => {
                     replace
                 >
                     Обо мне
-
                 </Link>
                 <Link
                     className={styles.dropdownLink}
@@ -85,14 +87,12 @@ const MainHeaderProfile = () => {
                     replace
                 >
                     Дашборд хоста
-
                 </Link>
                 <Link
                     className={styles.dropdownLink}
                     to={getMainPageUrl(locale)}
                 >
                     Стать волонтёром
-
                 </Link>
                 <button
                     type="button"

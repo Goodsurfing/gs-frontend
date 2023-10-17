@@ -47,17 +47,17 @@
 
             &:hover::before {
                 width: 100%;
-                transition: .3s ease-in-out;
+                transition: 0.3s ease-in-out;
             }
 
             &::before {
                 position: absolute;
                 top: 110%;
-                content: '';
+                content: "";
                 width: 0;
                 height: 2px;
                 background-color: #212121;
-                transition: .3s ease-in-out;
+                transition: 0.3s ease-in-out;
             }
         }
     }
