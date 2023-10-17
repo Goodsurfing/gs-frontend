@@ -12,8 +12,11 @@ interface ReviewFullCardProps {
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {
     const {
-        avatar, city, country, name, surname, textReview,
+        userInfo: {
+            avatar, city, country, name, surname,
+        }, textReview,
     } = review;
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>

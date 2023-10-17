@@ -1,4 +1,4 @@
-import { UserCardFullInfo, UserCardInfo } from "../types/reviewAboutVolunteers";
+import { UserCardFullInfo, UserCardInfo } from "@/features/HostReview/model/types/hostReview";
 
 export const fakeData: UserCardInfo[] = [
     {
@@ -61,32 +61,38 @@ export const fakeData: UserCardInfo[] = [
 
 export const fakeReviewData: UserCardFullInfo[] = [
     {
-        id: 1,
-        name: "Семён",
-        surname: "Володарский",
-        avatar: "",
-        city: "Москва",
-        country: "Россия",
+        userInfo: {
+            id: 1,
+            name: "Семён",
+            surname: "Володарский",
+            avatar: "",
+            city: "Москва",
+            country: "Россия",
+        },
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
     },
     {
-        id: 2,
-        name: "Семён",
-        surname: "Володарский",
-        avatar: "",
-        city: "Москва",
-        country: "Россия",
+        userInfo: {
+            id: 2,
+            name: "Семён",
+            surname: "Володарский",
+            avatar: "",
+            city: "Москва",
+            country: "Россия",
+        },
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
     },
     {
-        id: 3,
-        name: "Семён",
-        surname: "Володарский",
-        avatar: "",
-        city: "Москва",
-        country: "Россия",
+        userInfo: {
+            id: 3,
+            name: "Семён",
+            surname: "Володарский",
+            avatar: "",
+            city: "Москва",
+            country: "Россия",
+        },
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
     },

@@ -7,7 +7,8 @@ export interface UserCardInfo {
     city: string;
 }
 
-export interface UserCardFullInfo extends UserCardInfo {
+export interface UserCardFullInfo {
+    userInfo: UserCardInfo;
     textReview: string;
 }
 
