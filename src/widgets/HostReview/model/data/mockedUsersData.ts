@@ -1,4 +1,4 @@
-import { UserCardFullInfo, UserCardInfo } from "../../ui/ReviewAboutVolunteers/model/types/reviewAboutVolunteers";
+import { UserCardFullInfo, UserCardInfo } from "../types/reviewAboutVolunteers";
 
 export const fakeData: UserCardInfo[] = [
     {

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Rating } from "@mui/material";
-import { ReviewOffer } from "../../model/types/reviewAboutOffers";
+import { ReviewOffer } from "../../model/types/hostReview";
 import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 

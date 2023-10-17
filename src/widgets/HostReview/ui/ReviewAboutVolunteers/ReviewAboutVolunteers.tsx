@@ -2,14 +2,14 @@ import React, { FC, useState } from "react";
 
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { ReviewFullCard } from "../ReviewFullCard/ReviewFullCard";
-import { ReviewMiniCard } from "../ReviewMiniCard/ReviewMiniCard";
-import styles from "./ReviewAboutVolunteers.module.scss";
-import { fakeData, fakeReviewData } from "../../model/data/mockedUsersData";
+import { ReviewFullCard, ReviewMiniCard } from "@/features/HostReview/";
 import {
     UserCardFullInfo,
     UserCardInfo,
-} from "./model/types/reviewAboutVolunteers";
+} from "@/features/HostReview/"
+
+import { fakeData, fakeReviewData } from "../../model/data/mockedUsersData";
+import styles from "./ReviewAboutVolunteers.module.scss";
 
 export const ReviewAboutVolunteers: FC = () => {
     const [data] = useState<UserCardInfo[]>(fakeData);

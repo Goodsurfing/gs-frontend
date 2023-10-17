@@ -3,11 +3,11 @@ import React, { FC } from "react";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
-import { userCardFullInfo } from "../ReviewAboutVolunteers/model/types/reviewAboutVolunteers";
+import { UserCardFullInfo } from "../../model/types/hostReview";
 import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
-    review: userCardFullInfo;
+    review: UserCardFullInfo;
 }
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {

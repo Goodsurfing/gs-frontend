@@ -1,12 +1,11 @@
 import React, { FC } from "react";
-import { ReviewAboutVolunteers } from "@/modules/ReviewAboutVolunteers";
+import { ReviewAboutVolunteers, ReviewAboutOffers } from "@/widgets/HostReview/";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
 import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
 import { Title } from "./Title/Title";
-import { ReviewAboutOffers } from "@/modules/ReviewAboutOffers/ui/ReviewAboutOffers/ReviewAboutOffers";
 
 import styles from "./HostReviewPage.module.scss";
 

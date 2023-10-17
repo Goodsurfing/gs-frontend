@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 
 import { fakeRevewData } from "../../model/data/mockedReviewData";
-import { ReviewOffer } from "../../model/types/reviewAboutOffers";
-import { ReviewCardOffer } from "../ReviewCardOffer/ReviewCardOffer";
+import { ReviewOffer } from "@/features/HostReview/";
+import { ReviewCardOffer } from "@/features/HostReview/";
 import styles from "./ReviewAboutOffers.module.scss";
 
 export const ReviewAboutOffers: FC = () => {

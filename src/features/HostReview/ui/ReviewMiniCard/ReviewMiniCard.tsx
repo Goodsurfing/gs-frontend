@@ -1,12 +1,12 @@
 import { FC } from "react";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
-import { userCardInfo } from "./model/types/reviewAboutVolunteers";
+import { UserCardInfo } from "../../model/types/hostReview";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ReviewMiniCard.module.scss";
 
 interface ReviewMiniCardProps {
-    data:userCardInfo
+    data:UserCardInfo
 }
 
 export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
