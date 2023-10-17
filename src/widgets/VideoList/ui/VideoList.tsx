@@ -6,9 +6,14 @@ import { VideoListProps } from "@/widgets/VideoList";
 import styles from "./VideoList.module.scss";
 
 export const VideoList: React.FC<VideoListProps> = ({ videosURL }) => {
-    const renderVideoList = (videos: string[]) =>
-        videos.map((videoURL: string) => (
-            <ReactPlayer width="400px" url={videoURL} />
+    const renderVideoList = (videos: string[]) => videos
+        .map((videoURL: string, index) => (
+            <ReactPlayer
+                key={index}
+                width="400px"
+                url={videoURL}
+                controls
+            />
         ));
 
     return (

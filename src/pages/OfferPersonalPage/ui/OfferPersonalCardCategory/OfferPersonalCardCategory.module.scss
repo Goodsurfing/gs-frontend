@@ -1,0 +1,15 @@
+.category {
+    background-color: #C3A3E9;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 17px;
+    cursor: default;
+}
+
+.text {
+    font: var(--font-secondary);
+    color: var(--text-primary-2);
+}

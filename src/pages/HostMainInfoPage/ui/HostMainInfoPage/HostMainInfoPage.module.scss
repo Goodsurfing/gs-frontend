@@ -1,4 +1,21 @@
 .wrapper {
 	padding-bottom: 4.125rem;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
 	width: 100%;
+}
+
+.title {
+	font: var(--font-h2);
+}
+
+@media (max-width: 1000px) {
+	.wrapper {
+		flex-direction: column-reverse;
+		align-items: center;
+		margin: 0 auto;
+		padding-right: 3rem;
+		justify-content: center;
+	}
 }

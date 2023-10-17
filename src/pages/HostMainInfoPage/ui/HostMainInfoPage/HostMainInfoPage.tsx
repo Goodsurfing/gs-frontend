@@ -1,16 +1,25 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
-import HostMainInfoForm from "../HostMainInfoForm/HostMainInfoForm";
+import { HostDescriptionForm } from "@/features/HostDescription";
+
+import { useUser } from "@/entities/Profile";
+
 import styles from "./HostMainInfoPage.module.scss";
-import { PageLayout } from "@/widgets/PageLayout";
-import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
-const HostMainInfoPage: FC = () => (
-    <PageLayout sidebarContent={HostPagesSidebarData}>
+const HostMainInfoPage: FC = () => {
+    const { profile, error, isLoading } = useUser();
+
+    return (
         <div className={styles.wrapper}>
-            <HostMainInfoForm />
+            <h2 className={styles.title}>Основная информация</h2>
+            <HostDescriptionForm
+                className={styles.className}
+                host={profile?.organizations?.[0]}
+                isLoading={isLoading}
+                error={error}
+            />
         </div>
-    </PageLayout>
-);
+    );
+};
 
 export default HostMainInfoPage;

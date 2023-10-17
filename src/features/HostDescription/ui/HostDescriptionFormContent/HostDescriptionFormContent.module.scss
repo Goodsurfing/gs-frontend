@@ -1,0 +1,13 @@
+.mainSection {
+    display: flex;
+	flex-direction: column;
+	width: calc(100% - 235px);
+}
+
+.avatarSection {
+    margin-left: 20px;
+	width: 187px;
+	height: 187px;
+	background-color: lightblue;
+	border-radius: 50%;
+}

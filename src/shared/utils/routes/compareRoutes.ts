@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 const сompareRoutes = (fullRoute: string, comparableRoute: string): boolean => {
     const splitedFullRoute = fullRoute.split("/").slice(2, 4);
 

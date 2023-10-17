@@ -29,7 +29,15 @@ export function buildPlugins({
             __PROJECT__: JSON.stringify(project),
         }),
         new Dotenv(),
-        new ForkTsCheckerWebpackPlugin(),
+        new ForkTsCheckerWebpackPlugin({
+            typescript: {
+                diagnosticOptions: {
+                    semantic: true,
+                    syntactic: true,
+                },
+                mode: "write-references",
+            }
+        }),
         new webpack.ids.HashedModuleIdsPlugin(),
     ];
 

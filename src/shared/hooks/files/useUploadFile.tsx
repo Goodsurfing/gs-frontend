@@ -22,8 +22,8 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                     body: JSON.stringify(body),
                 },
             );
-            const data = await response.json();
-            return data;
+            const dataResult = await response.json();
+            return dataResult;
         } catch (error) {
             console.log(error);
         }

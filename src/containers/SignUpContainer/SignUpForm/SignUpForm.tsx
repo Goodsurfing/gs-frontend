@@ -1,4 +1,3 @@
-import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +42,7 @@ const SignUpForm: FC = () => {
                     dispatch(setRegisterUserData(response));
                     navigate(getConfirmEmailPageUrl(locale));
                 })
-                .catch((err) => {
+                .catch(() => {
                     console.error("error");
                     setToast({
                         text: "Некорректно введены данные",

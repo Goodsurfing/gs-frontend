@@ -47,7 +47,7 @@ const SignInForm = memo(() => {
                 navigate(getMainPageUrl(locale));
                 reset();
             })
-            .catch((err) => {
+            .catch(() => {
                 console.error("Неверные данные");
                 setToast({
                     text: "Неверный логин или пароль",

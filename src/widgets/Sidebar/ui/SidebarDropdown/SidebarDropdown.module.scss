@@ -29,19 +29,19 @@
 
 .link {
 	display: flex;
-  align-items: center;
+  	align-items: center;
 
-  height: 3.75rem;
+	height: 3.75rem;
 
-  cursor: pointer;
-  text-decoration: none;
-	
-  font-weight: 700;
+	cursor: pointer;
+	text-decoration: none;
+		
+	font-weight: 700;
 }
 
 .dropdownContainer {
 	display: flex;
-	overflow-y: scroll;
+	overflow-y: auto;
 	max-height: 10rem;
 	width: 100%;
 	margin: 0 0.875rem 0;
@@ -51,7 +51,7 @@
 	position: sticky;
 	top: 0;
 	width: 1px;
-	height: 300px;
+	// height: 300px;
 	margin: 0 1.25rem;
 	
 	background-color: var(--color-gray);

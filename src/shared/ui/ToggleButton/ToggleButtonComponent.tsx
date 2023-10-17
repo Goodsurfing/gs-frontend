@@ -3,8 +3,6 @@ import React, { FC, useState } from "react";
 import { SxProps, ToggleButton, ToggleButtonProps as MuiToggleButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import styles from "./ToggleButtonComponent.module.scss";
-
 interface StyledToggleButtonProps extends Pick<MuiToggleButtonProps, "onChange" | "selected"> {
     btncolor?: string;
     sx?: SxProps;
@@ -34,10 +32,10 @@ export const ToggleButtonComponent: FC<MuiToggleButtonProps & StyledToggleButton
 
     const onBtnToggle = (
         event: React.MouseEvent<HTMLElement, MouseEvent>,
-        value: any,
+        onChangeValue: any,
     ) => {
         setChecked(!checked);
-        onChange?.(event, value);
+        onChange?.(event, onChangeValue);
     };
 
     return (

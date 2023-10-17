@@ -1,0 +1,21 @@
+.wrapper {
+    margin-top: 1.875rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1.625rem;
+  
+      .telegram,
+      .instagram {
+          margin-top: 1.875rem;
+      }
+  }
+  
+  @media (max-width: 800px) {
+      .socialMedia {
+          grid-template-columns: 1fr;
+  
+          .facebook {
+              margin-top: 1.875rem;
+          }
+      }
+  }

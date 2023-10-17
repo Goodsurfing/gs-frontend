@@ -1,6 +1,5 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -17,7 +16,6 @@ import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 
 export const Footer = memo(() => {
     const { locale } = useLocale();
-    const { t } = useTranslation();
     return (
         <>
             <footer className={styles.footer}>

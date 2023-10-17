@@ -27,6 +27,7 @@
       "esModuleInterop": true,
       "resolveJsonModule": true,
       "allowSyntheticDefaultImports": true,
+      "isolatedModules": true
     },
     "ts-node": {
       "compilerOptions": {

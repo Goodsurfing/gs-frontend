@@ -1,20 +1,25 @@
-type Gender = "male" | "female";
+import { Host } from "@/entities/Host";
+
+export type Gender = "male" | "female" | "other";
 
 export interface Profile {
-    firstName: string;
-    lastName: string;
-    birthDate: string;
-    gender: Gender;
-    country: string;
-    city: string;
+    id: string;
+    email: string;
     locale: string;
-    phone: string;
-    imageUuid: string;
-    aboutMe: string;
+    firstName?: string;
+    lastName?: string;
+    gender?: Gender;
+    birthDate?: string;
+    country?: string;
+    city?: string;
+    phone?: string;
+    imageUuid?: string;
+    aboutMe?: string;
     vk?: string;
     facebook?: string;
-    instagram?: string,
-    telegram?: string
+    instagram?: string;
+    telegram?: string;
+    organizations?: Host[] | [];
 }
 
 export interface ProfileSchema {

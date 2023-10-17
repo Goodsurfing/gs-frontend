@@ -1,9 +1,23 @@
 {
   "": "",
+  "Facebook": "Facebook",
+  "Instagram": "Instagram",
+  "Telegram": "Telegram",
+  "VK": "VK",
   "main": {
     "welcome": {
       "activity-title": "activity-title",
       "header": {
+        "about-project": {
+          "about-npo": "about-npo",
+          "how-it-works": "how-it-works",
+          "news": "news",
+          "our-team": "our-team",
+          "out-team": "out-team",
+          "privacy-policy": "privacy-policy",
+          "rules": "rules",
+          "title": "title"
+        },
         "community": {
           "ambassadors": "ambassadors",
           "blog": "blog",
@@ -16,6 +30,24 @@
         },
         "exit": "exit",
         "how-it-work": "how-it-work",
+        "offers": {
+          "across-russia": "across-russia",
+          "africa": "africa",
+          "altai": "altai",
+          "asia": "asia",
+          "baikal": "baikal",
+          "caucasus": "caucasus",
+          "crimea": "crimea",
+          "europe": "europe",
+          "france": "france",
+          "germany": "germany",
+          "kamchatka": "kamchatka",
+          "latin-america": "latin-america",
+          "popular-places": "popular-places",
+          "title": "title",
+          "ural": "ural",
+          "view-all": "view-all"
+        },
         "sign-in": "sign-in",
         "sign-up": "sign-up"
       },
@@ -23,19 +55,27 @@
       "title": "title"
     }
   },
+  "Вк": "Вк",
   "Волонтёр помогает вам и будет делать это лучше, если ему будет комфортно": {
     " Создавая лучшие условия вы привлекаете лучших волонтёров": {
       "": ""
     }
   },
+  "Город": "Город",
+  "Де": "Де",
+  "День рождения": "День рождения",
   "Дополнительная информация": "Дополнительная информация",
   "Навыки, которыми должен обладать волонтер": "Навыки, которыми должен обладать волонтер",
   "Не более 1000 знаков": "Не более 1000 знаков",
   "Новыки, которыми должен обладать волонтер": "Новыки, которыми должен обладать волонтер",
+  "Отменить изменения": "Отменить изменения",
   "Подробно опишите, чем нужно будет заниматься — чем больше информации, тем лучше": {
     "": ""
   },
   "Расскажите, чем нужно будет заниматься": "Расскажите, чем нужно будет заниматься",
+  "Редактировать профиль": "Редактировать профиль",
+  "Страна": "Страна",
   "Требования к участнику": "Требования к участнику",
-  "Чем вы готовы обеспечить волонтёра": "Чем вы готовы обеспечить волонтёра"
+  "Чем вы готовы обеспечить волонтёра": "Чем вы готовы обеспечить волонтёра",
+  "Язык интерфейса": "Язык интерфейса"
 }
