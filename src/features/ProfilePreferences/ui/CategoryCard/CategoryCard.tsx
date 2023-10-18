@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 
 import cn from "classnames";
 import { PreferenceCategory } from "../../model/types/profilePreferences";
@@ -12,20 +12,22 @@ interface CategoryCardProps {
     onClick: () => void
 }
 
-export const CategoryCard: FC<CategoryCardProps> = ({ category, isSelect, onClick }) => {
-    const { image, title } = category;
-    return (
-        <div
-            className={styles.wrapper}
-            onClick={onClick}
-            style={{ backgroundImage: `url(${image})` }}
-        >
-            <h4 className={styles.title}>{title}</h4>
-            <img
-                src={selectCheckIcon}
-                alt="Select check icon"
-                className={cn(styles.checkIcon, { [styles.check]: isSelect })}
-            />
-        </div>
-    );
-};
+export const CategoryCard: FC<CategoryCardProps> = memo(
+    ({ category, isSelect, onClick }: CategoryCardProps) => {
+        const { image, title } = category;
+        return (
+            <div
+                className={styles.wrapper}
+                onClick={onClick}
+                style={{ backgroundImage: `url(${image})` }}
+            >
+                <h4 className={styles.title}>{title}</h4>
+                <img
+                    src={selectCheckIcon}
+                    alt="Select check icon"
+                    className={cn(styles.checkIcon, { [styles.check]: isSelect })}
+                />
+            </div>
+        );
+    },
+);

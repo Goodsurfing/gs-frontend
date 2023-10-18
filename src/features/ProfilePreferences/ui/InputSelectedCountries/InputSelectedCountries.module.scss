@@ -1,0 +1,49 @@
+.tagInput {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 48px;
+    padding: 0 8px;
+    border: 1px solid #d6d8da;
+    border-radius: 6px;
+
+    .tagList {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 8px 0 0 -8px;
+
+    li {
+        display: flex;
+        align-items: center;
+        background: #0052cc;
+        border-radius: 6px;
+        color: #fff;
+        margin: 0 0 8px 8px;
+        padding: 5px;
+
+        button {
+            margin-left: 8px;
+            background: #fff;
+            color: #0052cc;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            padding: 0;
+            border: none;
+        }
+    }
+    }
+
+    input {
+        flex-grow: 1;
+        border: none;
+        outline: none;
+        padding: 8px;
+        font-size: inherit;
+
+        &:focus {
+        outline-offset: -2px;
+        }
+    }
+}

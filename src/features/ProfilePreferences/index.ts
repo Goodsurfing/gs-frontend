@@ -1,3 +1,4 @@
 export { PopularPlaces } from "./ui/PopularPlaces/PopularPlaces";
-export { SelectCountries } from "./ui/SelectCountries/SelectCountries";
+export { AcrossRussia } from "./ui/AcrossRussia/AcrossRussia";
 export { Activity } from "./ui/Activity/Activity";
+export { InputSelectedCountries } from "./ui/InputSelectedCountries/InputSelectedCountries";

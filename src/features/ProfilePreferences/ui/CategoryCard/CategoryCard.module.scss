@@ -1,11 +1,13 @@
-.wrapper {
+.wrapper{
     position: relative;
     width: 130px;
     height: 174px;
     background-size: contain;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .title{

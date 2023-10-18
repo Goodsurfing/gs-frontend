@@ -1,21 +1,20 @@
 import React, { FC, useState } from "react";
 
-import { popularPlacesData } from "../../model/data/mockedPopularPlacesData";
-
-import styles from "./PopularPlaces.module.scss";
-import { CategoryCard } from "../CategoryCard/CategoryCard";
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
+import { acrossRussiaData } from "../../model/data/mockedPopularPlacesData";
+import { CategoryCard } from "../CategoryCard/CategoryCard";
 
-export const PopularPlaces: FC = () => {
+import styles from "./AcrossRussia.module.scss";
+
+export const AcrossRussia:FC = () => {
     const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
 
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.title}>Популярные места</h3>
+            <h3 className={styles.title}>По России</h3>
             <SelectableGroup
-                data={popularPlacesData}
+                data={acrossRussiaData}
                 getKey={(item) => item.value}
-                selectedItems={selectedPlaces}
                 onSelect={(value) => setSelectedPlaces(value)}
                 renderItem={(category, onClick, isSelect) => (
                     <CategoryCard
@@ -24,6 +23,7 @@ export const PopularPlaces: FC = () => {
                         isSelect={isSelect}
                     />
                 )}
+                selectedItems={selectedPlaces}
                 containerStyle={styles.container}
                 multiSelect
             />
