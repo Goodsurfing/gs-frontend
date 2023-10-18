@@ -26,6 +26,7 @@ import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
+import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 
 import {
@@ -45,6 +46,7 @@ import {
     getOffersWhatToDoPageUrl,
     getOffersConditionsPageUrl,
     getProfileInfoPageUrl,
+    getProfilePreferencesPageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
     getProfileResetPasswordPageUrl,
@@ -257,6 +259,13 @@ const publicRoutes: RouteType[] = [
             </PrivateRouteGuard>
         ),
         path: (locale: string) => getProfileInfoPageUrl(locale),
+    },
+    {
+        label: "profile-preferences",
+        element: (
+            <ProfilePreferencesPage />
+        ),
+        path: (locale: string) => getProfilePreferencesPageUrl(locale),
     },
 ];
 

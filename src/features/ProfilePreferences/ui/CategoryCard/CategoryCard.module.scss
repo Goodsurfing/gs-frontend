@@ -1,0 +1,30 @@
+.wrapper {
+    position: relative;
+    width: 130px;
+    height: 174px;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    color: white;
+    font-size: 18px;
+    font-family: Lato;
+    font-weight: 500;
+    line-height: 23.40px;
+    text-align: center;
+}
+
+.checkIcon{
+    position: absolute;
+    visibility: hidden;
+    right: 10px;
+    top: 10px;
+}
+
+.check{
+    visibility: visible;
+}
+
