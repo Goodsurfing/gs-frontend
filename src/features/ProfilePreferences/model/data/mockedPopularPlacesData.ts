@@ -26,6 +26,7 @@ import acivityImage9 from "@/shared/assets/images/popular-places/profile-prefere
 import acivityImage10 from "@/shared/assets/images/popular-places/profile-preferences/activity/10.png";
 import acivityImage11 from "@/shared/assets/images/popular-places/profile-preferences/activity/11.png";
 import acivityImage12 from "@/shared/assets/images/popular-places/profile-preferences/activity/12.png";
+import acivityImage13 from "@/shared/assets/images/popular-places/profile-preferences/activity/13.png";
 
 export const popularPlacesData:PreferenceCategory[] = [
     {
@@ -177,5 +178,11 @@ export const activityData:PreferenceCategory[] = [
         title: "Оплачиваемая работа",
         image: acivityImage12,
         value: "paid_work",
+    },
+    {
+        id: 13,
+        title: "Другое",
+        image: acivityImage13,
+        value: "other",
     },
 ];
