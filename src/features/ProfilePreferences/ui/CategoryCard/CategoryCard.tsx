@@ -21,7 +21,7 @@ export const CategoryCard: FC<CategoryCardProps> = memo(
                 onClick={onClick}
                 style={{ backgroundImage: `url(${image})` }}
             >
-                <h4 className={styles.title}>{title}</h4>
+                <h4 className={cn(styles.title, { [styles.selected]: isSelect })}>{title}</h4>
                 <img
                     src={selectCheckIcon}
                     alt="Select check icon"
