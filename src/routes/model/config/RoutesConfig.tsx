@@ -58,11 +58,13 @@ import {
     getMyOffersPageUrl,
     getHostPageUrl,
     getHostTeamPageUrl,
+    getProfileRolePagePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
+import { ProfileRolePage } from "@/pages/ProfileRolePage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -266,6 +268,13 @@ const publicRoutes: RouteType[] = [
             <ProfilePreferencesPage />
         ),
         path: (locale: string) => getProfilePreferencesPageUrl(locale),
+    },
+    {
+        label: "profile-role",
+        element: (
+            <ProfileRolePage />
+        ),
+        path: (locale: string) => getProfileRolePagePageUrl(locale),
     },
 ];
 

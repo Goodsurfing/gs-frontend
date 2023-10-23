@@ -20,6 +20,10 @@
     transition: transform 0.3s ease;
 }
 
+.title.selected {
+    transform: translateY(40px);
+  }
+
 .checkIcon{
     position: absolute;
     visibility: hidden;
