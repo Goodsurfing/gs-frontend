@@ -40,6 +40,10 @@
                     "privacy-policy": "Политика конфиденциальности",
                     "news": "Новости"
                 },
+                "messages": "Сообщения",
+                "my-page":"Моя страница",
+                "host-dashboard": "Дашборд хоста",
+                "volunteer-dashboard": "Дашборд волонтёра",
                 "sign-in": "Вход",
                 "sign-up": "Регистрация",
                 "exit": "Выход"

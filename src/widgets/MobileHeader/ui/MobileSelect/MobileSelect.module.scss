@@ -1,0 +1,57 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    width: 100%;
+    background-color: #ecf1f4;
+    color: var(--text-primary-1);
+    padding: 25px 20px;
+    justify-content: start;
+    text-transform: none;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: 600;
+
+    &.active {
+        color: var(--text-secondary-2);
+    }
+}
+
+.arrowActive {
+    border-color: transparent transparent var(--text-secondary-2);
+}
+
+.selectContainer {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: transform 300ms, opacity 300ms, display 300ms;
+
+    &.open {
+        display: flex;
+    }
+}
+
+// todo fix animation of select button
+// .my-node-enter {
+//   opacity: 0;
+//   transform: translateY(-100%);
+// }
+// .my-node-enter-active {
+//   opacity: 1;
+//   transform: translateY(0);
+// }
+// .my-node-exit {
+//   opacity: 1;
+//   transform: translateY(0);
+// }
+// .my-node-exit-active {
+//   opacity: 0;
+//   transform: translateY(-100%);
+//   display: none;
+// }
+// .my-node-exit-done {
+//   opacity: 0;
+// }

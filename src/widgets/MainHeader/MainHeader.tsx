@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Button } from "@mui/material";
-import MobileHeader from "@/components/MobileHeader/MobileHeader";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";

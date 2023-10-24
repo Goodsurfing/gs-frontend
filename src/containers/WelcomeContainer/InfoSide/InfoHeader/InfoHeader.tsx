@@ -14,7 +14,7 @@ import {
 } from "@/shared/config/routes/AppUrls";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import MobileHeader from "@/components/MobileHeader/MobileHeader";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
 import { getUserAuthData, userActions } from "@/entities/User";

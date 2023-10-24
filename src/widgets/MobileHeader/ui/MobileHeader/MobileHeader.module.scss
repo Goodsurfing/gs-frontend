@@ -59,7 +59,7 @@
 }
 
 .menu {
-	position: fixed;
+	position: absolute;
 
 	z-index: 1000;
 	top: 0;
@@ -91,4 +91,63 @@
 
 .active {
 	transform: translateX(0);
+}
+
+.selectContainer {
+    padding: 20px;
+    background-color: var(--bg-field);
+    top: 120%;
+    display: none;
+    flex-direction: column;
+    row-gap: 10px;
+
+	.title {
+        border-bottom: 1px solid var(--text-caption);
+        padding-bottom: 15px;
+        font-size: 16px;
+    }
+
+    .offersContainer {
+        display: flex;
+        column-gap: 30px;
+        min-width: 280px;
+
+        .famousContainer,
+        .acrossRussiaContainer {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+        }
+    }
+
+
+    .viewAll {
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--accent-color);
+        margin-top: 15px;
+    }
+
+	.dropdownLink {
+		color: #212121;
+		font-size: 16px;
+		text-decoration: none;
+		font-weight: 500;
+		&:hover {
+			color: var(--hover-blue);
+		}
+	}
+}
+
+.button {
+    width: 100%;
+    background-color: #ecf1f4;
+    color: var(--text-primary-1);
+    padding: 25px 20px;
+    justify-content: start;
+    text-transform: none;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: 600;
 }
