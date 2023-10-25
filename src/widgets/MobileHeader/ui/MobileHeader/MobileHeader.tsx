@@ -70,11 +70,11 @@ const MobileHeader: FC = () => {
                     <img
                         src={mobileLogotype}
                         alt="GoodSurfing"
-                        className={styles.logo}
+                        className={cn(styles.logo, { [styles.logoOpen]: menuIsOpen })}
                     />
                 </Link>
 
-                <ChangeLanguage />
+                <ChangeLanguage className={cn({ [styles.changeLanguageOpen]: menuIsOpen })} />
                 <div
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
@@ -92,33 +92,11 @@ const MobileHeader: FC = () => {
                     [styles.active]: menuIsOpen,
                 })}
             >
-                {/* <div className={styles.link}>
-                    <Link to={getMainPageUrl(locale)}>{t("main.welcome.header.how-it-work")}</Link>
-                </div>
-                <div className={styles.link}>
-                    <Link to={getMainPageUrl(locale)}>
-                        {t("main.welcome.header.community.title")}
-                    </Link>
-                </div>
-                <div className={styles.link}>
-                    {authData ? (
-                        <Link to={getMainPageUrl(locale)}>Категории</Link>
-                    ) : (
-                        <Link to={getSignInPageUrl(locale)}>
-                            {t("main.welcome.header.sign-in")}
-                        </Link>
-                    )}
-                </div>
-                <div className={styles.link}>
-                    <Link to={getSignUpPageUrl(locale)}>
-                        {t("main.welcome.header.sign-up")}
-                    </Link>
-                </div> */}
-
+                <div className={styles.container} />
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     isOpen={dropdownOpened.isOffersOpened}
-                    title="Все вакансии"
+                    title={t("main.welcome.header.offers.title")}
                     onClick={() => handleOpenDropdown("OFFERS")}
                     // ref={offersRef}
                 >
@@ -216,7 +194,7 @@ const MobileHeader: FC = () => {
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     isOpen={dropdownOpened.isCommunityOpened}
-                    title="Сообщество"
+                    title={t("main.welcome.header.community.title")}
                     onClick={() => handleOpenDropdown("COMMUNITY")}
                     // ref={communityRef}
                 >
@@ -266,9 +244,8 @@ const MobileHeader: FC = () => {
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     isOpen={dropdownOpened.isAboutProjectOpened}
-                    title="О проекте"
+                    title={t("main.welcome.header.about-project.title")}
                     onClick={() => handleOpenDropdown("ABOUT")}
-                    // ref={aboutProjectRef}
                 >
                     <Link
                         className={styles.dropdownLink}
