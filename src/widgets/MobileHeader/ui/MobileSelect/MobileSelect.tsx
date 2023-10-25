@@ -1,10 +1,9 @@
 import React, {
-    FC, PropsWithChildren, ButtonHTMLAttributes, forwardRef, ForwardedRef,
+    FC, PropsWithChildren, ButtonHTMLAttributes, ForwardedRef,
 } from "react";
 
 import { Button } from "@mui/material";
 import cn from "classnames";
-import { CSSTransition } from "react-transition-group";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import styles from "./MobileSelect.module.scss";

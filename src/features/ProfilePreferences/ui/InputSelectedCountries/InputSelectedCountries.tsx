@@ -1,7 +1,6 @@
 import React, {
     FC, KeyboardEvent, useState, ChangeEvent,
 } from "react";
-import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import styles from "./InputSelectedCountries.module.scss";
 

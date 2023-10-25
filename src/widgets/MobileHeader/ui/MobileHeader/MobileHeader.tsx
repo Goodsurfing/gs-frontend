@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC, useState, useRef } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -98,7 +98,6 @@ const MobileHeader: FC = () => {
                     isOpen={dropdownOpened.isOffersOpened}
                     title={t("main.welcome.header.offers.title")}
                     onClick={() => handleOpenDropdown("OFFERS")}
-                    // ref={offersRef}
                 >
                     <div className={styles.offersContainer}>
                         <div className={styles.famousContainer}>
@@ -196,7 +195,6 @@ const MobileHeader: FC = () => {
                     isOpen={dropdownOpened.isCommunityOpened}
                     title={t("main.welcome.header.community.title")}
                     onClick={() => handleOpenDropdown("COMMUNITY")}
-                    // ref={communityRef}
                 >
                     <Link
                         className={styles.dropdownLink}
