@@ -1,20 +1,34 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
     useForm, Controller, useWatch, SubmitHandler,
 } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
 
 import { authApi } from "@/store/api/authApi";
-import { userInfoApi } from "@/store/api/userInfoApi";
 
 import styles from "./ProfileResetPasswordForm.module.scss";
-import { IResetPasswordRequestFormData } from "@/types/api/auth/resetPassword.interface";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Input from "@/shared/ui/Input/Input";
+
+interface FormDataImplemintaion {
+    currentPassword:string;
+    newPassword:string;
+    repeatNewPassword:string;
+}
+
+interface ToastState {
+    text:string;
+    type:HintType;
+
+}
 
 const ProfileResetPasswordForm: FC = () => {
-    const [resetPasswordRequest, { isSuccess }] = authApi.useResetPasswordRequestMutation();
-    const { data: userInfo, isSuccess: userInfoSuccess } = userInfoApi.useGetUserInfoQuery();
+    const [resetPasswordVerify, { isSuccess, isError }] = authApi.useResetPasswordVerifyMutation();
+    const [toast, setToast] = useState<ToastState>();
 
-    const { handleSubmit, control } = useForm();
+    const { handleSubmit, control, reset } = useForm<FormDataImplemintaion>();
 
     const newPassword = useWatch({
         control,
@@ -22,58 +36,88 @@ const ProfileResetPasswordForm: FC = () => {
         defaultValue: "",
     });
 
-    const onSubmit: SubmitHandler<IResetPasswordRequestFormData> = async ({}) => {
-        if (userInfoSuccess && userInfo) {
-            await resetPasswordRequest({ email: userInfo.email });
+    const onSubmit: SubmitHandler<FormDataImplemintaion> = async (
+        { newPassword: plainPassword },
+    ) => {
+        const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
+        if (!token) {
+            return;
         }
+        console.log(token);
+        await resetPasswordVerify({ token, plainPassword })
+            .unwrap()
+            .then((response) => {
+                console.log("Изменение пароля произошло успешно");
+                reset();
+            }).catch((error) => {
+                console.error(error);
+                setToast({
+                    text: "Произошла ошибка",
+                    type: HintType.Error,
+                });
+            });
     };
-
-    if (isSuccess) {
-        return <h1>Заявка на восстановления пароля отправлена на почту!</h1>;
-    }
 
     return (
         <div className={styles.wrapper}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className={styles.inputContainer} onSubmit={handleSubmit(onSubmit)}>
+                {isError && toast && (
+                    <HintPopup type={HintType.Error} text="Произошла ошибка" />
+                )}
+                {isSuccess && (
+                    <HintPopup type={HintType.Success} text="Изменение пароля произошло успешно" />
+                )}
                 <Controller
                     name="currentPassword"
                     control={control}
-                    defaultValue=""
                     rules={{ required: "Текущий пароль обязателен" }}
+                    defaultValue=""
                     render={({ field, fieldState }) => (
-                        <div>
+                        <div className={styles.inputWrapper}>
                             <label>Текущий пароль</label>
-                            <input type="password" {...field} />
-                            {fieldState.error && <p>{fieldState.error.message}</p>}
+                            <Input type="password" {...field} />
+                            {fieldState.error && (
+                                <p className={styles.inputError}>
+                                    {fieldState.error.message}
+                                </p>
+                            )}
                         </div>
                     )}
                 />
                 <Controller
                     name="newPassword"
                     control={control}
-                    defaultValue=""
                     rules={{ required: "Новый пароль обязателен" }}
+                    defaultValue=""
                     render={({ field, fieldState }) => (
-                        <div>
+                        <div className={styles.inputWrapper}>
                             <label>Новый пароль</label>
-                            <input type="password" {...field} />
-                            {fieldState.error && <p>{fieldState.error.message}</p>}
+                            <Input type="password" {...field} />
+                            {fieldState.error && (
+                                <p className={styles.inputError}>
+                                    {fieldState.error.message}
+                                </p>
+                            )}
                         </div>
                     )}
                 />
                 <Controller
                     name="repeatNewPassword"
                     control={control}
-                    defaultValue=""
                     rules={{
                         validate: (value) => value === newPassword || "Пароли должны совпадать",
                         required: "Повторите новый пароль",
                     }}
+                    defaultValue=""
                     render={({ field, fieldState }) => (
-                        <div>
+                        <div className={styles.inputWrapper}>
                             <label>Повторите новый пароль</label>
-                            <input type="password" {...field} />
-                            {fieldState.error && <p>{fieldState.error.message}</p>}
+                            <Input type="password" {...field} />
+                            {fieldState.error && (
+                                <p className={styles.inputError}>
+                                    {fieldState.error.message}
+                                </p>
+                            )}
                         </div>
                     )}
                 />
@@ -82,6 +126,7 @@ const ProfileResetPasswordForm: FC = () => {
                     color="BLUE"
                     variant="FILL"
                     size="MEDIUM"
+                    className={styles.button}
                 >
                     Сохранить
                 </Button>
