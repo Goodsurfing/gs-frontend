@@ -27,6 +27,7 @@ import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
+import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 
 import {
     getConfirmEmailPageUrl,
@@ -56,6 +57,7 @@ import {
     getMyOffersPageUrl,
     getHostPageUrl,
     getHostTeamPageUrl,
+    getProfilePrivacyPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteType } from "../types/langRouter";
@@ -257,6 +259,13 @@ const publicRoutes: RouteType[] = [
             </PrivateRouteGuard>
         ),
         path: (locale: string) => getProfileInfoPageUrl(locale),
+    },
+    {
+        label: "profile-info",
+        element: (
+            <ProfilePrivacyPage />
+        ),
+        path: (locale: string) => getProfilePrivacyPageUrl(locale),
     },
 ];
 

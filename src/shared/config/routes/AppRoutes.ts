@@ -8,6 +8,7 @@ export enum AppRoutes {
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
     PROFILE_INFO = "profile_info",
     PROFILE_RESET_PASSWORD = "profile_reset_password",
+    PROFILE_PRIVACY = "profile_privacy",
     HOST = "host",
     HOST_DASHBOARD = "dashboard",
     HOST_REGISTRATION = "offers_registration",
