@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import cn from "classnames";
 
 import styles from "./IconTextComponent.module.scss";
@@ -11,7 +11,7 @@ interface IconTextComponentProps {
     alt?:string;
 }
 
-export const IconTextComponent:FC<IconTextComponentProps> = (props:IconTextComponentProps) => {
+export const IconTextComponent:FC<IconTextComponentProps> = memo((props:IconTextComponentProps) => {
     const {
         className, text, icon, alt,
     } = props;
@@ -27,4 +27,4 @@ export const IconTextComponent:FC<IconTextComponentProps> = (props:IconTextCompo
             {text}
         </div>
     );
-};
+});

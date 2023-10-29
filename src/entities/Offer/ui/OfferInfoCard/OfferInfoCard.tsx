@@ -8,6 +8,7 @@ import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
 import { OfferConditionsCard } from "../OfferConditionsCard/OfferConditionsCard";
+import { OfferPaymentCard } from "../OfferPaymentCard/OfferPaymentCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -19,13 +20,16 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     return (
         <div className={cn(className)}>
             <OfferWhenCard offerWhen={offer.when} />
-            <OfferWhoNeedsCard className={styles.container} whoNeeds={offer.whoNeeds} />
+            <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} className={styles.container} />
             {offer.finishingTouches.extraConditions
             && (
                 <OfferConditionsCard
                     finishingTouches={offer.finishingTouches}
                     className={styles.wrapper}
                 />
+            )}
+            {(offer.conditions.payment.contribution || offer.conditions.payment.reward) && (
+                <OfferPaymentCard payment={offer.conditions.payment} className={styles.container} />
             )}
         </div>
     );

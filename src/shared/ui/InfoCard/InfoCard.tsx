@@ -6,8 +6,8 @@ import styles from "./InfoCard.module.scss";
 
 interface InfoCardItemProps {
     className?: string;
-    title: string;
-    text: string | number;
+    title?: string;
+    text?: string | number;
 }
 
 interface InfoCardProps {
