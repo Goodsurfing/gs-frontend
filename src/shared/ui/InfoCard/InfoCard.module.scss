@@ -1,9 +1,10 @@
 .wrapper {
-    background-color: var(--text-caption);
+    background-color: var(--bg-field);
     border-radius: 10px;
     display: flex;
     padding: 16px 30px;
     gap: 30px;
+    width: 100%;
 }
 
 .infoCardItem {
