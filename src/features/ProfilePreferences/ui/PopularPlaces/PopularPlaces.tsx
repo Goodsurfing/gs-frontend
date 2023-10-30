@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, memo, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
@@ -6,7 +6,7 @@ import { popularPlacesData } from "../../model/data/mockedPopularPlacesData";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./PopularPlaces.module.scss";
 
-export const PopularPlaces: FC = () => {
+export const PopularPlaces: FC = memo(() => {
     const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
 
     return (
@@ -29,4 +29,4 @@ export const PopularPlaces: FC = () => {
             />
         </div>
     );
-};
+});

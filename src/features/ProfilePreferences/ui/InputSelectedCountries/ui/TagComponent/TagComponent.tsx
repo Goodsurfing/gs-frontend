@@ -16,7 +16,7 @@ export const TagComponent: FC<TagComponentProps> = memo((props: TagComponentProp
     }, [index, handleDelete]);
 
     return (
-        <li key={tag}>
+        <li className={styles.tagWrapper} key={tag}>
             {tag}
             <button
                 type="button"

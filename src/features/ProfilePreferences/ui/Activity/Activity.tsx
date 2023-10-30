@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, memo, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
@@ -6,7 +6,7 @@ import { activityData } from "../../model/data/mockedPopularPlacesData";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
 
-export const Activity: FC = () => {
+export const Activity: FC = memo(() => {
     const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
     return (
@@ -33,4 +33,4 @@ export const Activity: FC = () => {
             </div>
         </div>
     );
-};
+});
