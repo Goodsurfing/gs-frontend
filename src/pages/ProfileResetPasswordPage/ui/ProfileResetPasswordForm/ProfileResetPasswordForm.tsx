@@ -1,27 +1,26 @@
 import React, { FC, useState } from "react";
 import {
-    useForm, Controller, useWatch, SubmitHandler,
+    Controller, SubmitHandler, useForm, useWatch,
 } from "react-hook-form";
-import Button from "@/shared/ui/Button/Button";
-
 import { authApi } from "@/store/api/authApi";
 
-import styles from "./ProfileResetPasswordForm.module.scss";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 
+import styles from "./ProfileResetPasswordForm.module.scss";
+
 interface FormDataImplemintaion {
-    currentPassword:string;
-    newPassword:string;
-    repeatNewPassword:string;
+    currentPassword: string;
+    newPassword: string;
+    repeatNewPassword: string;
 }
 
 interface ToastState {
-    text:string;
-    type:HintType;
-
+    text: string;
+    type: HintType;
 }
 
 const ProfileResetPasswordForm: FC = () => {
@@ -36,9 +35,9 @@ const ProfileResetPasswordForm: FC = () => {
         defaultValue: "",
     });
 
-    const onSubmit: SubmitHandler<FormDataImplemintaion> = async (
-        { newPassword: plainPassword },
-    ) => {
+    const onSubmit: SubmitHandler<FormDataImplemintaion> = async ({
+        newPassword: plainPassword,
+    }) => {
         const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
         if (!token) {
             return;
@@ -46,10 +45,11 @@ const ProfileResetPasswordForm: FC = () => {
         console.log(token);
         await resetPasswordVerify({ token, plainPassword })
             .unwrap()
-            .then((response) => {
+            .then(() => {
                 console.log("Изменение пароля произошло успешно");
                 reset();
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.error(error);
                 setToast({
                     text: "Произошла ошибка",
@@ -60,12 +60,18 @@ const ProfileResetPasswordForm: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <form className={styles.inputContainer} onSubmit={handleSubmit(onSubmit)}>
+            <form
+                className={styles.inputContainer}
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 {isError && toast && (
                     <HintPopup type={HintType.Error} text="Произошла ошибка" />
                 )}
                 {isSuccess && (
-                    <HintPopup type={HintType.Success} text="Изменение пароля произошло успешно" />
+                    <HintPopup
+                        type={HintType.Success}
+                        text="Изменение пароля произошло успешно"
+                    />
                 )}
                 <Controller
                     name="currentPassword"
@@ -131,7 +137,6 @@ const ProfileResetPasswordForm: FC = () => {
                     Сохранить
                 </Button>
             </form>
-
         </div>
     );
 };

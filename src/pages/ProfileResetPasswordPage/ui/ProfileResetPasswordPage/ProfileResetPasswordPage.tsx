@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import ProfileResetPasswordForm from "@/pages/ProfileResetPasswordPage/ui/ProfileResetPasswordForm/ProfileResetPasswordForm";
 
 import { PageLayout } from "@/widgets/PageLayout";
+
 import { SideMenuData } from "@/shared/data/sidebar/profile-pages";
 
 import styles from "./ProfileResetPasswordPage.module.scss";
