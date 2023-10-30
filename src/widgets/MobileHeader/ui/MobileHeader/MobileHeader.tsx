@@ -1,24 +1,33 @@
+import { Button } from "@mui/material";
 import cn from "classnames";
-import React, { FC, useState, useReducer } from "react";
+import React, {
+    FC, useCallback, useReducer, useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Button } from "@mui/material";
+import { useLocale } from "@/app/providers/LocaleProvider";
+
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
-
 import {
-    getMainPageUrl, getSignInPageUrl, getSignUpPageUrl, getProfileInfoPageUrl,
+    getMainPageUrl,
+    getProfileInfoPageUrl,
+    getSignInPageUrl,
+    getSignUpPageUrl,
 } from "@/shared/config/routes/AppUrls";
+import { useAppSelector } from "@/shared/hooks/redux";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { MobileSelect } from "../MobileSelect/MobileSelect";
-import { getUserAuthData } from "@/entities/User";
-import { ButtonNav, initialState, toggleDropdownReducer } from "./lib/mobileHeaderUtils";
 import styles from "./MobileHeader.module.scss";
+import {
+    ButtonNav,
+    initialState,
+    toggleDropdownReducer,
+} from "./lib/mobileHeaderUtils";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
@@ -27,11 +36,19 @@ const MobileHeader: FC = () => {
 
     const authData = useAppSelector(getUserAuthData);
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-    const [dropdownOpened, dispatch] = useReducer(toggleDropdownReducer, initialState);
+    const [dropdownOpened, dispatch] = useReducer(
+        toggleDropdownReducer,
+        initialState,
+    );
 
     const handleOpenDropdown = (type: ButtonNav) => {
         dispatch({ type });
     };
+
+    const handleOpenMenu = useCallback(
+        () => setMenuIsOpen(!menuIsOpen),
+        [menuIsOpen],
+    );
 
     return (
         <>
@@ -40,16 +57,20 @@ const MobileHeader: FC = () => {
                     <img
                         src={mobileLogotype}
                         alt="GoodSurfing"
-                        className={cn(styles.logo, { [styles.logoOpen]: menuIsOpen })}
+                        className={cn(styles.logo, {
+                            [styles.logoOpen]: menuIsOpen,
+                        })}
                     />
                 </Link>
 
-                <ChangeLanguage className={cn({ [styles.changeLanguageOpen]: menuIsOpen })} />
+                <ChangeLanguage
+                    className={cn({ [styles.changeLanguageOpen]: menuIsOpen })}
+                />
                 <div
                     className={cn(styles.burger, {
                         [styles.open]: menuIsOpen,
                     })}
-                    onClick={() => setMenuIsOpen(!menuIsOpen)}
+                    onClick={handleOpenMenu}
                 >
                     <span />
                     <span />
@@ -252,52 +273,49 @@ const MobileHeader: FC = () => {
                         {t("main.welcome.header.about-project.news")}
                     </Link>
                 </MobileSelect>
-                {
-                    authData ? (
-                        <>
-                            <Button
-                                onClick={() => navigate(getProfileInfoPageUrl(locale))}
-                                className={styles.button}
-                            >
-                                {t("main.welcome.header.my-page")}
-                            </Button>
-                            <Button
-                                onClick={() => navigate(getMainPageUrl(locale))}
-                                className={styles.button}
-                            >
-                                {t("main.welcome.header.messages")}
-                            </Button>
-                            <Button
-                                onClick={() => navigate(getProfileInfoPageUrl(locale))}
-                                className={styles.button}
-                            >
-                                {t("main.welcome.header.host-dashboard")}
-                            </Button>
-                            <Button
-                                onClick={() => navigate(getMainPageUrl(locale))}
-                                className={styles.button}
-                            >
-                                {t("main.welcome.header.volunteer-dashboard")}
-                            </Button>
-                        </>
-                    )
-                        : (
-                            <>
-                                <Button
-                                    onClick={() => navigate(getSignInPageUrl(locale))}
-                                    className={styles.button}
-                                >
-                                    {t("main.welcome.header.sign-in")}
-                                </Button>
-                                <Button
-                                    onClick={() => navigate(getSignUpPageUrl(locale))}
-                                    className={styles.button}
-                                >
-                                    {t("main.welcome.header.sign-up")}
-                                </Button>
-                            </>
-                        )
-                }
+                {authData ? (
+                    <>
+                        <Button
+                            onClick={() => navigate(getProfileInfoPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.my-page")}
+                        </Button>
+                        <Button
+                            onClick={() => navigate(getMainPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.messages")}
+                        </Button>
+                        <Button
+                            onClick={() => navigate(getProfileInfoPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.host-dashboard")}
+                        </Button>
+                        <Button
+                            onClick={() => navigate(getMainPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.volunteer-dashboard")}
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        <Button
+                            onClick={() => navigate(getSignInPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.sign-in")}
+                        </Button>
+                        <Button
+                            onClick={() => navigate(getSignUpPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.sign-up")}
+                        </Button>
+                    </>
+                )}
             </div>
         </>
     );

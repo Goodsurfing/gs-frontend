@@ -1,9 +1,12 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback } from "react";
 
 interface SelectableGroupProps<T> {
     data: T[];
-    renderItem: (item: T,
-        onClick: () => void, isSelected: boolean) => ReactNode; // Pass isSelected to renderItem
+    renderItem: (
+        item: T,
+        onClick: () => void,
+        isSelected: boolean
+    ) => ReactNode; // Pass isSelected to renderItem
     selectedItems: string[]; // Selected items are always strings
     onSelect: (item: string[]) => void; // Selected items are always strings
     getKey: (item: T) => string | number; // Key extraction from object
@@ -42,18 +45,23 @@ export const SelectableGroup = <T,>({
     containerStyle,
 }: SelectableGroupProps<T>) => {
     const isSelected = (item: T) => selectedItems.includes(getKey(item).toString());
-    const handleSelection = (item: T) => {
-        const itemKey = getKey(item).toString();
+    const handleSelection = useCallback(
+        (item: T) => {
+            const itemKey = getKey(item).toString();
 
-        if (multiSelect) {
-            const updatedSelection = selectedItems.includes(itemKey)
-                ? selectedItems.filter((selectedItem) => selectedItem !== itemKey)
-                : [...selectedItems, itemKey];
-            onSelect(updatedSelection);
-        } else {
-            onSelect([itemKey]);
-        }
-    };
+            if (multiSelect) {
+                const updatedSelection = selectedItems.includes(itemKey)
+                    ? selectedItems.filter(
+                        (selectedItem) => selectedItem !== itemKey,
+                    )
+                    : [...selectedItems, itemKey];
+                onSelect(updatedSelection);
+            } else {
+                onSelect([itemKey]);
+            }
+        },
+        [multiSelect, onSelect, getKey, selectedItems],
+    );
 
     return (
         <div className={containerStyle}>

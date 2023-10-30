@@ -1,10 +1,11 @@
 import React, {
-    FC, KeyboardEvent, useState, ChangeEvent,
+    FC, KeyboardEvent, useState, ChangeEvent, memo,
 } from "react";
 
 import styles from "./InputSelectedCountries.module.scss";
+import { TagComponent } from "../TagComponent/TagComponent";
 
-export const InputSelectedCountries: FC = () => {
+export const InputSelectedCountries: FC = memo(() => {
     const [tags, setTags] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>("");
 
@@ -43,12 +44,7 @@ export const InputSelectedCountries: FC = () => {
             <div className={styles.tagInput}>
                 <ul className={styles.tagList}>
                     {tags.map((tag, index) => (
-                        <li key={tag}>
-                            {tag}
-                            <button type="button" onClick={() => { handleDelete(index); }}>
-                                <div className={styles.deleteIcon} />
-                            </button>
-                        </li>
+                        <TagComponent tag={tag} handleDelete={handleDelete} index={index} />
                     ))}
                 </ul>
                 <input
@@ -62,4 +58,4 @@ export const InputSelectedCountries: FC = () => {
             </div>
         </div>
     );
-};
+});
