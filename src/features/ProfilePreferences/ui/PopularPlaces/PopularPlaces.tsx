@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 
-import { popularPlacesData } from "../../model/data/mockedPopularPlacesData";
-
-import styles from "./PopularPlaces.module.scss";
-import { CategoryCard } from "../CategoryCard/CategoryCard";
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
+
+import { popularPlacesData } from "../../model/data/mockedPopularPlacesData";
+import { CategoryCard } from "../CategoryCard/CategoryCard";
+import styles from "./PopularPlaces.module.scss";
 
 export const PopularPlaces: FC = () => {
     const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);

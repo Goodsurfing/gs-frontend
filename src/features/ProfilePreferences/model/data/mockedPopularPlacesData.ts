@@ -1,19 +1,9 @@
-import { PreferenceCategory } from "../types/profilePreferences";
-
-import popularPlace1 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/1.png";
-import popularPlace2 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/2.png";
-import popularPlace3 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/3.png";
-import popularPlace4 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/4.png";
-import popularPlace5 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/5.png";
-import popularPlace6 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/6.png";
-
 import acrossRussia1 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/1.png";
 import acrossRussia2 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/2.png";
 import acrossRussia3 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/3.png";
 import acrossRussia4 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/4.png";
 import acrossRussia5 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/5.png";
 import acrossRussia6 from "@/shared/assets/images/popular-places/profile-preferences/across-russia/6.png";
-
 import acivityImage1 from "@/shared/assets/images/popular-places/profile-preferences/activity/1.png";
 import acivityImage2 from "@/shared/assets/images/popular-places/profile-preferences/activity/2.png";
 import acivityImage3 from "@/shared/assets/images/popular-places/profile-preferences/activity/3.png";
@@ -27,8 +17,16 @@ import acivityImage10 from "@/shared/assets/images/popular-places/profile-prefer
 import acivityImage11 from "@/shared/assets/images/popular-places/profile-preferences/activity/11.png";
 import acivityImage12 from "@/shared/assets/images/popular-places/profile-preferences/activity/12.png";
 import acivityImage13 from "@/shared/assets/images/popular-places/profile-preferences/activity/13.png";
+import popularPlace1 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/1.png";
+import popularPlace2 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/2.png";
+import popularPlace3 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/3.png";
+import popularPlace4 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/4.png";
+import popularPlace5 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/5.png";
+import popularPlace6 from "@/shared/assets/images/popular-places/profile-preferences/popular-places/6.png";
 
-export const popularPlacesData:PreferenceCategory[] = [
+import { PreferenceCategory } from "../types/profilePreferences";
+
+export const popularPlacesData: PreferenceCategory[] = [
     {
         id: 1,
         title: "Латинская Америка",
@@ -67,7 +65,7 @@ export const popularPlacesData:PreferenceCategory[] = [
     },
 ];
 
-export const acrossRussiaData:PreferenceCategory[] = [
+export const acrossRussiaData: PreferenceCategory[] = [
     {
         id: 1,
         title: "Алтай",
@@ -106,7 +104,7 @@ export const acrossRussiaData:PreferenceCategory[] = [
     },
 ];
 
-export const activityData:PreferenceCategory[] = [
+export const activityData: PreferenceCategory[] = [
     {
         id: 1,
         title: "Работа в хостеле",

@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     position: relative;
     width: 130px;
     height: 174px;
@@ -10,28 +10,27 @@
     flex-shrink: 0;
 }
 
-.title{
+.title {
     color: white;
     font-size: 18px;
     font-family: Lato;
     font-weight: 500;
-    line-height: 23.40px;
+    line-height: 23.4px;
     text-align: center;
     transition: transform 0.3s ease;
 }
 
 .title.selected {
     transform: translateY(40px);
-  }
+}
 
-.checkIcon{
+.checkIcon {
     position: absolute;
     visibility: hidden;
     right: 10px;
     top: 10px;
 }
 
-.check{
+.check {
     visibility: visible;
 }
-

@@ -1,17 +1,19 @@
 import React, { FC, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
-import { CategoryCard } from "../CategoryCard/CategoryCard";
-import { activityData } from "../../model/data/mockedPopularPlacesData";
 
+import { activityData } from "../../model/data/mockedPopularPlacesData";
+import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
 
-export const Activity:FC = () => {
+export const Activity: FC = () => {
     const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.title}>Какой тип путешествий вы предпочитаете</h2>
+            <h2 className={styles.title}>
+                Какой тип путешествий вы предпочитаете
+            </h2>
             <div className={styles.wrapper}>
                 <SelectableGroup
                     data={activityData}

@@ -1,12 +1,12 @@
 import React, { FC, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
+
 import { acrossRussiaData } from "../../model/data/mockedPopularPlacesData";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
-
 import styles from "./AcrossRussia.module.scss";
 
-export const AcrossRussia:FC = () => {
+export const AcrossRussia: FC = () => {
     const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
 
     return (

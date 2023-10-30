@@ -1,15 +1,15 @@
+import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import cn from "classnames";
-import { PreferenceCategory } from "../../model/types/profilePreferences";
 import selectCheckIcon from "@/shared/assets/icons/select-check.svg";
 
+import { PreferenceCategory } from "../../model/types/profilePreferences";
 import styles from "./CategoryCard.module.scss";
 
 interface CategoryCardProps {
-    category:PreferenceCategory;
-    isSelect:boolean;
-    onClick: () => void
+    category: PreferenceCategory;
+    isSelect: boolean;
+    onClick: () => void;
 }
 
 export const CategoryCard: FC<CategoryCardProps> = memo(
@@ -21,11 +21,19 @@ export const CategoryCard: FC<CategoryCardProps> = memo(
                 onClick={onClick}
                 style={{ backgroundImage: `url(${image})` }}
             >
-                <h4 className={cn(styles.title, { [styles.selected]: isSelect })}>{title}</h4>
+                <h4
+                    className={cn(styles.title, {
+                        [styles.selected]: isSelect,
+                    })}
+                >
+                    {title}
+                </h4>
                 <img
                     src={selectCheckIcon}
                     alt="Select check icon"
-                    className={cn(styles.checkIcon, { [styles.check]: isSelect })}
+                    className={cn(styles.checkIcon, {
+                        [styles.check]: isSelect,
+                    })}
                 />
             </div>
         );
