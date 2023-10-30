@@ -9,6 +9,7 @@ import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
 import { OfferConditionsCard } from "../OfferConditionsCard/OfferConditionsCard";
 import { OfferPaymentCard } from "../OfferPaymentCard/OfferPaymentCard";
+import { OfferDescriptionCard } from "../OfferDescriptionCard/OfferDescriptionCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -31,6 +32,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
             {(offer.conditions.payment.contribution || offer.conditions.payment.reward) && (
                 <OfferPaymentCard payment={offer.conditions.payment} className={styles.container} />
             )}
+            <OfferDescriptionCard description={offer.description} className={styles.container} />
         </div>
     );
 });
