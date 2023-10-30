@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC, useState } from "react";
+import React, { FC, useState, useReducer } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,51 +16,21 @@ import {
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MobileSelect } from "../MobileSelect/MobileSelect";
+import { getUserAuthData } from "@/entities/User";
+import { ButtonNav, initialState, toggleDropdownReducer } from "./lib/mobileHeaderUtils";
 import styles from "./MobileHeader.module.scss";
-
-interface DropdownState {
-    isCommunityOpened: boolean;
-    isAboutProjectOpened: boolean;
-    isOffersOpened: boolean;
-}
-
-type ButtonNav = "OFFERS" | "COMMUNITY" | "ABOUT";
 
 const MobileHeader: FC = () => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
 
-    const authData = useAppSelector((state) => state.user.authData);
+    const authData = useAppSelector(getUserAuthData);
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-    const [dropdownOpened, setDropdownOpened] = useState<DropdownState>({
-        isCommunityOpened: false,
-        isAboutProjectOpened: false,
-        isOffersOpened: false,
-    });
+    const [dropdownOpened, dispatch] = useReducer(toggleDropdownReducer, initialState);
 
     const handleOpenDropdown = (type: ButtonNav) => {
-        setDropdownOpened((prev) => {
-            switch (type) {
-                case "COMMUNITY":
-                    return {
-                        ...prev,
-                        isCommunityOpened: !prev.isCommunityOpened,
-                    };
-                case "ABOUT":
-                    return {
-                        ...prev,
-                        isAboutProjectOpened: !prev.isAboutProjectOpened,
-                    };
-                case "OFFERS":
-                    return {
-                        ...prev,
-                        isOffersOpened: !prev.isOffersOpened,
-                    };
-                default:
-                    return prev;
-            }
-        });
+        dispatch({ type });
     };
 
     return (
