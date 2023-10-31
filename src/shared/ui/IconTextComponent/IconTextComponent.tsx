@@ -13,9 +13,12 @@ interface IconTextComponentProps {
 
 export const IconTextComponent: FC<IconTextComponentProps> = memo(
     (props: IconTextComponentProps) => {
-        const { className, text, icon, alt } = props;
+        const {
+            className, text, icon, alt,
+        } = props;
+
         return (
-            <div className={styles.container}>
+            <div className={cn(styles.container, className)}>
                 <div className={styles.iconWrapper}>
                     <IconComponent
                         className={styles.icon}
@@ -26,5 +29,5 @@ export const IconTextComponent: FC<IconTextComponentProps> = memo(
                 {text}
             </div>
         );
-    }
+    },
 );
