@@ -6,8 +6,10 @@ interface ProfileDeleteSwitchProps {
     className?: string;
 }
 
-export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(({ className }) => (
-    <Button className={className} color="BLUE" variant="FILL" size="SMALL">
-        Удалить аккаунт
-    </Button>
-));
+export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(
+    ({ className }: ProfileDeleteSwitchProps) => (
+        <Button className={className} color="BLUE" variant="FILL" size="SMALL">
+            Удалить аккаунт
+        </Button>
+    ),
+);
