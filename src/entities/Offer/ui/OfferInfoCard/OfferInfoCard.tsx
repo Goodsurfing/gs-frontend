@@ -8,19 +8,21 @@ import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import { OfferLanguagesCard } from "../OfferLanguagesCard/OfferLanguagesCard";
 import styles from "./OfferInfoCard.module.scss";
+import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 
 interface HostInfoCardProps {
     className?: string;
-    offer: Offer;
+    offer?: Offer;
 }
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
-            <OfferWhenCard offerWhen={offer.when} />
+            {/* <OfferWhenCard offerWhen={offer.when} />
             <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
-            <OfferLanguagesCard languages={offer.whoNeeds.languages} />
+            <OfferLanguagesCard languages={offer.whoNeeds.languages} /> */}
+            <OfferAddressCard address="улица Пушкина, 46" />
         </div>
     );
 });
