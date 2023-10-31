@@ -25,6 +25,8 @@ export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/$
 // About me pages
 
 export const getProfileInfoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_info}`;
+export const getProfilePreferencesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_preferences}`;
+export const getProfileRolePagePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_role}`;
 
 // Host pages
 

@@ -26,6 +26,7 @@ import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
+import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 
 import {
@@ -45,6 +46,7 @@ import {
     getOffersWhatToDoPageUrl,
     getOffersConditionsPageUrl,
     getProfileInfoPageUrl,
+    getProfilePreferencesPageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
     getProfileResetPasswordPageUrl,
@@ -56,11 +58,13 @@ import {
     getMyOffersPageUrl,
     getHostPageUrl,
     getHostTeamPageUrl,
+    getProfileRolePagePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
+import { ProfileRolePage } from "@/pages/ProfileRolePage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -257,6 +261,20 @@ const publicRoutes: RouteType[] = [
             </PrivateRouteGuard>
         ),
         path: (locale: string) => getProfileInfoPageUrl(locale),
+    },
+    {
+        label: "profile-preferences",
+        element: (
+            <ProfilePreferencesPage />
+        ),
+        path: (locale: string) => getProfilePreferencesPageUrl(locale),
+    },
+    {
+        label: "profile-role",
+        element: (
+            <ProfileRolePage />
+        ),
+        path: (locale: string) => getProfileRolePagePageUrl(locale),
     },
 ];
 
