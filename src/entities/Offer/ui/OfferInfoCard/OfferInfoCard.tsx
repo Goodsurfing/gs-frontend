@@ -4,9 +4,10 @@ import cn from "classnames";
 
 import { Offer } from "../../model/types/offer";
 
-import styles from "./OfferInfoCard.module.scss";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
+import { OfferLanguagesCard } from "../OfferLanguagesCard/OfferLanguagesCard";
+import styles from "./OfferInfoCard.module.scss";
 
 interface HostInfoCardProps {
     className?: string;
@@ -19,6 +20,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
         <div className={cn(className, styles.wrapper)}>
             <OfferWhenCard offerWhen={offer.when} />
             <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
+            <OfferLanguagesCard languages={offer.whoNeeds.languages} />
         </div>
     );
 });
