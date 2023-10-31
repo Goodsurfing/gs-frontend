@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useCallback } from "react";
 import {
     Controller, SubmitHandler, useForm, useWatch,
 } from "react-hook-form";
@@ -35,7 +35,7 @@ const ProfileResetPasswordForm: FC = () => {
         defaultValue: "",
     });
 
-    const onSubmit: SubmitHandler<FormDataImplemintaion> = async ({
+    const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(async ({
         newPassword: plainPassword,
     }) => {
         const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
@@ -56,7 +56,7 @@ const ProfileResetPasswordForm: FC = () => {
                     type: HintType.Error,
                 });
             });
-    };
+    }, [resetPasswordVerify, reset]);
 
     return (
         <div className={styles.wrapper}>

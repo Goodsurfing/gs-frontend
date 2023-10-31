@@ -1,13 +1,13 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 
 import Button from "@/shared/ui/Button/Button";
 
-interface ProfileDeleteProps {
+interface ProfileDeleteSwitchProps {
     className?: string;
 }
 
-export const ProfileDelete: FC<ProfileDeleteProps> = ({ className }) => (
+export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(({ className }) => (
     <Button className={className} color="BLUE" variant="FILL" size="SMALL">
         Удалить аккаунт
     </Button>
-);
+));

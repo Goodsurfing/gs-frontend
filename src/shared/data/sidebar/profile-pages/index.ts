@@ -25,11 +25,11 @@ export const SideMenuData: SidebarContentProps[] = [
     {
         text: "Пароль",
         icon: lockIcon,
-        route: "/",
+        route: "/profile/reset-password",
     },
     {
-        route: "/",
         text: "Приватность",
         icon: shieldIcon,
+        route: "/profile/privacy",
     },
 ];

@@ -1,14 +1,14 @@
-import React from "react";
+import React, {FC, memo} from "react";
 
 import {
-    ProfileDelete,
+    ProfileDeleteSwitch,
     ProfileHideSwitch,
     ProfileNewsletterSwitch,
 } from "@/features/ProfilePrivacy";
 
 import styles from "./ProfilePrivacy.module.scss";
 
-export const ProfilePrivacy = () => (
+export const ProfilePrivacy:FC = memo(() => (
     <div className={styles.wrapper}>
         <div className={styles.container}>
             <ProfileHideSwitch />
@@ -27,7 +27,7 @@ export const ProfilePrivacy = () => (
             </p>
         </div>
         <div className={styles.container}>
-            <ProfileDelete />
+            <ProfileDeleteSwitch />
             <div className={styles.iconContainer}>
                 <div className={styles.errorLineIcon} />
                 <p className={styles.description}>
@@ -38,4 +38,4 @@ export const ProfilePrivacy = () => (
             </div>
         </div>
     </div>
-);
+));
