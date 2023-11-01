@@ -50,13 +50,6 @@ const MapWithAddress = (
     }, [options]);
 
     useEffect(() => {
-        console.log("value", value);
-        console.log("options", options);
-        console.log("inputValue", inputValue);
-        console.log("debouncedAddress", debouncedAddress);
-    }, [value, options, inputValue, debouncedAddress]);
-
-    useEffect(() => {
         let active = true;
 
         if (!ymap) {

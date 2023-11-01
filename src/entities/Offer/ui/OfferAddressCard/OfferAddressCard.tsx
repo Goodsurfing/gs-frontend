@@ -1,15 +1,13 @@
 import { Placemark } from "@pbe/react-yandex-maps";
 import cn from "classnames";
-import React, {
-    FC, memo, useState, useEffect,
-} from "react";
+import React, { FC, memo, useEffect, useState } from "react";
 
 import { validateCoordinates } from "@/features/MapWithAddress/model/lib/validateCoordinates";
+import { getGeoObjectCollection } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
 
-import { GeoObject, GeoObjectCollection, YMap, YmapType } from "@/entities/Map";
+import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
 import styles from "./OfferAddressCard.module.scss";
-import { getGeoObjectCollection } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
 
 interface OfferAddressCardProps {
     address: string;
@@ -23,13 +21,11 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
 
         useEffect(() => {
             getGeoObjectCollection(address).then((response) => {
-                setCoordinates(response?.featureMember[1].);
+                if (response?.featureMember.length) {
+                    setCoordinates(response.featureMember[0].GeoObject);
+                }
             });
         }, [address]);
-
-        useEffect(() => {
-            console.log(coordinates);
-        }, [coordinates]);
 
         return (
             <div className={styles.wrapper}>
@@ -37,17 +33,17 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                 <span>{address}</span>
                 <YMap
                     mapState={{
-                        center: validateCoordinates(""),
+                        center: validateCoordinates(coordinates?.Point.pos),
                         zoom: 10,
                     }}
                     className={cn(styles.map)}
                     setYmap={(ymaps) => setYmap(ymaps)}
                 >
                     <Placemark
-                        geometry={validateCoordinates("")}
+                        geometry={validateCoordinates(coordinates?.Point.pos)}
                     />
                 </YMap>
             </div>
         );
-    },
+    }
 );
