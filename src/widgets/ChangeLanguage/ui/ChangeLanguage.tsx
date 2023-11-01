@@ -7,13 +7,10 @@ import { ILanguage } from "@/types/languages";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import ruIcon from "@/shared/assets/icons/langs/ru.svg";
-import esIcon from "@/shared/assets/icons/langs/spain.svg";
-import enIcon from "@/shared/assets/icons/langs/uk.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
-import { changeLanguageData } from "../model/data/ChangeLanguage.data";
+import { changeLanguageData, languageIconsData } from "../model/data/ChangeLanguage.data";
 import styles from "./ChangeLanguage.module.scss";
 
 interface ChangeLanguageProps {
@@ -55,9 +52,7 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                 className={cn(styles.selectLang, className)}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {language === "ru" && <img src={ruIcon} alt="Russian language" />}
-                {language === "en" && <img src={enIcon} alt="English language" />}
-                {language === "es" && <img src={esIcon} alt="Spain language" />}
+                <img src={languageIconsData[language]} alt={`${language} language`} />
                 <Arrow isOpen={isOpen} />
             </div>
             <div

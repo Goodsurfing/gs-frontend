@@ -63,6 +63,7 @@ import {
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
+import { AuthProvider } from "@/app/providers/AuthProvider";
 
 const publicRoutes: RouteType[] = [
     {
@@ -240,7 +241,9 @@ const publicRoutes: RouteType[] = [
     {
         label: "reset-password-profile",
         element: (
-            <ProfileResetPasswordPage />
+            <AuthProvider>
+                <ProfileResetPasswordPage />
+            </AuthProvider>
         ),
         path: (locale: string) => getProfileResetPasswordPageUrl(locale),
     },

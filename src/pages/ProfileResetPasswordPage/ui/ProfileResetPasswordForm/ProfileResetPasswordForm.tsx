@@ -4,13 +4,13 @@ import {
 } from "react-hook-form";
 import { authApi } from "@/store/api/authApi";
 
-import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 
 import styles from "./ProfileResetPasswordForm.module.scss";
+import { useAuth } from "@/app/providers/AuthProvider";
 
 interface FormDataImplemintaion {
     currentPassword: string;
@@ -26,6 +26,7 @@ interface ToastState {
 const ProfileResetPasswordForm: FC = () => {
     const [resetPasswordVerify, { isSuccess, isError }] = authApi.useResetPasswordVerifyMutation();
     const [toast, setToast] = useState<ToastState>();
+    const { token } = useAuth();
 
     const { handleSubmit, control, reset } = useForm<FormDataImplemintaion>();
 
@@ -38,11 +39,13 @@ const ProfileResetPasswordForm: FC = () => {
     const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(async ({
         newPassword: plainPassword,
     }) => {
-        const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
         if (!token) {
+            setToast({
+                text: "Произошла ошибка",
+                type: HintType.Error,
+            });
             return;
         }
-        console.log(token);
         await resetPasswordVerify({ token, plainPassword })
             .unwrap()
             .then(() => {
@@ -56,7 +59,7 @@ const ProfileResetPasswordForm: FC = () => {
                     type: HintType.Error,
                 });
             });
-    }, [resetPasswordVerify, reset]);
+    }, [resetPasswordVerify, reset, token]);
 
     return (
         <div className={styles.wrapper}>

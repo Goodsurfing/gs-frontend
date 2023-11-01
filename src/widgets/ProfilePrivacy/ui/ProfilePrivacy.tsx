@@ -8,7 +8,7 @@ import {
 
 import styles from "./ProfilePrivacy.module.scss";
 
-export const ProfilePrivacy:FC = memo(() => (
+export const ProfilePrivacy: FC = memo(() => (
     <div className={styles.wrapper}>
         <div className={styles.container}>
             <ProfileHideSwitch />
