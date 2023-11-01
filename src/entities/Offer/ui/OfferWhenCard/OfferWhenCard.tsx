@@ -12,32 +12,32 @@ interface OfferWhenProps {
 }
 
 export const OfferWhenCard = memo((props: OfferWhenProps) => {
-    const { className, offerWhen } = props;
+    const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
+    const period = periods?.[0];
+    const offerPeriodStart = period ? period.start : "Точная дата не указана";
+    const offerPeriodEnd = period ? period.end : "Точная дата не указана";
+
     return (
         <div className={cn(className)}>
             <InfoCard>
-                {offerWhen.periods?.[0].start && (
-                    <InfoCardItem
-                        className={styles.left}
-                        title="Когда"
-                        text={offerWhen.periods?.[0].start}
-                    />
-                )}
+                <InfoCardItem
+                    className={styles.left}
+                    title="Когда"
+                    text={offerPeriodStart}
+                />
                 <div className={styles.right}>
                     <InfoCardItem
                         title="Минимум дней"
-                        text={offerWhen.durationMinDays}
+                        text={durationMinDays}
                     />
                     <InfoCardItem
                         title="Максимум дней"
-                        text={offerWhen.durationMaxDays}
+                        text={durationMaxDays}
                     />
-                    {offerWhen.periods?.[0].end && (
-                        <InfoCardItem
-                            title="Прием заявок до"
-                            text={offerWhen.periods?.[0].end}
-                        />
-                    )}
+                    <InfoCardItem
+                        title="Прием заявок до"
+                        text={offerPeriodEnd}
+                    />
                 </div>
             </InfoCard>
         </div>

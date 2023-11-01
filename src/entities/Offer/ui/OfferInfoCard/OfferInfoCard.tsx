@@ -16,6 +16,9 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
+    const isShowPaymentCard = (offer.conditions.payment.contribution
+        || offer.conditions.payment.reward);
+
     return (
         <div className={cn(className)}>
             <OfferWhenCard offerWhen={offer.when} />
@@ -29,8 +32,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.wrapper}
                 />
             )}
-            {(offer.conditions.payment.contribution
-                || offer.conditions.payment.reward) && (
+            {isShowPaymentCard && (
                 <OfferPaymentCard
                     payment={offer.conditions.payment}
                     className={styles.container}
