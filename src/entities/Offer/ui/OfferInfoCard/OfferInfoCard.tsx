@@ -19,7 +19,6 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
         <div className={cn(className, styles.wrapper)}>
             <OfferWhenCard offerWhen={offer.when} />
             <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
-
         </div>
     );
 });
