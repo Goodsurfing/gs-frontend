@@ -1,13 +1,12 @@
-import { memo, ReactNode } from "react";
-
 import cn from "classnames";
+import { ReactNode, memo } from "react";
 
 import styles from "./InfoCard.module.scss";
 
 interface InfoCardItemProps {
     className?: string;
-    title: string;
-    text: string | number;
+    title?: string;
+    text?: string | number;
 }
 
 interface InfoCardProps {
@@ -27,9 +26,5 @@ export const InfoCardItem = memo((props: InfoCardItemProps) => {
 
 export const InfoCard = memo((props: InfoCardProps) => {
     const { className, children } = props;
-    return (
-        <div className={cn(className, styles.wrapper)}>
-            {children}
-        </div>
-    );
+    return <div className={cn(className, styles.wrapper)}>{children}</div>;
 });
