@@ -1,7 +1,10 @@
-import React, { FC, useState, useCallback } from "react";
+import React, {
+    FC, useCallback, useState,
+} from "react";
 import {
     Controller, SubmitHandler, useForm, useWatch,
 } from "react-hook-form";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { authApi } from "@/store/api/authApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -10,7 +13,6 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 
 import styles from "./ProfileResetPasswordForm.module.scss";
-import { useAuth } from "@/app/providers/AuthProvider";
 
 interface FormDataImplemintaion {
     currentPassword: string;
@@ -36,30 +38,31 @@ const ProfileResetPasswordForm: FC = () => {
         defaultValue: "",
     });
 
-    const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(async ({
-        newPassword: plainPassword,
-    }) => {
-        if (!token) {
-            setToast({
-                text: "Произошла ошибка",
-                type: HintType.Error,
-            });
-            return;
-        }
-        await resetPasswordVerify({ token, plainPassword })
-            .unwrap()
-            .then(() => {
-                console.log("Изменение пароля произошло успешно");
-                reset();
-            })
-            .catch((error) => {
-                console.error(error);
+    const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(
+        async ({ newPassword: plainPassword }) => {
+            if (!token) {
                 setToast({
                     text: "Произошла ошибка",
                     type: HintType.Error,
                 });
-            });
-    }, [resetPasswordVerify, reset, token]);
+                return;
+            }
+            await resetPasswordVerify({ token, plainPassword })
+                .unwrap()
+                .then(() => {
+                    console.log("Изменение пароля произошло успешно");
+                    reset();
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setToast({
+                        text: "Произошла ошибка",
+                        type: HintType.Error,
+                    });
+                });
+        },
+        [resetPasswordVerify, reset, token],
+    );
 
     return (
         <div className={styles.wrapper}>

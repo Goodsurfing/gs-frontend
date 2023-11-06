@@ -26,7 +26,6 @@ import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 
 import { MainPage } from "@/pages/MainPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
-import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 
 import {
@@ -63,7 +62,7 @@ import {
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
-import { AuthProvider } from "@/app/providers/AuthProvider";
+import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 const publicRoutes: RouteType[] = [
     {
@@ -241,9 +240,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "reset-password-profile",
         element: (
-            <AuthProvider>
-                <ProfileResetPasswordPage />
-            </AuthProvider>
+            AuthRoutes.profile_reset_password
         ),
         path: (locale: string) => getProfileResetPasswordPageUrl(locale),
     },
