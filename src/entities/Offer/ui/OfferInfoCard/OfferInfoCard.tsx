@@ -1,12 +1,10 @@
+import cn from "classnames";
 import { memo } from "react";
 
-import cn from "classnames";
-
 import { Offer } from "../../model/types/offer";
-
-import styles from "./OfferInfoCard.module.scss";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
+import styles from "./OfferInfoCard.module.scss";
 
 interface HostInfoCardProps {
     className?: string;
