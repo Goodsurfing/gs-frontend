@@ -1,6 +1,8 @@
+import React, {
+    FC, memo, useEffect, useState,
+} from "react";
 import { Placemark } from "@pbe/react-yandex-maps";
 import cn from "classnames";
-import React, { FC, memo, useEffect, useState } from "react";
 
 import { validateCoordinates } from "@/features/MapWithAddress/model/lib/validateCoordinates";
 import { getGeoObjectCollection } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
@@ -45,5 +47,5 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                 </YMap>
             </div>
         );
-    }
+    },
 );
