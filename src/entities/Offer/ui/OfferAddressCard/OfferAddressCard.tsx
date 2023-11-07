@@ -18,7 +18,7 @@ interface OfferAddressCardProps {
 export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
     (props: OfferAddressCardProps) => {
         const { address } = props;
-        const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
+        const [, setYmap] = useState<YmapType | undefined>(undefined);
         const [coordinates, setCoordinates] = useState<GeoObject | null>();
 
         useEffect(() => {
