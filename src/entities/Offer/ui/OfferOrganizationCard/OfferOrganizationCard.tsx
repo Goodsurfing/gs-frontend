@@ -36,5 +36,5 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                 </div>
             </div>
         );
-    }
+    },
 );

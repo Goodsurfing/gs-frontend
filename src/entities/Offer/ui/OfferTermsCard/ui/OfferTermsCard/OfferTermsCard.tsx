@@ -9,10 +9,8 @@ import { FacilityCard } from "../FacilityCard/FacilityCard";
 import styles from "./OfferTermsCard.module.scss";
 
 export const OfferTermsCard: FC = memo((props) => {
+    // eslint-disable-next-line no-empty-pattern
     const {} = props;
-
-    // data for test
-    const mockedFacilities: Facilities[] = ["wi-fi", "bath"];
 
     const renderTerms = (
         facilitiesData: GoodsItems[],
