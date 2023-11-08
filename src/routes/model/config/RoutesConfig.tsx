@@ -68,7 +68,6 @@ import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
 
-
 const publicRoutes: RouteType[] = [
     {
         element: (
@@ -161,14 +160,15 @@ const publicRoutes: RouteType[] = [
                 ),
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-            {
-                label: "host-personal",
-                element: (
-                    <HostPersonalPage />
-                ),
-                path: (locale: string) => getHostPersonalPageUrl(locale),
-            },
+
         ],
+    },
+    {
+        label: "host-personal",
+        element: (
+            <HostPersonalPage />
+        ),
+        path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
         label: "offer-layout",
