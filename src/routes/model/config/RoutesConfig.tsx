@@ -5,6 +5,7 @@ import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
 
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
@@ -59,12 +60,14 @@ import {
     getHostPageUrl,
     getHostTeamPageUrl,
     getProfileRolePagePageUrl,
+    getHostPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
+
 
 const publicRoutes: RouteType[] = [
     {
@@ -157,6 +160,13 @@ const publicRoutes: RouteType[] = [
                     <HostReviewPage />
                 ),
                 path: (locale: string) => getHostReviewPageUrl(locale),
+            },
+            {
+                label: "host-personal",
+                element: (
+                    <HostPersonalPage />
+                ),
+                path: (locale: string) => getHostPersonalPageUrl(locale),
             },
         ],
     },

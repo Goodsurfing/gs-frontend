@@ -48,6 +48,8 @@ export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getHostTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_team}`;
 
+export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_personal}/:id`;
+
 // Offers pages
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
