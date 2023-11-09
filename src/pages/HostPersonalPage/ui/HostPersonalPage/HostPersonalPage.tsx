@@ -1,14 +1,16 @@
 import React from "react";
-
 import { useParams } from "react-router-dom";
+
+import { Footer } from "@/widgets/Footer";
+import MainHeader from "@/widgets/MainHeader/MainHeader";
+import { Submenu } from "@/widgets/Submenu";
+
 import { Text } from "@/shared/ui/Text/Text";
 
-import MainHeader from "@/widgets/MainHeader/MainHeader";
-import { Footer } from "@/widgets/Footer";
-import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
-
-import styles from "./HostPersonalPage.module.scss";
 import { mockedHostData } from "../../model/data/mockedHostData";
+import { SubmenuItems } from "../../model/data/submenuData";
+import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
+import styles from "./HostPersonalPage.module.scss";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -25,6 +27,7 @@ export const HostPersonalPage = () => {
             <MainHeader />
             <div className={styles.content}>
                 <HostlHeaderCard host={mockedHostData} />
+                <Submenu className={styles.navMenu} items={SubmenuItems} />
             </div>
             <Footer />
         </div>
