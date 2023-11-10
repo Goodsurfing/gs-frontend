@@ -21,5 +21,5 @@ export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
                 <p className={styles.description}>{description}</p>
             </div>
         );
-    }
+    },
 );
