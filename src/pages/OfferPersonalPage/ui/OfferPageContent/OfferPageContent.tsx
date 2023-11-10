@@ -1,9 +1,10 @@
+import cn from "classnames";
 import { memo } from "react";
 
-import cn from "classnames";
-
-import styles from "./OfferPageContent.module.scss";
 import { OfferInfoCard } from "@/entities/Offer";
+
+import { mockedOfferData } from "../../model/data/mockedOfferData";
+import styles from "./OfferPageContent.module.scss";
 
 interface OfferPageContentProps {
     className?: string;
@@ -15,7 +16,7 @@ export const OfferPageContent = memo((props: OfferPageContentProps) => {
     const { className, id } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
-            <OfferInfoCard />
+            <OfferInfoCard offer={mockedOfferData} />
         </div>
     );
 });

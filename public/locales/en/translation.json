@@ -40,6 +40,10 @@
                     "privacy-policy": "Privacy policy",
                     "news": "News"
                 },
+                "messages": "Messages",
+                "my-page":"My page",
+                "host-dashboard": "Host dashboard",
+                "volunteer-dashboard": "Volunteer dashboard",
                 "sign-in": "Sign In",
                 "sign-up": "Sign Up",
                 "exit": "Exit"

@@ -46,11 +46,11 @@ export const HostPagesSidebarData: SidebarContentProps[] = [
             },
             {
                 text: "Команда",
-                route: "",
+                route: "/team",
             },
             {
                 text: "Отзывы",
-                route: "",
+                route: "/review",
             },
         ],
     },

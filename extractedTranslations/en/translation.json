@@ -29,7 +29,10 @@
           "video": "video"
         },
         "exit": "exit",
+        "host-dashboard": "host-dashboard",
         "how-it-work": "how-it-work",
+        "messages": "messages",
+        "my-page": "my-page",
         "offers": {
           "across-russia": "across-russia",
           "africa": "africa",
@@ -49,7 +52,8 @@
           "view-all": "view-all"
         },
         "sign-in": "sign-in",
-        "sign-up": "sign-up"
+        "sign-up": "sign-up",
+        "volunteer-dashboard": "volunteer-dashboard"
       },
       "offers-btn": "offers-btn",
       "title": "title"

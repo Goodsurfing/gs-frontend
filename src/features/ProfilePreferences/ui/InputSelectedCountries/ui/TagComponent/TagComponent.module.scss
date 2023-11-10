@@ -1,0 +1,31 @@
+.tagWrapper {
+    display: flex;
+    background: rgba(223, 230, 235, 0.9);
+    border-radius: 22px;
+    color: var(--text-primary-2);
+    font-size: 16px;
+    line-height: 16px;
+    user-select: none;
+    margin: 0 0 10px 10px;
+    padding: 10px 16px;
+
+    button {
+        margin-left: 8px;
+        background-color: transparent;
+        color: #0052cc;
+        border-radius: 50%;
+        line-height: 16px;
+        text-align: center;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+
+        .deleteIcon {
+            width: 16px;
+            height: 16px;
+            background-image: url("data:image/svg+xml,%3Csvg width='11' height='11' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z' fill='%238494A1'/%3E%3C/svg%3E%0A");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+}
