@@ -9,12 +9,17 @@ interface HostDescriptionCardProps {
     host: Host;
 }
 
-export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo((props: HostDescriptionCardProps) => {
-    const { className, host: { description } } = props;
-    return (
-        <div className={cn(className, styles.wrapper)}>
-            <h3>Об организации</h3>
-            <p className={styles.description}>{description}</p>
-        </div>
-    );
-});
+export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
+    (props: HostDescriptionCardProps) => {
+        const {
+            className,
+            host: { description },
+        } = props;
+        return (
+            <div className={cn(className, styles.wrapper)}>
+                <h3>Об организации</h3>
+                <p className={styles.description}>{description}</p>
+            </div>
+        );
+    }
+);
