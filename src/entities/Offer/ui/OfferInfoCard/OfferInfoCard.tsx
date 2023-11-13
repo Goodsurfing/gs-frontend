@@ -15,12 +15,14 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
+    const address = "Казань улица Пушкина, 46";
+
     return (
         <div className={cn(className, styles.wrapper)}>
             <OfferWhenCard offerWhen={offer.when} />
             <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
             <OfferLanguagesCard languages={offer.whoNeeds.languages} />
-            <OfferAddressCard address="Казань улица Пушкина, 46" />
+            <OfferAddressCard address={address} />
         </div>
     );
 });
