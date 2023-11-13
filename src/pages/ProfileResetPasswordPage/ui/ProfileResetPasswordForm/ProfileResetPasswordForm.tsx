@@ -50,11 +50,13 @@ const ProfileResetPasswordForm: FC = () => {
             await resetPasswordVerify({ token, plainPassword })
                 .unwrap()
                 .then(() => {
-                    console.log("Изменение пароля произошло успешно");
+                    setToast({
+                        text: "Изменение пароля произошло успешно",
+                        type: HintType.Error,
+                    });
                     reset();
                 })
-                .catch((error) => {
-                    console.error(error);
+                .catch(() => {
                     setToast({
                         text: "Произошла ошибка",
                         type: HintType.Error,

@@ -48,7 +48,6 @@ const SignInForm = memo(() => {
                 reset();
             })
             .catch(() => {
-                console.error("Неверные данные");
                 setToast({
                     text: "Неверный логин или пароль",
                     type: HintType.Error,

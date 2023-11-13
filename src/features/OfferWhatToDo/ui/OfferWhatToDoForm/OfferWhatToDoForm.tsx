@@ -31,8 +31,7 @@ export const OfferWhatToDoForm = memo(({ onSuccess }: OfferWhatToDoFormProps) =>
 
     const { t } = useTranslation();
 
-    const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = () => {
         onSuccess?.();
     };
 

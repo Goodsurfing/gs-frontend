@@ -41,8 +41,7 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
-        const preparedData = offerWhenFormAdapter(data);
-        console.log(preparedData);
+        offerWhenFormAdapter(data);
         onComplete?.();
     };
 

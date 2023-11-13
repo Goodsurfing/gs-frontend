@@ -32,7 +32,6 @@ export const OfferFinishingTouchesForm = memo((props: OfferFinishingTouchesFormP
     });
 
     const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
-        console.log(data);
         onSuccess?.(data);
     };
 
