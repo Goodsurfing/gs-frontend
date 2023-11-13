@@ -1,12 +1,10 @@
-import { memo } from "react";
-
 import cn from "classnames";
+import { memo } from "react";
 
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { OfferWhen } from "../../model/types/offerWhen";
-
-// import styles from "./OfferWhen.module.scss";
+import styles from "./OfferWhenCard.module.scss";
 
 interface OfferWhenProps {
     className?: string;
@@ -14,18 +12,33 @@ interface OfferWhenProps {
 }
 
 export const OfferWhenCard = memo((props: OfferWhenProps) => {
-    const { className, offerWhen } = props;
+    const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
+    const period = periods?.[0];
+    const offerPeriodStart = period ? period.start : "Точная дата не указана";
+    const offerPeriodEnd = period ? period.end : "Точная дата не указана";
+
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <div className={cn(className)}>
             <InfoCard>
-                {offerWhen.periods?.[0].start && (
-                    <InfoCardItem title="Когда" text={offerWhen.periods?.[0].start} />
-                )}
-                <InfoCardItem title="Минимум дней" text={offerWhen.durationMinDays} />
-                <InfoCardItem title="Максимум дней" text={offerWhen.durationMaxDays} />
-                {offerWhen.periods?.[0].end && (
-                    <InfoCardItem title="Прием заявок до" text={offerWhen.periods?.[0].end} />
-                )}
+                <InfoCardItem
+                    className={styles.left}
+                    title="Когда"
+                    text={offerPeriodStart}
+                />
+                <div className={styles.right}>
+                    <InfoCardItem
+                        title="Минимум дней"
+                        text={durationMinDays}
+                    />
+                    <InfoCardItem
+                        title="Максимум дней"
+                        text={durationMaxDays}
+                    />
+                    <InfoCardItem
+                        title="Прием заявок до"
+                        text={offerPeriodEnd}
+                    />
+                </div>
             </InfoCard>
         </div>
     );
