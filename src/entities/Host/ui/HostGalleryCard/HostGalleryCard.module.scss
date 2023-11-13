@@ -1,0 +1,15 @@
+.wrapper {
+    width: 100%;
+}
+
+.container {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.image {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+}
