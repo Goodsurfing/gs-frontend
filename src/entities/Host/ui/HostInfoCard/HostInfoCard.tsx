@@ -18,8 +18,14 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
         const { className, host } = props;
         return (
             <div className={cn(className, styles.wrapper)}>
-                <HostDescriptionCard host={host.host} className={styles.container} />
-                <HostOffersCard offers={mockedOffersData} className={styles.container} />
+                <HostDescriptionCard
+                    host={host.host}
+                    className={styles.container}
+                />
+                <HostOffersCard
+                    offers={mockedOffersData}
+                    className={styles.container}
+                />
             </div>
         );
     },
