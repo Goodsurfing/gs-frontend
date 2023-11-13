@@ -37,7 +37,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
             </div>
             <div className={styles.content}>
                 <p className={styles.title}>
-                    {title.length > 36 ? `${title.slice(0, 36)}..` : title}
+                    {title.length > 88 ? `${title.slice(0, 88)}..` : title}
                 </p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
