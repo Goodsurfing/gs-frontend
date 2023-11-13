@@ -14,13 +14,15 @@ interface OfferContributorsCardProps {
     contributors: OfferContributor[];
 }
 
+const RENDER_EIGHT_CARDS = [0, 8];
+
 export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
     (props: OfferContributorsCardProps) => {
         const { contributors } = props;
         const { locale } = useLocale();
 
         const renderCards = (contributorsData: OfferContributor[]) => contributorsData
-            .slice(0, 8)
+            .slice(...RENDER_EIGHT_CARDS)
             .map(({ avatar, name }) => (
                 <OfferContributorCard avatar={avatar} name={name} />
             ));
