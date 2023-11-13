@@ -1,15 +1,24 @@
+import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { Host } from "@/entities/Host";
+import { HostInfoCard } from "@/entities/Host";
+import { mockedFullHostData } from "@/entities/Host/model/data/mockedHostData";
+
 import styles from "./HostPageContent.module.scss";
 
 interface HostPageContentProps {
-    host: Host;
+    className?: string;
+    id: string;
 }
 
-export const HostPageContent: FC<HostPageContentProps> = memo((props: HostPageContentProps) => {
-    const { host } = props;
-    return (
-        <div className={styles.wrapper}>HostPageContent</div>
-    );
-});
+export const HostPageContent: FC<HostPageContentProps> = memo(
+    (props: HostPageContentProps) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, className } = props;
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <HostInfoCard host={mockedFullHostData} />
+            </div>
+        );
+    },
+);

@@ -1,9 +1,11 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { Offer } from "@/entities/Offer";
+import { Offer, OfferCard } from "@/entities/Offer";
 
-import styles from "./HostDescriptionCard.module.scss";
+import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
+
+import styles from "./HostOffersCard.module.scss";
 
 interface HostOffersCardProps {
     className?: string;
@@ -17,8 +19,19 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         const renderOffers = useMemo(
             () => offers
                 .slice(0, 3)
-                .map((offer, index) => (
-                    <OfferCard offer={offer} key={index} />
+                .map(({ description }, index) => (
+                    <OfferCard
+                        image={offerDefaultImage}
+                        title={description.title}
+                        description={description.shortDescription}
+                        location="Казань, Россия"
+                        category="Заповедники и нац. парки"
+                        rating="4.3"
+                        likes="10"
+                        reviews="14"
+                        went="22"
+                        key={index}
+                    />
                 )),
             [offers],
         );

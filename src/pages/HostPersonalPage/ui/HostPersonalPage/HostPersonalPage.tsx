@@ -11,6 +11,7 @@ import { mockedHostData } from "../../model/data/mockedHostData";
 import { SubmenuItems } from "../../model/data/submenuData";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
 import styles from "./HostPersonalPage.module.scss";
+import { HostPageContent } from "../HostPageContent/HostPageContent";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -28,6 +29,7 @@ export const HostPersonalPage = () => {
             <div className={styles.content}>
                 <HostlHeaderCard host={mockedHostData} />
                 <Submenu className={styles.navMenu} items={SubmenuItems} />
+                <HostPageContent id={id} />
             </div>
             <Footer />
         </div>

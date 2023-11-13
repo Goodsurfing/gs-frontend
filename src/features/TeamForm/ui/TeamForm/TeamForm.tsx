@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import Button from "@/shared/ui/Button/Button";
 
-import { fakeUserData } from "../../model/data/mockedUserData";
+import { fakeUserData } from "@/entities/User/model/data/mockedUserData";
 import { TeamUser } from "@/entities/Host/model/types/host";
 import { TeamCard } from "../TeamCard/TeamCard";
 import { TeamInput } from "../TeamInput/TeamInput";

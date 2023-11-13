@@ -1,6 +1,6 @@
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
-import { TeamUser } from "../types/team";
+import { TeamUser } from "@/entities/Host/model/types/host";
 
 export const fakeUserData: TeamUser[] = [
     {

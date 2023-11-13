@@ -50,3 +50,4 @@ export type {
 } from "./model/types/offerFinishingTouches";
 
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
+export { OfferCard } from "./ui/OfferCard/OfferCard";

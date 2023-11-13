@@ -52,9 +52,10 @@ export interface HostReview {
 }
 
 export interface Article {
+    id: string;
     image: string;
     title: string;
-    tag:string;
+    tag: string;
     date: string;
     description: string;
     likes: number;
