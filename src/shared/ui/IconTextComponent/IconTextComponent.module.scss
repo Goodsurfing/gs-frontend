@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 16px;
+}
+
+.iconWrapper {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+    background-color: var(--accent-color);
+}
+
+.icon {
+    fill: var(--text-secondary-1);
+    width: 20px;
+    height: 20px;
+}

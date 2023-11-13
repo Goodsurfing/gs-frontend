@@ -13,7 +13,10 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.RESET_PASSWORD]: "/reset-password",
     [AppRoutes.RESET_PASSWORD_VERIFY]: "/reset-password-verify",
     [AppRoutes.PROFILE_INFO]: "/profile",
+    [AppRoutes.PROFILE_PREFERENCES]: "/profile/preferences",
+    [AppRoutes.PROFILE_ROLE]: "/profile/role",
     [AppRoutes.PROFILE_RESET_PASSWORD]: "/profile/reset-password",
+    [AppRoutes.PROFILE_PRIVACY]: "/profile/privacy",
     [AppRoutes.HOST]: "/host",
     [AppRoutes.OFFER_PERSONAL]: "/offer-personal", // :id
     [AppRoutes.HOST_DASHBOARD]: "/host/host-dashboard",
