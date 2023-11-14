@@ -1,163 +1,137 @@
-import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
-import { HostVideoPage } from "@/pages/HostVideoPage";
-import { HostGalleryPage } from "@/pages/HostGalleryPage";
-import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
-import { HostDashboardPage } from "@/pages/HostDashboardPage";
-import { HostOffersPage } from "@/pages/HostOffersPage";
-import { HostReviewPage } from "@/pages/HostReviewPage";
-import { HostPersonalPage } from "@/pages/HostPersonalPage";
-
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
-import { SignUpPage } from "@/pages/SignUpPage";
-import { SignInPage } from "@/pages/SignInPage";
-import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
-import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
-
+import { HostDashboardPage } from "@/pages/HostDashboardPage";
+import { HostGalleryPage } from "@/pages/HostGalleryPage";
+import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
+import { HostOffersPage } from "@/pages/HostOffersPage";
+import { HostReviewPage } from "@/pages/HostReviewPage";
+import { HostTeamPage } from "@/pages/HostTeamPage";
+import { HostVideoPage } from "@/pages/HostVideoPage";
+import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
+import { MainPage } from "@/pages/MainPage";
+import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
+import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
+import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
+import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
-import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
+import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 import { OfferWhenPage } from "@/pages/OfferWhenPage";
 import { OfferWherePage } from "@/pages/OfferWherePage";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
-import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
-import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
-import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
-import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
-
-import { MainPage } from "@/pages/MainPage";
+import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
-import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
+import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
+import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
+import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
+import { SignInPage } from "@/pages/SignInPage";
+import { SignUpPage } from "@/pages/SignUpPage";
 
 import {
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getHostDashboardPageUrl,
     getHostGalleryPageUrl,
+    getHostPageUrl,
     getHostRegistrationUrl,
+    getHostReviewPageUrl,
+    getHostTeamPageUrl,
     getHostVideoPageUrl,
+    getHostPersonalPageUrl,
     getMainPageUrl,
+    getMyOffersPageUrl,
     getOfferPersonalPageUrl,
+    getOffersConditionsPageUrl,
     getOffersDescriptionPageUrl,
+    getOffersFinishingTouchesPageUrl,
     getOffersPageUrl,
     getOffersWelcomePageUrl,
+    getOffersWhatToDoPageUrl,
     getOffersWhenPageUrl,
     getOffersWherePageUrl,
     getOffersWhoNeedsPageUrl,
-    getOffersWhatToDoPageUrl,
-    getOffersConditionsPageUrl,
     getProfileInfoPageUrl,
     getProfilePreferencesPageUrl,
+    getProfilePrivacyPageUrl,
+    getProfileResetPasswordPageUrl,
+    getProfileRolePagePageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
-    getProfileResetPasswordPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
-    getHostDashboardPageUrl,
-    getOffersFinishingTouchesPageUrl,
-    getHostReviewPageUrl,
-    getMyOffersPageUrl,
-    getHostPageUrl,
-    getHostTeamPageUrl,
-    getProfileRolePagePageUrl,
-    getHostPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
-import { RouteType } from "../types/langRouter";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
-import { HostTeamPage } from "@/pages/HostTeamPage";
-import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { RouteType } from "../types/langRouter";
+import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 const publicRoutes: RouteType[] = [
     {
-        element: (
-            <MainPage />
-        ),
+        element: <MainPage />,
         label: "main",
         path: (locale: string) => getMainPageUrl(locale),
     },
     {
-        element: (
-            <SignInPage />
-        ),
+        element: <SignInPage />,
         label: "sign-in",
         path: (locale: string) => getSignInPageUrl(locale),
     },
     {
-        element: (
-            <SignUpPage />
-        ),
+        element: <SignUpPage />,
         label: "sign-up",
         path: (locale: string) => getSignUpPageUrl(locale),
     },
     {
         label: "confirm-email",
-        element: (
-            <ConfirmEmailPage />
-        ),
+        element: <ConfirmEmailPage />,
         path: (locale: string) => getConfirmEmailPageUrl(locale),
     },
     {
         label: "confirm-email-success",
-        element: (
-            <ConfirmEmailSuccessPage />
-        ),
+        element: <ConfirmEmailSuccessPage />,
         path: (locale: string) => getConfirmEmailSuccessPageUrl(locale),
     },
     {
         label: "host-layout",
-        element: (
-            <HostsLayoutPage />
-        ),
+        element: <HostsLayoutPage />,
         path: (locale: string) => getHostPageUrl(locale),
         children: [
             {
                 label: "host-dashboard",
-                element: (
-                    <HostDashboardPage />
-                ),
+                element: <HostDashboardPage />,
                 index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
             {
                 label: "host-offers",
-                element: (
-                    <HostOffersPage />
-                ),
+                element: <HostOffersPage />,
                 path: (locale) => getMyOffersPageUrl(locale),
             },
             {
                 label: "host-main-info",
-                element: (
-                    <HostMainInfoPage />
-                ),
+                element: <HostMainInfoPage />,
                 path: (locale) => getHostRegistrationUrl(locale),
             },
             {
                 label: "host-gallery",
-                element: (
-                    <HostGalleryPage />
-                ),
+                element: <HostGalleryPage />,
                 path: (locale) => getHostGalleryPageUrl(locale),
             },
             {
                 label: "host-video",
-                element: (
-                    <HostVideoPage />
-                ),
+                element: <HostVideoPage />,
                 path: (locale) => getHostVideoPageUrl(locale),
             },
             {
                 label: "host-team",
-                element: (
-                    <HostTeamPage />
-                ),
+                element: <HostTeamPage />,
                 path: (locale) => getHostTeamPageUrl(locale),
-            }, {
+            },
+            {
                 label: "host-review",
-                element: (
-                    <HostReviewPage />
-                ),
+                element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
 
@@ -172,95 +146,69 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "offer-layout",
-        element: (
-            <OfferLayoutPage />
-        ),
+        element: <OfferLayoutPage />,
         path: (locale: string) => getOffersPageUrl(locale),
         children: [
             {
                 label: "offer-welcome",
-                element: (
-                    <OfferWelcomePage />
-                ),
+                element: <OfferWelcomePage />,
                 path: (locale: string) => getOffersWelcomePageUrl(locale),
             },
             {
                 label: "offer-description",
-                element: (
-                    <OfferDescriptionPage />
-                ),
+                element: <OfferDescriptionPage />,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {
                 label: "offer-when",
-                element: (
-                    <OfferWhenPage />
-                ),
+                element: <OfferWhenPage />,
                 path: (locale: string) => getOffersWhenPageUrl(locale),
             },
             {
                 label: "offer-where",
-                element: (
-                    <OfferWherePage />
-                ),
+                element: <OfferWherePage />,
                 path: (locale: string) => getOffersWherePageUrl(locale),
             },
             {
                 label: "offer-who-needs",
-                element: (
-                    <OfferWhoNeedsPage />
-                ),
+                element: <OfferWhoNeedsPage />,
                 path: (locale: string) => getOffersWhoNeedsPageUrl(locale),
             },
             {
                 label: "offer-what-to-do",
-                element: (
-                    <OfferWhatToDoPage />
-                ),
+                element: <OfferWhatToDoPage />,
                 path: (locale: string) => getOffersWhatToDoPageUrl(locale),
             },
             {
                 label: "offer-conditions",
-                element: (
-                    <OfferConditionsPage />
-                ),
+                element: <OfferConditionsPage />,
                 path: (locale: string) => getOffersConditionsPageUrl(locale),
             },
             {
                 label: "offer-finishing-touches",
-                element: (
-                    <OfferFinishingTouchesPage />
-                ),
+                element: <OfferFinishingTouchesPage />,
                 path: (locale: string) => getOffersFinishingTouchesPageUrl(locale),
             },
         ],
     },
     {
         label: "offer-personal",
-        element: (
-            <OfferPersonalPage />
-        ),
+        element: <OfferPersonalPage />,
         path: (locale: string) => getOfferPersonalPageUrl(locale),
     },
     {
         label: "reset-password",
-        element: (
-            <ResetPasswordPage />
-        ),
+        element: <ResetPasswordPage />,
         path: (locale: string) => getResetPasswordPageUrl(locale),
     },
     {
         label: "reset-password-profile",
-        element: (
-            <ProfileResetPasswordPage />
-        ),
+        element: AuthRoutes.profile_reset_password,
         path: (locale: string) => getProfileResetPasswordPageUrl(locale),
     },
     {
         label: "reset-password-verify",
-        element: (
-            <ResetPasswordVerifyPage />
-        ),
+        element: <ResetPasswordVerifyPage />,
         path: (locale: string) => getResetPasswordVerifyPageUrl(locale),
     },
     {
@@ -273,17 +221,18 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getProfileInfoPageUrl(locale),
     },
     {
+        label: "profile-info",
+        element: <ProfilePrivacyPage />,
+        path: (locale: string) => getProfilePrivacyPageUrl(locale),
+    },
+    {
         label: "profile-preferences",
-        element: (
-            <ProfilePreferencesPage />
-        ),
+        element: <ProfilePreferencesPage />,
         path: (locale: string) => getProfilePreferencesPageUrl(locale),
     },
     {
         label: "profile-role",
-        element: (
-            <ProfileRolePage />
-        ),
+        element: <ProfileRolePage />,
         path: (locale: string) => getProfileRolePagePageUrl(locale),
     },
 ];

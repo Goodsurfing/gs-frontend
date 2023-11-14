@@ -10,6 +10,7 @@ export enum AppRoutes {
     PROFILE_PREFERENCES = "profile_preferences",
     PROFILE_ROLE = "profile_role",
     PROFILE_RESET_PASSWORD = "profile_reset_password",
+    PROFILE_PRIVACY = "profile_privacy",
     HOST = "host",
     HOST_DASHBOARD = "dashboard",
     HOST_REGISTRATION = "offers_registration",

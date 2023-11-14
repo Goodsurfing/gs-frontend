@@ -31,9 +31,6 @@ const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
             .then((response) => {
                 changeStep(response.email);
                 reset();
-            })
-            .catch((error) => {
-                console.log(error);
             });
     };
 

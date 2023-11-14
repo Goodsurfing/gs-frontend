@@ -49,15 +49,12 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: hostUpdateError,
     }] = useUpdateHostMutation();
 
-    console.log(host);
-
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         const preparedData = hostDescriptionApiAdapter(data);
         if (!host) {
             const createHostResponse = await createHost(preparedData).unwrap();
             if (createHostResponse.id) {
                 const res = await joinToOrganization(createHostResponse.id);
-                console.log(res);
             }
         }
         if (host) {

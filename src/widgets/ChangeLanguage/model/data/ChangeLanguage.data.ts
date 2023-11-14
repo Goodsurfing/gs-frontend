@@ -24,3 +24,9 @@ export const changeLanguageData: ILanguage[] = [
         icon: spIcon,
     },
 ];
+
+export const languageIconsData: Record<string, string> = {
+    ru: ruIcon,
+    en: engIcon,
+    es: spIcon,
+};

@@ -31,9 +31,8 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
     const dispatch = useAppDispatch();
 
     const images = useAppSelector(getGalleryImages);
-    console.log(images);
+
     const handleUpdateImages = useCallback((image: File) => {
-        console.log(image.name);
         generateLink({ fileName: image.name }).unwrap().then((res) => {
             dispatch(galleryActions.addImage(res.url));
         });
