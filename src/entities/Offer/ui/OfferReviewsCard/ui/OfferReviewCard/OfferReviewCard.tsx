@@ -3,6 +3,7 @@ import React, { FC, memo } from "react";
 import { OfferReview } from "@/entities/Offer/model/types/offerReview";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import star from "@/shared/assets/icons/offers/star.svg";
 
 import styles from "./OfferReviewCard.module.scss";
 
@@ -21,6 +22,7 @@ export const OfferReviewCard: FC<OfferReviewCardProps> = memo(
             <div className={styles.wrapper}>
                 <p className={styles.reviewText}>{reviewText}</p>
                 <div className={styles.reviewInfo}>
+                    <img src={star} alt="rating" />
                     <span>{rating}</span>
                     <Avatar icon={avatar} className={styles.avatar} />
                     <span className={styles.name}>{name}</span>

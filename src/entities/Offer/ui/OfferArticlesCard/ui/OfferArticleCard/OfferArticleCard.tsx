@@ -1,6 +1,8 @@
 import React, { FC, memo } from "react";
 
 import { OfferArticle } from "@/entities/Offer/model/types/offerArticle";
+import like from "@/shared/assets/icons/offers/like.svg";
+import comment from "@/shared/assets/icons/comment.svg";
 
 import styles from "./OfferArticleCard.module.scss";
 
@@ -27,7 +29,9 @@ export const OfferArticleCard: FC<OfferArticleCardProps> = memo((
             </div>
             <p>{description}</p>
             <div className={styles.container}>
+                <img src={like} alt="likes" />
                 <span>{likes}</span>
+                <img src={comment} alt="comments" />
                 <span>{comments}</span>
             </div>
         </div>

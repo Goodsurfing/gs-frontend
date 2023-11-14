@@ -12,7 +12,7 @@ interface OfferReviewsCardProps {
     reviews: OfferReview[];
 }
 
-export const OfferReviewsCard: FC<OfferReviewsCardProps> = (
+export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo((
     props: OfferReviewsCardProps,
 ) => {
     const { reviews } = props;
@@ -31,4 +31,4 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = (
             <Link to={getMainPageUrl(locale)}>Посмотреть все</Link>
         </div>
     );
-};
+});
