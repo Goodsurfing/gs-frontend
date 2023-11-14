@@ -16,6 +16,7 @@ export interface Host {
 }
 
 export interface Video {
+    id: string;
     url: string;
 }
 
