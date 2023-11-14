@@ -20,7 +20,7 @@ export const HostsLayoutPage = () => {
         }
         return fillSidebarData(HostPagesSidebarData);
     }, [profile, isLoading]);
-    console.log(hostSidebarContent());
+
     return (
         <>
             {isLoading && (<Preloader />)}

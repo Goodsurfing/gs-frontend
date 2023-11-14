@@ -1,8 +1,9 @@
-import { RoleInfo } from "../types/profileRoleWidget";
 import profileGoodsurfer from "@/shared/assets/icons/profile/profile-goodsurfer.svg";
 import profileHost from "@/shared/assets/icons/profile/profile-host.svg";
 
-export const roleData:RoleInfo[] = [
+import { RoleInfo } from "../types/profileRoleWidget";
+
+export const roleData: RoleInfo[] = [
     {
         imageRole: profileGoodsurfer,
         titleRole: "Гудсёрфер",

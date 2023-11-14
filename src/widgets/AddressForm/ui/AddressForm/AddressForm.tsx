@@ -12,8 +12,9 @@ interface AddressFormProps {
 
 export const AddressForm = memo(({ className }: AddressFormProps) => {
     const { handleSubmit, control } = useForm<AddressFormFormFields>({ mode: "onChange" });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onSubmit = handleSubmit((data) => {
-        console.log("submit", data);
+
     });
 
     return (

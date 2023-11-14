@@ -43,14 +43,16 @@ const SignUpForm: FC = () => {
                     navigate(getConfirmEmailPageUrl(locale));
                 })
                 .catch(() => {
-                    console.error("error");
                     setToast({
                         text: "Некорректно введены данные",
                         type: HintType.Error,
                     });
                 });
         } catch (e) {
-            console.log(e);
+            setToast({
+                text: "Произошла ошибка",
+                type: HintType.Error,
+            });
         }
         reset();
     };

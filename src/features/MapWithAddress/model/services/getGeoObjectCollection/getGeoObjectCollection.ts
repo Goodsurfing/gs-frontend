@@ -19,6 +19,7 @@ export const getGeoObjectCollection = async (address: string) => {
         });
         return res.data.response.GeoObjectCollection;
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e);
     }
 };

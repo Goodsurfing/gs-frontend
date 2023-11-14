@@ -24,14 +24,11 @@ export const galleryApi = createApi({
     }),
     endpoints: (build) => ({
         generateLink: build.mutation<GenerateLinkResponse, { fileName: string }>({
-            query: (data: { fileName: string }) => {
-                console.log(data);
-                return {
-                    url: "/media/generate-upload-link",
-                    method: "POST",
-                    body: data,
-                };
-            },
+            query: (data: { fileName: string }) => ({
+                url: "/media/generate-upload-link",
+                method: "POST",
+                body: data,
+            }),
         }),
     }),
 });
