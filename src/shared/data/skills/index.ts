@@ -16,7 +16,7 @@ import {
     videoIcon,
 } from "../icons/skills";
 
-type SkillsData = {
+export type SkillsData = {
     id:
     | "admin" | "cooking" | "driving" | "housing" | "decor"
     | "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
