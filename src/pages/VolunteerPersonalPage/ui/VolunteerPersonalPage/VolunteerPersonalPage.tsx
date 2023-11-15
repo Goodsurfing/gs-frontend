@@ -9,8 +9,8 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { SubmenuVolunteerData } from "../../model/data/submenuData";
 import { VolunteerlHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
-import styles from "./VolunteerPersonalPage.module.scss";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
+import styles from "./VolunteerPersonalPage.module.scss";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();

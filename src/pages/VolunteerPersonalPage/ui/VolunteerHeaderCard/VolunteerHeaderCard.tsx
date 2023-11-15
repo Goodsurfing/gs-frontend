@@ -18,6 +18,7 @@ export const VolunteerlHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             volunteer: {
                 firstName, imageUuid, isMember, country, city, birthDate,
             },
+            id
         } = props;
         return (
             <div className={styles.wrapper}>

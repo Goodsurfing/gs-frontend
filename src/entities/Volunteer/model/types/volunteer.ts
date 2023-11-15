@@ -8,9 +8,9 @@ export interface Volunteer extends Profile {
     languages?: string[];
     offers?: Offer[];
     // review?: Review to do review type
-    gallery: Gallery;
+    gallery?: Gallery;
     // videoGallery?: VideoGallery to do VideoGallery type
-    certificates: string[];
+    certificates?: string[];
     // articles?: Article to do Article type
     favoriteOffers?: Offer[];
     isMember: boolean;
