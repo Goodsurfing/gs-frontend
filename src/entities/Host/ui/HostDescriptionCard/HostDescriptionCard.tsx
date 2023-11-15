@@ -18,7 +18,7 @@ export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)}>
                 <h3>Об организации</h3>
-                <p className={styles.description}>{description}</p>
+                <p className={styles.description}>{description || "Информация отсутсвует"}</p>
             </div>
         );
     },

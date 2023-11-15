@@ -17,22 +17,26 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         const { className, offers } = props;
 
         const renderOffers = useMemo(
-            () => offers
-                .slice(0, 3)
-                .map(({ description }, index) => (
-                    <OfferCard
-                        image={offerDefaultImage}
-                        title={description.title}
-                        description={description.shortDescription}
-                        location="Казань, Россия"
-                        category="Заповедники и нац. парки"
-                        rating="4.3"
-                        likes="10"
-                        reviews="14"
-                        went="22"
-                        key={index}
-                    />
-                )),
+            () => {
+                if (!offers) return "У организации пока нет вакансий";
+
+                return offers
+                    .slice(0, 3)
+                    .map(({ description }, index) => (
+                        <OfferCard
+                            image={offerDefaultImage}
+                            title={description.title}
+                            description={description.shortDescription}
+                            location="Казань, Россия"
+                            category="Заповедники и нац. парки"
+                            rating="4.3"
+                            likes="10"
+                            reviews="14"
+                            went="22"
+                            key={index}
+                        />
+                    ));
+            },
             [offers],
         );
 
