@@ -8,6 +8,7 @@ import memberIcon from "@/shared/assets/icons/select-check.svg";
 import styles from "./HostlHeaderCard.module.scss";
 
 interface VolunteerHeaderCardProps {
+    id: string;
     volunteer: Volunteer;
 }
 

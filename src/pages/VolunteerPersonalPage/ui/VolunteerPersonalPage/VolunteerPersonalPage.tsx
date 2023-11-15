@@ -12,7 +12,7 @@ import { VolunteerlHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard
 import styles from "./VolunteerPersonalPage.module.scss";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 
-const VolunteerPersonalPage = () => {
+export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
 
     if (!id) {
@@ -38,5 +38,3 @@ const VolunteerPersonalPage = () => {
         </div>
     );
 };
-
-export default VolunteerPersonalPage;
