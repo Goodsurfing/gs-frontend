@@ -59,6 +59,8 @@ import {
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerDashboardPageUrl,
+    getVolunteerPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -185,6 +187,19 @@ const publicRoutes: RouteType[] = [
         label: "offer-personal",
         element: <OfferPersonalPage />,
         path: (locale: string) => getOfferPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-layout",
+        element: <VolunteerLayoutPage />,
+        path: (locale: string) => getVolunteerPageUrl(locale),
+        children: [
+            {
+                label: "volunteer-dashboard",
+                element: <VolunteerDashboardPage />,
+                index: true,
+                path: (locale) => getVolunteerDashboardPageUrl(locale),
+            },
+        ],
     },
     {
         label: "reset-password",
