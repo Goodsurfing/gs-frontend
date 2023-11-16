@@ -23,6 +23,8 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
