@@ -15,6 +15,7 @@ export const EditVolunteer: FC<EditVolunteerProps> = memo(
         const { className } = props;
         const navigate = useNavigate();
         const { locale } = useLocale();
+
         const onEditClick = () => {
             navigate(getMainPageUrl(locale));
         };

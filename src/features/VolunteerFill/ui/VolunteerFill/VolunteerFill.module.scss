@@ -10,6 +10,7 @@
     display: flex;
     padding: 13px 20px;
     border-bottom: 1px solid var(--text-caption);
+    justify-content: space-between;
 }
 
 .bottom {
@@ -29,4 +30,9 @@
 .rightSide {
     margin-right: auto;
     margin-left: 130px;
+}
+
+.toProfile {
+    text-decoration: none;
+    color: var(--text-primary-1);
 }

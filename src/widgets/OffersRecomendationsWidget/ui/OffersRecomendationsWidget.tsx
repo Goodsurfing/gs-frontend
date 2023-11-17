@@ -12,8 +12,8 @@ interface OffersRecomendationsWidgetProps {
     className?: string;
 }
 
-export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = memo(
-    (props: OffersRecomendationsWidgetProps) => {
+export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> =
+    memo((props: OffersRecomendationsWidgetProps) => {
         const { className } = props;
         const { locale } = useLocale();
 
@@ -33,5 +33,4 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 </div>
             </div>
         );
-    },
-);
+    });
