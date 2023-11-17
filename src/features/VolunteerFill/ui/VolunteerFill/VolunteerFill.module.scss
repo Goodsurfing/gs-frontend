@@ -1,0 +1,32 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary-1);
+    filter: drop-shadow(0px 5px 20px rgba(14, 29, 39, 0.05));
+    width: 100%;
+}
+
+.top {
+    display: flex;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--text-caption);
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;    
+}
+
+.leftSide {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 38px;
+}
+
+.rightSide {
+    margin-right: auto;
+    margin-left: 130px;
+}
