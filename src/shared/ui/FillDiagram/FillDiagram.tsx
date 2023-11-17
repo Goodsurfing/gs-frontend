@@ -1,16 +1,16 @@
 import { memo, useState } from "react";
 import cn from "classnames";
 
-import styles from "./HostFillDiagram.module.scss";
+import styles from "./FillDiagram.module.scss";
 import { StatsChart, StatsChartPoints } from "@/entities/Stats";
 
-interface HostFillDiagramProps {
+interface FillDiagramProps {
     className?: string;
     pointsData: StatsChartPoints[];
     isLoading?: boolean;
 }
 
-export const HostFillDiagram = memo((props: HostFillDiagramProps) => {
+export const FillDiagram = memo((props: FillDiagramProps) => {
     const { className, pointsData, isLoading } = props;
 
     const [degrees, setDegrees] = useState<[number, number]>([360, 0]);
