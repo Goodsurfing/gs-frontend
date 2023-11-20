@@ -6,14 +6,16 @@ import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 import { OfferConditionsCard } from "../OfferConditionsCard/OfferConditionsCard";
 import { OfferDescriptionCard } from "../OfferDescriptionCard/OfferDescriptionCard";
 import { OfferLanguagesCard } from "../OfferLanguagesCard/OfferLanguagesCard";
+import { OfferOrganizationCard } from "../OfferOrganizationCard/OfferOrganizationCard";
 import { OfferPaymentCard } from "../OfferPaymentCard/OfferPaymentCard";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
+import { OfferGalleryCard } from "../OfferGalleryCard/OfferGalleryCard";
 
 interface HostInfoCardProps {
     className?: string;
-    offer?: Offer;
+    offer: Offer;
 }
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
@@ -25,9 +27,6 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     return (
         <div className={cn(className)}>
             <OfferWhenCard offerWhen={offer.when} />
-            <OfferWhoNeedsCard whoNeeds={offer.whoNeeds} />
-            <OfferLanguagesCard languages={offer.whoNeeds.languages} />
-            <OfferAddressCard address={address} />
             <OfferWhoNeedsCard
                 whoNeeds={offer.whoNeeds}
                 className={styles.container}
@@ -48,6 +47,16 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 description={offer.description}
                 className={styles.container}
             />
+            <OfferLanguagesCard
+                languages={offer.whoNeeds.languages}
+                className={styles.container}
+            />
+            <OfferAddressCard address={address} className={styles.container} />
+            <OfferOrganizationCard
+                organization={offer.description.organization}
+                className={styles.container}
+            />
+            <OfferGalleryCard gallery={offer.description.images} className={styles.container} />
         </div>
     );
 });

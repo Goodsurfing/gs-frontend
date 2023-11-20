@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import React, { FC, memo } from "react";
+import cn from "classnames";
 
 import organizationDefaultImage from "@/shared/assets/images/offers/organizationSmallMOCK.png";
 
@@ -8,15 +9,17 @@ import styles from "./OfferOrganizationCard.module.scss";
 
 interface OfferOrganizationCardProps {
     organization: OfferOrganization;
+    className?: string;
 }
 
 export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
     (props: OfferOrganizationCardProps) => {
         const {
             organization: { name, description },
+            className,
         } = props;
         return (
-            <div className={styles.wrapper}>
+            <div className={cn(className, styles.wrapper)}>
                 <h3 className={styles.title}>Организация</h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
