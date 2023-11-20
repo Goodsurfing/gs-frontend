@@ -1,0 +1,24 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.defaultscssscss {
+    color: var(--text-secondary-2);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tag {
+    display: flex;
+    padding: 3px 10px;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 14px;
+}
