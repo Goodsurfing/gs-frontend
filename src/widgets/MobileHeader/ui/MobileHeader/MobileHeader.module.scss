@@ -65,7 +65,7 @@
 	top: 0;
 	left: 0;
 
-	display: flex;
+	display: none;
 	align-items: center;
 	flex-direction: column;
 
@@ -90,6 +90,7 @@
 }
 
 .active {
+	display: flex;
 	transform: translateX(0);
 }
 
@@ -118,6 +119,10 @@
             flex-direction: column;
             row-gap: 10px;
         }
+
+		&:hover {
+			background-color: #ecf1f4;
+		}
     }
 
 
@@ -137,6 +142,12 @@
 		&:hover {
 			color: var(--hover-blue);
 		}
+	}
+}
+
+.select {
+	&:hover {
+		background-color: #ecf1f4;
 	}
 }
 

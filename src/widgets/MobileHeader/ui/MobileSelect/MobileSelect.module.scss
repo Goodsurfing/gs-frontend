@@ -17,6 +17,10 @@
 
     &.active {
         color: var(--text-secondary-2);
+        background-color: #ecf1f4;
+    }
+    &:hover {
+        background-color: #ecf1f4;
     }
 }
 

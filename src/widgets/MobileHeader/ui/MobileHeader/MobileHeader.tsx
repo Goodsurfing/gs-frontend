@@ -86,6 +86,8 @@ const MobileHeader: FC = () => {
                 <div className={styles.container} />
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
+                    className={styles.select}
+                    style={{ backgroundColor: "#ecf1f4" }}
                     isOpen={dropdownOpened.isOffersOpened}
                     title={t("main.welcome.header.offers.title")}
                     onClick={() => handleOpenDropdown("OFFERS")}
