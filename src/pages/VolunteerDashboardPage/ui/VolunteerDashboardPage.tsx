@@ -4,6 +4,7 @@ import { VolunteerFill } from "@/features/VolunteerFill";
 import styles from "./VolunteerDashboardPage.module.scss";
 import { OffersRecomendationsWidget } from "@/widgets/OffersRecomendationsWidget";
 import { MemberBanner } from "@/features/MemberBanner";
+import { DashboardNotifications } from "@/widgets/DashboardNotifications";
 
 const VolunteerDashboardPage = () => (
     <div className={styles.dashboard}>
@@ -12,7 +13,7 @@ const VolunteerDashboardPage = () => (
             <OffersRecomendationsWidget />
             <div className={styles.container}>
                 <MemberBanner />
-
+                <DashboardNotifications />
             </div>
         </div>
     </div>

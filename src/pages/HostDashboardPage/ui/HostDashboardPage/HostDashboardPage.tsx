@@ -5,7 +5,7 @@ import { HostFill } from "@/features/HostFill";
 import { RequestsWidget } from "@/widgets/RequestsWidget";
 import { CalendarWidget } from "@/widgets/CalendarWidget";
 
-import HostDashboardNotifications from "../HostDashboardNotifications/HostDashboardNotifications";
+import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 
 import styles from "./HostDashboard.module.scss";
 
@@ -15,7 +15,7 @@ const HostDashboardPage: FC = () => (
         <div className={styles.columns}>
             <RequestsWidget />
             <CalendarWidget />
-            <HostDashboardNotifications />
+            <DashboardNotifications />
         </div>
     </div>
 );
