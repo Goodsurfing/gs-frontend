@@ -23,7 +23,7 @@ export const mockedOfferData: Offer = {
         travel: "reimbursement",
     },
     whatToDo: {
-        skills: [{ id: 1, text: "cooking" }],
+        skills: [{ id: 1, text: "cooking" }, { id: 2, text: "farming" }, { id: 3, text: "driving" }],
         workingHours: { dayOff: 3, hours: 40, timeType: "day" },
         additionalSkills: ["additional skills"],
         extraInfo: "extra info",
