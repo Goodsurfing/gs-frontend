@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 160px;
+    min-height: 107px;
+    border: 1px solid var(--text-caption);
+    padding: 8px;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    fill: var(--text-caption);
+    color: var(--text-caption);
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary-2);
+}

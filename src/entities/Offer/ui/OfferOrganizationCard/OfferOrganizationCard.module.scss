@@ -1,0 +1,42 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border: 1px solid var(--text-caption);
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.fullInfoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 680px;
+}
+
+.nameContainer {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.name {
+    color: var(--text-primary-1);
+    font-size: 16px;
+}
+
+.button {
+    max-width: 185px;
+    min-width: 130px;
+    height: 36px;
+    text-transform: none;
+    border-radius: 10px;
+    border: 1px solid var(--text-primary-1);
+    color: var(--text-primary-1);
+}
