@@ -4,7 +4,7 @@ import deleteIcn from "@/shared/assets/icons/delete.svg";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import { sliceFirstLetter } from "../../lib/avatarUtils";
-import { TeamUser } from "../../model/types/team";
+import { TeamUser } from "@/entities/Host";
 import styles from "./TeamCard.module.scss";
 
 interface TeamCardProps {

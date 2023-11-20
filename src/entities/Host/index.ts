@@ -5,4 +5,8 @@ export {
     useGetHostsQuery,
     useUpdateHostMutation,
 } from "./api/hostApi";
-export type { Host } from "./model/types/host";
+export type {
+    Host, Article, TeamUser, HostReview,
+} from "./model/types/host";
+
+export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";

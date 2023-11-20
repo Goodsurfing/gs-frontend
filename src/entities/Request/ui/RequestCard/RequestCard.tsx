@@ -31,6 +31,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 <Avatar
                     icon={user?.imageUuid}
                     className={styles.image}
+                    size="MEDIUM"
                 />
                 <div className={styles.text}>
                     <span className={styles.name}>{user?.firstName}</span>
