@@ -1,4 +1,5 @@
 import { OfferConditions } from "./offerConditions";
+import { OfferContributor } from "./offerContributor";
 import { OfferDescription } from "./offerDescription";
 import { OfferFinishingTouches } from "./offerFinishingTouches";
 import { OfferWhatToDo } from "./offerWhatToDo";
@@ -14,6 +15,7 @@ export interface Offer {
     whatToDo: OfferWhatToDo;
     conditions: OfferConditions;
     finishingTouches: OfferFinishingTouches;
+    contributors: OfferContributor[];
 }
 
 export interface OfferSchema {

@@ -4,15 +4,18 @@ import { memo } from "react";
 import { Offer } from "../../model/types/offer";
 import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 import { OfferConditionsCard } from "../OfferConditionsCard/OfferConditionsCard";
+import { OfferContributorsCard } from "../OfferContributorsCard/OfferContributorsCard";
 import { OfferDescriptionCard } from "../OfferDescriptionCard/OfferDescriptionCard";
+import { OfferExtraConditionsCard } from "../OfferExtraConditionsCard/OfferExtraConditionsCard";
+import { OfferGalleryCard } from "../OfferGalleryCard/OfferGalleryCard";
 import { OfferLanguagesCard } from "../OfferLanguagesCard/OfferLanguagesCard";
 import { OfferOrganizationCard } from "../OfferOrganizationCard/OfferOrganizationCard";
 import { OfferPaymentCard } from "../OfferPaymentCard/OfferPaymentCard";
+import { OfferTermsCard } from "../OfferTermsCard/ui/OfferTermsCard/OfferTermsCard";
+import { OfferWhatToDoCard } from "../OfferWhatToDoCard/OfferWhatToDoCard";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
-import { OfferGalleryCard } from "../OfferGalleryCard/OfferGalleryCard";
-import { OfferWhatToDoCard } from "../OfferWhatToDoCard/OfferWhatToDoCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -22,8 +25,9 @@ interface HostInfoCardProps {
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
     const address = "Казань улица Пушкина, 46";
-    const isShowPaymentCard = offer.conditions.payment.contribution
-        || offer.conditions.payment.reward;
+    const isShowPaymentCard =
+        offer.conditions.payment.contribution ||
+        offer.conditions.payment.reward;
 
     return (
         <div className={cn(className)}>
@@ -57,8 +61,25 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 organization={offer.description.organization}
                 className={styles.container}
             />
-            <OfferGalleryCard gallery={offer.description.images} className={styles.container} />
-            <OfferWhatToDoCard whatToDo={offer.whatToDo} className={styles.wrapper} />
+            <OfferGalleryCard
+                gallery={offer.description.images}
+                className={styles.container}
+            />
+            <OfferWhatToDoCard
+                whatToDo={offer.whatToDo}
+                className={styles.wrapper}
+            />
+            <OfferTermsCard
+                facilities={offer.conditions.facilities}
+                className={styles.container}
+            />
+            {offer.conditions.extraConditions && (
+                <OfferExtraConditionsCard
+                    extraConditions={offer.conditions.extraConditions}
+                    className={styles.container}
+                />
+            )}
+            <OfferContributorsCard contributors={offer.conditions.}/>
         </div>
     );
 });
