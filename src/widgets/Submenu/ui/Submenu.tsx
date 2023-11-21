@@ -3,8 +3,6 @@ import {
     memo, useState, useEffect, ReactNode,
 } from "react";
 
-import Button from "@/shared/ui/Button/Button";
-
 import { SubmenuItem } from "../model/types/submenu";
 import styles from "./Submenu.module.scss";
 
