@@ -61,7 +61,7 @@ export const mockedOfferData: Offer = {
         extraConditions: ["students", "adult-only", "allow-kids", "couples"],
     },
     contributors: [
-        { avatar: "", name: "Екатерина Паршакова" },
+        { avatar: defaultImage, name: "Екатерина Паршакова" },
         { avatar: "", name: "Екатерина Паршакова" },
         { avatar: "", name: "Екатерина Паршакова" },
     ],
