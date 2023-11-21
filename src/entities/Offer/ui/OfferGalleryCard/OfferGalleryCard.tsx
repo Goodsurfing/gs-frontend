@@ -1,7 +1,6 @@
 import React, { FC, memo } from "react";
 import cn from "classnames";
 
-import classNames from "classnames";
 import styles from "./OfferGalleryCard.module.scss";
 
 interface OfferGalleryCardProps {

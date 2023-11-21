@@ -15,7 +15,7 @@ interface AvatarProps {
 
 export const Avatar = memo((props: AvatarProps) => {
     const {
-        className, size = "DEFAULT", alt, icon, color
+        className, size = "DEFAULT", alt, icon, color,
     } = props;
 
     return (

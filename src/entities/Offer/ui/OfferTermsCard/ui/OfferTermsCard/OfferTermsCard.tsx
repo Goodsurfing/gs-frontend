@@ -29,7 +29,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
         };
 
         return (
-            <div className={cn(className,styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)}>
                 <h3 className={styles.title}>Условия</h3>
                 <div className={styles.container}>
                     {renderTerms(goodsItems, facilities)}

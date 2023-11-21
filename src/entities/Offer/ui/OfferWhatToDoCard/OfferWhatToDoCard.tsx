@@ -31,7 +31,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                     acc[cur.id] = cur;
                     return acc;
                 },
-                {}
+                {},
             );
             return skills.map((item) => {
                 const skill = skillsMap[item.text];
@@ -70,5 +70,5 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                 </div>
             </div>
         );
-    }
+    },
 );
