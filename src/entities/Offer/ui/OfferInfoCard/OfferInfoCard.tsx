@@ -16,6 +16,7 @@ import { OfferWhatToDoCard } from "../OfferWhatToDoCard/OfferWhatToDoCard";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
+import { OfferShareCard } from "../OfferShareCard/OfferShareCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -25,9 +26,8 @@ interface HostInfoCardProps {
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
     const address = "Казань улица Пушкина, 46";
-    const isShowPaymentCard =
-        offer.conditions.payment.contribution ||
-        offer.conditions.payment.reward;
+    const isShowPaymentCard = offer.conditions.payment.contribution
+        || offer.conditions.payment.reward;
 
     return (
         <div className={cn(className)}>
@@ -79,7 +79,10 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferContributorsCard contributors={offer.conditions.}/>
+            <OfferContributorsCard contributors={offer.contributors} className={styles.wrapper} />
+            {/* Add reviews card */}
+            {/* Add articles card */}
+            <OfferShareCard />
         </div>
     );
 });

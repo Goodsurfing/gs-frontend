@@ -11,6 +11,7 @@ import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
 
 import styles from "./OfferPersonalPage.module.scss";
+import MainHeader from "@/widgets/MainHeader/MainHeader";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -30,6 +31,7 @@ export const OfferPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
+            <MainHeader />
             <div className={styles.content}>
                 <OfferPersonalCard id={id} onImagesClick={onImagesClick} />
                 <Submenu className={styles.navMenu} items={SubmenuItems} />

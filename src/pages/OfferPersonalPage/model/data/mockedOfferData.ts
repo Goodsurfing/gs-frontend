@@ -1,4 +1,5 @@
 import { Offer } from "@/entities/Offer";
+
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 
 export const mockedOfferData: Offer = {
@@ -23,7 +24,11 @@ export const mockedOfferData: Offer = {
         travel: "reimbursement",
     },
     whatToDo: {
-        skills: [{ id: 1, text: "cooking" }, { id: 2, text: "farming" }, { id: 3, text: "driving" }],
+        skills: [
+            { id: 1, text: "cooking" },
+            { id: 2, text: "farming" },
+            { id: 3, text: "driving" },
+        ],
         workingHours: { dayOff: 3, hours: 40, timeType: "day" },
         additionalSkills: ["additional skills"],
         extraInfo: "extra info",
@@ -43,7 +48,11 @@ export const mockedOfferData: Offer = {
         shortDescription: "short description",
         category: ["category1", "category2"],
         images: [defaultImage, defaultImage, defaultImage],
-        organization: { name: "КГБУ «Природный парк «Вулканы Камчатки»", description: "Природный парк «Вулканы Камчатки» — особо охраняемая природная территория на Камчатке, самая большая по размеру в Камчатском крае (2,475 млн га)." },
+        organization: {
+            name: "КГБУ «Природный парк «Вулканы Камчатки»",
+            description:
+                "Природный парк «Вулканы Камчатки» — особо охраняемая природная территория на Камчатке, самая большая по размеру в Камчатском крае (2,475 млн га).",
+        },
     },
     finishingTouches: {
         faq: "some faq",
@@ -51,4 +60,9 @@ export const mockedOfferData: Offer = {
         welcomeMessage: "welcome message",
         extraConditions: ["students", "adult-only", "allow-kids", "couples"],
     },
+    contributors: [
+        { avatar: "", name: "Екатерина Паршакова" },
+        { avatar: "", name: "Екатерина Паршакова" },
+        { avatar: "", name: "Екатерина Паршакова" },
+    ],
 };

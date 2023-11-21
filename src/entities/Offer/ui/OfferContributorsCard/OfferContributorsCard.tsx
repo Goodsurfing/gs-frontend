@@ -1,5 +1,7 @@
+import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
+import arrowIcon from "@/shared/assets/icons/arrow-down.svg";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -12,23 +14,28 @@ import styles from "./OfferContributorsCard.module.scss";
 
 interface OfferContributorsCardProps {
     contributors: OfferContributor[];
+    className?: string;
 }
 
 const RENDER_EIGHT_CARDS = [0, 8];
 
 export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
     (props: OfferContributorsCardProps) => {
-        const { contributors } = props;
+        const { contributors, className } = props;
         const { locale } = useLocale();
 
         const renderCards = (contributorsData: OfferContributor[]) => contributorsData
             .slice(...RENDER_EIGHT_CARDS)
-            .map(({ avatar, name }) => (
-                <OfferContributorCard avatar={avatar} name={name} />
+            .map(({ avatar, name }, index) => (
+                <OfferContributorCard
+                    avatar={avatar}
+                    name={name}
+                    key={index}
+                />
             ));
 
         return (
-            <div className={styles.wrapper}>
+            <div className={cn(className, styles.wrapper)}>
                 <h3>Участники(54)</h3>
                 <p className={styles.description}>
                     В нашем сообществе вы можете поговорить с волонтерами,
@@ -38,7 +45,11 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
                 <div className={styles.container}>
                     {renderCards(contributors)}
                 </div>
-                <Link to={getMainPageUrl(locale)}>Показать всех</Link>
+                <Link to={getMainPageUrl(locale)} className={styles.text}>
+                    Показать всех
+                    {" "}
+                    <img src={arrowIcon} alt="arrow-icon" />
+                </Link>
             </div>
         );
     },
