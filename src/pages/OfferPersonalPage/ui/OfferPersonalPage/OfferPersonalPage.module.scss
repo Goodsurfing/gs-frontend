@@ -14,7 +14,17 @@
 }
 
 .navMenu {
-    margin-top: 55px;
+    // margin-top: 55px;
+    padding: 26px 50px 16px 50px;
+    position: sticky;
+    top: 91px;
+    z-index: 5;
+}
+
+.button {
+    width: 100%;
+    max-width: 150px;
+    max-height: 36px;
 }
 
 @media (max-width: 768px) {

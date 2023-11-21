@@ -12,6 +12,7 @@ import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
 
 import styles from "./OfferPersonalPage.module.scss";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
+import Button from "@/shared/ui/Button/Button";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -34,7 +35,16 @@ export const OfferPersonalPage = () => {
             <MainHeader />
             <div className={styles.content}>
                 <OfferPersonalCard id={id} onImagesClick={onImagesClick} />
-                <Submenu className={styles.navMenu} items={SubmenuItems} />
+                <Submenu
+                    className={styles.navMenu}
+                    items={SubmenuItems}
+                    buttons={(
+                        <>
+                            <Button size="SMALL" color="BLUE" variant="OUTLINE" className={styles.button}>Написать</Button>
+                            <Button size="SMALL" color="BLUE" variant="FILL" className={styles.button}>Участвовать</Button>
+                        </>
+                    )}
+                />
                 <OfferPageContent id={id} />
             </div>
             <Footer />
