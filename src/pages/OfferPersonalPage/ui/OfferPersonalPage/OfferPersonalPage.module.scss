@@ -16,3 +16,9 @@
 .navMenu {
     margin-top: 55px;
 }
+
+@media (max-width: 768px) {
+    .content {
+        padding: 10px 15px 70px 15px;
+    }
+}
