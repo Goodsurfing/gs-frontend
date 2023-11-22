@@ -30,7 +30,8 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
                         onClick={() => setSelectedVideo(video)}
                         width="330px"
                         url={video}
-                        controls
+                        light
+                        playing={false}
                     />
                 </SwiperSlide>
             )),
@@ -48,7 +49,7 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
                 </Swiper>
                 {selectedVideo && (
                     <Modal onClose={() => setSelectedVideo(null)}>
-                        <ReactPlayer url={selectedVideo} playing />
+                        <ReactPlayer url={selectedVideo} playing controls />
                     </Modal>
                 )}
             </div>
