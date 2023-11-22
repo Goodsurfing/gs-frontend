@@ -2,6 +2,8 @@ import React, { FC, memo, useMemo } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
+import "swiper/css/navigation";
 import styles from "./ImageSwiper.module.scss";
 
 type ImageSwiperProps = {

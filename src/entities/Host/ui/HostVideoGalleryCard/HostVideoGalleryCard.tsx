@@ -1,12 +1,7 @@
 import cn from "classnames";
-import React, { FC, memo, useMemo } from "react";
-import ReactPlayer from "react-player";
-import { Navigation } from "swiper";
+import React, { FC, memo } from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import "swiper/css";
-import "swiper/css/navigation";
+import { VideoGallery } from "@/widgets/VideoGallery/ui/VideoGallery/VideoGallery";
 import styles from "./HostVideoGalleryCard.module.scss";
 
 interface HostVideoGalleryCardProps {
@@ -18,26 +13,10 @@ export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
     (props: HostVideoGalleryCardProps) => {
         const { videoGallery, className } = props;
 
-        const renderSlides = useMemo(
-            () => videoGallery.map((video, index) => (
-                <SwiperSlide>
-                    <ReactPlayer
-                        key={index}
-                        width="330px"
-                        url={video}
-                        controls
-                    />
-                </SwiperSlide>
-            )),
-            [videoGallery],
-        );
-
         return (
             <div className={cn(className, styles.wrapper)}>
                 <h3>Добавленные видео</h3>
-                <Swiper className={styles.swiper} navigation modules={[Navigation]}>
-                    {renderSlides}
-                </Swiper>
+                <VideoGallery videos={videoGallery} className={styles.swiper} />
             </div>
         );
     },
