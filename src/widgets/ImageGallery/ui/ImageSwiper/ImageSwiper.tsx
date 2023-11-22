@@ -30,7 +30,6 @@ export const ImageSwiper: FC<ImageSwiperProps> = memo(
         return (
             <Swiper
                 initialSlide={initialSlide}
-                spaceBetween={30}
                 centeredSlides
                 slidesPerView={1}
                 modules={[Navigation, Pagination]}
