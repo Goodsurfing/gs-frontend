@@ -61,11 +61,13 @@ import {
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerSkillsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -190,6 +192,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getOffersFinishingTouchesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "volunteer-skills",
+        element: <VolunteerSkillsPage />,
+        path: (locale: string) => getVolunteerSkillsPageUrl(locale),
     },
     {
         label: "offer-personal",
