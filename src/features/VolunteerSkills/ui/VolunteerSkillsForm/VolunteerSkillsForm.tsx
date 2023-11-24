@@ -1,15 +1,17 @@
 import React, { FC, memo } from "react";
-import { Controller, DefaultValues, useForm } from "react-hook-form";
+import {
+    Controller, DefaultValues, SubmitHandler, useForm,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { SkillsForm } from "@/features/SkillsForm";
 
+import Button from "@/shared/ui/Button/Button";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { VolunteerSkillsField } from "../../model/types/volunteerSkills";
 import { VolunteerLanguage } from "../VolunteerLanguage/VolunteerLanguage";
 import styles from "./VolunteerSkillsForm.module.scss";
-import Button from "@/shared/ui/Button/Button";
 
 // Change typing
 const defaultValues: DefaultValues<VolunteerSkillsField> = {
@@ -25,12 +27,16 @@ export const VolunteerSkillsForm: FC = memo(() => {
         defaultValues,
     });
 
+    const onSubmit: SubmitHandler<VolunteerSkillsField> = (data) => {
+        console.log(data);
+    };
+
     return (
-        <div className={styles.wrapper}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
             <Controller
                 name="languages"
                 control={control}
-                rules={{ required: true, maxLength: 1000 }}
+                rules={{ required: false }}
                 render={({ field }) => (
                     <VolunteerLanguage
                         className={styles.language}
@@ -39,12 +45,12 @@ export const VolunteerSkillsForm: FC = memo(() => {
                     />
                 )}
             />
-            <span>Навыки которыми вы обладаете</span>
+            <span className={styles.titleSkills}>Навыки которыми вы обладаете</span>
             <SkillsForm control={control} />
             <Controller
                 name="extraInfo"
                 control={control}
-                rules={{ required: true, maxLength: 1000 }}
+                rules={{ required: false, maxLength: 1000 }}
                 render={({ field }) => (
                     <Textarea
                         value={field.value}
@@ -54,7 +60,9 @@ export const VolunteerSkillsForm: FC = memo(() => {
                     />
                 )}
             />
-            <Button color="BLUE" size="MEDIUM" variant="FILL">Сохранить</Button>
-        </div>
+            <Button type="submit" color="BLUE" size="MEDIUM" variant="FILL">
+                Сохранить
+            </Button>
+        </form>
     );
 });

@@ -1,18 +1,24 @@
-import { MenuItem } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cn from "classnames";
 import React, {
-    FC, memo, useTransition, useState, useMemo,
+    FC,
+    memo,
+    useCallback,
+    useMemo,
+    useState,
+    useTransition,
 } from "react";
 
+import deleteIcon from "@/shared/assets/icons/delete.svg";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
-import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 
 import { LanguageSkills } from "../../model/types/volunteerSkills";
 import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
 import styles from "./VolunteerLanguage.module.scss";
+import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
 interface VolunteerLanguageProps {
-    value: LanguageSkills[];
+    value?: LanguageSkills[];
     onChange: (value: LanguageSkills[]) => void;
     className?: string;
 }
@@ -20,34 +26,94 @@ interface VolunteerLanguageProps {
 export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
     (props: VolunteerLanguageProps) => {
         const { className, value, onChange } = props;
-        const [languageSkills, setLanguageSkills] = useState<LanguageSkills[]>([]);
+        const [mainLanguageSkills, setMainLanguageSkills] = useState<
+        LanguageSkills | undefined
+        >(undefined);
         const { t } = useTransition();
 
-        const addLanguage = () => {
-            setLanguageSkills([...languageSkills, { language: "", level: "" }]);
+        const handleMainLanguageChange = (item: LanguageSkills) => {
+            setMainLanguageSkills(item);
         };
 
-        const updateLanguage = (index: number, field: keyof LanguageSkills, value: string) => {
-            const newLanguages = [...languageSkills];
-            newLanguages[index][field] = value;
-            setLanguageSkills(newLanguages);
+        const handleClearMainLanguageChange = () => {
+            setMainLanguageSkills(undefined);
         };
 
-        const renderLanguageLevelComponents = useMemo(() => {
-            value.map((item, index) => (
-                <LanguageLevelComponent
-                    key={index}
-                    value={item}
-                    onChange
-                />
-            ));
-        }, [value]);
+        const handleAddLanguage = () => {
+            if (mainLanguageSkills) {
+                onChange([...(value || []), mainLanguageSkills]);
+                setMainLanguageSkills(undefined);
+            }
+        };
+
+        const handleDeleteLanguage = useCallback(
+            (index: number) => {
+                const newValue = value?.filter((item, i) => i !== index) || [];
+                onChange(newValue);
+            },
+            [onChange, value],
+        );
+
+        const handleUpdateLanguage = useCallback(
+            (updatedItem: LanguageSkills, index: number) => {
+                const newValue = value?.map((item, i) => (i === index ? updatedItem : item)) || [];
+                onChange(newValue);
+            },
+            [value, onChange],
+        );
+
+        const renderLanguageLevelComponents = useMemo(
+            () => value?.map((item, index) => (
+                <div className={styles.wrapperLanguageComponent}>
+                    <LanguageLevelComponent
+                        key={index}
+                        value={item}
+                        onChange={(updatedItem) => {
+                            handleUpdateLanguage(updatedItem, index);
+                        }}
+                        isTitle={false}
+                    />
+                    <img
+                        className={styles.deleteIcon}
+                        onClick={() => handleDeleteLanguage(index)}
+                        src={deleteIcon}
+                        alt="delete"
+                    />
+                </div>
+            )),
+            [handleUpdateLanguage, value, handleDeleteLanguage],
+        );
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <LanguageLevelComponent value={} />
-                <div className={styles.container}>{renderLanguageLevelComponents}</div>
-                <IconButtonComponent icon={plusIcon} text="Добавить язык" />
+                <div className={styles.wrapperLanguageComponent}>
+                    <LanguageLevelComponent
+                        value={mainLanguageSkills}
+                        onChange={(item) => handleMainLanguageChange(item)}
+                    />
+                    <img
+                        className={styles.deleteIcon}
+                        onClick={() => handleClearMainLanguageChange()}
+                        src={deleteIcon}
+                        alt="delete"
+                    />
+                </div>
+                <div className={styles.container}>
+                    {renderLanguageLevelComponents}
+                </div>
+                <IconButton
+                    className={styles.button}
+                    onClick={handleAddLanguage}
+                    disabled={
+                        !mainLanguageSkills
+                        || !mainLanguageSkills?.language
+                        || !mainLanguageSkills?.level
+                    }
+                >
+                    <IconComponent icon={plusIcon} className={styles.plus} alt="add" />
+                    {" "}
+                    Добавить язык
+                </IconButton>
             </div>
         );
     },

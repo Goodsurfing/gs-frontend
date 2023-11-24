@@ -2,28 +2,22 @@ import { AdditionalSkillsType } from "@/features/OfferWhatToDo/model/types/offer
 
 import { OfferWhatToDoSkillType } from "@/entities/Offer";
 
-export type LanguageOptions = {
-    value: "english" | "spanish" | "russian";
-    text: "Английский" | "Испанский" | "Русский";
-};
+export type LanguageOptions = "english" | "spanish" | "russian";
 
-export type LanguageLevelOptions = {
-    value:
+export type LanguageLevelOptions =
     | "beginner"
     | "intermediate"
     | "proficient"
     | "fluent";
-    text: "Начальный" | "Средний" | "Хороший" | "Разговорный"
-};
 
 export interface LanguageSkills {
-    language: LanguageOptions;
-    level: LanguageLevelOptions;
+    language?: LanguageOptions;
+    level?: LanguageLevelOptions;
 }
 
 export interface VolunteerSkillsField {
     skills: OfferWhatToDoSkillType[];
     additionalSkills: AdditionalSkillsType[];
-    languages: LanguageSkills[];
+    languages?: LanguageSkills[];
     extraInfo?: string;
 }

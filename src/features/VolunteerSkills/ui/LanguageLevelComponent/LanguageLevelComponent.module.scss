@@ -1,3 +1,22 @@
 .wrapper {
-    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.titleSelect {
+    font-size: 14px;
+    color: var(--text-caption);
+}
+
+.selectContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.select {
+    min-width: 250px;
+    max-width: 300px;
+    min-height: 44px;
 }

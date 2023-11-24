@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import React, { FC, memo } from "react";
-
+import cn from "classnames";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
 import {
@@ -10,61 +10,68 @@ import {
 } from "../../model/types/volunteerSkills";
 import styles from "./LanguageLevelComponent.module.scss";
 
-const LanguagesOptions: LanguageOptions[] = [
-    { value: "english", text: "Английский" },
-    { value: "spanish", text: "Испанский" },
-    { value: "russian", text: "Русский" },
-];
+const LanguagesOptions: LanguageOptions[] = ["english", "spanish", "russian"];
 const LevelOptions: LanguageLevelOptions[] = [
-    { value: "beginner", text: "Начальный" },
-    { value: "intermediate", text: "Средний" },
-    { value: "proficient", text: "Хороший" },
-    { value: "fluent", text: "Разговорный" },
+    "beginner",
+    "intermediate",
+    "proficient",
+    "fluent",
 ];
 
 interface LanguageLevelComponentProps {
     className?: string;
-    value: LanguageSkills;
+    value?: LanguageSkills;
     onChange: (value: LanguageSkills) => void;
+    isTitle?: boolean
 }
 
 export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
     (props: LanguageLevelComponentProps) => {
-        const { className, value, onChange } = props;
+        const {
+            className, value, onChange, isTitle = true,
+        } = props;
 
-        const handleLanguageChange = (item: LanguageSkills) => {
-            onChange({ ...value, language: item.language. });
+        const handleLanguageChange = (language: LanguageOptions) => {
+            onChange({ ...value, language });
         };
-        const handleLevelChange = (item: LanguageSkills) => {
-            onChange({ ...value, level: item.level });
+        const handleLevelChange = (level: LanguageLevelOptions) => {
+            onChange({ ...value, level });
         };
 
         return (
-            <div className={styles.wrapper}>
-                <div>
-                    <span className={styles.titleSelect}>Знание языков</span>
+            <div className={cn(className, styles.wrapper)}>
+                <div className={styles.selectContainer}>
+                    {isTitle && <span className={styles.titleSelect}>Знание языков</span>}
                     <SelectComponent
                         className={styles.select}
-                        onChange={(e) => { handleLanguageChange(e.target.value); }}
-                        value={value.language.value}
+                        onChange={(e) => {
+                            handleLanguageChange(
+                                e.target.value as LanguageOptions,
+                            );
+                        }}
+                        value={value ? value.language : ""}
                     >
                         {LanguagesOptions.map((item, index) => (
-                            <MenuItem key={index} value={item.value}>
-                                {item.text}
+                            <MenuItem key={index} value={item}>
+                                {item}
                             </MenuItem>
                         ))}
                     </SelectComponent>
                 </div>
-                <div>
-                    <span className={styles.titleSelect}>Уровень владения</span>
+                <div className={styles.selectContainer}>
+                    {isTitle && <span className={styles.titleSelect}>Уровень владения</span>}
                     <SelectComponent
                         className={styles.select}
-                        onChange={() => {}}
-                        value={value}
+                        onChange={(e) => {
+                            handleLevelChange(
+                                e.target.value as LanguageLevelOptions,
+                            );
+                        }}
+                        value={value ? value.level : ""}
                     >
                         {LevelOptions.map((item, index) => (
-                            <MenuItem key={index} value={item.value}>
-                                {item.text}
+                            <MenuItem key={index} value={item}>
+                                {item}
                             </MenuItem>
                         ))}
                     </SelectComponent>
