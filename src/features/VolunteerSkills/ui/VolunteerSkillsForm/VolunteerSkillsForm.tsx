@@ -27,8 +27,8 @@ export const VolunteerSkillsForm: FC = memo(() => {
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<VolunteerSkillsField> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<VolunteerSkillsField> = () => {
+
     };
 
     return (

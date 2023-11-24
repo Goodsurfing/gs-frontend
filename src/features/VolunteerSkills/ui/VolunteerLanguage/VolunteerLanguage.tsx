@@ -11,11 +11,11 @@ import React, {
 
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
+import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
 import { LanguageSkills } from "../../model/types/volunteerSkills";
 import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
 import styles from "./VolunteerLanguage.module.scss";
-import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
 interface VolunteerLanguageProps {
     value?: LanguageSkills[];
@@ -29,6 +29,9 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         const [mainLanguageSkills, setMainLanguageSkills] = useState<
         LanguageSkills | undefined
         >(undefined);
+        const isDisabledButton = !mainLanguageSkills
+            || !mainLanguageSkills?.language
+            || !mainLanguageSkills?.level;
         const { t } = useTransition();
 
         const handleMainLanguageChange = (item: LanguageSkills) => {
@@ -40,7 +43,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         };
 
         const handleAddLanguage = () => {
-            if (mainLanguageSkills) {
+            if (mainLanguageSkills && (value?.length || 0) <= 10) {
                 onChange([...(value || []), mainLanguageSkills]);
                 setMainLanguageSkills(undefined);
             }
@@ -91,12 +94,14 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                         value={mainLanguageSkills}
                         onChange={(item) => handleMainLanguageChange(item)}
                     />
-                    <img
-                        className={styles.deleteIcon}
-                        onClick={() => handleClearMainLanguageChange()}
-                        src={deleteIcon}
-                        alt="delete"
-                    />
+                    {!isDisabledButton && (
+                        <img
+                            className={styles.deleteIcon}
+                            onClick={() => handleClearMainLanguageChange()}
+                            src={deleteIcon}
+                            alt="delete"
+                        />
+                    )}
                 </div>
                 <div className={styles.container}>
                     {renderLanguageLevelComponents}
@@ -104,13 +109,13 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                 <IconButton
                     className={styles.button}
                     onClick={handleAddLanguage}
-                    disabled={
-                        !mainLanguageSkills
-                        || !mainLanguageSkills?.language
-                        || !mainLanguageSkills?.level
-                    }
+                    disabled={isDisabledButton}
                 >
-                    <IconComponent icon={plusIcon} className={styles.plus} alt="add" />
+                    <IconComponent
+                        icon={plusIcon}
+                        className={styles.plus}
+                        alt="add"
+                    />
                     {" "}
                     Добавить язык
                 </IconButton>
