@@ -1,11 +1,10 @@
 import { memo, useMemo } from "react";
 
 import cn from "classnames";
-import { useTranslation } from "react-i18next";
-import styles from "./SidebarLinks.module.scss";
 import { SidebarContentProps } from "../../model/types/sidebar";
 import { SidebarLink } from "../SidebarLink/SidebarLink";
 import { SidebarDropdown } from "../SidebarDropdown/SidebarDropdown";
+import styles from "./SidebarLinks.module.scss";
 
 interface SidebarLinksProps {
     content: SidebarContentProps[];
