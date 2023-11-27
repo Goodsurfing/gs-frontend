@@ -1,15 +1,13 @@
-import React, {
-    memo, useCallback, useEffect, useState,
-} from "react";
-
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
 import { Placemark } from "@pbe/react-yandex-maps";
 import cn from "classnames";
-
+import React, {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import { Control, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
@@ -20,6 +18,7 @@ import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
 import { validateCoordinates } from "../model/lib/validateCoordinates";
 import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 import styles from "./MapWithAddress.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface MapWithAddressProps {
     className?: string;
@@ -28,6 +27,8 @@ interface MapWithAddressProps {
 }
 
 const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
+    const { t } = useTranslation("offer-where");
+    const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
@@ -62,7 +63,7 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
             if (value) {
                 newOptions = [value];
             }
-            getGeoObjectCollection(debouncedAddress).then((res) => {
+            getGeoObjectCollection(debouncedAddress, locale).then((res) => {
                 if (res?.featureMember.length) {
                     newOptions = [
                         ...newOptions,
@@ -76,7 +77,7 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
         return () => {
             active = false;
         };
-    }, [value, ymap, debouncedAddress]);
+    }, [value, ymap, debouncedAddress, locale]);
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -96,8 +97,8 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
                             }}
                             options={options}
                             getOptionLabel={(option) => option.name}
-                            noOptionsText="Точек на карте не найдено"
-                            labelText="Введите адрес"
+                            noOptionsText={t("Точек на карте не найдено")}
+                            labelText={t("Введите адрес")}
                             renderOption={(props, option) => (
                                 <li key={option.name} {...props}>
                                     <Grid

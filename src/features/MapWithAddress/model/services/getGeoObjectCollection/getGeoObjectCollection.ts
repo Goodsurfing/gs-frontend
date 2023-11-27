@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_YANDEX_BASE_URL } from "@/shared/constants/api/index";
 import { GeoObjectCollection } from "@/entities/Map";
+import { Locale } from "@/entities/Locale";
 
 export interface GetGeoObjectsResponse {
     response: {
@@ -8,13 +9,20 @@ export interface GetGeoObjectsResponse {
     }
 }
 
-export const getGeoObjectCollection = async (address: string) => {
+const languageList: Record<Locale, string> = {
+    en: "en_US",
+    ru: "ru_RU",
+    es: "es_ES",
+};
+
+export const getGeoObjectCollection = async (address: string, language: Locale) => {
     try {
         const res = await axios.get<GetGeoObjectsResponse>(`${API_YANDEX_BASE_URL}`, {
             params: {
                 apikey: process.env.REACT_APP_API_YANDEX_KEY,
                 format: "json",
                 geocode: address,
+                lang: languageList[language],
             },
         });
         return res.data.response.GeoObjectCollection;
