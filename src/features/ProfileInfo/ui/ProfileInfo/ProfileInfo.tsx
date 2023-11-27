@@ -2,10 +2,11 @@ import { memo } from "react";
 
 import cn from "classnames";
 
-import styles from "./ProfileInfo.module.scss";
+import { useTranslation } from "react-i18next";
 import { useUser } from "@/entities/Profile";
 import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import styles from "./ProfileInfo.module.scss";
 
 interface ProfileInfoProps {
     className?: string;
@@ -13,14 +14,14 @@ interface ProfileInfoProps {
 
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
-
+    const { t } = useTranslation("about-me");
     const { error, isLoading, profile } = useUser();
 
     if (error) {
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
             <div className={styles.body}>
-                Произошла ошибка
+                {t("Произошла ошибка")}
             </div>
         </div>;
     }
