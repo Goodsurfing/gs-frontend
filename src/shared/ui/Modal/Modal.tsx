@@ -2,8 +2,9 @@ import React, {
     FC, PropsWithChildren, memo, useEffect,
 } from "react";
 import { createPortal } from "react-dom";
-
+import closeIcon from "@/shared/assets/icons/delete.svg";
 import styles from "./Modal.module.scss";
+import IconComponent from "../IconComponent/IconComponent";
 
 interface ModalProps {
     onClose: () => void;
@@ -23,14 +24,13 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
 
         return createPortal(
             <div className={styles.wrapper} onClick={onClose}>
-                <div onClick={(event) => event.stopPropagation()}>
-                    <button
-                        type="button"
+                <div className={styles.container} onClick={(event) => event.stopPropagation()}>
+                    <IconComponent
+                        icon={closeIcon}
+                        alt="close"
                         className={styles.buttonClose}
                         onClick={onClose}
-                    >
-                        X
-                    </button>
+                    />
                     {children}
                 </div>
             </div>,

@@ -12,9 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import styles from "./VideoGallery.module.scss";
+import { Video } from "@/entities/Host/model/types/host";
 
 interface VideoGalleryProps {
-    videos: string[];
+    videos: Video[];
     className?: string;
 }
 
@@ -25,11 +26,13 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
 
         const renderSlides = useMemo(
             () => videos.map((video, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }} onClick={() => setSelectedVideo(video.url)}>
                     <ReactPlayer
-                        onClick={() => setSelectedVideo(video)}
+                        // onClick={() => setSelectedVideo(video.url)}
+                        style={{ pointerEvents: "none" }}
                         width="330px"
-                        url={video}
+                        height="193px"
+                        url={video.url}
                         light
                         playing={false}
                     />
@@ -42,8 +45,24 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
             <div className={cn(className, styles.wrapper)}>
                 <Swiper
                     className={styles.swiper}
+                    wrapperClass={styles.containerSwiper}
                     navigation
                     modules={[Navigation]}
+                    slidesPerView={2}
+                    spaceBetween={150}
+                    breakpoints={{
+                        640: {
+                            width: 500,
+                            slidesPerGroupAuto: true,
+                            spaceBetween: 30,
+                            slidesPerView: 1,
+                        },
+                        // when window width is >= 768px
+                        768: {
+                            width: 803,
+                            slidesPerView: 2,
+                        },
+                    }}
                 >
                     {renderSlides}
                 </Swiper>
