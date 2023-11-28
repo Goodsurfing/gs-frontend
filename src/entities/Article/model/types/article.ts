@@ -1,9 +1,10 @@
-export interface OfferArticle {
+export interface Article {
+    id: string;
     image: string;
     title: string;
-    description: string;
+    tag: string;
     date: string;
+    description: string;
     likes: number;
     comments: number;
-    tag: string;
 }

@@ -1,18 +1,17 @@
 import React, { FC, memo } from "react";
 
-import { OfferReview } from "@/entities/Offer/model/types/offerReview";
-
-import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import star from "@/shared/assets/icons/offers/star.svg";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { Review } from "@/entities/Review";
 
-import styles from "./OfferReviewCard.module.scss";
+import styles from "./ReviewWidget.module.scss";
 
-interface OfferReviewCardProps {
-    review: OfferReview;
+interface ReviewWidgetProps {
+    review: Review;
 }
 
-export const OfferReviewCard: FC<OfferReviewCardProps> = memo(
-    (props: OfferReviewCardProps) => {
+export const ReviewWidget: FC<ReviewWidgetProps> = memo(
+    (props: ReviewWidgetProps) => {
         const {
             review: {
                 avatar, name, rating, reviewText, date,
