@@ -8,6 +8,7 @@ import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
@@ -39,6 +40,7 @@ import {
     getHostReviewPageUrl,
     getHostTeamPageUrl,
     getHostVideoPageUrl,
+    getHostPersonalPageUrl,
     getMainPageUrl,
     getMyOffersPageUrl,
     getOfferPersonalPageUrl,
@@ -134,7 +136,15 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
+
         ],
+    },
+    {
+        label: "host-personal",
+        element: (
+            <HostPersonalPage />
+        ),
+        path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
         label: "offer-layout",

@@ -5,7 +5,7 @@
 }
 
 .content {
-    padding: 36px 50px 0 36px;
+    padding: 36px 50px 70px 36px;
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -14,5 +14,21 @@
 }
 
 .navMenu {
-    margin-top: 55px;
+    // margin-top: 55px;
+    padding: 26px 50px 16px 50px;
+    position: sticky;
+    top: 5.563rem;
+    z-index: 4;
+}
+
+.button {
+    width: 100%;
+    max-width: 150px;
+    max-height: 36px;
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 10px 15px 70px 15px;
+    }
 }

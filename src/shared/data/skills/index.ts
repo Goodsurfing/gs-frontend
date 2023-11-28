@@ -16,11 +16,12 @@ import {
     videoIcon,
 } from "../icons/skills";
 
+export export type Skills = | "admin" | "cooking" | "driving" | "housing" | "decor"
+| "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
+| "music" | "photo" | "night_job" | "sport";
+
 export type SkillsData = {
-    id:
-    | "admin" | "cooking" | "driving" | "housing" | "decor"
-    | "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
-    | "music" | "photo" | "night_job" | "sport";
+    id: Skills;
     text: string;
     icon: string;
 };
