@@ -3,6 +3,7 @@ import { memo } from "react";
 
 import { Offer } from "../../model/types/offer";
 import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
+import { OfferArticlesCard } from "../OfferArticlesCard/ui/OfferArticlesCard/OfferArticlesCard";
 import { OfferConditionsCard } from "../OfferConditionsCard/OfferConditionsCard";
 import { OfferContributorsCard } from "../OfferContributorsCard/OfferContributorsCard";
 import { OfferDescriptionCard } from "../OfferDescriptionCard/OfferDescriptionCard";
@@ -11,12 +12,13 @@ import { OfferGalleryCard } from "../OfferGalleryCard/OfferGalleryCard";
 import { OfferLanguagesCard } from "../OfferLanguagesCard/OfferLanguagesCard";
 import { OfferOrganizationCard } from "../OfferOrganizationCard/OfferOrganizationCard";
 import { OfferPaymentCard } from "../OfferPaymentCard/OfferPaymentCard";
+import { OfferReviewsCard } from "../OfferReviewsCard/ui/OfferReviewsCard/OfferReviewsCard";
+import { OfferShareCard } from "../OfferShareCard/OfferShareCard";
 import { OfferTermsCard } from "../OfferTermsCard/ui/OfferTermsCard/OfferTermsCard";
 import { OfferWhatToDoCard } from "../OfferWhatToDoCard/OfferWhatToDoCard";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
 import styles from "./OfferInfoCard.module.scss";
-import { OfferShareCard } from "../OfferShareCard/OfferShareCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -79,9 +81,17 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferContributorsCard contributors={offer.contributors} className={styles.wrapper} />
-            {/* Add reviews card */}
-            {/* Add articles card */}
+            <OfferContributorsCard
+                contributors={offer.contributors}
+                className={styles.wrapper}
+            />
+            {offer?.reviews && <OfferReviewsCard reviews={offer.reviews} />}
+            {offer?.articles && (
+                <OfferArticlesCard
+                    articles={offer.articles}
+                    className={styles.container}
+                />
+            )}
             <OfferShareCard />
         </div>
     );

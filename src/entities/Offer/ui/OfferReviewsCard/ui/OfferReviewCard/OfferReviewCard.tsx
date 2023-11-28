@@ -22,8 +22,10 @@ export const OfferReviewCard: FC<OfferReviewCardProps> = memo(
             <div className={styles.wrapper}>
                 <p className={styles.reviewText}>{reviewText}</p>
                 <div className={styles.reviewInfo}>
-                    <img src={star} alt="rating" />
-                    <span>{rating}</span>
+                    <div className={styles.ratingContainer}>
+                        <img src={star} alt="rating" />
+                        <span className={styles.rating}>{rating}</span>
+                    </div>
                     <Avatar icon={avatar} className={styles.avatar} />
                     <span className={styles.name}>{name}</span>
                     <span className={styles.date}>
