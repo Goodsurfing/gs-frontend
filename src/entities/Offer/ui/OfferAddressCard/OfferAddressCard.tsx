@@ -13,11 +13,12 @@ import styles from "./OfferAddressCard.module.scss";
 
 interface OfferAddressCardProps {
     address: string;
+    className?: string;
 }
 
 export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
     (props: OfferAddressCardProps) => {
-        const { address } = props;
+        const { address, className } = props;
         const [, setYmap] = useState<YmapType | undefined>(undefined);
         const [coordinates, setCoordinates] = useState<GeoObject | null>();
 
@@ -30,7 +31,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
         }, [address]);
 
         return (
-            <div className={styles.wrapper}>
+            <div className={cn(className, styles.wrapper)}>
                 <h3 className={styles.title}>Местоположение</h3>
                 <span>{address}</span>
                 <YMap

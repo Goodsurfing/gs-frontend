@@ -28,7 +28,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo((
         <div className={styles.wrapper}>
             <h3>Отзывы</h3>
             <div className={styles.container}>{renderCards}</div>
-            <Link to={getMainPageUrl(locale)}>Посмотреть все</Link>
+            <Link className={styles.viewAll} to={getMainPageUrl(locale)}>Посмотреть все</Link>
         </div>
     );
 });
