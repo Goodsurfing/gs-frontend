@@ -8,9 +8,9 @@ import { HostDescriptionCard } from "../HostDescriptionCard/HostDescriptionCard"
 import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
 import { HostOffersCard } from "../HostOffersCard/HostOffersCard";
 import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
-import styles from "./HostInfoCard.module.scss";
 import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
 import { HostReviewCard } from "../HostReviewCard/HostReviewCard";
+import styles from "./HostInfoCard.module.scss";
 
 interface HostInfoCardProps {
     className?: string;
@@ -42,7 +42,7 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                         className={styles.container}
                     />
                 )}
-                {host?.team && <HostTeamCard team={host.team} />}
+                {host?.team && <HostTeamCard team={host.team} className={styles.container} />}
                 {host?.review && <HostReviewCard />}
             </div>
         );
