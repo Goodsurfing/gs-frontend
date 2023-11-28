@@ -16,7 +16,7 @@ import {
     videoIcon,
 } from "../icons/skills";
 
-export export type Skills = | "admin" | "cooking" | "driving" | "housing" | "decor"
+export type Skills = | "admin" | "cooking" | "driving" | "housing" | "decor"
 | "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
 | "music" | "photo" | "night_job" | "sport";
 
