@@ -16,7 +16,7 @@ export const HostGalleryCard: FC<HostGalleryCardProps> = memo(
         return (
             <div className={cn(styles.wrapper, className)}>
                 <h3>Добавленные фотографии</h3>
-                <ImageGallery images={images} />
+                <ImageGallery images={images} className={styles.container} />
             </div>
         );
     },
