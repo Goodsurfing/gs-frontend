@@ -1,5 +1,7 @@
 import { Offer } from "@/entities/Offer";
 
+import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
+
 export const mockedOfferData: Offer = {
     when: {
         durationMinDays: 26,
@@ -22,7 +24,11 @@ export const mockedOfferData: Offer = {
         travel: "reimbursement",
     },
     whatToDo: {
-        skills: [{ id: 1, text: "cooking" }],
+        skills: [
+            { id: 1, text: "cooking" },
+            { id: 2, text: "farming" },
+            { id: 3, text: "driving" },
+        ],
         workingHours: { dayOff: 3, hours: 40, timeType: "day" },
         additionalSkills: ["additional skills"],
         extraInfo: "extra info",
@@ -41,7 +47,12 @@ export const mockedOfferData: Offer = {
             "В летнем сезоне 2023 года природному парку «Вулканы Камчатки» требуется помощь добровольцев для выполнения различных видов деятельности на особо охраняемых природных территориях регионального значения. Ждем волонтеров на новый летний сезон! Природный парк «Вулканы Камчатки» объявляет о начале приема заявок на участие в волонтерской программе 2020 года от потенциальных кандидатов. Добровольцы смогут отправиться в природные парки «Налычево», «Быстринский» и «Ключевской». Работы, к которым будут привлекаться волонтеры, запланированы на период с июня по сентябрь. В летнем сезоне 2020 года природному парку «Вулканы Камчатки» требуется помощь добровольцев для выполнения различных видов деятельности на особо охраняемых природных территориях регионального значения. В частности, планируется задействовать волонтеров в работах, связанных с ремонтом и поддержанием в надлежащем виде объектов туристической инфраструктуры, благоустройством прилегающей территории, уборкой мусора, ведением экскурсионной деятельности и общением с посетителями ООПТ регионального значения.",
         shortDescription: "short description",
         category: ["category1", "category2"],
-        images: "img1.png",
+        images: [defaultImage, defaultImage, defaultImage],
+        organization: {
+            name: "КГБУ «Природный парк «Вулканы Камчатки»",
+            description:
+                "Природный парк «Вулканы Камчатки» — особо охраняемая природная территория на Камчатке, самая большая по размеру в Камчатском крае (2,475 млн га).",
+        },
     },
     finishingTouches: {
         faq: "some faq",
@@ -49,4 +60,48 @@ export const mockedOfferData: Offer = {
         welcomeMessage: "welcome message",
         extraConditions: ["students", "adult-only", "allow-kids", "couples"],
     },
+    contributors: [
+        { avatar: defaultImage, name: "Екатерина Паршакова" },
+        { avatar: "", name: "Екатерина Паршакова" },
+        { avatar: "", name: "Екатерина Паршакова" },
+    ],
+    reviews: [
+        {
+            avatar: defaultImage, date: "25 мая", name: "Прикол Прикольный", rating: 4, reviewText: "Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, ",
+        },
+        {
+            avatar: "", date: "25 мая", name: "Прикол Прикольный", rating: 4, reviewText: "Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, ",
+        },
+        {
+            avatar: "", date: "25 мая", name: "Прикол Прикольный", rating: 4, reviewText: "Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, Тут текст отзыва, ",
+        }],
+    articles: [
+        {
+            title: "Название статьи",
+            description: "Описание статьи, Описание статьи, Описание статьи, Описание статьи, ",
+            comments: 4,
+            likes: 5,
+            date: "25 мая",
+            image: defaultImage,
+            tag: "Тег",
+        },
+        {
+            title: "Название статьи",
+            description: "Описание статьи, Описание статьи, Описание статьи, Описание статьи, ",
+            comments: 4,
+            likes: 5,
+            date: "25 мая",
+            image: defaultImage,
+            tag: "Тег",
+        },
+        {
+            title: "Название статьи",
+            description: "Описание статьи, Описание статьи, Описание статьи, Описание статьи, ",
+            comments: 4,
+            likes: 5,
+            date: "25 мая",
+            image: defaultImage,
+            tag: "Тег",
+        },
+    ],
 };

@@ -5,12 +5,36 @@
     gap: 8px;
 }
 
-.name {
-    margin-left: 12px;
+.reviewInfo {
+    display: flex;
+}
+
+.ratingContainer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.reviewText {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rating {
+    font-weight: 700;
+    font-size: 14px;
 }
 
 .name {
     margin-left: 8px;
+    color: var(--text-primary-1);
+}
+
+.avatar {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+    margin-left: 12px;
 }
 
 .date {

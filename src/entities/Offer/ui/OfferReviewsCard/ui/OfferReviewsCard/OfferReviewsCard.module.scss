@@ -10,4 +10,11 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    margin-top: 30px;
+}
+
+.viewAll {
+    text-decoration: none;
+    color: var(--text-primary-1);
+    margin-top: 20px;
 }
