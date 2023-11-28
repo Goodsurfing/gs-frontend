@@ -7,7 +7,7 @@ import { fakeUserData } from "@/entities/User/model/data/mockedUserData";
 import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
 import {
-    FullHost, Host, HostReview, VideoGallery,
+    FullHost, Host, VideoGallery,
 } from "../types/host";
 import { Review } from "@/entities/Review";
 
