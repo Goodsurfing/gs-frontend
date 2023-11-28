@@ -1,4 +1,4 @@
-export interface OfferReview {
+export interface Review {
     reviewText: string;
     rating: number;
     avatar: string;

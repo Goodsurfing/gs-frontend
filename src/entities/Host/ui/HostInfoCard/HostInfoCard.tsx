@@ -4,12 +4,13 @@ import React, { FC, memo } from "react";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import { FullHost } from "../../model/types/host";
+import { HostArticleCard } from "../HostArticleCard/HostArticleCard";
 import { HostDescriptionCard } from "../HostDescriptionCard/HostDescriptionCard";
 import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
 import { HostOffersCard } from "../HostOffersCard/HostOffersCard";
-import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
-import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
 import { HostReviewCard } from "../HostReviewCard/HostReviewCard";
+import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
+import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 import styles from "./HostInfoCard.module.scss";
 
 interface HostInfoCardProps {
@@ -42,8 +43,24 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                         className={styles.container}
                     />
                 )}
-                {host?.team && <HostTeamCard team={host.team} className={styles.container} />}
-                {host?.review && <HostReviewCard />}
+                {host?.team && (
+                    <HostTeamCard
+                        team={host.team}
+                        className={styles.container}
+                    />
+                )}
+                {host?.reviews && (
+                    <HostReviewCard
+                        review={host.reviews}
+                        className={styles.container}
+                    />
+                )}
+                {host?.articles && (
+                    <HostArticleCard
+                        articles={host.articles}
+                        className={styles.container}
+                    />
+                )}
             </div>
         );
     },

@@ -1,17 +1,17 @@
 import React, { FC, memo } from "react";
 
-import { OfferArticle } from "@/entities/Offer/model/types/offerArticle";
+import { Article } from "@/entities/Article";
 import like from "@/shared/assets/icons/ThumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
 
-import styles from "./OfferArticleCard.module.scss";
+import styles from "./ArticleWidget.module.scss";
 
-interface OfferArticleCardProps {
-    article: OfferArticle;
+interface ArticleWidgetProps {
+    article: Article;
 }
 
-export const OfferArticleCard: FC<OfferArticleCardProps> = memo((
-    props: OfferArticleCardProps,
+export const ArticleWidget: FC<ArticleWidgetProps> = memo((
+    props: ArticleWidgetProps,
 ) => {
     const {
         article: {
@@ -27,7 +27,7 @@ export const OfferArticleCard: FC<OfferArticleCardProps> = memo((
                 <span className={styles.date}>{date}</span>
                 <div className={styles.tag} style={{ backgroundColor: "#E0EBC6" }}>{tag}</div>
             </div>
-            <p className={styles.description}>{description}</p>
+            <p className={styles.description}>{description.substring(0, 300)}</p>
             <div className={styles.infoContainer}>
                 <img className={styles.likeIcon} src={like} alt="likes" />
                 <span>{likes}</span>
