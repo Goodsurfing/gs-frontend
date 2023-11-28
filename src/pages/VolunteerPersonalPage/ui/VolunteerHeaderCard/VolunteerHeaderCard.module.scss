@@ -1,0 +1,48 @@
+.wrapper {
+    width: 100%;
+    padding: 40px 60px;
+    background-color: var(--bg-field);
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.mainInfo {
+    display: flex;
+    gap: 60px;
+}
+
+.containerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.address, .languages {
+    color: var(--text-caption);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.subText {
+    color: var(--text-secondary-2);
+}
+
+.image {
+    width: 150px;
+    height: 150px;
+}
+
+.memberIcon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}

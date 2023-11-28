@@ -5,10 +5,12 @@ import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
+import { mockedVolunteerData } from "@/entities/Volunteer/model/data/mockedVolunteerData";
+
 import { Text } from "@/shared/ui/Text/Text";
 
 import { SubmenuVolunteerData } from "../../model/data/submenuData";
-import { VolunteerlHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
+import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import styles from "./VolunteerPersonalPage.module.scss";
 
@@ -27,7 +29,7 @@ export const VolunteerPersonalPage = () => {
         <div className={styles.wrapper}>
             <MainHeader />
             <div className={styles.content}>
-                <VolunteerlHeaderCard id={id} />
+                <VolunteerHeaderCard id={id} volunteer={mockedVolunteerData} />
                 <Submenu
                     className={styles.navMenu}
                     items={SubmenuVolunteerData}

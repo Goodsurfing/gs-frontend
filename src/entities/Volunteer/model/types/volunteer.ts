@@ -1,5 +1,8 @@
+import { Article } from "@/entities/Article";
+import { VideoGallery } from "@/entities/Host/model/types/host";
 import { Offer } from "@/entities/Offer";
 import { Profile } from "@/entities/Profile";
+import { Review } from "@/entities/Review";
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 import { SkillsData } from "@/shared/data/skills";
 
@@ -7,11 +10,11 @@ export interface Volunteer extends Profile {
     skills?: SkillsData[];
     languages?: string[];
     offers?: Offer[];
-    // review?: Review to do review type
+    reviews?: Review[];
     gallery?: Gallery;
-    // videoGallery?: VideoGallery to do VideoGallery type
+    videoGallery?: VideoGallery;
     certificates?: string[];
-    // articles?: Article to do Article type
+    articles?: Article[];
     favoriteOffers?: Offer[];
     isMember: boolean;
 }
