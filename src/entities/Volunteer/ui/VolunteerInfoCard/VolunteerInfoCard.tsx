@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { Volunteer } from "../../model/types/volunteer";
+import { VolunteerArticlesCard } from "../VolunteerArticlesCard/VolunteerArticlesCard";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
@@ -50,6 +51,10 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 <VolunteerCertificatesCard
                     certificates={volunteer.certificates}
                     classname={styles.container}
+                />
+                <VolunteerArticlesCard
+                    articles={volunteer.articles}
+                    className={styles.container}
                 />
             </div>
         );
