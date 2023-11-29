@@ -46,3 +46,28 @@
     height: 20px;
     margin-left: 10px;
 }
+
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 70px;
+    text-align: center;
+    width: 100%;
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.medalIcon {
+    width: 32px;
+}
+
+.medalContainer {
+    display: flex;
+    gap: 8px;
+}
+
+.btnMedalsContainer {
+    display: flex;
+    flex-direction: column;
+}

@@ -7,6 +7,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./VolunteerHeaderCard.module.scss";
+import { medalsData } from "@/shared/data/medals";
 
 interface VolunteerHeaderCardProps {
     id: string;
@@ -29,6 +30,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             id,
         } = props;
+
         return (
             <div className={styles.wrapper}>
                 <div className={styles.mainInfo}>
@@ -90,7 +92,18 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     </div>
                 </div>
                 <div className={styles.btnMedalsContainer}>
-                    <span>MEDALS</span>
+                    <div className={styles.medalContainer}>
+                        {medalsData.slice(0, 2).map((medal, index) => (
+                            <div className={styles.medal} key={index}>
+                                <img
+                                    className={styles.medalIcon}
+                                    src={medal.icon}
+                                    alt={medal.text}
+                                />
+                                <span>{medal.text}</span>
+                            </div>
+                        ))}
+                    </div>
                     <Button color="BLUE" size="SMALL" variant="FILL">
                         Редактировать профиль
                     </Button>
