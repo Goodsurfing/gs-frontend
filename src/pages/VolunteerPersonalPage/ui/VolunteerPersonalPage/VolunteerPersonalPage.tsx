@@ -13,6 +13,7 @@ import { SubmenuVolunteerData } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import styles from "./VolunteerPersonalPage.module.scss";
+import Button from "@/shared/ui/Button/Button";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,6 +34,26 @@ export const VolunteerPersonalPage = () => {
                 <Submenu
                     className={styles.navMenu}
                     items={SubmenuVolunteerData}
+                    buttons={(
+                        <>
+                            <Button
+                                size="SMALL"
+                                color="BLUE"
+                                variant="OUTLINE"
+                                className={styles.button}
+                            >
+                                Написать
+                            </Button>
+                            <Button
+                                size="SMALL"
+                                color="BLUE"
+                                variant="FILL"
+                                className={styles.button}
+                            >
+                                Участвовать
+                            </Button>
+                        </>
+                    )}
                 />
                 <VolunteerPageContent id={id} />
             </div>
