@@ -5,10 +5,11 @@ import { Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 import { SkillsData } from "@/shared/data/skills";
+import { Language } from "./language";
 
 export interface Volunteer extends Profile {
     skills?: SkillsData[];
-    languages?: string[];
+    languages?: Language[];
     offers?: Offer[];
     reviews?: Review[];
     gallery?: Gallery;

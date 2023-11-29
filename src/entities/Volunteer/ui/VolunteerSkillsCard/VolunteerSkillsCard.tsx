@@ -5,12 +5,10 @@ import { Skills, SkillsData, skillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
-import { OfferWhatToDo } from "../../model/types/offerWhatToDo";
-import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
-import styles from "./OfferWhatToDoCard.module.scss";
+import styles from "./VolunteerSkillsCard.module.scss";
 
-interface OfferWhatToDoCardProps {
-    whatToDo: OfferWhatToDo;
+interface VolunteerSkillsCardProps {
+    skills?: SkillsData[];
     className?: string;
 }
 
@@ -18,14 +16,18 @@ type SkillsMap = {
     [key in Skills]?: SkillsData;
 };
 
-export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
-    (props: OfferWhatToDoCardProps) => {
+export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
+    (props: VolunteerSkillsCardProps) => {
         const {
-            whatToDo: { skills, workingHours },
+            skills,
             className,
         } = props;
 
         const renderSkillsCard = useMemo(() => {
+            if (!skills) {
+                return <span>Волонтёр не указал умения</span>;
+            }
+
             const skillsMap: SkillsMap = skillsData.reduce(
                 (acc: SkillsMap, cur) => {
                     acc[cur.id] = cur;
@@ -34,7 +36,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                 {},
             );
             return skills.map((item) => {
-                const skill = skillsMap[item.text];
+                const skill = skillsMap[item.id];
                 return (
                     skill && (
                         <IconTextComponent
@@ -51,22 +53,8 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.card}>
-                    <Text title="Требования к участнику" titleSize="h3" />
+                    <Text title="Умения" titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
-                </div>
-                <div className={styles.card}>
-                    <InfoCard>
-                        <InfoCardItem
-                            className={styles.left}
-                            title="Количество рабочих часов"
-                            text={`${workingHours.hours} в неделю`}
-                        />
-                        <InfoCardItem
-                            className={styles.right}
-                            title="Выходных дней в неделю"
-                            text={workingHours.dayOff}
-                        />
-                    </InfoCard>
                 </div>
             </div>
         );
