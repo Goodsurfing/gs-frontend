@@ -2,12 +2,14 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { Volunteer } from "../../model/types/volunteer";
+import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
 import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLanguagesCard";
 import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
 import { VolunteerReviewsCard } from "../VolunteerReviewsCard/VolunteerReviewsCard";
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
+import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 import styles from "./VolunteerInfoCard.module.scss";
 
 interface VolunteerInfoCardProps {
@@ -40,6 +42,14 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 <VolunteerGalleryCard
                     images={volunteer.gallery?.images}
                     className={styles.container}
+                />
+                <VolunteerVideoGalleryCard
+                    videoGallery={volunteer.videoGallery}
+                    className={styles.container}
+                />
+                <VolunteerCertificatesCard
+                    certificates={volunteer.certificates}
+                    classname={styles.container}
                 />
             </div>
         );
