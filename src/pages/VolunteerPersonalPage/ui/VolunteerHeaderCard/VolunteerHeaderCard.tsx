@@ -72,7 +72,18 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 Языки:
                                 {" "}
                                 <span className={styles.subText}>
-                                    {languages?.join(", ") || "Языки не указаны"}
+                                    {languages && languages.length > 0 ? (
+                                        <span style={{ color: "black" }}>
+                                            {languages.map(({ language }, index) => (
+                                                <React.Fragment key={index}>
+                                                    {language}
+                                                    {index < languages.length - 1 && ", "}
+                                                </React.Fragment>
+                                            ))}
+                                        </span>
+                                    ) : (
+                                        <span>Языки не были указаны</span>
+                                    )}
                                 </span>
                             </span>
                         </div>
