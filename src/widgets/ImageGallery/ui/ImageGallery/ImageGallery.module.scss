@@ -1,0 +1,12 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+.image {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    cursor: pointer;
+}

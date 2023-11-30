@@ -8,6 +8,7 @@ import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
@@ -23,8 +24,7 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -40,6 +40,7 @@ import {
     getHostReviewPageUrl,
     getHostTeamPageUrl,
     getHostVideoPageUrl,
+    getHostPersonalPageUrl,
     getMainPageUrl,
     getMyOffersPageUrl,
     getOfferPersonalPageUrl,
@@ -61,8 +62,7 @@ import {
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
-    getVolunteerDashboardPageUrl,
-    getVolunteerPageUrl,
+    getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -136,7 +136,15 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
+
         ],
+    },
+    {
+        label: "host-personal",
+        element: (
+            <HostPersonalPage />
+        ),
+        path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
         label: "offer-layout",
@@ -191,17 +199,9 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getOfferPersonalPageUrl(locale),
     },
     {
-        label: "volunteer-layout",
-        element: <VolunteerLayoutPage />,
-        path: (locale: string) => getVolunteerPageUrl(locale),
-        children: [
-            {
-                label: "volunteer-dashboard",
-                element: <VolunteerDashboardPage />,
-                index: true,
-                path: (locale) => getVolunteerDashboardPageUrl(locale),
-            },
-        ],
+        label: "volunteer-personal",
+        element: <VolunteerPersonalPage />,
+        path: (locale: string) => getVolunteerPersonalPageUrl(locale),
     },
     {
         label: "reset-password",

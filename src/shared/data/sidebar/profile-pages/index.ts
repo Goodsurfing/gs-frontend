@@ -15,12 +15,12 @@ export const SideMenuData: SidebarContentProps[] = [
     {
         text: "Предпочтения",
         icon: successIcon,
-        route: "/",
+        route: "/profile/preferences",
     },
     {
         text: "Роль",
         icon: roleIcon,
-        route: "/",
+        route: "/profile/role",
     },
     {
         text: "Пароль",

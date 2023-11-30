@@ -1,0 +1,25 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    width: 100%;
+    max-width: 1180px;
+    align-self: center;
+    padding-bottom: 100px;
+}
+
+.navMenu {
+    padding: 26px 50px 16px 50px;
+    position: sticky;
+    top: 5.563rem;
+    z-index: 4;
+}
+
+.button {
+    width: 100%;
+    max-width: 150px;
+    max-height: 36px;
+}

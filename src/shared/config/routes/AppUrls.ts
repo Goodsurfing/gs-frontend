@@ -49,6 +49,8 @@ export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getHostTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_team}`;
 
+export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_personal}/:id`;
+
 // Offers pages
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
@@ -76,3 +78,4 @@ export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale
 export const getVolunteerPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer}`;
 
 export const getVolunteerDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_dashboard}`;
+export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_personal}/:id`;

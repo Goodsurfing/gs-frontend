@@ -19,6 +19,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.PROFILE_PRIVACY]: "/profile/privacy",
     [AppRoutes.HOST]: "/host",
     [AppRoutes.OFFER_PERSONAL]: "/offer-personal", // :id
+    [AppRoutes.HOST_PERSONAL]: "/host-personal", // :id
     [AppRoutes.HOST_DASHBOARD]: "/host/host-dashboard",
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
@@ -37,6 +38,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/finishing-touches",
     [AppRoutes.VOLUNTEER]: "/volunteer",
     [AppRoutes.VOLUNTEER_DASHBOARD]: "/volunteer/volunteer-dashboard",
+    [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",

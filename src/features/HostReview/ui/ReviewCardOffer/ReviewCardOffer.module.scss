@@ -40,6 +40,15 @@
     column-gap: 5px;
 }
 
+.avatar {
+    width: 22px;
+    height: 22px;
+}
+
+.author {
+    font-size: 14px;
+}
+
 .img {
     max-width: 40px;
     max-height: 40px;
@@ -70,9 +79,4 @@
     font-size: 14px;
     font-weight: 700;
     margin-left: 3px;
-}
-
-.avatar {
-    max-width: 22px;
-    max-height: 22px;
 }
