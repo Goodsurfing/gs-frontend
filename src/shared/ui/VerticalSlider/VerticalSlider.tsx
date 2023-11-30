@@ -69,9 +69,8 @@ export const VerticalSlider = <T,>({
                     }}
                     direction="vertical"
                     slidesPerView={4}
-                    spaceBetween={60}
+                    spaceBetween={20}
                     pagination={{ clickable: true }}
-                    navigation
                 >
                     {renderSlides(data)}
                 </Swiper>
