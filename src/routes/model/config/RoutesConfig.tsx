@@ -24,6 +24,7 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -61,6 +62,7 @@ import {
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -195,6 +197,11 @@ const publicRoutes: RouteType[] = [
         label: "offer-personal",
         element: <OfferPersonalPage />,
         path: (locale: string) => getOfferPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-personal",
+        element: <VolunteerPersonalPage />,
+        path: (locale: string) => getVolunteerPersonalPageUrl(locale),
     },
     {
         label: "reset-password",

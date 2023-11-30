@@ -15,7 +15,6 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo(
     (props: HostReviewCardProps) => {
         const { className, review } = props;
 
-        // Add render ReviewCards and dependencies
         const renderCards = useMemo(
             () => review
                 .slice(0, 2)

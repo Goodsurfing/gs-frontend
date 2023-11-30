@@ -1,0 +1,73 @@
+.wrapper {
+    width: 100%;
+    padding: 40px 60px;
+    background-color: var(--bg-field);
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.mainInfo {
+    display: flex;
+    gap: 60px;
+}
+
+.containerInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.address, .languages {
+    color: var(--text-caption);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.subText {
+    color: var(--text-secondary-2);
+}
+
+.image {
+    width: 150px;
+    height: 150px;
+}
+
+.memberIcon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 70px;
+    text-align: center;
+    width: 100%;
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.medalIcon {
+    width: 32px;
+}
+
+.medalContainer {
+    display: flex;
+    gap: 8px;
+}
+
+.btnMedalsContainer {
+    display: flex;
+    flex-direction: column;
+}

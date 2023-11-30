@@ -30,5 +30,6 @@ export enum AppRoutes {
     OFFERS_WHAT_TO_DO = "offers_what_to_do",
     OFFERS_CONDITIONS = "offers_conditions",
     OFFER_FINISHING_TOUCHES = "offers_finishing_touches",
+    VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     NOT_FOUND = "not_found",
 }
