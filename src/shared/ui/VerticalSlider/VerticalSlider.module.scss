@@ -10,7 +10,7 @@
 
 .swiperWrapper {
     width: 100%;
-    height: 340px;
+    height: 370px;
     overflow: hidden;
 
     .swiper-slide {
@@ -26,6 +26,7 @@
 }
 
 .slideBtnPrev {
+    box-sizing: content-box;
     width: 30px;
     height: 30px;
     position: absolute;
@@ -44,6 +45,7 @@
 }
 
 .slideBtnNext {
+    box-sizing: content-box;
     width: 30px;
     height: 30px;
     position: absolute;
