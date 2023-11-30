@@ -63,11 +63,15 @@ import {
     getSignInPageUrl,
     getSignUpPageUrl,
     getVolunteerPersonalPageUrl,
+    getVolunteerPageUrl,
+    getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -202,6 +206,18 @@ const publicRoutes: RouteType[] = [
         label: "volunteer-personal",
         element: <VolunteerPersonalPage />,
         path: (locale: string) => getVolunteerPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-layout",
+        element: <VolunteerLayoutPage />,
+        path: (locale: string) => getVolunteerPageUrl(locale),
+        children: [
+            {
+                label: "volunteer-dashboard",
+                element: <VolunteerDashboardPage />,
+                path: (locale: string) => getVolunteerDashboardPageUrl(locale),
+            },
+        ],
     },
     {
         label: "reset-password",

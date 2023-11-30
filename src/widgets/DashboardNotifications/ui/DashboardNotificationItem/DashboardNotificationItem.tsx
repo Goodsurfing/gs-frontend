@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 
-import styles from "./HostFashboardNotificationItem.module.scss";
+import styles from "./DashboardNotificationItem.module.scss";
 
-interface IHostDashboardNotificationItem {
+interface DashboardNotificationItemProps {
     title: string;
     date: string;
     content: string;
 }
 
-const HostFashboardNotificationItem: FC<IHostDashboardNotificationItem> = ({
+export const DashboardNotificationItem: FC<DashboardNotificationItemProps> = ({
     title, date, content,
 }) => (
     <div className={styles.wrapper}>
@@ -17,5 +17,3 @@ const HostFashboardNotificationItem: FC<IHostDashboardNotificationItem> = ({
         <p className={styles.content}>{content}</p>
     </div>
 );
-
-export default HostFashboardNotificationItem;
