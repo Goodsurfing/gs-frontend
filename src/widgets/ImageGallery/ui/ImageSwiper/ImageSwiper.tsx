@@ -32,8 +32,8 @@ export const ImageSwiper: FC<ImageSwiperProps> = memo(
         return (
             <Swiper
                 initialSlide={initialSlide}
-                centeredSlides
-                slidesPerView={1}
+                slidesPerView="auto"
+                // centeredSlides
                 modules={[Navigation, Pagination]}
                 navigation
                 pagination={{ clickable: true }}
