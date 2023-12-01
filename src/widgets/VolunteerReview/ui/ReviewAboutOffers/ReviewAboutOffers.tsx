@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { ReviewCardInfo } from "@/types/review";
 
-import { ReviewFullCard, ReviewMiniCard } from "@/features/HostReview/";
+import { ReviewMiniCard, ReviewCardOffer } from "@/features/Review/";
 
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
@@ -10,7 +10,7 @@ import styles from "./ReviewAboutOffers.module.scss";
 
 export const ReviewAboutOffers: FC = () => {
     const renderFullCards = (reviews: ReviewCardInfo[]) => reviews.map(
-        (review) => <ReviewFullCard review={review} />,
+        (review) => <ReviewCardOffer reviewOffer={review} />,
     );
 
     return (

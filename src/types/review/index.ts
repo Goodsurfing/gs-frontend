@@ -5,14 +5,17 @@ export interface ReviewCardInfo {
     country: string;
     city: string;
     textReview: string;
+    author: string;
+    date: Date;
+    rating: number;
 }
 
 export interface Review {
     id: number;
-    author: string;
-    authorAvatar: string;
-    rating: number;
     title: string;
+    image: string;
+    rating: number;
     textReview: string;
-    date: Date;
+    city: string;
+    country: string;
 }

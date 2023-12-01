@@ -1,9 +1,7 @@
 .wrapper {
-    max-width: 820px;
+    border: 1px solid var(--bg-accent);
     height: 100vh;
     overflow: scroll;
-    background-color: var(--bg-primary-1);
-    border: 1px solid var(--bg-accent);
     padding: 20px;
 
     &::-webkit-scrollbar {
@@ -13,35 +11,16 @@
     &::-webkit-scrollbar-track {
         background: var(--color-white);
     }
-    
+
     &::-webkit-scrollbar-thumb {
         border-radius: var(--radius);
         background-color: var(--bg-accent);
     }
 }
 
-.description {
-    margin-top: 30px;
-}
-
-.slider {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.swiperWrapper {
-    width: 100%;
-}
-
-.swiperSlide {
-    display: flex;
-    justify-content: center;
-}
-
-.fullCardContainer {
+.cardContainer {
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
+    row-gap: 30px;
     margin-top: 30px;
 }

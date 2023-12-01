@@ -1,13 +1,13 @@
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
-import { ReviewCardInfo } from "@/types/review";
+import { Review } from "@/types/review";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
-    review: ReviewCardInfo;
+    review: Review;
 }
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {

@@ -2,14 +2,14 @@ import React, { FC } from "react";
 
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { ReviewFullCard, ReviewMiniCard } from "@/features/HostReview/";
+import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
 import { fakeUserData } from "../../model/data/mockedUsersData";
+import { Review } from "@/types/review";
 import styles from "./ReviewAboutVolunteers.module.scss";
-import { ReviewCardInfo } from "@/types/review";
 
 export const ReviewAboutVolunteers: FC = () => {
-    const renderFullCards = (reviews: ReviewCardInfo[]) => reviews
+    const renderFullCards = (reviews: Review[]) => reviews
         .map((review) => <ReviewFullCard review={review} />);
 
     return (
@@ -23,7 +23,7 @@ export const ReviewAboutVolunteers: FC = () => {
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
                 data={fakeUserData}
-                renderItem={(item: ReviewCardInfo) => (
+                renderItem={(item: Review) => (
                     <ReviewMiniCard data={item} />
                 )}
             />

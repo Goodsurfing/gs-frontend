@@ -4,18 +4,18 @@ import { ReviewOffer } from "../../model/types/hostReview";
 import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
-import styles from "./ReviewCardOffer.module.scss";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import { Review } from "@/types/review";
+import { ReviewCardInfo } from "@/types/review";
+import styles from "./ReviewCardOffer.module.scss";
 
 interface ReviewCardOfferProps {
-    reviewOffer: Review;
+    reviewOffer: ReviewCardInfo;
 }
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const {
         reviewOffer: {
-            author, authorAvatar, date, rating, textReview, title,
+            textReview, title, image, city, country, author, date, rating,
         },
     } = props;
 

@@ -1,6 +1,6 @@
-import { ReviewCardInfo } from "@/types/review";
+import { Review } from "@/types/review";
 
-export const fakeUserData: ReviewCardInfo[] = [
+export const fakeUserData: Review[] = [
     {
         id: 1,
         title: "Семён Володарский",
@@ -9,6 +9,7 @@ export const fakeUserData: ReviewCardInfo[] = [
         country: "Россия",
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
+        rating: 4,
     },
     {
         id: 2,
@@ -18,6 +19,7 @@ export const fakeUserData: ReviewCardInfo[] = [
         country: "Россия",
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
+        rating: 4,
     },
     {
         id: 3,
@@ -27,5 +29,6 @@ export const fakeUserData: ReviewCardInfo[] = [
         country: "Россия",
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
+        rating: 4,
     },
 ];
