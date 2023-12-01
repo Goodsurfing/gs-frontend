@@ -6,16 +6,19 @@ import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import styles from "./ReviewCardOffer.module.scss";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { Review } from "@/types/review";
 
 interface ReviewCardOfferProps {
-    reviewOffer: ReviewOffer
+    reviewOffer: Review;
 }
 
-export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
+export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        author, authorAvatar, date, rating, textReview, title,
-    } = reviewOffer;
+        reviewOffer: {
+            author, authorAvatar, date, rating, textReview, title,
+        },
+    } = props;
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>

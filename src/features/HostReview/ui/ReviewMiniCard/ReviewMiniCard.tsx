@@ -1,13 +1,13 @@
 import { FC } from "react";
+import { ReviewCardInfo } from "@/types/review";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import Button from "@/shared/ui/Button/Button";
 
-import { UserCardInfo } from "../../model/types/hostReview";
 import styles from "./ReviewMiniCard.module.scss";
 
 interface ReviewMiniCardProps {
-    data: UserCardInfo;
+    data: ReviewCardInfo;
 }
 
 export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
@@ -15,9 +15,8 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
 }: ReviewMiniCardProps) => {
     const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        avatar,
-        name,
-        surname,
+        image,
+        title,
         country,
         city,
     } = data;
@@ -32,9 +31,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
                 />
                 <div className={styles.nameAddress}>
                     <span className={styles.name}>
-                        {name}
-                        {" "}
-                        {surname}
+                        {title}
                     </span>
                     <span className={styles.address}>
                         {country}

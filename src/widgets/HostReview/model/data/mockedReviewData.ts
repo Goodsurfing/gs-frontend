@@ -1,6 +1,6 @@
-import { ReviewOffer } from "../types/reviewAboutOffers";
+import { Review } from "@/types/review";
 
-export const fakeRevewData: ReviewOffer[] = [
+export const fakeReviewData: Review[] = [
     {
         id: 1,
         author: "Семён Володарский",
