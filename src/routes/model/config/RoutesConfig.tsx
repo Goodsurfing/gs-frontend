@@ -65,6 +65,7 @@ import {
     getVolunteerPersonalPageUrl,
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
+    getVolunteerNotesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -216,6 +217,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-dashboard",
                 element: <VolunteerDashboardPage />,
                 path: (locale: string) => getVolunteerDashboardPageUrl(locale),
+            },
+            {
+                label: "volunteer-notes",
+                element: <VolunteerDashboardPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
             },
         ],
     },

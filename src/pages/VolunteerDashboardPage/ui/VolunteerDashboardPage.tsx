@@ -1,10 +1,10 @@
 import React from "react";
 
 import { VolunteerFill } from "@/features/VolunteerFill";
-import styles from "./VolunteerDashboardPage.module.scss";
 import { OffersRecomendationsWidget } from "@/widgets/OffersRecomendationsWidget";
 import { MemberBanner } from "@/features/MemberBanner";
 import { DashboardNotifications } from "@/widgets/DashboardNotifications";
+import styles from "./VolunteerDashboardPage.module.scss";
 
 const VolunteerDashboardPage = () => (
     <div className={styles.dashboard}>
