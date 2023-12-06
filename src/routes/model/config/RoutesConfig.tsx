@@ -73,6 +73,7 @@ import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -220,7 +221,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "volunteer-notes",
-                element: <VolunteerDashboardPage />,
+                element: <VolunteerNotesPage />,
                 path: (locale: string) => getVolunteerNotesPageUrl(locale),
             },
         ],
