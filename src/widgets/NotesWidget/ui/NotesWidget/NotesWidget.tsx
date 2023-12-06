@@ -32,17 +32,17 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                 />
                 <NotesContainer
                     offers={offersByStatus.accepted}
-                    color="#79C8FF"
+                    color="#77EB98"
                     title="accepted"
                 />
                 <NotesContainer
                     offers={offersByStatus.confirmed}
-                    color="#79C8FF"
+                    color="#5EECD2"
                     title="confirmed"
                 />
                 <NotesContainer
                     offers={offersByStatus.rejected}
-                    color="#79C8FF"
+                    color="#FCC3C3"
                     title="rejected"
                 />
             </div>

@@ -43,7 +43,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     <span className={styles.tag}>Заповедники и нац. парки</span>
                 </div>
             </div>
-            <Button color="BLUE" variant="OUTLINE" size="SMALL">Сообщение</Button>
+            <Button className={styles.button} color="BLUE" variant="OUTLINE" size="SMALL">Сообщение</Button>
         </div>
     );
 });

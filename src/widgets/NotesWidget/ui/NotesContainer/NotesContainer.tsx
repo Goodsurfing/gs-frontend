@@ -7,7 +7,7 @@ import styles from "./NotesContainer.module.scss";
 import { NotesCard } from "../NotesCard/NotesCard";
 
 interface NotesContainerProps {
-    offers: Offer[];
+    offers?: Offer[];
     className?: string;
     color: string;
     title: string;
@@ -20,7 +20,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
         } = props;
 
         const renderOffers = useMemo(
-            () => offers.map((offer, index) => (
+            () => offers?.map((offer, index) => (
                 <NotesCard offer={offer} key={index} />
             )),
             [offers],
@@ -30,7 +30,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.top} style={{ borderBottom: `2px solid ${color}` }}>
                     <span className={styles.title}>{title}</span>
-                    <span className={styles.number}>{offers.length}</span>
+                    <span className={styles.number}>{offers?.length || 0}</span>
                 </div>
                 <div className={styles.container}>{renderOffers}</div>
             </div>
