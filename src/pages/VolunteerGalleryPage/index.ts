@@ -1,1 +1,1 @@
-export { VolunteerGalleryPageAsync as VolunteerGalleryPage } from "./ui/VolunteerGalleryPage.async";
+export { VolunteerGalleryPageAsync as VolunteerGalleryPage } from "./ui/VolunteerGalleryPage/VolunteerGalleryPage.async";
