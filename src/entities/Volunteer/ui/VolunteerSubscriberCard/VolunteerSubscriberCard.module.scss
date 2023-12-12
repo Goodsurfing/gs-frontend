@@ -1,0 +1,57 @@
+.wrapper {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid var(--bg-accent);
+    padding: 14px 8px;
+    position: relative;
+
+    &:hover {
+        border: 1px solid var(--text-caption);
+
+        .deleteIcon {
+            display: inherit;
+        }
+    }
+}
+
+.deleteIcon {
+    display: none;
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    fill: var(--text-caption);
+    width: 14px;
+    height: 14px;
+}
+
+.avatar {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    max-width: 140px;
+}
+
+.name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary-2);
+}
+
+.address {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-caption);
+}
+
+.messageIcon {
+    align-self: flex-end;
+}
