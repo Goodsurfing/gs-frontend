@@ -20,6 +20,7 @@ export enum AppRoutes {
     HOST_VIDEO = "host_video",
     HOST_TEAM = "host_team",
     HOST_REVIEW = "host_review",
+    HOST_NOTES = "host_notes",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",

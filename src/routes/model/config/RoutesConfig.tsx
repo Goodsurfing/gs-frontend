@@ -65,6 +65,7 @@ import {
     getVolunteerPersonalPageUrl,
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
+    getHostNotesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -72,6 +73,7 @@ import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { HostNotesPage } from "@/pages/HostNotesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -140,8 +142,17 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-
+            // {
+            //     label: "host-notes",
+            //     element: <HostNotesPage />,
+            //     path: (locale: string) => getHostNotesPageUrl(locale),
+            // },
         ],
+    },
+    {
+        label: "host-notes",
+        element: <HostNotesPage />,
+        path: (locale: string) => getHostNotesPageUrl(locale),
     },
     {
         label: "host-personal",

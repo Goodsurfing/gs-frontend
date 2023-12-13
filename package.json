@@ -93,6 +93,7 @@
         "i18next-browser-languagedetector": "^7.0.2",
         "i18next-http-backend": "^2.2.1",
         "react": "^18.2.0",
+        "react-beautiful-dnd": "^13.1.1",
         "react-calendar": "^4.2.1",
         "react-chartjs-2": "^5.2.0",
         "react-content-loader": "^6.2.1",
