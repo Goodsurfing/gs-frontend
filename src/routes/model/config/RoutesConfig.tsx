@@ -65,6 +65,7 @@ import {
     getVolunteerPersonalPageUrl,
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
+    getVolunteerNotesPageUrl,
     getHostNotesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
@@ -74,6 +75,7 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { HostNotesPage } from "@/pages/HostNotesPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -227,6 +229,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-dashboard",
                 element: <VolunteerDashboardPage />,
                 path: (locale: string) => getVolunteerDashboardPageUrl(locale),
+            },
+            {
+                label: "volunteer-notes",
+                element: <VolunteerNotesPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
             },
         ],
     },
