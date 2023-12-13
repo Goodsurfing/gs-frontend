@@ -127,11 +127,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostGalleryPage />,
                 path: (locale) => getHostGalleryPageUrl(locale),
             },
-            {
-                label: "host-video",
-                element: <HostVideoPage />,
-                path: (locale) => getHostVideoPageUrl(locale),
-            },
+            // {
+            //     label: "host-video",
+            //     element: <HostVideoPage />,
+            //     path: (locale) => getHostVideoPageUrl(locale),
+            // },
             {
                 label: "host-team",
                 element: <HostTeamPage />,
@@ -144,6 +144,11 @@ const publicRoutes: RouteType[] = [
             },
 
         ],
+    },
+    {
+        label: "host-video",
+        element: <HostVideoPage />,
+        path: (locale) => getHostVideoPageUrl(locale),
     },
     {
         label: "host-personal",
