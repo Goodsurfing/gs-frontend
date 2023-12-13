@@ -11,6 +11,7 @@ import { Article } from "@/entities/Article";
 import { OfferStatus } from "./offerStatus";
 
 export interface Offer {
+    id: string;
     where: OfferWhere;
     when: OfferWhen;
     whoNeeds: OfferWhoNeeds;
