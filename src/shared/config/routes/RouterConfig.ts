@@ -38,6 +38,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/finishing-touches",
     [AppRoutes.VOLUNTEER]: "/volunteer",
     [AppRoutes.VOLUNTEER_DASHBOARD]: "/volunteer/volunteer-dashboard",
+    [AppRoutes.VOLUNTEER_NOTES]: "/volunteer/notes",
     [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
