@@ -144,17 +144,12 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-            // {
-            //     label: "host-notes",
-            //     element: <HostNotesPage />,
-            //     path: (locale: string) => getHostNotesPageUrl(locale),
-            // },
+            {
+                label: "host-notes",
+                element: <HostNotesPage />,
+                path: (locale: string) => getHostNotesPageUrl(locale),
+            },
         ],
-    },
-    {
-        label: "host-notes",
-        element: <HostNotesPage />,
-        path: (locale: string) => getHostNotesPageUrl(locale),
     },
     {
         label: "host-personal",
