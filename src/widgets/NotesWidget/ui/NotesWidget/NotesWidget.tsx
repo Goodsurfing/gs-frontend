@@ -1,12 +1,13 @@
 import cn from "classnames";
 import React, {
-    FC, memo, useCallback, useMemo, useState,
+    FC, memo, useEffect, useState,
 } from "react";
 
 import { DragDropContext } from "react-beautiful-dnd";
 import { Offer, OfferStatus } from "@/entities/Offer";
 import { NotesContainer } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
+import { statusColors } from "../../model/lib/statusColors";
 
 interface NotesWidgetProps {
     offers: Offer[];
@@ -15,52 +16,43 @@ interface NotesWidgetProps {
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
     (props: NotesWidgetProps) => {
-        const { offers, className } = props;
-        const [offersData, setOffersData] = useState<Offer[]>(offers);
+        const { offers: initialOffers, className } = props;
 
-        const onDragEnd = useCallback((result) => {
-            if (!result.destination) {
-                return;
-            }
+        const [offers] = useState(initialOffers);
+        const [columns, setColumns] = useState<Record<OfferStatus, Offer[]>>({
+            "under consideration": [],
+            accepted: [],
+            confirmed: [],
+            rejected: [],
+        });
 
-            const newOffersData = Array.from(offersData);
-            const [reorderedItem] = newOffersData.splice(result.source.index, 1);
-            newOffersData.splice(result.destination.index, 0, reorderedItem);
+        useEffect(() => {
+            const newColumns: Record<OfferStatus, Offer[]> = {
+                "under consideration": [],
+                accepted: [],
+                confirmed: [],
+                rejected: [],
+            };
 
-            setOffersData(newOffersData);
-        }, [offersData, setOffersData]);
+            offers.forEach((offer) => {
+                newColumns[offer.status].push(offer);
+            });
 
-        const offersByStatus: Record<OfferStatus, Offer[]> = useMemo(
-            () => offersData.reduce<Record<OfferStatus, Offer[]>>((acc, offer) => {
-                acc[offer.status] = [...(acc[offer.status] || []), offer];
-                return acc;
-            }, {} as Record<OfferStatus, Offer[]>),
-            [offersData],
-        );
+            setColumns(newColumns);
+        }, [offers]);
 
         return (
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragEnd={() => {}}>
                 <div className={cn(className, styles.wrapper)}>
-                    <NotesContainer
-                        offers={offersByStatus["under consideration"]}
-                        color="#79C8FF"
-                        title="under consideration"
-                    />
-                    <NotesContainer
-                        offers={offersByStatus.accepted}
-                        color="#77EB98"
-                        title="accepted"
-                    />
-                    <NotesContainer
-                        offers={offersByStatus.confirmed}
-                        color="#5EECD2"
-                        title="confirmed"
-                    />
-                    <NotesContainer
-                        offers={offersByStatus.rejected}
-                        color="#FCC3C3"
-                        title="rejected"
-                    />
+                    {Object.entries(columns).map(([status, columnOffers]) => (
+                        <NotesContainer
+                            key={status}
+                            status={status as OfferStatus}
+                            offers={columnOffers}
+                            color={statusColors[status as OfferStatus]}
+                            isDragDisable
+                        />
+                    ))}
                 </div>
             </DragDropContext>
         );

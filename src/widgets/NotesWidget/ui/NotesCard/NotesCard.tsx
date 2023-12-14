@@ -13,6 +13,7 @@ interface NotesCardProps {
     className?: string;
     offer: Offer;
     index: number;
+    isDragDisable: boolean;
 }
 
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
@@ -24,17 +25,21 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
         },
         index,
         className,
+        isDragDisable,
     } = props;
     const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);
 
     return (
-        <Draggable draggableId={id} key={id} index={index}>
+        <Draggable isDragDisabled={isDragDisable} key={id} draggableId={id} index={index}>
             {(provided) => (
                 <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className={cn(className, styles.wrapper)}
+                    style={{
+                        ...provided.draggableProps.style,
+                    }}
                 >
                     <div
                         className={styles.status}

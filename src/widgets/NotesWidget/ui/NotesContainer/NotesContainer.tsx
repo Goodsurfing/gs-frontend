@@ -2,53 +2,60 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
-import { Offer } from "@/entities/Offer";
+import { Offer, OfferStatus } from "@/entities/Offer";
 
 import { NotesCard } from "../NotesCard/NotesCard";
 import styles from "./NotesContainer.module.scss";
 
 interface NotesContainerProps {
-    offers?: Offer[];
+    offers: Offer[];
     className?: string;
     color: string;
-    title: string;
+    status: OfferStatus;
+    isDragDisable: boolean;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
     (props: NotesContainerProps) => {
         const {
-            offers, className, color, title,
+            offers,
+            className,
+            color = "#000",
+            status,
+            isDragDisable,
         } = props;
 
-        const renderOffers = useMemo(
-            () => offers?.map((offer, index) => (
-                <NotesCard offer={offer} key={offer.id} index={index} />
-            )),
-            [offers],
-        );
-
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <div
-                    className={styles.top}
-                    style={{ borderBottom: `2px solid ${color}` }}
-                >
-                    <span className={styles.title}>{title}</span>
-                    <span className={styles.number}>{offers?.length || 0}</span>
-                </div>
-                <Droppable droppableId={title}>
-                    {(provided) => (
+            <Droppable isDropDisabled={isDragDisable} droppableId={status}>
+                {(provided) => (
+                    <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={cn(className, styles.wrapper)}
+                    >
                         <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            className={styles.container}
+                            className={styles.top}
+                            style={{ borderBottom: `2px solid ${color}` }}
                         >
-                            {renderOffers}
+                            <span className={styles.title}>{status}</span>
+                            <span className={styles.number}>
+                                {offers?.length || 0}
+                            </span>
+                        </div>
+                        <div className={styles.container}>
+                            {offers.map((offer, index) => (
+                                <NotesCard
+                                    key={offer.id}
+                                    offer={offer}
+                                    index={index}
+                                    isDragDisable={isDragDisable}
+                                />
+                            ))}
                             {provided.placeholder}
                         </div>
-                    )}
-                </Droppable>
-            </div>
+                    </div>
+                )}
+            </Droppable>
         );
     },
 );
