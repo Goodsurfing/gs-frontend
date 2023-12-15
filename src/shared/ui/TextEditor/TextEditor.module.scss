@@ -5,17 +5,8 @@
     padding: 15px;
     min-height: 500px;
 
-    &:active {
-        border: 1px solid var(--text-caption);
-    }
-    &:focus-within {
-        border: 1px solid var(--text-caption);
-    }
     &:focus {
         outline: none;
         border: 1px solid var(--text-caption);
     }
-    // &: {
-    //     border: 1px solid var(--text-caption);
-    // }
 }
