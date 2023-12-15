@@ -1,1 +1,1 @@
-export { VolunteerCreateArticlePageAsync } from "./ui/VolunteerCreateArticlePage.async";
+export { VolunteerCreateArticlePageAsync as VolunteerCreateArticlePage } from "./ui/VolunteerCreateArticlePage.async";

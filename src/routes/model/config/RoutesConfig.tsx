@@ -24,6 +24,10 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
@@ -66,14 +70,12 @@ import {
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
     getVolunteerNotesPageUrl,
+    getVolunteerCreateArticlePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -223,6 +225,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-notes",
                 element: <VolunteerNotesPage />,
                 path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-create-article",
+                element: <VolunteerCreateArticlePage />,
+                path: (locale: string) => getVolunteerCreateArticlePageUrl(locale),
             },
         ],
     },

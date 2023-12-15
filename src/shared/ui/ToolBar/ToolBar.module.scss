@@ -1,0 +1,18 @@
+.wrapper {
+    border: 1px solid var(--text-caption);
+    border-radius: 0;
+    border-bottom: 1px solid #8494a187;
+    padding: 8px;
+}
+
+.toggleButton {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+}

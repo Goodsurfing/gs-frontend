@@ -81,4 +81,6 @@ export const getVolunteerDashboardPageUrl: RoutePathFunction = (locale) => `/${l
 
 export const getVolunteerNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_notes}`;
 
+export const getVolunteerCreateArticlePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_create_article}`;
+
 export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_personal}/:id`;
