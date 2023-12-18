@@ -1,9 +1,15 @@
 import { HandySvg } from "@handy-ones/handy-svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { type Editor } from "@tiptap/react";
+import cn from "classnames";
 import EmojiPicker from "emoji-picker-react";
 import React, {
-    FC, memo, useCallback, useRef, useState,
+    FC,
+    memo,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
 } from "react";
 
 import ArrowLeftIcon from "@/shared/assets/icons/textEditor/Arrows1.svg";
@@ -20,27 +26,27 @@ import paragraphIcon from "@/shared/assets/icons/textEditor/Paragraph4.svg";
 import bulletListIcon from "@/shared/assets/icons/textEditor/bulletList.svg";
 import imageIcon from "@/shared/assets/icons/textEditor/image.svg";
 import alignJustifyIcon from "@/shared/assets/icons/textEditor/justifyAlign.svg";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import InputFile from "../InputFile/InputFile";
 import styles from "./ToolBar.module.scss";
-import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 interface ToolBarProps {
     editor: Editor | null;
+    undoRedo: Object;
 }
 
 export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
-    const { editor } = props;
+    const { editor, undoRedo } = props;
     const [format, setFormat] = useState(null);
     const [alignText, setAlignText] = useState(null);
     const [listItem, setListItem] = useState(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [undo, setUndo] = useState(false);
+    const [redo, setRedo] = useState(false);
     const emojiRef = useRef(null);
 
-    useOnClickOutside(
-        emojiRef,
-        () => setShowEmojiPicker((prev) => !prev),
-    );
+    useOnClickOutside(emojiRef, () => setShowEmojiPicker((prev) => !prev));
 
     if (!editor) {
         return null;
@@ -139,8 +145,22 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         }
     };
 
+    const handleBack = () => {
+        // if (editor?.can().undo()) {
+        editor.chain().focus().undo().run();
+        // }
+    };
+
+    const handleForward = () => {
+        // if (editor?.can().redo()) {
+        editor.chain().focus().redo().run();
+        // }
+    };
+
     return (
         <div className={styles.wrapper}>
+            {editor?.can().redo() && <span>redo</span>}
+            {editor?.can().undo() && <span>undo</span>}
             <ToggleButtonGroup
                 exclusive
                 value={format}
@@ -247,9 +267,40 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                 </ToggleButton>
                 {showEmojiPicker && (
                     <div className={styles.emojiModal} ref={emojiRef}>
-                        <EmojiPicker onEmojiClick={onEmojiClick} lazyLoadEmojis />
+                        <EmojiPicker
+                            onEmojiClick={onEmojiClick}
+                            lazyLoadEmojis
+                        />
                     </div>
                 )}
+            </div>
+            <div>
+                <ToggleButton
+                    value="back"
+                    className={cn(styles.toggleButton, styles.buttonBack, {
+                        [styles.isActive]: !editor.can().undo(),
+                    })}
+                    onClick={() => editor.chain().focus().undo().run()}
+                >
+                    <HandySvg src={ArrowLeftIcon} />
+                </ToggleButton>
+                <button
+                    className="menu-button"
+                    onClick={() => editor.chain().focus().undo().run()}
+                    disabled={!editor.can().undo()}
+                >
+                    Есть я
+
+                </button>
+                <ToggleButton
+                    value="forward"
+                    className={cn(styles.buttonForward, styles.toggleButton, {
+                        [styles.isActive]: !editor.can().redo(),
+                    })}
+                    onClick={() => editor.chain().focus().redo().run()}
+                >
+                    <HandySvg src={ArrowLeftIcon} />
+                </ToggleButton>
             </div>
         </div>
     );

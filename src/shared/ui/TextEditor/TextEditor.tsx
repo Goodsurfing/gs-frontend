@@ -5,10 +5,11 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
+import History from "@tiptap/extension-history";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { ToolBar } from "@/shared/ui/ToolBar/ToolBar";
 
@@ -23,6 +24,10 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
     onChange,
     value,
 }) => {
+    const [undoRedo, setUndoRedo] = useState({
+        undo: false,
+        redo: false,
+    });
     const editor = useEditor({
         extensions: [
             StarterKit.configure(),
@@ -43,10 +48,18 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
         onUpdate: () => onChange(editor?.getHTML() || ""),
     });
 
+    const updateUndoRedo = () => {
+        console.log(editor?.can().undo());
+        setUndoRedo({
+            undo: editor?.can().undo(),
+            redo: editor?.can().redo(),
+        });
+    };
+
     return (
         <div className={styles.wrapper}>
-            <ToolBar editor={editor} />
-            <EditorContent editor={editor} />
+            <ToolBar editor={editor} undoRedo={undoRedo} />
+            <EditorContent editor={editor} on />
         </div>
     );
 };

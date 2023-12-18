@@ -4,6 +4,7 @@
     border-bottom: 1px solid #8494a187;
     padding: 8px;
     display: flex;
+    flex-wrap: wrap;
     gap: 24px;
 
     .ProseMirror {
@@ -30,15 +31,39 @@
     // }
 }
 
+.buttonBack {
+    svg {
+        filter: opacity(50%);
+    }
+}
+
+.buttonForward {
+    svg {
+        filter: opacity(50%);
+        transform: scaleX(-1);
+    }
+}
+
+.buttonBack.isActive {
+    svg {
+        filter: opacity(100%);
+    }
+}
+
+.buttonForward.isActive {
+    svg {
+        filter: opacity(100%);
+    }
+}
+
 .emojiButton {
     position: relative;
-    
+
     .emojiModal {
         position: absolute;
         z-index: 4;
     }
 }
-
 
 .imageButton {
     display: flex;
