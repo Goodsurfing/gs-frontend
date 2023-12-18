@@ -1,8 +1,9 @@
 import { HandySvg } from "@handy-ones/handy-svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { type Editor } from "@tiptap/react";
+import EmojiPicker from "emoji-picker-react";
 import React, {
-    FC, memo, useCallback, useState,
+    FC, memo, useCallback, useRef, useState,
 } from "react";
 
 import ArrowLeftIcon from "@/shared/assets/icons/textEditor/Arrows1.svg";
@@ -20,8 +21,9 @@ import bulletListIcon from "@/shared/assets/icons/textEditor/bulletList.svg";
 import imageIcon from "@/shared/assets/icons/textEditor/image.svg";
 import alignJustifyIcon from "@/shared/assets/icons/textEditor/justifyAlign.svg";
 
-import styles from "./ToolBar.module.scss";
 import InputFile from "../InputFile/InputFile";
+import styles from "./ToolBar.module.scss";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 interface ToolBarProps {
     editor: Editor | null;
@@ -32,8 +34,19 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     const [format, setFormat] = useState(null);
     const [alignText, setAlignText] = useState(null);
     const [listItem, setListItem] = useState(null);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const emojiRef = useRef(null);
 
-    const addImage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    useOnClickOutside(
+        emojiRef,
+        () => setShowEmojiPicker((prev) => !prev),
+    );
+
+    if (!editor) {
+        return null;
+    }
+
+    const addImage = (e: ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
@@ -41,11 +54,42 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
             const url = URL.createObjectURL(file);
             editor?.chain().focus().setImage({ src: url }).run();
         }
-    }, [editor]);
+    };
 
-    if (!editor) {
-        return null;
-    }
+    const setUnsetLink = () => {
+        if (editor.isActive("link")) {
+            editor.chain().focus().unsetLink().run();
+            return;
+        }
+        const previousUrl = editor.getAttributes("link").href;
+        const url = window.prompt("URL", previousUrl);
+
+        // cancelled
+        if (url === null) {
+            return;
+        }
+
+        // empty
+        if (url === "") {
+            editor.chain().focus().extendMarkRange("link").unsetLink()
+                .run();
+            return;
+        }
+
+        // update link
+        editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run();
+
+        editor.chain().insertContent({ type: "emoji" });
+    };
+
+    const onEmojiClick = (event) => {
+        editor.commands.insertContent(event.emoji);
+    };
 
     const handleFormat = (event, newFormat) => {
         setFormat(newFormat);
@@ -177,27 +221,36 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     <HandySvg src={bulletListIcon} />
                 </ToggleButton>
             </ToggleButtonGroup>
-            <ToggleButton value="link" className={styles.toggleButton}>
+            <ToggleButton
+                value="link"
+                className={styles.toggleButton}
+                onClick={setUnsetLink}
+            >
                 <HandySvg src={linkIcon} />
             </ToggleButton>
-            <ToggleButton
-                value="image"
-                className={styles.toggleButton}
-            >
+            <ToggleButton value="image" className={styles.toggleButton}>
                 <InputFile
                     id="upload image"
                     onChange={addImage}
                     wrapperClassName={styles.imageButton}
                     labelClassName={styles.imageButton}
-                    labelChildren={(
-                        <HandySvg src={imageIcon} />
-                    )}
+                    labelChildren={<HandySvg src={imageIcon} />}
                 />
-
             </ToggleButton>
-            <ToggleButton value="smile" className={styles.toggleButton}>
-                <HandySvg src={smileIcon} />
-            </ToggleButton>
+            <div className={styles.emojiButton}>
+                <ToggleButton
+                    value="smile"
+                    className={styles.toggleButton}
+                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                >
+                    <HandySvg src={smileIcon} />
+                </ToggleButton>
+                {showEmojiPicker && (
+                    <div className={styles.emojiModal} ref={emojiRef}>
+                        <EmojiPicker onEmojiClick={onEmojiClick} lazyLoadEmojis />
+                    </div>
+                )}
+            </div>
         </div>
     );
 });
