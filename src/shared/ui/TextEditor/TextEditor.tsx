@@ -5,11 +5,12 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
-import History from "@tiptap/extension-history";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { HandySvg } from "@handy-ones/handy-svg";
+import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import { ToolBar } from "@/shared/ui/ToolBar/ToolBar";
 
@@ -24,10 +25,6 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
     onChange,
     value,
 }) => {
-    const [undoRedo, setUndoRedo] = useState({
-        undo: false,
-        redo: false,
-    });
     const editor = useEditor({
         extensions: [
             StarterKit.configure(),
@@ -35,7 +32,11 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
             OrderedList,
             BulletList,
             ListItem,
-            TextAlign,
+            TextAlign.configure({
+                types: ["heading", "paragraph"],
+                alignments: ["left", "center", "justify"],
+                defaultAlignment: "left",
+            }),
             Link,
             Image,
         ],
@@ -48,18 +49,19 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
         onUpdate: () => onChange(editor?.getHTML() || ""),
     });
 
-    const updateUndoRedo = () => {
-        console.log(editor?.can().undo());
-        setUndoRedo({
-            undo: editor?.can().undo(),
-            redo: editor?.can().redo(),
-        });
+    const clearContent = () => {
+        editor?.commands.setContent("");
     };
 
     return (
         <div className={styles.wrapper}>
-            <ToolBar editor={editor} undoRedo={undoRedo} />
-            <EditorContent editor={editor} on />
+            <div className={styles.container}>
+                <ToolBar editor={editor} />
+                <EditorContent editor={editor} />
+            </div>
+            <div onClick={clearContent}>
+                <HandySvg src={deleteIcon} />
+            </div>
         </div>
     );
 };

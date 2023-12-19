@@ -4,6 +4,7 @@ import { type Editor } from "@tiptap/react";
 import cn from "classnames";
 import EmojiPicker from "emoji-picker-react";
 import React, {
+    ChangeEvent,
     FC,
     memo,
     useCallback,
@@ -33,11 +34,10 @@ import styles from "./ToolBar.module.scss";
 
 interface ToolBarProps {
     editor: Editor | null;
-    undoRedo: Object;
 }
 
 export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
-    const { editor, undoRedo } = props;
+    const { editor } = props;
     const [format, setFormat] = useState(null);
     const [alignText, setAlignText] = useState(null);
     const [listItem, setListItem] = useState(null);
@@ -47,6 +47,10 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     const emojiRef = useRef(null);
 
     useOnClickOutside(emojiRef, () => setShowEmojiPicker((prev) => !prev));
+
+    useEffect(() => {
+        console.log(alignText);
+    }, [alignText]);
 
     if (!editor) {
         return null;
@@ -118,13 +122,13 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         setAlignText(newAlign);
         switch (newAlign) {
             case "left":
-                editor.chain().focus().setTextAlign("left").run();
+                editor.commands.setTextAlign("left");
                 break;
             case "center":
-                editor.chain().focus().setTextAlign("center").run();
+                editor.commands.setTextAlign("center");
                 break;
             case "justify":
-                editor.chain().focus().setTextAlign("justify").run();
+                editor.commands.setTextAlign("justify");
                 break;
             default:
                 break;
@@ -146,21 +150,20 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     };
 
     const handleBack = () => {
-        // if (editor?.can().undo()) {
         editor.chain().focus().undo().run();
-        // }
     };
 
     const handleForward = () => {
-        // if (editor?.can().redo()) {
         editor.chain().focus().redo().run();
-        // }
     };
+
+    editor.on("update", () => {
+        setRedo(editor?.can().redo());
+        setUndo(editor?.can().undo());
+    });
 
     return (
         <div className={styles.wrapper}>
-            {editor?.can().redo() && <span>redo</span>}
-            {editor?.can().undo() && <span>undo</span>}
             <ToggleButtonGroup
                 exclusive
                 value={format}
@@ -241,61 +244,57 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     <HandySvg src={bulletListIcon} />
                 </ToggleButton>
             </ToggleButtonGroup>
-            <ToggleButton
-                value="link"
-                className={styles.toggleButton}
-                onClick={setUnsetLink}
-            >
-                <HandySvg src={linkIcon} />
-            </ToggleButton>
-            <ToggleButton value="image" className={styles.toggleButton}>
-                <InputFile
-                    id="upload image"
-                    onChange={addImage}
-                    wrapperClassName={styles.imageButton}
-                    labelClassName={styles.imageButton}
-                    labelChildren={<HandySvg src={imageIcon} />}
-                />
-            </ToggleButton>
-            <div className={styles.emojiButton}>
+            <div className={styles.container}>
                 <ToggleButton
-                    value="smile"
+                    value="link"
                     className={styles.toggleButton}
-                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                    onClick={setUnsetLink}
                 >
-                    <HandySvg src={smileIcon} />
+                    <HandySvg src={linkIcon} />
                 </ToggleButton>
-                {showEmojiPicker && (
-                    <div className={styles.emojiModal} ref={emojiRef}>
-                        <EmojiPicker
-                            onEmojiClick={onEmojiClick}
-                            lazyLoadEmojis
-                        />
-                    </div>
-                )}
+                <ToggleButton value="image" className={styles.toggleButton}>
+                    <InputFile
+                        id="upload image"
+                        onChange={addImage}
+                        wrapperClassName={styles.imageButton}
+                        labelClassName={styles.imageButton}
+                        labelChildren={<HandySvg src={imageIcon} />}
+                    />
+                </ToggleButton>
+                <div className={styles.emojiButton}>
+                    <ToggleButton
+                        value="smile"
+                        className={styles.toggleButton}
+                        onClick={() => setShowEmojiPicker((prev) => !prev)}
+                    >
+                        <HandySvg src={smileIcon} />
+                    </ToggleButton>
+                    {showEmojiPicker && (
+                        <div className={styles.emojiModal} ref={emojiRef}>
+                            <EmojiPicker
+                                onEmojiClick={onEmojiClick}
+                                lazyLoadEmojis
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
-            <div>
+            <div className={styles.arrows}>
                 <ToggleButton
                     value="back"
+                    disabled={!undo}
                     className={cn(styles.toggleButton, styles.buttonBack, {
-                        [styles.isActive]: !editor.can().undo(),
+                        [styles.isActive]: undo,
                     })}
                     onClick={() => editor.chain().focus().undo().run()}
                 >
                     <HandySvg src={ArrowLeftIcon} />
                 </ToggleButton>
-                <button
-                    className="menu-button"
-                    onClick={() => editor.chain().focus().undo().run()}
-                    disabled={!editor.can().undo()}
-                >
-                    Есть я
-
-                </button>
                 <ToggleButton
                     value="forward"
+                    disabled={!redo}
                     className={cn(styles.buttonForward, styles.toggleButton, {
-                        [styles.isActive]: !editor.can().redo(),
+                        [styles.isActive]: redo,
                     })}
                     onClick={() => editor.chain().focus().redo().run()}
                 >

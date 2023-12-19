@@ -7,11 +7,16 @@
     flex-wrap: wrap;
     gap: 24px;
 
-    .ProseMirror {
-        li p {
-            margin: 0;
-        }
-    }
+    // .ProseMirror {
+    //     li p {
+    //         margin: 0;
+    //     }
+    // }
+}
+
+.groupWrapper {
+    display: flex;
+    gap: 14px;
 }
 
 .toggleButton {
@@ -26,9 +31,18 @@
         flex-shrink: 0;
     }
 
+
+    &:disabled {
+        border: none;
+    }
     // aside {
     //     position: absolute;
     // }
+}
+
+.container {
+    display: flex;
+    gap: 14px;
 }
 
 .buttonBack {
@@ -71,4 +85,9 @@
     width: 24px;
     height: 24px;
     background: transparent;
+}
+
+.arrows {
+    display: flex;
+    gap: 20px;
 }
