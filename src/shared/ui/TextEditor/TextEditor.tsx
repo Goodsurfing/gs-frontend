@@ -15,6 +15,7 @@ import deleteIcon from "@/shared/assets/icons/delete.svg";
 import { ToolBar } from "@/shared/ui/ToolBar/ToolBar";
 
 import styles from "./TextEditor.module.scss";
+import ResizableImageExtension from "./model/extensions/resizableImage";
 
 interface TiptapEditorProps {
     onChange: (content: string) => void;
@@ -39,6 +40,7 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
             }),
             Link,
             Image,
+            ResizableImageExtension,
         ],
         content: value,
         editorProps: {
