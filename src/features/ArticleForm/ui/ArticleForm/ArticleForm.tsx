@@ -11,6 +11,8 @@ import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 import { formSchema } from "../../model/articleForm";
 import styles from "./ArticleForm.module.scss";
+import UploadButton from "@/modules/Gallery/ui/UploadButton/UploadButton";
+import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 
 interface ArticleFormProps {
     className?: string;
@@ -37,12 +39,17 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             console.log(data);
         };
 
+        const handleUpdateImages = (image: File) => {
+
+        };
+
         return (
             <form
                 className={cn(className, styles.wrapper)}
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <span>Заголовок</span>
+                <UploadArticleCover id="upload cover" />
                 <TextField
                     {...register("title")}
                     error={Boolean(errors.title)}
