@@ -3,3 +3,19 @@
     flex-direction: column;
     gap: 15px;
 }
+
+.smallDescription {
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.title {
+    font-size: 14px;
+    color: var(--text-caption);
+}
+
+.input {
+    &:focus {
+        border: 1px solid var(--text-primary-1);
+    }
+}

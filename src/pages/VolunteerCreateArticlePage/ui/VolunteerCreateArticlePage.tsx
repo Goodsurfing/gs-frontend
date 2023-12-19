@@ -7,7 +7,7 @@ import { ArticleCover } from "@/features/ArticleForm/ui/UploadArticleCover/Uploa
 const VolunteerCreateArticlePage = () => (
     <div className={styles.wrapper}>
         <h2>Написать в блог</h2>
-        <ArticleForm />
+        <ArticleForm className={styles.articleForm} />
     </div>
 );
 

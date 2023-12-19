@@ -57,7 +57,6 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                                 </div>
                             )}
                         />
-
                         <Button
                             className={styles.buttons}
                             color="BLUE"

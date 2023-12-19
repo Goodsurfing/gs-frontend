@@ -36,6 +36,12 @@
     padding: 15px;
     min-height: 500px;
 
+    p {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary-2);
+    }
+
     &:focus {
         outline: none;
         border: 1px solid var(--text-caption);
