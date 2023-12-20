@@ -1,21 +1,25 @@
 import React, { FC } from "react";
 import { Rating } from "@mui/material";
-import { ReviewOffer } from "../../model/types/hostReview";
+
 import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
-import styles from "./ReviewCardOffer.module.scss";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { ReviewCardInfo } from "@/types/review";
+import styles from "./ReviewCardOffer.module.scss";
 
 interface ReviewCardOfferProps {
-    reviewOffer: ReviewOffer
+    reviewOffer: ReviewCardInfo;
 }
 
-export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
+export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        author, authorAvatar, date, rating, textReview, title,
-    } = reviewOffer;
+        reviewOffer: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            textReview, title, image, city, country, author, date, rating,
+        },
+    } = props;
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
