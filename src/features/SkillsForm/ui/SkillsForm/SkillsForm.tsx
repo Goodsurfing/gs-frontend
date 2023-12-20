@@ -39,5 +39,5 @@ export const SkillsForm: FC<SkillsFormProps> = memo(
                 />
             </div>
         );
-    }
+    },
 );

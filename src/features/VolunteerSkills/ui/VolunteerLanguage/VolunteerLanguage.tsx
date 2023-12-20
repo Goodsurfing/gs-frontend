@@ -6,7 +6,6 @@ import React, {
     useCallback,
     useMemo,
     useState,
-    useTransition,
 } from "react";
 
 import deleteIcon from "@/shared/assets/icons/delete.svg";
@@ -32,7 +31,6 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         const isDisabledButton = !mainLanguageSkills
             || !mainLanguageSkills?.language
             || !mainLanguageSkills?.level;
-        const { t } = useTransition();
 
         const handleMainLanguageChange = (item: LanguageSkills) => {
             setMainLanguageSkills(item);

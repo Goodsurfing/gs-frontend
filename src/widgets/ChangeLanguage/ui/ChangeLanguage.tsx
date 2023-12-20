@@ -46,10 +46,6 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
         setLanguage(locale);
     }, [locale]);
 
-    useEffect(() => {
-        console.log(language);
-    }, [language]);
-
     return (
         <div ref={menuRef} className={styles.wrapper}>
             <div
