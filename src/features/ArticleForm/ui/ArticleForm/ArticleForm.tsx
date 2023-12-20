@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField } from "@mui/material";
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -10,9 +9,9 @@ import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
-import styles from "./ArticleForm.module.scss";
 import { OfferCategories } from "@/widgets/OfferCategories";
 import { InputField } from "@/shared/ui/InputField/InputField";
+import styles from "./ArticleForm.module.scss";
 
 interface ArticleFormProps {
     className?: string;
@@ -23,7 +22,6 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
         const { className } = props;
         const {
             register,
-            handleSubmit,
             formState: { errors },
             control,
         } = useForm<z.infer<typeof formSchema>>({
@@ -36,16 +34,9 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             },
         });
 
-        const onSubmit = (data: z.infer<typeof formSchema>) => {
-            console.log(data);
-        };
-
-        const handleUpdateImages = (image: File) => {};
-
         return (
             <form
                 className={cn(className, styles.wrapper)}
-                onSubmit={handleSubmit(onSubmit)}
             >
                 <div>
                     <UploadArticleCover id="upload cover" />
