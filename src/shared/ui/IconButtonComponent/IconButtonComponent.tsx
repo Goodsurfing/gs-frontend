@@ -11,6 +11,7 @@ interface IconButtonComponentProps {
     icon: string;
     className?: string;
     activeClassName?: string;
+    wrapperClassName?: string;
     text?: string;
     size?: IconButtonSize;
     rounded?: boolean;
@@ -23,6 +24,7 @@ interface IconButtonComponentProps {
 const IconButtonComponent = memo(({
     className,
     activeClassName,
+    wrapperClassName,
     text,
     icon,
     disabled,
@@ -32,7 +34,7 @@ const IconButtonComponent = memo(({
     checked = false,
     onClick,
 }: IconButtonComponentProps) => (
-    <div className={styles.wrapper}>
+    <div className={cn(wrapperClassName, styles.wrapper)}>
         <IconButton
             disabled={disabled}
             onClick={onClick}

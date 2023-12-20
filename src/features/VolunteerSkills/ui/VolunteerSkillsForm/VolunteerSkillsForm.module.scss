@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 30px;
+    width: 100%;
+}
+
+.language {
+    margin-top: 40px;
+}
+
+.titleSkills {
+    font-size: 14px;
+    color: var(--text-caption);
+}
