@@ -12,6 +12,7 @@ import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import styles from "./ArticleForm.module.scss";
 import { OfferCategories } from "@/widgets/OfferCategories";
+import { InputField } from "@/shared/ui/InputField/InputField";
 
 interface ArticleFormProps {
     className?: string;
@@ -53,27 +54,14 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     </span>
                 </div>
                 <span className={styles.title}>Название статьи</span>
-                <TextField
-                    {...register("title")}
+                <InputField
+                    name="title"
+                    register={register}
                     error={Boolean(errors.title)}
                     helperText={errors.title?.message}
                     variant="outlined"
                     placeholder="Заголовок вашей статьи"
                     className={styles.input}
-                    sx={{
-                        "& .MuiOutlinedInput-root": {
-                            height: "44px",
-                            borderRadius: "10px",
-                            borderColor: "var(--text-caption)",
-                            "&:hover fieldset": {
-                                borderColor: "var(--text-primary-1)",
-                            },
-                            "&.Mui-focused fieldset": {
-                                borderColor: "var(--text-primary-1)",
-                            },
-
-                        },
-                    }}
                 />
                 <OfferCategories />
                 <Controller
@@ -88,27 +76,14 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                 />
                 {errors.description && <p className={styles.error}>{errors.description.message}</p>}
                 <span className={styles.title}>Ссылка на проект</span>
-                <TextField
-                    {...register("offerLink")}
+                <InputField
+                    name="offerLink"
+                    register={register}
                     error={Boolean(errors.offerLink)}
                     helperText={errors.offerLink?.message}
                     variant="outlined"
                     placeholder="Ваша ссылка на заявку"
                     className={styles.input}
-                    sx={{
-                        "& .MuiOutlinedInput-root": {
-                            height: "44px",
-                            borderRadius: "10px",
-                            borderColor: "var(--text-caption)",
-                            "&:hover fieldset": {
-                                borderColor: "var(--text-primary-1)",
-                            },
-                            "&.Mui-focused fieldset": {
-                                borderColor: "var(--text-primary-1)",
-                            },
-
-                        },
-                    }}
                 />
                 <div className={styles.containerButtons}>
                     <Button color="BLUE" variant="FILL" size="SMALL">

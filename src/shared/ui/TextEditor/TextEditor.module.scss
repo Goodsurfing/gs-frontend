@@ -1,9 +1,8 @@
 .wrapper {
-    // .ProseMirror {
-    //     li p {
-    //         margin: 0;
-    //     }
-    // }
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
     ul,
     ol {
         padding-left: 40px;
@@ -14,9 +13,7 @@
             cursor: pointer;
         }
     }
-    display: flex;
-    gap: 10px;
-    width: 100%;
+    
     svg {
         cursor: pointer;
         width: 24px;
