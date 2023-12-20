@@ -19,7 +19,7 @@ interface ProfileInfoFormLocaleProps {
 export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) => {
     const { className } = props;
     const { control } = useFormContext();
-    const { t } = useTranslation();
+    const { t } = useTranslation("about-me");
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -28,7 +28,6 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
             <Controller
                 name="locale.country"
                 control={control}
-                // defaultValue={}
                 render={({ field }) => (
                     <SelectComponent
                         disabled={isLocked}
@@ -44,7 +43,6 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
             <Controller
                 name="locale.city"
                 control={control}
-                // defaultValue={}
                 render={({ field }) => (
                     <SelectComponent
                         disabled={isLocked}
@@ -60,7 +58,6 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
             <Controller
                 name="locale.language"
                 control={control}
-                // defaultValue={}
                 render={({ field }) => (
                     <SelectComponent
                         disabled={isLocked}
