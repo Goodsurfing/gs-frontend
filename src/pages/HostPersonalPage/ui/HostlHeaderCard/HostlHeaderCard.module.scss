@@ -39,12 +39,6 @@
 }
 
 .image {
-    flex-shrink: 0;
-    svg {
-        width: 100%;
-        height: 100%;
-        max-width: 116px;
-        max-height: 116px;
-        fill: var(--text-caption);
-    }
+    width: 150px;
+    height: 150px;
 }

@@ -5,6 +5,7 @@ import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.pn
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import styles from "./ReviewCardOffer.module.scss";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 interface ReviewCardOfferProps {
     reviewOffer: ReviewOffer
@@ -45,7 +46,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = ({ reviewOffer }) => {
                 />
                 <span className={styles.ratingNum}>4.4</span>
                 <div className={styles.avatarInfoUser}>
-                    <img src={defaultAvatarImage} alt="AVATAR" />
+                    <Avatar icon={defaultAvatarImage} alt="avatar" className={styles.avatar} />
                     <span className={styles.author}>{author}</span>
                 </div>
             </div>

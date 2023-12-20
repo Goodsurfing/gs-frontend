@@ -24,6 +24,11 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -61,13 +66,16 @@ import {
     getResetPasswordVerifyPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerPersonalPageUrl,
+    getVolunteerPageUrl,
+    getVolunteerDashboardPageUrl,
+    getVolunteerNotesPageUrl,
     getVolunteerSkillsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -194,14 +202,36 @@ const publicRoutes: RouteType[] = [
         ],
     },
     {
-        label: "volunteer-skills",
-        element: <VolunteerSkillsPage />,
-        path: (locale: string) => getVolunteerSkillsPageUrl(locale),
-    },
-    {
         label: "offer-personal",
         element: <OfferPersonalPage />,
         path: (locale: string) => getOfferPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-personal",
+        element: <VolunteerPersonalPage />,
+        path: (locale: string) => getVolunteerPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-layout",
+        element: <VolunteerLayoutPage />,
+        path: (locale: string) => getVolunteerPageUrl(locale),
+        children: [
+            {
+                label: "volunteer-dashboard",
+                element: <VolunteerDashboardPage />,
+                path: (locale: string) => getVolunteerDashboardPageUrl(locale),
+            },
+            {
+                label: "volunteer-notes",
+                element: <VolunteerNotesPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-skills",
+                element: <VolunteerSkillsPage />,
+                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+            },
+        ],
     },
     {
         label: "reset-password",

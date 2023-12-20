@@ -1,10 +1,20 @@
 .wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    padding: 16px 20px;
+    background-color: var(--bg-field);
+    margin-top: 60px;
+    border-radius: 2px;
 }
 
 .container {
     display: flex;
     gap: 20px
+}
+
+.icon {
+    fill: var(--text-caption);
+    font-weight: 500;
 }

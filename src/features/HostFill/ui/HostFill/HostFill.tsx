@@ -6,7 +6,7 @@ import { useGetUserHostInfo } from "@/entities/Profile";
 import styles from "./HostFill.module.scss";
 import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
 import { StatsChartPoints, StatsPoints } from "@/entities/Stats";
-import { HostFillDiagram } from "../HostFillDiagram/HostFillDiagram";
+import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 import { EditHost } from "../EditHost/EditHost";
 import { CreateHost } from "../CreateHost/CreateHost";
 
@@ -73,7 +73,7 @@ export const HostFill = memo((props: HostFillProps) => {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
-                    <HostFillDiagram
+                    <FillDiagram
                         isLoading={isLoading}
                         pointsData={pointsData}
                     />

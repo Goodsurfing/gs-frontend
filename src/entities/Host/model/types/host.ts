@@ -1,6 +1,8 @@
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
 import { Offer } from "@/entities/Offer";
+import { Review } from "@/entities/Review";
+import { Article } from "@/entities/Article";
 
 export interface Host {
     id: string;
@@ -41,26 +43,8 @@ export interface FullHost {
     gallery?: Gallery;
     videoGallery?: VideoGallery;
     team: HostTeam;
-    review?: HostReview[];
+    reviews?: Review[];
     articles?: Article[];
-}
-
-export interface HostReview {
-    textReview: string;
-    rating: number;
-    author: string;
-    date: string;
-}
-
-export interface Article {
-    id: string;
-    image: string;
-    title: string;
-    tag: string;
-    date: string;
-    description: string;
-    likes: number;
-    comments: number;
 }
 
 export interface HostSchema {

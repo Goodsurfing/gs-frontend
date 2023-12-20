@@ -12,6 +12,7 @@ import { SubmenuItems } from "../../model/data/submenuData";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
 import styles from "./HostPersonalPage.module.scss";
 import { HostPageContent } from "../HostPageContent/HostPageContent";
+import Button from "@/shared/ui/Button/Button";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -28,7 +29,30 @@ export const HostPersonalPage = () => {
             <MainHeader />
             <div className={styles.content}>
                 <HostlHeaderCard host={mockedHostData} />
-                <Submenu className={styles.navMenu} items={SubmenuItems} />
+                <Submenu
+                    className={styles.navMenu}
+                    items={SubmenuItems}
+                    buttons={(
+                        <>
+                            <Button
+                                size="SMALL"
+                                color="BLUE"
+                                variant="OUTLINE"
+                                className={styles.button}
+                            >
+                                Написать
+                            </Button>
+                            <Button
+                                size="SMALL"
+                                color="BLUE"
+                                variant="FILL"
+                                className={styles.button}
+                            >
+                                Участвовать
+                            </Button>
+                        </>
+                    )}
+                />
                 <HostPageContent id={id} />
             </div>
             <Footer />

@@ -18,7 +18,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
         } = props;
         return (
             <div className={styles.wrapper}>
-                <Avatar size="LARGE" className={styles.image} alt="avatar" />
+                <Avatar icon="" size="LARGE" className={styles.image} alt="avatar" />
                 <div className={styles.containerInfo}>
                     <span className={styles.type}>
                         Организация/

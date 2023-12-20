@@ -18,6 +18,7 @@ import {
     getProfileInfoPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppSelector } from "@/shared/hooks/redux";
 
@@ -86,6 +87,8 @@ const MobileHeader: FC = () => {
                 <div className={styles.container} />
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
+                    className={styles.select}
+                    style={{ backgroundColor: "#ecf1f4" }}
                     isOpen={dropdownOpened.isOffersOpened}
                     title={t("main.welcome.header.offers.title")}
                     onClick={() => handleOpenDropdown("OFFERS")}
@@ -294,7 +297,7 @@ const MobileHeader: FC = () => {
                             {t("main.welcome.header.host-dashboard")}
                         </Button>
                         <Button
-                            onClick={() => navigate(getMainPageUrl(locale))}
+                            onClick={() => navigate(getVolunteerDashboardPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.volunteer-dashboard")}
