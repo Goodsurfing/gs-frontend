@@ -29,6 +29,7 @@ import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
+import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -71,6 +72,7 @@ import {
     getVolunteerDashboardPageUrl,
     getVolunteerNotesPageUrl,
     getVolunteerReviewPageUrl,
+    getVolunteerSkillsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -230,6 +232,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-review",
                 element: <VolunteerReviewPage />,
                 path: (locale: string) => getVolunteerReviewPageUrl(locale),
+            },
+            {
+                label: "volunteer-skills",
+                element: <VolunteerSkillsPage />,
+                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
             },
         ],
     },
