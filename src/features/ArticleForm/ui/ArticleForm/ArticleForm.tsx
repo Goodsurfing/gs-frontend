@@ -4,10 +4,8 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import UploadButton from "@/modules/Gallery/ui/UploadButton/UploadButton";
 
 import Button from "@/shared/ui/Button/Button";
-import Input from "@/shared/ui/Input/Input";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 import { formSchema } from "../../model/articleForm";
@@ -33,6 +31,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             defaultValues: {
                 title: "",
                 description: "",
+                offerLink: "",
             },
         });
 
@@ -87,9 +86,38 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         />
                     )}
                 />
-                <Button color="BLUE" variant="FILL" size="SMALL">
-                    Сохранить
-                </Button>
+                {errors.description && <p className={styles.error}>{errors.description.message}</p>}
+                <span className={styles.title}>Ссылка на проект</span>
+                <TextField
+                    {...register("offerLink")}
+                    error={Boolean(errors.offerLink)}
+                    helperText={errors.offerLink?.message}
+                    variant="outlined"
+                    placeholder="Ваша ссылка на заявку"
+                    className={styles.input}
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+                            height: "44px",
+                            borderRadius: "10px",
+                            borderColor: "var(--text-caption)",
+                            "&:hover fieldset": {
+                                borderColor: "var(--text-primary-1)",
+                            },
+                            "&.Mui-focused fieldset": {
+                                borderColor: "var(--text-primary-1)",
+                            },
+
+                        },
+                    }}
+                />
+                <div className={styles.containerButtons}>
+                    <Button color="BLUE" variant="FILL" size="SMALL">
+                        Опубликовать
+                    </Button>
+                    <Button color="BLUE" variant="OUTLINE" size="SMALL">
+                        Сохранить в черновики
+                    </Button>
+                </div>
             </form>
         );
     },

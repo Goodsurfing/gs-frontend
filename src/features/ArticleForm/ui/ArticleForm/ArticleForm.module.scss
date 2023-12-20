@@ -19,3 +19,21 @@
         border: 1px solid var(--text-primary-1);
     }
 }
+
+.error {
+    font-size: 0.75rem;
+    color: #d32f2f;
+    // margin-top: 3px;
+    margin-right: 14px;
+    margin-left: 14px;
+}
+
+.containerButtons {
+    display: flex;
+    gap: 30px;
+    margin-top: 80px;
+
+    button {
+        width: 100%;
+    }
+}

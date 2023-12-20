@@ -15,4 +15,7 @@ export const formSchema = z.object({
             message: "Описание статьи может достигать не больше 30000 символов",
         })
         .trim(),
+    offerLink: z
+        .string()
+        .url({ message: "Введите корректную ссылку на заявку" }),
 });

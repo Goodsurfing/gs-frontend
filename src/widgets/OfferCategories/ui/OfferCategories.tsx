@@ -16,7 +16,7 @@ export const OfferCategories = () => (
                 <ToggleButtonComponent
                     sx={{
                         maxHeight: "35px",
-                        padding: "10px 15px",
+                        padding: "5px 10px",
                         border: item.color,
                         borderRadius: "26px",
                         borderWidth: "2px",

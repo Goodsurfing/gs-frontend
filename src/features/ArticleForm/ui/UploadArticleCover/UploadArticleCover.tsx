@@ -2,7 +2,7 @@ import React, {
     ChangeEvent, FC, useCallback, useState,
 } from "react";
 
-import plusIcon from "@/shared/assets/icons/plus-icon.svg";
+import cameraIcon from "@/shared/assets/icons/photo-camera.svg";
 import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 
@@ -80,11 +80,11 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                     labelChildren={(
                         <div className={styles.innerWrapper}>
                             <img
-                                className={styles.icon}
-                                src={plusIcon}
+                                // className={styles.icon}
+                                src={cameraIcon}
                                 alt="add item"
                             />
-                            <span className={styles.text}>Добавить фото</span>
+                            <span className={styles.text}>Добавить фото обложки</span>
                         </div>
                     )}
                 />
