@@ -54,6 +54,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     placeholder="Заголовок вашей статьи"
                     className={styles.input}
                 />
+                <span className={styles.title}>Категория статьи</span>
                 <OfferCategories />
                 <Controller
                     name="description"
