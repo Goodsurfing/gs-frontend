@@ -25,6 +25,10 @@ import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -72,10 +76,6 @@ import {
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
-import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 
 const publicRoutes: RouteType[] = [
     {
