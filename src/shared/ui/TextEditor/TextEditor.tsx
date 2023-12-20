@@ -14,8 +14,8 @@ import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import { ToolBar } from "@/shared/ui/ToolBar/ToolBar";
 
-import styles from "./TextEditor.module.scss";
 import ResizableImageExtension from "./model/extensions/resizableImage";
+import styles from "./TextEditor.module.scss";
 
 interface TiptapEditorProps {
     onChange: (content: string) => void;

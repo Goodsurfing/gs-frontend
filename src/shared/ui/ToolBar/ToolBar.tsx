@@ -2,31 +2,28 @@ import { HandySvg } from "@handy-ones/handy-svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { type Editor } from "@tiptap/react";
 import cn from "classnames";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import React, {
     ChangeEvent,
     FC,
+    MouseEvent,
     memo,
-    useCallback,
-    useEffect,
     useRef,
     useState,
 } from "react";
 
-import ArrowLeftIcon from "@/shared/assets/icons/textEditor/Arrows1.svg";
-import ArrowRightIcon from "@/shared/assets/icons/textEditor/Arrows2.svg";
-import linkIcon from "@/shared/assets/icons/textEditor/Content1.svg";
-import smileIcon from "@/shared/assets/icons/textEditor/Content2.svg";
-import boldIcon from "@/shared/assets/icons/textEditor/Formatting1.svg";
-import italicIcon from "@/shared/assets/icons/textEditor/Formatting2.svg";
-import underlineIcon from "@/shared/assets/icons/textEditor/Formatting3.svg";
-import alignLeftIcon from "@/shared/assets/icons/textEditor/Paragraph1.svg";
-import alignCenterIcon from "@/shared/assets/icons/textEditor/Paragraph2.svg";
-import markIcon from "@/shared/assets/icons/textEditor/Paragraph3.svg";
-import paragraphIcon from "@/shared/assets/icons/textEditor/Paragraph4.svg";
+import ArrowLeftIcon from "@/shared/assets/icons/textEditor/arrowLeft.svg";
+import linkIcon from "@/shared/assets/icons/textEditor/link.svg";
+import smileIcon from "@/shared/assets/icons/textEditor/smile.svg";
+import boldIcon from "@/shared/assets/icons/textEditor/bold.svg";
+import italicIcon from "@/shared/assets/icons/textEditor/italic.svg";
+import underlineIcon from "@/shared/assets/icons/textEditor/underline.svg";
+import alignLeftIcon from "@/shared/assets/icons/textEditor/alignLeft.svg";
+import alignCenterIcon from "@/shared/assets/icons/textEditor/alignCenter.svg";
+import markIcon from "@/shared/assets/icons/textEditor/orderedList.svg";
 import bulletListIcon from "@/shared/assets/icons/textEditor/bulletList.svg";
 import imageIcon from "@/shared/assets/icons/textEditor/image.svg";
-import alignJustifyIcon from "@/shared/assets/icons/textEditor/justifyAlign.svg";
+import alignJustifyIcon from "@/shared/assets/icons/textEditor/alignJustify.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import InputFile from "../InputFile/InputFile";
@@ -38,19 +35,13 @@ interface ToolBarProps {
 
 export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     const { editor } = props;
-    const [format, setFormat] = useState(null);
-    const [alignText, setAlignText] = useState(null);
-    const [listItem, setListItem] = useState(null);
+    const [alignText, setAlignText] = useState<string | null>(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [undo, setUndo] = useState(false);
     const [redo, setRedo] = useState(false);
     const emojiRef = useRef(null);
 
     useOnClickOutside(emojiRef, () => setShowEmojiPicker((prev) => !prev));
-
-    useEffect(() => {
-        console.log(alignText);
-    }, [alignText]);
 
     if (!editor) {
         return null;
@@ -60,7 +51,6 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
-            // console.log(file);
             const url = URL.createObjectURL(file);
             editor?.chain().focus().setImage({ src: url }).run();
         }
@@ -97,28 +87,11 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         editor.chain().insertContent({ type: "emoji" });
     };
 
-    const onEmojiClick = (event) => {
+    const onEmojiClick = (event: EmojiClickData) => {
         editor.commands.insertContent(event.emoji);
     };
 
-    const handleFormat = (event, newFormat) => {
-        setFormat(newFormat);
-        switch (newFormat) {
-            case "bold":
-                editor.chain().toggleBold().run();
-                break;
-            case "italic":
-                editor.chain().toggleItalic().run();
-                break;
-            case "underlined":
-                editor.chain().toggleUnderline().run();
-                break;
-            default:
-                break;
-        }
-    };
-
-    const handleAlignText = (event, newAlign) => {
+    const handleAlignText = (event: MouseEvent<HTMLElement>, newAlign: string | null) => {
         setAlignText(newAlign);
         switch (newAlign) {
             case "left":
@@ -135,28 +108,6 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         }
     };
 
-    const handleListItem = (event, newList) => {
-        setListItem(newList);
-        switch (newList) {
-            case "bullet":
-                editor.chain().toggleBulletList().run();
-                break;
-            case "ordered":
-                editor.chain().toggleOrderedList().run();
-                break;
-            default:
-                break;
-        }
-    };
-
-    const handleBack = () => {
-        editor.chain().focus().undo().run();
-    };
-
-    const handleForward = () => {
-        editor.chain().focus().redo().run();
-    };
-
     editor.on("update", () => {
         setRedo(editor?.can().redo());
         setUndo(editor?.can().undo());
@@ -165,13 +116,11 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     return (
         <div className={styles.wrapper}>
             <ToggleButtonGroup
-                exclusive
-                value={format}
-                onChange={handleFormat}
                 aria-label="text formatting"
                 className={styles.groupWrapper}
             >
                 <ToggleButton
+                    onClick={() => editor.chain().toggleBold().run()}
                     value="bold"
                     aria-label="bold"
                     className={styles.toggleButton}
@@ -179,6 +128,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     <HandySvg src={boldIcon} />
                 </ToggleButton>
                 <ToggleButton
+                    onClick={() => editor.chain().toggleItalic().run()}
                     value="italic"
                     aria-label="italic"
                     className={styles.toggleButton}
@@ -186,6 +136,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     <HandySvg src={italicIcon} />
                 </ToggleButton>
                 <ToggleButton
+                    onClick={() => editor.chain().toggleUnderline().run()}
                     value="underlined"
                     aria-label="underlined"
                     className={styles.toggleButton}
@@ -223,14 +174,12 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                 </ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
-                exclusive
-                value={listItem}
-                onChange={handleListItem}
                 aria-label="list item"
                 className={styles.groupWrapper}
             >
                 <ToggleButton
                     value="ordered"
+                    onClick={() => editor.chain().toggleBulletList().run()}
                     aria-label="ordered"
                     className={styles.toggleButton}
                 >
@@ -238,6 +187,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                 </ToggleButton>
                 <ToggleButton
                     value="bullet"
+                    onClick={() => editor.chain().toggleOrderedList().run()}
                     aria-label="bullet"
                     className={styles.toggleButton}
                 >
