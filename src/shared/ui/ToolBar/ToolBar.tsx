@@ -20,7 +20,7 @@ import italicIcon from "@/shared/assets/icons/textEditor/italic.svg";
 import underlineIcon from "@/shared/assets/icons/textEditor/underline.svg";
 import alignLeftIcon from "@/shared/assets/icons/textEditor/alignLeft.svg";
 import alignCenterIcon from "@/shared/assets/icons/textEditor/alignCenter.svg";
-import markIcon from "@/shared/assets/icons/textEditor/orderedList.svg";
+import orderedListIcon from "@/shared/assets/icons/textEditor/orderedList.svg";
 import bulletListIcon from "@/shared/assets/icons/textEditor/bulletList.svg";
 import imageIcon from "@/shared/assets/icons/textEditor/image.svg";
 import alignJustifyIcon from "@/shared/assets/icons/textEditor/alignJustify.svg";
@@ -179,15 +179,15 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
             >
                 <ToggleButton
                     value="ordered"
-                    onClick={() => editor.chain().toggleBulletList().run()}
+                    onClick={() => editor.chain().toggleOrderedList().run()}
                     aria-label="ordered"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={markIcon} />
+                    <HandySvg src={orderedListIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="bullet"
-                    onClick={() => editor.chain().toggleOrderedList().run()}
+                    onClick={() => editor.chain().toggleBulletList().run()}
                     aria-label="bullet"
                     className={styles.toggleButton}
                 >
