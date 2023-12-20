@@ -49,5 +49,9 @@ export type {
     OfferFinishingTouches,
 } from "./model/types/offerFinishingTouches";
 
+export type {
+    OfferStatus,
+} from "./model/types/offerStatus";
+
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";

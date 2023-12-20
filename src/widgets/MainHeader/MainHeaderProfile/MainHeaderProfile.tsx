@@ -9,6 +9,7 @@ import {
     getHostDashboardPageUrl,
     getMainPageUrl,
     getProfileInfoPageUrl,
+    getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
@@ -90,7 +91,7 @@ const MainHeaderProfile = () => {
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={getMainPageUrl(locale)}
+                    to={getVolunteerDashboardPageUrl(locale)}
                 >
                     Стать волонтёром
                 </Link>
