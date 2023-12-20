@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, memo, useMemo } from "react";
+import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { Offer, OfferStatus } from "@/entities/Offer";
