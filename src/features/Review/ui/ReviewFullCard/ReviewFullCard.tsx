@@ -13,7 +13,7 @@ interface ReviewFullCardProps {
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
     const {
         review: {
-            title, image, textReview, city, country,
+            title, textReview, city, country,
         },
     } = props;
 

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Rating } from "@mui/material";
-import { ReviewOffer } from "../../model/types/hostReview";
+
 import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
@@ -15,6 +15,7 @@ interface ReviewCardOfferProps {
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const {
         reviewOffer: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             textReview, title, image, city, country, author, date, rating,
         },
     } = props;
