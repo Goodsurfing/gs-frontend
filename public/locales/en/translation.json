@@ -74,7 +74,13 @@
             "Предпочтения": "Preferences",
             "Роль": "Role",
             "Пароль": "Password",
-            "Приватность": "Privacy"
+            "Приватность": "Privacy",
+            "Панель управления": "Dashboard",
+            "Навыки": "Skills",
+            "Подписки": "Subscribers",
+            "Фото и видео": "Photo and videos",
+            "Написать в блог": "Write article",
+            "Мои статьи": "My articles"
         }
     }
 }

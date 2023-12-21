@@ -70,7 +70,13 @@
             "Предпочтения": "Preferencias",
             "Роль": "Role",
             "Пароль": "Contraseña",
-            "Приватность": "Privacidad"
+            "Приватность": "Privacidad",
+            "Панель управления": "Panel",
+            "Навыки": "Habilidades",
+            "Подписки": "Suscriptores",
+            "Фото и видео": "Foto y vídeos",
+            "Написать в блог": "Escribe un blog",
+            "Мои статьи": "Mis artículos"
         }
     }
 }

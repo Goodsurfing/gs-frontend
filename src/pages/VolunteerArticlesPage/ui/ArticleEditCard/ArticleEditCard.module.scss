@@ -1,0 +1,59 @@
+.wrapper {
+    position: relative;
+}
+
+.buttonContent {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.popup {
+    z-index: 4;
+    right: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: #fff;
+    padding: 14px;
+    width: 190px;
+    
+    a {
+        text-decoration: none;
+    }
+}
+
+.popupButton {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary-2);
+    border: none;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+}
+
+.button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+
+    svg {
+        width: 19px;
+        height: 4px;
+        overflow: visible;
+        object-fit: cover;
+    }
+}
