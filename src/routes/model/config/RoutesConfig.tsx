@@ -73,11 +73,13 @@ import {
     getVolunteerNotesPageUrl,
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
+    getVolunteerArticlesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -237,6 +239,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-skills",
                 element: <VolunteerSkillsPage />,
                 path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+            },
+            {
+                label: "volunteer-articles",
+                element: <VolunteerArticlesPage />,
+                path: (locale: string) => getVolunteerArticlesPageUrl(locale),
             },
         ],
     },
