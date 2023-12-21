@@ -37,7 +37,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo((props: ArticleEdi
     return (
         <div className={cn(className, styles.wrapper)}>
             <ArticleWidget article={article} />
-            <div className={styles.buttonContent}>
+            <div ref={popupRef} className={styles.buttonContent}>
                 <button type="button" className={styles.button} onClick={handleShowPopup}>
                     <HandySvg src={threeDotsIcon} />
                 </button>
