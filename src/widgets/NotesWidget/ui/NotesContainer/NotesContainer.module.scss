@@ -12,11 +12,21 @@
 }
 
 .container {
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 14px;
-    min-height: 300px;
+    height: 100%;
+
+}
+
+.droppable {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
 }
 
 .title {
@@ -29,4 +39,8 @@
     font-size: 14px;
     color: var(--text-primary-1);
     font-weight: 500;
+}
+
+.noteCard {
+    margin-top: 14px;
 }

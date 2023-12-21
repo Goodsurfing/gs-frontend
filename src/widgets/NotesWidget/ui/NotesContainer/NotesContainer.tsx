@@ -26,36 +26,39 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
         } = props;
 
         return (
-            <Droppable isDropDisabled={isDragDisable} droppableId={status}>
-                {(provided) => (
-                    <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className={cn(className, styles.wrapper)}
-                    >
-                        <div
-                            className={styles.top}
-                            style={{ borderBottom: `2px solid ${color}` }}
-                        >
-                            <span className={styles.title}>{status}</span>
-                            <span className={styles.number}>
-                                {offers?.length || 0}
-                            </span>
-                        </div>
-                        <div className={styles.container}>
-                            {offers.map((offer, index) => (
-                                <NotesCard
-                                    key={offer.id}
-                                    offer={offer}
-                                    index={index}
-                                    isDragDisable={isDragDisable}
-                                />
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    </div>
-                )}
-            </Droppable>
+            <div className={cn(className, styles.wrapper)}>
+                <div
+                    className={styles.top}
+                    style={{ borderBottom: `2px solid ${color}` }}
+                >
+                    <span className={styles.title}>{status}</span>
+                    <span className={styles.number}>
+                        {offers?.length || 0}
+                    </span>
+                </div>
+                <div className={styles.container}>
+                    <Droppable isDropDisabled={isDragDisable} droppableId={status}>
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                                className={styles.droppable}
+                            >
+                                {offers.map((offer, index) => (
+                                    <NotesCard
+                                        className={styles.noteCard}
+                                        key={offer.id}
+                                        offer={offer}
+                                        index={index}
+                                        isDragDisable={isDragDisable}
+                                    />
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </div>
+            </div>
         );
     },
 );
