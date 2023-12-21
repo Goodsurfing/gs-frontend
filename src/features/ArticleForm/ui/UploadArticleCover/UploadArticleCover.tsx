@@ -80,7 +80,6 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                     labelChildren={(
                         <div className={styles.innerWrapper}>
                             <img
-                                // className={styles.icon}
                                 src={cameraIcon}
                                 alt="add item"
                             />
