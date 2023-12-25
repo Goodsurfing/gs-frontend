@@ -28,7 +28,6 @@ import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
