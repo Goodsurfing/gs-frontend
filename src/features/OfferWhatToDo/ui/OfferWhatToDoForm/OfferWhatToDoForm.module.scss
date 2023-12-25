@@ -5,21 +5,8 @@
   gap: 30px;
 }
 
-.skillsWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
 .skillsText {
   color: var(--text-caption);
   font: var(--text-secondary);
 }
 
-.skills {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 30px;
-  grid-row-gap: 30px;
-}

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useFormContext } from "react-hook-form";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { useAppSelector } from "@/shared/hooks/redux";
 
@@ -15,7 +16,7 @@ interface ProfileInfoFormAboutProps {
 
 export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
     const { className } = props;
-
+    const { t } = useTranslation("about-me");
     const isLocked = useAppSelector(getProfileReadonly);
 
     const { control } = useFormContext();
@@ -24,13 +25,13 @@ export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
         <div className={cn(className, styles.wrapper)}>
             <InputControl
                 disabled={isLocked}
-                label="Имя"
+                label={t("Имя")}
                 control={control}
                 name="about.firstName"
             />
             <InputControl
                 disabled={isLocked}
-                label="Фамилия"
+                label={t("Фамилия")}
                 control={control}
                 name="about.lastName"
             />

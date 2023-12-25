@@ -18,4 +18,5 @@ export interface Volunteer extends Profile {
     articles?: Article[];
     favoriteOffers?: Offer[];
     isMember: boolean;
+    subscribers?: Profile[];
 }

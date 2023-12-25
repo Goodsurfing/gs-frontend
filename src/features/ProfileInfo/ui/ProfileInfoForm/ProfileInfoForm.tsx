@@ -2,6 +2,7 @@ import { memo } from "react";
 import cn from "classnames";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import Button from "@/shared/ui/Button/Button";
 
@@ -26,7 +27,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
         className,
         profile,
     } = props;
-
+    const { t } = useTranslation("about-me");
     const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
 
     const [updateProfile] = profileApi.useUpdateProfileInfoMutation();
@@ -65,11 +66,11 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                         size="MEDIUM"
                         color="BLUE"
                     >
-                        Сохранить
+                        {t("Сохранить")}
                     </Button>
                 </div>
                 <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
-                    {isLocked ? "Редактировать" : "Отмена"}
+                    {isLocked ? t("Редактировать") : t("Отмена")}
                 </button>
             </form>
         </FormProvider>

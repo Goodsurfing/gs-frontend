@@ -41,7 +41,7 @@
                     "news": "News"
                 },
                 "messages": "Messages",
-                "my-page":"My page",
+                "my-page": "My page",
                 "host-dashboard": "Host dashboard",
                 "volunteer-dashboard": "Volunteer dashboard",
                 "sign-in": "Sign In",
@@ -51,6 +51,30 @@
             "title": "Find the dream journey",
             "offers-btn": "All offers",
             "activity-title": "Or choose a type of activity"
+        },
+        "sidebar": {
+            "К предложениям": "To offers",
+            "Где": "Where",
+            "Когда": "When",
+            "Кто нужен": "Who needs",
+            "Описание": "Description",
+            "Что делать": "What need to do",
+            "Условия": "Conditions",
+            "Последние штрихи": "Finishing touches",
+            "Рабочий стол": "Host dashboard",
+            "Предложения": "Offers",
+            "Заявки": "Notes",
+            "Календарь": "Calendar",
+            "Организация": "Host",
+            "Фотогалерея": "Gallery",
+            "Видеогалерея": "Video gallery",
+            "Команда": "Team",
+            "Отзывы": "Reviews",
+            "Обо мне": "About me",
+            "Предпочтения": "Preferences",
+            "Роль": "Role",
+            "Пароль": "Password",
+            "Приватность": "Privacy"
         }
     }
 }

@@ -36,9 +36,7 @@ export const VideoInput = memo(({
                             <p className={styles.inputError}>{fieldState.error.message}</p>
                         )}
                     </div>
-                    <AddButton disabled={fieldState.invalid} type="submit" onClick={addVideo} className={styles.add}>
-                        Добавить видео
-                    </AddButton>
+                    <AddButton disabled={fieldState.invalid} type="submit" text="Добавить видео" onClick={addVideo} className={styles.add} />
                 </div>
             )}
         />
