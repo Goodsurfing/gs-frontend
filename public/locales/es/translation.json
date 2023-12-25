@@ -103,5 +103,12 @@
         "photo": "Fotografía",
         "night_job": "Turno Nocturno",
         "sport": "Deportes"
+    },
+    "notes": {
+        "under consideration": "En Consideración",
+        "accepted": "Aceptado",
+        "confirmed": "Confirmado",
+        "rejected": "Rechazado",
+        "Сообщение": "Mensaje"
     }
 }
