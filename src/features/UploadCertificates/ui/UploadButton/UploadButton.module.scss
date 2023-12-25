@@ -1,0 +1,38 @@
+.btn {
+    width: 130px;
+    height: 130px;
+
+    background-color: #ECF1F4;
+    border-radius: 2px;
+    border: 1px dashed var(--white-theme-color);
+
+    position: relative;
+}
+
+.innerWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text {
+    font-size: 14px;
+    color: var(--white-theme-color);
+    margin-top: 4px;
+}
+
+.icon {
+    width: 14px;
+    height: 14px;
+}
+
+.hiddenImg {
+    display: none;
+}

@@ -1,4 +1,5 @@
 import { RouteProps } from "react-router-dom";
+
 import { AppRoutes } from "./AppRoutes";
 
 export type AppRoutesProps = RouteProps & {
@@ -24,6 +25,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_REVIEW]: "/host/review",
+    [AppRoutes.HOST_NOTES]: "/host/notes",
     [AppRoutes.HOST_VIDEO]: "/host/video",
     [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",
@@ -38,11 +40,14 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/finishing-touches",
     [AppRoutes.VOLUNTEER]: "/volunteer",
     [AppRoutes.VOLUNTEER_DASHBOARD]: "/volunteer/volunteer-dashboard",
-    [AppRoutes.VOLUNTEER_NOTES]: "/volunteer/notes",
-    [AppRoutes.VOLUNTEER_REVIEW]: "/volunteer/review",
-    [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
     [AppRoutes.VOLUNTEER_SKILLS]: "/volunteer/skills",
+    [AppRoutes.VOLUNTEER_REVIEW]: "/volunteer/review",
+    [AppRoutes.VOLUNTEER_NOTES]: "/volunteer/notes",
+    [AppRoutes.VOLUNTEER_SUBSCRIBERS]: "/volunteer/subscribers",
+    [AppRoutes.VOLUNTEER_GALLERY]: "/volunteer/gallery",
+    [AppRoutes.VOLUNTEER_CREATE_ARTICLE]: "/volunteer/create-article",
     [AppRoutes.VOLUNTEER_ARTICLES]: "/volunteer/articles",
+    [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",

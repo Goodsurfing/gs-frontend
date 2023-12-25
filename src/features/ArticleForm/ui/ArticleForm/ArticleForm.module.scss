@@ -1,0 +1,39 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.smallDescription {
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.title {
+    font-size: 14px;
+    color: var(--text-caption);
+}
+
+.input {
+    &:focus {
+        border: 1px solid var(--text-primary-1);
+    }
+}
+
+.error {
+    font-size: 0.75rem;
+    color: #d32f2f;
+    // margin-top: 3px;
+    margin-right: 14px;
+    margin-left: 14px;
+}
+
+.containerButtons {
+    display: flex;
+    gap: 30px;
+    margin-top: 80px;
+
+    button {
+        width: 100%;
+    }
+}

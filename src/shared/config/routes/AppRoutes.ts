@@ -20,6 +20,7 @@ export enum AppRoutes {
     HOST_VIDEO = "host_video",
     HOST_TEAM = "host_team",
     HOST_REVIEW = "host_review",
+    HOST_NOTES = "host_notes",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",
@@ -32,10 +33,13 @@ export enum AppRoutes {
     OFFER_FINISHING_TOUCHES = "offers_finishing_touches",
     VOLUNTEER = "volunteer",
     VOLUNTEER_DASHBOARD = "volunteer_dashboard",
-    VOLUNTEER_NOTES = "volunteer_notes",
-    VOLUNTEER_REVIEW = "volunteer_review",
-    VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     VOLUNTEER_SKILLS = "volunteer_skills",
+    VOLUNTEER_REVIEW = "volunteer_review",
+    VOLUNTEER_NOTES = "volunteer_notes",
+    VOLUNTEER_SUBSCRIBERS = "volunteer_subscribers",
+    VOLUNTEER_GALLERY = "volunteer_gallery",
+    VOLUNTEER_CREATE_ARTICLE = "volunteer_create_article",
+    VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     VOLUNTEER_ARTICLES = "volunteer_articles",
     NOT_FOUND = "not_found",
 }

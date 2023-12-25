@@ -1,0 +1,10 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    max-width: 260px;
+}

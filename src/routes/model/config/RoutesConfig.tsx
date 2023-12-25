@@ -7,6 +7,7 @@ import { HostOffersPage } from "@/pages/HostOffersPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
+import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
@@ -24,12 +25,16 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
-import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
+import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
+import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -71,15 +76,18 @@ import {
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
     getVolunteerNotesPageUrl,
+    getHostNotesPageUrl,
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
+    getVolunteerGalleryPageUrl,
+    getVolunteerSubscribersPageUrl,
+    getVolunteerCreateArticlePageUrl,
     getVolunteerArticlesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -148,7 +156,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-
+            {
+                label: "host-notes",
+                element: <HostNotesPage />,
+                path: (locale: string) => getHostNotesPageUrl(locale),
+            },
         ],
     },
     {
@@ -226,9 +238,9 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerDashboardPageUrl(locale),
             },
             {
-                label: "volunteer-notes",
-                element: <VolunteerNotesPage />,
-                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+                label: "volunteer-skills",
+                element: <VolunteerSkillsPage />,
+                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
             },
             {
                 label: "volunteer-review",
@@ -236,9 +248,24 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerReviewPageUrl(locale),
             },
             {
-                label: "volunteer-skills",
-                element: <VolunteerSkillsPage />,
-                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+                label: "volunteer-notes",
+                element: <VolunteerNotesPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-subscribers",
+                element: <VolunteerSubscribersPage />,
+                path: (locale: string) => getVolunteerSubscribersPageUrl(locale),
+            },
+            {
+                label: "volunteer-gallery",
+                element: <VolunteerGalleryPage />,
+                path: (locale: string) => getVolunteerGalleryPageUrl(locale),
+            },
+            {
+                label: "volunteer-create-article",
+                element: <VolunteerCreateArticlePage />,
+                path: (locale: string) => getVolunteerCreateArticlePageUrl(locale),
             },
             {
                 label: "volunteer-articles",

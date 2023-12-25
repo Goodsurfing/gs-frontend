@@ -3,6 +3,7 @@ import defaultImage from "@/shared/assets/images/supportImage.jpg";
 
 export const mockedOffersData: Offer[] = [
     {
+        id: "1",
         when: {
             durationMinDays: 26,
             durationMaxDays: 30,
@@ -56,6 +57,7 @@ export const mockedOffersData: Offer[] = [
         status: "under consideration",
     },
     {
+        id: "2",
         when: {
             durationMinDays: 26,
             durationMaxDays: 30,
@@ -110,6 +112,7 @@ export const mockedOffersData: Offer[] = [
         status: "under consideration",
     },
     {
+        id: "3",
         when: {
             durationMinDays: 26,
             durationMaxDays: 30,

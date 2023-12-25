@@ -1,0 +1,93 @@
+.wrapper {
+    border: 1px solid var(--text-caption);
+    border-radius: 0;
+    border-bottom: 1px solid #8494a187;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+
+    // .ProseMirror {
+    //     li p {
+    //         margin: 0;
+    //     }
+    // }
+}
+
+.groupWrapper {
+    display: flex;
+    gap: 14px;
+}
+
+.toggleButton {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+
+
+    &:disabled {
+        border: none;
+    }
+    // aside {
+    //     position: absolute;
+    // }
+}
+
+.container {
+    display: flex;
+    gap: 14px;
+}
+
+.buttonBack {
+    svg {
+        filter: opacity(50%);
+    }
+}
+
+.buttonForward {
+    svg {
+        filter: opacity(50%);
+        transform: scaleX(-1);
+    }
+}
+
+.buttonBack.isActive {
+    svg {
+        filter: opacity(100%);
+    }
+}
+
+.buttonForward.isActive {
+    svg {
+        filter: opacity(100%);
+    }
+}
+
+.emojiButton {
+    position: relative;
+
+    .emojiModal {
+        position: absolute;
+        z-index: 4;
+    }
+}
+
+.imageButton {
+    display: flex;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+}
+
+.arrows {
+    display: flex;
+    gap: 20px;
+}
