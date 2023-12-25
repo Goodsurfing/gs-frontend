@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Review } from "@/types/review";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
@@ -19,6 +20,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
         country,
         city,
     } = data;
+    const { t } = useTranslation("volunteer");
 
     return (
         <div className={styles.wrapper}>
@@ -46,7 +48,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
                 size="SMALL"
                 className={styles.btn}
             >
-                Добавить отзыв
+                {t("volunteer-review.Добавить отзыв")}
             </Button>
         </div>
     );

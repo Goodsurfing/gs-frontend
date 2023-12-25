@@ -1,0 +1,39 @@
+{
+    "volunteer-dashboard": {
+        "Заполненность профиля": "Profile completeness",
+        "Посмотреть свой профиль": "View your profile",
+        "Загрузка...": "Loading...",
+        "Редактировать профиль": "Edit profile",
+        "Возможности, которые вам понравятся": "Features you'll love",
+        "Настроить": "Configure",
+        "Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!": "Sign up for a Goodsurfing membership and discover the endless world of meaningful travel!",
+        "Получить членство": "Get a membership",
+        "Уведомления": "Notifications"
+    },
+    "volunteer-skills": {
+        "Навыки и умения": "Skills and Abilities",
+        "Знание языков": "Language Proficiency",
+        "Уровень владения": "Proficiency Level",
+        "english": "English",
+        "spanish": "Spanish",
+        "russian": "Russian",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "proficient": "Proficient",
+        "fluent": "Fluent",
+        "Добавить язык": "Add Language",
+        "Навыки которыми вы обладаете": "Skills You Possess",
+        "Добавить навык": "Add Skill",
+        "Дополнительная информация": "Additional Information",
+        "Не более 1000 знаков": "Not more than 1000 characters",
+        "Сохранить": "Save"
+    },
+    "volunteer-review": {
+        "Отзывы": "Reviews",
+        "Ваш рейтинг": "Your Rating",
+        "Отзывы о проектах": "Project Reviews",
+        "Проекты, которые вы недавно посещали": "Projects You Recently Visited",
+        "Отзывы о вас": "Reviews About You",
+        "Добавить отзыв": "Add Review"
+    }
+}

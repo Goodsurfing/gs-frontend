@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { ReviewCardInfo } from "@/types/review";
 
 import { ReviewMiniCard, ReviewCardOffer } from "@/features/Review/";
@@ -9,15 +10,16 @@ import { mockedReviewOfferData } from "../../model/data/mockedReviewData";
 import styles from "./ReviewAboutOffers.module.scss";
 
 export const ReviewAboutOffers: FC = () => {
+    const { t } = useTranslation("volunteer");
     const renderFullCards = (reviews: ReviewCardInfo[]) => reviews.map(
         (review) => <ReviewCardOffer reviewOffer={review} />,
     );
 
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.h3}>Отзывы о проектах</h3>
+            <h3 className={styles.h3}>{t("volunteer-review.Отзывы о проектах")}</h3>
             <p className={styles.description}>
-                Проекты, которые вы недавно посещали
+                {t("volunteer-review.Проекты, которые вы недавно посещали")}
             </p>
             <VerticalSlider
                 classNameSlide={styles.swiperSlide}

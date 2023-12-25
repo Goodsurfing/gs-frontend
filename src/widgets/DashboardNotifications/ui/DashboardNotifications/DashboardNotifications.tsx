@@ -10,12 +10,12 @@ export const DashboardNotifications = () => {
     const notificationDateStorage = new NotificationDateStorage();
     notificationDateStorage.setNotificationDate();
 
-    const { t } = useTranslation("volunteer-dashboard");
+    const { t } = useTranslation("volunteer");
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.titleWrapper}>
-                <h3 className={styles.title}>{t("Уведомления")}</h3>
+                <h3 className={styles.title}>{t("volunteer-dashboard.Уведомления")}</h3>
             </div>
             <div className={styles.notificationItems}>
                 <DashboardNotificationItem

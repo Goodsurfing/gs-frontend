@@ -90,5 +90,22 @@
         "Видео": "Video gallery",
         "Публикации в блоге": "Blog Post",
         "Членство": "Membership"
+    },
+    "skills": {
+        "admin": "Administration",
+        "cooking": "Cooking",
+        "driving": "Driving",
+        "housing": "Housekeeping",
+        "decor": "Decorating",
+        "tourism": "Tour Guide",
+        "art": "Art",
+        "farming": "Farming",
+        "social": "Social Work",
+        "recording": "Video Editing",
+        "gardening": "Gardening",
+        "music": "Music",
+        "photo": "Photography",
+        "night_job": "Night Shift",
+        "sport": "Sports"
     }
 }

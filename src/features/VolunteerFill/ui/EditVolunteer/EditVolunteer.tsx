@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -13,6 +14,7 @@ interface EditVolunteerProps {
 export const EditVolunteer: FC<EditVolunteerProps> = memo(
     (props: EditVolunteerProps) => {
         const { className } = props;
+        const { t } = useTranslation("volunteer");
         const navigate = useNavigate();
         const { locale } = useLocale();
 
@@ -28,7 +30,7 @@ export const EditVolunteer: FC<EditVolunteerProps> = memo(
                 size="SMALL"
                 variant="FILL"
             >
-                Редактировать профиль
+                {t("volunteer-dashboard.Редактировать профиль")}
             </Button>
         );
     },

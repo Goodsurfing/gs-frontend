@@ -17,17 +17,17 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
     (props: OffersRecomendationsWidgetProps) => {
         const { className } = props;
         const { locale } = useLocale();
-        const { t } = useTranslation("volunteer-dashboard");
+        const { t } = useTranslation("volunteer");
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.top}>
-                    <h3>{t("Возможности, которые вам понравятся")}</h3>
+                    <h3>{t("volunteer-dashboard.Возможности, которые вам понравятся")}</h3>
                     <Link
                         to={getMainPageUrl(locale)}
                         className={styles.settings}
                     >
-                        {t("Настроить")}
+                        {t("volunteer-dashboard.Настроить")}
                     </Link>
                 </div>
                 <div className={styles.container}>

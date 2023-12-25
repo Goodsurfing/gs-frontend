@@ -20,17 +20,17 @@ interface VolunteerFillProps {
 export const VolunteerFill = memo((props: VolunteerFillProps) => {
     const { className } = props;
     const { locale } = useLocale();
-    const { t } = useTranslation("volunteer-dashboard");
+    const { t } = useTranslation("volunteer");
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
-                <h3>{t("Заполненность профиля")}</h3>
+                <h3>{t("volunteer-dashboard.Заполненность профиля")}</h3>
                 <Link
                     to={getMainPageUrl(locale)}
                     className={styles.toProfile}
                 >
-                    {t("Посмотреть свой профиль")}
+                    {t("volunteer-dashboard.Посмотреть свой профиль")}
                 </Link>
             </div>
             <div className={styles.bottom}>

@@ -13,14 +13,14 @@ interface FillDiagramProps {
 
 export const FillDiagram = memo((props: FillDiagramProps) => {
     const { className, pointsData, isLoading } = props;
-    const { t } = useTranslation("volunteer-dashboard");
+    const { t } = useTranslation("volunteer");
 
     const [degrees, setDegrees] = useState<[number, number]>([360, 0]);
 
     if (isLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
-                {t("Загрузка...")}
+                {t("volunteer-dashboard.Загрузка...")}
             </div>
         );
     }

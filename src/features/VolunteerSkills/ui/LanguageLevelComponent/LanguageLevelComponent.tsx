@@ -1,6 +1,7 @@
 import { MenuItem } from "@mui/material";
 import React, { FC, memo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
 import {
@@ -30,6 +31,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
         const {
             className, value, onChange, isTitle = true,
         } = props;
+        const { t } = useTranslation("volunteer");
 
         const handleLanguageChange = (language: LanguageOptions) => {
             onChange({ ...value, language });
@@ -41,7 +43,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>Знание языков</span>}
+                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Знание языков")}</span>}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
@@ -53,13 +55,13 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                     >
                         {LanguagesOptions.map((item, index) => (
                             <MenuItem key={index} value={item}>
-                                {item}
+                                {t(`volunteer-skills.${item}`)}
                             </MenuItem>
                         ))}
                     </SelectComponent>
                 </div>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>Уровень владения</span>}
+                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Уровень владения")}</span>}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
@@ -71,7 +73,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                     >
                         {LevelOptions.map((item, index) => (
                             <MenuItem key={index} value={item}>
-                                {item}
+                                {t(`volunteer-skills.${item}`)}
                             </MenuItem>
                         ))}
                     </SelectComponent>

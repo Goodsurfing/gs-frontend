@@ -86,5 +86,22 @@
         "Видео": "Galeria de VIDEOS",
         "Публикации в блоге": "Entrada en el blog",
         "Членство": "Afiliación"
+    },
+    "skills": {
+        "admin": "Administración",
+        "cooking": "Cocina",
+        "driving": "Conducción",
+        "housing": "Hogar",
+        "decor": "Decoración",
+        "tourism": "Guía Turístico",
+        "art": "Arte",
+        "farming": "Agricultura",
+        "social": "Trabajo Social",
+        "recording": "Edición de Video",
+        "gardening": "Jardinería",
+        "music": "Música",
+        "photo": "Fotografía",
+        "night_job": "Turno Nocturno",
+        "sport": "Deportes"
     }
 }
