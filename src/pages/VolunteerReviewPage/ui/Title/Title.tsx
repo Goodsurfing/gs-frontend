@@ -5,7 +5,7 @@ import styles from "./Title.module.scss";
 
 export const Title = () => (
     <div className={styles.wrapper}>
-        <h1 className={styles.title}>Отзывы</h1>
+        <h2 className={styles.title}>Отзывы</h2>
         <div className={styles.ratingWrapper}>
             <span className={styles.ratingText}>Ваш рейтинг</span>
             <Rating

@@ -6,7 +6,7 @@ import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 const VolunteerNotesPage = () => (
     <div className={styles.wrapper}>
-        <h1>Мои заявки</h1>
+        <h2>Мои заявки</h2>
         <NotesWidget className={styles.notes} offers={mockedOffersData} isDragDisable />
     </div>
 );
