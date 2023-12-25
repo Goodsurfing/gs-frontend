@@ -32,6 +32,7 @@ import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -77,6 +78,7 @@ import {
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
     getVolunteerGalleryPageUrl,
+    getVolunteerSubscribersPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -135,11 +137,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostGalleryPage />,
                 path: (locale) => getHostGalleryPageUrl(locale),
             },
-            // {
-            //     label: "host-video",
-            //     element: <HostVideoPage />,
-            //     path: (locale) => getHostVideoPageUrl(locale),
-            // },
+            {
+                label: "host-video",
+                element: <HostVideoPage />,
+                path: (locale) => getHostVideoPageUrl(locale),
+            },
             {
                 label: "host-team",
                 element: <HostTeamPage />,
@@ -156,11 +158,6 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getHostNotesPageUrl(locale),
             },
         ],
-    },
-    {
-        label: "host-video",
-        element: <HostVideoPage />,
-        path: (locale) => getHostVideoPageUrl(locale),
     },
     {
         label: "host-personal",
@@ -237,9 +234,9 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerDashboardPageUrl(locale),
             },
             {
-                label: "volunteer-notes",
-                element: <VolunteerNotesPage />,
-                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+                label: "volunteer-skills",
+                element: <VolunteerSkillsPage />,
+                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
             },
             {
                 label: "volunteer-review",
@@ -247,9 +244,14 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerReviewPageUrl(locale),
             },
             {
-                label: "volunteer-skills",
-                element: <VolunteerSkillsPage />,
-                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+                label: "volunteer-notes",
+                element: <VolunteerNotesPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-subscribers",
+                element: <VolunteerSubscribersPage />,
+                path: (locale: string) => getVolunteerSubscribersPageUrl(locale),
             },
             {
                 label: "volunteer-gallery",

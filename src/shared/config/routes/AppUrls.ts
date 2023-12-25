@@ -81,12 +81,14 @@ export const getVolunteerPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getVolunteerDashboardPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_dashboard}`;
 
-export const getVolunteerNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_notes}`;
-
-export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_personal}/:id`;
-
-export const getVolunteerGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_gallery}`;
+export const getVolunteerSkillsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_skills}`;
 
 export const getVolunteerReviewPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_review}`;
 
-export const getVolunteerSkillsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_skills}`;
+export const getVolunteerNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_notes}`;
+
+export const getVolunteerSubscribersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_subscribers}`;
+
+export const getVolunteerGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_gallery}`;
+
+export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_personal}/:id`;

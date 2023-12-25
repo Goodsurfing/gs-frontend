@@ -31,5 +31,33 @@ export const mockedVolunteerData: Volunteer = {
     offers: mockedOffersData,
     gallery: { images: [defaultImage, defaultImage, defaultImage] },
     videoGallery: [{ id: "1", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }, { id: "2", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }, { id: "1", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }],
-
+    subscribers: [
+        {
+            id: "1",
+            firstName: "Егор",
+            lastName: "Воттакович",
+            email: "example@gmail.com",
+            locale: "ru",
+            city: "Казань",
+            country: "Россия",
+        },
+        {
+            id: "1",
+            firstName: "Егор",
+            lastName: "Воттакович",
+            email: "example@gmail.com",
+            locale: "ru",
+            city: "Казань",
+            country: "Россия",
+        },
+        {
+            id: "1",
+            firstName: "Егор",
+            lastName: "Воттакович",
+            email: "example@gmail.com",
+            locale: "ru",
+            city: "Казань",
+            country: "Россия",
+        },
+    ],
 };

@@ -33,10 +33,11 @@ export enum AppRoutes {
     OFFER_FINISHING_TOUCHES = "offers_finishing_touches",
     VOLUNTEER = "volunteer",
     VOLUNTEER_DASHBOARD = "volunteer_dashboard",
-    VOLUNTEER_GALLERY = "volunteer_gallery",
-    VOLUNTEER_NOTES = "volunteer_notes",
-    VOLUNTEER_REVIEW = "volunteer_review",
-    VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     VOLUNTEER_SKILLS = "volunteer_skills",
+    VOLUNTEER_REVIEW = "volunteer_review",
+    VOLUNTEER_NOTES = "volunteer_notes",
+    VOLUNTEER_SUBSCRIBERS = "volunteer_subscribers",
+    VOLUNTEER_GALLERY = "volunteer_gallery",
+    VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     NOT_FOUND = "not_found",
 }
