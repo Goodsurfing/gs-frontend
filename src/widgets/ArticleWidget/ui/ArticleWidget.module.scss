@@ -16,6 +16,10 @@
     margin-top: 8px;
 }
 
+.description {
+    margin-top: 8px;
+}
+
 .infoContainer {
     display: flex;
     align-items: center;
@@ -44,6 +48,12 @@
 .date, .description {
     color: var(--text-caption);
     font-size: 14px;
+}
+
+.textStats {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .tag {

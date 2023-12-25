@@ -34,6 +34,7 @@ import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
+import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -81,6 +82,7 @@ import {
     getVolunteerGalleryPageUrl,
     getVolunteerSubscribersPageUrl,
     getVolunteerCreateArticlePageUrl,
+    getVolunteerArticlesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -264,6 +266,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-create-article",
                 element: <VolunteerCreateArticlePage />,
                 path: (locale: string) => getVolunteerCreateArticlePageUrl(locale),
+            },
+            {
+                label: "volunteer-articles",
+                element: <VolunteerArticlesPage />,
+                path: (locale: string) => getVolunteerArticlesPageUrl(locale),
             },
         ],
     },

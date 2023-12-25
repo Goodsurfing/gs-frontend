@@ -30,9 +30,9 @@ export const ArticleWidget: FC<ArticleWidgetProps> = memo((
             <p className={styles.description}>{description.substring(0, 300)}</p>
             <div className={styles.infoContainer}>
                 <img className={styles.likeIcon} src={like} alt="likes" />
-                <span>{likes}</span>
+                <span className={styles.textStats}>{likes}</span>
                 <img className={styles.commentIcon} src={comment} alt="comments" />
-                <span>{comments}</span>
+                <span className={styles.textStats}>{comments}</span>
             </div>
         </div>
     );

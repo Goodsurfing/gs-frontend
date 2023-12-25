@@ -17,36 +17,36 @@ export const SideMenuData: SidebarContentProps[] = [
     {
         text: "Навыки",
         icon: skillsIcon,
-        route: "/",
+        route: "/volunteer/skills",
     },
     {
         text: "Отзывы",
         icon: reviewsIcon,
-        route: "/",
+        route: "/volunteer/review",
     },
     {
         text: "Заявки",
         icon: feedbackIcon,
-        route: "/",
+        route: "/volunteer/notes",
     },
     {
         text: "Подписки",
         icon: friendsIcon,
-        route: "/",
+        route: "/volunteer/subscribers",
     },
     {
         text: "Фото и видео",
         icon: galleryIcon,
-        route: "/",
+        route: "/volunteer/gallery",
     },
     {
         text: "Написать в блог",
         icon: blogIcon,
-        route: "/",
+        route: "/volunteer/create-article",
     },
     {
         text: "Мои статьи",
         icon: articlesIcon,
-        route: "/",
+        route: "/volunteer/articles",
     },
 ];
