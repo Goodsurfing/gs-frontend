@@ -2,6 +2,7 @@ import { memo } from "react";
 import cn from "classnames";
 import { useFormContext } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 
@@ -15,6 +16,7 @@ interface ProfileInfoFormAboutMeProps {
 
 export const ProfileInfoFormAboutMe = memo((props: ProfileInfoFormAboutMeProps) => {
     const { className } = props;
+    const { t } = useTranslation("about-me");
     const isLocked = useAppSelector(getProfileReadonly);
     const { control } = useFormContext();
     return (
@@ -23,7 +25,7 @@ export const ProfileInfoFormAboutMe = memo((props: ProfileInfoFormAboutMeProps) 
                 disabled={isLocked}
                 control={control}
                 name="aboutMe"
-                label="Расскажите о себе"
+                label={t("Расскажите о себе")}
             />
         </div>
     );

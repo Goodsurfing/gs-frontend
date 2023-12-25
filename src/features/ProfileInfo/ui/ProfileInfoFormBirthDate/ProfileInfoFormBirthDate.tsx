@@ -22,7 +22,7 @@ export const ProfileInfoFormBirthDate = memo((props: ProfileInfoFormBirthDatePro
     const { className } = props;
     const isLocked = useAppSelector(getProfileReadonly);
     const { control } = useFormContext();
-    const { t } = useTranslation();
+    const { t } = useTranslation("about-me");
     return (
         <div className={cn(className, styles.wrapper)}>
             <span className={styles.text}>{t("День рождения")}</span>
@@ -52,7 +52,7 @@ export const ProfileInfoFormBirthDate = memo((props: ProfileInfoFormBirthDatePro
                             value={field.value}
                         >
                             {birthMounthData.map((mounth) => (
-                                <MenuItem value={mounth} key={mounth}>{mounth}</MenuItem>
+                                <MenuItem value={mounth} key={mounth}>{t(mounth)}</MenuItem>
                             ))}
                         </SelectComponent>
                     )}

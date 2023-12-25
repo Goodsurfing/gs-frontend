@@ -1,22 +1,21 @@
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
+import { Review } from "@/types/review";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
-import { UserCardFullInfo } from "../../model/types/hostReview";
 import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
-    review: UserCardFullInfo;
+    review: Review;
 }
 
-export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {
+export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
     const {
-        userInfo: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            avatar, city, country, name, surname,
-        }, textReview,
-    } = review;
+        review: {
+            title, textReview, city, country,
+        },
+    } = props;
 
     return (
         <div className={styles.wrapper}>
@@ -29,9 +28,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = ({ review }) => {
                     />
                     <div className={styles.userInfoContainer}>
                         <span className={styles.name}>
-                            {name}
-                            {" "}
-                            {surname}
+                            {title}
                         </span>
                         <span className={styles.address}>
                             {country}
