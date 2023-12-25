@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -16,16 +17,17 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
     (props: OffersRecomendationsWidgetProps) => {
         const { className } = props;
         const { locale } = useLocale();
+        const { t } = useTranslation("volunteer-dashboard");
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.top}>
-                    <h3>Возможности, которые вам понравятся</h3>
+                    <h3>{t("Возможности, которые вам понравятся")}</h3>
                     <Link
                         to={getMainPageUrl(locale)}
                         className={styles.settings}
                     >
-                        Настроить
+                        {t("Настроить")}
                     </Link>
                 </div>
                 <div className={styles.container}>

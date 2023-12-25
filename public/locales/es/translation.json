@@ -78,5 +78,13 @@
             "Написать в блог": "Escribe un blog",
             "Мои статьи": "Mis artículos"
         }
+    },
+    "stats-points": {
+        "О себе": "Acerca de mí",
+        "Навыки": "Habilidades",
+        "Фотографии": "Galería",
+        "Видео": "Galeria de VIDEOS",
+        "Публикации в блоге": "Entrada en el blog",
+        "Членство": "Afiliación"
     }
 }

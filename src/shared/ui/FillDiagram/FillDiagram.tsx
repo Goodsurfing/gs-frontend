@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import styles from "./FillDiagram.module.scss";
 import { StatsChart, StatsChartPoints } from "@/entities/Stats";
 
@@ -12,13 +13,14 @@ interface FillDiagramProps {
 
 export const FillDiagram = memo((props: FillDiagramProps) => {
     const { className, pointsData, isLoading } = props;
+    const { t } = useTranslation("volunteer-dashboard");
 
     const [degrees, setDegrees] = useState<[number, number]>([360, 0]);
 
     if (isLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
-                Загрузка
+                {t("Загрузка...")}
             </div>
         );
     }
