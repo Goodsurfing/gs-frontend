@@ -31,6 +31,7 @@ import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -75,6 +76,7 @@ import {
     getHostNotesPageUrl,
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
+    getVolunteerGalleryPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -133,11 +135,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostGalleryPage />,
                 path: (locale) => getHostGalleryPageUrl(locale),
             },
-            {
-                label: "host-video",
-                element: <HostVideoPage />,
-                path: (locale) => getHostVideoPageUrl(locale),
-            },
+            // {
+            //     label: "host-video",
+            //     element: <HostVideoPage />,
+            //     path: (locale) => getHostVideoPageUrl(locale),
+            // },
             {
                 label: "host-team",
                 element: <HostTeamPage />,
@@ -154,6 +156,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getHostNotesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "host-video",
+        element: <HostVideoPage />,
+        path: (locale) => getHostVideoPageUrl(locale),
     },
     {
         label: "host-personal",
@@ -243,6 +250,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-skills",
                 element: <VolunteerSkillsPage />,
                 path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+            },
+            {
+                label: "volunteer-gallery",
+                element: <VolunteerGalleryPage />,
+                path: (locale: string) => getVolunteerGalleryPageUrl(locale),
             },
         ],
     },
