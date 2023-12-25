@@ -8,7 +8,11 @@ import styles from "./VolunteerSubscribersPage.module.scss";
 
 const VolunteerSubscribersPage = () => (
     <div className={styles.wrapper}>
-        <SubscribersWidget subscribers={mockedVolunteerData.subscribers} />
+        <h2>Подписки</h2>
+        <SubscribersWidget
+            subscribers={mockedVolunteerData.subscribers}
+            className={styles.container}
+        />
     </div>
 );
 
