@@ -8,8 +8,10 @@ import { OfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
 import { Article } from "@/entities/Article";
+import { OfferStatus } from "./offerStatus";
 
 export interface Offer {
+    id: string;
     where: OfferWhere;
     when: OfferWhen;
     whoNeeds: OfferWhoNeeds;
@@ -20,6 +22,7 @@ export interface Offer {
     contributors: OfferContributor[];
     reviews?: Review[];
     articles?: Article[];
+    status: OfferStatus;
 }
 
 export interface OfferSchema {

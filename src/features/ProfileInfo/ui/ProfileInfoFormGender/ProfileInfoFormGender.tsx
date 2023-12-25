@@ -3,6 +3,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import cn from "classnames";
 import { MenuItem } from "@mui/material";
 
+import { useTranslation } from "react-i18next";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 import { useAppSelector } from "@/shared/hooks/redux";
 
@@ -16,7 +17,7 @@ interface ProfileInfoFormGenderProps {
 
 export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) => {
     const { className } = props;
-
+    const { t } = useTranslation("about-me");
     const isLocked = useAppSelector(getProfileReadonly);
 
     const { control } = useFormContext();
@@ -29,13 +30,13 @@ export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) =>
                 render={({ field }) => (
                     <SelectComponent
                         value={field.value}
-                        label="Пол"
+                        label={t("Пол")}
                         disabled={isLocked}
                         className={styles.genderDropdown}
                     >
-                        <MenuItem key="male" value="male">Мужчина</MenuItem>
-                        <MenuItem key="female" value="female">Женщина</MenuItem>
-                        <MenuItem key="other" value="other">Другой</MenuItem>
+                        <MenuItem key="male" value="male">{t("Мужчина")}</MenuItem>
+                        <MenuItem key="female" value="female">{t("Женщина")}</MenuItem>
+                        <MenuItem key="other" value="other">{t("Другой")}</MenuItem>
                     </SelectComponent>
                 )}
             />
