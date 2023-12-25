@@ -34,8 +34,12 @@ export const useLocale = () => {
 
         if (lang === "ru") {
             i18n.changeLanguage("ru");
-        } else {
+        }
+        if (lang === "en") {
             i18n.changeLanguage("en");
+        }
+        if (lang === "es") {
+            i18n.changeLanguage("es");
         }
     }, [i18n]);
 

@@ -7,6 +7,7 @@ import { HostOffersPage } from "@/pages/HostOffersPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
+import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
@@ -25,6 +26,13 @@ import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
+import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -65,15 +73,17 @@ import {
     getVolunteerPersonalPageUrl,
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
+    getVolunteerNotesPageUrl,
+    getHostNotesPageUrl,
+    getVolunteerReviewPageUrl,
+    getVolunteerSkillsPageUrl,
+    getVolunteerGalleryPageUrl,
     getVolunteerSubscribersPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -127,11 +137,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostGalleryPage />,
                 path: (locale) => getHostGalleryPageUrl(locale),
             },
-            {
-                label: "host-video",
-                element: <HostVideoPage />,
-                path: (locale) => getHostVideoPageUrl(locale),
-            },
+            // {
+            //     label: "host-video",
+            //     element: <HostVideoPage />,
+            //     path: (locale) => getHostVideoPageUrl(locale),
+            // },
             {
                 label: "host-team",
                 element: <HostTeamPage />,
@@ -142,8 +152,17 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-
+            {
+                label: "host-notes",
+                element: <HostNotesPage />,
+                path: (locale: string) => getHostNotesPageUrl(locale),
+            },
         ],
+    },
+    {
+        label: "host-video",
+        element: <HostVideoPage />,
+        path: (locale) => getHostVideoPageUrl(locale),
     },
     {
         label: "host-personal",
@@ -218,6 +237,26 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-dashboard",
                 element: <VolunteerDashboardPage />,
                 path: (locale: string) => getVolunteerDashboardPageUrl(locale),
+            },
+            {
+                label: "volunteer-notes",
+                element: <VolunteerNotesPage />,
+                path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-review",
+                element: <VolunteerReviewPage />,
+                path: (locale: string) => getVolunteerReviewPageUrl(locale),
+            },
+            {
+                label: "volunteer-skills",
+                element: <VolunteerSkillsPage />,
+                path: (locale: string) => getVolunteerSkillsPageUrl(locale),
+            },
+            {
+                label: "volunteer-gallery",
+                element: <VolunteerGalleryPage />,
+                path: (locale: string) => getVolunteerGalleryPageUrl(locale),
             },
             {
                 label: "volunteer-subscribers",

@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import cn from "classnames";
 import { NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { DropdownItem } from "../../model/types/sidebar";
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
 import compareRoutes from "@/shared/utils/routes/compareRoutes";
@@ -21,6 +22,7 @@ export const SidebarDropdown = memo(({
     const { locale } = useLocale();
     const { isOpen } = useSidebarContext();
     const [isDropdownOpened, setDropdownOpen] = useState(false);
+    const { t } = useTranslation();
 
     const { pathname } = useLocation();
 
@@ -37,7 +39,7 @@ export const SidebarDropdown = memo(({
                     [styles.matchRoute]: isMatchRoutes,
                 })}
                 >
-                    {text}
+                    {t(`main.sidebar.${text}`)}
                 </span>
             </div>
             {canOpen && (
@@ -53,7 +55,7 @@ export const SidebarDropdown = memo(({
                                     [styles.activeDropdownItem]: isActive,
                                 })}
                             >
-                                {item.text}
+                                {t(`main.sidebar.${item.text}`)}
                             </NavLink>
                         ))}
                     </div>

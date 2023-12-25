@@ -1,22 +1,15 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { ReviewFullCard, ReviewMiniCard } from "@/features/HostReview/";
-import {
-    UserCardFullInfo,
-    UserCardInfo,
-} from "@/features/HostReview/model/types/hostReview";
+import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { fakeData, fakeReviewData } from "../../model/data/mockedUsersData";
+import { fakeUserData } from "../../model/data/mockedUsersData";
+import { Review } from "@/types/review";
 import styles from "./ReviewAboutVolunteers.module.scss";
 
 export const ReviewAboutVolunteers: FC = () => {
-    const [data] = useState<UserCardInfo[]>(fakeData);
-
-    const [reveiwData] = useState<UserCardFullInfo[]>(fakeReviewData);
-
-    const renderFullCards = (reviews: UserCardFullInfo[]) => reviews
+    const renderFullCards = (reviews: Review[]) => reviews
         .map((review) => <ReviewFullCard review={review} />);
 
     return (
@@ -29,13 +22,13 @@ export const ReviewAboutVolunteers: FC = () => {
                 classNameSlide={styles.swiperSlide}
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
-                data={data}
-                renderItem={(item: UserCardInfo) => (
+                data={fakeUserData}
+                renderItem={(item: Review) => (
                     <ReviewMiniCard data={item} />
                 )}
             />
             <div className={styles.fullCardContainer}>
-                {renderFullCards(reveiwData)}
+                {renderFullCards(fakeUserData)}
             </div>
         </div>
     );

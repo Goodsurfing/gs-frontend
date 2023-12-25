@@ -47,7 +47,30 @@
             "title": "Encontrar el viaje soñado",
             "offers-btn": "Todas las ofertas",
             "activity-title": "O elija un tipo de actividad"
+        },
+        "sidebar": {
+            "К предложениям": "A las vacantes",
+            "Где": "Dónde",
+            "Когда": "Cuando",
+            "Кто нужен": "Quien es necesario",
+            "Описание": "Descripción",
+            "Что делать": "Qué tenemos que hacer",
+            "Условия": "Condiciones",
+            "Последние штрихи": "Últimos retoques",
+            "Рабочий стол": "Panel de host",
+            "Предложения": "Vacantes",
+            "Заявки": "Aplicaciones",
+            "Календарь": "Calendario",
+            "Организация": "Host",
+            "Фотогалерея": "Galería",
+            "Видеогалерея": "Galeria de VIDEOS",
+            "Команда": "Equipo",
+            "Отзывы": "Reseñas",
+            "Обо мне": "Acerca de mí",
+            "Предпочтения": "Preferencias",
+            "Роль": "Role",
+            "Пароль": "Contraseña",
+            "Приватность": "Privacidad"
         }
-    },
-    "test": "ТТТТЕЕЕЕЕСССССТТТТ!!!"
+    }
 }

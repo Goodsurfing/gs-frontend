@@ -18,6 +18,7 @@ import {
     getProfileInfoPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
+    getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppSelector } from "@/shared/hooks/redux";
 
@@ -296,7 +297,7 @@ const MobileHeader: FC = () => {
                             {t("main.welcome.header.host-dashboard")}
                         </Button>
                         <Button
-                            onClick={() => navigate(getMainPageUrl(locale))}
+                            onClick={() => navigate(getVolunteerDashboardPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.volunteer-dashboard")}

@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ratingWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ratingNum{
+    font-size: 18px;
+}
+
+.ratingText{
+    font-size: 14px;
+}
