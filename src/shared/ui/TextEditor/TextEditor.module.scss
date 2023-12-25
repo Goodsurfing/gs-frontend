@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
+    ul,
+    ol {
+        padding-left: 40px;
+    }
+
+    a {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    
+    svg {
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        fill: #000;
+    }
+}
+
+.container {
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+    border: 1px solid var(--text-caption);
+    border-top: 0;
+    border-radius: 0;
+    padding: 15px;
+    min-height: 500px;
+
+    p {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary-2);
+    }
+
+    &:focus {
+        outline: none;
+        border: 1px solid var(--text-caption);
+        border-top: none;
+    }
+
+    img {
+        max-width: 100%;
+    }
+}

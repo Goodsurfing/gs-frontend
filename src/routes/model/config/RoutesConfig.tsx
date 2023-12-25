@@ -25,12 +25,13 @@ import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
-import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
@@ -79,6 +80,7 @@ import {
     getVolunteerSkillsPageUrl,
     getVolunteerGalleryPageUrl,
     getVolunteerSubscribersPageUrl,
+    getVolunteerCreateArticlePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -257,6 +259,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-gallery",
                 element: <VolunteerGalleryPage />,
                 path: (locale: string) => getVolunteerGalleryPageUrl(locale),
+            },
+            {
+                label: "volunteer-create-article",
+                element: <VolunteerCreateArticlePage />,
+                path: (locale: string) => getVolunteerCreateArticlePageUrl(locale),
             },
         ],
     },
