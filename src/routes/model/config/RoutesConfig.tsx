@@ -7,6 +7,7 @@ import { HostOffersPage } from "@/pages/HostOffersPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
+import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
@@ -27,9 +28,9 @@ import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -71,6 +72,7 @@ import {
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
     getVolunteerNotesPageUrl,
+    getHostNotesPageUrl,
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -146,7 +148,11 @@ const publicRoutes: RouteType[] = [
                 element: <HostReviewPage />,
                 path: (locale: string) => getHostReviewPageUrl(locale),
             },
-
+            {
+                label: "host-notes",
+                element: <HostNotesPage />,
+                path: (locale: string) => getHostNotesPageUrl(locale),
+            },
         ],
     },
     {

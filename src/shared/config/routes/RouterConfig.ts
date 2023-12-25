@@ -1,4 +1,5 @@
 import { RouteProps } from "react-router-dom";
+
 import { AppRoutes } from "./AppRoutes";
 
 export type AppRoutesProps = RouteProps & {
@@ -24,6 +25,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_REGISTRATION]: "/host/registration",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_REVIEW]: "/host/review",
+    [AppRoutes.HOST_NOTES]: "/host/notes",
     [AppRoutes.HOST_VIDEO]: "/host/video",
     [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",

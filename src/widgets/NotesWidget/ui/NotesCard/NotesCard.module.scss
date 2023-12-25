@@ -1,10 +1,13 @@
 .wrapper {
     width: 100%;
-    max-width: 247px;
+    // max-width: 247px;
+    min-height: 100px;
     border: 1px solid var(--accent-elements);
     padding: 14px;
     display: flex;
     flex-direction: column;
+    user-select: none;
+    background-color: #fff;
 }
 
 .mainInfo {
@@ -14,9 +17,9 @@
 }
 
 .infoContainer {
-     display: flex;
-     flex-direction: column;
-     gap: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .status {
