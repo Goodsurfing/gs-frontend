@@ -1,19 +1,23 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import { SubscribersWidget } from "@/widgets/SubscribersWidget";
 
 import { mockedVolunteerData } from "@/entities/Volunteer/model/data/mockedVolunteerData";
 
 import styles from "./VolunteerSubscribersPage.module.scss";
 
-const VolunteerSubscribersPage = () => (
-    <div className={styles.wrapper}>
-        <h2>Подписки</h2>
-        <SubscribersWidget
-            subscribers={mockedVolunteerData.subscribers}
-            className={styles.container}
-        />
-    </div>
-);
+const VolunteerSubscribersPage = () => {
+    const { t } = useTranslation("volunteer");
+    return (
+        <div className={styles.wrapper}>
+            <h2>{t("Подписки")}</h2>
+            <SubscribersWidget
+                subscribers={mockedVolunteerData.subscribers}
+                className={styles.container}
+            />
+        </div>
+    );
+};
 
 export default VolunteerSubscribersPage;
