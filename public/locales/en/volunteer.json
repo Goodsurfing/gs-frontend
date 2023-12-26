@@ -41,5 +41,20 @@
     },
     "volunteer-subscribers": {
         "Подписки": "Subscriptions"
+    },
+    "volunteer-gallery": {
+        "Ваши фотографии": "Your photos",
+        "Добавьте несколько ваших фотографий, которые помогут больше о вас понять. Например, это фотографии где вы были, примеры как вы успешно справлялись с задачами или ваши встречи с другими гудсёрферами.": "Add some of your photos that will help others understand you better. For example, photos of where you've been, examples of how you successfully tackled tasks, or your meetings with other surfers.",
+        "Добавить фото": "Add photo",
+        "Видео о себе": "Video about yourself",
+        "Запишите и добавьте через Youtube небольшое презентационное видео. В видео расскажите о себе, о своих навыках и опыте и мотивации путешествовать со смыслом. Видео может быть несколько.": "Record and add a short presentation video via YouTube. In the video, talk about yourself, your skills and experience, and your motivation to travel with meaning. There can be multiple videos.",
+        "Ссылка на видео": "Video link",
+        "Добавить видео": "Add video",
+        "Дипломы и сертификаты": "Diplomas and certificates",
+        "Сюда вы можете добавить ваши дипломы и сертификаты, которые подтверждают ваш опыт и навыки.": "Here you can add your diplomas and certificates that confirm your experience and skills.",
+        "Добавить сертификат": "Add certificate",
+        "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
+        "Введите корректный URL": "Enter a valid URL",
+        "Вы ещё не добавили ни одного видео": "You haven't added any videos yet"
     }
 }

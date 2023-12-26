@@ -11,7 +11,7 @@ const VolunteerSubscribersPage = () => {
     const { t } = useTranslation("volunteer");
     return (
         <div className={styles.wrapper}>
-            <h2>{t("Подписки")}</h2>
+            <h2>{t("volunteer-subscribers.Подписки")}</h2>
             <SubscribersWidget
                 subscribers={mockedVolunteerData.subscribers}
                 className={styles.container}
