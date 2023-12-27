@@ -108,8 +108,22 @@
         "night_job": "Night Shift",
         "sport": "Sports"
     },
+    "category-offer": {
+        "Хостелы": "Hostels",
+        "Заповедники и парки": "Reserves and Parks",
+        "Ферма": "Farm",
+        "Животные": "Animals",
+        "Преподавание": "Teaching",
+        "Дети": "Children",
+        "Благотворительность": "Charity",
+        "Спорт": "Sports",
+        "Исскуство": "Art",
+        "Археология": "Archaeology",
+        "Онлайн": "Online",
+        "Другое": "Other"
+    },
     "notes": {
-        "under consideration":"Under Consideration",
+        "under consideration": "Under Consideration",
         "accepted": "Accepted",
         "confirmed": "Confirmed",
         "rejected": "Rejected",

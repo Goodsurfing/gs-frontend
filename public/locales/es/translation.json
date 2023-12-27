@@ -104,6 +104,20 @@
         "night_job": "Turno Nocturno",
         "sport": "Deportes"
     },
+    "category-offer": {
+        "Хостелы": "Hostales",
+        "Заповедники и парки": "Reservas y Parques",
+        "Ферма": "Granja",
+        "Животные": "Animales",
+        "Преподавание": "Enseñanza",
+        "Дети": "Niños",
+        "Благотворительность": "Caridad",
+        "Спорт": "Deportes",
+        "Исскуство": "Arte",
+        "Археология": "Arqueología",
+        "Онлайн": "En línea",
+        "Другое": "Otro"
+    },
     "notes": {
         "under consideration": "En Consideración",
         "accepted": "Aceptado",

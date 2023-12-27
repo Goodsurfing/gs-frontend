@@ -56,5 +56,24 @@
         "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
         "Введите корректный URL": "Enter a valid URL",
         "Вы ещё не добавили ни одного видео": "You haven't added any videos yet"
+    },
+    "volunteer-create-article": {
+        "Написать в блог": "Write in the blog",
+        "Добавить фото обложки": "Add cover photo",
+        "Оптимальные размеры 2175 х 966. Вес не более 5МБ": "Optimal size 2175 x 966. Weight no more than 5MB",
+        "Название статьи": "Article title",
+        "Заголовок вашей статьи": "Your article's headline",
+        "Категория статьи": "Article category",
+        "Ссылка на проект": "Project link",
+        "Ваша ссылка на заявку": "Your application link",
+        "Опубликовать": "Publish",
+        "Сохранить в черновики": "Save as draft",
+        "Заголовок слишком короткий": "Title is too short",
+        "Заголовок слишком большой": "Title is too long",
+        "Описание статьи должно достигать как минимум 200 символов": "Article description must be at least 200 characters",
+        "Описание статьи может достигать не больше 30000 символов": "Article description can be no more than 30000 characters",
+        "Введите корректную ссылку на заявку": "Enter a valid application link",
+        "Изменить": "Change",
+        "Удалить": "Delete"
     }
 }

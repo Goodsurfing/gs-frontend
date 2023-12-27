@@ -2,6 +2,7 @@ import React, {
     ChangeEvent, FC, useCallback, useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import cameraIcon from "@/shared/assets/icons/photo-camera.svg";
 import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
@@ -18,6 +19,7 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
 ) => {
     const { id, onUpload } = props;
     const [img, setImg] = useState<string | null>(null);
+    const { t } = useTranslation("volunteer");
 
     const handleUpload = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +55,7 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                                 <div
                                     className={styles.buttons}
                                 >
-                                    Изменить
+                                    {t("volunteer-create-article.Изменить")}
                                 </div>
                             )}
                         />
@@ -64,7 +66,7 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                             variant="OUTLINE"
                             onClick={handleDelete}
                         >
-                            Удалить
+                            {t("volunteer-create-article.Удалить")}
                         </Button>
                     </div>
                 </div>
@@ -83,7 +85,7 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                                 src={cameraIcon}
                                 alt="add item"
                             />
-                            <span className={styles.text}>Добавить фото обложки</span>
+                            <span className={styles.text}>{t("volunteer-create-article.Добавить фото обложки")}</span>
                         </div>
                     )}
                 />
