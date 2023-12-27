@@ -75,5 +75,10 @@
         "Введите корректную ссылку на заявку": "Ingrese un enlace de solicitud válido",
         "Изменить": "Cambiar",
         "Удалить": "Eliminar"
+    },
+    "volunteer-articles": {
+        "Мои статьи": "Mis artículos",
+        "Редактировать": "Editar",
+        "Удалить": "Borrar"
     }
 }

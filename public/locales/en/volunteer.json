@@ -75,5 +75,10 @@
         "Введите корректную ссылку на заявку": "Enter a valid application link",
         "Изменить": "Change",
         "Удалить": "Delete"
+    },
+    "volunteer-articles": {
+        "Мои статьи": "My articles",
+        "Редактировать": "Edit",
+        "Удалить": "Delete"
     }
 }
