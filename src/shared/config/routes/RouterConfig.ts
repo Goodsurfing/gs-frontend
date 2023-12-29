@@ -48,6 +48,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.VOLUNTEER_CREATE_ARTICLE]: "/volunteer/create-article",
     [AppRoutes.VOLUNTEER_ARTICLES]: "/volunteer/articles",
     [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
+    [AppRoutes.MEMBERSHIP]: "/membership",
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",

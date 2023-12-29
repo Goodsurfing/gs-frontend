@@ -35,6 +35,7 @@ import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
+import { MembershipPage } from "@/pages/MembershipPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -83,6 +84,7 @@ import {
     getVolunteerSubscribersPageUrl,
     getVolunteerCreateArticlePageUrl,
     getVolunteerArticlesPageUrl,
+    getMembershipPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -273,6 +275,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerArticlesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "membership",
+        element: <MembershipPage />,
+        path: (locale: string) => getMembershipPageUrl(locale),
     },
     {
         label: "reset-password",

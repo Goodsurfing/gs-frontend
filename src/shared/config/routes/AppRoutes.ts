@@ -41,5 +41,6 @@ export enum AppRoutes {
     VOLUNTEER_CREATE_ARTICLE = "volunteer_create_article",
     VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     VOLUNTEER_ARTICLES = "volunteer_articles",
+    MEMBERSHIP = "membership",
     NOT_FOUND = "not_found",
 }
