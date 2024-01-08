@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import { Outlet } from "react-router-dom";
 
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
@@ -18,7 +17,7 @@ export const MainPageLayout: FC<MainPageLayoutProps> = (
         <div className={styles.layout}>
             <MainHeader />
             <div className={styles.content}>
-                <Outlet />
+                {children}
             </div>
             <Footer />
         </div>
