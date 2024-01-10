@@ -4,19 +4,17 @@ import React, { FC } from "react";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./ForVolunteer.module.scss";
+import styles from "./ForHost.module.scss";
 
-interface ForVolunteerProps {
+interface ForHostProps {
     className?: string;
 }
 
-export const ForVolunteer: FC<ForVolunteerProps> = (
-    props: ForVolunteerProps,
-) => {
+export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const { className } = props;
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Для волонтёра</h2>
+            <h2 className={styles.title}>Для организатора</h2>
             <div className={styles.table}>
                 <div className={styles.column}>
                     <div className={styles.columnHeader}>
@@ -30,10 +28,12 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                     <div className={styles.columnContent}>
                         <div className={styles.row}>
                             <span>
-                                Отклик на волонтёрские вакансии через платформу
+                                Количество бесплатных объявлений на платформе
                                 «Гудсёрфинг»
                             </span>
-                            <span className={styles.blueText}>1 раз в год</span>
+                            <span className={styles.blueText}>
+                                1 объявление в год
+                            </span>
                         </div>
                         <div className={styles.row}>
                             <span>
@@ -80,7 +80,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                     <div className={styles.columnContent}>
                         <div className={styles.row}>
                             <span>
-                                Отклик на волонтёрские вакансии через платформу
+                                Количество бесплатных объявлений на платформе
                                 «Гудсёрфинг»
                             </span>
                             <span className={styles.blueText}>
@@ -89,8 +89,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                         </div>
                         <div className={styles.row}>
                             <span>
-                                Доступ к уникальным волонтёрским вакансиям и
-                                чатам платформы «Гудсёрфинг»
+                                Доступ к уникальным чатам платформы «Гудсёрфинг»
                             </span>
                             <img
                                 src={checkIcon}
@@ -139,9 +138,8 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                         </div>
                         <div className={styles.row}>
                             <span>
-                                Повышенное доверие организатора волонтёрского
-                                проекта при отборе участников (специальная метка
-                                в профиле)
+                                Повышенное доверие волонтёров при выборе проекта
+                                для участия (специальная метка в профиле)
                             </span>
                             <img
                                 src={checkIcon}
@@ -151,6 +149,17 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                         </div>
                         <div className={styles.row}>
                             <span>Доступ к блогу «Гудсёрфинг»</span>
+                            <img
+                                src={checkIcon}
+                                alt=""
+                                className={styles.icon}
+                            />
+                        </div>
+                        <div className={styles.row}>
+                            <span>
+                                Скидка для размещения рекламы и объявлений по
+                                платным тарифам на платформе «Гудсёрфинг»
+                            </span>
                             <img
                                 src={checkIcon}
                                 alt=""
