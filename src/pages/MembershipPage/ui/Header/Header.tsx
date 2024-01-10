@@ -4,7 +4,7 @@ import styles from "./Header.module.scss";
 import Button from "@/shared/ui/Button/Button";
 
 export const Header = () => (
-    <div className={styles.wrapeprImage}>
+    <section className={styles.wrapeprImage}>
         <h1 className={styles.title}>
             <span>Оформи членство Гудсёрфинга</span>
             <br />
@@ -23,5 +23,5 @@ export const Header = () => (
             <Button color="GREEN" size="SMALL" variant="FILL">Получить членство</Button>
             <span className={styles.price}>1 500 руб</span>
         </div>
-    </div>
+    </section>
 );
