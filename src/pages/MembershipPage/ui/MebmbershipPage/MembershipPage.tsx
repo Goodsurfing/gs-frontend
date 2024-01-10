@@ -6,6 +6,7 @@ import { HowItWorks } from "../HowItWorks/HowItWorks";
 import styles from "./MembershipPage.module.scss";
 import { ForVolunteer } from "../ForVolunteer/ForVolunteer";
 import { ForHost } from "../ForHost/ForHost";
+import { WhatIsGoodsurfing } from "../WhatIsGoodsurfing/WhatIsGoodsurfing";
 
 const MembershipPage = () => (
     <MainPageLayout>
@@ -14,6 +15,7 @@ const MembershipPage = () => (
             <HowItWorks className={styles.section} />
             <ForVolunteer className={styles.section} />
             <ForHost className={styles.section} />
+            <WhatIsGoodsurfing className={styles.section} />
         </div>
     </MainPageLayout>
 );
