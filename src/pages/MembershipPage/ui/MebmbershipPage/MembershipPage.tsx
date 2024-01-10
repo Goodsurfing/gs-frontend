@@ -9,7 +9,7 @@ const MembershipPage = () => (
     <MainPageLayout>
         <div className={styles.innerWrapper}>
             <Header />
-            <HowItWorks />
+            <HowItWorks className={styles.section} />
         </div>
     </MainPageLayout>
 );

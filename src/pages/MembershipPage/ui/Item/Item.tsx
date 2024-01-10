@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 
-import styles from "./Items.module.scss";
+import styles from "./Item.module.scss";
 
-interface ItemsProps {
+interface ItemProps {
     image: string;
     title: string;
 }
 
-export const Items: FC<ItemsProps> = (props: ItemsProps) => {
+export const Item: FC<ItemProps> = (props: ItemProps) => {
     const { image, title } = props;
     return (
         <div className={styles.itemWrapper}>
