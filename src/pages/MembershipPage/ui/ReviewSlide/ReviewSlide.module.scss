@@ -1,0 +1,87 @@
+.wrapper {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    max-width: 980px;
+    height: 400px;
+    background-color: white;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    max-width: 350px;
+}
+
+.main {
+    font-size: 0.75rem;
+    font-weight: 500;
+
+    margin-top: 17px;
+}
+
+.pagination {
+    display: flex;
+    gap: 15px;
+}
+
+.disabledPagination {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.left {
+    flex-shrink: 0;
+    width: 18px;
+    height: 8px;
+    transform: scale(-1, 1);
+}
+
+.right {
+    flex-shrink: 0;
+    width: 18px;
+    height: 8px;
+}
+
+.left, .right {
+    cursor: pointer;
+    padding: 10px;
+    box-sizing: content-box;
+}
+
+.left, .right, .avatar {
+    user-select: none;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+}
+
+.username {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary-1);
+}
