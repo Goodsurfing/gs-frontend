@@ -3,6 +3,8 @@ import React, {
     FC, memo, useCallback, useMemo, useRef, useState,
 } from "react";
 
+import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
+
 import styles from "./Accordion.module.scss";
 
 export interface AccordionData {
@@ -37,6 +39,13 @@ export const Accordion: FC<AccordionProps> = memo((props: AccordionProps) => {
                     onClick={() => openHandler(key)}
                 >
                     {item.title}
+                    <img
+                        src={arrowIcon}
+                        alt="arrow"
+                        className={cn(styles.arrow, {
+                            [styles.arrowActive]: key === openId,
+                        })}
+                    />
                 </button>
                 <div
                     className={cn(styles.collapse)}
