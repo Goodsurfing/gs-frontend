@@ -7,6 +7,12 @@
     background-color: white;
 }
 
+.image {
+    width: 100%;
+    max-width: 480px;
+    object-fit: cover;
+}
+
 .content {
     display: flex;
     flex-direction: column;
