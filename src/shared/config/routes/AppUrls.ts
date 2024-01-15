@@ -6,6 +6,10 @@ type RoutePathFunction = (locale: string) => string;
 
 export const getMainPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.main}`);
 
+// Categires page
+
+export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
+
 // Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email}`;
