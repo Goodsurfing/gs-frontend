@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
@@ -12,13 +13,14 @@ interface ForHostProps {
 
 export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const { className } = props;
+    const { t } = useTranslation("membership");
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Для организатора</h2>
+            <h2 className={styles.title}>{t("Для организатора")}</h2>
             <div className={styles.table}>
                 <div className={styles.column}>
                     <div className={styles.columnHeader}>
-                        <h2 className={styles.columnTitle}>Без членства</h2>
+                        <h2 className={styles.columnTitle}>{t("Без членства")}</h2>
                         <span className={styles.price}>
                             0
                             {" "}
@@ -28,16 +30,15 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                     <div className={styles.columnContent}>
                         <div className={styles.row}>
                             <span>
-                                Количество бесплатных объявлений на платформе
-                                «Гудсёрфинг»
+                                {t("Количество бесплатных объявлений на платформе «Гудсёрфинг»")}
                             </span>
                             <span className={styles.blueText}>
-                                1 объявление в год
+                                {t("1 объявление в год")}
                             </span>
                         </div>
                         <div className={styles.row}>
                             <span>
-                                Участие в онлайн-мероприятиях «Гудсёрфинг»
+                                {t("Участие в онлайн-мероприятиях «Гудсёрфинг»")}
                             </span>
                             <img
                                 src={checkIcon}
@@ -46,7 +47,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                             />
                         </div>
                         <div className={styles.row}>
-                            <span>Доступ к Академии «Гудсёрфинг»</span>
+                            <span>{t("Доступ к Академии «Гудсёрфинг»")}</span>
                             <img
                                 src={checkIcon}
                                 alt=""
@@ -54,7 +55,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                             />
                         </div>
                         <div className={styles.row}>
-                            <span>Доступ к блогу «Гудсёрфинг»</span>
+                            <span>{t("Доступ к блогу «Гудсёрфинг»")}</span>
                             <img
                                 src={checkIcon}
                                 alt=""
@@ -64,7 +65,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                     </div>
                     <div className={styles.columnFooter}>
                         <Button color="BLUE" size="SMALL" variant="FILL">
-                            Зарегестрироваться
+                            {t("Зарегистрироваться")}
                         </Button>
                     </div>
                 </div>
