@@ -6,6 +6,10 @@ type RoutePathFunction = (locale: string) => string;
 
 export const getMainPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.main}`);
 
+// Categires page
+
+export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
+
 // Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email}`;
@@ -25,8 +29,11 @@ export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/$
 // About me pages
 
 export const getProfileInfoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_info}`;
+
 export const getProfilePrivacyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_privacy}`;
+
 export const getProfilePreferencesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_preferences}`;
+
 export const getProfileRolePagePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_role}`;
 
 // Host pages
@@ -96,3 +103,5 @@ export const getVolunteerCreateArticlePageUrl: RoutePathFunction = (locale) => `
 export const getVolunteerArticlesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_articles}`;
 
 export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_personal}/:id`;
+
+export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;

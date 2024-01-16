@@ -4,7 +4,6 @@ import React, { FC, memo, useMemo } from "react";
 import { categoriesData } from "../../model/data/categories";
 import { Category } from "../Category/Category";
 import styles from "./CategoriesWidget.module.scss";
-import { useTranslation } from "react-i18next";
 
 interface CategoriesWidgetprops {
     className?: string;
@@ -12,7 +11,7 @@ interface CategoriesWidgetprops {
 
 export const CategoriesWidget: FC<CategoriesWidgetprops> = memo((props: CategoriesWidgetprops) => {
     const { className } = props;
-    const {t} = useTranslation("")
+
     const renderCategories = useMemo(() => categoriesData.map((category, index) => (
         <Category
             className={styles.category}

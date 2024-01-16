@@ -11,6 +11,7 @@ import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
+import { CategoriesPage } from "@/pages/CategoriesPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
@@ -35,6 +36,7 @@ import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
 import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
 import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
+import { MembershipPage } from "@/pages/MembershipPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 import { SignInPage } from "@/pages/SignInPage";
@@ -53,6 +55,7 @@ import {
     getHostVideoPageUrl,
     getHostPersonalPageUrl,
     getMainPageUrl,
+    getCategoriesPageUrl,
     getMyOffersPageUrl,
     getOfferPersonalPageUrl,
     getOffersConditionsPageUrl,
@@ -83,6 +86,7 @@ import {
     getVolunteerGalleryPageUrl,
     getVolunteerCreateArticlePageUrl,
     getVolunteerArticlesPageUrl,
+    getMembershipPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -94,6 +98,11 @@ const publicRoutes: RouteType[] = [
         element: <MainPage />,
         label: "main",
         path: (locale: string) => getMainPageUrl(locale),
+    },
+    {
+        element: <CategoriesPage />,
+        label: "main",
+        path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
         element: <SignInPage />,
@@ -273,6 +282,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getVolunteerArticlesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "membership",
+        element: <MembershipPage />,
+        path: (locale: string) => getMembershipPageUrl(locale),
     },
     {
         label: "reset-password",
