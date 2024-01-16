@@ -8,6 +8,8 @@ import React, {
     useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
+import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
@@ -25,6 +27,7 @@ interface VolunteerLanguageProps {
 export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
     (props: VolunteerLanguageProps) => {
         const { className, value, onChange } = props;
+        const { t } = useTranslation("volunteer");
         const [mainLanguageSkills, setMainLanguageSkills] = useState<
         LanguageSkills | undefined
         >(undefined);
@@ -74,7 +77,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                         }}
                         isTitle={false}
                     />
-                    <img
+                    <HandySvg
                         className={styles.deleteIcon}
                         onClick={() => handleDeleteLanguage(index)}
                         src={deleteIcon}
@@ -114,8 +117,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                         className={styles.plus}
                         alt="add"
                     />
-                    {" "}
-                    Добавить язык
+                    {t("volunteer-skills.Добавить язык")}
                 </IconButton>
             </div>
         );

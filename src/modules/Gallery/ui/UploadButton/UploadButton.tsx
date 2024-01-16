@@ -3,6 +3,7 @@ import React, {
     FC, useCallback, useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
 
 import InputFile from "@/shared/ui/InputFile/InputFile";
@@ -16,12 +17,11 @@ interface UploadButtonProps {
 
 const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
     const [img, setImg] = useState<string>();
-
+    const { t } = useTranslation("translation");
     const handleUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
-            // console.log(file);
             const url = URL.createObjectURL(file);
             setImg(url);
             onUpload?.(file);
@@ -38,7 +38,7 @@ const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
             labelChildren={(
                 <div className={styles.innerWrapper}>
                     <img className={styles.icon} src={plusIcon} alt="add item" />
-                    <span className={styles.text}>Добавить фото</span>
+                    <span className={styles.text}>{t("Добавить фото")}</span>
                 </div>
             )}
         />

@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import NotificationDateStorage from "@/shared/utils/storage/NotificationDateStorage";
 
 import styles from "./DashboardNotifications.module.scss";
@@ -9,10 +10,12 @@ export const DashboardNotifications = () => {
     const notificationDateStorage = new NotificationDateStorage();
     notificationDateStorage.setNotificationDate();
 
+    const { t } = useTranslation("volunteer");
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.titleWrapper}>
-                <h3 className={styles.title}>Уведомления</h3>
+                <h3 className={styles.title}>{t("volunteer-dashboard.Уведомления")}</h3>
             </div>
             <div className={styles.notificationItems}>
                 <DashboardNotificationItem

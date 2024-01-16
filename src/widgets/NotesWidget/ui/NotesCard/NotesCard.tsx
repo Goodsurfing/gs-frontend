@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
+import { useTranslation } from "react-i18next";
 import { Offer } from "@/entities/Offer";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -28,6 +29,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
         isDragDisable,
     } = props;
     const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);
+    const { t } = useTranslation();
 
     return (
         <Draggable isDragDisabled={isDragDisable} key={id} draggableId={id} index={index}>
@@ -73,7 +75,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                         variant="OUTLINE"
                         size="SMALL"
                     >
-                        Сообщение
+                        {t("notes.Сообщение")}
                     </Button>
                 </div>
             )}

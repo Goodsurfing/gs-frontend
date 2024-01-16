@@ -21,7 +21,7 @@ const defaultValues: DefaultValues<VolunteerSkillsField> = {
 };
 
 export const VolunteerSkillsForm: FC = memo(() => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("volunteer");
     const { handleSubmit, control } = useForm<VolunteerSkillsField>({
         mode: "onChange",
         defaultValues,
@@ -45,7 +45,7 @@ export const VolunteerSkillsForm: FC = memo(() => {
                     />
                 )}
             />
-            <span className={styles.titleSkills}>Навыки которыми вы обладаете</span>
+            <span className={styles.titleSkills}>{t("volunteer-skills.Навыки которыми вы обладаете")}</span>
             <SkillsForm control={control} />
             <Controller
                 name="extraInfo"
@@ -55,13 +55,13 @@ export const VolunteerSkillsForm: FC = memo(() => {
                     <Textarea
                         value={field.value}
                         onChange={field.onChange}
-                        label={t("Дополнительная информация")}
-                        description={t("Не более 1000 знаков")}
+                        label={t("volunteer-skills.Дополнительная информация")}
+                        description={t("volunteer-skills.Не более 1000 знаков")}
                     />
                 )}
             />
             <Button type="submit" color="BLUE" size="MEDIUM" variant="FILL">
-                Сохранить
+                {t("volunteer-skills.Сохранить")}
             </Button>
         </form>
     );

@@ -4,6 +4,7 @@ import React, {
 import cn from "classnames";
 import { HandySvg } from "@handy-ones/handy-svg";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Article } from "@/entities/Article";
 import { ArticleWidget } from "@/widgets/ArticleWidget";
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
@@ -23,7 +24,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo((props: ArticleEdi
     const { locale } = useLocale();
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
     const popupRef = useRef(null);
-
+    const { t } = useTranslation("volunteer");
     const handleClickOutside = useCallback(() => {
         setIsPopupOpen(false);
     }, []);
@@ -47,10 +48,10 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo((props: ArticleEdi
                             className={styles.popupButton}
                             to={getMainPageUrl(locale)}
                         >
-                            Редактировать
+                            {t("volunteer-articles.Редактировать")}
                         </Link>
                         <button type="button" className={styles.popupButton}>
-                            Удалить
+                            {t("volunteer-articles.Удалить")}
                         </button>
                     </div>
                 </Popup>

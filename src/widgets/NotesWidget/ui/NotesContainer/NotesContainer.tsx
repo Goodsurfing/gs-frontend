@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
+import { useTranslation } from "react-i18next";
 import { Offer, OfferStatus } from "@/entities/Offer";
 
 import { NotesCard } from "../NotesCard/NotesCard";
@@ -24,6 +25,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             status,
             isDragDisable,
         } = props;
+        const { t } = useTranslation();
 
         return (
             <div className={cn(className, styles.wrapper)}>
@@ -31,7 +33,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                     className={styles.top}
                     style={{ borderBottom: `2px solid ${color}` }}
                 >
-                    <span className={styles.title}>{status}</span>
+                    <span className={styles.title}>{t(`notes.${status}`)}</span>
                     <span className={styles.number}>
                         {offers?.length || 0}
                     </span>

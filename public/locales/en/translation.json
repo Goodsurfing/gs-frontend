@@ -82,5 +82,51 @@
             "Написать в блог": "Write article",
             "Мои статьи": "My articles"
         }
+    },
+    "stats-points": {
+        "О себе": "About me",
+        "Навыки": "Skills",
+        "Фотографии": "Gallery",
+        "Видео": "Video gallery",
+        "Публикации в блоге": "Blog Post",
+        "Членство": "Membership"
+    },
+    "skills": {
+        "admin": "Administration",
+        "cooking": "Cooking",
+        "driving": "Driving",
+        "housing": "Housekeeping",
+        "decor": "Decorating",
+        "tourism": "Tour Guide",
+        "art": "Art",
+        "farming": "Farming",
+        "social": "Social Work",
+        "recording": "Video Editing",
+        "gardening": "Gardening",
+        "music": "Music",
+        "photo": "Photography",
+        "night_job": "Night Shift",
+        "sport": "Sports"
+    },
+    "category-offer": {
+        "Хостелы": "Hostels",
+        "Заповедники и парки": "Reserves and Parks",
+        "Ферма": "Farm",
+        "Животные": "Animals",
+        "Преподавание": "Teaching",
+        "Дети": "Children",
+        "Благотворительность": "Charity",
+        "Спорт": "Sports",
+        "Исскуство": "Art",
+        "Археология": "Archaeology",
+        "Онлайн": "Online",
+        "Другое": "Other"
+    },
+    "notes": {
+        "under consideration": "Under Consideration",
+        "accepted": "Accepted",
+        "confirmed": "Confirmed",
+        "rejected": "Rejected",
+        "Сообщение": "Message"
     }
 }

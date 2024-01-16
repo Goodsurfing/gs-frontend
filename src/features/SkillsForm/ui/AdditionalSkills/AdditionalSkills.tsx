@@ -1,5 +1,6 @@
 import cn from "classnames";
 import { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { successIcon } from "@/shared/data/icons/skills";
 import { plusIcon } from "@/shared/data/icons/helpIcons";
 
@@ -16,6 +17,7 @@ interface Props {
 
 export const AdditionalSkills = memo(({ className, onChange, value }: Props) => {
     const [inputValue, setInputValue] = useState("");
+    const { t } = useTranslation("volunteer");
 
     const onSkillValueChange = (skillValue: string, prevValue: string) => {
         onChange(value.map((skill) => {
@@ -60,7 +62,7 @@ export const AdditionalSkills = memo(({ className, onChange, value }: Props) => 
                 inputButtonClassName={styles.inputIcon}
                 buttonIcon={successIcon}
                 inputButtonIcon={plusIcon}
-                placeholder="Добавить навык"
+                placeholder={t("volunteer-skills.Добавить навык")}
             />
         </div>
     );

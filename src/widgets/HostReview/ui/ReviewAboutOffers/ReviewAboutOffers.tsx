@@ -9,8 +9,8 @@ export const ReviewAboutOffers: FC = () => {
     const [data] = useState<ReviewCardInfo[]>(fakeReviewData);
 
     const renderCardOffers = (reviewOffers: ReviewCardInfo[]) => reviewOffers
-        .map((reviewOffer) => (
-            <ReviewCardOffer reviewOffer={reviewOffer} />
+        .map((reviewOffer, index) => (
+            <ReviewCardOffer reviewOffer={reviewOffer} key={index} />
         ));
 
     return (

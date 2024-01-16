@@ -2,15 +2,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import * as z from "zod";
 
+import { OfferCategories } from "@/widgets/OfferCategories";
+
 import Button from "@/shared/ui/Button/Button";
+import { InputField } from "@/shared/ui/InputField/InputField";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
-import { OfferCategories } from "@/widgets/OfferCategories";
-import { InputField } from "@/shared/ui/InputField/InputField";
 import styles from "./ArticleForm.module.scss";
 
 interface ArticleFormProps {
@@ -20,6 +22,7 @@ interface ArticleFormProps {
 export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
         const { className } = props;
+        const { t } = useTranslation("volunteer");
         const {
             register,
             formState: { errors },
@@ -35,26 +38,32 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
         });
 
         return (
-            <form
-                className={cn(className, styles.wrapper)}
-            >
+            <form className={cn(className, styles.wrapper)}>
                 <div>
                     <UploadArticleCover id="upload cover" />
                     <span className={styles.smallDescription}>
-                        Оптимальные размеры 2175 х 966. Вес не более 5МБ
+                        {t(
+                            "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 5МБ",
+                        )}
                     </span>
                 </div>
-                <span className={styles.title}>Название статьи</span>
+                <span className={styles.title}>
+                    {t("volunteer-create-article.Название статьи")}
+                </span>
                 <InputField
                     name="title"
                     register={register}
                     error={Boolean(errors.title)}
-                    helperText={errors.title?.message}
+                    helperText={errors.title?.message && t(`volunteer-create-article.${errors.title?.message}`)}
                     variant="outlined"
-                    placeholder="Заголовок вашей статьи"
+                    placeholder={t(
+                        "volunteer-create-article.Заголовок вашей статьи",
+                    )}
                     className={styles.input}
                 />
-                <span className={styles.title}>Категория статьи</span>
+                <span className={styles.title}>
+                    {t("volunteer-create-article.Категория статьи")}
+                </span>
                 <OfferCategories />
                 <Controller
                     name="description"
@@ -66,23 +75,25 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         />
                     )}
                 />
-                {errors.description && <p className={styles.error}>{errors.description.message}</p>}
-                <span className={styles.title}>Ссылка на проект</span>
+                {errors.description && (
+                    <p className={styles.error}>{t(`volunteer-create-article.${errors.description.message}`)}</p>
+                )}
+                <span className={styles.title}>{t("volunteer-create-article.Ссылка на проект")}</span>
                 <InputField
                     name="offerLink"
                     register={register}
                     error={Boolean(errors.offerLink)}
-                    helperText={errors.offerLink?.message}
+                    helperText={errors.offerLink?.message && t(`volunteer-create-article.${errors.offerLink?.message}`)}
                     variant="outlined"
-                    placeholder="Ваша ссылка на заявку"
+                    placeholder={t("volunteer-create-article.Ваша ссылка на заявку")}
                     className={styles.input}
                 />
                 <div className={styles.containerButtons}>
                     <Button color="BLUE" variant="FILL" size="SMALL">
-                        Опубликовать
+                        {t("volunteer-create-article.Опубликовать")}
                     </Button>
                     <Button color="BLUE" variant="OUTLINE" size="SMALL">
-                        Сохранить в черновики
+                        {t("volunteer-create-article.Сохранить в черновики")}
                     </Button>
                 </div>
             </form>

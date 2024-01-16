@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { StatsChartPoints } from "../../model/types/chart";
 
 import styles from "./StatsPoints.module.scss";
@@ -14,11 +15,12 @@ interface StatsPointsProps {
 
 export const StatsPoints = memo((props: StatsPointsProps) => {
     const { className, pointsData, isLoading } = props;
+    const { t } = useTranslation();
 
     if (isLoading) {
         return (
             <ul className={cn(styles.wrapper, className)}>
-                Загрузка...
+                {t("Загрузка...")}
             </ul>
         );
     }
@@ -29,7 +31,7 @@ export const StatsPoints = memo((props: StatsPointsProps) => {
                 <TextWithPoint
                     active={item.completed}
                     key={item.text}
-                    text={item.text}
+                    text={t(`stats-points.${item.text}`)}
                 />
             ))}
         </ul>

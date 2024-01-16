@@ -28,14 +28,14 @@ import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
-import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
-import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
-import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
-import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
+import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
 import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { MembershipPage } from "@/pages/MembershipPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
@@ -50,6 +50,7 @@ import {
     getHostPageUrl,
     getHostRegistrationUrl,
     getHostReviewPageUrl,
+    getHostNotesPageUrl,
     getHostTeamPageUrl,
     getHostVideoPageUrl,
     getHostPersonalPageUrl,
@@ -78,12 +79,11 @@ import {
     getVolunteerPersonalPageUrl,
     getVolunteerPageUrl,
     getVolunteerDashboardPageUrl,
-    getVolunteerNotesPageUrl,
-    getHostNotesPageUrl,
-    getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
-    getVolunteerGalleryPageUrl,
+    getVolunteerReviewPageUrl,
+    getVolunteerNotesPageUrl,
     getVolunteerSubscribersPageUrl,
+    getVolunteerGalleryPageUrl,
     getVolunteerCreateArticlePageUrl,
     getVolunteerArticlesPageUrl,
     getMembershipPageUrl,
