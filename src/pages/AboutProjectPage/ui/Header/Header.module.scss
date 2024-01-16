@@ -6,6 +6,10 @@
     background-position: center;
     box-sizing: border-box;
     padding: 6rem 10rem;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .title {

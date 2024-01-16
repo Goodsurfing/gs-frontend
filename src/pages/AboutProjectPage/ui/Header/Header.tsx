@@ -9,12 +9,12 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = memo((props: HeaderProps) => {
     const { className } = props;
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <section className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>
                 ГудСёрфинг –
                 путешествие со смыслом
             </h1>
-        </div>
+        </section>
     );
 });
 
