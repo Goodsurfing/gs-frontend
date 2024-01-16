@@ -47,7 +47,7 @@ export const Review: FC<ReviewProps> = (props: ReviewProps) => {
 
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>{t("what-is-goodsurfing.Отзывы")}</h2>
+            <h2 className={styles.title}>{t("review.Отзывы")}</h2>
             <Swiper
                 className={styles.swiper}
                 modules={[Navigation, Pagination]}

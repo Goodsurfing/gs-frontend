@@ -34,9 +34,9 @@ export const Questions: FC<QuestionsProps> = (props) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>
-                {t("Остались вопросы?")}
+                {t("questions.Остались вопросы?")}
                 <br />
-                {t("Сейчас ответим")}
+                {t("questions.Сейчас ответим")}
             </h2>
             <Accordion data={questionData} className={styles.container} />
         </div>

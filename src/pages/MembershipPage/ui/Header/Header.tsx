@@ -9,7 +9,7 @@ export const Header = () => {
     return (
         <section className={styles.wrapeprImage}>
             <h1 className={styles.title}>
-                <span>{t("Оформи членство Гудсёрфинга")}</span>
+                <span>{t("header.Оформи членство Гудсёрфинга")}</span>
                 <br />
                 <span>{t("header.и открой для себя бескрайний мир")}</span>
                 <br />
