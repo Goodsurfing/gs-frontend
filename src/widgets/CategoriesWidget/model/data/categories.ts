@@ -48,7 +48,7 @@ export const categoriesData: Categories[] = [
         numberVacancies: 9,
     },
     {
-        title: "Благотвори-тельность",
+        title: "Благотворительность",
         image: charityImage,
         numberVacancies: 9,
     },

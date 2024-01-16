@@ -9,5 +9,5 @@ export function getVacancyText(num: number): string {
         text = "вакансии";
     }
 
-    return `${num} ${text}`;
+    return `${text}`;
 }
