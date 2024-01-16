@@ -87,11 +87,13 @@ import {
     getVolunteerCreateArticlePageUrl,
     getVolunteerArticlesPageUrl,
     getMembershipPageUrl,
+    getAboutProjectPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { AboutProjectPage } from "@/pages/AboutProjectPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -326,6 +328,11 @@ const publicRoutes: RouteType[] = [
         label: "profile-role",
         element: <ProfileRolePage />,
         path: (locale: string) => getProfileRolePagePageUrl(locale),
+    },
+    {
+        label: "about-page",
+        element: <AboutProjectPage />,
+        path: (locale: string) => getAboutProjectPageUrl(locale),
     },
 ];
 
