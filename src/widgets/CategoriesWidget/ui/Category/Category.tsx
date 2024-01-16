@@ -50,6 +50,8 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
                 <span className={styles.title}>{t(`category-offer.${title}`)}</span>
                 <br />
                 <span className={styles.vacancy}>
+                    {vacancyNumber}
+                    {" "}
                     {getVacancyText(vacancyNumber)}
                 </span>
             </div>
