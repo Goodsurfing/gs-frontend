@@ -1,7 +1,6 @@
 import cn from "classnames";
 import { memo } from "react";
 
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { StatsChartPoints } from "../../model/types/chart";
 

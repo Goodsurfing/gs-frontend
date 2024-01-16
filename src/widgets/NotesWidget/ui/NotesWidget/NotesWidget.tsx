@@ -4,7 +4,6 @@ import React, {
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { useTranslation } from "react-i18next";
 import { Offer, OfferStatus } from "@/entities/Offer";
 
 import { statusColors } from "../../model/lib/statusColors";

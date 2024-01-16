@@ -22,7 +22,6 @@ const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
-            // console.log(file);
             const url = URL.createObjectURL(file);
             setImg(url);
             onUpload?.(file);
@@ -39,7 +38,7 @@ const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
             labelChildren={(
                 <div className={styles.innerWrapper}>
                     <img className={styles.icon} src={plusIcon} alt="add item" />
-                    <span className={styles.text}>Добавить фото</span>
+                    <span className={styles.text}>{t("Добавить фото")}</span>
                 </div>
             )}
         />
