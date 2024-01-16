@@ -1,5 +1,6 @@
 export enum AppRoutes {
     MAIN = "main",
+    CATEGORIES = "categories",
     SIGN_UP = "sign_up",
     SIGN_IN = "sign_in",
     RESET_PASSWORD = "reset_password",

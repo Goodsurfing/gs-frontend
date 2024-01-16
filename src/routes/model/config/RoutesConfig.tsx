@@ -11,6 +11,7 @@ import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
+import { CategoriesPage } from "@/pages/CategoriesPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
@@ -53,6 +54,7 @@ import {
     getHostVideoPageUrl,
     getHostPersonalPageUrl,
     getMainPageUrl,
+    getCategoriesPageUrl,
     getMyOffersPageUrl,
     getOfferPersonalPageUrl,
     getOffersConditionsPageUrl,
@@ -96,6 +98,11 @@ const publicRoutes: RouteType[] = [
         element: <MainPage />,
         label: "main",
         path: (locale: string) => getMainPageUrl(locale),
+    },
+    {
+        element: <CategoriesPage />,
+        label: "main",
+        path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
         element: <SignInPage />,
