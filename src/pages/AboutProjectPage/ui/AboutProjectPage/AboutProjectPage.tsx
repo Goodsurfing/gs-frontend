@@ -13,6 +13,7 @@ const AboutProjectPage = () => (
             <Header />
             <Mission className={styles.section} />
             <HowItStarted className={styles.section} />
+            <Prin
         </div>
     </MainPageLayout>
 );

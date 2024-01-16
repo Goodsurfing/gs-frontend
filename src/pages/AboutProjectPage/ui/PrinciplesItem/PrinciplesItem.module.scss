@@ -1,0 +1,22 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background-color: var(--bg-accent);
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.description {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
