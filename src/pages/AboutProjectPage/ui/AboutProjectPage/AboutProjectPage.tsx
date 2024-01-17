@@ -6,6 +6,7 @@ import Header from "../Header/Header";
 import { HowItStarted } from "../HowItStarted/HowItStarted";
 import { Mission } from "../Mission/Mission";
 import styles from "./AboutProjectPage.module.scss";
+import { Principles } from "../Principles/Principles";
 
 const AboutProjectPage = () => (
     <MainPageLayout>
@@ -13,7 +14,7 @@ const AboutProjectPage = () => (
             <Header />
             <Mission className={styles.section} />
             <HowItStarted className={styles.section} />
-            <Prin
+            <Principles className={styles.section} />
         </div>
     </MainPageLayout>
 );
