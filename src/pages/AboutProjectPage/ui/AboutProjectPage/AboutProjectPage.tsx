@@ -7,6 +7,7 @@ import { HowItStarted } from "../HowItStarted/HowItStarted";
 import { Mission } from "../Mission/Mission";
 import styles from "./AboutProjectPage.module.scss";
 import { Principles } from "../Principles/Principles";
+import { GoodsurfingNow } from "../GoodsurfingNow/GoodsurfingNow";
 
 const AboutProjectPage = () => (
     <MainPageLayout>
@@ -15,6 +16,7 @@ const AboutProjectPage = () => (
             <Mission className={styles.section} />
             <HowItStarted className={styles.section} />
             <Principles className={styles.section} />
+            <GoodsurfingNow className={styles.section} />
         </div>
     </MainPageLayout>
 );
