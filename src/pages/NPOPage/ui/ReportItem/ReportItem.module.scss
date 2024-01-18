@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--bg-accent);
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+}

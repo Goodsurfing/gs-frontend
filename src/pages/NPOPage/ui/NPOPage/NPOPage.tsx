@@ -6,6 +6,7 @@ import { Description } from "../Description/Description";
 
 import styles from "./NPOPage.module.scss";
 import { Documents } from "../Documents/Documents";
+import { Reports } from "../Reports/Reports";
 
 const NPOPage = () => (
     <MainPageLayout>
@@ -14,6 +15,7 @@ const NPOPage = () => (
             <div className={styles.content}>
                 <Description />
                 <Documents />
+                <Reports />
             </div>
         </div>
     </MainPageLayout>
