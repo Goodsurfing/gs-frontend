@@ -1,7 +1,6 @@
 .wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -22,6 +21,6 @@
     fill: white;
     width: 14px;
     height: 14px;
-    top: -40px;
-    right: 0;
+    top: 0;
+    right: -40px;
 }

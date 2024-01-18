@@ -9,8 +9,8 @@ interface HeaderProps {
 export const Header = (props: HeaderProps) => {
     const { className } = props;
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <section className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>О некоммерческой организации</h1>
-        </div>
+        </section>
     );
 };
