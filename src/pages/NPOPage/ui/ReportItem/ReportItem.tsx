@@ -12,9 +12,11 @@ interface ReportItemProps {
 export const ReportItem: FC<ReportItemProps> = memo((props: ReportItemProps) => {
     const { title, url } = props;
     return (
-        <div className={styles.wrapper}>
-            <Link to="https://translate.google.com/?hl=ru">{title}</Link>
-            <IconComponent icon={documentIcon} className={styles.icon} />
-        </div>
+        <Link to={url} className={styles.link} target="_blank" rel="noopener noreferrer">
+            <div className={styles.wrapper}>
+                <span className={styles.title}>{title}</span>
+                <IconComponent icon={documentIcon} className={styles.icon} />
+            </div>
+        </Link>
     );
 });

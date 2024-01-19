@@ -1,8 +1,8 @@
-import React, { FC, useMemo } from "react";
+import React, { useMemo } from "react";
 
 import { ReportItem } from "../ReportItem/ReportItem";
+import { reportsMinUstData, reportsActivityData } from "../../model/data/npo";
 import styles from "./Reports.module.scss";
-import { reportsMinUstData } from "../../model/data/npo";
 
 export const Reports = () => {
     const renderReportsMinUst = useMemo(
@@ -12,15 +12,21 @@ export const Reports = () => {
         [],
     );
     const renderReportsActivity = useMemo(
-        () => reportsMinUstData.map((report, index) => (
+        () => reportsActivityData.map((report, index) => (
             <ReportItem title={report.title} url={report.url} key={index} />
         )),
         [],
     );
     return (
         <div className={styles.wrapper}>
-            <h2>Отчёты МинЮст</h2>
-            {renderReportsMinUst}
+            <h2 className={styles.titleReports}>Отчёты МинЮст</h2>
+            <div className={styles.container}>
+                {renderReportsMinUst}
+            </div>
+            <h2 className={styles.titleActivity}>Отчёты о деятельности</h2>
+            <div className={styles.container}>
+                {renderReportsActivity}
+            </div>
         </div>
     );
 };
