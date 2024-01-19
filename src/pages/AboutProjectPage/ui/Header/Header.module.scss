@@ -1,0 +1,20 @@
+.wrapper {
+    background-image: url("@/shared/assets/images/about-project/header.png");
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    padding: 6rem 10rem;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    color: white;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
