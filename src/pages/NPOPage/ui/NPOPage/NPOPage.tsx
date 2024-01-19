@@ -1,12 +1,12 @@
 import React from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
-import { Header } from "../Header/Header";
-import { Description } from "../Description/Description";
 
-import styles from "./NPOPage.module.scss";
+import { Description } from "../Description/Description";
 import { Documents } from "../Documents/Documents";
+import { Header } from "../Header/Header";
 import { Reports } from "../Reports/Reports";
+import styles from "./NPOPage.module.scss";
 
 const NPOPage = () => (
     <MainPageLayout>
