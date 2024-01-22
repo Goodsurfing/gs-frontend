@@ -33,9 +33,9 @@ export const tags: InviteCategoryType[] = [{
     color: "#DBB5D4",
     text: "Спорт",
 }, {
-    value: "Исскуство",
+    value: "Искусство",
     color: "#F7EBAB",
-    text: "Исскуство",
+    text: "Искусство",
 }, {
     value: "Археология",
     color: "#EBC1FA",

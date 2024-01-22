@@ -4,6 +4,9 @@
   "Instagram": "Instagram",
   "Telegram": "Telegram",
   "VK": "VK",
+  "category-offer": {
+    "Выбирайте по интересам": "Выбирайте по интересам"
+  },
   "item": {
     "text": "text"
   },

@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 
+import { useTranslation } from "react-i18next";
 import { ReviewSlide } from "../ReviewSlide/ReviewSlide";
 import styles from "./Review.module.scss";
 
@@ -29,6 +30,7 @@ const data = [
 
 export const Review: FC<ReviewProps> = (props: ReviewProps) => {
     const { className } = props;
+    const { t } = useTranslation("membership");
     const renderSlides = useMemo(
         () => data.map((review, index) => (
             <SwiperSlide>
@@ -45,7 +47,7 @@ export const Review: FC<ReviewProps> = (props: ReviewProps) => {
 
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Отзывы</h2>
+            <h2 className={styles.title}>{t("review.Отзывы")}</h2>
             <Swiper
                 className={styles.swiper}
                 modules={[Navigation, Pagination]}

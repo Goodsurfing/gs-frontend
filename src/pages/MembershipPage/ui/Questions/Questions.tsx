@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Accordion, AccordionData } from "@/shared/ui/Accordion/Accordion";
 
 import styles from "./Questions.module.scss";
@@ -29,12 +30,13 @@ interface QuestionsProps {
 
 export const Questions: FC<QuestionsProps> = (props) => {
     const { className } = props;
+    const { t } = useTranslation("membership");
     return (
         <div className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>
-                Остались вопросы?
+                {t("questions.Остались вопросы?")}
                 <br />
-                Сейчас ответим
+                {t("questions.Сейчас ответим")}
             </h2>
             <Accordion data={questionData} className={styles.container} />
         </div>

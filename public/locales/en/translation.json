@@ -109,18 +109,27 @@
         "sport": "Sports"
     },
     "category-offer": {
+        "Выбирайте по интересам": "Choose by interests",
+        "Работа в хостеле": "Work in a hostel",
         "Хостелы": "Hostels",
+        "Заповедники и нац. парки": "Reserves and National Parks",
         "Заповедники и парки": "Reserves and Parks",
+        "Работа на ферме": "Farm Work",
         "Ферма": "Farm",
+        "Работа с животными": "Work with animals",
         "Животные": "Animals",
         "Преподавание": "Teaching",
+        "Работа с детьми": "Working with Children",
         "Дети": "Children",
         "Благотворительность": "Charity",
         "Спорт": "Sports",
-        "Исскуство": "Art",
+        "Искусство": "Art",
         "Археология": "Archaeology",
         "Онлайн": "Online",
-        "Другое": "Other"
+        "Другое": "Other",
+        "вакансий": "vacancies",
+        "вакансия": "vacancy",
+        "вакансии": "vacancies"
     },
     "notes": {
         "under consideration": "Under Consideration",
