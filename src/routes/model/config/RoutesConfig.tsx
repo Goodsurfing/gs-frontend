@@ -89,6 +89,7 @@ import {
     getMembershipPageUrl,
     getAboutProjectPageUrl,
     getNPOPageUrl,
+    getOurTeamPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -96,6 +97,7 @@ import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -340,6 +342,11 @@ const publicRoutes: RouteType[] = [
         label: "npo-page",
         element: <NPOPage />,
         path: (locale: string) => getNPOPageUrl(locale),
+    },
+    {
+        label: "our-team",
+        element: <OurTeamPage />,
+        path: (locale: string) => getOurTeamPageUrl(locale),
     },
 ];
 
