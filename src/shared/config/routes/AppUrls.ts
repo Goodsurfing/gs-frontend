@@ -107,3 +107,5 @@ export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${lo
 export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;
 
 export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.about_project}`;
+
+export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.npo}`;

@@ -1,0 +1,19 @@
+.container {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.titleReports,
+.titleActivity {
+    text-align: center;
+    font-size: 1.625rem;
+    font-weight: 400;
+}
+
+.titleActivity {
+    margin-top: 60px;
+}

@@ -88,12 +88,14 @@ import {
     getVolunteerArticlesPageUrl,
     getMembershipPageUrl,
     getAboutProjectPageUrl,
+    getNPOPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
+import { NPOPage } from "@/pages/NPOPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -333,6 +335,11 @@ const publicRoutes: RouteType[] = [
         label: "about-page",
         element: <AboutProjectPage />,
         path: (locale: string) => getAboutProjectPageUrl(locale),
+    },
+    {
+        label: "npo-page",
+        element: <NPOPage />,
+        path: (locale: string) => getNPOPageUrl(locale),
     },
 ];
 
