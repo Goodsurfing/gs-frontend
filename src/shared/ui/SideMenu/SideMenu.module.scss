@@ -1,14 +1,21 @@
-.side-menu {
+.sideMenu {
+    position: relative;
+    border-right: 1px solid var(--text-caption);
+}
+
+.innerWrapper {
+    max-width: 325px;
     position: fixed;
-    top: 0;
+    top: 6rem;
     left: 0;
 }
 
-.side-menu a {
+.sideMenu a {
     display: block;
     color: gray;
+    text-decoration: none;
 }
 
-.side-menu a.active {
+.sideMenu a.active {
     color: black;
 }

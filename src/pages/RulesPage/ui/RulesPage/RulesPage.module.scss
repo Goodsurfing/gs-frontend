@@ -1,0 +1,13 @@
+.wrapper {
+    display: flex;
+    gap: 30px;
+    max-width: 1280px;
+}
+
+.sideMenu {
+    flex: 1 0 350px;
+}
+
+.content {
+    flex: 3 0 auto;
+}

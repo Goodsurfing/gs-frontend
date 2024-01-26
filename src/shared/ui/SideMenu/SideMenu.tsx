@@ -1,15 +1,19 @@
-import React, {
-    useEffect, useState, FC, useCallback,
-} from "react";
 import cn from "classnames";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
+
+import { Link } from "react-router-dom";
 import styles from "./SideMenu.module.scss";
+import { Anchor } from "../Anchor/Anchor";
 
 interface SideMenuProps {
-    items: any[]
+    items: any[];
+    className?: string;
 }
 
 const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
-    const { items } = props;
+    const { items, className } = props;
     const [activeItem, setActiveItem] = useState(items[0].id);
 
     const handleScroll = useCallback(() => {
@@ -29,17 +33,21 @@ const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
     }, [handleScroll]);
 
     return (
-        <div className={styles.sideMenu}>
-            {items.map((item) => (
-                <a
-                    href={`#${item.id}`}
-                    key={item.id}
-                    className={cn({ [styles.active]: item.id === activeItem })}
-                >
-                    {item.name}
-                </a>
-            ))}
-        </div>
+        <nav className={cn(className, styles.sideMenu)}>
+            <div className={styles.innerWrapper}>
+                {items.map((item) => (
+                    <>
+                        <Anchor
+                            id={item.id}
+                            key={item.id}
+                            activeId={activeItem}
+                            title={item.title}
+                        />
+                        <br />
+                    </>
+                ))}
+            </div>
+        </nav>
     );
 };
 
