@@ -1,0 +1,14 @@
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.side-menu a {
+    display: block;
+    color: gray;
+}
+
+.side-menu a.active {
+    color: black;
+}
