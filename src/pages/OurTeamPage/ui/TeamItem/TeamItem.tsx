@@ -1,8 +1,10 @@
 import React, { FC, memo } from "react";
-import vkIcon from "@/shared/assets/icons/social-icons/vk-mini-logo.svg";
+
 import telegramIcon from "@/shared/assets/icons/social-icons/telegram-mini-logo.svg";
-import styles from "./TeamItem.module.scss";
+import vkIcon from "@/shared/assets/icons/social-icons/vk-mini-logo.svg";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
+
+import styles from "./TeamItem.module.scss";
 
 interface TeamItemProps {
     image: string;
@@ -23,10 +25,21 @@ export const TeamItem: FC<TeamItemProps> = memo((props: TeamItemProps) => {
             <div className={styles.info}>
                 <span className={styles.name}>{name}</span>
                 <span className={styles.description}>{description}</span>
-                <div>
-                    <IconComponent icon={vkIcon} alt="vkontakte" className={styles.vk} />
-                    <IconComponent icon={telegramIcon} alt="telegram" className={styles.telegram} />
-                </div>
+                {address && <span className={styles.address}>{address}</span>}
+                {(vk && telegram) && (
+                    <div className={styles.icons}>
+                        <IconComponent
+                            icon={vkIcon}
+                            alt="vkontakte"
+                            className={styles.vk}
+                        />
+                        <IconComponent
+                            icon={telegramIcon}
+                            alt="telegram"
+                            className={styles.telegram}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

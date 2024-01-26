@@ -1,24 +1,23 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { foundersData } from "../../model/data/ourTeam";
+import { goodSurfingData } from "../../model/data/ourTeam";
 import { TeamItem } from "../TeamItem/TeamItem";
-import styles from "./Founders.module.scss";
+import styles from "./GoodsurfingTeam.module.scss";
 
-interface FoundersProps {
+interface GoodsurfingTeamProps {
     className?: string;
 }
 
-export const Founders: FC<FoundersProps> = memo((props: FoundersProps) => {
+export const GoodsurfingTeam: FC<GoodsurfingTeamProps> = memo((props: GoodsurfingTeamProps) => {
     const { className } = props;
     const renderItems = useMemo(
-        () => foundersData.map((item, index) => (
+        () => goodSurfingData.map((item, index) => (
             <TeamItem
                 image={item.image}
                 name={item.name}
                 description={item.description}
-                vk={item.vk}
-                telegram={item.telegram}
+                address={item.description}
                 key={index}
             />
         )),
@@ -26,7 +25,7 @@ export const Founders: FC<FoundersProps> = memo((props: FoundersProps) => {
     );
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Основатели</h2>
+            <h2 className={styles.title}>Команда Гудсёрфинга</h2>
             <div className={styles.container}>{renderItems}</div>
         </section>
     );

@@ -25,15 +25,15 @@ export const foundersData: Founders[] = [
         image: ilyaImage,
         name: "Илья Попов",
         description: "Сооснователь, управляющий",
-        telegram: "",
-        vk: "",
+        telegram: "1",
+        vk: "1",
     },
     {
         image: nargizImage,
         name: "Наргиз Айтуганова",
         description: "Сооснователь",
-        telegram: "",
-        vk: "",
+        telegram: "1",
+        vk: "1",
     },
 ];
 
