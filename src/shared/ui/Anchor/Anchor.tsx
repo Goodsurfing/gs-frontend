@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, useCallback } from "react";
+
 import styles from "./Anchor.module.scss";
 
 interface AnchorProps {
@@ -7,19 +8,24 @@ interface AnchorProps {
     title: string;
     activeId: string;
     className?: string;
+    onClick?: () => void;
 }
 
 export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     const {
-        id, title, activeId, className,
+        id, title, activeId, className, onClick,
     } = props;
 
     const handleClick = useCallback(() => {
+        onClick?.();
         const element = document.getElementById(id);
         if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
+            window.scrollTo({
+                top: element.offsetTop - 100,
+                behavior: "smooth",
+            });
         }
-    }, [id]);
+    }, [id, onClick]);
 
     return (
         <div

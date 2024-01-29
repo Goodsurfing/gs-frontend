@@ -9,4 +9,10 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    ul {
+        margin-left: 1.325rem;
+        padding-top: 0.625rem;
+        padding-bottom: 0.625rem;
+    }
 }
