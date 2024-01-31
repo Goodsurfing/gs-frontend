@@ -2,7 +2,6 @@ import cn from "classnames";
 import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
-import { Link } from "react-router-dom";
 
 import { Anchor } from "../Anchor/Anchor";
 import styles from "./SideMenu.module.scss";
@@ -34,17 +33,12 @@ const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
-    useEffect(() => {
-        console.log(activeItem);
-    }, [activeItem]);
-
     return (
         <nav className={cn(className, styles.sideMenu)}>
             <div className={styles.innerWrapper}>
                 {items.map((item) => (
                     <>
                         <Anchor
-                            // onClick={() => handleScroll()}
                             id={item.id}
                             key={item.id}
                             activeId={activeItem}

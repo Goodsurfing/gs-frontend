@@ -12,11 +12,12 @@
 
 .sideMenu a {
     display: block;
-    color: gray;
+    color: var(--text-caption);
     text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 400;
 }
 
 .sideMenu a.active {
-    color: black;
+    color: var(--text-secondary-2);
 }
-
