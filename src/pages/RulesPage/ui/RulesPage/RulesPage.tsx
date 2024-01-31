@@ -1,16 +1,24 @@
 import React from "react";
-import { rulesData } from "../../model/rulesPage";
+
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import styles from "./RulesPage.module.scss";
 import SideMenu from "@/shared/ui/SideMenu/SideMenu";
+
+import { rulesData } from "../../model/rulesPage";
+import { Header } from "../Header/Header";
 import { TextContent } from "../TextContent/TextContent";
+import { Сonditions } from "../Сonditions/Сonditions";
+import styles from "./RulesPage.module.scss";
 
 const RulesPage = () => (
     <MainPageLayout>
         <div className={styles.wrapper}>
-            <SideMenu items={rulesData} className={styles.sideMenu} />
-            <TextContent className={styles.content} />
+            <Header />
+            <Сonditions />
+            <div className={styles.sidebarContent}>
+                <SideMenu items={rulesData} className={styles.sideMenu} />
+                <TextContent className={styles.content} />
+            </div>
         </div>
     </MainPageLayout>
 );

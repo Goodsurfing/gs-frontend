@@ -1,13 +1,22 @@
 .wrapper {
     display: flex;
+    flex-direction: column;
+    max-width: 1280px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 100px;
+}
+
+.sidebarContent {
+    display: flex;
     gap: 30px;
     max-width: 1280px;
+    
 }
 
 .sideMenu {
     flex: 1 0 350px;
-}
-
-.content {
-    flex: 3 0 auto;
 }
