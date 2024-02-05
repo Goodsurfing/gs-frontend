@@ -141,11 +141,11 @@ const publicRoutes: RouteType[] = [
                 index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
-            {
-                label: "host-offers",
-                element: <HostOffersPage />,
-                path: (locale) => getMyOffersPageUrl(locale),
-            },
+            // {
+            //     label: "host-offers",
+            //     element: <HostOffersPage />,
+            //     path: (locale) => getMyOffersPageUrl(locale),
+            // },
             {
                 label: "host-main-info",
                 element: <HostMainInfoPage />,
@@ -177,6 +177,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getHostNotesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "host-offers",
+        element: <HostOffersPage />,
+        path: (locale) => getMyOffersPageUrl(locale),
     },
     {
         label: "host-personal",
