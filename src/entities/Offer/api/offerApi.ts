@@ -31,7 +31,38 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-
+        updateWhen: build.mutation<unknown, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/when`,
+                method: "PATCH",
+                body: data.body.when,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateWhoNeeds: build.mutation<unknown, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/how-needs`,
+                method: "PATCH",
+                body: data.body.whoNeeds,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateDescription: build.mutation<unknown, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/description`,
+                method: "PATCH",
+                body: data.body.description,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateWhatToDo: build.mutation<unknown, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/what-to-do`,
+                method: "PATCH",
+                body: data.body.whatToDo,
+            }),
+            invalidatesTags: ["offer"],
+        }),
     }),
 });
 
