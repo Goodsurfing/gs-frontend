@@ -30,7 +30,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const { t } = useTranslation("offer-where");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
     });
 
     return (

@@ -40,17 +40,11 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
 
     const handleValueChange = useCallback(
         (newValue: GeoObject | null) => {
-            console.log("onHandleValueChange");
             setOptions(newValue ? [newValue, ...options] : options);
             setValue(newValue);
-            setInputValue(newValue?.description || "");
         },
         [options],
     );
-
-    useEffect(() => {
-        console.log(value);
-    }, [value]);
 
     useEffect(() => {
         let active = true;
@@ -98,12 +92,11 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
                             inputValue={field.value}
                             onChange={handleValueChange}
                             onInputChange={(inputVal) => {
-                                console.log(inputVal, "input change");
                                 field.onChange(inputVal);
                                 setInputValue(inputVal);
                             }}
                             options={options}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={(option) => `${option.description} ${option.name}`}
                             noOptionsText={t("Точек на карте не найдено")}
                             labelText={t("Введите адрес")}
                             renderOption={(props, option) => (
