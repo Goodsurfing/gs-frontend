@@ -37,7 +37,7 @@ const HostOffersPageCard = memo(({
     const navigate = useNavigate();
     const { locale } = useLocale();
     const onEditClick = () => {
-        navigate(getOffersWherePageUrl(locale));
+        navigate(`/${locale}/offers/welcome/${id}`);
     };
     return (
         <div className={styles.cardWrapper}>
