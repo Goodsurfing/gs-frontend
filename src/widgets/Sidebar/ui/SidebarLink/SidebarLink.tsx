@@ -19,14 +19,7 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { id } = useParams();
-
-    const routeParts = route.split("/");
-    if (routeParts[1] === "offers") {
-        routeParts.splice(2, 0, id);
-    }
-    const newRoute = routeParts.join("/");
-
-    const path = `/${locale}${newRoute}`;
+    const path = id ? `/${locale}${route}/${id}` : `/${locale}${route}`;
 
     return (
         <li className={styles.wrapper}>

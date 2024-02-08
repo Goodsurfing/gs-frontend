@@ -31,14 +31,14 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",
     [AppRoutes.OFFERS]: "/offers", // :id
-    [AppRoutes.OFFERS_WELCOME]: "/offers/:id/welcome", // :id
-    [AppRoutes.OFFERS_WHERE]: "/offers/:id/where", // :id
-    [AppRoutes.OFFERS_WHEN]: "/offers/:id/when", // :id
-    [AppRoutes.OFFERS_WHO_NEEDS]: "/offers/:id/who-needs", // :id
-    [AppRoutes.OFFERS_DESCRIPTION]: "/offers/:id/description", // :id
-    [AppRoutes.OFFERS_WHAT_TO_DO]: "/offers/:id/what-to-do", // :id
-    [AppRoutes.OFFERS_CONDITIONS]: "/offers/:id/conditions", // :id
-    [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/:id/finishing-touches", // :id
+    [AppRoutes.OFFERS_WELCOME]: "/offers/welcome", // :id
+    [AppRoutes.OFFERS_WHERE]: "/offers/where", // :id
+    [AppRoutes.OFFERS_WHEN]: "/offers/when", // :id
+    [AppRoutes.OFFERS_WHO_NEEDS]: "/offers/who-needs", // :id
+    [AppRoutes.OFFERS_DESCRIPTION]: "/offers/description", // :id
+    [AppRoutes.OFFERS_WHAT_TO_DO]: "/offers/what-to-do", // :id
+    [AppRoutes.OFFERS_CONDITIONS]: "/offers/conditions", // :id
+    [AppRoutes.OFFER_FINISHING_TOUCHES]: "/offers/finishing-touches", // :id
     [AppRoutes.VOLUNTEER]: "/volunteer",
     [AppRoutes.VOLUNTEER_DASHBOARD]: "/volunteer/volunteer-dashboard",
     [AppRoutes.VOLUNTEER_SKILLS]: "/volunteer/skills",
