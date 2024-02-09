@@ -24,9 +24,12 @@ interface MapWithAddressProps {
     className?: string;
     data: { address: string };
     control: Control<{ address: string }>;
+    onCoordinatesChange: (coordinates: string | undefined) => void;
 }
 
-const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
+const MapWithAddress = ({
+    className, data, control, onCoordinatesChange,
+}: MapWithAddressProps) => {
     const { t } = useTranslation("offer-where");
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
@@ -45,6 +48,8 @@ const MapWithAddress = ({ className, data, control }: MapWithAddressProps) => {
         },
         [options],
     );
+
+    useEffect(() => { onCoordinatesChange(value?.Point.pos); }, [value, onCoordinatesChange]);
 
     useEffect(() => {
         let active = true;

@@ -32,6 +32,11 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const onSubmit = handleSubmit((data) => {
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const handleCoordinatesChange = (coordinates: string | undefined) => {
+        if (coordinates) return coordinates;
+    };
+
     return (
         <form className={className} onSubmit={onSubmit}>
             {errors.address && (
@@ -39,7 +44,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     {errors.address.message}
                 </p>
             )}
-            <MapWithAddress control={control} data={{ address: "" }} />
+            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={} />
             <Button
                 variant="FILL"
                 color="BLUE"
