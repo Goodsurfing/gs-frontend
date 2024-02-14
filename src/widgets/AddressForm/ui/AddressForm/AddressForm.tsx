@@ -44,7 +44,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     {errors.address.message}
                 </p>
             )}
-            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={} />
+            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={handleCoordinatesChange} />
             <Button
                 variant="FILL"
                 color="BLUE"
