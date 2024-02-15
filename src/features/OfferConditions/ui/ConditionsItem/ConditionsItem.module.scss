@@ -21,5 +21,7 @@
     color: var(--text-secondary-1);
     border-color: var(--accent-color);
     background-color: var(--accent-color);
-    fill: var(--text-secondary-1);
+    svg{
+        fill: var(--text-secondary-1);
+    }
 }

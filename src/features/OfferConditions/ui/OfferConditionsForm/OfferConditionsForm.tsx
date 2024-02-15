@@ -38,12 +38,13 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferConditionsFormFields> = () => {
+    const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
+        console.log(data);
         onSuccess?.();
     };
 
     return (
-        <form className={cn(styles.wrapper, className)} onSubmit={handleSubmit(onSubmit)}>
+        <form className={cn(styles.wrapper, className)}>
             <Controller
                 name="housing"
                 control={control}
@@ -113,7 +114,9 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             />
             <div>
                 <Button
+                    onClick={handleSubmit(onSubmit)}
                     variant="FILL"
+                    type="submit"
                     color="BLUE"
                     size="MEDIUM"
                 >
