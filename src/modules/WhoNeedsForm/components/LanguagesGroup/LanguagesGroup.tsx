@@ -36,10 +36,9 @@ const LanguagesGroup = () => {
             </div>
             <div className="">
                 <AddButton
+                    text="Добавить язык"
                     onClick={() => setLanguagesCount((prev) => [...prev, 0])}
-                >
-                    Добавить язык
-                </AddButton>
+                />
             </div>
         </div>
     );

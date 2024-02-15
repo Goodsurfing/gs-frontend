@@ -6,7 +6,11 @@
 }
 
 .skillIcon {
-    fill: var(--text-caption);
+    background-color: var(--text-caption);
+    svg{
+        // fill: var(--text-secondary-1);
+        fill: var(--text-caption);
+    }
     width: 46px;
     height: 46px;
 }
@@ -19,6 +23,10 @@
     width: 46px;
     height: 46px;
     gap: 0;
+    background-color: var(--bg-accent) !important;
+    svg {
+        fill: var(--text-caption);
+    }
 }
 
 .inputIcon {
