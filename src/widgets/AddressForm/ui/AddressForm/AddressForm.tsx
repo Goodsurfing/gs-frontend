@@ -30,6 +30,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const { t } = useTranslation("offer-where");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onSubmit = handleSubmit((data) => {
+
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,7 +45,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     {errors.address.message}
                 </p>
             )}
-            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={} />
+            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={handleCoordinatesChange} />
             <Button
                 variant="FILL"
                 color="BLUE"

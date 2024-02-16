@@ -19,6 +19,7 @@ const HostOffersPage = () => {
                 <h2 className={styles.draftsTitle}>Черновики</h2>
                 <div className={styles.cards}>
                     <HostOffersPageCard
+                        id="1"
                         title="Работа в заповеднике Лен. область"
                         image={image}
                         location="Казань, Россия"
