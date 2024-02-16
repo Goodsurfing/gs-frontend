@@ -1,34 +1,41 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
+import cn from "classnames";
 import ExtraImagesItem from "../ExtraImagesItem/ExtraImagesItem";
 import ExtraImagesItemButton from "../ExtraImagesItem/ExtraImagesItemButton/ExtraImagesItemButton";
 import PictureReview from "../PictureReview/PictureReview";
-
 import styles from "./ExtraImagesUpload.module.scss";
 
-const ExtraImagesUpload: FC = () => {
+interface ExtraImagesUploadProps {
+    value: string[];
+    onChange: (value: string[]) => void;
+    classNameWrapper?: string;
+}
+
+const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
+    const { value, onChange, classNameWrapper } = props;
     const [imagesArray, setImagesArray] = useState<Array<string>>([]);
     const [inputImg, setInputImg] = useState<string | null>(null);
 
     const handleImageUpload = (img: string | null) => {
         if (img) {
             setInputImg(null);
-            setImagesArray([...imagesArray, img]);
+            onChange([...value, img]);
         }
     };
 
     const handleCloseBtnClick = (index: number) => {
-        setImagesArray((prev) => [...prev.filter((item, i) => i !== index)]);
+        onChange(value.filter((item, i) => i !== index));
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(classNameWrapper, styles.wrapper)}>
             <ExtraImagesItem
                 img={inputImg}
                 setImg={handleImageUpload}
                 id="asd"
             />
-            {imagesArray.map((image, index) => (
+            {value.map((image, index) => (
                 <PictureReview
                     className={styles.imgItem}
                     key={index}

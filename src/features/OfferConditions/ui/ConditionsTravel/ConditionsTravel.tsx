@@ -15,22 +15,16 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
     const { onChange, value } = props;
 
     const onSwitchChange = () => {
-        onChange({ ...value, switchState: !value.switchState });
+        const newSwitchState = !value.switchState;
+        onChange({
+            ...value,
+            switchState: newSwitchState,
+            travel: !newSwitchState ? undefined : value.travel,
+        });
     };
 
     const onToggleCondition = (conditionId: Travel) => {
-        const activeIndex = value.travel.findIndex((item) => item === conditionId);
-        if (activeIndex !== -1) {
-            onChange({
-                ...value,
-                travel: [...value.travel.filter((val) => val !== conditionId)],
-            });
-        } else {
-            onChange({
-                ...value,
-                travel: [...value.travel, conditionId],
-            });
-        }
+        if (value.switchState) onChange({ ...value, travel: conditionId });
     };
 
     return (
@@ -50,7 +44,7 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
             <div className={styles.conditions}>
                 {payedRideItems.map((item) => (
                     <ConditionsItem
-                        checked={!!value.travel?.find((val) => val === item.id)}
+                        checked={value.travel === item.id}
                         icon={item.icon}
                         onToggle={() => onToggleCondition(item.id)}
                         text={item.text}

@@ -1,11 +1,13 @@
 import { memo, useCallback } from "react";
-import { HousingFields } from "../../model/types/offerConditions";
+
+import { Housing } from "@/entities/Offer";
+
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-import styles from "./ConditionsHousing.module.scss";
-import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { liveItems } from "../../model/data/conditionItems";
-import { Housing } from "@/entities/Offer";
+import { HousingFields } from "../../model/types/offerConditions";
+import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import styles from "./ConditionsHousing.module.scss";
 
 export interface ConditionsHousingProps {
     value: HousingFields;
@@ -16,20 +18,19 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
     const { onChange, value } = props;
 
     const onSwitchChange = useCallback(() => {
-        onChange({ ...value, switchState: !value.switchState });
+        const newSwitchState = !value.switchState;
+        onChange({
+            ...value,
+            switchState: newSwitchState,
+            housing: !newSwitchState ? undefined : value.housing,
+        });
     }, [value, onChange]);
 
     const onToggleCondition = (conditionId: Housing) => {
-        const activeIndex = value.housing.findIndex((item) => item === conditionId);
-        if (activeIndex !== -1) {
+        if (value.switchState) {
             onChange({
                 ...value,
-                housing: [...value.housing.filter((val) => val !== conditionId)],
-            });
-        } else {
-            onChange({
-                ...value,
-                housing: [...value.housing, conditionId],
+                housing: conditionId,
             });
         }
     };
@@ -37,7 +38,9 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.toggleWrapper}>
-                <label className={styles.toggleText} htmlFor="housing">Жилье</label>
+                <label className={styles.toggleText} htmlFor="housing">
+                    Жилье
+                </label>
                 <div className={styles.toggle}>
                     <span className={styles.toggleSpan}>Нет</span>
                     <SwitchComponent
@@ -51,7 +54,7 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
             <div className={styles.conditions}>
                 {liveItems.map((item) => (
                     <ConditionsItem
-                        checked={!!value.housing?.find((val) => val === item.id)}
+                        checked={value.housing === item.id}
                         onToggle={() => onToggleCondition(item.id)}
                         key={item.id}
                         text={item.text}
