@@ -1,27 +1,40 @@
-import { useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-
-import Languages from "../Languages/Languages";
+import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
 import ExtraControls from "../ExtraControls/ExtraControls";
 
 import styles from "./LanguagesGroup.module.scss";
+import Languages from "../Languages/Languages";
 
-const LanguagesGroup = () => {
-    const [languagesCount, setLanguagesCount] = useState([0]);
+interface LanguagesGroupProps {
+    value: ILanguages;
+    onChange: (value: ILanguages) => void
+}
+
+const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
+    const { value, onChange } = props;
 
     const onCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;
-        setLanguagesCount(languagesCount.filter((_, i) => i !== index));
-    }, [languagesCount]);
+        const newValue = [...value];
+        newValue.splice(index, 1);
+        onChange(newValue);
+    }, [value, onChange]);
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.langsWrapper}>
-                {languagesCount.map((_, index) => (
+                {value.map((valueLanguage, index) => (
                     <Languages
                         key={index}
+                        value={valueLanguage}
+                        onChange={(newValue) => {
+                            const newLanguages = [...value];
+                            newLanguages[index] = newValue;
+                            onChange(newLanguages);
+                        }}
                         close={(
                             <CloseButton
                                 className={styles.closeBtn}
@@ -30,14 +43,14 @@ const LanguagesGroup = () => {
                         )}
                     />
                 ))}
-                {languagesCount.length > 1 && (
+                {value.length > 1 && (
                     <ExtraControls />
                 )}
             </div>
             <div className="">
                 <AddButton
                     text="Добавить язык"
-                    onClick={() => setLanguagesCount((prev) => [...prev, 0])}
+                    onClick={() => onChange([...value, { language: "Английский", level: "not_matter" } as Language])}
                 />
             </div>
         </div>

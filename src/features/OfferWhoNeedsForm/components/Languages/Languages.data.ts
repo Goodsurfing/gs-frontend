@@ -1,6 +1,10 @@
-import { IOption } from "@/types/select";
+import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
 
-export const allLangs: IOption[] = [
+export const allLangs: IOptionLanguage[] = [
+    {
+        label: "Не важен",
+        value: "not_matter",
+    },
     {
         label: "Английский",
         value: "Английский",
@@ -11,33 +15,37 @@ export const allLangs: IOption[] = [
     },
     {
         label: "Немецкий",
-        value: "НемецкИй",
+        value: "Немецкий",
     },
 ];
 
-export const langsLevels: IOption[] = [
+export const langsLevels: IOptionLevelLanguage[] = [
     {
-        label: "A1",
-        value: "A1",
+        label: "Не важен",
+        value: "not_matter",
     },
     {
-        label: "A2",
-        value: "A2",
+        label: "Начальный",
+        value: "beginner",
     },
     {
-        label: "B1",
-        value: "B1",
+        label: "Элементарный",
+        value: "elementary",
     },
     {
-        label: "B2",
-        value: "B2",
+        label: "Слабый средний уровень",
+        value: "lower_intermediate",
     },
     {
-        label: "C1",
-        value: "C1",
+        label: "Выше среднего",
+        value: "upper_intermediate",
     },
     {
-        label: "C2",
-        value: "C2",
+        label: "Продвинутый",
+        value: "advanced",
+    },
+    {
+        label: "В совершенстве",
+        value: "proficiency",
     },
 ];

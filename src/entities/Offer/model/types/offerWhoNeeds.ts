@@ -1,6 +1,6 @@
 export type Gender = "woman" | "man" | "other";
 
-export type LevelLanguage = "beginner" | "elementary" | "lower_intermediate" | "upper_intermediate" | "advanced" | "proficiency";
+export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_intermediate" | "upper_intermediate" | "advanced" | "proficiency";
 
 export interface Language {
     language: string;
@@ -11,9 +11,14 @@ export type Languages = Language[];
 
 export type ReceptionPlace = "any" | "foreigners" | "compatriot";
 
+export interface Age {
+    minAge: number;
+    maxAge: number;
+}
+
 export interface OfferWhoNeeds {
     gender: Gender;
-    age?: string;
+    age?: Age;
     languages: Languages;
     volunteerPlaces: number;
     receptionPlace: ReceptionPlace;

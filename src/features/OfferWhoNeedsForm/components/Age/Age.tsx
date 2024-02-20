@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { FC } from "react";
 
 import { Typography } from "@mui/material";
 import Input from "@/shared/ui/Input/Input";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 
+import { Age } from "@/entities/Offer/model/types/offerWhoNeeds";
 import styles from "./Age.module.scss";
 
-const Age = () => {
-    const [minAge, setMinAge] = useState<number>(MINIMAL_AGE_FOR_VOLUNTEER);
-    const [maxAge, setMaxAge] = useState<number>(18);
+interface AgeProps {
+    value: Age;
+    onChange: (value: Age) => void
+}
+
+export const AgeComponent: FC<AgeProps> = (props) => {
+    const { value, onChange } = props;
 
     const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
             return;
         }
 
-        if (+e.target.value >= maxAge) {
-            setMaxAge(+e.target.value);
-            setMinAge(+e.target.value);
+        if (+e.target.value >= value.maxAge) {
+            onChange({ ...value, maxAge: +e.target.value, minAge: +e.target.value });
         } else {
-            setMinAge(+e.target.value);
+            onChange({ ...value, minAge: +e.target.value });
         }
     };
 
@@ -29,11 +33,10 @@ const Age = () => {
             return;
         }
 
-        if (+e.target.value < minAge) {
-            setMinAge(+e.target.value);
-            setMaxAge(+e.target.value);
+        if (+e.target.value < value.minAge) {
+            onChange({ ...value, maxAge: +e.target.value, minAge: +e.target.value });
         } else {
-            setMaxAge(+e.target.value);
+            onChange({ ...value, maxAge: +e.target.value });
         }
     };
 
@@ -50,11 +53,9 @@ const Age = () => {
                 Возраст
             </Typography>
             <div className={styles.inputWrapper}>
-                <Input className={styles.from} value={minAge} onChange={onFromMinAgeChange} type="number" placeholder="от" />
-                <Input className={styles.to} value={maxAge} onChange={onFromMaxAgeChange} type="number" placeholder="до" />
+                <Input className={styles.from} value={value.minAge} onChange={onFromMinAgeChange} type="number" placeholder="от" />
+                <Input className={styles.to} value={value.maxAge} onChange={onFromMaxAgeChange} type="number" placeholder="до" />
             </div>
         </div>
     );
 };
-
-export default Age;
