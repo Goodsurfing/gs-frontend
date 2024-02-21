@@ -1,6 +1,7 @@
 .container {
     max-width: 1180px;
     margin: 0 auto;
+    padding-bottom: 100px;
 }
 
 .top {
@@ -23,6 +24,11 @@
 }
 
 @media (max-width: 1000px) {
+    .container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
     .newsList {
         grid-template-columns: 1fr;
     }
