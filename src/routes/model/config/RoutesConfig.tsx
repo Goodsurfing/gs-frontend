@@ -37,8 +37,11 @@ import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/"
 import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { MembershipPage } from "@/pages/MembershipPage";
+import { AboutProjectPage } from "@/pages/AboutProjectPage";
+import { NPOPage } from "@/pages/NPOPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
+import { RulesPage } from "@/pages/RulesPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 
@@ -90,14 +93,13 @@ import {
     getAboutProjectPageUrl,
     getNPOPageUrl,
     getRulesPageUrl,
+    getNewsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { AboutProjectPage } from "@/pages/AboutProjectPage";
-import { NPOPage } from "@/pages/NPOPage";
-import { RulesPage } from "@/pages/RulesPage";
+import { NewsPage } from "@/pages/NewsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -347,6 +349,11 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
+    },
+    {
+        label: "news",
+        element: <NewsPage />,
+        path: (locale: string) => getNewsPageUrl(locale),
     },
 ];
 

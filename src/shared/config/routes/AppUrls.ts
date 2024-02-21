@@ -111,3 +111,5 @@ export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}
 export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.npo}`;
 
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
+
+export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;

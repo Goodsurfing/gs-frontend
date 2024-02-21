@@ -1,0 +1,29 @@
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.content {
+    margin-top: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.newsList {
+    max-width: 780px;
+    width: 100%;
+
+}
+
+@media (max-width: 1000px) {
+    .newsList {
+        grid-template-columns: 1fr;
+    }
+}

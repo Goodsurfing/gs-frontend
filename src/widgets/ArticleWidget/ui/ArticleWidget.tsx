@@ -1,13 +1,14 @@
 import React, { FC, memo } from "react";
 
+import cn from "classnames";
 import { Article } from "@/entities/Article";
 import like from "@/shared/assets/icons/ThumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
-
 import styles from "./ArticleWidget.module.scss";
 
 interface ArticleWidgetProps {
     article: Article;
+    className?: string;
 }
 
 export const ArticleWidget: FC<ArticleWidgetProps> = memo((
@@ -17,10 +18,11 @@ export const ArticleWidget: FC<ArticleWidgetProps> = memo((
         article: {
             image, title, description, date, likes, comments, tag,
         },
+        className,
     } = props;
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(className, styles.wrapper)}>
             <img className={styles.image} src={image} alt={title} />
             <span className={styles.title}>{title}</span>
             <div className={styles.container}>
