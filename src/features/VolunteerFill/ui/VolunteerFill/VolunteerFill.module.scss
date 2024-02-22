@@ -1,0 +1,36 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary-1);
+    filter: drop-shadow(0px 5px 20px rgba(14, 29, 39, 0.05));
+    width: 100%;
+}
+
+.top {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--text-caption);
+    justify-content: space-between;
+}
+
+.bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 30px;
+    padding: 16px 24px;    
+}
+
+.leftSide {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 38px;
+}
+
+.toProfile {
+    text-decoration: none;
+    color: var(--text-primary-1);
+}

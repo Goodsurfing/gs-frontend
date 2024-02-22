@@ -31,7 +31,7 @@ export const AddButton = memo(({
             onClick={onBtnClick}
             {...restBtnProps}
         >
-            <img src={disabled ? plusWhiteIcon : plusIcon} alt="add" />
+            <img src={disabled ? plusIcon : plusWhiteIcon} alt="add" />
             <span className={styles.text}>{text}</span>
         </button>
     );

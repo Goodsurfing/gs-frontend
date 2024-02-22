@@ -1,0 +1,26 @@
+.wrapper {
+    background-color: var(--bg-field);
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px 30px;
+    gap: 30px;
+    width: 100%;
+}
+
+.infoCardItem {
+    font: var(--font-label);
+    color: var(--text-secondary-2);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title {
+    font: var(--font-caption);
+    color: var(--text-caption);
+}
+
+.text {
+    font: var(--font);
+}

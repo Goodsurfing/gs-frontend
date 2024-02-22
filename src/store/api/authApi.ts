@@ -1,6 +1,4 @@
-import {
-    BaseQueryFn, createApi, FetchArgs, FetchBaseQueryError, fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_PUBLIC_BASE_URL } from "@/shared/constants/api";
 import { AuthApiEndpoints } from "@/types/api/auth";
 import {
@@ -17,42 +15,6 @@ import {
     IResetPasswordVerifyData,
     IResetPasswordVerifyResponse,
 } from "@/types/api/auth/resetPassword.interface";
-import { logout, setLoginUserData } from "../reducers/loginSlice";
-
-const baseQuery = fetchBaseQuery({ baseUrl: API_PUBLIC_BASE_URL });
-
-const baseQueryWithReauth: BaseQueryFn<
-string | FetchArgs,
-unknown,
-FetchBaseQueryError
-> = async (args, api, extraOptions) => {
-    let result: any = await baseQuery(args, api, extraOptions);
-    console.log(result.data.token);
-    if (result.error && result.error.status === 401) {
-        const refreshResult: any = await baseQuery(args, api, extraOptions);
-        if (refreshResult.data) {
-            api.dispatch(setLoginUserData(refreshResult.data.token));
-            result = await baseQuery(args, api, extraOptions);
-        } else {
-            api.dispatch(logout());
-        }
-    }
-    return result;
-};
-
-export const reauthApi = createApi({
-    reducerPath: "reauthApi",
-    baseQuery: baseQueryWithReauth,
-    endpoints: (build) => ({
-        authUser: build.mutation<ILoginResponse, IAuthLoginData>({
-            query: (data: IAuthLoginData) => ({
-                url: AuthApiEndpoints.LOGIN,
-                method: "POST",
-                body: data,
-            }),
-        }),
-    }),
-});
 
 export const authApi = createApi({
     reducerPath: "authApi",

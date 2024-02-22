@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Input from "@/shared/ui/Input/Input";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
@@ -11,7 +11,7 @@ const Age = () => {
     const [minAge, setMinAge] = useState<number>(MINIMAL_AGE_FOR_VOLUNTEER);
     const [maxAge, setMaxAge] = useState<number>(18);
 
-    const onFromMinAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
             return;
         }
@@ -22,9 +22,9 @@ const Age = () => {
         } else {
             setMinAge(+e.target.value);
         }
-    }, [minAge, maxAge]);
+    };
 
-    const onFromMaxAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const onFromMaxAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
             return;
         }
@@ -35,7 +35,7 @@ const Age = () => {
         } else {
             setMaxAge(+e.target.value);
         }
-    }, [minAge, maxAge]);
+    };
 
     return (
         <div className={styles.wrapper}>

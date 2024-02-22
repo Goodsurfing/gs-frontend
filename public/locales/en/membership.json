@@ -1,0 +1,75 @@
+{
+    "header": {
+        "Оформи членство Гудсёрфинга": "Join GoodSurfing",
+        "и открой для себя бескрайний мир": "and discover the boundless world",
+        "путешествий со смыслом!": "of meaningful travels!",
+        "Неограниченный доступ ко всем направлениям и видам путешествий": "Unlimited access to all directions and types of travels",
+        "Прямое общение с хостом": "Direct communication with the host",
+        "Поддержка в путешествиях со стороны Гудсёрфинга": "Support in travels from GoodSurfing",
+        "Доступ к образовательным материалам": "Access to educational materials",
+        "Поддержка интересного и важного проекта": "Support for an interesting and important project",
+        "Получить членство": "Get membership"
+    },
+    "how-it-works": {
+        "Как это работает": "How It Works",
+        "С оформленным членством Гудсёрфинга вы можете пользоваться всеми возможностями нашего сервиса без каких-либо ограничений.": "With a registered membership in GoodSurfing, you can use all the features of our service without any restrictions.",
+        "1. Оплачиваете годовое членство": "1. Pay for annual membership",
+        "2. Проходите верификацию сервисом и получаете специальный значок на свою страницу": "2. Pass verification by the service and receive a special badge on your profile",
+        "3. Выбираете хосты на сервисе без ограничений": "3. Choose hosts on the service without limitations",
+        "4. Хосты смотрят на вашу верификацию и отдают вам предпочтения": "4. Hosts look at your verification and give you preferences",
+        "5. При необходимости пользуетесь чатом поддержки для планирования своего путешествия": "5. If necessary, use the support chat to plan your journey",
+        "6. Делаете доброе дело и получаете незабываемые впечатления": "6. Do a good deed and get unforgettable impressions"
+    },
+    "for-volunteer": {
+        "Для волонтёра": "For Volunteer",
+        "Без членства": "Without Membership",
+        "Отклик на волонтёрские вакансии через платформу «Гудсёрфинг»": "Respond to volunteer vacancies through the GoodSurfing platform",
+        "1 раз в год": "1 time per year",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
+        "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
+        "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
+        "Зарегистрироваться": "Register",
+        "Членство": "Membership",
+        "не ограничено": "unlimited",
+        "Доступ к уникальным волонтёрским вакансиям и чатам платформы «Гудсёрфинг»": "Access to unique volunteer vacancies and chats of the GoodSurfing platform",
+        "Получение статуса амбассадора (при выполнении условий)": "Obtaining ambassador status (subject to conditions)",
+        "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participation in offline events of GoodSurfing",
+        "Повышенное доверие организатора волонтёрского проекта при отборе участников (специальная метка в профиле)": "Increased trust of the organizer of the volunteer project in the selection of participants (special label in the profile)",
+        "Получить членство": "Get membership"
+    },
+    "for-host": {
+        "Для организатора": "For Host",
+        "Без членства": "Without Membership",
+        "Членство": "Membership",
+        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Number of free ads on the GoodSurfing platform",
+        "1 объявление в год": "1 ad per year",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
+        "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
+        "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
+        "Зарегистрироваться": "Register",
+        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Number of free ads on the GoodSurfing platform",
+        "не ограничено": "unlimited",
+        "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Access to unique chats of the GoodSurfing platform",
+        "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
+        "Получение статуса амбассадора (при выполнении условий)": "Obtaining ambassador status (subject to conditions)",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
+        "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participation in offline events of GoodSurfing",
+        "Повышенное доверие волонтёров при выборе проекта для участия (специальная метка в профиле)": "Increased trust of volunteers when choosing a project to participate in (special label in the profile)",
+        "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
+        "Скидка для размещения рекламы и объявлений по платным тарифам на платформе «Гудсёрфинг»": "Discount for placing ads and announcements on paid tariffs on the GoodSurfing platform",
+        "Получить членство": "Get membership"
+    },
+    "what-is-goodsurfing": {
+        "Что делает Гудсёрфинг и как он помогает развиваться сообществу": "What GoodSurfing does and how it helps the community develop",
+        "Миссия Гудсёрфинга – развитие выездного добровольчества в России и мире с помощью создания удобного веб-сервиса и распространения информации о подобных возможностях. В рамках этой миссии мы постоянно занимаемся развитием технологической части сервиса, готовим и распространяем полезный контент, формируем образовательные программы.": "The mission of GoodSurfing is to develop outbound volunteering in Russia and around the world by creating a convenient web service and disseminating information about such opportunities. Within this mission, we are constantly working on the technological part of the service, preparing and distributing useful content, and forming educational programs.",
+        "Мы уверены, что тысячи людей разделят с нами наши ценности в путешествиях со смыслом и готовы поддержать нас, оформив членство в сообществе. А мы в свою очередь сделаем для них всё возможное, чтобы их путешествия со смыслом были комфортными, полезными для общества и не забываемыми.": "We are confident that thousands of people will share our values in meaningful travels and are ready to support us by joining the community. In turn, we will do everything possible for them to have comfortable, socially beneficial, and unforgettable meaningful travels.",
+        "Начать сейчас": "Start now"
+    },
+    "review": {
+        "Отзывы": "Reviews"
+    },
+    "questions": {
+        "Остались вопросы?": "Have questions?",
+        "Сейчас ответим": "We'll answer them now"
+    }
+}

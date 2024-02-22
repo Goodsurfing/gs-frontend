@@ -1,0 +1,26 @@
+.content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 60px;
+    padding-left: 180px;
+    padding-right: 180px;
+    margin-top: 30px;
+}
+
+.image {
+    max-width: 275px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.title {
+    text-align: center;
+    font-size: 1.625rem;
+    font-weight: 400;
+}
+
+.modalImgae {
+    height: 80dvh;
+    object-fit: cover;
+}

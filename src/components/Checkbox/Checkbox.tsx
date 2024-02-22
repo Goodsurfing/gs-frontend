@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import styles from "./Checkbox.module.scss";
 
 interface CheckboxProps {
-    text: string;
+    text?: string;
     id?: string;
     isChecked: boolean;
     onChange: () => void;

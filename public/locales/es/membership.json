@@ -1,0 +1,75 @@
+{
+    "header": {
+        "Оформи членство Гудсёрфинга": "Hazte miembro de GoodSurfing",
+        "и открой для себя бескрайний мир": "y descubre un mundo sin límites",
+        "путешествий со смыслом!": "de viajes con significado",
+        "Неограниченный доступ ко всем направлениям и видам путешествий": "Acceso ilimitado a todas las direcciones y tipos de viajes",
+        "Прямое общение с хостом": "Comunicación directa con el anfitrión",
+        "Поддержка в путешествиях со стороны Гудсёрфинга": "Soporte en los viajes por parte de GoodSurfing",
+        "Доступ к образовательным материалам": "Acceso a materiales educativos",
+        "Поддержка интересного и важного проекта": "Soporte a un proyecto interesante e importante",
+        "Получить членство": "Obtener membresía"
+    },
+    "how-it-works": {
+        "Как это работает": "Cómo funciona",
+        "С оформленным членством Гудсёрфинга вы можете пользоваться всеми возможностями нашего сервиса без каких-либо ограничений.": "Con la membresía de GoodSurfing, puedes disfrutar de todas las funciones de nuestro servicio sin restricciones.",
+        "1. Оплачиваете годовое членство": "1. Paga la membresía anual",
+        "2. Проходите верификацию сервисом и получаете специальный значок на свою страницу": "2. Pasa la verificación del servicio y obtén un distintivo especial en tu perfil",
+        "3. Выбираете хосты на сервисе без ограничений": "3. Elige anfitriones en el servicio sin restricciones",
+        "4. Хосты смотрят на вашу верификацию и отдают вам предпочтения": "4. Los anfitriones revisan tu verificación y te dan preferencia",
+        "5. При необходимости пользуетесь чатом поддержки для планирования своего путешествия": "5. Si es necesario, utiliza el chat de soporte para planificar tu viaje",
+        "6. Делаете доброе дело и получаете незабываемые впечатления": "6. Haz una buena acción y obtén experiencias inolvidables"
+    },
+    "for-volunteer": {
+        "Для волонтёра": "Para el voluntario",
+        "Без членства": "Sin membresía",
+        "Отклик на волонтёрские вакансии через платформу «Гудсёрфинг»": "Responder a las oportunidades de voluntariado a través de la plataforma GoodSurfing",
+        "1 раз в год": "1 vez al año",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
+        "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
+        "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
+        "Зарегистрироваться": "Registrarse",
+        "Членство": "Membresía",
+        "не ограничено": "sin restricciones",
+        "Доступ к уникальным волонтёрским вакансиям и чатам платформы «Гудсёрфинг»": "Acceso a oportunidades de voluntariado y chats exclusivos de la plataforma GoodSurfing",
+        "Получение статуса амбассадора (при выполнении условий)": "Obtención del estatus de embajador (cumpliendo con condiciones)",
+        "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos fuera de línea de GoodSurfing",
+        "Повышенное доверие организатора волонтёрского проекта при отборе участников (специальная метка в профиле)": "Mayor confianza del organizador del proyecto de voluntariado al seleccionar participantes (etiqueta especial en el perfil)",
+        "Получить членство": "Obtener membresía"
+    },
+    "for-host": {
+        "Для организатора": "Para el anfitrión",
+        "Без членства": "Sin membresía",
+        "Членство": "Membresía",
+        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Número de anuncios gratuitos en la plataforma GoodSurfing",
+        "1 объявление в год": "1 anuncio al año",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
+        "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
+        "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
+        "Зарегистрироваться": "Registrarse",
+        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Número de anuncios gratuitos en la plataforma GoodSurfing",
+        "не ограничено": "sin restricciones",
+        "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Acceso a chats exclusivos de la plataforma GoodSurfing",
+        "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
+        "Получение статуса амбассадора (при выполнении условий)": "Obtención del estatus de embajador (cumpliendo con condiciones)",
+        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
+        "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos fuera de línea de GoodSurfing",
+        "Повышенное доверие волонтёров при выборе проекта для участия (специальная метка в профиле)": "Mayor confianza de los voluntarios al elegir un proyecto para participar (etiqueta especial en el perfil)",
+        "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
+        "Скидка для размещения рекламы и объявлений по платным тарифам на платформе «Гудсёрфинг»": "Descuento para colocar publicidad y anuncios en tarifas pagadas en la plataforma GoodSurfing",
+        "Получить членство": "Obtener membresía"
+    },
+    "what-is-goodsurfing": {
+        "Что делает Гудсёрфинг и как он помогает развиваться сообществу": "Qué hace GoodSurfing y cómo ayuda al desarrollo de la comunidad",
+        "Миссия Гудсёрфинга – развитие выездного добровольчества в России и мире с помощью создания удобного веб-сервиса и распространения информации о подобных возможностях. В рамках этой миссии мы постоянно занимаемся развитием технологической части сервиса, готовим и распространяем полезный контент, формируем образовательные программы.": "La misión de GoodSurfing es desarrollar el voluntariado en Rusia y en el mundo mediante la creación de un servicio web conveniente y la difusión de información sobre oportunidades similares. En el marco de esta misión, nos ocupamos constantemente del desarrollo tecnológico del servicio, creamos y distribuimos contenido útil y formamos programas educativos.",
+        "Мы уверены, что тысячи людей разделят с нами наши ценности в путешествиях со смыслом и готовы поддержать нас, оформив членство в сообществе. А мы в свою очередь сделаем для них всё возможное, чтобы их путешествия со смыслом были комфортными, полезными для общества и не забываемыми.": "Estamos seguros de que miles de personas comparten nuestros valores en los viajes con significado y están listas para apoyarnos haciéndose miembros de la comunidad. Y, a su vez, haremos todo lo posible para que sus viajes con significado sean cómodos, beneficiosos para la sociedad e inolvidables.",
+        "Начать сейчас": "Comenzar ahora"
+    },
+    "review": {
+        "Отзывы": "Reseñas"
+    },
+    "questions": {
+        "Остались вопросы?": "¿Tienes preguntas?",
+        "Сейчас ответим": "Te responderemos ahora"
+    }
+}

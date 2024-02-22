@@ -1,0 +1,16 @@
+.wrapper {
+    color: gray;
+    cursor: pointer;
+}
+
+.active {
+    color: black;
+}
+
+.wrapper {
+    color: grey; 
+}
+
+.wrapper.active {
+    color: black;
+}

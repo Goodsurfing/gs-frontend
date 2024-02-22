@@ -35,7 +35,6 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 setImg(url);
             } catch (e) {
                 setError(true);
-                console.log("Error ", e);
             }
         }
     };

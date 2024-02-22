@@ -1,0 +1,10 @@
+.left {
+    flex: 2;
+}
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}

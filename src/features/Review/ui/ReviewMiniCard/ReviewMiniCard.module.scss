@@ -1,0 +1,45 @@
+.wrapper {
+    border: 1px solid gray;
+    border-radius: 3px;
+    max-width: 380px;
+    width: 100%;
+    height: 65px;
+    display: flex;
+    padding: 12px 15px;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.userInfoContainer{
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.nameAddress{
+    display: flex;
+    flex-direction: column;
+}
+
+.btn{
+    max-width: 140px;
+    height: 32px;
+    padding: 7px 16px;
+    font-size: 12px;
+}
+
+.avatar{
+    max-width: 22px;
+    max-height: 22px;
+}
+
+.name{
+    color: var(--text-primary-1);
+    font-size: 14px;
+}
+
+.address{
+    color: var(--text-caption);
+    font-size: 12px;
+}

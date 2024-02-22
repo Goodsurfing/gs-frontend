@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import UploadButton from "../UploadButton/UploadButton";
 
 import styles from "./UploadMultipleImages.module.scss";
@@ -22,18 +24,16 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
     onUpload,
 }) => {
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
-
-    const [generateLink,
-        {
-            data, isLoading, isSuccess, isError,
-        }] = galleryApi.useGenerateLinkMutation();
+    const { t } = useTranslation("volunteer");
+    const [generateLink, {
+        data, isLoading, isSuccess, isError,
+    }] = galleryApi.useGenerateLinkMutation();
 
     const dispatch = useAppDispatch();
 
     const images = useAppSelector(getGalleryImages);
-    console.log(images);
+
     const handleUpdateImages = useCallback((image: File) => {
-        console.log(image.name);
         generateLink({ fileName: image.name }).unwrap().then((res) => {
             dispatch(galleryActions.addImage(res.url));
         });
@@ -58,7 +58,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
                     <UploadButton onUpload={handleUpdateImages} id={id} />
                 </div>
             </div>
-            {isError && <p className={styles.error}>Произошла ошибка при загрузке изображения</p>}
+            {isError && <p className={styles.error}>{t("volunteer-gallery.Произошла ошибка при загрузке изображения")}</p>}
         </>
     );
 };

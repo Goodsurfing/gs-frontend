@@ -1,4 +1,4 @@
-export enum allowedImageFileExtensions {
+export enum AllowedImageFileExtensions {
     JPG = "image/jpg",
     JPEG = "image/jpeg",
     PNG = "image/png",
@@ -6,4 +6,4 @@ export enum allowedImageFileExtensions {
     WEBP = "image/webp",
 }
 
-export type AllowedFilesExtensions = allowedImageFileExtensions;
+export type AllowedFilesExtensions = AllowedImageFileExtensions;

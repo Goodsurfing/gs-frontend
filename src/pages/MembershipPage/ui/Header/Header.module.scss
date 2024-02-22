@@ -1,0 +1,54 @@
+.wrapeprImage {
+    background-image: url('@/shared/assets/images/membership/membership-header.png');
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    min-height: 624px;
+    padding: 6rem 10rem;
+}
+
+.title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: white;
+    max-width: 33rem;
+    line-height: 3rem;
+
+    span {
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: #EEA52D;
+    }
+}
+
+.list {
+    margin-top: 30px;
+    list-style: none;
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 400;
+    line-height: 2rem;
+}
+
+.list li::before {
+    content: ""; 
+    display: inline-block;
+    width: 7px; 
+    height: 7px; 
+    margin-right: 10px; 
+    background-color: white; 
+    border-radius: 50%; 
+}
+
+.buttonPrice {
+    margin-top: 60px;
+    display: flex;
+    gap: 28px;
+}
+
+.price {
+    font-size: 1.625rem;
+    color: white;
+}

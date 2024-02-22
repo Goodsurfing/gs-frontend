@@ -1,7 +1,7 @@
 import { useState, memo } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import Button from "@/shared/ui/Button/Button";
 
 import Checkbox from "@/components/Checkbox/Checkbox";
@@ -47,8 +47,7 @@ const SignInForm = memo(() => {
                 navigate(getMainPageUrl(locale));
                 reset();
             })
-            .catch((err) => {
-                console.error("Неверные данные");
+            .catch(() => {
                 setToast({
                     text: "Неверный логин или пароль",
                     type: HintType.Error,
@@ -96,7 +95,13 @@ const SignInForm = memo(() => {
                 )}
             />
 
-            <Button disabled={isLoading} type="submit" variant={Variant.PRIMARY}>
+            <Button
+                disabled={isLoading}
+                type="submit"
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
                 Войти
             </Button>
 

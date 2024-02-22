@@ -1,25 +1,141 @@
 {
-  "main": {
-    "welcome": {
-      "header": {
-        "how-it-work": "How does it work?",
-        "community": {
-          "title": "Community",
-          "blog": "Blog",
-          "video": "Video",
-          "experts": "Experts",
-          "ambassadors": "Ambassadors",
-          "courses": "Courses",
-          "clubs": "Clubs",
-          "journal": "Journal"
+    "main": {
+        "welcome": {
+            "header": {
+                "how-it-work": "How does it work?",
+                "community": {
+                    "title": "Community",
+                    "blog": "Blog",
+                    "video": "Video",
+                    "experts": "Experts",
+                    "ambassadors": "Ambassadors",
+                    "courses": "Courses",
+                    "clubs": "Clubs",
+                    "journal": "Journal"
+                },
+                "offers": {
+                    "title": "Vacancies",
+                    "popular-places": "Popular places",
+                    "latin-america": "Latin America",
+                    "europe": "Europe",
+                    "asia": "Asia",
+                    "africa": "Africa",
+                    "france": "France",
+                    "germany": "Germany",
+                    "across-russia": "Across Russia",
+                    "altai": "Altai",
+                    "kamchatka": "Kamchatka",
+                    "crimea": "Crimea",
+                    "caucasus": "Caucasus",
+                    "ural": "Ural",
+                    "baikal": "Baikal",
+                    "view-all": "View all"
+                },
+                "about-project": {
+                    "title": "About project",
+                    "about-npo": "About-NPO",
+                    "our-team": "Our team",
+                    "how-it-works": "How it works",
+                    "rules": "Rules",
+                    "privacy-policy": "Privacy policy",
+                    "news": "News"
+                },
+                "messages": "Messages",
+                "my-page": "My page",
+                "host-dashboard": "Host dashboard",
+                "volunteer-dashboard": "Volunteer dashboard",
+                "sign-in": "Sign In",
+                "sign-up": "Sign Up",
+                "exit": "Exit"
+            },
+            "title": "Find the dream journey",
+            "offers-btn": "All offers",
+            "activity-title": "Or choose a type of activity"
         },
-        "sign-in": "Sign In",
-        "sign-up": "Sign Up",
-        "exit": "Exit"
-      },
-      "title": "Find the dream journey",
-      "offers-btn": "All offers",
-      "activity-title": "Or choose a type of activity"
+        "sidebar": {
+            "К предложениям": "To offers",
+            "Где": "Where",
+            "Когда": "When",
+            "Кто нужен": "Who needs",
+            "Описание": "Description",
+            "Что делать": "What need to do",
+            "Условия": "Conditions",
+            "Последние штрихи": "Finishing touches",
+            "Рабочий стол": "Host dashboard",
+            "Предложения": "Offers",
+            "Заявки": "Notes",
+            "Календарь": "Calendar",
+            "Организация": "Host",
+            "Фотогалерея": "Gallery",
+            "Видеогалерея": "Video gallery",
+            "Команда": "Team",
+            "Отзывы": "Reviews",
+            "Обо мне": "About me",
+            "Предпочтения": "Preferences",
+            "Роль": "Role",
+            "Пароль": "Password",
+            "Приватность": "Privacy",
+            "Панель управления": "Dashboard",
+            "Навыки": "Skills",
+            "Подписки": "Subscribers",
+            "Фото и видео": "Photo and videos",
+            "Написать в блог": "Write article",
+            "Мои статьи": "My articles"
+        }
+    },
+    "stats-points": {
+        "О себе": "About me",
+        "Навыки": "Skills",
+        "Фотографии": "Gallery",
+        "Видео": "Video gallery",
+        "Публикации в блоге": "Blog Post",
+        "Членство": "Membership"
+    },
+    "skills": {
+        "admin": "Administration",
+        "cooking": "Cooking",
+        "driving": "Driving",
+        "housing": "Housekeeping",
+        "decor": "Decorating",
+        "tourism": "Tour Guide",
+        "art": "Art",
+        "farming": "Farming",
+        "social": "Social Work",
+        "recording": "Video Editing",
+        "gardening": "Gardening",
+        "music": "Music",
+        "photo": "Photography",
+        "night_job": "Night Shift",
+        "sport": "Sports"
+    },
+    "category-offer": {
+        "Выбирайте по интересам": "Choose by interests",
+        "Работа в хостеле": "Work in a hostel",
+        "Хостелы": "Hostels",
+        "Заповедники и нац. парки": "Reserves and National Parks",
+        "Заповедники и парки": "Reserves and Parks",
+        "Работа на ферме": "Farm Work",
+        "Ферма": "Farm",
+        "Работа с животными": "Work with animals",
+        "Животные": "Animals",
+        "Преподавание": "Teaching",
+        "Работа с детьми": "Working with Children",
+        "Дети": "Children",
+        "Благотворительность": "Charity",
+        "Спорт": "Sports",
+        "Искусство": "Art",
+        "Археология": "Archaeology",
+        "Онлайн": "Online",
+        "Другое": "Other",
+        "вакансий": "vacancies",
+        "вакансия": "vacancy",
+        "вакансии": "vacancies"
+    },
+    "notes": {
+        "under consideration": "Under Consideration",
+        "accepted": "Accepted",
+        "confirmed": "Confirmed",
+        "rejected": "Rejected",
+        "Сообщение": "Message"
     }
-  }
 }

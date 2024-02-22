@@ -1,14 +1,14 @@
 .wrapper {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	justify-content: space-between;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-	margin-top: 50px;
+    margin-top: 50px;
 }
 
 @media screen and (max-width: 1180px) {
-	.wrapper {
-		justify-content: center;
-	}
+    .wrapper {
+        justify-content: center;
+    }
 }

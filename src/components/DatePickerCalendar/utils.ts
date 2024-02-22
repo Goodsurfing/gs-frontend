@@ -126,61 +126,12 @@ export const getInputValueFromDate = (value: Date) => {
     return `${date}-${month}-${year}`;
 };
 
-export const getDateFromInputValue = (inputValue: string) => {
-    if (!isValidDateString(inputValue)) {
-        return;
-    }
-
-    const [date, month, year] = inputValue.split("-").map((v) => parseInt(v, 10));
-
-    const dateObj = new Date(year, month - 1, date);
-
-    return dateObj;
-};
-
-const validValueRegex = /^\d{2}-\d{2}-\d{4}$/;
-
-export const isValidDateString = (value: string) => {
-    if (!validValueRegex.test(value)) {
-        return false;
-    }
-    const [date, month, year] = value.split("-").map((v) => parseInt(v, 10));
-
-    if (month < 1 || month > 12 || date < 1) {
-        return false;
-    }
-
-    const maxDaysInAMonth = getDaysAmountInAMonth(year, month - 1);
-
-    if (date > maxDaysInAMonth) {
-        return false;
-    }
-
-    return true;
-};
-
 export function isToday(cell: DateCellItem, todayDate: Date) {
     return (
         todayDate.getFullYear() === cell.year
     && todayDate.getMonth() === cell.month
     && todayDate.getDate() === cell.date
     );
-}
-
-export function isInRange(value: Date, min?: Date, max?: Date) {
-    if (min && max) {
-        return isSmallerThanDate(value, max) && isBiggerThanDate(value, min);
-    }
-
-    if (min) {
-        return isBiggerThanDate(value, min);
-    }
-
-    if (max) {
-        return isSmallerThanDate(value, max);
-    }
-
-    return true;
 }
 
 function isBiggerThanDate(value: Date, date: Date) {
@@ -222,3 +173,52 @@ function isSmallerThanDate(value: Date, date: Date) {
 
     return value.getDate() <= date.getDate();
 }
+
+export function isInRange(value: Date, min?: Date, max?: Date) {
+    if (min && max) {
+        return isSmallerThanDate(value, max) && isBiggerThanDate(value, min);
+    }
+
+    if (min) {
+        return isBiggerThanDate(value, min);
+    }
+
+    if (max) {
+        return isSmallerThanDate(value, max);
+    }
+
+    return true;
+}
+
+const validValueRegex = /^\d{2}-\d{2}-\d{4}$/;
+
+export const isValidDateString = (value: string) => {
+    if (!validValueRegex.test(value)) {
+        return false;
+    }
+    const [date, month, year] = value.split("-").map((v) => parseInt(v, 10));
+
+    if (month < 1 || month > 12 || date < 1) {
+        return false;
+    }
+
+    const maxDaysInAMonth = getDaysAmountInAMonth(year, month - 1);
+
+    if (date > maxDaysInAMonth) {
+        return false;
+    }
+
+    return true;
+};
+
+export const getDateFromInputValue = (inputValue: string) => {
+    if (!isValidDateString(inputValue)) {
+        return;
+    }
+
+    const [date, month, year] = inputValue.split("-").map((v) => parseInt(v, 10));
+
+    const dateObj = new Date(year, month - 1, date);
+
+    return dateObj;
+};

@@ -1,0 +1,11 @@
+.wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.content {
+    padding: 60px 150px 100px 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}

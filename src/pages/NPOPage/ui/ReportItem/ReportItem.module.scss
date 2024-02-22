@@ -1,0 +1,30 @@
+.link {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    max-width: 470px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    gap: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--bg-accent);
+    width: 100%;
+    max-width: 470px;
+    min-height: 50px;
+
+    .title {
+        color: var(--text-primary-1);
+        font-size: 1.125rem;
+        font-weight: 500;
+    }
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+}

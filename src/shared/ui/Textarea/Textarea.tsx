@@ -3,7 +3,7 @@ import React, { FC } from "react";
 
 import styles from "./Textarea.module.scss";
 
-interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     img?: string;
     label: string;
     description?: string;
@@ -33,7 +33,7 @@ const Textarea: FC<IText> = ({
         <div className={cn(styles.texarea, className)}>
             <div className={styles.labelWrapper}>
                 {img && (
-                    <img className={styles.image} src={img} alt={`${img}`} />
+                    <img className={styles.image} src={img} alt={img} />
                 )}
                 <label className={styles.label} htmlFor={id}>
                     {label}

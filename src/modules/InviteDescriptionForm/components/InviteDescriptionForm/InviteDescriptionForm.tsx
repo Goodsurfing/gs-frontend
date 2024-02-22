@@ -1,4 +1,3 @@
-import { Variant } from "@/shared/ui/Button/Button.interface";
 import Button from "@/shared/ui/Button/Button";
 
 import EventName from "../EventName/EventName";
@@ -23,7 +22,15 @@ export const InviteDescriptionForm = () => {
                 <ImageUpload />
                 <ExtraImagesUpload />
             </div>
-            <Button className={styles.btn} rounded variant={Variant.PRIMARY}>Сохранить</Button>
+            <Button
+                className={styles.btn}
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
+            >
+                Сохранить
+
+            </Button>
         </form>
     );
 };

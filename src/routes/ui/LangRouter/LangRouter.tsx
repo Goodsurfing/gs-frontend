@@ -1,9 +1,9 @@
 import {
     Suspense, useState, useEffect, useRef,
 } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { RouteWithChildrenProps } from "../../model/types/langRouter";
+import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import { allRoutes } from "../../model/config/RoutesConfig";
@@ -26,12 +26,19 @@ export const LangRouter = () => {
     }, []);
 
     const renderRouteWithChildren = (
-        routes: RouteWithChildrenProps[],
-    ) => routes.map((route, index) => (
-        <Route key={index} path={route.path(locale)} element={route.element}>
-            {route.children && renderRouteWithChildren(route.children)}
-        </Route>
-    ));
+        routes: RouteType[],
+    ) => routes.map((route) => {
+        if (route.index) {
+            return (
+                <Route key={route.label} index path={route.path(locale)} element={route.element} />
+            );
+        }
+        return (
+            <Route key={route.label} path={route.path(locale)} element={route.element}>
+                {route.children && renderRouteWithChildren(route.children)}
+            </Route>
+        );
+    });
 
     if (isLoading) {
         return <Preloader />;
@@ -40,7 +47,7 @@ export const LangRouter = () => {
     return (
         <Suspense fallback={<Preloader />}>
             <Routes>
-                <Route path={`/${locale}`} element={<Outlet />}>
+                <Route path={`/${locale}`}>
                     {renderRouteWithChildren(allRoutes)}
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />

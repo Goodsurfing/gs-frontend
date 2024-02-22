@@ -1,0 +1,23 @@
+.sideMenu {
+    position: relative;
+    border-right: 1px solid var(--text-caption);
+}
+
+.innerWrapper {
+    max-width: 325px;
+    position: sticky;
+    top: 8rem;
+    left: 0;
+}
+
+.sideMenu a {
+    display: block;
+    color: var(--text-caption);
+    text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 400;
+}
+
+.sideMenu a.active {
+    color: var(--text-secondary-2);
+}

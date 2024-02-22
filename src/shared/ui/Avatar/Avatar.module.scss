@@ -1,0 +1,39 @@
+.wrapper {
+    display: flex;
+}
+
+.SMALL, .MEDIUM, .LARGE, .DEFAULT {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.defaultPlaceholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-accent);
+    border-radius: 50%;
+}
+
+.DEFAULT {
+    width: 100%;
+    height: 100%;
+}
+
+.SMALL {
+    width: 30px;
+    height: 30px;
+}
+
+.MEDIUM {
+    width: 56px;
+    height: 56px;
+}
+
+.LARGE {
+    width: 70px;
+    height: 70px;
+}
+
+svg {
+    fill: var(--bg-field);
+}

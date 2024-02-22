@@ -1,26 +1,137 @@
 {
-  "main": {
-    "welcome": {
-      "header": {
-        "how-it-work": "O elija un tipo de actividad?",
-        "community": {
-          "title": "Comunidad",
-          "blog": "Blog",
-          "video": "Vídeo",
-          "experts": "Expertos",
-          "ambassadors": "Embajadores",
-          "courses": "Cursos",
-          "clubs": "Clubes",
-          "journal": "Revista"
+    "main": {
+        "welcome": {
+            "header": {
+                "how-it-work": "O elija un tipo de actividad?",
+                "community": {
+                    "title": "Comunidad",
+                    "blog": "Blog",
+                    "video": "Vídeo",
+                    "experts": "Expertos",
+                    "ambassadors": "Embajadores",
+                    "courses": "Cursos",
+                    "clubs": "Clubes",
+                    "journal": "Revista"
+                },
+                "offers": {
+                    "title": "Vacantes",
+                    "popular-places": "Lugares populares",
+                    "latin-america": "América Latina",
+                    "europe": "Europa",
+                    "asia": "Asia",
+                    "africa": "África",
+                    "france": "Francia",
+                    "germany": "Alemania",
+                    "across-russia": "En toda Rusia",
+                    "altai": "Altai",
+                    "kamchatka": "Kamchatka",
+                    "crimea": "Crimea",
+                    "caucasus": "Cáucaso",
+                    "ural": "Urales",
+                    "baikal": "Baikal",
+                    "view-all": "Ver todo"
+                },
+                "about-project": {
+                    "title": "Sobre el proyecto",
+                    "about-npo": "Sobre las OSFL",
+                    "our-team": "nuestro equipo",
+                    "how-it-works": "Cómo funciona",
+                    "rules": "Normas",
+                    "privacy-policy": "Política de Privacidad",
+                    "news": "Noticias"
+                },
+                "sign-in": "Iniciar sesión",
+                "sign-up": "Inscribirse",
+                "exit": "Salida"
+            },
+            "title": "Encontrar el viaje soñado",
+            "offers-btn": "Todas las ofertas",
+            "activity-title": "O elija un tipo de actividad"
         },
-        "sign-in": "Iniciar sesión",
-        "sign-up": "Inscribirse",
-        "exit": "Salida"
-      },
-      "title": "Encontrar el viaje soñado",
-      "offers-btn": "Todas las ofertas",
-      "activity-title": "O elija un tipo de actividad"
+        "sidebar": {
+            "К предложениям": "A las vacantes",
+            "Где": "Dónde",
+            "Когда": "Cuando",
+            "Кто нужен": "Quien es necesario",
+            "Описание": "Descripción",
+            "Что делать": "Qué tenemos que hacer",
+            "Условия": "Condiciones",
+            "Последние штрихи": "Últimos retoques",
+            "Рабочий стол": "Panel de host",
+            "Предложения": "Vacantes",
+            "Заявки": "Aplicaciones",
+            "Календарь": "Calendario",
+            "Организация": "Host",
+            "Фотогалерея": "Galería",
+            "Видеогалерея": "Galeria de VIDEOS",
+            "Команда": "Equipo",
+            "Отзывы": "Reseñas",
+            "Обо мне": "Acerca de mí",
+            "Предпочтения": "Preferencias",
+            "Роль": "Role",
+            "Пароль": "Contraseña",
+            "Приватность": "Privacidad",
+            "Панель управления": "Panel",
+            "Навыки": "Habilidades",
+            "Подписки": "Suscriptores",
+            "Фото и видео": "Foto y vídeos",
+            "Написать в блог": "Escribe un blog",
+            "Мои статьи": "Mis artículos"
+        }
+    },
+    "stats-points": {
+        "О себе": "Acerca de mí",
+        "Навыки": "Habilidades",
+        "Фотографии": "Galería",
+        "Видео": "Galeria de VIDEOS",
+        "Публикации в блоге": "Entrada en el blog",
+        "Членство": "Afiliación"
+    },
+    "skills": {
+        "admin": "Administración",
+        "cooking": "Cocina",
+        "driving": "Conducción",
+        "housing": "Hogar",
+        "decor": "Decoración",
+        "tourism": "Guía Turístico",
+        "art": "Arte",
+        "farming": "Agricultura",
+        "social": "Trabajo Social",
+        "recording": "Edición de Video",
+        "gardening": "Jardinería",
+        "music": "Música",
+        "photo": "Fotografía",
+        "night_job": "Turno Nocturno",
+        "sport": "Deportes"
+    },
+    "category-offer": {
+        "Выбирайте по интересам": "Elige por intereses",
+        "Работа в хостеле": "Trabajo en un hostal",
+        "Хостелы": "Hostales",
+        "Заповедники и нац. парки": "Reservas y Parques Nacionales",
+        "Заповедники и парки": "Reservas y Parques",
+        "Работа на ферме": "Trabajo en la granja",
+        "Ферма": "Granja",
+        "Работа с животными": "Trabajo con animales",
+        "Животные": "Animales",
+        "Преподавание": "Enseñanza",
+        "Работа с детьми": "Trabajo con niños",
+        "Дети": "Niños",
+        "Благотворительность": "Caridad",
+        "Спорт": "Deportes",
+        "Искусство": "Arte",
+        "Археология": "Arqueología",
+        "Онлайн": "En línea",
+        "Другое": "Otros",
+        "вакансий": "vacantes",
+        "вакансия": "vacante",
+        "вакансии": "vacantes"
+    },
+    "notes": {
+        "under consideration": "En Consideración",
+        "accepted": "Aceptado",
+        "confirmed": "Confirmado",
+        "rejected": "Rechazado",
+        "Сообщение": "Mensaje"
     }
-  },
-  "test": "ТТТТЕЕЕЕЕСССССТТТТ!!!"
 }

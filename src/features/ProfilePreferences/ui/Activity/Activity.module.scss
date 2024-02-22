@@ -1,0 +1,25 @@
+.wrapper {
+    margin-top: 30px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 30px;
+    margin-top: 20px;
+    cursor: pointer;
+
+    div {
+        &:last-child {
+            h4 {
+                color: var(--text-caption);
+            }
+        }
+    }
+}
+
+.title {
+    font-weight: 400;
+    font-size: 26px;
+}

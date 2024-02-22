@@ -20,13 +20,10 @@ export const userOrganizationInfoApi = createApi({
     tagTypes: ["userOrganizationInfo"],
     endpoints: (build) => ({
         getUserOrganizationInfo: build.query<IGetOrganizationInfo, string>({
-            query: (id) => {
-                console.log(id);
-                return {
-                    url: `/organization/${id}`,
-                    method: "GET",
-                };
-            },
+            query: (id) => ({
+                url: `/organization/${id}`,
+                method: "GET",
+            }),
             providesTags: ["userOrganizationInfo"],
         }),
     }),

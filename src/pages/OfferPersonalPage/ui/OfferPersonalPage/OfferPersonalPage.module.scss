@@ -1,0 +1,34 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content {
+    padding: 36px 50px 70px 36px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.navMenu {
+    // margin-top: 55px;
+    padding: 26px 50px 16px 50px;
+    position: sticky;
+    top: 5.563rem;
+    z-index: 4;
+}
+
+.button {
+    width: 100%;
+    max-width: 150px;
+    max-height: 36px;
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 10px 15px 70px 15px;
+    }
+}

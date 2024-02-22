@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
@@ -14,7 +14,7 @@ import {
 } from "@/shared/config/routes/AppUrls";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import MobileHeader from "@/components/MobileHeader/MobileHeader";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
 
 import { getUserAuthData, userActions } from "@/entities/User";
@@ -103,7 +103,9 @@ const InfoHeader = memo(() => {
                             <Button
                                 onClick={handleLogout}
                                 className={styles.btn}
-                                variant={Variant.PRIMARY}
+                                variant="FILL"
+                                color="BLUE"
+                                size="MEDIUM"
                             >
                                 {t("main.welcome.header.exit")}
                             </Button>

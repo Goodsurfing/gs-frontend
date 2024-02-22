@@ -1,0 +1,84 @@
+{
+    "volunteer-dashboard": {
+        "Заполненность профиля": "Profile completeness",
+        "Посмотреть свой профиль": "View your profile",
+        "Загрузка...": "Loading...",
+        "Редактировать профиль": "Edit profile",
+        "Возможности, которые вам понравятся": "Features you'll love",
+        "Настроить": "Configure",
+        "Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!": "Sign up for a Goodsurfing membership and discover the endless world of meaningful travel!",
+        "Получить членство": "Get a membership",
+        "Уведомления": "Notifications"
+    },
+    "volunteer-skills": {
+        "Навыки и умения": "Skills and Abilities",
+        "Знание языков": "Language Proficiency",
+        "Уровень владения": "Proficiency Level",
+        "english": "English",
+        "spanish": "Spanish",
+        "russian": "Russian",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "proficient": "Proficient",
+        "fluent": "Fluent",
+        "Добавить язык": "Add Language",
+        "Навыки которыми вы обладаете": "Skills You Possess",
+        "Добавить навык": "Add Skill",
+        "Дополнительная информация": "Additional Information",
+        "Не более 1000 знаков": "Not more than 1000 characters",
+        "Сохранить": "Save"
+    },
+    "volunteer-review": {
+        "Отзывы": "Reviews",
+        "Ваш рейтинг": "Your Rating",
+        "Отзывы о проектах": "Project Reviews",
+        "Проекты, которые вы недавно посещали": "Projects You Recently Visited",
+        "Отзывы о вас": "Reviews About You",
+        "Добавить отзыв": "Add Review"
+    },
+    "volunteer-notes": {
+        "Мои заявки": "My notes"
+    },
+    "volunteer-subscribers": {
+        "Подписки": "Subscriptions"
+    },
+    "volunteer-gallery": {
+        "Ваши фотографии": "Your photos",
+        "Добавьте несколько ваших фотографий, которые помогут больше о вас понять. Например, это фотографии где вы были, примеры как вы успешно справлялись с задачами или ваши встречи с другими гудсёрферами.": "Add some of your photos that will help others understand you better. For example, photos of where you've been, examples of how you successfully tackled tasks, or your meetings with other surfers.",
+        "Добавить фото": "Add photo",
+        "Видео о себе": "Video about yourself",
+        "Запишите и добавьте через Youtube небольшое презентационное видео. В видео расскажите о себе, о своих навыках и опыте и мотивации путешествовать со смыслом. Видео может быть несколько.": "Record and add a short presentation video via YouTube. In the video, talk about yourself, your skills and experience, and your motivation to travel with meaning. There can be multiple videos.",
+        "Ссылка на видео": "Video link",
+        "Добавить видео": "Add video",
+        "Дипломы и сертификаты": "Diplomas and certificates",
+        "Сюда вы можете добавить ваши дипломы и сертификаты, которые подтверждают ваш опыт и навыки.": "Here you can add your diplomas and certificates that confirm your experience and skills.",
+        "Добавить сертификат": "Add certificate",
+        "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
+        "Введите корректный URL": "Enter a valid URL",
+        "Вы ещё не добавили ни одного видео": "You haven't added any videos yet"
+    },
+    "volunteer-create-article": {
+        "Написать в блог": "Write in the blog",
+        "Добавить фото обложки": "Add cover photo",
+        "Оптимальные размеры 2175 х 966. Вес не более 5МБ": "Optimal size 2175 x 966. Weight no more than 5MB",
+        "Название статьи": "Article title",
+        "Заголовок вашей статьи": "Your article's headline",
+        "Категория статьи": "Article category",
+        "Ссылка на проект": "Project link",
+        "Ваша ссылка на заявку": "Your application link",
+        "Опубликовать": "Publish",
+        "Сохранить в черновики": "Save as draft",
+        "Заголовок слишком короткий": "Title is too short",
+        "Заголовок слишком большой": "Title is too long",
+        "Описание статьи должно достигать как минимум 200 символов": "Article description must be at least 200 characters",
+        "Описание статьи может достигать не больше 30000 символов": "Article description can be no more than 30000 characters",
+        "Введите корректную ссылку на заявку": "Enter a valid application link",
+        "Изменить": "Change",
+        "Удалить": "Delete"
+    },
+    "volunteer-articles": {
+        "Мои статьи": "My articles",
+        "Редактировать": "Edit",
+        "Удалить": "Delete"
+    }
+}

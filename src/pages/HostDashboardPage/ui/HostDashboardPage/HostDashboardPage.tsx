@@ -1,24 +1,23 @@
 import { FC } from "react";
 
+import { HostFill } from "@/features/HostFill";
+
+import { RequestsWidget } from "@/widgets/RequestsWidget";
+import { CalendarWidget } from "@/widgets/CalendarWidget";
+
+import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
+
 import styles from "./HostDashboard.module.scss";
-import HostDashboardRequest from "../HostDashboardRequest/HostDashboardRequest";
-import HostProfileFill from "../HostProfileFill/HostProfileFill";
-import HostDashboardCalendar from "../HostDashboardCalendar/HostDashboardCalendar";
-import HostDashboardNotifications from "../HostDashboardNotifications/HostDashboardNotifications";
-import { PageLayout } from "@/widgets/PageLayout";
-import { HostPagesSidebarData } from "@/shared/data/host-pages";
 
 const HostDashboardPage: FC = () => (
-    <PageLayout sidebarContent={HostPagesSidebarData}>
-        <div className={styles.dashboard}>
-            <HostProfileFill />
-            <div className={styles.columns}>
-                <HostDashboardRequest />
-                <HostDashboardCalendar />
-                <HostDashboardNotifications />
-            </div>
+    <div className={styles.dashboard}>
+        <HostFill />
+        <div className={styles.columns}>
+            <RequestsWidget />
+            <CalendarWidget />
+            <DashboardNotifications />
         </div>
-    </PageLayout>
+    </div>
 );
 
 export default HostDashboardPage;

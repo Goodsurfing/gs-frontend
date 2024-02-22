@@ -1,19 +1,17 @@
 import cn from "classnames";
 import {
-    useEffect, useRef, useState, memo,
+    memo, useEffect, useRef, useState,
 } from "react";
-import Arrow from "@/shared/ui/Arrow/Arrow";
-
-import { changeLanguageData } from "../model/data/ChangeLanguage.data";
-
-import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
 import { localeApi } from "@/store/api/localeApi";
-
 import { ILanguage } from "@/types/languages";
 
-import styles from "./ChangeLanguage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import Arrow from "@/shared/ui/Arrow/Arrow";
+
+import { changeLanguageData, languageIconsData } from "../model/data/ChangeLanguage.data";
+import styles from "./ChangeLanguage.module.scss";
 
 interface ChangeLanguageProps {
     className?: string;
@@ -54,8 +52,7 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
                 className={cn(styles.selectLang, className)}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <p>{language}</p>
-                {/* <img src={currentLanguage.icon} alt={currentLanguage.name} /> */}
+                <img src={languageIconsData[language]} alt={`${language} language`} />
                 <Arrow isOpen={isOpen} />
             </div>
             <div

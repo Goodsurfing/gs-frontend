@@ -1,0 +1,24 @@
+.wrapper {
+    width: 100%;
+    gap: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.625rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+.description {
+    font-size: 0.875rem;
+}
+
+.button {
+    max-width: 380px;
+    padding-left: 70px;
+    padding-right: 70px;
+}

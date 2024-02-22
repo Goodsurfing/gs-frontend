@@ -4,7 +4,6 @@ import {
 } from "react-hook-form";
 
 import Button from "@/shared/ui/Button/Button";
-import { Variant } from "@/shared/ui/Button/Button.interface";
 
 import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
@@ -42,8 +41,7 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
-        const preparedData = offerWhenFormAdapter(data);
-        console.log(preparedData);
+        offerWhenFormAdapter(data);
         onComplete?.();
     };
 
@@ -97,8 +95,9 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             <Button
                 onClick={handleSubmit(onSubmit)}
                 className={styles.btn}
-                rounded
-                variant={Variant.PRIMARY}
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
             >
                 Сохранить
             </Button>

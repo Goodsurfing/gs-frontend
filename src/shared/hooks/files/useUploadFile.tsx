@@ -22,9 +22,10 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                     body: JSON.stringify(body),
                 },
             );
-            const data = await response.json();
-            return data;
+            const dataResult = await response.json();
+            return dataResult;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.log(error);
         }
     };
@@ -38,12 +39,14 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                 body: data,
             });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.log(error);
         }
     };
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
+            // eslint-disable-next-line no-console
             console.log(generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.uuid;

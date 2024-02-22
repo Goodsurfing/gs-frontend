@@ -28,7 +28,7 @@ const SelectField: FC<SelectFieldProps> = ({
     <div className={styles.wrapper}>
         <div className={styles.labelWrapper}>
             {img && (
-                <img className={styles.image} src={img} alt={`${img}`} />
+                <img className={styles.image} src={img} alt={img} />
             )}
             <label htmlFor={name} className={styles.label}>
                 {label}
@@ -47,7 +47,11 @@ const SelectField: FC<SelectFieldProps> = ({
                 indicatorsContainer: () => styles.menuIndicator,
                 menuList: () => styles.menuWrapper,
                 menu: () => styles.menuList,
-                control: (state) => (state.isDisabled ? cn(styles.control, styles.disabled) : styles.control),
+                control: (state) => (
+                    state.isDisabled
+                        ? cn(styles.control, styles.disabled)
+                        : styles.control
+                ),
             }}
             name={name}
             unstyled

@@ -1,17 +1,25 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
-import { PageLayout } from "@/widgets/PageLayout";
-import { HostPagesSidebarData } from "@/shared/data/host-pages";
-import { VideoForm } from "@/modules/VideoForm";
+import { VideoForm } from "@/features/VideoForm";
+
+import Button from "@/shared/ui/Button/Button";
 
 import styles from "./HostVideoPage.module.scss";
+import { Text } from "./Text/Text";
 
 const HostVideoPage: FC = () => (
-    <PageLayout sidebarContent={HostPagesSidebarData}>
-        <div className={styles.wrapper}>
-            <VideoForm />
-        </div>
-    </PageLayout>
+    <div className={styles.wrapper}>
+        <Text />
+        <VideoForm />
+        <Button
+            className={styles.btn}
+            variant="FILL"
+            color="BLUE"
+            size="MEDIUM"
+        >
+            Сохранить
+        </Button>
+    </div>
 );
 
 export default HostVideoPage;

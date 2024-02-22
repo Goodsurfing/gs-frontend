@@ -1,0 +1,18 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.stateButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--text-primary-1);
+    border: none;
+    background-color: inherit;
+    outline: none;
+    cursor: pointer;
+    font: var(--font-label);
+}

@@ -1,0 +1,45 @@
+.wrapper {
+    width: 100%;
+    border-bottom: 1px solid var(--text-caption);
+    padding: 8px 0;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.innerWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+}
+
+.navItem {
+    cursor: pointer;
+    list-style: none;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+}
+
+.buttons.show {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+@media (max-width:768px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 30px;
+    }
+}

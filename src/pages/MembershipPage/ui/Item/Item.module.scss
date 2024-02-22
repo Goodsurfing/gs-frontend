@@ -1,0 +1,25 @@
+.itemWrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 350px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.imageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 114px;
+    height: 114px;
+    border-radius: 50%;
+    background-color: #DFE6EB;
+}
+
+.title {
+    color: var(--text-secondary-2);
+    font-size: 16px;
+    flex: 1;
+    text-align: center;
+}

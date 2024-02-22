@@ -1,8 +1,7 @@
-import i18n from "i18next";
 import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Variant } from "@/shared/ui/Button/Button.interface";
+
 import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -43,15 +42,17 @@ const SignUpForm: FC = () => {
                     dispatch(setRegisterUserData(response));
                     navigate(getConfirmEmailPageUrl(locale));
                 })
-                .catch((err) => {
-                    console.error("error");
+                .catch(() => {
                     setToast({
                         text: "Некорректно введены данные",
                         type: HintType.Error,
                     });
                 });
         } catch (e) {
-            console.log(e);
+            setToast({
+                text: "Произошла ошибка",
+                type: HintType.Error,
+            });
         }
         reset();
     };
@@ -89,7 +90,9 @@ const SignUpForm: FC = () => {
             />
             <Button
                 type="submit"
-                variant={Variant.PRIMARY}
+                variant="FILL"
+                color="BLUE"
+                size="MEDIUM"
                 className={styles.btn}
             >
                 Зарегистрироваться
