@@ -114,4 +114,6 @@ export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${Rou
 
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
 
+export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
+
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
