@@ -34,9 +34,7 @@ export const WhoNeedsForm = memo(() => {
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
-        console.log(data);
-        // offerWhoNeedsFormAdapter(data);
+    const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async () => {
     };
 
     return (

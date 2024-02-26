@@ -33,7 +33,7 @@ export const InviteDescriptionForm = () => {
     });
     const { handleSubmit, control } = form;
 
-    const onSubmit: SubmitHandler<OfferDescriptionField> = (data) => {
+    const onSubmit: SubmitHandler<OfferDescriptionField> = () => {
     };
 
     return (

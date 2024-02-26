@@ -5,9 +5,8 @@ import Button from "@/shared/ui/Button/Button";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 
-import styles from "./HostOffersPageCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./HostOffersPageCard.module.scss";
 
 interface IHostOffersPageCard {
     id: string;

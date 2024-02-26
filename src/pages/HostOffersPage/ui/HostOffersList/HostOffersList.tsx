@@ -8,9 +8,9 @@ import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import styles from "./HostOffersList.module.scss";
 
 export const HostOffersList = memo(() => {
-    const [offersData, setOffersData] = useState<Offer[]>(mockedOffersData);
+    const [offersData] = useState<Offer[]>(mockedOffersData);
 
-    const renderMyOffers = useMemo(() => offersData.map((offer, index) => (
+    const renderMyOffers = useMemo(() => offersData.map((offer) => (
         <HostOffersPageCard
             id={offer.id}
             title={offer.description.title}
@@ -22,6 +22,7 @@ export const HostOffersList = memo(() => {
             likes="10"
             reviews="14"
             went="22"
+            key={offer.id}
         />
     )), [offersData]);
 

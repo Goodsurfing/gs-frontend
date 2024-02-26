@@ -38,8 +38,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<OfferConditionsFormFields> = () => {
         onSuccess?.();
     };
 

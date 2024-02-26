@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 
 import cn from "classnames";
 import ExtraImagesItem from "../ExtraImagesItem/ExtraImagesItem";
@@ -14,7 +14,6 @@ interface ExtraImagesUploadProps {
 
 const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     const { value, onChange, classNameWrapper } = props;
-    const [imagesArray, setImagesArray] = useState<Array<string>>([]);
     const [inputImg, setInputImg] = useState<string | null>(null);
 
     const handleImageUpload = (img: string | null) => {
