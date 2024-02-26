@@ -116,4 +116,6 @@ export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
+export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;
+
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
