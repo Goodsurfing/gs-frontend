@@ -10,8 +10,8 @@ import styles from "./ConditionsItemsList.module.scss";
 interface ConditionsItemsListProps {
     className?: string;
     items: ConditionItems[];
-    value: any[]; // Todo: types issue.
-    onChange: (value: any[]) => void;
+    value: any; // Todo: types issue.
+    onChange: (value: any) => void;
 }
 
 export const ConditionsItemsList = memo((props: ConditionsItemsListProps) => {
@@ -23,19 +23,14 @@ export const ConditionsItemsList = memo((props: ConditionsItemsListProps) => {
     } = props;
 
     const onToggleCondition = (id: string) => {
-        const activeIndex = value.findIndex((item) => item === id);
-        if (activeIndex !== -1) {
-            onChange([...value.filter((val) => val !== id)]);
-        } else {
-            onChange([...value, id]);
-        }
+        onChange(id);
     };
 
     return (
         <div className={cn(styles.wrapper, className)}>
             {items.map((condition) => (
                 <ConditionsItem
-                    checked={!!value.find((val) => val === condition.id)}
+                    checked={value === condition.id}
                     onToggle={() => onToggleCondition(condition.id)}
                     icon={condition.icon}
                     text={condition.text}

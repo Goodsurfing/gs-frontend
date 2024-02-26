@@ -1,28 +1,22 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
+
+import { Gender } from "@/entities/Offer";
+
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-const Gender = () => {
-    const [woman, setWoman] = useState<boolean>(true);
-    const [man, setMan] = useState<boolean>(false);
-    const [other, setOther] = useState<boolean>(false);
+interface GenderProps {
+    value: Gender;
+    onChange: (value: Gender) => void;
+}
 
-    const onWomanChange = () => {
-        setWoman(true);
-        setMan(false);
-        setOther(false);
-    };
+export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
+    const { value, onChange } = props;
+    const [gender, setGender] = useState<Gender>(value);
 
-    const onManChange = () => {
-        setMan(true);
-        setWoman(false);
-        setOther(false);
-    };
-
-    const onOtherChange = () => {
-        setOther(true);
-        setMan(false);
-        setWoman(false);
+    const handleGenderChange = (selectedGender: Gender) => {
+        setGender(selectedGender);
+        onChange(selectedGender);
     };
 
     return (
@@ -40,9 +34,12 @@ const Gender = () => {
                         Женщина
                     </Typography>
                 )}
-                control={
-                    <SwitchComponent checked={woman} onClick={onWomanChange} />
-                }
+                control={(
+                    <SwitchComponent
+                        checked={gender === "woman"}
+                        onClick={() => handleGenderChange("woman")}
+                    />
+                )}
             />
             <FormControlLabel
                 label={(
@@ -57,9 +54,12 @@ const Gender = () => {
                         Мужчина
                     </Typography>
                 )}
-                control={
-                    <SwitchComponent checked={man} onClick={onManChange} />
-                }
+                control={(
+                    <SwitchComponent
+                        checked={gender === "man"}
+                        onClick={() => handleGenderChange("man")}
+                    />
+                )}
             />
             <FormControlLabel
                 label={(
@@ -74,12 +74,13 @@ const Gender = () => {
                         Другой
                     </Typography>
                 )}
-                control={
-                    <SwitchComponent checked={other} onClick={onOtherChange} />
-                }
+                control={(
+                    <SwitchComponent
+                        checked={gender === "other"}
+                        onClick={() => handleGenderChange("other")}
+                    />
+                )}
             />
         </Box>
     );
 };
-
-export default Gender;

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Map } from "@pbe/react-yandex-maps";
 import classNames from "classnames";
 import { MapDefaultState, YmapType } from "../../model/types/map";
@@ -22,18 +22,22 @@ export const YMap: FC<MapProps> = ({
     setLoading,
     setYmap,
     children,
-}) => (
-    <Map
-        onLoad={(ymap) => {
-            setLoading?.(true);
-            setYmap?.(ymap);
-        }}
-        state={{
-            center: mapState?.center,
-            zoom: mapState?.zoom,
-        }}
-        className={classNames(styles.map, className)}
-    >
-        {children}
-    </Map>
-);
+}) => {
+    const [mapLoaded, setMapLoaded] = useState(false);
+    return (
+        <Map
+            onLoad={(ymap) => {
+                setLoading?.(true);
+                setYmap?.(ymap);
+                setMapLoaded(true);
+            }}
+            state={{
+                center: mapState?.center,
+                zoom: mapState?.zoom,
+            }}
+            className={classNames(styles.map, className)}
+        >
+            {mapLoaded && children}
+        </Map>
+    );
+};
