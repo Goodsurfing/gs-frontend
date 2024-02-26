@@ -90,6 +90,7 @@ import {
     getAboutProjectPageUrl,
     getNPOPageUrl,
     getRulesPageUrl,
+    getFindJobPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -98,6 +99,7 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
 import { RulesPage } from "@/pages/RulesPage";
+import { FindJobPage } from "@/pages/FindJobPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -347,6 +349,11 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
+    },
+    {
+        label: "find-job",
+        element: <FindJobPage />,
+        path: (locale: string) => getFindJobPageUrl(locale),
     },
 ];
 
