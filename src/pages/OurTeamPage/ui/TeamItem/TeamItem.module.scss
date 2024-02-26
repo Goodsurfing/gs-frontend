@@ -1,0 +1,53 @@
+.wrapper {
+    display: flex;
+    gap: 24px;
+    border: 1px solid var(--text-caption);
+    border-radius: 0.625rem;
+    padding: 24px;
+    min-height: 228px;
+    width: 100%;
+}
+
+.image {
+    flex-shrink: 0;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.name {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--text-primary-1);
+}
+
+.description {
+    margin-top: 4px;
+}
+
+.icons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.address {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-caption)
+}
+
+.vk,
+.telegram {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

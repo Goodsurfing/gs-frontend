@@ -89,7 +89,9 @@ import {
     getMembershipPageUrl,
     getAboutProjectPageUrl,
     getNPOPageUrl,
+    getOurTeamPageUrl,
     getRulesPageUrl,
+    getPrivacyPolicyPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -97,7 +99,9 @@ import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
 import { RulesPage } from "@/pages/RulesPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -349,9 +353,19 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getNPOPageUrl(locale),
     },
     {
+        label: "our-team",
+        element: <OurTeamPage />,
+        path: (locale: string) => getOurTeamPageUrl(locale),
+    },
+    {
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
+    },
+    {
+        label: "rules",
+        element: <PrivacyPolicyPage />,
+        path: (locale: string) => getPrivacyPolicyPageUrl(locale),
     },
 ];
 
