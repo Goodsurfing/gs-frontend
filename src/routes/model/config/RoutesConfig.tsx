@@ -92,14 +92,18 @@ import {
     getMembershipPageUrl,
     getAboutProjectPageUrl,
     getNPOPageUrl,
+    getOurTeamPageUrl,
     getRulesPageUrl,
     getNewsPageUrl,
+    getPrivacyPolicyPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { NewsPage } from "@/pages/NewsPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -143,11 +147,11 @@ const publicRoutes: RouteType[] = [
                 index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
-            {
-                label: "host-offers",
-                element: <HostOffersPage />,
-                path: (locale) => getMyOffersPageUrl(locale),
-            },
+            // {
+            //     label: "host-offers",
+            //     element: <HostOffersPage />,
+            //     path: (locale) => getMyOffersPageUrl(locale),
+            // },
             {
                 label: "host-main-info",
                 element: <HostMainInfoPage />,
@@ -179,6 +183,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getHostNotesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "host-offers",
+        element: <HostOffersPage />,
+        path: (locale) => getMyOffersPageUrl(locale),
     },
     {
         label: "host-personal",
@@ -346,6 +355,11 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getNPOPageUrl(locale),
     },
     {
+        label: "our-team",
+        element: <OurTeamPage />,
+        path: (locale: string) => getOurTeamPageUrl(locale),
+    },
+    {
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
@@ -354,6 +368,11 @@ const publicRoutes: RouteType[] = [
         label: "news",
         element: <NewsPage />,
         path: (locale: string) => getNewsPageUrl(locale),
+    },
+    {
+        label: "rules",
+        element: <PrivacyPolicyPage />,
+        path: (locale: string) => getPrivacyPolicyPageUrl(locale),
     },
 ];
 

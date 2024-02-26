@@ -1,16 +1,14 @@
-export type {
-    Offer,
-    OfferSchema,
-} from "./model/types/offer";
+export {
+    offerApi,
+    useCreateOfferMutation,
+    useUpdateWhereMutation,
+} from "./api/offerApi";
 
-export type {
-    OfferWhere,
-} from "./model/types/offerWhere";
+export type { Offer, OfferSchema } from "./model/types/offer";
 
-export type {
-    OfferWhen,
-    OfferWhenPeriods,
-} from "./model/types/offerWhen";
+export type { OfferWhere } from "./model/types/offerWhere";
+
+export type { OfferWhen, OfferWhenPeriods } from "./model/types/offerWhen";
 
 export type {
     Gender,
@@ -49,9 +47,7 @@ export type {
     OfferFinishingTouches,
 } from "./model/types/offerFinishingTouches";
 
-export type {
-    OfferStatus,
-} from "./model/types/offerStatus";
+export type { OfferStatus } from "./model/types/offerStatus";
 
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";

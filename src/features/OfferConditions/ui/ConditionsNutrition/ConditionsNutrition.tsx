@@ -2,13 +2,11 @@ import { memo } from "react";
 
 import { Nutrition } from "@/entities/Offer";
 
-import { foodItems } from "../../model/data/conditionItems";
-import { NutritionFields } from "../../model/types/offerConditions";
-
-import { ConditionsItemsList } from "../ConditionsItemList/ConditionsItemsList";
-
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
+import { foodItems } from "../../model/data/conditionItems";
+import { NutritionFields } from "../../model/types/offerConditions";
+import { ConditionsItemsList } from "../ConditionsItemList/ConditionsItemsList";
 import styles from "./ConditionsNutrition.module.scss";
 
 interface ConditionsNutritionProps {
@@ -19,16 +17,27 @@ interface ConditionsNutritionProps {
 export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
     const { onChange, value } = props;
 
-    const onToggleCondition = (nutrition: Nutrition[]) => {
-        onChange({ ...value, nutrition });
+    const onToggleCondition = (nutrition: Nutrition) => {
+        if (value.switchState) {
+            onChange({ ...value, nutrition });
+        }
     };
 
     const onSwitchChange = () => {
-        onChange({ ...value, switchState: !value.switchState });
+        const newSwitchState = !value.switchState;
+        onChange({
+            ...value,
+            switchState: newSwitchState,
+            nutrition: !newSwitchState ? undefined : value.nutrition,
+        });
     };
 
     const onCancelClick = () => {
-        onChange({ ...value, switchState: false });
+        onChange({
+            ...value,
+            switchState: false,
+            nutrition: undefined,
+        });
     };
 
     const onApplyClick = () => {
@@ -40,13 +49,17 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
             <div className={styles.toggleWrapper}>
                 <p className={styles.toggleText}>Питание</p>
                 <div className={styles.toggle}>
-                    <span onClick={onCancelClick} className={styles.toggleSpan}>Нет</span>
+                    <span onClick={onCancelClick} className={styles.toggleSpan}>
+                        Нет
+                    </span>
                     <SwitchComponent
                         id="nutrition"
                         checked={value.switchState}
                         onClick={onSwitchChange}
                     />
-                    <span onClick={onApplyClick} className={styles.toggleSpan}>Да</span>
+                    <span onClick={onApplyClick} className={styles.toggleSpan}>
+                        Да
+                    </span>
                 </div>
             </div>
             <div className={styles.conditions}>
