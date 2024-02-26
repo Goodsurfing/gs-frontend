@@ -5,10 +5,10 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Header from "../Header/Header";
 import { HowItStarted } from "../HowItStarted/HowItStarted";
 import { Mission } from "../Mission/Mission";
-import styles from "./AboutProjectPage.module.scss";
 import { Principles } from "../Principles/Principles";
 import { GoodsurfingNow } from "../GoodsurfingNow/GoodsurfingNow";
 import { Gallery } from "../Gallery/Gallery";
+import styles from "./AboutProjectPage.module.scss";
 
 const AboutProjectPage = () => (
     <MainPageLayout>

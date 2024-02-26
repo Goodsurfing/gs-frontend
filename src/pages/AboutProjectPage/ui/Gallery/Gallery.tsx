@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Navigation, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -18,6 +19,7 @@ const data = [defaultImage, defaultImage, defaultImage, defaultImage];
 
 export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
     const { className } = props;
+    const { t } = useTranslation("about-project");
     const renderSlides = useMemo(
         () => data.map((image, index) => (
             <SwiperSlide>
@@ -34,7 +36,9 @@ export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
 
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Фото со встреч и командной работы</h2>
+            <h2 className={styles.title}>
+                {t("Фото со встреч и командной работы")}
+            </h2>
             <Swiper
                 className={styles.swiper}
                 wrapperClass={styles.swiperWrapper}

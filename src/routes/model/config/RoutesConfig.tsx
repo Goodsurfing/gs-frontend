@@ -90,6 +90,7 @@ import {
     getAboutProjectPageUrl,
     getNPOPageUrl,
     getOurTeamPageUrl,
+    getRulesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -98,6 +99,7 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
+import { RulesPage } from "@/pages/RulesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -347,6 +349,11 @@ const publicRoutes: RouteType[] = [
         label: "our-team",
         element: <OurTeamPage />,
         path: (locale: string) => getOurTeamPageUrl(locale),
+    },
+    {
+        label: "rules",
+        element: <RulesPage />,
+        path: (locale: string) => getRulesPageUrl(locale),
     },
 ];
 

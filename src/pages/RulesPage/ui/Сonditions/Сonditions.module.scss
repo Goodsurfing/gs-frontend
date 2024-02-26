@@ -1,0 +1,20 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.description {
+    max-width: 780px;
+    margin-top: 24px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
