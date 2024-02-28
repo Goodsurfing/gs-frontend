@@ -17,7 +17,8 @@
         "stylelint": "stylelint \"**/*.scss\" --fix",
         "lint:ts": "npx eslint ./src --fix",
         "lint:scss": "npx stylelint ./src --fix",
-        "prettier": "prettier --write \"**/*.{ts,tsx,js}\""
+        "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
+        "type-check": "tsc --noEmit"
     },
     "devDependencies": {
         "@babel/core": "^7.22.1",
