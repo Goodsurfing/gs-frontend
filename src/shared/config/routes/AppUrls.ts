@@ -1,6 +1,6 @@
 import { RoutePath } from "./RouterConfig";
 
-type RoutePathFunction = (locale: string) => string;
+type RoutePathFunction = (locale: string | Locale) => string;
 
 // Main page
 
