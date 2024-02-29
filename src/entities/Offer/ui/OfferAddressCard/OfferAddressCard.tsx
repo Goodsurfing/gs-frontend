@@ -10,6 +10,7 @@ import { getGeoObjectCollection } from "@/features/MapWithAddress/model/services
 import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
 import styles from "./OfferAddressCard.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferAddressCardProps {
     address: string;
@@ -19,16 +20,17 @@ interface OfferAddressCardProps {
 export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
     (props: OfferAddressCardProps) => {
         const { address, className } = props;
+        const { locale } = useLocale();
         const [, setYmap] = useState<YmapType | undefined>(undefined);
         const [coordinates, setCoordinates] = useState<GeoObject | null>();
 
         useEffect(() => {
-            getGeoObjectCollection(address).then((response) => {
+            getGeoObjectCollection(address, locale).then((response) => {
                 if (response?.featureMember.length) {
                     setCoordinates(response.featureMember[0].GeoObject);
                 }
             });
-        }, [address]);
+        }, [address, locale]);
 
         return (
             <div className={cn(className, styles.wrapper)}>

@@ -13,11 +13,19 @@ export function useGetUserHostInfo() {
         });
     }, [getHostInfo]);
 
-    if (error?.error) {
+    if (error) {
+        if ("status" in error) {
+            const errMsg = "error" in error ? error.error : JSON.stringify(error.data);
+            return {
+                host: hostData?.[0],
+                isLoading,
+                error: errMsg,
+            };
+        }
         return {
             host: hostData?.[0],
             isLoading,
-            error: error?.error,
+            error: error.message,
         };
     }
 

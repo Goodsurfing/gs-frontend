@@ -16,7 +16,7 @@ export const LocaleContext = createContext<LocaleContextProps>({
 });
 
 export const defaultLocale = "ru";
-export const availableLocales: Locale[] = ["ru", "en", "es"];
+export const availableLocales: Locale[] | string[] = ["ru", "en", "es"];
 
 interface LocaleProviderProps {
     initialLanguage?: Locale;

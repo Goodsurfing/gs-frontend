@@ -1,7 +1,7 @@
-import { HandySvg, Props } from "@handy-ones/handy-svg";
+import { HandySvg } from "@handy-ones/handy-svg";
 import { memo } from "react";
 
-interface IconProps extends Omit<Props, "icon"> {
+interface IconProps extends Omit<any, "icon"> {
     icon: string;
     alt?: string;
     id?: string;

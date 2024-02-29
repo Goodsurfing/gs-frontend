@@ -16,6 +16,7 @@ interface OfferWhoNeedsCardProps {
 
 export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
     const { className, whoNeeds } = props;
+
     return (
         <div className={cn(className, styles.wrapper)}>
             <Text title="Кто нужен" titleSize="h3" />
@@ -27,9 +28,9 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
                 />
                 {whoNeeds.age && (
                     <IconTextComponent
-                        text={whoNeeds.age}
+                        text={`${whoNeeds.age.minAge} - ${whoNeeds.age.maxAge}`}
                         icon={birthdayIcon}
-                        alt={whoNeeds.age}
+                        alt={`${whoNeeds.age.minAge} - ${whoNeeds.age.maxAge}`}
                     />
                 )}
             </div>

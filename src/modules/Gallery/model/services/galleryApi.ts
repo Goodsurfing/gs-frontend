@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { RootState } from "@/store/store";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 interface GenerateLinkResponse {
     url: string;
@@ -12,10 +12,10 @@ export const galleryApi = createApi({
     baseQuery: fetchBaseQuery({
         credentials: "same-origin",
         baseUrl: `${process.env._BASE_URL}api/v1`,
-        prepareHeaders: (headers, { getState }) => {
-            const { token } = (getState() as RootState).login;
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
             if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
             headers.set("Access-Control-Allow-Origin", "*");
             headers.set("Content-Type", "application/json");

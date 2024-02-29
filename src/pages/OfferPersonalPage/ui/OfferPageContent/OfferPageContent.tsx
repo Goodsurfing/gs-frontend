@@ -3,7 +3,8 @@ import { memo } from "react";
 
 import { OfferInfoCard } from "@/entities/Offer";
 
-import { mockedOfferData } from "../../model/data/mockedOfferData";
+// import { mockedOfferData } from "../../model/data/mockedOfferData";
+import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 import styles from "./OfferPageContent.module.scss";
 
 interface OfferPageContentProps {
@@ -16,7 +17,7 @@ export const OfferPageContent = memo((props: OfferPageContentProps) => {
     const { className, id } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
-            <OfferInfoCard offer={mockedOfferData} />
+            <OfferInfoCard offer={mockedOffersData[1]} />
         </div>
     );
 });

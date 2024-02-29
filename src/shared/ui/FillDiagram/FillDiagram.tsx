@@ -2,8 +2,8 @@ import { memo, useState } from "react";
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import styles from "./FillDiagram.module.scss";
 import { StatsChart, StatsChartPoints } from "@/entities/Stats";
+import styles from "./FillDiagram.module.scss";
 
 interface FillDiagramProps {
     className?: string;

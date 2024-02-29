@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { VideoGallery } from "@/widgets/VideoGallery/ui/VideoGallery/VideoGallery";
+import { VideoGallery } from "@/widgets/VideoGallery";
 import { Video } from "../../model/types/host";
 import styles from "./HostVideoGalleryCard.module.scss";
 

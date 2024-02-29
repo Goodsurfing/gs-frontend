@@ -7,7 +7,7 @@ import { successIcon } from "@/shared/data/icons/skills";
 import { EditableInputWithButton } from "@/shared/ui/EditableInputWithButton/EditableInputWithButton";
 import { InputWithButton } from "@/shared/ui/InputWithButton/InputWithButton";
 
-import { AdditionalSkillsType } from "../../model/types/offerWhatToDo";
+import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
 import styles from "./AdditionalSkills.module.scss";
 
 interface Props {
