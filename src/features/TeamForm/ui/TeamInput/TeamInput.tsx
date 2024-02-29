@@ -5,7 +5,7 @@ import {
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Input from "@/shared/ui/Input/Input";
 
-import { TeamUser } from "../../model/types/team";
+import { TeamUser } from "@/entities/Host";
 import { TeamCard } from "../TeamCard/TeamCard";
 import styles from "./TeamInput.module.scss";
 

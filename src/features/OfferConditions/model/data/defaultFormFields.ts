@@ -4,15 +4,15 @@ import { OfferConditionsFormFields } from "../types/offerConditions";
 export const defaultFormFields: DefaultValues<OfferConditionsFormFields> = {
     housing: {
         switchState: true,
-        housing: [],
+        housing: undefined,
     },
     nutrition: {
         switchState: true,
-        nutrition: [],
+        nutrition: undefined,
     },
     travel: {
         switchState: true,
-        travel: [],
+        travel: undefined,
     },
     facilities: {
         facilities: [],

@@ -13,7 +13,7 @@ export const Category: FC<CategoryProps> = (props) => {
     const { className } = props;
     const [categoryValue, setCategoryValue] = useState("Все категории");
 
-    const handleCategoryChange = (event: React.MouseEvent<HTMLElement>, newValue) => {
+    const handleCategoryChange = (event: React.MouseEvent<HTMLElement>, newValue: string) => {
         if (newValue) setCategoryValue(newValue);
     };
 

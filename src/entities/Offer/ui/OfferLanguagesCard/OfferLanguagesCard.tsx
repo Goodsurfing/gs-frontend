@@ -1,5 +1,5 @@
-import React, { FC, memo } from "react";
 import cn from "classnames";
+import React, { FC, memo, useMemo } from "react";
 
 import { Languages } from "../../model/types/offerWhoNeeds";
 import styles from "./OfferLanguagesCard.module.scss";
@@ -12,10 +12,15 @@ interface OfferLanguagesCardProps {
 export const OfferLanguagesCard: FC<OfferLanguagesCardProps> = memo(
     (props: OfferLanguagesCardProps) => {
         const { languages, className } = props;
+
+        const renderLanguages = useMemo(() => languages.map((language, index) => (
+            <span className={styles.languages}>{language.language}</span>
+        )), [languages]);
+
         return (
             <div className={cn(className, styles.wrapper)}>
                 <h3 className={styles.title}>Владение языками</h3>
-                <span className={styles.languages}>{languages}</span>
+                <span className={styles.languages}>{renderLanguages}</span>
             </div>
         );
     },

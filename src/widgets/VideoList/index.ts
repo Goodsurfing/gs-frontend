@@ -1,2 +1,2 @@
 export { VideoList } from "./ui/VideoList";
-export { VideoListProps } from "./model/videoList";
+export type { VideoListProps } from "./model/videoList";

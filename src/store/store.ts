@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import { authApi } from "@/store/api/authApi";
-import { userInfoApi } from "@/store/api/userInfoApi";
 
 import { localeApi } from "./api/localeApi";
 
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
-    [userInfoApi.reducerPath]: userInfoApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
     [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
@@ -41,7 +39,6 @@ export const setupStore = () => configureStore({
         authApi.middleware,
         loginApi.middleware,
         organizationApi.middleware,
-        userInfoApi.middleware,
         userOrganizationInfoApi.middleware,
         localeApi.middleware,
         profileApi.middleware,

@@ -68,8 +68,8 @@ export const mockedReviewOfferData: ReviewCardInfo[] = [
 export const mockedReviewVolunteers: Review[] = [
     {
         id: 1,
-        author: "Татьяна Олейникова",
-        authorAvatar: defaultImageGallery,
+        title: "Татьяна Олейникова",
+        image: defaultImageGallery,
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
         city: "Казань",
@@ -78,8 +78,8 @@ export const mockedReviewVolunteers: Review[] = [
     },
     {
         id: 2,
-        author: "Татьяна Олейникова",
-        authorAvatar: defaultImageGallery,
+        title: "Татьяна Олейникова",
+        image: defaultImageGallery,
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
         city: "Казань",
@@ -88,8 +88,8 @@ export const mockedReviewVolunteers: Review[] = [
     },
     {
         id: 3,
-        author: "Татьяна Олейникова",
-        authorAvatar: defaultImageGallery,
+        title: "Татьяна Олейникова",
+        image: defaultImageGallery,
         textReview:
             "Мне его посоветовала родственница, которой, в свою очередь, его посоветовала подружка много-много лет назад… Вспоминаю с улыбкой эту рассказанную историю)))",
         city: "Казань",
