@@ -31,8 +31,6 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const isShowPaymentCard = offer.conditions.payment.contribution
         || offer.conditions.payment.reward;
 
-    console.log(offer.whoNeeds);
-
     return (
         <div className={cn(className)}>
             <OfferWhenCard offerWhen={offer.when} />

@@ -14,7 +14,7 @@ export const OfferLanguagesCard: FC<OfferLanguagesCardProps> = memo(
         const { languages, className } = props;
 
         const renderLanguages = useMemo(() => languages.map((language, index) => (
-            <span className={styles.languages}>{language.language}</span>
+            <span className={styles.languages} key={index}>{language.language}</span>
         )), [languages]);
 
         return (
