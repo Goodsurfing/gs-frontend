@@ -35,7 +35,7 @@ export function buildPlugins({
                     semantic: true,
                     syntactic: true,
                 },
-                mode: "write-references",
+                mode: "write-tsbuildinfo",
             }
         }),
         new webpack.ids.HashedModuleIdsPlugin(),
