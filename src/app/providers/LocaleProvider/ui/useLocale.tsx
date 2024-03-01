@@ -2,7 +2,9 @@ import { useContext, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
-import { LocaleContext, availableLocales, defaultLocale } from "./LocaleProvider";
+import {
+    LocaleContext, availableLocales, defaultLocale, Locale,
+} from "./LocaleProvider";
 
 export const useLocale = () => {
     const { locale, setLocale } = useContext(LocaleContext);
@@ -25,7 +27,7 @@ export const useLocale = () => {
             } else {
                 navigate(`${newPath}${hash}${search}`);
             }
-            setLocale(newLocale);
+            setLocale(newLocale as Locale);
         }
     }, [hash, locale, navigate, pathname, search, setLocale]);
 
@@ -44,24 +46,22 @@ export const useLocale = () => {
     }, [i18n]);
 
     useEffect(() => {
-        if (availableLocales.includes(pathnameLocale)) {
+        if (availableLocales.includes(pathnameLocale as Locale)) {
             handleLocaleUpdate(pathnameLocale);
         } else if (pathname === "/") {
             handleLocaleUpdate(defaultLocale);
         }
-        // eslint-disable-next-line
-    }, [pathname]);
+    }, [handleLocaleUpdate, pathname, pathnameLocale]);
 
     useEffect(() => {
         let lang = defaultLocale;
-        if (availableLocales.includes(pathnameLocale)) {
+        if (availableLocales.includes(pathnameLocale as Locale)) {
             lang = pathnameLocale;
             setLanguageHandler(lang);
         } else if (pathname === "/") {
             setLanguageHandler(lang);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [locale]);
+    }, [locale, pathname, pathnameLocale, setLanguageHandler]);
 
     return { locale, updateLocale: handleLocaleUpdate };
 };

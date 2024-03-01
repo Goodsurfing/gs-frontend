@@ -37,8 +37,11 @@ import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/"
 import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { MembershipPage } from "@/pages/MembershipPage";
+import { AboutProjectPage } from "@/pages/AboutProjectPage";
+import { NPOPage } from "@/pages/NPOPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
+import { RulesPage } from "@/pages/RulesPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 
@@ -89,15 +92,18 @@ import {
     getMembershipPageUrl,
     getAboutProjectPageUrl,
     getNPOPageUrl,
+    getOurTeamPageUrl,
     getRulesPageUrl,
+    getNewsPageUrl,
+    getPrivacyPolicyPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { AboutProjectPage } from "@/pages/AboutProjectPage";
-import { NPOPage } from "@/pages/NPOPage";
-import { RulesPage } from "@/pages/RulesPage";
+import { NewsPage } from "@/pages/NewsPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -141,11 +147,11 @@ const publicRoutes: RouteType[] = [
                 index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
-            {
-                label: "host-offers",
-                element: <HostOffersPage />,
-                path: (locale) => getMyOffersPageUrl(locale),
-            },
+            // {
+            //     label: "host-offers",
+            //     element: <HostOffersPage />,
+            //     path: (locale) => getMyOffersPageUrl(locale),
+            // },
             {
                 label: "host-main-info",
                 element: <HostMainInfoPage />,
@@ -177,6 +183,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getHostNotesPageUrl(locale),
             },
         ],
+    },
+    {
+        label: "host-offers",
+        element: <HostOffersPage />,
+        path: (locale) => getMyOffersPageUrl(locale),
     },
     {
         label: "host-personal",
@@ -344,9 +355,24 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getNPOPageUrl(locale),
     },
     {
+        label: "our-team",
+        element: <OurTeamPage />,
+        path: (locale: string) => getOurTeamPageUrl(locale),
+    },
+    {
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
+    },
+    {
+        label: "news",
+        element: <NewsPage />,
+        path: (locale: string) => getNewsPageUrl(locale),
+    },
+    {
+        label: "rules",
+        element: <PrivacyPolicyPage />,
+        path: (locale: string) => getPrivacyPolicyPageUrl(locale),
     },
 ];
 

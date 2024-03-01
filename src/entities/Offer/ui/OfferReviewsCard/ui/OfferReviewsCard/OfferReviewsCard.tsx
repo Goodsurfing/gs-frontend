@@ -5,14 +5,14 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { OfferReview } from "@/entities/Offer/model/types/offerReview";
+import { Review } from "@/entities/Review";
 
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./OfferReviewsCard.module.scss";
 
 interface OfferReviewsCardProps {
-    reviews: OfferReview[];
+    reviews: Review[];
 }
 
 export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(

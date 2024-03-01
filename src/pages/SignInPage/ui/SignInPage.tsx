@@ -13,7 +13,6 @@ const SignInPage: FC = () => {
     return (
         <SignLayout cancelPath={getMainPageUrl(locale)} cancelText="Отменить">
             <div className={styles.wrapper}>
-                {/* <SignInContainer /> */}
                 <AuthByEmail />
             </div>
         </SignLayout>

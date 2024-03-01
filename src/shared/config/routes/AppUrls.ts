@@ -1,6 +1,6 @@
 import { RoutePath } from "./RouterConfig";
 
-type RoutePathFunction = (locale: string) => string;
+type RoutePathFunction = (locale: string | Locale) => string;
 
 // Main page
 
@@ -64,21 +64,21 @@ export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
 
-export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_welcome}`;
+export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_welcome}/:id`;
 
-export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}`;
+export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}/:id`;
 
-export const getOffersWherePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_where}`;
+export const getOffersWherePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_where}/:id`;
 
-export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_who_needs}`;
+export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_who_needs}/:id`;
 
-export const getOffersDescriptionPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_description}`;
+export const getOffersDescriptionPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_description}/:id`;
 
-export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_what_to_do}`;
+export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_what_to_do}/:id`;
 
-export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_conditions}`;
+export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_conditions}/:id`;
 
-export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}`;
+export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}/:id`;
 
 export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offer_personal}/:id`;
 
@@ -110,4 +110,10 @@ export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}
 
 export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.npo}`;
 
+export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.our_team}`;
+
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
+
+export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
+
+export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;

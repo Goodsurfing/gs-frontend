@@ -1,4 +1,4 @@
-import { WhoNeedsForm } from "@/modules/WhoNeedsForm";
+import { WhoNeedsForm } from "@/features/OfferWhoNeedsForm";
 
 import styles from "./OfferWhoNeedsPage.module.scss";
 

@@ -2,6 +2,7 @@ import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { HandySvg } from "@handy-ones/handy-svg";
 import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -81,7 +82,7 @@ export const MainHeaderNav = () => {
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
-                    <img
+                    <HandySvg
                         className={styles.searchIcn}
                         src={searchIcon}
                         alt="SEARCH ICON"

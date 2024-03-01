@@ -14,18 +14,22 @@ import { getConfirmEmailPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
-import { IToast } from "@/store/reducers/toastSlice";
 
 import { IAuthFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
+interface ToastAlert {
+    text: string;
+    type: HintType
+}
+
 const SignUpForm: FC = () => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();
 
     const { locale } = useLocale();
-    const [toast, setToast] = useState<IToast>();
+    const [toast, setToast] = useState<ToastAlert>();
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

@@ -33,7 +33,9 @@
 }
 
 .checked {
-  fill: white;
+  svg {
+    fill: white;
+  }
   stroke: none;
 }
 

@@ -1,11 +1,12 @@
+import cn from "classnames";
 import React, { FC, useState } from "react";
 
-import cn from "classnames";
 import InputFile from "@/shared/ui/InputFile/InputFile";
+import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
-import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
+import Button from "@/shared/ui/Button/Button";
 
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
@@ -20,7 +21,9 @@ const ImageInput: FC<ImageInputComponentProps> = ({
 }) => {
     const [error, setError] = useState<boolean>(false);
 
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
@@ -39,22 +42,62 @@ const ImageInput: FC<ImageInputComponentProps> = ({
         }
     };
 
+    const handleDelete = () => {
+        setImg(null);
+    };
+
     return (
         <div className={styles.main}>
-            <InputFile
-                onChange={handleFileChange}
-                imageURL={img}
-                uploadedImageClassName={styles.uploadedImg}
-                wrapperClassName={cn(styles.wrapper, wrapperClassName)}
-                labelClassName={cn(styles.label, labelClassName)}
-                labelChildren={labelChildren}
-                id={id}
-                {...restInputProps}
-            />
-            <div className={cn(extraWrapperClassName, styles.extraWrapper)}>
-                {error && <span className={styles.error}>Неверный формат файла</span>}
-                {description}
-            </div>
+            {img && (
+                <div className={styles.imageWrapper}>
+                    <img src={img} alt="uploaded" className={styles.imageCover} />
+                    <div className={styles.containerButtons}>
+                        <InputFile
+                            id="upload image"
+                            onChange={handleFileChange}
+                            wrapperClassName={styles.inputButton}
+                            uploadedImageClassName={styles.hiddenImg}
+                            labelClassName={styles.inputButton}
+                            labelChildren={(
+                                <div
+                                    className={styles.buttons}
+                                >
+                                    Изменить
+                                </div>
+                            )}
+                        />
+                        <Button
+                            className={styles.buttons}
+                            color="BLUE"
+                            size="SMALL"
+                            variant="OUTLINE"
+                            onClick={handleDelete}
+                        >
+                            Удалить
+                        </Button>
+                    </div>
+                </div>
+            )}
+            {!img && (
+                <>
+                    <InputFile
+                        onChange={handleFileChange}
+                        imageURL={img}
+                        uploadedImageClassName={styles.uploadedImg}
+                        wrapperClassName={cn(styles.wrapper, wrapperClassName)}
+                        labelClassName={cn(styles.label, labelClassName)}
+                        labelChildren={labelChildren}
+                        id={id}
+                        {...restInputProps}
+                    />
+                    <div className={cn(extraWrapperClassName, styles.extraWrapper)}>
+                        {error && (
+                            <span className={styles.error}>Неверный формат файла</span>
+                        )}
+                        {description}
+                    </div>
+                </>
+            )}
         </div>
     );
 };
