@@ -2,7 +2,7 @@ node_modules
 dist
 webpack.config.js
 assets
-.nginx
+# .nginx
 public
 .docker
 .github
