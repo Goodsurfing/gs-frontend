@@ -2,7 +2,7 @@ import React, { FC, memo } from "react";
 
 import cn from "classnames";
 import { Article } from "@/entities/Article";
-import like from "@/shared/assets/icons/ThumbsUp.svg";
+import like from "@/shared/assets/icons/thumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
 import styles from "./ArticleWidget.module.scss";
 
