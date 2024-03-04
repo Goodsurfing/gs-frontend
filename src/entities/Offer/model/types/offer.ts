@@ -28,7 +28,11 @@ export interface Offer {
 export interface MyOffers {
     list: [
         {
+            id: string,
             title: string,
+            description: string,
+            location: string,
+            category: string,
             rating: number,
             likes: number,
             reviews: number,

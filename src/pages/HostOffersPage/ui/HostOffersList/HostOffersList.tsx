@@ -1,20 +1,18 @@
-import React, { memo, useMemo } from "react";
+import React, { FC, memo, useMemo } from "react";
 
 import image from "@/shared/assets/images/default-offer-image.svg";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
+import { MyOffers } from "@/entities/Offer";
 import styles from "./HostOffersList.module.scss";
-import { useGetMyOffersQuery } from "@/entities/Offer/api/offerApi";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-export const HostOffersList = memo(() => {
-    const {
-        data: offers, isLoading, isError,
-    } = useGetMyOffersQuery();
+interface HostOffersListProps {
+    offers?: MyOffers
+}
 
+export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
+    const { offers } = props;
     const renderMyOffers = useMemo(() => {
         if (!offers) {
             return <span>Нет списка вакансий</span>;
@@ -22,12 +20,12 @@ export const HostOffersList = memo(() => {
 
         return offers.list.map((offer, index) => (
             <HostOffersPageCard
-                id={String(index)}
+                id={offer.id}
                 title={offer.title}
-                description="Здесь будет описание"
+                description={offer.description}
                 image={image}
-                location="Казань, Россия"
-                category="Работа с животными"
+                location={offer.location}
+                category={offer.category}
                 rating={String(offer.rating)}
                 likes={String(offer.likes)}
                 reviews={String(offer.reviews)}
@@ -37,13 +35,8 @@ export const HostOffersList = memo(() => {
         ));
     }, [offers]);
 
-    if (isLoading) {
-        return <Preloader className={styles.wrapperPreloader} preloader={styles.preloader} />;
-    }
-
     return (
         <div className={styles.wrapper}>
-            {isError && <HintPopup text="Ошибка вывода списка вакансий" type={HintType.Error} />}
             {renderMyOffers}
         </div>
     );
