@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
-import { Offer } from "../model/types/offer";
+import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -13,7 +13,7 @@ interface CreateOfferResponse {
 export const offerApi = createApi({
     reducerPath: "offerApi",
     baseQuery,
-    tagTypes: ["offer"],
+    tagTypes: ["offer", "address"],
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, void>({
             query: (body) => ({
@@ -23,43 +23,106 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhere: build.mutation<unknown, UpdateOfferParams>({
+        getAddressAutoComplete: build.query<AddressAutoComplete, void>({
+            query: () => ({
+                url: "/address-autocomplet",
+                method: "GET",
+            }),
+            providesTags: ["address"],
+        }),
+        getMyOffers: build.query<MyOffers, void>({
+            query: () => ({
+                url: "/vacansy/my",
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateStatus: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/status`,
+                method: "PUT",
+                body: { status: data.body.status },
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateWhere: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacansy/${data.body.id}/where`,
-                method: "PATCH",
+                method: "PUT",
                 body: data.body.where,
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhen: build.mutation<unknown, UpdateOfferParams>({
+        updateWhen: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacansy/${data.body.id}/when`,
-                method: "PATCH",
+                method: "PUT",
                 body: data.body.when,
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhoNeeds: build.mutation<unknown, UpdateOfferParams>({
+        updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacansy/${data.body.id}/how-needs`,
-                method: "PATCH",
-                body: data.body.whoNeeds,
+                method: "PUT",
+                body: {
+                    genders: [data.body.whoNeeds?.genders],
+                    ageMax: data.body.whoNeeds?.age?.maxAge,
+                    ageMin: data.body.whoNeeds?.age?.minAge,
+                    volunteerPlaces: data.body.whoNeeds?.volunteerPlaces,
+                    receptionPlace: data.body.whoNeeds?.receptionPlace,
+                    additionalInfo: data.body.whoNeeds?.additionalInfo,
+                    needAllLanguages: data.body.whoNeeds?.needAllLanguages,
+                    languages: data.body.whoNeeds?.languages,
+                },
             }),
             invalidatesTags: ["offer"],
         }),
-        updateDescription: build.mutation<unknown, UpdateOfferParams>({
+        updateDescription: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacansy/${data.body.id}/description`,
-                method: "PATCH",
-                body: data.body.description,
+                method: "PUT",
+                body: {
+                    title: data.body.description?.title,
+                    categoryIds: data.body.description?.category,
+                    shortDescription: data.body.description?.shortDescription,
+                    description: data.body.description?.longDescription,
+                    imageId: data.body.description?.titleImage,
+                    galleryIds: data.body.description?.images,
+                },
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhatToDo: build.mutation<unknown, UpdateOfferParams>({
+        updateWhatToDo: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacansy/${data.body.id}/what-to-do`,
-                method: "PATCH",
-                body: data.body.whatToDo,
+                method: "PUT",
+                body: {
+                    hours: data.body.whatToDo?.workingHours.hours,
+                    timeType: data.body.whatToDo?.workingHours.timeType,
+                    dayOff: data.body.whatToDo?.workingHours.dayOff,
+                    skillIds: data.body.whatToDo?.skills,
+                    additionalSkills: data.body.whatToDo?.additionalSkills,
+                    externalInfo: data.body.whatToDo?.extraInfo,
+                },
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateConditions: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacansy/${data.body.id}/conditions`,
+                method: "PUT",
+                body: {
+                    housingIds: [data.body.conditions?.housing],
+                    foodIds: [data.body.conditions?.nutrition],
+                    paidTravelIds: [data.body.conditions?.travel],
+                    conveniencesIds: data.body.conditions?.facilities,
+                    additionalFeaturesIds: data.body.conditions?.extraFeatures,
+                    volunteerContributions: data.body.conditions?.payment.contribution,
+                    volunteerRemuneration: data.body.conditions?.payment.reward,
+                    currency: data.body.conditions?.payment.currency,
+                    additionalConditions: data.body.conditions?.extraConditions,
+                },
             }),
             invalidatesTags: ["offer"],
         }),

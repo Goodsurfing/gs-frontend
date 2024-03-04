@@ -25,6 +25,23 @@ export interface Offer {
     status: OfferStatus;
 }
 
+export interface MyOffers {
+    list: [
+        {
+            title: string,
+            rating: number,
+            likes: number,
+            reviews: number,
+            acceptedRequests: number,
+            status: OfferStatus;
+        },
+    ]
+}
+
+export interface AddressAutoComplete {
+    list: string[]
+}
+
 export interface OfferSchema {
     data?: Offer;
     form?: Offer;
