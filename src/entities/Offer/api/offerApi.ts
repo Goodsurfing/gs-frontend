@@ -66,16 +66,7 @@ export const offerApi = createApi({
                 url: `/vacanсy/${data.body.id}/how-needs`,
                 method: "PUT",
                 // toDo: Change body typing for backend
-                body: {
-                    genders: [data.body.whoNeeds?.genders],
-                    ageMax: data.body.whoNeeds?.age?.maxAge,
-                    ageMin: data.body.whoNeeds?.age?.minAge,
-                    volunteerPlaces: data.body.whoNeeds?.volunteerPlaces,
-                    receptionPlace: data.body.whoNeeds?.receptionPlace,
-                    additionalInfo: data.body.whoNeeds?.additionalInfo,
-                    needAllLanguages: data.body.whoNeeds?.needAllLanguages,
-                    languages: data.body.whoNeeds?.languages,
-                },
+                body: data.body.whoNeeds,
             }),
             invalidatesTags: ["offer"],
         }),
@@ -138,4 +129,6 @@ export const {
     useUpdateWhereMutation,
     useGetMyOffersQuery,
     useUpdateWhenMutation,
+    useUpdateWhoNeedsMutation,
+    useUpdateDescriptionMutation,
 } = offerApi;

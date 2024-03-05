@@ -1,5 +1,6 @@
 import { FC, useCallback } from "react";
 
+import { Controller, useFormContext } from "react-hook-form";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
@@ -15,6 +16,7 @@ interface LanguagesGroupProps {
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
+    const { control } = useFormContext();
 
     const onCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;
@@ -44,7 +46,13 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                     />
                 ))}
                 {value.length > 1 && (
-                    <ExtraControls />
+                    <Controller
+                        control={control}
+                        name="needAllLanguages"
+                        render={({ field }) => (
+                            <ExtraControls value={field.value} onChange={field.onChange} />
+                        )}
+                    />
                 )}
             </div>
             <div className="">

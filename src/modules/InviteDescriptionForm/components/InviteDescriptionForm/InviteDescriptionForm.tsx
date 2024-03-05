@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -5,9 +6,18 @@ import {
     SubmitHandler,
     useForm,
 } from "react-hook-form";
+import { useParams } from "react-router-dom";
+
+import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
 
+import { inviteDescriptionApiAdapter } from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";
@@ -32,12 +42,33 @@ export const InviteDescriptionForm = () => {
         defaultValues,
     });
     const { handleSubmit, control } = form;
+    const [updateDescription, { isError }] = useUpdateDescriptionMutation();
+    const [toast, setToast] = useState<ToastAlert>();
+    const { id } = useParams();
 
-    const onSubmit: SubmitHandler<OfferDescriptionField> = () => {
+    const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
+        const preparedData = inviteDescriptionApiAdapter(data);
+        await updateDescription({ body: { id, ...preparedData } })
+            .unwrap()
+            .then(() => {
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            })
+            .catch(() => {
+                setToast({
+                    text: "Некорректно введены данные",
+                    type: HintType.Error,
+                });
+            });
     };
 
     return (
         <FormProvider {...form}>
+            {isError && toast && (
+                <HintPopup text={toast.text} type={toast.type} />
+            )}
             <form>
                 <div className={styles.formWrapper}>
                     <EventName />
