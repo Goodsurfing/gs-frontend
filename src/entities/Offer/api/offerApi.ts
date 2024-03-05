@@ -1,5 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
+
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+
 import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 
 interface UpdateOfferParams {
@@ -70,7 +72,10 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        updateDescription: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+        updateDescription: build.mutation<
+        CreateOfferResponse,
+        UpdateOfferParams
+        >({
             query: (data) => ({
                 url: `/vacanсy/${data.body.id}/description`,
                 method: "PUT",
@@ -102,7 +107,10 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        updateConditions: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+        updateConditions: build.mutation<
+        CreateOfferResponse,
+        UpdateOfferParams
+        >({
             query: (data) => ({
                 url: `/vacanсy/${data.body.id}/conditions`,
                 method: "PUT",
@@ -113,7 +121,8 @@ export const offerApi = createApi({
                     paidTravelIds: [data.body.conditions?.travel],
                     conveniencesIds: data.body.conditions?.facilities,
                     additionalFeaturesIds: data.body.conditions?.extraFeatures,
-                    volunteerContributions: data.body.conditions?.payment.contribution,
+                    volunteerContributions:
+                        data.body.conditions?.payment.contribution,
                     volunteerRemuneration: data.body.conditions?.payment.reward,
                     currency: data.body.conditions?.payment.currency,
                     additionalConditions: data.body.conditions?.extraConditions,
@@ -121,12 +130,20 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        updateFinish: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+        updateFinishingTouches: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacanсy/${data.body.id}/conditions`,
                 method: "PUT",
                 // toDo: Change body typing for backend
-                body: data.body.finishingTouches,
+                body: {
+                    additionalConditionsIds: data.body.finishingTouches?.extraConditions,
+                    // onlyVerified: true,
+                    helloText: data.body.finishingTouches?.welcomeMessage,
+                    roles: data.body.finishingTouches?.rulesInfo,
+                    // questionnaireUrl: "string",
+                    // questions: "string",
+                    // data.body.finishingTouches},
+                },
             }),
             invalidatesTags: ["offer"],
         }),
@@ -142,4 +159,5 @@ export const {
     useUpdateDescriptionMutation,
     useUpdateWhatToDoMutation,
     useUpdateConditionsMutation,
+    useUpdateFinishingTouchesMutation,
 } = offerApi;
