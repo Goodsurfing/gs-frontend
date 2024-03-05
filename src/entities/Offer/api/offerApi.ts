@@ -121,6 +121,15 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        updateFinish: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacanсy/${data.body.id}/conditions`,
+                method: "PUT",
+                // toDo: Change body typing for backend
+                body: data.body.finishingTouches,
+            }),
+            invalidatesTags: ["offer"],
+        }),
     }),
 });
 
@@ -131,4 +140,6 @@ export const {
     useUpdateWhenMutation,
     useUpdateWhoNeedsMutation,
     useUpdateDescriptionMutation,
+    useUpdateWhatToDoMutation,
+    useUpdateConditionsMutation,
 } = offerApi;

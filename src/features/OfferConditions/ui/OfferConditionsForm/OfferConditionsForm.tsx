@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { memo } from "react";
+import { memo, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -7,6 +7,7 @@ import {
     useForm,
 } from "react-hook-form";
 
+import { useParams } from "react-router-dom";
 import type { OfferConditionsFormFields } from "../../model/types/offerConditions";
 
 import { defaultFormFields } from "../../model/data/defaultFormFields";
@@ -22,6 +23,9 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./OfferConditionsForm.module.scss";
+import { offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
+import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -32,13 +36,18 @@ const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormField
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
+    const [updateConditions, { isError, isLoading }] = useUpdateConditionsMutation();
+    const [toast, setToast] = useState<ToastAlert>();
+    const { id } = useParams();
 
     const { control, handleSubmit } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferConditionsFormFields> = () => {
+    const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
+        const preparedData = offerConditionsApiAdapter(data);
+        console.log(preparedData);
         onSuccess?.();
     };
 

@@ -42,7 +42,7 @@ export const InviteDescriptionForm = () => {
         defaultValues,
     });
     const { handleSubmit, control } = form;
-    const [updateDescription, { isError }] = useUpdateDescriptionMutation();
+    const [updateDescription, { isError, isLoading }] = useUpdateDescriptionMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
 
@@ -89,6 +89,7 @@ export const InviteDescriptionForm = () => {
                 </div>
                 <Button
                     className={styles.btn}
+                    disabled={isLoading}
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"

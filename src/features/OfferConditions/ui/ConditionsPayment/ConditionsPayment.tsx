@@ -3,7 +3,7 @@ import { memo } from "react";
 import { MenuItem } from "@mui/material";
 import Input from "@/shared/ui/Input/Input";
 
-import { Payment } from "@/entities/Offer";
+import { Currency, Payment } from "@/entities/Offer";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
 import { paymentValues } from "../../model/data/payment";
@@ -30,6 +30,10 @@ export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
         }
     };
 
+    const onCurrencyChange = (inputValue: Currency) => {
+        onChange({ ...value, currency: inputValue });
+    };
+
     return (
         <div className={styles.wrapper}>
             <p className={styles.title}>Оплата</p>
@@ -45,6 +49,7 @@ export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
                         <MenuItem
                             key={currency.symbol}
                             value={currency.name}
+                            onClick={() => onCurrencyChange(currency.name)}
                         >
                             {currency.symbol}
                         </MenuItem>
