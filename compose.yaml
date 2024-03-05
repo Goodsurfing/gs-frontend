@@ -9,6 +9,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`gudserfing.ru`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=leresolver"
     networks:
       - proxy
 
