@@ -1,8 +1,9 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import {
     Controller, DefaultValues, SubmitHandler, useForm,
 } from "react-hook-form";
 
+import { useParams } from "react-router-dom";
 import Button from "@/shared/ui/Button/Button";
 
 import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
@@ -16,6 +17,9 @@ import type {
 
 import styles from "./OfferWhenForm.module.scss";
 import { offerWhenFormAdapter } from "../../lib/offerWhenFormAdapter";
+import { useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -40,8 +44,26 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 };
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
+    const [updateWhen, { isError }] = useUpdateWhenMutation();
+    const [toast, setToast] = useState<ToastAlert>();
+    const { id } = useParams();
+
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
-        offerWhenFormAdapter(data);
+        const preparedData = offerWhenFormAdapter(data);
+        await updateWhen({ body: { id, ...preparedData } })
+            .unwrap()
+            .then(() => {
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            })
+            .catch(() => {
+                setToast({
+                    text: "Некорректно введены данные",
+                    type: HintType.Error,
+                });
+            });
         onComplete?.();
     };
 
@@ -52,6 +74,9 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     return (
         <form className={styles.form}>
+            {isError && toast && (
+                <HintPopup text={toast.text} type={toast.type} />
+            )}
             <Controller
                 name="periods"
                 control={control}

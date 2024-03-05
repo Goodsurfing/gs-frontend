@@ -137,4 +137,5 @@ export const {
     useCreateOfferMutation,
     useUpdateWhereMutation,
     useGetMyOffersQuery,
+    useUpdateWhenMutation,
 } = offerApi;

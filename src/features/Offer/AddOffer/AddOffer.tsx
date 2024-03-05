@@ -28,6 +28,7 @@ export const AddOffer = () => {
             )}
             <Button
                 variant="FILL"
+                disabled={isLoading}
                 color="BLUE"
                 size="MEDIUM"
                 className={styles.btn}

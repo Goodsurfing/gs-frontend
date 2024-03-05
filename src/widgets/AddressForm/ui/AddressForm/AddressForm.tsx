@@ -33,7 +33,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     });
     const { t } = useTranslation("offer-where");
     const { id } = useParams();
-    const [updateWhere, { isError }] = useUpdateWhereMutation();
+    const [updateWhere, { isError, isLoading }] = useUpdateWhereMutation();
     const [toast, setToast] = useState<ToastAlert>();
 
     const onSubmit = handleSubmit(async (data) => {
@@ -71,6 +71,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={handleCoordinatesChange} />
             <Button
                 variant="FILL"
+                disabled={isLoading}
                 color="BLUE"
                 size="MEDIUM"
                 className={styles.btn}
