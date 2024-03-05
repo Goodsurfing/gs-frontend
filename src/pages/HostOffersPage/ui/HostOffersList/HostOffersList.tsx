@@ -1,7 +1,6 @@
 import React, { FC, memo, useMemo } from "react";
 
 import image from "@/shared/assets/images/default-offer-image.svg";
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { MyOffers } from "@/entities/Offer";
