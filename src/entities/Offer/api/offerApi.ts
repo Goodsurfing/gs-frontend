@@ -19,7 +19,7 @@ export const offerApi = createApi({
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, void>({
             query: (body) => ({
-                url: "/vacanсy",
+                url: "/vacancy",
                 method: "POST",
                 body,
             }),
@@ -34,14 +34,14 @@ export const offerApi = createApi({
         }),
         getMyOffers: build.query<MyOffers, void>({
             query: () => ({
-                url: "/vacanсy/my",
+                url: "/vacancy/my",
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
         updateStatus: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/status`,
+                url: `/vacancy/${data.body.id}/status`,
                 method: "PUT",
                 body: { status: data.body.status },
             }),
@@ -49,7 +49,7 @@ export const offerApi = createApi({
         }),
         updateWhere: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/where`,
+                url: `/vacancy/${data.body.id}/where`,
                 method: "PUT",
                 body: data.body.where,
             }),
@@ -57,19 +57,22 @@ export const offerApi = createApi({
         }),
         updateWhen: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/when`,
+                url: `/vacancy/${data.body.id}/when`,
                 method: "PUT",
                 body: data.body.when,
             }),
             invalidatesTags: ["offer"],
         }),
         updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacanсy/${data.body.id}/how-needs`,
-                method: "PUT",
-                // toDo: Change body typing for backend
-                body: data.body.whoNeeds,
-            }),
+            query: (data) => {
+                console.log("Request body:", data.body.whoNeeds);
+                return {
+                    url: `/vacancy/${data.body.id}/how-needs`,
+                    method: "PUT",
+                    // toDo: Change body typing for backend
+                    body: data.body.whoNeeds,
+                };
+            },
             invalidatesTags: ["offer"],
         }),
         updateDescription: build.mutation<
@@ -77,7 +80,7 @@ export const offerApi = createApi({
         UpdateOfferParams
         >({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/description`,
+                url: `/vacancy/${data.body.id}/description`,
                 method: "PUT",
                 // toDo: Change body typing for backend
                 body: {
@@ -92,19 +95,22 @@ export const offerApi = createApi({
             invalidatesTags: ["offer"],
         }),
         updateWhatToDo: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacanсy/${data.body.id}/what-to-do`,
-                method: "PUT",
-                // toDo: Change body typing for backend
-                body: {
-                    hours: data.body.whatToDo?.workingHours.hours,
-                    timeType: data.body.whatToDo?.workingHours.timeType,
-                    dayOff: data.body.whatToDo?.workingHours.dayOff,
-                    skillIds: data.body.whatToDo?.skills,
-                    additionalSkills: data.body.whatToDo?.additionalSkills,
-                    externalInfo: data.body.whatToDo?.extraInfo,
-                },
-            }),
+            query: (data) => {
+                console.log("Request data:", data.body.whatToDo);
+                return {
+                    url: `/vacancy/${data.body.id}/what-to-do`,
+                    method: "PUT",
+                    // toDo: Change body typing for backend
+                    body: {
+                        hours: data.body.whatToDo?.workingHours.hours,
+                        timeType: data.body.whatToDo?.workingHours.timeType,
+                        dayOff: data.body.whatToDo?.workingHours.dayOff,
+                        skillIds: data.body.whatToDo?.skills,
+                        additionalSkills: data.body.whatToDo?.additionalSkills,
+                        externalInfo: data.body.whatToDo?.extraInfo,
+                    },
+                };
+            },
             invalidatesTags: ["offer"],
         }),
         updateConditions: build.mutation<
@@ -112,7 +118,7 @@ export const offerApi = createApi({
         UpdateOfferParams
         >({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/conditions`,
+                url: `/vacancy/${data.body.id}/conditions`,
                 method: "PUT",
                 // toDo: Change body typing for backend
                 body: {
@@ -130,19 +136,23 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        updateFinishingTouches: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+        updateFinishingTouches: build.mutation<
+        CreateOfferResponse,
+        UpdateOfferParams
+        >({
             query: (data) => ({
-                url: `/vacanсy/${data.body.id}/conditions`,
+                url: `/vacancy/${data.body.id}/finishing-touches`,
                 method: "PUT",
                 // toDo: Change body typing for backend
                 body: {
-                    additionalConditionsIds: data.body.finishingTouches?.extraConditions,
-                    // onlyVerified: true,
+                    additionalConditionsIds: [
+                        0,
+                    ],
+                    onlyVerified: data.body.finishingTouches?.onlyVerified,
                     helloText: data.body.finishingTouches?.welcomeMessage,
                     roles: data.body.finishingTouches?.rulesInfo,
-                    // questionnaireUrl: "string",
-                    // questions: "string",
-                    // data.body.finishingTouches},
+                    questionnaireUrl: data.body.finishingTouches?.questionnaireUrl,
+                    questions: data.body.finishingTouches?.questions,
                 },
             }),
             invalidatesTags: ["offer"],
@@ -152,6 +162,7 @@ export const offerApi = createApi({
 
 export const {
     useCreateOfferMutation,
+    useUpdateStatusMutation,
     useUpdateWhereMutation,
     useGetMyOffersQuery,
     useUpdateWhenMutation,

@@ -13,7 +13,7 @@ interface HostOffersListProps {
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
     const { offers } = props;
     const renderMyOffers = useMemo(() => {
-        if (!offers) {
+        if (!offers || !offers.list) {
             return <span>Нет списка вакансий</span>;
         }
 

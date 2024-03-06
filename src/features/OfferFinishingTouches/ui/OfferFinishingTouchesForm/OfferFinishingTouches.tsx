@@ -1,3 +1,4 @@
+import { FormControlLabel, Typography } from "@mui/material";
 import cn from "classnames";
 import { memo, useState } from "react";
 import {
@@ -8,7 +9,7 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { useUpdateFinishingTouchesMutation } from "@/entities/Offer/api/offerApi";
+import { useUpdateFinishingTouchesMutation, useUpdateStatusMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -16,11 +17,14 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Input from "@/shared/ui/Input/Input";
+import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { offerFinishingTouchesApiAdapter } from "../../lib/offerFinishingTouchesAdapter";
 import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishingTouches";
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
+import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import styles from "./OfferFinishingTouches.module.scss";
 
 interface OfferFinishingTouchesFormProps {
@@ -30,15 +34,18 @@ interface OfferFinishingTouchesFormProps {
 
 const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
     extraConditions: [],
+    onlyVerified: false,
+    welcomeMessage: "",
+    rules: "",
+    questionnaireUrl: "",
+    questions: "",
 };
 
 export const OfferFinishingTouchesForm = memo(
     (props: OfferFinishingTouchesFormProps) => {
         const { className, onSuccess } = props;
-        const [updateFinishingTouches, {
-            isError,
-            isLoading,
-        }] = useUpdateFinishingTouchesMutation();
+        const [updateFinishingTouches, { isLoading }] = useUpdateFinishingTouchesMutation();
+        const [updateOfferStatus] = useUpdateStatusMutation();
         const [toast, setToast] = useState<ToastAlert>();
         const { id } = useParams();
 
@@ -47,15 +54,16 @@ export const OfferFinishingTouchesForm = memo(
             defaultValues,
         });
 
-        const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (
-            data,
-        ) => {
+        const updateFinishingTouchesHandle = (data: OfferFinishingTouchesFormFields) => {
             const preparedData = offerFinishingTouchesApiAdapter(data);
-            updateFinishingTouches({ body: { id, ...preparedData } })
+            setToast(undefined);
+            updateFinishingTouches({
+                body: { id, finishingTouches: preparedData },
+            })
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Адрес успешно изменён",
+                        text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
                 })
@@ -65,7 +73,33 @@ export const OfferFinishingTouchesForm = memo(
                         type: HintType.Error,
                     });
                 });
+        };
+
+        const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (
+            data,
+        ) => {
+            updateFinishingTouchesHandle(data);
+            updateOfferStatus({ body: { id, status: "open" } })
+                .unwrap()
+                .catch(() => {
+                    setToast({
+                        text: "Произошла ошибка публикации",
+                        type: HintType.Error,
+                    });
+                });
             onSuccess?.(data);
+        };
+
+        const onDraftHandle: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
+            updateFinishingTouchesHandle(data);
+            updateOfferStatus({ body: { id, status: "closed" } })
+                .unwrap()
+                .catch(() => {
+                    setToast({
+                        text: "Произошла ошибка",
+                        type: HintType.Error,
+                    });
+                });
         };
 
         return (
@@ -73,9 +107,7 @@ export const OfferFinishingTouchesForm = memo(
                 onSubmit={handleSubmit(onSubmit)}
                 className={cn(styles.wrapper, className)}
             >
-                {isError && toast && (
-                    <HintPopup text={toast.text} type={toast.type} />
-                )}
+                {toast && <HintPopup text={toast.text} type={toast.type} />}
                 <div className={styles.formFields}>
                     <div className={styles.skillsWrapper}>
                         <p className={styles.formTitle}>
@@ -89,6 +121,27 @@ export const OfferFinishingTouchesForm = memo(
                                     value={field.value}
                                     className={styles.skills}
                                     onChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className={styles.formField}>
+                        <Controller
+                            name="onlyVerified"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
+                                    label={(
+                                        <Typography className={styles.checkbox}>
+                                            Принимать заявки только от проверенных участников
+                                        </Typography>
+                                    )}
+                                    control={(
+                                        <SwitchComponent
+                                            value={field.value}
+                                            onClick={field.onChange}
+                                        />
+                                    )}
                                 />
                             )}
                         />
@@ -128,18 +181,28 @@ export const OfferFinishingTouchesForm = memo(
                     <div className={styles.formField}>
                         <p className={styles.formTitle}>Добавить вопросы</p>
                         <Controller
-                            name="faq"
+                            name="questionnaireUrl"
                             control={control}
                             render={({ field }) => (
-                                <Textarea
-                                    label="Вы можете добавить стандартные вопросы волонтёру или ссылку на анкету, которую он должен заполнить и отправить. Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать»."
-                                    description="Не более 1000 знаков"
-                                    onChange={field.onChange}
+                                <OfferQuestionnaire
                                     value={field.value}
+                                    onChange={field.onChange}
                                 />
                             )}
                         />
                     </div>
+                    <Controller
+                        name="questions"
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                style={{ height: 44 }}
+                                description="Добавить вопрос"
+                                onChange={field.onChange}
+                                value={field.value}
+                            />
+                        )}
+                    />
                 </div>
                 <div className={styles.submitBtns}>
                     <Button
@@ -151,7 +214,7 @@ export const OfferFinishingTouchesForm = memo(
                     >
                         Опубликовать
                     </Button>
-                    <Button color="BLUE" size="MEDIUM" variant="OUTLINE">
+                    <Button onClick={handleSubmit(onDraftHandle)} color="BLUE" size="MEDIUM" variant="OUTLINE">
                         Сохранить в черновики
                     </Button>
                 </div>

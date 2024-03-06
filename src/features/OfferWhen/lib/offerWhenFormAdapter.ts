@@ -2,7 +2,7 @@ import { formatToW3CDate } from "@/shared/lib/formatToW3CDate";
 import { OfferWhenPeriods, OfferWhen } from "@/entities/Offer";
 import { OfferWhenFields } from "../model/types/offerWhen";
 
-export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen {
+export function offerWhenFormApiAdapter(offerWhenForm: OfferWhenFields): OfferWhen {
     const {
         endSettings,
         participationPeriod,
@@ -16,7 +16,7 @@ export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen 
     }));
 
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
-    const { applicationEndDate, isWithoutApplicationDate } = endSettings;
+    const { applicationEndDate } = endSettings;
 
     const formattedEndDate = formatToW3CDate(applicationEndDate);
 
@@ -24,7 +24,7 @@ export function offerWhenFormAdapter(offerWhenForm: OfferWhenFields): OfferWhen 
         periods: offerWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
-        isWithoutApplicationEndDate: isWithoutApplicationDate,
+        // isWithoutApplicationEndDate: isWithoutApplicationDate,
         applicationEndDate: formattedEndDate,
         isFullYearAcceptable,
         isApplicableAtTheEnd,

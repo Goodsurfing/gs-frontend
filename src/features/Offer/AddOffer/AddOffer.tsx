@@ -14,8 +14,7 @@ export const AddOffer = () => {
 
     const addOfferHandle = async () => {
         const result = await postOffer().unwrap();
-
-        navigate(`${locale}/offers/welcome/${result.id}`);
+        navigate(`/${locale}/offers/welcome/${result}`);
     };
 
     return (

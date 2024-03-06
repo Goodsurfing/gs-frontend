@@ -4,5 +4,7 @@ export interface OfferFinishingTouches {
     extraConditions?: ExtraConditions[];
     welcomeMessage: string;
     rulesInfo: string;
-    faq: string;
+    questionnaireUrl: string;
+    questions: string;
+    onlyVerified: boolean;
 }

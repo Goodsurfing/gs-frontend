@@ -33,12 +33,12 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     });
     const { t } = useTranslation("offer-where");
     const { id } = useParams();
-    const [updateWhere, { isError, isLoading }] = useUpdateWhereMutation();
+    const [updateWhere, { isLoading }] = useUpdateWhereMutation();
     const [toast, setToast] = useState<ToastAlert>();
 
     const onSubmit = handleSubmit(async (data) => {
-        await updateWhere({ body: { id, where: data } })
-            .unwrap()
+        setToast(undefined);
+        updateWhere({ body: { id, where: data } })
             .then(() => {
                 setToast({
                     text: "Адрес успешно изменён",
@@ -60,7 +60,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
 
     return (
         <form className={className} onSubmit={onSubmit}>
-            {isError && toast && (
+            {toast && (
                 <HintPopup text={toast.text} type={toast.type} />
             )}
             {errors.address && (

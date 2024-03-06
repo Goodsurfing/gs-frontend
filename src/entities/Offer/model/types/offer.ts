@@ -39,7 +39,7 @@ export interface MyOffers {
             acceptedRequests: number,
             status: OfferStatus;
         },
-    ]
+    ] | []
 }
 
 export interface AddressAutoComplete {

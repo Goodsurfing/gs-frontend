@@ -37,7 +37,7 @@ export const OfferWhatToDoForm = memo(
             mode: "onChange",
             defaultValues,
         });
-        const [updateWhatToDo, { isError, isLoading }] = useUpdateWhatToDoMutation();
+        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
         const [toast, setToast] = useState<ToastAlert>();
         const { id } = useParams();
 
@@ -45,7 +45,8 @@ export const OfferWhatToDoForm = memo(
 
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
-            await updateWhatToDo({ body: { id, ...preparedData } })
+            setToast(undefined);
+            updateWhatToDo({ body: { id, whatToDo: preparedData } })
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -64,7 +65,7 @@ export const OfferWhatToDoForm = memo(
 
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
-                {isError && toast && (
+                {toast && (
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
                 <p className={styles.skillsText}>
@@ -96,6 +97,7 @@ export const OfferWhatToDoForm = memo(
                 />
                 <div>
                     <Button
+                        onClick={handleSubmit(onSubmit)}
                         disabled={isLoading}
                         variant="FILL"
                         color="BLUE"

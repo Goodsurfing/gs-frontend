@@ -4,7 +4,7 @@ import { OfferConditionsFormFields } from "../model/types/offerConditions";
 
 export const offerConditionsApiAdapter = (
     data: OfferConditionsFormFields,
-): Partial<OfferConditions> => {
+): OfferConditions => {
     const {
         housing,
         nutrition,

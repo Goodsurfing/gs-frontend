@@ -24,8 +24,9 @@ import Button from "@/shared/ui/Button/Button";
 
 import styles from "./OfferConditionsForm.module.scss";
 import { offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
-import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -36,7 +37,7 @@ const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormField
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
-    const [updateConditions, { isError, isLoading }] = useUpdateConditionsMutation();
+    const [updateConditions, { isLoading }] = useUpdateConditionsMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
 
@@ -47,12 +48,27 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
 
     const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
         const preparedData = offerConditionsApiAdapter(data);
-        console.log(preparedData);
+        setToast(undefined);
+        updateConditions({ body: { id, conditions: preparedData } })
+            .unwrap()
+            .then(() => {
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            })
+            .catch(() => {
+                setToast({
+                    text: "Некорректно введены данные",
+                    type: HintType.Error,
+                });
+            });
         onSuccess?.();
     };
 
     return (
         <form className={cn(styles.wrapper, className)}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 name="housing"
                 control={control}
@@ -122,6 +138,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             />
             <div>
                 <Button
+                    disabled={isLoading}
                     onClick={handleSubmit(onSubmit)}
                     variant="FILL"
                     type="submit"

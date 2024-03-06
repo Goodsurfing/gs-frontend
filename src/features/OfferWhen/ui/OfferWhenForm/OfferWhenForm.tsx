@@ -1,25 +1,33 @@
 import { memo, useState } from "react";
 import {
-    Controller, DefaultValues, SubmitHandler, useForm,
+    Controller,
+    DefaultValues,
+    SubmitHandler,
+    useForm,
 } from "react-hook-form";
-
 import { useParams } from "react-router-dom";
-import Button from "@/shared/ui/Button/Button";
 
-import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
+import { useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
+
+import Button from "@/shared/ui/Button/Button";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
+
+import { offerWhenFormApiAdapter } from "../../lib/offerWhenFormAdapter";
+import type {
+    DatePeriods,
+    EndSettings,
+    OfferWhenFields,
+    TimeSettingsControls,
+} from "../../model/types/offerWhen";
 import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
+import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
-
-import type {
-    DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
-} from "../../model/types/offerWhen";
-
 import styles from "./OfferWhenForm.module.scss";
-import { offerWhenFormAdapter } from "../../lib/offerWhenFormAdapter";
-import { useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -44,13 +52,15 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 };
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
-    const [updateWhen, { isError }] = useUpdateWhenMutation();
+    const [updateWhen, { isLoading }] = useUpdateWhenMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
 
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
-        const preparedData = offerWhenFormAdapter(data);
-        await updateWhen({ body: { id, ...preparedData } })
+        const preparedData = offerWhenFormApiAdapter(data);
+        console.log(preparedData);
+        setToast(undefined);
+        updateWhen({ body: { id, when: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -74,9 +84,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     return (
         <form className={styles.form}>
-            {isError && toast && (
-                <HintPopup text={toast.text} type={toast.type} />
-            )}
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 name="periods"
                 control={control}
@@ -118,6 +126,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 )}
             />
             <Button
+                disabled={isLoading}
                 onClick={handleSubmit(onSubmit)}
                 className={styles.btn}
                 variant="FILL"

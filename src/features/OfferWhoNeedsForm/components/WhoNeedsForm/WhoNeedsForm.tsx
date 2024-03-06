@@ -49,14 +49,15 @@ export const WhoNeedsForm = memo(() => {
         mode: "onChange",
         defaultValues,
     });
-    const [updateWnoNeeds, { isError }] = useUpdateWhoNeedsMutation();
+    const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
     const { handleSubmit, control } = form;
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
 
     const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
         const preparedData = offerWhoNeedsApapter(data);
-        await updateWnoNeeds({ body: { id, ...preparedData } })
+        setToast(undefined);
+        updateWnoNeeds({ body: { id, whoNeeds: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -74,9 +75,7 @@ export const WhoNeedsForm = memo(() => {
 
     return (
         <FormProvider {...form}>
-            {isError && toast && (
-                <HintPopup text={toast.text} type={toast.type} />
-            )}
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form className={styles.wrapper}>
                 <Controller
                     control={control}
@@ -146,6 +145,7 @@ export const WhoNeedsForm = memo(() => {
                     )}
                 />
                 <Button
+                    disabled={isLoading}
                     onClick={handleSubmit(onSubmit)}
                     className={styles.btn}
                     variant="FILL"

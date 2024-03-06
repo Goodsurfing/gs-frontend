@@ -1,5 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
+
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+
 import { Host } from "../model/types/host";
 
 interface UpdateHostParams {

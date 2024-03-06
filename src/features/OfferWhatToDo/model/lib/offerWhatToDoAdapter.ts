@@ -4,7 +4,7 @@ import { OfferWhatToDoFormFields } from "../types/offerWhatToDo";
 
 export const offerWhatToDoApiAdapter = (
     data: OfferWhatToDoFormFields,
-): Partial<OfferWhatToDo> => {
+): OfferWhatToDo => {
     const {
         additionalSkills, skills, workingHours, extraInfo,
     } = data;

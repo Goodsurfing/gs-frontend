@@ -4,11 +4,21 @@ import { OfferFinishingTouchesFormFields } from "../model/types/offerFinishingTo
 
 export const offerFinishingTouchesApiAdapter = (
     data: OfferFinishingTouchesFormFields,
-): Partial<OfferFinishingTouches> => {
+): OfferFinishingTouches => {
     const {
-        extraConditions, faq, rules, welcomeMessage,
+        extraConditions,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        rules,
+        welcomeMessage,
     } = data;
     return {
-        extraConditions, faq, rulesInfo: rules, welcomeMessage,
+        extraConditions,
+        rulesInfo: rules,
+        welcomeMessage,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
     };
 };
