@@ -1,9 +1,11 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
     SubmitHandler,
+    useController,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
@@ -55,6 +57,16 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const [updateWhen, { isLoading }] = useUpdateWhenMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
+    const {
+        handleSubmit, control, watch,
+    } = useForm<OfferWhenFields>({
+        mode: "onChange",
+        defaultValues,
+    });
+
+    const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
+
+    useEffect(() => { console.log(watchIsFullYearAcceptable); }, [watchIsFullYearAcceptable]);
 
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
@@ -77,24 +89,23 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         onComplete?.();
     };
 
-    const { handleSubmit, control } = useForm<OfferWhenFields>({
-        mode: "onChange",
-        defaultValues,
-    });
-
     return (
         <form className={styles.form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <Controller
-                name="periods"
-                control={control}
-                render={({ field }) => (
-                    <OfferWhenPeriods
-                        value={field.value}
-                        onChange={field.onChange}
+            {
+                watchIsFullYearAcceptable && (
+                    <Controller
+                        name="periods"
+                        control={control}
+                        render={({ field }) => (
+                            <OfferWhenPeriods
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
                     />
-                )}
-            />
+                )
+            }
             <Controller
                 name="timeSettings"
                 control={control}

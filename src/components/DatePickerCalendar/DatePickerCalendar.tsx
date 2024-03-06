@@ -28,6 +28,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     calendarClassName,
     min,
     max,
+    inputDisabled = true,
 }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
@@ -118,6 +119,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             ref={elementRef}
         >
             <input
+                disabled={inputDisabled}
                 type="text"
                 value={inputValue}
                 onChange={onInputValueChange}
