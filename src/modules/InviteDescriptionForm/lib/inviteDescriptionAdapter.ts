@@ -4,7 +4,7 @@ import { OfferDescriptionField } from "../model/types/inviteDescription";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
-): Partial<OfferDescription> => ({
+): OfferDescription => ({
     title: data.title,
     longDescription: data.fullDescription,
     shortDescription: data.shortDescription,

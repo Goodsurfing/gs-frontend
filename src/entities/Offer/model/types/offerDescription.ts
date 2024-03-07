@@ -9,5 +9,4 @@ export interface OfferDescription {
     shortDescription: string;
     longDescription: string;
     images: string[];
-    organization: OfferOrganization;
 }

@@ -8,6 +8,10 @@ import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground
 const ImageUpload: FC = () => {
     const { control, formState: { errors } } = useFormContext();
 
+    const setUrlImage = (data: void) => {
+        console.log("url image", data);
+    };
+
     return (
         <Controller
             control={control}
@@ -18,6 +22,7 @@ const ImageUpload: FC = () => {
                     <ImageInput
                         img={field.value}
                         setImg={field.onChange}
+                        setUrlImage={setUrlImage}
                         wrapperClassName={styles.input}
                         labelClassName={styles.label}
                         labelChildren={<ImageUploadBackground />}

@@ -47,8 +47,9 @@ export const InviteDescriptionForm = () => {
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         const preparedData = inviteDescriptionApiAdapter(data);
+        console.log(preparedData);
         setToast(undefined);
-        await updateDescription({ body: { id, ...preparedData } })
+        updateDescription({ body: { id, description: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({

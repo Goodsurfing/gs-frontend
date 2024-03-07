@@ -9,7 +9,7 @@ const ShortDescription: FC<FullDescriptionProps> = () => {
     const { control } = useFormContext();
     return (
         <Controller
-            name="shortDescription"
+            name="fullDescription"
             control={control}
             render={({ field }) => (
                 <Textarea

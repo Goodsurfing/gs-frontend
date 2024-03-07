@@ -16,6 +16,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     extraWrapperClassName,
     labelChildren,
     wrapperClassName,
+    setUrlImage,
     labelClassName,
     ...restInputProps
 }) => {
@@ -33,7 +34,11 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     setError(true);
                     return;
                 }
+                const formData = new FormData();
+                formData.append("image", file);
+                console.log(typeof formData.get("image"));
                 const url = URL.createObjectURL(file);
+                console.log(url);
                 setError(false);
                 setImg(url);
             } catch (e) {
