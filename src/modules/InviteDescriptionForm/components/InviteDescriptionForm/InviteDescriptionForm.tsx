@@ -7,7 +7,6 @@ import {
     useForm,
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
-
 import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";

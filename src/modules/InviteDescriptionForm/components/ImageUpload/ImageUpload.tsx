@@ -6,27 +6,31 @@ import styles from "./ImageUpload.module.scss";
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 
 const ImageUpload: FC = () => {
-    const { control } = useFormContext();
+    const { control, formState: { errors } } = useFormContext();
 
     return (
         <Controller
             control={control}
             name="coverImage"
+            rules={{ required: { value: true, message: "Загрузите обложку" } }}
             render={({ field }) => (
-                <ImageInput
-                    img={field.value}
-                    setImg={field.onChange}
-                    wrapperClassName={styles.input}
-                    labelClassName={styles.label}
-                    labelChildren={<ImageUploadBackground />}
-                    description={(
-                        <span className={styles.description}>
-                            Ширина фотографии для обложки не меньше 1920
-                            пикселей
-                        </span>
-                    )}
-                    id="image-wrapper"
-                />
+                <div>
+                    <ImageInput
+                        img={field.value}
+                        setImg={field.onChange}
+                        wrapperClassName={styles.input}
+                        labelClassName={styles.label}
+                        labelChildren={<ImageUploadBackground />}
+                        description={(
+                            <span className={styles.description}>
+                                Ширина фотографии для обложки не меньше 1920
+                                пикселей
+                            </span>
+                        )}
+                        id="image-wrapper"
+                    />
+                    <p className={styles.error}>{errors.coverImage?.message?.toString()}</p>
+                </div>
             )}
         />
     );

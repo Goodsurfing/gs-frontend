@@ -1,9 +1,8 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import {
     Controller,
     DefaultValues,
     SubmitHandler,
-    useController,
     useForm,
     useWatch,
 } from "react-hook-form";
@@ -58,7 +57,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
     const {
-        handleSubmit, control, watch,
+        handleSubmit, control,
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
@@ -66,11 +65,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
 
-    useEffect(() => { console.log(watchIsFullYearAcceptable); }, [watchIsFullYearAcceptable]);
-
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
-        console.log(preparedData);
         setToast(undefined);
         updateWhen({ body: { id, when: preparedData } })
             .unwrap()
@@ -93,7 +89,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         <form className={styles.form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {
-                watchIsFullYearAcceptable && (
+                !watchIsFullYearAcceptable && (
                     <Controller
                         name="periods"
                         control={control}
