@@ -16,11 +16,12 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     extraWrapperClassName,
     labelChildren,
     wrapperClassName,
-    setUrlImage,
+    onUpload,
     labelClassName,
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
+    // const [image, setImage] = useState<string | null>(null);
 
     const handleFileChange = async (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -34,11 +35,10 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     setError(true);
                     return;
                 }
-                const formData = new FormData();
-                formData.append("image", file);
-                console.log(typeof formData.get("image"));
+                // const formData = new FormData();
+                // formData.append("image", file);
+                onUpload?.(file);
                 const url = URL.createObjectURL(file);
-                console.log(url);
                 setError(false);
                 setImg(url);
             } catch (e) {

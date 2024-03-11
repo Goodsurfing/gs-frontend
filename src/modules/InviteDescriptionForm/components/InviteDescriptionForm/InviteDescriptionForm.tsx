@@ -7,6 +7,8 @@ import {
     useForm,
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import { galleryApi } from "@/modules/Gallery";
+
 import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -40,8 +42,8 @@ export const InviteDescriptionForm = () => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
-    const [updateDescription, { isError, isLoading }] = useUpdateDescriptionMutation();
+    const { handleSubmit, control, formState: { errors } } = form;
+    const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
 
@@ -67,7 +69,7 @@ export const InviteDescriptionForm = () => {
 
     return (
         <FormProvider {...form}>
-            {isError && toast && (
+            {toast && (
                 <HintPopup text={toast.text} type={toast.type} />
             )}
             <form>
@@ -76,7 +78,24 @@ export const InviteDescriptionForm = () => {
                     <Categories />
                     <ShortDescription />
                     <FullDescription />
-                    <ImageUpload />
+                    <Controller
+                        control={control}
+                        name="coverImage"
+                        rules={{
+                            required: {
+                                value: true,
+                                message: "Загрузите обложку",
+                            },
+                        }}
+                        render={({ field }) => (
+                            <div>
+                                <ImageUpload onChange={field.onChange} />
+                                <p className={styles.error}>
+                                    {errors.coverImage?.message?.toString()}
+                                </p>
+                            </div>
+                        )}
+                    />
                     <Controller
                         name="images"
                         control={control}
