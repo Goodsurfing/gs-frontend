@@ -49,7 +49,7 @@ export const liveItems: LiveItems[] = [{
 }, {
     text: "Место под палатку",
     icon: pickupIcon,
-    id: "tent-place",
+    id: "tent_place",
 }];
 
 export const foodItems: FoodItems[] = [{
@@ -103,7 +103,7 @@ export const goodsItems: GoodsItems[] = [{
 }, {
     text: "Электричество",
     icon: electricityIcon,
-    id: "electicity",
+    id: "electricity",
 }, {
     text: "Кондиционер",
     icon: airConditioningIcon,
@@ -117,7 +117,7 @@ export const goodsItems: GoodsItems[] = [{
 export const extraAvailiablesItems: ExtraAvailiablesItems[] = [{
     text: "Мастер-классы/ обучающие курсы",
     icon: classIcon,
-    id: "master-class",
+    id: "master_class",
 }, {
     text: "Экскурсии",
     icon: excursionsIcon,

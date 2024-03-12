@@ -22,7 +22,7 @@ export const SidebarDropdown = memo(({
     const { locale } = useLocale();
     const { isOpen } = useSidebarContext();
     const [isDropdownOpened, setDropdownOpen] = useState(false);
-    const { t } = useTranslation();
+    const { t } = useTranslation("translation");
 
     const { pathname } = useLocation();
 

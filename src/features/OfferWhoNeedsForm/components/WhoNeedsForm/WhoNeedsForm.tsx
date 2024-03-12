@@ -115,8 +115,8 @@ export const WhoNeedsForm = memo(() => {
                             className={styles.container}
                             type="number"
                             label="Сколько волонтерских мест одновременно"
-                            value={field.value}
-                            onChange={field.onChange}
+                            value={String(field.value)}
+                            onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                     )}
                 />

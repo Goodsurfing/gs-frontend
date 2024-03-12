@@ -1,12 +1,12 @@
-export type Housing = Readonly<"house" | "room" | "bed" | "tent" | "tent-place">;
+export type Housing = Readonly<"house" | "room" | "bed" | "tent" | "tent_place">;
 
 export type Nutrition = Readonly<"full" | "breakfast" | "products" | "vegetarian">;
 
 export type Travel = Readonly<"full" | "reimbursement" | "partial" | "pick-up" | "transfer">;
 
-export type Facilities = Readonly<"hot-water" | "wi-fi" | "electicity" | "conditioner" | "bath">;
+export type Facilities = Readonly<"hot-water" | "wi-fi" | "electricity" | "conditioner" | "bath">;
 
-export type ExtraFeatures = Readonly<"master-class" | "excursions" | "horses" | "languages" | "additional">;
+export type ExtraFeatures = Readonly<"master_class" | "excursions" | "horses" | "languages" | "additional">;
 
 export type Currency = Readonly<"RUB" | "EUR" | "USD">;
 

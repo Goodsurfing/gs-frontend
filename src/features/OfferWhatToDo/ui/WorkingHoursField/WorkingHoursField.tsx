@@ -12,7 +12,7 @@ interface Props {
     onChange: (value: WorkSettings) => void;
 }
 
-const TimeTypeOptions: TimeType[] = ["week", "day", "mounth"];
+const TimeTypeOptions: TimeType[] = ["week", "day", "month"];
 
 const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6];
 

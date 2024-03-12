@@ -4,18 +4,15 @@ import cn from "classnames";
 
 import organizationDefaultImage from "@/shared/assets/images/offers/organizationSmallMOCK.png";
 
-import { OfferOrganization } from "../../model/types/offerOrganization";
 import styles from "./OfferOrganizationCard.module.scss";
 
 interface OfferOrganizationCardProps {
-    organization: OfferOrganization;
     className?: string;
 }
 
 export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
     (props: OfferOrganizationCardProps) => {
         const {
-            organization: { name, description },
             className,
         } = props;
         return (
@@ -29,9 +26,9 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                                 src={organizationDefaultImage}
                                 alt="organization"
                             />
-                            <span className={styles.name}>{name}</span>
+                            <span className={styles.name}>Название организации</span>
                         </div>
-                        <p className={styles.description}>{description}</p>
+                        <p className={styles.description}>Описание</p>
                     </div>
                     <Button className={styles.button} variant="outlined">
                         Подробнее

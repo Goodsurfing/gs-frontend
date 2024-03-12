@@ -1,8 +1,8 @@
-type TimeType = "week" | "day" | "mounth";
+type TimeType = "week" | "day" | "month";
 
 export function convertStringToWord(timeType: TimeType): string | null {
     switch (timeType) {
-        case "mounth":
+        case "month":
             return "В месяц";
         case "week":
             return "В неделю";

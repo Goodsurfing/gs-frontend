@@ -9,7 +9,7 @@ export type OfferWhatToDoSkill = {
 
 // export type DayOff = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export type TimeType = "week" | "day" | "mounth";
+export type TimeType = "week" | "day" | "month";
 
 export type WorkSettings = {
     hours: number;

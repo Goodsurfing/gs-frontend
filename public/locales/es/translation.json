@@ -76,11 +76,15 @@
             "Подписки": "Suscriptores",
             "Фото и видео": "Foto y vídeos",
             "Написать в блог": "Escribe un blog",
-            "Мои статьи": "Mis artículos"
+            "Мои статьи": "Mis artículos",
+            "Создать организацию": "Create an organization"
         }
     },
     "stats-points": {
+        "Описание": "Descripción",
+        "Предложения": "Vacantes",
         "О себе": "Acerca de mí",
+        "Отзывы": "Reseñas",
         "Навыки": "Habilidades",
         "Фотографии": "Galería",
         "Видео": "Galeria de VIDEOS",

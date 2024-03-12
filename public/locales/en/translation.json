@@ -80,11 +80,15 @@
             "Подписки": "Subscribers",
             "Фото и видео": "Photo and videos",
             "Написать в блог": "Write article",
-            "Мои статьи": "My articles"
+            "Мои статьи": "My articles",
+            "Создать организацию": "Crear una organización"
         }
     },
     "stats-points": {
+        "Описание": "Description",
+        "Предложения": "Vacancies",
         "О себе": "About me",
+        "Отзывы": "Reviews",
         "Навыки": "Skills",
         "Фотографии": "Gallery",
         "Видео": "Video gallery",

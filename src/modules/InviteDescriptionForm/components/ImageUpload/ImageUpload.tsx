@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
 import ImageInput from "@/components/ImageInput/ImageInput";
 
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";

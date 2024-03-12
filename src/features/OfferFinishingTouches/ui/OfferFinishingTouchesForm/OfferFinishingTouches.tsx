@@ -92,7 +92,7 @@ export const OfferFinishingTouchesForm = memo(
 
         const onDraftHandle: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
             updateFinishingTouchesHandle(data);
-            updateOfferStatus({ body: { id, status: "closed" } })
+            updateOfferStatus({ body: { id, status: "empty" } })
                 .unwrap()
                 .catch(() => {
                     setToast({

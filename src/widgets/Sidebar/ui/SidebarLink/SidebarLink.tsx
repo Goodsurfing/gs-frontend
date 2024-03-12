@@ -17,7 +17,7 @@ interface SidebarLinkProps {
 export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
     const { isOpen } = useSidebarContext();
     const { locale } = useLocale();
-    const { t } = useTranslation();
+    const { t } = useTranslation("translation");
     const { id } = useParams();
     const path = id ? `/${locale}${route}/${id}` : `/${locale}${route}`;
 
