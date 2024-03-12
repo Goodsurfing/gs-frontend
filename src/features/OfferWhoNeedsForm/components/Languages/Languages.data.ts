@@ -7,15 +7,59 @@ export const allLangs: IOptionLanguage[] = [
     },
     {
         label: "Английский",
-        value: "Английский",
+        value: "english",
     },
     {
         label: "Русский",
-        value: "Русский",
+        value: "russian",
+    },
+    {
+        label: "Испанский",
+        value: "german",
     },
     {
         label: "Немецкий",
-        value: "Немецкий",
+        value: "german",
+    },
+    {
+        label: "Итальянский",
+        value: "italian",
+    },
+    {
+        label: "Французский",
+        value: "french",
+    },
+    {
+        label: "Португальский",
+        value: "portuguese",
+    },
+    {
+        label: "Турецкий",
+        value: "turkish",
+    },
+    {
+        label: "Арабский",
+        value: "arabic",
+    },
+    {
+        label: "Шведский",
+        value: "swedish",
+    },
+    {
+        label: "Датский",
+        value: "danish",
+    },
+    {
+        label: "Норвежский",
+        value: "norwegian",
+    },
+    {
+        label: "Украинский",
+        value: "ukrainian",
+    },
+    {
+        label: "Иврит",
+        value: "hebrew",
     },
 ];
 

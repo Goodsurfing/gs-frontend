@@ -1,0 +1,12 @@
+{
+    "when": {
+        "Укажите на какой срок или сроки вам нужен волонтер": "Especifique el plazo o plazos para los que necesita un voluntario",
+        "Добавить период": "Agregar período",
+        "Принимаю круглый год": "Acepto todo el año",
+        "Принимаю в последний момент": "Acepto en el último momento",
+        "Срок участия (от-до)": "Período de participación (desde-hasta)",
+        "Дата окончания приема заявок": "Fecha límite de solicitud",
+        "Нет даты окончания": "Sin fecha de finalización",
+        "Сохранить":"Guardar"
+    }
+}
