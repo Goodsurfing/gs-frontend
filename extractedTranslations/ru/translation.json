@@ -7,6 +7,9 @@
   "category-offer": {
     "Выбирайте по интересам": "Выбирайте по интересам"
   },
+  "day": "day",
+  "days": "days",
+  "days_plural": "days_plural",
   "item": {
     "text": "text"
   },
@@ -65,6 +68,9 @@
       "title": "title"
     }
   },
+  "month": "month",
+  "months": "months",
+  "months_plural": "months_plural",
   "notes": {
     "Мои заявки": "Мои заявки",
     "Сообщение": "Сообщение"

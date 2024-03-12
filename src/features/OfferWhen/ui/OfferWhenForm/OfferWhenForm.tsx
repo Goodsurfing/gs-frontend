@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -55,6 +56,7 @@ const defaultValues: DefaultValues<OfferWhenFields> = {
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const [updateWhen, { isLoading }] = useUpdateWhenMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("offer");
     const { id } = useParams();
     const {
         handleSubmit, control,
@@ -140,7 +142,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 color="BLUE"
                 size="MEDIUM"
             >
-                Сохранить
+                {t("when.Сохранить")}
             </Button>
         </form>
     );

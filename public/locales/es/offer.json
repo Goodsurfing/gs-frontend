@@ -5,8 +5,23 @@
         "Принимаю круглый год": "Acepto todo el año",
         "Принимаю в последний момент": "Acepto en el último momento",
         "Срок участия (от-до)": "Período de participación (desde-hasta)",
+        "1 день": "1 día",
+        "7 дней": "7 días",
+        "14 дней": "14 días",
+        "1 месяц": "1 mes",
+        "2 месяца": "2 meses",
+        "3 месяца": "3 meses",
+        "4 месяца": "4 meses",
+        "5 месяцев": "5 meses",
+        "6 месяцев": "6 meses",
+        "день": "día",
+        "дня": "días",
+        "дней": "días",
+        "месяц": "mes",
+        "месяца": "meses",
+        "месяцев": "meses",
         "Дата окончания приема заявок": "Fecha límite de solicitud",
         "Нет даты окончания": "Sin fecha de finalización",
-        "Сохранить":"Guardar"
+        "Сохранить": "Guardar"
     }
 }
