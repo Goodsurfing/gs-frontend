@@ -22,5 +22,5 @@ export interface OfferWhatToDoFormFields {
     skills: OfferWhatToDoSkillType[];
     additionalSkills: AdditionalSkillsType[];
     workingHours: WorkSettings;
-    extraInfo?: string;
+    extraInfo: string;
 }

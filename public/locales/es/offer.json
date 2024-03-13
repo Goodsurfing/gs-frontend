@@ -65,5 +65,18 @@
         "Дополнительная информация": "Información adicional",
         "Не более 1000 знаков": "No más de 1000 caracteres",
         "Сохранить": "Guardar"
+    },
+    "description": {
+        "Название мероприятия": "Nombre del evento",
+        "Категория приглашения": "Categoría de invitación",
+        "Краткое описание": "Descripción breve",
+        "Не более 250 знаков": "No más de 250 caracteres",
+        "Полное описание": "Descripción completa",
+        "Не более 3000 знаков": "No más de 3000 caracteres",
+        "Добавить фото обложки": "Agregar foto de portada",
+        "Ширина фотографии для обложки не меньше 1920 пикселей": "El ancho de la foto de portada debe ser de al menos 1920 píxeles",
+        "Неверный формат файла": "Formato de archivo incorrecto",
+        "Добавить фото": "Agregar foto",
+        "Сохранить": "Guardar"
     }
 }

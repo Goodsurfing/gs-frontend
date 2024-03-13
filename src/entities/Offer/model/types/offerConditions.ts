@@ -11,17 +11,19 @@ export type ExtraFeatures = Readonly<"master_class" | "excursions" | "horses" | 
 export type Currency = Readonly<"RUB" | "EUR" | "USD">;
 
 export interface Payment {
-    contribution?: number;
-    reward?: number;
+    contribution: number;
+    reward: number;
     currency: Currency;
 }
 
 export interface OfferConditions {
-    housing?: Housing;
-    nutrition?: Nutrition;
-    travel?: Travel;
-    facilities: Facilities[];
-    extraFeatures: ExtraFeatures[];
-    payment: Payment;
-    extraConditions?: string;
+    housingIds?: Housing;
+    foodIds?: Nutrition;
+    paidTravelIds?: Travel;
+    conveniencesIds: Facilities[];
+    additionalFeaturesIds: ExtraFeatures[];
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+    currency: Currency;
+    additionalConditions?: string;
 }

@@ -109,23 +109,25 @@ export const offerApi = createApi({
         CreateOfferResponse,
         UpdateOfferParams
         >({
-            query: (data) => ({
-                url: `/vacancy/${data.body.id}/conditions`,
-                method: "PUT",
-                // toDo: Change body typing for backend
-                body: {
-                    housingIds: [data.body.conditions?.housing],
-                    foodIds: [data.body.conditions?.nutrition],
-                    paidTravelIds: [data.body.conditions?.travel],
-                    conveniencesIds: data.body.conditions?.facilities,
-                    additionalFeaturesIds: data.body.conditions?.extraFeatures,
-                    volunteerContributions:
-                        data.body.conditions?.payment.contribution,
-                    volunteerRemuneration: data.body.conditions?.payment.reward,
-                    currency: data.body.conditions?.payment.currency,
-                    additionalConditions: data.body.conditions?.extraConditions,
-                },
-            }),
+            query: (data) => {
+                const { body: { id, conditions } } = data;
+                return {
+                    url: `/vacancy/${id}/conditions`,
+                    method: "PUT",
+                    // toDo: Change body typing for backend
+                    body: {
+                        housingIds: [conditions?.housingIds],
+                        foodIds: [conditions?.foodIds],
+                        paidTravelIds: [conditions?.paidTravelIds],
+                        conveniencesIds: conditions?.conveniencesIds,
+                        additionalFeaturesIds: conditions?.additionalFeaturesIds,
+                        volunteerContributions: conditions?.volunteerContributions,
+                        volunteerRemuneration: conditions?.volunteerRemuneration,
+                        currency: conditions?.currency,
+                        additionalConditions: conditions?.additionalConditions,
+                    },
+                };
+            },
             invalidatesTags: ["offer"],
         }),
         updateFinishingTouches: build.mutation<

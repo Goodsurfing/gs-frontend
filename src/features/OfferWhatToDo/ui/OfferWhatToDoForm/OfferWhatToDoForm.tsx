@@ -29,6 +29,7 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
     skills: [],
     additionalSkills: [],
     workingHours: { dayOff: 2, hours: 6, timeType: "week" },
+    extraInfo: "",
 };
 
 export const OfferWhatToDoForm = memo(
@@ -45,6 +46,7 @@ export const OfferWhatToDoForm = memo(
 
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
+            console.log(preparedData);
             setToast(undefined);
             updateWhatToDo({ body: { id, whatToDo: preparedData } })
                 .unwrap()
@@ -85,7 +87,7 @@ export const OfferWhatToDoForm = memo(
                 <Controller
                     name="extraInfo"
                     control={control}
-                    rules={{ required: true, maxLength: 1000 }}
+                    rules={{ required: false, maxLength: 1000 }}
                     render={({ field }) => (
                         <Textarea
                             value={field.value}
