@@ -36,7 +36,7 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
             >
                 <img className={styles.img} src={icon} alt={text} />
                 <span className={cn(styles.text, { [styles.opened]: isOpen })}>
-                    {t(`main.sidebar.${text}`)}
+                    {text}
                 </span>
             </NavLink>
         </li>

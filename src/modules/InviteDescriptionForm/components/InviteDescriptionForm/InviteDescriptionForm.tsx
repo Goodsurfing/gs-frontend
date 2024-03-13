@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -44,6 +45,7 @@ export const InviteDescriptionForm = () => {
     const { handleSubmit, control, formState: { errors } } = form;
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("offer");
     const { id } = useParams();
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
@@ -88,9 +90,9 @@ export const InviteDescriptionForm = () => {
                         }}
                         render={({ field }) => (
                             <div>
-                                <ImageUpload onChange={field.onChange} />
+                                <ImageUpload onChange={field.onChange} childrenLabel={t("description.Добавить фото обложки")} />
                                 <p className={styles.error}>
-                                    {errors.coverImage?.message?.toString()}
+                                    {errors.coverImage && t(`description.${errors.coverImage?.message?.toString()}`)}
                                 </p>
                             </div>
                         )}
@@ -100,6 +102,7 @@ export const InviteDescriptionForm = () => {
                         control={control}
                         render={({ field }) => (
                             <ExtraImagesUpload
+                                label={t("description.Добавить фото")}
                                 value={field.value}
                                 onChange={field.onChange}
                             />
@@ -114,7 +117,7 @@ export const InviteDescriptionForm = () => {
                     size="MEDIUM"
                     onClick={handleSubmit(onSubmit)}
                 >
-                    Сохранить
+                    {t("description.Сохранить")}
                 </Button>
             </form>
         </FormProvider>

@@ -49,7 +49,7 @@ const Location: FC<LocationProps> = (props) => {
                                 color: "#212121",
                             }}
                         >
-                            Только иностранцев
+                            {t("whoNeeds.Только иностранцев")}
                         </Typography>
                     )}
                     control={<Switch checked={value === "foreigners"} onChange={() => handleChange("foreigners")} />}
@@ -64,7 +64,7 @@ const Location: FC<LocationProps> = (props) => {
                                 color: "#212121",
                             }}
                         >
-                            Только из моей страны
+                            {t("whoNeeds.Только из моей страны")}
                         </Typography>
                     )}
                     control={<Switch checked={value === "compatriot"} onChange={() => handleChange("compatriot")} />}

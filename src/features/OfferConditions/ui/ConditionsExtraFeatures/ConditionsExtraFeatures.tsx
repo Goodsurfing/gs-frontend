@@ -1,5 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { ExtraFeatures } from "@/entities/Offer";
-import { extraAvailiablesItems } from "../../model/data/conditionItems";
+import { useConditionItems } from "../../model/data/conditionItems";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { ExtraFeaturesFields } from "../../model/types/offerConditions";
 
@@ -12,6 +13,8 @@ interface ConditionsExtraFeaturesProps {
 
 export const ConditionsExtraFeatures = (props: ConditionsExtraFeaturesProps) => {
     const { onChange, value } = props;
+    const { extraAvailiablesItems } = useConditionItems();
+    const { t } = useTranslation("offer");
 
     const onConditionToggle = (conditionId: ExtraFeatures) => {
         const activeIndex = value.extraFeatures.findIndex((item) => item === conditionId);
@@ -30,7 +33,7 @@ export const ConditionsExtraFeatures = (props: ConditionsExtraFeaturesProps) => 
 
     return (
         <div className={styles.wrapper}>
-            <p className={styles.title}>Дополнительные возможности</p>
+            <p className={styles.title}>{t("conditions.Дополнительные возможности")}</p>
             <div className={styles.conditions}>
                 {extraAvailiablesItems.map((item) => (
                     <ConditionsItem

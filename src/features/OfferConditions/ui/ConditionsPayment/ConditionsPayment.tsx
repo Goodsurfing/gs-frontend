@@ -1,6 +1,7 @@
 import { memo } from "react";
 
 import { MenuItem } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import Input from "@/shared/ui/Input/Input";
 
 import { Currency, Payment } from "@/entities/Offer";
@@ -17,6 +18,7 @@ interface ConditionsPaymentProps {
 
 export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
     const { onChange, value } = props;
+    const { t } = useTranslation("offer");
 
     const onContributionChange = (inputValue: string) => {
         if (!Number.isNaN(+inputValue)) {
@@ -36,13 +38,13 @@ export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
 
     return (
         <div className={styles.wrapper}>
-            <p className={styles.title}>Оплата</p>
+            <p className={styles.title}>{t("conditions.Оплата")}</p>
             <div className={styles.content}>
                 <div className={styles.volunteer}>
-                    <Input description="Взносы волонтера" type="number" value={value.contribution} onChange={(e) => onContributionChange(e.target.value)} />
+                    <Input description={t("conditions.Взносы волонтера")} type="number" value={value.contribution} onChange={(e) => onContributionChange(e.target.value)} />
                 </div>
                 <div className={styles.reward}>
-                    <Input description="Вознаграждение труда" type="number" value={value.reward} onChange={(e) => onRewardChange(e.target.value)} />
+                    <Input description={t("conditions.Вознаграждение труда")} type="number" value={value.reward} onChange={(e) => onRewardChange(e.target.value)} />
                 </div>
                 <SelectComponent className={styles.dropdown} defaultValue={value.currency}>
                     {paymentValues.map((currency) => (

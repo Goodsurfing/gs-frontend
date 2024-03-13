@@ -7,13 +7,16 @@ import PictureReview from "../PictureReview/PictureReview";
 import styles from "./ExtraImagesUpload.module.scss";
 
 interface ExtraImagesUploadProps {
+    label: string;
     value: string[];
     onChange: (value: string[]) => void;
     classNameWrapper?: string;
 }
 
 const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
-    const { value, onChange, classNameWrapper } = props;
+    const {
+        value, onChange, classNameWrapper, label,
+    } = props;
     const [inputImg, setInputImg] = useState<string | null>(null);
 
     const handleImageUpload = (img: string | null) => {
@@ -30,6 +33,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     return (
         <div className={cn(classNameWrapper, styles.wrapper)}>
             <ExtraImagesItem
+                label={label}
                 img={inputImg}
                 setImg={handleImageUpload}
                 id="asd"

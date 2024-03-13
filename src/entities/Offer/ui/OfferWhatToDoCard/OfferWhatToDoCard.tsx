@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { Skills, SkillsData, skillsData } from "@/shared/data/skills";
+import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -24,6 +24,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
             whatToDo: { skillIds, hours, dayOff },
             className,
         } = props;
+        const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
             const skillsMap: SkillsMap = skillsData.reduce(
@@ -46,7 +47,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                     )
                 );
             });
-        }, [skillIds]);
+        }, [skillIds, skillsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>

@@ -1,6 +1,7 @@
 import { memo, ChangeEvent } from "react";
 
 import { MenuItem } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 import Input from "@/shared/ui/Input/Input";
 import { TimeType, WorkSettings } from "@/entities/Offer";
@@ -17,6 +18,7 @@ const TimeTypeOptions: TimeType[] = ["week", "day", "month"];
 const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6];
 
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
+    const { t } = useTranslation("offer");
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value) {
             onChange({ ...value, hours: +e.target.value });
@@ -32,7 +34,7 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.workingHoursWrapper}>
-                <p className={styles.workingHoursText}>Количество рабочих часов</p>
+                <p className={styles.workingHoursText}>{t("whatToDo.Количество рабочих часов")}</p>
                 <div className={styles.workingHours}>
                     <Input
                         inputClassName={styles.inputClassName}
@@ -52,7 +54,7 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
                 </div>
             </div>
             <div className={styles.dayOffs}>
-                <p className={styles.dayOffsText}>Количество выходных дней в неделю</p>
+                <p className={styles.dayOffsText}>{t("whatToDo.Количество выходных дней в неделю")}</p>
                 <SelectComponent
                     className={styles.dayOffsSelect}
                     onChange={(e) => handleDayOffChange(e.target.value as string)}

@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ImageInput from "@/components/ImageInput/ImageInput";
 
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
@@ -9,12 +10,14 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface ImageUploadProps {
     onChange?: (value: string | undefined) => void;
+    childrenLabel: string;
 }
 
 const ImageUpload: FC<ImageUploadProps> = (props) => {
-    const { onChange } = props;
+    const { onChange, childrenLabel } = props;
     const [toast, setToast] = useState<ToastAlert>();
     const [img, setImg] = useState<string | null>(null);
+    const { t } = useTranslation("offer");
     const [generateLink, { isLoading }] = galleryApi.useGenerateLinkMutation();
 
     const handleUploadImage = useCallback((image: File) => {
@@ -30,7 +33,6 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
                     text: "Произошла ошибка при загрузке изображения",
                     type: HintType.Error,
                 });
-                console.log("error upload", error);
             });
     }, [generateLink, onChange]);
 
@@ -46,11 +48,10 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
                 onUpload={handleUploadImage}
                 wrapperClassName={styles.input}
                 labelClassName={styles.label}
-                labelChildren={<ImageUploadBackground />}
+                labelChildren={<ImageUploadBackground text={childrenLabel} />}
                 description={(
                     <span className={styles.description}>
-                        Ширина фотографии для обложки не меньше 1920
-                        пикселей
+                        {t("description.Ширина фотографии для обложки не меньше 1920 пикселей")}
                     </span>
                 )}
                 id="image-wrapper"

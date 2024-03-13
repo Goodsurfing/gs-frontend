@@ -1,9 +1,11 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import styles from "./EventName.module.scss";
 import Input from "@/shared/ui/Input/Input";
 
 const EventName = () => {
+    const { t } = useTranslation("offer");
     const {
         control,
         formState: { errors },
@@ -15,13 +17,13 @@ const EventName = () => {
             rules={{
                 required: {
                     value: true,
-                    message: "Поле название вакансии не может быть пустымы",
+                    message: t("description.Поле название вакансии не может быть пустымы"),
                 },
             }}
             render={({ field }) => (
                 <div>
                     <Input
-                        label="Название мероприятия"
+                        label={t("description.Название мероприятия")}
                         value={field.value}
                         onChange={field.onChange}
                     />

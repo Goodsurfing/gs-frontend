@@ -5,7 +5,7 @@ import styles from "./OfferConditionsPage.module.scss";
 import { OfferConditionsForm } from "@/features/OfferConditions";
 
 export const OfferConditionsPage = () => {
-    const { t } = useTranslation("offer-conditions");
+    const { t } = useTranslation("offer");
 
     return (
         <div className={styles.wrapper}>
@@ -13,8 +13,8 @@ export const OfferConditionsPage = () => {
                 gap={40}
                 titleSize="h2"
                 textSize="primary"
-                title={t("Чем вы готовы обеспечить волонтёра")}
-                text={t("Волонтёр помогает вам и будет делать это лучше, если ему будет комфортно. Создавая лучшие условия вы привлекаете лучших волонтёров.")}
+                title={t("conditions.Чем вы готовы обеспечить волонтёра")}
+                text={t("conditions.Волонтёр помогает вам и будет делать это лучше, если ему будет комфортно. Создавая лучшие условия вы привлекаете лучших волонтёров.")}
             />
             <OfferConditionsForm className={styles.form} />
         </div>

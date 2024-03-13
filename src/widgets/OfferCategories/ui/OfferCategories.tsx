@@ -4,7 +4,7 @@ import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleBut
 
 import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
 
-import { tags } from "./OfferCategories.data";
+import { useTags } from "./OfferCategories.data";
 import styles from "./OfferCategories.module.scss";
 
 interface OfferCategoriesProps {
@@ -14,7 +14,7 @@ interface OfferCategoriesProps {
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { value, onChange } = props;
-    const { t } = useTranslation("translation");
+    const { tags } = useTags();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange?.(newValues.filter(Boolean));
@@ -74,7 +74,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                         key={index}
                         value={item.value}
                     >
-                        {t(`category-offer.${item.text}`)}
+                        {item.text}
                     </ToggleButtonComponent>
                 ))}
             </ToggleButtonGroupComponent>

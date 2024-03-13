@@ -1,10 +1,11 @@
+import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { TravelFields } from "../../model/types/offerConditions";
 
 import styles from "./ConditionsTravel.module.scss";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { Travel } from "@/entities/Offer";
-import { payedRideItems } from "../../model/data/conditionItems";
+import { useConditionItems } from "../../model/data/conditionItems";
 
 interface ConditionsTravelProps {
     value: TravelFields;
@@ -13,6 +14,8 @@ interface ConditionsTravelProps {
 
 export const ConditionsTravel = (props: ConditionsTravelProps) => {
     const { onChange, value } = props;
+    const { t } = useTranslation("offer");
+    const { payedRideItems } = useConditionItems();
 
     const onSwitchChange = () => {
         const newSwitchState = !value.switchState;
@@ -30,15 +33,15 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.toggleWrapper}>
-                <p className={styles.toggleText}>Оплачиваемый проезд</p>
+                <p className={styles.toggleText}>{t("conditions.Оплачиваемый проезд")}</p>
                 <div className={styles.toggle}>
-                    <span className={styles.toggleSpan}>Нет</span>
+                    <span className={styles.toggleSpan}>{t("conditions.Нет")}</span>
                     <SwitchComponent
                         id="travel"
                         checked={value.switchState}
                         onClick={onSwitchChange}
                     />
-                    <span className={styles.toggleSpan}>Да</span>
+                    <span className={styles.toggleSpan}>{t("conditions.Да")}</span>
                 </div>
             </div>
             <div className={styles.conditions}>

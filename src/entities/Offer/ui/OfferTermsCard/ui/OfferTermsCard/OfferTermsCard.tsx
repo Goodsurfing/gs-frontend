@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { goodsItems } from "@/features/OfferConditions/model/data/conditionItems";
+import { useConditionItems } from "@/features/OfferConditions/model/data/conditionItems";
 import { GoodsItems } from "@/features/OfferConditions/model/types/conditionsData";
 
 import { Facilities } from "@/entities/Offer/model/types/offerConditions";
@@ -18,6 +18,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
     (props: OfferTermsCardProps) => {
         // eslint-disable-next-line no-empty-pattern
         const { facilities, className } = props;
+        const { goodsItems } = useConditionItems();
 
         const renderTerms = (
             facilitiesData: GoodsItems[],

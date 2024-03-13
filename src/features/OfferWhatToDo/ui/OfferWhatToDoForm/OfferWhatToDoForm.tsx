@@ -42,7 +42,7 @@ export const OfferWhatToDoForm = memo(
         const [toast, setToast] = useState<ToastAlert>();
         const { id } = useParams();
 
-        const { t } = useTranslation();
+        const { t } = useTranslation("offer");
 
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
@@ -71,7 +71,7 @@ export const OfferWhatToDoForm = memo(
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
                 <p className={styles.skillsText}>
-                    {t("Навыки, которыми должен обладать волонтер")}
+                    {t("whatToDo.Навыки, которыми должен обладать волонтёр")}
                 </p>
                 <SkillsForm control={control} />
                 <Controller
@@ -92,8 +92,8 @@ export const OfferWhatToDoForm = memo(
                         <Textarea
                             value={field.value}
                             onChange={field.onChange}
-                            label={t("Дополнительная информация")}
-                            description={t("Не более 1000 знаков")}
+                            label={t("whatToDo.Дополнительная информация")}
+                            description={t("whatToDo.Не более 1000 знаков")}
                         />
                     )}
                 />
@@ -106,7 +106,7 @@ export const OfferWhatToDoForm = memo(
                         size="MEDIUM"
                         type="submit"
                     >
-                        Сохранить
+                        {t("whatToDo.Сохранить")}
                     </Button>
                 </div>
             </form>

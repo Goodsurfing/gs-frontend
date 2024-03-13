@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { OfferConditionsFormFields } from "../../model/types/offerConditions";
 
 import { defaultFormFields } from "../../model/data/defaultFormFields";
@@ -40,6 +41,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const [updateConditions, { isLoading }] = useUpdateConditionsMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
+    const { t } = useTranslation("offer");
 
     const { control, handleSubmit } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
@@ -134,7 +136,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 name="extraConditions"
                 control={control}
                 render={({ field }) => (
-                    <Textarea className={styles.textarea} value={field.value} onChange={field.onChange} label="Дополнительные условия" description="Не более 1000 знаков" />
+                    <Textarea className={styles.textarea} value={field.value} onChange={field.onChange} label={t("conditions.Дополнительные условия")} description={t("conditions.Не более 1000 знаков")} />
                 )}
             />
             <div>

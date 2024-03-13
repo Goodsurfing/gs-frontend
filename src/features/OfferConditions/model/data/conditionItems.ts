@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
     airConditioningIcon,
     bathIcon,
@@ -30,108 +31,49 @@ import {
     PayedRideItems,
 } from "../types/conditionsData";
 
-export const liveItems: LiveItems[] = [{
-    text: "Отдельный дом",
-    icon: houseIcon,
-    id: "house",
-}, {
-    text: "Комната",
-    icon: roomIcon,
-    id: "room",
-}, {
-    text: "Койко-место",
-    icon: bedIcon,
-    id: "bed",
-}, {
-    text: "Палатка",
-    icon: campingTentIcon,
-    id: "tent",
-}, {
-    text: "Место под палатку",
-    icon: pickupIcon,
-    id: "tent_place",
-}];
+export const useConditionItems = () => {
+    const { t } = useTranslation("offer");
 
-export const foodItems: FoodItems[] = [{
-    text: "Полный пансион",
-    icon: fullIcon,
-    id: "full",
-}, {
-    text: "Завтрак включен",
-    icon: breakfastIcon,
-    id: "breakfast",
-}, {
-    text: "Продкуты",
-    icon: productsIcon,
-    id: "products",
-}, {
-    text: "Вегетарианское",
-    icon: vegetarianIcon,
-    id: "vegetarian",
-}];
+    const liveItems: LiveItems[] = [
+        { text: t("conditions.Отдельный дом"), icon: houseIcon, id: "house" },
+        { text: t("conditions.Комната"), icon: roomIcon, id: "room" },
+        { text: t("conditions.Койко-место"), icon: bedIcon, id: "bed" },
+        { text: t("conditions.Палатка"), icon: campingTentIcon, id: "tent" },
+        { text: t("conditions.Место под палатку"), icon: pickupIcon, id: "tent_place" },
+    ];
 
-export const payedRideItems: PayedRideItems[] = [{
-    text: "Полная оплата проезда",
-    icon: fullIcon,
-    id: "full",
-}, {
-    text: "Компенсация строимостри проезда",
-    icon: breakfastIcon,
-    id: "partial",
-}, {
-    text: "Частичная компенсация затрат",
-    icon: partPaymentIcon,
-    id: "reimbursement",
-}, {
-    text: "Заброска из пункта сбора",
-    icon: placeIcon,
-    id: "pick-up",
-}, {
-    text: "Трансфер из/в аэропорта/вокзала",
-    icon: transferIcon,
-    id: "transfer",
-}];
+    const foodItems: FoodItems[] = [
+        { text: t("conditions.Полный пансион"), icon: fullIcon, id: "full" },
+        { text: t("conditions.Завтрак включен"), icon: breakfastIcon, id: "breakfast" },
+        { text: t("conditions.Продкуты"), icon: productsIcon, id: "products" },
+        { text: t("conditions.Вегетарианское"), icon: vegetarianIcon, id: "vegetarian" },
+    ];
 
-export const goodsItems: GoodsItems[] = [{
-    text: "Горячая вода",
-    icon: hotWaterIcon,
-    id: "hot-water",
-}, {
-    text: "Интернет и wi-fi",
-    icon: wiFiIcon,
-    id: "wi-fi",
-}, {
-    text: "Электричество",
-    icon: electricityIcon,
-    id: "electricity",
-}, {
-    text: "Кондиционер",
-    icon: airConditioningIcon,
-    id: "conditioner",
-}, {
-    text: "Баня/сауна",
-    icon: bathIcon,
-    id: "bath",
-}];
+    const payedRideItems: PayedRideItems[] = [
+        { text: t("conditions.Полная оплата проезда"), icon: fullIcon, id: "full" },
+        { text: t("conditions.Компенсация строимостри проезда"), icon: breakfastIcon, id: "partial" },
+        { text: t("conditions.Частичная компенсация затрат"), icon: partPaymentIcon, id: "reimbursement" },
+        { text: t("conditions.Заброска из пункта сбора"), icon: placeIcon, id: "pick-up" },
+        { text: t("conditions.Трансфер из/в аэропорта/вокзала"), icon: transferIcon, id: "transfer" },
+    ];
 
-export const extraAvailiablesItems: ExtraAvailiablesItems[] = [{
-    text: "Мастер-классы/ обучающие курсы",
-    icon: classIcon,
-    id: "master_class",
-}, {
-    text: "Экскурсии",
-    icon: excursionsIcon,
-    id: "excursions",
-}, {
-    text: "Катание на лошадях",
-    icon: horsingIcon,
-    id: "horses",
-}, {
-    text: "Языковые уроки",
-    icon: languageIcon,
-    id: "languages",
-}, {
-    text: "Другое",
-    icon: otherIcon,
-    id: "additional",
-}];
+    const goodsItems: GoodsItems[] = [
+        { text: t("conditions.Горячая вода"), icon: hotWaterIcon, id: "hot-water" },
+        { text: t("conditions.Интернет и wi-fi"), icon: wiFiIcon, id: "wi-fi" },
+        { text: t("conditions.Электричество"), icon: electricityIcon, id: "electricity" },
+        { text: t("conditions.Кондиционер"), icon: airConditioningIcon, id: "conditioner" },
+        { text: t("conditions.Баня/сауна"), icon: bathIcon, id: "bath" },
+    ];
+
+    const extraAvailiablesItems: ExtraAvailiablesItems[] = [
+        { text: t("conditions.Мастер-классы/ обучающие курсы"), icon: classIcon, id: "master_class" },
+        { text: t("conditions.Экскурсии"), icon: excursionsIcon, id: "excursions" },
+        { text: t("conditions.Катание на лошадях"), icon: horsingIcon, id: "horses" },
+        { text: t("conditions.Языковые уроки"), icon: languageIcon, id: "languages" },
+        { text: t("conditions.Другое"), icon: otherIcon, id: "additional" },
+    ];
+
+    return {
+        liveItems, foodItems, payedRideItems, goodsItems, extraAvailiablesItems,
+    };
+};
