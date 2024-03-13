@@ -69,6 +69,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
+        console.log(preparedData);
         setToast(undefined);
         updateWhen({ body: { id, when: preparedData } })
             .unwrap()

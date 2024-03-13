@@ -1,6 +1,7 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Gender } from "@/entities/Offer";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
@@ -13,6 +14,7 @@ interface GenderProps {
 export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     const { value, onChange } = props;
     const [gender, setGender] = useState<Gender[]>(value);
+    const { t } = useTranslation("offer");
 
     const handleGenderChange = (selectedGender: Gender) => {
         if (gender.includes(selectedGender)) {
@@ -36,7 +38,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Женщина
+                        {t("whoNeeds.Женщина")}
                     </Typography>
                 )}
                 control={(
@@ -56,7 +58,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Мужчина
+                        {t("whoNeeds.Мужчина")}
                     </Typography>
                 )}
                 control={(
@@ -76,7 +78,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Другой
+                        {t("whoNeeds.Другой")}
                     </Typography>
                 )}
                 control={(

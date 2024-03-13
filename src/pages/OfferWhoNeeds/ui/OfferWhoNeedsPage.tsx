@@ -8,10 +8,9 @@ const OffersWhoNeedsPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h1 className={styles.title}>Кого бы вы хотели видеть у себя в волонтерах</h1>
+            <h1 className={styles.title}>{t("whoNeeds.Кого бы вы хотели видеть у себя в волонтерах")}</h1>
             <p className={styles.subtitle}>
-                Опишите, что должен уметь волонтер,
-                что он должен делать и на каких языках вы с ним можете общаться.
+                {t("whoNeeds.Опишите, что должен уметь волонтер, что он должен делать и на каких языках вы с ним можете общаться.")}
             </p>
             <WhoNeedsForm />
         </div>

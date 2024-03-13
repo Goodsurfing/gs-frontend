@@ -1,6 +1,7 @@
 import { FC, useCallback } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
@@ -17,6 +18,7 @@ interface LanguagesGroupProps {
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("offer");
 
     const onCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;
@@ -57,7 +59,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
             </div>
             <div className="">
                 <AddButton
-                    text="Добавить язык"
+                    text={t("whoNeeds.Добавить язык")}
                     onClick={() => onChange([...value, { language: "Английский", level: "not_matter" } as Language])}
                 />
             </div>

@@ -1,6 +1,7 @@
 import { FormControlLabel, Switch, Typography } from "@mui/material";
 import React, { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import styles from "./ExtraControl.module.scss";
 
 interface ExtraControlsProps {
@@ -10,6 +11,7 @@ interface ExtraControlsProps {
 
 const ExtraControls: FC<ExtraControlsProps> = (props: ExtraControlsProps) => {
     const { value, onChange } = props;
+    const { t } = useTranslation("offer");
 
     return (
         <div className={styles.wrapper}>
@@ -24,7 +26,7 @@ const ExtraControls: FC<ExtraControlsProps> = (props: ExtraControlsProps) => {
                             color: "#212121",
                         }}
                     >
-                        Обязателен один из этих языков
+                        {t("whoNeeds.Обязателен один из этих языков")}
                     </Typography>
                 )}
                 control={<Switch checked={value === false} />}
@@ -41,7 +43,7 @@ const ExtraControls: FC<ExtraControlsProps> = (props: ExtraControlsProps) => {
                             color: "#212121",
                         }}
                     >
-                        Все перечисленные языки обязательны
+                        {t("whoNeeds.Все перечисленные языки обязательны")}
                     </Typography>
                 )}
                 control={<Switch checked={value === true} />}

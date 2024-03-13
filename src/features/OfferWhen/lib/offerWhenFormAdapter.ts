@@ -1,4 +1,3 @@
-import { formatToW3CDate } from "@/shared/lib/formatToW3CDate";
 import { OfferWhenPeriods, OfferWhen } from "@/entities/Offer";
 import { OfferWhenFields } from "../model/types/offerWhen";
 
@@ -11,14 +10,14 @@ export function offerWhenFormApiAdapter(offerWhenForm: OfferWhenFields): OfferWh
     } = offerWhenForm;
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
-        start: formatToW3CDate(period.start),
-        end: formatToW3CDate(period.end),
+        start: period.start.toLocaleDateString(),
+        end: period.end.toLocaleDateString(),
     }));
 
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
     const { applicationEndDate } = endSettings;
 
-    const formattedEndDate = formatToW3CDate(applicationEndDate);
+    const formattedEndDate = applicationEndDate.toLocaleDateString();
 
     const offerWhen: OfferWhen = {
         periods: offerWhenPeriods,

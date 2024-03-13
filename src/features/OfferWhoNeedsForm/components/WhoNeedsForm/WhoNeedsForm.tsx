@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useUpdateWhoNeedsMutation } from "@/entities/Offer/api/offerApi";
 import { Age, Languages } from "@/entities/Offer/model/types/offerWhoNeeds";
 
@@ -50,6 +51,7 @@ export const WhoNeedsForm = memo(() => {
         defaultValues,
     });
     const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
+    const { t } = useTranslation("offer");
     const { handleSubmit, control } = form;
     const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
@@ -114,7 +116,7 @@ export const WhoNeedsForm = memo(() => {
                         <Input
                             className={styles.container}
                             type="number"
-                            label="Сколько волонтерских мест одновременно"
+                            label={t("whoNeeds.Сколько волонтерских мест одновременно")}
                             value={String(field.value)}
                             onChange={(e) => field.onChange(Number(e.target.value))}
                         />
@@ -138,8 +140,8 @@ export const WhoNeedsForm = memo(() => {
                             className={styles.container}
                             value={field.value}
                             onChange={field.onChange}
-                            label="Дополнительная информация"
-                            description="Не более 1000 знаков"
+                            label={t("whoNeeds.Дополнительная информация")}
+                            description={t("whoNeeds.Не более 1000 знаков")}
                             maxLength={1000}
                         />
                     )}
@@ -152,7 +154,7 @@ export const WhoNeedsForm = memo(() => {
                     color="BLUE"
                     size="MEDIUM"
                 >
-                    Сохранить
+                    {t("whoNeeds.Сохранить")}
                 </Button>
             </form>
         </FormProvider>

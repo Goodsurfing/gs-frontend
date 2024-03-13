@@ -55,6 +55,8 @@
         "Продвинутый": "Advanced",
         "В совершенстве": "Fluent",
         "Добавить язык": "Add language",
+        "Обязателен один из этих языков": "One of these languages is required",
+        "Все перечисленные языки обязательны": "All listed languages are required",
         "Сколько волонтерских мест одновременно": "How many volunteer positions simultaneously",
         "Откуда принимаю волонтеров": "Where I accept volunteers from",
         "Не важно": "Doesn't matter",

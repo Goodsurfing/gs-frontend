@@ -1,6 +1,7 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import { ReceptionPlace } from "@/entities/Offer";
 
 import Switch from "@/shared/ui/Switch/Switch";
@@ -14,15 +15,14 @@ interface LocationProps {
 
 const Location: FC<LocationProps> = (props) => {
     const { value, onChange } = props;
-
+    const { t } = useTranslation("offer");
     const handleChange = (newValue: ReceptionPlace) => {
-        // setSelectedValue(newValue);
         onChange(newValue);
     };
 
     return (
         <div className={styles.wrapper}>
-            <p className={styles.title}>Откуда принимаю волонтеров</p>
+            <p className={styles.title}>{t("whoNeeds.Откуда принимаю волонтеров")}</p>
             <div className={styles.container}>
                 <FormControlLabel
                     label={(
@@ -34,7 +34,7 @@ const Location: FC<LocationProps> = (props) => {
                                 color: "#212121",
                             }}
                         >
-                            Не важно
+                            {t("whoNeeds.Не важно")}
                         </Typography>
                     )}
                     control={<Switch checked={value === "any"} onChange={() => handleChange("any")} />}
