@@ -131,5 +131,27 @@
         "Вознаграждение труда": "Wages",
         "Дополнительные условия": "Additional conditions",
         "Не более 1000 знаков": "Not more than 1000 characters"
+    },
+    "finishingTouches": {
+        "Требования к участнику": "Participant requirements",
+        "Дополнительные условия": "Additional conditions",
+        "Можно с детьми": "Children allowed",
+        "Можно с животными": "Pets allowed",
+        "Принимаем парами": "Accepting couples",
+        "Можно студентам": "Students allowed",
+        "Только для вегетарианцев": "Only for vegetarians",
+        "Только для совершеннолетних": "Only for adults",
+        "Принимать заявки только от проверенных участников": "Accept applications only from verified participants",
+        "Приветственное сообщение": "Welcome message",
+        "Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».": "This message will be automatically sent to all applicants after they click the 'Participate' button.",
+        "Не более 1000 знаков": "Not more than 1000 characters",
+        "Согласие с правилами": "Agreement with the rules",
+        "Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку.": "Add information about the rules and conditions existing in your proposal, which the applicant must be familiar with at the time of application.",
+        "Добавить вопросы": "Add questions",
+        "Вы можете добавить стандартные вопросы волонтёру или ссылку на анкету, которую он должен заполнить и отправить. Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».": "You can add standard questions to the volunteer or a link to a form that they must fill out and submit. This message will be automatically sent to all applicants after they click the 'Participate' button.",
+        "Добавить ссылку на анкету": "Add a link to the form",
+        "Добавить вопрос": "Add a question",
+        "Опубликовать": "Publish",
+        "Сохранить в черновики": "Save as draft"
     }
 }

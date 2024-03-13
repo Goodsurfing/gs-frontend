@@ -131,5 +131,27 @@
         "Вознаграждение труда": "Salario",
         "Дополнительные условия": "Condiciones adicionales",
         "Не более 1000 знаков": "No más de 1000 caracteres"
+    },
+    "finishingTouches": {
+        "Требования к участнику": "Requisitos del participante",
+        "Дополнительные условия": "Condiciones adicionales",
+        "Можно с детьми": "Se permiten niños",
+        "Можно с животными": "Se permiten mascotas",
+        "Принимаем парами": "Aceptamos parejas",
+        "Можно студентам": "Se permiten estudiantes",
+        "Только для вегетарианцев": "Solo para vegetarianos",
+        "Только для совершеннолетних": "Solo para adultos",
+        "Принимать заявки только от проверенных участников": "Aceptar solicitudes solo de participantes verificados",
+        "Приветственное сообщение": "Mensaje de bienvenida",
+        "Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».": "Este mensaje se enviará automáticamente a todos los solicitantes después de que hagan clic en el botón 'Participar'.",
+        "Не более 1000 знаков": "No más de 1000 caracteres",
+        "Согласие с правилами": "Acuerdo con las reglas",
+        "Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку.": "Agregue información sobre las reglas y condiciones existentes en su propuesta, con las que el solicitante debe estar familiarizado en el momento de la solicitud.",
+        "Добавить вопросы": "Agregar preguntas",
+        "Вы можете добавить стандартные вопросы волонтёру или ссылку на анкету, которую он должен заполнить и отправить. Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».": "Puede agregar preguntas estándar al voluntario o un enlace a un formulario que debe completar y enviar. Este mensaje se enviará automáticamente a todos los solicitantes después de que hagan clic en el botón 'Participar'.",
+        "Добавить ссылку на анкету": "Agregar un enlace al formulario",
+        "Добавить вопрос": "Agregar una pregunta",
+        "Опубликовать": "Publicar",
+        "Сохранить в черновики": "Guardar como borrador"
     }
 }

@@ -43,6 +43,7 @@ const defaultValues: DefaultValues<OfferWhoNeedsFields> = {
     receptionPlace: "any",
     volunteerPlaces: 0,
     needAllLanguages: false,
+    additionalInfo: "",
 };
 
 export const WhoNeedsForm = memo(() => {
