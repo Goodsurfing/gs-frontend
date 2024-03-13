@@ -11,14 +11,18 @@ export const offerWhatToDoApiAdapter = (
 
     const skillsTemp = skills.map((skill) => ({ text: skill }));
 
+    const { hours, dayOff, timeType } = workingHours;
+
     const additionalSkillsTemp = additionalSkills.map(
         (additionalSkill) => additionalSkill.text,
     );
 
     return {
-        skills: skillsTemp,
+        skillIds: skillsTemp,
         additionalSkills: additionalSkillsTemp,
-        workingHours,
-        extraInfo,
+        hours,
+        dayOff,
+        timeType,
+        externalInfo: extraInfo,
     };
 };

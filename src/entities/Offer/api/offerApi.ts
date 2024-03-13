@@ -100,15 +100,7 @@ export const offerApi = createApi({
                 return {
                     url: `/vacancy/${data.body.id}/what-to-do`,
                     method: "PUT",
-                    // toDo: Change body typing for backend
-                    body: {
-                        hours: data.body.whatToDo?.workingHours.hours,
-                        timeType: data.body.whatToDo?.workingHours.timeType,
-                        dayOff: data.body.whatToDo?.workingHours.dayOff,
-                        skillIds: data.body.whatToDo?.skills,
-                        additionalSkills: data.body.whatToDo?.additionalSkills,
-                        externalInfo: data.body.whatToDo?.extraInfo,
-                    },
+                    body: data.body.whatToDo,
                 };
             },
             invalidatesTags: ["offer"],

@@ -23,10 +23,12 @@ export const mockedOffersData: Offer[] = [
             travel: "reimbursement",
         },
         whatToDo: {
-            skills: [{ text: "cooking" }],
-            workingHours: { dayOff: 3, hours: 40, timeType: "day" },
+            skillIds: [{ text: "cooking" }],
+            dayOff: 3,
+            hours: 40,
+            timeType: "day",
             additionalSkills: ["additional skills"],
-            extraInfo: "extra info",
+            externalInfo: "extra info",
         },
         whoNeeds: {
             genders: ["male"],
@@ -80,10 +82,12 @@ export const mockedOffersData: Offer[] = [
             travel: "reimbursement",
         },
         whatToDo: {
-            skills: [{ text: "cooking" }],
-            workingHours: { dayOff: 3, hours: 40, timeType: "day" },
+            skillIds: [{ text: "cooking" }],
+            dayOff: 3,
+            hours: 40,
+            timeType: "day",
             additionalSkills: ["additional skills"],
-            extraInfo: "extra info",
+            externalInfo: "extra info",
         },
         whoNeeds: {
             genders: ["male"],
