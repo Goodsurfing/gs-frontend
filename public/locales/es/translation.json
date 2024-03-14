@@ -40,6 +40,11 @@
                     "privacy-policy": "Política de Privacidad",
                     "news": "Noticias"
                 },
+                "profile": "Perfil",
+                "my-page": "Mi página",
+                "about-me": "Acerca de mí",
+                "host-dashboard": "Panel de host",
+                "volunteer-dashboard": "Panel de control voluntario",
                 "sign-in": "Iniciar sesión",
                 "sign-up": "Inscribirse",
                 "exit": "Salida"

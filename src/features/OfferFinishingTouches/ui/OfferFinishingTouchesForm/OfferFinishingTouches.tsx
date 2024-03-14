@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useUpdateFinishingTouchesMutation, useUpdateStatusMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -47,6 +48,7 @@ export const OfferFinishingTouchesForm = memo(
         const [updateFinishingTouches, { isLoading }] = useUpdateFinishingTouchesMutation();
         const [updateOfferStatus] = useUpdateStatusMutation();
         const [toast, setToast] = useState<ToastAlert>();
+        const { t } = useTranslation("offer");
         const { id } = useParams();
 
         const { handleSubmit, control } = useForm<OfferFinishingTouchesFormFields>({
@@ -111,7 +113,7 @@ export const OfferFinishingTouchesForm = memo(
                 <div className={styles.formFields}>
                     <div className={styles.skillsWrapper}>
                         <p className={styles.formTitle}>
-                            Дополнительные условия
+                            {t("finishingTouches.Дополнительные условия")}
                         </p>
                         <Controller
                             name="extraConditions"
@@ -133,7 +135,7 @@ export const OfferFinishingTouchesForm = memo(
                                 <FormControlLabel
                                     label={(
                                         <Typography className={styles.checkbox}>
-                                            Принимать заявки только от проверенных участников
+                                            {t("finishingTouches.Принимать заявки только от проверенных участников")}
                                         </Typography>
                                     )}
                                     control={(
@@ -148,15 +150,15 @@ export const OfferFinishingTouchesForm = memo(
                     </div>
                     <div className={styles.formField}>
                         <p className={styles.formTitle}>
-                            Приветственное сообщение
+                            {t("finishingTouches.Приветственное сообщение")}
                         </p>
                         <Controller
                             name="welcomeMessage"
                             control={control}
                             render={({ field }) => (
                                 <Textarea
-                                    label="Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать»."
-                                    description="Не более 1000 знаков"
+                                    label={t("finishingTouches.Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».")}
+                                    description={t("finishingTouches.Не более 1000 знаков")}
                                     onChange={field.onChange}
                                     value={field.value}
                                 />
@@ -164,14 +166,14 @@ export const OfferFinishingTouchesForm = memo(
                         />
                     </div>
                     <div className={styles.formField}>
-                        <p className={styles.formTitle}>Согласие с правилами</p>
+                        <p className={styles.formTitle}>{t("finishingTouches.Согласие с правилами")}</p>
                         <Controller
                             name="rules"
                             control={control}
                             render={({ field }) => (
                                 <Textarea
-                                    label="Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку."
-                                    description="Не более 1000 знаков"
+                                    label={t("finishingTouches.Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку.")}
+                                    description={t("finishingTouches.Не более 1000 знаков")}
                                     onChange={field.onChange}
                                     value={field.value}
                                 />
@@ -179,7 +181,7 @@ export const OfferFinishingTouchesForm = memo(
                         />
                     </div>
                     <div className={styles.formField}>
-                        <p className={styles.formTitle}>Добавить вопросы</p>
+                        <p className={styles.formTitle}>{t("finishingTouches.Добавить вопросы")}</p>
                         <Controller
                             name="questionnaireUrl"
                             control={control}
@@ -197,7 +199,7 @@ export const OfferFinishingTouchesForm = memo(
                         render={({ field }) => (
                             <Input
                                 style={{ height: 44 }}
-                                description="Добавить вопрос"
+                                description={t("finishingTouches.Добавить вопрос")}
                                 onChange={field.onChange}
                                 value={field.value}
                             />
@@ -212,10 +214,10 @@ export const OfferFinishingTouchesForm = memo(
                         variant="FILL"
                         onClick={handleSubmit(onSubmit)}
                     >
-                        Опубликовать
+                        {t("finishingTouches.Опубликовать")}
                     </Button>
                     <Button onClick={handleSubmit(onDraftHandle)} color="BLUE" size="MEDIUM" variant="OUTLINE">
-                        Сохранить в черновики
+                        {t("finishingTouches.Сохранить в черновики")}
                     </Button>
                 </div>
             </form>

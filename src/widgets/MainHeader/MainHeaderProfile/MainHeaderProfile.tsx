@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import Popup from "@/components/Popup/Popup";
 
 import { userActions } from "@/entities/User";
@@ -24,6 +25,7 @@ import styles from "./MainHeaderProfile.module.scss";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     const profileRef = useRef(null);
 
@@ -73,34 +75,34 @@ const MainHeaderProfile = () => {
                     to={getProfileInfoPageUrl(locale)}
                     replace
                 >
-                    Моя страница
+                    {t("main.welcome.header.my-page")}
                 </Link>
                 <Link
                     className={styles.dropdownLink}
-                    to={`/${getProfileInfoPageUrl(locale)}`}
+                    to={getProfileInfoPageUrl(locale)}
                     replace
                 >
-                    Обо мне
+                    {t("main.welcome.header.my-page")}
                 </Link>
                 <Link
                     className={styles.dropdownLink}
                     to={getHostDashboardPageUrl(locale)}
                     replace
                 >
-                    Дашборд хоста
+                    {t("main.welcome.header.host-dashboard")}
                 </Link>
                 <Link
                     className={styles.dropdownLink}
                     to={getVolunteerDashboardPageUrl(locale)}
                 >
-                    Стать волонтёром
+                    {t("main.welcome.header.volunteer-dashboard")}
                 </Link>
                 <button
                     type="button"
                     className={styles.dropdownLink}
                     onClick={handleLogout}
                 >
-                    Выйти
+                    {t("main.welcome.header.exit")}
                 </button>
             </Popup>
         </div>

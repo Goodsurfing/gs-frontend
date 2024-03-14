@@ -325,7 +325,7 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getProfileInfoPageUrl(locale),
     },
     {
-        label: "profile-info",
+        label: "profile-privacy",
         element: <ProfilePrivacyPage />,
         path: (locale: string) => getProfilePrivacyPageUrl(locale),
     },

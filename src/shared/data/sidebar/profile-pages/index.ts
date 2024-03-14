@@ -13,7 +13,7 @@ export const useProfileSidebarData = () => {
         {
             text: t("main.sidebar.Обо мне"),
             icon: aboutMeIcon,
-            route: "/profile",
+            route: "/profile/info",
         },
         {
             text: t("main.sidebar.Предпочтения"),

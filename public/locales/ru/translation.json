@@ -42,8 +42,10 @@
                 },
                 "messages": "Сообщения",
                 "my-page": "Моя страница",
+                "about-me": "Обо мне",
                 "host-dashboard": "Дашборд хоста",
                 "volunteer-dashboard": "Дашборд волонтёра",
+                "profile": "Личный кабинет",
                 "sign-in": "Вход",
                 "sign-up": "Регистрация",
                 "exit": "Выход"

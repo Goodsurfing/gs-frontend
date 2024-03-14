@@ -42,8 +42,10 @@
                 },
                 "messages": "Messages",
                 "my-page": "My page",
+                "about-me": "About me",
                 "host-dashboard": "Host dashboard",
                 "volunteer-dashboard": "Volunteer dashboard",
+                "profile": "Profile",
                 "sign-in": "Sign In",
                 "sign-up": "Sign Up",
                 "exit": "Exit"
