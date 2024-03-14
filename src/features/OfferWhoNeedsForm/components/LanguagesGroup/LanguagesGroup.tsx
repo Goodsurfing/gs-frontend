@@ -20,6 +20,12 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { control } = useFormContext();
     const { t } = useTranslation("offer");
 
+    const onAddBtnClick = useCallback(() => {
+        if (value.length < 10) {
+            onChange([...value, { language: "Английский", level: "not_matter" } as Language]);
+        }
+    }, [onChange, value]);
+
     const onCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;
         const newValue = [...value];
@@ -60,7 +66,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
             <div className="">
                 <AddButton
                     text={t("whoNeeds.Добавить язык")}
-                    onClick={() => onChange([...value, { language: "Английский", level: "not_matter" } as Language])}
+                    onClick={onAddBtnClick}
                 />
             </div>
         </div>
