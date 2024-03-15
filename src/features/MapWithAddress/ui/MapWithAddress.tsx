@@ -135,6 +135,7 @@ const MapWithAddress = ({
                     )}
                 />
                 <YMap
+                    locale={locale}
                     mapState={{
                         center: validateCoordinates(value?.Point.pos),
                         zoom: 10,

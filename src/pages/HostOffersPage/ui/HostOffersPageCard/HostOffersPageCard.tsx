@@ -9,6 +9,7 @@ import Button from "@/shared/ui/Button/Button";
 
 import { textSlice } from "../../lib/filterOffersByStatus";
 import styles from "./HostOffersPageCard.module.scss";
+import { OfferStatus } from "@/entities/Offer";
 
 interface IHostOffersPageCard {
     id: string;
@@ -21,6 +22,7 @@ interface IHostOffersPageCard {
     reviews: string;
     went: string;
     description: string;
+    status: OfferStatus;
 }
 
 const HostOffersPageCard = memo(
@@ -35,11 +37,16 @@ const HostOffersPageCard = memo(
         reviews,
         went,
         description,
+        status,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
         const onEditClick = () => {
-            navigate(`/${locale}/offers/welcome/${id}`);
+            if (status === "empty") {
+                navigate(`/${locale}/offers/welcome/${id}`);
+            } else {
+                navigate(`/${locale}/offers/where/${id}`);
+            }
         };
 
         return (

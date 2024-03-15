@@ -16,7 +16,7 @@ export const useSideMenuData = () => {
         {
             text: t("main.sidebar.К предложениям"),
             icon: backIcon,
-            route: "/offers/welcome",
+            route: "/host/my-offers",
         },
         {
             text: t("main.sidebar.Где"),

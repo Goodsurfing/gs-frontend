@@ -29,6 +29,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                 likes={String(offer.likes)}
                 reviews={String(offer.reviews)}
                 went={String(offer.acceptedRequests)}
+                status={offer.status}
                 key={index}
             />
         ));
