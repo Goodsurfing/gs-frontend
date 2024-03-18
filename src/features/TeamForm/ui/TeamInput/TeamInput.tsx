@@ -38,6 +38,7 @@ export const TeamInput = memo(
                 return inputValue && userEmail.startsWith(searchTerm);
             })
             .map((user) => (
+                // eslint-disable-next-line jsx-a11y/control-has-associated-label
                 <button type="button" onClick={() => onClickCard(user.email)} className={styles.wrapperCard}>
                     <TeamCard
                         teamUser={user}

@@ -5,8 +5,8 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import Dotenv from "dotenv-webpack";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { BuildOptions } from "./types/config";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 const MAX_CYCLES = 5;
 let numCyclesDetected = 0;
@@ -29,15 +29,6 @@ export function buildPlugins({
             __PROJECT__: JSON.stringify(project),
         }),
         new Dotenv(),
-        new ForkTsCheckerWebpackPlugin({
-            typescript: {
-                diagnosticOptions: {
-                    semantic: true,
-                    syntactic: true,
-                },
-                mode: "write-references",
-            }
-        }),
         new webpack.ids.HashedModuleIdsPlugin(),
     ];
 

@@ -39,6 +39,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo((props: ArticleEdi
         <div className={cn(className, styles.wrapper)}>
             <ArticleWidget article={article} />
             <div ref={popupRef} className={styles.buttonContent}>
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <button type="button" className={styles.button} onClick={handleShowPopup}>
                     <HandySvg src={threeDotsIcon} />
                 </button>

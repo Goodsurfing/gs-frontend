@@ -1,25 +1,34 @@
-import webpack from "webpack";
-import { BuildOptions } from "./types/config";
+import TerserPlugin from 'terser-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
-export const buildOptimizations = (options: BuildOptions) => {
-    const {} = options;
+export const buildOptimizations = () => {
     return {
         runtimeChunk: 'single',
+        chunkIds: 'deterministic',
+        moduleIds: 'deterministic',
+        minimizer: [
+            new TerserPlugin({
+                minify: TerserPlugin.swcMinify,
+                parallel: true,
+            }),
+            new CssMinimizerPlugin(),
+        ],
         splitChunks: {
             chunks: 'all',
-            maxInitialRequests: Infinity,
-            minSize: 0,
+            minSize: 20000,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
             cacheGroups: {
+                bundle: {
+                    chunks: 'all',
+                    automaticNameDelimiter: '~',
+                    minChunks: 2,
+                },
                 vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module: any) {
-                    // get the name. E.g. node_modules/packageName/not/this/part.js
-                    // or node_modules/packageName
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-                    // npm package names are URL-safe, but some servers don't like @ symbols
-                        return `npm.${packageName.replace('@', '')}`;
-                    },
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: 'vendor',
+                    enforce: true,
                 },
             },
         },
