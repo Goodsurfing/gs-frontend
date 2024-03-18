@@ -8,22 +8,22 @@ interface TagComponentProps {
     handleDelete: (index: number) => void;
 }
 
-export const TagComponent: FC<TagComponentProps> = memo((props: TagComponentProps) => {
-    const { tag, handleDelete, index } = props;
+export const TagComponent: FC<TagComponentProps> = memo(
+    (props: TagComponentProps) => {
+        const { tag, handleDelete, index } = props;
 
-    const onHandleDelete = useCallback(() => {
-        handleDelete(index);
-    }, [index, handleDelete]);
+        const onHandleDelete = useCallback(() => {
+            handleDelete(index);
+        }, [index, handleDelete]);
 
-    return (
-        <li className={styles.tagWrapper} key={tag}>
-            {tag}
-            <button
-                type="button"
-                onClick={onHandleDelete}
-            >
-                <div className={styles.deleteIcon} />
-            </button>
-        </li>
-    );
-});
+        return (
+            <li className={styles.tagWrapper} key={tag}>
+                {tag}
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <button type="button" onClick={onHandleDelete}>
+                    <div className={styles.deleteIcon} />
+                </button>
+            </li>
+        );
+    },
+);
