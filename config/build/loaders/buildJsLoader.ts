@@ -10,14 +10,13 @@ export function buildJsLoader({ isDev }: { isDev: boolean }) {
                 module: {
                     type: 'nodenext',
                 },
-                minify: isDev,
+                minify: !isDev,
                 jsc: {
                     minify: {
                         compress: true,
                         mangle: true,
                         format: {
                             asciiOnly: true,
-                            comments: /^(?!webpack|.*LOADABLE).*$/,
                         },
                     },
                     // TODO: Split builds for new and old browsers and add 2021's build
@@ -35,14 +34,4 @@ export function buildJsLoader({ isDev }: { isDev: boolean }) {
             },
         },
     };
-}
-
-export function buildJSLibLoader() {
-    return {
-        test: /.js$/,
-        include: [/node_modules/],
-        use: {
-            
-        },
-    }
 }
