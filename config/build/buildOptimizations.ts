@@ -1,15 +1,24 @@
-import webpack from "webpack";
-import { BuildOptions } from "./types/config";
+import TerserPlugin from 'terser-webpack-plugin';
 
-export const buildOptimizations = (options: BuildOptions) => {
-    const {} = options;
+export const buildOptimizations = () => {
     return {
         runtimeChunk: 'single',
+        chunkIds: 'deterministic',
+        moduleIds: 'deterministic',
+        minimizer: [new TerserPlugin({
+            parallel: true,
+        })],
         splitChunks: {
             chunks: 'all',
-            maxInitialRequests: Infinity,
-            minSize: 0,
+            minSize: 20000,
+            maxAsyncRequests: 30,
+            maxInitialRequests: 30,
             cacheGroups: {
+                bundle: {
+                    chunks: 'all',
+                    automaticNameDelimiter: '~',
+                    minChunks: 2,
+                },
                 vendor: {
                     test: /[\\/]node_modules[\\/]/,
                     name(module: any) {

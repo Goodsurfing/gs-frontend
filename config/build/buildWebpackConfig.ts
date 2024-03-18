@@ -33,7 +33,7 @@ export function buildWebpackConfig(options: BuildOptions): Configuration {
         watchOptions: {
             ignored: /node_modules/,
         },
-        optimization: buildOptimizations(options) as any,
+        optimization: buildOptimizations() as any,
         resolve: buildResolvers(options),
         devtool: isDev ? "inline-source-map" : undefined,
         devServer: isDev ? buildDevServer(options) : undefined,

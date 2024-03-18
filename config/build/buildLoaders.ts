@@ -1,15 +1,12 @@
 import webpack from "webpack";
 import { BuildOptions } from "./types/config";
 import { buildCssLoader } from "./loaders/buildCssLoader";
-import { buildBabelLoader } from "./loaders/buildBabelLoader";
+import { buildJsLoader } from "./loaders/buildJsLoader";
 
 export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
     const { isDev } = options;
 
-    const babelLoader = buildBabelLoader(options);
-
-    const codeBabelLoader = buildBabelLoader({ ...options, isTsx: false });
-    const tsxCodeBabelLoader = buildBabelLoader({ ...options, isTsx: true });
+    const jsLoader = buildJsLoader(options);
 
     const cssLoader = buildCssLoader(isDev);
 
@@ -29,5 +26,5 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
         },
     };
 
-    return [babelLoader, codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader];
+    return [jsLoader, ...cssLoader, svgLoader, imgLoader];
 }
