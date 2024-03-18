@@ -1,14 +1,18 @@
 import TerserPlugin from 'terser-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 export const buildOptimizations = () => {
     return {
         runtimeChunk: 'single',
         chunkIds: 'deterministic',
         moduleIds: 'deterministic',
-        minimizer: [new TerserPlugin({
-            minify: TerserPlugin.swcMinify,
-            parallel: true,
-        })],
+        minimizer: [
+            new TerserPlugin({
+                minify: TerserPlugin.swcMinify,
+                parallel: true,
+            }),
+            new CssMinimizerPlugin(),
+        ],
         splitChunks: {
             chunks: 'all',
             minSize: 20000,

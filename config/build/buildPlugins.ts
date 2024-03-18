@@ -6,6 +6,7 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import Dotenv from "dotenv-webpack";
 import { BuildOptions } from "./types/config";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 const MAX_CYCLES = 5;
 let numCyclesDetected = 0;
