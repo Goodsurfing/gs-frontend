@@ -1,6 +1,6 @@
 import type { BuildOptions } from "../types/config";
 
-export function buildJsLoader({ isDev }: {isDev: boolean}) {
+export function buildJsLoader({ isDev }: { isDev: boolean }) {
     return {
         test: /.(ts|js)x?$/,
         exclude: /node_modules/,
@@ -35,4 +35,14 @@ export function buildJsLoader({ isDev }: {isDev: boolean}) {
             },
         },
     };
+}
+
+export function buildJSLibLoader() {
+    return {
+        test: /.js$/,
+        include: [/node_modules/],
+        use: {
+            
+        },
+    }
 }

@@ -6,6 +6,7 @@ export const buildOptimizations = () => {
         chunkIds: 'deterministic',
         moduleIds: 'deterministic',
         minimizer: [new TerserPlugin({
+            minify: TerserPlugin.swcMinify,
             parallel: true,
         })],
         splitChunks: {
@@ -20,15 +21,10 @@ export const buildOptimizations = () => {
                     minChunks: 2,
                 },
                 vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module: any) {
-                    // get the name. E.g. node_modules/packageName/not/this/part.js
-                    // or node_modules/packageName
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-                    // npm package names are URL-safe, but some servers don't like @ symbols
-                        return `npm.${packageName.replace('@', '')}`;
-                    },
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: 'vendor',
+                    enforce: true,
                 },
             },
         },
