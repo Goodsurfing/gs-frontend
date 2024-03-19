@@ -3,7 +3,7 @@ import cn from "classnames";
 import { Link } from "react-router-dom";
 import styles from "./Navigation.module.scss";
 
-type NameMain = "Новости" | "Сообщество" | "Журналы";
+type NameMain = "Новости" | "Сообщество" | "Журнал";
 
 interface NavigationProps {
     nameMain: NameMain;
