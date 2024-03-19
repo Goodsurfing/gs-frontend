@@ -30,7 +30,7 @@ interface MapWithAddressProps {
 const MapWithAddress = ({
     className, data, control, onCoordinatesChange,
 }: MapWithAddressProps) => {
-    const { t } = useTranslation("offer-where");
+    const { t } = useTranslation("offer");
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
@@ -102,8 +102,8 @@ const MapWithAddress = ({
                             }}
                             options={options}
                             getOptionLabel={(option) => `${option.description} ${option.name}`}
-                            noOptionsText={t("Точек на карте не найдено")}
-                            labelText={t("Введите адрес")}
+                            noOptionsText={t("where.Точек на карте не найдено")}
+                            labelText={t("where.Введите адрес")}
                             renderOption={(props, option) => (
                                 <li key={option.name} {...props}>
                                     <Grid

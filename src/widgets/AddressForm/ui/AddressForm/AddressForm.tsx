@@ -31,7 +31,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             address: "",
         },
     });
-    const { t } = useTranslation("offer-where");
+    const { t } = useTranslation("offer");
     const { id } = useParams();
     const [updateWhere, { isLoading }] = useUpdateWhereMutation();
     const [toast, setToast] = useState<ToastAlert>();
@@ -78,7 +78,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 onClick={onSubmit}
                 type="submit"
             >
-                {t("Сохранить")}
+                {t("where.Сохранить")}
             </Button>
         </form>
     );
