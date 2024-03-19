@@ -4,14 +4,22 @@ import { OfferDescriptionField } from "../model/types/inviteDescription";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
-): OfferDescription => ({
-    title: data.title,
-    longDescription: data.fullDescription,
-    shortDescription: data.shortDescription,
-    category: data.category,
-    titleImage: data.coverImage,
-    images: data.images,
-});
+    coverImage: string,
+    extraImages: (string | undefined)[],
+): OfferDescription => {
+    const filteredExtraImages: string[] = extraImages.filter(
+        (item): item is string => item !== undefined,
+    );
+
+    return {
+        title: data.title,
+        longDescription: data.fullDescription,
+        shortDescription: data.shortDescription,
+        category: data.category,
+        titleImage: coverImage,
+        images: filteredExtraImages,
+    };
+};
 
 export const inviteDescriptionAdapter = (
     data?: OfferDescription,

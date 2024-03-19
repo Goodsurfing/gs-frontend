@@ -203,7 +203,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: <OfferDescriptionPage />,
+                element: AuthRoutes.offers_description,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {

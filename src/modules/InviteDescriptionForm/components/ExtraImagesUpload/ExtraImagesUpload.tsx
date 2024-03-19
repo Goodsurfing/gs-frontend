@@ -8,8 +8,8 @@ import styles from "./ExtraImagesUpload.module.scss";
 
 interface ExtraImagesUploadProps {
     label: string;
-    value: string[];
-    onChange: (value: string[]) => void;
+    value: File[];
+    onChange: (value: File[]) => void;
     classNameWrapper?: string;
 }
 
@@ -18,16 +18,21 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
         value, onChange, classNameWrapper, label,
     } = props;
     const [inputImg, setInputImg] = useState<string | null>(null);
+    const [images, setImages] = useState<Array<string>>([]);
 
     const handleImageUpload = (img: string | null) => {
         if (img) {
             setInputImg(null);
-            onChange([...value, img]);
+            setImages([...images, img]);
         }
     };
 
+    const handleFileUploadImage = (file: File) => {
+        onChange([...value, file]);
+    };
+
     const handleCloseBtnClick = (index: number) => {
-        onChange(value.filter((item, i) => i !== index));
+        setImages(images.filter((item, i) => i !== index));
     };
 
     return (
@@ -36,9 +41,10 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 label={label}
                 img={inputImg}
                 setImg={handleImageUpload}
+                onUpload={handleFileUploadImage}
                 id="asd"
             />
-            {value.map((image, index) => (
+            {images.map((image, index) => (
                 <PictureReview
                     className={styles.imgItem}
                     key={index}

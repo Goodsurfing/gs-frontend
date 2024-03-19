@@ -6,7 +6,11 @@ interface GenerateLinkResponse {
     uuid: string;
 }
 
-const useUploadFile = async (fileName: string, data: any, token: string) => {
+const uploadFile = async (
+    fileName: string,
+    data: any,
+    token: string,
+) => {
     const sendRequestForGenerateUploadLink = async () => {
         const body = {
             fileName,
@@ -17,7 +21,7 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                 {
                     method: "POST",
                     headers: new Headers({
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${JSON.parse(token)}`,
                     }),
                     body: JSON.stringify(body),
                 },
@@ -30,11 +34,18 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
+        // fix this replaced url in backend
+        const replacedUrl = link.url.replace(
+            "minio:9000",
+            "storage.gudserfing.ru",
+        );
+        console.log(link);
         try {
-            await fetch(link!.url, {
+            await fetch(replacedUrl, {
                 method: "PUT",
                 headers: new Headers({
-                    "Content-Type": link!.contentType,
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    "Content-Type": link.contentType,
                 }),
                 body: data,
             });
@@ -47,11 +58,11 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
             // eslint-disable-next-line no-console
-            console.log(generateLinkResponse);
+            console.log("generateLinkResponse", generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.uuid;
         }
     }
 };
 
-export default useUploadFile;
+export default uploadFile;

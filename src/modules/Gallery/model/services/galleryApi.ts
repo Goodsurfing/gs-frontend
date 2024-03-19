@@ -18,7 +18,7 @@ export const galleryApi = createApi({
             if (token) {
                 headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
-            headers.set("Content-Type", "application/json");
+            // headers.set("Content-Type", "application/json");
             return headers;
         },
     }),

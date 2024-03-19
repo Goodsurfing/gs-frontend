@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -6,11 +6,13 @@ import {
     SubmitHandler,
     useForm,
 } from "react-hook-form";
-import { useParams } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+
 import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -27,6 +29,7 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: undefined,
@@ -42,16 +45,79 @@ export const InviteDescriptionForm = () => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control, formState: { errors } } = form;
+    const {
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = form;
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
     const [toast, setToast] = useState<ToastAlert>();
-    const { t } = useTranslation("offer");
     const { id } = useParams();
+    const { token } = useAuth();
+    const { t } = useTranslation("offer");
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
-        const preparedData = inviteDescriptionApiAdapter(data);
-        console.log(preparedData);
         setToast(undefined);
+        const fileName = data.coverImage.name;
+        let imageUuid: string | undefined;
+        let extraImagesUuid: (string | undefined)[] = [];
+        if (!token) return;
+        console.log(data.coverImage);
+        // upload coverImage
+        try {
+            imageUuid = await uploadFile(
+                fileName,
+                data.coverImage,
+                token,
+            );
+        } catch {
+            setToast({
+                text: "Произошла ошибка при загрузке файла",
+                type: HintType.Error,
+            });
+        }
+        if (!imageUuid) {
+            setToast({
+                text: "Не удалось загрузить файл",
+                type: HintType.Error,
+            });
+            return;
+        }
+
+        // upload extra images
+        if (data.images.length !== 0) {
+            const uploadImagesPromises = data.images.map((file) => uploadFile(
+                file.name,
+                file,
+                token,
+            )
+                .then((imageDataUuid) => imageDataUuid)
+                .catch(() => {
+                    setToast({
+                        text: "Произошла ошибка при загрузке файлов",
+                        type: HintType.Error,
+                    });
+                    return undefined;
+                }));
+
+            try {
+                const imagesUuid = await Promise.all(uploadImagesPromises);
+                extraImagesUuid = imagesUuid;
+            } catch {
+                extraImagesUuid = [];
+                setToast({
+                    text: "Произошла ошибка при загрузке файлов",
+                    type: HintType.Error,
+                });
+            }
+        }
+        const preparedData = inviteDescriptionApiAdapter(
+            data,
+            imageUuid,
+            extraImagesUuid,
+        );
+        console.log(preparedData);
+
         updateDescription({ body: { id, description: preparedData } })
             .unwrap()
             .then(() => {
@@ -70,9 +136,7 @@ export const InviteDescriptionForm = () => {
 
     return (
         <FormProvider {...form}>
-            {toast && (
-                <HintPopup text={toast.text} type={toast.type} />
-            )}
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form>
                 <div className={styles.formWrapper}>
                     <EventName />
@@ -90,9 +154,17 @@ export const InviteDescriptionForm = () => {
                         }}
                         render={({ field }) => (
                             <div>
-                                <ImageUpload onChange={field.onChange} childrenLabel={t("description.Добавить фото обложки")} />
+                                <ImageUpload
+                                    onChange={field.onChange}
+                                    childrenLabel={t(
+                                        "description.Добавить фото обложки",
+                                    )}
+                                />
                                 <p className={styles.error}>
-                                    {errors.coverImage && t(`description.${errors.coverImage?.message?.toString()}`)}
+                                    {errors.coverImage
+                                        && t(
+                                            `description.${errors.coverImage?.message?.toString()}`,
+                                        )}
                                 </p>
                             </div>
                         )}

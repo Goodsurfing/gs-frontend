@@ -5,11 +5,11 @@ import ImageInput from "@/components/ImageInput/ImageInput";
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 import { galleryApi } from "@/modules/Gallery";
 import styles from "./ImageUpload.module.scss";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface ImageUploadProps {
-    onChange?: (value: string | undefined) => void;
+    onChange?: (value: File | null) => void;
     childrenLabel: string;
 }
 
@@ -18,23 +18,13 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
     const [toast, setToast] = useState<ToastAlert>();
     const [img, setImg] = useState<string | null>(null);
     const { t } = useTranslation("offer");
-    const [generateLink, { isLoading }] = galleryApi.useGenerateLinkMutation();
+    // const [generateLink, { isLoading }] = galleryApi.useGenerateLinkMutation();
 
     const handleUploadImage = useCallback((image: File) => {
         console.log(image.name);
         setToast(undefined);
-        generateLink({ fileName: image.name })
-            .unwrap()
-            .then((res) => {
-                onChange?.(res.url);
-            })
-            .catch((error) => {
-                setToast({
-                    text: "Произошла ошибка при загрузке изображения",
-                    type: HintType.Error,
-                });
-            });
-    }, [generateLink, onChange]);
+        onChange?.(image);
+    }, [onChange]);
 
     return (
         <>
@@ -44,7 +34,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             <ImageInput
                 img={img}
                 setImg={setImg}
-                disabled={isLoading}
+                // disabled={isLoading}
                 onUpload={handleUploadImage}
                 wrapperClassName={styles.input}
                 labelClassName={styles.label}

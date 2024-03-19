@@ -5,6 +5,6 @@ export interface OfferDescriptionField {
     category: Category[];
     shortDescription: string;
     fullDescription: string;
-    coverImage: string;
-    images: string[];
+    coverImage: File;
+    images: File[];
 }

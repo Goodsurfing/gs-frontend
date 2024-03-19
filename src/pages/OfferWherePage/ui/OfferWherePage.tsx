@@ -5,6 +5,7 @@ import styles from "./OfferWherePage.module.scss";
 
 const OfferWherePage = () => {
     const { t } = useTranslation("offer-where");
+
     return (
         <div className={styles.wrapper}>
             <h1 className={styles.title}>{t("Где вы находитесь или будете принимать волонтеров")}</h1>

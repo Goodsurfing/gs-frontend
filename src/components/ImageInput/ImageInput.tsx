@@ -23,9 +23,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     const [error, setError] = useState<boolean>(false);
     // const [image, setImage] = useState<string | null>(null);
 
-    const handleFileChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
@@ -35,8 +33,14 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     setError(true);
                     return;
                 }
-                // const formData = new FormData();
-                // formData.append("image", file);
+
+                const validExtensions = [".png", ".jpeg", ".jpg"];
+                const fileExtension = file.name.toLowerCase().slice(file.name.lastIndexOf("."));
+                if (!validExtensions.includes(fileExtension)) {
+                    setError(true);
+                    return;
+                }
+
                 onUpload?.(file);
                 const url = URL.createObjectURL(file);
                 setError(false);
