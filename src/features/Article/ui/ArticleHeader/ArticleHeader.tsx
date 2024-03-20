@@ -1,6 +1,9 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { HandySvg } from "@handy-ones/handy-svg";
 import styles from "./ArticleHeader.module.scss";
+import likesIcon from "@/shared/assets/icons/ThumbsUp.svg";
+import commentsIcon from "@/shared/assets/icons/comment.svg";
 
 interface ArticleHeaderProps {
     className?: string;
@@ -18,7 +21,7 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
     return (
         <div className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>{title}</h1>
-            <div>
+            <div className={styles.containerHeader}>
                 <div className={styles.infoWrapper}>
                     <div className={styles.author}>
                         <img src={authorAvatar} alt="auhtor avatar" className={styles.avatar} />
@@ -26,6 +29,16 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
                     </div>
                     <span className={styles.date}>{date}</span>
                     <div className={styles.category}>{category}</div>
+                </div>
+                <div className={styles.containerIcon}>
+                    <div className={styles.wrapperIcon}>
+                        <HandySvg src={likesIcon} className={styles.icon} />
+                        <span className={styles.number}>7</span>
+                    </div>
+                    <div className={styles.wrapperIcon}>
+                        <HandySvg src={commentsIcon} className={styles.icon} />
+                        <span className={styles.number}>0</span>
+                    </div>
                 </div>
             </div>
         </div>

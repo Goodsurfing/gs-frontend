@@ -22,6 +22,7 @@ const NewsPersonalPage = () => {
                     nameArticle="Тестовая статья"
                 />
                 <ArticleHeader
+                    className={styles.articleHeader}
                     title="Тестовая статья"
                     authorAvatar={defaultImage}
                     authorName="Алексей Петров"

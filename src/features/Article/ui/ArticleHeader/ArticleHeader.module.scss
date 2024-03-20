@@ -2,9 +2,16 @@
     text-align: center;
 }
 
+.containerHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
 .infoWrapper {
     display: flex;
     gap: 30px;
+    align-items: center;
 }
 
 .author {
@@ -14,7 +21,7 @@
 }
 
 .authorName {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--text-primary-1);
 }
 
@@ -30,5 +37,29 @@
 }
 
 .category {
-    
+    font-size: 0.875rem;
+    padding: 3px 10px;
+    background-color: #C3A3E9;
+    border-radius: 40px;
+}
+
+.containerIcon {
+    display: flex;
+    gap: 12px;
+}
+
+.wrapperIcon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}
+
+.number {
+    font-size: 0.875rem;
+    font-weight: 700;
 }
