@@ -4,12 +4,15 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import { ArticleHeader, Navigation } from "@/features/Article";
+import {
+    ArticleContent, ArticleHeader, ArticleShare, Navigation,
+} from "@/features/Article";
 
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 import { getNewsPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./NewsPersonalPage.module.scss";
+import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
 
 const NewsPersonalPage = () => {
     const { locale } = useLocale();
@@ -29,6 +32,8 @@ const NewsPersonalPage = () => {
                     category="Категория"
                     date="17 мая 2017"
                 />
+                <ArticleContent className={styles.content} content="" />
+                <ArticleShare className={styles.shareBlock} />
             </div>
         </MainPageLayout>
     );
