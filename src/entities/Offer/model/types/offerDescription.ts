@@ -1,5 +1,3 @@
-import { OfferOrganization } from "./offerOrganization";
-
 export type Category = string;
 
 export interface OfferDescription {

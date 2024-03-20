@@ -31,7 +31,5 @@ export const inviteDescriptionAdapter = (
         fullDescription: data.longDescription,
         shortDescription: data.shortDescription,
         category: data.category,
-        coverImage: data.titleImage,
-        images: data.images,
     };
 };

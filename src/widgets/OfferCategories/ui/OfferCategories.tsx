@@ -1,5 +1,4 @@
 import React, { FC, ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
 import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
 
 import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";

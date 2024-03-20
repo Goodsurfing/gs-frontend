@@ -13,7 +13,6 @@ import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";

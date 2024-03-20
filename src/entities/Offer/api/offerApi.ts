@@ -64,15 +64,12 @@ export const offerApi = createApi({
             invalidatesTags: ["offer"],
         }),
         updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => {
-                console.log("Request body:", data.body.whoNeeds);
-                return {
-                    url: `/vacancy/${data.body.id}/how-needs`,
-                    method: "PUT",
-                    // toDo: Change body typing for backend
-                    body: data.body.whoNeeds,
-                };
-            },
+            query: (data) => ({
+                url: `/vacancy/${data.body.id}/how-needs`,
+                method: "PUT",
+                // toDo: Change body typing for backend
+                body: data.body.whoNeeds,
+            }),
             invalidatesTags: ["offer"],
         }),
         updateDescription: build.mutation<
@@ -95,14 +92,11 @@ export const offerApi = createApi({
             invalidatesTags: ["offer"],
         }),
         updateWhatToDo: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => {
-                console.log("Request data:", data.body.whatToDo);
-                return {
-                    url: `/vacancy/${data.body.id}/what-to-do`,
-                    method: "PUT",
-                    body: data.body.whatToDo,
-                };
-            },
+            query: (data) => ({
+                url: `/vacancy/${data.body.id}/what-to-do`,
+                method: "PUT",
+                body: data.body.whatToDo,
+            }),
             invalidatesTags: ["offer"],
         }),
         updateConditions: build.mutation<

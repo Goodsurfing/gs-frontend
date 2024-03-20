@@ -46,7 +46,6 @@ export const OfferWhatToDoForm = memo(
 
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
-            console.log(preparedData);
             setToast(undefined);
             updateWhatToDo({ body: { id, whatToDo: preparedData } })
                 .unwrap()

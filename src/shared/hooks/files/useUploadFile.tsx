@@ -39,7 +39,6 @@ const uploadFile = async (
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        console.log(link);
         try {
             await fetch(link.url, {
                 method: "PUT",
@@ -58,8 +57,6 @@ const uploadFile = async (
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
-            // eslint-disable-next-line no-console
-            console.log("generateLinkResponse", generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.url;
         }

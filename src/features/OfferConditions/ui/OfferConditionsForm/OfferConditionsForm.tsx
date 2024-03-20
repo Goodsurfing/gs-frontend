@@ -50,7 +50,6 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
 
     const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
         const preparedData = offerConditionsApiAdapter(data);
-        console.log(preparedData);
         setToast(undefined);
         updateConditions({ body: { id, conditions: preparedData } })
             .unwrap()

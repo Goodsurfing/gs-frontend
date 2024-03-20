@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -115,7 +115,6 @@ export const InviteDescriptionForm = () => {
             imageUrl || "",
             extraImagesUuid,
         );
-        console.log(preparedData);
 
         updateDescription({ body: { id, description: preparedData } })
             .unwrap()
