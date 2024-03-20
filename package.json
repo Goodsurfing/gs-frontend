@@ -102,6 +102,7 @@
         "chart.js": "^4.3.0",
         "classnames": "^2.3.2",
         "crypto-js": "^4.1.1",
+        "dompurify": "^3.0.10",
         "emoji-picker-react": "^4.5.16",
         "i18next": "^23.3.0",
         "i18next-browser-languagedetector": "^7.0.2",
