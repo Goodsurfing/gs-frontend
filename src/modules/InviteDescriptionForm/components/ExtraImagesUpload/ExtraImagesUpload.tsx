@@ -5,11 +5,12 @@ import ExtraImagesItem from "../ExtraImagesItem/ExtraImagesItem";
 import ExtraImagesItemButton from "../ExtraImagesItem/ExtraImagesItemButton/ExtraImagesItemButton";
 import PictureReview from "../PictureReview/PictureReview";
 import styles from "./ExtraImagesUpload.module.scss";
+import { ImageType } from "@/components/ImageInput/types";
 
 interface ExtraImagesUploadProps {
     label: string;
-    value: File[];
-    onChange: (value: File[]) => void;
+    value: ImageType[];
+    onChange: (value: ImageType[]) => void;
     classNameWrapper?: string;
 }
 
@@ -17,22 +18,15 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     const {
         value, onChange, classNameWrapper, label,
     } = props;
-    const [inputImg, setInputImg] = useState<string | null>(null);
-    const [images, setImages] = useState<Array<string>>([]);
+    const [inputImg, setInputImg] = useState<ImageType>({ file: null, src: null });
 
-    const handleImageUpload = (img: string | null) => {
-        if (img) {
-            setInputImg(null);
-            setImages([...images, img]);
-        }
-    };
-
-    const handleFileUploadImage = (file: File) => {
-        onChange([...value, file]);
+    const handleImageUpload = (img: ImageType) => {
+        setInputImg((prev) => ({ ...prev, file: null, src: null }));
+        onChange([...value, { ...img }]);
     };
 
     const handleCloseBtnClick = (index: number) => {
-        setImages(images.filter((item, i) => i !== index));
+        onChange(value.filter((item, i) => i !== index));
     };
 
     return (
@@ -41,14 +35,13 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 label={label}
                 img={inputImg}
                 setImg={handleImageUpload}
-                onUpload={handleFileUploadImage}
                 id="asd"
             />
-            {images.map((image, index) => (
+            {value.map((image, index) => (
                 <PictureReview
                     className={styles.imgItem}
                     key={index}
-                    img={image}
+                    img={image.src || ""}
                     close={(
                         <ExtraImagesItemButton
                             className={styles.closeBtn}

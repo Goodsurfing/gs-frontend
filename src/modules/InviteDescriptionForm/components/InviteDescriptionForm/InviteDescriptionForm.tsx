@@ -29,14 +29,16 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
-    title: undefined,
+    title: "",
     category: [],
-    fullDescription: undefined,
-    shortDescription: undefined,
-    coverImage: undefined,
+    fullDescription: "",
+    shortDescription: "",
+    coverImage: {
+        file: null,
+        src: "null",
+    },
     images: [],
 };
 
@@ -58,53 +60,50 @@ export const InviteDescriptionForm = () => {
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
-        const fileName = data.coverImage.name;
-        let imageUuid: string | undefined;
-        let extraImagesUuid: (string | undefined)[] = [];
+        let imageUrl: string | null = data.coverImage.src;
+        let extraImagesUuid: string[] = [];
         if (!token) return;
-        console.log(data.coverImage);
+
         // upload coverImage
-        try {
-            imageUuid = await uploadFile(
-                fileName,
-                data.coverImage,
-                token,
-            );
-        } catch {
-            setToast({
-                text: "Произошла ошибка при загрузке файла",
-                type: HintType.Error,
-            });
-        }
-        if (!imageUuid) {
-            setToast({
-                text: "Не удалось загрузить файл",
-                type: HintType.Error,
-            });
-            return;
+        if (data.coverImage.file) {
+            try {
+                imageUrl = (await uploadFile(
+                    data.coverImage.file.name,
+                    data.coverImage.file,
+                    token,
+                )) || null;
+            } catch {
+                setToast({
+                    text: "Произошла ошибка при загрузке файла",
+                    type: HintType.Error,
+                });
+            }
+            if (!imageUrl) {
+                setToast({
+                    text: "Не удалось загрузить файл",
+                    type: HintType.Error,
+                });
+                return;
+            }
         }
 
         // upload extra images
         if (data.images.length !== 0) {
-            const uploadImagesPromises = data.images.map((file) => uploadFile(
-                file.name,
-                file,
-                token,
-            )
-                .then((imageDataUuid) => imageDataUuid)
-                .catch(() => {
-                    setToast({
-                        text: "Произошла ошибка при загрузке файлов",
-                        type: HintType.Error,
-                    });
-                    return undefined;
-                }));
+            const uploadImagesPromises = data.images.map((image) => {
+                if (image.file) {
+                    return uploadFile(image.file.name, image.file, token).catch(
+                        () => null,
+                    );
+                } return image.src;
+            });
 
             try {
                 const imagesUuid = await Promise.all(uploadImagesPromises);
-                extraImagesUuid = imagesUuid;
+                const filteredImagesUuid = imagesUuid.filter(
+                    (result): result is string => result !== null && result !== undefined,
+                );
+                extraImagesUuid = filteredImagesUuid;
             } catch {
-                extraImagesUuid = [];
                 setToast({
                     text: "Произошла ошибка при загрузке файлов",
                     type: HintType.Error,
@@ -113,7 +112,7 @@ export const InviteDescriptionForm = () => {
         }
         const preparedData = inviteDescriptionApiAdapter(
             data,
-            imageUuid,
+            imageUrl || "",
             extraImagesUuid,
         );
         console.log(preparedData);
@@ -147,14 +146,17 @@ export const InviteDescriptionForm = () => {
                         control={control}
                         name="coverImage"
                         rules={{
-                            required: {
-                                value: true,
-                                message: "Загрузите обложку",
+                            validate: (value) => {
+                                if (!value?.src) {
+                                    return "Загрузите обложку";
+                                }
+                                return true;
                             },
                         }}
                         render={({ field }) => (
                             <div>
                                 <ImageUpload
+                                    value={field.value}
                                     onChange={field.onChange}
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",

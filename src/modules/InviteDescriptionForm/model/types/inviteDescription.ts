@@ -1,3 +1,4 @@
+import { ImageType } from "@/components/ImageInput/types";
 import { Category } from "@/entities/Offer";
 
 export interface OfferDescriptionField {
@@ -5,6 +6,6 @@ export interface OfferDescriptionField {
     category: Category[];
     shortDescription: string;
     fullDescription: string;
-    coverImage: File;
-    images: File[];
+    coverImage: ImageType;
+    images: ImageType[];
 }

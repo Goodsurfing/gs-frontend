@@ -27,22 +27,23 @@ const uploadFile = async (
                 },
             );
             const dataResult = await response.json();
-            return dataResult;
+            // fix this replaced url in backend
+            const replacedUrl = dataResult.url.replace(
+                "minio:9000",
+                "storage.gudserfing.ru",
+            );
+            return { ...dataResult, url: replacedUrl };
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error);
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        // fix this replaced url in backend
-        const replacedUrl = link.url.replace(
-            "minio:9000",
-            "storage.gudserfing.ru",
-        );
         console.log(link);
         try {
-            await fetch(replacedUrl, {
+            await fetch(link.url, {
                 method: "PUT",
+                credentials: "same-origin",
                 headers: new Headers({
                     Authorization: `Bearer ${JSON.parse(token)}`,
                     "Content-Type": link.contentType,
@@ -60,7 +61,7 @@ const uploadFile = async (
             // eslint-disable-next-line no-console
             console.log("generateLinkResponse", generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse.uuid;
+            return generateLinkResponse.url;
         }
     }
 };
