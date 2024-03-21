@@ -5,14 +5,17 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
 
-import styles from "./OfferShareCard.module.scss";
+interface ArticleShareProps {
+    className?: string;
+}
 
-export const OfferShareCard: FC = memo(() => {
+export const ArticleShare: FC<ArticleShareProps> = memo((props: ArticleShareProps) => {
     const { locale } = useLocale();
+    const { className } = props;
     return (
         <ShareBlock
-            className={styles.wrapper}
-            label="Поделиться вакансией"
+            className={className}
+            label="Поделиться"
             vk={getMainPageUrl(locale)}
             instagram={getMainPageUrl(locale)}
             telegram={getMainPageUrl(locale)}

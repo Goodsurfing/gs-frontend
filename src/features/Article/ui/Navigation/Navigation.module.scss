@@ -1,0 +1,10 @@
+.navigation {
+    color: var(--text-primary-1);
+    font-weight: 500;
+    font-size: 0.875rem;
+    a {
+        color: var(--text-primary-1);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+    }
+}
