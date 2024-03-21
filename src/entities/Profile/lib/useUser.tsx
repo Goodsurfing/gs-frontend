@@ -21,7 +21,12 @@ export function useUser() {
         });
     }, [getProfile, profileData, profile]);
     if (error) {
-        return { profile, isLoading, error: error?.error };
+        if ("status" in error) {
+            const errMsg = "error" in error ? error.error : JSON.stringify(error.data);
+
+            return { profile, isLoading, error: errMsg };
+        }
+        return { profile, isLoading, error: error.message };
     }
     return { profile, isLoading, error };
 }

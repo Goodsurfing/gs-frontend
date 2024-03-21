@@ -8,8 +8,8 @@ import { tags } from "./OfferCategories.data";
 import styles from "./OfferCategories.module.scss";
 
 interface OfferCategoriesProps {
-    value: string[];
-    onChange: (value: string[]) => void;
+    value?: string[];
+    onChange?: (value: string[]) => void;
 }
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
@@ -17,7 +17,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { t } = useTranslation("translation");
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
-        onChange(newValues.filter(Boolean));
+        onChange?.(newValues.filter(Boolean));
     };
 
     return (

@@ -1,17 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import type { RootState } from "@/store/store";
 
 import { API_ORGANIZATIONS_BASE_URL } from "@/shared/constants/api";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 const teamApi = createApi({
     reducerPath: "teamApi",
     baseQuery: fetchBaseQuery({
         credentials: "same-origin",
         baseUrl: API_ORGANIZATIONS_BASE_URL,
-        prepareHeaders: (headers, { getState }) => {
-            const { token } = (getState() as RootState).login;
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
             if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
             headers.set("Access-Control-Allow-Origin", "*");
             headers.set("Content-Type", "application/json");

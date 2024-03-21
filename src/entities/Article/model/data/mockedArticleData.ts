@@ -1,4 +1,4 @@
-import { Article } from "@/entities/Host";
+import { Article } from "@/entities/Article";
 
 import articleDefaultImage from "@/shared/assets/images/articles/article1.png";
 

@@ -1,4 +1,6 @@
-export const translateMounth = (mounth: Mounth) => {
+import { MounthType } from "@/app/types/shared-kernel";
+
+export const translateMounth = (mounth: MounthType) => {
     switch (mounth) {
         case "December":
             return "Декабрь";

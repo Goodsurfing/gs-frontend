@@ -32,11 +32,11 @@ export const mockedOffersData: Offer[] = [
         },
         whoNeeds: {
             gender: "man",
-            languages: ["russian", "english"],
+            languages: [{ language: "russian", level: "beginner" }, { language: "english", level: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaces: 3,
             additionalInfo: "additional info",
-            age: "20",
+            age: { minAge: 18, maxAge: 25 },
         },
         description: {
             title: "Природный парк «Вулканы Камчатки» ждет волонтеров!",
@@ -86,11 +86,11 @@ export const mockedOffersData: Offer[] = [
         },
         whoNeeds: {
             gender: "man",
-            languages: ["russian", "english"],
+            languages: [{ language: "russian", level: "beginner" }, { language: "english", level: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaces: 3,
             additionalInfo: "additional info",
-            age: "20",
+            age: { minAge: 18, maxAge: 25 },
         },
         description: {
             titleImage: defaultImage,
@@ -141,11 +141,11 @@ export const mockedOffersData: Offer[] = [
         },
         whoNeeds: {
             gender: "man",
-            languages: ["russian", "english"],
+            languages: [{ language: "russian", level: "beginner" }, { language: "english", level: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaces: 3,
             additionalInfo: "additional info",
-            age: "20",
+            age: { minAge: 18, maxAge: 25 },
         },
         description: {
             title: "Природный парк «Вулканы Камчатки» ждет волонтеров!",

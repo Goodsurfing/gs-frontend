@@ -1,6 +1,6 @@
-import { Storage } from "../Storage";
-import { Scanner } from "../Scanner";
-import { ImageScaler } from "../ImageScaller";
+// import { Storage } from "../Storage";
+// import { Scanner } from "../Scanner/Scanner";
+// import { ImageScaler } from "../ImageScaller";
 
 type Attachment = {
     file: File;
@@ -10,18 +10,18 @@ const IMAGE_SCALE_WIDTH = 300;
 const IMAGE_SCALE_HEIGHT = 300;
 
 export class UploadRequest {
-    private readonly scanner: Scanner;
+    private readonly scanner;
 
     private readonly storage: Storage;
 
-    private readonly scaler: ImageScaler;
+    private readonly scaler;
 
     private readonly IMAGE_SCALE_STATS = {
         width: IMAGE_SCALE_WIDTH,
         height: IMAGE_SCALE_HEIGHT,
     };
 
-    constructor(storage: Storage, scanner: Scanner, scaler: ImageScaler) {
+    constructor(storage: Storage, scanner: any, scaler: any) {
         this.scanner = scanner;
         this.storage = storage;
         this.scaler = scaler;

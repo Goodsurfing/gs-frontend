@@ -15,6 +15,7 @@ interface RequestsWidgetProps {
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className } = props;
     const { isLoading, profile: userData } = useUser();
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.titleWrapper}>
@@ -29,7 +30,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 {isLoading
                     ? "...Загрузка"
                     : (
-                        <RequestCard article="Даб даб да я" notificationType="new" user={userData} />
+                        userData && <RequestCard article="Даб даб да я" notificationType="new" user={userData} />
                     )}
                 <Button
                     variant="FILL"

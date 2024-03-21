@@ -3,7 +3,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import { getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
+import { getSignInPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./ConfirmEmailSuccessPage.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
@@ -25,7 +25,7 @@ const ConfirmEmailSuccessPage: FC = () => {
                     </div>
                     <ButtonLink
                         className={styles.btn}
-                        path={RoutePath.sign_in}
+                        path={getSignInPageUrl(locale)}
                         type="outlined"
                     >
                         Войти в свой аккаунт
