@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import cn from "classnames";
 import { HandySvg } from "@handy-ones/handy-svg";
 import styles from "./ArticleHeader.module.scss";
-import likesIcon from "@/shared/assets/icons/ThumbsUp.svg";
+import likesIcon from "@/shared/assets/icons/thumbsUp.svg";
 import commentsIcon from "@/shared/assets/icons/comment.svg";
 
 interface ArticleHeaderProps {
