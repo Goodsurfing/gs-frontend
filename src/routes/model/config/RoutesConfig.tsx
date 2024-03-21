@@ -112,7 +112,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         element: <CategoriesPage />,
-        label: "main",
+        label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
