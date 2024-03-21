@@ -12,7 +12,7 @@ import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 import { getNewsPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./NewsPersonalPage.module.scss";
-import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
+import { CommentWidget } from "@/widgets/Article";
 
 const NewsPersonalPage = () => {
     const { locale } = useLocale();
@@ -24,16 +24,21 @@ const NewsPersonalPage = () => {
                     nameMain="Новости"
                     nameArticle="Тестовая статья"
                 />
-                <ArticleHeader
-                    className={styles.articleHeader}
-                    title="Тестовая статья"
-                    authorAvatar={defaultImage}
-                    authorName="Алексей Петров"
-                    category="Категория"
-                    date="17 мая 2017"
-                />
-                <ArticleContent className={styles.content} content="" />
-                <ArticleShare className={styles.shareBlock} />
+                <div className={styles.articleWrapper}>
+                    <ArticleHeader
+                        className={styles.articleHeader}
+                        title="Тестовая статья"
+                        authorAvatar={defaultImage}
+                        authorName="Алексей Петров"
+                        category="Категория"
+                        date="17 мая 2017"
+                    />
+                    <ArticleContent className={styles.content} content="<span>Привет</span>" />
+                    <ArticleShare className={styles.shareBlock} />
+                </div>
+                <div className={styles.commentWrapper}>
+                    <CommentWidget />
+                </div>
             </div>
         </MainPageLayout>
     );
