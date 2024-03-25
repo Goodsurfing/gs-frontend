@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -18,10 +18,13 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
     const { isOpen } = useSidebarContext();
     const { locale } = useLocale();
     const { t } = useTranslation();
+    const { id } = useParams();
+    const path = id ? `/${locale}${route}/${id}` : `/${locale}${route}`;
+
     return (
         <li className={styles.wrapper}>
             <NavLink
-                to={`/${locale}${route}`}
+                to={path}
                 replace
                 className={({ isActive }) => cn(
                     styles.link,

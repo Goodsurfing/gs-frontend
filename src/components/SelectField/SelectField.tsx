@@ -2,14 +2,12 @@ import cn from "classnames";
 import React, { FC } from "react";
 import Select, { GroupBase, Props } from "react-select";
 
-import { IOption } from "@/types/select";
-
 import styles from "./SelectField.module.scss";
 
-interface Group extends GroupBase<IOption> {}
+interface Group extends GroupBase<unknown> {}
 
-interface SelectFieldProps extends Props<IOption, boolean, Group> {
-    options: IOption[];
+interface SelectFieldProps extends Props<unknown, boolean, Group> {
+    options: unknown[];
     label?: string;
     name: string;
     img?: string;

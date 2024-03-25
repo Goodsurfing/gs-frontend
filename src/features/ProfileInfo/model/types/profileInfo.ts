@@ -22,7 +22,7 @@ export interface ProfileLocale {
 
 export interface ProfileContacts {
     email?: string;
-    phone?: number;
+    phone?: string;
 }
 
 export type ProfileAboutMe = string;

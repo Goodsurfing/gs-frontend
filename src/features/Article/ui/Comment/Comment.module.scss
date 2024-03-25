@@ -1,0 +1,36 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wrapperInfo,
+.wrapperAuthor {
+    display: flex;
+    align-items: center;
+}
+
+.wrapperInfo {
+    gap: 12px;
+}
+
+.wrapperAuthor {
+    gap: 8px;
+}
+
+.authorAvatar {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.authorName {
+    font-size: 0.875rem;
+    color: var(--text-primary-1);
+}
+
+.date {
+    font-size: 0.75rem;
+    color: var(--text-caption)
+}

@@ -45,7 +45,10 @@ export enum AppRoutes {
     MEMBERSHIP = "membership",
     ABOUT_PROJECT = "about_project",
     NPO = "npo",
+    OUR_TEAM = "our_team",
     RULES = "rules",
     FIND_JOB = "find_job",
+    NEWS = "news",
+    PRIVACY_POLICY = "privacy_policy",
     NOT_FOUND = "not_found",
 }

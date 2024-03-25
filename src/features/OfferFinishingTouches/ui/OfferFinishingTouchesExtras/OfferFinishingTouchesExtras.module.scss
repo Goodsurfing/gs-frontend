@@ -1,7 +1,11 @@
 .icon {
-    fill: var(--text-caption);
+    svg{
+        fill: var(--text-caption);
+    }
 }
 
 .active {
-    fill: var(--text-secondary-1);
+    svg {
+        fill: var(--text-secondary-1);
+    }
 }

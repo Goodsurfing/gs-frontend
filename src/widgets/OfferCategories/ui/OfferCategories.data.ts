@@ -1,4 +1,4 @@
-import { InviteCategoryType } from "./type";
+import { InviteCategoryType } from "../model/types/offerCategory";
 
 export const tags: InviteCategoryType[] = [{
     value: "Хостелы",

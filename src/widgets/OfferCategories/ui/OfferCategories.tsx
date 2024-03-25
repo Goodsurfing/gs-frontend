@@ -1,18 +1,36 @@
-import React from "react";
-
+import React, { FC, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
-import { tags } from "./OfferCategories.data";
 import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
+
+import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
+
+import { tags } from "./OfferCategories.data";
 import styles from "./OfferCategories.module.scss";
 
-export const OfferCategories = () => {
+interface OfferCategoriesProps {
+    value?: string[];
+    onChange?: (value: string[]) => void;
+}
+
+export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
+    const { value, onChange } = props;
     const { t } = useTranslation("translation");
+
+    const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
+        onChange?.(newValues.filter(Boolean));
+    };
+
     return (
         <div className={styles.container}>
             <ToggleButtonGroupComponent
+                value={value}
+                onChange={handleChange}
                 sx={{
-                    display: "flex", flexWrap: "wrap", maxWidth: "624px", gap: "10px", mt: "14px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    maxWidth: "624px",
+                    gap: "10px",
+                    mt: "14px",
                 }}
             >
                 {tags.map((item, index) => (
