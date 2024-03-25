@@ -114,6 +114,8 @@ export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${Rou
 
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
 
+export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
+
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
 export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;

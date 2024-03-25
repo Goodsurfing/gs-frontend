@@ -39,9 +39,15 @@ import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { MembershipPage } from "@/pages/MembershipPage";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
+import { RulesPage } from "@/pages/RulesPage";
+import { FindJobPage } from "@/pages/FindJobPage";
+import { NewsPage } from "@/pages/NewsPage";
+import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
-import { RulesPage } from "@/pages/RulesPage";
+
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 
@@ -97,15 +103,12 @@ import {
     getNewsPageUrl,
     getPrivacyPolicyPageUrl,
     getNewsPersonalPageUrl,
+    getFindJobPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { NewsPage } from "@/pages/NewsPage";
-import { OurTeamPage } from "@/pages/OurTeamPage";
-import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
-import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -360,6 +363,11 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <RulesPage />,
         path: (locale: string) => getRulesPageUrl(locale),
+    },
+    {
+        label: "find-job",
+        element: <FindJobPage />,
+        path: (locale: string) => getFindJobPageUrl(locale),
     },
     {
         label: "news",
