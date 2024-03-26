@@ -2,7 +2,7 @@ import React, { FC, useMemo } from "react";
 import cn from "classnames";
 import { Article } from "@/entities/Article";
 import styles from "./NewsList.module.scss";
-import { ArticleWidget } from "@/widgets/ArticleWidget";
+import { ArticleCard } from "@/entities/Article/";
 
 interface NewsListProps {
     data?: Article[]
@@ -12,7 +12,7 @@ interface NewsListProps {
 export const NewsList: FC<NewsListProps> = (props) => {
     const { data, className } = props;
     const renderNews = useMemo(() => data?.map((article, key) => (
-        <ArticleWidget
+        <ArticleCard
             article={article}
             key={key}
             className={styles.article}
