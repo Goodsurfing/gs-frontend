@@ -39,8 +39,6 @@ const InfoHeader = memo(() => {
 
     const navigate = useNavigate();
 
-    // const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
-
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
 

@@ -1,23 +1,37 @@
-import React, { FC } from "react";
 import { Button } from "@mui/material";
-import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
+import React, { FC, useCallback } from "react";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getUserAuthData, userActions } from "@/entities/User";
 
-import styles from "./MainHeader.module.scss";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
+import styles from "./MainHeader.module.scss";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
+
+    const isAuth = useAppSelector(getUserAuthData);
+
+    const navigate = useNavigate();
+
+    const dispatch = useAppDispatch();
+
+    const handleLogout = useCallback(() => {
+        dispatch(userActions.logout());
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, locale, navigate]);
+
     return (
         <>
             <header className={styles.header}>
