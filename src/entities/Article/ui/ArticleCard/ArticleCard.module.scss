@@ -1,11 +1,11 @@
+.link {
+    text-decoration: none;
+    color: inherit;
+}
 .wrapper {
     display: flex;
     flex-direction: column;
     max-width: 480px;
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
 }
 
 .image {
@@ -49,7 +49,8 @@
     margin-top: 20px;
 }
 
-.date, .description {
+.date,
+.description {
     color: var(--text-caption);
     font-size: 14px;
 }

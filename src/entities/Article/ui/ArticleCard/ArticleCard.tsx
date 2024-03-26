@@ -25,8 +25,8 @@ export const ArticleCard: FC<ArticleCardProps> = memo((
     const { locale } = useLocale();
 
     return (
-        <div className={cn(className, styles.wrapper)}>
-            <Link to={`/${locale}/news/1`}>
+        <Link className={styles.link} to={`/${locale}/news/1`}>
+            <div className={cn(className, styles.wrapper)}>
                 <img className={styles.image} src={image} alt={title} />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>
@@ -40,7 +40,7 @@ export const ArticleCard: FC<ArticleCardProps> = memo((
                     <img className={styles.commentIcon} src={comment} alt="comments" />
                     <span className={styles.textStats}>{comments}</span>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 });
