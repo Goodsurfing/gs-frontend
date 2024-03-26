@@ -2,7 +2,7 @@ export const tags = [
     {
         value: "Все категории",
         color: "#3DABF7",
-        text: "Все категории",
+        text: "Хостелы",
     },
     {
         value: "Хостелы",
