@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import { Article } from "@/entities/Article";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
-import styles from "./ArticleWidget.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ArticleCard.module.scss";
 
-interface ArticleWidgetProps {
+interface ArticleCardProps {
     article: Article;
     className?: string;
 }
 
-export const ArticleWidget: FC<ArticleWidgetProps> = memo((
-    props: ArticleWidgetProps,
+export const ArticleCard: FC<ArticleCardProps> = memo((
+    props: ArticleCardProps,
 ) => {
     const {
         article: {
