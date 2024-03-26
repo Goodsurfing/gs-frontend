@@ -104,11 +104,13 @@ import {
     getPrivacyPolicyPageUrl,
     getNewsPersonalPageUrl,
     getFindJobPageUrl,
+    getJournalsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { JournalsPage } from "@/pages/JournalsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -383,6 +385,11 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <PrivacyPolicyPage />,
         path: (locale: string) => getPrivacyPolicyPageUrl(locale),
+    },
+    {
+        label: "journals",
+        element: <JournalsPage />,
+        path: (locale: string) => getJournalsPageUrl(locale),
     },
 ];
 

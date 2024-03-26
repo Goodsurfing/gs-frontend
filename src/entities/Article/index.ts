@@ -1,1 +1,2 @@
-export type { Article } from "./model/types/article";
+export type { Article, Journal } from "./model/types/article";
+export { JournalCard } from "./ui/JournalCard/JournalCard";
