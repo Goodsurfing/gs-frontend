@@ -8,10 +8,10 @@ import styles from "./OfferFinishingTouchesPage.module.scss";
 import { OfferFinishingTouchesForm } from "@/features/OfferFinishingTouches";
 
 export const OfferFinishingTouchesPage = memo(() => {
-    const { t } = useTranslation("finishing-touches");
+    const { t } = useTranslation("offer");
     return (
         <div className={styles.wrapper}>
-            <Text titleSize="h2" title={t("Требования к участнику")} />
+            <Text titleSize="h2" title={t("finishingTouches.Требования к участнику")} />
             <OfferFinishingTouchesForm className={styles.form} />
         </div>
     );

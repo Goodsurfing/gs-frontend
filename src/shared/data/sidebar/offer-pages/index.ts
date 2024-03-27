@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import backIcon from "@/shared/assets/icons/navbar/offers/back.svg";
 import calendarIcon from "@/shared/assets/icons/navbar/offers/calendar.svg";
 import checklistIcon from "@/shared/assets/icons/navbar/offers/checklist.svg";
@@ -9,45 +10,49 @@ import listCheckboxIcon from "@/shared/assets/icons/navbar/offers/list-checkbox.
 
 import { SidebarContentProps } from "@/widgets/Sidebar";
 
-export const SideMenuData: SidebarContentProps[] = [
-    {
-        text: "К предложениям",
-        icon: backIcon,
-        route: "/offers/welcome",
-    },
-    {
-        text: "Где",
-        icon: pinIcon,
-        route: "/offers/where",
-    },
-    {
-        text: "Когда",
-        icon: calendarIcon,
-        route: "/offers/when",
-    },
-    {
-        text: "Кто нужен",
-        icon: rightUserIcon,
-        route: "/offers/who-needs",
-    },
-    {
-        text: "Описание",
-        icon: checklistIcon,
-        route: "/offers/description",
-    },
-    {
-        text: "Что делать",
-        icon: viewListIcon,
-        route: "/offers/what-to-do",
-    },
-    {
-        text: "Условия",
-        icon: listCheckboxIcon,
-        route: "/offers/conditions",
-    },
-    {
-        route: "/offers/finishing-touches",
-        text: "Последние штрихи",
-        icon: writeIcon,
-    },
-];
+export const useSideMenuData = () => {
+    const { t } = useTranslation("translation");
+    const SideMenuData: SidebarContentProps[] = [
+        {
+            text: t("main.sidebar.К предложениям"),
+            icon: backIcon,
+            route: "/host/my-offers",
+        },
+        {
+            text: t("main.sidebar.Где"),
+            icon: pinIcon,
+            route: "/offers/where",
+        },
+        {
+            text: t("main.sidebar.Когда"),
+            icon: calendarIcon,
+            route: "/offers/when",
+        },
+        {
+            text: t("main.sidebar.Кто нужен"),
+            icon: rightUserIcon,
+            route: "/offers/who-needs",
+        },
+        {
+            text: t("main.sidebar.Описание"),
+            icon: checklistIcon,
+            route: "/offers/description",
+        },
+        {
+            text: t("main.sidebar.Что делать"),
+            icon: viewListIcon,
+            route: "/offers/what-to-do",
+        },
+        {
+            text: t("main.sidebar.Условия"),
+            icon: listCheckboxIcon,
+            route: "/offers/conditions",
+        },
+        {
+            route: "/offers/finishing-touches",
+            text: t("main.sidebar.Последние штрихи"),
+            icon: writeIcon,
+        },
+    ];
+    return { SideMenuData };
+};

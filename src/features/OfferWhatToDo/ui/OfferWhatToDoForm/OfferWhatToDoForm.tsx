@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { useParams } from "react-router-dom";
 import { SkillsForm } from "@/features/SkillsForm";
 
 import Button from "@/shared/ui/Button/Button";
@@ -15,6 +16,10 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import styles from "./OfferWhatToDoForm.module.scss";
+import { offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
+import { useUpdateWhatToDoMutation } from "@/entities/Offer/api/offerApi";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -23,7 +28,8 @@ interface OfferWhatToDoFormProps {
 const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
     skills: [],
     additionalSkills: [],
-    workingHours: { dayOffs: 2, hours: 6, timeType: "week" },
+    workingHours: { dayOff: 2, hours: 6, timeType: "week" },
+    extraInfo: "",
 };
 
 export const OfferWhatToDoForm = memo(
@@ -32,17 +38,39 @@ export const OfferWhatToDoForm = memo(
             mode: "onChange",
             defaultValues,
         });
+        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
+        const [toast, setToast] = useState<ToastAlert>();
+        const { id } = useParams();
 
-        const { t } = useTranslation();
+        const { t } = useTranslation("offer");
 
-        const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = () => {
+        const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
+            const preparedData = offerWhatToDoApiAdapter(data);
+            setToast(undefined);
+            updateWhatToDo({ body: { id, whatToDo: preparedData } })
+                .unwrap()
+                .then(() => {
+                    setToast({
+                        text: "Данные успешно изменены",
+                        type: HintType.Success,
+                    });
+                })
+                .catch(() => {
+                    setToast({
+                        text: "Некорректно введены данные",
+                        type: HintType.Error,
+                    });
+                });
             onSuccess?.();
         };
 
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+                {toast && (
+                    <HintPopup text={toast.text} type={toast.type} />
+                )}
                 <p className={styles.skillsText}>
-                    {t("Навыки, которыми должен обладать волонтер")}
+                    {t("whatToDo.Навыки, которыми должен обладать волонтёр")}
                 </p>
                 <SkillsForm control={control} />
                 <Controller
@@ -58,24 +86,26 @@ export const OfferWhatToDoForm = memo(
                 <Controller
                     name="extraInfo"
                     control={control}
-                    rules={{ required: true, maxLength: 1000 }}
+                    rules={{ required: false, maxLength: 1000 }}
                     render={({ field }) => (
                         <Textarea
                             value={field.value}
                             onChange={field.onChange}
-                            label={t("Дополнительная информация")}
-                            description={t("Не более 1000 знаков")}
+                            label={t("whatToDo.Дополнительная информация")}
+                            description={t("whatToDo.Не более 1000 знаков")}
                         />
                     )}
                 />
                 <div>
                     <Button
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={isLoading}
                         variant="FILL"
                         color="BLUE"
                         size="MEDIUM"
                         type="submit"
                     >
-                        Сохранить
+                        {t("whatToDo.Сохранить")}
                     </Button>
                 </div>
             </form>

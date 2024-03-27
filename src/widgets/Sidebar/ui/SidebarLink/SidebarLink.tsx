@@ -1,12 +1,12 @@
 import cn from "classnames";
 import { memo } from "react";
-import { useTranslation } from "react-i18next";
 import { NavLink, useParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
 import styles from "./SidebarLink.module.scss";
+import { isSidebarLinkBack } from "../../lib/isSidebarLinkBack";
 
 interface SidebarLinkProps {
     text: string;
@@ -17,9 +17,16 @@ interface SidebarLinkProps {
 export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
     const { isOpen } = useSidebarContext();
     const { locale } = useLocale();
-    const { t } = useTranslation();
     const { id } = useParams();
-    const path = id ? `/${locale}${route}/${id}` : `/${locale}${route}`;
+    const pathCheck = () => {
+        if (id) {
+            if (isSidebarLinkBack(route)) {
+                return `/${locale}${route}`;
+            } return `/${locale}${route}/${id}`;
+        }
+        return `/${locale}${route}`;
+    };
+    const path = pathCheck();
 
     return (
         <li className={styles.wrapper}>
@@ -36,7 +43,7 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
             >
                 <img className={styles.img} src={icon} alt={text} />
                 <span className={cn(styles.text, { [styles.opened]: isOpen })}>
-                    {t(`main.sidebar.${text}`)}
+                    {text}
                 </span>
             </NavLink>
         </li>

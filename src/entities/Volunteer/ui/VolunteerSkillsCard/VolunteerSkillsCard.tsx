@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { Skills, SkillsData, skillsData } from "@/shared/data/skills";
+import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -22,6 +22,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             skills,
             className,
         } = props;
+        const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
             if (!skills) {
@@ -48,7 +49,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                     )
                 );
             });
-        }, [skills]);
+        }, [skills, skillsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>

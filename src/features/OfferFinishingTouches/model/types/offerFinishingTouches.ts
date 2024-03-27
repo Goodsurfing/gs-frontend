@@ -12,5 +12,7 @@ export interface OfferFinishingTouchesFormFields {
     extraConditions: ExtraConditionsFormFields;
     welcomeMessage: WelcomeMessageFields;
     rules: RulesInfoFields;
-    faq: FaqFields;
+    onlyVerified: boolean;
+    questionnaireUrl: string;
+    questions: string;
 }

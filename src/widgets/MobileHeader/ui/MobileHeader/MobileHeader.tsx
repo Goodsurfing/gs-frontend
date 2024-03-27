@@ -10,17 +10,16 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import { getUserAuthData } from "@/entities/User";
+import { getUserAuthData, userActions } from "@/entities/User";
 
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
     getMainPageUrl,
     getProfileInfoPageUrl,
     getSignInPageUrl,
-    getSignUpPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { useAppSelector } from "@/shared/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 
 import { MobileSelect } from "../MobileSelect/MobileSelect";
 import styles from "./MobileHeader.module.scss";
@@ -34,6 +33,7 @@ const MobileHeader: FC = () => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const appDispatch = useAppDispatch();
 
     const authData = useAppSelector(getUserAuthData);
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
@@ -50,6 +50,11 @@ const MobileHeader: FC = () => {
         () => setMenuIsOpen(!menuIsOpen),
         [menuIsOpen],
     );
+
+    const handleLogout = useCallback(() => {
+        appDispatch(userActions.logout());
+        navigate(getMainPageUrl(locale));
+    }, [appDispatch, locale, navigate]);
 
     return (
         <>
@@ -302,22 +307,20 @@ const MobileHeader: FC = () => {
                         >
                             {t("main.welcome.header.volunteer-dashboard")}
                         </Button>
+                        <Button
+                            onClick={handleLogout}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.exit")}
+                        </Button>
                     </>
                 ) : (
-                    <>
-                        <Button
-                            onClick={() => navigate(getSignInPageUrl(locale))}
-                            className={styles.button}
-                        >
-                            {t("main.welcome.header.sign-in")}
-                        </Button>
-                        <Button
-                            onClick={() => navigate(getSignUpPageUrl(locale))}
-                            className={styles.button}
-                        >
-                            {t("main.welcome.header.sign-up")}
-                        </Button>
-                    </>
+                    <Button
+                        onClick={() => navigate(getSignInPageUrl(locale))}
+                        className={styles.button}
+                    >
+                        {t("main.welcome.header.sign-in")}
+                    </Button>
                 )}
             </div>
         </>

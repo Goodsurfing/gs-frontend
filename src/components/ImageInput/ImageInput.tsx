@@ -20,10 +20,9 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
+    // const [image, setImage] = useState<string | null>(null);
 
-    const handleFileChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
@@ -33,9 +32,17 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     setError(true);
                     return;
                 }
+
+                const validExtensions = [".png", ".jpeg"];
+                const fileExtension = file.name.toLowerCase().slice(file.name.lastIndexOf("."));
+                if (!validExtensions.includes(fileExtension)) {
+                    setError(true);
+                    return;
+                }
+
                 const url = URL.createObjectURL(file);
                 setError(false);
-                setImg(url);
+                setImg({ ...img, file, src: url });
             } catch (e) {
                 setError(true);
             }
@@ -43,14 +50,14 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     };
 
     const handleDelete = () => {
-        setImg(null);
+        setImg({ ...img, file: null, src: null });
     };
 
     return (
         <div className={styles.main}>
-            {img && (
+            {img.src && (
                 <div className={styles.imageWrapper}>
-                    <img src={img} alt="uploaded" className={styles.imageCover} />
+                    <img src={img.src} alt="uploaded" className={styles.imageCover} />
                     <div className={styles.containerButtons}>
                         <InputFile
                             id="upload image"
@@ -78,11 +85,11 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     </div>
                 </div>
             )}
-            {!img && (
+            {!img.src && (
                 <>
                     <InputFile
                         onChange={handleFileChange}
-                        imageURL={img}
+                        imageURL={img.src}
                         uploadedImageClassName={styles.uploadedImg}
                         wrapperClassName={cn(styles.wrapper, wrapperClassName)}
                         labelClassName={cn(styles.label, labelClassName)}

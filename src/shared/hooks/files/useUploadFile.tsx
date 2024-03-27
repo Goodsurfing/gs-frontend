@@ -6,7 +6,11 @@ interface GenerateLinkResponse {
     uuid: string;
 }
 
-const useUploadFile = async (fileName: string, data: any, token: string) => {
+const uploadFile = async (
+    fileName: string,
+    data: any,
+    token: string,
+) => {
     const sendRequestForGenerateUploadLink = async () => {
         const body = {
             fileName,
@@ -17,13 +21,18 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                 {
                     method: "POST",
                     headers: new Headers({
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${JSON.parse(token)}`,
                     }),
                     body: JSON.stringify(body),
                 },
             );
             const dataResult = await response.json();
-            return dataResult;
+            // fix this replaced url in backend
+            const replacedUrl = dataResult.url.replace(
+                "minio:9000",
+                "storage.gudserfing.ru",
+            );
+            return { ...dataResult, url: replacedUrl };
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error);
@@ -31,10 +40,12 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
         try {
-            await fetch(link!.url, {
+            await fetch(link.url, {
                 method: "PUT",
+                credentials: "same-origin",
                 headers: new Headers({
-                    "Content-Type": link!.contentType,
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    "Content-Type": link.contentType,
                 }),
                 body: data,
             });
@@ -46,12 +57,10 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
-            // eslint-disable-next-line no-console
-            console.log(generateLinkResponse);
             uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse.uuid;
+            return generateLinkResponse.url;
         }
     }
 };
 
-export default useUploadFile;
+export default uploadFile;

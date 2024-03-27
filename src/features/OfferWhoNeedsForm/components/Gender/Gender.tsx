@@ -1,22 +1,29 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import React, { FC, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Gender } from "@/entities/Offer";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 interface GenderProps {
-    value: Gender;
-    onChange: (value: Gender) => void;
+    value: Gender[];
+    onChange: (value: Gender[]) => void;
 }
 
 export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     const { value, onChange } = props;
-    const [gender, setGender] = useState<Gender>(value);
+    const [gender, setGender] = useState<Gender[]>(value);
+    const { t } = useTranslation("offer");
 
     const handleGenderChange = (selectedGender: Gender) => {
-        setGender(selectedGender);
-        onChange(selectedGender);
+        if (gender.includes(selectedGender)) {
+            setGender(gender.filter((g) => g !== selectedGender));
+            onChange(gender.filter((g) => g !== selectedGender));
+        } else {
+            setGender([...gender, selectedGender]);
+            onChange([...gender, selectedGender]);
+        }
     };
 
     return (
@@ -31,13 +38,13 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Женщина
+                        {t("whoNeeds.Женщина")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender === "woman"}
-                        onClick={() => handleGenderChange("woman")}
+                        checked={gender.includes("female")}
+                        onClick={() => handleGenderChange("female")}
                     />
                 )}
             />
@@ -51,13 +58,13 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Мужчина
+                        {t("whoNeeds.Мужчина")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender === "man"}
-                        onClick={() => handleGenderChange("man")}
+                        checked={gender.includes("male")}
+                        onClick={() => handleGenderChange("male")}
                     />
                 )}
             />
@@ -71,12 +78,12 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                             color: "#212121",
                         }}
                     >
-                        Другой
+                        {t("whoNeeds.Другой")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender === "other"}
+                        checked={gender.includes("other")}
                         onClick={() => handleGenderChange("other")}
                     />
                 )}

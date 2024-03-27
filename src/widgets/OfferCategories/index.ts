@@ -1,2 +1,2 @@
 export { OfferCategories } from "./ui/OfferCategories";
-export { tags } from "./ui/OfferCategories.data";
+export { useTags } from "./ui/OfferCategories.data";

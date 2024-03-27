@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
 import { Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import Input from "@/shared/ui/Input/Input";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
@@ -15,6 +16,7 @@ interface AgeProps {
 
 export const AgeComponent: FC<AgeProps> = (props) => {
     const { value, onChange } = props;
+    const { t } = useTranslation("offer");
 
     const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
@@ -50,7 +52,7 @@ export const AgeComponent: FC<AgeProps> = (props) => {
                     color: "#8494A1",
                 }}
             >
-                Возраст
+                {t("whoNeeds.Возраст")}
             </Typography>
             <div className={styles.inputWrapper}>
                 <Input className={styles.from} value={value.minAge} onChange={onFromMinAgeChange} type="number" placeholder="от" />

@@ -15,7 +15,7 @@ interface StatsPointsProps {
 
 export const StatsPoints = memo((props: StatsPointsProps) => {
     const { className, pointsData, isLoading } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("translation");
 
     if (isLoading) {
         return (

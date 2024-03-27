@@ -21,6 +21,9 @@ export const defaultFormFields: DefaultValues<OfferConditionsFormFields> = {
         extraFeatures: [],
     },
     payment: {
+        contribution: 0,
+        reward: 0,
         currency: "RUB",
     },
+    extraConditions: "",
 };

@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { Skills, SkillsData, skillsData } from "@/shared/data/skills";
+import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -21,9 +21,10 @@ type SkillsMap = {
 export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
     (props: OfferWhatToDoCardProps) => {
         const {
-            whatToDo: { skills, workingHours },
+            whatToDo: { skillIds, hours, dayOff },
             className,
         } = props;
+        const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
             const skillsMap: SkillsMap = skillsData.reduce(
@@ -33,7 +34,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                 },
                 {},
             );
-            return skills.map((item) => {
+            return skillIds.map((item) => {
                 const skill = skillsMap[item.text];
                 return (
                     skill && (
@@ -46,7 +47,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                     )
                 );
             });
-        }, [skills]);
+        }, [skillIds, skillsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>
@@ -59,12 +60,12 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                         <InfoCardItem
                             className={styles.left}
                             title="Количество рабочих часов"
-                            text={`${workingHours.hours} в неделю`}
+                            text={`${hours} в неделю`}
                         />
                         <InfoCardItem
                             className={styles.right}
                             title="Выходных дней в неделю"
-                            text={workingHours.dayOff}
+                            text={dayOff}
                         />
                     </InfoCard>
                 </div>

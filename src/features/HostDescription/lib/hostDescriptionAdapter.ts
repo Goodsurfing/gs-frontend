@@ -50,9 +50,13 @@ export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Part
     return {
         name: mainInfo?.organization,
         type: type?.organizationType,
-        description: mainInfo?.shortOrganization,
-        address,
+        description: mainInfo?.aboutInfo,
+        address: "тест",
         // wip backend avatar,
-        ...socialMedia,
+        vk: "тест",
+        instagram: "тест",
+        facebook: "тест",
+        telegram: "тест",
+        website: "http://test.org",
     };
 };

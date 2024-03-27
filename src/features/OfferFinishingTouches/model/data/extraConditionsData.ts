@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ExtraConditions } from "@/entities/Offer";
 import {
     adultsIcon,
@@ -14,28 +15,33 @@ export type ExtraConditionsData = {
     icon: string;
 };
 
-export const extraConditionsData: ExtraConditionsData[] = [{
-    id: "allow-kids",
-    icon: kidsIcon,
-    text: "Можно с детьми",
-}, {
-    id: "allow-pets",
-    icon: animalsIcon,
-    text: "Можно с животными",
-}, {
-    id: "couples",
-    icon: pairsIcon,
-    text: "Принимаем парами",
-}, {
-    id: "students",
-    icon: studentsIcon,
-    text: "Можно студентам",
-}, {
-    id: "vegetarian",
-    icon: vegansIcon,
-    text: "Только для вегетарианцев",
-}, {
-    id: "adult-only",
-    icon: adultsIcon,
-    text: "Только для совершеннолетних",
-}];
+export const useExtraConditionsData = () => {
+    const { t } = useTranslation("offer");
+    const extraConditionsData: ExtraConditionsData[] = [{
+        id: "allow-kids",
+        icon: kidsIcon,
+        text: t("finishingTouches.Можно с детьми"),
+    }, {
+        id: "allow-pets",
+        icon: animalsIcon,
+        text: t("finishingTouches.Можно с животными"),
+    }, {
+        id: "couples",
+        icon: pairsIcon,
+        text: t("finishingTouches.Принимаем парами"),
+    }, {
+        id: "students",
+        icon: studentsIcon,
+        text: t("finishingTouches.Можно студентам"),
+    }, {
+        id: "vegetarian",
+        icon: vegansIcon,
+        text: t("finishingTouches.Только для вегетарианцев"),
+    }, {
+        id: "adult-only",
+        icon: adultsIcon,
+        text: t("finishingTouches.Только для совершеннолетних"),
+    }];
+
+    return { extraConditionsData };
+};

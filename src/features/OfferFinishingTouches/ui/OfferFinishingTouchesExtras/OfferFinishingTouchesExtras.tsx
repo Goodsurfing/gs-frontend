@@ -3,7 +3,7 @@ import { memo, useCallback } from "react";
 import { ExtraConditions } from "@/entities/Offer";
 
 import styles from "./OfferFinishingTouchesExtras.module.scss";
-import { extraConditionsData } from "../../model/data/extraConditionsData";
+import { useExtraConditionsData } from "../../model/data/extraConditionsData";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 
 interface OfferFinishingTouchesExtrasProps {
@@ -14,6 +14,7 @@ interface OfferFinishingTouchesExtrasProps {
 
 export const OfferFinishingTouchesExtras = memo((props: OfferFinishingTouchesExtrasProps) => {
     const { className, onChange, value } = props;
+    const { extraConditionsData } = useExtraConditionsData();
     const handleIconStateChange = useCallback((id: ExtraConditions) => {
         const isActive = value.find((item) => item === id);
         if (isActive) {

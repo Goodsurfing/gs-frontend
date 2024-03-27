@@ -3,7 +3,7 @@ import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { useTranslation } from "react-i18next";
-import { Offer, OfferStatus } from "@/entities/Offer";
+import { Offer, OfferState } from "@/entities/Offer";
 
 import { NotesCard } from "../NotesCard/NotesCard";
 import styles from "./NotesContainer.module.scss";
@@ -12,7 +12,7 @@ interface NotesContainerProps {
     offers: Offer[];
     className?: string;
     color: string;
-    status: OfferStatus;
+    status: OfferState;
     isDragDisable: boolean;
 }
 

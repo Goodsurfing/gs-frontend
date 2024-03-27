@@ -8,7 +8,7 @@ import { OfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
 import { Article } from "@/entities/Article";
-import { OfferStatus } from "./offerStatus";
+import { OfferState, OfferStatus } from "./offerStatus";
 
 export interface Offer {
     id: string;
@@ -23,6 +23,28 @@ export interface Offer {
     reviews?: Review[];
     articles?: Article[];
     status: OfferStatus;
+    state: OfferState;
+}
+
+export interface MyOffers {
+    list: [
+        {
+            id: string,
+            title: string,
+            description: string,
+            location: string,
+            category: string,
+            rating: number,
+            likes: number,
+            reviews: number,
+            acceptedRequests: number,
+            status: OfferStatus;
+        },
+    ] | []
+}
+
+export interface AddressAutoComplete {
+    list: string[]
 }
 
 export interface OfferSchema {

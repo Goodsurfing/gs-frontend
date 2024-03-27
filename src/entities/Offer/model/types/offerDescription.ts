@@ -1,5 +1,3 @@
-import { OfferOrganization } from "./offerOrganization";
-
 export type Category = string;
 
 export interface OfferDescription {
@@ -9,5 +7,4 @@ export interface OfferDescription {
     shortDescription: string;
     longDescription: string;
     images: string[];
-    organization: OfferOrganization;
 }

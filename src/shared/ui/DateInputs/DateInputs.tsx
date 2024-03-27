@@ -28,10 +28,15 @@ const DateInputs: FC<DateInputsProps> = ({
     max,
 }) => {
     const handleFromDateChange = useCallback((date: Date) => {
+        if (date > value.end) {
+            onDateChange({ ...value, start: date, end: date });
+            return;
+        }
         onDateChange({ ...value, start: date });
     }, [onDateChange, value]);
 
     const handleToDateChange = useCallback((date: Date) => {
+        if (date < value.start) return;
         onDateChange({ ...value, end: date });
     }, [onDateChange, value]);
 
@@ -42,12 +47,15 @@ const DateInputs: FC<DateInputsProps> = ({
                 onDateChange={handleFromDateChange}
                 value={value?.start}
                 min={min}
+                inputDisabled
             />
             <DateInput
                 className={styles.rightInput}
                 onDateChange={handleToDateChange}
                 value={value?.end}
+                min={new Date()}
                 max={max}
+                inputDisabled
             />
             {close}
         </Box>
