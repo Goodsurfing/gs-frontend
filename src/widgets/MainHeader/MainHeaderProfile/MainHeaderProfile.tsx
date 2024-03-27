@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import Popup from "@/components/Popup/Popup";
@@ -8,7 +8,6 @@ import { userActions } from "@/entities/User";
 
 import {
     getHostDashboardPageUrl,
-    getMainPageUrl,
     getProfileInfoPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -30,15 +29,13 @@ const MainHeaderProfile = () => {
     const profileRef = useRef(null);
 
     const { locale } = useLocale();
-    const navigate = useNavigate();
     const { data: userInfo } = profileApi.useGetProfileInfoQuery();
 
     const dispatch = useAppDispatch();
 
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-        navigate(getMainPageUrl(locale));
-    }, [dispatch, navigate, locale]);
+    }, [dispatch]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
