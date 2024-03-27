@@ -20,7 +20,6 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
-    // const [image, setImage] = useState<string | null>(null);
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;

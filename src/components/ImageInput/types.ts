@@ -8,7 +8,6 @@ export interface ImageType {
 export interface ImageInputComponentProps extends InputFileProps {
     img: ImageType;
     setImg: (img: ImageType) => void;
-    // onUpload?: (image: File | null) => void;
     description?: React.ReactNode;
     extraWrapperClassName?: string;
 }

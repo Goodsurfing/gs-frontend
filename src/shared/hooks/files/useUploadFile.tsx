@@ -6,15 +6,12 @@ interface GenerateLinkResponse {
     uuid: string;
 }
 
-const uploadFile = async (
-    fileName: string,
-    data: any,
-    token: string,
-) => {
+const uploadFile = async (fileName: string, data: File, token: string) => {
     const sendRequestForGenerateUploadLink = async () => {
         const body = {
             fileName,
         };
+        console.log(body);
         try {
             const response = await fetch(
                 `${API_MEDIA_BASE_URL}/generate-upload-link`,
@@ -39,23 +36,27 @@ const uploadFile = async (
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        try {
-            await fetch(link.url, {
-                method: "PUT",
-                credentials: "same-origin",
-                headers: new Headers({
-                    Authorization: `Bearer ${JSON.parse(token)}`,
-                    "Content-Type": link.contentType,
-                }),
-                body: data,
-            });
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(error);
-        }
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            console.log(event.target.result);
+            try {
+                await fetch(link.url, {
+                    method: "PUT",
+                    headers: new Headers({
+                        "Content-Type": link.contentType,
+                    }),
+                    body: event.target?.result,
+                });
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log(error);
+            }
+        };
+        reader.readAsArrayBuffer(data);
     };
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
+        console.log(generateLinkResponse);
         if (generateLinkResponse) {
             uploadFileMutation(generateLinkResponse);
             return generateLinkResponse.url;

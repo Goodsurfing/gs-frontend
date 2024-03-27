@@ -37,7 +37,7 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
     shortDescription: "",
     coverImage: {
         file: null,
-        src: "null",
+        src: null,
     },
     images: [],
 };
@@ -115,7 +115,7 @@ export const InviteDescriptionForm = () => {
             imageUrl || "",
             extraImagesUuid,
         );
-
+        console.log(preparedData);
         updateDescription({ body: { id, description: preparedData } })
             .unwrap()
             .then(() => {
