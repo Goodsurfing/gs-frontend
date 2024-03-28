@@ -123,3 +123,5 @@ export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
 
 export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}`;
+
+export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}/:id`;
