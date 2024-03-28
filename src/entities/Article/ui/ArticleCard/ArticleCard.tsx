@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import { Article } from "@/entities/Article";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
-import styles from "./ArticleWidget.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ArticleCard.module.scss";
 
-interface ArticleWidgetProps {
+interface ArticleCardProps {
     article: Article;
     className?: string;
 }
 
-export const ArticleWidget: FC<ArticleWidgetProps> = memo((
-    props: ArticleWidgetProps,
+export const ArticleCard: FC<ArticleCardProps> = memo((
+    props: ArticleCardProps,
 ) => {
     const {
         article: {
@@ -25,8 +25,8 @@ export const ArticleWidget: FC<ArticleWidgetProps> = memo((
     const { locale } = useLocale();
 
     return (
-        <div className={cn(className, styles.wrapper)}>
-            <Link to={`/${locale}/news/1`}>
+        <Link className={styles.link} to={`/${locale}/news/1`}>
+            <div className={cn(className, styles.wrapper)}>
                 <img className={styles.image} src={image} alt={title} />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>
@@ -40,7 +40,7 @@ export const ArticleWidget: FC<ArticleWidgetProps> = memo((
                     <img className={styles.commentIcon} src={comment} alt="comments" />
                     <span className={styles.textStats}>{comments}</span>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 });

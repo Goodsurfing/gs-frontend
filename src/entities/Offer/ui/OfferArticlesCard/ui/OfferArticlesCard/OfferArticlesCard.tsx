@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
-import { ArticleWidget } from "@/widgets/ArticleWidget";
+import { ArticleCard } from "@/entities/Article/";
 
 import { Article } from "@/entities/Article";
 
@@ -20,7 +20,7 @@ export const OfferArticlesCard: FC<OfferArticlesCardProps> = memo(
             () => articles
                 .slice(0, 2)
                 .map((article, index) => (
-                    <ArticleWidget article={article} key={index} />
+                    <ArticleCard article={article} key={index} />
                 )),
             [articles],
         );
