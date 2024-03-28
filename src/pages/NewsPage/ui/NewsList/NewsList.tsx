@@ -1,8 +1,8 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
 import { Article } from "@/entities/Article";
-import styles from "./NewsList.module.scss";
 import { ArticleWidget } from "@/widgets/ArticleWidget";
+import styles from "./NewsList.module.scss";
 
 interface NewsListProps {
     data?: Article[]

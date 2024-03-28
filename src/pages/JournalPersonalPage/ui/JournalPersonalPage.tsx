@@ -5,8 +5,8 @@ import {
     ArticleContent, ArticleHeader, ArticleShare, Navigation,
 } from "@/features/Article";
 import { getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./JournalPersonalPage.module.scss";
 import { CommentWidget } from "@/widgets/Article";
+import styles from "./JournalPersonalPage.module.scss";
 
 const JournalPersonalPage = () => {
     const { locale } = useLocale();
@@ -27,7 +27,7 @@ const JournalPersonalPage = () => {
                         category="Журнал"
                         date="17 мая 2017"
                     />
-                    <ArticleContent className={styles.content} content={"<iframe src=\"https://www.mindomo.com/mindmap/colores-"} />
+                    <ArticleContent className={styles.content} content={"<iframe src=\"\""} />
                     <ArticleShare className={styles.shareBlock} />
                 </div>
                 <div className={styles.commentWrapper}>
