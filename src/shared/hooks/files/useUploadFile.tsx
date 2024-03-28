@@ -39,15 +39,17 @@ const uploadFile = async (
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
+        const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        const formData = new FormData();
+        formData.append(`${link.uuid}.png`, newFile);
+        console.log(link.url);
         try {
             await fetch(link.url, {
                 method: "PUT",
-                credentials: "same-origin",
                 headers: new Headers({
-                    Authorization: `Bearer ${JSON.parse(token)}`,
                     "Content-Type": link.contentType,
                 }),
-                body: data,
+                body: newFile,
             });
         } catch (error) {
             // eslint-disable-next-line no-console

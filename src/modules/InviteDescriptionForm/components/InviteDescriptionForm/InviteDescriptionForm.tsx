@@ -37,7 +37,7 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
     shortDescription: "",
     coverImage: {
         file: null,
-        src: "null",
+        src: null,
     },
     images: [],
 };
