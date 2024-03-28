@@ -110,11 +110,13 @@ import {
     getJournalsPageUrl,
     getJournalPersonalPageUrl,
     getVideoPageUrl,
+    getVideoPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -399,6 +401,11 @@ const publicRoutes: RouteType[] = [
         label: "video",
         element: <VideoPage />,
         path: (locale: string) => getVideoPageUrl(locale),
+    },
+    {
+        label: "video-personal",
+        element: <VideoPersonalPage />,
+        path: (locale: string) => getVideoPersonalPageUrl(locale),
     },
     {
         label: "rules",

@@ -127,3 +127,5 @@ export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${Ro
 export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}/:id`;
 
 export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}`;
+
+export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;
