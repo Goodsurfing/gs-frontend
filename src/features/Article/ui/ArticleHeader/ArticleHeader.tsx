@@ -8,8 +8,8 @@ import commentsIcon from "@/shared/assets/icons/comment.svg";
 interface ArticleHeaderProps {
     className?: string;
     title: string;
-    authorAvatar: string;
-    authorName: string;
+    authorAvatar?: string;
+    authorName?: string;
     date: string;
     category: string;
 }
@@ -23,10 +23,12 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
             <h1 className={styles.title}>{title}</h1>
             <div className={styles.containerHeader}>
                 <div className={styles.infoWrapper}>
-                    <div className={styles.author}>
-                        <img src={authorAvatar} alt="auhtor avatar" className={styles.avatar} />
-                        <span className={styles.authorName}>{authorName}</span>
-                    </div>
+                    { (authorName && authorName) && (
+                        <div className={styles.author}>
+                            <img src={authorAvatar} alt="auhtor avatar" className={styles.avatar} />
+                            <span className={styles.authorName}>{authorName}</span>
+                        </div>
+                    )}
                     <span className={styles.date}>{date}</span>
                     <div className={styles.category}>{category}</div>
                 </div>

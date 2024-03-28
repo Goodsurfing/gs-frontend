@@ -45,6 +45,7 @@ import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
+import { JournalsPage } from "@/pages/JournalsPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 
@@ -104,11 +105,14 @@ import {
     getPrivacyPolicyPageUrl,
     getNewsPersonalPageUrl,
     getFindJobPageUrl,
+    getJournalsPageUrl,
+    getJournalPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -378,6 +382,16 @@ const publicRoutes: RouteType[] = [
         label: "news-personal",
         element: <NewsPersonalPage />,
         path: (locale: string) => getNewsPersonalPageUrl(locale),
+    },
+    {
+        label: "journals",
+        element: <JournalsPage />,
+        path: (locale: string) => getJournalsPageUrl(locale),
+    },
+    {
+        label: "journal-personal",
+        element: <JournalPersonalPage />,
+        path: (locale: string) => getJournalPersonalPageUrl(locale),
     },
     {
         label: "rules",
