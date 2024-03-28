@@ -1,4 +1,4 @@
-import { Article, Journal } from "@/entities/Article";
+import { Article, Journal, Video } from "@/entities/Article";
 
 import articleDefaultImage from "@/shared/assets/images/articles/article1.png";
 import journalDefaultImage from "@/shared/assets/images/journalDefault.png";
@@ -89,5 +89,35 @@ export const mockedJournalsData: Journal[] = [
         likes: 4,
         image: journalDefaultImage,
         date: "28 ноября 2023",
+    },
+];
+
+export const mockedVideoData: Video[] = [
+    {
+        id: "1",
+        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
+        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        comments: 5,
+        likes: 0,
+        tag: "хостелы",
+        date: "17 мая 2017",
+    },
+    {
+        id: "2",
+        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
+        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        comments: 5,
+        likes: 0,
+        tag: "хостелы",
+        date: "17 мая 2017",
+    },
+    {
+        id: "3",
+        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
+        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        comments: 5,
+        likes: 0,
+        tag: "хостелы",
+        date: "17 мая 2017",
     },
 ];

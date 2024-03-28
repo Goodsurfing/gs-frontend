@@ -46,6 +46,8 @@ import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { JournalsPage } from "@/pages/JournalsPage";
+import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
+import { VideoPage } from "@/pages/VideoPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 
@@ -107,12 +109,12 @@ import {
     getFindJobPageUrl,
     getJournalsPageUrl,
     getJournalPersonalPageUrl,
+    getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -392,6 +394,11 @@ const publicRoutes: RouteType[] = [
         label: "journal-personal",
         element: <JournalPersonalPage />,
         path: (locale: string) => getJournalPersonalPageUrl(locale),
+    },
+    {
+        label: "video",
+        element: <VideoPage />,
+        path: (locale: string) => getVideoPageUrl(locale),
     },
     {
         label: "rules",

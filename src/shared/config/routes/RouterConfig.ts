@@ -56,6 +56,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.FIND_JOB]: "/find-job",
     [AppRoutes.NEWS]: "/news",
     [AppRoutes.JOURNALS]: "/journals",
+    [AppRoutes.VIDEO]: "/video",
     [AppRoutes.PRIVACY_POLICY]: "/privacy-policy",
     [AppRoutes.OUR_TEAM]: "/our-team",
     [AppRoutes.SIGN_UP]: "/signup",
