@@ -9,7 +9,7 @@ interface FilterProps {
 export const ArticleFilter: FC<FilterProps> = (props) => {
     const { className } = props;
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <div className={cn(className)}>
             <Filter />
         </div>
     );
