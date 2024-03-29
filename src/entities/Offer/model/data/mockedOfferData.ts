@@ -13,7 +13,7 @@ export const mockedOffersData: Offer[] = [
             periods: [{ start: "31.01.2023", end: "8.02.2023" }],
         },
         where: {
-            address: "Казань",
+            address: "Казань Пушкина 46",
         },
         conditions: {
             extraFeatures: ["additional", "excursions"],
@@ -67,7 +67,7 @@ export const mockedOffersData: Offer[] = [
             periods: [{ start: "31.01.2023", end: "8.02.2023" }],
         },
         where: {
-            address: "Казань",
+            address: "Казань ул. Баумана, 70А",
         },
         conditions: {
             extraFeatures: ["additional", "excursions"],
@@ -122,7 +122,7 @@ export const mockedOffersData: Offer[] = [
             periods: [{ start: "31.01.2023", end: "8.02.2023" }],
         },
         where: {
-            address: "Казань",
+            address: "Казань ул. Чехова, 2, Вахитовский район",
         },
         conditions: {
             extraFeatures: ["additional", "excursions"],
