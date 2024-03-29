@@ -1,0 +1,71 @@
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+}
+
+.image {
+    max-width: 480px;
+    object-fit: cover;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 8px;
+}
+
+.description {
+    margin-top: 8px;
+}
+
+.infoContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.likeIcon {
+    margin-right: 6px;
+    width: 16px;
+    height: 16px;
+}
+
+.commentIcon {
+    margin-left: 14px;
+    margin-right: 6px;
+    width: 16px;
+    height: 16px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.date,
+.description {
+    color: var(--text-caption);
+    font-size: 14px;
+}
+
+.textStats {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tag {
+    display: flex;
+    padding: 3px 10px;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 40px;
+}

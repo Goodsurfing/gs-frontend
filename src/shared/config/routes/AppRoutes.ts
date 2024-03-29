@@ -50,6 +50,7 @@ export enum AppRoutes {
     FIND_JOB = "find_job",
     NEWS = "news",
     JOURNALS = "journals",
+    VIDEO = "video",
     PRIVACY_POLICY = "privacy_policy",
     NOT_FOUND = "not_found",
 }

@@ -6,10 +6,10 @@ interface FilterProps {
     className?: string;
 }
 
-export const ArticleFilter: FC<FilterProps> = (props) => {
+export const VideoFilter: FC<FilterProps> = (props) => {
     const { className } = props;
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <div className={cn(className)}>
             <Filter />
         </div>
     );
