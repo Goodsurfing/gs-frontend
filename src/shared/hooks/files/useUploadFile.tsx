@@ -36,6 +36,7 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
+<<<<<<< HEAD
         const reader = new FileReader();
         reader.onload = async (event) => {
             console.log(event.target.result);
@@ -53,6 +54,24 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
             }
         };
         reader.readAsArrayBuffer(data);
+=======
+        const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        const formData = new FormData();
+        formData.append(`${link.uuid}.png`, newFile);
+        console.log(link.url);
+        try {
+            await fetch(link.url, {
+                method: "PUT",
+                headers: new Headers({
+                    "Content-Type": link.contentType,
+                }),
+                body: newFile,
+            });
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(error);
+        }
+>>>>>>> 7df2cd389f86906bd0aaa660cfea1203fae33135
     };
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
