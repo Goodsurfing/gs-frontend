@@ -12,7 +12,9 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
 
-import uploadFile from "@/shared/hooks/files/useUploadFile";
+import uploadFile, {
+    GenerateLinkResponse,
+} from "@/shared/hooks/files/useUploadFile";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -60,14 +62,15 @@ export const InviteDescriptionForm = () => {
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
-        let imageUrl: string | null = data.coverImage.src;
-        let extraImagesUuid: string[] = [];
+        // let imageUpload: string | null = data.coverImage.src;
+        let imageUpload: GenerateLinkResponse | null = null;
+        let extraImages: GenerateLinkResponse[] = [];
         if (!token) return;
 
         // upload coverImage
         if (data.coverImage.file) {
             try {
-                imageUrl = (await uploadFile(
+                imageUpload = (await uploadFile(
                     data.coverImage.file.name,
                     data.coverImage.file,
                     token,
@@ -78,7 +81,7 @@ export const InviteDescriptionForm = () => {
                     type: HintType.Error,
                 });
             }
-            if (!imageUrl) {
+            if (!imageUpload) {
                 setToast({
                     text: "Не удалось загрузить файл",
                     type: HintType.Error,
@@ -94,15 +97,17 @@ export const InviteDescriptionForm = () => {
                     return uploadFile(image.file.name, image.file, token).catch(
                         () => null,
                     );
-                } return image.src;
+                }
+                return image.src;
             });
 
             try {
-                const imagesUuid = await Promise.all(uploadImagesPromises);
-                const filteredImagesUuid = imagesUuid.filter(
-                    (result): result is string => result !== null && result !== undefined,
+                const images = await Promise.all(uploadImagesPromises);
+                const filteredImages = images.filter(
+                    (result): result is GenerateLinkResponse => result
+                    !== null && result !== undefined,
                 );
-                extraImagesUuid = filteredImagesUuid;
+                extraImages = filteredImages;
             } catch {
                 setToast({
                     text: "Произошла ошибка при загрузке файлов",
@@ -112,8 +117,8 @@ export const InviteDescriptionForm = () => {
         }
         const preparedData = inviteDescriptionApiAdapter(
             data,
-            imageUrl || "",
-            extraImagesUuid,
+            imageUpload?.uuid || "",
+            extraImages,
         );
         console.log(preparedData);
         updateDescription({ body: { id, description: preparedData } })

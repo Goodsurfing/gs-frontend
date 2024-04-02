@@ -1,15 +1,14 @@
 import { OfferDescription } from "@/entities/Offer";
 
 import { OfferDescriptionField } from "../model/types/inviteDescription";
+import { GenerateLinkResponse } from "@/shared/hooks/files/useUploadFile";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
     coverImage: string,
-    extraImages: (string | undefined)[],
+    extraImages: GenerateLinkResponse[],
 ): OfferDescription => {
-    const filteredExtraImages: string[] = extraImages.filter(
-        (item): item is string => item !== undefined,
-    );
+    const extraImagesUuid = extraImages.map((extraImage) => extraImage.uuid);
 
     return {
         title: data.title,
@@ -17,7 +16,7 @@ export const inviteDescriptionApiAdapter = (
         shortDescription: data.shortDescription,
         category: data.category,
         titleImage: coverImage,
-        images: filteredExtraImages,
+        images: extraImagesUuid,
     };
 };
 

@@ -1,6 +1,6 @@
 import { API_MEDIA_BASE_URL } from "@/shared/constants/api";
 
-interface GenerateLinkResponse {
+export interface GenerateLinkResponse {
     url: string;
     contentType: string;
     uuid: string;
@@ -36,9 +36,9 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        // const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
         const formData = new FormData();
-        formData.append(`${link.uuid}.png`, newFile);
+        formData.append("image", data);
         console.log(link.url);
         try {
             await fetch(link.url, {
@@ -46,7 +46,7 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
                 headers: new Headers({
                     "Content-Type": link.contentType,
                 }),
-                body: newFile,
+                body: formData,
             });
         } catch (error) {
             // eslint-disable-next-line no-console
@@ -58,7 +58,7 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         console.log(generateLinkResponse);
         if (generateLinkResponse) {
             uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse.url;
+            return generateLinkResponse;
         }
     }
 };
