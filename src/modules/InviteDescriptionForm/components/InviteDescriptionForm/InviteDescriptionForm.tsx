@@ -115,6 +115,7 @@ export const InviteDescriptionForm = () => {
                 });
             }
         }
+        if (!imageUpload) return;
         const preparedData = inviteDescriptionApiAdapter(
             data,
             imageUpload?.uuid || "",

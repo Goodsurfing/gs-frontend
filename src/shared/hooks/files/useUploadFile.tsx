@@ -25,14 +25,11 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
             );
             const dataResult = await response.json();
             // fix this replaced url in backend
-            const replacedUrl = dataResult.url.replace(
-                "minio:9000",
-                "storage.gudserfing.ru",
-            );
-            return { ...dataResult, url: replacedUrl };
+
+            return dataResult;
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(error);
+            return null;
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
@@ -57,8 +54,11 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         console.log(generateLinkResponse);
         if (generateLinkResponse) {
-            uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse;
+            const result = await uploadFileMutation(generateLinkResponse)
+                .then(() => true)
+                .catch(() => false);
+            if (result) return generateLinkResponse;
+            // return generateLinkResponse;
         }
     }
 };
