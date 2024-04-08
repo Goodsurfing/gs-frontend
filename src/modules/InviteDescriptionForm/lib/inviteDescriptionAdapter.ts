@@ -12,11 +12,11 @@ export const inviteDescriptionApiAdapter = (
 
     return {
         title: data.title,
-        longDescription: data.fullDescription,
+        description: data.fullDescription,
         shortDescription: data.shortDescription,
-        category: data.category,
-        titleImage: coverImage,
-        images: extraImagesUuid,
+        categoryIds: data.category,
+        imageId: coverImage,
+        galleryIds: extraImagesUuid,
     };
 };
 
@@ -27,8 +27,8 @@ export const inviteDescriptionAdapter = (
 
     return {
         title: data.title,
-        fullDescription: data.longDescription,
+        fullDescription: data.description,
         shortDescription: data.shortDescription,
-        category: data.category,
+        category: data.categoryIds,
     };
 };

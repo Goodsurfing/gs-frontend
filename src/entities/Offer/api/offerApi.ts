@@ -79,15 +79,7 @@ export const offerApi = createApi({
             query: (data) => ({
                 url: `/vacancy/${data.body.id}/description`,
                 method: "PUT",
-                // toDo: Change body typing for backend
-                body: {
-                    title: data.body.description?.title,
-                    categoryIds: data.body.description?.category,
-                    shortDescription: data.body.description?.shortDescription,
-                    description: data.body.description?.longDescription,
-                    imageId: data.body.description?.titleImage,
-                    galleryIds: data.body.description?.images,
-                },
+                body: data.body.description,
             }),
             invalidatesTags: ["offer"],
         }),

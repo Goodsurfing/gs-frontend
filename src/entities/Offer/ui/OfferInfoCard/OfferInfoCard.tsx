@@ -63,7 +63,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 className={styles.container}
             />
             <OfferGalleryCard
-                gallery={offer.description.images}
+                gallery={offer.description.galleryIds}
                 className={styles.container}
             />
             <OfferWhatToDoCard
