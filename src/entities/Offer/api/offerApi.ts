@@ -3,6 +3,11 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 
 import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
+import { OfferWhere } from "../model/types/offerWhere";
+import { OfferWhen } from "../model/types/offerWhen";
+import { OfferWhoNeeds } from "../model/types/offerWhoNeeds";
+import { OfferDescription } from "../model/types/offerDescription";
+import { OfferWhatToDo } from "../model/types/offerWhatToDo";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -55,6 +60,13 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        getWhere: build.query<OfferWhere, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/where`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
         updateWhen: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacancy/${data.body.id}/when`,
@@ -63,14 +75,27 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        getWhen: build.query<OfferWhen, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/when`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
         updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacancy/${data.body.id}/how-needs`,
                 method: "PUT",
-                // toDo: Change body typing for backend
                 body: data.body.whoNeeds,
             }),
             invalidatesTags: ["offer"],
+        }),
+        getWhoNeeds: build.query<OfferWhoNeeds, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/how-needs`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
         }),
         updateDescription: build.mutation<
         CreateOfferResponse,
@@ -83,6 +108,13 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        getDescription: build.query<OfferDescription, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/description`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
         updateWhatToDo: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
                 url: `/vacancy/${data.body.id}/what-to-do`,
@@ -90,6 +122,13 @@ export const offerApi = createApi({
                 body: data.body.whatToDo,
             }),
             invalidatesTags: ["offer"],
+        }),
+        getWhatToDo: build.query<OfferWhatToDo, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/what-to-do`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
         }),
         updateConditions: build.mutation<
         CreateOfferResponse,
@@ -116,6 +155,13 @@ export const offerApi = createApi({
             },
             invalidatesTags: ["offer"],
         }),
+        getConditions: build.query<unknown, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/conditions`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
         updateFinishingTouches: build.mutation<
         CreateOfferResponse,
         UpdateOfferParams
@@ -136,6 +182,13 @@ export const offerApi = createApi({
                 },
             }),
             invalidatesTags: ["offer"],
+        }),
+        getFinishingTouches: build.query<unknown, CreateOfferResponse>({
+            query: (data) => ({
+                url: `vacancy/${data.id}/finishing-touches`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
         }),
     }),
 });
