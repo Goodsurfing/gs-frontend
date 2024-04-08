@@ -102,9 +102,9 @@ export const offerApi = createApi({
                     method: "PUT",
                     // toDo: Change body typing for backend
                     body: {
-                        housingIds: [conditions?.housingIds],
-                        foodIds: [conditions?.foodIds],
-                        paidTravelIds: [conditions?.paidTravelIds],
+                        housingIds: conditions?.housingIds ? [conditions?.housingIds] : [],
+                        foodIds: conditions?.foodIds ? [conditions?.foodIds] : [],
+                        paidTravelIds: conditions?.paidTravelIds ? [conditions?.paidTravelIds] : [],
                         conveniencesIds: conditions?.conveniencesIds,
                         additionalFeaturesIds: conditions?.additionalFeaturesIds,
                         volunteerContributions: conditions?.volunteerContributions,
