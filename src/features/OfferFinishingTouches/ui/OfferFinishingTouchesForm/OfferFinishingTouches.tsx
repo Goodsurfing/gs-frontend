@@ -10,7 +10,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useUpdateFinishingTouchesMutation, useUpdateStatusMutation } from "@/entities/Offer/api/offerApi";
+import { useGetFinishingTouchesQuery, useUpdateFinishingTouchesMutation, useUpdateStatusMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -45,11 +45,12 @@ const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
 export const OfferFinishingTouchesForm = memo(
     (props: OfferFinishingTouchesFormProps) => {
         const { className, onSuccess } = props;
+        const { id } = useParams();
         const [updateFinishingTouches, { isLoading }] = useUpdateFinishingTouchesMutation();
+        const { data: getFinishingTouches } = useGetFinishingTouchesQuery({ id: id || "" });
         const [updateOfferStatus] = useUpdateStatusMutation();
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
-        const { id } = useParams();
 
         const { handleSubmit, control } = useForm<OfferFinishingTouchesFormFields>({
             mode: "onChange",

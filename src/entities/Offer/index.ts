@@ -51,6 +51,7 @@ export type {
 export type {
     ExtraConditions,
     OfferFinishingTouches,
+    OfferFinishingTouchesApi,
 } from "./model/types/offerFinishingTouches";
 
 export type { OfferStatus, OfferState } from "./model/types/offerStatus";

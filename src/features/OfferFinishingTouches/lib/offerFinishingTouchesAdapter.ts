@@ -1,4 +1,7 @@
-import { OfferFinishingTouches } from "@/entities/Offer";
+import {
+    OfferFinishingTouches,
+    OfferFinishingTouchesApi,
+} from "@/entities/Offer";
 
 import { OfferFinishingTouchesFormFields } from "../model/types/offerFinishingTouches";
 
@@ -20,5 +23,27 @@ export const offerFinishingTouchesApiAdapter = (
         onlyVerified,
         questionnaireUrl,
         questions,
+    };
+};
+
+export const offerFinishingTouchesAdapter = (
+    offerFinishingTouches: OfferFinishingTouchesApi,
+): OfferFinishingTouchesFormFields => {
+    const {
+        helloText,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        roles,
+        additionalConditions,
+    } = offerFinishingTouches;
+
+    return {
+        welcomeMessage: helloText,
+        extraConditions: additionalConditions || [],
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        rules: roles,
     };
 };
