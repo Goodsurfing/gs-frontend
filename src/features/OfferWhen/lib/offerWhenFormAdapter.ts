@@ -1,12 +1,14 @@
-import { OfferWhenPeriods, OfferWhen } from "@/entities/Offer";
-import { OfferWhenFields } from "../model/types/offerWhen";
+import { OfferWhen, OfferWhenApi, OfferWhenPeriods } from "@/entities/Offer";
 
-export function offerWhenFormApiAdapter(offerWhenForm: OfferWhenFields): OfferWhen {
+import {
+    DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
+} from "../model/types/offerWhen";
+
+export const offerWhenFormApiAdapter = (
+    offerWhenForm: OfferWhenFields,
+): OfferWhen => {
     const {
-        endSettings,
-        participationPeriod,
-        periods,
-        timeSettings,
+        endSettings, participationPeriod, periods, timeSettings,
     } = offerWhenForm;
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
@@ -29,4 +31,39 @@ export function offerWhenFormApiAdapter(offerWhenForm: OfferWhenFields): OfferWh
         isApplicableAtTheEnd,
     };
     return offerWhen;
-}
+};
+
+export const offerWhenFormAdapter = (offerWhen: OfferWhenApi): OfferWhenFields => {
+    const {
+        durationMaxDays,
+        durationMinDays,
+        isApplicableAtTheEnd,
+        isFullYearAcceptable,
+        applicationEndDate,
+        periods,
+    } = offerWhen;
+    const offerWhenPeriods: DatePeriods[] = periods?.map((period) => ({
+        start: new Date(period.start.date),
+        end: new Date(period.end.date),
+    })) || [];
+
+    const timeSettings: TimeSettingsControls = {
+        isFullYearAcceptable,
+        isApplicableAtTheEnd,
+    };
+
+    const endSettings: EndSettings = {
+        applicationEndDate: new Date(applicationEndDate || ""),
+        isWithoutApplicationDate: !applicationEndDate,
+    };
+
+    const offerWhenFields: OfferWhenFields = {
+        periods: offerWhenPeriods,
+        participationPeriod: [durationMinDays, durationMaxDays],
+        applicationEndDate: new Date(applicationEndDate || ""),
+        timeSettings,
+        endSettings,
+    };
+
+    return offerWhenFields;
+};

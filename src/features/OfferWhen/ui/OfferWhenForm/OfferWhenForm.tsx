@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -9,7 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
+import { useGetWhenQuery, useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -18,7 +18,7 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { offerWhenFormApiAdapter } from "../../lib/offerWhenFormAdapter";
+import { offerWhenFormAdapter, offerWhenFormApiAdapter } from "../../lib/offerWhenFormAdapter";
 import type {
     DatePeriods,
     EndSettings,
@@ -35,31 +35,32 @@ interface OfferWhenFormProps {
     onComplete?: () => void;
 }
 
-const initialSliderValue: number[] = [7, 186];
-const initialPeriods: DatePeriods[] = [{ start: new Date(), end: new Date() }];
-const endSettings: EndSettings = {
-    applicationEndDate: new Date(),
-    isWithoutApplicationDate: false,
-};
-const timeSettings: TimeSettingsControls = {
-    isApplicableAtTheEnd: false,
-    isFullYearAcceptable: false,
-};
-
-const defaultValues: DefaultValues<OfferWhenFields> = {
-    participationPeriod: initialSliderValue,
-    periods: initialPeriods,
-    endSettings,
-    timeSettings,
-};
-
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
+    const { id } = useParams();
     const [updateWhen, { isLoading }] = useUpdateWhenMutation();
+    const { data: getWhenData } = useGetWhenQuery({ id: id || "" });
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
-    const { id } = useParams();
+
+    const initialSliderValue: number[] = [7, 186];
+    const initialPeriods: DatePeriods[] = [{ start: new Date(), end: new Date() }];
+    const endSettings: EndSettings = {
+        applicationEndDate: new Date(),
+        isWithoutApplicationDate: false,
+    };
+    const timeSettings: TimeSettingsControls = {
+        isApplicableAtTheEnd: false,
+        isFullYearAcceptable: false,
+    };
+
+    const defaultValues: DefaultValues<OfferWhenFields> = {
+        participationPeriod: initialSliderValue,
+        periods: initialPeriods,
+        endSettings,
+        timeSettings,
+    };
     const {
-        handleSubmit, control,
+        handleSubmit, control, reset,
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
@@ -86,6 +87,12 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             });
         onComplete?.();
     };
+
+    useEffect(() => {
+        if (getWhenData) {
+            reset(offerWhenFormAdapter(getWhenData));
+        }
+    }, [getWhenData, reset]);
 
     return (
         <form className={styles.form}>

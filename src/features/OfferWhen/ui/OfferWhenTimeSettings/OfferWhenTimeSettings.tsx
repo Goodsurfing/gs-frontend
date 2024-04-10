@@ -25,6 +25,7 @@ export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSet
     const handleEndAccepatableChange = () => {
         onChange({ ...value, isApplicableAtTheEnd: !value.isApplicableAtTheEnd });
     };
+
     return (
         <Box className={styles.wrapper}>
             <FormControlLabel
@@ -35,8 +36,9 @@ export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSet
                 )}
                 control={(
                     <SwitchComponent
-                        value={value.isFullYearAcceptable}
-                        onClick={handleFullYearChange}
+                        checked={value.isFullYearAcceptable}
+                        // value={value.isFullYearAcceptable}
+                        onChange={handleFullYearChange}
                     />
                 )}
             />
@@ -48,8 +50,8 @@ export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSet
                 )}
                 control={(
                     <SwitchComponent
-                        value={value.isApplicableAtTheEnd}
-                        onClick={handleEndAccepatableChange}
+                        checked={value.isApplicableAtTheEnd}
+                        onChange={handleEndAccepatableChange}
                     />
                 )}
             />
