@@ -45,6 +45,7 @@ export type {
     Nutrition,
     Payment,
     OfferConditions,
+    OfferConditionsApi,
 } from "./model/types/offerConditions";
 
 export type {

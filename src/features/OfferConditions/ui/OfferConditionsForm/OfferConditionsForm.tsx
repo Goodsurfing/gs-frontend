@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -26,7 +26,7 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./OfferConditionsForm.module.scss";
 import { offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
+import { useGetConditionsQuery, useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface OfferConditionsFormProps {
@@ -38,12 +38,13 @@ const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormField
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
-    const [updateConditions, { isLoading }] = useUpdateConditionsMutation();
-    const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
+    const [updateConditions, { isLoading }] = useUpdateConditionsMutation();
+    const { data: getConditions } = useGetConditionsQuery({ id: id || "" });
+    const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
-    const { control, handleSubmit } = useForm<OfferConditionsFormFields>({
+    const { control, handleSubmit, reset } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -67,6 +68,12 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             });
         onSuccess?.();
     };
+
+    // useEffect(()=> {
+    //     if(getConditions) {
+    //         reset
+    //     }
+    // }, [])
 
     return (
         <form className={cn(styles.wrapper, className)}>

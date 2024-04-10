@@ -1,4 +1,4 @@
-import { OfferConditions } from "@/entities/Offer";
+import { OfferConditions, OfferConditionsApi } from "@/entities/Offer";
 
 import { OfferConditionsFormFields } from "../model/types/offerConditions";
 
@@ -27,5 +27,35 @@ export const offerConditionsApiAdapter = (
         volunteerContributions: contribution,
         volunteerRemuneration: reward,
         currency,
+    };
+};
+
+export const offerConditionsAdapter = (
+    offerConditions: OfferConditionsApi,
+): OfferConditionsFormFields => {
+    const {
+        additionalFeatures,
+        conveniences,
+        currency,
+        volunteerContributions,
+        volunteerRemuneration,
+        additionalConditions,
+        food,
+        housing,
+        paidTravel,
+    } = offerConditions;
+
+    return {
+        extraConditions: additionalConditions || "",
+        extraFeatures: { extraFeatures: additionalFeatures },
+        facilities: { facilities: conveniences },
+        housing: { switchState: true, housing: housing?.[0] },
+        nutrition: { switchState: true, nutrition: food?.[0] },
+        travel: { switchState: true, travel: paidTravel?.[0] },
+        payment: {
+            currency,
+            contribution: volunteerContributions,
+            reward: volunteerRemuneration,
+        },
     };
 };

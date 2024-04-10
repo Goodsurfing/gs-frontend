@@ -8,6 +8,7 @@ import { OfferWhen, OfferWhenApi } from "../model/types/offerWhen";
 import { OfferWhoNeeds, OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
 import { OfferDescription } from "../model/types/offerDescription";
 import { OfferWhatToDo, OfferWhatToDoApi } from "../model/types/offerWhatToDo";
+import { OfferConditionsApi } from "../model/types/offerConditions";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -155,7 +156,7 @@ export const offerApi = createApi({
             },
             invalidatesTags: ["offer"],
         }),
-        getConditions: build.query<unknown, CreateOfferResponse>({
+        getConditions: build.query<OfferConditionsApi, CreateOfferResponse>({
             query: (data) => ({
                 url: `vacancy/${data.id}/conditions`,
                 method: "GET",
@@ -208,5 +209,7 @@ export const {
     useUpdateWhatToDoMutation,
     useGetWhatToDoQuery,
     useUpdateConditionsMutation,
+    useGetConditionsQuery,
     useUpdateFinishingTouchesMutation,
+    useGetFinishingTouchesQuery,
 } = offerApi;

@@ -27,3 +27,15 @@ export interface OfferConditions {
     currency: Currency;
     additionalConditions?: string;
 }
+
+export interface OfferConditionsApi {
+    housing?: Housing[];
+    food?: Nutrition[];
+    conveniences: Facilities[];
+    paidTravel?: Travel[];
+    additionalFeatures: ExtraFeatures[];
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+    currency: Currency;
+    additionalConditions?: string;
+}
