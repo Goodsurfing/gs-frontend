@@ -1,6 +1,6 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import cn from "classnames";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -22,7 +22,7 @@ import Input from "@/shared/ui/Input/Input";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { offerFinishingTouchesApiAdapter } from "../../lib/offerFinishingTouchesAdapter";
+import { offerFinishingTouchesAdapter, offerFinishingTouchesApiAdapter } from "../../lib/offerFinishingTouchesAdapter";
 import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishingTouches";
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
@@ -52,7 +52,7 @@ export const OfferFinishingTouchesForm = memo(
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
 
-        const { handleSubmit, control } = useForm<OfferFinishingTouchesFormFields>({
+        const { handleSubmit, control, reset } = useForm<OfferFinishingTouchesFormFields>({
             mode: "onChange",
             defaultValues,
         });
@@ -104,6 +104,12 @@ export const OfferFinishingTouchesForm = memo(
                     });
                 });
         };
+
+        useEffect(() => {
+            if (getFinishingTouches) {
+                reset(offerFinishingTouchesAdapter(getFinishingTouches));
+            }
+        }, [getFinishingTouches, reset]);
 
         return (
             <form

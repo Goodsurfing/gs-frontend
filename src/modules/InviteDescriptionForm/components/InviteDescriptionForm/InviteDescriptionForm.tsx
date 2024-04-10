@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -63,6 +63,7 @@ export const InviteDescriptionForm = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
+    const [testImage, setTestImage] = useState<string>("");
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
@@ -141,6 +142,8 @@ export const InviteDescriptionForm = () => {
                 });
             });
     };
+
+    console.log(getDescription);
 
     return (
         <FormProvider {...form}>

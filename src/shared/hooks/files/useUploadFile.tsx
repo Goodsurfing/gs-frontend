@@ -33,9 +33,9 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        // const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
         const formData = new FormData();
-        formData.append(link.uuid, data);
+        formData.append(`${link.uuid}.png`, newFile);
         console.log(link.url);
         try {
             await fetch(link.url, {

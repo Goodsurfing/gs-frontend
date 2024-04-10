@@ -9,6 +9,7 @@ import { OfferWhoNeeds, OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
 import { OfferDescription } from "../model/types/offerDescription";
 import { OfferWhatToDo, OfferWhatToDoApi } from "../model/types/offerWhatToDo";
 import { OfferConditionsApi } from "../model/types/offerConditions";
+import { OfferFinishingTouchesApi } from "../model/types/offerFinishingTouches";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -172,9 +173,7 @@ export const offerApi = createApi({
                 method: "PUT",
                 // toDo: Change body typing for backend
                 body: {
-                    additionalConditionsIds: [
-                        0,
-                    ],
+                    additionalConditionsIds: data.body.finishingTouches?.extraConditions,
                     onlyVerified: data.body.finishingTouches?.onlyVerified,
                     helloText: data.body.finishingTouches?.welcomeMessage,
                     roles: data.body.finishingTouches?.rulesInfo,
@@ -184,7 +183,7 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        getFinishingTouches: build.query<unknown, CreateOfferResponse>({
+        getFinishingTouches: build.query<OfferFinishingTouchesApi, CreateOfferResponse>({
             query: (data) => ({
                 url: `vacancy/${data.id}/finishing-touches`,
                 method: "GET",
