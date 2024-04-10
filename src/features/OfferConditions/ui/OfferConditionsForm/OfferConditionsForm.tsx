@@ -24,7 +24,7 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./OfferConditionsForm.module.scss";
-import { offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
+import { offerConditionsAdapter, offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { useGetConditionsQuery, useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -69,11 +69,11 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         onSuccess?.();
     };
 
-    // useEffect(()=> {
-    //     if(getConditions) {
-    //         reset
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (getConditions) {
+            reset(offerConditionsAdapter(getConditions));
+        }
+    }, [getConditions, reset]);
 
     return (
         <form className={cn(styles.wrapper, className)}>
