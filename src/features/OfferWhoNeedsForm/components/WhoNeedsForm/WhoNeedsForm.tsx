@@ -9,7 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useUpdateWhoNeedsMutation } from "@/entities/Offer/api/offerApi";
+import { useGetWhoNeedsQuery, useUpdateWhoNeedsMutation } from "@/entities/Offer/api/offerApi";
 import { Age, Languages } from "@/entities/Offer/model/types/offerWhoNeeds";
 
 import Button from "@/shared/ui/Button/Button";
@@ -51,11 +51,12 @@ export const WhoNeedsForm = memo(() => {
         mode: "onChange",
         defaultValues,
     });
+    const { id } = useParams();
     const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
+    const { data: getWhoNeeds } = useGetWhoNeedsQuery({ id: id || "" });
     const { t } = useTranslation("offer");
     const { handleSubmit, control } = form;
     const [toast, setToast] = useState<ToastAlert>();
-    const { id } = useParams();
 
     const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
         const preparedData = offerWhoNeedsApapter(data);

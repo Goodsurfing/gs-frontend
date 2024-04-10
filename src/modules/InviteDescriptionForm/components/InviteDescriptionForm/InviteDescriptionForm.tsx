@@ -10,7 +10,10 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
-import { useUpdateDescriptionMutation } from "@/entities/Offer/api/offerApi";
+import {
+    useGetDescriptionQuery,
+    useUpdateDescriptionMutation,
+} from "@/entities/Offer/api/offerApi";
 
 import uploadFile, {
     GenerateLinkResponse,
@@ -54,9 +57,10 @@ export const InviteDescriptionForm = () => {
         control,
         formState: { errors },
     } = form;
-    const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const [toast, setToast] = useState<ToastAlert>();
     const { id } = useParams();
+    const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
+    const { data: getDescription } = useGetDescriptionQuery({ id: id || "" });
+    const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
 

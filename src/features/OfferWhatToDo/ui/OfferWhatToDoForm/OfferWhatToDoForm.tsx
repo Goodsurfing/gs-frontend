@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -15,11 +15,11 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
-import styles from "./OfferWhatToDoForm.module.scss";
-import { offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
-import { useUpdateWhatToDoMutation } from "@/entities/Offer/api/offerApi";
+import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
+import { useGetWhatToDoQuery, useUpdateWhatToDoMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import styles from "./OfferWhatToDoForm.module.scss";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -34,13 +34,14 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
 
 export const OfferWhatToDoForm = memo(
     ({ onSuccess }: OfferWhatToDoFormProps) => {
-        const { handleSubmit, control } = useForm<OfferWhatToDoFormFields>({
+        const { handleSubmit, control, reset } = useForm<OfferWhatToDoFormFields>({
             mode: "onChange",
             defaultValues,
         });
-        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
-        const [toast, setToast] = useState<ToastAlert>();
         const { id } = useParams();
+        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
+        const { data: getWhatToDo } = useGetWhatToDoQuery({ id: id || "" });
+        const [toast, setToast] = useState<ToastAlert>();
 
         const { t } = useTranslation("offer");
 
@@ -63,6 +64,12 @@ export const OfferWhatToDoForm = memo(
                 });
             onSuccess?.();
         };
+
+        useEffect(() => {
+            if (getWhatToDo) {
+                reset(offerWhatToDoAdapter(getWhatToDo));
+            }
+        }, [getWhatToDo, reset]);
 
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>

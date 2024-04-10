@@ -19,6 +19,7 @@ export type {
     Languages,
     ReceptionPlace,
     OfferWhoNeeds,
+    OfferWhoNeedsApi,
 } from "./model/types/offerWhoNeeds";
 
 export type {
@@ -32,6 +33,7 @@ export type {
     OfferWhatToDoSkillType,
     OfferWhatToDoSkill,
     OfferWhatToDo,
+    OfferWhatToDoApi,
 } from "./model/types/offerWhatToDo";
 
 export type {

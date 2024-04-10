@@ -25,3 +25,12 @@ export interface OfferWhatToDo {
     dayOff: number;
     externalInfo?: string;
 }
+
+export interface OfferWhatToDoApi {
+    skills: OfferWhatToDoSkill[];
+    additionalSkills?: string[];
+    hours: number;
+    timeType: TimeType;
+    dayOff: number;
+    externalInfo?: string;
+}

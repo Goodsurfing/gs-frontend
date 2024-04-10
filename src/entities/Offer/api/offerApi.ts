@@ -5,9 +5,9 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 import { OfferWhere } from "../model/types/offerWhere";
 import { OfferWhen, OfferWhenApi } from "../model/types/offerWhen";
-import { OfferWhoNeeds } from "../model/types/offerWhoNeeds";
+import { OfferWhoNeeds, OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
 import { OfferDescription } from "../model/types/offerDescription";
-import { OfferWhatToDo } from "../model/types/offerWhatToDo";
+import { OfferWhatToDo, OfferWhatToDoApi } from "../model/types/offerWhatToDo";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -90,7 +90,7 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        getWhoNeeds: build.query<OfferWhoNeeds, CreateOfferResponse>({
+        getWhoNeeds: build.query<OfferWhoNeedsApi, CreateOfferResponse>({
             query: (data) => ({
                 url: `vacancy/${data.id}/how-needs`,
                 method: "GET",
@@ -123,7 +123,7 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        getWhatToDo: build.query<OfferWhatToDo, CreateOfferResponse>({
+        getWhatToDo: build.query<OfferWhatToDoApi, CreateOfferResponse>({
             query: (data) => ({
                 url: `vacancy/${data.id}/what-to-do`,
                 method: "GET",
@@ -202,8 +202,11 @@ export const {
     useUpdateWhenMutation,
     useGetWhenQuery,
     useUpdateWhoNeedsMutation,
+    useGetWhoNeedsQuery,
     useUpdateDescriptionMutation,
+    useGetDescriptionQuery,
     useUpdateWhatToDoMutation,
+    useGetWhatToDoQuery,
     useUpdateConditionsMutation,
     useUpdateFinishingTouchesMutation,
 } = offerApi;

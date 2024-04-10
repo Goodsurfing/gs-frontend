@@ -26,3 +26,15 @@ export interface OfferWhoNeeds {
     receptionPlace: ReceptionPlace;
     additionalInfo?: string;
 }
+
+export interface OfferWhoNeedsApi {
+    id: string;
+    genders: Gender[];
+    ageMax: number;
+    ageMin: number;
+    needAllLanguages: boolean,
+    requiredLanguages: Languages;
+    volunteerPlaceCount: number;
+    receptionPlace: ReceptionPlace;
+    additionalInfo?: string;
+}
