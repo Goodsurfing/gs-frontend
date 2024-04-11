@@ -1,7 +1,11 @@
+import { ImageType } from "@/components/ImageInput/types";
+
 import { OfferDescription } from "@/entities/Offer";
+import { OfferDescriptionApi } from "@/entities/Offer/model/types/offerDescription";
+
+import { GenerateLinkResponse } from "@/shared/hooks/files/useUploadFile";
 
 import { OfferDescriptionField } from "../model/types/inviteDescription";
-import { GenerateLinkResponse } from "@/shared/hooks/files/useUploadFile";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
@@ -21,14 +25,20 @@ export const inviteDescriptionApiAdapter = (
 };
 
 export const inviteDescriptionAdapter = (
-    data?: OfferDescription,
+    data?: OfferDescriptionApi,
 ): Partial<OfferDescriptionField> => {
     if (!data) return {};
+
+    const imagesTemp: ImageType[] = data.gallery.map(
+        (image): ImageType => ({ file: null, src: image.url }),
+    );
 
     return {
         title: data.title,
         fullDescription: data.description,
         shortDescription: data.shortDescription,
+        coverImage: { file: null, src: data.image.url },
         category: data.categoryIds,
+        images: imagesTemp,
     };
 };

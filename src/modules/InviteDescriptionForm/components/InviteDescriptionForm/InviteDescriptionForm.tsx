@@ -25,7 +25,7 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { inviteDescriptionApiAdapter } from "../../lib/inviteDescriptionAdapter";
+import { inviteDescriptionAdapter, inviteDescriptionApiAdapter } from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";
@@ -56,6 +56,7 @@ export const InviteDescriptionForm = () => {
         handleSubmit,
         control,
         formState: { errors },
+        reset,
     } = form;
     const { id } = useParams();
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
@@ -63,7 +64,6 @@ export const InviteDescriptionForm = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
-    const [testImage, setTestImage] = useState<string>("");
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
@@ -91,7 +91,6 @@ export const InviteDescriptionForm = () => {
                     text: "Не удалось загрузить файл",
                     type: HintType.Error,
                 });
-                return;
             }
         }
 
@@ -126,7 +125,6 @@ export const InviteDescriptionForm = () => {
             imageUpload?.uuid || "",
             extraImages,
         );
-        console.log(preparedData);
         updateDescription({ body: { id, description: preparedData } })
             .unwrap()
             .then(() => {
@@ -143,7 +141,11 @@ export const InviteDescriptionForm = () => {
             });
     };
 
-    console.log(getDescription);
+    useEffect(() => {
+        if (getDescription) {
+            reset(inviteDescriptionAdapter(getDescription));
+        }
+    }, [getDescription, reset]);
 
     return (
         <FormProvider {...form}>

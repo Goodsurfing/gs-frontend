@@ -6,7 +6,7 @@ import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 import { OfferWhere } from "../model/types/offerWhere";
 import { OfferWhen, OfferWhenApi } from "../model/types/offerWhen";
 import { OfferWhoNeeds, OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
-import { OfferDescription } from "../model/types/offerDescription";
+import { OfferDescription, OfferDescriptionApi } from "../model/types/offerDescription";
 import { OfferWhatToDo, OfferWhatToDoApi } from "../model/types/offerWhatToDo";
 import { OfferConditionsApi } from "../model/types/offerConditions";
 import { OfferFinishingTouchesApi } from "../model/types/offerFinishingTouches";
@@ -110,7 +110,7 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        getDescription: build.query<OfferDescription, CreateOfferResponse>({
+        getDescription: build.query<OfferDescriptionApi, CreateOfferResponse>({
             query: (data) => ({
                 url: `vacancy/${data.id}/description`,
                 method: "GET",
