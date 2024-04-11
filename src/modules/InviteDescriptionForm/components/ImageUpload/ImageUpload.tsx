@@ -5,10 +5,11 @@ import { ImageType } from "@/components/ImageInput/types";
 
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 import styles from "./ImageUpload.module.scss";
+import { DescriptionImage } from "../../model/types/inviteDescription";
 
 interface ImageUploadProps {
-    value: ImageType;
-    onChange: (value: ImageType) => void;
+    value: DescriptionImage;
+    onChange: (value: DescriptionImage) => void;
     childrenLabel: string;
 }
 
@@ -16,10 +17,14 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
     const { onChange, childrenLabel, value } = props;
     const { t } = useTranslation("offer");
 
+    const handleImageUpload = (image: ImageType) => {
+        onChange({ uuid: null, image });
+    };
+
     return (
         <ImageInput
-            img={value}
-            setImg={onChange}
+            img={value.image}
+            setImg={handleImageUpload}
             wrapperClassName={styles.input}
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground text={childrenLabel} />}

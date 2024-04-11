@@ -6,11 +6,12 @@ import ExtraImagesItemButton from "../ExtraImagesItem/ExtraImagesItemButton/Extr
 import PictureReview from "../PictureReview/PictureReview";
 import styles from "./ExtraImagesUpload.module.scss";
 import { ImageType } from "@/components/ImageInput/types";
+import { DescriptionImage } from "../../model/types/inviteDescription";
 
 interface ExtraImagesUploadProps {
     label: string;
-    value: ImageType[];
-    onChange: (value: ImageType[]) => void;
+    value: DescriptionImage[];
+    onChange: (value: DescriptionImage[]) => void;
     classNameWrapper?: string;
 }
 
@@ -22,7 +23,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
 
     const handleImageUpload = (img: ImageType) => {
         setInputImg((prev) => ({ ...prev, file: null, src: null }));
-        onChange([...value, { ...img }]);
+        onChange([...value, { uuid: null, image: img }]);
     };
 
     const handleCloseBtnClick = (index: number) => {
@@ -41,7 +42,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 <PictureReview
                     className={styles.imgItem}
                     key={index}
-                    img={image.src || ""}
+                    img={image.image.src || ""}
                     close={(
                         <ExtraImagesItemButton
                             className={styles.closeBtn}

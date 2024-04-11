@@ -4,10 +4,10 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 
 import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 import { OfferWhere } from "../model/types/offerWhere";
-import { OfferWhen, OfferWhenApi } from "../model/types/offerWhen";
-import { OfferWhoNeeds, OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
-import { OfferDescription, OfferDescriptionApi } from "../model/types/offerDescription";
-import { OfferWhatToDo, OfferWhatToDoApi } from "../model/types/offerWhatToDo";
+import { OfferWhenApi } from "../model/types/offerWhen";
+import { OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
+import { OfferDescriptionApi } from "../model/types/offerDescription";
+import { OfferWhatToDoApi } from "../model/types/offerWhatToDo";
 import { OfferConditionsApi } from "../model/types/offerConditions";
 import { OfferFinishingTouchesApi } from "../model/types/offerFinishingTouches";
 

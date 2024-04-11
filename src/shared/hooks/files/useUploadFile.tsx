@@ -33,10 +33,9 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
-        const formData = new FormData();
-        formData.append(`${link.uuid}`, newFile);
-        console.log(link.url);
+        // const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        // const formData = new FormData();
+        // formData.append(`${link.uuid}`, newFile);
         try {
             await fetch(link.url, {
                 method: "PUT",
@@ -52,7 +51,6 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
     };
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
-        console.log(generateLinkResponse);
         if (generateLinkResponse) {
             const result = await uploadFileMutation(generateLinkResponse)
                 .then(() => true)

@@ -1,4 +1,7 @@
-import React, { FC, ChangeEvent } from "react";
+import React, {
+    FC, ChangeEvent, useEffect, useState,
+} from "react";
+import { ToggleButtonGroup } from "@mui/material";
 import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
 
 import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
@@ -19,9 +22,11 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
         onChange?.(newValues.filter(Boolean));
     };
 
+    useEffect(() => { console.log(value); }, [value]);
+
     return (
         <div className={styles.container}>
-            <ToggleButtonGroupComponent
+            <ToggleButtonGroup
                 value={value}
                 onChange={handleChange}
                 sx={{
@@ -76,7 +81,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                         {item.text}
                     </ToggleButtonComponent>
                 ))}
-            </ToggleButtonGroupComponent>
+            </ToggleButtonGroup>
         </div>
     );
 };

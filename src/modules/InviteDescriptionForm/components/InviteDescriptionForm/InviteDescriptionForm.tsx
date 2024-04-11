@@ -5,6 +5,7 @@ import {
     FormProvider,
     SubmitHandler,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -25,7 +26,10 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { inviteDescriptionAdapter, inviteDescriptionApiAdapter } from "../../lib/inviteDescriptionAdapter";
+import {
+    inviteDescriptionAdapter,
+    inviteDescriptionApiAdapter,
+} from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";
@@ -41,8 +45,8 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
     fullDescription: "",
     shortDescription: "",
     coverImage: {
-        file: null,
-        src: null,
+        uuid: null,
+        image: { file: null, src: null },
     },
     images: [],
 };
@@ -60,24 +64,29 @@ export const InviteDescriptionForm = () => {
     } = form;
     const { id } = useParams();
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const { data: getDescription } = useGetDescriptionQuery({ id: id || "" });
+    const { data: getDescription, isLoading: isLoadingGetDescription } = useGetDescriptionQuery({ id: id || "" });
+    const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
+        setIsLoadingImages(true);
         // let imageUpload: string | null = data.coverImage.src;
         let imageUpload: GenerateLinkResponse | null = null;
         let extraImages: GenerateLinkResponse[] = [];
-        if (!token) return;
+        if (!token) {
+            setIsLoadingImages(false);
+            return;
+        }
 
         // upload coverImage
-        if (data.coverImage.file) {
+        if (data.coverImage.image.file) {
             try {
                 imageUpload = (await uploadFile(
-                    data.coverImage.file.name,
-                    data.coverImage.file,
+                    data.coverImage.image.file.name,
+                    data.coverImage.image.file,
                     token,
                 )) || null;
             } catch {
@@ -97,19 +106,21 @@ export const InviteDescriptionForm = () => {
         // upload extra images
         if (data.images.length !== 0) {
             const uploadImagesPromises = data.images.map((image) => {
-                if (image.file) {
-                    return uploadFile(image.file.name, image.file, token).catch(
-                        () => null,
-                    );
+                if (image.image.file) {
+                    return uploadFile(
+                        image.image.file.name,
+                        image.image.file,
+                        token,
+                    ).catch(() => null);
                 }
-                return image.src;
+                return image.image.src;
             });
 
             try {
                 const images = await Promise.all(uploadImagesPromises);
                 const filteredImages = images.filter(
-                    (result): result is GenerateLinkResponse => result
-                    !== null && result !== undefined,
+                    (result): result is GenerateLinkResponse => result !== null
+                    && result !== undefined,
                 );
                 extraImages = filteredImages;
             } catch {
@@ -119,12 +130,25 @@ export const InviteDescriptionForm = () => {
                 });
             }
         }
-        if (!imageUpload) return;
+        let imageUuid: string | null = data.coverImage.uuid;
+        let newGallery: string[] = [];
+        const galleryTemp: string[] = data.images.map((image) => image.uuid)
+            .filter((imageId): imageId is string => typeof imageId === "string") as string[];
+        if (imageUpload) {
+            imageUuid = imageUpload?.uuid;
+        }
+        if (extraImages.length > 0) {
+            const extraImagesTemp: string[] = extraImages.map((image) => image.uuid);
+            newGallery = [...galleryTemp, ...extraImagesTemp];
+        } else {
+            newGallery = [...galleryTemp];
+        }
         const preparedData = inviteDescriptionApiAdapter(
             data,
-            imageUpload?.uuid || "",
-            extraImages,
+            imageUuid || "",
+            newGallery,
         );
+
         updateDescription({ body: { id, description: preparedData } })
             .unwrap()
             .then(() => {
@@ -138,7 +162,8 @@ export const InviteDescriptionForm = () => {
                     text: "Некорректно введены данные",
                     type: HintType.Error,
                 });
-            });
+            })
+            .finally(() => setIsLoadingImages(false));
     };
 
     useEffect(() => {
@@ -161,7 +186,7 @@ export const InviteDescriptionForm = () => {
                         name="coverImage"
                         rules={{
                             validate: (value) => {
-                                if (!value?.src) {
+                                if (!value?.image.src) {
                                     return "Загрузите обложку";
                                 }
                                 return true;
@@ -199,7 +224,7 @@ export const InviteDescriptionForm = () => {
                 </div>
                 <Button
                     className={styles.btn}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingImages}
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"
