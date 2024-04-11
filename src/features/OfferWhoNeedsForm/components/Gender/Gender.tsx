@@ -44,7 +44,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 control={(
                     <SwitchComponent
                         checked={gender.includes("female")}
-                        onClick={() => handleGenderChange("female")}
+                        onChange={() => handleGenderChange("female")}
                     />
                 )}
             />
@@ -64,7 +64,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 control={(
                     <SwitchComponent
                         checked={gender.includes("male")}
-                        onClick={() => handleGenderChange("male")}
+                        onChange={() => handleGenderChange("male")}
                     />
                 )}
             />
@@ -84,7 +84,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 control={(
                     <SwitchComponent
                         checked={gender.includes("other")}
-                        onClick={() => handleGenderChange("other")}
+                        onChange={() => handleGenderChange("other")}
                     />
                 )}
             />

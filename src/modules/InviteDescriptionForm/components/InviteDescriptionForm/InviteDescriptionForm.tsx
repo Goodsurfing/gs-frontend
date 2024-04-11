@@ -64,7 +64,7 @@ export const InviteDescriptionForm = () => {
     } = form;
     const { id } = useParams();
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const { data: getDescription, isLoading: isLoadingGetDescription } = useGetDescriptionQuery({ id: id || "" });
+    const { data: getDescription } = useGetDescriptionQuery({ id: id || "" });
     const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();

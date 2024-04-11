@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
@@ -22,7 +22,7 @@ import Input from "@/shared/ui/Input/Input";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
-import { offerWhoNeedsApapter } from "../../lib/offerWhoNeedsAdapter";
+import { offerWhoNeedsApapter, offerWhoNeedsApiAdapter } from "../../lib/offerWhoNeedsAdapter";
 import { OfferWhoNeedsFields } from "../../model/types/offerWhoNeeds";
 import { AgeComponent } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
@@ -55,8 +55,14 @@ export const WhoNeedsForm = memo(() => {
     const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
     const { data: getWhoNeeds } = useGetWhoNeedsQuery({ id: id || "" });
     const { t } = useTranslation("offer");
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
     const [toast, setToast] = useState<ToastAlert>();
+
+    useEffect(() => {
+        if (getWhoNeeds) {
+            reset(offerWhoNeedsApiAdapter(getWhoNeeds));
+        }
+    }, [getWhoNeeds, reset]);
 
     const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
         const preparedData = offerWhoNeedsApapter(data);
@@ -76,6 +82,10 @@ export const WhoNeedsForm = memo(() => {
                 });
             });
     };
+
+    useEffect(() => {
+        console.log(getWhoNeeds);
+    }, [getWhoNeeds]);
 
     return (
         <FormProvider {...form}>
