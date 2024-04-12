@@ -11,10 +11,13 @@ interface ImageUploadProps {
     value: DescriptionImage;
     onChange: (value: DescriptionImage) => void;
     childrenLabel: string;
+    isLoading?: boolean
 }
 
 const ImageUpload: FC<ImageUploadProps> = (props) => {
-    const { onChange, childrenLabel, value } = props;
+    const {
+        onChange, childrenLabel, value, isLoading,
+    } = props;
     const { t } = useTranslation("offer");
 
     const handleImageUpload = (image: ImageType) => {
@@ -26,6 +29,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             img={value.image}
             setImg={handleImageUpload}
             wrapperClassName={styles.input}
+            isLoading={isLoading}
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground text={childrenLabel} />}
             description={(

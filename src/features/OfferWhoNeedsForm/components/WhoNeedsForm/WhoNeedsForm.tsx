@@ -6,10 +6,14 @@ import {
     SubmitHandler,
     useForm,
 } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
-import { useGetWhoNeedsQuery, useUpdateWhoNeedsMutation } from "@/entities/Offer/api/offerApi";
+import cn from "classnames";
+import {
+    useGetWhoNeedsQuery,
+    useUpdateWhoNeedsMutation,
+} from "@/entities/Offer/api/offerApi";
 import { Age, Languages } from "@/entities/Offer/model/types/offerWhoNeeds";
 
 import Button from "@/shared/ui/Button/Button";
@@ -19,10 +23,14 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
-import { offerWhoNeedsApapter, offerWhoNeedsApiAdapter } from "../../lib/offerWhoNeedsAdapter";
+import {
+    offerWhoNeedsApapter,
+    offerWhoNeedsApiAdapter,
+} from "../../lib/offerWhoNeedsAdapter";
 import { OfferWhoNeedsFields } from "../../model/types/offerWhoNeeds";
 import { AgeComponent } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
@@ -53,7 +61,7 @@ export const WhoNeedsForm = memo(() => {
     });
     const { id } = useParams();
     const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
-    const { data: getWhoNeeds } = useGetWhoNeedsQuery({ id: id || "" });
+    const { data: getWhoNeeds, isLoading: isLoadingGetWhoNeedsData } = useGetWhoNeedsQuery({ id: id || "" });
     const { t } = useTranslation("offer");
     const { handleSubmit, control, reset } = form;
     const [toast, setToast] = useState<ToastAlert>();
@@ -83,9 +91,9 @@ export const WhoNeedsForm = memo(() => {
             });
     };
 
-    useEffect(() => {
-        console.log(getWhoNeeds);
-    }, [getWhoNeeds]);
+    if (isLoadingGetWhoNeedsData) {
+        return <Preloader className={styles.loading} />;
+    }
 
     return (
         <FormProvider {...form}>
@@ -126,9 +134,11 @@ export const WhoNeedsForm = memo(() => {
                     control={control}
                     render={({ field }) => (
                         <Input
-                            className={styles.container}
+                            className={cn(styles.container, styles.input)}
                             type="number"
-                            label={t("whoNeeds.Сколько волонтерских мест одновременно")}
+                            label={t(
+                                "whoNeeds.Сколько волонтерских мест одновременно",
+                            )}
                             value={String(field.value)}
                             onChange={(e) => field.onChange(Number(e.target.value))}
                         />
@@ -149,7 +159,7 @@ export const WhoNeedsForm = memo(() => {
                     control={control}
                     render={({ field }) => (
                         <Textarea
-                            className={styles.container}
+                            className={cn(styles.container, styles.textarea)}
                             value={field.value}
                             onChange={field.onChange}
                             label={t("whoNeeds.Дополнительная информация")}

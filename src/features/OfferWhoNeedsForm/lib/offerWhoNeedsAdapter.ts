@@ -41,8 +41,6 @@ export const offerWhoNeedsApiAdapter = (
         additionalInfo,
     } = whoNeeds;
 
-    console.log("whoNeedsAdapter", whoNeeds);
-
     return {
         age: { maxAge: ageMax, minAge: ageMin },
         gender,

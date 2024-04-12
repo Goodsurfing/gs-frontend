@@ -6,12 +6,19 @@ export interface GenerateLinkResponse {
     uuid: string;
 }
 
+const createNewFileName = (file: File) => {
+    if (file.type === "image/jpeg") {
+        return file.name.replace(".jpg", ".jpeg");
+    }
+    return file.name;
+};
+
 const uploadFile = async (fileName: string, data: File, token: string) => {
     const sendRequestForGenerateUploadLink = async () => {
+        const newFileName = createNewFileName(data);
         const body = {
-            fileName,
+            fileName: newFileName,
         };
-        console.log(body);
         try {
             const response = await fetch(
                 `${API_MEDIA_BASE_URL}/generate-upload-link`,
@@ -24,7 +31,6 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
                 },
             );
             const dataResult = await response.json();
-            // fix this replaced url in backend
 
             return dataResult;
         } catch (error) {

@@ -10,4 +10,5 @@ export interface ImageInputComponentProps extends InputFileProps {
     setImg: (img: ImageType) => void;
     description?: React.ReactNode;
     extraWrapperClassName?: string;
+    isLoading?: boolean;
 }

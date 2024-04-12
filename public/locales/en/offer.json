@@ -88,6 +88,8 @@
         "Полное описание": "Full description",
         "Не более 3000 знаков": "Not more than 3000 characters",
         "Добавить фото обложки": "Add cover photo",
+        "Изменить": "Change",
+        "Удалить": "Delete",
         "Ширина фотографии для обложки не меньше 1920 пикселей": "Cover photo width should be at least 1920 pixels",
         "Неверный формат файла": "Invalid file format",
         "Добавить фото": "Add photo",

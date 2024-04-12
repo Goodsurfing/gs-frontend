@@ -22,6 +22,7 @@ import {
 import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface AddressFormProps {
     className?: string;
@@ -45,7 +46,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const { t } = useTranslation("offer");
     const { id } = useParams();
     const [updateWhere, { isLoading }] = useUpdateWhereMutation();
-    const [trigger] = useLazyGetWhereQuery();
+    const [trigger, { isLoading: isLoadingGetData }] = useLazyGetWhereQuery();
     const [toast, setToast] = useState<ToastAlert>();
 
     const fetchGeoObject = useCallback(async () => {
@@ -85,6 +86,10 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;
     };
+
+    if (isLoadingGetData) {
+        return <Preloader className={styles.loading} />;
+    }
 
     return (
         <form className={className} onSubmit={onSubmit}>

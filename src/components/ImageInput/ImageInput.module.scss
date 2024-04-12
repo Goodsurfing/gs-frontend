@@ -30,6 +30,8 @@
     object-fit: cover;
 }
 
+
+
 .extraWrapper {
     display: flex;
     flex-direction: column;
@@ -75,10 +77,19 @@
 }
 
 .imageCover {
+    position: relative;
     width: 100%;
     max-height: 270px;
     overflow: hidden;
     object-fit: cover;
+}
+
+.imageLoading {
+    // content: "";
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    opacity: .5;
 }
 
 .containerButtons {

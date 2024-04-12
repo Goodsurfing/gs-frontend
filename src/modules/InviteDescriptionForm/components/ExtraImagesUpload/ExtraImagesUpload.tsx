@@ -12,12 +12,13 @@ interface ExtraImagesUploadProps {
     label: string;
     value: DescriptionImage[];
     onChange: (value: DescriptionImage[]) => void;
+    isLoading?: boolean;
     classNameWrapper?: string;
 }
 
 const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     const {
-        value, onChange, classNameWrapper, label,
+        value, onChange, classNameWrapper, label, isLoading,
     } = props;
     const [inputImg, setInputImg] = useState<ImageType>({ file: null, src: null });
 
@@ -43,6 +44,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                     className={styles.imgItem}
                     key={index}
                     img={image.image.src || ""}
+                    isLoading={isLoading}
                     close={(
                         <ExtraImagesItemButton
                             className={styles.closeBtn}

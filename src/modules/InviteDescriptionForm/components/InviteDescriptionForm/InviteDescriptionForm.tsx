@@ -38,6 +38,7 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -64,19 +65,28 @@ export const InviteDescriptionForm = () => {
     } = form;
     const { id } = useParams();
     const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const { data: getDescription } = useGetDescriptionQuery({ id: id || "" });
+    const { data: getDescription, isLoading: isLoadingGetDescription } = useGetDescriptionQuery({ id: id || "" });
+    const [isLoadingCoverImage, setIsLoadingCoverImage] = useState<boolean>(false);
     const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
 
+    const watchGetImages = useWatch({ control, name: "images" });
+
+    useEffect(() => {
+        console.log(watchGetImages);
+    }, [watchGetImages]);
+
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
         setIsLoadingImages(true);
-        // let imageUpload: string | null = data.coverImage.src;
+        setIsLoadingCoverImage(true);
+
         let imageUpload: GenerateLinkResponse | null = null;
         let extraImages: GenerateLinkResponse[] = [];
         if (!token) {
+            setIsLoadingCoverImage(false);
             setIsLoadingImages(false);
             return;
         }
@@ -89,11 +99,13 @@ export const InviteDescriptionForm = () => {
                     data.coverImage.image.file,
                     token,
                 )) || null;
+                setIsLoadingCoverImage(false);
             } catch {
                 setToast({
                     text: "Произошла ошибка при загрузке файла",
                     type: HintType.Error,
                 });
+                setIsLoadingCoverImage(false);
             }
             if (!imageUpload) {
                 setToast({
@@ -123,11 +135,13 @@ export const InviteDescriptionForm = () => {
                     && result !== undefined,
                 );
                 extraImages = filteredImages;
+                setIsLoadingImages(false);
             } catch {
                 setToast({
                     text: "Произошла ошибка при загрузке файлов",
                     type: HintType.Error,
                 });
+                setIsLoadingImages(false);
             }
         }
         let imageUuid: string | null = data.coverImage.uuid;
@@ -143,6 +157,7 @@ export const InviteDescriptionForm = () => {
         } else {
             newGallery = [...galleryTemp];
         }
+        console.log(newGallery);
         const preparedData = inviteDescriptionApiAdapter(
             data,
             imageUuid || "",
@@ -163,7 +178,10 @@ export const InviteDescriptionForm = () => {
                     type: HintType.Error,
                 });
             })
-            .finally(() => setIsLoadingImages(false));
+            .finally(() => {
+                setIsLoadingCoverImage(false);
+                setIsLoadingImages(false);
+            });
     };
 
     useEffect(() => {
@@ -171,6 +189,10 @@ export const InviteDescriptionForm = () => {
             reset(inviteDescriptionAdapter(getDescription));
         }
     }, [getDescription, reset]);
+
+    if (isLoadingGetDescription) {
+        return <Preloader className={styles.loading} />;
+    }
 
     return (
         <FormProvider {...form}>
@@ -200,6 +222,7 @@ export const InviteDescriptionForm = () => {
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",
                                     )}
+                                    isLoading={isLoadingCoverImage}
                                 />
                                 <p className={styles.error}>
                                     {errors.coverImage
@@ -215,6 +238,7 @@ export const InviteDescriptionForm = () => {
                         control={control}
                         render={({ field }) => (
                             <ExtraImagesUpload
+                                isLoading={isLoadingImages}
                                 label={t("description.Добавить фото")}
                                 value={field.value}
                                 onChange={field.onChange}

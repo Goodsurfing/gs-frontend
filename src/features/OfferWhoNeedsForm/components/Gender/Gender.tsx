@@ -1,5 +1,5 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Gender } from "@/entities/Offer";
@@ -13,12 +13,7 @@ interface GenderProps {
 
 export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     const { value, onChange } = props;
-    // const [gender, setGender] = useState<Gender[]>(value);
     const { t } = useTranslation("offer");
-
-    useEffect(() => {
-        console.log(value);
-    }, [value]);
 
     const handleGenderChange = (selectedGender: Gender) => {
         if (value.includes(selectedGender)) {

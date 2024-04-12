@@ -17,34 +17,33 @@ interface OfferWhenSliderProps {
 
 export const OfferWhenSlider = memo(({ onChange, value }: OfferWhenSliderProps) => {
     const { t } = useTranslation("offer");
-    const marks: Mark[] = [{
-        value: 1,
-        label: t("when.1 день"),
-    }, {
-        value: 7,
-        label: t("when.7 дней"),
-    }, {
-        value: 14,
-        label: t("when.14 дней"),
-    }, {
-        value: 30,
-        label: t("when.1 месяц"),
-    }, {
-        value: 62,
-        label: t("when.2 месяца"),
-    }, {
-        value: 93,
-        label: t("when.3 месяца"),
-    }, {
-        value: 124,
-        label: t("when.4 месяца"),
-    }, {
-        value: 155,
-        label: t("when.5 месяцев"),
-    }, {
-        value: 186,
-        label: t("when.6 месяцев"),
-    }];
+    const marks: Mark[] = [
+        {
+            value: 1,
+            label: t("when.1 день"),
+        },
+        {
+            value: 14,
+            label: t("when.14 дней"),
+        }, {
+            value: 30,
+            label: t("when.1 месяц"),
+        }, {
+            value: 62,
+            label: t("when.2 месяца"),
+        }, {
+            value: 93,
+            label: t("when.3 месяца"),
+        }, {
+            value: 124,
+            label: t("when.4 месяца"),
+        }, {
+            value: 155,
+            label: t("when.5 месяцев"),
+        }, {
+            value: 186,
+            label: t("when.6 месяцев"),
+        }];
 
     const handleStartDateChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (!value || +e.target.value < 1 || +e.target.value >= value[1]) {

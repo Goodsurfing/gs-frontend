@@ -30,6 +30,7 @@ import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -38,7 +39,7 @@ interface OfferWhenFormProps {
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { id } = useParams();
     const [updateWhen, { isLoading }] = useUpdateWhenMutation();
-    const { data: getWhenData } = useGetWhenQuery({ id: id || "" });
+    const { data: getWhenData, isLoading: isLoadingGetWhenData } = useGetWhenQuery({ id: id || "" });
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
@@ -93,6 +94,10 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             reset(offerWhenFormAdapter(getWhenData));
         }
     }, [getWhenData, reset]);
+
+    if (isLoadingGetWhenData) {
+        return <Preloader className={styles.loading} />;
+    }
 
     return (
         <form className={styles.form}>
