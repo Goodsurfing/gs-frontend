@@ -1,5 +1,5 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 import { Gender } from "@/entities/Offer";
@@ -13,16 +13,20 @@ interface GenderProps {
 
 export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     const { value, onChange } = props;
-    const [gender, setGender] = useState<Gender[]>(value);
+    // const [gender, setGender] = useState<Gender[]>(value);
     const { t } = useTranslation("offer");
 
+    useEffect(() => {
+        console.log(value);
+    }, [value]);
+
     const handleGenderChange = (selectedGender: Gender) => {
-        if (gender.includes(selectedGender)) {
-            setGender(gender.filter((g) => g !== selectedGender));
-            onChange(gender.filter((g) => g !== selectedGender));
+        if (value.includes(selectedGender)) {
+            onChange(value.filter((g) => g !== selectedGender));
+            onChange(value.filter((g) => g !== selectedGender));
         } else {
-            setGender([...gender, selectedGender]);
-            onChange([...gender, selectedGender]);
+            onChange([...value, selectedGender]);
+            onChange([...value, selectedGender]);
         }
     };
 
@@ -43,7 +47,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender.includes("female")}
+                        checked={value.includes("female")}
                         onChange={() => handleGenderChange("female")}
                     />
                 )}
@@ -63,7 +67,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender.includes("male")}
+                        checked={value.includes("male")}
                         onChange={() => handleGenderChange("male")}
                     />
                 )}
@@ -83,7 +87,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                 )}
                 control={(
                     <SwitchComponent
-                        checked={gender.includes("other")}
+                        checked={value.includes("other")}
                         onChange={() => handleGenderChange("other")}
                     />
                 )}

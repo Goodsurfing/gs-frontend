@@ -29,11 +29,11 @@ export interface OfferWhoNeeds {
 
 export interface OfferWhoNeedsApi {
     id: string;
-    genders: Gender[];
+    gender: Gender[];
     ageMax: number;
     ageMin: number;
     needAllLanguages: boolean,
-    requiredLanguages: Languages;
+    languages: Languages;
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
     additionalInfo?: string;

@@ -34,17 +34,19 @@ export const offerWhoNeedsApiAdapter = (
         needAllLanguages,
         ageMax,
         ageMin,
-        genders,
+        gender,
         receptionPlace,
-        requiredLanguages,
+        languages,
         volunteerPlaceCount,
         additionalInfo,
     } = whoNeeds;
 
+    console.log("whoNeedsAdapter", whoNeeds);
+
     return {
         age: { maxAge: ageMax, minAge: ageMin },
-        gender: genders,
-        languages: requiredLanguages,
+        gender,
+        languages,
         needAllLanguages,
         receptionPlace,
         volunteerPlaces: volunteerPlaceCount,
