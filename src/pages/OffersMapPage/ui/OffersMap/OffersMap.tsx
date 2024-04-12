@@ -31,9 +31,21 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
     const [loading, setLoading] = useState(false);
     const [activePortal, setActivePortal] = useState(false);
     const testData = [
-        { geometry: [55.788028, 49.121729] },
-        { geometry: [55.78979, 49.117149] },
-        { geometry: [55.788824, 49.114648] },
+        {
+            geometry: [55.788028, 49.121729],
+            image: defaultImage,
+            title: "Тестовая вакансия1",
+        },
+        {
+            geometry: [55.78979, 49.117149],
+            image: defaultImage,
+            title: "Тестовая вакансия2",
+        },
+        {
+            geometry: [55.788824, 49.114648],
+            image: defaultImage,
+            title: "Тестовая вакансия3",
+        },
     ];
 
     const handlePlacemarkClick = (offer) => {
@@ -60,7 +72,15 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                             geometry={test.geometry}
                             properties={{
                                 balloonContent:
-                                    "<div id=\"balloon-offer\" class=\"offer-card\">ПРИВЕТ!!!</div>",
+                                // "<div id=\"balloon-offer\" class=\"offer-card\">
+
+                                    // </div>",
+                                    `<div id="ballon-offer" class="offer-card">
+                                        <div class="${styles.ballonWrapper}">
+                                            <img class="${styles.ballonImage}" src="${test.image}"/>
+                                            <span class="${styles.ballonTitle}">${test.title}</span>
+                                        </div>
+                                    </div>`,
                             }}
                             options={{
                                 hideIconOnBalloonOpen: false,
