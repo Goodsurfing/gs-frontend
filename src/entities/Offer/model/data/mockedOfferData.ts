@@ -1,5 +1,5 @@
 import { Offer } from "../types/offer";
-import defaultImage from "@/shared/assets/images/supportImage.jpg";
+import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 
 export const mockedOffersData: Offer[] = [
     {

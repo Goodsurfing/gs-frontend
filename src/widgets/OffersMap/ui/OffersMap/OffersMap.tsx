@@ -13,10 +13,11 @@ import styles from "./OffersMap.module.scss";
 
 interface OffersMapProps {
     className?: string;
+    classNameMap?: string;
 }
 
 export const OffersMap: FC<OffersMapProps> = (props) => {
-    const { className } = props;
+    const { className, classNameMap } = props;
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
     const testData = [
@@ -51,7 +52,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                     suppressMapOpenBlock: true,
                     restrictMapArea: [[85.23618, -178.9], [-73.87011, 181]],
                 }}
-                className={cn(styles.map, {
+                className={cn(styles.map, classNameMap, {
                     [styles.loading]: !loading,
                 })}
                 setYmap={(ymaps) => setYmap(ymaps)}

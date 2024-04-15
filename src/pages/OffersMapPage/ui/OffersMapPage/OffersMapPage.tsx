@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import { OffersList, OffersMap } from "@/widgets/OffersMap";
+
 import styles from "./OffersMapPage.module.scss";
-import { OffersMap } from "@/widgets/OffersMap";
 
-const OffersMapPage = () => (
-    <MainPageLayout>
-        <div className={styles.wrapper}>
-            <div className={styles.wrapperOffersMap}>
+const OffersMapPage = () => {
+    const [isMapOpened, setMapOpened] = useState<boolean>(true);
 
-                <OffersMap />
+    const handleMapOpen = useCallback(() => {
+        setMapOpened((prev) => !prev);
+    }, []);
+
+    return (
+        <MainPageLayout>
+            <div className={styles.wrapper}>
+                <div className={styles.wrapperOffersMap}>
+                    <OffersList
+                        onChangeMapOpen={handleMapOpen}
+                        mapOpenValue={isMapOpened}
+                        className={styles.offersList}
+                    />
+                    <OffersMap className={styles.offersMap} classNameMap={styles.offersMap} />
+                </div>
             </div>
-        </div>
-    </MainPageLayout>
-);
+        </MainPageLayout>
+    );
+};
 
 export default OffersMapPage;

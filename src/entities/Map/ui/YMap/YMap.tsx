@@ -12,7 +12,7 @@ export interface MapProps {
     className?: string;
     setLoading?: (isLoading: boolean) => void;
     setYmap?: (ymap: YmapType) => void;
-    options: any;
+    options?: any;
     children?: React.ReactNode;
 }
 

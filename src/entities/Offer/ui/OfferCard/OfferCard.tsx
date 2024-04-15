@@ -1,12 +1,16 @@
 import React, { FC, memo } from "react";
 
+import { Link } from "react-router-dom";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 
 import styles from "./OfferCard.module.scss";
+import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferCardProps {
-    image: string;
+    image?: string;
     title: string;
     location: string;
     category: string;
@@ -15,6 +19,7 @@ interface OfferCardProps {
     reviews: string;
     went: string;
     description: string;
+    link?: string;
 }
 
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
@@ -28,12 +33,14 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         rating,
         reviews,
         went,
+        link,
     } = props;
+    const { locale } = useLocale();
 
     return (
-        <div className={styles.wrapper}>
+        <Link to={`/${locale}/${link}` || getMainPageUrl(locale)} className={styles.wrapper}>
             <div className={styles.imageWrapper}>
-                <img src={image} alt="offer-img" />
+                <img src={image || defaultImage} alt="offer-img" />
             </div>
             <div className={styles.content}>
                 <p className={styles.title}>
@@ -71,6 +78,6 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                         : description}
                 </p>
             </div>
-        </div>
+        </Link>
     );
 });

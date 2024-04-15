@@ -1,0 +1,13 @@
+.wrapperOffersMap {
+    display: flex;
+}
+
+.offersList, .offersMap {
+    flex: 1;
+    height: 90vh;
+}
+
+.offersList {
+    // height: 90vh;
+    max-width: 1000px;
+}
