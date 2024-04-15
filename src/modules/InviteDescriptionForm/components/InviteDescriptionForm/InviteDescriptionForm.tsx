@@ -144,6 +144,7 @@ export const InviteDescriptionForm = () => {
                 setIsLoadingImages(false);
             }
         }
+        // toDo: Change this logic in future
         let imageUuid: string | null = data.coverImage.uuid;
         let newGallery: string[] = [];
         const galleryTemp: string[] = data.images.map((image) => image.uuid)
@@ -158,10 +159,15 @@ export const InviteDescriptionForm = () => {
             newGallery = [...galleryTemp];
         }
         console.log(newGallery);
+        const filteredGallery = newGallery.filter((item) => item != null);
+        //
+
         const preparedData = inviteDescriptionApiAdapter(
             data,
             imageUuid || "",
-            newGallery,
+            // "728322bf-6ccf-4749-9b1c-e2389b93a649",
+            // "9727b7be-90da-4b62-9c6c-42a844748258",
+            filteredGallery,
         );
 
         updateDescription({ body: { id, description: preparedData } })
