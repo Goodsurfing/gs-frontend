@@ -1,12 +1,15 @@
 import React from "react";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
-import { OffersMap } from "../OffersMap/OffersMap";
 import styles from "./OffersMapPage.module.scss";
+import { OffersMap } from "@/widgets/OffersMap";
 
 const OffersMapPage = () => (
     <MainPageLayout>
         <div className={styles.wrapper}>
-            <OffersMap />
+            <div className={styles.wrapperOffersMap}>
+
+                <OffersMap />
+            </div>
         </div>
     </MainPageLayout>
 );
