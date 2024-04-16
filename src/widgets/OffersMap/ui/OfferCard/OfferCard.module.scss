@@ -1,0 +1,7 @@
+.wrapper {
+    border-bottom: 1px solid var(--bg-accent);
+}
+
+.wrapper:last-child {
+    border-bottom: none;
+}

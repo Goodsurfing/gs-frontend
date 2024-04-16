@@ -8,6 +8,7 @@ import styles from "./OfferCard.module.scss";
 interface OfferCardProps {
     data: Offer;
     status: "opened" | "closed";
+    className?: string;
 }
 
 export const OfferCard: FC<OfferCardProps> = (props) => {
@@ -19,10 +20,11 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             where: { address },
         },
         status,
+        className,
     } = props;
     return (
         <div
-            className={cn(styles.wrapper, {
+            className={cn(styles.wrapper, className, {
                 [styles.closed]: status === "closed",
             })}
         >

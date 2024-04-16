@@ -22,3 +22,24 @@
         background-color: var(--bg-accent);
     }
 }
+
+.offer {
+    width: 100%;
+    min-width: 520px;
+}
+
+.offer.closed {
+    width: 50%;
+}
+
+.list.closed {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: baseline;
+}
+
+@media (max-width: 1280px) {
+    .offer.closed {
+        width: 100%;
+    }
+}

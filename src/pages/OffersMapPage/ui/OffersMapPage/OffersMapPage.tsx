@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 
+import cn from "classnames";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
-
 import styles from "./OffersMapPage.module.scss";
 
 const OffersMapPage = () => {
@@ -19,9 +19,14 @@ const OffersMapPage = () => {
                     <OffersList
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
-                        className={styles.offersList}
+                        className={cn(styles.offersList, { [styles.closed]: !isMapOpened })}
                     />
-                    <OffersMap className={styles.offersMap} classNameMap={styles.offersMap} />
+                    {isMapOpened && (
+                        <OffersMap
+                            className={styles.offersMap}
+                            classNameMap={styles.offersMap}
+                        />
+                    )}
                 </div>
             </div>
         </MainPageLayout>
