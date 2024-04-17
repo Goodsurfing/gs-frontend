@@ -6,6 +6,7 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
 import { OffersFilterFields, OffersSortFields } from "../../model/types";
 import styles from "./OffersSearchFilter.module.scss";
+import { OffersFilter } from "../OffersFilter/OffersFilter";
 
 export const OffersSearchFilter = () => {
     const defaultSortValues: DefaultValues<OffersSortFields> = {
@@ -37,6 +38,9 @@ export const OffersSearchFilter = () => {
 
     return (
         <div className={styles.wrapperOffersMap}>
+            <FormProvider {...offerFilterForm}>
+                <OffersFilter />
+            </FormProvider>
             <FormProvider {...offerSortForm}>
                 <OffersList
                     onChangeMapOpen={handleMapOpen}
@@ -46,6 +50,7 @@ export const OffersSearchFilter = () => {
                     })}
                 />
             </FormProvider>
+
             {isMapOpened && (
                 <OffersMap
                     className={styles.offersMap}
