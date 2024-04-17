@@ -4,7 +4,7 @@ export {
     useUpdateWhereMutation,
 } from "./api/offerApi";
 
-export type { Offer, OfferSchema } from "./model/types/offer";
+export type { Offer, OfferSchema, SortValue } from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";
 

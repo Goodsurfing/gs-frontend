@@ -29,3 +29,5 @@ export interface OfferSchema {
     data?: Offer;
     form?: Offer;
 }
+
+export type SortValue = "urgency" | "popularity" | "novelty";

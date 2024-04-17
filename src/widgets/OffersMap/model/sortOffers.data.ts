@@ -1,6 +1,6 @@
-type SortValue = "urgency" | "popularity" | "novelty";
+import { SortValue } from "@/entities/Offer";
 
-interface SortOffers {
+export interface SortOffers {
     label: string;
     value: SortValue;
 }
