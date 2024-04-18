@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 
 import { Link } from "react-router-dom";
+import cn from "classnames";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
@@ -20,6 +21,7 @@ interface OfferCardProps {
     went: string;
     description: string;
     link?: string;
+    className?: string;
 }
 
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
@@ -34,11 +36,12 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         reviews,
         went,
         link,
+        className,
     } = props;
     const { locale } = useLocale();
 
     return (
-        <Link to={`/${locale}/${link}` || getMainPageUrl(locale)} className={styles.wrapper}>
+        <Link to={`/${locale}/${link}` || getMainPageUrl(locale)} className={cn(styles.wrapper, className)}>
             <div className={styles.imageWrapper}>
                 <img src={image || defaultImage} alt="offer-img" />
             </div>

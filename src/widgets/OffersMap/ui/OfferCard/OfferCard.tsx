@@ -2,13 +2,13 @@ import cn from "classnames";
 import React, { FC } from "react";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
-
 import styles from "./OfferCard.module.scss";
 
 interface OfferCardProps {
     data: Offer;
     status: "opened" | "closed";
     className?: string;
+    classNameCard?: string
 }
 
 export const OfferCard: FC<OfferCardProps> = (props) => {
@@ -21,6 +21,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
         },
         status,
         className,
+        classNameCard,
     } = props;
     return (
         <div
@@ -39,6 +40,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 reviews="8"
                 went="21"
                 link="offer-personal/1"
+                className={classNameCard}
             />
         </div>
     );

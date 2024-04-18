@@ -28,8 +28,13 @@
     min-width: 520px;
 }
 
+.offerCard {
+    padding: 10px;
+}
+
 .offer.closed {
     width: 50%;
+    border-left: 1px solid var(--bg-accent);
 }
 
 .list.closed {

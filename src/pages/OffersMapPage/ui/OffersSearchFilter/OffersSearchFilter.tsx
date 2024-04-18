@@ -37,26 +37,28 @@ export const OffersSearchFilter = () => {
     }, []);
 
     return (
-        <div className={styles.wrapperOffersMap}>
+        <div className={styles.wrapper}>
             <FormProvider {...offerFilterForm}>
                 <OffersFilter />
             </FormProvider>
-            <FormProvider {...offerSortForm}>
-                <OffersList
-                    onChangeMapOpen={handleMapOpen}
-                    mapOpenValue={isMapOpened}
-                    className={cn(styles.offersList, {
-                        [styles.closed]: !isMapOpened,
-                    })}
-                />
-            </FormProvider>
+            <div className={styles.wrapperOffersMap}>
+                <FormProvider {...offerSortForm}>
+                    <OffersList
+                        onChangeMapOpen={handleMapOpen}
+                        mapOpenValue={isMapOpened}
+                        className={cn(styles.offersList, {
+                            [styles.closed]: !isMapOpened,
+                        })}
+                    />
+                </FormProvider>
 
-            {isMapOpened && (
-                <OffersMap
-                    className={styles.offersMap}
-                    classNameMap={styles.offersMap}
-                />
-            )}
+                {isMapOpened && (
+                    <OffersMap
+                        className={styles.offersMap}
+                        classNameMap={styles.offersMap}
+                    />
+                )}
+            </div>
         </div>
     );
 };

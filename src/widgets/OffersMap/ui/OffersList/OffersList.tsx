@@ -20,6 +20,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
     const renderOfferCards = useMemo(
         () => mockedOffersData.map((offer) => (
             <OfferCard
+                classNameCard={styles.offerCard}
                 className={cn(styles.offer, {
                     [styles.closed]: !mapOpenValue,
                 })}
@@ -40,6 +41,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
             <div
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}
             >
+                {renderOfferCards}
                 {renderOfferCards}
             </div>
             <OfferPagination />
