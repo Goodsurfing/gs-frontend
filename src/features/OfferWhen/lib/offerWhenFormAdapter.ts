@@ -42,10 +42,27 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhenApi): OfferWhenFields =
         applicationEndDate,
         periods,
     } = offerWhen;
-    const offerWhenPeriods: DatePeriods[] = periods?.map((period) => ({
-        start: new Date(period.start.date),
-        end: new Date(period.end.date),
-    })) || [];
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    let offerWhenPeriods: DatePeriods[] = [];
+    if (periods.length > 0) {
+        offerWhenPeriods = periods.map((period) => {
+            if (period.start && period.end) {
+                return ({
+                    start: new Date(period.start.date),
+                    end: new Date(period.end.date),
+                });
+            }
+            return ({
+                start: new Date(),
+                end: new Date(),
+            });
+        });
+    } else {
+        offerWhenPeriods = [{ start: new Date(), end: new Date() }];
+    }
 
     const timeSettings: TimeSettingsControls = {
         isFullYearAcceptable,

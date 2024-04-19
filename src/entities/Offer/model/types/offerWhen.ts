@@ -14,8 +14,8 @@ export interface OfferWhen {
 }
 
 export interface OfferWhenPeriodsApi {
-    start: { date: string };
-    end: { date: string };
+    start?: { date: string };
+    end?: { date: string };
 }
 
 export interface OfferWhenApi {
