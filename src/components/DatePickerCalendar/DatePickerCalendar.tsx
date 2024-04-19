@@ -125,6 +125,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 onChange={onInputValueChange}
                 className={cn(inputClassName, styles.input, {
                     [styles.invalid]: !isValueDate,
+                    [styles.disabled]: inputDisabled,
                 })}
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
