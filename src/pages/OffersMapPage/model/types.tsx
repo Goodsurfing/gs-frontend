@@ -6,8 +6,8 @@ export interface OffersSortFields {
 }
 
 export interface Periods {
-    from: Date | null;
-    to: Date | null;
+    start: Date | undefined;
+    end: Date | undefined;
 }
 
 export interface ParticipationPeriod {

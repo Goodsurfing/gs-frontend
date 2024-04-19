@@ -17,7 +17,7 @@ export const OffersSearchFilter = () => {
         category: [],
         languages: [],
         participationPeriod: { from: 7, to: 186 },
-        periods: { from: null, to: null },
+        periods: { start: undefined, end: undefined },
     };
 
     const offerSortForm = useForm<OffersSortFields>({

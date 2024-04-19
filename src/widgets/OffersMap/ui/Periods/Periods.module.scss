@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+}
+
+.leftInput, .rightInput {
+    border-radius: 0;
+}
+
+.leftInput {
+    border-right: 0;
+}
