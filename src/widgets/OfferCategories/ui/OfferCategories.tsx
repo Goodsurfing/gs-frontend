@@ -1,7 +1,7 @@
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, {
-    FC, ChangeEvent, useEffect, useState,
+    ChangeEvent, FC, useEffect, useState,
 } from "react";
-import { ToggleButtonGroup } from "@mui/material";
 import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
 
 import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
@@ -22,7 +22,9 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
         onChange?.(newValues.filter(Boolean));
     };
 
-    useEffect(() => { console.log(value); }, [value]);
+    useEffect(() => {
+        console.log(value);
+    }, [value]);
 
     return (
         <div className={styles.container}>
@@ -38,14 +40,14 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                 }}
             >
                 {tags.map((item, index) => (
-                    <ToggleButtonComponent
+                    <ToggleButton
                         sx={{
                             maxHeight: "35px",
                             padding: "5px 10px",
-                            border: item.color,
-                            borderRadius: "26px",
-                            borderWidth: "2px",
-                            borderStyle: "solid",
+                            border: `${item.color} !important`,
+                            borderRadius: "26px !important",
+                            borderWidth: "2px !important",
+                            borderStyle: "solid !important",
                             boxSizing: "content-box",
                             textTransform: "none",
                             color: "#212121",
@@ -73,13 +75,19 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                                 borderStyle: "solid",
                                 outline: "none",
                             },
+                            "&.Mui-selected": {
+                                backgroundColor: item.color,
+                            },
+                            "&.Mui-selected:hover": {
+                                backgroundColor: item.color,
+                            },
                         }}
-                        btncolor={item.color}
+                        // btncolor={item.color}
                         key={index}
                         value={item.value}
                     >
                         {item.text}
-                    </ToggleButtonComponent>
+                    </ToggleButton>
                 ))}
             </ToggleButtonGroup>
         </div>
