@@ -24,6 +24,7 @@ import Button from "@/shared/ui/Button/Button";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./InfoHeader.module.scss";
+import { useUser } from "@/entities/Profile";
 
 interface DropdownState {
     isCommunityOpened: boolean;
@@ -39,6 +40,9 @@ const InfoHeader = memo(() => {
 
     const navigate = useNavigate();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { profile } = useUser();
+
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
 
@@ -48,6 +52,8 @@ const InfoHeader = memo(() => {
     });
 
     const isAuth = useAppSelector(getUserAuthData);
+
+    console.log(isAuth);
 
     const dispatch = useAppDispatch();
 

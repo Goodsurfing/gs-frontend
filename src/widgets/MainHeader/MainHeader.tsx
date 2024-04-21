@@ -16,13 +16,17 @@ import { getUserAuthData } from "@/entities/User";
 
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
-import styles from "./MainHeader.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useUser } from "@/entities/Profile";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { profile } = useUser();
 
     const isAuth = useAppSelector(getUserAuthData);
 
