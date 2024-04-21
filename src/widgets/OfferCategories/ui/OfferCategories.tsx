@@ -1,10 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, {
-    ChangeEvent, FC, useEffect, useState,
+    ChangeEvent, FC,
 } from "react";
-import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
-
-import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
 
 import { useTags } from "./OfferCategories.data";
 import styles from "./OfferCategories.module.scss";
@@ -21,10 +18,6 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange?.(newValues.filter(Boolean));
     };
-
-    useEffect(() => {
-        console.log(value);
-    }, [value]);
 
     return (
         <div className={styles.container}>

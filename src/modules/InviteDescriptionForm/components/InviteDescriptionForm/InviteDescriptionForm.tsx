@@ -5,7 +5,6 @@ import {
     FormProvider,
     SubmitHandler,
     useForm,
-    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -71,12 +70,6 @@ export const InviteDescriptionForm = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { token } = useAuth();
     const { t } = useTranslation("offer");
-
-    const watchGetImages = useWatch({ control, name: "images" });
-
-    useEffect(() => {
-        console.log(watchGetImages);
-    }, [watchGetImages]);
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
@@ -158,7 +151,6 @@ export const InviteDescriptionForm = () => {
         } else {
             newGallery = [...galleryTemp];
         }
-        console.log(newGallery);
         const filteredGallery = newGallery.filter((item) => item != null);
         //
 

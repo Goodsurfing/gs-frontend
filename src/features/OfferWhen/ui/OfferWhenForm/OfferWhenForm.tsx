@@ -43,8 +43,6 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
-    useEffect(() => { console.log(getWhenData); }, [getWhenData]);
-
     const initialSliderValue: number[] = [7, 186];
     const initialPeriods: DatePeriods[] = [{ start: new Date(), end: new Date() }];
     const endSettings: EndSettings = {

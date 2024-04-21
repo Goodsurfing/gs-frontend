@@ -42,10 +42,7 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhenApi): OfferWhenFields =
         applicationEndDate,
         periods,
     } = offerWhen;
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1;
-    const year = currentDate.getFullYear();
+
     let offerWhenPeriods: DatePeriods[] = [];
     if (periods.length > 0) {
         offerWhenPeriods = periods.map((period) => {

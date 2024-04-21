@@ -53,8 +53,6 @@ const InfoHeader = memo(() => {
 
     const isAuth = useAppSelector(getUserAuthData);
 
-    console.log(isAuth);
-
     const dispatch = useAppDispatch();
 
     const handleLogout = useCallback(() => {
