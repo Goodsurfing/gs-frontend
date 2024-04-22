@@ -37,7 +37,7 @@ export const YMap: FC<MapProps> = ({
     setYmap,
     options,
     children,
-    locale,
+    locale = "ru",
 }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
     return (

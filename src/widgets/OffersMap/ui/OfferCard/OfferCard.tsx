@@ -15,7 +15,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
         data: {
             description: {
-                title, titleImage, category, shortDescription,
+                title, imageId, categoryIds, shortDescription,
             },
             where: { address },
         },
@@ -32,8 +32,8 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             <OfferCardComponent
                 title={title}
                 description={shortDescription}
-                category={category[0]}
-                image={titleImage}
+                category={categoryIds[0]}
+                image={imageId}
                 location={address || ""}
                 likes="5"
                 rating="10"

@@ -8,7 +8,7 @@ import Popup from "@/components/Popup/Popup";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMainPageUrl, getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -177,7 +177,7 @@ export const MainHeaderNav = () => {
                     </div>
                     <Link
                         className={styles.viewAll}
-                        to={getMainPageUrl(locale)}
+                        to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>

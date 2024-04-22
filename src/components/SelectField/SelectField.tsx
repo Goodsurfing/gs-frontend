@@ -24,7 +24,6 @@ const SelectField: FC<SelectFieldProps> = ({
     label,
     className,
     placeholder = "",
-    className,
     classNameDropdown,
     classNameControl,
     ...rest

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 import { DatePeriods } from "@/features/OfferWhen/model/types/offerWhen";
 
@@ -18,8 +18,6 @@ export const PeriodsFilter: FC<PeriodsFilterProps> = (props) => {
             onChange(periods);
         }
     };
-
-    useEffect(() => { console.log(value); }, [value]);
 
     return (
         <div className={styles.wrapper}>
