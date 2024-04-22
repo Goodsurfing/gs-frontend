@@ -22,6 +22,7 @@ const SelectField: FC<SelectFieldProps> = ({
     img,
     description,
     label,
+    className,
     placeholder = "",
     className,
     classNameDropdown,

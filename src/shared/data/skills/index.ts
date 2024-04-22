@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
     adminIcon,
     artIcon,
@@ -26,64 +27,68 @@ export type SkillsData = {
     icon: string;
 };
 
-export const skillsData: SkillsData[] = [{
-    id: "admin",
-    icon: adminIcon,
-    text: "Администрирование",
-}, {
-    id: "cooking",
-    icon: cookingIcon,
-    text: "Приготовление еды",
-}, {
-    id: "driving",
-    icon: driveIcon,
-    text: "Вождение",
-}, {
-    id: "housing",
-    icon: housekeepingIcon,
-    text: "Домоводство",
-}, {
-    id: "decor",
-    icon: decorIcon,
-    text: "Декорирование",
-}, {
-    id: "tourism",
-    icon: tourismIcon,
-    text: "Туристический гид",
-}, {
-    id: "art",
-    icon: artIcon,
-    text: "Исскуство",
-}, {
-    id: "farming",
-    icon: farmingIcon,
-    text: "Сельское хозяйство",
-}, {
-    id: "social",
-    icon: socialIcon,
-    text: "Социальная работа",
-}, {
-    id: "recording",
-    icon: videoIcon,
-    text: "Работа с видео",
-}, {
-    id: "gardening",
-    icon: gardeningIcon,
-    text: "Садоводство",
-}, {
-    id: "music",
-    icon: musicIcon,
-    text: "Музыка",
-}, {
-    id: "photo",
-    icon: photographyIcon,
-    text: "Фотография",
-}, {
-    id: "night_job",
-    icon: nightJobIcon,
-    text: "Ночная смена",
-}, {
-    id: "sport",
-    icon: sportIcon,
-    text: "Спорт",
-}];
+export const useSkillsData = () => {
+    const { t } = useTranslation("translation");
+    const skillsData: SkillsData[] = [{
+        id: "admin",
+        icon: adminIcon,
+        text: t("skills.admin"),
+    }, {
+        id: "cooking",
+        icon: cookingIcon,
+        text: t("skills.cooking"),
+    }, {
+        id: "driving",
+        icon: driveIcon,
+        text: t("skills.driving"),
+    }, {
+        id: "housing",
+        icon: housekeepingIcon,
+        text: t("skills.housing"),
+    }, {
+        id: "decor",
+        icon: decorIcon,
+        text: t("skills.decor"),
+    }, {
+        id: "tourism",
+        icon: tourismIcon,
+        text: t("skills.tourism"),
+    }, {
+        id: "art",
+        icon: artIcon,
+        text: t("skills.art"),
+    }, {
+        id: "farming",
+        icon: farmingIcon,
+        text: t("skills.farming"),
+    }, {
+        id: "social",
+        icon: socialIcon,
+        text: t("skills.social"),
+    }, {
+        id: "recording",
+        icon: videoIcon,
+        text: t("skills.recording"),
+    }, {
+        id: "gardening",
+        icon: gardeningIcon,
+        text: t("skills.gardening"),
+    }, {
+        id: "music",
+        icon: musicIcon,
+        text: t("skills.music"),
+    }, {
+        id: "photo",
+        icon: photographyIcon,
+        text: t("skills.photo"),
+    }, {
+        id: "night_job",
+        icon: nightJobIcon,
+        text: t("skills.night_job"),
+    }, {
+        id: "sport",
+        icon: sportIcon,
+        text: t("skills.sport"),
+    }];
+    return { skillsData };
+};

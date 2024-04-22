@@ -1,23 +1,24 @@
 import { memo, ChangeEvent } from "react";
 
 import { MenuItem } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 import Input from "@/shared/ui/Input/Input";
-import { WorkingHours } from "../../model/types/offerWhatToDo";
-import { TimeType } from "@/entities/Offer";
+import { TimeType, WorkSettings } from "@/entities/Offer";
 import { convertStringToWord } from "../../model/lib/convertDateStringToWord/convertDateStringToWord";
 import styles from "./WorkingHoursField.module.scss";
 
 interface Props {
-    value: WorkingHours;
-    onChange: (value: WorkingHours) => void;
+    value: WorkSettings;
+    onChange: (value: WorkSettings) => void;
 }
 
-const TimeTypeOptions: TimeType[] = ["week", "day"];
+const TimeTypeOptions: TimeType[] = ["week", "day", "month"];
 
-const DayOffOptions: number[] = [1, 2, 3, 4, 5];
+const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6];
 
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
+    const { t } = useTranslation("offer");
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value) {
             onChange({ ...value, hours: +e.target.value });
@@ -27,13 +28,13 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
         onChange({ ...value, timeType });
     };
     const handleDayOffChange = (newValue: string) => {
-        onChange({ ...value, dayOffs: +newValue });
+        onChange({ ...value, dayOff: +newValue });
     };
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.workingHoursWrapper}>
-                <p className={styles.workingHoursText}>Количество рабочих часов</p>
+                <p className={styles.workingHoursText}>{t("whatToDo.Количество рабочих часов")}</p>
                 <div className={styles.workingHours}>
                     <Input
                         inputClassName={styles.inputClassName}
@@ -53,11 +54,11 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
                 </div>
             </div>
             <div className={styles.dayOffs}>
-                <p className={styles.dayOffsText}>Количество выходных дней в неделю</p>
+                <p className={styles.dayOffsText}>{t("whatToDo.Количество выходных дней в неделю")}</p>
                 <SelectComponent
                     className={styles.dayOffsSelect}
                     onChange={(e) => handleDayOffChange(e.target.value as string)}
-                    value={value.dayOffs}
+                    value={value.dayOff}
                 >
                     {DayOffOptions.map((item) => (
                         <MenuItem key={item} value={item}>{item}</MenuItem>

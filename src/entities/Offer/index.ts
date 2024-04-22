@@ -4,17 +4,22 @@ export {
     useUpdateWhereMutation,
 } from "./api/offerApi";
 
-export type { Offer, OfferSchema, SortValue } from "./model/types/offer";
+export type {
+    Offer, OfferSchema, SortValue, AddressAutoComplete, MyOffers,
+} from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";
 
-export type { OfferWhen, OfferWhenPeriods } from "./model/types/offerWhen";
+export type {
+    OfferWhen, OfferWhenPeriods, OfferWhenApi, OfferWhenPeriodsApi,
+} from "./model/types/offerWhen";
 
 export type {
     Gender,
     Languages,
     ReceptionPlace,
     OfferWhoNeeds,
+    OfferWhoNeedsApi,
 } from "./model/types/offerWhoNeeds";
 
 export type {
@@ -23,12 +28,12 @@ export type {
 } from "./model/types/offerDescription";
 
 export type {
-    DayOff,
     TimeType,
     WorkSettings,
     OfferWhatToDoSkillType,
     OfferWhatToDoSkill,
     OfferWhatToDo,
+    OfferWhatToDoApi,
 } from "./model/types/offerWhatToDo";
 
 export type {
@@ -40,14 +45,16 @@ export type {
     Nutrition,
     Payment,
     OfferConditions,
+    OfferConditionsApi,
 } from "./model/types/offerConditions";
 
 export type {
     ExtraConditions,
     OfferFinishingTouches,
+    OfferFinishingTouchesApi,
 } from "./model/types/offerFinishingTouches";
 
-export type { OfferStatus } from "./model/types/offerStatus";
+export type { OfferStatus, OfferState } from "./model/types/offerStatus";
 
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";

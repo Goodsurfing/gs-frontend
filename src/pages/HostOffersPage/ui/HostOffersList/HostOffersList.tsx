@@ -1,30 +1,43 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { FC, memo, useMemo } from "react";
 
-import { Offer } from "@/entities/Offer";
 import image from "@/shared/assets/images/default-offer-image.svg";
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
+import { MyOffers } from "@/entities/Offer";
 import styles from "./HostOffersList.module.scss";
 
-export const HostOffersList = memo(() => {
-    const [offersData] = useState<Offer[]>(mockedOffersData);
+interface HostOffersListProps {
+    offers?: MyOffers
+}
 
-    const renderMyOffers = useMemo(() => offersData.map((offer) => (
-        <HostOffersPageCard
-            id={offer.id}
-            title={offer.description.title}
-            description={offer.description.shortDescription}
-            image={image}
-            location="Казань, Россия"
-            category="Работа с животными"
-            rating="4.3"
-            likes="10"
-            reviews="14"
-            went="22"
-            key={offer.id}
-        />
-    )), [offersData]);
+export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
+    const { offers } = props;
+    const renderMyOffers = useMemo(() => {
+        if (!offers || !offers.list) {
+            return <span>Нет списка вакансий</span>;
+        }
 
-    return <div className={styles.wrapper}>{renderMyOffers}</div>;
+        return offers.list.map((offer, index) => (
+            <HostOffersPageCard
+                id={offer.id}
+                title={offer.title}
+                description={offer.description}
+                image={image}
+                location={offer.location}
+                category={offer.category}
+                rating={String(offer.rating)}
+                likes={String(offer.likes)}
+                reviews={String(offer.reviews)}
+                went={String(offer.acceptedRequests)}
+                status={offer.status}
+                key={index}
+            />
+        ));
+    }, [offers]);
+
+    return (
+        <div className={styles.wrapper}>
+            {renderMyOffers}
+        </div>
+    );
 });

@@ -1,13 +1,25 @@
-import { OfferOrganization } from "./offerOrganization";
-
 export type Category = string;
 
 export interface OfferDescription {
     title: string;
-    titleImage?: string;
-    category: Category[];
+    imageId?: string;
+    categoryIds: Category[];
     shortDescription: string;
-    longDescription: string;
-    images: string[];
-    organization: OfferOrganization;
+    description: string;
+    galleryIds: string[];
+}
+
+export interface OfferDescriptionApi {
+    id: string;
+    title: string;
+    image: CoverImageType;
+    categoryIds: Category[];
+    shortDescription: string;
+    description: string;
+    gallery: CoverImageType[];
+}
+
+interface CoverImageType {
+    id: string;
+    url: string;
 }

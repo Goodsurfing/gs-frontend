@@ -28,8 +28,8 @@ interface HostInfoCardProps {
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
     const address = "Казань улица Пушкина, 46";
-    const isShowPaymentCard = offer.conditions.payment.contribution
-        || offer.conditions.payment.reward;
+    const isShowPaymentCard = offer.conditions.volunteerContributions
+        || offer.conditions.volunteerRemuneration;
 
     return (
         <div className={cn(className)}>
@@ -46,7 +46,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
             )}
             {isShowPaymentCard && (
                 <OfferPaymentCard
-                    payment={offer.conditions.payment}
+                    conditions={offer.conditions}
                     className={styles.container}
                 />
             )}
@@ -60,11 +60,10 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
             />
             <OfferAddressCard address={address} className={styles.container} />
             <OfferOrganizationCard
-                organization={offer.description.organization}
                 className={styles.container}
             />
             <OfferGalleryCard
-                gallery={offer.description.images}
+                gallery={offer.description.galleryIds}
                 className={styles.container}
             />
             <OfferWhatToDoCard
@@ -72,12 +71,12 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 className={styles.wrapper}
             />
             <OfferTermsCard
-                facilities={offer.conditions.facilities}
+                facilities={offer.conditions.conveniencesIds}
                 className={styles.container}
             />
-            {offer.conditions.extraConditions && (
+            {offer.conditions.additionalConditions && (
                 <OfferExtraConditionsCard
-                    extraConditions={offer.conditions.extraConditions}
+                    extraConditions={offer.conditions.additionalConditions}
                     className={styles.container}
                 />
             )}

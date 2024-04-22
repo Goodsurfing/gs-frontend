@@ -1,10 +1,10 @@
-import { OfferConditions } from "@/entities/Offer";
+import { OfferConditions, OfferConditionsApi } from "@/entities/Offer";
 
 import { OfferConditionsFormFields } from "../model/types/offerConditions";
 
 export const offerConditionsApiAdapter = (
     data: OfferConditionsFormFields,
-): Partial<OfferConditions> => {
+): OfferConditions => {
     const {
         housing,
         nutrition,
@@ -15,13 +15,47 @@ export const offerConditionsApiAdapter = (
         extraConditions,
     } = data;
 
+    const { currency, contribution, reward } = payment;
+
     return {
-        housing: housing.housing,
-        nutrition: nutrition.nutrition,
-        travel: travel.travel,
-        facilities: facilities.facilities,
-        extraConditions,
-        extraFeatures: extraFeatures.extraFeatures,
-        payment,
+        housingIds: housing.housing,
+        foodIds: nutrition.nutrition,
+        paidTravelIds: travel.travel,
+        conveniencesIds: facilities.facilities,
+        additionalConditions: extraConditions,
+        additionalFeaturesIds: extraFeatures.extraFeatures,
+        volunteerContributions: contribution,
+        volunteerRemuneration: reward,
+        currency,
+    };
+};
+
+export const offerConditionsAdapter = (
+    offerConditions: OfferConditionsApi,
+): OfferConditionsFormFields => {
+    const {
+        additionalFeatures,
+        conveniences,
+        currency,
+        volunteerContributions,
+        volunteerRemuneration,
+        additionalConditions,
+        food,
+        housing,
+        paidTravel,
+    } = offerConditions;
+
+    return {
+        extraConditions: additionalConditions || "",
+        extraFeatures: { extraFeatures: additionalFeatures },
+        facilities: { facilities: conveniences },
+        housing: { switchState: true, housing: housing?.[0] },
+        nutrition: { switchState: true, nutrition: food?.[0] },
+        travel: { switchState: true, travel: paidTravel?.[0] },
+        payment: {
+            currency,
+            contribution: volunteerContributions,
+            reward: volunteerRemuneration,
+        },
     };
 };

@@ -1,29 +1,37 @@
 import {
-    useRef, useState, memo, useCallback,
+    memo, useCallback, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import Arrow from "@/shared/ui/Arrow/Arrow";
-import Button from "@/shared/ui/Button/Button";
-
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
-import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-import {
-    getMainPageUrl, getProfileInfoPageUrl, getSignInPageUrl,
-} from "@/shared/config/routes/AppUrls";
-
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import Popup from "@/components/Popup/Popup";
-
-import { getUserAuthData, userActions } from "@/entities/User";
-
-import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
+import { ChangeLanguage } from "@/widgets/ChangeLanguage";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
+
+import { getUserAuthData, userActions } from "@/entities/User";
+
+import {
+    getMainPageUrl,
+    getProfileInfoPageUrl,
+    getSignInPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import Arrow from "@/shared/ui/Arrow/Arrow";
+import Button from "@/shared/ui/Button/Button";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+
 import styles from "./InfoHeader.module.scss";
+import { useUser } from "@/entities/Profile";
+
+interface DropdownState {
+    isCommunityOpened: boolean;
+    isAboutProjectOpened: boolean;
+}
+
+type ButtonNav = "COMMUNITY" | "ABOUT";
 
 const InfoHeader = memo(() => {
     const { t } = useTranslation();
@@ -32,7 +40,16 @@ const InfoHeader = memo(() => {
 
     const navigate = useNavigate();
 
-    const [linkIsOpen, setLinkIsOpen] = useState<boolean>(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { profile } = useUser();
+
+    const communityRef = useRef(null);
+    const aboutProjectRef = useRef(null);
+
+    const [dropdownOpened, setDropdownOpened] = useState<DropdownState>({
+        isCommunityOpened: false,
+        isAboutProjectOpened: false,
+    });
 
     const isAuth = useAppSelector(getUserAuthData);
 
@@ -43,13 +60,33 @@ const InfoHeader = memo(() => {
         navigate(getMainPageUrl(locale));
     }, [dispatch, locale, navigate]);
 
-    const communityRef = useRef(null);
+    useOnClickOutside(
+        communityRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isCommunityOpened: false })),
+    );
+    useOnClickOutside(
+        aboutProjectRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
+    );
 
-    const handleClickOutside = useCallback(() => {
-        setLinkIsOpen(false);
-    }, []);
-
-    useOnClickOutside(communityRef, handleClickOutside);
+    const handleOpenDropdown = (type: ButtonNav) => {
+        setDropdownOpened((prev) => {
+            switch (type) {
+                case "COMMUNITY":
+                    return {
+                        ...prev,
+                        isCommunityOpened: !prev.isCommunityOpened,
+                    };
+                case "ABOUT":
+                    return {
+                        ...prev,
+                        isAboutProjectOpened: !prev.isAboutProjectOpened,
+                    };
+                default:
+                    return prev;
+            }
+        });
+    };
 
     return (
         <>
@@ -58,17 +95,42 @@ const InfoHeader = memo(() => {
             </div>
             <header className={styles.header}>
                 <ChangeLanguage />
-                <div className={styles.link}>
-                    <Link to={getMainPageUrl(locale)}>{t("main.welcome.header.how-it-work")}</Link>
+                <div
+                    ref={aboutProjectRef}
+                    className={styles.link}
+                    onClick={() => handleOpenDropdown("ABOUT")}
+                >
+                    <p>{t("main.welcome.header.about-project.title")}</p>
+                    <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
+                    <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.about-npo")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.our-team")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.how-it-works")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.rules")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.privacy-policy")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.news")}
+                        </Link>
+                    </Popup>
                 </div>
                 <div
                     ref={communityRef}
                     className={styles.link}
-                    onClick={() => setLinkIsOpen(!linkIsOpen)}
+                    onClick={() => handleOpenDropdown("COMMUNITY")}
                 >
                     <p>{t("main.welcome.header.community.title")}</p>
-                    <Arrow isOpen={linkIsOpen} />
-                    <Popup isOpen={linkIsOpen} className={styles.popup}>
+                    <Arrow isOpen={dropdownOpened.isCommunityOpened} />
+                    <Popup isOpen={dropdownOpened.isCommunityOpened} className={styles.popup}>
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
@@ -96,7 +158,7 @@ const InfoHeader = memo(() => {
                     <>
                         <div className={styles.link}>
                             <Link to={getProfileInfoPageUrl(locale)}>
-                                Личный кабинет
+                                {t("main.welcome.header.profile")}
                             </Link>
                         </div>
                         <div className={styles.link}>
@@ -112,22 +174,15 @@ const InfoHeader = memo(() => {
                         </div>
                     </>
                 ) : (
-                    <>
-                        <div className={styles.link}>
-                            <LocaleLink to={getSignInPageUrl(locale)}>
-                                {t("main.welcome.header.sign-in")}
-                            </LocaleLink>
-                        </div>
-                        <div className={styles.link}>
-                            <ButtonLink
-                                className={styles.btn}
-                                type="outlined"
-                                path={getMainPageUrl(locale)}
-                            >
-                                {t("main.welcome.header.sign-up")}
-                            </ButtonLink>
-                        </div>
-                    </>
+                    <div className={styles.link}>
+                        <ButtonLink
+                            className={styles.btn}
+                            type="outlined"
+                            path={getSignInPageUrl(locale)}
+                        >
+                            {t("main.welcome.header.sign-in")}
+                        </ButtonLink>
+                    </div>
                 )}
             </header>
         </>
