@@ -10,6 +10,7 @@ import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 import "./yandex-map-restyle-ballon.scss";
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import styles from "./OffersMap.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OffersMapProps {
     className?: string;
@@ -18,6 +19,7 @@ interface OffersMapProps {
 
 export const OffersMap: FC<OffersMapProps> = (props) => {
     const { className, classNameMap } = props;
+    const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
     const testData = [
@@ -44,6 +46,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <YMap
+                locale={locale}
                 mapState={{
                     center: [50, 50],
                     zoom: 0,
