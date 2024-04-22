@@ -4,13 +4,14 @@ import styles from "./Categories.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
 import { OfferCategories } from "@/widgets/OfferCategories";
+import { BluePoint } from "../BluePoint/BluePoint";
 
 interface CategoriesProps {
     className?: string;
     ref: MutableRefObject<null>
     isOpen: boolean
     onClick: MouseEventHandler<HTMLDivElement>
-    value: string []
+    value: string[]
     onChange: (value: string[]) => void
 }
 
@@ -27,6 +28,7 @@ export const Categories: FC<CategoriesProps> = (props) => {
             >
                 Направление деятельности
                 <Arrow isOpen={isOpen} className={cn(styles.arrow, { [styles.open]: isOpen })} />
+                <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
             </div>
             <Popup
                 className={styles.popup}

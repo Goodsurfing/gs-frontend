@@ -30,7 +30,6 @@ export const OffersFilter = () => {
     });
 
     useOnClickOutside(categoriesRef, () => {
-        console.log("useOnClickOutside");
         setDropdownOpened(
             (prev) => ({ ...prev, isCategoriesOpened: false }),
         );

@@ -1,0 +1,11 @@
+.wrapper {
+    visibility: hidden;
+    width: .5rem;
+    height: .5rem;
+    background-color: var(--text-primary-1);
+    border-radius: 50%;
+}
+
+.wrapper.show {
+    visibility: visible;
+}
