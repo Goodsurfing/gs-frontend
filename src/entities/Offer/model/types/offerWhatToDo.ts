@@ -4,23 +4,33 @@ export type OfferWhatToDoSkillType =
 | "music" | "photo" | "night_job" | "sport";
 
 export type OfferWhatToDoSkill = {
-    id: number;
     text: OfferWhatToDoSkillType;
 };
 
-export type DayOff = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+// export type DayOff = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export type TimeType = "week" | "day";
+export type TimeType = "week" | "day" | "month";
 
 export type WorkSettings = {
     hours: number;
     timeType: TimeType;
-    dayOff: DayOff;
+    dayOff: number;
 };
 
 export interface OfferWhatToDo {
+    skillIds: OfferWhatToDoSkill[];
+    additionalSkills?: string[];
+    hours: number;
+    timeType: TimeType;
+    dayOff: number;
+    externalInfo?: string;
+}
+
+export interface OfferWhatToDoApi {
     skills: OfferWhatToDoSkill[];
     additionalSkills?: string[];
-    workingHours: WorkSettings;
-    extraInfo?: string;
+    hours: number;
+    timeType: TimeType;
+    dayOff: number;
+    externalInfo?: string;
 }

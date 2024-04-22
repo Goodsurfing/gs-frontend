@@ -9,6 +9,7 @@
 
 .form {
     margin-top: 40px;
+    max-width: 1280px;
 }
 
 .btn {
@@ -22,4 +23,8 @@
 
 .dates {
     display: flex;
+}
+
+.loading {
+    max-width: 1280px;
 }

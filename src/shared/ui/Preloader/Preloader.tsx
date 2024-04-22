@@ -6,11 +6,12 @@ import styles from "./Preloader.module.scss";
 
 interface PreloaderProps {
     className?: string;
+    preloader?: string;
 }
 
-const Preloader = ({ className }: PreloaderProps) => (
+const Preloader = ({ className, preloader }: PreloaderProps) => (
     <div className={cn(styles.layout, className)}>
-        <div className={styles.preloader}>
+        <div className={cn(preloader, styles.preloader)}>
             <svg
                 viewBox="0 0 102 102"
                 fill="none"

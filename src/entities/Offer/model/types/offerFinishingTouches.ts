@@ -4,5 +4,16 @@ export interface OfferFinishingTouches {
     extraConditions?: ExtraConditions[];
     welcomeMessage: string;
     rulesInfo: string;
-    faq: string;
+    questionnaireUrl: string;
+    questions: string;
+    onlyVerified: boolean;
+}
+
+export interface OfferFinishingTouchesApi {
+    additionalConditions?: ExtraConditions[];
+    onlyVerified: boolean;
+    helloText: string;
+    roles: string;
+    questionnaireUrl: string;
+    questions: string;
 }

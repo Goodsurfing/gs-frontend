@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { SidebarContentProps } from "@/widgets/Sidebar";
 import aboutMeIcon from "@/shared/assets/icons/navbar/volunteer/about-me.svg";
 import skillsIcon from "@/shared/assets/icons/navbar/volunteer/skills.svg";
@@ -8,45 +9,49 @@ import galleryIcon from "@/shared/assets/icons/navbar/volunteer/photo-gallery.sv
 import blogIcon from "@/shared/assets/icons/navbar/volunteer/blog.svg";
 import articlesIcon from "@/shared/assets/icons/navbar/volunteer/articles.svg";
 
-export const SideMenuData: SidebarContentProps[] = [
-    {
-        text: "Панель управления",
-        icon: aboutMeIcon,
-        route: "/volunteer/volunteer-dashboard",
-    },
-    {
-        text: "Навыки",
-        icon: skillsIcon,
-        route: "/volunteer/skills",
-    },
-    {
-        text: "Отзывы",
-        icon: reviewsIcon,
-        route: "/volunteer/review",
-    },
-    {
-        text: "Заявки",
-        icon: feedbackIcon,
-        route: "/volunteer/notes",
-    },
-    {
-        text: "Подписки",
-        icon: friendsIcon,
-        route: "/volunteer/subscribers",
-    },
-    {
-        text: "Фото и видео",
-        icon: galleryIcon,
-        route: "/volunteer/gallery",
-    },
-    {
-        text: "Написать в блог",
-        icon: blogIcon,
-        route: "/volunteer/create-article",
-    },
-    {
-        text: "Мои статьи",
-        icon: articlesIcon,
-        route: "/volunteer/articles",
-    },
-];
+export const useVolunteerSidebarData = () => {
+    const { t } = useTranslation();
+    const SideMenuData: SidebarContentProps[] = [
+        {
+            text: t("main.sidebar.Панель управления"),
+            icon: aboutMeIcon,
+            route: "/volunteer/volunteer-dashboard",
+        },
+        {
+            text: t("main.sidebar.Навыки"),
+            icon: skillsIcon,
+            route: "/volunteer/skills",
+        },
+        {
+            text: t("main.sidebar.Отзывы"),
+            icon: reviewsIcon,
+            route: "/volunteer/review",
+        },
+        {
+            text: t("main.sidebar.Заявки"),
+            icon: feedbackIcon,
+            route: "/volunteer/notes",
+        },
+        {
+            text: t("main.sidebar.Подписки"),
+            icon: friendsIcon,
+            route: "/volunteer/subscribers",
+        },
+        {
+            text: t("main.sidebar.Фото и видео"),
+            icon: galleryIcon,
+            route: "/volunteer/gallery",
+        },
+        {
+            text: t("main.sidebar.Написать в блог"),
+            icon: blogIcon,
+            route: "/volunteer/create-article",
+        },
+        {
+            text: t("main.sidebar.Мои статьи"),
+            icon: articlesIcon,
+            route: "/volunteer/articles",
+        },
+    ];
+    return { SideMenuData };
+};

@@ -13,7 +13,6 @@ import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
@@ -126,7 +125,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         element: <CategoriesPage />,
-        label: "main",
+        label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
@@ -216,7 +215,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: <OfferDescriptionPage />,
+                element: AuthRoutes.offers_description,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {
@@ -338,7 +337,7 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getProfileInfoPageUrl(locale),
     },
     {
-        label: "profile-info",
+        label: "profile-privacy",
         element: <ProfilePrivacyPage />,
         path: (locale: string) => getProfilePrivacyPageUrl(locale),
     },

@@ -18,7 +18,7 @@ export const OfferDescriptionCard: FC<OfferDescriptionCardProps> = memo(
                 <div className={styles.container}>
                     <h3 className={styles.title}>Описание</h3>
                     <p className={styles.description}>
-                        {description.longDescription}
+                        {description.description}
                     </p>
                 </div>
                 <div className={styles.container}>

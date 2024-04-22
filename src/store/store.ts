@@ -16,6 +16,7 @@ import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
 import { organizationApi } from "./api/organizationApi";
 import { hostApi } from "@/entities/Host";
 import { offerApi } from "@/entities/Offer";
+import { authMiddleware } from "./middlewares/authMiddleware";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -45,6 +46,7 @@ export const setupStore = () => configureStore({
         galleryApi.middleware,
         hostApi.middleware,
         offerApi.middleware,
+        authMiddleware,
     ]),
 });
 

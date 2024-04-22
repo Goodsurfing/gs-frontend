@@ -1,29 +1,36 @@
 import { OfferDescription } from "@/entities/Offer";
+import { OfferDescriptionApi } from "@/entities/Offer/model/types/offerDescription";
 
-import { OfferDescriptionField } from "../model/types/inviteDescription";
+import { DescriptionImage, OfferDescriptionField } from "../model/types/inviteDescription";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
-): Partial<OfferDescription> => ({
+    coverImage: string,
+    extraImages: string[],
+): OfferDescription => ({
     title: data.title,
-    longDescription: data.fullDescription,
+    description: data.fullDescription,
     shortDescription: data.shortDescription,
-    category: data.category,
-    titleImage: data.coverImage,
-    images: data.images,
+    categoryIds: data.category,
+    imageId: coverImage,
+    galleryIds: extraImages,
 });
 
 export const inviteDescriptionAdapter = (
-    data?: OfferDescription,
+    data?: OfferDescriptionApi,
 ): Partial<OfferDescriptionField> => {
     if (!data) return {};
 
+    const imagesTemp: DescriptionImage[] = data.gallery.map(
+        (image): DescriptionImage => ({ uuid: image.id, image: { file: null, src: image.url } }),
+    );
+
     return {
         title: data.title,
-        fullDescription: data.longDescription,
+        fullDescription: data.description,
         shortDescription: data.shortDescription,
-        category: data.category,
-        coverImage: data.titleImage,
-        images: data.images,
+        coverImage: { uuid: data.image.id, image: { file: null, src: data.image.url } },
+        category: data.categoryIds,
+        images: imagesTemp,
     };
 };

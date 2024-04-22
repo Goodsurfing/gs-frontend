@@ -28,6 +28,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     calendarClassName,
     min,
     max,
+    inputDisabled = true,
 }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
@@ -118,11 +119,13 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             ref={elementRef}
         >
             <input
+                disabled={inputDisabled}
                 type="text"
                 value={inputValue}
                 onChange={onInputValueChange}
                 className={cn(inputClassName, styles.input, {
                     [styles.invalid]: !isValueDate,
+                    [styles.disabled]: inputDisabled,
                 })}
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
