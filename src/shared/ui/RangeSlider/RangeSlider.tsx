@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { Slider } from "@mui/material";
 import { SliderProps } from "@mui/material/Slider";
 
-import { formatMonthDay } from "@/shared/utils/date/formatMonthDay";
+import { useFormatMonthDay } from "@/shared/utils/date/formatMonthDay";
 
 export type Mark = {
     value: number;
@@ -29,6 +29,7 @@ export const RangeSlider: FC<RangeSliderProps> = ({
     max = 0,
     ...restRangeSliderProps
 }) => {
+    const formatMonthDay = useFormatMonthDay();
     const handleChange = useCallback(
         (e: Event, newValue: number | number[], activeThumb: number) => {
             if (!Array.isArray(newValue) || !value) {

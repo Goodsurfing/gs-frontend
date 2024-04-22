@@ -7,3 +7,14 @@
     flex-direction: column;
     gap: 30px;
 }
+
+.error {
+    font-size: 0.75rem;
+    color: #d32f2f;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.loading {
+    max-width: 1280px;
+}

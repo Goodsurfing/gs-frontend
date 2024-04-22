@@ -6,8 +6,14 @@
     position: absolute;
 }
 
+
+.input.disabled {
+    pointer-events: none;
+}
+
 .wrapper {
     position: relative;
+    cursor: pointer;
 }
 
 .date {

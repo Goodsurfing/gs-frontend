@@ -1,23 +1,35 @@
-import React, { FC } from "react";
 import { Button } from "@mui/material";
-import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
+import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
+import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMainPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getUserAuthData } from "@/entities/User";
 
-import styles from "./MainHeader.module.scss";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
+import { useAppSelector } from "@/shared/hooks/redux";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useUser } from "@/entities/Profile";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { profile } = useUser();
+
+    const isAuth = useAppSelector(getUserAuthData);
+
     return (
         <>
             <header className={styles.header}>
@@ -32,21 +44,33 @@ const MainHeader: FC = () => {
                 </div>
                 <MainHeaderNav />
                 <div className={styles.right}>
-                    <div className={styles.icons}>
-                        <LocaleLink
-                            to={getMainPageUrl(locale)}
-                            className={styles.icon}
+                    {isAuth ? (
+                        <>
+                            <div className={styles.icons}>
+                                <LocaleLink
+                                    to={getMainPageUrl(locale)}
+                                    className={styles.icon}
+                                >
+                                    <img src={heartIcon} alt="Favorites" />
+                                </LocaleLink>
+                                <LocaleLink
+                                    to={getMainPageUrl(locale)}
+                                    className={styles.icon}
+                                >
+                                    <img src={messagesIcon} alt="Messages" />
+                                </LocaleLink>
+                            </div>
+                            <MainHeaderProfile />
+                        </>
+                    ) : (
+                        <ButtonLink
+                            className={styles.btn}
+                            type="outlined"
+                            path={getSignInPageUrl(locale)}
                         >
-                            <img src={heartIcon} alt="Favorites" />
-                        </LocaleLink>
-                        <LocaleLink
-                            to={getMainPageUrl(locale)}
-                            className={styles.icon}
-                        >
-                            <img src={messagesIcon} alt="Messages" />
-                        </LocaleLink>
-                    </div>
-                    <MainHeaderProfile />
+                            {t("main.welcome.header.sign-in")}
+                        </ButtonLink>
+                    )}
                     <Button className={styles.membership}>Членство</Button>
                 </div>
             </header>

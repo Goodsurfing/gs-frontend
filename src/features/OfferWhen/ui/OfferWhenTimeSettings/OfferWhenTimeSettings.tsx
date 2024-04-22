@@ -4,6 +4,7 @@ import Box from "@mui/material/Box/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography/Typography";
 
+import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 import styles from "./OfferWhenTimeSettings.module.scss";
@@ -15,6 +16,8 @@ interface OfferWhenTimeSettingsProps {
 }
 
 export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSettingsProps) => {
+    const { t } = useTranslation("offer");
+
     const handleFullYearChange = () => {
         onChange({ ...value, isFullYearAcceptable: !value.isFullYearAcceptable });
     };
@@ -22,31 +25,33 @@ export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSet
     const handleEndAccepatableChange = () => {
         onChange({ ...value, isApplicableAtTheEnd: !value.isApplicableAtTheEnd });
     };
+
     return (
         <Box className={styles.wrapper}>
             <FormControlLabel
                 label={(
                     <Typography className={styles.checkbox}>
-                        Принимаю круглый год
+                        {t("when.Принимаю круглый год")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        value={value.isFullYearAcceptable}
-                        onClick={handleFullYearChange}
+                        checked={value.isFullYearAcceptable}
+                        // value={value.isFullYearAcceptable}
+                        onChange={handleFullYearChange}
                     />
                 )}
             />
             <FormControlLabel
                 label={(
                     <Typography className={styles.checkbox}>
-                        Принимаю в последний момент
+                        {t("when.Принимаю в последний момент")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        value={value.isApplicableAtTheEnd}
-                        onClick={handleEndAccepatableChange}
+                        checked={value.isApplicableAtTheEnd}
+                        onChange={handleEndAccepatableChange}
                     />
                 )}
             />

@@ -28,7 +28,6 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
             () => videos.map((video, index) => (
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }} onClick={() => setSelectedVideo(video.url)}>
                     <ReactPlayer
-                        // onClick={() => setSelectedVideo(video.url)}
                         style={{ pointerEvents: "none" }}
                         width="330px"
                         height="193px"

@@ -5,22 +5,26 @@ import ExtraImagesItem from "../ExtraImagesItem/ExtraImagesItem";
 import ExtraImagesItemButton from "../ExtraImagesItem/ExtraImagesItemButton/ExtraImagesItemButton";
 import PictureReview from "../PictureReview/PictureReview";
 import styles from "./ExtraImagesUpload.module.scss";
+import { ImageType } from "@/components/ImageInput/types";
+import { DescriptionImage } from "../../model/types/inviteDescription";
 
 interface ExtraImagesUploadProps {
-    value: string[];
-    onChange: (value: string[]) => void;
+    label: string;
+    value: DescriptionImage[];
+    onChange: (value: DescriptionImage[]) => void;
+    isLoading?: boolean;
     classNameWrapper?: string;
 }
 
 const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
-    const { value, onChange, classNameWrapper } = props;
-    const [inputImg, setInputImg] = useState<string | null>(null);
+    const {
+        value, onChange, classNameWrapper, label, isLoading,
+    } = props;
+    const [inputImg, setInputImg] = useState<ImageType>({ file: null, src: null });
 
-    const handleImageUpload = (img: string | null) => {
-        if (img) {
-            setInputImg(null);
-            onChange([...value, img]);
-        }
+    const handleImageUpload = (img: ImageType) => {
+        setInputImg((prev) => ({ ...prev, file: null, src: null }));
+        onChange([...value, { uuid: null, image: img }]);
     };
 
     const handleCloseBtnClick = (index: number) => {
@@ -30,6 +34,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     return (
         <div className={cn(classNameWrapper, styles.wrapper)}>
             <ExtraImagesItem
+                label={label}
                 img={inputImg}
                 setImg={handleImageUpload}
                 id="asd"
@@ -38,7 +43,8 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 <PictureReview
                     className={styles.imgItem}
                     key={index}
-                    img={image}
+                    img={image.image.src || ""}
+                    isLoading={isLoading}
                     close={(
                         <ExtraImagesItemButton
                             className={styles.closeBtn}

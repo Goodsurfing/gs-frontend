@@ -114,6 +114,18 @@ export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${Rou
 
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
 
+export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
+
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
+export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;
+
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
+
+export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}`;
+
+export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}/:id`;
+
+export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}`;
+
+export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;

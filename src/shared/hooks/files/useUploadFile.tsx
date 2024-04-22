@@ -1,15 +1,23 @@
 import { API_MEDIA_BASE_URL } from "@/shared/constants/api";
 
-interface GenerateLinkResponse {
+export interface GenerateLinkResponse {
     url: string;
     contentType: string;
     uuid: string;
 }
 
-const useUploadFile = async (fileName: string, data: any, token: string) => {
+const createNewFileName = (file: File) => {
+    if (file.type === "image/jpeg") {
+        return file.name.replace(".jpg", ".jpeg");
+    }
+    return file.name;
+};
+
+const uploadFile = async (fileName: string, data: File, token: string) => {
     const sendRequestForGenerateUploadLink = async () => {
+        const newFileName = createNewFileName(data);
         const body = {
-            fileName,
+            fileName: newFileName,
         };
         try {
             const response = await fetch(
@@ -17,24 +25,28 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
                 {
                     method: "POST",
                     headers: new Headers({
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${JSON.parse(token)}`,
                     }),
                     body: JSON.stringify(body),
                 },
             );
             const dataResult = await response.json();
+
             return dataResult;
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(error);
+            return null;
         }
     };
     const uploadFileMutation = async (link: GenerateLinkResponse) => {
+        // const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
+        // const formData = new FormData();
+        // formData.append(`${link.uuid}`, newFile);
         try {
-            await fetch(link!.url, {
+            await fetch(link.url, {
                 method: "PUT",
                 headers: new Headers({
-                    "Content-Type": link!.contentType,
+                    "Content-Type": link.contentType,
                 }),
                 body: data,
             });
@@ -46,12 +58,13 @@ const useUploadFile = async (fileName: string, data: any, token: string) => {
     if (fileName && data) {
         const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
         if (generateLinkResponse) {
-            // eslint-disable-next-line no-console
-            console.log(generateLinkResponse);
-            uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse.uuid;
+            const result = await uploadFileMutation(generateLinkResponse)
+                .then(() => true)
+                .catch(() => false);
+            if (result) return generateLinkResponse;
+            // return generateLinkResponse;
         }
     }
 };
 
-export default useUploadFile;
+export default uploadFile;

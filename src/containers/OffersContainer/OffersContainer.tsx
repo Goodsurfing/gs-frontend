@@ -4,19 +4,24 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import cn from "classnames";
 import Offer from "@/containers/OffersContainer/Offer/Offer";
 import { offersData } from "@/containers/OffersContainer/Offers.data";
 
 import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
-
 import styles from "./OffersContainer.module.scss";
 
-const OffersContainer: FC = () => {
+interface OffersContainerProps {
+    className?: string;
+}
+
+const OffersContainer: FC<OffersContainerProps> = (props) => {
+    const { className } = props;
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(className, styles.wrapper)}>
             <div
                 ref={(node) => setPrevEl(node)}
                 className={styles.arrow}

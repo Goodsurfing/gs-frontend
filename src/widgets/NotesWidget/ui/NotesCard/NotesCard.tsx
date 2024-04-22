@@ -20,7 +20,7 @@ interface NotesCardProps {
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     const {
         offer: {
-            description: { titleImage, title },
+            description: { imageId, title },
             where: { address },
             id,
         },
@@ -51,7 +51,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={titleImage}
+                            icon={imageId}
                             alt="offer title image"
                             className={styles.avatar}
                         />

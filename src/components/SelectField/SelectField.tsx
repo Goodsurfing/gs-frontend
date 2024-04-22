@@ -20,10 +20,11 @@ const SelectField: FC<SelectFieldProps> = ({
     img,
     description,
     label,
+    className,
     placeholder = "",
     ...rest
 }) => (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, className)}>
         <div className={styles.labelWrapper}>
             {img && (
                 <img className={styles.image} src={img} alt={img} />
