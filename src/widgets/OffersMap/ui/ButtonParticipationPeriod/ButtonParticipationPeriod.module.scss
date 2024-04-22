@@ -1,7 +1,6 @@
 .wrapper {
     display: flex;
     align-items: center;
-    position: relative;
 }
 
 .btn {
@@ -12,21 +11,11 @@
     min-width: 260px;
     justify-content: space-between;
     cursor: pointer;
+    position: relative;
 }
 
 .btn.open {
     background-color: var(--bg-accent);
-}
-
-.popup {
-    position: absolute;
-    top: 100%;
-    width: max-content;
-    max-width: 420px;
-    background: var(--text-secondary-1);
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
-    padding: 17px 15px;
-    z-index: 4;
 }
 
 .inner {
@@ -36,7 +25,7 @@
 .bluePoint {
     position: absolute;
     top: 0;
-    left: 105%;
+    left: 110%;
 }
 
 .arrow {

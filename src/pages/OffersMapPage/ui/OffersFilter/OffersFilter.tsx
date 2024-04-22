@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 import { Categories } from "@/widgets/OffersMap";
+import { ButtonParticipationPeriod } from "@/widgets/OffersMap/ui/ButtonParticipationPeriod/ButtonParticipationPeriod";
+import { ParticipationPeriod } from "@/widgets/OffersMap/ui/ParticipationPeriod/ParticipationPeriod";
 import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilter";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
@@ -29,10 +31,13 @@ export const OffersFilter = () => {
         isExtraFiltersOpened: false,
     });
 
+    const watchParticipationPeriod = useWatch({
+        control,
+        name: "participationPeriod",
+    });
+
     useOnClickOutside(categoriesRef, () => {
-        setDropdownOpened(
-            (prev) => ({ ...prev, isCategoriesOpened: false }),
-        );
+        setDropdownOpened((prev) => ({ ...prev, isCategoriesOpened: false }));
     });
     useOnClickOutside(periodsRef, () => setDropdownOpened(
         (prev) => ({ ...prev, isPeriodsOpened: false }),
@@ -67,30 +72,49 @@ export const OffersFilter = () => {
 
     return (
         <div className={styles.wrapper}>
-            <Controller
-                name="periods"
-                control={control}
-                render={({ field }) => (
-                    <PeriodsFilter
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
-                )}
-            />
-            <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                    <Categories
-                        value={field.value}
-                        onChange={field.onChange}
-                        onClick={() => handleOpenDropdown("CATEGORIES")}
-                        isOpen={dropdownOpened.isCategoriesOpened}
-                        ref={categoriesRef}
-                    />
-                )}
-            />
-
+            <div className={styles.top}>
+                <Controller
+                    name="periods"
+                    control={control}
+                    render={({ field }) => (
+                        <PeriodsFilter
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
+                <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                        <Categories
+                            value={field.value}
+                            onChange={field.onChange}
+                            onClick={() => handleOpenDropdown("CATEGORIES")}
+                            isOpen={dropdownOpened.isCategoriesOpened}
+                            ref={categoriesRef}
+                        />
+                    )}
+                />
+                <ButtonParticipationPeriod
+                    value={watchParticipationPeriod}
+                    isOpen={dropdownOpened.isPeriodsOpened}
+                    onClick={() => handleOpenDropdown("PERIODS")}
+                />
+            </div>
+            <div className={styles.bottom}>
+                <Controller
+                    name="participationPeriod"
+                    control={control}
+                    render={({ field }) => (
+                        <ParticipationPeriod
+                            value={field.value}
+                            onChange={field.onChange}
+                            isOpen={dropdownOpened.isPeriodsOpened}
+                        />
+                    )}
+                />
+            </div>
         </div>
     );
 };

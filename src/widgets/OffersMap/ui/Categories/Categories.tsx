@@ -26,9 +26,11 @@ export const Categories: FC<CategoriesProps> = (props) => {
                 ref={ref}
                 className={cn(styles.btn, { [styles.open]: isOpen })}
             >
-                Направление деятельности
+                <div className={styles.inner}>
+                    Направление деятельности
+                    <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
+                </div>
                 <Arrow isOpen={isOpen} className={cn(styles.arrow, { [styles.open]: isOpen })} />
-                <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
             </div>
             <Popup
                 className={styles.popup}

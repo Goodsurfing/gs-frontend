@@ -42,7 +42,6 @@ export const OffersList: FC<OffersListProps> = (props) => {
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}
             >
                 {renderOfferCards}
-                {renderOfferCards}
             </div>
             <OfferPagination />
         </div>
