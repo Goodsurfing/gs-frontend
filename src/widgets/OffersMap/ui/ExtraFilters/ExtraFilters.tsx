@@ -4,6 +4,7 @@ import { Control, Controller, FieldValues } from "react-hook-form";
 import { LanguagesFilter, WithChildren } from "@/features/OffersMap";
 
 import styles from "./ExtraFilters.module.scss";
+import { ProvidedFilter } from "../ProvidedFilter/ProvidedFilter";
 
 interface ExtraFiltersProps {
     isOpen: boolean;
@@ -37,6 +38,16 @@ export const ExtraFilters: FC<ExtraFiltersProps> = (props) => {
                         )}
                     />
                 </div>
+                <Controller
+                    name="provided"
+                    control={control}
+                    render={({ field }) => (
+                        <ProvidedFilter
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
             </div>
         )
     );
