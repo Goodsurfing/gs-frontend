@@ -1,18 +1,22 @@
 import React, { FC } from "react";
 
-import { ParticipationPeriod as ParticipationPeriodType } from "@/pages/OffersMapPage/model/types";
+import { OfferWhenSlider } from "@/features/OfferWhen";
 
 import styles from "./ParticipationPeriod.module.scss";
 
 interface ParticipationPeriodProps {
-    value: ParticipationPeriodType;
-    onChange: (value: ParticipationPeriodType) => void;
+    value: number[];
+    onChange: (value: number[]) => void;
     isOpen: boolean;
 }
 
 export const ParticipationPeriod: FC<ParticipationPeriodProps> = (props) => {
     const { value, onChange, isOpen } = props;
-    return isOpen && (
-        <div className={styles.wrapper}>ParticipationPeriod</div>
+    return (
+        isOpen && (
+            <div className={styles.wrapper}>
+                <OfferWhenSlider value={value} onChange={onChange} className={styles.slider} />
+            </div>
+        )
     );
 };

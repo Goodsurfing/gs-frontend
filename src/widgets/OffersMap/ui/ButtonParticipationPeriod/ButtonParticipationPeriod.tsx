@@ -1,7 +1,6 @@
 import React, { FC, MouseEventHandler } from "react";
 
 import cn from "classnames";
-import { ParticipationPeriod } from "@/pages/OffersMapPage/model/types";
 
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
@@ -11,7 +10,7 @@ import styles from "./ButtonParticipationPeriod.module.scss";
 interface ButtonParticipationPeriodProps {
     onClick: MouseEventHandler<HTMLDivElement>;
     isOpen: boolean;
-    value: ParticipationPeriod;
+    value: number[];
 }
 
 export const ButtonParticipationPeriod: FC<ButtonParticipationPeriodProps> = (
@@ -23,7 +22,7 @@ export const ButtonParticipationPeriod: FC<ButtonParticipationPeriodProps> = (
             <div className={styles.inner}>
                 Срок участия
                 <BluePoint
-                    isShow={!(value.from === 7 && value.to === 186)}
+                    isShow={!(value[0] === 7 && value[1] === 186)}
                     className={styles.bluePoint}
                 />
             </div>

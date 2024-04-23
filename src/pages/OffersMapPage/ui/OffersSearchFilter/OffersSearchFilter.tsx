@@ -16,7 +16,7 @@ export const OffersSearchFilter = () => {
     const defaultFilterValues: DefaultValues<OffersFilterFields> = {
         category: [],
         languages: [],
-        participationPeriod: { from: 7, to: 186 },
+        participationPeriod: [7, 186],
         periods: { start: undefined, end: undefined },
     };
 
