@@ -18,6 +18,8 @@ export const OffersSearchFilter = () => {
         languages: [],
         participationPeriod: [7, 186],
         periods: { start: undefined, end: undefined },
+        withChildren: false,
+        provided: [],
     };
 
     const offerSortForm = useForm<OffersSortFields>({

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
-import { Categories } from "@/widgets/OffersMap";
-import { ButtonParticipationPeriod } from "@/widgets/OffersMap/ui/ButtonParticipationPeriod/ButtonParticipationPeriod";
+import { Categories, ExtraFilters } from "@/widgets/OffersMap";
+import { ButtonFilter } from "@/widgets/OffersMap/ui/ButtonFilter/ButtonFilter";
 import { ParticipationPeriod } from "@/widgets/OffersMap/ui/ParticipationPeriod/ParticipationPeriod";
 import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilter";
 
@@ -51,17 +51,20 @@ export const OffersFilter = () => {
             switch (type) {
                 case "CATEGORIES":
                     return {
-                        ...prev,
+                        isExtraFiltersOpened: false,
+                        isPeriodsOpened: false,
                         isCategoriesOpened: !prev.isCategoriesOpened,
                     };
                 case "PERIODS":
                     return {
-                        ...prev,
+                        isCategoriesOpened: false,
+                        isExtraFiltersOpened: false,
                         isPeriodsOpened: !prev.isPeriodsOpened,
                     };
                 case "EXTRAFILTERS":
                     return {
-                        ...prev,
+                        isCategoriesOpened: false,
+                        isPeriodsOpened: false,
                         isExtraFiltersOpened: !prev.isExtraFiltersOpened,
                     };
                 default:
@@ -96,10 +99,22 @@ export const OffersFilter = () => {
                         />
                     )}
                 />
-                <ButtonParticipationPeriod
-                    value={watchParticipationPeriod}
+                <ButtonFilter
+                    text="Срок участия"
+                    isShowBluePoint={
+                        !(
+                            watchParticipationPeriod[0] === 7
+                            && watchParticipationPeriod[1] === 186
+                        )
+                    }
                     isOpen={dropdownOpened.isPeriodsOpened}
                     onClick={() => handleOpenDropdown("PERIODS")}
+                />
+                <ButtonFilter
+                    text="Доп. фильтры"
+                    isShowBluePoint={false}
+                    isOpen={dropdownOpened.isExtraFiltersOpened}
+                    onClick={() => handleOpenDropdown("EXTRAFILTERS")}
                 />
             </div>
             <div className={styles.bottom}>
@@ -114,6 +129,7 @@ export const OffersFilter = () => {
                         />
                     )}
                 />
+                <ExtraFilters control={control} isOpen={dropdownOpened.isExtraFiltersOpened} />
             </div>
         </div>
     );

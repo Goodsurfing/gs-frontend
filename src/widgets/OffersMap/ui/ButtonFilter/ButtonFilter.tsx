@@ -5,24 +5,27 @@ import cn from "classnames";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { BluePoint } from "../BluePoint/BluePoint";
-import styles from "./ButtonParticipationPeriod.module.scss";
+import styles from "./ButtonFilter.module.scss";
 
-interface ButtonParticipationPeriodProps {
+interface ButtonFilterProps {
     onClick: MouseEventHandler<HTMLDivElement>;
     isOpen: boolean;
-    value: number[];
+    isShowBluePoint: boolean;
+    text?: string;
 }
 
-export const ButtonParticipationPeriod: FC<ButtonParticipationPeriodProps> = (
+export const ButtonFilter: FC<ButtonFilterProps> = (
     props,
 ) => {
-    const { onClick, isOpen, value } = props;
+    const {
+        onClick, isOpen, text, isShowBluePoint,
+    } = props;
     return (
         <div className={cn(styles.btn, { [styles.open]: isOpen })} onClick={onClick}>
             <div className={styles.inner}>
-                Срок участия
+                {text}
                 <BluePoint
-                    isShow={!(value[0] === 7 && value[1] === 186)}
+                    isShow={isShowBluePoint}
                     className={styles.bluePoint}
                 />
             </div>

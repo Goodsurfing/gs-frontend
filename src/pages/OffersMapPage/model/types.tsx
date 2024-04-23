@@ -1,4 +1,4 @@
-import { Languages, SortValue } from "@/entities/Offer";
+import { SortValue } from "@/entities/Offer";
 
 export interface OffersSortFields {
     sortValue: SortValue;
@@ -19,6 +19,6 @@ export interface OffersFilterFields {
     category: Category[];
     participationPeriod: number[];
     withChildren: boolean;
-    languages: Languages;
-    provided: Provided;
+    languages: string[];
+    provided: Provided[];
 }
