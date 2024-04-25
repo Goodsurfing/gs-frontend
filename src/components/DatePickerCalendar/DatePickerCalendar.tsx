@@ -97,7 +97,6 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     };
 
     const onInputClick = () => {
-        console.log("click");
         setShowPopup(true);
     };
 

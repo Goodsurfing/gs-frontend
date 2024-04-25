@@ -3,18 +3,20 @@ import { Control, Controller, FieldValues } from "react-hook-form";
 
 import { LanguagesFilter, WithChildren } from "@/features/OffersMap";
 
-import styles from "./ExtraFilters.module.scss";
 import { ProvidedFilter } from "../ProvidedFilter/ProvidedFilter";
+import styles from "./ExtraFilters.module.scss";
 
 interface ExtraFiltersProps {
     isOpen: boolean;
     control: Control<FieldValues>;
 }
 
-export const ExtraFilters: FC<ExtraFiltersProps> = (props) => {
+export const ExtraFilters: FC<ExtraFiltersProps> = (
+    props: ExtraFiltersProps,
+) => {
     const { isOpen, control } = props;
     return (
-        isOpen && (
+        isOpen ? (
             <div className={styles.wrapper}>
                 <div className={styles.left}>
                     <Controller
@@ -49,6 +51,6 @@ export const ExtraFilters: FC<ExtraFiltersProps> = (props) => {
                     )}
                 />
             </div>
-        )
+        ) : null
     );
 };

@@ -3,7 +3,7 @@ import cn from "classnames";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import styles from "./Periods.module.scss";
 
-type DatesType = { start: Date, end: Date };
+type DatesType = { start: Date | undefined, end: Date | undefined };
 
 interface PeriodsProps {
     min?: Date;

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 import arrowIcon from "@/shared/assets/icons/arrow-right.svg";
 
@@ -12,9 +12,7 @@ interface ButtonCloseProps {
 
 export const ButtonClose: FC<ButtonCloseProps> = (props) => {
     const { value, onChange } = props;
-    useEffect(() => {
-        console.log(value);
-    }, [value]);
+
     return (
         <>
             <span

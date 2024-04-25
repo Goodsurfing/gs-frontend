@@ -1,5 +1,5 @@
 export interface DatePickerCalendarProps {
-    value: Date;
+    value: Date | undefined;
     onChange: (date: Date) => void;
     min?: Date;
     max?: Date;

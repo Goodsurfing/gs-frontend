@@ -10,13 +10,19 @@ interface ParticipationPeriodProps {
     isOpen: boolean;
 }
 
-export const ParticipationPeriod: FC<ParticipationPeriodProps> = (props) => {
+export const ParticipationPeriod: FC<ParticipationPeriodProps> = (
+    props: ParticipationPeriodProps,
+) => {
     const { value, onChange, isOpen } = props;
     return (
-        isOpen && (
+        isOpen ? (
             <div className={styles.wrapper}>
-                <OfferWhenSlider value={value} onChange={onChange} className={styles.slider} />
+                <OfferWhenSlider
+                    value={value}
+                    onChange={onChange}
+                    className={styles.slider}
+                />
             </div>
-        )
+        ) : null
     );
 };

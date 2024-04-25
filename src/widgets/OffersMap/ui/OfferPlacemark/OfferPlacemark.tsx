@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect } from "react";
+import React, { FC, memo } from "react";
 
 import { Placemark } from "@pbe/react-yandex-maps";
 import { useNavigate } from "react-router-dom";
