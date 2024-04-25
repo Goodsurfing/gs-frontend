@@ -4,7 +4,7 @@ import { userActions } from "@/entities/User";
 export const authMiddleware: Middleware = ({ dispatch }) => (next) => (action) => {
     if (action.type.endsWith("/rejected")) {
         const { payload } = action;
-        if (payload.data.code === 401) {
+        if (payload && payload.data && payload.data.code === 401) {
             dispatch(userActions.logout());
         }
     }

@@ -92,6 +92,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     useEffect(() => {
         if (getWhenData) {
             reset(offerWhenFormAdapter(getWhenData));
+        } else {
+            reset();
         }
     }, [getWhenData, reset]);
 
