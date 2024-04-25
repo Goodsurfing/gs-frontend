@@ -1,6 +1,7 @@
-import React, { FC, memo } from "react";
+import React, { FC, memo, useEffect } from "react";
 
 import { Placemark } from "@pbe/react-yandex-maps";
+import { useNavigate } from "react-router-dom";
 import styles from "./OfferPlacemark.module.scss";
 
 interface OfferPlacemarkProps {
@@ -20,20 +21,37 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
             geometry,
             locale,
         } = props;
+
+        const navigate = useNavigate();
+
+        const handleClick = () => {
+            navigate(`/${locale}/offer-personal/${id}`);
+        };
+
+        const handleBalloonOpen = () => {
+            const element = document.getElementById(`ballon-offer-${id}`);
+            if (element) {
+                element.addEventListener("click", handleClick);
+            }
+        };
+
+        const handleBalloonClose = () => {
+            const element = document.getElementById(`ballon-offer-${id}`);
+            if (element) {
+                element.removeEventListener("click", handleClick);
+            }
+        };
+
         return (
             <Placemark
                 key={id}
                 geometry={geometry}
                 properties={{
                     balloonContent:
-                `<div id="ballon-offer" class="offer-card">
+                `<div id="ballon-offer-${id}" class="offer-card">
                     <div class="${styles.ballonWrapper}">
-                        <a href="/${locale}/offer-personal/${id}">
                         <img class="${styles.ballonImage}" src="${image}"/>
-                        </a>
-                        <a href="/${locale}/offer-personal/${id}">
-                            <span class="${styles.ballonTitle}">${title}</span>
-                        </a>
+                        <span class="${styles.ballonTitle}">${title}</span>
                     </div>
                 </div>`,
                 }}
@@ -42,6 +60,8 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
                     hideIconOnBalloonOpen: false,
                     openEmptyBalloon: false,
                 }}
+                onBalloonOpen={handleBalloonOpen}
+                onBalloonClose={handleBalloonClose}
             />
         );
     },

@@ -1,4 +1,6 @@
-import React, { FC, MouseEventHandler, MutableRefObject } from "react";
+import React, {
+    forwardRef, MouseEventHandler,
+} from "react";
 import cn from "classnames";
 import styles from "./Categories.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -8,17 +10,17 @@ import { BluePoint } from "../BluePoint/BluePoint";
 
 interface CategoriesProps {
     className?: string;
-    ref: MutableRefObject<null>
     isOpen: boolean
     onClick: MouseEventHandler<HTMLDivElement>
     value: string[]
     onChange: (value: string[]) => void
 }
 
-export const Categories: FC<CategoriesProps> = (props) => {
+export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, ref) => {
     const {
-        className, ref, isOpen, onClick, value, onChange,
+        className, isOpen, onClick, value, onChange,
     } = props;
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div
@@ -42,4 +44,4 @@ export const Categories: FC<CategoriesProps> = (props) => {
             </Popup>
         </div>
     );
-};
+});

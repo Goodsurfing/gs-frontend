@@ -22,8 +22,6 @@ export const OffersFilter = () => {
     const { control } = useFormContext();
 
     const categoriesRef = useRef(null);
-    const periodsRef = useRef(null);
-    const extraFiltersRef = useRef(null);
 
     const [dropdownOpened, setDropdownOpened] = useState<DropdownState>({
         isCategoriesOpened: false,
@@ -39,12 +37,6 @@ export const OffersFilter = () => {
     useOnClickOutside(categoriesRef, () => {
         setDropdownOpened((prev) => ({ ...prev, isCategoriesOpened: false }));
     });
-    useOnClickOutside(periodsRef, () => setDropdownOpened(
-        (prev) => ({ ...prev, isPeriodsOpened: false }),
-    ));
-    useOnClickOutside(extraFiltersRef, () => setDropdownOpened(
-        (prev) => ({ ...prev, isExtraFiltersOpened: false }),
-    ));
 
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {

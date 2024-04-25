@@ -1,6 +1,8 @@
 .ballonWrapper {
     display: flex;
     gap: 10px;
+    padding-right: 10px;
+    cursor: pointer;
 
     a {
         text-decoration: none;

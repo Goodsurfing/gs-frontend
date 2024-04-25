@@ -61,6 +61,7 @@ const MainHeader: FC = () => {
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile />
+                            <Button className={styles.membership}>Членство</Button>
                         </>
                     ) : (
                         <ButtonLink
@@ -71,7 +72,6 @@ const MainHeader: FC = () => {
                             {t("main.welcome.header.sign-in")}
                         </ButtonLink>
                     )}
-                    <Button className={styles.membership}>Членство</Button>
                 </div>
             </header>
             <div className={styles.mobile}>

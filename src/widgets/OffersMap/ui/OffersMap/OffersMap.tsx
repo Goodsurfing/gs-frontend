@@ -62,12 +62,15 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                 setLoading={setLoading}
                 modules={["geoObject.addon.balloon"]}
             >
-                <Clusterer options={{
-                    zoomMargin: 10,
-                }}
-                >
-                    <OffersPlacemarkList data={testData} />
-                </Clusterer>
+                {ymap && (
+                    <Clusterer
+                        options={{
+                            zoomMargin: 15,
+                        }}
+                    >
+                        <OffersPlacemarkList data={testData} />
+                    </Clusterer>
+                )}
             </YMap>
         </div>
     );
