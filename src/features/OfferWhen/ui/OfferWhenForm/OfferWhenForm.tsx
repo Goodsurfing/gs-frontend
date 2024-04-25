@@ -44,7 +44,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { t } = useTranslation("offer");
 
     const initialSliderValue: number[] = [7, 186];
-    const initialPeriods: DatePeriods[] = [{ start: new Date(), end: new Date() }];
+    const initialPeriods: DatePeriods[] = [{ start: undefined, end: undefined }];
     const endSettings: EndSettings = {
         applicationEndDate: new Date(),
         isWithoutApplicationDate: false,

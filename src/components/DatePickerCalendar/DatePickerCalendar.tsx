@@ -97,6 +97,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     };
 
     const onInputClick = () => {
+        console.log("click");
         setShowPopup(true);
     };
 
@@ -122,6 +123,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 disabled={inputDisabled}
                 type="text"
                 value={inputValue}
+                placeholder="Не задано"
                 onChange={onInputValueChange}
                 className={cn(inputClassName, styles.input, {
                     [styles.invalid]: !isValueDate,
@@ -129,10 +131,10 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 })}
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
-            {showPopup && inputValueDate && (
+            {showPopup && (
                 <CalendarComponent
                     className={cn(calendarClassName, styles.calendar)}
-                    value={inputValueDate}
+                    value={inputValueDate || new Date()}
                     onChange={(date: Date) => {
                         handleChange(date);
                     }}
