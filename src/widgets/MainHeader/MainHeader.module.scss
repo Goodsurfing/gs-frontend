@@ -44,6 +44,12 @@
     }
 }
 
+.icon {
+    svg {
+        fill: var(--bg-accent);
+    }
+}
+
 .membership {
     background-color: var(--button-1);
     color: var(--text-secondary-1);
