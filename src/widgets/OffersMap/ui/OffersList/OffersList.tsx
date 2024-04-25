@@ -2,7 +2,6 @@ import cn from "classnames";
 import React, { FC, useMemo } from "react";
 
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
-
 import { HeaderList } from "../HeaderList/HeaderList";
 import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";

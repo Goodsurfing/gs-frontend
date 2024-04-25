@@ -1,5 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
+import { ReactSVG } from "react-svg";
+import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
 import styles from "./OfferCard.module.scss";
@@ -42,6 +44,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 link="offer-personal/1"
                 className={classNameCard}
             />
+            <ReactSVG src={heartIcon} className={cn(styles.favorite)} />
         </div>
     );
 };
