@@ -118,12 +118,15 @@ const addLeadingZeroIfNeeded = (value: number) => {
     return `0${value}`;
 };
 
-export const getInputValueFromDate = (value: Date) => {
-    const date = addLeadingZeroIfNeeded(value.getDate());
-    const month = addLeadingZeroIfNeeded(value.getMonth() + 1);
-    const year = value.getFullYear();
+export const getInputValueFromDate = (value: Date | undefined) => {
+    if (value) {
+        const date = addLeadingZeroIfNeeded(value.getDate());
+        const month = addLeadingZeroIfNeeded(value.getMonth() + 1);
+        const year = value.getFullYear();
 
-    return `${date}-${month}-${year}`;
+        return `${date}-${month}-${year}`;
+    }
+    return "";
 };
 
 export function isToday(cell: DateCellItem, todayDate: Date) {

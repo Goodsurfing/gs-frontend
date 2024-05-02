@@ -15,6 +15,10 @@
     &:hover {
         background-color: rgb(102, 191, 255);
     }
+
+    svg, img {
+        fill: white;
+    }
 }
 
 .btnCommunity {
@@ -98,4 +102,8 @@
     height: 16px;
     stroke: var(--text-secondary-1);
     fill: none;
+
+    svg {
+        fill: transparent;
+    }
 }

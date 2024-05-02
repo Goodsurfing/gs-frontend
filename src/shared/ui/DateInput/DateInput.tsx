@@ -16,7 +16,7 @@ export interface DateInputProps {
 }
 
 const DateInput = memo(({
-    min, max, className, onDateChange, value = new Date(), inputDisabled,
+    min, max, className, onDateChange, value, inputDisabled,
 }: DateInputProps) => {
     const handleDateChange = useCallback((date: Date) => {
         onDateChange?.(date);

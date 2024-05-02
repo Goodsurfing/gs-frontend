@@ -5,9 +5,12 @@
     gap: 14px;
     align-items: flex-start;
     box-shadow: 0px 5px 20px 0px #2121210D;
+    text-decoration: none;
+    color: inherit;
 }
 
 .imageWrapper {
+    flex-shrink: 0;
     width: 180px;
     height: 140px;
 
