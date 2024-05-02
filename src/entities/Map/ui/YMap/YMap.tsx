@@ -1,17 +1,20 @@
 import React, { FC, useState } from "react";
 import { Map, YMaps } from "@pbe/react-yandex-maps";
 import classNames from "classnames";
+import { YMapsModules } from "@pbe/react-yandex-maps/typings/util/typing";
 import { MapDefaultState, YmapType } from "../../model/types/map";
 
 import styles from "./Ymap.module.scss";
 import { Locale } from "@/entities/Locale";
 
 export interface MapProps {
+    modules?: YMapsModules;
     locale: Locale;
     mapState?: MapDefaultState;
     className?: string;
     setLoading?: (isLoading: boolean) => void;
     setYmap?: (ymap: YmapType) => void;
+    options?: any;
     children?: React.ReactNode;
 }
 
@@ -24,6 +27,7 @@ const languageList: Record<Locale, YandexLanguageType> = {
 };
 
 export const YMap: FC<MapProps> = ({
+    modules,
     mapState = {
         center: [55, 37],
         zoom: 5,
@@ -31,13 +35,15 @@ export const YMap: FC<MapProps> = ({
     className,
     setLoading,
     setYmap,
+    options,
     children,
-    locale,
+    locale = "ru",
 }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
     return (
         <YMaps key={locale} query={{ lang: languageList[locale] }}>
             <Map
+                options={options}
                 onLoad={(ymap) => {
                     setLoading?.(true);
                     setYmap?.(ymap);
@@ -48,6 +54,7 @@ export const YMap: FC<MapProps> = ({
                     zoom: mapState?.zoom,
                 }}
                 className={classNames(styles.map, className)}
+                modules={modules}
             >
                 {mapLoaded && children}
             </Map>

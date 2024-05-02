@@ -2,13 +2,13 @@ import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMainPageUrl, getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -82,10 +82,9 @@ export const MainHeaderNav = () => {
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
-                    <HandySvg
+                    <ReactSVG
                         className={styles.searchIcn}
                         src={searchIcon}
-                        alt="SEARCH ICON"
                     />
                 </IconButton>
                 <Popup
@@ -178,7 +177,7 @@ export const MainHeaderNav = () => {
                     </div>
                     <Link
                         className={styles.viewAll}
-                        to={getMainPageUrl(locale)}
+                        to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>

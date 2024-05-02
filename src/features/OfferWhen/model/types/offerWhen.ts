@@ -4,7 +4,7 @@ export interface CreateOfferWhen {
     data: OfferWhen;
 }
 
-export type DatePeriods = { start: Date, end: Date };
+export type DatePeriods = { start: Date | undefined, end: Date | undefined };
 
 export type TimeSettingsControls = {
     isFullYearAcceptable: boolean;

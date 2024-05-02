@@ -5,7 +5,7 @@ import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
 import { LevelLanguage } from "@/entities/Offer/model/types/offerWhoNeeds";
 
-import { useAllLangs, useLangsLevels } from "./Languages.data";
+import { useAllLangs, useLangsLevels } from "@/shared/data/languages";
 import { LanguagesProps } from "./types";
 import styles from "./Languages.module.scss";
 

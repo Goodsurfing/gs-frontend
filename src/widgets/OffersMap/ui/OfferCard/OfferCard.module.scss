@@ -1,0 +1,19 @@
+.wrapper {
+    border-bottom: 1px solid var(--bg-accent);
+    position: relative;
+}
+
+.closed {
+    opacity: .45;
+}
+
+.favorite {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+
+    svg {
+        fill: var(--bg-primary-1);
+    }
+}

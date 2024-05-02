@@ -67,6 +67,68 @@ export const useAllLangs = (): IOptionLanguage[] => {
     ];
 };
 
+export const useAllLangsFilter = (): IOptionLanguage[] => {
+    const { t } = useTranslation("offer");
+    return [
+        {
+            label: t("whoNeeds.Английский"),
+            value: "english",
+        },
+        {
+            label: t("whoNeeds.Русский"),
+            value: "russian",
+        },
+        {
+            label: t("whoNeeds.Испанский"),
+            value: "german",
+        },
+        {
+            label: t("whoNeeds.Немецкий"),
+            value: "german",
+        },
+        {
+            label: t("whoNeeds.Итальянский"),
+            value: "italian",
+        },
+        {
+            label: t("whoNeeds.Французский"),
+            value: "french",
+        },
+        {
+            label: t("whoNeeds.Португальский"),
+            value: "portuguese",
+        },
+        {
+            label: t("whoNeeds.Турецкий"),
+            value: "turkish",
+        },
+        {
+            label: t("whoNeeds.Арабский"),
+            value: "arabic",
+        },
+        {
+            label: t("whoNeeds.Шведский"),
+            value: "swedish",
+        },
+        {
+            label: t("whoNeeds.Датский"),
+            value: "danish",
+        },
+        {
+            label: t("whoNeeds.Норвежский"),
+            value: "norwegian",
+        },
+        {
+            label: t("whoNeeds.Украинский"),
+            value: "ukrainian",
+        },
+        {
+            label: t("whoNeeds.Иврит"),
+            value: "hebrew",
+        },
+    ];
+};
+
 export const useLangsLevels = (): IOptionLevelLanguage[] => {
     const { t } = useTranslation("offer");
 

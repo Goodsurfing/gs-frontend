@@ -5,6 +5,7 @@ import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography";
 
 import { useTranslation } from "react-i18next";
+import cn from "classnames";
 import { Mark, RangeSlider } from "@/shared/ui/RangeSlider/RangeSlider";
 import Input from "@/shared/ui/Input/Input";
 
@@ -13,9 +14,10 @@ import styles from "./OfferWhenSlider.module.scss";
 interface OfferWhenSliderProps {
     onChange?: (value: number[]) => void;
     value: number[];
+    className?: string;
 }
 
-export const OfferWhenSlider = memo(({ onChange, value }: OfferWhenSliderProps) => {
+export const OfferWhenSlider = memo(({ onChange, value, className }: OfferWhenSliderProps) => {
     const { t } = useTranslation("offer");
     const marks: Mark[] = [
         {
@@ -61,7 +63,7 @@ export const OfferWhenSlider = memo(({ onChange, value }: OfferWhenSliderProps) 
     }, [onChange, value]);
 
     return (
-        <Box className={styles.wrapper}>
+        <Box className={cn(styles.wrapper, className)}>
             <Typography className={styles.helpText}>
                 {t("when.Срок участия (от-до)")}
             </Typography>

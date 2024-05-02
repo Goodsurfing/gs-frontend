@@ -8,7 +8,7 @@ import DateInput from "../DateInput/DateInput";
 
 import styles from "./DateInputs.module.scss";
 
-type DatesType = { start: Date, end: Date };
+type DatesType = { start: Date | undefined, end: Date | undefined };
 
 export interface DateInputsProps {
     close: ReactNode;
@@ -28,7 +28,12 @@ const DateInputs: FC<DateInputsProps> = ({
     max,
 }) => {
     const handleFromDateChange = useCallback((date: Date) => {
-        if (date > value.end) {
+        if (value.end) {
+            if (date > value.end) {
+                onDateChange({ ...value, start: date, end: date });
+                return;
+            }
+        } else {
             onDateChange({ ...value, start: date, end: date });
             return;
         }
@@ -36,8 +41,12 @@ const DateInputs: FC<DateInputsProps> = ({
     }, [onDateChange, value]);
 
     const handleToDateChange = useCallback((date: Date) => {
-        if (date < value.start) return;
-        onDateChange({ ...value, end: date });
+        if (!value.start) {
+            onDateChange({ ...value, start: new Date(), end: date });
+        } else {
+            if (date < value.start) return;
+            onDateChange({ ...value, end: date });
+        }
     }, [onDateChange, value]);
 
     return (

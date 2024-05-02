@@ -1,5 +1,6 @@
 export enum AppRoutes {
     MAIN = "main",
+    OFFERS_MAP = "offers_map",
     MESSENGER = "messenger",
     CATEGORIES = "categories",
     SIGN_UP = "sign_up",
