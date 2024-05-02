@@ -49,6 +49,7 @@ import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 import { VideoPage } from "@/pages/VideoPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
+import { MessengerPage } from "@/pages/MessengerPage";
 
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
@@ -110,6 +111,7 @@ import {
     getJournalPersonalPageUrl,
     getVideoPageUrl,
     getVideoPersonalPageUrl,
+    getMessengerPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -122,6 +124,11 @@ const publicRoutes: RouteType[] = [
         element: <MainPage />,
         label: "main",
         path: (locale: string) => getMainPageUrl(locale),
+    },
+    {
+        element: <MessengerPage />,
+        label: "messenger",
+        path: (locale: string) => getMessengerPageUrl(locale),
     },
     {
         element: <CategoriesPage />,
