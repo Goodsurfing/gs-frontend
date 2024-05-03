@@ -39,12 +39,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
         >
             <Avatar icon={avatar} text={name} size="MEDIUM" />
             <div className={styles.content}>
-                <div className={styles.nameLast}>
+                <div className={styles.nameDate}>
                     <span className={styles.name}>{name}</span>
-                    <span className={styles.lastMessage}>{lastMessage}</span>
-                </div>
-                <div className={styles.dateNewMess}>
                     <span className={styles.date}>{date}</span>
+                </div>
+                <div className={styles.dateNewLastMess}>
+                    <div className={styles.lastMessage}>{lastMessage}</div>
                     <div className={styles.newMessages}>{newMessages}</div>
                 </div>
             </div>

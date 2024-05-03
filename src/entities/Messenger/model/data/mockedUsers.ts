@@ -8,7 +8,7 @@ export const mockedUsers: UserType[] = [
         name: "Николай Николаев",
         date: "14.08.2024",
         lastMessage: "Есть какие-то необычные вещи, которые всегда берешь с собой?",
-        newMessages: 3,
+        newMessages: 0,
         state: "new",
     },
     {

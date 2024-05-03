@@ -1,3 +1,9 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .title {
     font-weight: 400;
 }
@@ -7,8 +13,19 @@
     margin-left: 50px;
     margin-right: 50px;
     margin-bottom: 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .userList {
-    height: 90vh;
+    height: 100%;
+    flex-grow: 1;
 }

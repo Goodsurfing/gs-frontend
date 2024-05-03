@@ -1,5 +1,6 @@
 .wrapper {
     display: flex;
+    flex-shrink: 0;
 }
 
 .SMALL, .MEDIUM, .LARGE, .DEFAULT {
@@ -12,6 +13,7 @@
     height: 100%;
     background-color: var(--bg-accent);
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .DEFAULT {

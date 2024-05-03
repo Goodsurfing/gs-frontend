@@ -21,31 +21,56 @@
 
 .content {
     display: flex;
+    flex-direction: column;
     gap: 8px;
+    width: 100%;
 }
 
-.nameLast {
-    display: flex;
-    flex-direction: column;
+.nameDate {
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 10px;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .name {
     font-size: 0.875rem;
+    width: 100%;
+}
+
+.date {
+    font-size: 0.75rem;
+    color: var(--text-caption);
+}
+
+.newMessages {
+    width: 16px;
+    height: 16px;
+    background-color: var(--error-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    font-weight: 800;
+    font-size: 0.625rem;
+    color: var(--text-secondary-1);
+    border-radius: 50%;
 }
 
 .lastMessage {
     font-size: 0.75rem;
     color: var(--text-caption);
+    width: 100%;
 }
 
-.dateNewMess {
-    display: flex;
-    flex-direction: column;
+.name, .lastMessage, .dateNewLastMess, .nameDate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dateNewLastMess {
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 10px;
 }
 
