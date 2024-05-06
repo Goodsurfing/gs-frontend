@@ -32,9 +32,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
         <div
             className={cn(
                 styles.wrapper,
-                className,
                 { [styles.newMess]: newMessages !== 0 },
                 { [styles.active]: id === userId },
+                className,
             )}
         >
             <Avatar icon={avatar} text={name} size="MEDIUM" />

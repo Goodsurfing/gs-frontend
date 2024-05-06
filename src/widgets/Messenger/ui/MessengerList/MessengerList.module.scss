@@ -1,11 +1,19 @@
+.layout {
+    display: flex;
+    max-width: 980px;
+    min-width: 200px;
+    max-height: calc(100vh - 180px);
+}
+
 .wrapper {
     display: flex;
+    position: relative;
     flex-direction: column;
     border: 1px solid var(--bg-accent);
-    max-width: 1280px;
-    min-width: 200px;
-    resize: horizontal;
-    overflow-y: scroll;
+    width: 100%;
+    
+    // resize: horizontal;
+    overflow-y: auto;
     overflow-x: hidden;
 
     &::-webkit-scrollbar {
@@ -15,9 +23,18 @@
     &::-webkit-scrollbar-track {
         background: var(--color-white);
     }
-    
+
     &::-webkit-scrollbar-thumb {
         border-radius: var(--radius);
         background-color: var(--bg-accent);
     }
+}
+
+.rightBorder {
+    position: sticky;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    cursor: ew-resize;
 }
