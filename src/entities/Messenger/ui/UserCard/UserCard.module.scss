@@ -9,6 +9,8 @@
     padding-right: 14px;
     border-bottom: 1px solid var(--bg-accent);
     width: 100%;
+    text-decoration: none;
+    color: inherit;
 }
 
 .wrapper.newMess {
@@ -17,6 +19,11 @@
 
 .wrapper.active {
     background-color: var(--accent-color);
+    color: var(--text-secondary-1);
+
+    .lastMessage, .date {
+        color: var(--text-secondary-1);
+    }
 }
 
 .content {

@@ -1,12 +1,14 @@
 import cn from "classnames";
 import React, { FC } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import { UserType } from "../../model/types/messenger";
 import styles from "./UserCard.module.scss";
 import { getOfferStateColor } from "@/shared/lib/offerState";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface UserCardProps {
     data: UserType;
@@ -27,12 +29,15 @@ export const UserCard: FC<UserCardProps> = (props) => {
         className,
     } = props;
     const { id } = useParams();
+    const { locale } = useLocale();
+    const isHaveNewMessages = newMessages !== 0;
 
     return (
-        <div
+        <Link
+            to={`${getMessengerPageUrl(locale)}/${userId}`}
             className={cn(
                 styles.wrapper,
-                { [styles.newMess]: newMessages !== 0 },
+                { [styles.newMess]: isHaveNewMessages },
                 { [styles.active]: id === userId },
                 className,
             )}
@@ -44,11 +49,11 @@ export const UserCard: FC<UserCardProps> = (props) => {
                     <span className={styles.date}>{date}</span>
                 </div>
                 <div className={styles.dateNewLastMess}>
-                    <div className={styles.lastMessage}>{lastMessage}</div>
-                    <div className={styles.newMessages}>{newMessages}</div>
+                    <span className={styles.lastMessage}>{lastMessage}</span>
+                    {isHaveNewMessages && <div className={styles.newMessages}>{newMessages}</div>}
                 </div>
             </div>
             <div style={{ backgroundColor: getOfferStateColor(state) }} className={styles.state} />
-        </div>
+        </Link>
     );
 };

@@ -59,14 +59,6 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
 
             >
                 {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
-                {renderUserCard}
             </div>
             <div
                 className={styles.rightBorder}
