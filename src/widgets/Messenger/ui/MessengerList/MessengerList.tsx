@@ -1,10 +1,9 @@
 import cn from "classnames";
 import React, {
-    FC, useMemo, useRef, useState,
+    FC, useCallback, useMemo, useRef, useState,
 } from "react";
 
-import { mockedUsers } from "@/entities/Messenger/model/data/mockedUsers";
-import { UserCard } from "@/entities/Messenger/ui/UserCard/UserCard";
+import { mockedUsers, UserCard } from "@/entities/Messenger";
 
 import styles from "./MessengerList.module.scss";
 
@@ -18,23 +17,23 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     const [width, setWidth] = useState("980px");
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = useCallback((e: MouseEvent) => {
         if (wrapperRef.current) {
             const newWidth = e.clientX - wrapperRef.current.getBoundingClientRect().left;
             setWidth(`${newWidth}px`);
         }
-    };
+    }, []);
 
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
-    };
+    }, [handleMouseMove]);
 
-    const handleMouseDown = (e: React.MouseEvent) => {
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
-    };
+    }, [handleMouseMove, handleMouseUp]);
 
     const renderUserCard = useMemo(
         () => mockedUsers.map(

@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 
+import { ReactSVG } from "react-svg";
 import starIcon from "@/shared/assets/icons/star.svg";
 
 import styles from "./Offer.module.scss";
@@ -32,7 +33,7 @@ const Offer: FC<OfferProps> = ({
         </div>
         <div className={styles.info}>
             <div className={styles.rating}>
-                <img src={starIcon} alt="Rating" />
+                <ReactSVG src={starIcon} />
                 <span>{rating}</span>
             </div>
             <div className={styles.reviews}>
