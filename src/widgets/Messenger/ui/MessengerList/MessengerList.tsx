@@ -6,6 +6,7 @@ import React, {
 import { mockedUsers, UserCard } from "@/entities/Messenger";
 
 import styles from "./MessengerList.module.scss";
+import { ListFilter } from "../ListFilter/ListFilter";
 
 interface MessengerListProps {
     className?: string;
@@ -48,21 +49,27 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     );
 
     return (
-        <div
-            className={cn(styles.layout, className)}
-            style={{ width }}
-            ref={wrapperRef}
-        >
-            <div
-                className={cn(styles.wrapper)}
-
-            >
-                {renderUserCard}
+        <div className={styles.list} style={{ width }}>
+            <div className={styles.topList}>
+                <ListFilter />
             </div>
+
             <div
-                className={styles.rightBorder}
-                onMouseDown={handleMouseDown}
-            />
+                className={cn(styles.layout, className)}
+                style={{ width }}
+                ref={wrapperRef}
+            >
+                <div
+                    className={cn(styles.wrapper)}
+
+                >
+                    {renderUserCard}
+                </div>
+                <div
+                    className={styles.rightBorder}
+                    onMouseDown={handleMouseDown}
+                />
+            </div>
         </div>
     );
 };

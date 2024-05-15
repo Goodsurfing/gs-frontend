@@ -1,3 +1,14 @@
+.list {
+    max-width: 980px;
+    min-width: 200px;
+}
+
+.topList {
+    border: 1px solid var(--bg-accent);
+    padding: 9px 8px;
+    width: calc(100% - 8px);
+}
+
 .layout {
     display: flex;
     max-width: 980px;
@@ -36,4 +47,5 @@
     bottom: 0;
     width: 8px;
     cursor: ew-resize;
+    flex-shrink: 0;
 }
