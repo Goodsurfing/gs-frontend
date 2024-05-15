@@ -49,27 +49,25 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     );
 
     return (
-        <div className={styles.list} style={{ width }}>
-            <div className={styles.topList}>
-                <ListFilter />
-            </div>
-
-            <div
-                className={cn(styles.layout, className)}
-                style={{ width }}
-                ref={wrapperRef}
-            >
+        <div
+            className={cn(styles.layout, className)}
+            style={{ width }}
+            ref={wrapperRef}
+        >
+            <div style={{ width: "100%" }}>
+                <div className={styles.topList}>
+                    <ListFilter />
+                </div>
                 <div
                     className={cn(styles.wrapper)}
-
                 >
                     {renderUserCard}
                 </div>
-                <div
-                    className={styles.rightBorder}
-                    onMouseDown={handleMouseDown}
-                />
             </div>
+            <div
+                className={styles.rightBorder}
+                onMouseDown={handleMouseDown}
+            />
         </div>
     );
 };
