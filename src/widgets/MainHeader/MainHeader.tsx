@@ -12,7 +12,7 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
-import { getMainPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMainPageUrl, getMessengerPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { getUserAuthData } from "@/entities/User";
 
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
@@ -55,7 +55,7 @@ const MainHeader: FC = () => {
                                     <ReactSVG src={heartIcon} />
                                 </LocaleLink>
                                 <LocaleLink
-                                    to={getMainPageUrl(locale)}
+                                    to={getMessengerPageUrl(locale)}
                                     className={styles.icon}
                                 >
                                     <ReactSVG src={messagesIcon} />

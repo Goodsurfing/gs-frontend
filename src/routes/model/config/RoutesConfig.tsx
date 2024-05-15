@@ -52,6 +52,7 @@ import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 
 import { OffersMapPage } from "@/pages/OffersMapPage";
+import { MessengerPage } from "@/pages/MessengerPage";
 
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
@@ -114,6 +115,7 @@ import {
     getVideoPageUrl,
     getVideoPersonalPageUrl,
     getOffersMapPageUrl,
+    getMessengerPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -130,6 +132,11 @@ const publicRoutes: RouteType[] = [
         element: <OffersMapPage />,
         label: "offers-map",
         path: (locale: string) => getOffersMapPageUrl(locale),
+    },
+    {
+        element: <MessengerPage />,
+        label: "messenger",
+        path: (locale: string) => getMessengerPageUrl(locale),
     },
     {
         element: <CategoriesPage />,

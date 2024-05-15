@@ -5,9 +5,7 @@ import { OffersSearchFilter } from "../OffersSearchFilter/OffersSearchFilter";
 
 const OffersMapPage = () => (
     <MainPageLayout>
-        <div>
-            <OffersSearchFilter />
-        </div>
+        <OffersSearchFilter />
     </MainPageLayout>
 );
 
