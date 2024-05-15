@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { HandySvg } from "@handy-ones/handy-svg";
 import {
     IconButton, InputBase, Paper, SxProps, Theme,
 } from "@mui/material";
+import { ReactSVG } from "react-svg";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 
 import styles from "./SearchInput.module.scss";
@@ -17,7 +17,7 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
         <Paper
             component="form"
             sx={{
-                p: "2px 4px",
+                p: "4px 6px",
                 display: "flex",
                 alignItems: "center",
                 minwidth: 150,
@@ -30,7 +30,7 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
         >
             <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Поиск" />
             <IconButton aria-label="menu" className={styles.searchIcon}>
-                <HandySvg src={searchIcon} className={styles.searchIcon} />
+                <ReactSVG src={searchIcon} className={styles.searchIconSVG} />
             </IconButton>
         </Paper>
     );
