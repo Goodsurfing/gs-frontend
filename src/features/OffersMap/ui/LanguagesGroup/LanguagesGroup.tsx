@@ -35,10 +35,8 @@ export const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                             maxHeight: "35px",
                             padding: "5px 10px",
                             backgroundColor: "var(--bg-field)",
-                            border: "var(--bg-field) !important",
+                            border: "none !important",
                             borderRadius: "26px !important",
-                            borderWidth: "2px !important",
-                            borderStyle: "solid !important",
                             boxSizing: "content-box",
                             textTransform: "none",
                             color: "#212121",
@@ -69,6 +67,7 @@ export const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                             "&.Mui-selected": {
                                 backgroundColor: "var(--accent-color)",
                                 color: "var(--bg-primary-1)",
+                                border: "none !important",
                             },
                             "&.Mui-selected:hover": {
                                 backgroundColor: "var(--accent-color)",

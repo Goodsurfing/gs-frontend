@@ -80,7 +80,7 @@ export const useAllLangsFilter = (): IOptionLanguage[] => {
         },
         {
             label: t("whoNeeds.Испанский"),
-            value: "german",
+            value: "spanish",
         },
         {
             label: t("whoNeeds.Немецкий"),
