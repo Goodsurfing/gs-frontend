@@ -14,6 +14,7 @@ export interface UserType {
 
 export interface UserChatType {
     id: string;
+    name: string;
     avatar: string;
     description: string;
     address: string;

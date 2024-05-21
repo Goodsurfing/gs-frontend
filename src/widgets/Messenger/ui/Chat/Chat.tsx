@@ -35,7 +35,7 @@ export const Chat: FC<ChatProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.topTab}>
-                {}
+                <span className={styles.userName}>{name}</span>
             </div>
             Chat
             {id}
