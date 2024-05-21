@@ -24,11 +24,15 @@
     height: 100%;
     max-height: calc(100vh - 180px);
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     flex-grow: 1;
 }
 
 .userList {
     height: 100%;
     flex-grow: 1;
+}
+
+.chat {
+    width: 100%;
 }

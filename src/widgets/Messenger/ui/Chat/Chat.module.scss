@@ -1,0 +1,19 @@
+.wrapper {
+    background-color: var(--field);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        color: var(--text-caption);
+    }
+}
+
+.chatIcon svg {
+    stroke: var(--text-caption);
+    font-size: rem;
+}
