@@ -1,5 +1,6 @@
 .wrapper {
     background-color: var(--field);
+    display: flex;
 }
 
 .empty {
@@ -27,7 +28,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 0 16px;
+    padding: 16px;
     justify-content: space-between;
     height: 100%;
     max-height: 60px;

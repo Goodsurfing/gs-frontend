@@ -3,7 +3,7 @@ import cn from "classnames";
 import { ReactSVG } from "react-svg";
 import styles from "./Chat.module.scss";
 import chatIcon from "@/shared/assets/icons/chat.svg";
-import { Message, UserChatType } from "@/entities/Messenger";
+import { Message, UserChatType, UserInfoCard } from "@/entities/Messenger";
 import { UserSettings } from "@/features/Messenger";
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 
@@ -17,12 +17,7 @@ interface ChatProps {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, className, isEmpty, messages, user: {
-            name,
-            description, address, skills,
-            languages, cases,
-            arrivalDate, expirationDate, avatar,
-        },
+        id, className, isEmpty, messages, user,
     } = props;
 
     const [isInfoOpened, setInfoOpened] = useState<boolean>(true);
@@ -38,19 +33,22 @@ export const Chat: FC<ChatProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div className={styles.topTab}>
-                <span className={styles.userName}>{name}</span>
-                <div className={styles.settingsInfo}>
-                    <UserSettings />
-                    <ReactSVG
-                        src={arrowIcon}
-                        className={styles.openInfo}
-                        onClick={() => setInfoOpened((prev) => !prev)}
-                    />
+            <div style={{ flexGrow: 1 }}>
+                <div className={styles.topTab}>
+                    <span className={styles.userName}>{user.name}</span>
+                    <div className={styles.settingsInfo}>
+                        <UserSettings />
+                        <ReactSVG
+                            src={arrowIcon}
+                            className={styles.openInfo}
+                            onClick={() => setInfoOpened((prev) => !prev)}
+                        />
+                    </div>
                 </div>
+                Chat
+                {id}
             </div>
-            Chat
-            {id}
+            {isInfoOpened && <UserInfoCard user={user} />}
         </div>
     );
 };

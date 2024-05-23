@@ -18,7 +18,6 @@ const MessengerPage = () => (
                     messages={mockedMessages}
                     user={mockedChatUser}
                 />
-                <div style={{ backgroundColor: "white", width: "200px", height: "100%" }} />
             </div>
         </div>
     </div>
