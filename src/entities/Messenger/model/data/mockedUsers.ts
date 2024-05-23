@@ -1,4 +1,4 @@
-import { UserChatType, UserType } from "../types/messenger";
+import { Message, UserChatType, UserType } from "../types/messenger";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 
 export const mockedUsers: UserType[] = [
@@ -43,3 +43,10 @@ export const mockedChatUser: UserChatType = {
     languages: [{ language: "russian", level: "B2" }],
     skills: ["art", "admin", "sport"],
 };
+
+export const mockedMessages: Message[] = [
+    {
+        date: new Date(),
+        content: "Привет!",
+    },
+];

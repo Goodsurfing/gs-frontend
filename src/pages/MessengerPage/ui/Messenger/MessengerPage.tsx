@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./MessengerPage.module.scss";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Chat, MessengerList } from "@/widgets/Messenger";
+import { mockedChatUser, mockedMessages } from "@/entities/Messenger";
 
 const MessengerPage = () => (
     <div className={styles.layout}>
@@ -10,7 +11,14 @@ const MessengerPage = () => (
             <h2 className={styles.title}>Сообщения</h2>
             <div className={styles.content}>
                 <MessengerList className={styles.userList} />
-                <Chat id="1" isEmpty={false} className={styles.chat} />
+                <Chat
+                    id="1"
+                    isEmpty={false}
+                    className={styles.chat}
+                    messages={mockedMessages}
+                    user={mockedChatUser}
+                />
+                <div style={{ backgroundColor: "white", width: "200px", height: "100%" }} />
             </div>
         </div>
     </div>

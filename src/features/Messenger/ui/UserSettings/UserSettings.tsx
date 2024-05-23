@@ -1,24 +1,25 @@
-import { IconButton } from "@mui/material";
-import cn from "classnames";
 import React, {
     FC, useCallback, useMemo, useRef, useState,
 } from "react";
+import { IconButton } from "@mui/material";
+import cn from "classnames";
 import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { FilterValue, filterData } from "../../data/filter.data";
-import styles from "./UserListFilter.module.scss";
+import styles from "./UserSettings.module.scss";
+import { ValueSettings, userSettingsData } from "../../data/userSettings.data";
 
-interface UserListFilterProps {
-    onChange?: (value: any) => void;
+interface UserSettingsProps {
+    onChange?: (value: any) => void
 }
 
-export const UserListFilter: FC<UserListFilterProps> = (props) => {
+export const UserSettings: FC<UserSettingsProps> = (props) => {
     const { onChange } = props;
-    const [filterValue, setFilterValue] = useState<FilterValue>(null);
+
+    const [selectedValue, setSelectedValue] = useState<ValueSettings | null>(null);
     const [isDropdownOpened, setDropdownOpened] = useState<boolean>(false);
     const buttonRef = useRef(null);
 
@@ -28,36 +29,32 @@ export const UserListFilter: FC<UserListFilterProps> = (props) => {
         setDropdownOpened((prev) => !prev);
     };
 
-    const selectFilter = useCallback(
-        (value: FilterValue) => {
-            if (value === filterValue) {
-                setFilterValue(null);
+    const selectSettings = useCallback(
+        (value: ValueSettings) => {
+            if (value === selectedValue) {
+                setSelectedValue(null);
                 onChange?.(null);
             } else {
-                setFilterValue(value);
+                setSelectedValue(value);
                 onChange?.(value);
             }
             setDropdownOpened(false);
         },
-        [filterValue, onChange],
+        [onChange, selectedValue],
     );
 
     const renderFilterItems = useMemo(
-        () => filterData.map((item) => (
+        () => userSettingsData.map((item) => (
             <div
                 className={cn(styles.item, {
-                    [styles.active]: item.value === filterValue,
+                    [styles.active]: item.value === selectedValue,
                 })}
-                onClick={() => selectFilter(item.value)}
+                onClick={() => selectSettings(item.value)}
             >
-                <div
-                    className={styles.dot}
-                    style={{ backgroundColor: item.color }}
-                />
                 <span className={styles.text}>{item.text}</span>
             </div>
         )),
-        [filterValue, selectFilter],
+        [selectSettings, selectedValue],
     );
 
     return (
