@@ -1,7 +1,7 @@
 import { memo } from "react";
 import cn from "classnames";
 
-import { useGetUserHostInfo } from "@/entities/Profile";
+import { useGetUserHostInfo, useUser } from "@/entities/Profile";
 
 import styles from "./HostFill.module.scss";
 import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
@@ -17,7 +17,9 @@ interface HostFillProps {
 export const HostFill = memo((props: HostFillProps) => {
     const { className } = props;
 
-    const { host, isLoading, error } = useGetUserHostInfo();
+    // const { host, isLoading, error } = useGetUserHostInfo();
+    const { profile, isLoading, error } = useUser();
+    const host = profile?.organizations?.[0];
 
     if (isLoading) {
         return (

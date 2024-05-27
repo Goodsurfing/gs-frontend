@@ -139,6 +139,7 @@
     },
     "notes": {
         "under consideration": "Under Consideration",
+        "new": "New",
         "accepted": "Accepted",
         "confirmed": "Confirmed",
         "rejected": "Rejected",

@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import cn from "classnames";
 import { NavLink, useLocation } from "react-router-dom";
 import { DropdownItem } from "../../model/types/sidebar";
@@ -20,7 +20,6 @@ export const SidebarDropdown = memo(({
 }: SidebarDropdownProps) => {
     const { locale } = useLocale();
     const { isOpen } = useSidebarContext();
-    // const [isDropdownOpened, setDropdownOpen] = useState(false);
 
     const { pathname } = useLocation();
 

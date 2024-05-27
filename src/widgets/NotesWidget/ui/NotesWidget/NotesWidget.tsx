@@ -22,7 +22,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
 
         const [offers] = useState(initialOffers);
         const [columns, setColumns] = useState<Record<OfferState, Offer[]>>({
-            "under consideration": [],
+            new: [],
             accepted: [],
             confirmed: [],
             rejected: [],
@@ -30,7 +30,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
 
         useEffect(() => {
             const newColumns: Record<OfferState, Offer[]> = {
-                "under consideration": [],
+                new: [],
                 accepted: [],
                 confirmed: [],
                 rejected: [],
