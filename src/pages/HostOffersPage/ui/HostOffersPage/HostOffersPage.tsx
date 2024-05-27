@@ -1,7 +1,5 @@
 import { useGetMyOffersQuery } from "@/entities/Offer/api/offerApi";
 
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { HostOffersList } from "../HostOffersList/HostOffersList";
@@ -10,7 +8,7 @@ import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import styles from "./HostOffersPage.module.scss";
 
 const HostOffersPage = () => {
-    const { data: offers, isLoading, isError } = useGetMyOffersQuery();
+    const { data: offers, isLoading } = useGetMyOffersQuery();
     const offersWithOpenStatus = filterOffersByStatus(offers, "open");
     const offersWithClosedStatus = filterOffersByStatus(offers, "closed");
 
@@ -20,12 +18,6 @@ const HostOffersPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            {isError && (
-                <HintPopup
-                    text="Ошибка вывода списка вакансий"
-                    type={HintType.Error}
-                />
-            )}
             <h2 className={styles.abilities}>Мои возможности</h2>
             <HostOffersList offers={offersWithOpenStatus} />
             {offersWithClosedStatus && (
