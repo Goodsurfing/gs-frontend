@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import calendarIcon from "@/shared/assets/icons/navbar/calendar.svg";
 import cityIcon from "@/shared/assets/icons/navbar/city.svg";
 import globeIcon from "@/shared/assets/icons/navbar/globe.svg";
 import houseIcon from "@/shared/assets/icons/navbar/home.svg";
@@ -24,11 +23,6 @@ export const useHostPagesSidebarData = () => {
             route: "/host/notes",
             text: t("main.sidebar.Заявки"),
             icon: mailIcon,
-        },
-        {
-            route: "/host/calendar",
-            text: t("main.sidebar.Календарь"),
-            icon: calendarIcon,
         },
         {
             route: "/host",

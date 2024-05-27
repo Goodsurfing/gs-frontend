@@ -20,16 +20,16 @@ export const SidebarDropdown = memo(({
 }: SidebarDropdownProps) => {
     const { locale } = useLocale();
     const { isOpen } = useSidebarContext();
-    const [isDropdownOpened, setDropdownOpen] = useState(false);
+    // const [isDropdownOpened, setDropdownOpen] = useState(false);
 
     const { pathname } = useLocation();
 
     const isMatchRoutes = compareRoutes(pathname, route);
 
-    const canOpen = isDropdownOpened && isOpen;
+    const canOpen = isOpen;
 
     return (
-        <li className={styles.wrapper} onClick={() => setDropdownOpen(!isDropdownOpened)}>
+        <li className={styles.wrapper}>
             <div className={cn(styles.link, { [styles.linkOpen]: isOpen })}>
                 <img className={styles.img} src={icon} alt={text} />
                 <span className={cn(styles.text, {
