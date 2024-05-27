@@ -47,8 +47,12 @@ import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { JournalsPage } from "@/pages/JournalsPage";
 import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 import { VideoPage } from "@/pages/VideoPage";
+import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
+
+import { OffersMapPage } from "@/pages/OffersMapPage";
+import { MessengerPage } from "@/pages/MessengerPage";
 
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
@@ -110,18 +114,29 @@ import {
     getJournalPersonalPageUrl,
     getVideoPageUrl,
     getVideoPersonalPageUrl,
+    getOffersMapPageUrl,
+    getMessengerPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
         element: <MainPage />,
         label: "main",
         path: (locale: string) => getMainPageUrl(locale),
+    },
+    {
+        element: <OffersMapPage />,
+        label: "offers-map",
+        path: (locale: string) => getOffersMapPageUrl(locale),
+    },
+    {
+        element: <MessengerPage />,
+        label: "messenger",
+        path: (locale: string) => getMessengerPageUrl(locale),
     },
     {
         element: <CategoriesPage />,

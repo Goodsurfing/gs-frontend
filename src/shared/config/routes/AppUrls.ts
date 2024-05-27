@@ -6,6 +6,14 @@ type RoutePathFunction = (locale: string | Locale) => string;
 
 export const getMainPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.main}`);
 
+// Offers map page
+
+export const getOffersMapPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.offers_map}`);
+
+// Messenger page
+
+export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}`);
+
 // Categires page
 
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);

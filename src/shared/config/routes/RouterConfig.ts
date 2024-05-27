@@ -9,6 +9,8 @@ export type AppRoutesProps = RouteProps & {
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: "/",
+    [AppRoutes.OFFERS_MAP]: "/offers-map",
+    [AppRoutes.MESSENGER]: "/messenger",
     [AppRoutes.CATEGORIES]: "/categories",
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",

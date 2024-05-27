@@ -12,8 +12,8 @@ export const offerWhenFormApiAdapter = (
     } = offerWhenForm;
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
-        start: period.start.toLocaleDateString(),
-        end: period.end.toLocaleDateString(),
+        start: period.start ? period.start.toLocaleDateString() : null,
+        end: period.end ? period.end.toLocaleDateString() : null,
     }));
 
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;

@@ -1,6 +1,6 @@
 export interface OfferWhenPeriods {
-    start: string;
-    end: string;
+    start: string | null;
+    end: string | null;
 }
 
 export interface OfferWhen {

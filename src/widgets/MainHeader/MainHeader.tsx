@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { ReactSVG } from "react-svg";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -11,7 +12,7 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
-import { getMainPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMainPageUrl, getMessengerPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { getUserAuthData } from "@/entities/User";
 
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
@@ -51,16 +52,17 @@ const MainHeader: FC = () => {
                                     to={getMainPageUrl(locale)}
                                     className={styles.icon}
                                 >
-                                    <img src={heartIcon} alt="Favorites" />
+                                    <ReactSVG src={heartIcon} />
                                 </LocaleLink>
                                 <LocaleLink
-                                    to={getMainPageUrl(locale)}
+                                    to={getMessengerPageUrl(locale)}
                                     className={styles.icon}
                                 >
-                                    <img src={messagesIcon} alt="Messages" />
+                                    <ReactSVG src={messagesIcon} />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile />
+                            <Button className={styles.membership}>Членство</Button>
                         </>
                     ) : (
                         <ButtonLink
@@ -71,7 +73,6 @@ const MainHeader: FC = () => {
                             {t("main.welcome.header.sign-in")}
                         </ButtonLink>
                     )}
-                    <Button className={styles.membership}>Членство</Button>
                 </div>
             </header>
             <div className={styles.mobile}>

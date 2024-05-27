@@ -1,0 +1,37 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    display: flex;
+    border: 1px solid var(--bg-field);
+    padding: 14px 10px;
+    align-items: center;
+    min-width: 200px;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.btn.open {
+    background-color: var(--bg-accent);
+}
+
+.inner {
+    position: relative;
+}
+
+.bluePoint {
+    position: absolute;
+    top: 0;
+    left: 110%;
+}
+
+.arrow {
+    border-color: var(--text-secondary-2) transparent transparent;
+}
+
+.arrow.open {
+    border-color: transparent transparent var(--text-secondary-2);
+}

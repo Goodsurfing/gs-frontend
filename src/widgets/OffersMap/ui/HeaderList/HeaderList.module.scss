@@ -1,0 +1,15 @@
+.wrapper {
+    background-color: var(--bg-field);
+    padding: 12px 30px;
+    min-height: 80px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+}
+
+.offerCount {
+    color: var(--text-secondary-2);
+    font-weight: 500;
+    font-size: 1.125rem;
+}

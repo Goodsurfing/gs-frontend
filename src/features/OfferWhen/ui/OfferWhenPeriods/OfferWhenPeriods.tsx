@@ -38,6 +38,7 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
     }, [onChange, value]);
 
     const onAddBtnClick = () => {
+        if ((value[0].start == null) || (value[0].end == null)) return;
         if (value.length > 4) {
             return;
         }
