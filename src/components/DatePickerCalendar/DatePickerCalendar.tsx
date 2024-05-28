@@ -19,6 +19,7 @@ import {
     getInputValueFromDate,
     isInRange,
 } from "./utils";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     value,
@@ -33,6 +34,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
     const elementRef = useRef<HTMLDivElement>(null);
+    const { locale } = useLocale();
 
     useLayoutEffect(() => {
         setInputValue(getInputValueFromDate(value));
@@ -132,6 +134,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             <img className={styles.img} src={calendarIcon} alt="calendar" />
             {showPopup && (
                 <CalendarComponent
+                    locale={locale}
                     className={cn(calendarClassName, styles.calendar)}
                     value={inputValueDate || new Date()}
                     onChange={(date: Date) => {

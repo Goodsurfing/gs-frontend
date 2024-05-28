@@ -49,11 +49,12 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                 locale={locale}
                 mapState={{
                     center: [50, 50],
-                    zoom: 0,
+                    zoom: 2,
                 }}
                 options={{
                     suppressMapOpenBlock: true,
                     restrictMapArea: [[85.23618, -178.9], [-73.87011, 181]],
+                    maxZoom: 18,
                 }}
                 className={cn(styles.map, classNameMap, {
                     [styles.loading]: !loading,
@@ -66,6 +67,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                     <Clusterer
                         options={{
                             zoomMargin: 15,
+                            maxZoom: 18,
                         }}
                     >
                         <OffersPlacemarkList data={testData} />

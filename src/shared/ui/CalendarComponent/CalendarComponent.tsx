@@ -6,15 +6,13 @@ import "react-calendar/dist/Calendar.css";
 import styles from "./CalendarComponent.module.scss";
 import "./CalendarComponent.scss";
 import { ICalendarComponent } from "./types";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 const CalendarComponent: FC<ICalendarComponent> = ({
     className,
     value,
     onChange,
+    locale,
 }) => {
-    const { locale } = useLocale();
-
     const onDatePick = useCallback((date: Date) => {
         onChange?.(date);
     }, [onChange]);
