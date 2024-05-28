@@ -14,6 +14,7 @@ export interface SidebarProps {
 
 export const Sidebar = memo(({ content }: SidebarProps) => {
     const { isOpen } = useSidebarContext();
+
     return (
         <nav className={cn(styles.sidebar, { [styles.open]: isOpen })}>
             <SidebarLinks content={content} />

@@ -1,8 +1,7 @@
-import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 import { SidebarContentProps } from "@/widgets/Sidebar";
 
-export function FillSidebarData(sidebarContent: SidebarContentProps[]) {
-    const { t } = useTranslation();
+export function FillSidebarData(sidebarContent: SidebarContentProps[], t: TFunction) {
     return sidebarContent.map((item) => {
         if (item.dropdownItems && item.route === "/host") {
             const newDropdownItem = {

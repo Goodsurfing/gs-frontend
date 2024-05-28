@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import Popup from "@/components/Popup/Popup";
@@ -8,6 +8,7 @@ import { userActions } from "@/entities/User";
 
 import {
     getHostDashboardPageUrl,
+    getMainPageUrl,
     getProfileInfoPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -25,6 +26,7 @@ import styles from "./MainHeaderProfile.module.scss";
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const profileRef = useRef(null);
 
@@ -35,7 +37,8 @@ const MainHeaderProfile = () => {
 
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
-    }, [dispatch]);
+        navigate(getMainPageUrl(locale));
+    }, [dispatch, locale, navigate]);
 
     useOnClickOutside(profileRef, () => setProfileOpened(false));
 
@@ -79,7 +82,7 @@ const MainHeaderProfile = () => {
                     to={getProfileInfoPageUrl(locale)}
                     replace
                 >
-                    {t("main.welcome.header.my-page")}
+                    {t("main.welcome.header.about-me")}
                 </Link>
                 <Link
                     className={styles.dropdownLink}

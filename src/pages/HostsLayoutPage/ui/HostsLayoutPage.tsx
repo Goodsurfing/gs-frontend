@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 
 import { useCallback } from "react";
 
+import { useTranslation } from "react-i18next";
 import { useHostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
@@ -14,19 +15,22 @@ import { FillSidebarData } from "../lib/fillSidebarData";
 export const HostsLayoutPage = () => {
     const { profile, isLoading } = useUser();
     const { HostPagesSidebarData } = useHostPagesSidebarData();
+    const { t } = useTranslation();
 
     const hostSidebarContent = useCallback(() => {
         if (!isLoading && profile?.organizations?.length) {
             return HostPagesSidebarData;
         }
-        return FillSidebarData(HostPagesSidebarData);
-    }, [isLoading, profile?.organizations?.length, HostPagesSidebarData]);
+        return FillSidebarData(HostPagesSidebarData, t);
+    }, [isLoading, profile?.organizations?.length, HostPagesSidebarData, t]);
+
+    const sidebarContent = hostSidebarContent();
 
     return (
         <>
             {isLoading && (<Preloader />)}
             {!isLoading && profile && (
-                <PageLayout sidebarContent={hostSidebarContent()}>
+                <PageLayout sidebarContent={sidebarContent}>
                     <Outlet />
                 </PageLayout>
             )}

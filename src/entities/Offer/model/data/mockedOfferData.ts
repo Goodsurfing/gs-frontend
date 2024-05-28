@@ -123,7 +123,7 @@ export const mockedOffersData: Offer[] = [
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "open",
-        state: "under consideration",
+        state: "accepted",
     },
     {
         id: "3",

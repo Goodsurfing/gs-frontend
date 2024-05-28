@@ -139,6 +139,7 @@
     },
     "notes": {
         "under consideration": "На рассмотрении",
+        "new": "Новые",
         "accepted": "Принято",
         "confirmed": "Подтверждено",
         "rejected": "Отклонено",

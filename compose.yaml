@@ -5,10 +5,15 @@ services:
     build:
       context: .
     container_name: gs_frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`gudserfing.ru`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=leresolver"
     networks:
-      - gs
+      - proxy
 
 networks:
-  gs:
-    name: proxy
+  proxy:
+    name: traefik-network
     external: true

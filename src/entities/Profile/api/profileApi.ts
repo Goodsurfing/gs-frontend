@@ -27,7 +27,7 @@ export const profileApi = createApi({
                 url: `organization/${organizationId}/join/`,
                 method: "PUT",
             }),
-            invalidatesTags: ["host"],
+            invalidatesTags: ["host", "profile"],
         }),
     }),
 });
