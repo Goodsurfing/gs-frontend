@@ -1,7 +1,6 @@
 import React, { FC, MouseEvent } from "react";
-import { ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import cn from "classnames";
-import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
 import { tags } from "../../model/data/tags.data";
 import styles from "./CategoriesFilter.module.scss";
 
@@ -26,14 +25,14 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
                 }}
             >
                 {tags.map((item, index) => (
-                    <ToggleButtonComponent
+                    <ToggleButton
                         sx={{
                             maxHeight: "35px",
                             padding: "5px 10px",
-                            border: item.color,
-                            borderRadius: "26px",
-                            borderWidth: "2px",
-                            borderStyle: "solid",
+                            border: `${item.color} !important`,
+                            borderRadius: "26px !important",
+                            borderWidth: "2px !important",
+                            borderStyle: "solid !important",
                             boxSizing: "content-box",
                             textTransform: "none",
                             color: "#212121",
@@ -43,9 +42,9 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
                             "&.Mui-selected:hover": {
                                 cursor: "pointer",
                                 border: item.color,
-                                borderRadius: "26px",
-                                borderWidth: "2px",
-                                borderStyle: "solid",
+                                borderRadius: "26px !important",
+                                borderWidth: "2px !important",
+                                borderStyle: "solid !important",
                                 outline: "none",
                                 backgroundColor: item.color,
                             },
@@ -60,12 +59,11 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
                                 backgroundColor: item.color,
                             },
                         }}
-                        btncolor={item.color}
                         key={index}
                         value={item.value}
                     >
                         {item.text}
-                    </ToggleButtonComponent>
+                    </ToggleButton>
                 ))}
             </ToggleButtonGroup>
         </div>
