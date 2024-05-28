@@ -1,7 +1,7 @@
 import { memo } from "react";
 import cn from "classnames";
 
-import { useGetUserHostInfo, useUser } from "@/entities/Profile";
+import { useUser } from "@/entities/Profile";
 
 import styles from "./HostFill.module.scss";
 import { HostFillTitle } from "../HostFillTitle/HostFillTitle";

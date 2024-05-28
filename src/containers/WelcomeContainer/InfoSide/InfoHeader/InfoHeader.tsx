@@ -13,9 +13,16 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import { getUserAuthData, userActions } from "@/entities/User";
 
 import {
+    getJournalsPageUrl,
     getMainPageUrl,
+    getNPOPageUrl,
+    getNewsPageUrl,
+    getOurTeamPageUrl,
+    getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
+    getRulesPageUrl,
     getSignInPageUrl,
+    getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
@@ -103,22 +110,22 @@ const InfoHeader = memo(() => {
                     <p>{t("main.welcome.header.about-project.title")}</p>
                     <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
                     <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getNPOPageUrl(locale)}>
                             {t("main.welcome.header.about-project.about-npo")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getOurTeamPageUrl(locale)}>
                             {t("main.welcome.header.about-project.our-team")}
                         </Link>
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.about-project.how-it-works")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getRulesPageUrl(locale)}>
                             {t("main.welcome.header.about-project.rules")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getPrivacyPolicyPageUrl(locale)}>
                             {t("main.welcome.header.about-project.privacy-policy")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getNewsPageUrl(locale)}>
                             {t("main.welcome.header.about-project.news")}
                         </Link>
                     </Popup>
@@ -134,7 +141,7 @@ const InfoHeader = memo(() => {
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getVideoPageUrl(locale)}>
                             {t("main.welcome.header.community.video")}
                         </Link>
                         <Link to={getMainPageUrl(locale)}>
@@ -149,7 +156,7 @@ const InfoHeader = memo(() => {
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.clubs")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getJournalsPageUrl(locale)}>
                             {t("main.welcome.header.community.journal")}
                         </Link>
                     </Popup>

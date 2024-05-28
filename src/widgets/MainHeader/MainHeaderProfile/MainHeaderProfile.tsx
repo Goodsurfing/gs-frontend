@@ -82,7 +82,7 @@ const MainHeaderProfile = () => {
                     to={getProfileInfoPageUrl(locale)}
                     replace
                 >
-                    {t("main.welcome.header.my-page")}
+                    {t("main.welcome.header.about-me")}
                 </Link>
                 <Link
                     className={styles.dropdownLink}
