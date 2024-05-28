@@ -8,7 +8,11 @@ import Popup from "@/components/Popup/Popup";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import { getMainPageUrl, getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getJournalsPageUrl, getMainPageUrl, getNPOPageUrl, getNewsPageUrl,
+    getOffersMapPageUrl, getOurTeamPageUrl, getPrivacyPolicyPageUrl,
+    getRulesPageUrl, getVideoPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -204,7 +208,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getVideoPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.video")}
                     </Link>
@@ -234,7 +238,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
                     </Link>
@@ -255,13 +259,13 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getOurTeamPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.our-team")}
                     </Link>
@@ -273,19 +277,19 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getRulesPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.rules")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
                     </Link>

@@ -62,6 +62,7 @@
     "welcome": {
       "activity-title": "activity-title",
       "header": {
+        "about-me": "about-me",
         "about-project": {
           "about-npo": "about-npo",
           "how-it-works": "how-it-works",
