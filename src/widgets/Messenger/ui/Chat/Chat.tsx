@@ -17,6 +17,7 @@ interface ChatProps {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         id, className, isEmpty, messages, user,
     } = props;
 
