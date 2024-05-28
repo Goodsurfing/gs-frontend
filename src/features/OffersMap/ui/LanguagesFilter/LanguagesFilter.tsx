@@ -24,7 +24,7 @@ export const LanguagesFilter: FC<LanguagesFilterProps> = (props) => {
     const [isShowDropdown, setShowDropdown] = useState<boolean>(false);
 
     useOnClickOutside(languagesRef, () => {
-        setShowDropdown((prev) => (!prev));
+        setShowDropdown(() => (false));
     });
 
     const handleClick = () => {

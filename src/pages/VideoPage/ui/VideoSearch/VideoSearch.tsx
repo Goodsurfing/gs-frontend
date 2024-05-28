@@ -1,5 +1,5 @@
 import React from "react";
-import { SearchInput } from "@/features/Article";
+import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 
 export const VideoSearch = () => (
     <SearchInput sx={{ maxWidth: "370px" }} />

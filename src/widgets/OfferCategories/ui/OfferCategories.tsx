@@ -75,7 +75,6 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                                 backgroundColor: item.color,
                             },
                         }}
-                        // btncolor={item.color}
                         key={index}
                         value={item.value}
                     >

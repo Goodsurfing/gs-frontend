@@ -1,8 +1,17 @@
+.topList {
+    border: 1px solid var(--bg-accent);
+    border-bottom: 0;
+    border-top: 0;
+    padding: 9px 8px;
+}
+
 .layout {
     display: flex;
-    max-width: 980px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
     min-width: 200px;
-    max-height: calc(100vh - 180px);
+    height: calc(100vh - 200px);
 }
 
 .wrapper {
@@ -11,6 +20,7 @@
     flex-direction: column;
     border: 1px solid var(--bg-accent);
     width: 100%;
+    height: 100%;
     
     overflow-y: auto;
     overflow-x: hidden;
@@ -36,4 +46,5 @@
     bottom: 0;
     width: 8px;
     cursor: ew-resize;
+    flex-shrink: 0;
 }

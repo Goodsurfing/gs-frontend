@@ -22,10 +22,9 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
     } = props;
 
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={cn(styles.wrapper, className)} ref={ref}>
             <div
                 onClick={onClick}
-                ref={ref}
                 className={cn(styles.btn, { [styles.open]: isOpen })}
             >
                 <div className={styles.inner}>
@@ -38,7 +37,7 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
                 className={styles.popup}
                 isOpen={isOpen}
             >
-                <div className={styles.popupContainer}>
+                <div className={styles.popupContainer} ref={ref}>
                     <OfferCategories value={value} onChange={onChange} />
                 </div>
             </Popup>

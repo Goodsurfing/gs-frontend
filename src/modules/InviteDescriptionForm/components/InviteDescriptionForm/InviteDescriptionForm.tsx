@@ -157,8 +157,6 @@ export const InviteDescriptionForm = () => {
         const preparedData = inviteDescriptionApiAdapter(
             data,
             imageUuid || "",
-            // "728322bf-6ccf-4749-9b1c-e2389b93a649",
-            // "9727b7be-90da-4b62-9c6c-42a844748258",
             filteredGallery,
         );
 

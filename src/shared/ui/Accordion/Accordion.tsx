@@ -3,6 +3,7 @@ import React, {
     FC, memo, useCallback, useMemo, useRef, useState,
 } from "react";
 
+import { ReactSVG } from "react-svg";
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 
 import styles from "./Accordion.module.scss";
@@ -39,9 +40,8 @@ export const Accordion: FC<AccordionProps> = memo((props: AccordionProps) => {
                     onClick={() => openHandler(key)}
                 >
                     {item.title}
-                    <img
+                    <ReactSVG
                         src={arrowIcon}
-                        alt="arrow"
                         className={cn(styles.arrow, {
                             [styles.arrowActive]: key === openId,
                         })}
