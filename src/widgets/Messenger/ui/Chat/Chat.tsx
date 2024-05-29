@@ -32,6 +32,10 @@ export const Chat: FC<ChatProps> = (props) => {
         );
     }
 
+    const infoOpenedChange = () => {
+        setInfoOpened((prev) => !prev);
+    };
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div style={{ flexGrow: 1 }}>
@@ -49,7 +53,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 Chat
                 {id}
             </div>
-            {isInfoOpened && <UserInfoCard user={user} />}
+            {isInfoOpened && <UserInfoCard user={user} infoOpenedChange={infoOpenedChange} />}
         </div>
     );
 };

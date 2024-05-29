@@ -40,7 +40,7 @@ export const mockedChatUser: UserChatType = {
     expirationDate: new Date(),
     cases: ["Природный парк \"Вулканы Камчатки\" ждет волонтеров!", "Итуруп-жемчужина Курил!", "Студенческий Экологический Отряд «Новая Земля»"],
     description: "Волонтёр, 27 лет",
-    languages: [{ language: "russian", level: "B2" }],
+    languages: [{ language: "russian", level: "B2" }, { language: "russian", level: "B2" }],
     skills: ["art", "admin", "sport"],
 };
 
