@@ -2,7 +2,21 @@
     background-color: var(--bg-primary-1);
     width: 100%;
     max-width: 320px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-white);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--bg-accent);
+    }
 }
 
 .top {

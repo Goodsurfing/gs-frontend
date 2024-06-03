@@ -48,46 +48,6 @@ export const mockedChatUser: UserChatType = {
         }, {
             isUser: true, content: "Привет, как сам?", date: new Date(),
         },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
-        {
-            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
-        }, {
-            isUser: true, content: "Привет, как сам?", date: new Date(),
-        },
     ],
 };
 

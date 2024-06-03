@@ -73,7 +73,7 @@ export const Chat: FC<ChatProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div style={{ flexGrow: 1, overflow: "auto" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div className={styles.topTab}>
                     <span className={styles.userName}>{user.name}</span>
                     <div className={styles.settingsInfo}>
@@ -86,7 +86,9 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    {renderMessages()}
+                    <div className={styles.chatList}>
+                        {renderMessages()}
+                    </div>
                 </div>
             </div>
             {isInfoOpened && (
