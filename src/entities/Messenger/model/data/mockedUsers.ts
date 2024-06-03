@@ -42,11 +42,18 @@ export const mockedChatUser: UserChatType = {
     description: "Волонтёр, 27 лет",
     languages: [{ language: "russian", level: "B2" }, { language: "russian", level: "B2" }],
     skills: ["art", "admin", "sport"],
+    messages: [
+        {
+            isUser: false, content: "Привет!", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        }],
 };
 
-export const mockedMessages: Message[] = [
+export const mockedMessages: MessageType[] = [
     {
         date: new Date(),
         content: "Привет!",
+        isUser: false,
     },
 ];

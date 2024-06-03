@@ -24,6 +24,14 @@
     font-weight: 500;
 }
 
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 16px;
+    overflow: auto;
+}
+
 .topTab {
     display: flex;
     align-items: center;

@@ -1,24 +1,32 @@
-import React, { FC, useState } from "react";
 import cn from "classnames";
+import React, { FC, useState } from "react";
 import { ReactSVG } from "react-svg";
-import styles from "./Chat.module.scss";
-import chatIcon from "@/shared/assets/icons/chat.svg";
-import { Message, UserChatType, UserInfoCard } from "@/entities/Messenger";
+
 import { UserSettings } from "@/features/Messenger";
+
+import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
+
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
+import chatIcon from "@/shared/assets/icons/chat.svg";
+
+import { Message } from "../Message/Message";
+import styles from "./Chat.module.scss";
 
 interface ChatProps {
     id: string;
     isEmpty: boolean;
     className?: string;
     user: UserChatType;
-    messages: Message[];
+    messages: MessageType[];
 }
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        id, className, isEmpty, messages, user,
+        id,
+        className,
+        isEmpty,
+        user,
     } = props;
 
     const [isInfoOpened, setInfoOpened] = useState<boolean>(true);
@@ -36,6 +44,16 @@ export const Chat: FC<ChatProps> = (props) => {
         setInfoOpened((prev) => !prev);
     };
 
+    const renderMessages = user.messages.map((message) => (
+        <Message
+            avatar={user.avatar}
+            date={message.date}
+            isUser={message.isUser}
+            text={message.content}
+            username={user.name}
+        />
+    ));
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div style={{ flexGrow: 1 }}>
@@ -50,10 +68,13 @@ export const Chat: FC<ChatProps> = (props) => {
                         />
                     </div>
                 </div>
-                Chat
-                {id}
+                <div className={styles.chat}>
+                    {renderMessages}
+                </div>
             </div>
-            {isInfoOpened && <UserInfoCard user={user} infoOpenedChange={infoOpenedChange} />}
+            {isInfoOpened && (
+                <UserInfoCard user={user} infoOpenedChange={infoOpenedChange} />
+            )}
         </div>
     );
 };
