@@ -4,7 +4,8 @@ import styles from "./Message.module.scss";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 interface MessageProps {
-    isUser: boolean;
+    adminMessage?: string;
+    isUser?: boolean;
     text: string;
     date: Date;
     avatar: string;
@@ -13,13 +14,19 @@ interface MessageProps {
 
 export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     const {
-        avatar, date, isUser, text, username,
+        avatar, date, isUser, text, username, adminMessage,
     } = props;
     const time = `${date.getHours()}:${date.getMinutes()}`;
     const messageClass = cn(styles.message, {
         [styles.userMessage]: isUser,
         [styles.otherMessage]: !isUser,
     });
+
+    if (adminMessage) {
+        return (
+            <span className={cn(styles.centerLine, styles.adminMessage)}>{adminMessage}</span>
+        );
+    }
 
     return (
         <div className={messageClass}>

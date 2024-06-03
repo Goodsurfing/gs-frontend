@@ -1,4 +1,4 @@
-import { Message, UserChatType, UserType } from "../types/messenger";
+import { MessageType, UserChatType, UserType } from "../types/messenger";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 
 export const mockedUsers: UserType[] = [
@@ -44,10 +44,51 @@ export const mockedChatUser: UserChatType = {
     skills: ["art", "admin", "sport"],
     messages: [
         {
-            isUser: false, content: "Привет!", date: new Date(),
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
         }, {
             isUser: true, content: "Привет, как сам?", date: new Date(),
-        }],
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+        {
+            isUser: false, content: "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", date: new Date(),
+        }, {
+            isUser: true, content: "Привет, как сам?", date: new Date(),
+        },
+    ],
 };
 
 export const mockedMessages: MessageType[] = [

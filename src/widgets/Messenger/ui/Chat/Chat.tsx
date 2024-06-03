@@ -44,19 +44,36 @@ export const Chat: FC<ChatProps> = (props) => {
         setInfoOpened((prev) => !prev);
     };
 
-    const renderMessages = user.messages.map((message) => (
-        <Message
-            avatar={user.avatar}
-            date={message.date}
-            isUser={message.isUser}
-            text={message.content}
-            username={user.name}
-        />
-    ));
+    const renderMessages = () => {
+        let currentDate = "";
+
+        return user.messages.map((message) => {
+            const messageDate = new Date(message.date).toLocaleDateString();
+
+            let dateLine = null;
+            if (messageDate !== currentDate) {
+                currentDate = messageDate;
+                dateLine = <div className={styles.date}>{currentDate}</div>;
+            }
+
+            return (
+                <>
+                    {dateLine}
+                    <Message
+                        avatar={user.avatar}
+                        date={message.date}
+                        isUser={message.isUser}
+                        text={message.content}
+                        username={user.name}
+                    />
+                </>
+            );
+        });
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div style={{ flexGrow: 1 }}>
+            <div style={{ flexGrow: 1, overflow: "auto" }}>
                 <div className={styles.topTab}>
                     <span className={styles.userName}>{user.name}</span>
                     <div className={styles.settingsInfo}>
@@ -69,7 +86,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    {renderMessages}
+                    {renderMessages()}
                 </div>
             </div>
             {isInfoOpened && (
