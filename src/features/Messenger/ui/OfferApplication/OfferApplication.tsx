@@ -7,6 +7,7 @@ interface OfferApplicationProps {
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const { onChange } = props;
+
     return (
         <div className={styles.wrapper}>OfferApplication</div>
     );

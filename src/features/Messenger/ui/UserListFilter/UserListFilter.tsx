@@ -45,6 +45,7 @@ export const UserListFilter: FC<UserListFilterProps> = (props) => {
     const renderFilterItems = useMemo(
         () => filterData.map((item) => (
             <div
+                key={item.value}
                 className={cn(styles.item, {
                     [styles.active]: item.value === filterValue,
                 })}
