@@ -67,7 +67,6 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                         <div
                             className={styles.emojiWrapper}
                             onClick={(e) => e.stopPropagation()}
-                            ref={emojiRef}
                         >
                             <EmojiPicker
                                 onEmojiClick={(emoji, event) => onEmojiClick(emoji, event)}
