@@ -2,7 +2,7 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 import { ReactSVG } from "react-svg";
 
-import { UserSettings } from "@/features/Messenger";
+import { OfferApplication, UserSettings } from "@/features/Messenger";
 
 import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
 
@@ -89,6 +89,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 <div className={styles.chat}>
                     <div className={styles.chatList}>
                         {renderMessages()}
+                        <OfferApplication />
                     </div>
                 </div>
                 <SendMessage />

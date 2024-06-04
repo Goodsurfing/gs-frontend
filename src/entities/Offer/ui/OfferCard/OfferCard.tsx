@@ -22,6 +22,7 @@ interface OfferCardProps {
     description: string;
     link?: string;
     className?: string;
+    isImageShow?: boolean;
 }
 
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
@@ -37,14 +38,19 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         went,
         link,
         className,
+        isImageShow = true,
     } = props;
     const { locale } = useLocale();
 
     return (
         <Link to={`/${locale}/${link}` || getMainPageUrl(locale)} className={cn(styles.wrapper, className)}>
-            <div className={styles.imageWrapper}>
-                <img src={image || defaultImage} alt="offer-img" />
-            </div>
+            {
+                isImageShow && (
+                    <div className={styles.imageWrapper}>
+                        <img src={image || defaultImage} alt="offer-img" />
+                    </div>
+                )
+            }
             <div className={styles.content}>
                 <p className={styles.title}>
                     {title.length > 88 ? `${title.slice(0, 88)}..` : title}
