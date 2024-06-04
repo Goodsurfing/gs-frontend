@@ -1,6 +1,9 @@
 .calendar {
-    z-index: 10;
     min-width: 300px;
+}
+
+.calendarWrapper {
+    z-index: 10;
     top: 120%;
     left: 5%;
     position: absolute;

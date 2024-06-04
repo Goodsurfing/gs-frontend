@@ -133,16 +133,21 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
             {showPopup && (
-                <CalendarComponent
-                    locale={locale}
-                    className={cn(calendarClassName, styles.calendar)}
-                    value={inputValueDate || new Date()}
-                    onChange={(date: Date) => {
-                        handleChange(date);
-                    }}
-                    minDate={min}
-                    maxDate={max}
-                />
+                <div
+                    className={styles.calendarWrapper}
+                    onClick={(event) => { event.stopPropagation(); }}
+                >
+                    <CalendarComponent
+                        locale={locale}
+                        className={cn(calendarClassName, styles.calendar)}
+                        value={inputValueDate || new Date()}
+                        onChange={(date: Date) => {
+                            handleChange(date);
+                        }}
+                        minDate={min}
+                        maxDate={max}
+                    />
+                </div>
             )}
         </div>
     );

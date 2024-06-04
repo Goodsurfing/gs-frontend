@@ -26,7 +26,6 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function onEmojiClick(emoji: EmojiClickData, event: MouseEvent): void {
-        // event.stopPropagation();
     }
 
     return (
