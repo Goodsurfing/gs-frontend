@@ -11,6 +11,7 @@ import chatIcon from "@/shared/assets/icons/chat.svg";
 
 import { Message } from "../Message/Message";
 import styles from "./Chat.module.scss";
+import { SendMessage } from "../SendMessage/SendMessage";
 
 interface ChatProps {
     id: string;
@@ -90,6 +91,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         {renderMessages()}
                     </div>
                 </div>
+                <SendMessage />
             </div>
             {isInfoOpened && (
                 <UserInfoCard user={user} infoOpenedChange={infoOpenedChange} />

@@ -1,0 +1,34 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--bg-accent);
+    border-bottom: 1px solid var(--bg-accent);
+}
+
+.button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    svg {
+        object-fit: contain;
+        fill: var(--text-caption);
+    }
+}
+
+.clip {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    svg {
+        stroke: var(--text-caption);
+        fill: transparent;
+    }
+}
+
+.icon > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
