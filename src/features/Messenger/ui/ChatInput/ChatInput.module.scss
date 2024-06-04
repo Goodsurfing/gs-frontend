@@ -14,7 +14,8 @@
     padding: 0;
     svg {
         object-fit: contain;
-        fill: var(--text-caption);
+        stroke: var(--text-caption);
+        fill: transparent;
     }
 }
 
@@ -24,14 +25,10 @@
     right: 0;
 }
 
-.clip {
+.send {
     width: 20px;
     height: 20px;
     padding: 0;
-    svg {
-        stroke: var(--text-caption);
-        fill: transparent;
-    }
 }
 
 .icon > div {

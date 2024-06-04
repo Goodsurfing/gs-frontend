@@ -2,13 +2,12 @@ import {
     IconButton, InputBase, Paper, SxProps, Theme,
 } from "@mui/material";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
-import { MouseDownEvent } from "emoji-picker-react/dist/config/config";
 import React, { FC, useRef, useState } from "react";
 import { ReactSVG } from "react-svg";
 
 import clipIcon from "@/shared/assets/icons/clip.svg";
 import sendIcon from "@/shared/assets/icons/send-arrow.svg";
-import smileIcon from "@/shared/assets/icons/textEditor/smile.svg";
+import smileIcon from "@/shared/assets/icons/chat-smile.svg";
 
 import styles from "./ChatInput.module.scss";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
@@ -48,7 +47,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                 }}
             >
                 <IconButton aria-label="menu" className={styles.button}>
-                    <ReactSVG src={clipIcon} className={styles.clip} />
+                    <ReactSVG src={clipIcon} className={styles.icon} />
                 </IconButton>
                 <InputBase
                     sx={{ ml: 1, flex: 1 }}
@@ -76,7 +75,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     )}
                 </IconButton>
             </Paper>
-            <IconButton aria-label="menu" className={styles.button}>
+            <IconButton aria-label="menu" className={styles.send}>
                 <ReactSVG src={sendIcon} className={styles.icon} />
             </IconButton>
         </div>
