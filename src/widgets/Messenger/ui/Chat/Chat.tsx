@@ -89,7 +89,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 <div className={styles.chat}>
                     <div className={styles.chatList}>
                         {renderMessages()}
-                        <OfferApplication isHost username="Николай Николаевич" />
+                        <OfferApplication isHost={false} username="Николай Николаевич" />
                     </div>
                 </div>
                 <SendMessage />

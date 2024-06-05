@@ -1,11 +1,9 @@
-import React, {
-    FC, useCallback, useEffect, useState,
-} from "react";
+import React, { FC, useCallback, useState } from "react";
 
 import { OfferCard } from "@/entities/Offer";
 
-import styles from "./OfferApplication.module.scss";
 import { TermsApplication } from "../TermsApplication/TermsApplication";
+import styles from "./OfferApplication.module.scss";
 
 interface OfferApplicationProps {
     isHost: boolean;
@@ -19,13 +17,21 @@ interface DatesType {
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const { isHost, username } = props;
-    const [whenPeriods, setWhenPeriods] = useState<DatesType>(
-        { start: undefined, end: undefined },
-    );
+    const [whenPeriods, setWhenPeriods] = useState<DatesType>({
+        start: undefined,
+        end: undefined,
+    });
 
-    const handleDates = useCallback((periods: DatesType) => {
-        setWhenPeriods({ ...whenPeriods, start: periods.start, end: periods.end });
-    }, [whenPeriods]);
+    const handleDates = useCallback(
+        (periods: DatesType) => {
+            setWhenPeriods({
+                ...whenPeriods,
+                start: periods.start,
+                end: periods.end,
+            });
+        },
+        [whenPeriods],
+    );
 
     const renderTitle = () => {
         if (isHost) {
@@ -59,7 +65,12 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 isImageShow={false}
                 link="offer-personal/1"
             />
-            <TermsApplication terms={whenPeriods} onChange={handleDates} />
+            <TermsApplication
+                terms={whenPeriods}
+                onChange={handleDates}
+                isSuccess={false}
+                isHost={isHost}
+            />
         </div>
     );
 };

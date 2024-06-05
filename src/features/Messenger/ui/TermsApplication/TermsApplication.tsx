@@ -4,6 +4,7 @@ import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { successIcon } from "@/shared/data/icons/skills";
+import Button from "@/shared/ui/Button/Button";
 
 interface DateType {
     start: Date | undefined;
@@ -59,38 +60,61 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
         <div>
             {renderLine()}
             <div className={cn(styles.wrapper, className)}>
-
                 <div className={styles.group}>
                     <span>Прибытие</span>
-                    <DateInput
-                        className={styles.leftInput}
-                        onDateChange={handleFromDateChange}
-                        value={terms?.start}
-                        min={min}
-                        inputDisabled
-                    />
+                    {isSuccess ? (
+                        <p>{terms.start?.toDateString()}</p>
+                    )
+                        : (
+                            <DateInput
+                                className={styles.leftInput}
+                                onDateChange={handleFromDateChange}
+                                value={terms?.start}
+                                min={min}
+                                inputDisabled
+                            />
+                        )}
                 </div>
                 <div className={styles.group}>
                     <span>Отъезд</span>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-                        <DateInput
-                            className={styles.rightInput}
-                            onDateChange={handleToDateChange}
-                            value={terms?.end}
-                            min={new Date()}
-                            max={max}
-                            inputDisabled
-                        />
-                        <IconButtonComponent
-                            wrapperClassName={styles.wrapperButton}
-                            disabledClassName={styles.disabled}
-                            disabled={!((terms.start && terms.end))}
-                            className={cn(styles.iconButton)}
-                            icon={successIcon}
-                        />
+                        {isSuccess ? (
+                            <p>{terms.end?.toDateString()}</p>
+                        ) : (
+                            <>
+                                <DateInput
+                                    className={styles.rightInput}
+                                    onDateChange={handleToDateChange}
+                                    value={terms?.end}
+                                    min={new Date()}
+                                    max={max}
+                                    inputDisabled
+                                />
+                                <IconButtonComponent
+                                    wrapperClassName={styles.wrapperButton}
+                                    disabledClassName={styles.disabled}
+                                    disabled={!((terms.start && terms.end))}
+                                    className={cn(styles.iconButton)}
+                                    icon={successIcon}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
+            { isHost && (
+                <div style={{
+                    display: "flex",
+                    gap: "10px",
+                    width: "100%",
+                    justifyContent: "center",
+                    marginTop: "20px",
+                }}
+                >
+                    <Button color="BLUE" size="SMALL" variant="FILL">Принять</Button>
+                    <Button color="GRAY" size="SMALL" variant="OUTLINE">Отклонить</Button>
+                </div>
+            )}
         </div>
     );
 };
