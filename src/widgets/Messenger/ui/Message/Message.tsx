@@ -16,7 +16,9 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     const {
         avatar, date, isUser, text, username, adminMessage,
     } = props;
-    const time = `${date.getHours()}:${date.getMinutes()}`;
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const time = `${hours}:${minutes}`;
     const messageClass = cn(styles.message, {
         [styles.userMessage]: isUser,
         [styles.otherMessage]: !isUser,

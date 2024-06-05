@@ -1,20 +1,52 @@
-import React, { FC } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 
 import { OfferCard } from "@/entities/Offer";
 
 import styles from "./OfferApplication.module.scss";
+import { TermsApplication } from "../TermsApplication/TermsApplication";
 
 interface OfferApplicationProps {
-    onChange?: () => void;
     isHost: boolean;
     username: string;
 }
 
+interface DatesType {
+    start: Date | undefined;
+    end: Date | undefined;
+}
+
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
-    const { onChange, isHost, username } = props;
+    const { isHost, username } = props;
+    const [whenPeriods, setWhenPeriods] = useState<DatesType>(
+        { start: undefined, end: undefined },
+    );
+
+    const handleDates = useCallback((periods: DatesType) => {
+        setWhenPeriods({ ...whenPeriods, start: periods.start, end: periods.end });
+    }, [whenPeriods]);
+
+    const renderTitle = () => {
+        if (isHost) {
+            return (
+                <span className={styles.line}>
+                    {username}
+                    {" "}
+                    подал заявку на вашу вакансию
+                </span>
+            );
+        }
+        return (
+            <span className={styles.line}>
+                Вы подали заявку на данную вакансию
+            </span>
+        );
+    };
 
     return (
         <div className={styles.wrapper}>
+            {renderTitle()}
             <OfferCard
                 category="category"
                 description="description"
@@ -27,6 +59,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 isImageShow={false}
                 link="offer-personal/1"
             />
+            <TermsApplication terms={whenPeriods} onChange={handleDates} />
         </div>
     );
 };
