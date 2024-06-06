@@ -24,16 +24,52 @@
 .content {
     margin-top: 20px;
     height: 100%;
-    border-top: 1px solid var(--bg-accent);
-    border-right: 1px solid var(--bg-accent);
+    border: 1px solid var(--bg-accent);
     display: flex;
     flex: 1;
 }
 
 .userList {
     height: 100%;
+    border-right: 1px solid var(--bg-accent);
 }
 
 .chat {
     width: 100%;
+}
+
+@media (max-width: 992px) {
+    .title {
+        display: none;
+    }
+    .wrapper {
+        margin-top: 0;
+        margin-right: 20px;
+        margin-left: 20px;
+        max-height: calc(100vh - 110px);
+    }
+
+    .userList {
+        display: none !important;
+    }
+
+    .userList.open {
+        display: flex !important;
+        max-width: none;
+    }
+
+    .chat {
+        display: none !important;
+    }
+
+    .chat.open {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        margin-right: 0;
+        margin-left: 0;
+    }
 }

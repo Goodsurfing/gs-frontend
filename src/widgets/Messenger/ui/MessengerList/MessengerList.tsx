@@ -10,21 +10,24 @@ import { ListFilter } from "../ListFilter/ListFilter";
 
 interface MessengerListProps {
     className?: string;
+    onUserClick?: (value: string) => void;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props) => {
-    const { className } = props;
+    const { className, onUserClick } = props;
 
     const renderUserCard = useMemo(
         () => mockedUsers.map(
             (user) => (
-                <UserCard
-                    data={user}
-                    key={user.id}
-                />
+                <div onClick={() => onUserClick?.(user.id)}>
+                    <UserCard
+                        data={user}
+                        key={user.id}
+                    />
+                </div>
             ),
         ),
-        [],
+        [onUserClick],
     );
 
     return (

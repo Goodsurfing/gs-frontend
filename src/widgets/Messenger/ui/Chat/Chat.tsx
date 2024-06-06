@@ -7,6 +7,7 @@ import { OfferApplication, UserSettings } from "@/features/Messenger";
 import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
+import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
 import chatIcon from "@/shared/assets/icons/chat.svg";
 
 import { Message } from "../Message/Message";
@@ -14,8 +15,8 @@ import styles from "./Chat.module.scss";
 import { SendMessage } from "../SendMessage/SendMessage";
 
 interface ChatProps {
-    id: string;
-    isEmpty: boolean;
+    id: string | null;
+    onChange: (value: string | null) => void
     className?: string;
     user: UserChatType;
     messages: MessageType[];
@@ -26,13 +27,13 @@ export const Chat: FC<ChatProps> = (props) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         id,
         className,
-        isEmpty,
+        onChange,
         user,
     } = props;
 
-    const [isInfoOpened, setInfoOpened] = useState<boolean>(true);
+    const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
 
-    if (isEmpty) {
+    if (!id) {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
                 <ReactSVG src={chatIcon} className={styles.chatIcon} />
@@ -43,6 +44,10 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const infoOpenedChange = () => {
         setInfoOpened((prev) => !prev);
+    };
+
+    const handleBackButton = () => {
+        onChange(null);
     };
 
     const renderMessages = () => {
@@ -76,7 +81,14 @@ export const Chat: FC<ChatProps> = (props) => {
         <div className={cn(styles.wrapper, className)}>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div className={styles.topTab}>
-                    <span className={styles.userName}>{user.name}</span>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                        <ReactSVG
+                            src={arrowBackIcon}
+                            className={styles.back}
+                            onClick={handleBackButton}
+                        />
+                        <span className={styles.userName}>{user.name}</span>
+                    </div>
                     <div className={styles.settingsInfo}>
                         <UserSettings />
                         <ReactSVG
@@ -95,7 +107,11 @@ export const Chat: FC<ChatProps> = (props) => {
                 <SendMessage />
             </div>
             {isInfoOpened && (
-                <UserInfoCard user={user} infoOpenedChange={infoOpenedChange} />
+                <UserInfoCard
+                    user={user}
+                    infoOpenedChange={infoOpenedChange}
+                    className={styles.userInfo}
+                />
             )}
         </div>
     );

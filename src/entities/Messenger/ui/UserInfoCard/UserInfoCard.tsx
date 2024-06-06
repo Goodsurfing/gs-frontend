@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from "react";
 import { ReactSVG } from "react-svg";
 
+import cn from "classnames";
 import { UserChatType } from "@/entities/Messenger";
 
 import exitIcon from "@/shared/assets/icons/delete.svg";
@@ -13,10 +14,11 @@ import styles from "./UserInfoCard.module.scss";
 interface UserInfoCardProps {
     user: UserChatType;
     infoOpenedChange: () => void;
+    className?: string;
 }
 
 export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
-    const { user, infoOpenedChange } = props;
+    const { user, infoOpenedChange, className } = props;
     const { skillsData } = useSkillsData();
 
     const renderLanguagesList = useMemo(
@@ -47,7 +49,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     }, [user.cases]);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
                 <span>Информация</span>
                 <ReactSVG

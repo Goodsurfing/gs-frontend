@@ -1,5 +1,7 @@
 .message {
     display: flex;
+    width: 100%;
+    max-width: 446px;
 }
 
 .name {
@@ -15,7 +17,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-width: 100%;
+    // width: 100%;
 }
 
 .messageContent.userMessage {
@@ -53,5 +55,11 @@
 
     .otherMessage {
         align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .message {
+        max-width: 280px;
     }
 }
