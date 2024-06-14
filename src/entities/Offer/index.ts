@@ -20,6 +20,7 @@ export type {
     ReceptionPlace,
     OfferWhoNeeds,
     OfferWhoNeedsApi,
+    LevelLanguage,
 } from "./model/types/offerWhoNeeds";
 
 export type {

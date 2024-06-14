@@ -4,20 +4,20 @@ import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
+import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
 import {
-    LanguageLevelOptions,
-    LanguageOptions,
     LanguageSkills,
 } from "../../model/types/volunteerSkills";
 import styles from "./LanguageLevelComponent.module.scss";
+import { useAllLangsFilter, useLangsLevelsFilter } from "@/shared/data/languages";
 
-const LanguagesOptions: LanguageOptions[] = ["english", "spanish", "russian"];
-const LevelOptions: LanguageLevelOptions[] = [
-    "beginner",
-    "intermediate",
-    "proficient",
-    "fluent",
-];
+// const LanguagesOptions: LanguageOptions[] = ["english", "spanish", "russian"];
+// const LevelOptions: LanguageLevelOptions[] = [
+//     "beginner",
+//     "intermediate",
+//     "proficient",
+//     "fluent",
+// ];
 
 interface LanguageLevelComponentProps {
     className?: string;
@@ -32,11 +32,13 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
             className, value, onChange, isTitle = true,
         } = props;
         const { t } = useTranslation("volunteer");
+        const allLangs = useAllLangsFilter();
+        const allLevels = useLangsLevelsFilter();
 
-        const handleLanguageChange = (language: LanguageOptions) => {
+        const handleLanguageChange = (language: IOptionLanguage) => {
             onChange({ ...value, language });
         };
-        const handleLevelChange = (level: LanguageLevelOptions) => {
+        const handleLevelChange = (level: IOptionLevelLanguage) => {
             onChange({ ...value, level });
         };
 
@@ -48,14 +50,14 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                         className={styles.select}
                         onChange={(e) => {
                             handleLanguageChange(
-                                e.target.value as LanguageOptions,
+                                e.target.value as IOptionLanguage,
                             );
                         }}
                         value={value ? value.language : ""}
                     >
-                        {LanguagesOptions.map((item, index) => (
-                            <MenuItem key={index} value={item}>
-                                {t(`volunteer-skills.${item}`)}
+                        {allLangs.map((item, index) => (
+                            <MenuItem key={index} value={item.value}>
+                                {item.label}
                             </MenuItem>
                         ))}
                     </SelectComponent>
@@ -66,14 +68,14 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                         className={styles.select}
                         onChange={(e) => {
                             handleLevelChange(
-                                e.target.value as LanguageLevelOptions,
+                                e.target.value as IOptionLevelLanguage,
                             );
                         }}
                         value={value ? value.level : ""}
                     >
-                        {LevelOptions.map((item, index) => (
-                            <MenuItem key={index} value={item}>
-                                {t(`volunteer-skills.${item}`)}
+                        {allLevels.map((item, index) => (
+                            <MenuItem key={index} value={item.value}>
+                                {item.label}
                             </MenuItem>
                         ))}
                     </SelectComponent>
