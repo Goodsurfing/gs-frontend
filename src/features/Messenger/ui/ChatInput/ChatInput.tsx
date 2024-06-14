@@ -38,7 +38,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     p: "10px 14px",
                     display: "flex",
                     alignItems: "center",
-                    minwidth: 150,
+                    minWidth: 150,
                     width: "100%",
                     boxShadow: "none",
                     border: "1px solid var(--text-caption)",

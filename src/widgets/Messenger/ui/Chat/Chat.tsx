@@ -110,7 +110,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 <UserInfoCard
                     user={user}
                     infoOpenedChange={infoOpenedChange}
-                    className={styles.userInfo}
+                    className={cn(styles.userInfo)}
                 />
             )}
         </div>

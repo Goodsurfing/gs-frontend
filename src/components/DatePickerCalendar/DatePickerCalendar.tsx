@@ -27,6 +27,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     wrapperClassName,
     inputClassName,
     calendarClassName,
+    calendarWrapperClassName,
     min,
     max,
     inputDisabled = true,
@@ -134,7 +135,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             <img className={styles.img} src={calendarIcon} alt="calendar" />
             {showPopup && (
                 <div
-                    className={styles.calendarWrapper}
+                    className={cn(styles.calendarWrapper, calendarWrapperClassName)}
                     onClick={(event) => { event.stopPropagation(); }}
                 >
                     <CalendarComponent

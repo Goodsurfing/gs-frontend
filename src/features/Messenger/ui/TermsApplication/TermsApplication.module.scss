@@ -28,6 +28,11 @@
     }
 }
 
+.calendar {
+    top: auto !important;
+    bottom: 100%;
+}
+
 .line {
     display: flex;
     justify-content: center;

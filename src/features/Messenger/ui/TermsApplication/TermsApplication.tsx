@@ -68,6 +68,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                         : (
                             <DateInput
                                 className={styles.leftInput}
+                                calendarWrapperClassName={styles.calendar}
                                 onDateChange={handleFromDateChange}
                                 value={terms?.start}
                                 min={min}
@@ -84,6 +85,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                             <>
                                 <DateInput
                                     className={styles.rightInput}
+                                    calendarWrapperClassName={styles.calendar}
                                     onDateChange={handleToDateChange}
                                     value={terms?.end}
                                     min={new Date()}
