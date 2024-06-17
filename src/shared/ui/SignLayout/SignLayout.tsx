@@ -1,5 +1,7 @@
-import { FC, PropsWithChildren } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { FC, PropsWithChildren, useEffect } from "react";
+import {
+    Link, useNavigate,
+} from "react-router-dom";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import EmptyHeader from "@/shared/ui/EmptyHeader/EmptyHeader";
@@ -23,11 +25,11 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     children,
 }) => {
     const { locale } = useLocale();
+    const navigate = useNavigate();
     const isAuth = useAppSelector(getUserAuthData);
-    const location = useLocation();
 
     if (isAuth) {
-        return <Navigate replace to={getMainPageUrl(locale)} state={{ from: location }} />;
+        navigate(getMainPageUrl(locale));
     }
 
     return (

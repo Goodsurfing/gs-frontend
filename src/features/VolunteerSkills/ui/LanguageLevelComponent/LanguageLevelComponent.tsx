@@ -11,14 +11,6 @@ import {
 import styles from "./LanguageLevelComponent.module.scss";
 import { useAllLangsFilter, useLangsLevelsFilter } from "@/shared/data/languages";
 
-// const LanguagesOptions: LanguageOptions[] = ["english", "spanish", "russian"];
-// const LevelOptions: LanguageLevelOptions[] = [
-//     "beginner",
-//     "intermediate",
-//     "proficient",
-//     "fluent",
-// ];
-
 interface LanguageLevelComponentProps {
     className?: string;
     value?: LanguageSkills;
