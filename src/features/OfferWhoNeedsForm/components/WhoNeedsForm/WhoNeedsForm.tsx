@@ -95,6 +95,10 @@ export const WhoNeedsForm = memo(() => {
         return <Preloader className={styles.loading} />;
     }
 
+    const handleVolunteerPlaces = (inputValue: string) => {
+
+    };
+
     return (
         <FormProvider {...form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -140,7 +144,12 @@ export const WhoNeedsForm = memo(() => {
                                 "whoNeeds.Сколько волонтерских мест одновременно",
                             )}
                             value={String(field.value)}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            onChange={(e) => {
+                                const inputValue = +e.target.value;
+                                if (inputValue >= 0 && inputValue <= 999) {
+                                    field.onChange(inputValue);
+                                }
+                            }}
                         />
                     )}
                 />
