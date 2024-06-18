@@ -46,8 +46,7 @@ export const AuthByEmailForm = memo(({
                 username: data.username,
             }));
             localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
-            console.log(token);
-            console.log(data.username);
+
             onSuccess?.();
             reset();
         } catch (e) {

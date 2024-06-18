@@ -28,9 +28,12 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     const navigate = useNavigate();
     const isAuth = useAppSelector(getUserAuthData);
 
-    if (isAuth) {
-        navigate(getMainPageUrl(locale));
-    }
+    useEffect(() => {
+        if (isAuth) {
+            navigate(getMainPageUrl(locale));
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

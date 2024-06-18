@@ -26,7 +26,7 @@ export const offerApi = createApi({
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, void>({
             query: (body) => ({
-                url: "/vacancy/",
+                url: "/vacancy",
                 method: "POST",
                 body,
             }),
@@ -34,14 +34,14 @@ export const offerApi = createApi({
         }),
         getAddressAutoComplete: build.query<AddressAutoComplete, void>({
             query: () => ({
-                url: "/address-autocomplet/",
+                url: "/address-autocomplet",
                 method: "GET",
             }),
             providesTags: ["address"],
         }),
         getMyOffers: build.query<MyOffers, void>({
             query: () => ({
-                url: "/vacancy/my/",
+                url: "/vacancy/my",
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -56,7 +56,7 @@ export const offerApi = createApi({
         }),
         updateWhere: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/where/`,
+                url: `/vacancy/${data.body.id}/where`,
                 method: "PUT",
                 body: data.body.where,
             }),
@@ -64,14 +64,14 @@ export const offerApi = createApi({
         }),
         getWhere: build.query<OfferWhere, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/where/`,
+                url: `vacancy/${data.id}/where`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
         updateWhen: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/when/`,
+                url: `/vacancy/${data.body.id}/when`,
                 method: "PUT",
                 body: data.body.when,
             }),
@@ -79,14 +79,14 @@ export const offerApi = createApi({
         }),
         getWhen: build.query<OfferWhenApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/when/`,
+                url: `vacancy/${data.id}/when`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
         updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/how-needs/`,
+                url: `/vacancy/${data.body.id}/how-needs`,
                 method: "PUT",
                 body: data.body.whoNeeds,
             }),
@@ -94,7 +94,7 @@ export const offerApi = createApi({
         }),
         getWhoNeeds: build.query<OfferWhoNeedsApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/how-needs/`,
+                url: `vacancy/${data.id}/how-needs`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -104,7 +104,7 @@ export const offerApi = createApi({
         UpdateOfferParams
         >({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/description/`,
+                url: `/vacancy/${data.body.id}/description`,
                 method: "PUT",
                 body: data.body.description,
             }),
@@ -112,14 +112,14 @@ export const offerApi = createApi({
         }),
         getDescription: build.query<OfferDescriptionApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/description/`,
+                url: `vacancy/${data.id}/description`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
         updateWhatToDo: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/what-to-do/`,
+                url: `/vacancy/${data.body.id}/what-to-do`,
                 method: "PUT",
                 body: data.body.whatToDo,
             }),
@@ -127,7 +127,7 @@ export const offerApi = createApi({
         }),
         getWhatToDo: build.query<OfferWhatToDoApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/what-to-do/`,
+                url: `vacancy/${data.id}/what-to-do`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -139,7 +139,7 @@ export const offerApi = createApi({
             query: (data) => {
                 const { body: { id, conditions } } = data;
                 return {
-                    url: `/vacancy/${id}/conditions/`,
+                    url: `/vacancy/${id}/conditions`,
                     method: "PUT",
                     // toDo: Change body typing for backend
                     body: {
@@ -159,7 +159,7 @@ export const offerApi = createApi({
         }),
         getConditions: build.query<OfferConditionsApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/conditions/`,
+                url: `vacancy/${data.id}/conditions`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -169,7 +169,7 @@ export const offerApi = createApi({
         UpdateOfferParams
         >({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/finishing-touches/`,
+                url: `/vacancy/${data.body.id}/finishing-touches`,
                 method: "PUT",
                 // toDo: Change body typing for backend
                 body: {
@@ -185,7 +185,7 @@ export const offerApi = createApi({
         }),
         getFinishingTouches: build.query<OfferFinishingTouchesApi, CreateOfferResponse>({
             query: (data) => ({
-                url: `vacancy/${data.id}/finishing-touches/`,
+                url: `vacancy/${data.id}/finishing-touches`,
                 method: "GET",
             }),
             providesTags: ["offer"],
