@@ -95,10 +95,6 @@ export const WhoNeedsForm = memo(() => {
         return <Preloader className={styles.loading} />;
     }
 
-    const handleVolunteerPlaces = (inputValue: string) => {
-
-    };
-
     return (
         <FormProvider {...form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
