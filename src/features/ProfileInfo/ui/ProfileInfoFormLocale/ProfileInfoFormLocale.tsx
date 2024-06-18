@@ -19,7 +19,7 @@ interface ProfileInfoFormLocaleProps {
 export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) => {
     const { className } = props;
     const { control } = useFormContext();
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -34,7 +34,7 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
                         className={styles.dropdown}
                         onChange={field.onChange}
                         value={field.value}
-                        label={t("Страна")}
+                        label={t("info.Страна")}
                     >
                         {}
                     </SelectComponent>
@@ -49,7 +49,7 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
                         className={styles.dropdown}
                         onChange={field.onChange}
                         value={field.value}
-                        label={t("Город")}
+                        label={t("info.Город")}
                     >
                         {}
                     </SelectComponent>
@@ -64,7 +64,7 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
                         className={styles.dropdown}
                         onChange={field.onChange}
                         value={field.value}
-                        label={t("Язык интерфейса")}
+                        label={t("info.Язык интерфейса")}
                     >
                         {localeLanguage.map((lang) => (
                             <MenuItem value={lang.value} key={lang.value}>{lang.name}</MenuItem>
