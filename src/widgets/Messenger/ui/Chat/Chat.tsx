@@ -106,13 +106,11 @@ export const Chat: FC<ChatProps> = (props) => {
                 </div>
                 <SendMessage />
             </div>
-            {isInfoOpened && (
-                <UserInfoCard
-                    user={user}
-                    infoOpenedChange={infoOpenedChange}
-                    className={cn(styles.userInfo)}
-                />
-            )}
+            <UserInfoCard
+                user={user}
+                infoOpenedChange={infoOpenedChange}
+                className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
+            />
         </div>
     );
 };

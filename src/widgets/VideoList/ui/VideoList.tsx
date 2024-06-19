@@ -12,7 +12,8 @@ export const VideoList: React.FC<VideoListProps> = ({ videosURL }) => {
         .map((videoURL: string, index) => (
             <ReactPlayer
                 key={index}
-                width="400px"
+                width="387px"
+                height="220px"
                 url={videoURL}
                 controls
             />

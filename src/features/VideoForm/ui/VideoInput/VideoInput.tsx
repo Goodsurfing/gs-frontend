@@ -24,7 +24,7 @@ export const VideoInput = memo(({
             <Controller
                 name="video"
                 control={control}
-                rules={{ pattern: { value: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.com/i, message: t("volunteer-gallery.Введите корректный URL") } }}
+                rules={{ pattern: { value: /^(?:(?:https?:\/\/)?(?:www\.)?(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch?.+&v=))((\w|-){11})(?:\S+)?|(http:\/\/|https:\/\/)?(www\.)?(vimeo.com\/)([0-9]+))$/, message: t("volunteer-gallery.Введите корректный URL") } }}
                 render={({ field, fieldState }) => (
                     <div className={styles.contentWrapper}>
                         <div className={styles.inputContent}>

@@ -107,12 +107,33 @@
     display: none;
 }
 
+.userInfo {
+    display: none;
+}
+
+.userInfo.open {
+    display: block;
+}
+
 @keyframes slideInFromRight {
     from {
         transform: translateX(100%);
+        display: none;
     }
     to {
         transform: translateX(0);
+        display: block;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        display: block;
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+        display: none;
     }
 }
 
@@ -122,6 +143,9 @@
         height: 100%;
         right: 0;
         box-shadow: -15px 0px 20px 0px rgba(33, 33, 33, 0.0509803922);
+        animation: slideInFromLeft 0.5s forwards;
+    }
+    .userInfo.open {
         animation: slideInFromRight 0.5s forwards;
     }
 }
