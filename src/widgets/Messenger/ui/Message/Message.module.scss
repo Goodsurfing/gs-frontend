@@ -17,7 +17,10 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    // width: 100%;
+}
+
+.messageContent.image {
+    padding: 8px;
 }
 
 .messageContent.userMessage {
@@ -31,11 +34,26 @@
     word-break: break-all;
 }
 
+.image {
+    width: auto;
+    max-width: 420px;
+    object-fit: contain;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .date {
     color: var(--text-caption);
     font-weight: 500;
     font-size: 0.75rem;
     align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error * {
+    height: 16px;
 }
 
 @media (max-width: 1400px) {
@@ -51,6 +69,7 @@
 
     .userMessage {
         align-self: flex-start;
+        margin-left: 0;
     }
 
     .otherMessage {

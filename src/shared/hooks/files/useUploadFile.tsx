@@ -8,7 +8,8 @@ export interface GenerateLinkResponse {
 
 const createNewFileName = (file: File) => {
     if (file.type === "image/jpeg") {
-        return file.name.replace(".jpg", ".jpeg");
+        const tempFileName = file.name.replace(".JPG", ".jpg");
+        return tempFileName.replace(".jpg", ".jpeg");
     }
     return file.name;
 };

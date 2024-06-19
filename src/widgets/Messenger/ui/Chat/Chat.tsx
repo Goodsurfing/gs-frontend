@@ -13,6 +13,8 @@ import chatIcon from "@/shared/assets/icons/chat.svg";
 import { Message } from "../Message/Message";
 import styles from "./Chat.module.scss";
 import { SendMessage } from "../SendMessage/SendMessage";
+import Popup from "@/components/Popup/Popup";
+import { Modal } from "@/shared/ui/Modal/Modal";
 
 interface ChatProps {
     id: string | null;
@@ -32,6 +34,7 @@ export const Chat: FC<ChatProps> = (props) => {
     } = props;
 
     const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
+    const [selectedImage, setSelectedImage] = useState<string | undefined>();
 
     if (!id) {
         return (
@@ -44,6 +47,14 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const infoOpenedChange = () => {
         setInfoOpened((prev) => !prev);
+    };
+
+    const onImageChange = (src: string) => {
+        setSelectedImage(src);
+    };
+
+    const onClosePopup = () => {
+        setSelectedImage(undefined);
     };
 
     const handleBackButton = () => {
@@ -81,7 +92,14 @@ export const Chat: FC<ChatProps> = (props) => {
         <div className={cn(styles.wrapper, className)}>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div className={styles.topTab}>
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <div style={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "center",
+                        overflow: "hidden",
+                        width: "100%",
+                    }}
+                    >
                         <ReactSVG
                             src={arrowBackIcon}
                             className={styles.back}
@@ -102,6 +120,14 @@ export const Chat: FC<ChatProps> = (props) => {
                     <div className={styles.chatList}>
                         {renderMessages()}
                         <OfferApplication isHost={false} username="Николай Николаевич" />
+                        <Message
+                            avatar=""
+                            date={new Date()}
+                            isUser
+                            image="https://corporate.walmart.com/content/corporate/en_us/purpose/sustainability/planet/nature/jcr:content/par/image_2_0.img.png/1693432526985.png"
+                            username={user.name}
+                            onImageClick={onImageChange}
+                        />
                     </div>
                 </div>
                 <SendMessage />
@@ -111,6 +137,11 @@ export const Chat: FC<ChatProps> = (props) => {
                 infoOpenedChange={infoOpenedChange}
                 className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
             />
+            {selectedImage && (
+                <Modal onClose={onClosePopup}>
+                    <img src={selectedImage} className={styles.imagePopup} alt="" />
+                </Modal>
+            )}
         </div>
     );
 };

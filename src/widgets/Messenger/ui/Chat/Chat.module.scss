@@ -23,6 +23,9 @@
 .userName {
     font-size: 1.125rem;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .back path {
@@ -113,6 +116,12 @@
 
 .userInfo.open {
     display: block;
+}
+
+.imagePopup {
+    width: auto;
+    max-width: 80vw;
+    object-fit: contain;
 }
 
 @keyframes slideInFromRight {
