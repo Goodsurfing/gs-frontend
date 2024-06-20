@@ -24,3 +24,11 @@
     top: 0;
     right: -40px;
 }
+
+@media (max-width: 480px) {
+    .buttonClose {
+        bottom: 110%;
+        right: 0;
+        top: auto;
+    }
+}

@@ -14,14 +14,14 @@ interface ProfileInfoProps {
 
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const { error, isLoading, profile } = useUser();
 
     if (error) {
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
             <div className={styles.body}>
-                {t("Произошла ошибка")}
+                {t("info.Произошла ошибка")}
             </div>
         </div>;
     }

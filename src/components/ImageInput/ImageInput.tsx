@@ -27,12 +27,13 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     const handleFileChange = async (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
+        setError(false);
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
             try {
                 const size = await checkWidthAndHeight(file);
-                if (size.width < 1920 || size.height < 1080) {
+                if (size.width < 1280 || size.height < 720) {
                     setError(true);
                     return;
                 }
@@ -96,32 +97,30 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 </div>
             )}
             {!img.src && (
-                <>
-                    <InputFile
-                        onChange={handleFileChange}
-                        imageURL={img.src}
-                        uploadedImageClassName={styles.uploadedImg}
-                        wrapperClassName={cn(styles.wrapper, wrapperClassName)}
-                        labelClassName={cn(styles.label, labelClassName)}
-                        labelChildren={labelChildren}
-                        id={id}
-                        {...restInputProps}
-                    />
-                    <div
-                        className={cn(
-                            extraWrapperClassName,
-                            styles.extraWrapper,
-                        )}
-                    >
-                        {error && (
-                            <span className={styles.error}>
-                                Неверный формат файла
-                            </span>
-                        )}
-                        {description}
-                    </div>
-                </>
+                <InputFile
+                    onChange={handleFileChange}
+                    imageURL={img.src}
+                    uploadedImageClassName={styles.uploadedImg}
+                    wrapperClassName={cn(styles.wrapper, wrapperClassName)}
+                    labelClassName={cn(styles.label, labelClassName)}
+                    labelChildren={labelChildren}
+                    id={id}
+                    {...restInputProps}
+                />
             )}
+            <div
+                className={cn(
+                    extraWrapperClassName,
+                    styles.extraWrapper,
+                )}
+            >
+                {error && (
+                    <span className={styles.error}>
+                        Неверный формат файла
+                    </span>
+                )}
+                {description}
+            </div>
         </div>
     );
 };

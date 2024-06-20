@@ -16,7 +16,7 @@ interface ProfileInfoFormAboutMeProps {
 
 export const ProfileInfoFormAboutMe = memo((props: ProfileInfoFormAboutMeProps) => {
     const { className } = props;
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const isLocked = useAppSelector(getProfileReadonly);
     const { control } = useFormContext();
     return (
@@ -25,7 +25,7 @@ export const ProfileInfoFormAboutMe = memo((props: ProfileInfoFormAboutMeProps) 
                 disabled={isLocked}
                 control={control}
                 name="aboutMe"
-                label={t("Расскажите о себе")}
+                label={t("info.Расскажите о себе")}
             />
         </div>
     );

@@ -18,7 +18,7 @@ export const InputSelectedCountries: FC = memo(() => {
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (["Enter", "Tab", ";"].includes(event.key)) {
+        if (["Enter", "Tab", ";", ","].includes(event.key)) {
             event.preventDefault();
             setTagList();
         }

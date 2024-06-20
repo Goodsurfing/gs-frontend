@@ -18,12 +18,12 @@ interface ProfileInfoFormContactsProps {
 export const ProfileInfoFormContacts = memo((props: ProfileInfoFormContactsProps) => {
     const { className } = props;
     const { control } = useFormContext();
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const isLocked = useAppSelector(getProfileReadonly);
     return (
         <div className={cn(className, styles.wrapper)}>
             <InputControl disabled={isLocked} control={control} name="contacts.email" label="E-mail" />
-            <InputControl disabled={isLocked} control={control} name="contacts.profile" label={t("Телефон")} />
+            <InputControl disabled={isLocked} control={control} name="contacts.profile" label={t("info.Телефон")} />
         </div>
     );
 });

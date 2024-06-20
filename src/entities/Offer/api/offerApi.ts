@@ -48,7 +48,7 @@ export const offerApi = createApi({
         }),
         updateStatus: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/status`,
+                url: `/vacancy/${data.body.id}/status/`,
                 method: "PUT",
                 body: { status: data.body.status },
             }),

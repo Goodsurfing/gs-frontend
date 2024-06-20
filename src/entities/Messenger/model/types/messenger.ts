@@ -23,9 +23,11 @@ export interface UserChatType {
     cases: string[]
     arrivalDate: Date;
     expirationDate: Date;
+    messages: MessageType[];
 }
 
-export interface Message {
+export interface MessageType {
     date: Date;
     content: string;
+    isUser: boolean;
 }

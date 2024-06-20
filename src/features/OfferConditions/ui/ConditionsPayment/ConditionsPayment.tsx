@@ -21,14 +21,18 @@ export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
     const { t } = useTranslation("offer");
 
     const onContributionChange = (inputValue: string) => {
-        if (!Number.isNaN(+inputValue)) {
-            onChange({ ...value, contribution: +inputValue });
+        if (inputValue.length <= 15) {
+            if (inputValue === "" || /^[0-9]+$/.test(inputValue)) {
+                onChange({ ...value, contribution: inputValue ? +inputValue : 0 });
+            }
         }
     };
 
     const onRewardChange = (inputValue: string) => {
-        if (!Number.isNaN(+inputValue)) {
-            onChange({ ...value, reward: +inputValue });
+        if (inputValue.length <= 15) {
+            if (inputValue === "" || /^[0-9]+$/.test(inputValue)) {
+                onChange({ ...value, reward: inputValue ? +inputValue : 0 });
+            }
         }
     };
 
@@ -41,10 +45,10 @@ export const ConditionsPayment = memo((props: ConditionsPaymentProps) => {
             <p className={styles.title}>{t("conditions.Оплата")}</p>
             <div className={styles.content}>
                 <div className={styles.volunteer}>
-                    <Input description={t("conditions.Взносы волонтера")} type="number" value={value.contribution} onChange={(e) => onContributionChange(e.target.value)} />
+                    <Input description={t("conditions.Взносы волонтера")} type="number" value={value.contribution.toString()} onChange={(e) => onContributionChange(e.target.value)} min="0" />
                 </div>
                 <div className={styles.reward}>
-                    <Input description={t("conditions.Вознаграждение труда")} type="number" value={value.reward} onChange={(e) => onRewardChange(e.target.value)} />
+                    <Input description={t("conditions.Вознаграждение труда")} type="number" value={value.reward.toString()} onChange={(e) => onRewardChange(e.target.value)} min="0" />
                 </div>
                 <SelectComponent className={styles.dropdown} defaultValue={value.currency}>
                     {paymentValues.map((currency) => (

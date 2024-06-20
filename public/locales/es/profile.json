@@ -1,0 +1,33 @@
+{
+    "info": {
+        "Основная информация": "Información básica",
+        "Имя": "Nombre",
+        "Фамилия": "Apellido",
+        "Редактировать": "Editar",
+        "Пол": "Género",
+        "Мужчина": "Hombre",
+        "Женщина": "Mujer",
+        "Другой": "Otro",
+        "Страна": "Un país",
+        "Город": "Ciudad",
+        "Язык интерфейса": "Lenguaje de interfaz",
+        "Телефон": "Teléfono",
+        "День рождения": "Cumpleaños",
+        "Расскажите о себе": "Cuéntanos acerca de tí",
+        "Сохранить": "Ahorrar",
+        "Произошла ошибка": "Se ha producido un error",
+        "Отмена": "Cancelar",
+        "January": "Enero",
+        "February": "Febrero",
+        "March": "Marzo",
+        "April": "Abril",
+        "May": "Mayo",
+        "June": "Junio",
+        "July": "Julio",
+        "August": "Agosto",
+        "September": "Septiembre",
+        "October": "Octubre",
+        "November": "Noviembre",
+        "December": "Diciembre"
+    }
+}

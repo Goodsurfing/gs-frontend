@@ -140,7 +140,12 @@ export const WhoNeedsForm = memo(() => {
                                 "whoNeeds.Сколько волонтерских мест одновременно",
                             )}
                             value={String(field.value)}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            onChange={(e) => {
+                                const inputValue = +e.target.value;
+                                if (inputValue >= 0 && inputValue <= 999) {
+                                    field.onChange(inputValue);
+                                }
+                            }}
                         />
                     )}
                 />

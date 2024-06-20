@@ -163,3 +163,34 @@ export const useLangsLevels = (): IOptionLevelLanguage[] => {
         },
     ];
 };
+
+export const useLangsLevelsFilter = (): IOptionLevelLanguage[] => {
+    const { t } = useTranslation("offer");
+
+    return [
+        {
+            label: t("whoNeeds.Начальный"),
+            value: "beginner",
+        },
+        {
+            label: t("whoNeeds.Элементарный"),
+            value: "elementary",
+        },
+        {
+            label: t("whoNeeds.Слабый средний уровень"),
+            value: "lower_intermediate",
+        },
+        {
+            label: t("whoNeeds.Выше среднего"),
+            value: "upper_intermediate",
+        },
+        {
+            label: t("whoNeeds.Продвинутый"),
+            value: "advanced",
+        },
+        {
+            label: t("whoNeeds.В совершенстве"),
+            value: "proficiency",
+        },
+    ];
+};

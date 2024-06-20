@@ -20,7 +20,8 @@ const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6];
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     const { t } = useTranslation("offer");
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (+e.target.value) {
+        const inputString = e.target.value;
+        if (inputString.length <= 4 && +inputString) {
             onChange({ ...value, hours: +e.target.value });
         }
     };

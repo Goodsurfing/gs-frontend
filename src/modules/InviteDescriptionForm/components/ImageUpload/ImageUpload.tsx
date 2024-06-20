@@ -35,7 +35,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             description={(
                 <span className={styles.description}>
                     {t(
-                        "description.Ширина фотографии для обложки не меньше 1920 пикселей",
+                        "description.Ширина фотографии для обложки не меньше 1280 пикселей",
                     )}
                 </span>
             )}

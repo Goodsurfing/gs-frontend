@@ -27,7 +27,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
         className,
         profile,
     } = props;
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
 
     const [updateProfile] = profileApi.useUpdateProfileInfoMutation();
@@ -66,11 +66,11 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                         size="MEDIUM"
                         color="BLUE"
                     >
-                        {t("Сохранить")}
+                        {t("info.Сохранить")}
                     </Button>
                 </div>
                 <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
-                    {isLocked ? t("Редактировать") : t("Отмена")}
+                    {isLocked ? t("info.Редактировать") : t("info.Отмена")}
                 </button>
             </form>
         </FormProvider>
