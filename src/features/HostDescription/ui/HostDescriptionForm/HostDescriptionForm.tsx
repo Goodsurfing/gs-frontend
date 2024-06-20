@@ -69,6 +69,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     text: "Организация создана",
                     type: HintType.Success,
                 });
+                window.location.reload();
             } catch (err) {
                 setToast({
                     text: "Ошибка при создании организации",
@@ -120,7 +121,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     <HostDescriptionFormContent />
                 </div>
                 <div>
-                    <Button type="submit" disabled={isCreateHostLoading} color="BLUE" size="MEDIUM" variant="FILL">
+                    <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">
                         Сохранить
                     </Button>
                 </div>
