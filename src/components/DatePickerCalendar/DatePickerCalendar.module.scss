@@ -9,6 +9,10 @@
     position: absolute;
 }
 
+.calendarWrapper.close {
+    visibility: hidden;
+}
+
 .input.disabled {
     pointer-events: none;
 }

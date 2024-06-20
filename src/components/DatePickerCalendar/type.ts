@@ -8,4 +8,5 @@ export interface DatePickerCalendarProps {
     calendarClassName?: string;
     calendarWrapperClassName?: string;
     inputDisabled?: boolean;
+    isScrollTo?: boolean;
 }

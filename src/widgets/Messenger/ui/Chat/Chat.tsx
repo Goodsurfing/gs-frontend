@@ -13,7 +13,6 @@ import chatIcon from "@/shared/assets/icons/chat.svg";
 import { Message } from "../Message/Message";
 import styles from "./Chat.module.scss";
 import { SendMessage } from "../SendMessage/SendMessage";
-import Popup from "@/components/Popup/Popup";
 import { Modal } from "@/shared/ui/Modal/Modal";
 
 interface ChatProps {

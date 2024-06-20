@@ -21,6 +21,7 @@
 
 .messageContent.image {
     padding: 8px;
+    max-width: 420px;
 }
 
 .messageContent.userMessage {
@@ -35,8 +36,7 @@
 }
 
 .image {
-    width: auto;
-    max-width: 420px;
+    width: 100%;
     object-fit: contain;
     border-radius: 10px;
     cursor: pointer;

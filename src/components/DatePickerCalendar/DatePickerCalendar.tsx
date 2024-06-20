@@ -31,9 +31,11 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     min,
     max,
     inputDisabled = true,
+    isScrollTo = false,
 }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
+    const calendarRef = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     const { locale } = useLocale();
 
@@ -100,7 +102,10 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     };
 
     const onInputClick = () => {
-        setShowPopup(true);
+        setShowPopup((prev) => {
+            if (isScrollTo) calendarRef.current?.scrollIntoView({ behavior: "smooth" });
+            return !prev;
+        });
     };
 
     const [inputValueDate, isValueDate] = useMemo(() => {
@@ -133,23 +138,26 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 })}
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
-            {showPopup && (
-                <div
-                    className={cn(styles.calendarWrapper, calendarWrapperClassName)}
-                    onClick={(event) => { event.stopPropagation(); }}
-                >
-                    <CalendarComponent
-                        locale={locale}
-                        className={cn(calendarClassName, styles.calendar)}
-                        value={inputValueDate || new Date()}
-                        onChange={(date: Date) => {
-                            handleChange(date);
-                        }}
-                        minDate={min}
-                        maxDate={max}
-                    />
-                </div>
-            )}
+            <div
+                ref={calendarRef}
+                className={cn(
+                    styles.calendarWrapper,
+                    { [styles.close]: !showPopup },
+                    calendarWrapperClassName,
+                )}
+                onClick={(event) => { event.stopPropagation(); }}
+            >
+                <CalendarComponent
+                    locale={locale}
+                    className={cn(calendarClassName, styles.calendar)}
+                    value={inputValueDate || new Date()}
+                    onChange={(date: Date) => {
+                        handleChange(date);
+                    }}
+                    minDate={min}
+                    maxDate={max}
+                />
+            </div>
         </div>
     );
 };

@@ -68,11 +68,13 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                         : (
                             <DateInput
                                 className={styles.leftInput}
+                                calendarClassName={styles.calendarInner}
                                 calendarWrapperClassName={styles.calendar}
                                 onDateChange={handleFromDateChange}
                                 value={terms?.start}
                                 min={min}
                                 inputDisabled
+                                isScrollTo
                             />
                         )}
                 </div>
@@ -85,12 +87,14 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                             <>
                                 <DateInput
                                     className={styles.rightInput}
+                                    calendarClassName={styles.calendarInner}
                                     calendarWrapperClassName={styles.calendar}
                                     onDateChange={handleToDateChange}
                                     value={terms?.end}
                                     min={new Date()}
                                     max={max}
                                     inputDisabled
+                                    isScrollTo
                                 />
                                 <IconButtonComponent
                                     wrapperClassName={styles.wrapperButton}

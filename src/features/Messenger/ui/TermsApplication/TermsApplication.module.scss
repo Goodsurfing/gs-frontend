@@ -40,4 +40,16 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-primary-1);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 1rem;
+    }
+
+    .calendarInner {
+        min-width: 0 !important;
+        width: 75vw !important;
+    }
 }

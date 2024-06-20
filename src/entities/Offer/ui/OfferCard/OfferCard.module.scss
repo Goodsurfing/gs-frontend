@@ -117,3 +117,9 @@
   text-align: left;
   color: var(--white-theme-color);
 }
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 1rem;
+  }
+}

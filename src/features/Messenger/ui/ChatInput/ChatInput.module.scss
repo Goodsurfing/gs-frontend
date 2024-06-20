@@ -44,3 +44,14 @@
         width: 100% !important;
     }
 }
+
+
+@media (max-width: 480px) {
+    .emojiWrapper {
+        width: 85vw;
+        right: -180%;
+    }
+    .emojiWrapper > aside {
+        width: 100% !important;
+    }
+}
