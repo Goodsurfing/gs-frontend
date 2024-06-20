@@ -7,6 +7,10 @@
     height: calc(100vh - 178px);
 }
 
+.offersMap.close {
+    display: none;
+}
+
 .offersList {
     max-width: 1000px;
 }

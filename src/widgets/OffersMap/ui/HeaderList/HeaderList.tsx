@@ -5,6 +5,7 @@ import styles from "./HeaderList.module.scss";
 import { SwitchClosedOffers } from "../SwitchClosedOffers/SwitchClosedOffers";
 import { SelectSort } from "../SelectSort/SelectSort";
 import { ButtonClose } from "../ButtonClose/ButtonClose";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 
 interface HeaderListProps {
     isShowMap: boolean;
@@ -14,6 +15,7 @@ interface HeaderListProps {
 export const HeaderList: FC<HeaderListProps> = (props) => {
     const { isShowMap, onChangeShowMap } = props;
     const { control } = useFormContext();
+    const { width } = useWindowDimensions();
 
     return (
         <div className={styles.wrapper}>
@@ -32,7 +34,9 @@ export const HeaderList: FC<HeaderListProps> = (props) => {
                     <SelectSort value={field.value} onChange={field.onChange} />
                 )}
             />
-            <ButtonClose value={isShowMap} onChange={onChangeShowMap} />
+            {(width > 992) && (
+                <ButtonClose value={isShowMap} onChange={onChangeShowMap} />
+            )}
         </div>
     );
 };

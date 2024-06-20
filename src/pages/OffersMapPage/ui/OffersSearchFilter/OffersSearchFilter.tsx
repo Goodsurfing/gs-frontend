@@ -7,6 +7,7 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields, OffersSortFields } from "../../model/types";
 import styles from "./OffersSearchFilter.module.scss";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 
 export const OffersSearchFilter = () => {
     const defaultSortValues: DefaultValues<OffersSortFields> = {
@@ -33,6 +34,7 @@ export const OffersSearchFilter = () => {
     });
 
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
+    const { width } = useWindowDimensions();
 
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
@@ -54,7 +56,7 @@ export const OffersSearchFilter = () => {
                     />
                 </FormProvider>
 
-                {isMapOpened && (
+                {(isMapOpened && width > 992) && (
                     <OffersMap
                         className={styles.offersMap}
                         classNameMap={styles.offersMap}
