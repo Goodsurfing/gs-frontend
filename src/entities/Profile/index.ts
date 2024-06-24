@@ -10,7 +10,6 @@ export {
 export {
     profileApi,
     useGetProfileInfoQuery,
-    useJoinToHostMutation,
 } from "./api/profileApi";
 
 export type {

@@ -12,6 +12,7 @@ import { OfferState, OfferStatus } from "./offerStatus";
 
 export interface Offer {
     id: string;
+    organization: OfferOrganization,
     where: OfferWhere;
     when: OfferWhen;
     whoNeeds: OfferWhoNeeds;
@@ -24,8 +25,14 @@ export interface Offer {
     articles?: Article[];
     status: OfferStatus;
     state: OfferState;
+    gallery: CoverImageType[];
 }
 
+interface OfferOrganization {
+    id: string;
+    name: string;
+    type: string;
+}
 export interface MyOffers {
     list: [
         {
@@ -43,6 +50,10 @@ export interface MyOffers {
     ] | []
 }
 
+interface CoverImageType {
+    id: string;
+    contentUrl: string;
+}
 export interface AddressAutoComplete {
     list: string[]
 }

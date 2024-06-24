@@ -16,10 +16,9 @@ export interface OfferDescriptionApi {
     categoryIds: Category[];
     shortDescription: string;
     description: string;
-    gallery: CoverImageType[];
 }
 
 interface CoverImageType {
     id: string;
-    url: string;
+    contentUrl: string;
 }

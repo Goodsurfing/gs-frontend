@@ -10,6 +10,7 @@ import { OfferDescriptionApi } from "../model/types/offerDescription";
 import { OfferWhatToDoApi } from "../model/types/offerWhatToDo";
 import { OfferConditionsApi } from "../model/types/offerConditions";
 import { OfferFinishingTouchesApi } from "../model/types/offerFinishingTouches";
+import { OfferStatus } from "../model/types/offerStatus";
 
 interface UpdateOfferParams {
     body: Partial<Offer>;
@@ -19,14 +20,18 @@ interface CreateOfferResponse {
     id: string;
 }
 
+interface CreateOfferRequest {
+    status: OfferStatus;
+}
+
 export const offerApi = createApi({
     reducerPath: "offerApi",
     baseQuery,
     tagTypes: ["offer", "address"],
     endpoints: (build) => ({
-        createOffer: build.mutation<CreateOfferResponse, void>({
+        createOffer: build.mutation<CreateOfferResponse, CreateOfferRequest>({
             query: (body) => ({
-                url: "/vacancy",
+                url: "/vacancies",
                 method: "POST",
                 body,
             }),

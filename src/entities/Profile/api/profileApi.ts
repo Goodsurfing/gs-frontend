@@ -9,31 +9,23 @@ export const profileApi = createApi({
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: "/user/profile/",
+                url: "users/me",
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "/user/profile/",
+                url: "users",
                 method: "PUT",
                 body: profileData,
             }),
             invalidatesTags: ["profile"],
-        }),
-        joinToHost: build.mutation<Profile, string>({
-            query: (organizationId) => ({
-                url: `organization/${organizationId}/join/`,
-                method: "PUT",
-            }),
-            invalidatesTags: ["host", "profile"],
         }),
     }),
 });
 
 export const {
     useGetProfileInfoQuery,
-    useJoinToHostMutation,
     useUpdateProfileInfoMutation,
 } = profileApi;

@@ -1,6 +1,6 @@
 export enum AuthApiEndpoints {
-    REGISTER = "/register/",
-    LOGIN = "/login_check",
+    REGISTER = "/users",
+    LOGIN = "/auth",
     RESET_PASSWORD_REQUEST = "/user/reset-password/request",
     RESET_PASSWORD = "/user/reset-password/",
 }
