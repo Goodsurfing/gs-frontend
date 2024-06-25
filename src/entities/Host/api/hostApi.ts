@@ -37,7 +37,7 @@ export const hostApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        getMyHost: build.query<GetHostsResponse | { list: [] }, void>({
+        getMyHost: build.query<Host, void>({
             query: () => ({
                 url: "organizations/my",
                 method: "GET",
@@ -66,6 +66,7 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
 } = hostApi;

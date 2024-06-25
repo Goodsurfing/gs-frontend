@@ -30,12 +30,47 @@ export const offerApi = createApi({
     tagTypes: ["offer", "address"],
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, CreateOfferRequest>({
-            query: (body) => ({
+            query: () => ({
                 url: "/vacancies",
                 method: "POST",
-                body,
             }),
             invalidatesTags: ["offer"],
+        }),
+        updateOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacancies${data.body.id}`,
+                method: "PATCH",
+                body: data.body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        deleteOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
+            query: (data) => ({
+                url: `/vacancies/${data.body.id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getOfferById: build.query<Offer, string>({
+            query: (offerId) => ({
+                url: `vacancies/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        getOffers: build.query<Offer[], void>({
+            query: () => ({
+                url: "vacancies",
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        getHostOffersById: build.query<Offer[], string>({
+            query: (organizationId) => ({
+                url: `ogranizations/${organizationId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
         }),
         getAddressAutoComplete: build.query<AddressAutoComplete, void>({
             query: () => ({
@@ -44,17 +79,10 @@ export const offerApi = createApi({
             }),
             providesTags: ["address"],
         }),
-        getMyOffers: build.query<MyOffers, void>({
-            query: () => ({
-                url: "/vacancy/my",
-                method: "GET",
-            }),
-            providesTags: ["offer"],
-        }),
         updateStatus: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/status/`,
-                method: "PUT",
+                url: `/vacancy/${data.body.id}`,
+                method: "PATCH",
                 body: { status: data.body.status },
             }),
             invalidatesTags: ["offer"],
@@ -203,7 +231,6 @@ export const {
     useUpdateStatusMutation,
     useUpdateWhereMutation,
     useLazyGetWhereQuery,
-    useGetMyOffersQuery,
     useUpdateWhenMutation,
     useGetWhenQuery,
     useUpdateWhoNeedsMutation,

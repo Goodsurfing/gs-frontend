@@ -14,7 +14,7 @@ export interface Profile {
     country?: string;
     city?: string;
     phone?: string;
-    imageUuid?: string;
+    imageUuid?: ImageType;
     aboutMe?: string;
     vk?: string;
     facebook?: string;
@@ -22,6 +22,11 @@ export interface Profile {
     telegram?: string;
     organizations?: Host[] | [];
     volunteer?: Volunteer;
+}
+
+interface ImageType {
+    id: string;
+    contentUrl: string;
 }
 
 export interface ProfileSchema {

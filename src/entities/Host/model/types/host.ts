@@ -3,6 +3,7 @@ import { Gallery } from "@/modules/Gallery/model/types/gallery";
 import { Offer } from "@/entities/Offer";
 import { Review } from "@/entities/Review";
 import { Article } from "@/entities/Article";
+import { Profile } from "@/entities/Profile";
 
 export interface Host {
     id: string;
@@ -15,6 +16,9 @@ export interface Host {
     facebook: string;
     instagram: string;
     telegram: string;
+    team: Profile[];
+    vacancies: Offer[];
+    owner: Profile;
 }
 
 export interface Video {
