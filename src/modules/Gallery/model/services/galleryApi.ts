@@ -2,10 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { API_BASE_URL } from "@/shared/constants/api";
 
-interface GenerateLinkResponse {
-    url: string;
-    uuid: string;
-    contentType: string;
+interface MediaObjectResponse {
+    contentUrl: string;
+    id: string;
 }
 
 export const galleryApi = createApi({
@@ -23,11 +22,11 @@ export const galleryApi = createApi({
         },
     }),
     endpoints: (build) => ({
-        generateLink: build.mutation<GenerateLinkResponse, { fileName: string }>({
-            query: (data: { fileName: string }) => ({
-                url: "/media/generate-upload-link",
+        getMediaObjectById: build.mutation<MediaObjectResponse, string>({
+            query: (fileId) => ({
+                url: "/media_objects",
                 method: "POST",
-                body: data,
+                body: fileId,
             }),
         }),
     }),

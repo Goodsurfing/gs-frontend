@@ -1,15 +1,16 @@
-import { API_MEDIA_BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
-export interface GenerateLinkResponse {
-    url: string;
-    contentType: string;
-    uuid: string;
+export interface ObjectMediaResponse {
+    id: string;
+    contentUrl: string;
 }
 
 const createNewFileName = (file: File) => {
     if (file.type === "image/jpeg") {
-        const tempFileName = file.name.replace(".JPG", ".jpg");
-        return tempFileName.replace(".jpg", ".jpeg");
+        return file.name.replace(/\.jpg$/i, ".jpeg");
+    }
+    if (file.type === "image/png") {
+        return file.name.replace(/\.png$/i, ".png");
     }
     return file.name;
 };
@@ -22,7 +23,7 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
         };
         try {
             const response = await fetch(
-                `${API_MEDIA_BASE_URL}/generate-upload-link`,
+                `${API_BASE_URL}/media_objects`,
                 {
                     method: "POST",
                     headers: new Headers({
@@ -31,41 +32,22 @@ const uploadFile = async (fileName: string, data: File, token: string) => {
                     body: JSON.stringify(body),
                 },
             );
-            const dataResult = await response.json();
+            const dataResult: ObjectMediaResponse = await response.json();
 
             return dataResult;
         } catch (error) {
-            // eslint-disable-next-line no-console
             return null;
         }
     };
-    const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        // const newFile = new File([data], `${link.uuid}.png`, { type: data.type });
-        // const formData = new FormData();
-        // formData.append(`${link.uuid}`, newFile);
-        try {
-            await fetch(link.url, {
-                method: "PUT",
-                headers: new Headers({
-                    "Content-Type": link.contentType,
-                }),
-                body: data,
-            });
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(error);
-        }
-    };
     if (fileName && data) {
-        const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
-        if (generateLinkResponse) {
-            const result = await uploadFileMutation(generateLinkResponse)
-                .then(() => true)
-                .catch(() => false);
-            if (result) return generateLinkResponse;
-            // return generateLinkResponse;
+        const uploadedFile: ObjectMediaResponse | null = await
+        sendRequestForGenerateUploadLink();
+        if (uploadedFile) {
+            return uploadedFile;
         }
     }
 };
+
+// add get media_object
 
 export default uploadFile;
