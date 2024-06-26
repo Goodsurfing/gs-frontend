@@ -16,6 +16,10 @@ export const loginApi = createApi({
                 url: AuthApiEndpoints.LOGIN,
                 method: "POST",
                 body: data,
+                headers: {
+                    accept: "application/json",
+                    "Content-type": "application/json",
+                },
             }),
         }),
     }),

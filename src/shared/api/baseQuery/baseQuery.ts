@@ -8,8 +8,11 @@ export const baseQuery = fetchBaseQuery({
         const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
         if (token) {
             headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
+            console.log(`Bearer ${JSON.parse(token)}`);
+            console.log(`${JSON.parse(token)}`);
         }
         headers.set("Content-Type", "application/json");
+        headers.set("accept", "application/json");
         return headers;
     },
 });
