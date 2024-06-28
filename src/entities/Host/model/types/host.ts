@@ -17,7 +17,7 @@ export interface Host {
     instagram: string;
     telegram: string;
     team: Profile[];
-    vacancies: Offer[];
+    vacancies: string[]; // link to offers /api/vacancies/id
     owner: Profile;
 }
 

@@ -14,7 +14,7 @@ export interface Profile {
     country?: string;
     city?: string;
     phone?: string;
-    imageUuid?: ImageType;
+    image?: ImageType;
     aboutMe?: string;
     vk?: string;
     facebook?: string;
@@ -24,7 +24,7 @@ export interface Profile {
     volunteer?: Volunteer;
 }
 
-interface ImageType {
+export interface ImageType {
     id: string;
     contentUrl: string;
 }

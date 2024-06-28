@@ -15,6 +15,7 @@ export {
 export type {
     Profile,
     Gender,
+    ImageType,
 } from "./model/types/profile";
 
 export { useUser } from "./lib/useUser";

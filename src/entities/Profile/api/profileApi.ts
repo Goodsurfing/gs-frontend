@@ -16,8 +16,8 @@ export const profileApi = createApi({
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "users",
-                method: "PUT",
+                url: "users/me",
+                method: "PATCH",
                 body: profileData,
             }),
             invalidatesTags: ["profile"],

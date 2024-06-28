@@ -59,7 +59,9 @@ const HostOffersPageCard = memo(
                         {textSlice(title, 34, "title")}
                     </p>
                     <div className={styles.subtitle}>
-                        <span className={styles.location}>{location}</span>
+                        <span className={styles.location}>
+                            {textSlice(location, 34, "address")}
+                        </span>
                         <span className={styles.category}>{category}</span>
                     </div>
                     <div className={styles.stats}>

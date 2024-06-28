@@ -1,21 +1,21 @@
-import { MyOffers, OfferStatus } from "@/entities/Offer";
+import { Offer, OfferStatus } from "@/entities/Offer";
 
-type TextSlice = "title" | "description";
+type TextSlice = "title" | "description" | "address";
 
 export const filterOffersByStatus = (
-    offers: MyOffers | undefined,
+    offers: Offer[] | undefined,
     status: OfferStatus,
-): MyOffers | undefined => {
+): Offer[] | undefined => {
     if (!offers) return;
-    const filteredList = offers.list.filter(
+    const filteredList = offers.filter(
         (item) => item.status === status || item.status === "empty",
     );
 
     if (status === "open") {
-        return { list: offers.list.filter((item) => item.status === "open") } as MyOffers;
+        return offers.filter((item) => item.status === "open");
     }
 
-    return filteredList.length > 0 ? { list: filteredList } as MyOffers : undefined;
+    return filteredList.length > 0 ? filteredList : undefined;
 };
 
 export const textSlice = (
@@ -29,6 +29,8 @@ export const textSlice = (
                 return "Без заголовка";
             case "description":
                 return "Без описания";
+            case "address":
+                return "Без адреса";
             default:
                 return "";
         }

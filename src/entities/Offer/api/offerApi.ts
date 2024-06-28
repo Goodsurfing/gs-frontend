@@ -230,6 +230,7 @@ export const {
     useCreateOfferMutation,
     useUpdateStatusMutation,
     useUpdateWhereMutation,
+    useGetHostOffersByIdQuery,
     useLazyGetWhereQuery,
     useUpdateWhenMutation,
     useGetWhenQuery,
