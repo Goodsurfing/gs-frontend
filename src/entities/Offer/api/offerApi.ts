@@ -1,10 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQuery, baseQueryMergeJson } from "@/shared/api/baseQuery/baseQuery";
 
 import { AddressAutoComplete, MyOffers, Offer } from "../model/types/offer";
 import { OfferWhere } from "../model/types/offerWhere";
-import { OfferWhenApi } from "../model/types/offerWhen";
 import { OfferWhoNeedsApi } from "../model/types/offerWhoNeeds";
 import { OfferDescriptionApi } from "../model/types/offerDescription";
 import { OfferWhatToDoApi } from "../model/types/offerWhatToDo";
@@ -13,11 +12,12 @@ import { OfferFinishingTouchesApi } from "../model/types/offerFinishingTouches";
 import { OfferStatus } from "../model/types/offerStatus";
 
 interface UpdateOfferParams {
+    id: number
     body: Partial<Offer>;
 }
 
 interface CreateOfferResponse {
-    id: string;
+    id: number;
 }
 
 interface CreateOfferRequest {
@@ -26,7 +26,7 @@ interface CreateOfferRequest {
 
 export const offerApi = createApi({
     reducerPath: "offerApi",
-    baseQuery,
+    baseQuery: baseQueryMergeJson,
     tagTypes: ["offer", "address"],
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, CreateOfferRequest>({
@@ -37,11 +37,14 @@ export const offerApi = createApi({
             invalidatesTags: ["offer"],
         }),
         updateOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacancies${data.body.id}`,
-                method: "PATCH",
-                body: data.body,
-            }),
+            query: (data) => {
+                console.log(data);
+                return {
+                    url: `/vacancies/${data.id}`,
+                    method: "PATCH",
+                    body: JSON.stringify(data.body),
+                };
+            },
             invalidatesTags: ["offer"],
         }),
         deleteOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
@@ -81,7 +84,7 @@ export const offerApi = createApi({
         }),
         updateStatus: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}`,
+                url: `/vacancies/${data.body.id}`,
                 method: "PATCH",
                 body: { status: data.body.status },
             }),
@@ -89,37 +92,39 @@ export const offerApi = createApi({
         }),
         updateWhere: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/where`,
-                method: "PUT",
+                url: `/vacancies/${data.body.id}`,
+                method: "PATCH",
                 body: data.body.where,
             }),
             invalidatesTags: ["offer"],
         }),
-        getWhere: build.query<OfferWhere, CreateOfferResponse>({
-            query: (data) => ({
-                url: `vacancy/${data.id}/where`,
-                method: "GET",
-            }),
-            providesTags: ["offer"],
-        }),
+        // getWhere: build.query<OfferWhere, CreateOfferResponse>({
+        //     query: (data) => ({
+        //         url: `vacancies/${data.id}`,
+        //         method: "GET",
+        //     }),
+        //     transformResponse: (response: Offer) => response.where,
+        //     providesTags: ["offer"],
+        // }),
         updateWhen: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/when`,
+                url: `/vacancies/${data.body.id}`,
                 method: "PUT",
                 body: data.body.when,
             }),
             invalidatesTags: ["offer"],
         }),
-        getWhen: build.query<OfferWhenApi, CreateOfferResponse>({
-            query: (data) => ({
-                url: `vacancy/${data.id}/when`,
-                method: "GET",
-            }),
-            providesTags: ["offer"],
-        }),
+        // getWhen: build.query<OfferWhenApi, CreateOfferResponse>({
+        //     query: (data) => ({
+        //         url: `vacancies/${data.id}`,
+        //         method: "GET",
+        //     }),
+        //     transformResponse: (response: Offer) => response.when,
+        //     providesTags: ["offer"],
+        // }),
         updateWhoNeeds: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacancy/${data.body.id}/how-needs`,
+                url: `/vacancies/${data.body.id}`,
                 method: "PUT",
                 body: data.body.whoNeeds,
             }),
@@ -228,12 +233,13 @@ export const offerApi = createApi({
 
 export const {
     useCreateOfferMutation,
+    useUpdateOfferMutation,
     useUpdateStatusMutation,
     useUpdateWhereMutation,
     useGetHostOffersByIdQuery,
-    useLazyGetWhereQuery,
+    useGetOfferByIdQuery,
+    useLazyGetOfferByIdQuery,
     useUpdateWhenMutation,
-    useGetWhenQuery,
     useUpdateWhoNeedsMutation,
     useGetWhoNeedsQuery,
     useUpdateDescriptionMutation,

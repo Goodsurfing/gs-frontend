@@ -17,7 +17,7 @@ export const useGetMyOffers = () => {
         const fetchOffers = async (links: string[]) => {
             try {
                 const offers = await Promise.all(
-                    links.map((url) => fetch(`${BASE_URL}${url}`).then((response) => {
+                    links.map((url) => fetch(`${BASE_URL}${url.slice(1)}`).then((response) => {
                         if (!response.ok) {
                             throw new Error(`Ошибка при запросе: ${response.statusText}`);
                         }

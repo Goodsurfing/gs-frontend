@@ -11,7 +11,7 @@ export type {
 export type { OfferWhere } from "./model/types/offerWhere";
 
 export type {
-    OfferWhen, OfferWhenPeriods, OfferWhenApi, OfferWhenPeriodsApi,
+    OfferWhen, OfferWhenPeriods, OfferWhenPeriodsApi,
 } from "./model/types/offerWhen";
 
 export type {

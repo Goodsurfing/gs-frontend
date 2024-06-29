@@ -11,21 +11,24 @@ import { Article } from "@/entities/Article";
 import { OfferState, OfferStatus } from "./offerStatus";
 
 export interface Offer {
-    id: string;
     organization: OfferOrganization,
-    where: OfferWhere;
-    when: OfferWhen;
-    whoNeeds: OfferWhoNeeds;
-    description: OfferDescription;
-    whatToDo: OfferWhatToDo;
-    conditions: OfferConditions;
-    finishingTouches: OfferFinishingTouches;
+    where?: OfferWhere;
+    when?: OfferWhen;
+    howNeeds?: OfferWhoNeeds;
+    description?: OfferDescription;
+    whatToDo?: OfferWhatToDo;
+    conditions?: OfferConditions;
+    finishingTouches?: OfferFinishingTouches;
     contributors: OfferContributor[];
     reviews?: Review[];
     articles?: Article[];
     status: OfferStatus;
-    state: OfferState;
     gallery: CoverImageType[];
+    state: OfferState;
+}
+
+export interface OfferWithId extends Offer {
+    id: number;
 }
 
 interface OfferOrganization {

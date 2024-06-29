@@ -2,11 +2,10 @@ export type Category = string;
 
 export interface OfferDescription {
     title: string;
-    imageId?: string;
+    image?: string;
     categoryIds: Category[];
     shortDescription: string;
     description: string;
-    galleryIds: string[];
 }
 
 export interface OfferDescriptionApi {

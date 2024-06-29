@@ -42,12 +42,12 @@ const Languages: FC<LanguagesProps> = (props) => {
                 name="langLevels"
                 label={t("whoNeeds.Уровень владения")}
                 options={allLevels}
-                value={getObjectFromValue(value.level, allLevels)}
+                value={getObjectFromValue(value.languageLevel, allLevels)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
                         onChange({
                             ...value,
-                            level: (newValue as IOptionLevelLanguage).value,
+                            languageLevel: (newValue as IOptionLevelLanguage).value,
                         });
                     }
                 }}

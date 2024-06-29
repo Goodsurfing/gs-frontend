@@ -12,16 +12,16 @@ import styles from "./HostOffersPageCard.module.scss";
 import { OfferStatus } from "@/entities/Offer";
 
 interface IHostOffersPageCard {
-    id: string;
+    id: number;
     image: string;
-    title: string;
-    location: string;
-    category: string;
+    title?: string;
+    location?: string;
+    category?: string;
     rating: string;
     likes: string;
     reviews: string;
     went: string;
-    description: string;
+    description?: string;
     status: OfferStatus;
 }
 

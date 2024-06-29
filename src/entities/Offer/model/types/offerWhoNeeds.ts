@@ -4,7 +4,7 @@ export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_in
 
 export interface Language {
     language: string;
-    level: LevelLanguage
+    languageLevel: LevelLanguage
 }
 
 export type Languages = Language[];
@@ -17,24 +17,12 @@ export interface Age {
 }
 
 export interface OfferWhoNeeds {
-    genders: Gender[];
-    ageMax: number;
-    ageMin: number;
-    needAllLanguages: boolean,
-    languages: Languages;
-    volunteerPlaces: number;
-    receptionPlace: ReceptionPlace;
-    additionalInfo?: string;
-}
-
-export interface OfferWhoNeedsApi {
-    id: string;
     gender: Gender[];
     ageMax: number;
     ageMin: number;
     needAllLanguages: boolean,
-    languages: Languages;
+    requiredLanguages: Languages;
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
-    additionalInfo?: string;
+    additionalInfo: string;
 }

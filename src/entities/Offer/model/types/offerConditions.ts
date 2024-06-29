@@ -17,11 +17,11 @@ export interface Payment {
 }
 
 export interface OfferConditions {
-    housingIds?: Housing;
-    foodIds?: Nutrition;
-    paidTravelIds?: Travel;
-    conveniencesIds: Facilities[];
-    additionalFeaturesIds: ExtraFeatures[];
+    housing?: Housing;
+    food?: Nutrition;
+    paidTravel?: Travel;
+    conveniences: Facilities[];
+    additionalFeatures: ExtraFeatures[];
     volunteerContributions: number;
     volunteerRemuneration: number;
     currency: Currency;
