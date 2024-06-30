@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { CircularProgress } from "@mui/material";
 import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
@@ -71,29 +72,32 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                             className={cn(styles.imageCover)}
                         />
                     </div>
-                    <div className={styles.containerButtons}>
-                        <InputFile
-                            id="upload image"
-                            onChange={handleFileChange}
-                            wrapperClassName={styles.inputButton}
-                            uploadedImageClassName={styles.hiddenImg}
-                            labelClassName={styles.inputButton}
-                            labelChildren={(
-                                <div className={styles.buttons}>
-                                    {t("description.Изменить")}
-                                </div>
-                            )}
-                        />
-                        <Button
-                            className={styles.buttons}
-                            color="BLUE"
-                            size="SMALL"
-                            variant="OUTLINE"
-                            onClick={handleDelete}
-                        >
-                            {t("description.Удалить")}
-                        </Button>
-                    </div>
+                    {!isLoading && (
+                        <div className={styles.containerButtons}>
+                            <InputFile
+                                id="upload image"
+                                onChange={handleFileChange}
+                                wrapperClassName={styles.inputButton}
+                                uploadedImageClassName={styles.hiddenImg}
+                                labelClassName={styles.inputButton}
+                                labelChildren={(
+                                    <div className={styles.buttons}>
+                                        {t("description.Изменить")}
+                                    </div>
+                                )}
+                            />
+                            <Button
+                                className={styles.buttons}
+                                color="BLUE"
+                                size="SMALL"
+                                variant="OUTLINE"
+                                onClick={handleDelete}
+                            >
+                                {t("description.Удалить")}
+                            </Button>
+                        </div>
+                    )}
+                    {isLoading && <CircularProgress className={styles.loader} />}
                 </div>
             )}
             {!img.src && (

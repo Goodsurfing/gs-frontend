@@ -3,8 +3,9 @@ import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { API_BASE_URL } from "@/shared/constants/api";
 
 interface MediaObjectResponse {
-    contentUrl: string;
+    "@id": string;
     id: string;
+    contentUrl: string;
 }
 
 export const galleryApi = createApi({
@@ -17,17 +18,18 @@ export const galleryApi = createApi({
             if (token) {
                 headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
-            // headers.set("Content-Type", "application/json");
+            headers.set("Accept", "application/ld+json");
             return headers;
         },
     }),
     endpoints: (build) => ({
-        getMediaObjectById: build.mutation<MediaObjectResponse, string>({
-            query: (fileId) => ({
-                url: "/media_objects",
-                method: "POST",
-                body: fileId,
+        getMediaObjectById: build.query<MediaObjectResponse, string>({
+            query: (mediaId) => ({
+                url: `/media_objects/${mediaId}`,
+                method: "GET",
             }),
         }),
     }),
 });
+
+export const { useGetMediaObjectByIdQuery, useLazyGetMediaObjectByIdQuery } = galleryApi;

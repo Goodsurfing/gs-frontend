@@ -7,16 +7,6 @@ export interface OfferDescription {
     shortDescription: string;
     description: string;
 }
-
-export interface OfferDescriptionApi {
-    id: string;
-    title: string;
-    image: CoverImageType;
-    categoryIds: Category[];
-    shortDescription: string;
-    description: string;
-}
-
 interface CoverImageType {
     id: string;
     contentUrl: string;
