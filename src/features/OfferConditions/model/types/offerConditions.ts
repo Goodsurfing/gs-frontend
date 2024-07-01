@@ -4,17 +4,17 @@ import {
 
 export type HousingFields = {
     switchState: boolean;
-    housing?: Housing;
+    housing: Housing[];
 };
 
 export type NutritionFields = {
     switchState: boolean;
-    nutrition?: Nutrition;
+    nutrition: Nutrition[];
 };
 
 export type TravelFields = {
     switchState: boolean;
-    travel?: Travel;
+    travel: Travel[];
 };
 
 export type FacilitiesFields = {

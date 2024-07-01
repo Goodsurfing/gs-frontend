@@ -10,7 +10,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useGetFinishingTouchesQuery, useUpdateFinishingTouchesMutation, useUpdateStatusMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -27,6 +27,7 @@ import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishin
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import styles from "./OfferFinishingTouches.module.scss";
+import { OfferStatus } from "@/entities/Offer";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -46,9 +47,8 @@ export const OfferFinishingTouchesForm = memo(
     (props: OfferFinishingTouchesFormProps) => {
         const { className, onSuccess } = props;
         const { id } = useParams();
-        const [updateFinishingTouches, { isLoading }] = useUpdateFinishingTouchesMutation();
-        const { data: getFinishingTouches } = useGetFinishingTouchesQuery({ id: id || "" });
-        const [updateOfferStatus] = useUpdateStatusMutation();
+        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
 
@@ -57,11 +57,18 @@ export const OfferFinishingTouchesForm = memo(
             defaultValues,
         });
 
-        const updateFinishingTouchesHandle = (data: OfferFinishingTouchesFormFields) => {
+        const updateFinishingTouchesHandle = (
+            data: OfferFinishingTouchesFormFields,
+            offerStatus: OfferStatus,
+        ) => {
             const preparedData = offerFinishingTouchesApiAdapter(data);
             setToast(undefined);
-            updateFinishingTouches({
-                body: { id, finishingTouches: preparedData },
+            updateOffer({
+                id: Number(id),
+                body: {
+                    finishingTouches: preparedData,
+                    status: offerStatus,
+                },
             })
                 .unwrap()
                 .then(() => {
@@ -81,35 +88,19 @@ export const OfferFinishingTouchesForm = memo(
         const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (
             data,
         ) => {
-            updateFinishingTouchesHandle(data);
-            updateOfferStatus({ body: { id, status: "open" } })
-                .unwrap()
-                .catch(() => {
-                    setToast({
-                        text: "Произошла ошибка публикации",
-                        type: HintType.Error,
-                    });
-                });
+            updateFinishingTouchesHandle(data, "open");
             onSuccess?.(data);
         };
 
         const onDraftHandle: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
-            updateFinishingTouchesHandle(data);
-            updateOfferStatus({ body: { id, status: "empty" } })
-                .unwrap()
-                .catch(() => {
-                    setToast({
-                        text: "Произошла ошибка",
-                        type: HintType.Error,
-                    });
-                });
+            updateFinishingTouchesHandle(data, "empty");
         };
 
         useEffect(() => {
-            if (getFinishingTouches) {
-                reset(offerFinishingTouchesAdapter(getFinishingTouches));
+            if (getOfferData?.finishingTouches) {
+                reset(offerFinishingTouchesAdapter(getOfferData.finishingTouches));
             }
-        }, [getFinishingTouches, reset]);
+        }, [getOfferData?.finishingTouches, reset]);
 
         return (
             <form

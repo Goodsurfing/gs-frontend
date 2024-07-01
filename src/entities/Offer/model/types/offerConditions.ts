@@ -17,9 +17,9 @@ export interface Payment {
 }
 
 export interface OfferConditions {
-    housing?: Housing;
-    food?: Nutrition;
-    paidTravel?: Travel;
+    housing?: Housing[];
+    food?: Nutrition[];
+    paidTravel?: Travel[];
     conveniences: Facilities[];
     additionalFeatures: ExtraFeatures[];
     volunteerContributions: number;
