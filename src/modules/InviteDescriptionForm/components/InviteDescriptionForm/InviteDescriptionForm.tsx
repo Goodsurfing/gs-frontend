@@ -8,14 +8,12 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import {
     useGetOfferByIdQuery,
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
-import uploadFile from "@/shared/hooks/files/useUploadFile";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -63,11 +61,38 @@ export const InviteDescriptionForm = () => {
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
+    const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
+    const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
-    const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
+    const handleCoverImageLoading = (value: boolean) => {
+        setCoverImageLoading(value);
+    };
 
+    const handleGalleryLoading = (value: boolean) => {
+        setGalleryLoading(value);
+    };
+
+    const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
+        setToast(undefined);
+        const preparedData = inviteDescriptionApiAdapter(data);
+        const galleryImages = data.images.map((image) => image.uuid)
+            .filter((uuid) => uuid !== null) as string[];
+        updateOffer({ id: Number(id), body: { description: preparedData, gallery: galleryImages } })
+            .unwrap()
+            .then(() => {
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            })
+            .catch(() => {
+                setToast({
+                    text: "Некорректно введены данные",
+                    type: HintType.Error,
+                });
+            });
     };
 
     // const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
@@ -214,6 +239,8 @@ export const InviteDescriptionForm = () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={field.onChange}
+                                    isLoading={isCoverImageLoading}
+                                    onChangeLoading={handleCoverImageLoading}
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",
                                     )}
@@ -235,13 +262,15 @@ export const InviteDescriptionForm = () => {
                                 label={t("description.Добавить фото")}
                                 value={field.value}
                                 onChange={field.onChange}
+                                isLoading={isGalleryLoading}
+                                onChangeLoading={handleGalleryLoading}
                             />
                         )}
                     />
                 </div>
                 <Button
                     className={styles.btn}
-                    disabled={isLoading}
+                    disabled={isLoading || isCoverImageLoading || isGalleryLoading}
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"

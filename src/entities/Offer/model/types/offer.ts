@@ -24,7 +24,7 @@ export interface Offer {
     reviews?: Review[];
     articles?: Article[];
     status: OfferStatus;
-    gallery: CoverImageType[];
+    gallery: string[];
     state: OfferState;
 }
 
@@ -36,27 +36,6 @@ interface OfferOrganization {
     id: string;
     name: string;
     type: string;
-}
-export interface MyOffers {
-    list: [
-        {
-            id: string,
-            title: string,
-            description: string,
-            location: string,
-            category: string,
-            rating: number,
-            likes: number,
-            reviews: number,
-            acceptedRequests: number,
-            status: OfferStatus;
-        },
-    ] | []
-}
-
-interface CoverImageType {
-    id: string;
-    contentUrl: string;
 }
 export interface AddressAutoComplete {
     list: string[]

@@ -55,6 +55,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 setError(true);
             }
         }
+        event.target.value = "";
     };
 
     const handleDelete = () => {
@@ -97,7 +98,12 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                             </Button>
                         </div>
                     )}
-                    {isLoading && <CircularProgress className={styles.loader} />}
+                    {isLoading
+                    && (
+                        <div className={styles.loader}>
+                            <CircularProgress />
+                        </div>
+                    )}
                 </div>
             )}
             {!img.src && (

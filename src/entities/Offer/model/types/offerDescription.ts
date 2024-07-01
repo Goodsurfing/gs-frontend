@@ -7,7 +7,3 @@ export interface OfferDescription {
     shortDescription: string;
     description: string;
 }
-interface CoverImageType {
-    id: string;
-    contentUrl: string;
-}
