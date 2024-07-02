@@ -22,6 +22,7 @@ interface IHostOffersPageCard {
     went: string;
     description?: string;
     status: OfferStatus;
+    onCloseClick: () => void;
 }
 
 const HostOffersPageCard = memo(
@@ -37,9 +38,11 @@ const HostOffersPageCard = memo(
         went,
         description,
         status,
+        onCloseClick,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
+
         const onEditClick = () => {
             if (status === "empty") {
                 navigate(`/${locale}/offers/welcome/${id}`);
@@ -104,6 +107,7 @@ const HostOffersPageCard = memo(
                         variant="OUTLINE"
                         size="SMALL"
                         className={styles.gray}
+                        onClick={onCloseClick}
                     >
                         Закрыть
                     </Button>

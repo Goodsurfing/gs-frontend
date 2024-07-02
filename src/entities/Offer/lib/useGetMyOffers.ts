@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import { Offer } from "../model/types/offer";
-import { BASE_URL } from "@/shared/constants/api";
+import { useLazyGetHostOffersByIdQuery } from "../api/offerApi";
 
 export const useGetMyOffers = () => {
     const { data: myHost } = useGetMyHostQuery();
+    const [trigger] = useLazyGetHostOffersByIdQuery();
 
     const [data, setData] = useState<Offer[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,28 +15,20 @@ export const useGetMyOffers = () => {
         setIsLoading(true);
         setError(null);
 
-        const fetchOffers = async (links: string[]) => {
-            try {
-                const offers = await Promise.all(
-                    links.map((url) => fetch(`${BASE_URL}${url.slice(1)}`).then((response) => {
-                        if (!response.ok) {
-                            throw new Error(`Ошибка при запросе: ${response.statusText}`);
-                        }
-                        return response.json();
-                    })),
-                );
-                setData(offers);
-                setIsLoading(false);
-            } catch (err) {
-                setError(err);
-                setIsLoading(false);
+        const fetchOffers = async () => {
+            if (myHost) {
+                try {
+                    const offers = await trigger(myHost?.id).unwrap();
+                    setData(offers);
+                    setIsLoading(false);
+                } catch (err) {
+                    setError(err);
+                    setIsLoading(false);
+                }
             }
         };
-        if (myHost) {
-            const offersLinks = myHost.vacancies || [];
-            fetchOffers(offersLinks);
-        }
-    }, [myHost, myHost?.vacancies]);
+        fetchOffers();
+    }, [myHost, trigger]);
 
     return { data, isLoading, error };
 };

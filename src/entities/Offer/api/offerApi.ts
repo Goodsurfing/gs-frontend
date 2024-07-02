@@ -61,9 +61,10 @@ export const offerApi = createApi({
         }),
         getHostOffersById: build.query<Offer[], string>({
             query: (organizationId) => ({
-                url: `ogranizations/${organizationId}`,
+                url: `organizations/${organizationId}/vacancies`,
                 method: "GET",
             }),
+
             providesTags: ["offer"],
         }),
     }),
@@ -73,6 +74,7 @@ export const {
     useCreateOfferMutation,
     useUpdateOfferMutation,
     useGetHostOffersByIdQuery,
+    useLazyGetHostOffersByIdQuery,
     useGetOfferByIdQuery,
     useLazyGetOfferByIdQuery,
 } = offerApi;

@@ -55,6 +55,10 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
                     {t(
                         "description.Ширина фотографии для обложки не меньше 1280 пикселей",
                     )}
+                    <br />
+                    {t(
+                        "description.Изображение не должно превышать 2 МБ",
+                    )}
                 </span>
             )}
             id="image-wrapper"
