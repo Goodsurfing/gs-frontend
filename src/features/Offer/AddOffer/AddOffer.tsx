@@ -19,7 +19,7 @@ export const AddOffer = () => {
         if (!profile?.organizations?.length) {
             return;
         }
-        const result = await postOffer().unwrap();
+        const result = await postOffer({ status: "empty" }).unwrap();
         navigate(`/${locale}/offers/welcome/${result}`);
     };
 

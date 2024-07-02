@@ -1,7 +1,7 @@
 export type ExtraConditions = "allow-kids" | "allow-pets" | "couples" | "students" | "vegetarian" | "adult-only";
 
 export interface OfferFinishingTouches {
-    additionalConditions?: ExtraConditions[];
+    additionalConditions: ExtraConditions[];
     helloText: string;
     roles: string;
     questionnaireUrl: string;

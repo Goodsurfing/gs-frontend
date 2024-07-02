@@ -8,7 +8,7 @@ import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 export const mockedVolunteerData: Volunteer = {
     id: "1",
-    imageUuid: defaultImage,
+    image: { id: "", contentUrl: defaultImage },
     firstName: "Станислав",
     lastName: "Старовойтов",
     aboutMe: "about me",

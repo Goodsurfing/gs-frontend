@@ -5,6 +5,7 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 import { Host } from "../model/types/host";
 
 interface UpdateHostParams {
+    id: string;
     body: Partial<Host>;
 }
 
@@ -54,7 +55,7 @@ export const hostApi = createApi({
         }),
         updateHost: build.mutation<unknown, UpdateHostParams>({
             query: (data) => ({
-                url: `organizations/${data.body.id}`,
+                url: `organizations/${data.id}`,
                 method: "PATH",
                 body: data.body,
             }),

@@ -6,10 +6,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import Button from "@/shared/ui/Button/Button";
-
-import { textSlice } from "../../lib/filterOffersByStatus";
 import styles from "./HostOffersPageCard.module.scss";
 import { OfferStatus } from "@/entities/Offer";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface IHostOffersPageCard {
     id: number;

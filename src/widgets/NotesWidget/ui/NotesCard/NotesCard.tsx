@@ -20,8 +20,8 @@ interface NotesCardProps {
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     const {
         offer: {
-            description: { imageId, title },
-            where: { address },
+            description,
+            where,
             id,
         },
         index,
@@ -32,7 +32,12 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     const { t } = useTranslation();
 
     return (
-        <Draggable isDragDisabled={isDragDisable} key={id} draggableId={id} index={index}>
+        <Draggable
+            isDragDisabled={isDragDisable}
+            key={id}
+            draggableId={id.toString()}
+            index={index}
+        >
             {(provided) => (
                 <div
                     ref={provided.innerRef}
@@ -51,17 +56,17 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={imageId}
+                            icon={description?.image}
                             alt="offer title image"
                             className={styles.avatar}
                         />
                         <div className={styles.infoContainer}>
                             <span className={styles.title}>
-                                {truncateString(title, 30)}
+                                {description ? truncateString(description.title, 30) : "Без заголовка"}
                             </span>
                             <span className={styles.address}>
-                                {address
-                                    ? truncateString(address, 23)
+                                {where?.address
+                                    ? truncateString(where.address, 23)
                                     : "Адрес не указан"}
                             </span>
                             <span className={styles.tag}>

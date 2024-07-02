@@ -28,10 +28,6 @@ export interface Offer {
     state: OfferState;
 }
 
-// export interface OfferWithId extends Offer {
-//     id: number;
-// }
-
 interface OfferOrganization {
     id: string;
     name: string;

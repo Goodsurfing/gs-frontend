@@ -9,17 +9,18 @@ import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import styles from "./OfferCard.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface OfferCardProps {
     image?: string;
-    title: string;
-    location: string;
-    category: string;
-    rating: string;
-    likes: string;
-    reviews: string;
-    went: string;
-    description: string;
+    title?: string;
+    location?: string;
+    category?: string;
+    rating?: string;
+    likes?: string;
+    reviews?: string;
+    went?: string;
+    description?: string;
     link?: string;
     className?: string;
     isImageShow?: boolean;
@@ -53,7 +54,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
             }
             <div className={styles.content}>
                 <p className={styles.title}>
-                    {title.length > 88 ? `${title.slice(0, 88)}..` : title}
+                    {textSlice(title, 88, "title")}
                 </p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
@@ -84,9 +85,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                     </div>
                 </div>
                 <p className={styles.description}>
-                    {description.length > 110
-                        ? `${description.slice(0, 109)}..`
-                        : description}
+                    {textSlice(description, 110, "description")}
                 </p>
             </div>
         </Link>

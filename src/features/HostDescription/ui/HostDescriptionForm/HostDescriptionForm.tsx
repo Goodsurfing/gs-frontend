@@ -12,8 +12,6 @@ import {
     useCreateHostMutation,
 } from "@/entities/Host";
 
-import { useJoinToHostMutation } from "@/entities/Profile";
-
 import type { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import {
     hostDescriptionFormAdapter,
@@ -44,11 +42,6 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: createHostError,
     }] = useCreateHostMutation();
 
-    const [joinToOrganization, {
-        isLoading: isJoinLoading,
-        error: joinError,
-    }] = useJoinToHostMutation();
-
     const [updateHost, {
         isLoading: isHostUpdateLoading,
         error: hostUpdateError,
@@ -61,10 +54,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         const preparedData = hostDescriptionApiAdapter(data);
         if (!host) {
             try {
-                const createHostResponse = await createHost(preparedData).unwrap();
-                if (createHostResponse.id) {
-                    const res = await joinToOrganization(createHostResponse.id);
-                }
+                createHost(preparedData).unwrap();
                 setToast({
                     text: "Организация создана",
                     type: HintType.Success,
@@ -78,7 +68,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
             }
         }
         if (host) {
-            updateHost({ body: { ...preparedData, id: host.id } });
+            updateHost({ id: host.id, body: { ...preparedData } });
         }
     };
 
