@@ -7,9 +7,9 @@ import { useParams } from "react-router-dom";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
 import { getGeoObject } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
-import { useUpdateWhereMutation } from "@/entities/Offer";
 import {
-    useLazyGetWhereQuery,
+    useLazyGetOfferByIdQuery,
+    useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -45,16 +45,18 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     });
     const { t } = useTranslation("offer");
     const { id } = useParams();
-    const [updateWhere, { isLoading }] = useUpdateWhereMutation();
-    const [trigger, { isLoading: isLoadingGetData }] = useLazyGetWhereQuery();
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const [trigger, { isLoading: isLoadingGetData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
 
     const fetchGeoObject = useCallback(async () => {
-        const resultWhere = await trigger({ id: id || "" });
-        if (resultWhere.data?.address) {
-            const geoObject = await getGeoObject(resultWhere.data?.address);
+        const resultWhere = await trigger(id || "");
+        const { data: offerData } = resultWhere;
+        if (offerData?.where?.address) {
+            const offerAddress = offerData.where.address;
+            const geoObject = await getGeoObject(offerAddress);
             if (geoObject) {
-                reset({ address: { address: resultWhere.data?.address, geoObject } });
+                reset({ address: { address: offerAddress, geoObject } });
             }
         }
     }, [trigger, id, reset]);
@@ -62,7 +64,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateWhere({ body: { id, where: preparedData } })
+        updateOffer({ id: Number(id), body: { where: preparedData } })
             .then(() => {
                 fetchGeoObject();
                 setToast({
@@ -82,7 +84,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         fetchGeoObject();
     }, [fetchGeoObject]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;
     };

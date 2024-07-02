@@ -9,7 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useGetWhenQuery, useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -38,8 +38,8 @@ interface OfferWhenFormProps {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { id } = useParams();
-    const [updateWhen, { isLoading }] = useUpdateWhenMutation();
-    const { data: getWhenData, isLoading: isLoadingGetWhenData } = useGetWhenQuery({ id: id || "" });
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
@@ -72,7 +72,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
         setToast(undefined);
-        updateWhen({ body: { id, when: preparedData } })
+        updateOffer({ id: Number(id), body: { when: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -90,12 +90,12 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     };
 
     useEffect(() => {
-        if (getWhenData) {
-            reset(offerWhenFormAdapter(getWhenData));
+        if (getOfferData?.when) {
+            reset(offerWhenFormAdapter(getOfferData?.when));
         } else {
             reset();
         }
-    }, [getWhenData, reset]);
+    }, [getOfferData?.when, reset]);
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;

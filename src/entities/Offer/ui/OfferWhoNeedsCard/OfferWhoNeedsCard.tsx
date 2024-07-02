@@ -22,7 +22,7 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
             <Text title="Кто нужен" titleSize="h3" />
             <div className={styles.cards}>
                 <IconTextComponent
-                    text={whoNeeds.genders.length > 0 ? whoNeeds.genders.join(", ") : "Не указано"}
+                    text={whoNeeds.gender.length > 0 ? whoNeeds.gender.join(", ") : "Не указано"}
                     icon={menIcon}
                     alt="genders"
                 />

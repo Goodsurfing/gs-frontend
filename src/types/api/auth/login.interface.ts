@@ -1,5 +1,5 @@
 export interface IAuthLoginData {
-    username: string;
+    email: string;
     password: string;
 }
 

@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { TravelFields } from "../../model/types/offerConditions";
 
-import styles from "./ConditionsTravel.module.scss";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { Travel } from "@/entities/Offer";
 import { useConditionItems } from "../../model/data/conditionItems";
+import styles from "./ConditionsTravel.module.scss";
 
 interface ConditionsTravelProps {
     value: TravelFields;
@@ -22,12 +22,20 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
         onChange({
             ...value,
             switchState: newSwitchState,
-            travel: !newSwitchState ? undefined : value.travel,
+            travel: !newSwitchState ? [] : value.travel,
         });
     };
 
     const onToggleCondition = (conditionId: Travel) => {
-        if (value.switchState) onChange({ ...value, travel: conditionId });
+        if (value.switchState) {
+            const newHousing = value.travel.includes(conditionId)
+                ? value.travel.filter((id) => id !== conditionId)
+                : [...value.travel, conditionId];
+            onChange({
+                ...value,
+                travel: newHousing,
+            });
+        }
     };
 
     return (
@@ -47,7 +55,7 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
             <div className={styles.conditions}>
                 {payedRideItems.map((item) => (
                     <ConditionsItem
-                        checked={value.travel === item.id}
+                        checked={value.travel.includes(item.id)}
                         icon={item.icon}
                         onToggle={() => onToggleCondition(item.id)}
                         text={item.text}

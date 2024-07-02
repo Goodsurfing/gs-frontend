@@ -19,13 +19,13 @@ export const VolunteerSubscriberCard: FC<VolunteerSubscriberCardProps> = memo(
     (props: VolunteerSubscriberCardProps) => {
         const {
             profile: {
-                imageUuid, firstName, lastName, country, city,
+                image, firstName, lastName, country, city,
             },
             className,
         } = props;
         return (
             <div className={cn(className, styles.wrapper)}>
-                <Avatar icon={imageUuid} className={styles.avatar} />
+                <Avatar icon={image?.contentUrl} className={styles.avatar} />
                 <div className={styles.info}>
                     <span className={styles.name}>
                         {firstName}

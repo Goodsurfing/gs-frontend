@@ -22,7 +22,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
 
     const onAddBtnClick = useCallback(() => {
         if (value.length < 10) {
-            onChange([...value, { language: "Английский", level: "not_matter" } as Language]);
+            onChange([...value, { language: "Английский", languageLevel: "not_matter" } as Language]);
         }
     }, [onChange, value]);
 

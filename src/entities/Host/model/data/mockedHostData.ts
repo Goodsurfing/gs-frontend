@@ -23,6 +23,53 @@ export const mockedHostData: Host = {
     telegram: "",
     vk: "",
     website: "",
+    owner: {
+        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        email: "string",
+        locale: "string",
+        firstName: "string",
+        lastName: "string",
+        birthDate: "2024-07-01T18:11:04.893Z",
+        image: {
+            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            contentUrl: "string",
+        },
+        gender: "male",
+        country: "string",
+        city: "string",
+        phone: "string",
+        aboutMe: "string",
+        vk: "string",
+        facebook: "string",
+        instagram: "string",
+        telegram: "string",
+    },
+    team: [
+        {
+            id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            email: "string",
+            locale: "string",
+            firstName: "string",
+            lastName: "string",
+            birthDate: "2024-07-01T18:23:44.318Z",
+            image: {
+                id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                contentUrl: "string",
+            },
+            gender: "male",
+            country: "string",
+            city: "string",
+            phone: "string",
+            aboutMe: "string",
+            vk: "string",
+            facebook: "string",
+            instagram: "string",
+            telegram: "string",
+        },
+    ],
+    vacancies: [
+        "https://example.com/",
+    ],
 };
 
 const mockedGallery: Gallery = {

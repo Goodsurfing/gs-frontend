@@ -25,8 +25,8 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
                     .map(({ description }, index) => (
                         <OfferCard
                             image={offerDefaultImage}
-                            title={description.title}
-                            description={description.shortDescription}
+                            title={description?.title}
+                            description={description?.shortDescription}
                             location="Казань, Россия"
                             category="Заповедники и нац. парки"
                             rating="4.3"

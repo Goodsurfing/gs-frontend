@@ -11,6 +11,7 @@ import { galleryApi } from "../../model/services/galleryApi";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getGalleryImages } from "../../model/selectors/getGalleryImages/getGalleryImages";
 import { galleryActions } from "../../model/slice/gallerySlice";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 interface UploadMultipleImagesProps {
     className?: string;
@@ -24,21 +25,26 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
     onUpload,
 }) => {
     const [uploadedImg, setUploadedImg] = useState<string[]>([]);
+    const [isError, setError] = useState<boolean>(false);
     const { t } = useTranslation("volunteer");
-    const [generateLink, {
-        data, isLoading, isSuccess, isError,
-    }] = galleryApi.useGenerateLinkMutation();
 
     const dispatch = useAppDispatch();
 
     const images = useAppSelector(getGalleryImages);
 
     const handleUpdateImages = useCallback((image: File) => {
-        generateLink({ fileName: image.name }).unwrap().then((res) => {
-            dispatch(galleryActions.addImage(res.url));
-        });
+        setError(false);
+        uploadFile(image.name, image)
+            .then((res) => {
+                if (res) {
+                    dispatch(galleryActions.addImage(res.contentUrl));
+                }
+            })
+            .catch(() => {
+                setError(true);
+            });
         onUpload?.(image.name);
-    }, [generateLink, onUpload, dispatch]);
+    }, [onUpload, dispatch]);
 
     const handleDeleteImg = useCallback((index: number) => {
         setUploadedImg((items) => items.filter((_, i) => i !== index));

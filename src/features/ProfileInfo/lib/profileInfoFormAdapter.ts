@@ -24,7 +24,7 @@ export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields
             city: profileData?.city,
             country: profileData?.country,
         },
-        profileAvatar: profileData?.imageUuid,
+        profileAvatar: profileData?.image,
         aboutMe: profileData?.aboutMe,
     };
 }

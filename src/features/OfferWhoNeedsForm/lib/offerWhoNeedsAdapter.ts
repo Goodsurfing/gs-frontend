@@ -1,8 +1,8 @@
-import { OfferWhoNeeds, OfferWhoNeedsApi } from "@/entities/Offer";
+import { OfferWhoNeeds } from "@/entities/Offer";
 
 import { OfferWhoNeedsFields } from "../model/types/offerWhoNeeds";
 
-export const offerWhoNeedsApapter = (
+export const offerWhoNeedsAdapter = (
     whoNeedsForm: OfferWhoNeedsFields,
 ): OfferWhoNeeds => {
     const {
@@ -19,16 +19,16 @@ export const offerWhoNeedsApapter = (
         ageMax: age.maxAge,
         ageMin: age.minAge,
         needAllLanguages,
-        additionalInfo,
+        additionalInfo: additionalInfo || "",
         receptionPlace,
-        volunteerPlaces,
-        genders: gender,
-        languages,
+        volunteerPlaceCount: volunteerPlaces,
+        gender,
+        requiredLanguages: languages,
     };
 };
 
 export const offerWhoNeedsApiAdapter = (
-    whoNeeds: OfferWhoNeedsApi,
+    whoNeeds: OfferWhoNeeds,
 ): OfferWhoNeedsFields => {
     const {
         needAllLanguages,
@@ -36,7 +36,7 @@ export const offerWhoNeedsApiAdapter = (
         ageMin,
         gender,
         receptionPlace,
-        languages,
+        requiredLanguages,
         volunteerPlaceCount,
         additionalInfo,
     } = whoNeeds;
@@ -44,7 +44,7 @@ export const offerWhoNeedsApiAdapter = (
     return {
         age: { maxAge: ageMax, minAge: ageMin },
         gender,
-        languages,
+        languages: requiredLanguages,
         needAllLanguages,
         receptionPlace,
         volunteerPlaces: volunteerPlaceCount,

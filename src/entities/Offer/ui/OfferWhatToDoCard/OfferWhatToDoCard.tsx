@@ -21,7 +21,7 @@ type SkillsMap = {
 export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
     (props: OfferWhatToDoCardProps) => {
         const {
-            whatToDo: { skillIds, hours, dayOff },
+            whatToDo: { skills, hours, dayOff },
             className,
         } = props;
         const { skillsData } = useSkillsData();
@@ -34,7 +34,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                 },
                 {},
             );
-            return skillIds.map((item) => {
+            return skills.map((item) => {
                 const skill = skillsMap[item.text];
                 return (
                     skill && (
@@ -47,7 +47,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
                     )
                 );
             });
-        }, [skillIds, skillsData]);
+        }, [skills, skillsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>

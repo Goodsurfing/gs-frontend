@@ -15,7 +15,7 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
     const period = periods?.[0];
     const offerPeriodStart = (period && period.start) ? period.start : "Точная дата не указана";
-    const offerPeriodEnd = (period && period.end) ? period.end : "Точная дата не указана";
+    const offerPeriodEnd = (period && period.ending) ? period.ending : "Точная дата не указана";
 
     return (
         <div className={cn(className)}>

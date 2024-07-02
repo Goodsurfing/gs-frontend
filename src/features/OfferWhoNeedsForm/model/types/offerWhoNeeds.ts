@@ -8,5 +8,5 @@ export interface OfferWhoNeedsFields {
     needAllLanguages: boolean;
     volunteerPlaces: number;
     receptionPlace: ReceptionPlace;
-    additionalInfo?: string;
+    additionalInfo: string;
 }

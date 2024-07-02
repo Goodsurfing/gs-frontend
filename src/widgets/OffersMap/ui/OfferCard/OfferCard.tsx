@@ -16,10 +16,8 @@ interface OfferCardProps {
 export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
         data: {
-            description: {
-                title, imageId, categoryIds, shortDescription,
-            },
-            where: { address },
+            description,
+            where,
         },
         status,
         className,
@@ -32,11 +30,11 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             })}
         >
             <OfferCardComponent
-                title={title}
-                description={shortDescription}
-                category={categoryIds[0]}
-                image={imageId}
-                location={address || ""}
+                title={description?.title}
+                description={description?.shortDescription}
+                category={description?.categoryIds[0]}
+                image={description?.image}
+                location={where?.address || ""}
                 likes="5"
                 rating="10"
                 reviews="8"

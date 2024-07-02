@@ -10,12 +10,12 @@ export {
 export {
     profileApi,
     useGetProfileInfoQuery,
-    useJoinToHostMutation,
 } from "./api/profileApi";
 
 export type {
     Profile,
     Gender,
+    ImageType,
 } from "./model/types/profile";
 
 export { useUser } from "./lib/useUser";

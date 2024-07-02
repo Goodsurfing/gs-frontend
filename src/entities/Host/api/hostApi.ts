@@ -5,6 +5,7 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 import { Host } from "../model/types/host";
 
 interface UpdateHostParams {
+    id: string;
     body: Partial<Host>;
 }
 
@@ -25,21 +26,28 @@ export const hostApi = createApi({
     endpoints: (build) => ({
         getHostById: build.query<Host, string>({
             query: (id) => ({
-                url: `/organization/${id}`,
+                url: `organizations/${id}`,
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
         getHosts: build.query<GetHostsResponse | { list: [] }, void>({
             query: () => ({
-                url: "/organization",
+                url: "organizations/",
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
+        getMyHost: build.query<Host, void>({
+            query: () => ({
+                url: "organizations/my",
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
         createHost: build.mutation<CreateHostResponse, Partial<Host>>({
             query: (body) => ({
-                url: "/organization/",
+                url: "organizations/",
                 method: "POST",
                 body,
             }),
@@ -47,8 +55,8 @@ export const hostApi = createApi({
         }),
         updateHost: build.mutation<unknown, UpdateHostParams>({
             query: (data) => ({
-                url: `/organization/${data.body.id}`,
-                method: "PUT",
+                url: `organizations/${data.id}`,
+                method: "PATH",
                 body: data.body,
             }),
             invalidatesTags: ["host"],
@@ -59,6 +67,7 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
 } = hostApi;

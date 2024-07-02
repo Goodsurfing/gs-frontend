@@ -6,22 +6,21 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import Button from "@/shared/ui/Button/Button";
-
-import { textSlice } from "../../lib/filterOffersByStatus";
 import styles from "./HostOffersPageCard.module.scss";
 import { OfferStatus } from "@/entities/Offer";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface IHostOffersPageCard {
-    id: string;
+    id: number;
     image: string;
-    title: string;
-    location: string;
-    category: string;
+    title?: string;
+    location?: string;
+    category?: string;
     rating: string;
     likes: string;
     reviews: string;
     went: string;
-    description: string;
+    description?: string;
     status: OfferStatus;
 }
 
@@ -59,7 +58,9 @@ const HostOffersPageCard = memo(
                         {textSlice(title, 34, "title")}
                     </p>
                     <div className={styles.subtitle}>
-                        <span className={styles.location}>{location}</span>
+                        <span className={styles.location}>
+                            {textSlice(location, 34, "address")}
+                        </span>
                         <span className={styles.category}>{category}</span>
                     </div>
                     <div className={styles.stats}>

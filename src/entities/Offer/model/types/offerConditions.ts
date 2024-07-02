@@ -17,25 +17,25 @@ export interface Payment {
 }
 
 export interface OfferConditions {
-    housingIds?: Housing;
-    foodIds?: Nutrition;
-    paidTravelIds?: Travel;
-    conveniencesIds: Facilities[];
-    additionalFeaturesIds: ExtraFeatures[];
-    volunteerContributions: number;
-    volunteerRemuneration: number;
-    currency: Currency;
-    additionalConditions?: string;
-}
-
-export interface OfferConditionsApi {
-    housing?: Housing[];
-    food?: Nutrition[];
+    housing: Housing[];
+    food: Nutrition[];
+    paidTravel: Travel[];
     conveniences: Facilities[];
-    paidTravel?: Travel[];
     additionalFeatures: ExtraFeatures[];
     volunteerContributions: number;
     volunteerRemuneration: number;
     currency: Currency;
-    additionalConditions?: string;
+    additionalConditions: string;
+}
+
+export interface OfferConditionsApi {
+    housing: Housing[];
+    food: Nutrition[];
+    conveniences: Facilities[];
+    paidTravel: Travel[];
+    additionalFeatures: ExtraFeatures[];
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+    currency: Currency;
+    additionalConditions: string;
 }

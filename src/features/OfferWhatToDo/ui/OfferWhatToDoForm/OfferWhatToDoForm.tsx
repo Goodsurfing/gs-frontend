@@ -16,7 +16,7 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
-import { useGetWhatToDoQuery, useUpdateWhatToDoMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./OfferWhatToDoForm.module.scss";
@@ -39,8 +39,8 @@ export const OfferWhatToDoForm = memo(
             defaultValues,
         });
         const { id } = useParams();
-        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
-        const { data: getWhatToDo } = useGetWhatToDoQuery({ id: id || "" });
+        const [updateWhatToDo, { isLoading }] = useUpdateOfferMutation();
+        const { data: getWhatToDo } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
 
         const { t } = useTranslation("offer");
@@ -48,7 +48,7 @@ export const OfferWhatToDoForm = memo(
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
-            updateWhatToDo({ body: { id, whatToDo: preparedData } })
+            updateWhatToDo({ id: Number(id), body: { whatToDo: preparedData } })
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -66,8 +66,8 @@ export const OfferWhatToDoForm = memo(
         };
 
         useEffect(() => {
-            if (getWhatToDo) {
-                reset(offerWhatToDoAdapter(getWhatToDo));
+            if (getWhatToDo?.whatToDo) {
+                reset(offerWhatToDoAdapter(getWhatToDo.whatToDo));
             }
         }, [getWhatToDo, reset]);
 

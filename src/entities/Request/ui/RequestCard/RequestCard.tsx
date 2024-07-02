@@ -29,7 +29,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     {notificationType}
                 </div>
                 <Avatar
-                    icon={user?.imageUuid}
+                    icon={user?.image?.contentUrl}
                     className={styles.image}
                     size="MEDIUM"
                 />
