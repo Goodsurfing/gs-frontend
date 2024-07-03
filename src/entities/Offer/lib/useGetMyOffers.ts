@@ -32,3 +32,32 @@ export const useGetMyOffers = () => {
 
     return { data, isLoading, error };
 };
+
+export const useLazyGetMyOffers = () => {
+    const { data: myHost } = useGetMyHostQuery();
+    const [trigger] = useLazyGetHostOffersByIdQuery();
+
+    const [data, setData] = useState<Offer[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<unknown | null>(null);
+
+    const fetchOffers = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        if (myHost) {
+            try {
+                const offers = await trigger(myHost?.id).unwrap();
+                setData(offers);
+                setIsLoading(false);
+            } catch (err) {
+                setError(err);
+                setIsLoading(false);
+            }
+        }
+    };
+
+    return {
+        data, isLoading, error, fetchOffers,
+    };
+};

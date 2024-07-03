@@ -1,9 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQueryMergeJson } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import { Offer } from "../model/types/offer";
-import { OfferStatus } from "../model/types/offerStatus";
 
 interface UpdateOfferParams {
     id: number
@@ -14,19 +13,16 @@ interface CreateOfferResponse {
     id: number;
 }
 
-interface CreateOfferRequest {
-    status: OfferStatus;
-}
-
 export const offerApi = createApi({
     reducerPath: "offerApi",
-    baseQuery: baseQueryMergeJson,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["offer", "address"],
     endpoints: (build) => ({
-        createOffer: build.mutation<CreateOfferResponse, CreateOfferRequest>({
-            query: () => ({
+        createOffer: build.mutation<CreateOfferResponse, FormData>({
+            query: (data) => ({
                 url: "/vacancies",
                 method: "POST",
+                body: data,
             }),
             invalidatesTags: ["offer"],
         }),
@@ -34,13 +30,16 @@ export const offerApi = createApi({
             query: (data) => ({
                 url: `/vacancies/${data.id}`,
                 method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
                 body: JSON.stringify(data.body),
             }),
             invalidatesTags: ["offer"],
         }),
-        deleteOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacancies/${data.body.id}`,
+        deleteOffer: build.mutation<CreateOfferResponse, string>({
+            query: (offerId) => ({
+                url: `/vacancies/${offerId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["offer"],
@@ -73,6 +72,7 @@ export const offerApi = createApi({
 export const {
     useCreateOfferMutation,
     useUpdateOfferMutation,
+    useDeleteOfferMutation,
     useGetHostOffersByIdQuery,
     useLazyGetHostOffersByIdQuery,
     useGetOfferByIdQuery,

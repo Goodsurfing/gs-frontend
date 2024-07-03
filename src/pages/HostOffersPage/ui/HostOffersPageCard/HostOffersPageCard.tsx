@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { MouseEventHandler, memo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -22,7 +22,7 @@ interface IHostOffersPageCard {
     went: string;
     description?: string;
     status: OfferStatus;
-    onCloseClick: () => void;
+    onCloseClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const HostOffersPageCard = memo(

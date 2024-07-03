@@ -1,6 +1,12 @@
 export {
     offerApi,
     useCreateOfferMutation,
+    useUpdateOfferMutation,
+    useDeleteOfferMutation,
+    useGetHostOffersByIdQuery,
+    useGetOfferByIdQuery,
+    useLazyGetHostOffersByIdQuery,
+    useLazyGetOfferByIdQuery,
 } from "./api/offerApi";
 
 export type {
@@ -57,4 +63,4 @@ export type { OfferStatus, OfferState } from "./model/types/offerStatus";
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";
 
-export { useGetMyOffers } from "./lib/useGetMyOffers";
+export { useGetMyOffers, useLazyGetMyOffers } from "./lib/useGetMyOffers";

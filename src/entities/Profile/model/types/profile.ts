@@ -21,6 +21,7 @@ export interface Profile {
     instagram?: string;
     telegram?: string;
     organizations?: Host[] | [];
+    host?: Host;
     volunteer?: Volunteer;
 }
 

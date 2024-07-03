@@ -9,25 +9,27 @@ import styles from "./AddOffer.module.scss";
 import { useUser } from "@/entities/Profile";
 
 export const AddOffer = () => {
-    const [postOffer, { isLoading, isError }] = useCreateOfferMutation();
+    const [createOffer, { isLoading, isError }] = useCreateOfferMutation();
     const [disabledButton, setDisabledButton] = useState<boolean>(true);
     const { profile } = useUser();
     const navigate = useNavigate();
     const { locale } = useLocale();
 
     const addOfferHandle = async () => {
-        if (!profile?.organizations?.length) {
+        if (!profile?.host) {
             return;
         }
-        const result = await postOffer({ status: "empty" }).unwrap();
+        const formData = new FormData();
+        formData.append("status", "empty");
+        const result = await createOffer(formData).unwrap();
         navigate(`/${locale}/offers/welcome/${result}`);
     };
 
     useEffect(() => {
-        if (profile?.organizations?.length) {
+        if (profile?.host) {
             setDisabledButton(false);
         }
-    }, [profile?.organizations?.length]);
+    }, [profile?.host]);
 
     return (
         <div className={styles.btnWrapper}>
