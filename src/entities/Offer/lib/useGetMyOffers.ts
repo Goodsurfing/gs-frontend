@@ -18,7 +18,7 @@ export const useGetMyOffers = () => {
         const fetchOffers = async () => {
             if (myHost) {
                 try {
-                    const offers = await trigger(myHost?.id).unwrap();
+                    const offers = await trigger(myHost.id).unwrap();
                     setData(offers);
                     setIsLoading(false);
                 } catch (err) {
@@ -37,7 +37,6 @@ export const useLazyGetMyOffers = () => {
     const { data: myHost } = useGetMyHostQuery();
     const [trigger] = useLazyGetHostOffersByIdQuery();
 
-    const [data, setData] = useState<Offer[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<unknown | null>(null);
 
@@ -48,8 +47,8 @@ export const useLazyGetMyOffers = () => {
         if (myHost) {
             try {
                 const offers = await trigger(myHost?.id).unwrap();
-                setData(offers);
                 setIsLoading(false);
+                return offers;
             } catch (err) {
                 setError(err);
                 setIsLoading(false);
@@ -58,6 +57,6 @@ export const useLazyGetMyOffers = () => {
     };
 
     return {
-        data, isLoading, error, fetchOffers,
+        fetchOffers, isLoading, error,
     };
 };

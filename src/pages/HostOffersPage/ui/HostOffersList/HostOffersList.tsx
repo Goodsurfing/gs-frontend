@@ -24,7 +24,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
         return offers.map((offer, index) => (
             <HostOffersPageCard
                 id={offer.id}
-                title={offer?.description?.title}
+                title={`${offer?.description?.title}${offer.id}`}
                 description={offer?.description?.description}
                 image={image}
                 location={offer?.where?.address}
