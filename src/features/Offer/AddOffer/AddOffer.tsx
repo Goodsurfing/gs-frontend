@@ -22,7 +22,7 @@ export const AddOffer = () => {
         const formData = new FormData();
         formData.append("status", "empty");
         const result = await createOffer(formData).unwrap();
-        navigate(`/${locale}/offers/welcome/${result}`);
+        navigate(`/${locale}/offers/welcome/${result.id}`);
     };
 
     useEffect(() => {

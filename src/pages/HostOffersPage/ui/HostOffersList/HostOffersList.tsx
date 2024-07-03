@@ -1,5 +1,5 @@
 import React, {
-    FC, memo, useMemo,
+    FC, memo,
 } from "react";
 
 import image from "@/shared/assets/images/default-offer-image.svg";
@@ -16,7 +16,7 @@ interface HostOffersListProps {
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
     const { offers, onCloseClick } = props;
 
-    const renderMyOffers = useMemo(() => {
+    const renderMyOffers = () => {
         if (!offers || !offers.length) {
             return <span>Нет списка вакансий</span>;
         }
@@ -38,11 +38,11 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                 onCloseClick={() => onCloseClick(offer.id)}
             />
         ));
-    }, [offers, onCloseClick]);
+    };
 
     return (
         <div className={styles.wrapper}>
-            {renderMyOffers}
+            {renderMyOffers()}
         </div>
     );
 });

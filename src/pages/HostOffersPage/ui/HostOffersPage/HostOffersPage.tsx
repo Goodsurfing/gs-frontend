@@ -7,9 +7,8 @@ import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import {
-    useGetMyOffers, useDeleteOfferMutation, Offer, useLazyGetMyOffers,
+    useDeleteOfferMutation, Offer,
     useLazyGetHostOffersByIdQuery,
-    useGetHostOffersByIdQuery,
 } from "@/entities/Offer";
 import styles from "./HostOffersPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
@@ -18,24 +17,31 @@ const HostOffersPage = () => {
     const [deleteOffer, { isLoading: isDeleteLoading }] = useDeleteOfferMutation();
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
-    const [trigger, { isLoading }] = useLazyGetHostOffersByIdQuery();
-    const [offersData, setOffersData] = useState<Offer[]>();
+    const [trigger, { isLoading, data }] = useLazyGetHostOffersByIdQuery();
 
-    // const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[] | undefined>(filterOffersByStatus(offers, "open"));
-    // const [offersWithClosedStatus, setoffersWithClosedStatus] = useState<Offer[] | undefined>(filterOffersByStatus(offers, "empty"));
+    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>([]);
+    const [offersWithClosedStatus, setoffersWithClosedStatus] = useState<Offer[]>([]);
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
             const result = await trigger(myHostId).unwrap();
-            setOffersData(result);
+            setOffersWithOpenStatus(filterOffersByStatus(result, "open"));
+            setoffersWithClosedStatus(filterOffersByStatus(result, "empty"));
         }
     }, [myHostId, trigger]);
 
     useEffect(() => {
         fetchOffers();
     }, [fetchOffers]);
+
+    useEffect(() => {
+        if (data) {
+            setOffersWithOpenStatus(filterOffersByStatus(data, "open"));
+            setoffersWithClosedStatus(filterOffersByStatus(data, "empty"));
+        }
+    }, [data]);
 
     const handleCloseClick = (offerId: number) => {
         setSelectedOffer(offerId);
@@ -48,7 +54,7 @@ const HostOffersPage = () => {
     const handleConfirmClick = async () => {
         if (selectedOffer) {
             await deleteOffer(selectedOffer.toString());
-            fetchOffers();
+            setSelectedOffer(null);
         }
     };
 
@@ -60,10 +66,10 @@ const HostOffersPage = () => {
         <div className={styles.wrapper}>
             <h2 className={styles.abilities}>Мои возможности</h2>
             <HostOffersList
-                offers={offersData}
+                offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
             />
-            {/* {offersWithClosedStatus && (
+            {offersWithClosedStatus.length && (
                 <div className={styles.drafts}>
                     <h2 className={styles.draftsTitle}>Черновики</h2>
                     <div className={styles.cards}>
@@ -73,7 +79,7 @@ const HostOffersPage = () => {
                         />
                     </div>
                 </div>
-            )} */}
+            )}
             <AddOffer />
             {selectedOffer && (
                 <ConfirmActionModal

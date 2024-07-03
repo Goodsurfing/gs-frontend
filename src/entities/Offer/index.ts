@@ -62,5 +62,3 @@ export type { OfferStatus, OfferState } from "./model/types/offerStatus";
 
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";
-
-export { useGetMyOffers, useLazyGetMyOffers } from "./lib/useGetMyOffers";

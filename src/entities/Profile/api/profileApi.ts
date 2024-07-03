@@ -5,7 +5,7 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery,
-    tagTypes: ["profile", "host"],
+    tagTypes: ["profile"],
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({

@@ -3,8 +3,8 @@ import { Offer, OfferStatus } from "@/entities/Offer";
 export const filterOffersByStatus = (
     offers: Offer[] | undefined,
     status: OfferStatus,
-): Offer[] | undefined => {
-    if (!offers) return;
+): Offer[] => {
+    if (!offers) return [];
     const filteredList = offers.filter(
         (item) => item.status === status || item.status === "empty",
     );
@@ -13,5 +13,5 @@ export const filterOffersByStatus = (
         return offers.filter((item) => item.status === "open");
     }
 
-    return filteredList.length > 0 ? filteredList : undefined;
+    return filteredList.length > 0 ? filteredList : [];
 };
