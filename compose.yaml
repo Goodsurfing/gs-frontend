@@ -4,6 +4,7 @@ services:
   frontend:
     build:
       context: .
+    restart: unless-stopped
     container_name: gs_frontend
     labels:
       - "traefik.enable=true"
