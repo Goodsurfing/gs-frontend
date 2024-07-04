@@ -1,7 +1,8 @@
 import { MouseEventHandler, memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
+import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -12,7 +13,7 @@ import { textSlice } from "@/shared/lib/textSlice";
 
 interface IHostOffersPageCard {
     id: number;
-    image: string;
+    image?: string;
     title?: string;
     location?: string;
     category?: string;
@@ -53,45 +54,47 @@ const HostOffersPageCard = memo(
 
         return (
             <div className={styles.cardWrapper}>
-                <div className={styles.imageWrapper}>
-                    <img src={image} alt="travel-img" />
-                </div>
-                <div className={styles.content}>
-                    <p className={styles.title}>
-                        {textSlice(title, 34, "title")}
-                    </p>
-                    <div className={styles.subtitle}>
-                        <span className={styles.location}>
-                            {textSlice(location, 34, "address")}
-                        </span>
-                        <span className={styles.category}>{category}</span>
+                <Link to={`/${locale}/offer-personal/${id}`} className={styles.cardInner}>
+                    <div className={styles.imageWrapper}>
+                        <img src={image || defaultImage} alt="travel-img" />
                     </div>
-                    <div className={styles.stats}>
-                        <div className={styles.rating}>
-                            <img src={star} alt="star-icon" />
-                            <span>{rating}</span>
-                        </div>
-                        <div className={styles.likes}>
-                            <img src={like} alt="heart-icon" />
-                            <span>{likes}</span>
-                        </div>
-                        <div className={styles.extraInfo}>
-                            <span className={styles.review}>
-                                Отзывов:
-                                {" "}
-                                {reviews}
+                    <div className={styles.content}>
+                        <p className={styles.title}>
+                            {textSlice(title, 34, "title")}
+                        </p>
+                        <div className={styles.subtitle}>
+                            <span className={styles.location}>
+                                {textSlice(location, 34, "address")}
                             </span>
-                            <span className={styles.went}>
-                                Отправились:
-                                {" "}
-                                {went}
-                            </span>
+                            <span className={styles.category}>{category}</span>
                         </div>
+                        <div className={styles.stats}>
+                            <div className={styles.rating}>
+                                <img src={star} alt="star-icon" />
+                                <span>{rating}</span>
+                            </div>
+                            <div className={styles.likes}>
+                                <img src={like} alt="heart-icon" />
+                                <span>{likes}</span>
+                            </div>
+                            <div className={styles.extraInfo}>
+                                <span className={styles.review}>
+                                    Отзывов:
+                                    {" "}
+                                    {reviews}
+                                </span>
+                                <span className={styles.went}>
+                                    Отправились:
+                                    {" "}
+                                    {went}
+                                </span>
+                            </div>
+                        </div>
+                        <p className={styles.description}>
+                            {textSlice(description, 110, "description")}
+                        </p>
                     </div>
-                    <p className={styles.description}>
-                        {textSlice(description, 110, "description")}
-                    </p>
-                </div>
+                </Link>
                 <div className={styles.btns}>
                     <Button
                         className={styles.green}

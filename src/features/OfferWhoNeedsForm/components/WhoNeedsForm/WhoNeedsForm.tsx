@@ -67,7 +67,7 @@ export const WhoNeedsForm = memo(() => {
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
-        if (getOfferData?.howNeeds) {
+        if (getOfferData?.howNeeds && !Array.isArray(getOfferData.howNeeds)) {
             reset(offerWhoNeedsApiAdapter(getOfferData.howNeeds));
         }
     }, [getOfferData, reset]);

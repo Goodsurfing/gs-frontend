@@ -14,9 +14,9 @@ import styles from "./HostOffersPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 
 const HostOffersPage = () => {
-    const [deleteOffer, { isLoading: isDeleteLoading }] = useDeleteOfferMutation();
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
+    const [deleteOffer, { isLoading: isDeleteLoading }] = useDeleteOfferMutation();
     const [trigger, { isLoading, data }] = useLazyGetHostOffersByIdQuery();
 
     const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>([]);

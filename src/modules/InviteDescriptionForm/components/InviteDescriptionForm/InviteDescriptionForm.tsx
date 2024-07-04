@@ -97,7 +97,7 @@ export const InviteDescriptionForm = () => {
 
     useEffect(() => {
         if (getOfferData?.description) {
-            reset(inviteDescriptionAdapter(getOfferData?.description));
+            reset(inviteDescriptionAdapter(getOfferData.description));
         }
     }, [getOfferData?.description, reset]);
 

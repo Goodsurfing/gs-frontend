@@ -39,8 +39,8 @@ export const OfferWhatToDoForm = memo(
             defaultValues,
         });
         const { id } = useParams();
-        const [updateWhatToDo, { isLoading }] = useUpdateOfferMutation();
-        const { data: getWhatToDo } = useGetOfferByIdQuery(id || "");
+        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
 
         const { t } = useTranslation("offer");
@@ -48,7 +48,7 @@ export const OfferWhatToDoForm = memo(
         const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
-            updateWhatToDo({ id: Number(id), body: { whatToDo: preparedData } })
+            updateOffer({ id: Number(id), body: { whatToDo: preparedData } })
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -66,10 +66,10 @@ export const OfferWhatToDoForm = memo(
         };
 
         useEffect(() => {
-            if (getWhatToDo?.whatToDo) {
-                reset(offerWhatToDoAdapter(getWhatToDo.whatToDo));
+            if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
+                reset(offerWhatToDoAdapter(getOfferData.whatToDo));
             }
-        }, [getWhatToDo, reset]);
+        }, [getOfferData?.whatToDo, reset]);
 
         return (
             <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>

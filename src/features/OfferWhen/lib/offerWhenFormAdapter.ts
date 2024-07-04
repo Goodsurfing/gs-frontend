@@ -15,6 +15,10 @@ export const offerWhenFormApiAdapter = (
         start: period.start ? period.start.toLocaleDateString() : null,
         ending: period.end ? period.end.toLocaleDateString() : null,
     }));
+    let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
+    if (!offerWhenPeriods[0].start || !offerWhenPeriods[0].ending) {
+        offerTempWhenPeriods = [];
+    }
 
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
     const { applicationEndDate } = endSettings;
@@ -22,7 +26,7 @@ export const offerWhenFormApiAdapter = (
     const formattedEndDate = applicationEndDate.toLocaleDateString();
 
     const offerWhen: OfferWhen = {
-        periods: offerWhenPeriods,
+        periods: offerTempWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
         // isWithoutApplicationEndDate: isWithoutApplicationDate,

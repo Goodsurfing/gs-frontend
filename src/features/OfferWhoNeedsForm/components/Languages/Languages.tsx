@@ -30,11 +30,18 @@ const Languages: FC<LanguagesProps> = (props) => {
                 value={getObjectFromValue(value.language, allLangs)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
+                        if ((newValue as IOptionLanguage).value === "not_matter") {
+                            onChange({ ...value, languageLevel: "not_matter", language: "not_matter" });
+                            return;
+                        }
                         onChange({
                             ...value,
                             language: (newValue as IOptionLanguage).value,
                         });
                     }
+                }}
+                onBlur={() => {
+
                 }}
             />
             <SelectField
@@ -45,6 +52,7 @@ const Languages: FC<LanguagesProps> = (props) => {
                 value={getObjectFromValue(value.languageLevel, allLevels)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
+                        if (value.language === "not_matter") return;
                         onChange({
                             ...value,
                             languageLevel: (newValue as IOptionLevelLanguage).value,

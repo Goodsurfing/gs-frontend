@@ -2,10 +2,9 @@ import React, {
     FC, memo,
 } from "react";
 
-import image from "@/shared/assets/images/default-offer-image.svg";
-
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { Offer } from "@/entities/Offer";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./HostOffersList.module.scss";
 
 interface HostOffersListProps {
@@ -21,23 +20,26 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
             return <span>Нет списка вакансий</span>;
         }
 
-        return offers.map((offer, index) => (
-            <HostOffersPageCard
-                id={offer.id}
-                title={`${offer?.description?.title}${offer.id}`}
-                description={offer?.description?.description}
-                image={image}
-                location={offer?.where?.address}
-                category="категория"
-                rating="5"
-                likes="4"
-                reviews="2"
-                went="8"
-                status={offer.status}
-                key={index}
-                onCloseClick={() => onCloseClick(offer.id)}
-            />
-        ));
+        return offers.map((offer, index) => {
+            const mediaObjectCover = getMediaContent(offer.description?.image);
+            return (
+                <HostOffersPageCard
+                    id={offer.id}
+                    title={offer?.description?.title}
+                    description={offer?.description?.shortDescription}
+                    image={mediaObjectCover}
+                    location={offer?.where?.address}
+                    category={offer.description?.categoryIds[0]}
+                    rating="5"
+                    likes="4"
+                    reviews="2"
+                    went="8"
+                    status={offer.status}
+                    key={index}
+                    onCloseClick={() => onCloseClick(offer.id)}
+                />
+            );
+        });
     };
 
     return (

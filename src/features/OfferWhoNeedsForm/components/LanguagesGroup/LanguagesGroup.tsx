@@ -21,8 +21,11 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { t } = useTranslation("offer");
 
     const onAddBtnClick = useCallback(() => {
+        if ((value[0].language === "not_matter") && (value[0].languageLevel === "not_matter")) {
+            return;
+        }
         if (value.length < 10) {
-            onChange([...value, { language: "Английский", languageLevel: "not_matter" } as Language]);
+            onChange([...value, { language: "english", languageLevel: "not_matter" } as Language]);
         }
     }, [onChange, value]);
 
@@ -43,6 +46,10 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                         onChange={(newValue) => {
                             const newLanguages = [...value];
                             newLanguages[index] = newValue;
+                            if (newLanguages[0].language === "not_matter") {
+                                onChange([newLanguages[0]]);
+                                return;
+                            }
                             onChange(newLanguages);
                         }}
                         close={(
