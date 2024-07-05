@@ -30,7 +30,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 {isLoading
                     ? "...Загрузка"
                     : (
-                        userData && <RequestCard article="Даб даб да я" notificationType="new" user={userData} />
+                        userData && <RequestCard article="Тест реквест" notificationType="new" user={userData} />
                     )}
                 <Button
                     variant="FILL"

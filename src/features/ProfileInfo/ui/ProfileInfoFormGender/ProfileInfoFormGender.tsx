@@ -17,7 +17,7 @@ interface ProfileInfoFormGenderProps {
 
 export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) => {
     const { className } = props;
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const isLocked = useAppSelector(getProfileReadonly);
 
     const { control } = useFormContext();
@@ -30,13 +30,13 @@ export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) =>
                 render={({ field }) => (
                     <SelectComponent
                         value={field.value}
-                        label={t("Пол")}
+                        label={t("info.Пол")}
                         disabled={isLocked}
                         className={styles.genderDropdown}
                     >
-                        <MenuItem key="male" value="male">{t("Мужчина")}</MenuItem>
-                        <MenuItem key="female" value="female">{t("Женщина")}</MenuItem>
-                        <MenuItem key="other" value="other">{t("Другой")}</MenuItem>
+                        <MenuItem key="male" value="male">{t("info.Мужчина")}</MenuItem>
+                        <MenuItem key="female" value="female">{t("info.Женщина")}</MenuItem>
+                        <MenuItem key="other" value="other">{t("info.Другой")}</MenuItem>
                     </SelectComponent>
                 )}
             />

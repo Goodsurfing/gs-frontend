@@ -38,3 +38,7 @@ nav,
 section {
 	display: block;
 }
+
+body > svg {
+	display: none;
+}

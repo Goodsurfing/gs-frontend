@@ -14,14 +14,20 @@ export interface Profile {
     country?: string;
     city?: string;
     phone?: string;
-    imageUuid?: string;
+    image?: ImageType;
     aboutMe?: string;
     vk?: string;
     facebook?: string;
     instagram?: string;
     telegram?: string;
     organizations?: Host[] | [];
+    host?: Host;
     volunteer?: Volunteer;
+}
+
+export interface ImageType {
+    id: string;
+    contentUrl: string;
 }
 
 export interface ProfileSchema {

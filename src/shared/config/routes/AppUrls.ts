@@ -32,9 +32,11 @@ export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${Rout
 
 export const getSignUpPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_up}`;
 
-export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
+// Profile pages
 
-// About me pages
+export const getProfilePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile}`;
+
+export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
 
 export const getProfileInfoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_info}`;
 

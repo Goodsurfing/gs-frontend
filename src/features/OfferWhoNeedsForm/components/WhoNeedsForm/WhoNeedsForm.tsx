@@ -11,8 +11,8 @@ import { useParams } from "react-router-dom";
 
 import cn from "classnames";
 import {
-    useGetWhoNeedsQuery,
-    useUpdateWhoNeedsMutation,
+    useGetOfferByIdQuery,
+    useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 import { Age, Languages } from "@/entities/Offer/model/types/offerWhoNeeds";
 
@@ -28,7 +28,7 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 import {
-    offerWhoNeedsApapter,
+    offerWhoNeedsAdapter,
     offerWhoNeedsApiAdapter,
 } from "../../lib/offerWhoNeedsAdapter";
 import { OfferWhoNeedsFields } from "../../model/types/offerWhoNeeds";
@@ -41,7 +41,7 @@ import styles from "./WhoNeedsForm.module.scss";
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
 const languagesDefaultValue: Languages = [
-    { language: "not_matter", level: "not_matter" },
+    { language: "not_matter", languageLevel: "not_matter" },
 ];
 
 const defaultValues: DefaultValues<OfferWhoNeedsFields> = {
@@ -60,22 +60,22 @@ export const WhoNeedsForm = memo(() => {
         defaultValues,
     });
     const { id } = useParams();
-    const [updateWnoNeeds, { isLoading }] = useUpdateWhoNeedsMutation();
-    const { data: getWhoNeeds, isLoading: isLoadingGetWhoNeedsData } = useGetWhoNeedsQuery({ id: id || "" });
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
     const { handleSubmit, control, reset } = form;
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
-        if (getWhoNeeds) {
-            reset(offerWhoNeedsApiAdapter(getWhoNeeds));
+        if (getOfferData?.howNeeds && !Array.isArray(getOfferData.howNeeds)) {
+            reset(offerWhoNeedsApiAdapter(getOfferData.howNeeds));
         }
-    }, [getWhoNeeds, reset]);
+    }, [getOfferData, reset]);
 
     const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
-        const preparedData = offerWhoNeedsApapter(data);
+        const preparedData = offerWhoNeedsAdapter(data);
         setToast(undefined);
-        updateWnoNeeds({ body: { id, whoNeeds: preparedData } })
+        updateOffer({ id: Number(id), body: { howNeeds: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -140,7 +140,12 @@ export const WhoNeedsForm = memo(() => {
                                 "whoNeeds.Сколько волонтерских мест одновременно",
                             )}
                             value={String(field.value)}
-                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            onChange={(e) => {
+                                const inputValue = +e.target.value;
+                                if (inputValue >= 0 && inputValue <= 999) {
+                                    field.onChange(inputValue);
+                                }
+                            }}
                         />
                     )}
                 />

@@ -1,3 +1,137 @@
 .wrapper {
     background-color: var(--bg-primary-1);
+    width: 100%;
+    max-width: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-white);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--bg-accent);
+    }
+}
+
+.top {
+    height: 100%;
+    max-height: 60px;
+    border-bottom: 1px solid var(--text-primary-1);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    padding: 0 16px;
+    background-color: var(--text-secondary-1);
+    position: sticky;
+    top: 0;
+
+    span {
+        font-weight: 500;
+        font-size: 1.125rem;
+    }
+}
+
+.content {
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.info {
+    display: flex;
+    gap: 16px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    word-break: break-word;
+}
+
+.textCaption {
+    font-size: 0.75rem;
+    color: var(--text-caption);
+}
+
+.languages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lang {
+    color: var(--text-secondary-2);
+}
+
+.langLevel {
+    color: var(--text-caption);
+}
+
+.textPrimary {
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text-secondary-2);
+}
+
+.skills {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.caseItem {
+    display: flex;
+    gap: 3px;
+    align-items: baseline;
+}
+
+.circle {
+    background-color: var(--text-primary-1);
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+}
+
+.casesList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.casesList * {
+    color: var(--text-primary-1);
+    font-size: 0.75rem;
+}
+
+.dates {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .text {
+        font-size: 14px;
+    }
+}
+
+.exitIcon {
+    svg {
+        fill: var(--text-caption);
+        cursor: pointer;
+    }
 }

@@ -1,0 +1,17 @@
+.wrapper {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.wrapper > .line {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary-1);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+

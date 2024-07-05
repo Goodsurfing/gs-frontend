@@ -22,10 +22,10 @@ export const ProfileInfoFormBirthDate = memo((props: ProfileInfoFormBirthDatePro
     const { className } = props;
     const isLocked = useAppSelector(getProfileReadonly);
     const { control } = useFormContext();
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     return (
         <div className={cn(className, styles.wrapper)}>
-            <span className={styles.text}>{t("День рождения")}</span>
+            <span className={styles.text}>{t("info.День рождения")}</span>
             <div className={styles.container}>
                 <Controller
                     name="birthDate.day"

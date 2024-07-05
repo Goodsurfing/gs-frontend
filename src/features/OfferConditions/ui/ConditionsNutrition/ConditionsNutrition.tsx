@@ -20,9 +20,15 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
     const { t } = useTranslation("offer");
     const { foodItems } = useConditionItems();
 
-    const onToggleCondition = (nutrition: Nutrition) => {
+    const onToggleCondition = (conditionId: Nutrition) => {
         if (value.switchState) {
-            onChange({ ...value, nutrition });
+            const newNutrition = value.nutrition.includes(conditionId)
+                ? value.nutrition.filter((id) => id !== conditionId)
+                : [...value.nutrition, conditionId];
+            onChange({
+                ...value,
+                nutrition: newNutrition,
+            });
         }
     };
 
@@ -31,7 +37,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         onChange({
             ...value,
             switchState: newSwitchState,
-            nutrition: !newSwitchState ? undefined : value.nutrition,
+            nutrition: !newSwitchState ? [] : value.nutrition,
         });
     };
 
@@ -39,7 +45,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         onChange({
             ...value,
             switchState: false,
-            nutrition: undefined,
+            nutrition: [],
         });
     };
 

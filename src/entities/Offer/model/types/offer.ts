@@ -11,38 +11,28 @@ import { Article } from "@/entities/Article";
 import { OfferState, OfferStatus } from "./offerStatus";
 
 export interface Offer {
-    id: string;
-    where: OfferWhere;
-    when: OfferWhen;
-    whoNeeds: OfferWhoNeeds;
-    description: OfferDescription;
-    whatToDo: OfferWhatToDo;
-    conditions: OfferConditions;
-    finishingTouches: OfferFinishingTouches;
+    id: number;
+    organization: OfferOrganization,
+    where?: OfferWhere;
+    when?: OfferWhen;
+    howNeeds?: OfferWhoNeeds;
+    description?: OfferDescription;
+    whatToDo?: OfferWhatToDo;
+    conditions?: OfferConditions;
+    finishingTouches?: OfferFinishingTouches;
     contributors: OfferContributor[];
     reviews?: Review[];
     articles?: Article[];
     status: OfferStatus;
+    gallery: string[];
     state: OfferState;
 }
 
-export interface MyOffers {
-    list: [
-        {
-            id: string,
-            title: string,
-            description: string,
-            location: string,
-            category: string,
-            rating: number,
-            likes: number,
-            reviews: number,
-            acceptedRequests: number,
-            status: OfferStatus;
-        },
-    ] | []
+interface OfferOrganization {
+    id: string;
+    name: string;
+    type: string;
 }
-
 export interface AddressAutoComplete {
     list: string[]
 }

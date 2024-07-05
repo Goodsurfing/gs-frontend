@@ -116,11 +116,13 @@ import {
     getVideoPersonalPageUrl,
     getOffersMapPageUrl,
     getMessengerPageUrl,
+    getProfilePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
+import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -333,39 +335,47 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getResetPasswordPageUrl(locale),
     },
     {
-        label: "reset-password-profile",
-        element: AuthRoutes.profile_reset_password,
-        path: (locale: string) => getProfileResetPasswordPageUrl(locale),
-    },
-    {
         label: "reset-password-verify",
         element: <ResetPasswordVerifyPage />,
         path: (locale: string) => getResetPasswordVerifyPageUrl(locale),
     },
     {
-        label: "profile-info",
-        element: (
-            <PrivateRouteGuard>
-                <ProfileInfoPage />
-            </PrivateRouteGuard>
-        ),
-        path: (locale: string) => getProfileInfoPageUrl(locale),
+        label: "profile",
+        element: <ProfileLayoutPage />,
+        path: (locale: string) => getProfilePageUrl(locale),
+        children: [
+            {
+                label: "profile-info",
+                element: (
+                    <PrivateRouteGuard>
+                        <ProfileInfoPage />
+                    </PrivateRouteGuard>
+                ),
+                path: (locale: string) => getProfileInfoPageUrl(locale),
+            },
+            {
+                label: "profile-preferences",
+                element: <ProfilePreferencesPage />,
+                path: (locale: string) => getProfilePreferencesPageUrl(locale),
+            },
+            {
+                label: "reset-password-profile",
+                element: AuthRoutes.profile_reset_password,
+                path: (locale: string) => getProfileResetPasswordPageUrl(locale),
+            },
+            {
+                label: "profile-role",
+                element: <ProfileRolePage />,
+                path: (locale: string) => getProfileRolePagePageUrl(locale),
+            },
+            {
+                label: "profile-privacy",
+                element: <ProfilePrivacyPage />,
+                path: (locale: string) => getProfilePrivacyPageUrl(locale),
+            },
+        ],
     },
-    {
-        label: "profile-privacy",
-        element: <ProfilePrivacyPage />,
-        path: (locale: string) => getProfilePrivacyPageUrl(locale),
-    },
-    {
-        label: "profile-preferences",
-        element: <ProfilePreferencesPage />,
-        path: (locale: string) => getProfilePreferencesPageUrl(locale),
-    },
-    {
-        label: "profile-role",
-        element: <ProfileRolePage />,
-        path: (locale: string) => getProfileRolePagePageUrl(locale),
-    },
+
     {
         label: "about-page",
         element: <AboutProjectPage />,

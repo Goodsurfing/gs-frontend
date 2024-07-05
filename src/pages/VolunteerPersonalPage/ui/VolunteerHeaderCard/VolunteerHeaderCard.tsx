@@ -20,7 +20,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             volunteer: {
                 firstName,
                 lastName,
-                imageUuid,
+                image,
                 isMember,
                 country,
                 city,
@@ -35,7 +35,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             <div className={styles.wrapper}>
                 <div className={styles.mainInfo}>
                     <Avatar
-                        icon={imageUuid}
+                        icon={image?.contentUrl}
                         className={styles.image}
                         alt="avatar"
                     />

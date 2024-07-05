@@ -12,12 +12,11 @@ import {
     useCreateHostMutation,
 } from "@/entities/Host";
 
-import { useJoinToHostMutation } from "@/entities/Profile";
-
 import type { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import {
     hostDescriptionFormAdapter,
-    hostDescriptionApiAdapter,
+    hostDescriptionApiAdapterCreate,
+    hostDescriptionApiAdapterUpdate,
 } from "../../lib/hostDescriptionAdapter";
 import { HostDescriptionFormContent } from "../HostDescriptionFormContent/HostDescriptionFormContent";
 import {
@@ -44,11 +43,6 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: createHostError,
     }] = useCreateHostMutation();
 
-    const [joinToOrganization, {
-        isLoading: isJoinLoading,
-        error: joinError,
-    }] = useJoinToHostMutation();
-
     const [updateHost, {
         isLoading: isHostUpdateLoading,
         error: hostUpdateError,
@@ -58,17 +52,16 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         setToast(undefined);
-        const preparedData = hostDescriptionApiAdapter(data);
+        let preparedData;
         if (!host) {
             try {
-                const createHostResponse = await createHost(preparedData).unwrap();
-                if (createHostResponse.id) {
-                    const res = await joinToOrganization(createHostResponse.id);
-                }
+                preparedData = hostDescriptionApiAdapterCreate(data);
+                await createHost(preparedData).unwrap();
                 setToast({
                     text: "Организация создана",
                     type: HintType.Success,
                 });
+                window.location.reload();
             } catch (err) {
                 setToast({
                     text: "Ошибка при создании организации",
@@ -77,7 +70,8 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
             }
         }
         if (host) {
-            updateHost({ body: { ...preparedData, id: host.id } });
+            preparedData = hostDescriptionApiAdapterUpdate(data);
+            updateHost({ id: host.id, body: { ...preparedData } });
         }
     };
 
@@ -120,7 +114,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     <HostDescriptionFormContent />
                 </div>
                 <div>
-                    <Button type="submit" disabled={isCreateHostLoading} color="BLUE" size="MEDIUM" variant="FILL">
+                    <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">
                         Сохранить
                     </Button>
                 </div>

@@ -1,4 +1,4 @@
-import { LevelLanguage } from "@/entities/Offer/model/types/offerWhoNeeds";
+import { LevelLanguage } from "@/entities/Offer";
 
 export interface IOptionLanguage {
     value: string;

@@ -46,6 +46,7 @@ export const UserSettings: FC<UserSettingsProps> = (props) => {
     const renderFilterItems = useMemo(
         () => userSettingsData.map((item) => (
             <div
+                key={item.value}
                 className={cn(styles.item, {
                     [styles.active]: item.value === selectedValue,
                 })}

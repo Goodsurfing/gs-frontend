@@ -19,7 +19,7 @@ export const HostFill = memo((props: HostFillProps) => {
 
     // const { host, isLoading, error } = useGetUserHostInfo();
     const { profile, isLoading, error } = useUser();
-    const host = profile?.organizations?.[0];
+    const host = profile?.host;
 
     if (isLoading) {
         return (

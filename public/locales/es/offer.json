@@ -90,7 +90,8 @@
         "Изменить": "Cambiar",
         "Удалить": "Borrar",
         "Добавить фото обложки": "Agregar foto de portada",
-        "Ширина фотографии для обложки не меньше 1920 пикселей": "El ancho de la foto de portada debe ser de al menos 1920 píxeles",
+        "Ширина фотографии для обложки не меньше 1280 пикселей": "El ancho de la foto de portada debe ser de al menos 1280 píxeles",
+        "Изображение не должно превышать 2 МБ": "La imagen no debe exceder los 2 MB",
         "Неверный формат файла": "Formato de archivo incorrecto",
         "Добавить фото": "Agregar foto",
         "Сохранить": "Guardar"

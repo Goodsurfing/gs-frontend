@@ -19,8 +19,13 @@ export const AgeComponent: FC<AgeProps> = (props) => {
     const { t } = useTranslation("offer");
 
     const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
-            return;
+        if (+e.target.value < 0 || +e.target.value > 100 || !/^[0-9]+$/.test(e.target.value)) {
+            // return;
+            onChange({
+                ...value,
+                maxAge: MINIMAL_AGE_FOR_VOLUNTEER,
+                minAge: MINIMAL_AGE_FOR_VOLUNTEER,
+            });
         }
 
         if (+e.target.value >= value.maxAge) {
@@ -30,15 +35,29 @@ export const AgeComponent: FC<AgeProps> = (props) => {
         }
     };
 
-    const onFromMaxAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (+e.target.value < 0 || +e.target.value < MINIMAL_AGE_FOR_VOLUNTEER) {
-            return;
+    const onFromMinAgeBlur = () => {
+        if ((value.minAge < MINIMAL_AGE_FOR_VOLUNTEER) || (value.minAge > 100)) {
+            onChange({
+                ...value,
+                minAge: MINIMAL_AGE_FOR_VOLUNTEER,
+                maxAge: MINIMAL_AGE_FOR_VOLUNTEER,
+            });
         }
+    };
 
-        if (+e.target.value < value.minAge) {
-            onChange({ ...value, maxAge: +e.target.value, minAge: +e.target.value });
-        } else {
-            onChange({ ...value, maxAge: +e.target.value });
+    const onFromMaxAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (+e.target.value < 0 || +e.target.value > 100) {
+            onChange({ ...value, maxAge: MINIMAL_AGE_FOR_VOLUNTEER });
+        }
+        onChange({ ...value, maxAge: +e.target.value });
+    };
+
+    const onFromMaxAgeBlur = () => {
+        if ((value.maxAge < value.minAge) || (value.maxAge > 100)) {
+            onChange({
+                ...value,
+                minAge: MINIMAL_AGE_FOR_VOLUNTEER,
+            });
         }
     };
 
@@ -55,8 +74,8 @@ export const AgeComponent: FC<AgeProps> = (props) => {
                 {t("whoNeeds.Возраст")}
             </Typography>
             <div className={styles.inputWrapper}>
-                <Input className={styles.from} value={value.minAge} onChange={onFromMinAgeChange} type="number" placeholder="от" />
-                <Input className={styles.to} value={value.maxAge} onChange={onFromMaxAgeChange} type="number" placeholder="до" />
+                <Input className={styles.from} value={value.minAge.toString()} onChange={onFromMinAgeChange} onBlur={onFromMinAgeBlur} type="number" placeholder="от" />
+                <Input className={styles.to} value={value.maxAge.toString()} onChange={onFromMaxAgeChange} onBlur={onFromMaxAgeBlur} type="number" placeholder="до" />
             </div>
         </div>
     );

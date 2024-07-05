@@ -8,7 +8,8 @@
 }
 
 .error {
-    color: red;
+    margin-top: 10px;
+    color: #d32f2f;
     font-size: 0.825rem;
 }
 
@@ -85,11 +86,14 @@
 }
 
 .imageLoading {
-    // content: "";
-    // position: absolute;
-    // top: 0;
-    // left: 0;
     opacity: .5;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .containerButtons {

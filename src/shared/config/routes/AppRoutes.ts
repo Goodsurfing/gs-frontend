@@ -9,6 +9,7 @@ export enum AppRoutes {
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
+    PROFILE = "profile",
     PROFILE_INFO = "profile_info",
     PROFILE_PREFERENCES = "profile_preferences",
     PROFILE_ROLE = "profile_role",

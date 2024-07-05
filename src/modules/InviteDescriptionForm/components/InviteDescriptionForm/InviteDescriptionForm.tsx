@@ -8,16 +8,12 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import {
-    useGetDescriptionQuery,
-    useUpdateDescriptionMutation,
+    useGetOfferByIdQuery,
+    useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
-import uploadFile, {
-    GenerateLinkResponse,
-} from "@/shared/hooks/files/useUploadFile";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -63,104 +59,27 @@ export const InviteDescriptionForm = () => {
         reset,
     } = form;
     const { id } = useParams();
-    const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const { data: getDescription, isLoading: isLoadingGetDescription } = useGetDescriptionQuery({ id: id || "" });
-    const [isLoadingCoverImage, setIsLoadingCoverImage] = useState<boolean>(false);
-    const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
+    const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
+    const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
-    const { token } = useAuth();
     const { t } = useTranslation("offer");
+
+    const handleCoverImageLoading = (value: boolean) => {
+        setCoverImageLoading(value);
+    };
+
+    const handleGalleryLoading = (value: boolean) => {
+        setGalleryLoading(value);
+    };
 
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
-        setIsLoadingImages(true);
-        setIsLoadingCoverImage(true);
-
-        let imageUpload: GenerateLinkResponse | null = null;
-        let extraImages: GenerateLinkResponse[] = [];
-        if (!token) {
-            setIsLoadingCoverImage(false);
-            setIsLoadingImages(false);
-            return;
-        }
-
-        // upload coverImage
-        if (data.coverImage.image.file) {
-            try {
-                imageUpload = (await uploadFile(
-                    data.coverImage.image.file.name,
-                    data.coverImage.image.file,
-                    token,
-                )) || null;
-                setIsLoadingCoverImage(false);
-            } catch {
-                setToast({
-                    text: "Произошла ошибка при загрузке файла",
-                    type: HintType.Error,
-                });
-                setIsLoadingCoverImage(false);
-            }
-            if (!imageUpload) {
-                setToast({
-                    text: "Не удалось загрузить файл",
-                    type: HintType.Error,
-                });
-            }
-        }
-
-        // upload extra images
-        if (data.images.length !== 0) {
-            const uploadImagesPromises = data.images.map((image) => {
-                if (image.image.file) {
-                    return uploadFile(
-                        image.image.file.name,
-                        image.image.file,
-                        token,
-                    ).catch(() => null);
-                }
-                return image.image.src;
-            });
-
-            try {
-                const images = await Promise.all(uploadImagesPromises);
-                const filteredImages = images.filter(
-                    (result): result is GenerateLinkResponse => result !== null
-                    && result !== undefined,
-                );
-                extraImages = filteredImages;
-                setIsLoadingImages(false);
-            } catch {
-                setToast({
-                    text: "Произошла ошибка при загрузке файлов",
-                    type: HintType.Error,
-                });
-                setIsLoadingImages(false);
-            }
-        }
-        // toDo: Change this logic in future
-        let imageUuid: string | null = data.coverImage.uuid;
-        let newGallery: string[] = [];
-        const galleryTemp: string[] = data.images.map((image) => image.uuid)
-            .filter((imageId): imageId is string => typeof imageId === "string") as string[];
-        if (imageUpload) {
-            imageUuid = imageUpload?.uuid;
-        }
-        if (extraImages.length > 0) {
-            const extraImagesTemp: string[] = extraImages.map((image) => image.uuid);
-            newGallery = [...galleryTemp, ...extraImagesTemp];
-        } else {
-            newGallery = [...galleryTemp];
-        }
-        const filteredGallery = newGallery.filter((item) => item != null);
-        //
-
-        const preparedData = inviteDescriptionApiAdapter(
-            data,
-            imageUuid || "",
-            filteredGallery,
-        );
-
-        updateDescription({ body: { id, description: preparedData } })
+        const preparedData = inviteDescriptionApiAdapter(data);
+        const galleryImages = data.images.map((image) => image.uuid)
+            .filter((uuid) => uuid !== null) as string[];
+        updateOffer({ id: Number(id), body: { description: preparedData, gallery: galleryImages } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -173,18 +92,14 @@ export const InviteDescriptionForm = () => {
                     text: "Некорректно введены данные",
                     type: HintType.Error,
                 });
-            })
-            .finally(() => {
-                setIsLoadingCoverImage(false);
-                setIsLoadingImages(false);
             });
     };
 
     useEffect(() => {
-        if (getDescription) {
-            reset(inviteDescriptionAdapter(getDescription));
+        if (getOfferData?.description) {
+            reset(inviteDescriptionAdapter(getOfferData.description));
         }
-    }, [getDescription, reset]);
+    }, [getOfferData?.description, reset]);
 
     if (isLoadingGetDescription) {
         return <Preloader className={styles.loading} />;
@@ -215,10 +130,11 @@ export const InviteDescriptionForm = () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={field.onChange}
+                                    isLoading={isCoverImageLoading}
+                                    onChangeLoading={handleCoverImageLoading}
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",
                                     )}
-                                    isLoading={isLoadingCoverImage}
                                 />
                                 <p className={styles.error}>
                                     {errors.coverImage
@@ -234,17 +150,18 @@ export const InviteDescriptionForm = () => {
                         control={control}
                         render={({ field }) => (
                             <ExtraImagesUpload
-                                isLoading={isLoadingImages}
                                 label={t("description.Добавить фото")}
                                 value={field.value}
                                 onChange={field.onChange}
+                                isLoading={isGalleryLoading}
+                                onChangeLoading={handleGalleryLoading}
                             />
                         )}
                     />
                 </div>
                 <Button
                     className={styles.btn}
-                    disabled={isLoading || isLoadingImages}
+                    disabled={isLoading || isCoverImageLoading || isGalleryLoading}
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"

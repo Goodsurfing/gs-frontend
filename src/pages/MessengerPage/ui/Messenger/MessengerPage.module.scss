@@ -1,7 +1,8 @@
 .layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
+    overflow-x: hidden;
 }
 
 .title {
@@ -10,30 +11,66 @@
 
 .wrapper {
     max-width: 100%;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 50px;
     margin-right: 50px;
     margin-bottom: 18px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    
+    height: 100%;
+    max-height: calc(100vh - 200px);
 }
 
 .content {
     margin-top: 20px;
     height: 100%;
-    max-height: calc(100vh - 200px);
-    border-top: 1px solid var(--bg-accent);
+    border: 1px solid var(--bg-accent);
     display: flex;
-    flex-grow: 1;
+    flex: 1;
 }
 
 .userList {
     height: 100%;
-    flex-grow: 1;
+    border-right: 1px solid var(--bg-accent);
 }
 
 .chat {
     width: 100%;
+}
+
+@media (max-width: 992px) {
+    .title {
+        display: none;
+    }
+    .wrapper {
+        margin-top: 0;
+        margin-right: 20px;
+        margin-left: 20px;
+        max-height: calc(100vh - 110px);
+    }
+
+    .userList {
+        display: none !important;
+    }
+
+    .userList.open {
+        display: flex !important;
+        max-width: none;
+    }
+
+    .chat {
+        display: none !important;
+    }
+
+    .chat.open {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        margin-right: 0;
+        margin-left: 0;
+    }
 }

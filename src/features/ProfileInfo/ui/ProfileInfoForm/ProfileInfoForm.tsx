@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import cn from "classnames";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
@@ -16,6 +16,8 @@ import { profileInfoFormAdapter } from "../../lib/profileInfoFormAdapter";
 import { profileFormApiAdapter } from "../../lib/profileFormApiAdapter";
 
 import styles from "./ProfileInfoForm.module.scss";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { ToastAlert, HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -27,10 +29,12 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
         className,
         profile,
     } = props;
-    const { t } = useTranslation("about-me");
+    const { t } = useTranslation("profile");
     const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
+    const [toast, setToast] = useState<ToastAlert>();
 
     const [updateProfile] = profileApi.useUpdateProfileInfoMutation();
+    const { data: getProfileData } = profileApi.useGetProfileInfoQuery();
 
     const { handleSubmit, reset } = form;
 
@@ -38,9 +42,25 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
 
     const onSubmit: SubmitHandler<ProfileInfoFields> = (data) => {
         const formattedData = profileFormApiAdapter(data);
-        updateProfile(formattedData);
+        updateProfile(formattedData).unwrap().then(() => {
+            setToast({
+                text: "Данные успешно изменены",
+                type: HintType.Success,
+            });
+        }).catch(() => {
+            setToast({
+                text: "Некорректно введены данные",
+                type: HintType.Error,
+            });
+        });
         dispatch(profileActions.setReadonly(true));
     };
+
+    useEffect(() => {
+        if (getProfileData) {
+            reset(profileInfoFormAdapter(getProfileData));
+        }
+    }, [getProfileData, reset]);
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -48,11 +68,14 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
         dispatch(profileActions.setReadonly(!isLocked));
         if (!isLocked) {
             reset(profileInfoFormAdapter(profile));
+        } else {
+            reset();
         }
     };
 
     return (
         <FormProvider {...form}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className={cn(styles.wrapper, className)}
@@ -66,11 +89,11 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                         size="MEDIUM"
                         color="BLUE"
                     >
-                        {t("Сохранить")}
+                        {t("info.Сохранить")}
                     </Button>
                 </div>
                 <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
-                    {isLocked ? t("Редактировать") : t("Отмена")}
+                    {isLocked ? t("info.Редактировать") : t("info.Отмена")}
                 </button>
             </form>
         </FormProvider>

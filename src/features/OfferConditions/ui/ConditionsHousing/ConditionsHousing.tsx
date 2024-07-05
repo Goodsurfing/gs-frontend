@@ -25,15 +25,18 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
         onChange({
             ...value,
             switchState: newSwitchState,
-            housing: !newSwitchState ? undefined : value.housing,
+            housing: !newSwitchState ? [] : value.housing,
         });
     }, [value, onChange]);
 
     const onToggleCondition = (conditionId: Housing) => {
         if (value.switchState) {
+            const newHousing = value.housing.includes(conditionId)
+                ? value.housing.filter((id) => id !== conditionId)
+                : [...value.housing, conditionId];
             onChange({
                 ...value,
-                housing: conditionId,
+                housing: newHousing,
             });
         }
     };
@@ -57,7 +60,7 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
             <div className={styles.conditions}>
                 {liveItems.map((item) => (
                     <ConditionsItem
-                        checked={value.housing === item.id}
+                        checked={value.housing.includes(item.id)}
                         onToggle={() => onToggleCondition(item.id)}
                         key={item.id}
                         text={item.text}

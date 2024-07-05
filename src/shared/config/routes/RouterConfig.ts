@@ -16,6 +16,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
     [AppRoutes.RESET_PASSWORD]: "/reset-password",
     [AppRoutes.RESET_PASSWORD_VERIFY]: "/reset-password-verify",
+    [AppRoutes.PROFILE]: "/profile",
     [AppRoutes.PROFILE_INFO]: "/profile/info",
     [AppRoutes.PROFILE_PREFERENCES]: "/profile/preferences",
     [AppRoutes.PROFILE_ROLE]: "/profile/role",
