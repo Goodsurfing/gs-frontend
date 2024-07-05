@@ -15,7 +15,8 @@ import {
 import type { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import {
     hostDescriptionFormAdapter,
-    hostDescriptionApiAdapter,
+    hostDescriptionApiAdapterCreate,
+    hostDescriptionApiAdapterUpdate,
 } from "../../lib/hostDescriptionAdapter";
 import { HostDescriptionFormContent } from "../HostDescriptionFormContent/HostDescriptionFormContent";
 import {
@@ -51,10 +52,11 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         setToast(undefined);
-        const preparedData = hostDescriptionApiAdapter(data);
+        let preparedData;
         if (!host) {
             try {
-                createHost(preparedData).unwrap();
+                preparedData = hostDescriptionApiAdapterCreate(data);
+                await createHost(preparedData).unwrap();
                 setToast({
                     text: "Организация создана",
                     type: HintType.Success,
@@ -68,6 +70,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
             }
         }
         if (host) {
+            preparedData = hostDescriptionApiAdapterUpdate(data);
             updateHost({ id: host.id, body: { ...preparedData } });
         }
     };

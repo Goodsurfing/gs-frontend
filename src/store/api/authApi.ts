@@ -6,7 +6,6 @@ import {
     ILoginResponse,
 } from "@/types/api/auth/login.interface";
 import {
-    IAuthFormData,
     IRegisterResponse,
 } from "@/types/api/auth/register.interface";
 import {
@@ -27,8 +26,8 @@ export const authApi = createApi({
                 body: data,
             }),
         }),
-        registerUser: build.mutation<IRegisterResponse, IAuthFormData>({
-            query: (data: IAuthFormData) => ({
+        registerUser: build.mutation<IRegisterResponse, FormData>({
+            query: (data) => ({
                 url: AuthApiEndpoints.REGISTER,
                 method: "POST",
                 body: data,

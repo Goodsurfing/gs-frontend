@@ -69,7 +69,7 @@ const HostOffersPage = () => {
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
             />
-            {offersWithClosedStatus.length && (
+            {!!offersWithClosedStatus.length && (
                 <div className={styles.drafts}>
                     <h2 className={styles.draftsTitle}>Черновики</h2>
                     <div className={styles.cards}>

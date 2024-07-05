@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import { Footer } from "@/widgets/Footer";
@@ -12,15 +12,9 @@ import { SubmenuItems } from "../../model/data/submenuData";
 import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
 import styles from "./OfferPersonalPage.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
-    if (isLoading) {
-        return (<Preloader />);
-    }
 
     if (!id) {
         return (

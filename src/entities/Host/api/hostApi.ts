@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import { Host } from "../model/types/host";
 
@@ -21,7 +21,7 @@ interface GetHostsResponse {
 
 export const hostApi = createApi({
     reducerPath: "hostApi",
-    baseQuery,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["host"],
     endpoints: (build) => ({
         getHostById: build.query<Host, string>({
@@ -45,10 +45,13 @@ export const hostApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        createHost: build.mutation<CreateHostResponse, Partial<Host>>({
+        createHost: build.mutation<CreateHostResponse, FormData>({
             query: (body) => ({
-                url: "organizations/",
+                url: "organizations",
                 method: "POST",
+                headers: {
+                    // "Content-Type": "multipart/form-data",
+                },
                 body,
             }),
             invalidatesTags: ["host"],

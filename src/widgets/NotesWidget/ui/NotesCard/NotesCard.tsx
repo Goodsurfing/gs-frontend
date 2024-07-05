@@ -9,6 +9,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./NotesCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface NotesCardProps {
     className?: string;
@@ -30,6 +31,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     } = props;
     const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);
     const { t } = useTranslation();
+    const offerCover = getMediaContent(description?.image);
 
     return (
         <Draggable
@@ -56,7 +58,7 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={description?.image}
+                            icon={offerCover}
                             alt="offer title image"
                             className={styles.avatar}
                         />
