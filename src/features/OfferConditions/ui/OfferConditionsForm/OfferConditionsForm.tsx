@@ -26,8 +26,9 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./OfferConditionsForm.module.scss";
 import { offerConditionsAdapter, offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { useGetConditionsQuery, useUpdateConditionsMutation } from "@/entities/Offer/api/offerApi";
+
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -39,8 +40,8 @@ const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormField
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
     const { id } = useParams();
-    const [updateConditions, { isLoading }] = useUpdateConditionsMutation();
-    const { data: getConditions } = useGetConditionsQuery({ id: id || "" });
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
@@ -52,7 +53,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
         const preparedData = offerConditionsApiAdapter(data);
         setToast(undefined);
-        updateConditions({ body: { id, conditions: preparedData } })
+        updateOffer({ id: Number(id), body: { conditions: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -70,10 +71,10 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     };
 
     useEffect(() => {
-        if (getConditions) {
-            reset(offerConditionsAdapter(getConditions));
+        if (getOfferData?.conditions) {
+            reset(offerConditionsAdapter(getOfferData?.conditions));
         }
-    }, [getConditions, reset]);
+    }, [getOfferData?.conditions, reset]);
 
     return (
         <form className={cn(styles.wrapper, className)}>

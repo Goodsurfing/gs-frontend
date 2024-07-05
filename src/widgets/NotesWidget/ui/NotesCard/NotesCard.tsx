@@ -9,6 +9,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./NotesCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface NotesCardProps {
     className?: string;
@@ -20,8 +21,8 @@ interface NotesCardProps {
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     const {
         offer: {
-            description: { imageId, title },
-            where: { address },
+            description,
+            where,
             id,
         },
         index,
@@ -30,9 +31,15 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     } = props;
     const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);
     const { t } = useTranslation();
+    const offerCover = getMediaContent(description?.image);
 
     return (
-        <Draggable isDragDisabled={isDragDisable} key={id} draggableId={id} index={index}>
+        <Draggable
+            isDragDisabled={isDragDisable}
+            key={id}
+            draggableId={id.toString()}
+            index={index}
+        >
             {(provided) => (
                 <div
                     ref={provided.innerRef}
@@ -51,17 +58,17 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={imageId}
+                            icon={offerCover}
                             alt="offer title image"
                             className={styles.avatar}
                         />
                         <div className={styles.infoContainer}>
                             <span className={styles.title}>
-                                {truncateString(title, 30)}
+                                {description ? truncateString(description.title, 30) : "Без заголовка"}
                             </span>
                             <span className={styles.address}>
-                                {address
-                                    ? truncateString(address, 23)
+                                {where?.address
+                                    ? truncateString(where.address, 23)
                                     : "Адрес не указан"}
                             </span>
                             <span className={styles.tag}>

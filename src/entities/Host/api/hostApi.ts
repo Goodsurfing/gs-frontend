@@ -1,10 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import { Host } from "../model/types/host";
 
 interface UpdateHostParams {
+    id: string;
     body: Partial<Host>;
 }
 
@@ -20,35 +21,45 @@ interface GetHostsResponse {
 
 export const hostApi = createApi({
     reducerPath: "hostApi",
-    baseQuery,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["host"],
     endpoints: (build) => ({
         getHostById: build.query<Host, string>({
             query: (id) => ({
-                url: `/organization/${id}`,
+                url: `organizations/${id}`,
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
         getHosts: build.query<GetHostsResponse | { list: [] }, void>({
             query: () => ({
-                url: "/organization",
+                url: "organizations/",
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
-        createHost: build.mutation<CreateHostResponse, Partial<Host>>({
+        getMyHost: build.query<Host, void>({
+            query: () => ({
+                url: "organizations/my",
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
+        createHost: build.mutation<CreateHostResponse, FormData>({
             query: (body) => ({
-                url: "/organization/",
+                url: "organizations",
                 method: "POST",
+                headers: {
+                    // "Content-Type": "multipart/form-data",
+                },
                 body,
             }),
             invalidatesTags: ["host"],
         }),
         updateHost: build.mutation<unknown, UpdateHostParams>({
             query: (data) => ({
-                url: `/organization/${data.body.id}`,
-                method: "PUT",
+                url: `organizations/${data.id}`,
+                method: "PATH",
                 body: data.body,
             }),
             invalidatesTags: ["host"],
@@ -59,6 +70,7 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
 } = hostApi;

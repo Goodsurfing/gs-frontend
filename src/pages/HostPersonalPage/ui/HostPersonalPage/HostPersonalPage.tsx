@@ -7,7 +7,7 @@ import { Submenu } from "@/widgets/Submenu";
 
 import { Text } from "@/shared/ui/Text/Text";
 
-import { mockedHostData } from "../../model/data/mockedHostData";
+import { mockedHostData } from "@/entities/Host/model/data/mockedHostData";
 import { SubmenuItems } from "../../model/data/submenuData";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
 import styles from "./HostPersonalPage.module.scss";

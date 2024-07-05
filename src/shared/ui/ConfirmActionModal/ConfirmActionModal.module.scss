@@ -1,0 +1,20 @@
+.wrapper {
+    background-color: #fff;
+    border-radius: 10px;
+    gap: 30px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.description {
+    text-align: center;
+}

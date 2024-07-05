@@ -1,4 +1,4 @@
-import { OfferWhen, OfferWhenApi, OfferWhenPeriods } from "@/entities/Offer";
+import { OfferWhen, OfferWhenPeriods } from "@/entities/Offer";
 
 import {
     DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
@@ -13,8 +13,12 @@ export const offerWhenFormApiAdapter = (
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
         start: period.start ? period.start.toLocaleDateString() : null,
-        end: period.end ? period.end.toLocaleDateString() : null,
+        ending: period.end ? period.end.toLocaleDateString() : null,
     }));
+    let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
+    if (!offerWhenPeriods[0].start || !offerWhenPeriods[0].ending) {
+        offerTempWhenPeriods = [];
+    }
 
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
     const { applicationEndDate } = endSettings;
@@ -22,7 +26,7 @@ export const offerWhenFormApiAdapter = (
     const formattedEndDate = applicationEndDate.toLocaleDateString();
 
     const offerWhen: OfferWhen = {
-        periods: offerWhenPeriods,
+        periods: offerTempWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
         // isWithoutApplicationEndDate: isWithoutApplicationDate,
@@ -33,7 +37,7 @@ export const offerWhenFormApiAdapter = (
     return offerWhen;
 };
 
-export const offerWhenFormAdapter = (offerWhen: OfferWhenApi): OfferWhenFields => {
+export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
     const {
         durationMaxDays,
         durationMinDays,
@@ -46,10 +50,10 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhenApi): OfferWhenFields =
     let offerWhenPeriods: DatePeriods[] = [];
     if (periods.length > 0) {
         offerWhenPeriods = periods.map((period) => {
-            if (period.start && period.end) {
+            if (period.start && period.ending) {
                 return ({
-                    start: new Date(period.start.date),
-                    end: new Date(period.end.date),
+                    start: new Date(period.start),
+                    end: new Date(period.ending),
                 });
             }
             return ({

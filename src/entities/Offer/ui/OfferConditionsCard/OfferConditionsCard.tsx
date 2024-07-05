@@ -27,7 +27,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
     (props: OfferConditionsCardProps) => {
         const {
             className,
-            finishingTouches: { extraConditions },
+            finishingTouches: { additionalConditions },
         } = props;
         const { extraConditionsData } = useExtraConditionsData();
 
@@ -39,7 +39,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                 },
                 {},
             );
-            return extraConditions?.map((id) => {
+            return additionalConditions?.map((id) => {
                 const condition = conditionsMap[id];
                 return (
                     condition && (
@@ -52,7 +52,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                     )
                 );
             });
-        }, [extraConditions, extraConditionsData]);
+        }, [additionalConditions, extraConditionsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>
