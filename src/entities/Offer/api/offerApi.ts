@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Offer } from "../model/types/offer";
+import { Offer, OfferGalleryItem } from "../model/types/offer";
 
 interface UpdateOfferParams {
     id: number
@@ -11,6 +11,16 @@ interface UpdateOfferParams {
 
 interface CreateOfferResponse {
     id: number;
+}
+
+interface CreateOfferGalleryItemRequest {
+    offerId: string;
+    formData: FormData;
+}
+
+interface OfferGalleryItemRequest {
+    offerId: string;
+    galleryId: string;
 }
 
 export const offerApi = createApi({
@@ -63,8 +73,36 @@ export const offerApi = createApi({
                 url: `organizations/${organizationId}/vacancies`,
                 method: "GET",
             }),
-
             providesTags: ["offer"],
+        }),
+        createOfferGalleryItem: build.mutation<OfferGalleryItem, CreateOfferGalleryItemRequest>({
+            query: (data) => ({
+                url: `/vacancies/${data.offerId}/gallery`,
+                method: "POST",
+                body: data.formData,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getOfferGalleryItems: build.query<OfferGalleryItem[], string>({
+            query: (offerId) => ({
+                url: `vacancies/${offerId}/gallery`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        getOfferGalleryItemById: build.query<OfferGalleryItem, OfferGalleryItemRequest>({
+            query: (data) => ({
+                url: `vacancies/${data.offerId}/gallery/${data.galleryId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        deleteOfferGalleryItem: build.mutation<CreateOfferResponse, OfferGalleryItemRequest>({
+            query: (data) => ({
+                url: `/vacancies/${data.offerId}/${data.galleryId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["offer"],
         }),
     }),
 });
@@ -77,4 +115,8 @@ export const {
     useLazyGetHostOffersByIdQuery,
     useGetOfferByIdQuery,
     useLazyGetOfferByIdQuery,
+    useCreateOfferGalleryItemMutation,
+    useGetOfferGalleryItemsQuery,
+    useGetOfferGalleryItemByIdQuery,
+    useDeleteOfferGalleryItemMutation,
 } = offerApi;

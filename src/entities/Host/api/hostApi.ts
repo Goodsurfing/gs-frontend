@@ -40,7 +40,7 @@ export const hostApi = createApi({
         }),
         getMyHost: build.query<Host, void>({
             query: () => ({
-                url: "organizations/my",
+                url: "personal/organization",
                 method: "GET",
             }),
             providesTags: ["host"],
