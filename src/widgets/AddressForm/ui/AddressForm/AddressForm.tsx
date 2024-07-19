@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
-import { getGeoObject } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
+import { getGeoObjectByCoordinates } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
 import {
     useLazyGetOfferByIdQuery,
     useUpdateOfferMutation,
@@ -52,11 +52,14 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const fetchGeoObject = useCallback(async () => {
         const resultWhere = await trigger(id || "");
         const { data: offerData } = resultWhere;
-        if (offerData?.where?.address) {
-            const offerAddress = offerData.where.address;
-            const geoObject = await getGeoObject(offerAddress);
+        if (offerData?.where) {
+            const offerGeoObject = offerData.where;
+            const geoObject = await getGeoObjectByCoordinates(
+                offerGeoObject.longitude,
+                offerGeoObject.latitude,
+            );
             if (geoObject) {
-                reset({ address: { address: offerAddress, geoObject } });
+                reset({ address: { address: `${geoObject.description} ${geoObject.name}`, geoObject } });
             }
         }
     }, [trigger, id, reset]);
