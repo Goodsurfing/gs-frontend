@@ -70,11 +70,13 @@ export const getGeoObjectByCoordinates = async (
     latitude: number,
 ): Promise<GeoObject | undefined> => {
     try {
+        const roundedLongitude = longitude.toFixed(6);
+        const roundedLatitude = latitude.toFixed(6);
         const res = await axios.get(`${API_YANDEX_BASE_URL}`, {
             params: {
                 apikey: process.env.REACT_APP_API_YANDEX_KEY,
                 format: "json",
-                geocode: `${longitude},${latitude}`,
+                geocode: `${roundedLongitude}, ${roundedLatitude}`,
             },
         });
         const geoObjectCollection = res.data.response.GeoObjectCollection;

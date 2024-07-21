@@ -99,7 +99,7 @@ export const offerApi = createApi({
         }),
         deleteOfferGalleryItem: build.mutation<CreateOfferResponse, OfferGalleryItemRequest>({
             query: (data) => ({
-                url: `/vacancies/${data.offerId}/${data.galleryId}`,
+                url: `/vacancies/${data.offerId}/gallery/${data.galleryId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["offer"],

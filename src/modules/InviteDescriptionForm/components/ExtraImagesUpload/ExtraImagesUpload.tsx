@@ -96,12 +96,12 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 <PictureReview
                     className={styles.imgItem}
                     key={index}
-                    img={image.mediaObject.contentUrl}
+                    img={`${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`}
                     isLoading={isLoading} // change logic for personal image loading
                     close={(
                         <ExtraImagesItemButton
                             className={styles.closeBtn}
-                            onClick={() => handleCloseBtnClick(image.mediaObject.id)}
+                            onClick={() => handleCloseBtnClick(image.id.toString())}
                         />
                     )}
                 />

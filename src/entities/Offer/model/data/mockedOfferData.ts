@@ -12,6 +12,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
@@ -78,6 +80,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
@@ -144,6 +148,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
