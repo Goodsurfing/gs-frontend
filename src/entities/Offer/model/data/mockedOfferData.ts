@@ -4,6 +4,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 1,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,
@@ -72,6 +73,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 2,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,
@@ -140,6 +142,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 3,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,

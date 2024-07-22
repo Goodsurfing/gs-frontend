@@ -6,6 +6,7 @@ import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { Offer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./HostOffersList.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
 interface HostOffersListProps {
     offers?: Offer[]
@@ -14,6 +15,7 @@ interface HostOffersListProps {
 
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
     const { offers, onCloseClick } = props;
+    const { getTranslation } = useCategories();
 
     const renderMyOffers = () => {
         if (!offers || !offers.length) {
@@ -29,7 +31,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     description={offer?.description?.shortDescription}
                     image={mediaObjectCover}
                     location={offer?.where?.address}
-                    category={offer.description?.categoryIds[0]}
+                    category={getTranslation(offer.description?.categoryIds[0])}
                     rating="5"
                     likes="4"
                     reviews="2"

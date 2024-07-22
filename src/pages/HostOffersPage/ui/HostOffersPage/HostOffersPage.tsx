@@ -64,7 +64,7 @@ const HostOffersPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.abilities}>Мои возможности</h2>
+            <h2 className={styles.abilities}>Мои вакансии</h2>
             <HostOffersList
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}

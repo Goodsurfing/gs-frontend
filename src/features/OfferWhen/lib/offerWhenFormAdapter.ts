@@ -20,19 +20,19 @@ export const offerWhenFormApiAdapter = (
         offerTempWhenPeriods = [];
     }
 
-    const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
+    const { isFullYearAcceptable } = timeSettings;
     const { applicationEndDate } = endSettings;
 
-    const formattedEndDate = applicationEndDate.toLocaleDateString();
+    const formattedEndDate = applicationEndDate?.toLocaleDateString();
 
     const offerWhen: OfferWhen = {
         periods: offerTempWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
         // isWithoutApplicationEndDate: isWithoutApplicationDate,
-        applicationEndDate: formattedEndDate,
+        applicationEndDate: formattedEndDate || null,
         isFullYearAcceptable,
-        isApplicableAtTheEnd,
+        isApplicableAtTheEnd: endSettings.isWithoutApplicationDate,
     };
     return offerWhen;
 };
@@ -78,7 +78,6 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
     const offerWhenFields: OfferWhenFields = {
         periods: offerWhenPeriods,
         participationPeriod: [durationMinDays, durationMaxDays],
-        applicationEndDate: new Date(applicationEndDate || ""),
         timeSettings,
         endSettings,
     };
