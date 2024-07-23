@@ -12,5 +12,5 @@ export interface OfferDescriptionField {
     shortDescription: string;
     fullDescription: string;
     coverImage: DescriptionImage;
-    images: DescriptionImage[];
+    // images: DescriptionImage[];
 }

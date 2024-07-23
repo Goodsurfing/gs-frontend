@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
-import { getGeoObject } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
+import { getGeoObjectByCoordinates } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
 import {
     useLazyGetOfferByIdQuery,
     useUpdateOfferMutation,
@@ -46,20 +46,24 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const { t } = useTranslation("offer");
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const [trigger, { isLoading: isLoadingGetData }] = useLazyGetOfferByIdQuery();
+    const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
 
     const fetchGeoObject = useCallback(async () => {
-        const resultWhere = await trigger(id || "");
-        const { data: offerData } = resultWhere;
-        if (offerData?.where?.address) {
-            const offerAddress = offerData.where.address;
-            const geoObject = await getGeoObject(offerAddress);
+        trigger(id || "").unwrap();
+        if (offerData?.where) {
+            const offerGeoObject = offerData.where;
+            const geoObject = await getGeoObjectByCoordinates(
+                offerGeoObject.longitude,
+                offerGeoObject.latitude,
+            );
             if (geoObject) {
-                reset({ address: { address: offerAddress, geoObject } });
+                reset({ address: { address: `${geoObject.description} ${geoObject.name}`, geoObject } });
             }
+        } else {
+            reset();
         }
-    }, [trigger, id, reset]);
+    }, [trigger, id, offerData?.where, reset]);
 
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
@@ -101,6 +105,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             <Controller
                 control={control}
                 name="address"
+                rules={{
+                    validate: (value) => value?.geoObject !== null || "Укажите пожалуйста адрес",
+                }}
                 render={({ field }) => (
                     <MapWithAddress
                         field={field}

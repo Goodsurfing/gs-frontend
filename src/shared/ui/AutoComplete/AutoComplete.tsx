@@ -12,6 +12,7 @@ interface AutoCompleteProps<T> {
     value?: T | null;
     onChange?: (value: T | null) => void;
     onInputChange?: (value: string) => void;
+    onKeyDown?: (event: React.KeyboardEvent) => void;
     noOptionsText?: string;
     labelText?: string;
     autocomplete?: boolean;
@@ -27,6 +28,7 @@ const AutoComplete = <T,>({
     noOptionsText,
     getOptionLabel,
     onChange,
+    onKeyDown,
     inputSx,
     labelText,
     value,
@@ -50,6 +52,7 @@ const AutoComplete = <T,>({
             getOptionLabel={getOptionLabel}
             autoComplete={autocomplete}
             noOptionsText={noOptionsText}
+            onKeyDown={onKeyDown}
             renderInput={(params) => <TextField label={labelText} {...params} sx={inputSx} />}
             renderOption={renderOption}
             includeInputInList

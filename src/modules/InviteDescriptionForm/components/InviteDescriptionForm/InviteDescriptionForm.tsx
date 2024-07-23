@@ -44,7 +44,6 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
         uuid: null,
         image: { file: null, src: null },
     },
-    images: [],
 };
 
 export const InviteDescriptionForm = () => {
@@ -63,6 +62,8 @@ export const InviteDescriptionForm = () => {
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
     const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
     const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
+    const [isGalleryError, setGalleryError] = useState<boolean>(false);
+    const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
@@ -74,12 +75,18 @@ export const InviteDescriptionForm = () => {
         setGalleryLoading(value);
     };
 
+    const handleGalleryError = (value: boolean) => {
+        setGalleryError(value);
+    };
+
+    const handleGallerySuccess = (value: boolean) => {
+        setGallerySuccess(value);
+    };
+
     const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
         setToast(undefined);
         const preparedData = inviteDescriptionApiAdapter(data);
-        const galleryImages = data.images.map((image) => image.uuid)
-            .filter((uuid) => uuid !== null) as string[];
-        updateOffer({ id: Number(id), body: { description: preparedData, gallery: galleryImages } })
+        updateOffer({ id: Number(id), body: { description: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -100,6 +107,21 @@ export const InviteDescriptionForm = () => {
             reset(inviteDescriptionAdapter(getOfferData.description));
         }
     }, [getOfferData?.description, reset]);
+
+    useEffect(() => {
+        if (isGalleryError) {
+            setToast({
+                text: "Произошла ошибка с обновлением галереи",
+                type: HintType.Error,
+            });
+        }
+        if (isGallerySuccess) {
+            setToast({
+                text: "Галерея успешно обновлена",
+                type: HintType.Success,
+            });
+        }
+    }, [isGalleryError, isGallerySuccess]);
 
     if (isLoadingGetDescription) {
         return <Preloader className={styles.loading} />;
@@ -145,18 +167,13 @@ export const InviteDescriptionForm = () => {
                             </div>
                         )}
                     />
-                    <Controller
-                        name="images"
-                        control={control}
-                        render={({ field }) => (
-                            <ExtraImagesUpload
-                                label={t("description.Добавить фото")}
-                                value={field.value}
-                                onChange={field.onChange}
-                                isLoading={isGalleryLoading}
-                                onChangeLoading={handleGalleryLoading}
-                            />
-                        )}
+                    <ExtraImagesUpload
+                        offerId={id || ""}
+                        label={t("description.Добавить фото")}
+                        isLoading={isGalleryLoading}
+                        onChangeLoading={handleGalleryLoading}
+                        onChangeError={handleGalleryError}
+                        onChangeSuccess={handleGallerySuccess}
                     />
                 </div>
                 <Button

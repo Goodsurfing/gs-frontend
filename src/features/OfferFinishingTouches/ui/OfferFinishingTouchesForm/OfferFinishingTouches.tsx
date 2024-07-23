@@ -138,8 +138,8 @@ export const OfferFinishingTouchesForm = memo(
                                     )}
                                     control={(
                                         <SwitchComponent
-                                            value={field.value}
-                                            onClick={field.onChange}
+                                            checked={field.value}
+                                            onChange={field.onChange}
                                         />
                                     )}
                                 />

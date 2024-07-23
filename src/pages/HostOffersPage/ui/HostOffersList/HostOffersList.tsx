@@ -6,14 +6,19 @@ import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { Offer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./HostOffersList.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
 interface HostOffersListProps {
     offers?: Offer[]
     onCloseClick: (value: number) => void;
+    onEveryOpenClick: (value: number) => void;
 }
 
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
-    const { offers, onCloseClick } = props;
+    const {
+        offers, onCloseClick, onEveryOpenClick,
+    } = props;
+    const { getTranslation } = useCategories();
 
     const renderMyOffers = () => {
         if (!offers || !offers.length) {
@@ -29,7 +34,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     description={offer?.description?.shortDescription}
                     image={mediaObjectCover}
                     location={offer?.where?.address}
-                    category={offer.description?.categoryIds[0]}
+                    category={getTranslation(offer.description?.categoryIds[0])}
                     rating="5"
                     likes="4"
                     reviews="2"
@@ -37,6 +42,8 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     status={offer.status}
                     key={index}
                     onCloseClick={() => onCloseClick(offer.id)}
+                    onEveryOpenClick={() => onEveryOpenClick(offer.id)}
+                    isEveryOpenActive={offer.status === "every_open"}
                 />
             );
         });

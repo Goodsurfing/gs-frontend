@@ -4,6 +4,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 1,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,
@@ -12,6 +13,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
@@ -60,7 +63,7 @@ export const mockedOffersData: Offer[] = [
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "open",
         state: "accepted",
-        gallery: ["image.png"],
+        galleryItems: ["image.png"],
         organization: {
             id: "123",
             name: "exampleOrg",
@@ -70,6 +73,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 2,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,
@@ -78,6 +82,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
@@ -126,7 +132,7 @@ export const mockedOffersData: Offer[] = [
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "open",
         state: "accepted",
-        gallery: ["image.png"],
+        galleryItems: ["image.png"],
         organization: {
             id: "123",
             name: "exampleOrg",
@@ -136,6 +142,7 @@ export const mockedOffersData: Offer[] = [
     {
         id: 3,
         when: {
+            applicationEndDate: null,
             durationMinDays: 26,
             durationMaxDays: 30,
             isApplicableAtTheEnd: true,
@@ -144,6 +151,8 @@ export const mockedOffersData: Offer[] = [
         },
         where: {
             address: "Казань Пушкина 46",
+            latitude: 55,
+            longitude: 57,
         },
         conditions: {
             additionalFeatures: ["additional", "excursions"],
@@ -192,7 +201,7 @@ export const mockedOffersData: Offer[] = [
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "open",
         state: "accepted",
-        gallery: ["image.png"],
+        galleryItems: ["image.png"],
         organization: {
             id: "123",
             name: "exampleOrg",

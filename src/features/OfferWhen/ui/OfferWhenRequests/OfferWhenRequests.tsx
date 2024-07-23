@@ -16,11 +16,25 @@ interface OfferWhenRequestsProps {
 export const OfferWhenRequests = memo(({ onChange, value }: OfferWhenRequestsProps) => {
     const { t } = useTranslation("offer");
     const handleEndDateChange = (date: Date) => {
-        onChange({ ...value, applicationEndDate: date });
+        if (!value.isWithoutApplicationDate) {
+            onChange({ ...value, applicationEndDate: date });
+        }
     };
 
     const handleNoEndDateLabelChange = () => {
-        onChange({ ...value, isWithoutApplicationDate: true });
+        if (value.isWithoutApplicationDate) {
+            onChange({
+                ...value,
+                isWithoutApplicationDate: !value.isWithoutApplicationDate,
+                applicationEndDate: new Date(),
+            });
+        } else {
+            onChange({
+                ...value,
+                isWithoutApplicationDate: !value.isWithoutApplicationDate,
+                applicationEndDate: undefined,
+            });
+        }
     };
 
     return (

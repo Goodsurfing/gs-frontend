@@ -9,42 +9,55 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import {
     useDeleteOfferMutation, Offer,
     useLazyGetHostOffersByIdQuery,
+    useUpdateOfferMutation,
+    useLazyGetOfferByIdQuery,
 } from "@/entities/Offer";
 import styles from "./HostOffersPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
+
+type SeletecBtnType = "delete" | "every_open";
 
 const HostOffersPage = () => {
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
     const [deleteOffer, { isLoading: isDeleteLoading }] = useDeleteOfferMutation();
-    const [trigger, { isLoading, data }] = useLazyGetHostOffersByIdQuery();
+    const [updateOffer] = useUpdateOfferMutation();
+    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
+    const [triggerOffer, { data: offerData }] = useLazyGetOfferByIdQuery();
 
     const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>([]);
     const [offersWithClosedStatus, setoffersWithClosedStatus] = useState<Offer[]>([]);
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
+    const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
-            const result = await trigger(myHostId).unwrap();
+            const result = await triggerHost(myHostId).unwrap();
             setOffersWithOpenStatus(filterOffersByStatus(result, "open"));
             setoffersWithClosedStatus(filterOffersByStatus(result, "empty"));
         }
-    }, [myHostId, trigger]);
+    }, [myHostId, triggerHost]);
 
     useEffect(() => {
         fetchOffers();
     }, [fetchOffers]);
 
     useEffect(() => {
-        if (data) {
-            setOffersWithOpenStatus(filterOffersByStatus(data, "open"));
-            setoffersWithClosedStatus(filterOffersByStatus(data, "empty"));
+        if (hostData) {
+            setOffersWithOpenStatus(filterOffersByStatus(hostData, "open"));
+            setoffersWithClosedStatus(filterOffersByStatus(hostData, "empty"));
         }
-    }, [data]);
+    }, [hostData]);
 
     const handleCloseClick = (offerId: number) => {
         setSelectedOffer(offerId);
+        setSelectedBtnOffer("delete");
+    };
+
+    const handleEveryOpenClick = (offerId: number) => {
+        setSelectedOffer(offerId);
+        setSelectedBtnOffer("every_open");
     };
 
     const handleModalClose = () => {
@@ -52,8 +65,17 @@ const HostOffersPage = () => {
     };
 
     const handleConfirmClick = async () => {
-        if (selectedOffer) {
+        if (selectedOffer && (selectedBtnOffer === "delete")) {
             await deleteOffer(selectedOffer.toString());
+            setSelectedOffer(null);
+        }
+        if (selectedOffer && (selectedBtnOffer === "every_open")) {
+            await triggerOffer(selectedOffer.toString()).unwrap();
+            if (offerData?.status === "open") {
+                await updateOffer({ body: { status: "every_open" }, id: selectedOffer });
+            } else {
+                await updateOffer({ body: { status: "open" }, id: selectedOffer });
+            }
             setSelectedOffer(null);
         }
     };
@@ -64,10 +86,11 @@ const HostOffersPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.abilities}>Мои возможности</h2>
+            <h2 className={styles.abilities}>Мои вакансии</h2>
             <HostOffersList
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
+                onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
             />
             {!!offersWithClosedStatus.length && (
                 <div className={styles.drafts}>
@@ -76,14 +99,15 @@ const HostOffersPage = () => {
                         <HostOffersList
                             offers={offersWithClosedStatus}
                             onCloseClick={(offerId) => handleCloseClick(offerId)}
+                            onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
                         />
                     </div>
                 </div>
             )}
             <AddOffer />
-            {selectedOffer && (
+            {(selectedOffer && selectedBtnOffer) && (
                 <ConfirmActionModal
-                    description="Вы уверены что хотите удалить вакансию?"
+                    description="Вы уверены что хотите изменить вакансию?"
                     onConfirm={() => handleConfirmClick()}
                     onClose={() => handleModalClose()}
                 />

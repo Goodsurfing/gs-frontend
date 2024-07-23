@@ -3,7 +3,7 @@ import React, {
     ChangeEvent, FC,
 } from "react";
 
-import { useTags } from "./OfferCategories.data";
+import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferCategories.module.scss";
 
 interface OfferCategoriesProps {
@@ -13,7 +13,7 @@ interface OfferCategoriesProps {
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { value, onChange } = props;
-    const { tags } = useTags();
+    const { tags } = useCategories();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange?.(newValues.filter(Boolean));
