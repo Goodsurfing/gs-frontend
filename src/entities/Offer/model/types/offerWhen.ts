@@ -9,6 +9,6 @@ export interface OfferWhen {
     isApplicableAtTheEnd: boolean;
     durationMinDays: number;
     durationMaxDays: number;
-    applicationEndDate?: string;
+    applicationEndDate: string | null;
     // isWithoutApplicationEndDate: boolean;
 }

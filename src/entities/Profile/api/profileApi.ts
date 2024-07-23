@@ -9,14 +9,14 @@ export const profileApi = createApi({
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: "users/me",
+                url: "personal/profile",
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "users/me",
+                url: "personal/profile",
                 method: "PATCH",
                 body: profileData,
             }),

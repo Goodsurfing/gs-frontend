@@ -7,9 +7,9 @@ import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import Button from "@/shared/ui/Button/Button";
-import styles from "./HostOffersPageCard.module.scss";
 import { OfferStatus } from "@/entities/Offer";
 import { textSlice } from "@/shared/lib/textSlice";
+import styles from "./HostOffersPageCard.module.scss";
 
 interface IHostOffersPageCard {
     id: number;
@@ -24,6 +24,8 @@ interface IHostOffersPageCard {
     description?: string;
     status: OfferStatus;
     onCloseClick: MouseEventHandler<HTMLButtonElement>;
+    onEveryOpenClick: MouseEventHandler<HTMLButtonElement>;
+    isEveryOpenActive: boolean;
 }
 
 const HostOffersPageCard = memo(
@@ -39,7 +41,9 @@ const HostOffersPageCard = memo(
         went,
         description,
         status,
+        isEveryOpenActive,
         onCloseClick,
+        onEveryOpenClick,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
@@ -116,9 +120,10 @@ const HostOffersPageCard = memo(
                     </Button>
                     <Button
                         className={styles.black}
-                        variant="FILL"
+                        variant={isEveryOpenActive ? "FILL" : "OUTLINE"}
                         color="BLACK"
                         size="SMALL"
+                        onClick={onEveryOpenClick}
                     >
                         Стать «всегда открытым»
                     </Button>

@@ -10,7 +10,7 @@ export {
 } from "./api/offerApi";
 
 export type {
-    Offer, OfferSchema, SortValue, AddressAutoComplete,
+    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferGalleryItem,
 } from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";

@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
+import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
+
 import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
 import locationIcon from "@/shared/assets/icons/location.svg";
@@ -18,9 +20,11 @@ import useDebounce from "@/shared/hooks/useDebounce";
 import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
 
 import { validateCoordinates } from "../model/lib/validateCoordinates";
-import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
+import {
+    getGeoObjectByCoordinates,
+    getGeoObjectCollection,
+} from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 import styles from "./MapWithAddress.module.scss";
-import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
 
 interface MapWithAddressProps {
     className?: string;
@@ -49,6 +53,35 @@ const MapWithAddress = ({
         [field, options],
     );
 
+    const handleMapClick = useCallback(
+        async (coords: [number, number]) => {
+            const [latitude, longitude] = coords;
+            const geoObject = await getGeoObjectByCoordinates(
+                longitude,
+                latitude,
+            );
+            field.onChange({
+                ...field.value,
+                geoObject,
+                address: `${geoObject?.description} ${geoObject?.name}`,
+            });
+        },
+        [field],
+    );
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        const { keyCode } = event;
+        const isBackspaceOrDelete = keyCode === 8 || keyCode === 46;
+        const isAlphanumeric = (keyCode >= 48 && keyCode <= 57)
+            || (keyCode >= 65 && keyCode <= 90)
+            || (keyCode >= 97 && keyCode <= 122)
+            || keyCode === 32;
+
+        if ((isBackspaceOrDelete || isAlphanumeric) && field.value.geoObject) {
+            field.onChange({ ...field.value, geoObject: null });
+        }
+    };
+
     useEffect(() => {
         onCoordinatesChange(field.value.geoObject?.Point.pos);
     }, [onCoordinatesChange, field.value.geoObject?.Point.pos]);
@@ -73,8 +106,8 @@ const MapWithAddress = ({
             getGeoObjectCollection(debouncedAddress, locale).then((res) => {
                 if (res?.featureMember.length) {
                     newOptions = [
-                        ...newOptions,
                         ...res.featureMember.map((item) => item.GeoObject),
+                        ...newOptions,
                     ];
                     setOptions(newOptions);
                 }
@@ -100,6 +133,7 @@ const MapWithAddress = ({
                     getOptionLabel={(option) => `${option.description} ${option.name}`}
                     noOptionsText={t("where.Точек на карте не найдено")}
                     labelText={t("where.Введите адрес")}
+                    onKeyDown={(event: React.KeyboardEvent) => handleKeyDown(event)}
                     renderOption={(props, option) => (
                         <li key={option.name} {...props}>
                             <Grid item sx={{ display: "flex", width: 30 }}>
@@ -122,19 +156,27 @@ const MapWithAddress = ({
                 />
                 <YMap
                     locale={locale}
+                    options={{ suppressMapOpenBlock: true }}
                     mapState={{
-                        center: validateCoordinates(field.value.geoObject?.Point.pos),
+                        center: validateCoordinates(
+                            field.value.geoObject?.Point.pos,
+                        ),
                         zoom: 10,
                     }}
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
                     setYmap={(ymaps) => setYmap(ymaps)}
+                    onClick={handleMapClick}
                     setLoading={setLoading}
                 >
-                    <Placemark
-                        geometry={validateCoordinates(field.value.geoObject?.Point.pos)}
-                    />
+                    {field.value.geoObject && (
+                        <Placemark
+                            geometry={validateCoordinates(
+                                field.value.geoObject?.Point.pos,
+                            )}
+                        />
+                    )}
                 </YMap>
             </div>
         </div>
