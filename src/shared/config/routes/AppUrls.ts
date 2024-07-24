@@ -14,6 +14,8 @@ export const getOffersMapPageUrl: RoutePathFunction = (locale) => (`/${locale}${
 
 export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}`);
 
+export const getMessengerPageIdUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id`);
+
 // Categires page
 
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);

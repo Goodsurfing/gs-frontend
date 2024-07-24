@@ -8,6 +8,7 @@ import styles from "./OfferApplication.module.scss";
 interface OfferApplicationProps {
     isHost: boolean;
     username: string;
+    isClosed?: boolean;
 }
 
 interface DatesType {
@@ -16,7 +17,7 @@ interface DatesType {
 }
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
-    const { isHost, username } = props;
+    const { isHost, username, isClosed } = props;
     const [whenPeriods, setWhenPeriods] = useState<DatesType>({
         start: undefined,
         end: undefined,
@@ -68,7 +69,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
             <TermsApplication
                 terms={whenPeriods}
                 onChange={handleDates}
-                isSuccess={false}
+                isSuccess={isClosed || false}
                 isHost={isHost}
             />
         </div>

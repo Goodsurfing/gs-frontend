@@ -87,18 +87,32 @@ export const Chat: FC<ChatProps> = (props) => {
         });
     };
 
+    const renderChat = () => {
+        if (id === "create") {
+            return (
+                <OfferApplication isHost={false} username="Николай Николаевич" isClosed={false} />
+            );
+        }
+        return (
+            <>
+                <Message
+                    avatar=""
+                    date={new Date()}
+                    isUser
+                    image="https://corporate.walmart.com/content/corporate/en_us/purpose/sustainability/planet/nature/jcr:content/par/image_2_0.img.png/1693432526985.png"
+                    username={user.name}
+                    onImageClick={onImageChange}
+                />
+                {renderMessages()}
+            </>
+        );
+    };
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div className={styles.topTab}>
-                    <div style={{
-                        display: "flex",
-                        gap: "10px",
-                        alignItems: "center",
-                        overflow: "hidden",
-                        width: "100%",
-                    }}
-                    >
+                    <div className={styles.topInner}>
                         <ReactSVG
                             src={arrowBackIcon}
                             className={styles.back}
@@ -117,16 +131,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 </div>
                 <div className={styles.chat}>
                     <div className={styles.chatList}>
-                        {renderMessages()}
-                        <OfferApplication isHost={false} username="Николай Николаевич" />
-                        <Message
-                            avatar=""
-                            date={new Date()}
-                            isUser
-                            image="https://corporate.walmart.com/content/corporate/en_us/purpose/sustainability/planet/nature/jcr:content/par/image_2_0.img.png/1693432526985.png"
-                            username={user.name}
-                            onImageClick={onImageChange}
-                        />
+                        {renderChat()}
                     </div>
                 </div>
                 <SendMessage />
