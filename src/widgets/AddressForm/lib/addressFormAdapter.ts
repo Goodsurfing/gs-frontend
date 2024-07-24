@@ -3,5 +3,7 @@ import { AddressFormFormFields } from "../model/types/addressForm";
 
 export const addressFormApiAdapter = (addressForm: AddressFormFormFields): OfferWhere => {
     const { address } = addressForm;
-    return { address: address.address };
+    const pos = address.geoObject?.Point.pos || "";
+    const [longitude, latitude] = pos.split(" ").map(Number);
+    return { address: address.address, longitude, latitude };
 };

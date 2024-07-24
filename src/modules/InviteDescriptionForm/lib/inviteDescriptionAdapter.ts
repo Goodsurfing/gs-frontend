@@ -1,6 +1,7 @@
 import { OfferDescription } from "@/entities/Offer";
 
 import { OfferDescriptionField } from "../model/types/inviteDescription";
+import { BASE_URL } from "@/shared/constants/api";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
@@ -41,7 +42,7 @@ export const inviteDescriptionAdapter = (
         title: data.title,
         fullDescription: data.description,
         shortDescription: data.shortDescription,
-        coverImage: { uuid: imageUuid || null, image: { file: null, src: imageSrc || null } },
+        coverImage: { uuid: `${BASE_URL}${imageUuid?.slice(1)}` || null, image: { file: null, src: `${BASE_URL}${imageSrc?.slice(1)}` || null } },
         category: data.categoryIds,
         // images: imagesTemp,
     };

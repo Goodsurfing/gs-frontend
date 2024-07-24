@@ -1,6 +1,6 @@
 import { ymapsDefaultLocation } from "@/shared/constants/ymaps";
 
-export const validateCoordinates = (location: string | undefined): [number, number] => {
+export const validateCoordinates = (location: string | undefined): [number, number] | undefined => {
     if (!location) {
         return ymapsDefaultLocation;
     }

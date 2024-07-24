@@ -1,16 +1,17 @@
 import React, { FC } from "react";
-
 import ImageInput from "@/components/ImageInput/ImageInput";
 
+import styles from "./ExtraImagesItem.module.scss";
 import ExtraImagesItemBackground from "./ExtraImagesItemBackground/ExtraImagesItemBackground";
 import ExtraImagesItemButton from "./ExtraImagesItemButton/ExtraImagesItemButton";
-
 import { ExtraImagesItemProps } from "./types";
 
-import styles from "./ExtraImagesItem.module.scss";
-
 const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
-    img, setImg, id, closeBtn, label,
+    img,
+    setImg,
+    id,
+    closeBtn,
+    label,
 }) => {
     const onBtnClick = () => {};
 
@@ -23,11 +24,17 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
                 className={styles.main}
                 wrapperClassName={styles.background}
                 labelClassName={styles.label}
-                labelChildren={!img.src && <ExtraImagesItemBackground label={label} />}
+                labelChildren={
+                    !img.src && <ExtraImagesItemBackground label={label} />
+                }
             />
-            {closeBtn && <ExtraImagesItemButton className={styles.closeBtn} onClick={onBtnClick} />}
+            {closeBtn && (
+                <ExtraImagesItemButton
+                    className={styles.closeBtn}
+                    onClick={onBtnClick}
+                />
+            )}
         </div>
-
     );
 };
 
