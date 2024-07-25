@@ -1,25 +1,33 @@
-import React, { useCallback } from "react";
 import cn from "classnames";
+import React, { useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import MainHeader from "@/widgets/MainHeader/MainHeader";
-import { Chat, MessengerList } from "@/widgets/Messenger";
-import { mockedChatUser, mockedMessages } from "@/entities/Messenger";
-import styles from "./MessengerPage.module.scss";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
 
+import MainHeader from "@/widgets/MainHeader/MainHeader";
+import { Chat, MessengerList } from "@/widgets/Messenger";
+
+import { mockedChatUser, mockedMessages } from "@/entities/Messenger";
+
+import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
+
+import styles from "./MessengerPage.module.scss";
+
 const MessengerPage = () => {
-    // const [selectedChat, setSelectedChat] = useState<string | null>("create");
-    const { id: selectedChat } = useParams();
+    const { id: selectedChat, offerId } = useParams();
     const navigate = useNavigate();
     const { locale } = useLocale();
 
-    const handleOnUserClick = useCallback((value: string | null) => {
-        if (value) {
-            navigate(`/${locale}/messenger/${value}`);
-        } else {
-            navigate(`/${locale}/messenger`);
-        }
-    }, [locale, navigate]);
+    const handleOnUserClick = useCallback(
+        (value?: string) => {
+            if (value) {
+                navigate(`/${locale}/messenger/${value}`);
+            } else {
+                navigate(getMessengerPageUrl(locale));
+            }
+        },
+        [locale, navigate],
+    );
 
     return (
         <div className={styles.layout}>
@@ -28,13 +36,18 @@ const MessengerPage = () => {
                 <h2 className={styles.title}>Сообщения</h2>
                 <div className={styles.content}>
                     <MessengerList
-                        className={cn(styles.userList, { [styles.open]: !selectedChat })}
+                        className={cn(styles.userList, {
+                            [styles.open]: !selectedChat,
+                        })}
                         onUserClick={handleOnUserClick}
                     />
                     <Chat
-                        id={selectedChat || null}
-                        onChange={handleOnUserClick}
-                        className={cn(styles.chat, { [styles.open]: selectedChat })}
+                        id={selectedChat}
+                        offerId={offerId}
+                        onBackButton={handleOnUserClick}
+                        className={cn(styles.chat, {
+                            [styles.open]: selectedChat,
+                        })}
                         messages={mockedMessages}
                         user={mockedChatUser}
                     />

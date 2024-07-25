@@ -116,8 +116,9 @@ import {
     getVideoPersonalPageUrl,
     getOffersMapPageUrl,
     getMessengerPageUrl,
-    getProfilePageUrl,
     getMessengerPageIdUrl,
+    getMessengerPageCreateUrl,
+    getProfilePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
@@ -145,6 +146,11 @@ const publicRoutes: RouteType[] = [
         element: <MessengerPage />,
         label: "messengerId",
         path: (locale: string) => getMessengerPageIdUrl(locale),
+    },
+    {
+        element: <MessengerPage />,
+        label: "messengerCreate",
+        path: (locale: string) => getMessengerPageCreateUrl(locale),
     },
     {
         element: <CategoriesPage />,

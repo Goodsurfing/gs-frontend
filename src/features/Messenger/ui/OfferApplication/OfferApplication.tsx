@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback } from "react";
 
 import { OfferCard } from "@/entities/Offer";
 
@@ -9,6 +9,9 @@ interface OfferApplicationProps {
     isHost: boolean;
     username: string;
     isClosed?: boolean;
+    onSubmit?: () => void;
+    terms: DatesType;
+    onChange: (terms: DatesType) => void;
 }
 
 interface DatesType {
@@ -17,21 +20,19 @@ interface DatesType {
 }
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
-    const { isHost, username, isClosed } = props;
-    const [whenPeriods, setWhenPeriods] = useState<DatesType>({
-        start: undefined,
-        end: undefined,
-    });
+    const {
+        isHost, username, isClosed, onSubmit, terms, onChange,
+    } = props;
 
     const handleDates = useCallback(
         (periods: DatesType) => {
-            setWhenPeriods({
-                ...whenPeriods,
+            onChange({
+                ...terms,
                 start: periods.start,
                 end: periods.end,
             });
         },
-        [whenPeriods],
+        [onChange, terms],
     );
 
     const renderTitle = () => {
@@ -67,10 +68,11 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 link="offer-personal/1"
             />
             <TermsApplication
-                terms={whenPeriods}
+                terms={terms}
                 onChange={handleDates}
                 isSuccess={isClosed || false}
                 isHost={isHost}
+                onSubmit={onSubmit}
             />
         </div>
     );

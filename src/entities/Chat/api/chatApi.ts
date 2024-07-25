@@ -1,14 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
-import { FormApplicationRequest, FormApplicationResponse, Message } from "@/entities/Chat";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { FormApplicationResponse, Message } from "@/entities/Chat";
 
 export const chatApi = createApi({
     reducerPath: "chatApi",
-    baseQuery,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["chat"],
     endpoints: (build) => ({
-        createApplicationForm: build.mutation<FormApplicationResponse, FormApplicationRequest>({
+        createApplicationForm: build.mutation<FormApplicationResponse, FormData>({
             query: (data) => ({
                 url: "application_forms",
                 method: "POST",
@@ -23,14 +23,14 @@ export const chatApi = createApi({
             }),
             providesTags: ["chat"],
         }),
-        getChatsWithOrganizations: build.query<Offer, string>({
+        getChatsWithOrganizations: build.query<any, string>({
             query: () => ({
                 url: "chats/my/with-organizations",
                 method: "GET",
             }),
             providesTags: ["chat"],
         }),
-        getChatsWithVolunteers: build.query<Offer, string>({
+        getChatsWithVolunteers: build.query<any, string>({
             query: () => ({
                 url: "chats/my/with-volunteers",
                 method: "GET",
@@ -39,3 +39,7 @@ export const chatApi = createApi({
         }),
     }),
 });
+
+export const {
+    useCreateApplicationFormMutation,
+} = chatApi;
