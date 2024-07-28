@@ -52,7 +52,6 @@ import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
 
 import { OffersMapPage } from "@/pages/OffersMapPage";
-import { MessengerPage } from "@/pages/MessengerPage";
 
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
@@ -138,17 +137,17 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getOffersMapPageUrl(locale),
     },
     {
-        element: <MessengerPage />,
+        element: AuthRoutes.messenger, // refactor this three routes with children routes
         label: "messenger",
         path: (locale: string) => getMessengerPageUrl(locale),
     },
     {
-        element: <MessengerPage />,
+        element: AuthRoutes.messenger,
         label: "messengerId",
         path: (locale: string) => getMessengerPageIdUrl(locale),
     },
     {
-        element: <MessengerPage />,
+        element: AuthRoutes.messenger,
         label: "messengerCreate",
         path: (locale: string) => getMessengerPageCreateUrl(locale),
     },
