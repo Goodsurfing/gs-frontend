@@ -7,7 +7,6 @@ export const useGetChatListData = (token: string | null) => {
 
     useEffect(() => {
         if (!token) return;
-
         const fetchChats = async () => {
             try {
                 const orgResponse = await fetch(`${BASE_URL}api/personal/chats/with-organizations`, {
@@ -25,8 +24,8 @@ export const useGetChatListData = (token: string | null) => {
                 const volData = await volResponse.json();
 
                 setUsers([...orgData, ...volData]);
-            } catch (error) {
-                console.error("Ошибка при получении чатов:", error);
+            } catch {
+                setUsers([]);
             }
         };
 
