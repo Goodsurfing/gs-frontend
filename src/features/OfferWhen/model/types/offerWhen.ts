@@ -4,7 +4,7 @@ export interface CreateOfferWhen {
     data: OfferWhen;
 }
 
-export type DatePeriods = { start: Date, end: Date };
+export type DatePeriods = { start: Date | undefined, end: Date | undefined };
 
 export type TimeSettingsControls = {
     isFullYearAcceptable: boolean;
@@ -12,14 +12,14 @@ export type TimeSettingsControls = {
 };
 
 export type EndSettings = {
-    applicationEndDate: Date;
+    applicationEndDate: Date | undefined;
     isWithoutApplicationDate: boolean;
 };
 
 export interface OfferWhenFields {
-    periods: DatePeriods[]; //
-    participationPeriod: number[]; //
-    applicationEndDate: Date; //
-    timeSettings: TimeSettingsControls; //
+    periods: DatePeriods[];
+    participationPeriod: number[];
+    // applicationEndDate: Date;
+    timeSettings: TimeSettingsControls;
     endSettings: EndSettings;
 }

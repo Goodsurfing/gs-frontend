@@ -13,7 +13,6 @@ import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { MainPage } from "@/pages/MainPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
@@ -39,9 +38,22 @@ import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { MembershipPage } from "@/pages/MembershipPage";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { NPOPage } from "@/pages/NPOPage";
+import { RulesPage } from "@/pages/RulesPage";
+import { FindJobPage } from "@/pages/FindJobPage";
+import { NewsPage } from "@/pages/NewsPage";
+import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
+import { JournalsPage } from "@/pages/JournalsPage";
+import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
+import { VideoPage } from "@/pages/VideoPage";
+import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
-import { RulesPage } from "@/pages/RulesPage";
+
+import { OffersMapPage } from "@/pages/OffersMapPage";
+import { MessengerPage } from "@/pages/MessengerPage";
+
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 
@@ -96,14 +108,21 @@ import {
     getRulesPageUrl,
     getNewsPageUrl,
     getPrivacyPolicyPageUrl,
+    getNewsPersonalPageUrl,
+    getFindJobPageUrl,
+    getJournalsPageUrl,
+    getJournalPersonalPageUrl,
+    getVideoPageUrl,
+    getVideoPersonalPageUrl,
+    getOffersMapPageUrl,
+    getMessengerPageUrl,
+    getProfilePageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { NewsPage } from "@/pages/NewsPage";
-import { OurTeamPage } from "@/pages/OurTeamPage";
-import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
+import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -112,8 +131,18 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getMainPageUrl(locale),
     },
     {
+        element: <OffersMapPage />,
+        label: "offers-map",
+        path: (locale: string) => getOffersMapPageUrl(locale),
+    },
+    {
+        element: <MessengerPage />,
+        label: "messenger",
+        path: (locale: string) => getMessengerPageUrl(locale),
+    },
+    {
         element: <CategoriesPage />,
-        label: "main",
+        label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
@@ -147,11 +176,11 @@ const publicRoutes: RouteType[] = [
                 index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
-            // {
-            //     label: "host-offers",
-            //     element: <HostOffersPage />,
-            //     path: (locale) => getMyOffersPageUrl(locale),
-            // },
+            {
+                label: "host-offers",
+                element: <HostOffersPage />,
+                path: (locale) => getMyOffersPageUrl(locale),
+            },
             {
                 label: "host-main-info",
                 element: <HostMainInfoPage />,
@@ -185,11 +214,6 @@ const publicRoutes: RouteType[] = [
         ],
     },
     {
-        label: "host-offers",
-        element: <HostOffersPage />,
-        path: (locale) => getMyOffersPageUrl(locale),
-    },
-    {
         label: "host-personal",
         element: (
             <HostPersonalPage />
@@ -208,7 +232,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: <OfferDescriptionPage />,
+                element: AuthRoutes.offers_description,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {
@@ -311,39 +335,47 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getResetPasswordPageUrl(locale),
     },
     {
-        label: "reset-password-profile",
-        element: AuthRoutes.profile_reset_password,
-        path: (locale: string) => getProfileResetPasswordPageUrl(locale),
-    },
-    {
         label: "reset-password-verify",
         element: <ResetPasswordVerifyPage />,
         path: (locale: string) => getResetPasswordVerifyPageUrl(locale),
     },
     {
-        label: "profile-info",
-        element: (
-            <PrivateRouteGuard>
-                <ProfileInfoPage />
-            </PrivateRouteGuard>
-        ),
-        path: (locale: string) => getProfileInfoPageUrl(locale),
+        label: "profile",
+        element: <ProfileLayoutPage />,
+        path: (locale: string) => getProfilePageUrl(locale),
+        children: [
+            {
+                label: "profile-info",
+                element: (
+                    <PrivateRouteGuard>
+                        <ProfileInfoPage />
+                    </PrivateRouteGuard>
+                ),
+                path: (locale: string) => getProfileInfoPageUrl(locale),
+            },
+            {
+                label: "profile-preferences",
+                element: <ProfilePreferencesPage />,
+                path: (locale: string) => getProfilePreferencesPageUrl(locale),
+            },
+            {
+                label: "reset-password-profile",
+                element: AuthRoutes.profile_reset_password,
+                path: (locale: string) => getProfileResetPasswordPageUrl(locale),
+            },
+            {
+                label: "profile-role",
+                element: <ProfileRolePage />,
+                path: (locale: string) => getProfileRolePagePageUrl(locale),
+            },
+            {
+                label: "profile-privacy",
+                element: <ProfilePrivacyPage />,
+                path: (locale: string) => getProfilePrivacyPageUrl(locale),
+            },
+        ],
     },
-    {
-        label: "profile-info",
-        element: <ProfilePrivacyPage />,
-        path: (locale: string) => getProfilePrivacyPageUrl(locale),
-    },
-    {
-        label: "profile-preferences",
-        element: <ProfilePreferencesPage />,
-        path: (locale: string) => getProfilePreferencesPageUrl(locale),
-    },
-    {
-        label: "profile-role",
-        element: <ProfileRolePage />,
-        path: (locale: string) => getProfileRolePagePageUrl(locale),
-    },
+
     {
         label: "about-page",
         element: <AboutProjectPage />,
@@ -365,9 +397,39 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getRulesPageUrl(locale),
     },
     {
+        label: "find-job",
+        element: <FindJobPage />,
+        path: (locale: string) => getFindJobPageUrl(locale),
+    },
+    {
         label: "news",
         element: <NewsPage />,
         path: (locale: string) => getNewsPageUrl(locale),
+    },
+    {
+        label: "news-personal",
+        element: <NewsPersonalPage />,
+        path: (locale: string) => getNewsPersonalPageUrl(locale),
+    },
+    {
+        label: "journals",
+        element: <JournalsPage />,
+        path: (locale: string) => getJournalsPageUrl(locale),
+    },
+    {
+        label: "journal-personal",
+        element: <JournalPersonalPage />,
+        path: (locale: string) => getJournalPersonalPageUrl(locale),
+    },
+    {
+        label: "video",
+        element: <VideoPage />,
+        path: (locale: string) => getVideoPageUrl(locale),
+    },
+    {
+        label: "video-personal",
+        element: <VideoPersonalPage />,
+        path: (locale: string) => getVideoPersonalPageUrl(locale),
     },
     {
         label: "rules",

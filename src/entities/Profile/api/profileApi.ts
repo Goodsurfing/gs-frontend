@@ -5,35 +5,27 @@ import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery,
-    tagTypes: ["profile", "host"],
+    tagTypes: ["profile"],
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: "/user/profile",
+                url: "personal/profile",
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "/user/profile/",
-                method: "PUT",
+                url: "personal/profile",
+                method: "PATCH",
                 body: profileData,
             }),
             invalidatesTags: ["profile"],
-        }),
-        joinToHost: build.mutation<Profile, string>({
-            query: (organizationId) => ({
-                url: `organization/${organizationId}/join/`,
-                method: "PUT",
-            }),
-            invalidatesTags: ["host"],
         }),
     }),
 });
 
 export const {
     useGetProfileInfoQuery,
-    useJoinToHostMutation,
     useUpdateProfileInfoMutation,
 } = profileApi;

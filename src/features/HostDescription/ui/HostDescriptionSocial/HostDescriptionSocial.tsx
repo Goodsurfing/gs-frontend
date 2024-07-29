@@ -26,14 +26,14 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 label="Вконтакте"
                 img={vkIcon}
                 id="vk"
-                name="social.vk"
+                name="socialMedia.vk"
                 control={control}
             />
             <InputControl
                 label="Facebook"
                 img={facebookIcon}
                 id="fb"
-                name="social.facebook"
+                name="socialMedia.facebook"
                 control={control}
             />
             <InputControl
@@ -41,7 +41,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 label="Instagram"
                 img={instaIcon}
                 id="inst"
-                name="social.instagram"
+                name="socialMedia.instagram"
                 control={control}
             />
             <InputControl
@@ -49,7 +49,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 label="Telegram"
                 img={telegramIcon}
                 id="tg"
-                name="social.telegram"
+                name="socialMedia.telegram"
                 control={control}
             />
         </div>

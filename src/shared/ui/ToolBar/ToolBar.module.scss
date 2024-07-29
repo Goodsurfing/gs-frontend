@@ -6,12 +6,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
-
-    // .ProseMirror {
-    //     li p {
-    //         margin: 0;
-    //     }
-    // }
 }
 
 .groupWrapper {
@@ -35,9 +29,6 @@
     &:disabled {
         border: none;
     }
-    // aside {
-    //     position: absolute;
-    // }
 }
 
 .container {

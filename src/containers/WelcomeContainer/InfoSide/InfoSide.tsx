@@ -6,7 +6,7 @@ import SectionTitle from "@/shared/ui/SectionTitle/SectionTitle";
 import ActivityContainer from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityContainer";
 import InfoHeader from "@/containers/WelcomeContainer/InfoSide/InfoHeader/InfoHeader";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import styles from "./InfoSide.module.scss";
@@ -24,7 +24,7 @@ const InfoSide: FC = memo(() => {
                     <SectionTitle classNames={styles.title}>
                         {t("main.welcome.title")}
                     </SectionTitle>
-                    <ButtonLink className={styles.btn} type="primary" path={getMainPageUrl(locale)}>
+                    <ButtonLink className={styles.btn} type="primary" path={getOffersMapPageUrl(locale)}>
                         {t("main.welcome.offers-btn")}
                     </ButtonLink>
                 </div>

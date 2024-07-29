@@ -1,5 +1,7 @@
 export enum AppRoutes {
     MAIN = "main",
+    OFFERS_MAP = "offers_map",
+    MESSENGER = "messenger",
     CATEGORIES = "categories",
     SIGN_UP = "sign_up",
     SIGN_IN = "sign_in",
@@ -7,6 +9,7 @@ export enum AppRoutes {
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
+    PROFILE = "profile",
     PROFILE_INFO = "profile_info",
     PROFILE_PREFERENCES = "profile_preferences",
     PROFILE_ROLE = "profile_role",
@@ -47,7 +50,10 @@ export enum AppRoutes {
     NPO = "npo",
     OUR_TEAM = "our_team",
     RULES = "rules",
+    FIND_JOB = "find_job",
     NEWS = "news",
+    JOURNALS = "journals",
+    VIDEO = "video",
     PRIVACY_POLICY = "privacy_policy",
     NOT_FOUND = "not_found",
 }

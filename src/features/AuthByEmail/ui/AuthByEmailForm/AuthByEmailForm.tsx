@@ -35,15 +35,15 @@ export const AuthByEmailForm = memo(({
     const onSubmit: SubmitHandler<LoginByEmailProps> = useCallback(async (data) => {
         try {
             const formData = {
-                username: data.username,
+                email: data.email,
                 password: data.password,
             };
             const { token } = await loginUser(formData).unwrap();
 
-            dispatch(userActions.setAuthData({ username: data.username }));
+            dispatch(userActions.setAuthData({ username: data.email }));
 
             localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({
-                username: data.username,
+                username: data.email,
             }));
             localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
 
@@ -58,7 +58,7 @@ export const AuthByEmailForm = memo(({
         <form className={cn(styles.form, className)} onSubmit={handleSubmit(onSubmit)}>
             <Controller
                 control={control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                     <InputField
                         onChange={(e) => field.onChange(e)}

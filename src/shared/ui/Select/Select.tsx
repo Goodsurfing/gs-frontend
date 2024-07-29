@@ -1,13 +1,13 @@
 import cn from "classnames";
-import { Select, SelectProps } from "@mui/material";
+import { Select, SelectProps as MuiSelectProps } from "@mui/material";
 
 import styles from "./Select.module.scss";
 
-interface SelectComponentProps extends SelectProps {
+type SelectProps = MuiSelectProps & {
     label?: string;
-}
+};
 
-export const SelectComponent = (props: SelectComponentProps) => {
+export const SelectComponent = (props: SelectProps) => {
     const {
         children, label, className, id, disabled, ...restSelectProps
     } = props;

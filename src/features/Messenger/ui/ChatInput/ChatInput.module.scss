@@ -1,0 +1,57 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--bg-accent);
+}
+
+.button {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    svg {
+        object-fit: contain;
+        stroke: var(--text-caption);
+        fill: transparent;
+    }
+}
+
+.emojiWrapper {
+    position: absolute;
+    bottom: 300%;
+    right: 0;
+}
+
+.send {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+.icon > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 992px) {
+    .emojiWrapper {
+        width: 70vw;
+    }
+    .emojiWrapper > aside {
+        width: 100% !important;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .emojiWrapper {
+        width: 85vw;
+        right: -180%;
+    }
+    .emojiWrapper > aside {
+        width: 100% !important;
+    }
+}

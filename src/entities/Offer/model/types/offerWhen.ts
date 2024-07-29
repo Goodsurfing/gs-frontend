@@ -1,14 +1,14 @@
 export interface OfferWhenPeriods {
-    start: string;
-    end: string;
+    start: string | null;
+    ending: string | null;
 }
 
 export interface OfferWhen {
-    periods?: OfferWhenPeriods[];
+    periods: OfferWhenPeriods[];
     isFullYearAcceptable: boolean;
     isApplicableAtTheEnd: boolean;
     durationMinDays: number;
     durationMaxDays: number;
-    applicationEndDate?: string;
-    isWithoutApplicationEndDate: boolean;
+    applicationEndDate: string | null;
+    // isWithoutApplicationEndDate: boolean;
 }

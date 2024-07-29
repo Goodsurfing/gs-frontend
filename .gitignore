@@ -5,3 +5,5 @@ coverage
 http-requests
 .env
 .eslintcache
+localhost+1-key.pem
+localhost+1.pem

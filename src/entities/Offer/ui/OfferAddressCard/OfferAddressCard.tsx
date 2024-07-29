@@ -43,6 +43,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                     }}
                     className={cn(styles.map)}
                     setYmap={(ymaps) => setYmap(ymaps)}
+                    locale={locale}
                 >
                     <Placemark
                         geometry={validateCoordinates(coordinates?.Point.pos)}

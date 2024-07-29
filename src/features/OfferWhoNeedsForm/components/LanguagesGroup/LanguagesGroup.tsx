@@ -1,5 +1,7 @@
 import { FC, useCallback } from "react";
 
+import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
@@ -15,6 +17,17 @@ interface LanguagesGroupProps {
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
+    const { control } = useFormContext();
+    const { t } = useTranslation("offer");
+
+    const onAddBtnClick = useCallback(() => {
+        if ((value[0].language === "not_matter") && (value[0].languageLevel === "not_matter")) {
+            return;
+        }
+        if (value.length < 10) {
+            onChange([...value, { language: "english", languageLevel: "not_matter" } as Language]);
+        }
+    }, [onChange, value]);
 
     const onCloseBtnClick = useCallback((index: number) => {
         if (index === 0) return;
@@ -33,6 +46,10 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                         onChange={(newValue) => {
                             const newLanguages = [...value];
                             newLanguages[index] = newValue;
+                            if (newLanguages[0].language === "not_matter") {
+                                onChange([newLanguages[0]]);
+                                return;
+                            }
                             onChange(newLanguages);
                         }}
                         close={(
@@ -44,13 +61,19 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                     />
                 ))}
                 {value.length > 1 && (
-                    <ExtraControls />
+                    <Controller
+                        control={control}
+                        name="needAllLanguages"
+                        render={({ field }) => (
+                            <ExtraControls value={field.value} onChange={field.onChange} />
+                        )}
+                    />
                 )}
             </div>
             <div className="">
                 <AddButton
-                    text="Добавить язык"
-                    onClick={() => onChange([...value, { language: "Английский", level: "not_matter" } as Language])}
+                    text={t("whoNeeds.Добавить язык")}
+                    onClick={onAddBtnClick}
                 />
             </div>
         </div>

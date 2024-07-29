@@ -1,15 +1,28 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { memo } from "react";
-import { useForm } from "react-hook-form";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import * as z from "zod";
+import { useParams } from "react-router-dom";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
+import { getGeoObjectByCoordinates } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
+import {
+    useLazyGetOfferByIdQuery,
+    useUpdateOfferMutation,
+} from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { addressFormSchema } from "../../model/types/addressForm";
+import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
+import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface AddressFormProps {
     className?: string;
@@ -20,41 +33,98 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         handleSubmit,
         formState: { errors },
         control,
-    } = useForm<z.infer<typeof addressFormSchema>>({
-        resolver: zodResolver(addressFormSchema),
+        reset,
+    } = useForm<AddressFormFormFields>({
         mode: "onChange",
         defaultValues: {
-            address: "",
+            address: {
+                address: "",
+                geoObject: null,
+            },
         },
     });
-    const { t } = useTranslation("offer-where");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const onSubmit = handleSubmit((data) => {
+    const { t } = useTranslation("offer");
+    const { id } = useParams();
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
+    const [toast, setToast] = useState<ToastAlert>();
 
+    const fetchGeoObject = useCallback(async () => {
+        trigger(id || "").unwrap();
+        if (offerData?.where) {
+            const offerGeoObject = offerData.where;
+            const geoObject = await getGeoObjectByCoordinates(
+                offerGeoObject.longitude,
+                offerGeoObject.latitude,
+            );
+            if (geoObject) {
+                reset({ address: { address: `${geoObject.description} ${geoObject.name}`, geoObject } });
+            }
+        } else {
+            reset();
+        }
+    }, [trigger, id, offerData?.where, reset]);
+
+    const onSubmit = handleSubmit(async (data) => {
+        setToast(undefined);
+        const preparedData = addressFormApiAdapter(data);
+        updateOffer({ id: Number(id), body: { where: preparedData } })
+            .then(() => {
+                fetchGeoObject();
+                setToast({
+                    text: "Адрес успешно изменён",
+                    type: HintType.Success,
+                });
+            })
+            .catch(() => {
+                setToast({
+                    text: "Произошла ошибка",
+                    type: HintType.Error,
+                });
+            });
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    useEffect(() => {
+        fetchGeoObject();
+    }, [fetchGeoObject]);
+
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;
     };
 
+    if (isLoadingGetData) {
+        return <Preloader className={styles.loading} />;
+    }
+
     return (
         <form className={className} onSubmit={onSubmit}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             {errors.address && (
-                <p className={styles.error}>
-                    {errors.address.message}
-                </p>
+                <p className={styles.error}>{errors.address.message}</p>
             )}
-            <MapWithAddress control={control} data={{ address: "" }} onCoordinatesChange={handleCoordinatesChange} />
+            <Controller
+                control={control}
+                name="address"
+                rules={{
+                    validate: (value) => value?.geoObject !== null || "Укажите пожалуйста адрес",
+                }}
+                render={({ field }) => (
+                    <MapWithAddress
+                        field={field}
+                        onCoordinatesChange={handleCoordinatesChange}
+                    />
+                )}
+            />
             <Button
                 variant="FILL"
+                disabled={isLoading}
                 color="BLUE"
                 size="MEDIUM"
                 className={styles.btn}
                 onClick={onSubmit}
                 type="submit"
             >
-                {t("Сохранить")}
+                {t("where.Сохранить")}
             </Button>
         </form>
     );

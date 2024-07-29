@@ -4,7 +4,7 @@ import React, {
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { Offer, OfferStatus } from "@/entities/Offer";
+import { Offer, OfferState } from "@/entities/Offer";
 
 import { statusColors } from "../../model/lib/statusColors";
 import { NotesContainer } from "../NotesContainer/NotesContainer";
@@ -21,23 +21,23 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         const { offers: initialOffers, className, isDragDisable } = props;
 
         const [offers] = useState(initialOffers);
-        const [columns, setColumns] = useState<Record<OfferStatus, Offer[]>>({
-            "under consideration": [],
+        const [columns, setColumns] = useState<Record<OfferState, Offer[]>>({
+            new: [],
             accepted: [],
             confirmed: [],
             rejected: [],
         });
 
         useEffect(() => {
-            const newColumns: Record<OfferStatus, Offer[]> = {
-                "under consideration": [],
+            const newColumns: Record<OfferState, Offer[]> = {
+                new: [],
                 accepted: [],
                 confirmed: [],
                 rejected: [],
             };
 
             offers.forEach((offer) => {
-                newColumns[offer.status].push(offer);
+                newColumns[offer.state].push(offer);
             });
 
             setColumns(newColumns);
@@ -60,8 +60,8 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             }
 
             // Start updating the state
-            const startOffers = columns[source.droppableId as OfferStatus];
-            const finishOffers = columns[destination.droppableId as OfferStatus];
+            const startOffers = columns[source.droppableId as OfferState];
+            const finishOffers = columns[destination.droppableId as OfferState];
 
             // If the item was dragged within the same column
             if (startOffers === finishOffers) {
@@ -81,7 +81,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             // If the item was dragged to another column
             const startNewOffers = Array.from(startOffers);
             const [removed] = startNewOffers.splice(source.index, 1);
-            removed.status = destination.droppableId as OfferStatus;
+            removed.state = destination.droppableId as OfferState;
             const finishNewOffers = Array.from(finishOffers);
             finishNewOffers.splice(destination.index, 0, removed);
 
@@ -100,9 +100,9 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                     {Object.entries(columns).map(([status, columnOffers]) => (
                         <NotesContainer
                             key={status}
-                            status={status as OfferStatus}
+                            status={status as OfferState}
                             offers={columnOffers}
-                            color={statusColors[status as OfferStatus]}
+                            color={statusColors[status as OfferState]}
                             isDragDisable={isDragDisable}
                         />
                     ))}

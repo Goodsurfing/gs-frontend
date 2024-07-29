@@ -1,9 +1,10 @@
-import * as z from "zod";
+import { GeoObject } from "@/entities/Map";
 
-export const addressFormSchema = z.object({
-    address: z.string().min(5, { message: "Адресс слишком короткий" }).trim(),
-});
+export interface AddressFormInput {
+    address: string;
+    geoObject: GeoObject | null
+}
 
 export interface AddressFormFormFields {
-    address: string;
+    address: AddressFormInput;
 }

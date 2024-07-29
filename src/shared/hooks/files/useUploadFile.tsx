@@ -1,57 +1,40 @@
-import { API_MEDIA_BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
-interface GenerateLinkResponse {
-    url: string;
-    contentType: string;
-    uuid: string;
+export interface ObjectMediaResponse {
+    "@id": string;
+    id: string;
+    contentUrl: string;
 }
 
-const useUploadFile = async (fileName: string, data: any, token: string) => {
+const uploadFile = async (fileName: string, data: File) => {
     const sendRequestForGenerateUploadLink = async () => {
-        const body = {
-            fileName,
-        };
+        const formData = new FormData();
+        formData.append("file", data);
         try {
             const response = await fetch(
-                `${API_MEDIA_BASE_URL}/generate-upload-link`,
+                `${API_BASE_URL}media_objects`,
                 {
                     method: "POST",
                     headers: new Headers({
-                        Authorization: `Bearer ${token}`,
+                        Accept: "application/ld+json",
                     }),
-                    body: JSON.stringify(body),
+                    body: formData,
                 },
             );
-            const dataResult = await response.json();
+            const dataResult: ObjectMediaResponse = await response.json();
+
             return dataResult;
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(error);
-        }
-    };
-    const uploadFileMutation = async (link: GenerateLinkResponse) => {
-        try {
-            await fetch(link!.url, {
-                method: "PUT",
-                headers: new Headers({
-                    "Content-Type": link!.contentType,
-                }),
-                body: data,
-            });
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(error);
+            return null;
         }
     };
     if (fileName && data) {
-        const generateLinkResponse: GenerateLinkResponse = await sendRequestForGenerateUploadLink();
-        if (generateLinkResponse) {
-            // eslint-disable-next-line no-console
-            console.log(generateLinkResponse);
-            uploadFileMutation(generateLinkResponse);
-            return generateLinkResponse.uuid;
+        const uploadedFile: ObjectMediaResponse | null = await
+        sendRequestForGenerateUploadLink();
+        if (uploadedFile) {
+            return uploadedFile;
         }
     }
 };
 
-export default useUploadFile;
+export default uploadFile;

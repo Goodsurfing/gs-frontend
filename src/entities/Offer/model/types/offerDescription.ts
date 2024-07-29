@@ -1,13 +1,11 @@
-import { OfferOrganization } from "./offerOrganization";
+import { MediaObjectType } from "@/types/media";
 
 export type Category = string;
 
 export interface OfferDescription {
     title: string;
-    titleImage?: string;
-    category: Category[];
+    image?: string | MediaObjectType;
+    categoryIds: Category[];
     shortDescription: string;
-    longDescription: string;
-    images: string[];
-    organization: OfferOrganization;
+    description: string;
 }

@@ -1,34 +1,35 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import { API_BASE_URL } from "@/shared/constants/api";
 
-interface GenerateLinkResponse {
-    url: string;
-    uuid: string;
-    contentType: string;
+interface MediaObjectResponse {
+    "@id": string;
+    id: string;
+    contentUrl: string;
 }
 
 export const galleryApi = createApi({
     reducerPath: "galleryApi",
     baseQuery: fetchBaseQuery({
         credentials: "same-origin",
-        baseUrl: `${process.env._BASE_URL}api/v1`,
+        baseUrl: `${API_BASE_URL}`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
             if (token) {
                 headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
             }
-            headers.set("Access-Control-Allow-Origin", "*");
-            headers.set("Content-Type", "application/json");
+            headers.set("Accept", "application/ld+json");
             return headers;
         },
     }),
     endpoints: (build) => ({
-        generateLink: build.mutation<GenerateLinkResponse, { fileName: string }>({
-            query: (data: { fileName: string }) => ({
-                url: "/media/generate-upload-link",
-                method: "POST",
-                body: data,
+        getMediaObjectById: build.query<MediaObjectResponse, string>({
+            query: (mediaId) => ({
+                url: `/media_objects/${mediaId}`,
+                method: "GET",
             }),
         }),
     }),
 });
+
+export const { useGetMediaObjectByIdQuery, useLazyGetMediaObjectByIdQuery } = galleryApi;

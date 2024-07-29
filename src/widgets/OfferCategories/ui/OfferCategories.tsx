@@ -1,10 +1,9 @@
-import React, { FC, ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
-import ToggleButtonGroupComponent from "@/components/ToggleButtonGroup/ToggleButtonGroup";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import React, {
+    ChangeEvent, FC,
+} from "react";
 
-import { ToggleButtonComponent } from "@/shared/ui/ToggleButton/ToggleButtonComponent";
-
-import { tags } from "./OfferCategories.data";
+import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferCategories.module.scss";
 
 interface OfferCategoriesProps {
@@ -14,7 +13,7 @@ interface OfferCategoriesProps {
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { value, onChange } = props;
-    const { t } = useTranslation("translation");
+    const { tags } = useCategories();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange?.(newValues.filter(Boolean));
@@ -22,7 +21,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
 
     return (
         <div className={styles.container}>
-            <ToggleButtonGroupComponent
+            <ToggleButtonGroup
                 value={value}
                 onChange={handleChange}
                 sx={{
@@ -34,14 +33,14 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                 }}
             >
                 {tags.map((item, index) => (
-                    <ToggleButtonComponent
+                    <ToggleButton
                         sx={{
                             maxHeight: "35px",
                             padding: "5px 10px",
-                            border: item.color,
-                            borderRadius: "26px",
-                            borderWidth: "2px",
-                            borderStyle: "solid",
+                            border: `${item.color} !important`,
+                            borderRadius: "26px !important",
+                            borderWidth: "2px !important",
+                            borderStyle: "solid !important",
                             boxSizing: "content-box",
                             textTransform: "none",
                             color: "#212121",
@@ -69,15 +68,20 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                                 borderStyle: "solid",
                                 outline: "none",
                             },
+                            "&.Mui-selected": {
+                                backgroundColor: item.color,
+                            },
+                            "&.Mui-selected:hover": {
+                                backgroundColor: item.color,
+                            },
                         }}
-                        btncolor={item.color}
                         key={index}
                         value={item.value}
                     >
-                        {t(`category-offer.${item.text}`)}
-                    </ToggleButtonComponent>
+                        {item.text}
+                    </ToggleButton>
                 ))}
-            </ToggleButtonGroupComponent>
+            </ToggleButtonGroup>
         </div>
     );
 };

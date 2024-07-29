@@ -19,6 +19,7 @@ import {
     getInputValueFromDate,
     isInRange,
 } from "./utils";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     value,
@@ -26,12 +27,17 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     wrapperClassName,
     inputClassName,
     calendarClassName,
+    calendarWrapperClassName,
     min,
     max,
+    inputDisabled = true,
+    isScrollTo = false,
 }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
+    const calendarRef = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
+    const { locale } = useLocale();
 
     useLayoutEffect(() => {
         setInputValue(getInputValueFromDate(value));
@@ -96,7 +102,10 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     };
 
     const onInputClick = () => {
-        setShowPopup(true);
+        setShowPopup((prev) => {
+            if (isScrollTo) calendarRef.current?.scrollIntoView({ behavior: "smooth" });
+            return !prev;
+        });
     };
 
     const [inputValueDate, isValueDate] = useMemo(() => {
@@ -118,25 +127,37 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             ref={elementRef}
         >
             <input
+                disabled={inputDisabled}
                 type="text"
                 value={inputValue}
+                placeholder="Не задано"
                 onChange={onInputValueChange}
                 className={cn(inputClassName, styles.input, {
                     [styles.invalid]: !isValueDate,
+                    [styles.disabled]: inputDisabled,
                 })}
             />
             <img className={styles.img} src={calendarIcon} alt="calendar" />
-            {showPopup && inputValueDate && (
+            <div
+                ref={calendarRef}
+                className={cn(
+                    styles.calendarWrapper,
+                    { [styles.close]: !showPopup },
+                    calendarWrapperClassName,
+                )}
+                onClick={(event) => { event.stopPropagation(); }}
+            >
                 <CalendarComponent
+                    locale={locale}
                     className={cn(calendarClassName, styles.calendar)}
-                    value={inputValueDate}
+                    value={inputValueDate || new Date()}
                     onChange={(date: Date) => {
                         handleChange(date);
                     }}
                     minDate={min}
                     maxDate={max}
                 />
-            )}
+            </div>
         </div>
     );
 };

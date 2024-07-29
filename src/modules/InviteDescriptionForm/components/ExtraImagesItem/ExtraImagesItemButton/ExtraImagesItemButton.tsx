@@ -11,13 +11,15 @@ import styles from "./ExtraImagesItemButton.module.scss";
 export interface ExtraImagesItemButtonProps {
     className?: string;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    disabled?: boolean;
 }
 
 const ExtraImagesItemButton = memo(({
     className,
     onClick,
+    disabled,
 }: ExtraImagesItemButtonProps) => (
-    <ExtraCloseButton className={cn(className, styles.btn)} onClick={onClick}>
+    <ExtraCloseButton className={cn(className, styles.btn)} onClick={onClick} disabled={disabled}>
         <img className={styles.icon} src={closeIcon} alt="close" />
     </ExtraCloseButton>
 ));

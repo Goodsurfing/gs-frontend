@@ -1,5 +1,6 @@
 .wrapper {
     display: flex;
+    flex-shrink: 0;
 }
 
 .SMALL, .MEDIUM, .LARGE, .DEFAULT {
@@ -12,6 +13,7 @@
     height: 100%;
     background-color: var(--bg-accent);
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .DEFAULT {
@@ -32,6 +34,18 @@
 .LARGE {
     width: 70px;
     height: 70px;
+}
+
+.avatarNoImg {
+    border-radius: 50%;
+    background-color: var(--text-primary-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bg-primary-1);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 svg {

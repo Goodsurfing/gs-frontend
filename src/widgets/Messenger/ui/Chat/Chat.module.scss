@@ -1,0 +1,170 @@
+.wrapper {
+    background-color: var(--field);
+    display: flex;
+    position: relative;
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        color: var(--text-caption);
+    }
+}
+
+.chatIcon svg {
+    stroke: var(--text-caption);
+    font-size: rem;
+}
+
+.userName {
+    font-size: 1.125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.back path {
+    fill: var(--text-secondary-2);
+}
+
+.chat {
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-white);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--bg-accent);
+    }
+}
+
+.chatList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 16px;
+    max-width: 768px;
+}
+
+.date {
+    color: var(--text-caption);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+
+.adminMessage {
+    color: var(--text-primary-1);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.topTab {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    background-color: var(--text-secondary-1);
+}
+
+.settingsInfo {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.openInfo {
+    transform: rotate(270deg);
+
+    svg {
+        fill: var(--text-primary-1);
+        stroke: var(--text-primary-1);;
+        width: 20px;
+        cursor: pointer;
+        padding: 5px;
+    }
+}
+
+.back {
+    display: none;
+}
+
+.userInfo {
+    display: none;
+}
+
+.userInfo.open {
+    display: block;
+}
+
+.imagePopup {
+    width: auto;
+    max-width: 80vw;
+    object-fit: contain;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        display: none;
+    }
+    to {
+        transform: translateX(0);
+        display: block;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        display: block;
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+        display: none;
+    }
+}
+
+@media (max-width: 1180px) {
+    .userInfo {
+        position: absolute;
+        height: 100%;
+        right: 0;
+        box-shadow: -15px 0px 20px 0px rgba(33, 33, 33, 0.0509803922);
+        animation: slideInFromLeft 0.5s forwards;
+    }
+    .userInfo.open {
+        animation: slideInFromRight 0.5s forwards;
+    }
+}
+
+@media (max-width: 992px) {
+    .back {
+        display: block;
+    }
+}
+
+@media(max-width: 480px) {
+    .imagePopup {
+        max-width: 90vw;
+    }
+}

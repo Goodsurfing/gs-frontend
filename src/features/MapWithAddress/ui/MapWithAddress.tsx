@@ -6,8 +6,12 @@ import cn from "classnames";
 import React, {
     memo, useCallback, useEffect, useState,
 } from "react";
-import { Control, Controller } from "react-hook-form";
+import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
+
+import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
 
 import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
@@ -16,40 +20,71 @@ import useDebounce from "@/shared/hooks/useDebounce";
 import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
 
 import { validateCoordinates } from "../model/lib/validateCoordinates";
-import { getGeoObjectCollection } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
+import {
+    getGeoObjectByCoordinates,
+    getGeoObjectCollection,
+} from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 import styles from "./MapWithAddress.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface MapWithAddressProps {
     className?: string;
-    data: { address: string };
-    control: Control<{ address: string }>;
+    field: ControllerRenderProps<AddressFormFormFields, "address">;
     onCoordinatesChange: (coordinates: string | undefined) => void;
 }
 
 const MapWithAddress = ({
-    className, data, control, onCoordinatesChange,
+    className,
+    onCoordinatesChange,
+    field,
 }: MapWithAddressProps) => {
-    const { t } = useTranslation("offer-where");
+    const { t } = useTranslation("offer");
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-
-    const [value, setValue] = useState<GeoObject | null>(null);
     const [options, setOptions] = useState<readonly GeoObject[]>([]);
-    const [inputValue, setInputValue] = useState("");
 
-    const debouncedAddress = useDebounce(inputValue, 300);
+    const debouncedAddress = useDebounce(field.value.address, 300);
 
     const handleValueChange = useCallback(
         (newValue: GeoObject | null) => {
             setOptions(newValue ? [newValue, ...options] : options);
-            setValue(newValue);
+            field.onChange({ ...field.value, geoObject: newValue });
         },
-        [options],
+        [field, options],
     );
 
-    useEffect(() => { onCoordinatesChange(value?.Point.pos); }, [value, onCoordinatesChange]);
+    const handleMapClick = useCallback(
+        async (coords: [number, number]) => {
+            const [latitude, longitude] = coords;
+            const geoObject = await getGeoObjectByCoordinates(
+                longitude,
+                latitude,
+            );
+            field.onChange({
+                ...field.value,
+                geoObject,
+                address: `${geoObject?.description} ${geoObject?.name}`,
+            });
+        },
+        [field],
+    );
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        const { keyCode } = event;
+        const isBackspaceOrDelete = keyCode === 8 || keyCode === 46;
+        const isAlphanumeric = (keyCode >= 48 && keyCode <= 57)
+            || (keyCode >= 65 && keyCode <= 90)
+            || (keyCode >= 97 && keyCode <= 122)
+            || keyCode === 32;
+
+        if ((isBackspaceOrDelete || isAlphanumeric) && field.value.geoObject) {
+            field.onChange({ ...field.value, geoObject: null });
+        }
+    };
+
+    useEffect(() => {
+        onCoordinatesChange(field.value.geoObject?.Point.pos);
+    }, [onCoordinatesChange, field.value.geoObject?.Point.pos]);
 
     useEffect(() => {
         let active = true;
@@ -59,20 +94,20 @@ const MapWithAddress = ({
         }
 
         if (debouncedAddress === "") {
-            setOptions(value ? [value] : []);
+            setOptions(field.value.geoObject ? [field.value.geoObject] : []);
             return undefined;
         }
 
         if (active) {
             let newOptions: readonly GeoObject[] = [];
-            if (value) {
-                newOptions = [value];
+            if (field.value.geoObject) {
+                newOptions = [field.value.geoObject];
             }
             getGeoObjectCollection(debouncedAddress, locale).then((res) => {
                 if (res?.featureMember.length) {
                     newOptions = [
-                        ...newOptions,
                         ...res.featureMember.map((item) => item.GeoObject),
+                        ...newOptions,
                     ];
                     setOptions(newOptions);
                 }
@@ -82,72 +117,66 @@ const MapWithAddress = ({
         return () => {
             active = false;
         };
-    }, [value, ymap, debouncedAddress, locale]);
+    }, [ymap, debouncedAddress, locale, field.value.geoObject]);
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.content}>
-                <Controller
-                    name="address"
-                    defaultValue={data.address || ""}
-                    control={control}
-                    render={({ field }) => (
-                        <AutoComplete
-                            value={value}
-                            inputValue={field.value}
-                            onChange={handleValueChange}
-                            onInputChange={(inputVal) => {
-                                field.onChange(inputVal);
-                                setInputValue(inputVal);
-                            }}
-                            options={options}
-                            getOptionLabel={(option) => `${option.description} ${option.name}`}
-                            noOptionsText={t("Точек на карте не найдено")}
-                            labelText={t("Введите адрес")}
-                            renderOption={(props, option) => (
-                                <li key={option.name} {...props}>
-                                    <Grid
-                                        item
-                                        sx={{ display: "flex", width: 30 }}
-                                    >
-                                        <img
-                                            src={locationIcon}
-                                            alt="location"
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        sx={{
-                                            width: "calc(100% - 44px)",
-                                            wordWrap: "break-word",
-                                        }}
-                                    >
-                                        <Box component="span">
-                                            {option.name}
-                                        </Box>
-                                        <Typography variant="body2">
-                                            {option.description}
-                                        </Typography>
-                                    </Grid>
-                                </li>
-                            )}
-                        />
+                <AutoComplete
+                    value={field.value.geoObject}
+                    inputValue={field.value.address}
+                    onChange={handleValueChange}
+                    onInputChange={(inputVal) => {
+                        field.onChange({ ...field.value, address: inputVal });
+                    }}
+                    options={options}
+                    getOptionLabel={(option) => `${option.description} ${option.name}`}
+                    noOptionsText={t("where.Точек на карте не найдено")}
+                    labelText={t("where.Введите адрес")}
+                    onKeyDown={(event: React.KeyboardEvent) => handleKeyDown(event)}
+                    renderOption={(props, option) => (
+                        <li key={option.name} {...props}>
+                            <Grid item sx={{ display: "flex", width: 30 }}>
+                                <img src={locationIcon} alt="location" />
+                            </Grid>
+                            <Grid
+                                item
+                                sx={{
+                                    width: "calc(100% - 44px)",
+                                    wordWrap: "break-word",
+                                }}
+                            >
+                                <Box component="span">{option.name}</Box>
+                                <Typography variant="body2">
+                                    {option.description}
+                                </Typography>
+                            </Grid>
+                        </li>
                     )}
                 />
                 <YMap
+                    locale={locale}
+                    options={{ suppressMapOpenBlock: true }}
                     mapState={{
-                        center: validateCoordinates(value?.Point.pos),
+                        center: validateCoordinates(
+                            field.value.geoObject?.Point.pos,
+                        ),
                         zoom: 10,
                     }}
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
                     setYmap={(ymaps) => setYmap(ymaps)}
+                    onClick={handleMapClick}
                     setLoading={setLoading}
                 >
-                    <Placemark
-                        geometry={validateCoordinates(value?.Point.pos)}
-                    />
+                    {field.value.geoObject && (
+                        <Placemark
+                            geometry={validateCoordinates(
+                                field.value.geoObject?.Point.pos,
+                            )}
+                        />
+                    )}
                 </YMap>
             </div>
         </div>

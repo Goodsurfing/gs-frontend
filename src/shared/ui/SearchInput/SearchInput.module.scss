@@ -1,0 +1,17 @@
+.searchIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    padding: 0;
+    svg {
+        object-fit: contain;
+        stroke: var(--text-caption);
+        fill: transparent;
+    }
+}
+
+.searchIconSVG > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

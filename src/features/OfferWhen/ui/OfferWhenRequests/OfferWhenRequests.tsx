@@ -1,6 +1,7 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
 
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import Switch from "@/shared/ui/Switch/Switch";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 
@@ -13,18 +14,33 @@ interface OfferWhenRequestsProps {
 }
 
 export const OfferWhenRequests = memo(({ onChange, value }: OfferWhenRequestsProps) => {
+    const { t } = useTranslation("offer");
     const handleEndDateChange = (date: Date) => {
-        onChange({ ...value, applicationEndDate: date });
+        if (!value.isWithoutApplicationDate) {
+            onChange({ ...value, applicationEndDate: date });
+        }
     };
 
     const handleNoEndDateLabelChange = () => {
-        onChange({ ...value, isWithoutApplicationDate: true });
+        if (value.isWithoutApplicationDate) {
+            onChange({
+                ...value,
+                isWithoutApplicationDate: !value.isWithoutApplicationDate,
+                applicationEndDate: new Date(),
+            });
+        } else {
+            onChange({
+                ...value,
+                isWithoutApplicationDate: !value.isWithoutApplicationDate,
+                applicationEndDate: undefined,
+            });
+        }
     };
 
     return (
         <Box className={styles.dateOfEndContainer}>
             <Typography className={styles.dateOfEnd}>
-                Дата окончания приема заявок
+                {t("when.Дата окончания приема заявок")}
             </Typography>
             <Box className={styles.noDateContainer}>
                 <DateInput onDateChange={handleEndDateChange} value={value.applicationEndDate} />
@@ -32,7 +48,7 @@ export const OfferWhenRequests = memo(({ onChange, value }: OfferWhenRequestsPro
                     className={styles.noDate}
                     label={(
                         <Typography className={styles.noDateText}>
-                            Нет даты окончания
+                            {t("when.Нет даты окончания")}
                         </Typography>
                     )}
                     control={<Switch onClick={handleNoEndDateLabelChange} />}

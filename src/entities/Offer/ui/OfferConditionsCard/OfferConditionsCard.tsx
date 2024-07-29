@@ -2,8 +2,7 @@ import cn from "classnames";
 import React, { FC, memo, useCallback } from "react";
 
 import {
-    ExtraConditionsData,
-    extraConditionsData,
+    ExtraConditionsData, useExtraConditionsData,
 } from "@/features/OfferFinishingTouches/model/data/extraConditionsData";
 
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
@@ -28,8 +27,9 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
     (props: OfferConditionsCardProps) => {
         const {
             className,
-            finishingTouches: { extraConditions },
+            finishingTouches: { additionalConditions },
         } = props;
+        const { extraConditionsData } = useExtraConditionsData();
 
         const renderConditionsCard = useCallback(() => {
             const conditionsMap: ConditionsMap = extraConditionsData.reduce(
@@ -39,7 +39,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                 },
                 {},
             );
-            return extraConditions?.map((id) => {
+            return additionalConditions?.map((id) => {
                 const condition = conditionsMap[id];
                 return (
                     condition && (
@@ -52,7 +52,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                     )
                 );
             });
-        }, [extraConditions]);
+        }, [additionalConditions, extraConditionsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>

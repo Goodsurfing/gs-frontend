@@ -44,6 +44,12 @@
     }
 }
 
+.icon {
+    svg {
+        fill: var(--bg-accent);
+    }
+}
+
 .membership {
     background-color: var(--button-1);
     color: var(--text-secondary-1);
@@ -68,6 +74,15 @@
     top: 0;
     padding: 20px;
     background-color: var(--color-white);
+}
+
+.btn {
+    max-width: 66px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 10px;
 }
 
 @media screen and (max-width: 992px) {

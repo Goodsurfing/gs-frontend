@@ -6,6 +6,14 @@ type RoutePathFunction = (locale: string | Locale) => string;
 
 export const getMainPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.main}`);
 
+// Offers map page
+
+export const getOffersMapPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.offers_map}`);
+
+// Messenger page
+
+export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}`);
+
 // Categires page
 
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
@@ -24,9 +32,11 @@ export const getSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${Rout
 
 export const getSignUpPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.sign_up}`;
 
-export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
+// Profile pages
 
-// About me pages
+export const getProfilePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile}`;
+
+export const getProfileResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_reset_password}`;
 
 export const getProfileInfoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_info}`;
 
@@ -114,6 +124,18 @@ export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${Rou
 
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
 
+export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
+
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
+export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;
+
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
+
+export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}`;
+
+export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}/:id`;
+
+export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}`;
+
+export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;

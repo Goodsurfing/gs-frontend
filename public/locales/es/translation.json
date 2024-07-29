@@ -40,6 +40,11 @@
                     "privacy-policy": "Política de Privacidad",
                     "news": "Noticias"
                 },
+                "profile": "Perfil",
+                "my-page": "Mi página",
+                "about-me": "Acerca de mí",
+                "host-dashboard": "Panel de host",
+                "volunteer-dashboard": "Panel de control voluntario",
                 "sign-in": "Iniciar sesión",
                 "sign-up": "Inscribirse",
                 "exit": "Salida"
@@ -76,11 +81,15 @@
             "Подписки": "Suscriptores",
             "Фото и видео": "Foto y vídeos",
             "Написать в блог": "Escribe un blog",
-            "Мои статьи": "Mis artículos"
+            "Мои статьи": "Mis artículos",
+            "Создать организацию": "Create an organization"
         }
     },
     "stats-points": {
+        "Описание": "Descripción",
+        "Предложения": "Vacantes",
         "О себе": "Acerca de mí",
+        "Отзывы": "Reseñas",
         "Навыки": "Habilidades",
         "Фотографии": "Galería",
         "Видео": "Galeria de VIDEOS",
@@ -129,6 +138,7 @@
     },
     "notes": {
         "under consideration": "En Consideración",
+        "new": "Nuevo",
         "accepted": "Aceptado",
         "confirmed": "Confirmado",
         "rejected": "Rechazado",

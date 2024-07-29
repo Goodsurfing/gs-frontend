@@ -3,36 +3,36 @@ import React, { FC, memo } from "react";
 
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
-import { Payment } from "../../model/types/offerConditions";
 import { combineToFullPayment } from "./lib/offerPaymentCardUtils";
+import { OfferConditions } from "../../model/types/offerConditions";
 
 interface OfferPaymentCardProps {
     className?: string;
-    payment: Payment;
+    conditions: OfferConditions;
 }
 
 export const OfferPaymentCard: FC<OfferPaymentCardProps> = memo(
     (props: OfferPaymentCardProps) => {
-        const { className, payment } = props;
+        const { className, conditions } = props;
 
         return (
             <div className={cn(className)}>
                 <InfoCard>
-                    {payment.contribution && (
+                    {conditions.volunteerContributions && (
                         <InfoCardItem
                             title="Необходимый взнос"
                             text={combineToFullPayment(
-                                payment.contribution,
-                                payment.currency,
+                                conditions.volunteerContributions,
+                                conditions.currency,
                             )}
                         />
                     )}
-                    {payment.reward && (
+                    {conditions.volunteerRemuneration && (
                         <InfoCardItem
                             title="Денежное вознаграждение"
                             text={combineToFullPayment(
-                                payment.reward,
-                                payment.currency,
+                                conditions.volunteerRemuneration,
+                                conditions.currency,
                             )}
                         />
                     )}

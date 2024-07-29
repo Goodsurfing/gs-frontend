@@ -4,6 +4,7 @@ import { memo, useCallback } from "react";
 
 import { Box } from "@mui/material";
 
+import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import DateInputs from "@/shared/ui/DateInputs/DateInputs";
@@ -18,6 +19,8 @@ interface OfferWhenPeriodsProps {
 }
 
 export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps) => {
+    const { t } = useTranslation("offer");
+
     const handlePeriodsChange = (periods: DatePeriods, index: number) => {
         if (value) {
             onChange(value.map((period, i) => {
@@ -35,6 +38,7 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
     }, [onChange, value]);
 
     const onAddBtnClick = () => {
+        if ((value[0].start == null) || (value[0].end == null)) return;
         if (value.length > 4) {
             return;
         }
@@ -61,7 +65,7 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
                 ))}
             </Box>
             <Box className={styles.add}>
-                <AddButton text="Добавить период" onClick={onAddBtnClick} />
+                <AddButton text={t("when.Добавить период")} onClick={onAddBtnClick} />
             </Box>
         </Box>
     );

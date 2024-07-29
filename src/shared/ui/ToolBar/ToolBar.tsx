@@ -53,6 +53,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
             const file = fileList[0];
             const url = URL.createObjectURL(file);
             editor?.chain().focus().setImage({ src: url }).run();
+            e.target.value = "";
         }
     };
 

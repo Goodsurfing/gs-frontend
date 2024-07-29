@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import cn from "classnames";
 
@@ -12,14 +12,18 @@ import {
     useCreateHostMutation,
 } from "@/entities/Host";
 
-import { useJoinToHostMutation } from "@/entities/Profile";
-
 import type { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import {
     hostDescriptionFormAdapter,
-    hostDescriptionApiAdapter,
+    hostDescriptionApiAdapterCreate,
+    hostDescriptionApiAdapterUpdate,
 } from "../../lib/hostDescriptionAdapter";
 import { HostDescriptionFormContent } from "../HostDescriptionFormContent/HostDescriptionFormContent";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 import styles from "./HostDescriptionForm.module.scss";
 
@@ -39,26 +43,35 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: createHostError,
     }] = useCreateHostMutation();
 
-    const [joinToOrganization, {
-        isLoading: isJoinLoading,
-        error: joinError,
-    }] = useJoinToHostMutation();
-
     const [updateHost, {
         isLoading: isHostUpdateLoading,
         error: hostUpdateError,
     }] = useUpdateHostMutation();
 
+    const [toast, setToast] = useState<ToastAlert>();
+
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
-        const preparedData = hostDescriptionApiAdapter(data);
+        setToast(undefined);
+        let preparedData;
         if (!host) {
-            const createHostResponse = await createHost(preparedData).unwrap();
-            if (createHostResponse.id) {
-                const res = await joinToOrganization(createHostResponse.id);
+            try {
+                preparedData = hostDescriptionApiAdapterCreate(data);
+                await createHost(preparedData).unwrap();
+                setToast({
+                    text: "Организация создана",
+                    type: HintType.Success,
+                });
+                window.location.reload();
+            } catch (err) {
+                setToast({
+                    text: "Ошибка при создании организации",
+                    type: HintType.Error,
+                });
             }
         }
         if (host) {
-            updateHost({ body: { ...preparedData, id: host.id } });
+            preparedData = hostDescriptionApiAdapterUpdate(data);
+            updateHost({ id: host.id, body: { ...preparedData } });
         }
     };
 
@@ -69,7 +82,9 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const { handleSubmit, reset } = form;
 
     useEffect(() => {
-        reset(hostDescriptionFormAdapter(host));
+        if (host) {
+            reset(hostDescriptionFormAdapter(host));
+        }
     }, [host, reset]);
 
     if (isLoading) {
@@ -90,6 +105,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     return (
         <FormProvider {...form}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form
                 className={cn(styles.formWrapper, className)}
                 onSubmit={handleSubmit(onSubmit)}
@@ -98,7 +114,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     <HostDescriptionFormContent />
                 </div>
                 <div>
-                    <Button type="submit" disabled={isCreateHostLoading} color="BLUE" size="MEDIUM" variant="FILL">
+                    <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">
                         Сохранить
                     </Button>
                 </div>

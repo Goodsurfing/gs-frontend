@@ -12,10 +12,15 @@ export interface DateInputProps {
     className?: string;
     value?: Date;
     onDateChange?: (value: Date) => void;
+    inputDisabled?: boolean;
+    calendarClassName?: string;
+    calendarWrapperClassName?: string;
+    isScrollTo?: boolean;
 }
 
 const DateInput = memo(({
-    min, max, className, onDateChange, value = new Date(),
+    min, max, className, onDateChange, value, inputDisabled, calendarClassName,
+    calendarWrapperClassName, isScrollTo,
 }: DateInputProps) => {
     const handleDateChange = useCallback((date: Date) => {
         onDateChange?.(date);
@@ -30,6 +35,10 @@ const DateInput = memo(({
                 min={min}
                 max={max}
                 value={value}
+                inputDisabled={inputDisabled}
+                calendarClassName={calendarClassName}
+                calendarWrapperClassName={calendarWrapperClassName}
+                isScrollTo={isScrollTo}
             />
         </Box>
     );

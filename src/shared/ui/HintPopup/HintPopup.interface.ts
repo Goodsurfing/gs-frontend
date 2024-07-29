@@ -9,3 +9,8 @@ export interface IHintPopup {
     className?: string;
     timeout?: number;
 }
+
+export interface ToastAlert {
+    text: string;
+    type: HintType
+}

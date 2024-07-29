@@ -22,17 +22,15 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
             <Text title="Кто нужен" titleSize="h3" />
             <div className={styles.cards}>
                 <IconTextComponent
-                    text={whoNeeds.gender}
+                    text={whoNeeds.gender.length > 0 ? whoNeeds.gender.join(", ") : "Не указано"}
                     icon={menIcon}
-                    alt={whoNeeds.gender}
+                    alt="genders"
                 />
-                {whoNeeds.age && (
-                    <IconTextComponent
-                        text={`${whoNeeds.age.minAge} - ${whoNeeds.age.maxAge}`}
-                        icon={birthdayIcon}
-                        alt={`${whoNeeds.age.minAge} - ${whoNeeds.age.maxAge}`}
-                    />
-                )}
+                <IconTextComponent
+                    text={`${whoNeeds.ageMin} - ${whoNeeds.ageMax}`}
+                    icon={birthdayIcon}
+                    alt={`${whoNeeds.ageMin} - ${whoNeeds.ageMax}`}
+                />
             </div>
         </div>
     );

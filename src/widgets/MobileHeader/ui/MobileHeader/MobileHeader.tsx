@@ -10,17 +10,26 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import { getUserAuthData } from "@/entities/User";
+import { getUserAuthData, userActions } from "@/entities/User";
 
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
+    getHostDashboardPageUrl,
+    getJournalsPageUrl,
     getMainPageUrl,
+    getMessengerPageUrl,
+    getNPOPageUrl,
+    getNewsPageUrl,
+    getOffersMapPageUrl,
+    getOurTeamPageUrl,
+    getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
+    getRulesPageUrl,
     getSignInPageUrl,
-    getSignUpPageUrl,
+    getVideoPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { useAppSelector } from "@/shared/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 
 import { MobileSelect } from "../MobileSelect/MobileSelect";
 import styles from "./MobileHeader.module.scss";
@@ -34,6 +43,7 @@ const MobileHeader: FC = () => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const appDispatch = useAppDispatch();
 
     const authData = useAppSelector(getUserAuthData);
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
@@ -50,6 +60,11 @@ const MobileHeader: FC = () => {
         () => setMenuIsOpen(!menuIsOpen),
         [menuIsOpen],
     );
+
+    const handleLogout = useCallback(() => {
+        appDispatch(userActions.logout());
+        navigate(getMainPageUrl(locale));
+    }, [appDispatch, locale, navigate]);
 
     return (
         <>
@@ -179,7 +194,7 @@ const MobileHeader: FC = () => {
                     </div>
                     <Link
                         className={styles.viewAll}
-                        to={getMainPageUrl(locale)}
+                        to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
@@ -198,7 +213,7 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getVideoPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.video")}
                     </Link>
@@ -228,7 +243,7 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
                     </Link>
@@ -241,13 +256,13 @@ const MobileHeader: FC = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getOurTeamPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.our-team")}
                     </Link>
@@ -259,19 +274,19 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getRulesPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.rules")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
                     </Link>
@@ -285,13 +300,13 @@ const MobileHeader: FC = () => {
                             {t("main.welcome.header.my-page")}
                         </Button>
                         <Button
-                            onClick={() => navigate(getMainPageUrl(locale))}
+                            onClick={() => navigate(getMessengerPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.messages")}
                         </Button>
                         <Button
-                            onClick={() => navigate(getProfileInfoPageUrl(locale))}
+                            onClick={() => navigate(getHostDashboardPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.host-dashboard")}
@@ -302,22 +317,20 @@ const MobileHeader: FC = () => {
                         >
                             {t("main.welcome.header.volunteer-dashboard")}
                         </Button>
+                        <Button
+                            onClick={handleLogout}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.exit")}
+                        </Button>
                     </>
                 ) : (
-                    <>
-                        <Button
-                            onClick={() => navigate(getSignInPageUrl(locale))}
-                            className={styles.button}
-                        >
-                            {t("main.welcome.header.sign-in")}
-                        </Button>
-                        <Button
-                            onClick={() => navigate(getSignUpPageUrl(locale))}
-                            className={styles.button}
-                        >
-                            {t("main.welcome.header.sign-up")}
-                        </Button>
-                    </>
+                    <Button
+                        onClick={() => navigate(getSignInPageUrl(locale))}
+                        className={styles.button}
+                    >
+                        {t("main.welcome.header.sign-in")}
+                    </Button>
                 )}
             </div>
         </>

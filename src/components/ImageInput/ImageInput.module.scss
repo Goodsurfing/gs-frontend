@@ -8,7 +8,8 @@
 }
 
 .error {
-    color: red;
+    margin-top: 10px;
+    color: #d32f2f;
     font-size: 0.825rem;
 }
 
@@ -29,6 +30,8 @@
     height: 100%;
     object-fit: cover;
 }
+
+
 
 .extraWrapper {
     display: flex;
@@ -75,10 +78,22 @@
 }
 
 .imageCover {
+    position: relative;
     width: 100%;
     max-height: 270px;
     overflow: hidden;
     object-fit: cover;
+}
+
+.imageLoading {
+    opacity: .5;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .containerButtons {

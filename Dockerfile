@@ -46,6 +46,9 @@ WORKDIR /usr/share/nginx/html
 # Remove default nginx static assets
 RUN rm -rf ./*
 
+# Copy locales files
+COPY --from=build /app/public/locales ./locales
+
 # Copy static assets from builder stage
 COPY --from=build /app/dist .
 

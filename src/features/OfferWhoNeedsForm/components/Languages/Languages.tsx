@@ -1,15 +1,19 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import SelectField from "@/components/SelectField/SelectField";
 import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
 import { LevelLanguage } from "@/entities/Offer/model/types/offerWhoNeeds";
 
-import { allLangs, langsLevels } from "./Languages.data";
-import styles from "./Languages.module.scss";
+import { useAllLangs, useLangsLevels } from "@/shared/data/languages";
 import { LanguagesProps } from "./types";
+import styles from "./Languages.module.scss";
 
 const Languages: FC<LanguagesProps> = (props) => {
     const { close, value, onChange } = props;
+    const { t } = useTranslation("offer");
+    const allLangs = useAllLangs();
+    const allLevels = useLangsLevels();
 
     const getObjectFromValue = (
         valueObject: string | LevelLanguage,
@@ -21,29 +25,37 @@ const Languages: FC<LanguagesProps> = (props) => {
             <SelectField
                 className={styles.all}
                 name="allLangs"
-                label="Знание языков"
+                label={t("whoNeeds.Знание языков")}
                 options={allLangs}
                 value={getObjectFromValue(value.language, allLangs)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
+                        if ((newValue as IOptionLanguage).value === "not_matter") {
+                            onChange({ ...value, languageLevel: "not_matter", language: "not_matter" });
+                            return;
+                        }
                         onChange({
                             ...value,
                             language: (newValue as IOptionLanguage).value,
                         });
                     }
                 }}
+                onBlur={() => {
+
+                }}
             />
             <SelectField
                 className={styles.levels}
                 name="langLevels"
-                label="Уровень владения"
-                options={langsLevels}
-                value={getObjectFromValue(value.level, langsLevels)}
+                label={t("whoNeeds.Уровень владения")}
+                options={allLevels}
+                value={getObjectFromValue(value.languageLevel, allLevels)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
+                        if (value.language === "not_matter") return;
                         onChange({
                             ...value,
-                            level: (newValue as IOptionLevelLanguage).value,
+                            languageLevel: (newValue as IOptionLevelLanguage).value,
                         });
                     }
                 }}

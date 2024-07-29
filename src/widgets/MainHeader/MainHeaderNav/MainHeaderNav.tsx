@@ -2,13 +2,17 @@ import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getJournalsPageUrl, getMainPageUrl, getNPOPageUrl, getNewsPageUrl,
+    getOffersMapPageUrl, getOurTeamPageUrl, getPrivacyPolicyPageUrl,
+    getRulesPageUrl, getVideoPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -82,10 +86,9 @@ export const MainHeaderNav = () => {
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
-                    <HandySvg
+                    <ReactSVG
                         className={styles.searchIcn}
                         src={searchIcon}
-                        alt="SEARCH ICON"
                     />
                 </IconButton>
                 <Popup
@@ -178,7 +181,7 @@ export const MainHeaderNav = () => {
                     </div>
                     <Link
                         className={styles.viewAll}
-                        to={getMainPageUrl(locale)}
+                        to={getOffersMapPageUrl(locale)}
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
@@ -205,7 +208,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getVideoPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.video")}
                     </Link>
@@ -235,7 +238,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
                     </Link>
@@ -256,13 +259,13 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getOurTeamPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.our-team")}
                     </Link>
@@ -274,19 +277,19 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getRulesPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.rules")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
                     </Link>

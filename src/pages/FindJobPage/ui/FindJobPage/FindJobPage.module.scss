@@ -1,0 +1,27 @@
+.wrapper {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-bottom: 120px;
+}
+
+.content {
+    max-width: 1180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-top: 80px;
+}
+
+.title {
+    text-align: center;
+}
+
+.howItWork {
+    max-width: 1014px;
+}
+
+.container {
+    margin-bottom: 120px;
+}

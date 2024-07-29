@@ -1,65 +1,106 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
-import { Offer } from "../model/types/offer";
+
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+
+import { Offer, OfferGalleryItem } from "../model/types/offer";
 
 interface UpdateOfferParams {
+    id: number
     body: Partial<Offer>;
 }
 
 interface CreateOfferResponse {
-    id: string;
+    id: number;
+}
+
+interface CreateOfferGalleryItemRequest {
+    offerId: string;
+    formData: FormData;
+}
+
+interface OfferGalleryItemRequest {
+    offerId: string;
+    galleryId: string;
 }
 
 export const offerApi = createApi({
     reducerPath: "offerApi",
-    baseQuery,
-    tagTypes: ["offer"],
+    baseQuery: baseQueryAcceptJson,
+    tagTypes: ["offer", "address"],
     endpoints: (build) => ({
-        createOffer: build.mutation<CreateOfferResponse, void>({
-            query: (body) => ({
-                url: "/vacansy",
+        createOffer: build.mutation<CreateOfferResponse, FormData>({
+            query: (data) => ({
+                url: "/vacancies",
                 method: "POST",
-                body,
+                body: data,
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhere: build.mutation<unknown, UpdateOfferParams>({
+        updateOffer: build.mutation<CreateOfferResponse, UpdateOfferParams>({
             query: (data) => ({
-                url: `/vacansy/${data.body.id}/where`,
+                url: `/vacancies/${data.id}`,
                 method: "PATCH",
-                body: data.body.where,
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify(data.body),
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhen: build.mutation<unknown, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacansy/${data.body.id}/when`,
-                method: "PATCH",
-                body: data.body.when,
+        deleteOffer: build.mutation<CreateOfferResponse, string>({
+            query: (offerId) => ({
+                url: `/vacancies/${offerId}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["offer"],
         }),
-        updateWhoNeeds: build.mutation<unknown, UpdateOfferParams>({
+        getOfferById: build.query<Offer, string>({
+            query: (offerId) => ({
+                url: `vacancies/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        getOffers: build.query<Offer[], void>({
+            query: () => ({
+                url: "vacancies",
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        getHostOffersById: build.query<Offer[], string>({
+            query: (organizationId) => ({
+                url: `organizations/${organizationId}/vacancies`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        createOfferGalleryItem: build.mutation<OfferGalleryItem, CreateOfferGalleryItemRequest>({
             query: (data) => ({
-                url: `/vacansy/${data.body.id}/how-needs`,
-                method: "PATCH",
-                body: data.body.whoNeeds,
+                url: `/vacancies/${data.offerId}/gallery`,
+                method: "POST",
+                body: data.formData,
             }),
             invalidatesTags: ["offer"],
         }),
-        updateDescription: build.mutation<unknown, UpdateOfferParams>({
-            query: (data) => ({
-                url: `/vacansy/${data.body.id}/description`,
-                method: "PATCH",
-                body: data.body.description,
+        getOfferGalleryItems: build.query<OfferGalleryItem[], string>({
+            query: (offerId) => ({
+                url: `vacancies/${offerId}/gallery`,
+                method: "GET",
             }),
-            invalidatesTags: ["offer"],
+            providesTags: ["offer"],
         }),
-        updateWhatToDo: build.mutation<unknown, UpdateOfferParams>({
+        getOfferGalleryItemById: build.query<OfferGalleryItem, OfferGalleryItemRequest>({
             query: (data) => ({
-                url: `/vacansy/${data.body.id}/what-to-do`,
-                method: "PATCH",
-                body: data.body.whatToDo,
+                url: `vacancies/${data.offerId}/gallery/${data.galleryId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        deleteOfferGalleryItem: build.mutation<CreateOfferResponse, OfferGalleryItemRequest>({
+            query: (data) => ({
+                url: `/vacancies/${data.offerId}/gallery/${data.galleryId}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["offer"],
         }),
@@ -68,5 +109,14 @@ export const offerApi = createApi({
 
 export const {
     useCreateOfferMutation,
-    useUpdateWhereMutation,
+    useUpdateOfferMutation,
+    useDeleteOfferMutation,
+    useGetHostOffersByIdQuery,
+    useLazyGetHostOffersByIdQuery,
+    useGetOfferByIdQuery,
+    useLazyGetOfferByIdQuery,
+    useCreateOfferGalleryItemMutation,
+    useGetOfferGalleryItemsQuery,
+    useGetOfferGalleryItemByIdQuery,
+    useDeleteOfferGalleryItemMutation,
 } = offerApi;

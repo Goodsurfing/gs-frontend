@@ -42,8 +42,10 @@
                 },
                 "messages": "Messages",
                 "my-page": "My page",
+                "about-me": "About me",
                 "host-dashboard": "Host dashboard",
                 "volunteer-dashboard": "Volunteer dashboard",
+                "profile": "Profile",
                 "sign-in": "Sign In",
                 "sign-up": "Sign Up",
                 "exit": "Exit"
@@ -80,11 +82,15 @@
             "Подписки": "Subscribers",
             "Фото и видео": "Photo and videos",
             "Написать в блог": "Write article",
-            "Мои статьи": "My articles"
+            "Мои статьи": "My articles",
+            "Создать организацию": "Create organization"
         }
     },
     "stats-points": {
+        "Описание": "Description",
+        "Предложения": "Vacancies",
         "О себе": "About me",
+        "Отзывы": "Reviews",
         "Навыки": "Skills",
         "Фотографии": "Gallery",
         "Видео": "Video gallery",
@@ -133,6 +139,7 @@
     },
     "notes": {
         "under consideration": "Under Consideration",
+        "new": "New",
         "accepted": "Accepted",
         "confirmed": "Confirmed",
         "rejected": "Rejected",

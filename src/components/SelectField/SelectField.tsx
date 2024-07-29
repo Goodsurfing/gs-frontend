@@ -12,6 +12,8 @@ interface SelectFieldProps extends Props<unknown, boolean, Group> {
     name: string;
     img?: string;
     description?: string;
+    classNameDropdown?: string;
+    classNameControl?: string;
 }
 
 const SelectField: FC<SelectFieldProps> = ({
@@ -20,10 +22,13 @@ const SelectField: FC<SelectFieldProps> = ({
     img,
     description,
     label,
+    className,
     placeholder = "",
+    classNameDropdown,
+    classNameControl,
     ...rest
 }) => (
-    <div className={styles.wrapper}>
+    <div className={cn(styles.wrapper, className)}>
         <div className={styles.labelWrapper}>
             {img && (
                 <img className={styles.image} src={img} alt={img} />
@@ -38,7 +43,7 @@ const SelectField: FC<SelectFieldProps> = ({
             isDisabled={isDisabled}
             className={cn(styles.dropdown, {
                 [styles.disabled]: isDisabled,
-            })}
+            }, classNameDropdown)}
             classNames={{
                 option: () => styles.option,
                 input: () => styles.input,
@@ -47,8 +52,8 @@ const SelectField: FC<SelectFieldProps> = ({
                 menu: () => styles.menuList,
                 control: (state) => (
                     state.isDisabled
-                        ? cn(styles.control, styles.disabled)
-                        : styles.control
+                        ? cn(styles.control, classNameControl, styles.disabled)
+                        : cn(styles.control, classNameControl)
                 ),
             }}
             name={name}

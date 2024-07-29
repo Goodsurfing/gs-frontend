@@ -1,0 +1,50 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-white);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--bg-accent);
+    }
+}
+
+.offer {
+    width: 100%;
+    min-width: 520px;
+}
+
+.offerCard {
+    padding: 10px;
+}
+
+.offer.closed {
+    width: 50%;
+    border-left: 1px solid var(--bg-accent);
+}
+
+.list.closed {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: baseline;
+}
+
+@media (max-width: 1280px) {
+    .offer.closed {
+        width: 100%;
+    }
+}
