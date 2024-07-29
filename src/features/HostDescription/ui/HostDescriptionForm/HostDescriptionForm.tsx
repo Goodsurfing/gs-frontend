@@ -56,7 +56,6 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         setToast(undefined);
         let preparedData;
-        console.log(host);
         if (!host) {
             try {
                 preparedData = hostDescriptionApiAdapterCreate(data);
@@ -98,7 +97,6 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
 
     useEffect(() => {
         if (getHost) {
-            console.log("useEffect", getHost);
             reset(hostDescriptionFormAdapter(getHost));
         }
     }, [getHost, reset]);
