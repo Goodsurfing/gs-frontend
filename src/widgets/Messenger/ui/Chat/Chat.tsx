@@ -120,7 +120,6 @@ export const Chat: FC<ChatProps> = (props) => {
                 });
                 return dataApplication;
             }).catch((error: ErrorType) => {
-                console.log(error);
                 setToast({
                     text: error.data.detail,
                     type: HintType.Error,
