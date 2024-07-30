@@ -3,7 +3,6 @@ import {
     Controller,
     DefaultValues,
     FormProvider,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -37,6 +36,8 @@ import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
 import styles from "./WhoNeedsForm.module.scss";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -63,7 +64,9 @@ export const WhoNeedsForm = memo(() => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
-    const { handleSubmit, control, reset } = form;
+    const {
+        handleSubmit, control, reset, formState: { isDirty },
+    } = form;
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
@@ -72,7 +75,7 @@ export const WhoNeedsForm = memo(() => {
         }
     }, [getOfferData, reset]);
 
-    const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhoNeedsAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { howNeeds: preparedData } })
@@ -89,7 +92,13 @@ export const WhoNeedsForm = memo(() => {
                     type: HintType.Error,
                 });
             });
-    };
+    });
+
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetWhoNeedsData) {
         return <Preloader className={styles.loading} />;
@@ -175,7 +184,7 @@ export const WhoNeedsForm = memo(() => {
                 />
                 <Button
                     disabled={isLoading}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                     className={styles.btn}
                     variant="FILL"
                     color="BLUE"
@@ -183,6 +192,13 @@ export const WhoNeedsForm = memo(() => {
                 >
                     {t("whoNeeds.Сохранить")}
                 </Button>
+                <ConfirmActionModal
+                    description="Изменения не были сохранены"
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton="Сохранить"
+                    isModalOpen={isModalOpen}
+                />
             </form>
         </FormProvider>
     );

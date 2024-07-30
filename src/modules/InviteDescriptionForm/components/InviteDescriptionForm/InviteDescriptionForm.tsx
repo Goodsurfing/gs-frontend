@@ -3,7 +3,6 @@ import {
     Controller,
     DefaultValues,
     FormProvider,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -34,6 +33,8 @@ import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -54,7 +55,7 @@ export const InviteDescriptionForm = () => {
     const {
         handleSubmit,
         control,
-        formState: { errors },
+        formState: { errors, isDirty },
         reset,
     } = form;
     const { id } = useParams();
@@ -83,7 +84,7 @@ export const InviteDescriptionForm = () => {
         setGallerySuccess(value);
     };
 
-    const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = inviteDescriptionApiAdapter(data);
         updateOffer({ id: Number(id), body: { description: preparedData } })
@@ -100,7 +101,13 @@ export const InviteDescriptionForm = () => {
                     type: HintType.Error,
                 });
             });
-    };
+    });
+
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     useEffect(() => {
         if (getOfferData?.description) {
@@ -182,10 +189,17 @@ export const InviteDescriptionForm = () => {
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                 >
                     {t("description.Сохранить")}
                 </Button>
+                <ConfirmActionModal
+                    description="Изменения не были сохранены"
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton="Сохранить"
+                    isModalOpen={isModalOpen}
+                />
             </form>
         </FormProvider>
     );

@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
     useWatch,
 } from "react-hook-form";
@@ -31,6 +30,8 @@ import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { NavBlockerControl, useNavBlocker } from "@/shared/hooks/useNavBlocker";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -42,6 +43,10 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [isBlocking, setIsBlocking] = useState(false);
 
     const initialSliderValue: number[] = [7, 186];
     const initialPeriods: DatePeriods[] = [{ start: undefined, end: undefined }];
@@ -61,7 +66,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         timeSettings,
     };
     const {
-        handleSubmit, control, reset,
+        handleSubmit, control, reset, formState: { isDirty },
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
@@ -69,7 +74,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
 
-    const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { when: preparedData } })
@@ -87,7 +92,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 });
             });
         onComplete?.();
-    };
+    });
 
     useEffect(() => {
         if (getOfferData?.when) {
@@ -96,6 +101,32 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             reset();
         }
     }, [getOfferData?.when, reset]);
+
+    const handleNavBlock = ({ confirm }: NavBlockerControl) => {
+        setConfirmAction(() => confirm);
+        setIsBlocking(true);
+        setIsModalOpen(true);
+    };
+
+    const handleConfirmClick = async () => {
+        if (confirmAction) {
+            await onSubmit();
+            confirmAction();
+            setIsBlocking(false);
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleModalClose = () => {
+        setIsBlocking(false);
+        setIsModalOpen(false);
+        setConfirmAction(null);
+    };
+
+    useNavBlocker({
+        onBlock: handleNavBlock,
+        enabled: isDirty && !isBlocking,
+    });
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
@@ -150,7 +181,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             />
             <Button
                 disabled={isLoading}
-                onClick={handleSubmit(onSubmit)}
+                onClick={onSubmit}
                 className={styles.btn}
                 variant="FILL"
                 color="BLUE"
@@ -158,6 +189,13 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             >
                 {t("when.Сохранить")}
             </Button>
+            <ConfirmActionModal
+                description="Изменения не были сохранены"
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton="Сохранить"
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });

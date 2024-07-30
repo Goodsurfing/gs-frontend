@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -20,6 +19,9 @@ import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/a
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./OfferWhatToDoForm.module.scss";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -34,18 +36,20 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
 
 export const OfferWhatToDoForm = memo(
     ({ onSuccess }: OfferWhatToDoFormProps) => {
-        const { handleSubmit, control, reset } = useForm<OfferWhatToDoFormFields>({
+        const {
+            handleSubmit, control, reset, formState: { isDirty },
+        } = useForm<OfferWhatToDoFormFields>({
             mode: "onChange",
             defaultValues,
         });
         const { id } = useParams();
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
 
         const { t } = useTranslation("offer");
 
-        const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
+        const onSubmit = handleSubmit(async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
             updateOffer({ id: Number(id), body: { whatToDo: preparedData } })
@@ -63,7 +67,13 @@ export const OfferWhatToDoForm = memo(
                     });
                 });
             onSuccess?.();
-        };
+        });
+
+        const {
+            isModalOpen,
+            handleConfirmClick,
+            handleModalClose,
+        } = useConfirmNavigation(onSubmit, isDirty);
 
         useEffect(() => {
             if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
@@ -71,8 +81,16 @@ export const OfferWhatToDoForm = memo(
             }
         }, [getOfferData?.whatToDo, reset]);
 
+        if (isOfferDataLoading) {
+            return (
+                <div className={styles.wrapper}>
+                    <Preloader />
+                </div>
+            );
+        }
+
         return (
-            <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+            <form onSubmit={onSubmit} className={styles.wrapper}>
                 {toast && (
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
@@ -105,7 +123,7 @@ export const OfferWhatToDoForm = memo(
                 />
                 <div>
                     <Button
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                         disabled={isLoading}
                         variant="FILL"
                         color="BLUE"
@@ -115,6 +133,13 @@ export const OfferWhatToDoForm = memo(
                         {t("whatToDo.Сохранить")}
                     </Button>
                 </div>
+                <ConfirmActionModal
+                    description="Изменения не были сохранены"
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton="Сохранить"
+                    isModalOpen={isModalOpen}
+                />
             </form>
         );
     },

@@ -28,6 +28,9 @@ import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/Offe
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import styles from "./OfferFinishingTouches.module.scss";
 import { OfferStatus } from "@/entities/Offer";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -48,11 +51,14 @@ export const OfferFinishingTouchesForm = memo(
         const { className, onSuccess } = props;
         const { id } = useParams();
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
 
-        const { handleSubmit, control, reset } = useForm<OfferFinishingTouchesFormFields>({
+        const {
+            handleSubmit, control, reset,
+            formState: { isDirty },
+        } = useForm<OfferFinishingTouchesFormFields>({
             mode: "onChange",
             defaultValues,
         });
@@ -96,11 +102,25 @@ export const OfferFinishingTouchesForm = memo(
             updateFinishingTouchesHandle(data, "empty");
         };
 
+        const {
+            isModalOpen,
+            handleConfirmClick,
+            handleModalClose,
+        } = useConfirmNavigation(onDraftHandle, isDirty);
+
         useEffect(() => {
             if (getOfferData?.finishingTouches) {
                 reset(offerFinishingTouchesAdapter(getOfferData.finishingTouches));
             }
         }, [getOfferData?.finishingTouches, reset]);
+
+        if (isOfferDataLoading) {
+            return (
+                <div className={cn(styles.wrapper, className)}>
+                    <Preloader />
+                </div>
+            );
+        }
 
         return (
             <form
@@ -218,6 +238,13 @@ export const OfferFinishingTouchesForm = memo(
                         {t("finishingTouches.Сохранить в черновики")}
                     </Button>
                 </div>
+                <ConfirmActionModal
+                    description="Изменения не были сохранены"
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton="Сохранить"
+                    isModalOpen={isModalOpen}
+                />
             </form>
         );
     },

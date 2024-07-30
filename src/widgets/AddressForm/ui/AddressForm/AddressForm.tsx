@@ -24,7 +24,7 @@ import styles from "./AddressForm.module.scss";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { NavBlockerControl, useNavBlocker } from "@/shared/hooks/useNavBlocker";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 
 interface AddressFormProps {
     className?: string;
@@ -51,9 +51,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-    const [isBlocking, setIsBlocking] = useState(false);
 
     const fetchGeoObject = useCallback(async () => {
         trigger(id || "").unwrap();
@@ -81,7 +78,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     text: "Адрес успешно изменён",
                     type: HintType.Success,
                 });
-                setIsBlocking(false);
             })
             .catch(() => {
                 setToast({
@@ -99,31 +95,11 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         if (coordinates) return coordinates;
     };
 
-    const handleNavBlock = ({ confirm }: NavBlockerControl) => {
-        setConfirmAction(() => confirm);
-        setIsBlocking(true);
-        setIsModalOpen(true);
-    };
-
-    const handleConfirmClick = async () => {
-        if (confirmAction) {
-            await onSubmit();
-            confirmAction();
-            setIsBlocking(false);
-            setIsModalOpen(false);
-        }
-    };
-
-    const handleModalClose = () => {
-        setIsBlocking(false);
-        setIsModalOpen(false);
-        setConfirmAction(null);
-    };
-
-    useNavBlocker({
-        onBlock: handleNavBlock,
-        enabled: isDirty && !isBlocking,
-    });
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetData) {
         return <Preloader className={styles.loading} />;
@@ -159,14 +135,13 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             >
                 {t("where.Сохранить")}
             </Button>
-            {isModalOpen && (
-                <ConfirmActionModal
-                    description="Изменения не были сохранены"
-                    onConfirm={handleConfirmClick}
-                    onClose={handleModalClose}
-                    confirmTextButton="Сохранить"
-                />
-            )}
+            <ConfirmActionModal
+                description="Изменения не были сохранены"
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton="Сохранить"
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });
