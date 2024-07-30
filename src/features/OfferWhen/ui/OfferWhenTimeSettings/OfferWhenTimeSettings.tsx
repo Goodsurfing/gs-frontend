@@ -15,7 +15,9 @@ interface OfferWhenTimeSettingsProps {
     onChange: (value: TimeSettingsControls) => void;
 }
 
-export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSettingsProps) => {
+export const OfferWhenTimeSettings = memo(({
+    value, onChange,
+}: OfferWhenTimeSettingsProps) => {
     const { t } = useTranslation("offer");
 
     const handleFullYearChange = () => {
@@ -37,7 +39,6 @@ export const OfferWhenTimeSettings = memo(({ value, onChange }: OfferWhenTimeSet
                 control={(
                     <SwitchComponent
                         checked={value.isFullYearAcceptable}
-                        // value={value.isFullYearAcceptable}
                         onChange={handleFullYearChange}
                     />
                 )}

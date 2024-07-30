@@ -56,7 +56,6 @@ const DateInputs: FC<DateInputsProps> = ({
                 onDateChange={handleFromDateChange}
                 value={value?.start}
                 min={min}
-                inputDisabled
             />
             <DateInput
                 className={styles.rightInput}
@@ -64,7 +63,6 @@ const DateInputs: FC<DateInputsProps> = ({
                 value={value?.end}
                 min={new Date()}
                 max={max}
-                inputDisabled
             />
             {close}
         </Box>

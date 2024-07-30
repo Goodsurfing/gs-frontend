@@ -74,6 +74,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     });
 
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
+    const watchIsApplicableAtTheEnd = useWatch({ name: "timeSettings.isApplicableAtTheEnd", control });
+    const watchPeriods = useWatch({ name: "periods", control });
 
     const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
@@ -177,6 +179,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenRequests
                         value={field.value}
                         onChange={field.onChange}
+                        periods={watchPeriods}
+                        isApplicableAtTheEnd={watchIsApplicableAtTheEnd}
                     />
                 )}
             />
