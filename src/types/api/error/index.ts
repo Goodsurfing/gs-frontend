@@ -3,7 +3,14 @@ interface DataError {
     detail: string;
 }
 
-export interface ErrorType {
+export interface ErrorMessage {
+    code: number;
+    message: string;
+}
+
+export interface Error {
     status: number;
     data: DataError
 }
+
+export type ErrorType = Error | ErrorMessage;

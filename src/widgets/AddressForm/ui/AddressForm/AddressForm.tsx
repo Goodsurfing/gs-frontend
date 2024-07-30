@@ -72,7 +72,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateOffer({ id: Number(id), body: { where: preparedData } })
+        updateOffer({ id: Number(id), body: { where: preparedData } }).unwrap()
             .then(() => {
                 fetchGeoObject();
                 setToast({

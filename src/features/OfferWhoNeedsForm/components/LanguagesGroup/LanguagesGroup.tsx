@@ -43,6 +43,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                     <Languages
                         key={index}
                         value={valueLanguage}
+                        selectedLanguages={value}
                         onChange={(newValue) => {
                             const newLanguages = [...value];
                             newLanguages[index] = newValue;
