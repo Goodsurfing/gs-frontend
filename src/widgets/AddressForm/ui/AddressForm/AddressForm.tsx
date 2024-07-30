@@ -25,6 +25,7 @@ import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
 
 interface AddressFormProps {
     className?: string;
@@ -79,9 +80,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: error.data.detail,
                     type: HintType.Error,
                 });
             });

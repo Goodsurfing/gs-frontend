@@ -11,17 +11,17 @@ export const offerWhenFormApiAdapter = (
         endSettings, participationPeriod, periods, timeSettings,
     } = offerWhenForm;
 
+    const { isFullYearAcceptable } = timeSettings;
+    const { applicationEndDate } = endSettings;
+
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
         start: period.start ? period.start.toLocaleDateString() : null,
         ending: period.end ? period.end.toLocaleDateString() : null,
     }));
     let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
-    if (!offerWhenPeriods[0].start || !offerWhenPeriods[0].ending) {
+    if ((!offerWhenPeriods[0].start || !offerWhenPeriods[0].ending) || isFullYearAcceptable) {
         offerTempWhenPeriods = [];
     }
-
-    const { isFullYearAcceptable } = timeSettings;
-    const { applicationEndDate } = endSettings;
 
     const formattedEndDate = applicationEndDate?.toLocaleDateString();
 
@@ -32,7 +32,7 @@ export const offerWhenFormApiAdapter = (
         // isWithoutApplicationEndDate: isWithoutApplicationDate,
         applicationEndDate: formattedEndDate || null,
         isFullYearAcceptable,
-        isApplicableAtTheEnd: endSettings.isWithoutApplicationDate,
+        isApplicableAtTheEnd: endSettings.isWithoutApplicationDate, // backend issue
     };
     return offerWhen;
 };

@@ -38,6 +38,7 @@ import Location from "../Location/Location";
 import styles from "./WhoNeedsForm.module.scss";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -86,9 +87,9 @@ export const WhoNeedsForm = memo(() => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: error.data.detail,
                     type: HintType.Error,
                 });
             });

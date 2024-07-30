@@ -35,6 +35,7 @@ import styles from "./InviteDescriptionForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { ErrorType } from "@/types/api/error";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -95,9 +96,9 @@ export const InviteDescriptionForm = () => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: error.data.detail,
                     type: HintType.Error,
                 });
             });

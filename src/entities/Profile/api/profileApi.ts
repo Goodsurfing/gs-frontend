@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { Profile } from "../model/types/profile";
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 export const profileApi = createApi({
     reducerPath: "profileApi",
-    baseQuery,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["profile"],
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
@@ -18,7 +18,10 @@ export const profileApi = createApi({
             query: (profileData) => ({
                 url: "personal/profile",
                 method: "PATCH",
-                body: profileData,
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify(profileData),
             }),
             invalidatesTags: ["profile"],
         }),

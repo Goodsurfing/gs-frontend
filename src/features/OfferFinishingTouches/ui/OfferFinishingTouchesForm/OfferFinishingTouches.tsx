@@ -4,7 +4,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -91,16 +90,16 @@ export const OfferFinishingTouchesForm = memo(
                 });
         };
 
-        const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (
+        const onSubmit = handleSubmit((
             data,
         ) => {
             updateFinishingTouchesHandle(data, "open");
             onSuccess?.(data);
-        };
+        });
 
-        const onDraftHandle: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
+        const onDraftHandle = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "empty");
-        };
+        });
 
         const {
             isModalOpen,
@@ -124,7 +123,7 @@ export const OfferFinishingTouchesForm = memo(
 
         return (
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={onSubmit}
                 className={cn(styles.wrapper, className)}
             >
                 {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -230,11 +229,11 @@ export const OfferFinishingTouchesForm = memo(
                         color="BLUE"
                         size="MEDIUM"
                         variant="FILL"
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                     >
                         {t("finishingTouches.Опубликовать")}
                     </Button>
-                    <Button onClick={handleSubmit(onDraftHandle)} color="BLUE" size="MEDIUM" variant="OUTLINE">
+                    <Button onClick={onDraftHandle} color="BLUE" size="MEDIUM" variant="OUTLINE">
                         {t("finishingTouches.Сохранить в черновики")}
                     </Button>
                 </div>

@@ -3,7 +3,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 
@@ -29,6 +28,10 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -41,16 +44,19 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
-    const { control, handleSubmit, reset } = useForm<OfferConditionsFormFields>({
+    const {
+        control, handleSubmit,
+        reset, formState: { isDirty },
+    } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
+    const onSubmit = handleSubmit((data) => {
         const preparedData = offerConditionsApiAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { conditions: preparedData } })
@@ -61,20 +67,34 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: error.data.detail,
                     type: HintType.Error,
                 });
             });
         onSuccess?.();
-    };
+    });
 
     useEffect(() => {
         if (getOfferData?.conditions) {
             reset(offerConditionsAdapter(getOfferData?.conditions));
         }
     }, [getOfferData?.conditions, reset]);
+
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
+
+    if (isOfferDataLoading) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <Preloader />
+            </div>
+        );
+    }
 
     return (
         <form className={cn(styles.wrapper, className)}>
@@ -149,7 +169,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             <div>
                 <Button
                     disabled={isLoading}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                     variant="FILL"
                     type="submit"
                     color="BLUE"
@@ -158,6 +178,13 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     Сохранить
                 </Button>
             </div>
+            <ConfirmActionModal
+                description="Изменения не были сохранены"
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton="Сохранить"
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });

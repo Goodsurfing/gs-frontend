@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import Button from "@/shared/ui/Button/Button";
 
 import {
-    Profile, getProfileReadonly, profileActions, profileApi,
+    Profile, getProfileReadonly, profileActions,
+    useGetProfileInfoQuery,
 } from "@/entities/Profile";
 
 import { ProfileInfoFormContent } from "../ProfileInfoFormContent/ProfileInfoFormContent";
@@ -15,9 +16,11 @@ import type { ProfileInfoFields } from "../../model/types/profileInfo";
 import { profileInfoFormAdapter } from "../../lib/profileInfoFormAdapter";
 import { profileFormApiAdapter } from "../../lib/profileFormApiAdapter";
 
-import styles from "./ProfileInfoForm.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ToastAlert, HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
+import styles from "./ProfileInfoForm.module.scss";
+import { ErrorType } from "@/types/api/error";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -33,8 +36,8 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
     const [toast, setToast] = useState<ToastAlert>();
 
-    const [updateProfile] = profileApi.useUpdateProfileInfoMutation();
-    const { data: getProfileData } = profileApi.useGetProfileInfoQuery();
+    const [updateProfile] = useUpdateProfileInfoMutation();
+    const { data: getProfileData } = useGetProfileInfoQuery();
 
     const { handleSubmit, reset } = form;
 
@@ -47,9 +50,9 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                 text: "Данные успешно изменены",
                 type: HintType.Success,
             });
-        }).catch(() => {
+        }).catch((error: ErrorType) => {
             setToast({
-                text: "Некорректно введены данные",
+                text: error.data.detail,
                 type: HintType.Error,
             });
         });

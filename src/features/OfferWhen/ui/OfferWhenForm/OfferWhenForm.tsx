@@ -32,6 +32,7 @@ import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { NavBlockerControl, useNavBlocker } from "@/shared/hooks/useNavBlocker";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { ErrorType } from "@/types/api/error";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -85,9 +86,9 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: error.data.detail,
                     type: HintType.Error,
                 });
             });
