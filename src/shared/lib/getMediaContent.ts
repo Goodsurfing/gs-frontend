@@ -1,7 +1,11 @@
 import { MediaObjectType } from "@/types/media";
 import { BASE_URL } from "../constants/api";
 
-export const getMediaContent = (value: string | MediaObjectType | undefined): string => {
+export const getMediaContent = (
+    value: string
+    | MediaObjectType
+    | undefined,
+): string | undefined => {
     switch (typeof value) {
         case "string":
             return `${BASE_URL}${value.slice(1)}`;
@@ -9,8 +13,8 @@ export const getMediaContent = (value: string | MediaObjectType | undefined): st
             if ("contentUrl" in value) {
                 return `${BASE_URL}${value.contentUrl.slice(1)}`;
             }
-            return "";
+            return undefined;
         default:
-            return "";
+            return undefined;
     }
 };

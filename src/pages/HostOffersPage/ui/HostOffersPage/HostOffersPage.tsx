@@ -62,6 +62,7 @@ const HostOffersPage = () => {
 
     const handleModalClose = () => {
         setSelectedOffer(null);
+        setSelectedBtnOffer(null);
     };
 
     const handleConfirmClick = async () => {
