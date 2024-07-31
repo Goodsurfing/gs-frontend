@@ -130,7 +130,7 @@ const MapWithAddress = ({
                         field.onChange({ ...field.value, address: inputVal });
                     }}
                     options={options}
-                    getOptionLabel={(option) => `${option.description} ${option.name}`}
+                    getOptionLabel={(option) => `${option.description}, ${option.name}`}
                     noOptionsText={t("where.Точек на карте не найдено")}
                     labelText={t("where.Введите адрес")}
                     onKeyDown={(event: React.KeyboardEvent) => handleKeyDown(event)}

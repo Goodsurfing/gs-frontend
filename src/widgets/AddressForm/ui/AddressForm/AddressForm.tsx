@@ -64,7 +64,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 offerGeoObject.latitude,
             );
             if (geoObject) {
-                reset({ address: { address: `${geoObject.description} ${geoObject.name}`, geoObject } });
+                reset({ address: { address: `${geoObject.description}, ${geoObject.name}`, geoObject } });
             }
         } else {
             reset();
