@@ -33,6 +33,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { NavBlockerControl, useNavBlocker } from "@/shared/hooks/useNavBlocker";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -90,7 +91,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             })
             .catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });

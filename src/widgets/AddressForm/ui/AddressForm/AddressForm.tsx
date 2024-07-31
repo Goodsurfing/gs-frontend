@@ -26,6 +26,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface AddressFormProps {
     className?: string;
@@ -82,7 +83,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             })
             .catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
@@ -109,9 +110,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     return (
         <form className={className} onSubmit={onSubmit}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            {errors.address && (
-                <p className={styles.error}>{errors.address.message}</p>
-            )}
             <Controller
                 control={control}
                 name="address"
@@ -125,6 +123,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     />
                 )}
             />
+            {errors.address && (
+                <p className={styles.error}>{errors.address.message}</p>
+            )}
             <Button
                 variant="FILL"
                 disabled={isLoading}

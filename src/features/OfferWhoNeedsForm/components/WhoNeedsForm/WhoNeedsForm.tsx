@@ -39,6 +39,8 @@ import styles from "./WhoNeedsForm.module.scss";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -66,7 +68,7 @@ export const WhoNeedsForm = memo(() => {
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
     const {
-        handleSubmit, control, reset, formState: { isDirty },
+        handleSubmit, control, reset, formState: { isDirty, errors },
     } = form;
     const [toast, setToast] = useState<ToastAlert>();
 
@@ -89,7 +91,7 @@ export const WhoNeedsForm = memo(() => {
             })
             .catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
@@ -112,21 +114,33 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     control={control}
                     name="gender"
+                    rules={{ required: "Это поле является обязательным" }}
                     render={({ field }) => (
-                        <GenderComponent
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
+                        <>
+                            <GenderComponent
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {errors.gender && (
+                                <ErrorText text={errors.gender.message?.toString()} />
+                            )}
+                        </>
                     )}
                 />
                 <Controller
                     control={control}
                     name="age"
+                    rules={{ required: "Это поле является обязательным" }}
                     render={({ field }) => (
-                        <AgeComponent
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
+                        <>
+                            <AgeComponent
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {errors.age && (
+                                <ErrorText text={errors.age.message?.toString()} />
+                            )}
+                        </>
                     )}
                 />
                 <Controller
@@ -142,21 +156,30 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     name="volunteerPlaces"
                     control={control}
+                    rules={{
+                        required: "Это поле является обязательным",
+                        validate: (value) => value !== 0 || "Это поле является обязательным",
+                    }}
                     render={({ field }) => (
-                        <Input
-                            className={cn(styles.container, styles.input)}
-                            type="number"
-                            label={t(
-                                "whoNeeds.Сколько волонтерских мест одновременно",
+                        <>
+                            <Input
+                                className={cn(styles.container, styles.input)}
+                                type="number"
+                                label={t(
+                                    "whoNeeds.Сколько волонтерских мест одновременно",
+                                )}
+                                value={String(field.value)}
+                                onChange={(e) => {
+                                    const inputValue = +e.target.value;
+                                    if (inputValue >= 0 && inputValue <= 999) {
+                                        field.onChange(inputValue);
+                                    }
+                                }}
+                            />
+                            {errors.volunteerPlaces && (
+                                <ErrorText text={errors.volunteerPlaces.message?.toString()} />
                             )}
-                            value={String(field.value)}
-                            onChange={(e) => {
-                                const inputValue = +e.target.value;
-                                if (inputValue >= 0 && inputValue <= 999) {
-                                    field.onChange(inputValue);
-                                }
-                            }}
-                        />
+                        </>
                     )}
                 />
                 <Controller

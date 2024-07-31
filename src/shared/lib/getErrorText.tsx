@@ -1,7 +1,6 @@
 import { ErrorType } from "@/types/api/error";
 
-const getErrorText = (error: ErrorType) => {
-    const errorText = "";
+export const getErrorText = (error: ErrorType): string => {
     if ("data" in error && "detail" in error.data) {
         // Это ошибка типа Error
         return error.data.detail;
@@ -11,5 +10,4 @@ const getErrorText = (error: ErrorType) => {
     }
     // Неизвестный формат ошибки
     return "An unknown error occurred.";
-
 };

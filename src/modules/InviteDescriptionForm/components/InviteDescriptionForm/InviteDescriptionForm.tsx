@@ -36,6 +36,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -98,7 +99,7 @@ export const InviteDescriptionForm = () => {
             })
             .catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
