@@ -19,11 +19,12 @@ interface TermsApplicationProps {
     min?: Date;
     max?: Date;
     onChange: (terms: DateType) => void
+    onSubmit?: () => void;
 }
 
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
-        className, onChange, terms, max, min, isHost, isSuccess = false,
+        className, onChange, onSubmit, terms, max, min, isHost, isSuccess = false,
     } = props;
 
     const handleFromDateChange = useCallback((date: Date) => {
@@ -102,6 +103,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                                     disabled={!((terms.start && terms.end))}
                                     className={cn(styles.iconButton)}
                                     icon={successIcon}
+                                    onClick={onSubmit}
                                 />
                             </>
                         )}

@@ -2,7 +2,7 @@
     background-color: #fff;
     border-radius: 10px;
     gap: 30px;
-    padding: 16px;
+    padding: 25px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,4 +17,9 @@
 
 .description {
     text-align: center;
+}
+
+.blue {
+    background-color: #3DABF7 !important;
+    color: white;
 }

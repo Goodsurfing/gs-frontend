@@ -3,10 +3,12 @@ import React, {
     FC, useMemo,
 } from "react";
 
-import { mockedUsers, UserCard } from "@/entities/Messenger";
+import { UserCard } from "@/entities/Messenger";
 
 import styles from "./MessengerList.module.scss";
 import { ListFilter } from "../ListFilter/ListFilter";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetChatListData } from "@/entities/Chat";
 
 interface MessengerListProps {
     className?: string;
@@ -15,19 +17,16 @@ interface MessengerListProps {
 
 export const MessengerList: FC<MessengerListProps> = (props) => {
     const { className, onUserClick } = props;
+    const { token } = useAuth();
+    const { users } = useGetChatListData(token);
 
     const renderUserCard = useMemo(
-        () => mockedUsers.map(
-            (user) => (
-                <div onClick={() => onUserClick?.(user.id)}>
-                    <UserCard
-                        data={user}
-                        key={user.id}
-                    />
-                </div>
-            ),
-        ),
-        [onUserClick],
+        () => users.map((user) => (
+            <div onClick={() => onUserClick?.(user.id)} key={user.id}>
+                <UserCard data={user} />
+            </div>
+        )),
+        [users, onUserClick],
     );
 
     return (

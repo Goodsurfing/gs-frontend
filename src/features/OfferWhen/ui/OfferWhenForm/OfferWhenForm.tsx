@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
     useWatch,
 } from "react-hook-form";
@@ -31,6 +30,11 @@ import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -61,15 +65,17 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         timeSettings,
     };
     const {
-        handleSubmit, control, reset,
+        handleSubmit, control, reset, formState: { isDirty },
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
     });
 
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
+    const watchIsApplicableAtTheEnd = useWatch({ name: "timeSettings.isApplicableAtTheEnd", control });
+    const watchPeriods = useWatch({ name: "periods", control });
 
-    const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { when: preparedData } })
@@ -80,14 +86,14 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
         onComplete?.();
-    };
+    });
 
     useEffect(() => {
         if (getOfferData?.when) {
@@ -96,6 +102,12 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             reset();
         }
     }, [getOfferData?.when, reset]);
+
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
@@ -145,12 +157,14 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenRequests
                         value={field.value}
                         onChange={field.onChange}
+                        periods={watchPeriods}
+                        isApplicableAtTheEnd={watchIsApplicableAtTheEnd}
                     />
                 )}
             />
             <Button
                 disabled={isLoading}
-                onClick={handleSubmit(onSubmit)}
+                onClick={onSubmit}
                 className={styles.btn}
                 variant="FILL"
                 color="BLUE"
@@ -158,6 +172,14 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             >
                 {t("when.Сохранить")}
             </Button>
+            <ConfirmActionModal
+                description={CHANGES_NOT_SAVED}
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });

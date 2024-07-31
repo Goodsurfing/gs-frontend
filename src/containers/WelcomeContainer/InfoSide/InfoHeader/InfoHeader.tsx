@@ -103,34 +103,6 @@ const InfoHeader = memo(() => {
             <header className={styles.header}>
                 <ChangeLanguage />
                 <div
-                    ref={aboutProjectRef}
-                    className={styles.link}
-                    onClick={() => handleOpenDropdown("ABOUT")}
-                >
-                    <p>{t("main.welcome.header.about-project.title")}</p>
-                    <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
-                    <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
-                        <Link to={getNPOPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.about-npo")}
-                        </Link>
-                        <Link to={getOurTeamPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.our-team")}
-                        </Link>
-                        <Link to={getMainPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.how-it-works")}
-                        </Link>
-                        <Link to={getRulesPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.rules")}
-                        </Link>
-                        <Link to={getPrivacyPolicyPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.privacy-policy")}
-                        </Link>
-                        <Link to={getNewsPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.news")}
-                        </Link>
-                    </Popup>
-                </div>
-                <div
                     ref={communityRef}
                     className={styles.link}
                     onClick={() => handleOpenDropdown("COMMUNITY")}
@@ -161,6 +133,35 @@ const InfoHeader = memo(() => {
                         </Link>
                     </Popup>
                 </div>
+                <div
+                    ref={aboutProjectRef}
+                    className={styles.link}
+                    onClick={() => handleOpenDropdown("ABOUT")}
+                >
+                    <p>{t("main.welcome.header.about-project.title")}</p>
+                    <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
+                    <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
+                        <Link to={getNPOPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.about-npo")}
+                        </Link>
+                        <Link to={getOurTeamPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.our-team")}
+                        </Link>
+                        <Link to={getMainPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.how-it-works")}
+                        </Link>
+                        <Link to={getRulesPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.rules")}
+                        </Link>
+                        <Link to={getPrivacyPolicyPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.privacy-policy")}
+                        </Link>
+                        <Link to={getNewsPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.news")}
+                        </Link>
+                    </Popup>
+                </div>
+
                 {isAuth ? (
                     <>
                         <div className={styles.link}>

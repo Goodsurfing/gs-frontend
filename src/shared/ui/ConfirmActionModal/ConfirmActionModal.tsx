@@ -6,21 +6,31 @@ import { Modal } from "../Modal/Modal";
 interface ConfirmActionModalProps {
     description: string;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
+    confirmTextButton?: string;
     onClose: () => void;
+    cancelTextButton?: string;
+    isModalOpen?: boolean;
 }
 
 export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
-    const { description, onConfirm, onClose } = props;
+    const {
+        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false,
+    } = props;
+
+    if (!isModalOpen) {
+        return null;
+    }
+
     return (
         <Modal onClose={onClose} isShowCloseIcon={false}>
             <div className={styles.wrapper}>
                 <span className={styles.description}>{description}</span>
                 <div className={styles.buttons}>
-                    <Button color="GREEN" size="MEDIUM" variant="FILL" onClick={onConfirm}>
-                        Ок
+                    <Button className={styles.blue} color="BLUE" size="MEDIUM" variant="FILL" onClick={onConfirm}>
+                        {confirmTextButton}
                     </Button>
-                    <Button color="GRAY" size="MEDIUM" variant="OUTLINE" onClick={onClose}>
-                        Отмена
+                    <Button className={styles.gray} color="GRAY" size="MEDIUM" variant="OUTLINE" onClick={onClose}>
+                        {cancelTextButton}
                     </Button>
                 </div>
             </div>

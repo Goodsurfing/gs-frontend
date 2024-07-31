@@ -26,10 +26,11 @@ import {
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 import styles from "./HostDescriptionForm.module.scss";
+import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 
 interface HostDescriptionFormProps {
     className?: string;
-    host?: Host;
+    host?: string;
     isLoading?: boolean;
     error?: string;
 }
@@ -48,6 +49,8 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: hostUpdateError,
     }] = useUpdateHostMutation();
 
+    const { data: getHost } = useGetMyHostQuery();
+
     const [toast, setToast] = useState<ToastAlert>();
 
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
@@ -62,16 +65,27 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     type: HintType.Success,
                 });
                 window.location.reload();
-            } catch (err) {
+            } catch {
                 setToast({
                     text: "Ошибка при создании организации",
                     type: HintType.Error,
                 });
             }
         }
-        if (host) {
-            preparedData = hostDescriptionApiAdapterUpdate(data);
-            updateHost({ id: host.id, body: { ...preparedData } });
+        if (host && getHost) {
+            try {
+                preparedData = hostDescriptionApiAdapterUpdate(data);
+                await updateHost({ id: getHost.id, body: { ...preparedData } }).unwrap();
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            } catch {
+                setToast({
+                    text: "Произошла ошибка",
+                    type: HintType.Error,
+                });
+            }
         }
     };
 
@@ -82,10 +96,10 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const { handleSubmit, reset } = form;
 
     useEffect(() => {
-        if (host) {
-            reset(hostDescriptionFormAdapter(host));
+        if (getHost) {
+            reset(hostDescriptionFormAdapter(getHost));
         }
-    }, [host, reset]);
+    }, [getHost, reset]);
 
     if (isLoading) {
         return (

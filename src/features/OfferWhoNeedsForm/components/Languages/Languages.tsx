@@ -10,7 +10,9 @@ import { LanguagesProps } from "./types";
 import styles from "./Languages.module.scss";
 
 const Languages: FC<LanguagesProps> = (props) => {
-    const { close, value, onChange } = props;
+    const {
+        close, value, onChange, selectedLanguages,
+    } = props;
     const { t } = useTranslation("offer");
     const allLangs = useAllLangs();
     const allLevels = useLangsLevels();
@@ -20,13 +22,21 @@ const Languages: FC<LanguagesProps> = (props) => {
         options: IOptionLanguage[] | IOptionLevelLanguage[],
     ) => options.find((option) => option.value === valueObject);
 
+    let filteredOptions = allLangs.filter(
+        (lang) => !selectedLanguages.some((selected) => selected.language === lang.value),
+    );
+
+    if (selectedLanguages.length !== 1) {
+        filteredOptions = filteredOptions.filter((lang) => lang.value !== "not_matter");
+    }
+
     return (
         <div className={styles.wrapper}>
             <SelectField
                 className={styles.all}
                 name="allLangs"
                 label={t("whoNeeds.Знание языков")}
-                options={allLangs}
+                options={filteredOptions}
                 value={getObjectFromValue(value.language, allLangs)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {

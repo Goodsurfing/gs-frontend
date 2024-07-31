@@ -26,7 +26,7 @@ interface OfferGalleryItemRequest {
 export const offerApi = createApi({
     reducerPath: "offerApi",
     baseQuery: baseQueryAcceptJson,
-    tagTypes: ["offer", "address"],
+    tagTypes: ["offer"],
     endpoints: (build) => ({
         createOffer: build.mutation<CreateOfferResponse, FormData>({
             query: (data) => ({

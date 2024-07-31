@@ -5,6 +5,6 @@ export interface OfferFinishingTouches {
     helloText: string;
     roles: string;
     questionnaireUrl: string;
-    questions: string;
+    questions: string[];
     onlyVerified: boolean;
 }

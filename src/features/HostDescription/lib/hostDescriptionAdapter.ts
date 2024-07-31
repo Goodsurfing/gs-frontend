@@ -68,12 +68,11 @@ export const hostDescriptionApiAdapterUpdate = (data: HostDescriptionFormFields)
         name: mainInfo?.organization,
         type: type?.organizationType,
         description: mainInfo?.aboutInfo,
-        address: "тест",
         // wip backend avatar,
-        vk: "тест",
-        instagram: "тест",
-        facebook: "тест",
-        telegram: "тест",
-        website: "http://test.org",
+        vk: socialMedia?.vk,
+        instagram: socialMedia?.instagram,
+        facebook: socialMedia?.facebook,
+        telegram: socialMedia?.telegram,
+        website: mainInfo?.website,
     };
 };

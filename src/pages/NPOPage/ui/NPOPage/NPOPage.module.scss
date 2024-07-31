@@ -1,5 +1,5 @@
 .wrapper {
-    max-width: 1280px;
+    max-width: 1920px;
     margin: 0 auto;
 }
 
@@ -8,4 +8,6 @@
     display: flex;
     flex-direction: column;
     gap: 60px;
+    max-width: 1280px;
+    margin: 0 auto;
 }

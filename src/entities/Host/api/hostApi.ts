@@ -49,18 +49,18 @@ export const hostApi = createApi({
             query: (body) => ({
                 url: "organizations",
                 method: "POST",
-                headers: {
-                    // "Content-Type": "multipart/form-data",
-                },
                 body,
             }),
             invalidatesTags: ["host"],
         }),
-        updateHost: build.mutation<unknown, UpdateHostParams>({
+        updateHost: build.mutation<Host, UpdateHostParams>({
             query: (data) => ({
                 url: `organizations/${data.id}`,
-                method: "PATH",
-                body: data.body,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify(data.body),
             }),
             invalidatesTags: ["host"],
         }),

@@ -23,6 +23,11 @@ import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface AddressFormProps {
     className?: string;
@@ -31,7 +36,7 @@ interface AddressFormProps {
 export const AddressForm = memo(({ className }: AddressFormProps) => {
     const {
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
         control,
         reset,
     } = useForm<AddressFormFormFields>({
@@ -43,6 +48,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             },
         },
     });
+
     const { t } = useTranslation("offer");
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
@@ -68,7 +74,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateOffer({ id: Number(id), body: { where: preparedData } })
+        updateOffer({ id: Number(id), body: { where: preparedData } }).unwrap()
             .then(() => {
                 fetchGeoObject();
                 setToast({
@@ -76,9 +82,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
@@ -92,6 +98,12 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         if (coordinates) return coordinates;
     };
 
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
+
     if (isLoadingGetData) {
         return <Preloader className={styles.loading} />;
     }
@@ -99,9 +111,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     return (
         <form className={className} onSubmit={onSubmit}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            {errors.address && (
-                <p className={styles.error}>{errors.address.message}</p>
-            )}
             <Controller
                 control={control}
                 name="address"
@@ -115,6 +124,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     />
                 )}
             />
+            {errors.address && (
+                <p className={styles.error}>{errors.address.message}</p>
+            )}
             <Button
                 variant="FILL"
                 disabled={isLoading}
@@ -126,6 +138,14 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             >
                 {t("where.Сохранить")}
             </Button>
+            <ConfirmActionModal
+                description={CHANGES_NOT_SAVED}
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });

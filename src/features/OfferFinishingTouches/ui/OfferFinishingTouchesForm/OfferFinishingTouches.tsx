@@ -1,33 +1,41 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import cn from "classnames";
 import { memo, useEffect, useState } from "react";
-import {
-    Controller,
-    DefaultValues,
-    SubmitHandler,
-    useForm,
-} from "react-hook-form";
-import { useParams } from "react-router-dom";
-
+import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
+import { useParams } from "react-router-dom";
+import { ErrorType } from "@/types/api/error";
 
+import { OfferStatus } from "@/entities/Offer";
+import {
+    useGetOfferByIdQuery,
+    useUpdateOfferMutation,
+} from "@/entities/Offer/api/offerApi";
+
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Input from "@/shared/ui/Input/Input";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { offerFinishingTouchesAdapter, offerFinishingTouchesApiAdapter } from "../../lib/offerFinishingTouchesAdapter";
+import {
+    offerFinishingTouchesAdapter,
+    offerFinishingTouchesApiAdapter,
+} from "../../lib/offerFinishingTouchesAdapter";
 import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishingTouches";
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
+import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
 import styles from "./OfferFinishingTouches.module.scss";
-import { OfferStatus } from "@/entities/Offer";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -40,7 +48,7 @@ const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
     welcomeMessage: "",
     rules: "",
     questionnaireUrl: "",
-    questions: "",
+    questions: [],
 };
 
 export const OfferFinishingTouchesForm = memo(
@@ -48,11 +56,16 @@ export const OfferFinishingTouchesForm = memo(
         const { className, onSuccess } = props;
         const { id } = useParams();
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
 
-        const { handleSubmit, control, reset } = useForm<OfferFinishingTouchesFormFields>({
+        const {
+            handleSubmit,
+            control,
+            reset,
+            formState: { isDirty, errors },
+        } = useForm<OfferFinishingTouchesFormFields>({
             mode: "onChange",
             defaultValues,
         });
@@ -77,36 +90,46 @@ export const OfferFinishingTouchesForm = memo(
                         type: HintType.Success,
                     });
                 })
-                .catch(() => {
+                .catch((error: ErrorType) => {
                     setToast({
-                        text: "Произошла ошибка",
+                        text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });
         };
 
-        const onSubmit: SubmitHandler<OfferFinishingTouchesFormFields> = (
-            data,
-        ) => {
+        const onSubmit = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "open");
             onSuccess?.(data);
-        };
+        });
 
-        const onDraftHandle: SubmitHandler<OfferFinishingTouchesFormFields> = (data) => {
+        const onDraftHandle = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "empty");
-        };
+        });
+
+        const {
+            isModalOpen, handleConfirmClick,
+            handleModalClose,
+        } = useConfirmNavigation(onDraftHandle, isDirty);
 
         useEffect(() => {
             if (getOfferData?.finishingTouches) {
-                reset(offerFinishingTouchesAdapter(getOfferData.finishingTouches));
+                reset(
+                    offerFinishingTouchesAdapter(getOfferData.finishingTouches),
+                );
             }
         }, [getOfferData?.finishingTouches, reset]);
 
+        if (isOfferDataLoading) {
+            return (
+                <div className={cn(styles.wrapper, className)}>
+                    <Preloader />
+                </div>
+            );
+        }
+
         return (
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className={cn(styles.wrapper, className)}
-            >
+            <form onSubmit={onSubmit} className={cn(styles.wrapper, className)}>
                 {toast && <HintPopup text={toast.text} type={toast.type} />}
                 <div className={styles.formFields}>
                     <div className={styles.skillsWrapper}>
@@ -133,7 +156,9 @@ export const OfferFinishingTouchesForm = memo(
                                 <FormControlLabel
                                     label={(
                                         <Typography className={styles.checkbox}>
-                                            {t("finishingTouches.Принимать заявки только от проверенных участников")}
+                                            {t(
+                                                "finishingTouches.Принимать заявки только от проверенных участников",
+                                            )}
                                         </Typography>
                                     )}
                                     control={(
@@ -155,8 +180,12 @@ export const OfferFinishingTouchesForm = memo(
                             control={control}
                             render={({ field }) => (
                                 <Textarea
-                                    label={t("finishingTouches.Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».")}
-                                    description={t("finishingTouches.Не более 1000 знаков")}
+                                    label={t(
+                                        "finishingTouches.Данное сообщение будет автоматически отправляться всем соискателям после того, как они нажмут кнопку «Участвовать».",
+                                    )}
+                                    description={t(
+                                        "finishingTouches.Не более 1000 знаков",
+                                    )}
                                     onChange={field.onChange}
                                     value={field.value}
                                 />
@@ -164,14 +193,20 @@ export const OfferFinishingTouchesForm = memo(
                         />
                     </div>
                     <div className={styles.formField}>
-                        <p className={styles.formTitle}>{t("finishingTouches.Согласие с правилами")}</p>
+                        <p className={styles.formTitle}>
+                            {t("finishingTouches.Согласие с правилами")}
+                        </p>
                         <Controller
                             name="rules"
                             control={control}
                             render={({ field }) => (
                                 <Textarea
-                                    label={t("finishingTouches.Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку.")}
-                                    description={t("finishingTouches.Не более 1000 знаков")}
+                                    label={t(
+                                        "finishingTouches.Добавьте информацию о правилах и условиях, существующих в вашем предложении, с которым соискатель должен быть ознакомлен в момент, когда он подаёт заявку.",
+                                    )}
+                                    description={t(
+                                        "finishingTouches.Не более 1000 знаков",
+                                    )}
                                     onChange={field.onChange}
                                     value={field.value}
                                 />
@@ -179,15 +214,30 @@ export const OfferFinishingTouchesForm = memo(
                         />
                     </div>
                     <div className={styles.formField}>
-                        <p className={styles.formTitle}>{t("finishingTouches.Добавить вопросы")}</p>
+                        <p className={styles.formTitle}>
+                            {t("finishingTouches.Добавить вопросы")}
+                        </p>
                         <Controller
                             name="questionnaireUrl"
                             control={control}
+                            rules={{
+                                pattern: {
+                                    value: /^(https?:\/\/)?([\w\d.-]+\.)+[\w\d]{2,}(\/.+)?$/,
+                                    message: "Введите корректную ссылку",
+                                },
+                            }}
                             render={({ field }) => (
-                                <OfferQuestionnaire
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                />
+                                <div>
+                                    <OfferQuestionnaire
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                    {errors.questionnaireUrl && (
+                                        <ErrorText
+                                            text={errors.questionnaireUrl.message?.toString()}
+                                        />
+                                    )}
+                                </div>
                             )}
                         />
                     </div>
@@ -195,11 +245,9 @@ export const OfferFinishingTouchesForm = memo(
                         name="questions"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                style={{ height: 44 }}
-                                description={t("finishingTouches.Добавить вопрос")}
-                                onChange={field.onChange}
+                            <OfferQuestions
                                 value={field.value}
+                                onChange={field.onChange}
                             />
                         )}
                     />
@@ -210,14 +258,27 @@ export const OfferFinishingTouchesForm = memo(
                         color="BLUE"
                         size="MEDIUM"
                         variant="FILL"
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                     >
                         {t("finishingTouches.Опубликовать")}
                     </Button>
-                    <Button onClick={handleSubmit(onDraftHandle)} color="BLUE" size="MEDIUM" variant="OUTLINE">
+                    <Button
+                        onClick={onDraftHandle}
+                        color="BLUE"
+                        size="MEDIUM"
+                        variant="OUTLINE"
+                    >
                         {t("finishingTouches.Сохранить в черновики")}
                     </Button>
                 </div>
+                <ConfirmActionModal
+                    description={CHANGES_NOT_SAVED}
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
+                    isModalOpen={isModalOpen}
+                />
             </form>
         );
     },

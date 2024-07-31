@@ -3,7 +3,6 @@ import {
     Controller,
     DefaultValues,
     FormProvider,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -37,6 +36,14 @@ import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
 import styles from "./WhoNeedsForm.module.scss";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import {
+    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE, THIS_FIELD_IS_REQUIRED,
+} from "@/shared/constants/messages";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -63,7 +70,9 @@ export const WhoNeedsForm = memo(() => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
-    const { handleSubmit, control, reset } = form;
+    const {
+        handleSubmit, control, reset, formState: { isDirty, errors },
+    } = form;
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
@@ -72,7 +81,7 @@ export const WhoNeedsForm = memo(() => {
         }
     }, [getOfferData, reset]);
 
-    const onSubmit: SubmitHandler<OfferWhoNeedsFields> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhoNeedsAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { howNeeds: preparedData } })
@@ -83,13 +92,19 @@ export const WhoNeedsForm = memo(() => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
-    };
+    });
+
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetWhoNeedsData) {
         return <Preloader className={styles.loading} />;
@@ -102,21 +117,33 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     control={control}
                     name="gender"
+                    rules={{ required: THIS_FIELD_IS_REQUIRED }}
                     render={({ field }) => (
-                        <GenderComponent
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
+                        <>
+                            <GenderComponent
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {errors.gender && (
+                                <ErrorText text={errors.gender.message?.toString()} />
+                            )}
+                        </>
                     )}
                 />
                 <Controller
                     control={control}
                     name="age"
+                    rules={{ required: THIS_FIELD_IS_REQUIRED }}
                     render={({ field }) => (
-                        <AgeComponent
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
+                        <>
+                            <AgeComponent
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {errors.age && (
+                                <ErrorText text={errors.age.message?.toString()} />
+                            )}
+                        </>
                     )}
                 />
                 <Controller
@@ -132,21 +159,30 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     name="volunteerPlaces"
                     control={control}
+                    rules={{
+                        required: THIS_FIELD_IS_REQUIRED,
+                        validate: (value) => value !== 0 || THIS_FIELD_IS_REQUIRED,
+                    }}
                     render={({ field }) => (
-                        <Input
-                            className={cn(styles.container, styles.input)}
-                            type="number"
-                            label={t(
-                                "whoNeeds.Сколько волонтерских мест одновременно",
+                        <>
+                            <Input
+                                className={cn(styles.container, styles.input)}
+                                type="number"
+                                label={t(
+                                    "whoNeeds.Сколько волонтерских мест одновременно",
+                                )}
+                                value={String(field.value)}
+                                onChange={(e) => {
+                                    const inputValue = +e.target.value;
+                                    if (inputValue >= 0 && inputValue <= 999) {
+                                        field.onChange(inputValue);
+                                    }
+                                }}
+                            />
+                            {errors.volunteerPlaces && (
+                                <ErrorText text={errors.volunteerPlaces.message?.toString()} />
                             )}
-                            value={String(field.value)}
-                            onChange={(e) => {
-                                const inputValue = +e.target.value;
-                                if (inputValue >= 0 && inputValue <= 999) {
-                                    field.onChange(inputValue);
-                                }
-                            }}
-                        />
+                        </>
                     )}
                 />
                 <Controller
@@ -175,7 +211,7 @@ export const WhoNeedsForm = memo(() => {
                 />
                 <Button
                     disabled={isLoading}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                     className={styles.btn}
                     variant="FILL"
                     color="BLUE"
@@ -183,6 +219,14 @@ export const WhoNeedsForm = memo(() => {
                 >
                     {t("whoNeeds.Сохранить")}
                 </Button>
+                <ConfirmActionModal
+                    description={CHANGES_NOT_SAVED}
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
+                    isModalOpen={isModalOpen}
+                />
             </form>
         </FormProvider>
     );

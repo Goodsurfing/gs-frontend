@@ -2,7 +2,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -20,6 +19,12 @@ import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/a
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./OfferWhatToDoForm.module.scss";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -34,18 +39,20 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
 
 export const OfferWhatToDoForm = memo(
     ({ onSuccess }: OfferWhatToDoFormProps) => {
-        const { handleSubmit, control, reset } = useForm<OfferWhatToDoFormFields>({
+        const {
+            handleSubmit, control, reset, formState: { isDirty },
+        } = useForm<OfferWhatToDoFormFields>({
             mode: "onChange",
             defaultValues,
         });
         const { id } = useParams();
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
 
         const { t } = useTranslation("offer");
 
-        const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
+        const onSubmit = handleSubmit(async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
             updateOffer({ id: Number(id), body: { whatToDo: preparedData } })
@@ -56,14 +63,20 @@ export const OfferWhatToDoForm = memo(
                         type: HintType.Success,
                     });
                 })
-                .catch(() => {
+                .catch((error: ErrorType) => {
                     setToast({
-                        text: "Некорректно введены данные",
+                        text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });
             onSuccess?.();
-        };
+        });
+
+        const {
+            isModalOpen,
+            handleConfirmClick,
+            handleModalClose,
+        } = useConfirmNavigation(onSubmit, isDirty);
 
         useEffect(() => {
             if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
@@ -71,8 +84,16 @@ export const OfferWhatToDoForm = memo(
             }
         }, [getOfferData?.whatToDo, reset]);
 
+        if (isOfferDataLoading) {
+            return (
+                <div className={styles.wrapper}>
+                    <Preloader />
+                </div>
+            );
+        }
+
         return (
-            <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+            <form onSubmit={onSubmit} className={styles.wrapper}>
                 {toast && (
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
@@ -105,7 +126,7 @@ export const OfferWhatToDoForm = memo(
                 />
                 <div>
                     <Button
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                         disabled={isLoading}
                         variant="FILL"
                         color="BLUE"
@@ -115,6 +136,14 @@ export const OfferWhatToDoForm = memo(
                         {t("whatToDo.Сохранить")}
                     </Button>
                 </div>
+                <ConfirmActionModal
+                    description={CHANGES_NOT_SAVED}
+                    onConfirm={handleConfirmClick}
+                    onClose={handleModalClose}
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
+                    isModalOpen={isModalOpen}
+                />
             </form>
         );
     },

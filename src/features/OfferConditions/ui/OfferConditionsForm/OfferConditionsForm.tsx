@@ -3,7 +3,6 @@ import { memo, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
 } from "react-hook-form";
 
@@ -29,6 +28,15 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { ErrorType } from "@/types/api/error";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import {
+    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, NOT_SELECTED, SAVE,
+} from "@/shared/constants/messages";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -41,16 +49,19 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { onSuccess, className } = props;
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const { data: getOfferData } = useGetOfferByIdQuery(id || "");
+    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
-    const { control, handleSubmit, reset } = useForm<OfferConditionsFormFields>({
+    const {
+        control, handleSubmit,
+        reset, formState: { isDirty, errors },
+    } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
     });
 
-    const onSubmit: SubmitHandler<OfferConditionsFormFields> = (data) => {
+    const onSubmit = handleSubmit((data) => {
         const preparedData = offerConditionsApiAdapter(data);
         setToast(undefined);
         updateOffer({ id: Number(id), body: { conditions: preparedData } })
@@ -61,14 +72,14 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     type: HintType.Success,
                 });
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
         onSuccess?.();
-    };
+    });
 
     useEffect(() => {
         if (getOfferData?.conditions) {
@@ -76,37 +87,90 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         }
     }, [getOfferData?.conditions, reset]);
 
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
+
+    if (isOfferDataLoading) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <Preloader />
+            </div>
+        );
+    }
+
     return (
         <form className={cn(styles.wrapper, className)}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 name="housing"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.housing.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsHousing
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsHousing
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.housing && (
+                            <ErrorText text={errors.housing.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller
                 name="nutrition"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.nutrition.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsNutrition
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsNutrition
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.nutrition && (
+                            <ErrorText text={errors.nutrition.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller
                 name="travel"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.travel.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsTravel
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsTravel
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.travel && (
+                            <ErrorText text={errors.travel.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller
@@ -149,7 +213,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             <div>
                 <Button
                     disabled={isLoading}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                     variant="FILL"
                     type="submit"
                     color="BLUE"
@@ -158,6 +222,14 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     Сохранить
                 </Button>
             </div>
+            <ConfirmActionModal
+                description={CHANGES_NOT_SAVED}
+                onConfirm={handleConfirmClick}
+                onClose={handleModalClose}
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
+                isModalOpen={isModalOpen}
+            />
         </form>
     );
 });

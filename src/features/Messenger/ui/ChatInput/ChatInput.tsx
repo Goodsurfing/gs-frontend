@@ -14,10 +14,11 @@ import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 interface ChatInputProps {
     sx?: SxProps<Theme>;
+    disabled?: boolean;
 }
 
 export const ChatInput: FC<ChatInputProps> = (props) => {
-    const { sx } = props;
+    const { sx, disabled = false } = props;
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const emojiRef = useRef(null);
 
@@ -75,7 +76,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     )}
                 </IconButton>
             </Paper>
-            <IconButton aria-label="menu" className={styles.send}>
+            <IconButton aria-label="menu" className={styles.send} disabled={disabled}>
                 <ReactSVG src={sendIcon} className={styles.icon} />
             </IconButton>
         </div>

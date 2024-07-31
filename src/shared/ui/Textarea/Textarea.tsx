@@ -7,6 +7,7 @@ export interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement>
     img?: string;
     label: string;
     description?: string;
+    classNameTextarea?: string;
 }
 
 const Textarea: FC<IText> = ({
@@ -16,6 +17,7 @@ const Textarea: FC<IText> = ({
     children,
     placeholder,
     className,
+    classNameTextarea,
     required,
     maxLength = 1000,
     id,
@@ -41,7 +43,7 @@ const Textarea: FC<IText> = ({
             </div>
             <textarea
                 onKeyDown={(e) => handleTextAreaChange(e)}
-                className={styles.textarea}
+                className={cn(styles.textarea, classNameTextarea)}
                 required={required}
                 placeholder={placeholder}
                 name={name}

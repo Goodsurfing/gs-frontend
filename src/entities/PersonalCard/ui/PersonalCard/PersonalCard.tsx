@@ -29,28 +29,50 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         image,
         medals,
     } = props;
+    const isImage = image !== undefined;
+    const backgroundImageStyle = isImage
+        ? {
+            background: `
+            linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%,
+            rgba(0, 0, 0, 0.50) 100%),
+            lightgray 50% / cover no-repeat
+            url(${image})`,
+        }
+        : { background: "#ECF1F4" };
     return (
         <div className={cn(className, styles.wrapper)}>
             <div
                 className={styles.backgroundImage}
-                style={{
-                    background: `
-                    linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%,
-                    rgba(0, 0, 0, 0.50) 100%),
-                    lightgray 50% / cover no-repeat
-                    url(${image})`,
-                }}
+                style={backgroundImageStyle}
             />
             <div className={styles.content}>
                 <div className={styles.left}>
                     <div className={styles.topPart}>
-                        <h1 className={styles.title}>{title}</h1>
+                        <h1 className={cn(
+                            styles.title,
+                            { [styles.black]: !isImage },
+                        )}
+                        >
+                            {title}
+                        </h1>
                         <div className={styles.info}>
                             {categories}
-                            <span className={styles.location}>{location}</span>
+                            <span className={cn(
+                                styles.location,
+                                { [styles.black]: !isImage },
+                            )}
+                            >
+                                {location}
+                            </span>
                             <div className={styles.rating}>
                                 <IconComponent className={styles.star} icon={star} />
-                                <span className={styles.ratingText}>{rating}</span>
+                                <span className={cn(
+                                    styles.ratingText,
+                                    { [styles.black]: !isImage },
+                                )}
+                                >
+                                    {rating}
+                                </span>
                             </div>
                         </div>
                     </div>
