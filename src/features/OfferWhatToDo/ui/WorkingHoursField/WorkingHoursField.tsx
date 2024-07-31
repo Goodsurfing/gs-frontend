@@ -21,7 +21,7 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     const { t } = useTranslation("offer");
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputString = +e.target.value;
-        if (inputString >= 1 && inputString <= 100) {
+        if (inputString >= 0 && inputString <= 1000) {
             onChange({ ...value, hours: +e.target.value });
         }
     };
