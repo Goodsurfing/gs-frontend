@@ -22,10 +22,13 @@ export const useConfirmNavigation = (onSubmit: any, isDirty: boolean) => {
     }, [confirmAction, onSubmit]);
 
     const handleModalClose = useCallback(() => {
+        if (confirmAction) {
+            confirmAction();
+        }
         setIsBlocking(false);
         setIsModalOpen(false);
         setConfirmAction(null);
-    }, []);
+    }, [confirmAction]);
 
     useNavBlocker({
         onBlock: handleNavBlock,

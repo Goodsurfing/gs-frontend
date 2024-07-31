@@ -21,6 +21,7 @@ import { ToastAlert, HintType } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 import styles from "./ProfileInfoForm.module.scss";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -52,7 +53,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
             });
         }).catch((error: ErrorType) => {
             setToast({
-                text: error.data.detail,
+                text: getErrorText(error),
                 type: HintType.Error,
             });
         });

@@ -1,12 +1,10 @@
-import { memo, useEffect, useState } from "react";
-
-import mockBackgroundImage from "@/shared/assets/images/personalCardMOCK.png";
+import { memo } from "react";
 
 import { PersonalCard } from "@/entities/PersonalCard";
 
 import { OfferPersonalCardCategory } from "../OfferPersonalCardCategory/OfferPersonalCardCategory";
 import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
-import { Offer, useGetOfferByIdQuery } from "@/entities/Offer";
+import { useGetOfferByIdQuery } from "@/entities/Offer";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 

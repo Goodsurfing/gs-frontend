@@ -30,10 +30,11 @@ import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { NavBlockerControl, useNavBlocker } from "@/shared/hooks/useNavBlocker";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -45,10 +46,6 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-    const [isBlocking, setIsBlocking] = useState(false);
 
     const initialSliderValue: number[] = [7, 186];
     const initialPeriods: DatePeriods[] = [{ start: undefined, end: undefined }];
@@ -106,31 +103,11 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         }
     }, [getOfferData?.when, reset]);
 
-    const handleNavBlock = ({ confirm }: NavBlockerControl) => {
-        setConfirmAction(() => confirm);
-        setIsBlocking(true);
-        setIsModalOpen(true);
-    };
-
-    const handleConfirmClick = async () => {
-        if (confirmAction) {
-            await onSubmit();
-            confirmAction();
-            setIsBlocking(false);
-            setIsModalOpen(false);
-        }
-    };
-
-    const handleModalClose = () => {
-        setIsBlocking(false);
-        setIsModalOpen(false);
-        setConfirmAction(null);
-    };
-
-    useNavBlocker({
-        onBlock: handleNavBlock,
-        enabled: isDirty && !isBlocking,
-    });
+    const {
+        isModalOpen,
+        handleConfirmClick,
+        handleModalClose,
+    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
@@ -196,10 +173,11 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 {t("when.Сохранить")}
             </Button>
             <ConfirmActionModal
-                description="Изменения не были сохранены"
+                description={CHANGES_NOT_SAVED}
                 onConfirm={handleConfirmClick}
                 onClose={handleModalClose}
-                confirmTextButton="Сохранить"
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
                 isModalOpen={isModalOpen}
             />
         </form>

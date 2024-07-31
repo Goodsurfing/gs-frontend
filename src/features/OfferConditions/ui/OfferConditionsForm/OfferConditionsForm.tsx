@@ -33,7 +33,9 @@ import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { NOT_SELECTED } from "@/shared/constants/messages";
+import {
+    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, NOT_SELECTED, SAVE,
+} from "@/shared/constants/messages";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferConditionsFormProps {
@@ -221,10 +223,11 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 </Button>
             </div>
             <ConfirmActionModal
-                description="Изменения не были сохранены"
+                description={CHANGES_NOT_SAVED}
                 onConfirm={handleConfirmClick}
                 onClose={handleModalClose}
-                confirmTextButton="Сохранить"
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
                 isModalOpen={isModalOpen}
             />
         </form>

@@ -41,7 +41,9 @@ import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import {
+    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE, THIS_FIELD_IS_REQUIRED,
+} from "@/shared/constants/messages";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -218,10 +220,11 @@ export const WhoNeedsForm = memo(() => {
                     {t("whoNeeds.Сохранить")}
                 </Button>
                 <ConfirmActionModal
-                    description="Изменения не были сохранены"
+                    description={CHANGES_NOT_SAVED}
                     onConfirm={handleConfirmClick}
                     onClose={handleModalClose}
-                    confirmTextButton="Сохранить"
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
                     isModalOpen={isModalOpen}
                 />
             </form>

@@ -53,7 +53,7 @@ export const mockedOffersData: Offer[] = [
             categoryIds: ["category1", "category2"],
         },
         finishingTouches: {
-            questions: "вопросы",
+            questions: ["вопросы"],
             questionnaireUrl: "example.com",
             onlyVerified: true,
             roles: "some rules",
@@ -122,7 +122,7 @@ export const mockedOffersData: Offer[] = [
             categoryIds: ["category1", "category2"],
         },
         finishingTouches: {
-            questions: "вопросы",
+            questions: ["вопросы"],
             questionnaireUrl: "example.com",
             onlyVerified: true,
             roles: "some rules",
@@ -191,7 +191,7 @@ export const mockedOffersData: Offer[] = [
             categoryIds: ["category1", "category2"],
         },
         finishingTouches: {
-            questions: "вопросы",
+            questions: ["вопросы"],
             questionnaireUrl: "example.com",
             onlyVerified: true,
             roles: "some rules",

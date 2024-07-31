@@ -37,6 +37,7 @@ import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -196,10 +197,11 @@ export const InviteDescriptionForm = () => {
                     {t("description.Сохранить")}
                 </Button>
                 <ConfirmActionModal
-                    description="Изменения не были сохранены"
+                    description={CHANGES_NOT_SAVED}
                     onConfirm={handleConfirmClick}
                     onClose={handleModalClose}
-                    confirmTextButton="Сохранить"
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
                     isModalOpen={isModalOpen}
                 />
             </form>

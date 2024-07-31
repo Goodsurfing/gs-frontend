@@ -20,6 +20,7 @@ export const useGetChatMessages = (
         };
 
         eventSource.onerror = (error) => {
+            // eslint-disable-next-line no-console
             console.error("EventSource error:", error);
         };
 

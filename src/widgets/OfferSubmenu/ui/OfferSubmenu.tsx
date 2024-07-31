@@ -9,6 +9,7 @@ interface OfferSubmenuProps {
 }
 
 export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { offerId } = props;
     return (
         <Submenu

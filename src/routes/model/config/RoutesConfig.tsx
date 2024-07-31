@@ -184,7 +184,6 @@ const publicRoutes: RouteType[] = [
             {
                 label: "host-dashboard",
                 element: <HostDashboardPage />,
-                index: true,
                 path: (locale) => getHostDashboardPageUrl(locale),
             },
             {

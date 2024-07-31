@@ -31,8 +31,6 @@ export const useGetChatListData = (token: string | null) => {
 
         fetchChats();
 
-        // const orgEventSource = new EventSource(`${BASE_URL}.well-known/mercure?topic=${encodeURIComponent(`${BASE_URL}api/personal/chats/with-organizations`)}&authorization=${token}`);
-        // const volEventSource = new EventSource(`${BASE_URL}.well-known/mercure?topic=${encodeURIComponent(`${BASE_URL}api/personal/chats/with-volunteers`)}&authorization=${token}`);
         const orgEventSource = new EventSource(`${BASE_URL}api/personal/chats/with-organizations`, { withCredentials: true });
         const volEventSource = new EventSource(`${BASE_URL}api/personal/chats/with-volunteers`, { withCredentials: true });
 

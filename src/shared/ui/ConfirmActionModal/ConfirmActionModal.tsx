@@ -16,21 +16,24 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
     const {
         description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false,
     } = props;
+
+    if (!isModalOpen) {
+        return null;
+    }
+
     return (
-        isModalOpen && (
-            <Modal onClose={onClose} isShowCloseIcon={false}>
-                <div className={styles.wrapper}>
-                    <span className={styles.description}>{description}</span>
-                    <div className={styles.buttons}>
-                        <Button className={styles.blue} color="BLUE" size="MEDIUM" variant="FILL" onClick={onConfirm}>
-                            {confirmTextButton}
-                        </Button>
-                        <Button className={styles.gray} color="GRAY" size="MEDIUM" variant="OUTLINE" onClick={onClose}>
-                            {cancelTextButton}
-                        </Button>
-                    </div>
+        <Modal onClose={onClose} isShowCloseIcon={false}>
+            <div className={styles.wrapper}>
+                <span className={styles.description}>{description}</span>
+                <div className={styles.buttons}>
+                    <Button className={styles.blue} color="BLUE" size="MEDIUM" variant="FILL" onClick={onConfirm}>
+                        {confirmTextButton}
+                    </Button>
+                    <Button className={styles.gray} color="GRAY" size="MEDIUM" variant="OUTLINE" onClick={onClose}>
+                        {cancelTextButton}
+                    </Button>
                 </div>
-            </Modal>
-        )
+            </div>
+        </Modal>
     );
 };

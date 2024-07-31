@@ -24,6 +24,7 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -136,10 +137,11 @@ export const OfferWhatToDoForm = memo(
                     </Button>
                 </div>
                 <ConfirmActionModal
-                    description="Изменения не были сохранены"
+                    description={CHANGES_NOT_SAVED}
                     onConfirm={handleConfirmClick}
                     onClose={handleModalClose}
-                    confirmTextButton="Сохранить"
+                    confirmTextButton={SAVE}
+                    cancelTextButton={EXIT_WITHOUT_SAVE}
                     isModalOpen={isModalOpen}
                 />
             </form>

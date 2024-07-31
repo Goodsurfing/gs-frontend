@@ -27,6 +27,7 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface AddressFormProps {
     className?: string;
@@ -138,10 +139,11 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 {t("where.Сохранить")}
             </Button>
             <ConfirmActionModal
-                description="Изменения не были сохранены"
+                description={CHANGES_NOT_SAVED}
                 onConfirm={handleConfirmClick}
                 onClose={handleModalClose}
-                confirmTextButton="Сохранить"
+                confirmTextButton={SAVE}
+                cancelTextButton={EXIT_WITHOUT_SAVE}
                 isModalOpen={isModalOpen}
             />
         </form>

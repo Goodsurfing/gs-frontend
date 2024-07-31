@@ -21,6 +21,7 @@ import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ChatProps {
     id?: string;
@@ -121,11 +122,12 @@ export const Chat: FC<ChatProps> = (props) => {
                 return dataApplication;
             }).catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
             if (result) {
+                // eslint-disable-next-line no-console
                 console.log(result);
             }
         }
