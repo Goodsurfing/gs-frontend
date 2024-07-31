@@ -41,6 +41,7 @@ import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -114,7 +115,7 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     control={control}
                     name="gender"
-                    rules={{ required: "Это поле является обязательным" }}
+                    rules={{ required: THIS_FIELD_IS_REQUIRED }}
                     render={({ field }) => (
                         <>
                             <GenderComponent
@@ -130,7 +131,7 @@ export const WhoNeedsForm = memo(() => {
                 <Controller
                     control={control}
                     name="age"
-                    rules={{ required: "Это поле является обязательным" }}
+                    rules={{ required: THIS_FIELD_IS_REQUIRED }}
                     render={({ field }) => (
                         <>
                             <AgeComponent
@@ -157,8 +158,8 @@ export const WhoNeedsForm = memo(() => {
                     name="volunteerPlaces"
                     control={control}
                     rules={{
-                        required: "Это поле является обязательным",
-                        validate: (value) => value !== 0 || "Это поле является обязательным",
+                        required: THIS_FIELD_IS_REQUIRED,
+                        validate: (value) => value !== 0 || THIS_FIELD_IS_REQUIRED,
                     }}
                     render={({ field }) => (
                         <>

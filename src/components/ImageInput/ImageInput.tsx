@@ -9,6 +9,7 @@ import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
@@ -125,9 +126,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 )}
             >
                 {error && (
-                    <span className={styles.error}>
-                        Неверный формат файла
-                    </span>
+                    <ErrorText text="Неверный формат файла или ширина фото меньше 1280 пикселей" />
                 )}
                 {description}
             </div>

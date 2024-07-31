@@ -15,13 +15,13 @@ interface Props {
 
 const TimeTypeOptions: TimeType[] = ["week", "day", "month"];
 
-const DayOffOptions: number[] = [1, 2, 3, 4, 5, 6];
+const DayOffOptions: number[] = [0, 1, 2, 3, 4, 5, 6];
 
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     const { t } = useTranslation("offer");
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputString = e.target.value;
-        if (inputString.length <= 4) {
+        const inputString = +e.target.value;
+        if (inputString >= 1 && inputString <= 100) {
             onChange({ ...value, hours: +e.target.value });
         }
     };

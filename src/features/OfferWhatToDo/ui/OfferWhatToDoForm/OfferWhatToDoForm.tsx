@@ -23,6 +23,7 @@ import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -63,7 +64,7 @@ export const OfferWhatToDoForm = memo(
                 })
                 .catch((error: ErrorType) => {
                     setToast({
-                        text: error.data.detail,
+                        text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });

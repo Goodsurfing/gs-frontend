@@ -32,6 +32,9 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { NOT_SELECTED } from "@/shared/constants/messages";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -50,7 +53,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
 
     const {
         control, handleSubmit,
-        reset, formState: { isDirty },
+        reset, formState: { isDirty, errors },
     } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
@@ -69,7 +72,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             })
             .catch((error: ErrorType) => {
                 setToast({
-                    text: error.data.detail,
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
@@ -102,31 +105,70 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             <Controller
                 name="housing"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.housing.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsHousing
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsHousing
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.housing && (
+                            <ErrorText text={errors.housing.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller
                 name="nutrition"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.nutrition.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsNutrition
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsNutrition
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.nutrition && (
+                            <ErrorText text={errors.nutrition.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller
                 name="travel"
                 control={control}
+                rules={{
+                    validate: (value) => {
+                        if (value.switchState && value.travel.length === 0) {
+                            return NOT_SELECTED;
+                        }
+                        return true;
+                    },
+                }}
                 render={({ field }) => (
-                    <ConditionsTravel
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
+                    <div>
+                        <ConditionsTravel
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                        {errors.travel && (
+                            <ErrorText text={errors.travel.message?.toString()} />
+                        )}
+                    </div>
                 )}
             />
             <Controller

@@ -17,7 +17,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Input from "@/shared/ui/Input/Input";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
@@ -30,6 +29,10 @@ import { OfferStatus } from "@/entities/Offer";
 import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -42,7 +45,7 @@ const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
     welcomeMessage: "",
     rules: "",
     questionnaireUrl: "",
-    questions: "",
+    questions: [],
 };
 
 export const OfferFinishingTouchesForm = memo(
@@ -56,7 +59,7 @@ export const OfferFinishingTouchesForm = memo(
 
         const {
             handleSubmit, control, reset,
-            formState: { isDirty },
+            formState: { isDirty, errors },
         } = useForm<OfferFinishingTouchesFormFields>({
             mode: "onChange",
             defaultValues,
@@ -82,9 +85,9 @@ export const OfferFinishingTouchesForm = memo(
                         type: HintType.Success,
                     });
                 })
-                .catch(() => {
+                .catch((error: ErrorType) => {
                     setToast({
-                        text: "Произошла ошибка",
+                        text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });
@@ -202,11 +205,24 @@ export const OfferFinishingTouchesForm = memo(
                         <Controller
                             name="questionnaireUrl"
                             control={control}
+                            rules={{
+                                pattern: {
+                                    value: /^(https?:\/\/)?([\w\d\-]+\.)+[\w\d]{2,}(\/.+)?$/,
+                                    message: "Введите корректную ссылку",
+                                },
+                            }}
                             render={({ field }) => (
-                                <OfferQuestionnaire
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                />
+                                <div>
+                                    <OfferQuestionnaire
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                    {errors.questionnaireUrl && (
+                                        <ErrorText
+                                            text={errors.questionnaireUrl.message?.toString()}
+                                        />
+                                    )}
+                                </div>
                             )}
                         />
                     </div>
@@ -214,11 +230,9 @@ export const OfferFinishingTouchesForm = memo(
                         name="questions"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                style={{ height: 44 }}
-                                description={t("finishingTouches.Добавить вопрос")}
-                                onChange={field.onChange}
+                            <OfferQuestions
                                 value={field.value}
+                                onChange={field.onChange}
                             />
                         )}
                     />
