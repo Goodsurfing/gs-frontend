@@ -30,6 +30,7 @@ const HostOffersPage = () => {
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
+    const isModalOpen = (selectedOffer !== null && selectedBtnOffer !== null);
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
@@ -106,13 +107,12 @@ const HostOffersPage = () => {
                 </div>
             )}
             <AddOffer />
-            {(selectedOffer && selectedBtnOffer) && (
-                <ConfirmActionModal
-                    description="Вы уверены что хотите изменить вакансию?"
-                    onConfirm={() => handleConfirmClick()}
-                    onClose={() => handleModalClose()}
-                />
-            )}
+            <ConfirmActionModal
+                isModalOpen={isModalOpen}
+                description="Вы уверены что хотите изменить вакансию?"
+                onConfirm={() => handleConfirmClick()}
+                onClose={() => handleModalClose()}
+            />
         </div>
     );
 };

@@ -1,4 +1,6 @@
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
@@ -30,11 +32,8 @@ import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
-import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -74,6 +73,38 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
     const watchIsApplicableAtTheEnd = useWatch({ name: "timeSettings.isApplicableAtTheEnd", control });
     const watchPeriods = useWatch({ name: "periods", control });
+    const watch = useWatch({ control });
+
+    const saveFormData = useCallback((data: OfferWhenFields) => {
+        sessionStorage.setItem(`offerWhenForm-${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
+    }, [id]);
+
+    const loadFormData = useCallback((): OfferWhenFields | null => {
+        const savedData = sessionStorage.getItem(`offerWhenForm-${id}`);
+        return savedData ? offerWhenFormAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.when) {
+            reset(offerWhenFormAdapter(getOfferData?.when));
+        } else {
+            reset();
+        }
+    }, [getOfferData?.when, loadFormData, reset]);
+
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferWhenFields);
+        }
+    }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
@@ -85,6 +116,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`offerWhenForm-${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
@@ -95,19 +127,13 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         onComplete?.();
     });
 
-    useEffect(() => {
-        if (getOfferData?.when) {
-            reset(offerWhenFormAdapter(getOfferData?.when));
-        } else {
-            reset();
-        }
-    }, [getOfferData?.when, reset]);
-
-    const {
-        isModalOpen,
-        handleConfirmClick,
-        handleModalClose,
-    } = useConfirmNavigation(onSubmit, isDirty);
+    // useEffect(() => {
+    //     if (getOfferData?.when) {
+    //         reset(offerWhenFormAdapter(getOfferData?.when));
+    //     } else {
+    //         reset();
+    //     }
+    // }, [getOfferData?.when, reset]);
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
@@ -172,14 +198,6 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             >
                 {t("when.Сохранить")}
             </Button>
-            <ConfirmActionModal
-                description={CHANGES_NOT_SAVED}
-                onConfirm={handleConfirmClick}
-                onClose={handleModalClose}
-                confirmTextButton={SAVE}
-                cancelTextButton={EXIT_WITHOUT_SAVE}
-                isModalOpen={isModalOpen}
-            />
         </form>
     );
 });

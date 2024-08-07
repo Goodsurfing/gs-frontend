@@ -70,8 +70,12 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
         isApplicableAtTheEnd,
     };
 
+    const parsedDate = applicationEndDate
+        ? new Date(applicationEndDate.split(".").reverse().join("-"))
+        : new Date();
+
     const endSettings: EndSettings = {
-        applicationEndDate: new Date(applicationEndDate || ""),
+        applicationEndDate: parsedDate,
         isWithoutApplicationDate: !applicationEndDate,
     };
 

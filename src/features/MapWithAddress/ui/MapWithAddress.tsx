@@ -63,7 +63,7 @@ const MapWithAddress = ({
             field.onChange({
                 ...field.value,
                 geoObject,
-                address: `${geoObject?.description} ${geoObject?.name}`,
+                address: `${geoObject?.description}, ${geoObject?.name}`,
             });
         },
         [field],
