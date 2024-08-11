@@ -1,7 +1,7 @@
 import {
     memo, useCallback, useEffect, useState,
 } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -23,11 +23,9 @@ import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
+import { OFFER_WHERE_FORM } from "@/shared/constants/localstorage";
 
 interface AddressFormProps {
     className?: string;
@@ -36,9 +34,10 @@ interface AddressFormProps {
 export const AddressForm = memo(({ className }: AddressFormProps) => {
     const {
         handleSubmit,
-        formState: { errors, isDirty },
+        formState: { errors },
         control,
         reset,
+        watch,
     } = useForm<AddressFormFormFields>({
         mode: "onChange",
         defaultValues: {
@@ -54,6 +53,8 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
+
+    // const watch = useWatch({ control });
 
     const fetchGeoObject = useCallback(async () => {
         trigger(id || "").unwrap();
@@ -81,6 +82,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     text: "Адрес успешно изменён",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_WHERE_FORM}${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
@@ -94,15 +96,37 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         fetchGeoObject();
     }, [fetchGeoObject]);
 
+    useEffect(() => {
+        const savedData = sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`);
+        if (savedData) {
+            reset(JSON.parse(savedData));
+        }
+    }, [id, reset]);
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            const formData = JSON.stringify(watch());
+            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [id, watch]);
+
+    useEffect(() => {
+        const subscription = watch((value) => {
+            const formData = JSON.stringify(value);
+            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [id, watch]);
+
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;
     };
-
-    const {
-        isModalOpen,
-        handleConfirmClick,
-        handleModalClose,
-    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetData) {
         return <Preloader className={styles.loading} />;
@@ -138,14 +162,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             >
                 {t("where.Сохранить")}
             </Button>
-            <ConfirmActionModal
-                description={CHANGES_NOT_SAVED}
-                onConfirm={handleConfirmClick}
-                onClose={handleModalClose}
-                confirmTextButton={SAVE}
-                cancelTextButton={EXIT_WITHOUT_SAVE}
-                isModalOpen={isModalOpen}
-            />
         </form>
     );
 });
