@@ -52,8 +52,8 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
         offerWhenPeriods = periods.map((period) => {
             if (period.start && period.ending) {
                 return ({
-                    start: new Date(period.start),
-                    end: new Date(period.ending),
+                    start: new Date(period.start.split(".").reverse().join("-")),
+                    end: new Date(period.ending.split(".").reverse().join("-")),
                 });
             }
             return ({
