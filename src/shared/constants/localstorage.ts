@@ -6,3 +6,4 @@ export const LANGUAGE_LOCALSTORAGE_KEY = "i18nextLng";
 export const OFFER_WHERE_FORM = "offerWhereForm-";
 export const OFFER_WHEN_FORM = "offerWhenForm-";
 export const OFFER_WHO_NEEDS_FORM = "offerWhoNeedsForm-";
+export const OFFER_DESCRIPTION_FORM = "offerDescriptionForm-";

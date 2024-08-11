@@ -5,6 +5,7 @@ import { BASE_URL } from "@/shared/constants/api";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
+    isSession: boolean = false,
 ): OfferDescription => {
     const result: OfferDescription = {
         title: data.title,
@@ -15,6 +16,10 @@ export const inviteDescriptionApiAdapter = (
 
     if (data.coverImage.uuid) {
         result.image = data.coverImage.uuid;
+    }
+
+    if (isSession) {
+        result.image = { "@id": data.coverImage.uuid ?? "", id: data.coverImage.uuid ?? "", contentUrl: data.coverImage.image.src ?? "" };
     }
 
     return result;

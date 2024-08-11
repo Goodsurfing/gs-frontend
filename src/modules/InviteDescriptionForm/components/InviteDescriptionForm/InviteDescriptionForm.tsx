@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
     FormProvider,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -33,11 +34,9 @@ import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
+import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -70,6 +69,7 @@ export const InviteDescriptionForm = () => {
     const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
+    const watch = useWatch({ control });
 
     const handleCoverImageLoading = (value: boolean) => {
         setCoverImageLoading(value);
@@ -86,6 +86,37 @@ export const InviteDescriptionForm = () => {
     const handleGallerySuccess = (value: boolean) => {
         setGallerySuccess(value);
     };
+
+    const saveFormData = useCallback((data: OfferDescriptionField) => {
+        sessionStorage.setItem(`${OFFER_DESCRIPTION_FORM}${id}`, JSON.stringify(inviteDescriptionApiAdapter(data, true)));
+    }, [id]);
+
+    const loadFormData = useCallback((): Partial<OfferDescriptionField> | null => {
+        const savedData = sessionStorage.getItem(`${OFFER_DESCRIPTION_FORM}${id}`);
+        return savedData ? inviteDescriptionAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.description) {
+            reset(inviteDescriptionAdapter(getOfferData?.description));
+        } else {
+            reset();
+        }
+    }, [getOfferData?.description, loadFormData, reset]);
+
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferDescriptionField);
+        }
+    }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
@@ -106,17 +137,11 @@ export const InviteDescriptionForm = () => {
             });
     });
 
-    const {
-        isModalOpen,
-        handleConfirmClick,
-        handleModalClose,
-    } = useConfirmNavigation(onSubmit, isDirty);
-
-    useEffect(() => {
-        if (getOfferData?.description) {
-            reset(inviteDescriptionAdapter(getOfferData.description));
-        }
-    }, [getOfferData?.description, reset]);
+    // useEffect(() => {
+    //     if (getOfferData?.description) {
+    //         reset(inviteDescriptionAdapter(getOfferData.description));
+    //     }
+    // }, [getOfferData?.description, reset]);
 
     useEffect(() => {
         if (isGalleryError) {
@@ -196,14 +221,6 @@ export const InviteDescriptionForm = () => {
                 >
                     {t("description.Сохранить")}
                 </Button>
-                <ConfirmActionModal
-                    description={CHANGES_NOT_SAVED}
-                    onConfirm={handleConfirmClick}
-                    onClose={handleModalClose}
-                    confirmTextButton={SAVE}
-                    cancelTextButton={EXIT_WITHOUT_SAVE}
-                    isModalOpen={isModalOpen}
-                />
             </form>
         </FormProvider>
     );
