@@ -1,7 +1,7 @@
 import {
     memo, useCallback, useEffect, useState,
 } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -53,8 +53,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
-
-    // const watch = useWatch({ control });
 
     const fetchGeoObject = useCallback(async () => {
         trigger(id || "").unwrap();

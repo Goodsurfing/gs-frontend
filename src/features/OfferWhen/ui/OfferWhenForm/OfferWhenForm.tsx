@@ -34,6 +34,7 @@ import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -76,11 +77,11 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const watch = useWatch({ control });
 
     const saveFormData = useCallback((data: OfferWhenFields) => {
-        sessionStorage.setItem(`offerWhenForm-${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
+        sessionStorage.setItem(`${OFFER_WHEN_FORM}${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
     }, [id]);
 
     const loadFormData = useCallback((): OfferWhenFields | null => {
-        const savedData = sessionStorage.getItem(`offerWhenForm-${id}`);
+        const savedData = sessionStorage.getItem(`${OFFER_WHEN_FORM}${id}`);
         return savedData ? offerWhenFormAdapter(JSON.parse(savedData)) : null;
     }, [id]);
 
@@ -116,7 +117,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
-                sessionStorage.removeItem(`offerWhenForm-${id}`);
+                sessionStorage.removeItem(`${OFFER_WHEN_FORM}${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
@@ -126,14 +127,6 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             });
         onComplete?.();
     });
-
-    // useEffect(() => {
-    //     if (getOfferData?.when) {
-    //         reset(offerWhenFormAdapter(getOfferData?.when));
-    //     } else {
-    //         reset();
-    //     }
-    // }, [getOfferData?.when, reset]);
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
