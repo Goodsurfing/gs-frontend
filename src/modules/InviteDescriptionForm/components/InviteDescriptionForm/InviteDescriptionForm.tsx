@@ -128,6 +128,7 @@ export const InviteDescriptionForm = () => {
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
