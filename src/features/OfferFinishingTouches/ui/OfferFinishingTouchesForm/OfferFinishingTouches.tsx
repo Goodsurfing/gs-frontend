@@ -1,7 +1,11 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import cn from "classnames";
-import { memo, useEffect, useState } from "react";
-import { Controller, DefaultValues, useForm } from "react-hook-form";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
+import {
+    Controller, DefaultValues, useForm, useWatch,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
@@ -12,10 +16,8 @@ import {
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -35,7 +37,7 @@ import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/Offe
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
 import styles from "./OfferFinishingTouches.module.scss";
-import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
+import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -53,13 +55,6 @@ const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
 
 export const OfferFinishingTouchesForm = memo(
     (props: OfferFinishingTouchesFormProps) => {
-        const { className, onSuccess } = props;
-        const { id } = useParams();
-        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
-        const [toast, setToast] = useState<ToastAlert>();
-        const { t } = useTranslation("offer");
-
         const {
             handleSubmit,
             control,
@@ -69,6 +64,45 @@ export const OfferFinishingTouchesForm = memo(
             mode: "onChange",
             defaultValues,
         });
+
+        const { className, onSuccess } = props;
+        const { id } = useParams();
+        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
+        const [toast, setToast] = useState<ToastAlert>();
+        const { t } = useTranslation("offer");
+        const watch = useWatch({ control });
+
+        const saveFormData = useCallback((data: OfferFinishingTouchesFormFields) => {
+            sessionStorage.setItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`, JSON.stringify(offerFinishingTouchesApiAdapter(data)));
+        }, [id]);
+
+        const loadFormData = useCallback((): OfferFinishingTouchesFormFields | null => {
+            const savedData = sessionStorage.getItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
+            return savedData ? offerFinishingTouchesAdapter(JSON.parse(savedData)) : null;
+        }, [id]);
+
+        const initializeForm = useCallback(() => {
+            const savedData = loadFormData();
+            if (savedData) {
+                reset(savedData);
+            } else if (getOfferData?.finishingTouches) {
+                reset(offerFinishingTouchesAdapter(getOfferData?.finishingTouches));
+            } else {
+                reset();
+            }
+        }, [getOfferData?.finishingTouches, loadFormData, reset]);
+
+        useEffect(() => {
+            initializeForm();
+        }, [initializeForm]);
+
+        useEffect(() => {
+            if (isDirty) {
+                const currentData = watch;
+                saveFormData(currentData as OfferFinishingTouchesFormFields);
+            }
+        }, [isDirty, saveFormData, watch]);
 
         const updateFinishingTouchesHandle = (
             data: OfferFinishingTouchesFormFields,
@@ -89,6 +123,7 @@ export const OfferFinishingTouchesForm = memo(
                         text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
+                    sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -107,18 +142,13 @@ export const OfferFinishingTouchesForm = memo(
             updateFinishingTouchesHandle(data, "empty");
         });
 
-        const {
-            isModalOpen, handleConfirmClick,
-            handleModalClose,
-        } = useConfirmNavigation(onDraftHandle, isDirty);
-
-        useEffect(() => {
-            if (getOfferData?.finishingTouches) {
-                reset(
-                    offerFinishingTouchesAdapter(getOfferData.finishingTouches),
-                );
-            }
-        }, [getOfferData?.finishingTouches, reset]);
+        // useEffect(() => {
+        //     if (getOfferData?.finishingTouches) {
+        //         reset(
+        //             offerFinishingTouchesAdapter(getOfferData.finishingTouches),
+        //         );
+        //     }
+        // }, [getOfferData?.finishingTouches, reset]);
 
         if (isOfferDataLoading) {
             return (
@@ -271,14 +301,6 @@ export const OfferFinishingTouchesForm = memo(
                         {t("finishingTouches.Сохранить в черновики")}
                     </Button>
                 </div>
-                <ConfirmActionModal
-                    description={CHANGES_NOT_SAVED}
-                    onConfirm={handleConfirmClick}
-                    onClose={handleModalClose}
-                    confirmTextButton={SAVE}
-                    cancelTextButton={EXIT_WITHOUT_SAVE}
-                    isModalOpen={isModalOpen}
-                />
             </form>
         );
     },

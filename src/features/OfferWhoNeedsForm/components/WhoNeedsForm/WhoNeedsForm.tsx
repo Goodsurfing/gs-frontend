@@ -1,9 +1,12 @@
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
     FormProvider,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -35,15 +38,12 @@ import { AgeComponent } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
-import styles from "./WhoNeedsForm.module.scss";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import {
-    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE, THIS_FIELD_IS_REQUIRED,
-} from "@/shared/constants/messages";
+import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import styles from "./WhoNeedsForm.module.scss";
+import { OFFER_WHO_NEEDS_FORM } from "@/shared/constants/localstorage";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -71,15 +71,47 @@ export const WhoNeedsForm = memo(() => {
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
     const {
-        handleSubmit, control, reset, formState: { isDirty, errors },
+        handleSubmit, control, reset, formState: { errors, isDirty },
     } = form;
     const [toast, setToast] = useState<ToastAlert>();
+    const watch = useWatch({ control });
+
+    // useEffect(() => {
+    //     if (getOfferData?.howNeeds && !Array.isArray(getOfferData.howNeeds)) {
+    //         reset(offerWhoNeedsApiAdapter(getOfferData.howNeeds));
+    //     }
+    // }, [getOfferData, reset]);
+
+    const saveFormData = useCallback((data: OfferWhoNeedsFields) => {
+        sessionStorage.setItem(`${OFFER_WHO_NEEDS_FORM}${id}`, JSON.stringify(offerWhoNeedsAdapter(data)));
+    }, [id]);
+
+    const loadFormData = useCallback((): OfferWhoNeedsFields | null => {
+        const savedData = sessionStorage.getItem(`${OFFER_WHO_NEEDS_FORM}${id}`);
+        return savedData ? offerWhoNeedsApiAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.howNeeds) {
+            reset(offerWhoNeedsApiAdapter(getOfferData?.howNeeds));
+        } else {
+            reset();
+        }
+    }, [getOfferData?.howNeeds, loadFormData, reset]);
 
     useEffect(() => {
-        if (getOfferData?.howNeeds && !Array.isArray(getOfferData.howNeeds)) {
-            reset(offerWhoNeedsApiAdapter(getOfferData.howNeeds));
+        initializeForm();
+    }, [initializeForm]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferWhoNeedsFields);
         }
-    }, [getOfferData, reset]);
+    }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhoNeedsAdapter(data);
@@ -91,6 +123,7 @@ export const WhoNeedsForm = memo(() => {
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_WHO_NEEDS_FORM}${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
@@ -99,12 +132,6 @@ export const WhoNeedsForm = memo(() => {
                 });
             });
     });
-
-    const {
-        isModalOpen,
-        handleConfirmClick,
-        handleModalClose,
-    } = useConfirmNavigation(onSubmit, isDirty);
 
     if (isLoadingGetWhoNeedsData) {
         return <Preloader className={styles.loading} />;
@@ -219,14 +246,6 @@ export const WhoNeedsForm = memo(() => {
                 >
                     {t("whoNeeds.Сохранить")}
                 </Button>
-                <ConfirmActionModal
-                    description={CHANGES_NOT_SAVED}
-                    onConfirm={handleConfirmClick}
-                    onClose={handleModalClose}
-                    confirmTextButton={SAVE}
-                    cancelTextButton={EXIT_WITHOUT_SAVE}
-                    isModalOpen={isModalOpen}
-                />
             </form>
         </FormProvider>
     );

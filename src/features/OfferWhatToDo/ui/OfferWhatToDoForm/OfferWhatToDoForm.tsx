@@ -1,8 +1,11 @@
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -18,13 +21,11 @@ import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/o
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./OfferWhatToDoForm.module.scss";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, SAVE } from "@/shared/constants/messages";
+import styles from "./OfferWhatToDoForm.module.scss";
+import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -49,8 +50,40 @@ export const OfferWhatToDoForm = memo(
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
         const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
+        const watch = useWatch({ control });
 
         const { t } = useTranslation("offer");
+
+        const saveFormData = useCallback((data: OfferWhatToDoFormFields) => {
+            sessionStorage.setItem(`${OFFER_WHAT_TO_DO_FORM}${id}`, JSON.stringify(offerWhatToDoApiAdapter(data)));
+        }, [id]);
+
+        const loadFormData = useCallback((): OfferWhatToDoFormFields | null => {
+            const savedData = sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
+            return savedData ? offerWhatToDoAdapter(JSON.parse(savedData)) : null;
+        }, [id]);
+
+        const initializeForm = useCallback(() => {
+            const savedData = loadFormData();
+            if (savedData) {
+                reset(savedData);
+            } else if (getOfferData?.whatToDo) {
+                reset(offerWhatToDoAdapter(getOfferData?.whatToDo));
+            } else {
+                reset();
+            }
+        }, [getOfferData?.whatToDo, loadFormData, reset]);
+
+        useEffect(() => {
+            initializeForm();
+        }, [initializeForm]);
+
+        useEffect(() => {
+            if (isDirty) {
+                const currentData = watch;
+                saveFormData(currentData as OfferWhatToDoFormFields);
+            }
+        }, [isDirty, saveFormData, watch]);
 
         const onSubmit = handleSubmit(async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
@@ -62,6 +95,7 @@ export const OfferWhatToDoForm = memo(
                         text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
+                    sessionStorage.removeItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -72,17 +106,11 @@ export const OfferWhatToDoForm = memo(
             onSuccess?.();
         });
 
-        const {
-            isModalOpen,
-            handleConfirmClick,
-            handleModalClose,
-        } = useConfirmNavigation(onSubmit, isDirty);
-
-        useEffect(() => {
-            if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
-                reset(offerWhatToDoAdapter(getOfferData.whatToDo));
-            }
-        }, [getOfferData?.whatToDo, reset]);
+        // useEffect(() => {
+        //     if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
+        //         reset(offerWhatToDoAdapter(getOfferData.whatToDo));
+        //     }
+        // }, [getOfferData?.whatToDo, reset]);
 
         if (isOfferDataLoading) {
             return (
@@ -136,14 +164,6 @@ export const OfferWhatToDoForm = memo(
                         {t("whatToDo.Сохранить")}
                     </Button>
                 </div>
-                <ConfirmActionModal
-                    description={CHANGES_NOT_SAVED}
-                    onConfirm={handleConfirmClick}
-                    onClose={handleModalClose}
-                    confirmTextButton={SAVE}
-                    cancelTextButton={EXIT_WITHOUT_SAVE}
-                    isModalOpen={isModalOpen}
-                />
             </form>
         );
     },

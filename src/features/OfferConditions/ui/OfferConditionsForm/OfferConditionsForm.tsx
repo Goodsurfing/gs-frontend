@@ -1,9 +1,12 @@
 import cn from "classnames";
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
     useForm,
+    useWatch,
 } from "react-hook-form";
 
 import { useParams } from "react-router-dom";
@@ -28,15 +31,14 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { useConfirmNavigation } from "@/shared/hooks/useConfirmNavigation";
 import { ErrorType } from "@/types/api/error";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import {
-    CHANGES_NOT_SAVED, EXIT_WITHOUT_SAVE, NOT_SELECTED, SAVE,
+    NOT_SELECTED,
 } from "@/shared/constants/messages";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -46,13 +48,6 @@ interface OfferConditionsFormProps {
 const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormFields;
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
-    const { onSuccess, className } = props;
-    const { id } = useParams();
-    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
-    const [toast, setToast] = useState<ToastAlert>();
-    const { t } = useTranslation("offer");
-
     const {
         control, handleSubmit,
         reset, formState: { isDirty, errors },
@@ -60,6 +55,44 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         mode: "onChange",
         defaultValues,
     });
+    const { onSuccess, className } = props;
+    const { id } = useParams();
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
+    const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("offer");
+    const watch = useWatch({ control });
+
+    const saveFormData = useCallback((data: OfferConditionsFormFields) => {
+        sessionStorage.setItem(`${OFFER_CONDITIONS_FORM}${id}`, JSON.stringify(offerConditionsApiAdapter(data)));
+    }, [id]);
+
+    const loadFormData = useCallback((): OfferConditionsFormFields | null => {
+        const savedData = sessionStorage.getItem(`${OFFER_CONDITIONS_FORM}${id}`);
+        return savedData ? offerConditionsAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.conditions) {
+            reset(offerConditionsAdapter(getOfferData?.conditions));
+        } else {
+            reset();
+        }
+    }, [getOfferData?.conditions, loadFormData, reset]);
+
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferConditionsFormFields);
+        }
+    }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit((data) => {
         const preparedData = offerConditionsApiAdapter(data);
@@ -71,6 +104,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_CONDITIONS_FORM}${id}`);
             })
             .catch((error: ErrorType) => {
                 setToast({
@@ -81,17 +115,11 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         onSuccess?.();
     });
 
-    useEffect(() => {
-        if (getOfferData?.conditions) {
-            reset(offerConditionsAdapter(getOfferData?.conditions));
-        }
-    }, [getOfferData?.conditions, reset]);
-
-    const {
-        isModalOpen,
-        handleConfirmClick,
-        handleModalClose,
-    } = useConfirmNavigation(onSubmit, isDirty);
+    // useEffect(() => {
+    //     if (getOfferData?.conditions) {
+    //         reset(offerConditionsAdapter(getOfferData?.conditions));
+    //     }
+    // }, [getOfferData?.conditions, reset]);
 
     if (isOfferDataLoading) {
         return (
@@ -222,14 +250,6 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     Сохранить
                 </Button>
             </div>
-            <ConfirmActionModal
-                description={CHANGES_NOT_SAVED}
-                onConfirm={handleConfirmClick}
-                onClose={handleModalClose}
-                confirmTextButton={SAVE}
-                cancelTextButton={EXIT_WITHOUT_SAVE}
-                isModalOpen={isModalOpen}
-            />
         </form>
     );
 });
