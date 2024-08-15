@@ -37,7 +37,7 @@ export interface OfferGalleryItem {
     };
 }
 
-interface OfferOrganization {
+export interface OfferOrganization {
     id: string;
     name: string;
     type: string;

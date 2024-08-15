@@ -1,20 +1,26 @@
-import { Button } from "@mui/material";
 import React, { FC, memo } from "react";
 import cn from "classnames";
 
 import organizationDefaultImage from "@/shared/assets/images/offers/organizationSmallMOCK.png";
 
 import styles from "./OfferOrganizationCard.module.scss";
+import { OfferOrganization } from "@/entities/Offer";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferOrganizationCardProps {
+    organization: OfferOrganization;
     className?: string;
 }
 
 export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
     (props: OfferOrganizationCardProps) => {
         const {
+            organization,
             className,
         } = props;
+        const { locale } = useLocale();
         return (
             <div className={cn(className, styles.wrapper)}>
                 <h3 className={styles.title}>Организация</h3>
@@ -26,13 +32,13 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                                 src={organizationDefaultImage}
                                 alt="organization"
                             />
-                            <span className={styles.name}>Название организации</span>
+                            <span className={styles.name}>{organization.name}</span>
                         </div>
-                        <p className={styles.description}>Описание</p>
+                        <p className={styles.description}>{organization.type}</p>
                     </div>
-                    <Button className={styles.button} variant="outlined">
+                    <ButtonLink className={styles.button} type="outlined" path={getHostPersonalPageUrl(locale, organization.id)}>
                         Подробнее
-                    </Button>
+                    </ButtonLink>
                 </div>
             </div>
         );
