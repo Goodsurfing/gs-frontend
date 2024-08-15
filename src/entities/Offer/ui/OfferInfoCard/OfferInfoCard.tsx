@@ -64,8 +64,10 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferAddressCard address={address} className={styles.container} />
-            <OfferOrganizationCard
+            {offer.where && (
+                <OfferAddressCard address={offer.where} className={styles.container} />
+            )}
+            {/* <OfferOrganizationCard
                 className={styles.container}
             />
             {offer.galleryItems && (
@@ -103,7 +105,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferShareCard />
+            <OfferShareCard /> */}
         </div>
     );
 });

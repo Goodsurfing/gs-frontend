@@ -5,7 +5,6 @@ import { PersonalCard } from "@/entities/PersonalCard";
 import { OfferPersonalCardCategory } from "../OfferPersonalCardCategory/OfferPersonalCardCategory";
 import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
 import { useGetOfferByIdQuery } from "@/entities/Offer";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OfferPersonalCardProps {
@@ -15,13 +14,7 @@ interface OfferPersonalCardProps {
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
     const { onImagesClick, id } = props;
-    const { data, isLoading } = useGetOfferByIdQuery(id);
-
-    if (isLoading) {
-        return (
-            <Preloader />
-        );
-    }
+    const { data } = useGetOfferByIdQuery(id);
 
     return (
         <PersonalCard

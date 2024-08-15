@@ -7,9 +7,9 @@
     },
     "where": {
         "Где вы находитесь или будете принимать волонтеров": "Where are you located or will be accepting volunteers",
-    "Сохранить": "Save",
-    "Точек на карте не найдено": "No points found on the map",
-    "Введите адрес": "Enter an address"
+        "Сохранить": "Save",
+        "Точек на карте не найдено": "No points found on the map",
+        "Введите адрес": "Enter an address"
     },
     "when": {
         "Укажите на какой срок или сроки вам нужен волонтер": "Specify the term or terms you need a volunteer for",
@@ -168,5 +168,16 @@
         "Добавить вопрос": "Add a question",
         "Опубликовать": "Publish",
         "Сохранить в черновики": "Save as draft"
+    },
+    "personalOffer": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "notSpecified": "Not specified",
+        "Когда": "When",
+        "Минимум дней": "Minimum days",
+        "Максимум дней": "Maximum days",
+        "Прием заявок до": "Application deadline",
+        "Кто нужен": "Who is needed"
     }
 }

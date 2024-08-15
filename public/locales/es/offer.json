@@ -168,5 +168,16 @@
         "Добавить вопрос": "Agregar una pregunta",
         "Опубликовать": "Publicar",
         "Сохранить в черновики": "Guardar como borrador"
+    },
+    "personalOffer": {
+        "male": "Hombre",
+        "female": "Mujer",
+        "other": "Otro",
+        "notSpecified": "No especificado",
+        "Когда": "Cuándo",
+        "Минимум дней": "Mínimo de días",
+        "Максимум дней": "Máximo de días",
+        "Прием заявок до": "Fecha límite de solicitudes",
+        "Кто нужен": "Quién se necesita"
     }
 }

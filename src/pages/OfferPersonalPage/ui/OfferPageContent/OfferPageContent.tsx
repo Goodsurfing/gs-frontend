@@ -1,10 +1,8 @@
 import cn from "classnames";
 import { memo } from "react";
 
-import { OfferInfoCard } from "@/entities/Offer";
+import { OfferInfoCard, useGetOfferByIdQuery } from "@/entities/Offer";
 
-// import { mockedOfferData } from "../../model/data/mockedOfferData";
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 import styles from "./OfferPageContent.module.scss";
 
 interface OfferPageContentProps {
@@ -15,9 +13,19 @@ interface OfferPageContentProps {
 export const OfferPageContent = memo((props: OfferPageContentProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { className, id } = props;
+    const { data } = useGetOfferByIdQuery(id);
+
+    if (!data) {
+        return (
+            <div className={cn(className, styles.wrapper)}>
+                <span>Произошла ошибка в загрузке данных</span>
+            </div>
+        );
+    }
+
     return (
         <div className={cn(className, styles.wrapper)}>
-            <OfferInfoCard offer={mockedOffersData[1]} />
+            <OfferInfoCard offer={data} />
         </div>
     );
 });

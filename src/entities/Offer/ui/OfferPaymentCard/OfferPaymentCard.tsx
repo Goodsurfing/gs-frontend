@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { combineToFullPayment } from "./lib/offerPaymentCardUtils";
@@ -14,28 +15,29 @@ interface OfferPaymentCardProps {
 export const OfferPaymentCard: FC<OfferPaymentCardProps> = memo(
     (props: OfferPaymentCardProps) => {
         const { className, conditions } = props;
+        const { t } = useTranslation("offer");
 
         return (
             <div className={cn(className)}>
                 <InfoCard>
-                    {conditions.volunteerContributions && (
+                    {conditions.volunteerContributions ? (
                         <InfoCardItem
-                            title="Необходимый взнос"
+                            title={t("personalOffer.Необходимый взнос")}
                             text={combineToFullPayment(
                                 conditions.volunteerContributions,
                                 conditions.currency,
                             )}
                         />
-                    )}
-                    {conditions.volunteerRemuneration && (
+                    ) : null}
+                    {conditions.volunteerRemuneration ? (
                         <InfoCardItem
-                            title="Денежное вознаграждение"
+                            title={t("personalOffer.Денежное вознаграждение")}
                             text={combineToFullPayment(
                                 conditions.volunteerRemuneration,
                                 conditions.currency,
                             )}
                         />
-                    )}
+                    ) : null}
                 </InfoCard>
             </div>
         );

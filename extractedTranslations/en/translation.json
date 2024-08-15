@@ -122,6 +122,9 @@
     "Мои заявки": "Мои заявки",
     "Сообщение": "Сообщение"
   },
+  "personalOffer": {
+    "notSpecified": "notSpecified"
+  },
   "skills": {
     "admin": "admin",
     "art": "art",
