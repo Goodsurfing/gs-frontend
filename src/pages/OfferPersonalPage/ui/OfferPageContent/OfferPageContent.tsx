@@ -11,11 +11,10 @@ interface OfferPageContentProps {
 }
 
 export const OfferPageContent = memo((props: OfferPageContentProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { className, id } = props;
-    const { data } = useGetOfferByIdQuery(id);
+    const { data, isError } = useGetOfferByIdQuery(id);
 
-    if (!data) {
+    if (!data || isError) {
         return (
             <div className={cn(className, styles.wrapper)}>
                 <span>Произошла ошибка в загрузке данных</span>

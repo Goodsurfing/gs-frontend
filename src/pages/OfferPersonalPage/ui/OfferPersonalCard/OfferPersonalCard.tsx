@@ -22,7 +22,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
             title={data?.description?.title}
             location={data?.where?.address}
             rating={4.3}
-            categories={<OfferPersonalCardCategory />}
+            categories={<OfferPersonalCardCategory categories={data?.description?.categoryIds} />}
             imageBlock={<OfferPersonalCardImageBlock onImagesClick={onImagesClick} />}
         />
     );

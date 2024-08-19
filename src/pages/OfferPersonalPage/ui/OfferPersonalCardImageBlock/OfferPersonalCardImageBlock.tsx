@@ -2,6 +2,7 @@ import { memo } from "react";
 
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import firstImg from "@/shared/assets/icons/hostPersonal/first-img.svg";
 import secondImg from "@/shared/assets/icons/hostPersonal/second-img.svg";
 import thirdImg from "@/shared/assets/icons/hostPersonal/third-img.svg";
@@ -17,11 +18,12 @@ interface OfferPersonalCardImageBlockProps {
 
 export const OfferPersonalCardImageBlock = memo((props: OfferPersonalCardImageBlockProps) => {
     const { className, onImagesClick } = props;
+    const { t } = useTranslation("offer");
     return (
         <div onClick={onImagesClick} className={cn(className, styles.wrapper)}>
             <div className={styles.overlay}>
                 <img className={styles.dots} src={dots} alt="show more" />
-                <span className={styles.dotsText}>Все фотографии</span>
+                <span className={styles.dotsText}>{t("personalOffer.Фотографии")}</span>
             </div>
             <img className={styles.imageItem} src={firstImg} alt="first" />
             <img className={styles.imageItem} src={secondImg} alt="second" />
