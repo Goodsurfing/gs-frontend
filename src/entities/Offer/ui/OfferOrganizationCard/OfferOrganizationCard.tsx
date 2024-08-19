@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import organizationDefaultImage from "@/shared/assets/images/offers/organizationSmallMOCK.png";
 
 import styles from "./OfferOrganizationCard.module.scss";
@@ -21,9 +22,10 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
             className,
         } = props;
         const { locale } = useLocale();
+        const { t } = useTranslation("offer");
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>Организация</h3>
+                <h3 className={styles.title}>{t("personalOffer.Организация")}</h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
                         <div className={styles.nameContainer}>
@@ -37,7 +39,7 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                         <p className={styles.description}>{organization.type}</p>
                     </div>
                     <ButtonLink className={styles.button} type="outlined" path={getHostPersonalPageUrl(locale, organization.id)}>
-                        Подробнее
+                        {t("personalOffer.Подробнее")}
                     </ButtonLink>
                 </div>
             </div>

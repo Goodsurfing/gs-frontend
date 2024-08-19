@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { ArticleCard } from "@/entities/Article/";
 
 import { Article } from "@/entities/Article";
@@ -15,6 +16,7 @@ interface OfferArticlesCardProps {
 export const OfferArticlesCard: FC<OfferArticlesCardProps> = memo(
     (props: OfferArticlesCardProps) => {
         const { articles, className } = props;
+        const { t } = useTranslation("offer");
 
         const renderCards = useMemo(
             () => articles
@@ -27,7 +29,7 @@ export const OfferArticlesCard: FC<OfferArticlesCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>Статьи о вакансии</h3>
+                <h3>{t("personalOffer.Статьи о вакансии")}</h3>
                 <div className={styles.container}>{renderCards}</div>
             </div>
         );

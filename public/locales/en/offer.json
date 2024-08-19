@@ -182,7 +182,23 @@
         "Максимум дней": "Maximum days",
         "Прием заявок до": "Application deadline",
         "Кто нужен": "Who is needed",
+        "Требования к участнику": "Participant Requirements",
+        "Необходимый взнос": "Required Contribution",
+        "Денежное вознаграждение": "Monetary Reward",
         "Количество рабочих часов": "Number of Working Hours",
-        "Выходных дней в неделю": "Days Off Per Week"
+        "Выходных дней в неделю": "Days Off Per Week",
+        "Описание": "Description",
+        "Дополнительная информация": "Additional Information",
+        "Владение языками": "Language Proficiency",
+        "Местоположение": "Location",
+        "Организация": "Organization",
+        "Подробнее": "More Details",
+        "Фотографии": "Photos",
+        "Условия": "Terms",
+        "Дополнительные условия": "Additional Terms",
+        "Поделиться вакансией": "Share Vacancy",
+        "Отзывы": "Reviews",
+        "Посмотреть все": "View All",
+        "Статьи о вакансии": "Articles about the Vacancy"
     }
 }

@@ -4,6 +4,7 @@ import React, {
 import { Placemark } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import { YMap, YmapType } from "@/entities/Map";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -20,10 +21,11 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
         const { address, className } = props;
         const { locale } = useLocale();
         const [, setYmap] = useState<YmapType | undefined>(undefined);
+        const { t } = useTranslation("offer");
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>Местоположение</h3>
+                <h3 className={styles.title}>{t("personalOffer.Местоположение")}</h3>
                 <span>{address.address}</span>
                 <YMap
                     mapState={{

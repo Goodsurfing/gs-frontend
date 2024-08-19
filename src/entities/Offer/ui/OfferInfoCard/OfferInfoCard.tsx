@@ -88,7 +88,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.wrapper}
                 />
             )}
-            {/* {offer.conditions && (
+            {offer.conditions && (
                 <>
                     <OfferTermsCard
                         facilities={offer.conditions.conveniences}
@@ -100,18 +100,20 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     />
                 </>
             )}
-            <OfferContributorsCard
-                contributors={offer.contributors}
-                className={styles.wrapper}
-            />
-            {offer?.reviews && <OfferReviewsCard reviews={offer.reviews} />}
-            {offer?.articles && (
+            {offer.contributors && (
+                <OfferContributorsCard
+                    contributors={offer.contributors}
+                    className={styles.wrapper}
+                />
+            )}
+            {offer.reviews && <OfferReviewsCard reviews={offer.reviews} />}
+            {offer.articles && (
                 <OfferArticlesCard
                     articles={offer.articles}
                     className={styles.container}
                 />
             )}
-            <OfferShareCard /> */}
+            <OfferShareCard />
         </div>
     );
 });

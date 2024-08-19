@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import styles from "./OfferGalleryCard.module.scss";
 import { useGetOfferGalleryItemsQuery } from "../../api/offerApi";
 import { OfferGalleryItem } from "../../model/types/offer";
@@ -15,6 +16,7 @@ export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
     (props: OfferGalleryCardProps) => {
         const { offerId, className } = props;
         const { data: gallery } = useGetOfferGalleryItemsQuery(offerId.toString());
+        const { t } = useTranslation("offer");
 
         const renderGallery = (allImages?: OfferGalleryItem[]) => {
             if (!allImages) return (<p>Галерея не заполнена</p>);
@@ -32,7 +34,7 @@ export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>Фотографии</h3>
+                <h3>{t("personalOffer.Фотографии")}</h3>
                 <div className={styles.container}>{renderGallery(gallery)}</div>
             </div>
         );
