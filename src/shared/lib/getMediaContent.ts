@@ -1,5 +1,6 @@
 import { MediaObjectType } from "@/types/media";
 import { BASE_URL } from "../constants/api";
+import { OfferGalleryItem } from "@/entities/Offer";
 
 export const getMediaContent = (
     value: string
@@ -17,4 +18,8 @@ export const getMediaContent = (
         default:
             return undefined;
     }
+};
+
+export const getMediaContentsArray = (images: OfferGalleryItem[]) => {
+
 };
