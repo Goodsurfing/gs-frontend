@@ -105,7 +105,10 @@
         "Количество выходных дней в неделю": "Number of days off per week",
         "Дополнительная информация": "Additional information",
         "Не более 1000 знаков": "Not more than 1000 characters",
-        "Сохранить": "Save"
+        "Сохранить": "Save",
+        "day": "per day",
+        "week": "per week",
+        "month": "per month"
     },
     "conditions": {
         "Чем вы готовы обеспечить волонтёра": "What are you willing to provide for the volunteer",
@@ -178,6 +181,8 @@
         "Минимум дней": "Minimum days",
         "Максимум дней": "Maximum days",
         "Прием заявок до": "Application deadline",
-        "Кто нужен": "Who is needed"
+        "Кто нужен": "Who is needed",
+        "Количество рабочих часов": "Number of Working Hours",
+        "Выходных дней в неделю": "Days Off Per Week"
     }
 }

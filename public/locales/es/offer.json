@@ -105,7 +105,10 @@
         "Количество выходных дней в неделю": "Número de días libres por semana",
         "Дополнительная информация": "Información adicional",
         "Не более 1000 знаков": "No más de 1000 caracteres",
-        "Сохранить": "Guardar"
+        "Сохранить": "Guardar",
+        "day": "por día",
+        "week": "por semana",
+        "month": "por mes"
     },
     "conditions": {
         "Чем вы готовы обеспечить волонтёра": "¿Qué estás dispuesto a proporcionar al voluntario?",
@@ -178,6 +181,8 @@
         "Минимум дней": "Mínimo de días",
         "Максимум дней": "Máximo de días",
         "Прием заявок до": "Fecha límite de solicitudes",
-        "Кто нужен": "Quién se necesita"
+        "Кто нужен": "Quién se necesita",
+        "Количество рабочих часов": "Número de Horas de Trabajo",
+        "Выходных дней в неделю": "Días Libres por Semana"
     }
 }
