@@ -2,7 +2,6 @@ import { memo } from "react";
 import cn from "classnames";
 
 import { RequestCard } from "@/entities/Request";
-import { useUser } from "@/entities/Profile";
 
 import Button from "@/shared/ui/Button/Button";
 
@@ -15,11 +14,13 @@ interface RequestsWidgetProps {
 
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className } = props;
-    const { isLoading, profile: userData } = useUser();
     const { data: applications, isLoading: isApplicationsLoading } = useGetMyApplicationsQuery();
 
     const renderRequests = () => {
-
+        if (!applications) return null;
+        return applications.map((application) => (
+            <RequestCard application={application} />
+        ));
     };
 
     return (
@@ -36,7 +37,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 {isApplicationsLoading
                     ? "...Загрузка"
                     : (
-                        userData && <RequestCard article="Тест реквест" notificationType="new" user={userData} />
+                        renderRequests()
                     )}
                 <Button
                     variant="FILL"

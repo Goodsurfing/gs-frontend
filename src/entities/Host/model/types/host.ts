@@ -1,7 +1,7 @@
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
 import { Article } from "@/entities/Article";
-import { Offer } from "@/entities/Offer";
+import { Offer, OfferState } from "@/entities/Offer";
 import { Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { VolunteerApi } from "@/entities/Volunteer";
@@ -37,7 +37,7 @@ export interface Application {
     vacancy: Offer;
     startDate: string;
     endDate: string;
-    status: string;
+    status: OfferState;
 }
 
 export interface TeamUser {
