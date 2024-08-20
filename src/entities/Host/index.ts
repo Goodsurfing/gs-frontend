@@ -6,7 +6,7 @@ export {
     useUpdateHostMutation,
 } from "./api/hostApi";
 export type {
-    Host, TeamUser,
+    Host, TeamUser, Application,
 } from "./model/types/host";
 
 export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";

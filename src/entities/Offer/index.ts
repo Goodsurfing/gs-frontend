@@ -21,10 +21,8 @@ export type {
 
 export type {
     Gender,
-    Languages,
     ReceptionPlace,
     OfferWhoNeeds,
-    LevelLanguage,
 } from "./model/types/offerWhoNeeds";
 
 export type {
@@ -35,7 +33,6 @@ export type {
 export type {
     TimeType,
     WorkSettings,
-    OfferWhatToDoSkillType,
     OfferWhatToDoSkill,
     OfferWhatToDo,
     OfferWhatToDoApi,

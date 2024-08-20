@@ -3,11 +3,10 @@ import { useTranslation } from "react-i18next";
 import SelectField from "@/components/SelectField/SelectField";
 import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
-import { LevelLanguage } from "@/entities/Offer/model/types/offerWhoNeeds";
-
 import { useAllLangs, useLangsLevels } from "@/shared/data/languages";
 import { LanguagesProps } from "./types";
 import styles from "./Languages.module.scss";
+import { LevelLanguage } from "@/types/languages";
 
 const Languages: FC<LanguagesProps> = (props) => {
     const {

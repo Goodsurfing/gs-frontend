@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Host } from "../model/types/host";
+import { Application, Host } from "@/entities/Host";
 
 interface UpdateHostParams {
     id: string;
@@ -64,6 +64,13 @@ export const hostApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
+        getMyApplications: build.query<Application[], void>({
+            query: () => ({
+                url: "personal/organization/forms",
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
     }),
 });
 
@@ -73,4 +80,5 @@ export const {
     useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
+    useGetMyApplicationsQuery,
 } = hostApi;

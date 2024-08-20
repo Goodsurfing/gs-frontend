@@ -9,6 +9,7 @@ import { Request } from "../../model/types/request";
 
 import styles from "./RequestCard.module.scss";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface RequestCardProps extends Request {
     className?: string;
@@ -29,7 +30,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     {notificationType}
                 </div>
                 <Avatar
-                    icon={user?.image?.contentUrl}
+                    icon={getMediaContent(user?.image?.contentUrl)}
                     className={styles.image}
                     size="MEDIUM"
                 />

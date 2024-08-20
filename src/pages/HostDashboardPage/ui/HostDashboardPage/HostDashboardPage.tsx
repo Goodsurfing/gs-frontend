@@ -3,7 +3,6 @@ import { FC } from "react";
 import { HostFill } from "@/features/HostFill";
 
 import { RequestsWidget } from "@/widgets/RequestsWidget";
-import { CalendarWidget } from "@/widgets/CalendarWidget";
 
 import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 
@@ -14,7 +13,7 @@ const HostDashboardPage: FC = () => (
         <HostFill />
         <div className={styles.columns}>
             <RequestsWidget />
-            <CalendarWidget />
+            {/* <CalendarWidget /> add this logic in future */}
             <DashboardNotifications />
         </div>
     </div>

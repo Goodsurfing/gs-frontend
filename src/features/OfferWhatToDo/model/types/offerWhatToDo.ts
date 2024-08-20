@@ -1,8 +1,8 @@
 import type {
     OfferWhatToDoSkill,
-    OfferWhatToDoSkillType,
     WorkSettings,
 } from "@/entities/Offer";
+import { WhatToDoSkillType } from "@/types/skills";
 
 export type ExtraSkill = { skill: string };
 
@@ -19,7 +19,7 @@ export type AdditionalSkillsType = {
 };
 
 export interface OfferWhatToDoFormFields {
-    skills: OfferWhatToDoSkillType[];
+    skills: WhatToDoSkillType[];
     additionalSkills: AdditionalSkillsType[];
     workingHours: WorkSettings;
     extraInfo: string;

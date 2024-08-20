@@ -7,6 +7,7 @@ import { useUser } from "@/entities/Profile";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestsWidget.module.scss";
+import { useGetMyApplicationsQuery } from "@/entities/Host/api/hostApi";
 
 interface RequestsWidgetProps {
     className?: string;
@@ -15,6 +16,11 @@ interface RequestsWidgetProps {
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className } = props;
     const { isLoading, profile: userData } = useUser();
+    const { data: applications, isLoading: isApplicationsLoading } = useGetMyApplicationsQuery();
+
+    const renderRequests = () => {
+
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -27,7 +33,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 </p>
             </div>
             <div className={styles.requestsItems}>
-                {isLoading
+                {isApplicationsLoading
                     ? "...Загрузка"
                     : (
                         userData && <RequestCard article="Тест реквест" notificationType="new" user={userData} />
