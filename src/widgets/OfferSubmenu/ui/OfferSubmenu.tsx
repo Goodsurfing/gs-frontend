@@ -6,12 +6,12 @@ import Button from "@/shared/ui/Button/Button";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 
 interface OfferSubmenuProps {
-    offerId?: string;
+    id?: string;
 }
 
 export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { offerId } = props;
+    const { id } = props;
     const { t } = useTranslation("offer");
     const { SubmenuItemsOffer } = useTranslateSubmenu();
     return (

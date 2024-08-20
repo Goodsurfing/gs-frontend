@@ -6,35 +6,35 @@ export const useTranslateSubmenu = () => {
     const SubmenuItemsOffer = [
         {
             text: t("personalOffer.Описание", "Описание"),
-            id: "1",
+            id: "description",
         },
         {
             text: t("personalOffer.Фото", "Фото"),
-            id: "2",
+            id: "gallery",
         },
         {
             text: t("personalOffer.Что делать", "Что делать"),
-            id: "3",
+            id: "whatToDo",
         },
         {
             text: t("personalOffer.Условия", "Условия"),
-            id: "4",
+            id: "terms",
         },
         {
             text: t("personalOffer.Отзывы", "Отзывы"),
-            id: "5",
+            id: "review",
         },
         {
             text: t("personalOffer.Организация", "Организация"),
-            id: "6",
+            id: "organization",
         },
         {
             text: t("personalOffer.Участники", "Участники"),
-            id: "7",
+            id: "participants",
         },
         {
             text: t("personalOffer.Статьи", "Статьи"),
-            id: "8",
+            id: "articles",
         },
     ];
 

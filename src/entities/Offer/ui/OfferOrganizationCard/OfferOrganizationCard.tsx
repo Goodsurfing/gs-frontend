@@ -24,7 +24,7 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
         const { locale } = useLocale();
         const { t } = useTranslation("offer");
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)} id="organization">
                 <h3 className={styles.title}>{t("personalOffer.Организация")}</h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>

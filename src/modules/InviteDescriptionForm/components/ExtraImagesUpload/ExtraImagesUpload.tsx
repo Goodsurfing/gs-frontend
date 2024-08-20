@@ -9,7 +9,7 @@ import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { BASE_URL } from "@/shared/constants/api";
 import styles from "./ExtraImagesUpload.module.scss";
 import { useCreateOfferGalleryItemMutation, useDeleteOfferGalleryItemMutation, useGetOfferGalleryItemsQuery } from "@/entities/Offer/api/offerApi";
-import { OfferGalleryItem } from "@/entities/Offer";
+import { GalleryItem } from "@/types/media";
 
 interface ExtraImagesUploadProps {
     label: string;
@@ -27,7 +27,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
         onChangeError, onChangeSuccess, offerId,
     } = props;
     const [inputImg, setInputImg] = useState<ImageType>({ file: null, src: null });
-    const [galleryImgs, setGalleryImgs] = useState<OfferGalleryItem[]>([]);
+    const [galleryImgs, setGalleryImgs] = useState<GalleryItem[]>([]);
     const [createGalleryItem] = useCreateOfferGalleryItemMutation();
     const [deleteGalleryItem] = useDeleteOfferGalleryItemMutation();
     const { data: galleryData } = useGetOfferGalleryItemsQuery(offerId);

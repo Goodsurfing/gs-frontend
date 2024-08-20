@@ -9,11 +9,12 @@ interface AnchorProps {
     activeId: string;
     className?: string;
     onClick?: () => void;
+    topGap?: number;
 }
 
 export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     const {
-        id, title, activeId, className, onClick,
+        id, title, activeId, className, onClick, topGap = 100,
     } = props;
 
     const handleClick = useCallback(() => {
@@ -21,11 +22,11 @@ export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
         const element = document.getElementById(id);
         if (element) {
             window.scrollTo({
-                top: element.offsetTop - 100,
+                top: element.offsetTop - (topGap),
                 behavior: "smooth",
             });
         }
-    }, [id, onClick]);
+    }, [id, onClick, topGap]);
 
     return (
         <div

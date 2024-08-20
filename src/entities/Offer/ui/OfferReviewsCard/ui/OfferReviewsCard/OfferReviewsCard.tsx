@@ -32,7 +32,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         );
 
         return (
-            <div className={styles.wrapper}>
+            <div className={styles.wrapper} id="review">
                 <h3>{t("personalOffer.Отзывы")}</h3>
                 <div className={styles.container}>{renderCards}</div>
                 <Link className={styles.viewAll} to={getMainPageUrl(locale)}>

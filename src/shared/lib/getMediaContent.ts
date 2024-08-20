@@ -1,6 +1,5 @@
-import { MediaObjectType } from "@/types/media";
+import { GalleryItem, MediaObjectType } from "@/types/media";
 import { BASE_URL } from "../constants/api";
-import { OfferGalleryItem } from "@/entities/Offer";
 
 export const getMediaContent = (
     value: string
@@ -20,6 +19,7 @@ export const getMediaContent = (
     }
 };
 
-export const getMediaContentsArray = (images: OfferGalleryItem[]) => {
-
+export const getMediaContentsArray = (images: GalleryItem[]) => {
+    const newImages = images.map((image) => `${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`);
+    return newImages;
 };

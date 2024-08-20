@@ -28,7 +28,7 @@ export const OfferArticlesCard: FC<OfferArticlesCardProps> = memo(
         );
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)} id="articles">
                 <h3>{t("personalOffer.Статьи о вакансии")}</h3>
                 <div className={styles.container}>{renderCards}</div>
             </div>

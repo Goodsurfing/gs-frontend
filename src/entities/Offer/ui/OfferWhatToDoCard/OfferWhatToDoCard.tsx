@@ -58,7 +58,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
         }, [skills, skillsData]);
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)} id="whatToDo">
                 <div className={styles.card}>
                     <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>

@@ -29,14 +29,6 @@ export interface Offer {
     state: OfferState;
 }
 
-export interface OfferGalleryItem {
-    id: number;
-    mediaObject: {
-        id: string;
-        contentUrl: string;
-    };
-}
-
 export interface OfferOrganization {
     id: string;
     name: string;
