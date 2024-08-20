@@ -35,7 +35,7 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
             ));
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)} id="participants">
                 <h3>Участники (54)</h3>
                 <p className={styles.description}>
                     В нашем сообществе вы можете поговорить с волонтерами,

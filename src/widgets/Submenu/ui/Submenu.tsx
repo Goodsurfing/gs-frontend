@@ -5,6 +5,7 @@ import {
 
 import { SubmenuItem } from "../model/types/submenu";
 import styles from "./Submenu.module.scss";
+import { Anchor } from "@/shared/ui/Anchor/Anchor";
 
 interface SubmenuProps {
     items: SubmenuItem[];
@@ -36,7 +37,13 @@ export const Submenu = memo((props: SubmenuProps) => {
             <ul className={styles.innerWrapper}>
                 {items.map((item) => (
                     <li key={item.id} className={styles.navItem}>
-                        {item.text}
+                        <Anchor
+                            id={item.id}
+                            key={item.id}
+                            activeId={item.id}
+                            title={item.text}
+                            topGap={300}
+                        />
                     </li>
                 ))}
             </ul>

@@ -1,19 +1,18 @@
 import React, {
-    FC, memo, useEffect, useState,
+    FC, memo, useState,
 } from "react";
 import { Placemark } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 
-import { validateCoordinates } from "@/features/MapWithAddress/model/lib/validateCoordinates";
-import { getGeoObjectCollection } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
+import { useTranslation } from "react-i18next";
+import { YMap, YmapType } from "@/entities/Map";
 
-import { GeoObject, YMap, YmapType } from "@/entities/Map";
-
-import styles from "./OfferAddressCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { OfferWhere } from "../../model/types/offerWhere";
+import styles from "./OfferAddressCard.module.scss";
 
 interface OfferAddressCardProps {
-    address: string;
+    address: OfferWhere;
     className?: string;
 }
 
@@ -22,23 +21,15 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
         const { address, className } = props;
         const { locale } = useLocale();
         const [, setYmap] = useState<YmapType | undefined>(undefined);
-        const [coordinates, setCoordinates] = useState<GeoObject | null>();
-
-        useEffect(() => {
-            getGeoObjectCollection(address, locale).then((response) => {
-                if (response?.featureMember.length) {
-                    setCoordinates(response.featureMember[0].GeoObject);
-                }
-            });
-        }, [address, locale]);
+        const { t } = useTranslation("offer");
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>Местоположение</h3>
-                <span>{address}</span>
+                <h3 className={styles.title}>{t("personalOffer.Местоположение")}</h3>
+                <span>{address.address}</span>
                 <YMap
                     mapState={{
-                        center: validateCoordinates(coordinates?.Point.pos),
+                        center: [address.latitude, address.longitude],
                         zoom: 10,
                     }}
                     className={cn(styles.map)}
@@ -46,7 +37,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                     locale={locale}
                 >
                     <Placemark
-                        geometry={validateCoordinates(coordinates?.Point.pos)}
+                        geometry={[address.latitude, address.longitude]}
                     />
                 </YMap>
             </div>

@@ -2,7 +2,8 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Offer, OfferGalleryItem } from "../model/types/offer";
+import { Offer } from "../model/types/offer";
+import { GalleryItem } from "@/types/media";
 
 interface UpdateOfferParams {
     id: number
@@ -75,7 +76,7 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        createOfferGalleryItem: build.mutation<OfferGalleryItem, CreateOfferGalleryItemRequest>({
+        createOfferGalleryItem: build.mutation<GalleryItem, CreateOfferGalleryItemRequest>({
             query: (data) => ({
                 url: `/vacancies/${data.offerId}/gallery`,
                 method: "POST",
@@ -83,14 +84,14 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
-        getOfferGalleryItems: build.query<OfferGalleryItem[], string>({
+        getOfferGalleryItems: build.query<GalleryItem[], string>({
             query: (offerId) => ({
                 url: `vacancies/${offerId}/gallery`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
-        getOfferGalleryItemById: build.query<OfferGalleryItem, OfferGalleryItemRequest>({
+        getOfferGalleryItemById: build.query<GalleryItem, OfferGalleryItemRequest>({
             query: (data) => ({
                 url: `vacancies/${data.offerId}/gallery/${data.galleryId}`,
                 method: "GET",

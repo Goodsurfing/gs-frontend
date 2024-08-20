@@ -87,5 +87,10 @@ export const useCategories = () => {
         }
     };
 
-    return { tags, getTranslation };
+    const getColorByCategory = (category: string): string | undefined => {
+        const tag = tags.find((tagItem) => tagItem.value === category);
+        return tag?.color;
+    };
+
+    return { tags, getTranslation, getColorByCategory };
 };

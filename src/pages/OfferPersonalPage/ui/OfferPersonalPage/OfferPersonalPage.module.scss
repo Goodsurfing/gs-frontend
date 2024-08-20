@@ -13,6 +13,12 @@
     justify-content: center;
 }
 
+.error {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
     .content {
         padding: 10px 15px 70px 15px;

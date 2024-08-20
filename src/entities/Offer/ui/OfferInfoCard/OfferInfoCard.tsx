@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Offer } from "../../model/types/offer";
 import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 import { OfferArticlesCard } from "../OfferArticlesCard/ui/OfferArticlesCard/OfferArticlesCard";
@@ -27,9 +28,13 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
-    const address = "Казань улица Пушкина, 46";
     const isShowPaymentCard = offer.conditions?.volunteerContributions
         || offer.conditions?.volunteerRemuneration;
+    const { ready } = useTranslation("offer");
+
+    if (!ready) {
+        return null;
+    }
 
     return (
         <div className={cn(className)}>
@@ -64,13 +69,16 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferAddressCard address={address} className={styles.container} />
+            {offer.where && (
+                <OfferAddressCard address={offer.where} className={styles.container} />
+            )}
             <OfferOrganizationCard
+                organization={offer.organization}
                 className={styles.container}
             />
             {offer.galleryItems && (
                 <OfferGalleryCard
-                    gallery={offer.galleryItems}
+                    offerId={offer.id}
                     className={styles.container}
                 />
             )}
@@ -92,12 +100,14 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     />
                 </>
             )}
-            <OfferContributorsCard
-                contributors={offer.contributors}
-                className={styles.wrapper}
-            />
-            {offer?.reviews && <OfferReviewsCard reviews={offer.reviews} />}
-            {offer?.articles && (
+            {offer.contributors && (
+                <OfferContributorsCard
+                    contributors={offer.contributors}
+                    className={styles.wrapper}
+                />
+            )}
+            {offer.reviews && <OfferReviewsCard reviews={offer.reviews} />}
+            {offer.articles && (
                 <OfferArticlesCard
                     articles={offer.articles}
                     className={styles.container}

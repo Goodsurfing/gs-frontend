@@ -1,20 +1,23 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./OfferSubmenu.module.scss";
 import { Submenu } from "@/widgets/Submenu";
 import Button from "@/shared/ui/Button/Button";
-import { SubmenuItems } from "../model/data/submenuData";
+import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 
 interface OfferSubmenuProps {
-    offerId?: string;
+    id?: string;
 }
 
 export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { offerId } = props;
+    const { id } = props;
+    const { t } = useTranslation("offer");
+    const { SubmenuItemsOffer } = useTranslateSubmenu();
     return (
         <Submenu
             className={styles.navMenu}
-            items={SubmenuItems}
+            items={SubmenuItemsOffer}
             buttons={(
                 <>
                     <Button
@@ -23,7 +26,7 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
                         variant="OUTLINE"
                         className={styles.button}
                     >
-                        Написать
+                        {t("personalOffer.Написать")}
                     </Button>
                     <Button
                         size="SMALL"
@@ -31,7 +34,7 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
                         variant="FILL"
                         className={styles.button}
                     >
-                        Участвовать
+                        {t("personalOffer.Участвовать")}
                     </Button>
                 </>
             )}

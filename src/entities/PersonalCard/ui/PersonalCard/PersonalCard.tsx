@@ -1,6 +1,7 @@
 import { memo, ReactNode } from "react";
 
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import star from "@/shared/assets/icons/star.svg";
 
 import styles from "./PersonalCard.module.scss";
@@ -29,6 +30,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         image,
         medals,
     } = props;
+    const { t } = useTranslation("offer");
     const isImage = image !== undefined;
     const backgroundImageStyle = isImage
         ? {
@@ -86,7 +88,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                         MEDALS
                     </div>
                     <Button size="SMALL" variant="FILL" color="BLUE">
-                        Редактировать
+                        {t("personalOffer.Редактировать")}
                     </Button>
                 </div>
             </div>

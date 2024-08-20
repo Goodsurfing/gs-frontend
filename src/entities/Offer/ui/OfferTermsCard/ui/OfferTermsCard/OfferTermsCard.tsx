@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { useConditionItems } from "@/features/OfferConditions/model/data/conditionItems";
 import { GoodsItems } from "@/features/OfferConditions/model/types/conditionsData";
 
@@ -19,6 +20,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
         // eslint-disable-next-line no-empty-pattern
         const { facilities, className } = props;
         const { goodsItems } = useConditionItems();
+        const { t } = useTranslation("offer");
 
         const renderTerms = (
             facilitiesData: GoodsItems[],
@@ -30,8 +32,8 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
         };
 
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>Условия</h3>
+            <div className={cn(className, styles.wrapper)} id="terms">
+                <h3 className={styles.title}>{t("personalOffer.Условия")}</h3>
                 <div className={styles.container}>
                     {renderTerms(goodsItems, facilities)}
                 </div>

@@ -1,0 +1,11 @@
+.wrapper {
+    width: 80vw;
+    margin: 0 auto;
+}
+
+.modalImage {
+    width: 100%;
+    height: calc(80vh - 100px);
+    object-fit: cover;
+    margin: 0 auto;
+}
