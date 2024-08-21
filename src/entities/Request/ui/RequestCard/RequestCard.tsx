@@ -2,6 +2,7 @@ import { memo } from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -23,11 +24,12 @@ export const RequestCard = memo((props: RequestCardProps) => {
     } = props;
     const { locale } = useLocale();
     const { volunteer, vacancy, status } = application;
+    const { t } = useTranslation();
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.cardHead}>
                 <div className={cn(styles.notification, styles[status])}>
-                    {status}
+                    {t(`notes.${status}`)}
                 </div>
                 <Avatar
                     icon={getMediaContent(application.volunteer.profile.image?.contentUrl)}
@@ -46,8 +48,12 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 </Link>
             </div>
             <div className={styles.buttons}>
-                <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>Сообщение</ButtonLink>
-                <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>Написать отзыв</ButtonLink>
+                {status === "accepted" && (
+                    <>
+                        <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>{t("notes.Сообщение")}</ButtonLink>
+                        <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>{t("notes.Написать отзыв")}</ButtonLink>
+                    </>
+                )}
             </div>
         </div>
     );

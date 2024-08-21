@@ -137,11 +137,13 @@
         "вакансии": "vacantes"
     },
     "notes": {
+        "Мои заявки": "Mis solicitudes",
         "under consideration": "En Consideración",
         "new": "Nuevo",
         "accepted": "Aceptado",
         "confirmed": "Confirmado",
         "canceled": "Rechazado",
-        "Сообщение": "Mensaje"
+        "Сообщение": "Mensaje",
+        "Написать отзыв": "Escribir una reseña"
     }
 }
