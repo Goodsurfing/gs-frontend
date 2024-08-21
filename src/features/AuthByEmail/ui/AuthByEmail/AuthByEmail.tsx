@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./AuthByEmail.module.scss";
@@ -16,10 +17,15 @@ export const AuthByEmail = memo(() => {
     const onSuccess = useCallback(() => {
         navigate(getProfileInfoPageUrl(locale));
     }, [locale, navigate]);
+    const { t, ready } = useTranslation();
 
     const onError = useCallback(() => {
         setError(true);
     }, []);
+
+    if (!ready) {
+        return;
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -35,8 +41,9 @@ export const AuthByEmail = memo(() => {
             </div>
             <div className={styles.redirect}>
                 Не зарегистрированы на Гудсерфинге?
+                {" "}
                 <LocaleLink to={getSignUpPageUrl(locale)}>
-                    Зарегистрироваться.
+                    Зарегистрироваться
                 </LocaleLink>
             </div>
         </div>
