@@ -17,9 +17,13 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { data: applications, isLoading: isApplicationsLoading } = useGetMyApplicationsQuery();
 
     const renderRequests = () => {
+        if (isApplicationsLoading) return <p>Загрузка...</p>;
         if (!applications) return null;
-        return applications.map((application) => (
-            <RequestCard application={application} />
+
+        const limitedApplications = applications.slice(0, 10);
+
+        return limitedApplications.map((application) => (
+            <RequestCard key={application.id} application={application} />
         ));
     };
 
@@ -30,22 +34,20 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 <p className={styles.requests}>
                     Новых заявок:
                     {" "}
-                    <span className={styles.requestsCount}>10</span>
+                    <span className={styles.requestsCount}>{applications?.length}</span>
                 </p>
             </div>
             <div className={styles.requestsItems}>
-                {isApplicationsLoading
-                    ? "...Загрузка"
-                    : (
-                        renderRequests()
-                    )}
-                <Button
-                    variant="FILL"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    Посмотреть все
-                </Button>
+                {renderRequests()}
+                {applications?.length && (
+                    <Button
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        Посмотреть все
+                    </Button>
+                )}
             </div>
         </div>
     );

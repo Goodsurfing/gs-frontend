@@ -15,11 +15,6 @@ export const filterData: FilterData[] = [
         value: "new",
     },
     {
-        text: "Подтвержденные",
-        color: "#5EECD2",
-        value: "confirmed",
-    },
-    {
         text: "Принятые",
         color: "#77EB98",
         value: "accepted",
@@ -27,7 +22,7 @@ export const filterData: FilterData[] = [
     {
         text: "Отклоненные",
         color: "#FCC3C3",
-        value: "rejected",
+        value: "canceled",
     },
     {
         text: "Общение",

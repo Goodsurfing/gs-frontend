@@ -3,29 +3,56 @@ import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { useTranslation } from "react-i18next";
-import { Offer, OfferState } from "@/entities/Offer";
-
-import { NotesCard } from "../NotesCard/NotesCard";
+import { OfferState } from "@/entities/Offer";
 import styles from "./NotesContainer.module.scss";
+import { Application } from "@/entities/Host";
+import { NotesCard } from "../NotesCard/NotesCard";
+import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
 
+export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
-    offers: Offer[];
+    notes: Application[];
     className?: string;
     color: string;
     status: OfferState;
     isDragDisable: boolean;
+    variant: VariantType;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
     (props: NotesContainerProps) => {
         const {
-            offers,
+            notes,
             className,
             color = "#000",
             status,
             isDragDisable,
+            variant,
         } = props;
         const { t } = useTranslation();
+
+        const renderNotes = () => {
+            if (variant === "host") {
+                return notes.map((application, index) => (
+                    <NotesApplicationCard
+                        key={application.id}
+                        application={application}
+                        className={styles.noteCard}
+                        index={index}
+                        isDragDisable={false}
+                    />
+                ));
+            }
+            return notes.map((application, index) => (
+                <NotesCard
+                    key={application.id}
+                    application={application}
+                    className={styles.noteCard}
+                    index={index}
+                    isDragDisable
+                />
+            ));
+        };
 
         return (
             <div className={cn(className, styles.wrapper)}>
@@ -35,7 +62,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                 >
                     <span className={styles.title}>{t(`notes.${status}`)}</span>
                     <span className={styles.number}>
-                        {offers?.length || 0}
+                        {notes?.length || 0}
                     </span>
                 </div>
                 <div className={styles.container}>
@@ -46,15 +73,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                                 ref={provided.innerRef}
                                 className={styles.droppable}
                             >
-                                {offers.map((offer, index) => (
-                                    <NotesCard
-                                        className={styles.noteCard}
-                                        key={offer.id}
-                                        offer={offer}
-                                        index={index}
-                                        isDragDisable={isDragDisable}
-                                    />
-                                ))}
+                                {renderNotes()}
                                 {provided.placeholder}
                             </div>
                         )}

@@ -22,7 +22,7 @@ export interface Profile {
     telegram?: string;
     organizations?: Host[] | [];
     host?: string;
-    volunteer?: Volunteer;
+    // volunteer?: Volunteer;
 }
 
 export interface ImageType {

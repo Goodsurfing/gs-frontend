@@ -141,7 +141,7 @@
         "new": "Nuevo",
         "accepted": "Aceptado",
         "confirmed": "Confirmado",
-        "rejected": "Rechazado",
+        "canceled": "Rechazado",
         "Сообщение": "Mensaje"
     }
 }

@@ -4,44 +4,46 @@ import React, {
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { Offer, OfferState } from "@/entities/Offer";
+import { OfferState } from "@/entities/Offer";
 
 import { statusColors } from "../../model/lib/statusColors";
-import { NotesContainer } from "../NotesContainer/NotesContainer";
+import { NotesContainer, VariantType } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
+import { Application } from "@/entities/Host";
 
 interface NotesWidgetProps {
-    offers: Offer[];
+    notes: Application[];
     className?: string;
     isDragDisable: boolean;
+    variant: VariantType
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
     (props: NotesWidgetProps) => {
-        const { offers: initialOffers, className, isDragDisable } = props;
+        const {
+            notes: initialNotes, className, isDragDisable, variant,
+        } = props;
 
-        const [offers] = useState(initialOffers);
-        const [columns, setColumns] = useState<Record<OfferState, Offer[]>>({
+        const [notes] = useState(initialNotes);
+        const [columns, setColumns] = useState<Record<OfferState, Application[]>>({
             new: [],
             accepted: [],
-            confirmed: [],
-            rejected: [],
+            canceled: [],
         });
 
         useEffect(() => {
-            const newColumns: Record<OfferState, Offer[]> = {
+            const newColumns: Record<OfferState, Application[]> = {
                 new: [],
                 accepted: [],
-                confirmed: [],
-                rejected: [],
+                canceled: [],
             };
 
-            offers.forEach((offer) => {
-                newColumns[offer.state].push(offer);
+            notes.forEach((note) => {
+                newColumns[note.status].push(note);
             });
 
             setColumns(newColumns);
-        }, [offers]);
+        }, [notes]);
 
         const onDragEnd = (result: DropResult) => {
             const { destination, source } = result;
@@ -60,18 +62,18 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             }
 
             // Start updating the state
-            const startOffers = columns[source.droppableId as OfferState];
-            const finishOffers = columns[destination.droppableId as OfferState];
+            const startNotes = columns[source.droppableId as OfferState];
+            const finishNotes = columns[destination.droppableId as OfferState];
 
             // If the item was dragged within the same column
-            if (startOffers === finishOffers) {
-                const newOffers = Array.from(startOffers);
-                const [removed] = newOffers.splice(source.index, 1);
-                newOffers.splice(destination.index, 0, removed);
+            if (startNotes === finishNotes) {
+                const newNotes = Array.from(startNotes);
+                const [removed] = newNotes.splice(source.index, 1);
+                newNotes.splice(destination.index, 0, removed);
 
                 const newColumns = {
                     ...columns,
-                    [source.droppableId]: newOffers,
+                    [source.droppableId]: newNotes,
                 };
 
                 setColumns(newColumns);
@@ -79,16 +81,16 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             }
 
             // If the item was dragged to another column
-            const startNewOffers = Array.from(startOffers);
-            const [removed] = startNewOffers.splice(source.index, 1);
-            removed.state = destination.droppableId as OfferState;
-            const finishNewOffers = Array.from(finishOffers);
-            finishNewOffers.splice(destination.index, 0, removed);
+            const startNewNotes = Array.from(startNotes);
+            const [removed] = startNewNotes.splice(source.index, 1);
+            removed.status = destination.droppableId as OfferState;
+            const finishNewNotes = Array.from(finishNotes);
+            finishNewNotes.splice(destination.index, 0, removed);
 
             const newColumns = {
                 ...columns,
-                [source.droppableId]: startNewOffers,
-                [destination.droppableId]: finishNewOffers,
+                [source.droppableId]: startNewNotes,
+                [destination.droppableId]: finishNewNotes,
             };
 
             setColumns(newColumns);
@@ -97,12 +99,13 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         return (
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className={cn(className, styles.wrapper)}>
-                    {Object.entries(columns).map(([status, columnOffers]) => (
+                    {Object.entries(columns).map(([status, columnNotes]) => (
                         <NotesContainer
                             key={status}
                             status={status as OfferState}
-                            offers={columnOffers}
+                            notes={columnNotes}
                             color={statusColors[status as OfferState]}
+                            variant={variant}
                             isDragDisable={isDragDisable}
                         />
                     ))}

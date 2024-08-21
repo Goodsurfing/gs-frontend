@@ -2,17 +2,17 @@ import React from "react";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
-
 import styles from "./HostNotesPage.module.scss";
+import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 
 const HostNotesPage = () => (
     <div className={styles.wrapper}>
         <div className={styles.wrapper}>
             <h1>Мои заявки</h1>
             <NotesWidget
+                notes={mockedApplications}
                 className={styles.notes}
-                offers={mockedOffersData}
+                variant="host"
                 isDragDisable={false}
             />
         </div>

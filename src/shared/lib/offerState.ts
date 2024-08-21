@@ -15,11 +15,7 @@ const offerStateColors: OfferStateType[] = [
         color: "#77EB98",
     },
     {
-        label: "confirmed",
-        color: "#5EECD2",
-    },
-    {
-        label: "rejected",
+        label: "canceled",
         color: "#FCC3C3",
     },
 ];
