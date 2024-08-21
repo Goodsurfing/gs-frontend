@@ -1,5 +1,4 @@
 import { Host } from "@/entities/Host";
-import { Volunteer } from "@/entities/Volunteer";
 
 export type Gender = "male" | "female" | "other";
 
