@@ -13,5 +13,17 @@
         "Предложения": "Ofertas",
         "Отзывы": "Opiniones",
         "Заявки": "Solicitudes"
+    },
+    "personalHost": {
+        "Написать организатору": "Contactar al organizador",
+        "Организация/": "Organización/",
+        "Редактировать профиль": "Editar perfil",
+        "Об организации": "Sobre la organización",
+        "Вакансии": "Vacantes",
+        "Фото": "Fotos",
+        "Видео": "Videos",
+        "Команда": "Equipo",
+        "Отзывы": "Opiniones",
+        "Статьи": "Artículos"
     }
 }

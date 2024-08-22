@@ -18,6 +18,9 @@
 .btnMedalsContainer {
     width: 100%;
     max-width: 280px;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .type {
@@ -41,4 +44,8 @@
 .image {
     width: 150px;
     height: 150px;
+}
+
+.button {
+    margin-top: auto;
 }

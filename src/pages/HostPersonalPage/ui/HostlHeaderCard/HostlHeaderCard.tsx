@@ -1,5 +1,6 @@
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Host } from "@/entities/Host";
 
 import Button from "@/shared/ui/Button/Button";
@@ -16,12 +17,14 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
         const {
             host: { name, type, address },
         } = props;
+        const { t } = useTranslation("host");
+
         return (
             <div className={styles.wrapper}>
                 <Avatar icon="" size="LARGE" className={styles.image} alt="avatar" />
                 <div className={styles.containerInfo}>
                     <span className={styles.type}>
-                        Организация/
+                        {t("personalHost.Организация/")}
                         {type}
                     </span>
                     <h3 className={styles.name}>{name}</h3>
@@ -29,8 +32,8 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                 </div>
                 <div className={styles.btnMedalsContainer}>
                     <span>MEDALS</span>
-                    <Button color="BLUE" size="SMALL" variant="FILL">
-                        Редактировать профиль
+                    <Button color="BLUE" size="SMALL" variant="FILL" className={styles.button}>
+                        {t("personalHost.Редактировать профиль")}
                     </Button>
                 </div>
             </div>

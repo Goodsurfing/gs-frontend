@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Offer, OfferCard } from "@/entities/Offer";
 
 import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
@@ -15,6 +16,7 @@ interface HostOffersCardProps {
 export const HostOffersCard: FC<HostOffersCardProps> = memo(
     (props: HostOffersCardProps) => {
         const { className, offers } = props;
+        const { t } = useTranslation("host");
 
         const renderOffers = useMemo(
             () => {
@@ -42,7 +44,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>Вакансии</h3>
+                <h3>{t("personalHost.Вакансии")}</h3>
                 <div className={styles.container}>{renderOffers}</div>
             </div>
         );
