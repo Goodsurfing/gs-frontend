@@ -1,17 +1,25 @@
+import { AboutProjectPage } from "@/pages/AboutProjectPage";
+import { CategoriesPage } from "@/pages/CategoriesPage";
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
 import { ConfirmEmailSuccessPage } from "@/pages/ConfirmEmailSuccessPage";
+import { FindJobPage } from "@/pages/FindJobPage";
 import { HostDashboardPage } from "@/pages/HostDashboardPage";
 import { HostGalleryPage } from "@/pages/HostGalleryPage";
 import { HostMainInfoPage } from "@/pages/HostMainInfoPage";
+import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostOffersPage } from "@/pages/HostOffersPage";
+import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
-import { HostNotesPage } from "@/pages/HostNotesPage";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
-import { HostPersonalPage } from "@/pages/HostPersonalPage";
+import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
+import { JournalsPage } from "@/pages/JournalsPage";
 import { MainPage } from "@/pages/MainPage";
-import { CategoriesPage } from "@/pages/CategoriesPage";
+import { MembershipPage } from "@/pages/MembershipPage";
+import { NPOPage } from "@/pages/NPOPage";
+import { NewsPage } from "@/pages/NewsPage";
+import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
@@ -21,109 +29,99 @@ import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
 import { OfferWhenPage } from "@/pages/OfferWhenPage";
 import { OfferWherePage } from "@/pages/OfferWherePage";
 import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
+import { OffersMapPage } from "@/pages/OffersMapPage";
+import { OurTeamPage } from "@/pages/OurTeamPage";
+import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
+import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
-import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
-import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
-import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
-import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
-import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
-import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
-import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
-import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
-import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
-import { MembershipPage } from "@/pages/MembershipPage";
-import { AboutProjectPage } from "@/pages/AboutProjectPage";
-import { NPOPage } from "@/pages/NPOPage";
-import { RulesPage } from "@/pages/RulesPage";
-import { FindJobPage } from "@/pages/FindJobPage";
-import { NewsPage } from "@/pages/NewsPage";
-import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
-import { OurTeamPage } from "@/pages/OurTeamPage";
-import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
-import { JournalsPage } from "@/pages/JournalsPage";
-import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
-import { VideoPage } from "@/pages/VideoPage";
-import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { ResetPasswordVerifyPage } from "@/pages/ResetPasswordVerifyPage";
-
-import { OffersMapPage } from "@/pages/OffersMapPage";
-
+import { RulesPage } from "@/pages/RulesPage";
 import { SignInPage } from "@/pages/SignInPage";
 import { SignUpPage } from "@/pages/SignUpPage";
+import { VideoPage } from "@/pages/VideoPage";
+import { VideoPersonalPage } from "@/pages/VideoPersonalPage";
+import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
+import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
+import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
+import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
+import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
+import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
+import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
+import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
+import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 import {
+    getAboutProjectPageUrl,
+    getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getFindJobPageUrl,
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
+    getHostNotesPageUrl,
     getHostPageUrl,
+    getHostPersonalPageUrl,
     getHostRegistrationUrl,
     getHostReviewPageUrl,
-    getHostNotesPageUrl,
     getHostTeamPageUrl,
     getHostVideoPageUrl,
-    getHostPersonalPageUrl,
+    getJournalPersonalPageUrl,
+    getJournalsPageUrl,
     getMainPageUrl,
-    getCategoriesPageUrl,
+    getMembershipPageUrl,
+    getMessengerPageCreateUrl,
+    getMessengerPageIdUrl,
+    getMessengerPageUrl,
     getMyOffersPageUrl,
+    getNPOPageUrl,
+    getNewsPageUrl,
+    getNewsPersonalPageUrl,
     getOfferPersonalPageUrl,
     getOffersConditionsPageUrl,
     getOffersDescriptionPageUrl,
     getOffersFinishingTouchesPageUrl,
+    getOffersMapPageUrl,
     getOffersPageUrl,
     getOffersWelcomePageUrl,
     getOffersWhatToDoPageUrl,
     getOffersWhenPageUrl,
     getOffersWherePageUrl,
     getOffersWhoNeedsPageUrl,
+    getOurTeamPageUrl,
+    getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
+    getProfilePageUrl,
     getProfilePreferencesPageUrl,
     getProfilePrivacyPageUrl,
     getProfileResetPasswordPageUrl,
     getProfileRolePagePageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
+    getRulesPageUrl,
     getSignInPageUrl,
     getSignUpPageUrl,
-    getVolunteerPersonalPageUrl,
-    getVolunteerPageUrl,
-    getVolunteerDashboardPageUrl,
-    getVolunteerSkillsPageUrl,
-    getVolunteerReviewPageUrl,
-    getVolunteerNotesPageUrl,
-    getVolunteerSubscribersPageUrl,
-    getVolunteerGalleryPageUrl,
-    getVolunteerCreateArticlePageUrl,
-    getVolunteerArticlesPageUrl,
-    getMembershipPageUrl,
-    getAboutProjectPageUrl,
-    getNPOPageUrl,
-    getOurTeamPageUrl,
-    getRulesPageUrl,
-    getNewsPageUrl,
-    getPrivacyPolicyPageUrl,
-    getNewsPersonalPageUrl,
-    getFindJobPageUrl,
-    getJournalsPageUrl,
-    getJournalPersonalPageUrl,
     getVideoPageUrl,
     getVideoPersonalPageUrl,
-    getOffersMapPageUrl,
-    getMessengerPageUrl,
-    getMessengerPageIdUrl,
-    getMessengerPageCreateUrl,
-    getProfilePageUrl,
+    getVolunteerArticlesPageUrl,
+    getVolunteerCreateArticlePageUrl,
+    getVolunteerDashboardPageUrl,
+    getVolunteerGalleryPageUrl,
+    getVolunteerNotesPageUrl,
+    getVolunteerPageUrl,
+    getVolunteerPersonalPageUrl,
+    getVolunteerReviewPageUrl,
+    getVolunteerSkillsPageUrl,
+    getVolunteerSubscribersPageUrl,
 } from "@/shared/config/routes/AppUrls";
+import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
-import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
-import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -178,7 +176,11 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "host-layout",
-        element: <HostsLayoutPage />,
+        element: (
+            <PrivateRouteGuard>
+                <HostsLayoutPage />
+            </PrivateRouteGuard>
+        ),
         path: (locale: string) => getHostPageUrl(locale),
         children: [
             {
@@ -225,9 +227,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "host-personal",
-        element: (
-            <HostPersonalPage />
-        ),
+        element: <HostPersonalPage />,
         path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
@@ -289,7 +289,11 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "volunteer-layout",
-        element: <VolunteerLayoutPage />,
+        element: (
+            <PrivateRouteGuard>
+                <VolunteerLayoutPage />
+            </PrivateRouteGuard>
+        ),
         path: (locale: string) => getVolunteerPageUrl(locale),
         children: [
             {
