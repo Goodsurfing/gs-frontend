@@ -1,18 +1,18 @@
 {
+    "login": {
+        "Вход": "Login",
+        "Войти": "Sign In",
+        "Пароль": "Password",
+        "Забыли пароль?": "Forgot password?",
+        "Запомнить меня": "Remember me",
+        "Отменить": "Cancel",
+        "Не зарегистрированы на Гудсерфинге?": "Not registered on Goodsurfing?",
+        "Зарегистрироваться": "Sign Up",
+        "Регистрация пользователя": "User Registration",
+        "Мы не постим ничего без вашего ведома": "We don't post anything without your knowledge",
+        "Ошибка авторизации": "Authorization error"
+    },
     "main": {
-        "login": {
-            "Вход": "Login",
-            "Войти": "Sign In",
-            "Пароль": "Password",
-            "Забыли пароль?": "Forgot password?",
-            "Запомнить меня": "Remember me",
-            "Отменить": "Cancel",
-            "Не зарегистрированы на Гудсерфинге?": "Not registered on Goodsurfing?",
-            "Зарегистрироваться": "Sign Up",
-            "Регистрация пользователя": "User Registration",
-            "Мы не постим ничего без вашего ведома": "We don't post anything without your knowledge",
-            "Ошибка авторизации": "Authorization error"
-        },
         "welcome": {
             "header": {
                 "how-it-work": "How does it work?",
@@ -78,7 +78,7 @@
             "Последние штрихи": "Finishing touches",
             "Рабочий стол": "Host dashboard",
             "Предложения": "Offers",
-            "Заявки": "Notes",
+            "Заявки": "Applications",
             "Календарь": "Calendar",
             "Организация": "Host",
             "Фотогалерея": "Gallery",

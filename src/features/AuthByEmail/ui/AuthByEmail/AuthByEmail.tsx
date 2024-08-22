@@ -29,8 +29,8 @@ export const AuthByEmail = memo(() => {
 
     return (
         <div className={styles.wrapper}>
-            {error && <HintPopup text="Ошибка авторизации" type={HintType.Error} />}
-            <h2 className={styles.title}>Вход</h2>
+            {error && <HintPopup text={t("login.Ошибка авторизации")} type={HintType.Error} />}
+            <h2 className={styles.title}>{t("login.Вход")}</h2>
             <AuthByEmailForm
                 className={styles.form}
                 onSuccess={onSuccess}
@@ -40,10 +40,10 @@ export const AuthByEmail = memo(() => {
                 <SocialAuthContainer />
             </div>
             <div className={styles.redirect}>
-                Не зарегистрированы на Гудсерфинге?
+                {t("login.Не зарегистрированы на Гудсерфинге?")}
                 {" "}
                 <LocaleLink to={getSignUpPageUrl(locale)}>
-                    Зарегистрироваться
+                    {t("login.Зарегистрироваться")}
                 </LocaleLink>
             </div>
         </div>

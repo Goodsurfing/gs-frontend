@@ -76,12 +76,12 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 organization={offer.organization}
                 className={styles.container}
             />
-            {offer.galleryItems && (
+            {(offer.galleryItems && offer.galleryItems.length) ? (
                 <OfferGalleryCard
                     offerId={offer.id}
                     className={styles.container}
                 />
-            )}
+            ) : null}
             {offer.whatToDo && (
                 <OfferWhatToDoCard
                     whatToDo={offer.whatToDo}

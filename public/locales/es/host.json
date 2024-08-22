@@ -1,0 +1,17 @@
+{
+    "host-dashboard": {
+        "Редактировать профиль": "Editar perfil",
+        "Создать организацию": "Crear organización",
+        "Посмотреть все": "Ver todo",
+        "Новых заявок": "Nuevas solicitudes",
+        "Загрузка...": "Cargando...",
+        "Ошибка": "Error",
+        "Заполненность профиля": "Integridad del perfil",
+        "Описание": "Descripción",
+        "Фотографии": "Fotos",
+        "Видео": "Videos",
+        "Предложения": "Ofertas",
+        "Отзывы": "Opiniones",
+        "Заявки": "Solicitudes"
+    }
+}

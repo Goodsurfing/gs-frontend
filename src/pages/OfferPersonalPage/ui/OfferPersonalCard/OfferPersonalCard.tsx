@@ -27,6 +27,10 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
         setModalOpen(false);
     };
 
+    const showImageBlock = gallery?.length ? (
+        <OfferPersonalCardImageBlock onImagesClick={onImagesClick} />
+    ) : null;
+
     return (
         <>
             <PersonalCard
@@ -39,7 +43,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                         categories={data?.description?.categoryIds}
                     />
                 )}
-                imageBlock={<OfferPersonalCardImageBlock onImagesClick={onImagesClick} />}
+                imageBlock={showImageBlock}
             />
             <ModalGallery
                 isOpen={isModalOpen}
