@@ -24,7 +24,7 @@ export const AuthByEmail = memo(() => {
     }, []);
 
     if (!ready) {
-        return;
+        return null;
     }
 
     return (
