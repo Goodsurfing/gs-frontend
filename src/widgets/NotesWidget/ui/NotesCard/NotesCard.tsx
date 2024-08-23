@@ -5,18 +5,22 @@ import { Draggable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import Button from "@/shared/ui/Button/Button";
 
-import styles from "./NotesCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Application } from "@/entities/Host";
 import { textSlice } from "@/shared/lib/textSlice";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { useCategories } from "@/shared/data/categories";
+import styles from "./NotesCard.module.scss";
 
 interface NotesCardProps {
     className?: string;
     application: Application;
     index: number;
     isDragDisable: boolean;
+    onReviewClick: (id: number) => void;
 }
 
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
@@ -25,9 +29,13 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
         index,
         className,
         isDragDisable,
+        onReviewClick,
     } = props;
     const { t } = useTranslation();
+    const { locale } = useLocale();
     const imageCover = getMediaContent(getMediaContent(application.vacancy.description?.image));
+    const { status, vacancy } = application;
+    const { getTranslation } = useCategories();
 
     return (
         <Draggable
@@ -47,10 +55,9 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     }}
                 >
                     <div
-                        className={styles.status}
-                        style={{ backgroundColor: "#79C8FF" }}
+                        className={cn(styles.status, styles[status])}
                     >
-                        новая
+                        {t(`notes.${status}`)}
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
@@ -66,18 +73,29 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                                 {textSlice(application.vacancy.where?.address, 23, "address")}
                             </span>
                             <span className={styles.tag}>
-                                Заповедники и нац. парки
+                                {getTranslation(vacancy.description?.categoryIds[0])}
                             </span>
                         </div>
                     </div>
-                    <Button
-                        className={styles.button}
-                        color="BLUE"
-                        variant="OUTLINE"
-                        size="SMALL"
-                    >
-                        {t("notes.Сообщение")}
-                    </Button>
+                    <div className={styles.buttons}>
+                        <ButtonLink
+                            className={styles.button}
+                            type="outlined"
+                            path={getMessengerPageUrl(locale)}
+                        >
+                            {t("notes.Сообщение")}
+                        </ButtonLink>
+                        {application.status === "accepted" && (
+                            <ButtonLink
+                                className={styles.button}
+                                type="outlined"
+                                path={getMessengerPageUrl(locale)}
+                                onClick={() => onReviewClick(application.id)}
+                            >
+                                {t("notes.Написать отзыв")}
+                            </ButtonLink>
+                        )}
+                    </div>
                 </div>
             )}
         </Draggable>

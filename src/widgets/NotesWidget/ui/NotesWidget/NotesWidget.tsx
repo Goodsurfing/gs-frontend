@@ -15,13 +15,14 @@ interface NotesWidgetProps {
     notes: Application[];
     className?: string;
     isDragDisable: boolean;
-    variant: VariantType
+    variant: VariantType;
+    onReviewClick: (id: number) => void;
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
     (props: NotesWidgetProps) => {
         const {
-            notes: initialNotes, className, isDragDisable, variant,
+            notes: initialNotes, className, isDragDisable, variant, onReviewClick,
         } = props;
 
         const [notes] = useState(initialNotes);
@@ -101,6 +102,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                 <div className={cn(className, styles.wrapper)}>
                     {Object.entries(columns).map(([status, columnNotes]) => (
                         <NotesContainer
+                            onReviewClick={onReviewClick}
                             key={status}
                             status={status as OfferState}
                             notes={columnNotes}
