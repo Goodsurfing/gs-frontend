@@ -1,11 +1,12 @@
 import { memo } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import { RequestCard } from "@/entities/Request";
-import { useUser } from "@/entities/Profile";
 
 import Button from "@/shared/ui/Button/Button";
 
+import { useGetMyApplicationsQuery } from "@/entities/Host/api/hostApi";
 import styles from "./RequestsWidget.module.scss";
 
 interface RequestsWidgetProps {
@@ -14,31 +15,45 @@ interface RequestsWidgetProps {
 
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className } = props;
-    const { isLoading, profile: userData } = useUser();
+    const { data: applications, isLoading: isApplicationsLoading } = useGetMyApplicationsQuery();
+    const { t } = useTranslation("host");
+
+    const renderRequests = () => {
+        if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
+        if (!applications) return null;
+
+        const limitedApplications = applications.slice(0, 10);
+
+        return limitedApplications.map((application) => (
+            <RequestCard key={application.id} application={application} />
+        ));
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.titleWrapper}>
-                <h3 className={styles.title}>Заявки</h3>
+                <h3 className={styles.title}>{t("host-dashboard.Заявки")}</h3>
                 <p className={styles.requests}>
-                    Новых заявок:
-                    {" "}
-                    <span className={styles.requestsCount}>10</span>
+                    {t("host-dashboard.Новых заявок")}
+                    {": "}
+                    <span className={styles.requestsCount}>
+                        {
+                            applications ? applications.length : 0
+                        }
+                    </span>
                 </p>
             </div>
             <div className={styles.requestsItems}>
-                {isLoading
-                    ? "...Загрузка"
-                    : (
-                        userData && <RequestCard article="Тест реквест" notificationType="new" user={userData} />
-                    )}
-                <Button
-                    variant="FILL"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    Посмотреть все
-                </Button>
+                {renderRequests()}
+                {applications?.length && (
+                    <Button
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        {t("host-dashboard.Посмотреть все")}
+                    </Button>
+                )}
             </div>
         </div>
     );

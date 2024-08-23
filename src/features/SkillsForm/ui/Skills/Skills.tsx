@@ -2,19 +2,19 @@ import { memo, useCallback } from "react";
 
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { useSkillsData } from "@/shared/data/skills";
-import { OfferWhatToDoSkillType } from "@/entities/Offer";
 
 import styles from "./Skills.module.scss";
+import { WhatToDoSkillType } from "@/types/skills";
 
 interface Props {
     className?: string;
-    value: OfferWhatToDoSkillType[];
-    onChange: (value: OfferWhatToDoSkillType[]) => void;
+    value: WhatToDoSkillType[];
+    onChange: (value: WhatToDoSkillType[]) => void;
 }
 
 export const Skills = memo(({ className, onChange, value }: Props) => {
     const { skillsData } = useSkillsData();
-    const handleIconStateChange = useCallback((id: OfferWhatToDoSkillType) => {
+    const handleIconStateChange = useCallback((id: WhatToDoSkillType) => {
         const isActive = value.find((item) => item === id);
         if (isActive) {
             onChange(value.filter((skill) => skill !== id));

@@ -16,7 +16,7 @@ import {
     useGetOfferByIdQuery,
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
-import { Age, Languages } from "@/entities/Offer/model/types/offerWhoNeeds";
+import { Age } from "@/entities/Offer/model/types/offerWhoNeeds";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -44,10 +44,11 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
 import styles from "./WhoNeedsForm.module.scss";
 import { OFFER_WHO_NEEDS_FORM } from "@/shared/constants/localstorage";
+import { Language } from "@/types/languages";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
-const languagesDefaultValue: Languages = [
+const languagesDefaultValue: Language[] = [
     { language: "not_matter", languageLevel: "not_matter" },
 ];
 

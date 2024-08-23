@@ -1,4 +1,19 @@
 {
+    "login": {
+        "Вход": "Inicio de sesión",
+        "Войти": "Iniciar sesión",
+        "Пароль": "Contraseña",
+        "Забыли пароль?": "¿Olvidaste tu contraseña?",
+        "Запомнить меня": "Recuérdame",
+        "Отменить": "Cancelar",
+        "Не зарегистрированы на Гудсерфинге?": "¿No estás registrado en Goodsurfing?",
+        "Зарегистрироваться": "Registrarse",
+        "Регистрация пользователя": "Registro de usuario",
+        "Мы не постим ничего без вашего ведома": "No publicamos nada sin tu consentimiento",
+        "Ошибка авторизации": "Error de autorización",
+        "Нажимая кнопку «Зарегистрироваться», я принимаю": "Al hacer clic en el botón 'Registrarse', acepto",
+        "Политику конфеденциальности ГудСёрфинга": "Política de privacidad de GoodSurfing"
+    },
     "main": {
         "welcome": {
             "header": {
@@ -137,11 +152,13 @@
         "вакансии": "vacantes"
     },
     "notes": {
+        "Мои заявки": "Mis solicitudes",
         "under consideration": "En Consideración",
         "new": "Nuevo",
         "accepted": "Aceptado",
         "confirmed": "Confirmado",
-        "rejected": "Rechazado",
-        "Сообщение": "Mensaje"
+        "canceled": "Rechazado",
+        "Сообщение": "Mensaje",
+        "Написать отзыв": "Escribir una reseña"
     }
 }

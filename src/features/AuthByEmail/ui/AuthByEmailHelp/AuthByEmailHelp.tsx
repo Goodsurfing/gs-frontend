@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { getResetPasswordPageUrl } from "@/shared/config/routes/AppUrls";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
@@ -9,6 +10,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const AuthByEmailHelp = memo(() => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
 
     const { handleToggle, isChecked } = useCheckbox();
 
@@ -17,13 +19,14 @@ export const AuthByEmailHelp = memo(() => {
             <Checkbox
                 isChecked={isChecked}
                 onChange={handleToggle}
-                text="Запомнить меня"
+                text={t("login.Запомнить меня")}
             />
+            {" "}
             <LocaleLink
                 to={getResetPasswordPageUrl(locale)}
                 className={styles.forget}
             >
-                Забыли пароль?
+                {t("login.Забыли пароль?")}
             </LocaleLink>
         </div>
     );

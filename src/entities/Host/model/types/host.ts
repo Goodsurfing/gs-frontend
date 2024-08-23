@@ -1,9 +1,10 @@
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
-import { Offer } from "@/entities/Offer";
-import { Review } from "@/entities/Review";
 import { Article } from "@/entities/Article";
+import { Offer, OfferState } from "@/entities/Offer";
 import { Profile } from "@/entities/Profile";
+import { Review } from "@/entities/Review";
+import { VolunteerApi } from "@/entities/Volunteer";
 
 export interface Host {
     id: string;
@@ -29,6 +30,15 @@ export interface Video {
 export type VideoGallery = Video[];
 
 export type HostTeam = TeamUser[];
+
+export interface Application {
+    id: number;
+    volunteer: VolunteerApi;
+    vacancy: Offer;
+    startDate: string;
+    endDate: string;
+    status: OfferState;
+}
 
 export interface TeamUser {
     id: number;

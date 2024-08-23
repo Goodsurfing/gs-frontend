@@ -2,12 +2,12 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Languages } from "../../model/types/offerWhoNeeds";
 import { useFormatLanguages } from "@/shared/data/languages";
 import styles from "./OfferLanguagesCard.module.scss";
+import { Language } from "@/types/languages";
 
 interface OfferLanguagesCardProps {
-    languages: Languages;
+    languages: Language[];
     className?: string;
 }
 

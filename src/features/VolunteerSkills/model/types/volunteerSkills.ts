@@ -1,8 +1,7 @@
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo/model/types/offerWhatToDo";
 
-import { OfferWhatToDoSkillType } from "@/entities/Offer";
-
 import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
+import { WhatToDoSkillType } from "@/types/skills";
 
 export interface LanguageSkills {
     language?: IOptionLanguage;
@@ -10,7 +9,7 @@ export interface LanguageSkills {
 }
 
 export interface VolunteerSkillsField {
-    skills: OfferWhatToDoSkillType[];
+    skills: WhatToDoSkillType[];
     additionalSkills: AdditionalSkillsType[];
     languages?: LanguageSkills[];
     extraInfo?: string;

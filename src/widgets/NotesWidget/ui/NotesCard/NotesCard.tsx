@@ -3,41 +3,37 @@ import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import { useTranslation } from "react-i18next";
-import { Offer } from "@/entities/Offer";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./NotesCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Application } from "@/entities/Host";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface NotesCardProps {
     className?: string;
-    offer: Offer;
+    application: Application;
     index: number;
     isDragDisable: boolean;
 }
 
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
     const {
-        offer: {
-            description,
-            where,
-            id,
-        },
+        application,
         index,
         className,
         isDragDisable,
     } = props;
-    const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);
     const { t } = useTranslation();
-    const offerCover = getMediaContent(description?.image);
+    const imageCover = getMediaContent(getMediaContent(application.vacancy.description?.image));
 
     return (
         <Draggable
             isDragDisabled={isDragDisable}
-            key={id}
-            draggableId={id.toString()}
+            key={application.id}
+            draggableId={application.id.toString()}
             index={index}
         >
             {(provided) => (
@@ -58,18 +54,16 @@ export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {
                     </div>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={offerCover}
+                            icon={imageCover}
                             alt="offer title image"
                             className={styles.avatar}
                         />
                         <div className={styles.infoContainer}>
                             <span className={styles.title}>
-                                {description ? truncateString(description.title, 30) : "Без заголовка"}
+                                {textSlice(application.vacancy.description?.title, 30, "title")}
                             </span>
                             <span className={styles.address}>
-                                {where?.address
-                                    ? truncateString(where.address, 23)
-                                    : "Адрес не указан"}
+                                {textSlice(application.vacancy.where?.address, 23, "address")}
                             </span>
                             <span className={styles.tag}>
                                 Заповедники и нац. парки

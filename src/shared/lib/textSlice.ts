@@ -19,3 +19,5 @@ export const textSlice = (
     }
     return text.length > length ? `${text.slice(0, length - 1)}..` : text;
 };
+
+export const truncateString = (str: string, length: number) => (str.length > length ? `${str.substring(0, length)}...` : str);

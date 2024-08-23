@@ -2,6 +2,7 @@ import cn from "classnames";
 
 import { memo, useCallback } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { loginApi } from "../../model/services/loginApi/loginApi";
 
@@ -27,6 +28,7 @@ export const AuthByEmailForm = memo(({
     onError,
 }: AuthByEmailFormProps) => {
     const { control, reset, handleSubmit } = useForm<LoginByEmailProps>({ mode: "onChange" });
+    const { t } = useTranslation();
 
     const dispatch = useAppDispatch();
 
@@ -76,7 +78,7 @@ export const AuthByEmailForm = memo(({
                         onChange={(e) => field.onChange(e)}
                         value={field.value || ""}
                         type="password"
-                        text="Пароль"
+                        text={t("login.Пароль")}
                     />
                 )}
             />
@@ -87,7 +89,7 @@ export const AuthByEmailForm = memo(({
                 color="BLUE"
                 size="MEDIUM"
             >
-                Войти
+                {t("login.Войти")}
             </Button>
             <AuthByEmailHelp />
         </form>

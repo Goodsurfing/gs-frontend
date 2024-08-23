@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
-import { Languages } from "@/entities/Offer";
+import { Language } from "@/types/languages";
 
 export const useAllLangs = (): IOptionLanguage[] => {
     const { t } = useTranslation("offer");
@@ -196,7 +196,7 @@ export const useLangsLevelsFilter = (): IOptionLevelLanguage[] => {
     ];
 };
 
-export const useFormatLanguages = (languages: Languages) => {
+export const useFormatLanguages = (languages: Language[]) => {
     const { t } = useTranslation("offer");
 
     const languagesList: IOptionLanguage[] = [

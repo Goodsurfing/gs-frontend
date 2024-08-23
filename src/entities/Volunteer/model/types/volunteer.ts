@@ -6,6 +6,8 @@ import { Review } from "@/entities/Review";
 import { Gallery } from "@/modules/Gallery/model/types/gallery";
 import { SkillsData } from "@/shared/data/skills";
 import { Language } from "./language";
+import { Language as LanguageApi } from "@/types/languages";
+import { WhatToDoSkillType } from "@/types/skills";
 
 export interface Volunteer extends Profile {
     skills?: SkillsData[];
@@ -19,4 +21,12 @@ export interface Volunteer extends Profile {
     favoriteOffers?: Offer[];
     isMember: boolean;
     subscribers?: Profile[];
+}
+
+export interface VolunteerApi {
+    profile: Profile;
+    externalInfo: string;
+    skills: WhatToDoSkillType[];
+    additionalSkills: string[];
+    languages: LanguageApi[];
 }

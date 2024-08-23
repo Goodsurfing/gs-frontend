@@ -1,13 +1,6 @@
+import { Language } from "@/types/languages";
+
 export type Gender = "female" | "male" | "other";
-
-export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_intermediate" | "upper_intermediate" | "advanced" | "proficiency";
-
-export interface Language {
-    language: string;
-    languageLevel: LevelLanguage
-}
-
-export type Languages = Language[];
 
 export type ReceptionPlace = "any" | "foreigners" | "compatriot";
 
@@ -21,7 +14,7 @@ export interface OfferWhoNeeds {
     ageMax: number;
     ageMin: number;
     needAllLanguages: boolean,
-    requiredLanguages: Languages;
+    requiredLanguages: Language[];
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
     additionalInfo: string;

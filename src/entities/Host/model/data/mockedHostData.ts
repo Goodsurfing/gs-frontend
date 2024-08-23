@@ -7,8 +7,9 @@ import { fakeUserData } from "@/entities/User/model/data/mockedUserData";
 import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
 import {
+    Application,
     FullHost, Host, VideoGallery,
-} from "../types/host";
+} from "@/entities/Host";
 import { Review } from "@/entities/Review";
 
 export const mockedHostData: Host = {
@@ -118,3 +119,114 @@ export const mockedFullHostData: FullHost = {
     videoGallery: mockedVideoGallery,
     reviews: mockedReview,
 };
+
+export const mockedApplications: Application[] = [
+    {
+        id: 1,
+        status: "new",
+        volunteer: {
+            profile: {
+                id: "1",
+                host: "",
+                email: "test1@test.com",
+                locale: "ru",
+                aboutMe: "",
+                birthDate: "",
+                city: "",
+                country: "",
+                facebook: "",
+                firstName: "Георгий",
+                lastName: "Старовойтов",
+                gender: "male",
+                image: {
+                    id: "",
+                    contentUrl: "",
+                },
+                instagram: "",
+                organizations: [],
+                phone: "",
+                telegram: "",
+                vk: "",
+            },
+            additionalSkills: [],
+            externalInfo: "",
+            languages: [],
+            skills: [],
+        },
+        endDate: "",
+        startDate: "",
+        vacancy: mockedOffersData[0],
+    },
+    {
+        id: 2,
+        status: "new",
+        volunteer: {
+            profile: {
+                id: "1",
+                host: "",
+                email: "test1@test.com",
+                locale: "ru",
+                aboutMe: "",
+                birthDate: "",
+                city: "",
+                country: "",
+                facebook: "",
+                firstName: "Георгий",
+                lastName: "Старовойтов",
+                gender: "male",
+                image: {
+                    id: "",
+                    contentUrl: "",
+                },
+                instagram: "",
+                organizations: [],
+                phone: "",
+                telegram: "",
+                vk: "",
+            },
+            additionalSkills: [],
+            externalInfo: "",
+            languages: [],
+            skills: [],
+        },
+        endDate: "",
+        startDate: "",
+        vacancy: mockedOffersData[0],
+    },
+    {
+        id: 3,
+        status: "accepted",
+        volunteer: {
+            profile: {
+                id: "1",
+                host: "",
+                email: "test1@test.com",
+                locale: "ru",
+                aboutMe: "",
+                birthDate: "",
+                city: "",
+                country: "",
+                facebook: "",
+                firstName: "Георгий",
+                lastName: "Старовойтов",
+                gender: "male",
+                image: {
+                    id: "",
+                    contentUrl: "",
+                },
+                instagram: "",
+                organizations: [],
+                phone: "",
+                telegram: "",
+                vk: "",
+            },
+            additionalSkills: [],
+            externalInfo: "",
+            languages: [],
+            skills: [],
+        },
+        endDate: "",
+        startDate: "",
+        vacancy: mockedOffersData[0],
+    },
+];

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Language } from "@/entities/Offer/model/types/offerWhoNeeds";
+import { Language } from "@/types/languages";
 
 export interface LanguagesProps {
     close?: ReactNode;

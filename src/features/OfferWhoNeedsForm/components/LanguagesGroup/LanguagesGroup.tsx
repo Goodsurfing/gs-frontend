@@ -4,15 +4,15 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
 import ExtraControls from "../ExtraControls/ExtraControls";
 
 import styles from "./LanguagesGroup.module.scss";
 import Languages from "../Languages/Languages";
+import { Language } from "@/types/languages";
 
 interface LanguagesGroupProps {
-    value: ILanguages;
-    onChange: (value: ILanguages) => void
+    value: Language[];
+    onChange: (value: Language[]) => void
 }
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
