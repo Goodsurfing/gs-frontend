@@ -17,6 +17,7 @@ import { organizationApi } from "./api/organizationApi";
 import { hostApi } from "@/entities/Host";
 import { offerApi } from "@/entities/Offer";
 import { authMiddleware } from "./middlewares/authMiddleware";
+import { reviewApi } from "@/entities/Review";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     [galleryApi.reducerPath]: galleryApi.reducer,
     [hostApi.reducerPath]: hostApi.reducer,
     [offerApi.reducerPath]: offerApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -46,6 +48,7 @@ export const setupStore = () => configureStore({
         galleryApi.middleware,
         hostApi.middleware,
         offerApi.middleware,
+        reviewApi.middleware,
         authMiddleware,
     ]),
 });
