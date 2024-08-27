@@ -64,7 +64,7 @@ export const hostApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
-        getMyApplications: build.query<Application[], void>({
+        getMyHostApplications: build.query<Application[], void>({
             query: () => ({
                 url: "personal/organization/forms",
                 method: "GET",
@@ -80,5 +80,5 @@ export const {
     useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
-    useGetMyApplicationsQuery,
+    useGetMyHostApplicationsQuery,
 } = hostApi;

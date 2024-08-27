@@ -1,32 +1,35 @@
 import cn from "classnames";
 import React, { FC, useState } from "react";
-import { ReactSVG } from "react-svg";
-
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import { ReactSVG } from "react-svg";
+import { ErrorType } from "@/types/api/error";
+
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
 import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
+import { useCreateApplicationFormMutation } from "@/entities/Request";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
 import chatIcon from "@/shared/assets/icons/chat.svg";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
+import { Modal } from "@/shared/ui/Modal/Modal";
 
+import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
+import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
-import { Modal } from "@/shared/ui/Modal/Modal";
-import { useCreateApplicationFormMutation } from "@/entities/Chat/api/chatApi";
-import { ChatFormFields } from "../../model/types/chatForm";
 import styles from "./Chat.module.scss";
-import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ChatProps {
     id?: string;
     offerId?: string;
-    onBackButton: (value?: string) => void
+    onBackButton: (value?: string) => void;
     className?: string;
     user: UserChatType;
     messages: MessageType[];
@@ -41,14 +44,13 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id,
-        offerId,
-        className,
-        onBackButton,
-        user,
+        id, offerId, className, onBackButton, user,
     } = props;
 
-    const { handleSubmit, control } = useForm<ChatFormFields>({ mode: "onChange", defaultValues });
+    const { handleSubmit, control } = useForm<ChatFormFields>({
+        mode: "onChange",
+        defaultValues,
+    });
 
     const isChatCreate = id === "create";
     const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
@@ -110,22 +112,27 @@ export const Chat: FC<ChatProps> = (props) => {
     };
 
     const handleVolunteerSubmitOfferApplication = handleSubmit(async (data) => {
-        const { applicationForm: { startDate, endDate } } = data;
-        if ((startDate !== undefined) && (endDate !== undefined) && (offerId)) {
+        const {
+            applicationForm: { startDate, endDate },
+        } = data;
+        if (startDate !== undefined && endDate !== undefined && offerId) {
             setToast(undefined);
             const preparedData = applicationOfferAdapter(data, offerId);
-            const result = createApplicationForm(preparedData).unwrap().then((dataApplication) => {
-                setToast({
-                    text: "Заявка успешно отправлена",
-                    type: HintType.Success,
+            const result = createApplicationForm(preparedData)
+                .unwrap()
+                .then((dataApplication) => {
+                    setToast({
+                        text: "Заявка успешно отправлена",
+                        type: HintType.Success,
+                    });
+                    return dataApplication;
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
                 });
-                return dataApplication;
-            }).catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
-            });
             if (result) {
                 // eslint-disable-next-line no-console
                 console.log(result);
@@ -141,10 +148,15 @@ export const Chat: FC<ChatProps> = (props) => {
                     control={control}
                     render={({ field: { value, onChange } }) => (
                         <OfferApplication
-                            terms={{ start: value.startDate, end: value.endDate }}
-                            onChange={({ start, end }) => onChange(
-                                { ...value, startDate: start, endDate: end },
-                            )}
+                            terms={{
+                                start: value.startDate,
+                                end: value.endDate,
+                            }}
+                            onChange={({ start, end }) => onChange({
+                                ...value,
+                                startDate: start,
+                                endDate: end,
+                            })}
                             isHost={false}
                             username="Николай Николаевич"
                             isClosed={false}
@@ -171,7 +183,9 @@ export const Chat: FC<ChatProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {toast && <HintPopup text={toast.text} type={toast.type} timeout={6000} />}
+            {toast && (
+                <HintPopup text={toast.text} type={toast.type} timeout={6000} />
+            )}
             <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
                 <div className={styles.topTab}>
                     <div className={styles.topInner}>
@@ -192,9 +206,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    <div className={styles.chatList}>
-                        {renderChat()}
-                    </div>
+                    <div className={styles.chatList}>{renderChat()}</div>
                 </div>
                 <SendMessage disabled={isChatCreate} />
             </div>
@@ -205,7 +217,11 @@ export const Chat: FC<ChatProps> = (props) => {
             />
             {selectedImage && (
                 <Modal onClose={onClosePopup}>
-                    <img src={selectedImage} className={styles.imagePopup} alt="" />
+                    <img
+                        src={selectedImage}
+                        className={styles.imagePopup}
+                        alt=""
+                    />
                 </Modal>
             )}
         </div>

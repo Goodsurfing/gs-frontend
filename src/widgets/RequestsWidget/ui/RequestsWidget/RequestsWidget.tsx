@@ -6,7 +6,7 @@ import { RequestCard } from "@/entities/Request";
 
 import Button from "@/shared/ui/Button/Button";
 
-import { useGetMyApplicationsQuery } from "@/entities/Host/api/hostApi";
+import { useGetMyHostApplicationsQuery } from "@/entities/Host";
 import styles from "./RequestsWidget.module.scss";
 
 interface RequestsWidgetProps {
@@ -15,7 +15,10 @@ interface RequestsWidgetProps {
 
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className } = props;
-    const { data: applications, isLoading: isApplicationsLoading } = useGetMyApplicationsQuery();
+    const {
+        data: applications,
+        isLoading: isApplicationsLoading,
+    } = useGetMyHostApplicationsQuery();
     const { t } = useTranslation("host");
 
     const renderRequests = () => {

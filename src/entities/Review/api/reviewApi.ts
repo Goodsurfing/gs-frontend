@@ -52,6 +52,7 @@ export const reviewApi = createApi({
 export const {
     useCreateVolunteerReviewMutation,
     useGetVolunteerReviewByIdQuery,
+    useLazyGetVolunteerReviewByIdQuery,
     useGetVolunteerReviewsByIdQuery,
     useUpdateVolunteerReviewByIdMutation,
 } = reviewApi;

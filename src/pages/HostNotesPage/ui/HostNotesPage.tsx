@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-
 import { useTranslation } from "react-i18next";
+
 import { NotesWidget } from "@/widgets/NotesWidget";
 
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { useGetMyApplicationsQuery } from "@/entities/Host/api/hostApi";
-import styles from "./HostNotesPage.module.scss";
-import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
-import { RequestCard } from "@/entities/Request";
+import { useGetMyHostApplicationsQuery } from "@/entities/Host";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
+import { RequestCard } from "@/entities/Request";
+
+import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import styles from "./HostNotesPage.module.scss";
 
 const HostNotesPage = () => {
     const { t, ready } = useTranslation();
-    const { data: applications, isLoading } = useGetMyApplicationsQuery();
+    const { data: applications, isLoading } = useGetMyHostApplicationsQuery();
     const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
         null,
     );

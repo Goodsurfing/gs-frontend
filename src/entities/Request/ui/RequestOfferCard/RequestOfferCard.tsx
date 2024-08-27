@@ -19,7 +19,7 @@ import styles from "./RequestOfferCard.module.scss";
 interface RequestOfferCardProps {
     application: Application;
     className?: string;
-    onReviewClick: (id: number) => void;
+    onReviewClick?: (id: number) => void;
     showStatus?: boolean;
     showButtons?: boolean;
 }
@@ -96,7 +96,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                                 color="BLUE"
                                 size="SMALL"
                                 variant="OUTLINE"
-                                onClick={() => onReviewClick(application.id)}
+                                onClick={() => onReviewClick?.(application.id)}
                             >
                                 {t("notes.Написать отзыв")}
                             </Button>
