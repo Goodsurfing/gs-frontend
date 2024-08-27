@@ -5,11 +5,11 @@ import { ErrorType } from "@/types/api/error";
 import { NotesWidget } from "@/widgets/NotesWidget";
 
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
-import { VolunteerModalReview } from "@/entities/Review";
 import {
+    VolunteerModalReview,
     useCreateVolunteerReviewMutation,
     useLazyGetVolunteerReviewByIdQuery,
-} from "@/entities/Review/api/reviewApi";
+} from "@/entities/Review";
 
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getErrorText } from "@/shared/lib/getErrorText";
