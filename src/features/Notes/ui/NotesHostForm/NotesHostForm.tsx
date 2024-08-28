@@ -4,7 +4,7 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { NotesWidget } from "@/widgets/NotesWidget";
 
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
-import { VolunteerModalReview } from "@/entities/Review";
+import { HostModalReview } from "@/entities/Review";
 
 import {
     HintType,
@@ -23,8 +23,7 @@ export const NotesHostForm = () => {
         },
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [toast, setToast] = useState<ToastAlert>();
+    const [toast] = useState<ToastAlert>();
     const form = useForm<VolunteerReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -59,7 +58,7 @@ export const NotesHostForm = () => {
                 name="volunteerReview"
                 control={control}
                 render={({ field }) => (
-                    <VolunteerModalReview // change logic for host modal review
+                    <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
                         application={mockedApplications[0]}

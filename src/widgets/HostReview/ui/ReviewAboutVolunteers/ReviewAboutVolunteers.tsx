@@ -7,7 +7,7 @@ import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
 import { Application } from "@/entities/Host";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
-import { VolunteerModalReview } from "@/entities/Review";
+import { HostModalReview } from "@/entities/Review";
 
 import {
     HintType,
@@ -71,7 +71,7 @@ export const ReviewAboutVolunteers: FC = () => {
                 name="hostReview"
                 control={control}
                 render={({ field }) => (
-                    <VolunteerModalReview
+                    <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
                         application={mockedApplications[0]}

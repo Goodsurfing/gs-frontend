@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { Application } from "@/entities/Host";
-import { RequestOfferCard } from "@/entities/Request";
-import { VolunteerReviewTypeFields } from "@/features/Notes";
+import { RequestCard } from "@/entities/Request";
+import { HostReviewTypeFields } from "@/features/Notes";
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 
-interface VolunteerModalReviewProps {
+interface HostModalReviewProps {
     application: Application;
-    value: VolunteerReviewTypeFields;
-    onChange: (value: VolunteerReviewTypeFields) => void;
+    value: HostReviewTypeFields;
+    onChange: (value: HostReviewTypeFields) => void;
     isOpen: boolean;
     onClose: () => void;
     sendReview: () => void;
@@ -15,7 +15,7 @@ interface VolunteerModalReviewProps {
     errorText?: string;
 }
 
-export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
+export const HostModalReview: FC<HostModalReviewProps> = (props) => {
     const {
         application, value, onChange, isOpen, onClose, sendReview, successText, errorText,
     } = props;
@@ -35,7 +35,7 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
             successText={successText}
             errorText={errorText}
         >
-            <RequestOfferCard
+            <RequestCard
                 application={application}
                 showButtons={false}
                 showStatus={false}
