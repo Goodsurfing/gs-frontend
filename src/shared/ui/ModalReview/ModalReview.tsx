@@ -41,9 +41,6 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     const {
         stars, text,
     } = value;
-    // const [ratingValue, setRatingValue] = useState<number | null>(null);
-    // const [textReview, setTextReview] = useState<string>("");
-    // const [isReviewSended, setReviewSended] = useState<boolean>(false);
 
     if (!isOpen) {
         return null;
@@ -99,6 +96,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                     variant="FILL"
                     size="MEDIUM"
                     color="BLUE"
+                    disabled={!stars || !text}
                 >
                     Оставить отзыв
                 </Button>
