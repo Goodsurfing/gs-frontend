@@ -1,5 +1,6 @@
 import React, {
     FC, PropsWithChildren, memo, useEffect,
+    useRef,
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -17,16 +18,23 @@ interface ModalProps {
 export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
     (props: PropsWithChildren<ModalProps>) => {
         const { onClose, children, isShowCloseIcon = true } = props;
-        const modal = document.createElement("modal");
+
+        const modalRef = useRef<HTMLDivElement | null>(null);
+
+        if (!modalRef.current) {
+            modalRef.current = document.createElement("div");
+            modalRef.current.className = "modal";
+        }
 
         useEffect(() => {
+            const modal = modalRef.current!;
             document.body.appendChild(modal);
             document.body.style.overflow = "hidden";
             return () => {
                 document.body.removeChild(modal);
                 document.body.style.overflow = "";
             };
-        }, [modal]);
+        }, []);
 
         return createPortal(
             <div className={styles.wrapper} onClick={onClose}>
@@ -43,7 +51,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
                     {children}
                 </div>
             </div>,
-            modal,
+            modalRef.current,
         );
     },
 );

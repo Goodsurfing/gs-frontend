@@ -1,11 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
-import { Review } from "@/types/review";
 
-import { HostReviewFields } from "@/features/Notes";
-import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
+import { NotesWidget } from "@/widgets/NotesWidget";
 
-import { Application } from "@/entities/Host";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { HostModalReview } from "@/entities/Review";
 
@@ -13,30 +10,28 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { fakeUserData } from "../../model/data/mockedUsersData";
-import styles from "./ReviewAboutVolunteers.module.scss";
+import { VolunteerReviewFields } from "../../model/types/notes";
+import styles from "./NotesHostForm.module.scss";
+import { useGetMyHostApplicationsQuery } from "@/entities/Host";
 
-export const ReviewAboutVolunteers: FC = () => {
-    const defaultValues: DefaultValues<HostReviewFields> = {
-        hostReview: {
+export const NotesHostForm = () => {
+    const defaultValues: DefaultValues<VolunteerReviewFields> = {
+        volunteerReview: {
             stars: undefined,
             text: "",
         },
     };
+
     const [toast] = useState<ToastAlert>();
-    const form = useForm<HostReviewFields>({
+    const form = useForm<VolunteerReviewFields>({
         mode: "onChange",
         defaultValues,
     });
     const { handleSubmit, control } = form;
+    const { data: applications } = useGetMyHostApplicationsQuery();
     const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
         null,
-    );
-
-    const renderFullCards = (reviews: Review[]) => reviews.map(
-        (review) => <ReviewFullCard review={review} />,
     );
 
     const onReviewClick = (id: number) => {
@@ -47,28 +42,20 @@ export const ReviewAboutVolunteers: FC = () => {
         setSelectedReviewId(null);
     };
 
-    const onSendReview = handleSubmit(() => {});
+    const onSendReview = handleSubmit(() => {
+    });
 
     return (
-        <div className={styles.wrapper}>
-            <h3 className={styles.h3}>Отзывы про волонтёров</h3>
-            <p className={styles.description}>
-                Волонтёры, которых вы недавно принимали
-            </p>
-            <VerticalSlider
-                classNameSlide={styles.swiperSlide}
-                classNameWrapper={styles.swiperWrapper}
-                className={styles.slider}
-                data={mockedApplications}
-                renderItem={(item: Application) => (
-                    <ReviewMiniCard data={item} onReviewClick={onReviewClick} variant="volunteer" key={item.id} />
-                )}
+        <div>
+            <NotesWidget
+                className={styles.notes}
+                notes={applications ?? []}
+                variant="host"
+                onReviewClick={onReviewClick}
+                isDragDisable
             />
-            <div className={styles.fullCardContainer}>
-                {renderFullCards(fakeUserData)}
-            </div>
             <Controller
-                name="hostReview"
+                name="volunteerReview"
                 control={control}
                 render={({ field }) => (
                     <HostModalReview

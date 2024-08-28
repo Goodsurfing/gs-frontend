@@ -21,6 +21,8 @@ export const RequestCard = memo((props: RequestCardProps) => {
     const {
         className,
         application,
+        showStatus = true,
+        showButtons = true,
     } = props;
     const { locale } = useLocale();
     const { volunteer, vacancy, status } = application;
@@ -28,9 +30,11 @@ export const RequestCard = memo((props: RequestCardProps) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.cardHead}>
-                <div className={cn(styles.notification, styles[status])}>
-                    {t(`notes.${status}`)}
-                </div>
+                {showStatus && (
+                    <div className={cn(styles.notification, styles[status])}>
+                        {t(`notes.${status}`)}
+                    </div>
+                )}
                 <Avatar
                     icon={getMediaContent(application.volunteer.profile.image?.contentUrl)}
                     className={styles.image}
@@ -48,7 +52,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 </Link>
             </div>
             <div className={styles.buttons}>
-                {status === "accepted" && (
+                {((showButtons) && (status === "accepted")) && (
                     <>
                         <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>{t("notes.Сообщение")}</ButtonLink>
                         <ButtonLink className={styles.button} type="outlined" path={getMainPageUrl(locale)}>{t("notes.Написать отзыв")}</ButtonLink>

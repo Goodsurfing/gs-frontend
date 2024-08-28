@@ -17,6 +17,7 @@ interface NotesContainerProps {
     status: OfferState;
     isDragDisable: boolean;
     variant: VariantType;
+    onReviewClick: (id: number) => void;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
@@ -28,6 +29,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             status,
             isDragDisable,
             variant,
+            onReviewClick,
         } = props;
         const { t } = useTranslation();
 
@@ -45,6 +47,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             }
             return notes.map((application, index) => (
                 <NotesCard
+                    onReviewClick={onReviewClick}
                     key={application.id}
                     application={application}
                     className={styles.noteCard}

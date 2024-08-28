@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { PropsWithChildren, memo } from "react";
+import { MouseEventHandler, PropsWithChildren, memo } from "react";
 
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
@@ -9,6 +9,7 @@ export interface ButtonLinkProps {
     type: "primary" | "secondary" | "outlined";
     path: string;
     className?: string;
+    onClick?: MouseEventHandler<HTMLAnchorElement>
 }
 
 const ButtonLink = memo(({
@@ -16,8 +17,10 @@ const ButtonLink = memo(({
     path,
     className,
     children,
+    onClick,
 }: PropsWithChildren<ButtonLinkProps>) => (
     <LocaleLink
+        onClick={onClick}
         to={path}
         className={cn(
             className,

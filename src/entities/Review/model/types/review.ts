@@ -5,3 +5,10 @@ export interface Review {
     name: string;
     date: string;
 }
+
+export interface ApplicationReview {
+    id: number;
+    stars: number;
+    applicationForm: string;
+    text: string;
+}
