@@ -19,6 +19,16 @@ interface GetHostsResponse {
     list: Host[];
 }
 
+interface CreateMemberOrganizationParams {
+    organizationId: string;
+    formData: FormData;
+}
+
+interface MemberOrganizationResponse {
+    id: number;
+    profile: string;
+}
+
 export const hostApi = createApi({
     reducerPath: "hostApi",
     baseQuery: baseQueryAcceptJson,
@@ -70,6 +80,15 @@ export const hostApi = createApi({
                 method: "GET",
             }),
             providesTags: ["host"],
+        }),
+        addMemberToOrganization: build.mutation<MemberOrganizationResponse,
+        CreateMemberOrganizationParams>({
+            query: ({ organizationId, formData }) => ({
+                url: `organization/${organizationId}/members`,
+                method: "POST",
+                body: formData,
+            }),
+            invalidatesTags: ["host"],
         }),
     }),
 });
