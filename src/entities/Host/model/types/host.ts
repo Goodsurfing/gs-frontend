@@ -40,6 +40,11 @@ export interface Application {
     status: OfferState;
 }
 
+export interface HostMember {
+    id: number;
+    profile: string;
+}
+
 export interface TeamUser {
     id: number;
     name: string;
