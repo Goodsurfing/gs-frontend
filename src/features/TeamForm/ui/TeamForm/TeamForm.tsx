@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 
 import {
@@ -30,6 +31,8 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
     const { hostId } = props;
     const [toast, setToast] = useState<ToastAlert>();
     const { control } = useForm({ mode: "onChange" });
+    const { t, ready } = useTranslation("host");
+
     const {
         data: hostMembers,
         isLoading: isMembersLoading,
@@ -45,7 +48,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Участник был добавлен",
+                        text: t("hostTeam.Участник был добавлен"),
                         type: HintType.Success,
                     });
                 })
@@ -56,7 +59,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                     });
                 });
         },
-        [deleteMember, hostId, isDeleteLoading],
+        [deleteMember, hostId, isDeleteLoading, t],
     );
 
     const renderTeamUsers = (users: HostMember[] | undefined) => {
@@ -64,11 +67,11 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
             return <MiniLoader />;
         }
         if (isError) {
-            return <InfoText>Произошла ошибка</InfoText>;
+            return <InfoText>{t("hostTeam.Произошла ошибка")}</InfoText>;
         }
         if (!users) return null;
 
-        if (!users.length) return <InfoText>Команда не была заполнена</InfoText>;
+        if (!users.length) return <InfoText>{t("hostTeam.Команда не была заполнена")}</InfoText>;
 
         return users.map((teamUser) => (
             <TeamCard
@@ -78,6 +81,14 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
             />
         ));
     };
+
+    if (!ready) {
+        return (
+            <div className={styles.wrapper}>
+                <MiniLoader />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.wrapper}>

@@ -14,6 +14,15 @@
         "Отзывы": "Reviews",
         "Заявки": "Applications"
     },
+    "hostTeam": {
+        "Произошла ошибка": "An error occurred",
+        "Команда не была заполнена": "The team has not been filled",
+        "Добавить участника": "Add a member",
+        "Команда организации": "Organization team",
+        "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site.",
+        "Участник был добавлен": "Member was added",
+        "Введите ФИО участника": "Enter the participant's full name"
+    },
     "personalHost": {
         "Написать организатору": "Contact the organizer",
         "Организация/": "Organization/",

@@ -2,6 +2,7 @@ import {
     memo, useCallback, useRef,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Input from "@/shared/ui/Input/Input";
 
@@ -18,6 +19,7 @@ export interface TeamInputProps {
 export const TeamInput = memo(
     ({ inputValue, onInputChange, teamUsers }: TeamInputProps) => {
         const dropwownRef = useRef(null);
+        const { t } = useTranslation("host");
 
         const handleInputChange = useCallback(
             (value: string) => {
@@ -51,7 +53,7 @@ export const TeamInput = memo(
         return (
             <div className={styles.wrapper}>
                 <label htmlFor="input" className={styles.text}>
-                    Введите ФИО участника
+                    {t("hostTeam.Введите ФИО участника")}
                 </label>
                 <div className={styles.contentWrapper}>
                     <div className={styles.inputContainer}>
@@ -71,7 +73,7 @@ export const TeamInput = memo(
                     </div>
                     <AddButton
                         disabled={!inputValue}
-                        text="Добавить участника"
+                        text={t("hostTeam.Добавить участника")}
                     />
                 </div>
             </div>
