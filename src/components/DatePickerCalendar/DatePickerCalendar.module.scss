@@ -13,6 +13,14 @@
     visibility: hidden;
 }
 
+.input {
+    cursor: pointer;
+}
+
+.input:focus, .input:hover  {
+    outline: none;
+}
+
 .input.disabled {
     pointer-events: none;
 }

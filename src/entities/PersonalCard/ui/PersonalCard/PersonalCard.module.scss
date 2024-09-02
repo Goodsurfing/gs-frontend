@@ -18,7 +18,7 @@
     width: 100%;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 500px;
+    min-height: 560px;
 }
 
 .content {
@@ -50,6 +50,8 @@
         color: var(--text-secondary-1);
     }
 
+    
+
     .star {
         fill: #FED81C;
         width: 13px;
@@ -58,7 +60,6 @@
 
     .info {
         display: flex;
-        align-items: center;
         gap: 16px;
     }
 
@@ -73,6 +74,10 @@
     .location {
         font: var(--font-primary);
         color: var(--text-secondary-1);
+    }
+    
+    .black {
+        color: var(--text-secondary-2);
     }
 }
 

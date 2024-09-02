@@ -1,43 +1,57 @@
-import React, { FC, memo, useMemo } from "react";
-
-import image from "@/shared/assets/images/default-offer-image.svg";
+import React, {
+    FC, memo,
+} from "react";
 
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
-import { MyOffers } from "@/entities/Offer";
+import { Offer } from "@/entities/Offer";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./HostOffersList.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
 interface HostOffersListProps {
-    offers?: MyOffers
+    offers?: Offer[]
+    onCloseClick: (value: number) => void;
+    onEveryOpenClick: (value: number) => void;
 }
 
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
-    const { offers } = props;
-    const renderMyOffers = useMemo(() => {
-        if (!offers || !offers.list || !offers.list.length) {
+    const {
+        offers, onCloseClick, onEveryOpenClick,
+    } = props;
+    const { getTranslation } = useCategories();
+
+    const renderMyOffers = () => {
+        if (!offers || !offers.length) {
             return <span>Нет списка вакансий</span>;
         }
 
-        return offers.list.map((offer, index) => (
-            <HostOffersPageCard
-                id={offer.id}
-                title={offer.title}
-                description={offer.description}
-                image={image}
-                location={offer.location}
-                category={offer.category}
-                rating={String(offer.rating)}
-                likes={String(offer.likes)}
-                reviews={String(offer.reviews)}
-                went={String(offer.acceptedRequests)}
-                status={offer.status}
-                key={index}
-            />
-        ));
-    }, [offers]);
+        return offers.map((offer, index) => {
+            const mediaObjectCover = getMediaContent(offer.description?.image);
+            return (
+                <HostOffersPageCard
+                    id={offer.id}
+                    title={offer?.description?.title}
+                    description={offer?.description?.shortDescription}
+                    image={mediaObjectCover}
+                    location={offer?.where?.address}
+                    category={getTranslation(offer.description?.categoryIds[0])}
+                    rating="5"
+                    likes="4"
+                    reviews="2"
+                    went="8"
+                    status={offer.status}
+                    key={index}
+                    onCloseClick={() => onCloseClick(offer.id)}
+                    onEveryOpenClick={() => onEveryOpenClick(offer.id)}
+                    isEveryOpenActive={offer.status === "every_open"}
+                />
+            );
+        });
+    };
 
     return (
         <div className={styles.wrapper}>
-            {renderMyOffers}
+            {renderMyOffers()}
         </div>
     );
 });

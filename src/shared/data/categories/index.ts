@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import { InviteCategoryType } from "../model/types/offerCategory";
+import { InviteCategoryType } from "./model/types/offerCategory";
 
-export const useTags = () => {
+export const useCategories = () => {
     const { t } = useTranslation("translation");
     const tags: InviteCategoryType[] = [
         {
@@ -67,5 +67,30 @@ export const useTags = () => {
         },
     ];
 
-    return { tags };
+    const getTranslation = (category: string | undefined): string | undefined => {
+        const translations: Record<string, string> = {
+            hostels: t("category-offer.Хостелы"),
+            reserves_and_parks: t("category-offer.Заповедники и парки"),
+            farm: t("category-offer.Ферма"),
+            animals: t("category-offer.Животные"),
+            teaching: t("category-offer.Преподавание"),
+            children: t("category-offer.Дети"),
+            charity: t("category-offer.Благотворительность"),
+            sports: t("category-offer.Спорт"),
+            art: t("category-offer.Искусство"),
+            archeology: t("category-offer.Археология"),
+            online: t("category-offer.Онлайн"),
+            other: t("category-offer.Другое"),
+        };
+        if (category) {
+            return translations[category];
+        }
+    };
+
+    const getColorByCategory = (category: string): string | undefined => {
+        const tag = tags.find((tagItem) => tagItem.value === category);
+        return tag?.color;
+    };
+
+    return { tags, getTranslation, getColorByCategory };
 };

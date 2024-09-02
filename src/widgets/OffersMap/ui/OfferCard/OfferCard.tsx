@@ -5,6 +5,7 @@ import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
 import styles from "./OfferCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OfferCardProps {
     data: Offer;
@@ -16,15 +17,14 @@ interface OfferCardProps {
 export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
         data: {
-            description: {
-                title, imageId, categoryIds, shortDescription,
-            },
-            where: { address },
+            description,
+            where,
         },
         status,
         className,
         classNameCard,
     } = props;
+    const imageCover = getMediaContent(description?.image);
     return (
         <div
             className={cn(styles.wrapper, className, {
@@ -32,11 +32,11 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             })}
         >
             <OfferCardComponent
-                title={title}
-                description={shortDescription}
-                category={categoryIds[0]}
-                image={imageId}
-                location={address || ""}
+                title={description?.title}
+                description={description?.shortDescription}
+                category={description?.categoryIds[0]}
+                image={imageCover}
+                location={where?.address || ""}
                 likes="5"
                 rating="10"
                 reviews="8"

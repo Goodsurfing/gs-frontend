@@ -20,7 +20,12 @@ export const AgeComponent: FC<AgeProps> = (props) => {
 
     const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value > 100 || !/^[0-9]+$/.test(e.target.value)) {
-            return;
+            // return;
+            onChange({
+                ...value,
+                maxAge: MINIMAL_AGE_FOR_VOLUNTEER,
+                minAge: MINIMAL_AGE_FOR_VOLUNTEER,
+            });
         }
 
         if (+e.target.value >= value.maxAge) {
@@ -31,28 +36,26 @@ export const AgeComponent: FC<AgeProps> = (props) => {
     };
 
     const onFromMinAgeBlur = () => {
-        if (value.minAge < MINIMAL_AGE_FOR_VOLUNTEER) {
-            onChange({ ...value, minAge: MINIMAL_AGE_FOR_VOLUNTEER });
+        if ((value.minAge < MINIMAL_AGE_FOR_VOLUNTEER) || (value.minAge > 100)) {
+            onChange({
+                ...value,
+                minAge: MINIMAL_AGE_FOR_VOLUNTEER,
+                maxAge: MINIMAL_AGE_FOR_VOLUNTEER,
+            });
         }
     };
 
     const onFromMaxAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value > 100) {
-            return;
+            onChange({ ...value, maxAge: MINIMAL_AGE_FOR_VOLUNTEER });
         }
-
-        if (+e.target.value < value.minAge) {
-            onChange({ ...value, maxAge: +e.target.value, minAge: MINIMAL_AGE_FOR_VOLUNTEER });
-        } else {
-            onChange({ ...value, maxAge: +e.target.value });
-        }
+        onChange({ ...value, maxAge: +e.target.value });
     };
 
     const onFromMaxAgeBlur = () => {
-        if (value.maxAge < value.minAge) {
+        if ((value.maxAge < value.minAge) || (value.maxAge > 100)) {
             onChange({
                 ...value,
-                maxAge: MINIMAL_AGE_FOR_VOLUNTEER,
                 minAge: MINIMAL_AGE_FOR_VOLUNTEER,
             });
         }

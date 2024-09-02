@@ -1,13 +1,6 @@
+import { Language } from "@/types/languages";
+
 export type Gender = "female" | "male" | "other";
-
-export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_intermediate" | "upper_intermediate" | "advanced" | "proficiency";
-
-export interface Language {
-    language: string;
-    level: LevelLanguage
-}
-
-export type Languages = Language[];
 
 export type ReceptionPlace = "any" | "foreigners" | "compatriot";
 
@@ -17,24 +10,12 @@ export interface Age {
 }
 
 export interface OfferWhoNeeds {
-    genders: Gender[];
-    ageMax: number;
-    ageMin: number;
-    needAllLanguages: boolean,
-    languages: Languages;
-    volunteerPlaces: number;
-    receptionPlace: ReceptionPlace;
-    additionalInfo?: string;
-}
-
-export interface OfferWhoNeedsApi {
-    id: string;
     gender: Gender[];
     ageMax: number;
     ageMin: number;
     needAllLanguages: boolean,
-    languages: Languages;
+    requiredLanguages: Language[];
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
-    additionalInfo?: string;
+    additionalInfo: string;
 }

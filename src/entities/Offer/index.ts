@@ -1,26 +1,28 @@
 export {
     offerApi,
     useCreateOfferMutation,
-    useUpdateWhereMutation,
+    useUpdateOfferMutation,
+    useDeleteOfferMutation,
+    useGetHostOffersByIdQuery,
+    useGetOfferByIdQuery,
+    useLazyGetHostOffersByIdQuery,
+    useLazyGetOfferByIdQuery,
 } from "./api/offerApi";
 
 export type {
-    Offer, OfferSchema, SortValue, AddressAutoComplete, MyOffers,
+    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization,
 } from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";
 
 export type {
-    OfferWhen, OfferWhenPeriods, OfferWhenApi, OfferWhenPeriodsApi,
+    OfferWhen, OfferWhenPeriods,
 } from "./model/types/offerWhen";
 
 export type {
     Gender,
-    Languages,
     ReceptionPlace,
     OfferWhoNeeds,
-    OfferWhoNeedsApi,
-    LevelLanguage,
 } from "./model/types/offerWhoNeeds";
 
 export type {
@@ -31,7 +33,6 @@ export type {
 export type {
     TimeType,
     WorkSettings,
-    OfferWhatToDoSkillType,
     OfferWhatToDoSkill,
     OfferWhatToDo,
     OfferWhatToDoApi,
@@ -52,7 +53,6 @@ export type {
 export type {
     ExtraConditions,
     OfferFinishingTouches,
-    OfferFinishingTouchesApi,
 } from "./model/types/offerFinishingTouches";
 
 export type { OfferStatus, OfferState } from "./model/types/offerStatus";

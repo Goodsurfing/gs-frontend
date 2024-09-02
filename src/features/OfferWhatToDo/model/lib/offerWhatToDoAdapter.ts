@@ -1,4 +1,4 @@
-import { OfferWhatToDo, OfferWhatToDoApi } from "@/entities/Offer";
+import { OfferWhatToDo } from "@/entities/Offer";
 
 import { OfferWhatToDoFormFields } from "../types/offerWhatToDo";
 
@@ -18,7 +18,7 @@ export const offerWhatToDoApiAdapter = (
     );
 
     return {
-        skillIds: skillsTemp,
+        skills: skillsTemp,
         additionalSkills: additionalSkillsTemp,
         hours,
         dayOff,
@@ -28,7 +28,7 @@ export const offerWhatToDoApiAdapter = (
 };
 
 export const offerWhatToDoAdapter = (
-    offerWhatToDo: OfferWhatToDoApi,
+    offerWhatToDo: OfferWhatToDo,
 ): OfferWhatToDoFormFields => {
     const {
         dayOff, hours, skills, timeType, additionalSkills, externalInfo,

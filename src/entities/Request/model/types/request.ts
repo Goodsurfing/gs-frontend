@@ -1,9 +1,7 @@
-import { Profile } from "@/entities/Profile";
-
-export type NotificationType = "new" | "seen" | "done";
+import { Application } from "@/entities/Host";
 
 export interface Request {
-    user: Profile;
-    notificationType: NotificationType;
-    article: string;
+    application: Application;
+    showStatus?: boolean;
+    showButtons?: boolean;
 }

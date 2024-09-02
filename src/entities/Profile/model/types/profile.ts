@@ -1,5 +1,4 @@
 import { Host } from "@/entities/Host";
-import { Volunteer } from "@/entities/Volunteer";
 
 export type Gender = "male" | "female" | "other";
 
@@ -14,14 +13,20 @@ export interface Profile {
     country?: string;
     city?: string;
     phone?: string;
-    imageUuid?: string;
+    image?: ImageType;
     aboutMe?: string;
     vk?: string;
     facebook?: string;
     instagram?: string;
     telegram?: string;
     organizations?: Host[] | [];
-    volunteer?: Volunteer;
+    host?: string;
+    // volunteer?: Volunteer;
+}
+
+export interface ImageType {
+    id: string;
+    contentUrl: string;
 }
 
 export interface ProfileSchema {

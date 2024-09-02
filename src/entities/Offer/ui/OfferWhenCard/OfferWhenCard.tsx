@@ -1,10 +1,13 @@
 import cn from "classnames";
 import { memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { OfferWhen } from "../../model/types/offerWhen";
 import styles from "./OfferWhenCard.module.scss";
+import { formatDate } from "@/shared/lib/formatDate";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferWhenProps {
     className?: string;
@@ -15,28 +18,30 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
     const period = periods?.[0];
     const offerPeriodStart = (period && period.start) ? period.start : "Точная дата не указана";
-    const offerPeriodEnd = (period && period.end) ? period.end : "Точная дата не указана";
+    const offerPeriodEnd = (period && period.ending) ? period.ending : "Точная дата не указана";
+    const { locale } = useLocale();
+    const { t } = useTranslation("offer");
 
     return (
         <div className={cn(className)}>
             <InfoCard>
                 <InfoCardItem
                     className={styles.left}
-                    title="Когда"
-                    text={offerPeriodStart}
+                    title={t("personalOffer.Когда")}
+                    text={formatDate(locale, offerPeriodStart)}
                 />
                 <div className={styles.right}>
                     <InfoCardItem
-                        title="Минимум дней"
+                        title={t("personalOffer.Минимум дней")}
                         text={durationMinDays}
                     />
                     <InfoCardItem
-                        title="Максимум дней"
+                        title={t("personalOffer.Максимум дней")}
                         text={durationMaxDays}
                     />
                     <InfoCardItem
-                        title="Прием заявок до"
-                        text={offerPeriodEnd}
+                        title={t("personalOffer.Прием заявок до")}
+                        text={formatDate(locale, offerPeriodEnd)}
                     />
                 </div>
             </InfoCard>

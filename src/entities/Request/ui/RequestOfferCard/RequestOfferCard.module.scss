@@ -1,6 +1,5 @@
 .wrapper {
     width: 100%;
-    // max-width: 247px;
     min-height: 100px;
     border: 1px solid var(--accent-elements);
     padding: 14px;
@@ -57,10 +56,27 @@
     color: var(--text-primary-1);
 }
 
+.new {
+    background-color: var(--color-blue);
+}
+
+.canceled {
+    background-color: var(--color-pink);
+}
+
+.accepted {
+    background-color: var(--color-green);
+}
+
 .button {
     width: 100%;
     height: min-content;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding: 7px;
     margin-top: 14px;
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
 }

@@ -30,7 +30,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     calendarWrapperClassName,
     min,
     max,
-    inputDisabled = true,
+    inputDisabled = false,
     isScrollTo = false,
 }) => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -127,7 +127,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             ref={elementRef}
         >
             <input
-                disabled={inputDisabled}
+                readOnly
                 type="text"
                 value={inputValue}
                 placeholder="Не задано"
@@ -147,16 +147,18 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                 )}
                 onClick={(event) => { event.stopPropagation(); }}
             >
-                <CalendarComponent
-                    locale={locale}
-                    className={cn(calendarClassName, styles.calendar)}
-                    value={inputValueDate || new Date()}
-                    onChange={(date: Date) => {
-                        handleChange(date);
-                    }}
-                    minDate={min}
-                    maxDate={max}
-                />
+                {!inputDisabled && (
+                    <CalendarComponent
+                        locale={locale}
+                        className={cn(calendarClassName, styles.calendar)}
+                        value={inputValueDate || new Date()}
+                        onChange={(date: Date) => {
+                            handleChange(date);
+                        }}
+                        minDate={min}
+                        maxDate={max}
+                    />
+                )}
             </div>
         </div>
     );

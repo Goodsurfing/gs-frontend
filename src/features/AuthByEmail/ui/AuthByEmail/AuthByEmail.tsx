@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./AuthByEmail.module.scss";
@@ -16,15 +17,20 @@ export const AuthByEmail = memo(() => {
     const onSuccess = useCallback(() => {
         navigate(getProfileInfoPageUrl(locale));
     }, [locale, navigate]);
+    const { t, ready } = useTranslation();
 
     const onError = useCallback(() => {
         setError(true);
     }, []);
 
+    if (!ready) {
+        return null;
+    }
+
     return (
         <div className={styles.wrapper}>
-            {error && <HintPopup text="Ошибка авторизации" type={HintType.Error} />}
-            <h2 className={styles.title}>Вход</h2>
+            {error && <HintPopup text={t("login.Ошибка авторизации")} type={HintType.Error} />}
+            <h2 className={styles.title}>{t("login.Вход")}</h2>
             <AuthByEmailForm
                 className={styles.form}
                 onSuccess={onSuccess}
@@ -34,9 +40,10 @@ export const AuthByEmail = memo(() => {
                 <SocialAuthContainer />
             </div>
             <div className={styles.redirect}>
-                Не зарегистрированы на Гудсерфинге?
+                {t("login.Не зарегистрированы на Гудсерфинге?")}
+                {" "}
                 <LocaleLink to={getSignUpPageUrl(locale)}>
-                    Зарегистрироваться.
+                    {t("login.Зарегистрироваться")}
                 </LocaleLink>
             </div>
         </div>

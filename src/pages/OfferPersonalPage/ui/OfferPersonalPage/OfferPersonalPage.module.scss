@@ -5,7 +5,7 @@
 }
 
 .content {
-    padding: 36px 50px 70px 36px;
+    padding: 36px 50px 50px 50px;
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -13,18 +13,10 @@
     justify-content: center;
 }
 
-.navMenu {
-    // margin-top: 55px;
-    padding: 26px 50px 16px 50px;
-    position: sticky;
-    top: 5.563rem;
-    z-index: 4;
-}
-
-.button {
-    width: 100%;
-    max-width: 150px;
-    max-height: 36px;
+.error {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {

@@ -32,10 +32,11 @@ export const StatsChart = memo((props: StatsChartProps) => {
             data: degrees,
             backgroundColor: ["#22E0A5", "#DFE6EB"],
         }],
+
     };
 
     const options = {
-        responive: true,
+        responsive: true,
         elements: {
             center: {
                 text,

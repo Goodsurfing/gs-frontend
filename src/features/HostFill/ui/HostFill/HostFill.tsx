@@ -9,6 +9,7 @@ import { StatsChartPoints, StatsPoints } from "@/entities/Stats";
 import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 import { EditHost } from "../EditHost/EditHost";
 import { CreateHost } from "../CreateHost/CreateHost";
+import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 
 interface HostFillProps {
     className?: string;
@@ -16,10 +17,9 @@ interface HostFillProps {
 
 export const HostFill = memo((props: HostFillProps) => {
     const { className } = props;
-
-    // const { host, isLoading, error } = useGetUserHostInfo();
+    const { data: getHost } = useGetMyHostQuery();
     const { profile, isLoading, error } = useUser();
-    const host = profile?.organizations?.[0];
+    const host = profile?.host;
 
     if (isLoading) {
         return (
@@ -58,7 +58,7 @@ export const HostFill = memo((props: HostFillProps) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
-                <HostFillTitle isLoading={isLoading} text={host?.name} />
+                <HostFillTitle isLoading={isLoading} text={getHost?.name} />
             </div>
             <div className={styles.bottom}>
                 <div className={styles.leftSide}>

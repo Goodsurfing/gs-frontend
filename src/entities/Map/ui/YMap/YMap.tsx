@@ -1,4 +1,6 @@
-import React, { FC, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { Map, YMaps } from "@pbe/react-yandex-maps";
 import classNames from "classnames";
 import { YMapsModules } from "@pbe/react-yandex-maps/typings/util/typing";
@@ -14,6 +16,7 @@ export interface MapProps {
     className?: string;
     setLoading?: (isLoading: boolean) => void;
     setYmap?: (ymap: YmapType) => void;
+    onClick?: (coords: [number, number]) => void;
     options?: any;
     children?: React.ReactNode;
 }
@@ -35,14 +38,46 @@ export const YMap: FC<MapProps> = ({
     className,
     setLoading,
     setYmap,
+    onClick,
     options,
     children,
     locale = "ru",
 }) => {
     const [mapLoaded, setMapLoaded] = useState(false);
+    const mapRef = useRef<ymaps.Map | null>(null);
+    const ymapInstanceRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (mapRef.current && ymapInstanceRef.current) {
+            const mapInstance = ymapInstanceRef.current;
+
+            const handleMapClick = (event: any) => {
+                const coords = event.get("coords");
+                onClick?.(coords);
+            };
+
+            mapInstance.geoObjects.events.add("click", handleMapClick);
+            mapInstance.events.add("click", handleMapClick);
+
+            return () => {
+                mapInstance.geoObjects.events.remove("click", handleMapClick);
+                mapInstance.events.remove("click", handleMapClick);
+            };
+        }
+    }, [mapLoaded, onClick]);
+
     return (
         <YMaps key={locale} query={{ lang: languageList[locale] }}>
             <Map
+                instanceRef={(ref) => {
+                    mapRef.current = ref;
+                    if (ref) {
+                        ymapInstanceRef.current = ref;
+                        setLoading?.(true);
+                        setYmap?.(ref);
+                        setMapLoaded(true);
+                    }
+                }}
                 options={options}
                 onLoad={(ymap) => {
                     setLoading?.(true);

@@ -1,39 +1,34 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { Profile } from "../model/types/profile";
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 export const profileApi = createApi({
     reducerPath: "profileApi",
-    baseQuery,
-    tagTypes: ["profile", "host"],
+    baseQuery: baseQueryAcceptJson,
+    tagTypes: ["profile"],
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: "/user/profile/",
+                url: "personal/profile",
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
             query: (profileData) => ({
-                url: "/user/profile/",
-                method: "PUT",
-                body: profileData,
+                url: "personal/profile",
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify(profileData),
             }),
             invalidatesTags: ["profile"],
-        }),
-        joinToHost: build.mutation<Profile, string>({
-            query: (organizationId) => ({
-                url: `organization/${organizationId}/join/`,
-                method: "PUT",
-            }),
-            invalidatesTags: ["host", "profile"],
         }),
     }),
 });
 
 export const {
     useGetProfileInfoQuery,
-    useJoinToHostMutation,
     useUpdateProfileInfoMutation,
 } = profileApi;

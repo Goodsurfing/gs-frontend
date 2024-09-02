@@ -1,5 +1,10 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .category {
-    background-color: #C3A3E9;
     padding: 10px 12px;
     display: flex;
     justify-content: center;

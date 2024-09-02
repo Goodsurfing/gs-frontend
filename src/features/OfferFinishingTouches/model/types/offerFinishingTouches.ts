@@ -12,5 +12,5 @@ export interface OfferFinishingTouchesFormFields {
     rules: RulesInfoFields;
     onlyVerified: boolean;
     questionnaireUrl: string;
-    questions: string;
+    questions: string[];
 }

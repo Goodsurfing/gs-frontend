@@ -1,15 +1,16 @@
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
     useWatch,
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { useGetWhenQuery, useUpdateWhenMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -31,6 +32,9 @@ import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -38,8 +42,8 @@ interface OfferWhenFormProps {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { id } = useParams();
-    const [updateWhen, { isLoading }] = useUpdateWhenMutation();
-    const { data: getWhenData, isLoading: isLoadingGetWhenData } = useGetWhenQuery({ id: id || "" });
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
@@ -61,41 +65,68 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         timeSettings,
     };
     const {
-        handleSubmit, control, reset,
+        handleSubmit, control, reset, formState: { isDirty },
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
     });
 
     const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
+    const watchIsApplicableAtTheEnd = useWatch({ name: "timeSettings.isApplicableAtTheEnd", control });
+    const watchPeriods = useWatch({ name: "periods", control });
+    const watch = useWatch({ control });
 
-    const onSubmit: SubmitHandler<OfferWhenFields> = async (data) => {
+    const saveFormData = useCallback((data: OfferWhenFields) => {
+        sessionStorage.setItem(`${OFFER_WHEN_FORM}${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
+    }, [id]);
+
+    const loadFormData = useCallback((): OfferWhenFields | null => {
+        const savedData = sessionStorage.getItem(`${OFFER_WHEN_FORM}${id}`);
+        return savedData ? offerWhenFormAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.when) {
+            reset(offerWhenFormAdapter(getOfferData?.when));
+        } else {
+            reset();
+        }
+    }, [getOfferData?.when, loadFormData, reset]);
+
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferWhenFields);
+        }
+    }, [isDirty, saveFormData, watch]);
+
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
         setToast(undefined);
-        updateWhen({ body: { id, when: preparedData } })
+        updateOffer({ id: Number(id), body: { when: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_WHEN_FORM}${id}`);
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
         onComplete?.();
-    };
-
-    useEffect(() => {
-        if (getWhenData) {
-            reset(offerWhenFormAdapter(getWhenData));
-        } else {
-            reset();
-        }
-    }, [getWhenData, reset]);
+    });
 
     if (isLoadingGetWhenData) {
         return <Preloader className={styles.loading} />;
@@ -145,12 +176,14 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenRequests
                         value={field.value}
                         onChange={field.onChange}
+                        periods={watchPeriods}
+                        isApplicableAtTheEnd={watchIsApplicableAtTheEnd}
                     />
                 )}
             />
             <Button
                 disabled={isLoading}
-                onClick={handleSubmit(onSubmit)}
+                onClick={onSubmit}
                 className={styles.btn}
                 variant="FILL"
                 color="BLUE"

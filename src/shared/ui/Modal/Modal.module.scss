@@ -25,6 +25,10 @@
     right: -40px;
 }
 
+.buttonClose.hidden {
+    visibility: hidden;
+}
+
 @media (max-width: 480px) {
     .buttonClose {
         bottom: 110%;

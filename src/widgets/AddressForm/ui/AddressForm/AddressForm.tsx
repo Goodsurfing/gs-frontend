@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
-import { getGeoObject } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
-import { useUpdateWhereMutation } from "@/entities/Offer";
+import { getGeoObjectByCoordinates } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
 import {
-    useLazyGetWhereQuery,
+    useLazyGetOfferByIdQuery,
+    useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
 import Button from "@/shared/ui/Button/Button";
@@ -23,6 +23,9 @@ import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { OFFER_WHERE_FORM } from "@/shared/constants/localstorage";
 
 interface AddressFormProps {
     className?: string;
@@ -34,6 +37,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         formState: { errors },
         control,
         reset,
+        watch,
     } = useForm<AddressFormFormFields>({
         mode: "onChange",
         defaultValues: {
@@ -43,46 +47,83 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             },
         },
     });
+
     const { t } = useTranslation("offer");
     const { id } = useParams();
-    const [updateWhere, { isLoading }] = useUpdateWhereMutation();
-    const [trigger, { isLoading: isLoadingGetData }] = useLazyGetWhereQuery();
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
 
     const fetchGeoObject = useCallback(async () => {
-        const resultWhere = await trigger({ id: id || "" });
-        if (resultWhere.data?.address) {
-            const geoObject = await getGeoObject(resultWhere.data?.address);
+        trigger(id || "").unwrap();
+        if (offerData?.where) {
+            const offerGeoObject = offerData.where;
+            const geoObject = await getGeoObjectByCoordinates(
+                offerGeoObject.longitude,
+                offerGeoObject.latitude,
+            );
             if (geoObject) {
-                reset({ address: { address: resultWhere.data?.address, geoObject } });
+                reset({ address: { address: `${geoObject.description}, ${geoObject.name}`, geoObject } });
             }
+        } else {
+            reset();
         }
-    }, [trigger, id, reset]);
+    }, [trigger, id, offerData?.where, reset]);
 
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateWhere({ body: { id, where: preparedData } })
+        updateOffer({ id: Number(id), body: { where: preparedData } }).unwrap()
             .then(() => {
                 fetchGeoObject();
                 setToast({
                     text: "Адрес успешно изменён",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_WHERE_FORM}${id}`);
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             });
     });
 
-    useEffect(() => {
-        fetchGeoObject();
-    }, [fetchGeoObject]);
+    // useEffect(() => {
+    //     fetchGeoObject();
+    // }, [fetchGeoObject]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    useEffect(() => {
+        const savedData = sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`);
+        if (savedData) {
+            reset(JSON.parse(savedData));
+        } else {
+            fetchGeoObject();
+        }
+    }, [fetchGeoObject, id, reset]);
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            const formData = JSON.stringify(watch());
+            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [id, watch]);
+
+    useEffect(() => {
+        const subscription = watch((value) => {
+            const formData = JSON.stringify(value);
+            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [id, watch]);
+
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;
     };
@@ -94,12 +135,12 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     return (
         <form className={className} onSubmit={onSubmit}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            {errors.address && (
-                <p className={styles.error}>{errors.address.message}</p>
-            )}
             <Controller
                 control={control}
                 name="address"
+                rules={{
+                    validate: (value) => value?.geoObject !== null || "Укажите пожалуйста адрес",
+                }}
                 render={({ field }) => (
                     <MapWithAddress
                         field={field}
@@ -107,6 +148,9 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                     />
                 )}
             />
+            {errors.address && (
+                <p className={styles.error}>{errors.address.message}</p>
+            )}
             <Button
                 variant="FILL"
                 disabled={isLoading}

@@ -33,6 +33,7 @@ export const AdditionalSkills = memo(
         };
 
         const onAddSkill = (skill: string) => {
+            if (value.length >= 10) return;
             if (skill) {
                 if (value.find((item) => item.text === skill)) {
                     return;

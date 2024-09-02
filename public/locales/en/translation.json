@@ -1,4 +1,19 @@
 {
+    "login": {
+        "Вход": "Login",
+        "Войти": "Sign In",
+        "Пароль": "Password",
+        "Забыли пароль?": "Forgot password?",
+        "Запомнить меня": "Remember me",
+        "Отменить": "Cancel",
+        "Не зарегистрированы на Гудсерфинге?": "Not registered on Goodsurfing?",
+        "Зарегистрироваться": "Sign Up",
+        "Регистрация пользователя": "User Registration",
+        "Мы не постим ничего без вашего ведома": "We don't post anything without your knowledge",
+        "Ошибка авторизации": "Authorization error",
+        "Нажимая кнопку «Зарегистрироваться», я принимаю": "By clicking the 'Register' button, I accept",
+        "Политику конфеденциальности ГудСёрфинга": "GoodSurfing Privacy Policy"
+    },
     "main": {
         "welcome": {
             "header": {
@@ -65,7 +80,7 @@
             "Последние штрихи": "Finishing touches",
             "Рабочий стол": "Host dashboard",
             "Предложения": "Offers",
-            "Заявки": "Notes",
+            "Заявки": "Applications",
             "Календарь": "Calendar",
             "Организация": "Host",
             "Фотогалерея": "Gallery",
@@ -138,11 +153,13 @@
         "вакансии": "vacancies"
     },
     "notes": {
+        "Мои заявки": "My applications",
         "under consideration": "Under Consideration",
         "new": "New",
         "accepted": "Accepted",
         "confirmed": "Confirmed",
-        "rejected": "Rejected",
-        "Сообщение": "Message"
+        "canceled": "Rejected",
+        "Сообщение": "Message",
+        "Написать отзыв": "Write a review"
     }
 }

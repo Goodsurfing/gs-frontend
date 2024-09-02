@@ -1,10 +1,7 @@
-export type OfferWhatToDoSkillType =
-| "admin" | "cooking" | "driving" | "housing" | "decor"
-| "tourism" | "art" | "farming" | "social" | "recording" | "gardening"
-| "music" | "photo" | "night_job" | "sport";
+import { WhatToDoSkillType } from "@/types/skills";
 
 export type OfferWhatToDoSkill = {
-    text: OfferWhatToDoSkillType;
+    text: WhatToDoSkillType;
 };
 
 // export type DayOff = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -18,7 +15,7 @@ export type WorkSettings = {
 };
 
 export interface OfferWhatToDo {
-    skillIds: OfferWhatToDoSkill[];
+    skills: OfferWhatToDoSkill[];
     additionalSkills?: string[];
     hours: number;
     timeType: TimeType;

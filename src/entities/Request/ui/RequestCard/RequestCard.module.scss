@@ -1,6 +1,7 @@
 .wrapper {
     padding: 0.875rem;
     border: 1px solid var(--dark-theme-color);
+    background-color: var(--text-secondary-1);
 }
 
 .image {
@@ -24,6 +25,8 @@
 
 .text {
     margin-left: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .location {
@@ -45,11 +48,11 @@
     background-color: var(--color-blue);
 }
 
-.rejected {
+.canceled {
     background-color: var(--color-pink);
 }
 
-.completed {
+.accepted {
     background-color: var(--color-green);
 }
 
@@ -60,4 +63,16 @@
 .link {
     text-decoration: none;
     color: var(--color-blue);
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button {
+    width: 100%;
+    padding: 7px;
+    text-align: center;
 }

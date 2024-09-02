@@ -42,7 +42,24 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
     };
 };
 
-export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Partial<Host> => {
+export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields): FormData => {
+    const {
+        mainInfo, socialMedia, type,
+    } = data;
+    const formData = new FormData();
+    formData.append("name", mainInfo?.organization || "");
+    formData.append("address", "test");
+    formData.append("type", type?.organizationType || "");
+    formData.append("website", mainInfo?.website || "");
+    formData.append("description", mainInfo?.aboutInfo || "");
+    formData.append("vk", socialMedia?.vk || "");
+    formData.append("facebook", socialMedia?.facebook || "");
+    formData.append("instagram", socialMedia?.instagram || "");
+    formData.append("telegram", socialMedia?.telegram || "");
+    return formData;
+};
+
+export const hostDescriptionApiAdapterUpdate = (data: HostDescriptionFormFields): Partial<Host> => {
     const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         address, avatar, mainInfo, socialMedia, type,
@@ -51,12 +68,11 @@ export const hostDescriptionApiAdapter = (data: HostDescriptionFormFields): Part
         name: mainInfo?.organization,
         type: type?.organizationType,
         description: mainInfo?.aboutInfo,
-        address: "тест",
         // wip backend avatar,
-        vk: "тест",
-        instagram: "тест",
-        facebook: "тест",
-        telegram: "тест",
-        website: "http://test.org",
+        vk: socialMedia?.vk,
+        instagram: socialMedia?.instagram,
+        facebook: socialMedia?.facebook,
+        telegram: socialMedia?.telegram,
+        website: mainInfo?.website,
     };
 };

@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useCallback } from "react";
 
+import { useTranslation } from "react-i18next";
 import {
     ExtraConditionsData, useExtraConditionsData,
 } from "@/features/OfferFinishingTouches/model/data/extraConditionsData";
@@ -27,9 +28,10 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
     (props: OfferConditionsCardProps) => {
         const {
             className,
-            finishingTouches: { extraConditions },
+            finishingTouches: { additionalConditions },
         } = props;
         const { extraConditionsData } = useExtraConditionsData();
+        const { t } = useTranslation("offer");
 
         const renderConditionsCard = useCallback(() => {
             const conditionsMap: ConditionsMap = extraConditionsData.reduce(
@@ -39,7 +41,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                 },
                 {},
             );
-            return extraConditions?.map((id) => {
+            return additionalConditions?.map((id) => {
                 const condition = conditionsMap[id];
                 return (
                     condition && (
@@ -52,11 +54,11 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
                     )
                 );
             });
-        }, [extraConditions, extraConditionsData]);
+        }, [additionalConditions, extraConditionsData]);
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <Text title="Требования к участнику" titleSize="h3" />
+                <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
                 <div className={styles.cards}>{renderConditionsCard()}</div>
             </div>
         );

@@ -7,8 +7,8 @@ import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 import { useConditionItems } from "../../model/data/conditionItems";
 import { NutritionFields } from "../../model/types/offerConditions";
-import { ConditionsItemsList } from "../ConditionsItemList/ConditionsItemsList";
 import styles from "./ConditionsNutrition.module.scss";
+import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 
 interface ConditionsNutritionProps {
     value: NutritionFields;
@@ -20,9 +20,15 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
     const { t } = useTranslation("offer");
     const { foodItems } = useConditionItems();
 
-    const onToggleCondition = (nutrition: Nutrition) => {
+    const onToggleCondition = (conditionId: Nutrition) => {
         if (value.switchState) {
-            onChange({ ...value, nutrition });
+            const newNutrition = value.nutrition.includes(conditionId)
+                ? value.nutrition.filter((id) => id !== conditionId)
+                : [...value.nutrition, conditionId];
+            onChange({
+                ...value,
+                nutrition: newNutrition,
+            });
         }
     };
 
@@ -31,7 +37,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         onChange({
             ...value,
             switchState: newSwitchState,
-            nutrition: !newSwitchState ? undefined : value.nutrition,
+            nutrition: !newSwitchState ? [] : value.nutrition,
         });
     };
 
@@ -39,7 +45,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         onChange({
             ...value,
             switchState: false,
-            nutrition: undefined,
+            nutrition: [],
         });
     };
 
@@ -66,11 +72,15 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
                 </div>
             </div>
             <div className={styles.conditions}>
-                <ConditionsItemsList
-                    items={foodItems}
-                    value={value.nutrition}
-                    onChange={onToggleCondition}
-                />
+                {foodItems.map((item) => (
+                    <ConditionsItem
+                        checked={value.nutrition.includes(item.id)}
+                        onToggle={() => onToggleCondition(item.id)}
+                        key={item.id}
+                        text={item.text}
+                        icon={item.icon}
+                    />
+                ))}
             </div>
         </div>
     );

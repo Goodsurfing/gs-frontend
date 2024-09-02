@@ -1,9 +1,11 @@
-import { memo, useEffect, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import {
     Controller,
     DefaultValues,
-    SubmitHandler,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
@@ -16,10 +18,14 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
-import { useGetWhatToDoQuery, useUpdateWhatToDoMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import styles from "./OfferWhatToDoForm.module.scss";
+import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -34,45 +40,88 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
 
 export const OfferWhatToDoForm = memo(
     ({ onSuccess }: OfferWhatToDoFormProps) => {
-        const { handleSubmit, control, reset } = useForm<OfferWhatToDoFormFields>({
+        const {
+            handleSubmit, control, reset, formState: { isDirty },
+        } = useForm<OfferWhatToDoFormFields>({
             mode: "onChange",
             defaultValues,
         });
         const { id } = useParams();
-        const [updateWhatToDo, { isLoading }] = useUpdateWhatToDoMutation();
-        const { data: getWhatToDo } = useGetWhatToDoQuery({ id: id || "" });
+        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
+        const watch = useWatch({ control });
 
         const { t } = useTranslation("offer");
 
-        const onSubmit: SubmitHandler<OfferWhatToDoFormFields> = async (data) => {
+        const saveFormData = useCallback((data: OfferWhatToDoFormFields) => {
+            sessionStorage.setItem(`${OFFER_WHAT_TO_DO_FORM}${id}`, JSON.stringify(offerWhatToDoApiAdapter(data)));
+        }, [id]);
+
+        const loadFormData = useCallback((): OfferWhatToDoFormFields | null => {
+            const savedData = sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
+            return savedData ? offerWhatToDoAdapter(JSON.parse(savedData)) : null;
+        }, [id]);
+
+        const initializeForm = useCallback(() => {
+            const savedData = loadFormData();
+            if (savedData) {
+                reset(savedData);
+            } else if (getOfferData?.whatToDo) {
+                reset(offerWhatToDoAdapter(getOfferData?.whatToDo));
+            } else {
+                reset();
+            }
+        }, [getOfferData?.whatToDo, loadFormData, reset]);
+
+        useEffect(() => {
+            initializeForm();
+        }, [initializeForm]);
+
+        useEffect(() => {
+            if (isDirty) {
+                const currentData = watch;
+                saveFormData(currentData as OfferWhatToDoFormFields);
+            }
+        }, [isDirty, saveFormData, watch]);
+
+        const onSubmit = handleSubmit(async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
-            updateWhatToDo({ body: { id, whatToDo: preparedData } })
+            updateOffer({ id: Number(id), body: { whatToDo: preparedData } })
                 .unwrap()
                 .then(() => {
                     setToast({
                         text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
+                    sessionStorage.removeItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
                 })
-                .catch(() => {
+                .catch((error: ErrorType) => {
                     setToast({
-                        text: "Некорректно введены данные",
+                        text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });
             onSuccess?.();
-        };
+        });
 
-        useEffect(() => {
-            if (getWhatToDo) {
-                reset(offerWhatToDoAdapter(getWhatToDo));
-            }
-        }, [getWhatToDo, reset]);
+        // useEffect(() => {
+        //     if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
+        //         reset(offerWhatToDoAdapter(getOfferData.whatToDo));
+        //     }
+        // }, [getOfferData?.whatToDo, reset]);
+
+        if (isOfferDataLoading) {
+            return (
+                <div className={styles.wrapper}>
+                    <Preloader />
+                </div>
+            );
+        }
 
         return (
-            <form onSubmit={handleSubmit(onSubmit)} className={styles.wrapper}>
+            <form onSubmit={onSubmit} className={styles.wrapper}>
                 {toast && (
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
@@ -105,7 +154,7 @@ export const OfferWhatToDoForm = memo(
                 />
                 <div>
                     <Button
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={onSubmit}
                         disabled={isLoading}
                         variant="FILL"
                         color="BLUE"

@@ -4,15 +4,15 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-import { Languages as ILanguages, Language } from "@/entities/Offer/model/types/offerWhoNeeds";
 import ExtraControls from "../ExtraControls/ExtraControls";
 
 import styles from "./LanguagesGroup.module.scss";
 import Languages from "../Languages/Languages";
+import { Language } from "@/types/languages";
 
 interface LanguagesGroupProps {
-    value: ILanguages;
-    onChange: (value: ILanguages) => void
+    value: Language[];
+    onChange: (value: Language[]) => void
 }
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
@@ -21,8 +21,11 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { t } = useTranslation("offer");
 
     const onAddBtnClick = useCallback(() => {
+        if ((value[0].language === "not_matter") && (value[0].languageLevel === "not_matter")) {
+            return;
+        }
         if (value.length < 10) {
-            onChange([...value, { language: "Английский", level: "not_matter" } as Language]);
+            onChange([...value, { language: "english", languageLevel: "not_matter" } as Language]);
         }
     }, [onChange, value]);
 
@@ -40,9 +43,14 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                     <Languages
                         key={index}
                         value={valueLanguage}
+                        selectedLanguages={value}
                         onChange={(newValue) => {
                             const newLanguages = [...value];
                             newLanguages[index] = newValue;
+                            if (newLanguages[0].language === "not_matter") {
+                                onChange([newLanguages[0]]);
+                                return;
+                            }
                             onChange(newLanguages);
                         }}
                         close={(

@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -13,6 +14,7 @@ export const CreateHost = memo((props: CreateHostProps) => {
     const { className } = props;
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const { t } = useTranslation("host");
     const onCreateClick = () => {
         navigate(getHostRegistrationUrl(locale));
     };
@@ -24,7 +26,7 @@ export const CreateHost = memo((props: CreateHostProps) => {
             size="SMALL"
             variant="FILL"
         >
-            Создать организацию
+            {t("host-dashboard.Создать организацию")}
         </Button>
     );
 });

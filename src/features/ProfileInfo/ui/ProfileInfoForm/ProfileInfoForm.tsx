@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import cn from "classnames";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import Button from "@/shared/ui/Button/Button";
 
 import {
-    Profile, getProfileReadonly, profileActions, profileApi,
+    Profile, getProfileReadonly, profileActions,
+    useGetProfileInfoQuery,
 } from "@/entities/Profile";
 
 import { ProfileInfoFormContent } from "../ProfileInfoFormContent/ProfileInfoFormContent";
@@ -15,7 +16,12 @@ import type { ProfileInfoFields } from "../../model/types/profileInfo";
 import { profileInfoFormAdapter } from "../../lib/profileInfoFormAdapter";
 import { profileFormApiAdapter } from "../../lib/profileFormApiAdapter";
 
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { ToastAlert, HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 import styles from "./ProfileInfoForm.module.scss";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -29,8 +35,10 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     } = props;
     const { t } = useTranslation("profile");
     const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
+    const [toast, setToast] = useState<ToastAlert>();
 
-    const [updateProfile] = profileApi.useUpdateProfileInfoMutation();
+    const [updateProfile] = useUpdateProfileInfoMutation();
+    const { data: getProfileData } = useGetProfileInfoQuery();
 
     const { handleSubmit, reset } = form;
 
@@ -38,9 +46,25 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
 
     const onSubmit: SubmitHandler<ProfileInfoFields> = (data) => {
         const formattedData = profileFormApiAdapter(data);
-        updateProfile(formattedData);
+        updateProfile(formattedData).unwrap().then(() => {
+            setToast({
+                text: "Данные успешно изменены",
+                type: HintType.Success,
+            });
+        }).catch((error: ErrorType) => {
+            setToast({
+                text: getErrorText(error),
+                type: HintType.Error,
+            });
+        });
         dispatch(profileActions.setReadonly(true));
     };
+
+    useEffect(() => {
+        if (getProfileData) {
+            reset(profileInfoFormAdapter(getProfileData));
+        }
+    }, [getProfileData, reset]);
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -48,11 +72,14 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
         dispatch(profileActions.setReadonly(!isLocked));
         if (!isLocked) {
             reset(profileInfoFormAdapter(profile));
+        } else {
+            reset();
         }
     };
 
     return (
         <FormProvider {...form}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className={cn(styles.wrapper, className)}

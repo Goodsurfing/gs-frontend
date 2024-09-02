@@ -7,9 +7,9 @@
     },
     "where": {
         "Где вы находитесь или будете принимать волонтеров": "Where are you located or will be accepting volunteers",
-    "Сохранить": "Save",
-    "Точек на карте не найдено": "No points found on the map",
-    "Введите адрес": "Enter an address"
+        "Сохранить": "Save",
+        "Точек на карте не найдено": "No points found on the map",
+        "Введите адрес": "Enter an address"
     },
     "when": {
         "Укажите на какой срок или сроки вам нужен волонтер": "Specify the term or terms you need a volunteer for",
@@ -91,6 +91,7 @@
         "Изменить": "Change",
         "Удалить": "Delete",
         "Ширина фотографии для обложки не меньше 1280 пикселей": "Cover photo width should be at least 1280 pixels",
+        "Изображение не должно превышать 2 МБ": "The image must not exceed 2 MB",
         "Неверный формат файла": "Invalid file format",
         "Добавить фото": "Add photo",
         "Сохранить": "Save"
@@ -104,7 +105,10 @@
         "Количество выходных дней в неделю": "Number of days off per week",
         "Дополнительная информация": "Additional information",
         "Не более 1000 знаков": "Not more than 1000 characters",
-        "Сохранить": "Save"
+        "Сохранить": "Save",
+        "day": "per day",
+        "week": "per week",
+        "month": "per month"
     },
     "conditions": {
         "Чем вы готовы обеспечить волонтёра": "What are you willing to provide for the volunteer",
@@ -167,5 +171,41 @@
         "Добавить вопрос": "Add a question",
         "Опубликовать": "Publish",
         "Сохранить в черновики": "Save as draft"
+    },
+    "personalOffer": {
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "notSpecified": "Not specified",
+        "Когда": "When",
+        "Минимум дней": "Minimum days",
+        "Максимум дней": "Maximum days",
+        "Прием заявок до": "Application deadline",
+        "Кто нужен": "Who is needed",
+        "Требования к участнику": "Participant Requirements",
+        "Необходимый взнос": "Required Contribution",
+        "Денежное вознаграждение": "Monetary Reward",
+        "Количество рабочих часов": "Number of Working Hours",
+        "Выходных дней в неделю": "Days Off Per Week",
+        "Описание": "Description",
+        "Дополнительная информация": "Additional Information",
+        "Владение языками": "Language Proficiency",
+        "Местоположение": "Location",
+        "Организация": "Organization",
+        "Подробнее": "More Details",
+        "Фотографии": "Photos",
+        "Условия": "Terms",
+        "Дополнительные условия": "Additional Terms",
+        "Поделиться вакансией": "Share Vacancy",
+        "Отзывы": "Reviews",
+        "Посмотреть все": "View All",
+        "Статьи о вакансии": "Articles about the Vacancy",
+        "Редактировать": "Edit",
+        "Написать": "Write",
+        "Участвовать": "Participate",
+        "Фото": "Photos",
+        "Что делать": "What to do",
+        "Участники": "Participants",
+        "Статьи": "Articles"
     }
 }

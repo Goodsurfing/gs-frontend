@@ -1,10 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Host } from "../model/types/host";
+import { Application, Host } from "@/entities/Host";
 
 interface UpdateHostParams {
+    id: string;
     body: Partial<Host>;
 }
 
@@ -20,38 +21,55 @@ interface GetHostsResponse {
 
 export const hostApi = createApi({
     reducerPath: "hostApi",
-    baseQuery,
+    baseQuery: baseQueryAcceptJson,
     tagTypes: ["host"],
     endpoints: (build) => ({
         getHostById: build.query<Host, string>({
             query: (id) => ({
-                url: `/organization/${id}`,
+                url: `organizations/${id}`,
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
         getHosts: build.query<GetHostsResponse | { list: [] }, void>({
             query: () => ({
-                url: "/organization",
+                url: "organizations/",
                 method: "GET",
             }),
             providesTags: ["host"],
         }),
-        createHost: build.mutation<CreateHostResponse, Partial<Host>>({
+        getMyHost: build.query<Host, void>({
+            query: () => ({
+                url: "personal/organization",
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
+        createHost: build.mutation<CreateHostResponse, FormData>({
             query: (body) => ({
-                url: "/organization/",
+                url: "organizations",
                 method: "POST",
                 body,
             }),
             invalidatesTags: ["host"],
         }),
-        updateHost: build.mutation<unknown, UpdateHostParams>({
+        updateHost: build.mutation<Host, UpdateHostParams>({
             query: (data) => ({
-                url: `/organization/${data.body.id}`,
-                method: "PUT",
-                body: data.body,
+                url: `organizations/${data.id}`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify(data.body),
             }),
             invalidatesTags: ["host"],
+        }),
+        getMyHostApplications: build.query<Application[], void>({
+            query: () => ({
+                url: "personal/organization/forms",
+                method: "GET",
+            }),
+            providesTags: ["host"],
         }),
     }),
 });
@@ -59,6 +77,8 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
+    useGetMyHostApplicationsQuery,
 } = hostApi;

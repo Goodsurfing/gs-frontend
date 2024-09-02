@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Offer } from "../../model/types/offer";
 import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 import { OfferArticlesCard } from "../OfferArticlesCard/ui/OfferArticlesCard/OfferArticlesCard";
@@ -27,65 +28,86 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
-    const address = "Казань улица Пушкина, 46";
-    const isShowPaymentCard = offer.conditions.volunteerContributions
-        || offer.conditions.volunteerRemuneration;
+    const isShowPaymentCard = offer.conditions?.volunteerContributions
+        || offer.conditions?.volunteerRemuneration;
+    const { ready } = useTranslation("offer");
+
+    if (!ready) {
+        return null;
+    }
 
     return (
         <div className={cn(className)}>
-            <OfferWhenCard offerWhen={offer.when} />
-            <OfferWhoNeedsCard
-                whoNeeds={offer.whoNeeds}
-                className={styles.container}
-            />
-            {offer.finishingTouches.extraConditions && (
+            {offer.when && <OfferWhenCard offerWhen={offer.when} />}
+            {offer.howNeeds && (
+                <OfferWhoNeedsCard
+                    whoNeeds={offer.howNeeds}
+                    className={styles.container}
+                />
+            )}
+            {offer.finishingTouches && (
                 <OfferConditionsCard
                     finishingTouches={offer.finishingTouches}
                     className={styles.wrapper}
                 />
             )}
-            {isShowPaymentCard && (
+            {(offer.conditions && isShowPaymentCard) && (
                 <OfferPaymentCard
                     conditions={offer.conditions}
                     className={styles.container}
                 />
             )}
-            <OfferDescriptionCard
-                description={offer.description}
-                className={styles.container}
-            />
-            <OfferLanguagesCard
-                languages={offer.whoNeeds.languages}
-                className={styles.container}
-            />
-            <OfferAddressCard address={address} className={styles.container} />
-            <OfferOrganizationCard
-                className={styles.container}
-            />
-            <OfferGalleryCard
-                gallery={offer.description.galleryIds}
-                className={styles.container}
-            />
-            <OfferWhatToDoCard
-                whatToDo={offer.whatToDo}
-                className={styles.wrapper}
-            />
-            <OfferTermsCard
-                facilities={offer.conditions.conveniencesIds}
-                className={styles.container}
-            />
-            {offer.conditions.additionalConditions && (
-                <OfferExtraConditionsCard
-                    extraConditions={offer.conditions.additionalConditions}
+            {offer.description && (
+                <OfferDescriptionCard
+                    description={offer.description}
                     className={styles.container}
                 />
             )}
-            <OfferContributorsCard
-                contributors={offer.contributors}
-                className={styles.wrapper}
+            {offer.howNeeds && (
+                <OfferLanguagesCard
+                    languages={offer.howNeeds.requiredLanguages}
+                    className={styles.container}
+                />
+            )}
+            {offer.where && (
+                <OfferAddressCard address={offer.where} className={styles.container} />
+            )}
+            <OfferOrganizationCard
+                organization={offer.organization}
+                className={styles.container}
             />
-            {offer?.reviews && <OfferReviewsCard reviews={offer.reviews} />}
-            {offer?.articles && (
+            {(offer.galleryItems && offer.galleryItems.length) ? (
+                <OfferGalleryCard
+                    offerId={offer.id}
+                    className={styles.container}
+                />
+            ) : null}
+            {offer.whatToDo && (
+                <OfferWhatToDoCard
+                    whatToDo={offer.whatToDo}
+                    className={styles.wrapper}
+                />
+            )}
+            {offer.conditions && (
+                <>
+                    <OfferTermsCard
+                        facilities={offer.conditions.conveniences}
+                        className={styles.container}
+                    />
+                    <OfferExtraConditionsCard
+                        extraConditions={offer.conditions.additionalConditions}
+                        className={styles.container}
+                    />
+                </>
+            )}
+            {offer.contributors && (
+                <OfferContributorsCard
+                    contributors={offer.contributors}
+                    className={styles.wrapper}
+                />
+            )}
+            {offer.reviews && <OfferReviewsCard reviews={offer.reviews} />}
+            {offer.articles && (
                 <OfferArticlesCard
                     articles={offer.articles}
                     className={styles.container}

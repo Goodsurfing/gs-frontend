@@ -1,5 +1,6 @@
 import { memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import styles from "./HostFillTitle.module.scss";
 
 interface HostFillTitleProps {
@@ -9,15 +10,16 @@ interface HostFillTitleProps {
 
 export const HostFillTitle = memo((props: HostFillTitleProps) => {
     const { text, isLoading } = props;
+    const { t } = useTranslation("host");
 
-    let title: string = "Загузка";
+    let title: string = t("host-dashboard.Загрузка...");
 
     if (text && !isLoading) {
         title = text;
     }
 
     if (!isLoading && !text) {
-        title = "Заполненность профиля";
+        title = t("host-dashboard.Заполненность профиля");
     }
 
     return (

@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues,
     FormProvider,
-    SubmitHandler,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import {
-    useGetDescriptionQuery,
-    useUpdateDescriptionMutation,
+    useGetOfferByIdQuery,
+    useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
-import uploadFile, {
-    GenerateLinkResponse,
-} from "@/shared/hooks/files/useUploadFile";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
@@ -38,6 +34,9 @@ import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -48,7 +47,6 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
         uuid: null,
         image: { file: null, src: null },
     },
-    images: [],
 };
 
 export const InviteDescriptionForm = () => {
@@ -59,132 +57,107 @@ export const InviteDescriptionForm = () => {
     const {
         handleSubmit,
         control,
-        formState: { errors },
+        formState: { errors, isDirty },
         reset,
     } = form;
     const { id } = useParams();
-    const [updateDescription, { isLoading }] = useUpdateDescriptionMutation();
-    const { data: getDescription, isLoading: isLoadingGetDescription } = useGetDescriptionQuery({ id: id || "" });
-    const [isLoadingCoverImage, setIsLoadingCoverImage] = useState<boolean>(false);
-    const [isLoadingImages, setIsLoadingImages] = useState<boolean>(false);
+    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
+    const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
+    const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
+    const [isGalleryError, setGalleryError] = useState<boolean>(false);
+    const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
-    const { token } = useAuth();
     const { t } = useTranslation("offer");
+    const watch = useWatch({ control });
 
-    const onSubmit: SubmitHandler<OfferDescriptionField> = async (data) => {
-        setToast(undefined);
-        setIsLoadingImages(true);
-        setIsLoadingCoverImage(true);
+    const handleCoverImageLoading = (value: boolean) => {
+        setCoverImageLoading(value);
+    };
 
-        let imageUpload: GenerateLinkResponse | null = null;
-        let extraImages: GenerateLinkResponse[] = [];
-        if (!token) {
-            setIsLoadingCoverImage(false);
-            setIsLoadingImages(false);
-            return;
-        }
+    const handleGalleryLoading = (value: boolean) => {
+        setGalleryLoading(value);
+    };
 
-        // upload coverImage
-        if (data.coverImage.image.file) {
-            try {
-                imageUpload = (await uploadFile(
-                    data.coverImage.image.file.name,
-                    data.coverImage.image.file,
-                    token,
-                )) || null;
-                setIsLoadingCoverImage(false);
-            } catch {
-                setToast({
-                    text: "Произошла ошибка при загрузке файла",
-                    type: HintType.Error,
-                });
-                setIsLoadingCoverImage(false);
-            }
-            if (!imageUpload) {
-                setToast({
-                    text: "Не удалось загрузить файл",
-                    type: HintType.Error,
-                });
-            }
-        }
+    const handleGalleryError = (value: boolean) => {
+        setGalleryError(value);
+    };
 
-        // upload extra images
-        if (data.images.length !== 0) {
-            const uploadImagesPromises = data.images.map((image) => {
-                if (image.image.file) {
-                    return uploadFile(
-                        image.image.file.name,
-                        image.image.file,
-                        token,
-                    ).catch(() => null);
-                }
-                return image.image.src;
-            });
+    const handleGallerySuccess = (value: boolean) => {
+        setGallerySuccess(value);
+    };
 
-            try {
-                const images = await Promise.all(uploadImagesPromises);
-                const filteredImages = images.filter(
-                    (result): result is GenerateLinkResponse => result !== null
-                    && result !== undefined,
-                );
-                extraImages = filteredImages;
-                setIsLoadingImages(false);
-            } catch {
-                setToast({
-                    text: "Произошла ошибка при загрузке файлов",
-                    type: HintType.Error,
-                });
-                setIsLoadingImages(false);
-            }
-        }
-        // toDo: Change this logic in future
-        let imageUuid: string | null = data.coverImage.uuid;
-        let newGallery: string[] = [];
-        const galleryTemp: string[] = data.images.map((image) => image.uuid)
-            .filter((imageId): imageId is string => typeof imageId === "string") as string[];
-        if (imageUpload) {
-            imageUuid = imageUpload?.uuid;
-        }
-        if (extraImages.length > 0) {
-            const extraImagesTemp: string[] = extraImages.map((image) => image.uuid);
-            newGallery = [...galleryTemp, ...extraImagesTemp];
+    const saveFormData = useCallback((data: OfferDescriptionField) => {
+        sessionStorage.setItem(`${OFFER_DESCRIPTION_FORM}${id}`, JSON.stringify(inviteDescriptionApiAdapter(data, true)));
+    }, [id]);
+
+    const loadFormData = useCallback((): Partial<OfferDescriptionField> | null => {
+        const savedData = sessionStorage.getItem(`${OFFER_DESCRIPTION_FORM}${id}`);
+        return savedData ? inviteDescriptionAdapter(JSON.parse(savedData)) : null;
+    }, [id]);
+
+    const initializeForm = useCallback(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+        } else if (getOfferData?.description) {
+            reset(inviteDescriptionAdapter(getOfferData?.description));
         } else {
-            newGallery = [...galleryTemp];
+            reset();
         }
-        const filteredGallery = newGallery.filter((item) => item != null);
-        //
+    }, [getOfferData?.description, loadFormData, reset]);
 
-        const preparedData = inviteDescriptionApiAdapter(
-            data,
-            imageUuid || "",
-            filteredGallery,
-        );
+    useEffect(() => {
+        initializeForm();
+    }, [initializeForm]);
 
-        updateDescription({ body: { id, description: preparedData } })
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as OfferDescriptionField);
+        }
+    }, [isDirty, saveFormData, watch]);
+
+    const onSubmit = handleSubmit(async (data) => {
+        setToast(undefined);
+        const preparedData = inviteDescriptionApiAdapter(data);
+        updateOffer({ id: Number(id), body: { description: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
                     text: "Данные успешно изменены",
                     type: HintType.Success,
                 });
+                sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
             })
-            .catch(() => {
+            .catch((error: ErrorType) => {
                 setToast({
-                    text: "Некорректно введены данные",
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
-            })
-            .finally(() => {
-                setIsLoadingCoverImage(false);
-                setIsLoadingImages(false);
             });
-    };
+    });
+
+    // useEffect(() => {
+    //     if (getOfferData?.description) {
+    //         reset(inviteDescriptionAdapter(getOfferData.description));
+    //     }
+    // }, [getOfferData?.description, reset]);
 
     useEffect(() => {
-        if (getDescription) {
-            reset(inviteDescriptionAdapter(getDescription));
+        if (isGalleryError) {
+            setToast({
+                text: "Произошла ошибка с обновлением галереи",
+                type: HintType.Error,
+            });
         }
-    }, [getDescription, reset]);
+        if (isGallerySuccess) {
+            setToast({
+                text: "Галерея успешно обновлена",
+                type: HintType.Success,
+            });
+        }
+    }, [isGalleryError, isGallerySuccess]);
 
     if (isLoadingGetDescription) {
         return <Preloader className={styles.loading} />;
@@ -215,10 +188,11 @@ export const InviteDescriptionForm = () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={field.onChange}
+                                    isLoading={isCoverImageLoading}
+                                    onChangeLoading={handleCoverImageLoading}
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",
                                     )}
-                                    isLoading={isLoadingCoverImage}
                                 />
                                 <p className={styles.error}>
                                     {errors.coverImage
@@ -229,26 +203,22 @@ export const InviteDescriptionForm = () => {
                             </div>
                         )}
                     />
-                    <Controller
-                        name="images"
-                        control={control}
-                        render={({ field }) => (
-                            <ExtraImagesUpload
-                                isLoading={isLoadingImages}
-                                label={t("description.Добавить фото")}
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
+                    <ExtraImagesUpload
+                        offerId={id || ""}
+                        label={t("description.Добавить фото")}
+                        isLoading={isGalleryLoading}
+                        onChangeLoading={handleGalleryLoading}
+                        onChangeError={handleGalleryError}
+                        onChangeSuccess={handleGallerySuccess}
                     />
                 </div>
                 <Button
                     className={styles.btn}
-                    disabled={isLoading || isLoadingImages}
+                    disabled={isLoading || isCoverImageLoading || isGalleryLoading}
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={onSubmit}
                 >
                     {t("description.Сохранить")}
                 </Button>

@@ -91,6 +91,7 @@
         "Удалить": "Borrar",
         "Добавить фото обложки": "Agregar foto de portada",
         "Ширина фотографии для обложки не меньше 1280 пикселей": "El ancho de la foto de portada debe ser de al menos 1280 píxeles",
+        "Изображение не должно превышать 2 МБ": "La imagen no debe exceder los 2 MB",
         "Неверный формат файла": "Formato de archivo incorrecto",
         "Добавить фото": "Agregar foto",
         "Сохранить": "Guardar"
@@ -104,7 +105,10 @@
         "Количество выходных дней в неделю": "Número de días libres por semana",
         "Дополнительная информация": "Información adicional",
         "Не более 1000 знаков": "No más de 1000 caracteres",
-        "Сохранить": "Guardar"
+        "Сохранить": "Guardar",
+        "day": "por día",
+        "week": "por semana",
+        "month": "por mes"
     },
     "conditions": {
         "Чем вы готовы обеспечить волонтёра": "¿Qué estás dispuesto a proporcionar al voluntario?",
@@ -167,5 +171,41 @@
         "Добавить вопрос": "Agregar una pregunta",
         "Опубликовать": "Publicar",
         "Сохранить в черновики": "Guardar como borrador"
+    },
+    "personalOffer": {
+        "male": "Hombre",
+        "female": "Mujer",
+        "other": "Otro",
+        "notSpecified": "No especificado",
+        "Когда": "Cuándo",
+        "Минимум дней": "Mínimo de días",
+        "Максимум дней": "Máximo de días",
+        "Прием заявок до": "Fecha límite de solicitudes",
+        "Кто нужен": "Quién se necesita",
+        "Требования к участнику": "Requisitos para el Participante",
+        "Необходимый взнос": "Contribución Requerida",
+        "Денежное вознаграждение": "Recompensa Monetaria",
+        "Количество рабочих часов": "Número de Horas de Trabajo",
+        "Выходных дней в неделю": "Días Libres por Semana",
+        "Описание": "Descripción",
+        "Дополнительная информация": "Información Adicional",
+        "Владение языками": "Dominio de Idiomas",
+        "Местоположение": "Ubicación",
+        "Организация": "Organización",
+        "Подробнее": "Más Detalles",
+        "Фотографии": "Fotos",
+        "Условия": "Condiciones",
+        "Дополнительные условия": "Términos Adicionales",
+        "Поделиться вакансией": "Compartir Oferta",
+        "Отзывы": "Reseñas",
+        "Посмотреть все": "Ver todo",
+        "Статьи о вакансии": "Artículos sobre la vacante",
+        "Редактировать": "Editar",
+        "Написать": "Escribir",
+        "Участвовать": "Participar",
+        "Фото": "Fotos",
+        "Что делать": "Qué hacer",
+        "Участники": "Participantes",
+        "Статьи": "Artículos"
     }
 }

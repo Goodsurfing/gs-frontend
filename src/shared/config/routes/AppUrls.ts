@@ -1,6 +1,6 @@
 import { RoutePath } from "./RouterConfig";
 
-type RoutePathFunction = (locale: string | Locale) => string;
+type RoutePathFunction = (locale: string | Locale, id?: string) => string;
 
 // Main page
 
@@ -13,6 +13,10 @@ export const getOffersMapPageUrl: RoutePathFunction = (locale) => (`/${locale}${
 // Messenger page
 
 export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}`);
+
+export const getMessengerPageIdUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id`);
+
+export const getMessengerPageCreateUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id/:offerId`);
 
 // Categires page
 
@@ -68,7 +72,7 @@ export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getHostTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_team}`;
 
-export const getHostPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_personal}/:id`;
+export const getHostPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.host_personal}/${id}`;
 
 // Offers pages
 
