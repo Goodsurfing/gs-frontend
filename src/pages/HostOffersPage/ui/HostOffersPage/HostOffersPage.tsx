@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { HostOffersList } from "../HostOffersList/HostOffersList";
-import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
+import { AddOffer } from "@/features/Offer";
 import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import {
@@ -13,7 +13,7 @@ import {
     useLazyGetOfferByIdQuery,
 } from "@/entities/Offer";
 import styles from "./HostOffersPage.module.scss";
-import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
+import { useGetMyHostQuery } from "@/entities/Host";
 
 type SeletecBtnType = "delete" | "every_open";
 

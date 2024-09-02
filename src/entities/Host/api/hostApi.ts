@@ -128,4 +128,7 @@ export const {
     useGetHostsQuery,
     useUpdateHostMutation,
     useGetMyHostApplicationsQuery,
+    useGetHostMembersByIdQuery,
+    useAddMemberToOrganizationMutation,
+    useDeleteHostMemberMutation,
 } = hostApi;

@@ -42,7 +42,7 @@ export interface Application {
 
 export interface HostMember {
     id: number;
-    profile: string;
+    profile: Profile;
 }
 
 export interface TeamUser {

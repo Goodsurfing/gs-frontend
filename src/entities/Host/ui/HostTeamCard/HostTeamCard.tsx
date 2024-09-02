@@ -2,7 +2,7 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { TeamCard } from "@/features/TeamForm";
+import { TeamCard } from "@/features/TeamForm/ui/TeamCard/TeamCard";
 import { TeamUser } from "../../model/types/host";
 
 import styles from "./HostTeamCard.module.scss";

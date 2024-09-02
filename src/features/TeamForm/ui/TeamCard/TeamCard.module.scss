@@ -76,4 +76,8 @@
     right: 14px;
     top: 14px;
     cursor: pointer;
+
+    svg {
+        fill: var(--text-secondary-2);
+    }
 }

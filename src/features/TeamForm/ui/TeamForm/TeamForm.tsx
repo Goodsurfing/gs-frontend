@@ -1,27 +1,87 @@
-import React, { useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { ErrorType } from "@/types/api/error";
 
-import Button from "@/shared/ui/Button/Button";
+import {
+    HostMember,
+    useDeleteHostMemberMutation,
+    useGetHostMembersByIdQuery,
+} from "@/entities/Host";
 
-import { fakeUserData } from "@/entities/User/model/data/mockedUserData";
-import { TeamUser } from "@/entities/Host/model/types/host";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
+import { InfoText } from "@/shared/ui/InfoText/InfoText";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+
 import { TeamCard } from "../TeamCard/TeamCard";
 import { TeamInput } from "../TeamInput/TeamInput";
 import { Text } from "../Text/Text";
 import styles from "./TeamForm.module.scss";
 
-export const TeamForm = () => {
+interface TeamFormProps {
+    hostId: string;
+}
+
+export const TeamForm: FC<TeamFormProps> = (props) => {
+    const { hostId } = props;
+    const [toast, setToast] = useState<ToastAlert>();
     const { control } = useForm({ mode: "onChange" });
+    const {
+        data: hostMembers,
+        isLoading: isMembersLoading,
+        isError,
+    } = useGetHostMembersByIdQuery(hostId);
+    const [deleteMember, { isLoading: isDeleteLoading }] = useDeleteHostMemberMutation();
 
-    // fake data for test
-    const [teamUsers] = useState<TeamUser[]>(fakeUserData);
+    const handleDeleteClick = useCallback(
+        (id: number) => {
+            setToast(undefined);
+            if (isDeleteLoading) return;
+            deleteMember({ organizationId: hostId, memberId: id.toString() })
+                .unwrap()
+                .then(() => {
+                    setToast({
+                        text: "Участник был добавлен",
+                        type: HintType.Success,
+                    });
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
+                });
+        },
+        [deleteMember, hostId, isDeleteLoading],
+    );
 
-    const renderTeamUsers = (users: TeamUser[]) => users.map((teamUser) => (
-        <TeamCard key={teamUser.id} teamUser={teamUser} />
-    ));
+    const renderTeamUsers = (users: HostMember[] | undefined) => {
+        if (isMembersLoading) {
+            return <MiniLoader />;
+        }
+        if (isError) {
+            return <InfoText>Произошла ошибка</InfoText>;
+        }
+        if (!users) return null;
+
+        if (!users.length) return <InfoText>Команда не была заполнена</InfoText>;
+
+        return users.map((teamUser) => (
+            <TeamCard
+                key={teamUser.id}
+                teamUser={teamUser}
+                onDeleteClick={handleDeleteClick}
+            />
+        ));
+    };
 
     return (
         <div className={styles.wrapper}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Text />
             <Controller
                 control={control}
@@ -30,21 +90,21 @@ export const TeamForm = () => {
                     <TeamInput
                         inputValue={field.value}
                         onInputChange={field.onChange}
-                        teamUsers={teamUsers}
+                        teamUsers={hostMembers ?? []}
                     />
                 )}
             />
             <div className={styles.containerList}>
-                {renderTeamUsers(teamUsers)}
+                {renderTeamUsers(hostMembers)}
             </div>
-            <Button
+            {/* <Button
                 className={styles.btn}
                 variant="FILL"
                 color="BLUE"
                 size="MEDIUM"
             >
                 Сохранить
-            </Button>
+            </Button> */}
         </div>
     );
 };
