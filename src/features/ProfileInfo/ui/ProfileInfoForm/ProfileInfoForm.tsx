@@ -22,6 +22,7 @@ import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi"
 import styles from "./ProfileInfoForm.module.scss";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { ProfileInfoFormAvatar } from "../ProfileInfoFormAvatar/ProfileInfoFormAvatar";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -80,26 +81,29 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     return (
         <FormProvider {...form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className={cn(styles.wrapper, className)}
-            >
-                <ProfileInfoFormContent />
-                <div className={styles.submitBtn}>
-                    <Button
-                        disabled={isLocked}
-                        type="submit"
-                        variant="FILL"
-                        size="MEDIUM"
-                        color="BLUE"
-                    >
-                        {t("info.Сохранить")}
-                    </Button>
-                </div>
-                <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
-                    {isLocked ? t("info.Редактировать") : t("info.Отмена")}
-                </button>
-            </form>
+            <div className={styles.formWrapper}>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className={cn(styles.wrapper, className)}
+                >
+                    <ProfileInfoFormContent />
+                    <div className={styles.submitBtn}>
+                        <Button
+                            disabled={isLocked}
+                            type="submit"
+                            variant="FILL"
+                            size="MEDIUM"
+                            color="BLUE"
+                        >
+                            {t("info.Сохранить")}
+                        </Button>
+                    </div>
+                    <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
+                        {isLocked ? t("info.Редактировать") : t("info.Отмена")}
+                    </button>
+                </form>
+                <ProfileInfoFormAvatar />
+            </div>
         </FormProvider>
     );
 });

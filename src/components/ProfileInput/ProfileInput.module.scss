@@ -1,14 +1,12 @@
 .wrapper {
-    margin-left: 4.625rem;
     max-width: 182px;
     display: flex;
     justify-content: right;
     flex-direction: column;
-    margin-right: 50px;
 
     .linkWrapper {
         display: flex;
-        justify-content: right;
+        justify-content: center;
     }
 
     .link {

@@ -21,3 +21,8 @@
     cursor: pointer;
     font: var(--font-label);
 }
+
+.formWrapper {
+    display: flex;
+    gap: 20px;
+}

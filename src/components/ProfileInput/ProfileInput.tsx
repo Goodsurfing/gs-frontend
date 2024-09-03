@@ -71,6 +71,7 @@ const FileInput: FC<IFileInput> = ({
                 })}
             >
                 Максимальный размер
+                {" "}
                 {fileSizeInMB}
                 Мб
             </span>
