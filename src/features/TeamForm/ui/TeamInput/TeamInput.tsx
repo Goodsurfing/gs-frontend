@@ -6,18 +6,18 @@ import { useTranslation } from "react-i18next";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Input from "@/shared/ui/Input/Input";
 
-import { HostMember } from "@/entities/Host";
-import { TeamCard } from "../TeamCard/TeamCard";
+// import { HostMember } from "@/entities/Host";
+// import { TeamCard } from "../TeamCard/TeamCard";
 import styles from "./TeamInput.module.scss";
 
 export interface TeamInputProps {
     inputValue: string;
     onInputChange: (value: string) => void;
-    teamUsers: HostMember[];
+    // teamUsers: HostMember[];
 }
 
 export const TeamInput = memo(
-    ({ inputValue, onInputChange, teamUsers }: TeamInputProps) => {
+    ({ inputValue, onInputChange }: TeamInputProps) => {
         const dropwownRef = useRef(null);
         const { t } = useTranslation("host");
 
@@ -41,13 +41,17 @@ export const TeamInput = memo(
         //         return inputValue && userEmail.startsWith(searchTerm);
         //     })
         //     .map((user) => (
-        //         <button type="button" onClick={() => onClickCard(user.profile.firstName)} className={styles.wrapperCard}>
-        //             <TeamCard
-        //                 teamUser={user}
-        //                 key={user.id}
-        //                 disableDeleteIcn
-        //             />
-        //         </button>
+        //     <button
+        //     type="button" onClick={
+        //         () => onClickCard(user.profile.firstName)
+        //     } className={styles.wrapperCard}
+        // >
+        //     <TeamCard
+        //             teamUser={user}
+        //             key={user.id}
+        //             disableDeleteIcn
+        //         />
+        // </button>;
         //     )), [inputValue, onClickCard]);
 
         return (
