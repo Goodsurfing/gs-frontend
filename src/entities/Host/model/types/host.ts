@@ -19,7 +19,7 @@ export interface Host {
     telegram: string;
     team: Profile[];
     vacancies: string[]; // link to offers /api/vacancies/id
-    owner: Profile;
+    owner: Omit<Profile, "memberProfiles" | "membershipEndDate">;
 }
 
 export interface Video {
@@ -42,7 +42,7 @@ export interface Application {
 
 export interface HostMember {
     id: number;
-    profile: Profile;
+    profile: Omit<Profile, "image"> & { image?: string };
 }
 
 export interface TeamUser {

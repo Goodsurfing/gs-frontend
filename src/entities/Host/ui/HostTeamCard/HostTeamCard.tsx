@@ -3,12 +3,12 @@ import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
 import { TeamCard } from "@/features/TeamForm/ui/TeamCard/TeamCard";
-import { TeamUser } from "../../model/types/host";
+import { HostMember } from "../../model/types/host";
 
 import styles from "./HostTeamCard.module.scss";
 
 interface HostTeamCardProps {
-    team: TeamUser[];
+    team: HostMember[];
     className?: string;
 }
 

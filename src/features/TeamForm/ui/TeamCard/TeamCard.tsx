@@ -20,7 +20,7 @@ export const TeamCard: FC<TeamCardProps> = memo(
         const { id, profile } = teamUser;
         return (
             <div className={styles.wrapper}>
-                <Avatar icon={getMediaContent(profile.image?.contentUrl)} text={profile.firstName} size="MEDIUM" />
+                <Avatar icon={getMediaContent(profile.image)} text={profile.firstName} size="MEDIUM" />
                 <div className={styles.userInfo}>
                     {/* <span className={styles.role}>{teamUser.role}</span> */}
                     <span className={styles.name}>

@@ -27,7 +27,7 @@ export interface Profile {
     organizations?: Host[] | [];
     host?: string;
     volunteer?: Omit<VolunteerApi, "profile">;
-    memberProfiles: MemberProfiles;
+    memberProfiles: MemberProfiles[];
     membershipEndDate: string;
 }
 
