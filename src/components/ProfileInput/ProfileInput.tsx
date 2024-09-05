@@ -8,7 +8,7 @@ import defaultImage from "@/shared/assets/images/default-image-file.png";
 import styles from "./ProfileInput.module.scss";
 
 interface IFileInput extends InputFileProps {
-    file: File | undefined;
+    src: string | undefined;
     setFile: (file: File | undefined) => void;
     fileSizeInMB?: string;
     fileClassname?: string;
@@ -18,7 +18,7 @@ interface IFileInput extends InputFileProps {
 }
 
 const FileInput: FC<IFileInput> = ({
-    file,
+    src,
     setFile,
     fileSizeInMB = "2",
     route,
@@ -28,7 +28,6 @@ const FileInput: FC<IFileInput> = ({
     ...restInputProps
 }) => {
     const [isError, setError] = useState<boolean>(false);
-    const [fileImage, setFileImage] = useState<string>();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0].size > 2097152) {
@@ -37,8 +36,6 @@ const FileInput: FC<IFileInput> = ({
             return;
         }
         if (e.target.files) {
-            const image = URL.createObjectURL(e.target.files[0]);
-            setFileImage(image);
             setFile(e.target.files[0]);
             setError(false);
         }
@@ -58,10 +55,10 @@ const FileInput: FC<IFileInput> = ({
                 wrapperClassName={cn(fileClassname, styles.fileWrapper)}
                 className={styles.file}
                 labelClassName={cn(styles.labelClassname, {
-                    [styles.labelClassnameActive]: fileImage,
+                    [styles.labelClassnameActive]: src,
                 })}
                 labelChildren={
-                    <img alt="profile-pic" src={fileImage || defaultImage} />
+                    <img alt="profile-pic" src={src || defaultImage} />
                 }
                 {...restInputProps}
             />

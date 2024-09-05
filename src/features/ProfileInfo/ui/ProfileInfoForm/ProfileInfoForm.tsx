@@ -41,7 +41,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     const [updateProfile] = useUpdateProfileInfoMutation();
     const { data: getProfileData } = useGetProfileInfoQuery();
 
-    const { handleSubmit, reset } = form;
+    const { handleSubmit, reset, control } = form;
 
     const dispatch = useAppDispatch();
 
@@ -79,7 +79,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     };
 
     return (
-        <FormProvider {...form}>
+        <FormProvider {...form} control={control}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.formWrapper}>
                 <form

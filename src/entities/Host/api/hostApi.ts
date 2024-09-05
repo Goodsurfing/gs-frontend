@@ -124,9 +124,9 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
-    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
+    useGetMyHostQuery,
     useGetMyHostApplicationsQuery,
     useGetHostMembersByIdQuery,
     useAddMemberToOrganizationMutation,

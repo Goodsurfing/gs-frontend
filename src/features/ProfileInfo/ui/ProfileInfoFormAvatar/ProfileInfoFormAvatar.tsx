@@ -1,13 +1,15 @@
 import cn from "classnames";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getProfileReadonly } from "@/entities/Profile";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 
 import { getProfileInfoPageUrl } from "@/shared/config/routes/AppUrls";
-import { useAppSelector } from "@/shared/hooks/redux";
+import { BASE_URL } from "@/shared/constants/api";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 import styles from "./ProfileInfoFormAvatar.module.scss";
 
@@ -18,10 +20,38 @@ interface ProfileInfoFormAvatarProps {
 export const ProfileInfoFormAvatar = memo(
     (props: ProfileInfoFormAvatarProps) => {
         const { className } = props;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const isLocked = useAppSelector(getProfileReadonly);
-        const [avatar, setAvatar] = useState<File>();
+
+        const { data } = useGetProfileInfoQuery();
+        const [updateProfileInfo] = useUpdateProfileInfoMutation();
+        const [avatar, setAvatar] = useState<string | undefined>();
         const { locale } = useLocale();
+
+        const handleImageUpload = (file?: File) => {
+            if (file) {
+                uploadFile(file.name, file)
+                    .then(async (result) => {
+                        await updateProfileInfo({
+                            image: `${BASE_URL}${result?.["@id"].slice(1)}`,
+                            locale,
+                        }).unwrap();
+                    })
+                    .catch(() => {});
+            }
+        };
+
+        useEffect(() => {
+            if (data) {
+                const { image } = data;
+
+                if (
+                    typeof image === "object"
+                    && image !== null
+                    && "contentUrl" in image
+                ) {
+                    setAvatar(image.contentUrl);
+                }
+            }
+        }, [data]);
 
         return (
             <div className={cn(className, styles.wrapper)}>
@@ -29,8 +59,8 @@ export const ProfileInfoFormAvatar = memo(
                     fileClassname={styles.fileInput}
                     className={className}
                     id="profile-file"
-                    file={avatar}
-                    setFile={setAvatar}
+                    src={avatar ?? undefined}
+                    setFile={handleImageUpload}
                     route={getProfileInfoPageUrl(locale)}
                 />
             </div>

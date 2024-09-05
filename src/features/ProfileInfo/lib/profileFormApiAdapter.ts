@@ -1,7 +1,7 @@
 import type { Profile } from "@/entities/Profile";
 import type { ProfileInfoFields } from "../model/types/profileInfo";
 
-export function profileFormApiAdapter(data: ProfileInfoFields): Omit<Profile, "id"> {
+export function profileFormApiAdapter(data: ProfileInfoFields): Partial<Omit<Profile, "id">> {
     return {
         email: data.contacts.email!,
         locale: data.locale.language!,

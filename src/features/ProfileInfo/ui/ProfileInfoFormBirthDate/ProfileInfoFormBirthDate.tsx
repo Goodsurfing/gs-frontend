@@ -52,7 +52,7 @@ export const ProfileInfoFormBirthDate = memo((props: ProfileInfoFormBirthDatePro
                             value={field.value}
                         >
                             {birthMounthData.map((mounth) => (
-                                <MenuItem value={mounth} key={mounth}>{t(mounth)}</MenuItem>
+                                <MenuItem value={mounth} key={mounth}>{t(`info.${mounth}`)}</MenuItem>
                             ))}
                         </SelectComponent>
                     )}
