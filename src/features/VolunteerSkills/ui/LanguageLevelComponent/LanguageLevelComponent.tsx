@@ -45,7 +45,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                                 e.target.value as IOptionLanguage,
                             );
                         }}
-                        value={value ? value.language : ""}
+                        value={value?.language || ""}
                     >
                         {allLangs.map((item, index) => (
                             <MenuItem key={index} value={item.value}>
@@ -63,7 +63,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                                 e.target.value as IOptionLevelLanguage,
                             );
                         }}
-                        value={value ? value.level : ""}
+                        value={value?.level || ""}
                     >
                         {allLevels.map((item, index) => (
                             <MenuItem key={index} value={item.value}>

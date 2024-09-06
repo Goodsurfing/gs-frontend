@@ -77,12 +77,6 @@ export const WhoNeedsForm = memo(() => {
     const [toast, setToast] = useState<ToastAlert>();
     const watch = useWatch({ control });
 
-    // useEffect(() => {
-    //     if (getOfferData?.howNeeds && !Array.isArray(getOfferData.howNeeds)) {
-    //         reset(offerWhoNeedsApiAdapter(getOfferData.howNeeds));
-    //     }
-    // }, [getOfferData, reset]);
-
     const saveFormData = useCallback((data: OfferWhoNeedsFields) => {
         sessionStorage.setItem(`${OFFER_WHO_NEEDS_FORM}${id}`, JSON.stringify(offerWhoNeedsAdapter(data)));
     }, [id]);
