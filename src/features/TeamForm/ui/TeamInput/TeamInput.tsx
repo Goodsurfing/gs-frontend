@@ -9,15 +9,17 @@ import Input from "@/shared/ui/Input/Input";
 // import { HostMember } from "@/entities/Host";
 // import { TeamCard } from "../TeamCard/TeamCard";
 import styles from "./TeamInput.module.scss";
+import { HostMember } from "@/entities/Host";
 
 export interface TeamInputProps {
     inputValue: string;
     onInputChange: (value: string) => void;
-    // teamUsers: HostMember[];
+    teamUsers: HostMember[];
 }
 
 export const TeamInput = memo(
-    ({ inputValue, onInputChange }: TeamInputProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ({ inputValue, onInputChange, teamUsers }: TeamInputProps) => {
         const dropwownRef = useRef(null);
         const { t } = useTranslation("host");
 

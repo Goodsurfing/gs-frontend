@@ -14,6 +14,7 @@ export {
 
 export type {
     Profile,
+    ProfileApi,
     Gender,
     ImageType,
 } from "./model/types/profile";

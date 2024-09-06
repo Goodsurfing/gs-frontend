@@ -18,7 +18,7 @@ export interface Profile {
     country?: string;
     city?: string;
     phone?: string;
-    image?: ImageType | string;
+    image?: ImageType;
     aboutMe?: string;
     vk?: string;
     facebook?: string;
@@ -30,6 +30,8 @@ export interface Profile {
     memberProfiles: MemberProfiles[];
     membershipEndDate: string;
 }
+
+export type ProfileApi = Omit<Profile, "image"> & { image?: string };
 
 export interface ImageType {
     id: string;

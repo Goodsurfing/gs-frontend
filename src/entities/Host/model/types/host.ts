@@ -2,7 +2,7 @@ import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
 import { Article } from "@/entities/Article";
 import { Offer, OfferState } from "@/entities/Offer";
-import { Profile } from "@/entities/Profile";
+import { Profile, ProfileApi } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { VolunteerApi } from "@/entities/Volunteer";
 
@@ -42,7 +42,7 @@ export interface Application {
 
 export interface HostMember {
     id: number;
-    profile: Omit<Profile, "image"> & { image?: string };
+    profile: ProfileApi;
 }
 
 export interface TeamUser {
@@ -61,7 +61,7 @@ export interface FullHost {
     offers?: Offer[];
     gallery?: Gallery;
     videoGallery?: VideoGallery;
-    team: HostTeam;
+    team: HostMember[];
     reviews?: Review[];
     articles?: Article[];
 }

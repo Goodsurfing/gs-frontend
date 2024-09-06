@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { Profile } from "../model/types/profile";
+import { Profile, ProfileApi } from "../model/types/profile";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 export const profileApi = createApi({
@@ -14,7 +14,7 @@ export const profileApi = createApi({
             }),
             providesTags: ["profile"],
         }),
-        updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
+        updateProfileInfo: build.mutation<Profile, Partial<ProfileApi>>({
             query: (profileData) => ({
                 url: "personal/profile",
                 method: "PATCH",
