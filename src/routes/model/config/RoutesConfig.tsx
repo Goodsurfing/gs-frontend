@@ -48,7 +48,6 @@ import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
@@ -290,9 +289,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "volunteer-layout",
         element: (
-            <PrivateRouteGuard>
-                <VolunteerLayoutPage />
-            </PrivateRouteGuard>
+            AuthRoutes.volunteer
         ),
         path: (locale: string) => getVolunteerPageUrl(locale),
         children: [

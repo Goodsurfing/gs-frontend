@@ -19,10 +19,13 @@ export const volunteerApi = createApi({
             }),
             providesTags: ["volunteer"],
         }),
-        createVolunteer: build.mutation<VolunteerApi, FormData>({
+        createVolunteer: build.mutation<VolunteerApi, void>({
             query: (body) => ({
                 url: "personal/volunteer",
                 method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
                 body,
             }),
             invalidatesTags: ["volunteer"],

@@ -1,7 +1,8 @@
 import React, { FC, MouseEventHandler } from "react";
-import styles from "./ConfirmActionModal.module.scss";
+import cn from "classnames";
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
+import styles from "./ConfirmActionModal.module.scss";
 
 interface ConfirmActionModalProps {
     description: string;
@@ -10,11 +11,14 @@ interface ConfirmActionModalProps {
     onClose: () => void;
     cancelTextButton?: string;
     isModalOpen?: boolean;
+    buttonsDisabled?: boolean;
+    className?: string;
 }
 
 export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
     const {
-        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false,
+        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false, buttonsDisabled = false,
+        className,
     } = props;
 
     if (!isModalOpen) {
@@ -23,13 +27,27 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
 
     return (
         <Modal onClose={onClose} isShowCloseIcon={false}>
-            <div className={styles.wrapper}>
+            <div className={cn(styles.wrapper, className)}>
                 <span className={styles.description}>{description}</span>
                 <div className={styles.buttons}>
-                    <Button className={styles.blue} color="BLUE" size="MEDIUM" variant="FILL" onClick={onConfirm}>
+                    <Button
+                        className={styles.blue}
+                        color="BLUE"
+                        size="MEDIUM"
+                        variant="FILL"
+                        onClick={onConfirm}
+                        disabled={buttonsDisabled}
+                    >
                         {confirmTextButton}
                     </Button>
-                    <Button className={styles.gray} color="GRAY" size="MEDIUM" variant="OUTLINE" onClick={onClose}>
+                    <Button
+                        className={styles.gray}
+                        color="GRAY"
+                        size="MEDIUM"
+                        variant="OUTLINE"
+                        onClick={onClose}
+                        disabled={buttonsDisabled}
+                    >
                         {cancelTextButton}
                     </Button>
                 </div>

@@ -1,11 +1,12 @@
 import { AuthProvider } from "@/routes/model/guards/AuthProvider";
+import { PrivateRouteGuard } from "@/routes/model/guards/PrivateRouteGuard";
 
+import { MessengerPage } from "@/pages/MessengerPage";
+import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
+import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 
 import { AppRoutes } from "./AppRoutes";
-import { PrivateRouteGuard } from "@/routes/model/guards/PrivateRouteGuard";
-import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
-import { MessengerPage } from "@/pages/MessengerPage";
 
 export const AuthRoutes = {
     [AppRoutes.PROFILE_RESET_PASSWORD]: (
@@ -13,6 +14,13 @@ export const AuthRoutes = {
             <AuthProvider>
                 <ProfileResetPasswordPage />
             </AuthProvider>
+        </PrivateRouteGuard>
+    ),
+    [AppRoutes.VOLUNTEER]: (
+        <PrivateRouteGuard>
+            {/* <PrivateRouteVolunteerGuard> */}
+            <VolunteerLayoutPage />
+            {/* </PrivateRouteVolunteerGuard> */}
         </PrivateRouteGuard>
     ),
     [AppRoutes.OFFERS_DESCRIPTION]: (

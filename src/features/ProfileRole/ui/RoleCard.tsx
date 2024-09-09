@@ -8,6 +8,7 @@ interface RoleCardProps {
     titleRole: string;
     descriptionRole: string;
     buttonText: string;
+    buttonDisabled?: boolean;
     onClick?: () => void;
 }
 
@@ -16,13 +17,14 @@ export const RoleCard: FC<RoleCardProps> = ({
     titleRole,
     descriptionRole,
     buttonText,
+    buttonDisabled = false,
     onClick,
 }) => (
     <div className={styles.wrapper}>
         <img src={imageRole} alt="" />
         <span className={styles.title}>{titleRole}</span>
         <span className={styles.description}>{descriptionRole}</span>
-        <Button className={styles.button} color="primary" onClick={onClick}>
+        <Button className={styles.button} color="primary" onClick={onClick} disabled={buttonDisabled}>
             {buttonText}
         </Button>
     </div>

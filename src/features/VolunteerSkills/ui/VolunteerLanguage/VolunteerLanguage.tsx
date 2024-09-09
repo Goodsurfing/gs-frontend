@@ -11,14 +11,14 @@ import { useTranslation } from "react-i18next";
 import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
-import { LanguageSkills } from "../../model/types/volunteerSkills";
 import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
 import styles from "./VolunteerLanguage.module.scss";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
+import { Language } from "@/types/languages";
 
 interface VolunteerLanguageProps {
-    value?: LanguageSkills[];
-    onChange: (value: LanguageSkills[]) => void;
+    value?: Language[];
+    onChange: (value: Language[]) => void;
     className?: string;
 }
 
@@ -27,13 +27,13 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         const { className, value, onChange } = props;
         const { t } = useTranslation("volunteer");
         const [mainLanguageSkills, setMainLanguageSkills] = useState<
-        LanguageSkills | undefined
+        Language | undefined
         >(undefined);
         const isDisabledButton = !mainLanguageSkills
             || !mainLanguageSkills?.language
-            || !mainLanguageSkills?.level;
+            || !mainLanguageSkills?.languageLevel;
 
-        const handleMainLanguageChange = (item: LanguageSkills) => {
+        const handleMainLanguageChange = (item: Language) => {
             setMainLanguageSkills(item);
         };
 
@@ -57,7 +57,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         );
 
         const handleUpdateLanguage = useCallback(
-            (updatedItem: LanguageSkills, index: number) => {
+            (updatedItem: Language, index: number) => {
                 const newValue = value?.map((item, i) => (i === index ? updatedItem : item)) || [];
                 onChange(newValue);
             },

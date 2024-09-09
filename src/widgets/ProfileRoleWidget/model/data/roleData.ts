@@ -5,12 +5,14 @@ import { RoleInfo } from "../types/profileRoleWidget";
 
 export const roleData: RoleInfo[] = [
     {
+        id: "volunteer",
         imageRole: profileGoodsurfer,
         titleRole: "Гудсёрфер",
         descriptionRole: "Чтобы путешествовать как гудсёрфер",
         buttonText: "Стать гудсёрфером",
     },
     {
+        id: "host",
         imageRole: profileHost,
         titleRole: "Организатор",
         descriptionRole: "Чтобы принимать гудсёрферов как организатор",
