@@ -1,21 +1,19 @@
 import React, { FC, memo } from "react";
 
-import { VolunteerInfoCard } from "@/entities/Volunteer";
-import { mockedVolunteerData } from "@/entities/Volunteer/model/data/mockedVolunteerData";
+import { VolunteerApi, VolunteerInfoCard } from "@/entities/Volunteer";
 
 import styles from "./VolunteerPageContent.module.scss";
 
 interface VolunteerPageContentProps {
-    id: string;
+    volunteer: VolunteerApi;
 }
 
 export const VolunteerPageContent: FC<VolunteerPageContentProps> = memo(
     (props: VolunteerPageContentProps) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id } = props;
+        const { volunteer } = props;
         return (
             <div className={styles.wrapper}>
-                <VolunteerInfoCard volunteer={mockedVolunteerData} className={styles.container} />
+                <VolunteerInfoCard volunteer={volunteer} className={styles.container} />
             </div>
         );
     },

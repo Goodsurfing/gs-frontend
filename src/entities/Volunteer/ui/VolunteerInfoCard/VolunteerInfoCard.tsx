@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { Volunteer } from "../../model/types/volunteer";
+import { VolunteerApi } from "../../model/types/volunteer";
 import { VolunteerArticlesCard } from "../VolunteerArticlesCard/VolunteerArticlesCard";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
@@ -15,7 +15,7 @@ import styles from "./VolunteerInfoCard.module.scss";
 
 interface VolunteerInfoCardProps {
     className?: string;
-    volunteer: Volunteer;
+    volunteer: VolunteerApi;
 }
 
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
@@ -23,7 +23,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
         const { volunteer, className } = props;
         return (
             <div className={cn(className)}>
-                <VolunteerDesctiptionCard description={volunteer.aboutMe} />
+                <VolunteerDesctiptionCard description={volunteer.externalInfo} />
                 <VolunteerSkillsCard
                     skills={volunteer.skills}
                     className={styles.container}

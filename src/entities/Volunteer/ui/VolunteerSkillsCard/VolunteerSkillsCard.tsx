@@ -6,9 +6,10 @@ import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextCompone
 import { Text } from "@/shared/ui/Text/Text";
 
 import styles from "./VolunteerSkillsCard.module.scss";
+import { WhatToDoSkillType } from "@/types/skills";
 
 interface VolunteerSkillsCardProps {
-    skills?: SkillsData[];
+    skills?: WhatToDoSkillType[];
     className?: string;
 }
 
@@ -37,7 +38,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                 {},
             );
             return skills.map((item) => {
-                const skill = skillsMap[item.id];
+                const skill = skillsMap[item];
                 return (
                     skill && (
                         <IconTextComponent

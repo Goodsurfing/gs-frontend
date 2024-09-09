@@ -1,5 +1,6 @@
 import { AuthProvider } from "@/routes/model/guards/AuthProvider";
 import { PrivateRouteGuard } from "@/routes/model/guards/PrivateRouteGuard";
+import { PrivateRouteVolunteerGuard } from "@/routes/model/guards/PrivateRouteVolunteerGuard";
 
 import { MessengerPage } from "@/pages/MessengerPage";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
@@ -18,9 +19,9 @@ export const AuthRoutes = {
     ),
     [AppRoutes.VOLUNTEER]: (
         <PrivateRouteGuard>
-            {/* <PrivateRouteVolunteerGuard> */}
-            <VolunteerLayoutPage />
-            {/* </PrivateRouteVolunteerGuard> */}
+            <PrivateRouteVolunteerGuard>
+                <VolunteerLayoutPage />
+            </PrivateRouteVolunteerGuard>
         </PrivateRouteGuard>
     ),
     [AppRoutes.OFFERS_DESCRIPTION]: (

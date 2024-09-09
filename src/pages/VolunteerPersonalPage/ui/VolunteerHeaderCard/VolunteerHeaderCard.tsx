@@ -1,41 +1,39 @@
 import React, { FC, memo } from "react";
 
-import { Volunteer } from "@/entities/Volunteer";
+import { VolunteerApi } from "@/entities/Volunteer";
 
-import memberIcon from "@/shared/assets/icons/select-check.svg";
+// import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./VolunteerHeaderCard.module.scss";
 import { medalsData } from "@/shared/data/medals";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerHeaderCardProps {
     id: string;
-    volunteer: Volunteer;
+    volunteer: VolunteerApi;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
     (props: VolunteerHeaderCardProps) => {
         const {
             volunteer: {
-                firstName,
-                lastName,
-                image,
-                isMember,
-                country,
-                city,
-                birthDate,
+                profile,
                 languages,
             },
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             id,
         } = props;
+        const {
+            firstName, lastName, image, birthDate, country, city,
+        } = profile;
 
         return (
             <div className={styles.wrapper}>
                 <div className={styles.mainInfo}>
                     <Avatar
-                        icon={image?.contentUrl}
+                        icon={getMediaContent(image?.contentUrl)}
                         className={styles.image}
                         alt="avatar"
                     />
@@ -46,13 +44,13 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 {" "}
                                 {birthDate}
                             </span>
-                            {isMember && (
+                            {/* {isMember && (
                                 <img
                                     src={memberIcon}
                                     className={styles.memberIcon}
                                     alt="goodsurfing member"
                                 />
-                            )}
+                            )} */}
                         </div>
                         <h3 className={styles.name}>
                             {firstName}

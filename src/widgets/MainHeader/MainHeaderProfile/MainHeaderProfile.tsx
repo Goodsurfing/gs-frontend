@@ -11,6 +11,7 @@ import {
     getMainPageUrl,
     getProfileInfoPageUrl,
     getVolunteerDashboardPageUrl,
+    getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
@@ -22,6 +23,7 @@ import { profileApi } from "@/entities/Profile";
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import styles from "./MainHeaderProfile.module.scss";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const MainHeaderProfile = () => {
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
@@ -31,7 +33,7 @@ const MainHeaderProfile = () => {
     const profileRef = useRef(null);
 
     const { locale } = useLocale();
-    const { data: userInfo } = profileApi.useGetProfileInfoQuery();
+    const { data: userInfo, isLoading } = profileApi.useGetProfileInfoQuery();
 
     const dispatch = useAppDispatch();
 
@@ -55,6 +57,19 @@ const MainHeaderProfile = () => {
         setProfileOpened(!isProfileOpened);
     }, [isProfileOpened]);
 
+    if (!userInfo || isLoading) {
+        return (
+            <div
+                ref={profileRef}
+                onClick={handleProfileOpen}
+                onKeyDown={handleCloseDropdown}
+                className={styles.info}
+            >
+                <MiniLoader />
+            </div>
+        );
+    }
+
     return (
         <div
             ref={profileRef}
@@ -72,7 +87,7 @@ const MainHeaderProfile = () => {
             <Popup className={styles.popup} isOpen={isProfileOpened}>
                 <Link
                     className={styles.dropdownLink}
-                    to={getProfileInfoPageUrl(locale)}
+                    to={getVolunteerPersonalPageUrl(locale, userInfo.id)}
                     replace
                 >
                     {t("main.welcome.header.my-page")}
