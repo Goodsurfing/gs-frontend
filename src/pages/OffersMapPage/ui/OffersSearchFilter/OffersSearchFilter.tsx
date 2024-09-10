@@ -5,9 +5,9 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
 import { OffersFilterFields, OffersSortFields } from "../../model/types";
-import styles from "./OffersSearchFilter.module.scss";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
-import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import styles from "./OffersSearchFilter.module.scss";
+import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 
 export const OffersSearchFilter = () => {
     const defaultSortValues: DefaultValues<OffersSortFields> = {
@@ -34,7 +34,6 @@ export const OffersSearchFilter = () => {
     });
 
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
-    const { width } = useWindowDimensions();
 
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
@@ -43,7 +42,7 @@ export const OffersSearchFilter = () => {
     return (
         <div className={styles.wrapper}>
             <FormProvider {...offerFilterForm}>
-                <OffersFilter />
+                <OffersFilter className={styles.filter} />
             </FormProvider>
             <div className={styles.wrapperOffersMap}>
                 <FormProvider {...offerSortForm}>
@@ -56,13 +55,14 @@ export const OffersSearchFilter = () => {
                     />
                 </FormProvider>
 
-                {(isMapOpened && width > 992) && (
+                {isMapOpened && (
                     <OffersMap
                         className={styles.offersMap}
                         classNameMap={styles.offersMap}
                     />
                 )}
             </div>
+            <OffersSearchFilterMobile className={styles.mobile} />
         </div>
     );
 };
