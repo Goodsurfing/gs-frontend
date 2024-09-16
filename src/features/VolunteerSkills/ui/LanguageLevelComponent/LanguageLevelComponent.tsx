@@ -1,18 +1,22 @@
 import { MenuItem } from "@mui/material";
-import React, { FC, memo } from "react";
 import cn from "classnames";
+import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
+import { Language, LevelLanguage } from "@/types/languages";
+
+import {
+    useAllLangsFilter,
+    useLangsLevelsFilter,
+} from "@/shared/data/languages";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
 import styles from "./LanguageLevelComponent.module.scss";
-import { useAllLangsFilter, useLangsLevelsFilter } from "@/shared/data/languages";
-import { Language, LevelLanguage } from "@/types/languages";
 
 interface LanguageLevelComponentProps {
     className?: string;
     value?: Language;
     onChange: (value: Language) => void;
-    isTitle?: boolean
+    isTitle?: boolean;
 }
 
 export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
@@ -25,26 +29,24 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
         const allLevels = useLangsLevelsFilter();
 
         const handleLanguageChange = (language: string) => {
-            if (value) {
-                onChange({ ...value, language });
-            }
+            onChange({ ...value, language, languageLevel: "beginner" });
         };
         const handleLevelChange = (level: LevelLanguage) => {
-            if (value) {
-                onChange({ ...value, languageLevel: level });
-            }
+            onChange({ ...value, languageLevel: level, language: value?.language || "" });
         };
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Знание языков")}</span>}
+                    {isTitle && (
+                        <span className={styles.titleSelect}>
+                            {t("volunteer-skills.Знание языков")}
+                        </span>
+                    )}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
-                            handleLanguageChange(
-                                e.target.value as string,
-                            );
+                            handleLanguageChange(e.target.value as string);
                         }}
                         value={value?.language || ""}
                     >
@@ -56,13 +58,15 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                     </SelectComponent>
                 </div>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Уровень владения")}</span>}
+                    {isTitle && (
+                        <span className={styles.titleSelect}>
+                            {t("volunteer-skills.Уровень владения")}
+                        </span>
+                    )}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
-                            handleLevelChange(
-                                e.target.value as LevelLanguage,
-                            );
+                            handleLevelChange(e.target.value as LevelLanguage);
                         }}
                         value={value?.languageLevel || ""}
                     >

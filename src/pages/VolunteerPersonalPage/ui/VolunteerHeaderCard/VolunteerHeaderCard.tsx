@@ -1,33 +1,89 @@
-import React, { FC, memo } from "react";
+import React, { FC, memo, useCallback } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { Profile } from "@/entities/Profile";
 import { VolunteerApi } from "@/entities/Volunteer";
 
+import { medalsData } from "@/shared/data/medals";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 // import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
+import { getMessengerPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./VolunteerHeaderCard.module.scss";
-import { medalsData } from "@/shared/data/medals";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerHeaderCardProps {
-    id: string;
-    volunteer: VolunteerApi;
+    profile: Profile;
+    host?: string;
+    volunteer?: VolunteerApi;
+    showButtons: boolean;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
     (props: VolunteerHeaderCardProps) => {
         const {
-            volunteer: {
-                profile,
-                languages,
-            },
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            id,
+            volunteer,
+            profile,
+            showButtons,
+            host,
         } = props;
         const {
             firstName, lastName, image, birthDate, country, city,
         } = profile;
+        const navigate = useNavigate();
+        const { locale } = useLocale();
+
+        const renderLanguages = () => {
+            if (
+                volunteer
+                && volunteer.languages
+                && volunteer.languages.length > 0
+            ) {
+                return (
+                    <span style={{ color: "black" }}>
+                        {volunteer.languages.map(({ language }, index) => (
+                            <React.Fragment key={index}>
+                                {language}
+                                {index < volunteer.languages.length - 1 && ", "}
+                            </React.Fragment>
+                        ))}
+                    </span>
+                );
+            }
+            return <span>Языки не были указаны</span>;
+        };
+
+        const renderRole = () => {
+            const roles = [];
+            if (volunteer) {
+                roles.push("Волонтёр");
+            }
+            if (host) {
+                roles.push("Хост");
+            }
+
+            return roles.length > 0 ? roles.join(", ") : null;
+        };
+
+        const handleEditClick = useCallback(() => {
+            navigate(getVolunteerDashboardPageUrl(locale));
+        }, [locale, navigate]);
+
+        const handleMessageClick = useCallback(() => {
+            navigate(getMessengerPageUrl(locale));
+        }, [locale, navigate]);
+
+        const renderButtons = showButtons ? (
+            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleMessageClick}>
+                Написать
+            </Button>
+        ) : (
+            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
+                Редактировать
+            </Button>
+        );
 
         return (
             <div className={styles.wrapper}>
@@ -40,7 +96,8 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.containerInfo}>
                         <div>
                             <span className={styles.birthDate}>
-                                Волонтёр,
+                                {renderRole()}
+                                ,
                                 {" "}
                                 {birthDate}
                             </span>
@@ -48,7 +105,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 <img
                                     src={memberIcon}
                                     className={styles.memberIcon}
-                                    alt="goodsurfing member"
+                                    alt="member"
                                 />
                             )} */}
                         </div>
@@ -72,18 +129,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 Языки:
                                 {" "}
                                 <span className={styles.subText}>
-                                    {languages && languages.length > 0 ? (
-                                        <span style={{ color: "black" }}>
-                                            {languages.map(({ language }, index) => (
-                                                <React.Fragment key={index}>
-                                                    {language}
-                                                    {index < languages.length - 1 && ", "}
-                                                </React.Fragment>
-                                            ))}
-                                        </span>
-                                    ) : (
-                                        <span>Языки не были указаны</span>
-                                    )}
+                                    {renderLanguages()}
                                 </span>
                             </span>
                         </div>
@@ -102,9 +148,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                             </div>
                         ))}
                     </div>
-                    <Button color="BLUE" size="SMALL" variant="FILL">
-                        Редактировать профиль
-                    </Button>
+                    {renderButtons}
                 </div>
             </div>
         );

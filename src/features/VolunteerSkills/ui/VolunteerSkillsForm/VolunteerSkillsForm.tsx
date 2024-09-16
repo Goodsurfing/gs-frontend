@@ -100,6 +100,7 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
                         text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
+                    sessionStorage.removeItem(VOLUNTEER_SKILLS_FORM);
                 })
                 .catch((error: ErrorType) => {
                     setToast({

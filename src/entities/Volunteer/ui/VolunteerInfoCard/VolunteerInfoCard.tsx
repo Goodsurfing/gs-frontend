@@ -1,38 +1,38 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
+import { Host } from "@/entities/Host";
+
 import { VolunteerApi } from "../../model/types/volunteer";
-import { VolunteerArticlesCard } from "../VolunteerArticlesCard/VolunteerArticlesCard";
-import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
-import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
 import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLanguagesCard";
-import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
-import { VolunteerReviewsCard } from "../VolunteerReviewsCard/VolunteerReviewsCard";
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
-import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
+import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
 import styles from "./VolunteerInfoCard.module.scss";
 
 interface VolunteerInfoCardProps {
     className?: string;
-    volunteer: VolunteerApi;
+    volunteer?: VolunteerApi;
+    host?: Host;
 }
 
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
     (props: VolunteerInfoCardProps) => {
-        const { volunteer, className } = props;
+        const { volunteer, className, host } = props;
         return (
             <div className={cn(className)}>
-                <VolunteerDesctiptionCard description={volunteer.externalInfo} />
+                <VolunteerDesctiptionCard
+                    description={volunteer?.externalInfo}
+                />
                 <VolunteerSkillsCard
-                    skills={volunteer.skills}
+                    skills={volunteer?.skills}
                     className={styles.container}
                 />
                 <VolunteerLanguagesCard
-                    languages={volunteer.languages}
+                    languages={volunteer?.languages}
                     className={styles.container}
                 />
-                <VolunteerOffersCard
+                {/* <VolunteerOffersCard
                     offers={volunteer.offers}
                     className={styles.container}
                 />
@@ -55,7 +55,10 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 <VolunteerArticlesCard
                     articles={volunteer.articles}
                     className={styles.container}
-                />
+                /> */}
+                {host && (
+                    <VolunteerHostCard host={host} className={styles.container} />
+                )}
             </div>
         );
     },

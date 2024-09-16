@@ -26,7 +26,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
         const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
-            if (!skills) {
+            if (!skills || !skills.length) {
                 return <span>Волонтёр не указал умения</span>;
             }
 

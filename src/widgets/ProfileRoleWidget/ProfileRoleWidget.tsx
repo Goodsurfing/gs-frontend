@@ -59,7 +59,11 @@ export const ProfileRoleWidget: FC = () => {
 
     const handleConfirmClick = () => {
         if (selectedRole === "volunteer") {
-            createVolunteer()
+            const emptyFieldsFormData = new FormData(); // Crutch on backend
+            emptyFieldsFormData.append("externalInfo", "");
+            emptyFieldsFormData.append("skills", JSON.stringify([]));
+            emptyFieldsFormData.append("additionalSkills", JSON.stringify([]));
+            createVolunteer(emptyFieldsFormData)
                 .unwrap()
                 .then(() => {
                     setModalOpen(false);

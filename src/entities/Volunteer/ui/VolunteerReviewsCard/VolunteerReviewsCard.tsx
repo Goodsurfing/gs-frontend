@@ -19,9 +19,10 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
     (props: VolunteerReviewsCardProps) => {
         const { className, reviews } = props;
         const { locale } = useLocale();
+        const showReviews = !reviews || reviews.length;
         const renderCards = useMemo(
             () => {
-                if (!reviews) {
+                if (showReviews) {
                     return <span>У волонтёра пока нет отзывов</span>;
                 }
                 return reviews
@@ -30,18 +31,20 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
                         <ReviewWidget review={reviewItem} key={index} />
                     ));
             },
-            [reviews],
+            [reviews, showReviews],
         );
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <h3>Отзывы о волонтёре</h3>
                 <div className={styles.container}>{renderCards}</div>
-                <Link to={getMainPageUrl(locale)} className={styles.ViewAll}>
-                    Посмотреть все
-                    {" "}
-                    <img src={arrowDownIcon} alt="View all" />
-                </Link>
+                {!showReviews && (
+                    <Link to={getMainPageUrl(locale)} className={styles.ViewAll}>
+                        Посмотреть все
+                        {" "}
+                        <img src={arrowDownIcon} alt="View all" />
+                    </Link>
+                )}
             </div>
         );
     },
