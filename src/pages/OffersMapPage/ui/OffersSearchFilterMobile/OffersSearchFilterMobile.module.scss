@@ -1,0 +1,28 @@
+.wrapper {
+    padding: 0 20px;
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.button {
+    width: 100%;
+}
+
+.sortWrapper {
+    width: 100%;
+    height: auto;
+}
+
+.sortDropdown {
+    border: 1px solid var(--bg-field);
+}
+
+.sort {
+    padding: 10px 14px;
+    font-size: 16px;
+}

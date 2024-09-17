@@ -9,6 +9,6 @@ interface SquareButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const SquareButton: FC<SquareButtonProps> = (props) => {
     const { className, children, ...rest } = props;
     return (
-        <button type="button" className={cn(styles.wrapper, className)} {...rest}>{children}</button>
+        <button type="button" className={cn(styles.button, className)} {...rest}>{children}</button>
     );
 };

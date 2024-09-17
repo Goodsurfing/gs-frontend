@@ -62,7 +62,11 @@ export const OffersSearchFilter = () => {
                     />
                 )}
             </div>
-            <OffersSearchFilterMobile className={styles.mobile} />
+            <FormProvider {...offerFilterForm}>
+                <FormProvider {...offerSortForm}>
+                    <OffersSearchFilterMobile className={styles.mobile} />
+                </FormProvider>
+            </FormProvider>
         </div>
     );
 };
