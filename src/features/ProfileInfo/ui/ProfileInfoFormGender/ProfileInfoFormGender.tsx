@@ -33,6 +33,7 @@ export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) =>
                         label={t("info.Пол")}
                         disabled={isLocked}
                         className={styles.genderDropdown}
+                        onChange={field.onChange}
                     >
                         <MenuItem key="male" value="male">{t("info.Мужчина")}</MenuItem>
                         <MenuItem key="female" value="female">{t("info.Женщина")}</MenuItem>

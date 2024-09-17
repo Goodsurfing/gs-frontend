@@ -2,9 +2,9 @@ import { Locale } from "@/entities/Locale";
 import { Gender, ImageType } from "@/entities/Profile";
 
 export interface ProfileDateOfBirth {
-    day?: number;
-    mounth?: number;
-    year?: number;
+    day: number;
+    mounth: number;
+    year: number;
 }
 
 export interface ProfileAbout {

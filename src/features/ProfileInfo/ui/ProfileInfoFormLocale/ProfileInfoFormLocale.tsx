@@ -9,8 +9,9 @@ import { useAppSelector } from "@/shared/hooks/redux";
 
 import { getProfileReadonly } from "@/entities/Profile";
 
-import styles from "./ProfileInfoFormLocale.module.scss";
 import { localeLanguage } from "../../model/data/localeData";
+import { InputControl } from "@/shared/ui/InputControl/InputControl";
+import styles from "./ProfileInfoFormLocale.module.scss";
 
 interface ProfileInfoFormLocaleProps {
     className?: string;
@@ -25,35 +26,17 @@ export const ProfileInfoFormLocale = memo((props: ProfileInfoFormLocaleProps) =>
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Controller
+            <InputControl
+                disabled={isLocked}
+                label={t("info.Страна")}
+                control={control}
                 name="locale.country"
-                control={control}
-                render={({ field }) => (
-                    <SelectComponent
-                        disabled={isLocked}
-                        className={styles.dropdown}
-                        onChange={field.onChange}
-                        value={field.value}
-                        label={t("info.Страна")}
-                    >
-                        {}
-                    </SelectComponent>
-                )}
             />
-            <Controller
-                name="locale.city"
+            <InputControl
+                disabled={isLocked}
+                label={t("info.Город")}
                 control={control}
-                render={({ field }) => (
-                    <SelectComponent
-                        disabled={isLocked}
-                        className={styles.dropdown}
-                        onChange={field.onChange}
-                        value={field.value}
-                        label={t("info.Город")}
-                    >
-                        {}
-                    </SelectComponent>
-                )}
+                name="locale.city"
             />
             <Controller
                 name="locale.language"
