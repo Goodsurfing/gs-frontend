@@ -4,3 +4,4 @@ export { OffersPlacemarkList } from "./ui/OffersPlacemarkList/OffersPlacemarkLis
 export { OffersList } from "./ui/OffersList/OffersList";
 export { Categories } from "./ui/Categories/Categories";
 export { ExtraFilters } from "./ui/ExtraFilters/ExtraFilters";
+export { SwitchClosedOffers } from "./ui/SwitchClosedOffers/SwitchClosedOffers";
