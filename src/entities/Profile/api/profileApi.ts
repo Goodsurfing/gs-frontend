@@ -14,6 +14,13 @@ export const profileApi = createApi({
             }),
             providesTags: ["profile"],
         }),
+        getProfileInfoById: build.query<Profile, string>({
+            query: (userId) => ({
+                url: `users/${userId}`,
+                method: "GET",
+            }),
+            providesTags: ["profile"],
+        }),
         updateProfileInfo: build.mutation<Profile, Partial<ProfileApi>>({
             query: (profileData) => ({
                 url: "personal/profile",
@@ -30,5 +37,6 @@ export const profileApi = createApi({
 
 export const {
     useGetProfileInfoQuery,
+    useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
 } = profileApi;

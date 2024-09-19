@@ -22,6 +22,7 @@ import { SubmenuVolunteerData } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import styles from "./VolunteerPersonalPage.module.scss";
+import { useGetProfileInfoByIdQuery } from "@/entities/Profile/api/profileApi";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -31,7 +32,8 @@ export const VolunteerPersonalPage = () => {
     const { data: volunteerData, isLoading } = useGetVolunteerByIdQuery(
         id || "",
     );
-    const { data: profileData, isLoading: profileIsLoading } = useGetProfileInfoQuery();
+    const { data: myProfileData, isLoading: myProfileIsLoading } = useGetProfileInfoQuery();
+    const { data: profileData, isLoading: profileIsLoading } = useGetProfileInfoByIdQuery(id || "");
 
     const handleEditClick = useCallback(() => {
         navigate(getVolunteerDashboardPageUrl(locale));
@@ -41,7 +43,7 @@ export const VolunteerPersonalPage = () => {
         navigate(getMessengerPageUrl(locale));
     }, [locale, navigate]);
 
-    if (isLoading || profileIsLoading) {
+    if (isLoading || profileIsLoading || myProfileIsLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -49,7 +51,7 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    if (!id || !profileData) {
+    if (!id || !myProfileData || !profileData) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
@@ -65,17 +67,7 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    const showButtons = profileData.id === id ? (
-        <Button
-            size="SMALL"
-            color="BLUE"
-            variant="OUTLINE"
-            className={styles.button}
-            onClick={handleMessageClick}
-        >
-            Написать
-        </Button>
-    ) : (
+    const showButtons = myProfileData.id === id ? (
         <Button
             size="SMALL"
             color="BLUE"
@@ -84,6 +76,17 @@ export const VolunteerPersonalPage = () => {
             onClick={handleEditClick}
         >
             Редактировать
+        </Button>
+
+    ) : (
+        <Button
+            size="SMALL"
+            color="BLUE"
+            variant="OUTLINE"
+            className={styles.button}
+            onClick={handleMessageClick}
+        >
+            Написать
         </Button>
     );
 
@@ -94,6 +97,7 @@ export const VolunteerPersonalPage = () => {
                 <VolunteerHeaderCard
                     volunteer={volunteerData}
                     profile={profileData}
+                    host={profileData.host}
                     showButtons={profileData.id === id}
                 />
                 <Submenu

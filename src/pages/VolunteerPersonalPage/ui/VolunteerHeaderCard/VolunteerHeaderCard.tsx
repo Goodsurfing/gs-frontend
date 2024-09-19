@@ -76,12 +76,13 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         }, [locale, navigate]);
 
         const renderButtons = showButtons ? (
-            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleMessageClick}>
-                Написать
-            </Button>
-        ) : (
             <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
                 Редактировать
+            </Button>
+
+        ) : (
+            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleMessageClick}>
+                Написать
             </Button>
         );
 
@@ -97,7 +98,6 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         <div>
                             <span className={styles.birthDate}>
                                 {renderRole()}
-                                ,
                                 {" "}
                                 {birthDate}
                             </span>
