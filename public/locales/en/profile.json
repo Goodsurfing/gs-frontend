@@ -6,7 +6,7 @@
         "Редактировать": "Edit",
         "Пол": "Sex",
         "Мужчина": "Man",
-        "Женщина": "Woman",
+        "Женщина": "Female",
         "Другой": "Other",
         "Страна": "Country",
         "Город": "City",
@@ -28,6 +28,15 @@
         "September": "September",
         "October": "October",
         "November": "November",
-        "December": "December"
+        "December": "December",
+        "Это поле является обязательным": "This field is required",
+        "Укажите день": "Please specify the day",
+        "День_не_может_быть_больше": "Day cannot be greater than {{maxDays}} in the month of {{month}}",
+        "Укажите месяц": "Please specify the month",
+        "Укажите год": "Please specify the year",
+        "Год должен быть больше или равен 1900": "The year must be greater than or equal to 1900",
+        "Не верно указан год": "The year is invalid",
+        "Посмотреть профиль": "View Profile",
+        "Максимальный_размер": "Maximum size is {{size}} MB"
     }
 }

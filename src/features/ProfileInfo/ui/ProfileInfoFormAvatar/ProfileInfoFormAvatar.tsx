@@ -12,6 +12,7 @@ import { BASE_URL } from "@/shared/constants/api";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 import styles from "./ProfileInfoFormAvatar.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface ProfileInfoFormAvatarProps {
     className?: string;
@@ -48,7 +49,7 @@ export const ProfileInfoFormAvatar = memo(
                     && image !== null
                     && "contentUrl" in image
                 ) {
-                    setAvatar(image.contentUrl);
+                    setAvatar(getMediaContent(image.contentUrl));
                 }
             }
         }, [data]);

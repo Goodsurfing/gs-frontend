@@ -3,7 +3,7 @@ import type { ProfileInfoFields } from "../model/types/profileInfo";
 
 export function profileFormApiAdapter(data: ProfileInfoFields): Partial<Omit<ProfileApi, "id">> {
     let birthDate: string | undefined;
-    if (data.birthDate) {
+    if (data.birthDate && data.birthDate.year && data.birthDate.mounth && data.birthDate.day) {
         const tempBirthDate = new Date(
             data.birthDate.year,
             data.birthDate.mounth - 1,

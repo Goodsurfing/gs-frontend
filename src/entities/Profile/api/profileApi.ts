@@ -17,9 +17,9 @@ export const profileApi = createApi({
         updateProfileInfo: build.mutation<Profile, Partial<ProfileApi>>({
             query: (profileData) => ({
                 url: "personal/profile",
-                method: "PATCH",
+                method: "PUT",
                 headers: {
-                    "Content-Type": "application/merge-patch+json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(profileData),
             }),

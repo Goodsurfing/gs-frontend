@@ -28,6 +28,15 @@
         "September": "Septiembre",
         "October": "Octubre",
         "November": "Noviembre",
-        "December": "Diciembre"
+        "December": "Diciembre",
+        "Это поле является обязательным": "Este campo es obligatorio",
+        "Укажите день": "Por favor, especifique el día",
+        "День_не_может_быть_больше": "El día no puede ser mayor que {{maxDays}} en el mes de {{month}}",
+        "Укажите месяц": "Por favor, especifique el mes",
+        "Укажите год": "Por favor, especifique el año",
+        "Год должен быть больше или равен 1900": "El año debe ser mayor o igual a 1900",
+        "Не верно указан год": "El año es incorrecto",
+        "Посмотреть профиль": "Ver perfil",
+        "Максимальный_размер": "El tamaño máximo es de {{size}} MB"
     }
 }

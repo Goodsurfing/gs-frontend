@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 import { InputFileProps } from "@/shared/ui/InputFile/InputFile.interfaces";
 import defaultImage from "@/shared/assets/images/default-image-file.png";
@@ -17,16 +18,18 @@ interface IFileInput extends InputFileProps {
     classname?: string;
 }
 
-const FileInput: FC<IFileInput> = ({
-    src,
-    setFile,
-    fileSizeInMB = "2",
-    route,
-    text = "Посмотреть профиль",
-    classname,
-    fileClassname,
-    ...restInputProps
-}) => {
+const FileInput: FC<IFileInput> = (props) => {
+    const { t } = useTranslation("profile");
+    const {
+        src,
+        setFile,
+        fileSizeInMB = "2",
+        route,
+        text = t("info.Посмотреть профиль"),
+        classname,
+        fileClassname,
+        ...restInputProps
+    } = props;
     const [isError, setError] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,10 +70,7 @@ const FileInput: FC<IFileInput> = ({
                     [styles.error]: isError,
                 })}
             >
-                Максимальный размер
-                {" "}
-                {fileSizeInMB}
-                Мб
+                {t("info.Максимальный_размер", { size: fileSizeInMB })}
             </span>
         </div>
     );
