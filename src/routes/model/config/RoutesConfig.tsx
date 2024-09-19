@@ -33,7 +33,6 @@ import { OffersMapPage } from "@/pages/OffersMapPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
-import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
@@ -352,7 +351,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "profile",
-        element: <ProfileLayoutPage />,
+        element: AuthRoutes.profile,
         path: (locale: string) => getProfilePageUrl(locale),
         children: [
             {

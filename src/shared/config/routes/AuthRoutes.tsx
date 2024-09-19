@@ -8,14 +8,18 @@ import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 
 import { AppRoutes } from "./AppRoutes";
+import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 
 export const AuthRoutes = {
-    [AppRoutes.PROFILE_RESET_PASSWORD]: (
+    [AppRoutes.PROFILE]: (
         <PrivateRouteGuard>
-            <AuthProvider>
-                <ProfileResetPasswordPage />
-            </AuthProvider>
+            <ProfileLayoutPage />
         </PrivateRouteGuard>
+    ),
+    [AppRoutes.PROFILE_RESET_PASSWORD]: (
+        <AuthProvider>
+            <ProfileResetPasswordPage />
+        </AuthProvider>
     ),
     [AppRoutes.VOLUNTEER]: (
         <PrivateRouteGuard>

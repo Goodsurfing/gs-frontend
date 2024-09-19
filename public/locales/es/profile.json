@@ -38,5 +38,19 @@
         "Не верно указан год": "El año es incorrecto",
         "Посмотреть профиль": "Ver perfil",
         "Максимальный_размер": "El tamaño máximo es de {{size}} MB"
+    },
+    "role": {
+        "Заполните аккаунт гудсёрфера или организатора": "Completa tu cuenta de buen surfer o organizador",
+        "В новой версии Гудсёрфинга вы можете быть одновременно и гудсёрфером-путешественником и организатором, который выступает принимающей стороной.": "En la nueva versión de Couchsurfing, puedes ser tanto un viajero como un organizador que actúa como anfitrión.",
+        "Для каждой роли есть отдельный рабочий стол, в котором отражается вся необходимая информация. Выберите роль, перейдите на рабочий стол и заполните профиль гудсёрфера или профиль организации.": "Para cada rol hay un escritorio separado donde se muestra toda la información necesaria. Selecciona un rol, ve al escritorio y completa el perfil del surfer o el perfil de la organización.",
+        "Вы уверены что хотите стать волонтёром? Вам станет доступен дашборд волонтёра": "¿Estás seguro de que quieres convertirte en voluntario? Tendrás acceso al panel de control de voluntario.",
+        "Вы уверены что хотите стать организатором мероприятий? Для этого вы должны заполнить информацию о организации": "¿Estás seguro de que quieres convertirte en organizador de eventos? Necesitas completar la información de la organización.",
+        "Вы успешно стали волонтёром": "Has convertido exitosamente en voluntario.",
+        "Гудсёрфер": "Buen surfer",
+        "Чтобы путешествовать как гудсёрфер": "Para viajar como buen surfer",
+        "Стать гудсёрфером": "Convertirse en buen surfer",
+        "Организатор": "Organizador",
+        "Чтобы принимать гудсёрферов как организатор": "Para recibir a los buenos surfers como organizador",
+        "Стать организатором": "Convertirse en organizador"
     }
 }

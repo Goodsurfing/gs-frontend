@@ -43,7 +43,7 @@ export const VolunteerPersonalPage = () => {
         navigate(getMessengerPageUrl(locale));
     }, [locale, navigate]);
 
-    if (isLoading || profileIsLoading || myProfileIsLoading) {
+    if (isLoading && profileIsLoading && myProfileIsLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />

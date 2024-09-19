@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
 
@@ -19,7 +20,7 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 import styles from "./ProfileRoleWidget.module.scss";
-import { roleData } from "./model/data/roleData";
+import { useRoleData } from "./model/data/roleData";
 import { RoleInfo } from "./model/types/profileRoleWidget";
 
 export const ProfileRoleWidget: FC = () => {
@@ -29,6 +30,8 @@ export const ProfileRoleWidget: FC = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const { t } = useTranslation("profile");
+    const { roleData } = useRoleData();
 
     const [createVolunteer, { isLoading }] = useCreateVolunteerMutation();
     const { data } = useGetProfileInfoQuery();
@@ -36,7 +39,9 @@ export const ProfileRoleWidget: FC = () => {
     const handleVolunteerClick = () => {
         setModalOpen(true);
         setModalDescription(
-            "Вы уверены что хотите стать волонтёром? Вам станет доступен дашборд волонтёра",
+            t(
+                "role.Вы уверены что хотите стать волонтёром? Вам станет доступен дашборд волонтёра",
+            ),
         );
         setSelectedRole("volunteer");
     };
@@ -44,7 +49,9 @@ export const ProfileRoleWidget: FC = () => {
     const handleHostClick = () => {
         setModalOpen(true);
         setModalDescription(
-            "Вы уверены что хотите стать организатором мероприятий? Для этого вы должны заполнить информацию о организации",
+            t(
+                "role.Вы уверены что хотите стать организатором мероприятий? Для этого вы должны заполнить информацию о организации",
+            ),
         );
         setSelectedRole("host");
     };
