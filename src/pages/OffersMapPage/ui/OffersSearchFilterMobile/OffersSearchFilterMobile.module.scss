@@ -1,11 +1,11 @@
 .wrapper {
-    padding: 0 20px;
     width: 100%;
 }
 
 .top {
     display: flex;
     flex-direction: column;
+    padding: 15px 20px;
 }
 
 .closedOffers {
@@ -34,4 +34,17 @@
 .sort {
     padding: 10px 14px;
     font-size: 16px;
+}
+
+.offersCount {
+    background-color: var(--bg-field);
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+@media (max-width: 290px) {
+    .buttons {
+        flex-wrap: wrap;
+    }
 }

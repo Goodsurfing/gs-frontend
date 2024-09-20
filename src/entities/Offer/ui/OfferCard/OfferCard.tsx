@@ -2,6 +2,7 @@ import React, { FC, memo } from "react";
 
 import { Link } from "react-router-dom";
 import cn from "classnames";
+import { ReactSVG } from "react-svg";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
@@ -10,6 +11,7 @@ import styles from "./OfferCard.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
+import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 
 interface OfferCardProps {
     image?: string;
@@ -24,6 +26,7 @@ interface OfferCardProps {
     link?: string;
     className?: string;
     isImageShow?: boolean;
+    isFavoriteIconShow?: boolean;
 }
 
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
@@ -40,6 +43,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         link,
         className,
         isImageShow = true,
+        isFavoriteIconShow = false,
     } = props;
     const { locale } = useLocale();
 
@@ -49,6 +53,8 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 isImageShow && (
                     <div className={styles.imageWrapper}>
                         <img src={image || defaultImage} alt="offer-img" />
+                        {isFavoriteIconShow
+                            && <ReactSVG src={heartIcon} className={cn(styles.favorite)} />}
                     </div>
                 )
             }

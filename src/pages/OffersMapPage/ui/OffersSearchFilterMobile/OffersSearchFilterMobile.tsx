@@ -1,18 +1,24 @@
-import React, { FC, useMemo } from "react";
 import cn from "classnames";
+import React, { FC, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
-import styles from "./OffersSearchFilterMobile.module.scss";
-import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
-import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
+
 import { SwitchClosedOffers } from "@/widgets/OffersMap";
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
+import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
+
+import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
+
+import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
+
+import styles from "./OffersSearchFilterMobile.module.scss";
 
 interface OffersSearchFilterMobileProps {
     className?: string;
 }
 
-export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (props) => {
+export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
+    props,
+) => {
     const { className } = props;
     const { control } = useFormContext();
 
@@ -36,7 +42,9 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (prop
             <div className={styles.top}>
                 <div className={styles.buttons}>
                     <SquareButton className={styles.button}>Карта</SquareButton>
-                    <SquareButton className={styles.button}>Фильтр</SquareButton>
+                    <SquareButton className={styles.button}>
+                        Фильтр
+                    </SquareButton>
                 </div>
                 <Controller
                     name="sortValue"
@@ -63,6 +71,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (prop
                     )}
                 />
             </div>
+            <div className={styles.offersCount}>1 055 вариантов</div>
             <div className={styles.list}>{renderOfferCards}</div>
         </div>
     );
