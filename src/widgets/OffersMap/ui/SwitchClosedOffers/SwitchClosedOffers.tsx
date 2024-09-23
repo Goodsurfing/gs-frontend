@@ -1,17 +1,19 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import React, { FC } from "react";
 
+import cn from "classnames";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 interface SwitchClosedOffersProps {
     value: boolean;
     onChange: (value: boolean) => void;
+    className?: string;
 }
 
 export const SwitchClosedOffers: FC<SwitchClosedOffersProps> = (props) => {
-    const { value, onChange } = props;
+    const { value, onChange, className } = props;
     return (
-        <div>
+        <div className={cn(className)}>
             <FormControlLabel
                 label={(
                     <Typography

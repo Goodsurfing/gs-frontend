@@ -22,7 +22,7 @@ export const WithChildren: FC<WithChildrenProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        С детьми
+                        Можно с детьми
                     </Typography>
                 )}
                 control={(

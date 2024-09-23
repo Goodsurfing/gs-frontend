@@ -8,12 +8,15 @@ interface ParticipationPeriodProps {
     value: number[];
     onChange: (value: number[]) => void;
     isOpen: boolean;
+    isMobile?: boolean;
 }
 
 export const ParticipationPeriod: FC<ParticipationPeriodProps> = (
     props: ParticipationPeriodProps,
 ) => {
-    const { value, onChange, isOpen } = props;
+    const {
+        value, onChange, isOpen, isMobile,
+    } = props;
     return (
         isOpen ? (
             <div className={styles.wrapper}>
@@ -21,6 +24,7 @@ export const ParticipationPeriod: FC<ParticipationPeriodProps> = (
                     value={value}
                     onChange={onChange}
                     className={styles.slider}
+                    isMobile={isMobile}
                 />
             </div>
         ) : null

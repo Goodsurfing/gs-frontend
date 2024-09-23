@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import cn from "classnames";
+import React, { FC, useRef, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 import { Categories, ExtraFilters } from "@/widgets/OffersMap";
@@ -18,7 +19,12 @@ interface DropdownState {
 
 type ButtonNav = "CATEGORIES" | "PERIODS" | "EXTRAFILTERS";
 
-export const OffersFilter = () => {
+interface OffersFilterProps {
+    className?: string;
+}
+
+export const OffersFilter: FC<OffersFilterProps> = (props) => {
+    const { className } = props;
     const { control } = useFormContext();
 
     const categoriesRef = useRef(null);
@@ -66,7 +72,7 @@ export const OffersFilter = () => {
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
                 <Controller
                     name="periods"
@@ -121,7 +127,10 @@ export const OffersFilter = () => {
                         />
                     )}
                 />
-                <ExtraFilters control={control} isOpen={dropdownOpened.isExtraFiltersOpened} />
+                <ExtraFilters
+                    control={control}
+                    isOpen={dropdownOpened.isExtraFiltersOpened}
+                />
             </div>
         </div>
     );

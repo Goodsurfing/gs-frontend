@@ -2,7 +2,8 @@
     display: flex;
 }
 
-.leftInput, .rightInput {
+.leftInput,
+.rightInput {
     border: 1px solid var(--bg-field);
     border-radius: 0;
     background-color: white;
@@ -10,4 +11,31 @@
 
 .leftInput {
     border-right: 0;
+}
+
+@media (max-width: 992px) {
+    .datePicker {
+        max-width: 300px;
+        top: 100%;
+        left: 0%;
+    }
+}
+
+@media (max-width: 662px) {
+    .wrapper {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .leftInput,
+    .rightInput {
+        // max-width: 300px;
+        top: 100%;
+        left: 0%;
+        position: relative;
+    }
+
+    .leftInput {
+        border-right: 1px solid var(--bg-field);
+    }
 }

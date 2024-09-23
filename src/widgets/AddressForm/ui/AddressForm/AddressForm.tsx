@@ -90,10 +90,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             });
     });
 
-    // useEffect(() => {
-    //     fetchGeoObject();
-    // }, [fetchGeoObject]);
-
     useEffect(() => {
         const savedData = sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`);
         if (savedData) {

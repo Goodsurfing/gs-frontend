@@ -15,9 +15,12 @@ interface OfferWhenSliderProps {
     onChange?: (value: number[]) => void;
     value: number[];
     className?: string;
+    isMobile?: boolean;
 }
 
-export const OfferWhenSlider = memo(({ onChange, value, className }: OfferWhenSliderProps) => {
+export const OfferWhenSlider = memo(({
+    onChange, value, className, isMobile = false,
+}: OfferWhenSliderProps) => {
     const { t } = useTranslation("offer");
     const marks: Mark[] = [
         {
@@ -47,6 +50,10 @@ export const OfferWhenSlider = memo(({ onChange, value, className }: OfferWhenSl
             label: t("when.6 месяцев"),
         }];
 
+    const filteredMarks = isMobile
+        ? marks.filter((mark) => mark.value !== 14 && mark.value !== 93 && mark.value !== 155)
+        : marks;
+
     const handleStartDateChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (!value || +e.target.value < 1 || +e.target.value >= value[1]) {
             return;
@@ -61,6 +68,31 @@ export const OfferWhenSlider = memo(({ onChange, value, className }: OfferWhenSl
         }
         onChange?.([value[0], +e.target.value]);
     }, [onChange, value]);
+
+    if (isMobile) {
+        return (
+            <Box className={cn(styles.wrapper, className)}>
+                <Typography className={styles.helpText}>
+                    {t("when.Срок участия (от-до)")}
+                </Typography>
+                <div className={styles.inputs}>
+                    <Input value={value[0]} onChange={handleStartDateChange} type="number" className={styles.input} placeholder="от" />
+                    —
+                    <Input value={value[1]} onChange={handleEndDateChange} type="number" className={styles.input} placeholder="до" />
+                </div>
+                <Box className={cn(styles.sliderWrapper, styles.mobile)}>
+                    <RangeSlider
+                        className={styles.slider}
+                        onValueChange={onChange}
+                        value={value}
+                        marks={filteredMarks}
+                        min={1}
+                        max={190}
+                    />
+                </Box>
+            </Box>
+        );
+    }
 
     return (
         <Box className={cn(styles.wrapper, className)}>

@@ -126,18 +126,20 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
             className={cn(wrapperClassName, styles.wrapper)}
             ref={elementRef}
         >
-            <input
-                readOnly
-                type="text"
-                value={inputValue}
-                placeholder="Не задано"
-                onChange={onInputValueChange}
-                className={cn(inputClassName, styles.input, {
-                    [styles.invalid]: !isValueDate,
-                    [styles.disabled]: inputDisabled,
-                })}
-            />
-            <img className={styles.img} src={calendarIcon} alt="calendar" />
+            <div className={cn(styles.inputWrapper, inputClassName)}>
+                <input
+                    readOnly
+                    type="text"
+                    value={inputValue}
+                    placeholder="Не задано"
+                    onChange={onInputValueChange}
+                    className={cn(styles.input, {
+                        [styles.invalid]: !isValueDate,
+                        [styles.disabled]: inputDisabled,
+                    })}
+                />
+                <img className={styles.img} src={calendarIcon} alt="calendar" />
+            </div>
             <div
                 ref={calendarRef}
                 className={cn(

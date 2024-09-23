@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import cn from "classnames";
 import SelectField from "@/components/SelectField/SelectField";
 
 import { SortValue } from "@/entities/Offer";
@@ -9,10 +10,15 @@ import styles from "./SelectSort.module.scss";
 interface SelectSortProps {
     value: any;
     onChange: (value: any) => void;
+    classNameDropdown?: string;
+    className?: string;
+    classNameControl?: string;
 }
 
 export const SelectSort: FC<SelectSortProps> = (props) => {
-    const { value, onChange } = props;
+    const {
+        value, onChange, className, classNameControl, classNameDropdown,
+    } = props;
 
     const findValueSort = (valueSort: SortValue) => sortOffers
         .find((option) => option.value === valueSort);
@@ -25,9 +31,9 @@ export const SelectSort: FC<SelectSortProps> = (props) => {
         <div className={styles.wrapper}>
             <SelectField
                 name="sort"
-                className={styles.sort}
-                classNameDropdown={styles.dropdown}
-                classNameControl={styles.control}
+                className={cn(styles.sort, className)}
+                classNameDropdown={cn(styles.dropdown, classNameDropdown)}
+                classNameControl={cn(styles.control, classNameControl)}
                 options={sortOffers}
                 value={findValueSort(value)}
                 onChange={handleSortChange}

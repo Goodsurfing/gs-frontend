@@ -1,5 +1,5 @@
 .calendar {
-    min-width: 300px;
+    max-width: 300px;
 }
 
 .calendarWrapper {
@@ -13,16 +13,20 @@
     visibility: hidden;
 }
 
-.input {
-    cursor: pointer;
-}
-
-.input:focus, .input:hover  {
-    outline: none;
-}
-
-.input.disabled {
-    pointer-events: none;
+.inputWrapper {
+    .input {
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+    
+    .input:focus, .input:hover  {
+        outline: none;
+    }
+    
+    .input.disabled {
+        pointer-events: none;
+    }
 }
 
 .wrapper {
@@ -35,7 +39,7 @@
 }
 
 .invalid {
-    border: 1px solid red;
+    border: none;
     color: red;
 }
 

@@ -5,7 +5,7 @@ import IconComponent from "../IconComponent/IconComponent";
 
 import styles from "./Button.module.scss";
 
-export type ButtonVariant = "FILL" | "OUTLINE";
+export type ButtonVariant = "FILL" | "OUTLINE" | "TEXT";
 
 export type ButtonSize = "LARGE" | "MEDIUM" | "SMALL" | "EXTRA-SMALL";
 
