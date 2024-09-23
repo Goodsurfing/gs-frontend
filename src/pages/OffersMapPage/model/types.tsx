@@ -15,6 +15,7 @@ export type Category = "hostels" | "reserves_and_parks" | "farm" | "animals" | "
 export type Provided = "housing" | "food" | "padidTravel";
 
 export interface OffersFilterFields {
+    offersSort: OffersSortFields;
     periods: Periods;
     category: Category[];
     participationPeriod: number[];

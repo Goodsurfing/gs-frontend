@@ -6,4 +6,13 @@
     color: var(--text-secondary-2);
     padding: 10px 35px;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button.active {
+    background-color: var(--accent-color);
+    color: var(--text-secondary-1);
 }

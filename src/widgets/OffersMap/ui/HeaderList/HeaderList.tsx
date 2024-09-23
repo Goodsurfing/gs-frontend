@@ -6,6 +6,7 @@ import { SwitchClosedOffers } from "../SwitchClosedOffers/SwitchClosedOffers";
 import { SelectSort } from "../SelectSort/SelectSort";
 import { ButtonClose } from "../ButtonClose/ButtonClose";
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface HeaderListProps {
     isShowMap: boolean;
@@ -14,21 +15,21 @@ interface HeaderListProps {
 
 export const HeaderList: FC<HeaderListProps> = (props) => {
     const { isShowMap, onChangeShowMap } = props;
-    const { control } = useFormContext();
+    const { control } = useFormContext<OffersFilterFields>();
     const { width } = useWindowDimensions();
 
     return (
         <div className={styles.wrapper}>
             <span className={styles.offerCount}>2 059 вариантов</span>
             <Controller
-                name="showClosedOffers"
+                name="offersSort.showClosedOffers"
                 control={control}
                 render={({ field }) => (
                     <SwitchClosedOffers value={field.value} onChange={field.onChange} />
                 )}
             />
             <Controller
-                name="sortValue"
+                name="offersSort.sortValue"
                 control={control}
                 render={({ field }) => (
                     <SelectSort value={field.value} onChange={field.onChange} />
