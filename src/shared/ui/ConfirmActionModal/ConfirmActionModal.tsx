@@ -1,4 +1,5 @@
 import React, { FC, MouseEventHandler } from "react";
+import { CircularProgress } from "@mui/material";
 import styles from "./ConfirmActionModal.module.scss";
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
@@ -24,7 +25,9 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
 
     if (isLoading) {
         <Modal onClose={onClose} isShowCloseIcon={false}>
-            <div className={styles.wrapper} />
+            <div className={styles.wrapper}>
+                <CircularProgress style={{ color: "var(--accent-color)" }} />
+            </div>
         </Modal>;
     }
 

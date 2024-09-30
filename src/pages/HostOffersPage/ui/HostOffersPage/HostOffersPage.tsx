@@ -25,7 +25,9 @@ const HostOffersPage = () => {
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
 
     const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
-    const [triggerOffer, { data: offerData }] = useLazyGetOfferByIdQuery();
+    const [triggerOffer, {
+        isLoading: isOfferLoading,
+    }] = useLazyGetOfferByIdQuery();
 
     const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>(
         [],
@@ -74,25 +76,26 @@ const HostOffersPage = () => {
 
     const handleConfirmClick = async () => {
         if (selectedOffer && selectedBtnOffer === "delete") {
-            await triggerOffer(selectedOffer.toString()).unwrap();
-            if (offerData?.status === "active") {
-                console.log("click");
-                await updateOfferStatus({
-                    status: "disabled",
-                    id: selectedOffer.toString(),
+            await triggerOffer(selectedOffer.toString()).unwrap()
+                .then(async (result) => {
+                    if (result) {
+                        if (result.status === "active") {
+                            await updateOfferStatus({
+                                status: "disabled",
+                                id: selectedOffer.toString(),
+                            }).unwrap();
+                        }
+                        if (result.status === "disabled") {
+                            await updateOfferStatus({
+                                status: "active",
+                                id: selectedOffer.toString(),
+                            }).unwrap();
+                        }
+                    }
                 });
-            }
-            if (offerData?.status === "disabled") {
-                await updateOfferStatus({
-                    status: "active",
-                    id: selectedOffer.toString(),
-                });
-            }
-            setSelectedOffer(null);
         }
-        if (selectedOffer && selectedBtnOffer === "every_open") {
-            setSelectedOffer(null);
-        }
+        setSelectedOffer(null);
+        setSelectedBtnOffer(null);
     };
 
     if (isLoading) {
@@ -125,6 +128,7 @@ const HostOffersPage = () => {
                 description="Вы уверены что хотите изменить вакансию?"
                 onConfirm={() => handleConfirmClick()}
                 onClose={() => handleModalClose()}
+                isLoading={isOfferLoading}
             />
         </div>
     );

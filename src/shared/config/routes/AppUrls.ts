@@ -1,6 +1,6 @@
 import { RoutePath } from "./RouterConfig";
 
-type RoutePathFunction = (locale: string | Locale, id?: string) => string;
+type RoutePathFunction = (locale: string | Locale, id?: string, extraId?: string) => string;
 
 // Main page
 
@@ -16,7 +16,7 @@ export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${
 
 export const getMessengerPageIdUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id`);
 
-export const getMessengerPageCreateUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id/:offerId`);
+export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id", offerId = ":offerId") => (`/${locale}${RoutePath.messenger}/${id}/${offerId}`);
 
 // Categires page
 

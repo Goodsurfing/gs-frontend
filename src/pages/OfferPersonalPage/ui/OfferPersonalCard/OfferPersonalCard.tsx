@@ -34,6 +34,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
     return (
         <>
             <PersonalCard
+                offerId={id}
                 image={getMediaContent(data?.description?.image)}
                 title={data?.description?.title}
                 location={data?.where?.address}
