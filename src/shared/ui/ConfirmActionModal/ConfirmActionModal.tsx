@@ -10,15 +10,22 @@ interface ConfirmActionModalProps {
     onClose: () => void;
     cancelTextButton?: string;
     isModalOpen?: boolean;
+    isLoading?: boolean;
 }
 
 export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
     const {
-        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false,
+        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false, isLoading = false,
     } = props;
 
     if (!isModalOpen) {
         return null;
+    }
+
+    if (isLoading) {
+        <Modal onClose={onClose} isShowCloseIcon={false}>
+            <div className={styles.wrapper} />
+        </Modal>;
     }
 
     return (

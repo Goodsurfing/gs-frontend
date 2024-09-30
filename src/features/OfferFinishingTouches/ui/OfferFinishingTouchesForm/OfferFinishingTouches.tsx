@@ -134,12 +134,12 @@ export const OfferFinishingTouchesForm = memo(
         };
 
         const onSubmit = handleSubmit((data) => {
-            updateFinishingTouchesHandle(data, "open");
+            updateFinishingTouchesHandle(data, "active");
             onSuccess?.(data);
         });
 
         const onDraftHandle = handleSubmit((data) => {
-            updateFinishingTouchesHandle(data, "empty");
+            updateFinishingTouchesHandle(data, "draft");
         });
 
         // useEffect(() => {

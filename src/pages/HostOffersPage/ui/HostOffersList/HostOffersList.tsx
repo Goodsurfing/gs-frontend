@@ -42,8 +42,9 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     status={offer.status}
                     key={index}
                     onCloseClick={() => onCloseClick(offer.id)}
+                    isCloseButtonActive={offer.status !== "disabled"}
                     onEveryOpenClick={() => onEveryOpenClick(offer.id)}
-                    isEveryOpenActive={offer.status === "every_open"}
+                    isEveryOpenActive
                 />
             );
         });
