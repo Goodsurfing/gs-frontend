@@ -18,3 +18,12 @@
     line-height: 23.4px;
     user-select: none;
 }
+
+@media (max-width: 992px) {
+    .title {
+        text-align: center;
+    }
+    .container {
+        justify-content: center;
+    }
+}

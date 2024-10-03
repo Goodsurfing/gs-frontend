@@ -1,28 +1,32 @@
-import { memo, useEffect, useState } from "react";
 import cn from "classnames";
+import { memo, useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
-import Button from "@/shared/ui/Button/Button";
+import { ErrorType } from "@/types/api/error";
 
 import {
-    Profile, getProfileReadonly, profileActions,
+    Profile,
+    getProfileReadonly,
+    profileActions,
     useGetProfileInfoQuery,
 } from "@/entities/Profile";
-
-import { ProfileInfoFormContent } from "../ProfileInfoFormContent/ProfileInfoFormContent";
-import type { ProfileInfoFields } from "../../model/types/profileInfo";
-import { profileInfoFormAdapter } from "../../lib/profileInfoFormAdapter";
-import { profileFormApiAdapter } from "../../lib/profileFormApiAdapter";
-
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { ToastAlert, HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
-import styles from "./ProfileInfoForm.module.scss";
-import { ErrorType } from "@/types/api/error";
+
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import Button from "@/shared/ui/Button/Button";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import {
+    HintType,
+    ToastAlert,
+} from "@/shared/ui/HintPopup/HintPopup.interface";
+
+import { profileFormApiAdapter } from "../../lib/profileFormApiAdapter";
+import { profileInfoFormAdapter } from "../../lib/profileInfoFormAdapter";
+import type { ProfileInfoFields } from "../../model/types/profileInfo";
 import { ProfileInfoFormAvatar } from "../ProfileInfoFormAvatar/ProfileInfoFormAvatar";
+import { ProfileInfoFormContent } from "../ProfileInfoFormContent/ProfileInfoFormContent";
+import styles from "./ProfileInfoForm.module.scss";
 
 interface ProfileInfoFormProps {
     className?: string;
@@ -30,12 +34,12 @@ interface ProfileInfoFormProps {
 }
 
 export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
-    const {
-        className,
-        profile,
-    } = props;
+    const { className, profile } = props;
     const { t } = useTranslation("profile");
-    const form = useForm<ProfileInfoFields>({ mode: "onChange", defaultValues: profileInfoFormAdapter(profile) });
+    const form = useForm<ProfileInfoFields>({
+        mode: "onChange",
+        defaultValues: profileInfoFormAdapter(profile),
+    });
     const [toast, setToast] = useState<ToastAlert>();
 
     const [updateProfile] = useUpdateProfileInfoMutation();
@@ -46,18 +50,23 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     const dispatch = useAppDispatch();
 
     const onSubmit: SubmitHandler<ProfileInfoFields> = (data) => {
-        const formattedData = profileFormApiAdapter(data);
-        updateProfile(formattedData).unwrap().then(() => {
-            setToast({
-                text: "Данные успешно изменены",
-                type: HintType.Success,
-            });
-        }).catch((error: ErrorType) => {
-            setToast({
-                text: getErrorText(error),
-                type: HintType.Error,
-            });
-        });
+        if (getProfileData) {
+            const formattedData = profileFormApiAdapter(data);
+            updateProfile({ userId: getProfileData.id, profileData: formattedData })
+                .unwrap()
+                .then(() => {
+                    setToast({
+                        text: "Данные успешно изменены",
+                        type: HintType.Success,
+                    });
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
+                });
+        }
         dispatch(profileActions.setReadonly(true));
     };
 
@@ -98,7 +107,11 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                             {t("info.Сохранить")}
                         </Button>
                     </div>
-                    <button className={styles.stateButton} type="button" onClick={onReadonlyChange}>
+                    <button
+                        className={styles.stateButton}
+                        type="button"
+                        onClick={onReadonlyChange}
+                    >
                         {isLocked ? t("info.Редактировать") : t("info.Отмена")}
                     </button>
                 </form>

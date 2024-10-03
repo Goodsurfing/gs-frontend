@@ -119,6 +119,12 @@
 
 @media (max-width: 600px) {
     .wrapper {
+        margin: 0;
+        margin: 0 auto;
+        
+        .linkWrapper {
+            display: none;
+        }
         .labelClassname {
             width: 100px;
             height: 100px;

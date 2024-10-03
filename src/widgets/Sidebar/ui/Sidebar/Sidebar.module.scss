@@ -16,8 +16,42 @@
 	}
 }
 
+.link {
+	text-decoration: none;
+    color: inherit;
+}
+
+.link.isActive {
+	.mobileSidebarLink {
+		background-color: var(--accent-color);
+		color: var(--text-secondary-1);
+	}
+}
+
+.mobileSidebar {
+	display: none;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.mobileSidebarLink {
+	padding: 8px 14px;
+	background-color: var(--bg-field);
+	border-radius: 20px;
+	border: 1px solid var(--accent-elements);
+}
+
 .open {
 	width: 20.625rem;
 
 	transform: translate();
+}
+
+@media (max-width: 992px) {
+	.mobileSidebar {
+		display: flex;
+	}
+	.sidebar {
+		display: none;
+	}
 }

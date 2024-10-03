@@ -26,3 +26,11 @@
     display: flex;
     gap: 20px;
 }
+
+@media (max-width: 992px) {
+    .formWrapper {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        padding-top: 15px;
+    }
+}
