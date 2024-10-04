@@ -30,3 +30,17 @@
     margin-right: auto;
     margin-left: 130px;
 }
+
+@media (max-width: 768px) {
+    .button {
+        padding: 10px;
+        width: 100%;
+    }
+    .bottom {
+        flex-direction: column-reverse;
+    }
+    .rightSide {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}

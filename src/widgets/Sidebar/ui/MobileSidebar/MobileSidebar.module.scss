@@ -1,0 +1,24 @@
+.link {
+	text-decoration: none;
+    color: inherit;
+}
+
+.link.isActive {
+	.mobileSidebarLink {
+		background-color: var(--accent-color);
+		color: var(--text-secondary-1);
+	}
+}
+
+.mobileSidebar {
+	flex-direction: column;
+	row-gap: 20px;
+	overflow-x: hidden;
+}
+
+.mobileSidebarLink {
+	padding: 8px 14px;
+	background-color: var(--bg-field);
+	border-radius: 20px;
+	border: 1px solid var(--accent-elements);
+}

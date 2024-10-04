@@ -4,3 +4,11 @@
         padding: 12px 100px;
     }
 }
+
+@media (max-width: 576px) {
+    .btnWrapper {
+        .btn {
+            padding: 12px;
+        }
+    }
+}

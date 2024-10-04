@@ -16,22 +16,8 @@
 	}
 }
 
-.link {
-	text-decoration: none;
-    color: inherit;
-}
-
-.link.isActive {
-	.mobileSidebarLink {
-		background-color: var(--accent-color);
-		color: var(--text-secondary-1);
-	}
-}
-
 .mobileSidebar {
 	display: none;
-	overflow-x: hidden;
-	padding-top: 20px;
 }
 
 .mobileSidebarLink {
