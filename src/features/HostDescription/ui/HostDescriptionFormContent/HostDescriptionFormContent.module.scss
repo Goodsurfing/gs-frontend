@@ -11,3 +11,9 @@
 	background-color: lightblue;
 	border-radius: 50%;
 }
+
+@media (max-width: 992px) {
+	.mainSection {
+		width: 100%;
+	}
+}

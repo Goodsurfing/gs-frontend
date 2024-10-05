@@ -8,3 +8,10 @@
 .text {
     font-size: 14px;
 }
+
+@media (max-width: 992px) {
+    .title,
+    .text {
+        text-align: center;
+    }
+}

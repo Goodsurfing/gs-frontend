@@ -45,3 +45,16 @@
     row-gap: 20px;
     margin-top: 30px;
 }
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        height: auto;
+        overflow: auto;
+    }
+}

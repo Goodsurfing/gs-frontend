@@ -43,6 +43,7 @@
 .avatar {
     width: 22px;
     height: 22px;
+    object-fit: cover;
 }
 
 .author {
@@ -50,8 +51,9 @@
 }
 
 .img {
-    max-width: 40px;
-    max-height: 40px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
     border-radius: 3px;
 }
 
@@ -65,13 +67,13 @@
 .ratingUserContainer {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .avatarInfoUser {
     display: flex;
-    // justify-content: center;
     align-items: center;
-    margin-left: 24px;
 }
 
 .ratingNum {
@@ -79,4 +81,18 @@
     font-size: 14px;
     font-weight: 700;
     margin-left: 3px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .titleImg {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        row-gap: 10px;
+    }
 }
