@@ -16,11 +16,12 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface ProfileInfoFormAvatarProps {
     className?: string;
+    userId: string;
 }
 
 export const ProfileInfoFormAvatar = memo(
     (props: ProfileInfoFormAvatarProps) => {
-        const { className } = props;
+        const { className, userId } = props;
 
         const { data } = useGetProfileInfoQuery();
         const [updateProfileInfo] = useUpdateProfileInfoMutation();
@@ -32,8 +33,11 @@ export const ProfileInfoFormAvatar = memo(
                 uploadFile(file.name, file)
                     .then(async (result) => {
                         await updateProfileInfo({
-                            image: `${BASE_URL}${result?.["@id"].slice(1)}`,
-                            locale,
+                            userId,
+                            profileData: {
+                                image: `${BASE_URL}${result?.["@id"].slice(1)}`,
+                                locale,
+                            },
                         }).unwrap();
                     })
                     .catch(() => {});

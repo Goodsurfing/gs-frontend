@@ -8,7 +8,6 @@ import {
     Profile,
     getProfileReadonly,
     profileActions,
-    useGetProfileInfoQuery,
 } from "@/entities/Profile";
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 
@@ -43,38 +42,33 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     const [toast, setToast] = useState<ToastAlert>();
 
     const [updateProfile] = useUpdateProfileInfoMutation();
-    const { data: getProfileData } = useGetProfileInfoQuery();
 
     const { handleSubmit, reset, control } = form;
 
     const dispatch = useAppDispatch();
 
     const onSubmit: SubmitHandler<ProfileInfoFields> = (data) => {
-        if (getProfileData) {
-            const formattedData = profileFormApiAdapter(data);
-            updateProfile({ userId: getProfileData.id, profileData: formattedData })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: "Данные успешно изменены",
-                        type: HintType.Success,
-                    });
-                })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
+        const formattedData = profileFormApiAdapter(data);
+        updateProfile({ userId: profile.id, profileData: formattedData })
+            .unwrap()
+            .then(() => {
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
                 });
-        }
+            })
+            .catch((error: ErrorType) => {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            });
         dispatch(profileActions.setReadonly(true));
     };
 
     useEffect(() => {
-        if (getProfileData) {
-            reset(profileInfoFormAdapter(getProfileData));
-        }
-    }, [getProfileData, reset]);
+        reset(profileInfoFormAdapter(profile));
+    }, [profile, reset]);
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -115,7 +109,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                         {isLocked ? t("info.Редактировать") : t("info.Отмена")}
                     </button>
                 </form>
-                <ProfileInfoFormAvatar />
+                <ProfileInfoFormAvatar userId={profile.id} />
             </div>
         </FormProvider>
     );
