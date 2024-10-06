@@ -1,10 +1,10 @@
 import { CircularProgress } from "@mui/material";
+import cn from "classnames";
 import React, { FC, MouseEventHandler } from "react";
 
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import styles from "./ConfirmActionModal.module.scss";
-import cn from 'classnames'
 
 interface ConfirmActionModalProps {
     description: string;
@@ -20,7 +20,14 @@ interface ConfirmActionModalProps {
 
 export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
     const {
-        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false, isLoading = false, buttonsDisabled = false,
+        description,
+        onConfirm,
+        onClose,
+        confirmTextButton = "Ок",
+        cancelTextButton = "Отмена",
+        isModalOpen = false,
+        isLoading = false,
+        buttonsDisabled = false,
         className,
     } = props;
 
