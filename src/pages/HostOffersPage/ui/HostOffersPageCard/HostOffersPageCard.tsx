@@ -24,6 +24,7 @@ interface IHostOffersPageCard {
     description?: string;
     status: OfferStatus;
     onCloseClick: MouseEventHandler<HTMLButtonElement>;
+    isCloseButtonActive: boolean;
     onEveryOpenClick: MouseEventHandler<HTMLButtonElement>;
     isEveryOpenActive: boolean;
 }
@@ -41,15 +42,16 @@ const HostOffersPageCard = memo(
         went,
         description,
         status,
-        isEveryOpenActive,
         onCloseClick,
+        isCloseButtonActive,
+        isEveryOpenActive,
         onEveryOpenClick,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
 
         const onEditClick = () => {
-            if (status === "empty") {
+            if (status === "draft") {
                 navigate(`/${locale}/offers/welcome/${id}`);
             } else {
                 navigate(`/${locale}/offers/where/${id}`);
@@ -118,7 +120,7 @@ const HostOffersPageCard = memo(
                         className={styles.gray}
                         onClick={onCloseClick}
                     >
-                        Закрыть
+                        {isCloseButtonActive ? "Закрыть" : "Открыть"}
                     </Button>
                     <Button
                         className={styles.black}

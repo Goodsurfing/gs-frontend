@@ -4,16 +4,17 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
-import { OffersFilterFields, OffersSortFields } from "../../model/types";
-import styles from "./OffersSearchFilter.module.scss";
+import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
+import styles from "./OffersSearchFilter.module.scss";
+import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 
 export const OffersSearchFilter = () => {
-    const defaultSortValues: DefaultValues<OffersSortFields> = {
-        showClosedOffers: false,
-        sortValue: "novelty",
-    };
     const defaultFilterValues: DefaultValues<OffersFilterFields> = {
+        offersSort: {
+            showClosedOffers: false,
+            sortValue: "novelty",
+        },
         category: [],
         languages: [],
         participationPeriod: [7, 186],
@@ -21,11 +22,6 @@ export const OffersSearchFilter = () => {
         withChildren: false,
         provided: [],
     };
-
-    const offerSortForm = useForm<OffersSortFields>({
-        mode: "onChange",
-        defaultValues: defaultSortValues,
-    });
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -39,12 +35,11 @@ export const OffersSearchFilter = () => {
     }, []);
 
     return (
-        <div className={styles.wrapper}>
-            <FormProvider {...offerFilterForm}>
-                <OffersFilter />
-            </FormProvider>
-            <div className={styles.wrapperOffersMap}>
-                <FormProvider {...offerSortForm}>
+        <FormProvider {...offerFilterForm}>
+            <div className={styles.wrapper}>
+                <OffersFilter className={styles.filter} />
+
+                <div className={styles.wrapperOffersMap}>
                     <OffersList
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
@@ -52,15 +47,18 @@ export const OffersSearchFilter = () => {
                             [styles.closed]: !isMapOpened,
                         })}
                     />
-                </FormProvider>
 
-                {isMapOpened && (
-                    <OffersMap
-                        className={styles.offersMap}
-                        classNameMap={styles.offersMap}
-                    />
-                )}
+                    {isMapOpened && (
+                        <OffersMap
+                            className={styles.offersMap}
+                            classNameMap={styles.offersMap}
+                        />
+                    )}
+                </div>
+                <FormProvider {...offerFilterForm}>
+                    <OffersSearchFilterMobile className={styles.mobile} />
+                </FormProvider>
             </div>
-        </div>
+        </FormProvider>
     );
 };

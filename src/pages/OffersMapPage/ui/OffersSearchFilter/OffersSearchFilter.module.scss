@@ -7,10 +7,28 @@
     height: calc(100vh - 178px);
 }
 
+.offersMap.close {
+    display: none;
+}
+
 .offersList {
     max-width: 1000px;
 }
 
 .offersList.closed {
     max-width: 100%;
+}
+
+.mobile {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    .offersMap, .filter, .offersList{
+        display: none;
+    }
+
+    .mobile {
+        display: inline-block;
+    }
 }

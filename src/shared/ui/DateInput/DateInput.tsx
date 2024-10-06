@@ -13,6 +13,7 @@ export interface DateInputProps {
     value?: Date;
     onDateChange?: (value: Date) => void;
     inputDisabled?: boolean;
+    wrapperClassName?: string;
     calendarClassName?: string;
     calendarWrapperClassName?: string;
     isScrollTo?: boolean;
@@ -20,14 +21,16 @@ export interface DateInputProps {
 
 const DateInput = memo(({
     min, max, className, onDateChange, value, inputDisabled, calendarClassName,
-    calendarWrapperClassName, isScrollTo,
+    calendarWrapperClassName, isScrollTo, wrapperClassName,
 }: DateInputProps) => {
     const handleDateChange = useCallback((date: Date) => {
         onDateChange?.(date);
     }, [onDateChange]);
     return (
         <Box
-            sx={{ display: "flex", alignItems: "center", position: "relative" }}
+            sx={{
+                display: "flex", alignItems: "center", position: "relative", width: "100%",
+            }}
         >
             <DatePickerCalendar
                 inputClassName={cn(styles.input, className)}
@@ -39,6 +42,7 @@ const DateInput = memo(({
                 calendarClassName={calendarClassName}
                 calendarWrapperClassName={calendarWrapperClassName}
                 isScrollTo={isScrollTo}
+                wrapperClassName={wrapperClassName}
             />
         </Box>
     );

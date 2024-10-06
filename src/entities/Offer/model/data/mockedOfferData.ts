@@ -46,7 +46,7 @@ export const mockedOffersData: Offer[] = [
             needAllLanguages: false,
         },
         description: {
-            title: "Природный парк «Вулканы Камчатки» ждет волонтеров!fffffffffffffffffffffffffffffffffff",
+            title: "Природный парк «Вулканы Камчатки» ждет волонтеров!",
             description:
             "В летнем сезоне 2023 года природному парку «Вулканы Камчатки» требуется помощь добровольцев для выполнения различных видов деятельности на особо охраняемых природных территориях регионального значения. Ждем волонтеров на новый летний сезон! Природный парк «Вулканы Камчатки» объявляет о начале приема заявок на участие в волонтерской программе 2020 года от потенциальных кандидатов. Добровольцы смогут отправиться в природные парки «Налычево», «Быстринский» и «Ключевской». Работы, к которым будут привлекаться волонтеры, запланированы на период с июня по сентябрь. В летнем сезоне 2020 года природному парку «Вулканы Камчатки» требуется помощь добровольцев для выполнения различных видов деятельности на особо охраняемых природных территориях регионального значения. В частности, планируется задействовать волонтеров в работах, связанных с ремонтом и поддержанием в надлежащем виде объектов туристической инфраструктуры, благоустройством прилегающей территории, уборкой мусора, ведением экскурсионной деятельности и общением с посетителями ООПТ регионального значения.",
             shortDescription: "short description",
@@ -61,7 +61,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {
@@ -130,7 +130,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {
@@ -199,7 +199,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {

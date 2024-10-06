@@ -11,7 +11,7 @@ export const OfferPagination: FC<OfferPaginationProps> = (props) => {
     const { className } = props;
     return (
         <div className={cn(styles.wrapper, className)}>
-            <Pagination count={10} size="large" />
+            <Pagination count={3} size="large" />
         </div>
     );
 };

@@ -1,8 +1,10 @@
+import { CircularProgress } from "@mui/material";
 import React, { FC, MouseEventHandler } from "react";
-import cn from "classnames";
+
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import styles from "./ConfirmActionModal.module.scss";
+import cn from 'classnames'
 
 interface ConfirmActionModalProps {
     description: string;
@@ -13,16 +15,33 @@ interface ConfirmActionModalProps {
     isModalOpen?: boolean;
     buttonsDisabled?: boolean;
     className?: string;
+    isLoading?: boolean;
 }
 
 export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
     const {
-        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false, buttonsDisabled = false,
+        description, onConfirm, onClose, confirmTextButton = "Ок", cancelTextButton = "Отмена", isModalOpen = false, isLoading = false, buttonsDisabled = false,
         className,
     } = props;
 
     if (!isModalOpen) {
         return null;
+    }
+
+    if (isLoading) {
+        <Modal onClose={onClose} isShowCloseIcon={false}>
+            <div className={styles.wrapper}>
+                <CircularProgress style={{ color: "var(--accent-color)" }} />
+            </div>
+        </Modal>;
+    }
+
+    if (isLoading) {
+        <Modal onClose={onClose} isShowCloseIcon={false}>
+            <div className={styles.wrapper}>
+                <CircularProgress style={{ color: "var(--accent-color)" }} />
+            </div>
+        </Modal>;
     }
 
     return (
