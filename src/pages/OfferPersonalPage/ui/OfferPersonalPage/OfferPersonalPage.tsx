@@ -35,7 +35,7 @@ export const OfferPersonalPage = () => {
         );
     }
 
-    if (offerData.status === "empty") {
+    if (offerData.status === "draft") {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />

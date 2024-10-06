@@ -6,15 +6,15 @@ export const filterOffersByStatus = (
 ): Offer[] => {
     if (!offers) return [];
 
-    if (status === "open" || status === "every_open") {
+    if (status === "active" || status === "disabled") {
         return offers.filter(
-            (item) => item.status === "open" || item.status === "every_open",
+            (item) => item.status === "active" || item.status === "disabled",
         );
     }
 
-    if (status === "not_filled" || status === "empty") {
+    if (status === "draft") {
         return offers.filter(
-            (item) => item.status === "not_filled" || item.status === "empty",
+            (item) => item.status === "draft",
         );
     }
 

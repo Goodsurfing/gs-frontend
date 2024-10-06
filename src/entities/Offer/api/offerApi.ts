@@ -4,6 +4,7 @@ import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import { Offer } from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
+import { OfferStatus } from "../model/types/offerStatus";
 
 interface UpdateOfferParams {
     id: number
@@ -12,6 +13,15 @@ interface UpdateOfferParams {
 
 interface CreateOfferResponse {
     id: number;
+}
+
+interface UpdateOfferStatusRequest {
+    id: string;
+    status: OfferStatus;
+}
+
+interface UpdateOfferStatusResponse {
+    status: OfferStatus;
 }
 
 interface CreateOfferGalleryItemRequest {
@@ -45,6 +55,17 @@ export const offerApi = createApi({
                     "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify(data.body),
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferStatus: build.mutation<UpdateOfferStatusResponse, UpdateOfferStatusRequest>({
+            query: (data) => ({
+                url: `/vacancies/${data.id}/status`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ status: data.status }),
             }),
             invalidatesTags: ["offer"],
         }),
@@ -111,6 +132,7 @@ export const offerApi = createApi({
 export const {
     useCreateOfferMutation,
     useUpdateOfferMutation,
+    useUpdateOfferStatusMutation,
     useDeleteOfferMutation,
     useGetHostOffersByIdQuery,
     useLazyGetHostOffersByIdQuery,

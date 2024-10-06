@@ -1,14 +1,18 @@
-import { memo, ReactNode } from "react";
+import { memo, ReactNode, useCallback } from "react";
 
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import star from "@/shared/assets/icons/star.svg";
 
 import styles from "./PersonalCard.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getMessengerPageCreateUrl } from "@/shared/config/routes/AppUrls";
 
 interface PersonalCardProps {
+    offerId: string;
     className?: string;
     title?: string;
     image?: string;
@@ -21,6 +25,7 @@ interface PersonalCardProps {
 
 export const PersonalCard = memo((props: PersonalCardProps) => {
     const {
+        offerId,
         className,
         categories,
         rating,
@@ -41,6 +46,13 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
             url(${image})`,
         }
         : { background: "#ECF1F4" };
+    const { locale } = useLocale();
+    const navigate = useNavigate();
+
+    const handleParticipateClick = useCallback(() => {
+        navigate(getMessengerPageCreateUrl(locale, "create", offerId));
+    }, [locale, navigate, offerId]);
+
     return (
         <div className={cn(className, styles.wrapper)}>
             <div
@@ -87,8 +99,8 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                         {medals}
                         MEDALS
                     </div>
-                    <Button size="SMALL" variant="FILL" color="BLUE">
-                        {t("personalOffer.Редактировать")}
+                    <Button size="SMALL" variant="FILL" color="BLUE" onClick={handleParticipateClick}>
+                        {t("personalOffer.Участвовать")}
                     </Button>
                 </div>
             </div>

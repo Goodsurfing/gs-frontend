@@ -14,6 +14,7 @@ import { OfferStatus } from "@/entities/Offer";
 import {
     useGetOfferByIdQuery,
     useUpdateOfferMutation,
+    useUpdateOfferStatusMutation,
 } from "@/entities/Offer/api/offerApi";
 
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -68,6 +69,7 @@ export const OfferFinishingTouchesForm = memo(
         const { className, onSuccess } = props;
         const { id } = useParams();
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const [updateOfferStatus] = useUpdateOfferStatusMutation();
         const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
@@ -108,38 +110,40 @@ export const OfferFinishingTouchesForm = memo(
             data: OfferFinishingTouchesFormFields,
             offerStatus: OfferStatus,
         ) => {
-            const preparedData = offerFinishingTouchesApiAdapter(data);
-            setToast(undefined);
-            updateOffer({
-                id: Number(id),
-                body: {
-                    finishingTouches: preparedData,
-                    status: offerStatus,
-                },
-            })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: "Данные успешно изменены",
-                        type: HintType.Success,
-                    });
-                    sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
+            if (id) {
+                const preparedData = offerFinishingTouchesApiAdapter(data);
+                setToast(undefined);
+                updateOffer({
+                    id: Number(id),
+                    body: {
+                        finishingTouches: preparedData,
+                    },
                 })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
+                    .unwrap()
+                    .then(async () => {
+                        await updateOfferStatus({ id, status: offerStatus });
+                        setToast({
+                            text: "Данные успешно изменены",
+                            type: HintType.Success,
+                        });
+                        sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
+                    })
+                    .catch((error: ErrorType) => {
+                        setToast({
+                            text: getErrorText(error),
+                            type: HintType.Error,
+                        });
                     });
-                });
+            }
         };
 
         const onSubmit = handleSubmit((data) => {
-            updateFinishingTouchesHandle(data, "open");
+            updateFinishingTouchesHandle(data, "active");
             onSuccess?.(data);
         });
 
         const onDraftHandle = handleSubmit((data) => {
-            updateFinishingTouchesHandle(data, "empty");
+            updateFinishingTouchesHandle(data, "draft");
         });
 
         // useEffect(() => {

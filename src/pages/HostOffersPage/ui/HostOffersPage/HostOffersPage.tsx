@@ -1,42 +1,50 @@
 import { useCallback, useEffect, useState } from "react";
 
-import Preloader from "@/shared/ui/Preloader/Preloader";
-
-import { HostOffersList } from "../HostOffersList/HostOffersList";
 import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
-import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
-import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+
+import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import {
-    useDeleteOfferMutation, Offer,
+    Offer,
     useLazyGetHostOffersByIdQuery,
-    useUpdateOfferMutation,
     useLazyGetOfferByIdQuery,
 } from "@/entities/Offer";
+import { useUpdateOfferStatusMutation } from "@/entities/Offer/api/offerApi";
+
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
+import { HostOffersList } from "../HostOffersList/HostOffersList";
 import styles from "./HostOffersPage.module.scss";
-import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 
 type SeletecBtnType = "delete" | "every_open";
 
 const HostOffersPage = () => {
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
-    const [deleteOffer, { isLoading: isDeleteLoading }] = useDeleteOfferMutation();
-    const [updateOffer] = useUpdateOfferMutation();
-    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
-    const [triggerOffer, { data: offerData }] = useLazyGetOfferByIdQuery();
+    const [updateOfferStatus] = useUpdateOfferStatusMutation();
 
-    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>([]);
-    const [offersWithClosedStatus, setoffersWithClosedStatus] = useState<Offer[]>([]);
+    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
+    const [triggerOffer, {
+        isLoading: isOfferLoading,
+    }] = useLazyGetOfferByIdQuery();
+
+    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>(
+        [],
+    );
+    const [offersWithClosedStatus, setoffersWithClosedStatus] = useState<
+    Offer[]
+    >([]);
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
-    const isModalOpen = (selectedOffer !== null && selectedBtnOffer !== null);
+    const isModalOpen = selectedOffer !== null && selectedBtnOffer !== null;
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
             const result = await triggerHost(myHostId).unwrap();
-            setOffersWithOpenStatus(filterOffersByStatus(result, "open"));
-            setoffersWithClosedStatus(filterOffersByStatus(result, "empty"));
+            setOffersWithOpenStatus(filterOffersByStatus(result, "active"));
+            setoffersWithClosedStatus(filterOffersByStatus(result, "draft"));
         }
     }, [myHostId, triggerHost]);
 
@@ -46,8 +54,8 @@ const HostOffersPage = () => {
 
     useEffect(() => {
         if (hostData) {
-            setOffersWithOpenStatus(filterOffersByStatus(hostData, "open"));
-            setoffersWithClosedStatus(filterOffersByStatus(hostData, "empty"));
+            setOffersWithOpenStatus(filterOffersByStatus(hostData, "active"));
+            setoffersWithClosedStatus(filterOffersByStatus(hostData, "draft"));
         }
     }, [hostData]);
 
@@ -67,22 +75,30 @@ const HostOffersPage = () => {
     };
 
     const handleConfirmClick = async () => {
-        if (selectedOffer && (selectedBtnOffer === "delete")) {
-            await deleteOffer(selectedOffer.toString());
-            setSelectedOffer(null);
+        if (selectedOffer && selectedBtnOffer === "delete") {
+            await triggerOffer(selectedOffer.toString()).unwrap()
+                .then(async (result) => {
+                    if (result) {
+                        if (result.status === "active") {
+                            await updateOfferStatus({
+                                status: "disabled",
+                                id: selectedOffer.toString(),
+                            }).unwrap();
+                        }
+                        if (result.status === "disabled") {
+                            await updateOfferStatus({
+                                status: "active",
+                                id: selectedOffer.toString(),
+                            }).unwrap();
+                        }
+                    }
+                });
         }
-        if (selectedOffer && (selectedBtnOffer === "every_open")) {
-            await triggerOffer(selectedOffer.toString()).unwrap();
-            if (offerData?.status === "open") {
-                await updateOffer({ body: { status: "every_open" }, id: selectedOffer });
-            } else {
-                await updateOffer({ body: { status: "open" }, id: selectedOffer });
-            }
-            setSelectedOffer(null);
-        }
+        setSelectedOffer(null);
+        setSelectedBtnOffer(null);
     };
 
-    if (isLoading || isDeleteLoading) {
+    if (isLoading) {
         return <Preloader />;
     }
 
@@ -112,6 +128,7 @@ const HostOffersPage = () => {
                 description="Вы уверены что хотите изменить вакансию?"
                 onConfirm={() => handleConfirmClick()}
                 onClose={() => handleModalClose()}
+                isLoading={isOfferLoading}
             />
         </div>
     );

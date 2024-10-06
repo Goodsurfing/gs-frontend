@@ -61,7 +61,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {
@@ -130,7 +130,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {
@@ -199,7 +199,7 @@ export const mockedOffersData: Offer[] = [
             additionalConditions: ["students", "adult-only", "allow-kids", "couples"],
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
-        status: "open",
+        status: "active",
         state: "accepted",
         galleryItems: ["image.png"],
         organization: {
