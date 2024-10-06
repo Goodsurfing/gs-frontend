@@ -55,7 +55,7 @@ export const VerticalSlider = <T,>({
             <div className={styles.swiperWrapper}>
                 <Swiper
                     wrapperClass={cn(classNameWrapper)}
-                    style={{ height: "90%" }}
+                    style={{ height: "100%" }}
                     setWrapperSize={false}
                     onSlideChange={(swiper) => {
                         setBtnNav((prev) => ({

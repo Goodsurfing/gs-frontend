@@ -1,5 +1,7 @@
 .wrapper {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 15px;
 }
 
 .btn {

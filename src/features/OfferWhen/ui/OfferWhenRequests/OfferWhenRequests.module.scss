@@ -11,11 +11,10 @@
 .noDateContainer {
   margin-top: 8px;
   display: flex;
+  flex-wrap: wrap;
+  column-gap: 60px;
+  row-gap: 15px;
   align-items: center;
-}
-
-.noDate {
-  margin-left: 60px;
 }
 
 .noDateText {

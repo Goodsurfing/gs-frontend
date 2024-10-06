@@ -10,19 +10,25 @@ import { useUser } from "@/entities/Profile";
 
 export const AddOffer = () => {
     const [createOffer, { isLoading, isError }] = useCreateOfferMutation();
+    const [createOfferError, setCreateOfferError] = useState<boolean>(false);
     const [disabledButton, setDisabledButton] = useState<boolean>(true);
     const { profile } = useUser();
     const navigate = useNavigate();
     const { locale } = useLocale();
 
     const addOfferHandle = async () => {
+        setCreateOfferError(false);
         if (!profile?.host) {
             return;
         }
         const formData = new FormData();
-        formData.append("status", "empty");
-        const result = await createOffer(formData).unwrap();
-        navigate(`/${locale}/offers/welcome/${result.id}`);
+        createOffer(formData).unwrap()
+            .then((result) => {
+                navigate(`/${locale}/offers/welcome/${result.id}`);
+            })
+            .catch(() => {
+                setCreateOfferError(true);
+            });
     };
 
     useEffect(() => {
@@ -33,7 +39,7 @@ export const AddOffer = () => {
 
     return (
         <div className={styles.btnWrapper}>
-            {isError && (
+            {(isError || createOfferError) && (
                 <HintPopup
                     text="Ошибка создания вакансии"
                     type={HintType.Error}

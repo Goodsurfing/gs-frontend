@@ -25,3 +25,9 @@
         fill: var(--text-secondary-1);
     }
 }
+
+@media (max-width: 576px) {
+    .toggleButton {
+        width: 100%;
+    }
+}

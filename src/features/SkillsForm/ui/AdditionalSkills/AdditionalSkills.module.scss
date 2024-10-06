@@ -1,8 +1,9 @@
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-column-gap: 30px;
     grid-row-gap: 30px;
+    align-items: start;
 }
 
 .skillIcon {
@@ -33,3 +34,4 @@
     max-width: 14px;
     max-height: 14px;
 }
+

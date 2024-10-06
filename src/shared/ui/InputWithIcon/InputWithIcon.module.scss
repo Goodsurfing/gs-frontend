@@ -22,3 +22,9 @@
     transform: translateY(-50%);
     left: 20px;
 }
+
+@media (max-width: 992px) {
+    .input {
+        padding: 10px;;
+    }
+}
