@@ -8,12 +8,6 @@ export type ExtraSkill = { skill: string };
 
 export type OfferWhatToDoFormSkill = OfferWhatToDoSkill;
 
-// export type WorkingHours = {
-//     hours: number;
-//     timeType: "week" | "day" | "mounth";
-//     dayOffs: number;
-// };
-
 export type AdditionalSkillsType = {
     text: string;
 };

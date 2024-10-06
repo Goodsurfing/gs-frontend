@@ -14,6 +14,8 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 10px;
 }
 
 .avatarInfoUser {
@@ -53,4 +55,10 @@
 
 .ratingNum {
     font-size: 14px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
 }

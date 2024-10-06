@@ -68,9 +68,9 @@ export const HostFill = memo((props: HostFillProps) => {
                     />
                     <div>
                         {host ? (
-                            <EditHost />
+                            <EditHost className={styles.button} />
                         ) : (
-                            <CreateHost />
+                            <CreateHost className={styles.button} />
                         )}
                     </div>
                 </div>

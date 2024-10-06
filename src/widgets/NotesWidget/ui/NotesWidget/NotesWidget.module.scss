@@ -5,3 +5,15 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
+
+@media (max-width: 756px) {
+    .wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+@media (max-width: 442px) {
+    .wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}

@@ -2,7 +2,6 @@ import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
 import { mockedArticlesData } from "@/entities/Article/model/data/mockedArticleData";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
-import { fakeUserData } from "@/entities/User/model/data/mockedUserData";
 
 import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
@@ -66,6 +65,8 @@ export const mockedHostData: Host = {
             facebook: "string",
             instagram: "string",
             telegram: "string",
+            memberProfiles: [],
+            membershipEndDate: "",
         },
     ],
     vacancies: [
@@ -112,7 +113,7 @@ export const mockedReview: Review[] = [
 
 export const mockedFullHostData: FullHost = {
     host: mockedHostData,
-    team: fakeUserData,
+    team: [],
     articles: mockedArticlesData,
     offers: mockedOffersData,
     gallery: mockedGallery,
@@ -147,6 +148,8 @@ export const mockedApplications: Application[] = [
                 phone: "",
                 telegram: "",
                 vk: "",
+                memberProfiles: [],
+                membershipEndDate: "",
             },
             additionalSkills: [],
             externalInfo: "",
@@ -183,6 +186,8 @@ export const mockedApplications: Application[] = [
                 phone: "",
                 telegram: "",
                 vk: "",
+                memberProfiles: [],
+                membershipEndDate: "",
             },
             additionalSkills: [],
             externalInfo: "",
@@ -219,6 +224,8 @@ export const mockedApplications: Application[] = [
                 phone: "",
                 telegram: "",
                 vk: "",
+                memberProfiles: [],
+                membershipEndDate: "",
             },
             additionalSkills: [],
             externalInfo: "",
@@ -255,6 +262,8 @@ export const mockedApplications: Application[] = [
                 phone: "",
                 telegram: "",
                 vk: "",
+                memberProfiles: [],
+                membershipEndDate: "",
             },
             additionalSkills: [],
             externalInfo: "",
@@ -291,6 +300,8 @@ export const mockedApplications: Application[] = [
                 phone: "",
                 telegram: "",
                 vk: "",
+                memberProfiles: [],
+                membershipEndDate: "",
             },
             additionalSkills: [],
             externalInfo: "",

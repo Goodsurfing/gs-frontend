@@ -1,8 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { Application, Host, HostMember } from "@/entities/Host";
 
-import { Application, Host } from "@/entities/Host";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 interface UpdateHostParams {
     id: string;
@@ -17,6 +17,21 @@ interface CreateHostResponse {
 
 interface GetHostsResponse {
     list: Host[];
+}
+
+interface CreateMemberOrganizationParams {
+    organizationId: string;
+    formData: FormData;
+}
+
+interface MemberOrganizationParams {
+    organizationId: string;
+    memberId: string;
+}
+
+interface MemberOrganizationResponse {
+    id: number;
+    profile: string;
 }
 
 export const hostApi = createApi({
@@ -71,14 +86,49 @@ export const hostApi = createApi({
             }),
             providesTags: ["host"],
         }),
+        addMemberToOrganization: build.mutation<
+        MemberOrganizationResponse,
+        CreateMemberOrganizationParams
+        >({
+            query: ({ organizationId, formData }) => ({
+                url: `organization/${organizationId}/members`,
+                method: "POST",
+                body: formData,
+            }),
+            invalidatesTags: ["host"],
+        }),
+        deleteHostMember: build.mutation<void, MemberOrganizationParams>({
+            query: ({ organizationId, memberId }) => ({
+                url: `organization/${organizationId}/members/${memberId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["host"],
+        }),
+        getHostMembersById: build.query<HostMember[], string>({
+            query: (organizationId) => ({
+                url: `organization/${organizationId}/members`,
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
+        getHostMemberById: build.query<HostMember, MemberOrganizationParams>({
+            query: ({ organizationId, memberId }) => ({
+                url: `organization/${organizationId}/members/${memberId}`,
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
     }),
 });
 
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
-    useGetMyHostQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
+    useGetMyHostQuery,
     useGetMyHostApplicationsQuery,
+    useGetHostMembersByIdQuery,
+    useAddMemberToOrganizationMutation,
+    useDeleteHostMemberMutation,
 } = hostApi;

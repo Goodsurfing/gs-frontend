@@ -1,21 +1,22 @@
 import { MenuItem } from "@mui/material";
-import React, { FC, memo } from "react";
 import cn from "classnames";
+import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
+import { Language, LevelLanguage } from "@/types/languages";
+
+import {
+    useAllLangsFilter,
+    useLangsLevelsFilter,
+} from "@/shared/data/languages";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
-import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
-import {
-    LanguageSkills,
-} from "../../model/types/volunteerSkills";
 import styles from "./LanguageLevelComponent.module.scss";
-import { useAllLangsFilter, useLangsLevelsFilter } from "@/shared/data/languages";
 
 interface LanguageLevelComponentProps {
     className?: string;
-    value?: LanguageSkills;
-    onChange: (value: LanguageSkills) => void;
-    isTitle?: boolean
+    value?: Language;
+    onChange: (value: Language) => void;
+    isTitle?: boolean;
 }
 
 export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
@@ -27,25 +28,27 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
         const allLangs = useAllLangsFilter();
         const allLevels = useLangsLevelsFilter();
 
-        const handleLanguageChange = (language: IOptionLanguage) => {
-            onChange({ ...value, language });
+        const handleLanguageChange = (language: string) => {
+            onChange({ ...value, language, languageLevel: "beginner" });
         };
-        const handleLevelChange = (level: IOptionLevelLanguage) => {
-            onChange({ ...value, level });
+        const handleLevelChange = (level: LevelLanguage) => {
+            onChange({ ...value, languageLevel: level, language: value?.language || "" });
         };
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Знание языков")}</span>}
+                    {isTitle && (
+                        <span className={styles.titleSelect}>
+                            {t("volunteer-skills.Знание языков")}
+                        </span>
+                    )}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
-                            handleLanguageChange(
-                                e.target.value as IOptionLanguage,
-                            );
+                            handleLanguageChange(e.target.value as string);
                         }}
-                        value={value ? value.language : ""}
+                        value={value?.language || ""}
                     >
                         {allLangs.map((item, index) => (
                             <MenuItem key={index} value={item.value}>
@@ -55,15 +58,17 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                     </SelectComponent>
                 </div>
                 <div className={styles.selectContainer}>
-                    {isTitle && <span className={styles.titleSelect}>{t("volunteer-skills.Уровень владения")}</span>}
+                    {isTitle && (
+                        <span className={styles.titleSelect}>
+                            {t("volunteer-skills.Уровень владения")}
+                        </span>
+                    )}
                     <SelectComponent
                         className={styles.select}
                         onChange={(e) => {
-                            handleLevelChange(
-                                e.target.value as IOptionLevelLanguage,
-                            );
+                            handleLevelChange(e.target.value as LevelLanguage);
                         }}
-                        value={value ? value.level : ""}
+                        value={value?.languageLevel || ""}
                     >
                         {allLevels.map((item, index) => (
                             <MenuItem key={index} value={item.value}>

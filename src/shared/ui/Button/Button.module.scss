@@ -187,3 +187,10 @@
 	padding: 6px 20px;
 	font: var(--font-caption);
 }
+
+@media (max-width: 992px) {
+	.MEDIUM {
+		padding: 12px 15px;
+		width: 100%;
+	}
+}

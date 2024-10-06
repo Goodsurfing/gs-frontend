@@ -14,3 +14,9 @@
     font-weight: 400;
     color: var(--color-black);
 }
+
+@media (max-width: 992px) {
+    .title, .subtitle {
+        text-align: center;
+    }
+}

@@ -6,7 +6,7 @@
         "Редактировать": "Edit",
         "Пол": "Sex",
         "Мужчина": "Man",
-        "Женщина": "Woman",
+        "Женщина": "Female",
         "Другой": "Other",
         "Страна": "Country",
         "Город": "City",
@@ -28,6 +28,29 @@
         "September": "September",
         "October": "October",
         "November": "November",
-        "December": "December"
+        "December": "December",
+        "Это поле является обязательным": "This field is required",
+        "Укажите день": "Please specify the day",
+        "День_не_может_быть_больше": "Day cannot be greater than {{maxDays}} in the month of {{month}}",
+        "Укажите месяц": "Please specify the month",
+        "Укажите год": "Please specify the year",
+        "Год должен быть больше или равен 1900": "The year must be greater than or equal to 1900",
+        "Не верно указан год": "The year is invalid",
+        "Посмотреть профиль": "View Profile",
+        "Максимальный_размер": "Maximum size is {{size}} MB"
+    },
+    "role": {
+        "Заполните аккаунт гудсёрфера или организатора": "Complete your good surfer or organizer account",
+        "В новой версии Гудсёрфинга вы можете быть одновременно и гудсёрфером-путешественником и организатором, который выступает принимающей стороной.": "In the new version of Goodsurfing, you can be both a traveler and an organizer hosting others.",
+        "Для каждой роли есть отдельный рабочий стол, в котором отражается вся необходимая информация. Выберите роль, перейдите на рабочий стол и заполните профиль гудсёрфера или профиль организации.": "Each role has a separate workspace where all necessary information is displayed. Select a role, go to the workspace, and complete the surfer profile or organization profile.",
+        "Вы уверены что хотите стать волонтёром? Вам станет доступен дашборд волонтёра": "Are you sure you want to become a volunteer? You will gain access to the volunteer dashboard.",
+        "Вы уверены что хотите стать организатором мероприятий? Для этого вы должны заполнить информацию о организации": "Are you sure you want to become an event organizer? You need to fill in the organization information.",
+        "Вы успешно стали волонтёром": "You have successfully become a volunteer.",
+        "Гудсёрфер": "Goodsurfer",
+        "Чтобы путешествовать как гудсёрфер": "To travel as a good surfer",
+        "Стать гудсёрфером": "Become a goodsurfer",
+        "Организатор": "Organizer",
+        "Чтобы принимать гудсёрферов как организатор": "To host good surfers as an organizer",
+        "Стать организатором": "Become an organizer"
     }
 }

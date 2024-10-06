@@ -7,3 +7,11 @@
         width: 300px;
     }
 }
+
+@media (max-width: 992px) {
+    .wrapper {
+        & > * {
+            width: 100%;
+        }
+    }
+}

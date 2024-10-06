@@ -2,7 +2,7 @@ import { Gallery } from "@/modules/Gallery/model/types/gallery";
 
 import { Article } from "@/entities/Article";
 import { Offer, OfferState } from "@/entities/Offer";
-import { Profile } from "@/entities/Profile";
+import { Profile, ProfileApi } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { VolunteerApi } from "@/entities/Volunteer";
 
@@ -19,7 +19,7 @@ export interface Host {
     telegram: string;
     team: Profile[];
     vacancies: string[]; // link to offers /api/vacancies/id
-    owner: Profile;
+    owner: Omit<Profile, "memberProfiles" | "membershipEndDate">;
 }
 
 export interface Video {
@@ -40,6 +40,11 @@ export interface Application {
     status: OfferState;
 }
 
+export interface HostMember {
+    id: number;
+    profile: ProfileApi;
+}
+
 export interface TeamUser {
     id: number;
     name: string;
@@ -56,7 +61,7 @@ export interface FullHost {
     offers?: Offer[];
     gallery?: Gallery;
     videoGallery?: VideoGallery;
-    team: HostTeam;
+    team: HostMember[];
     reviews?: Review[];
     articles?: Article[];
 }

@@ -1,7 +1,12 @@
 import { Host } from "@/entities/Host";
+import { VolunteerApi } from "@/entities/Volunteer";
 
 export type Gender = "male" | "female" | "other";
 
+export interface MemberProfiles {
+    id: number;
+    organization: string;
+}
 export interface Profile {
     id: string;
     email: string;
@@ -21,8 +26,12 @@ export interface Profile {
     telegram?: string;
     organizations?: Host[] | [];
     host?: string;
-    // volunteer?: Volunteer;
+    volunteer?: Omit<VolunteerApi, "profile">;
+    memberProfiles: MemberProfiles[];
+    membershipEndDate: string;
 }
+
+export type ProfileApi = Omit<Profile, "image"> & { image?: string };
 
 export interface ImageType {
     id: string;

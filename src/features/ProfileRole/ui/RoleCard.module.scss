@@ -36,6 +36,11 @@
     &:hover {
         background-color: #60bdff;
     }
+
+    &:disabled {
+        color: var(--text-secondary-1);
+        opacity: .7;
+    }
 }
 
 @media (max-width: 992px) {
@@ -45,5 +50,6 @@
 
     .button {
         width: 90%;
+        padding: 10px 40px;
     }
 }

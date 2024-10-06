@@ -18,7 +18,7 @@ export const Skills = memo(({ className, onChange, value }: Props) => {
         const isActive = value.find((item) => item === id);
         if (isActive) {
             onChange(value.filter((skill) => skill !== id));
-        } else {
+        } else if ((value?.length || 0) <= 10) {
             onChange([...value, id]);
         }
     }, [onChange, value]);

@@ -1,42 +1,44 @@
 .wrapper {
-  background-color: var(--color-white);
-  width: 100%;
-  max-width: 486px;
-  box-shadow: 0px 5px 20px rgba(14, 29, 39, 0.05);
+    background-color: var(--color-white);
+    width: 100%;
+    max-width: 486px;
+    box-shadow: 0px 5px 20px rgba(14, 29, 39, 0.05);
 }
 
 .titleWrapper {
-  padding: 14px 20px;
-  border-bottom: var(--dark-theme-color) 2px solid;
-  background-color: var(--color-white);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    padding: 14px 20px;
+    border-bottom: var(--dark-theme-color) 2px solid;
+    background-color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  font-family: 'Lato', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: "Lato", sans-serif;
 }
 
 .requests {
-  color: var(--color-blue);
+    color: var(--color-blue);
 }
 
 .requestsCount {
-  margin-left: 6px;
+    margin-left: 6px;
 }
 
 .notificationItems {
-  min-height: 450px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 30px;
-  background-color: var(--color-white);
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 30px;
+    background-color: var(--color-white);
 }
 
-
-
-
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
+}

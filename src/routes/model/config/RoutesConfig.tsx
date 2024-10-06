@@ -33,7 +33,6 @@ import { OffersMapPage } from "@/pages/OffersMapPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
-import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 import { ProfilePreferencesPage } from "@/pages/ProfilePreferencesPage";
 import { ProfilePrivacyPage } from "@/pages/ProfilePrivacyPage";
 import { ProfileRolePage } from "@/pages/ProfileRolePage";
@@ -48,7 +47,6 @@ import { VolunteerArticlesPage } from "@/pages/VolunteerArticlesPage";
 import { VolunteerCreateArticlePage } from "@/pages/VolunteerCreateArticlePage/";
 import { VolunteerDashboardPage } from "@/pages/VolunteerDashboardPage";
 import { VolunteerGalleryPage } from "@/pages/VolunteerGalleryPage";
-import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 import { VolunteerNotesPage } from "@/pages/VolunteerNotesPage";
 import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
@@ -290,9 +288,7 @@ const publicRoutes: RouteType[] = [
     {
         label: "volunteer-layout",
         element: (
-            <PrivateRouteGuard>
-                <VolunteerLayoutPage />
-            </PrivateRouteGuard>
+            AuthRoutes.volunteer
         ),
         path: (locale: string) => getVolunteerPageUrl(locale),
         children: [
@@ -355,7 +351,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "profile",
-        element: <ProfileLayoutPage />,
+        element: AuthRoutes.profile,
         path: (locale: string) => getProfilePageUrl(locale),
         children: [
             {

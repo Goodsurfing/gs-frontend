@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 
-import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import {
     Offer,
     useLazyGetHostOffersByIdQuery,
@@ -16,6 +15,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { HostOffersList } from "../HostOffersList/HostOffersList";
 import styles from "./HostOffersPage.module.scss";
+import { useGetMyHostQuery } from "@/entities/Host";
 
 type SeletecBtnType = "delete" | "every_open";
 
@@ -25,9 +25,7 @@ const HostOffersPage = () => {
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
 
     const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
-    const [triggerOffer, {
-        isLoading: isOfferLoading,
-    }] = useLazyGetOfferByIdQuery();
+    const [triggerOffer, { isLoading: isOfferLoading }] = useLazyGetOfferByIdQuery();
 
     const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>(
         [],
@@ -76,7 +74,8 @@ const HostOffersPage = () => {
 
     const handleConfirmClick = async () => {
         if (selectedOffer && selectedBtnOffer === "delete") {
-            await triggerOffer(selectedOffer.toString()).unwrap()
+            await triggerOffer(selectedOffer.toString())
+                .unwrap()
                 .then(async (result) => {
                     if (result) {
                         if (result.status === "active") {

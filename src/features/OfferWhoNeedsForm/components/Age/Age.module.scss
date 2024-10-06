@@ -11,3 +11,9 @@
 .from, .to {
     max-width: 150px;
 }
+
+@media (max-width: 992px) {
+    .inputWrapper {
+        gap: 5px;
+    }
+}

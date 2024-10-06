@@ -1,10 +1,21 @@
 .form {
     width: 100%;
     display: flex;
+    gap: 10px;
+    justify-content: space-between;
 }
 
 .formWrapper {
     display: flex;
     flex-direction: column;
     gap: 60px;
+}
+
+@media (max-width: 992px) {
+    .formWrapper {
+        width: 100%;
+    }
+    .form {
+        flex-direction: column-reverse;
+    }
 }

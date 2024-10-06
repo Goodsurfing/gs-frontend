@@ -18,6 +18,7 @@ export const VideoInput = memo(({
     control, addVideo,
 }: VideoInputProps) => {
     const { t } = useTranslation("volunteer");
+
     return (
         <div className={styles.wrapper}>
             <label htmlFor="input" className={styles.text}>{t("volunteer-gallery.Ссылка на видео")}</label>

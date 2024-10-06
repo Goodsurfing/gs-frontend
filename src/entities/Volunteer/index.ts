@@ -1,3 +1,7 @@
+export {
+    volunteerApi, useCreateVolunteerMutation,
+    useGetMyVolunteerQuery, useGetVolunteerByIdQuery, useUpdateVolunteerByIdMutation,
+} from "./api/volunteerApi";
 export type { Volunteer, VolunteerApi } from "./model/types/volunteer";
 export type { AllLanguages, AllLevels, Language } from "./model/types/language";
 

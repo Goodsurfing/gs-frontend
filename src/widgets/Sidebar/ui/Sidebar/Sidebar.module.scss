@@ -16,8 +16,28 @@
 	}
 }
 
+.mobileSidebar {
+	display: none;
+}
+
+.mobileSidebarLink {
+	padding: 8px 14px;
+	background-color: var(--bg-field);
+	border-radius: 20px;
+	border: 1px solid var(--accent-elements);
+}
+
 .open {
 	width: 20.625rem;
 
 	transform: translate();
+}
+
+@media (max-width: 992px) {
+	.mobileSidebar {
+		display: flex;
+	}
+	.sidebar {
+		display: none;
+	}
 }

@@ -32,7 +32,6 @@ const ExtraControls: FC<ExtraControlsProps> = (props: ExtraControlsProps) => {
                 control={<Switch checked={value === false} />}
             />
             <FormControlLabel
-                sx={{ ml: "30px" }}
                 onChange={() => onChange((!value))}
                 label={(
                     <Typography

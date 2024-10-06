@@ -1,10 +1,12 @@
-import { Box, FormControlLabel, Typography } from "@mui/material";
+import { FormControlLabel, Typography } from "@mui/material";
 import React, { FC } from "react";
-
 import { useTranslation } from "react-i18next";
+
 import { Gender } from "@/entities/Offer";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
+
+import styles from "./Gender.module.scss";
 
 interface GenderProps {
     value: Gender[];
@@ -26,7 +28,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     };
 
     return (
-        <Box sx={{ display: "flex", mt: "30px" }}>
+        <div className={styles.wrapper}>
             <FormControlLabel
                 label={(
                     <Typography
@@ -87,6 +89,6 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
                     />
                 )}
             />
-        </Box>
+        </div>
     );
 };

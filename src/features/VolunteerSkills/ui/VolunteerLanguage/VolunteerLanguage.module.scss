@@ -38,39 +38,6 @@
     }
 }
 
-.button {
-    background-color: var(--text-primary-1);
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    border: 1px solid var(--text-caption);
-    padding: 15px 20px;
-    font-size: 14px;
-    color: white;
-
-    .plus {
-        width: 14px;
-        height: 14px;
-        margin-right: 10px;
-        fill: white;
-    }
-
-    &:hover {
-        color: black;
-        .plus {
-            fill: black;
-        }
-    }
-    &:disabled {
-        background-color: var(--bg-field);
-        color: var(--text-caption);
-        .plus {
-            fill: var(--text-caption);
-        }
-        cursor: not-allowed;
-    }
-}
-
 
 @media (max-width: 768px) {
     .container,

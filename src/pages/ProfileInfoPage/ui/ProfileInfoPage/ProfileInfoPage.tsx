@@ -5,9 +5,18 @@ import { useTranslation } from "react-i18next";
 import { ProfileInfoForm } from "@/features/ProfileInfo";
 
 import styles from "./ProfileInfoPage.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const ProfileInfoPage: FC = () => {
-    const { t } = useTranslation("profile");
+    const { t, ready } = useTranslation("profile");
+
+    if (!ready) {
+        return (
+            <main className={styles.wrapper}>
+                <Preloader />
+            </main>
+        );
+    }
 
     return (
         <main className={styles.wrapper}>

@@ -1,4 +1,3 @@
-import { IconButton } from "@mui/material";
 import cn from "classnames";
 import React, {
     FC,
@@ -11,16 +10,15 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
-import plusIcon from "@/shared/assets/icons/plus-icon.svg";
-import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
-import { LanguageSkills } from "../../model/types/volunteerSkills";
 import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
 import styles from "./VolunteerLanguage.module.scss";
+import { AddButton } from "@/shared/ui/AddButton/AddButton";
+import { Language } from "@/types/languages";
 
 interface VolunteerLanguageProps {
-    value?: LanguageSkills[];
-    onChange: (value: LanguageSkills[]) => void;
+    value?: Language[];
+    onChange: (value: Language[]) => void;
     className?: string;
 }
 
@@ -29,13 +27,13 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         const { className, value, onChange } = props;
         const { t } = useTranslation("volunteer");
         const [mainLanguageSkills, setMainLanguageSkills] = useState<
-        LanguageSkills | undefined
+        Language | undefined
         >(undefined);
         const isDisabledButton = !mainLanguageSkills
             || !mainLanguageSkills?.language
-            || !mainLanguageSkills?.level;
+            || !mainLanguageSkills?.languageLevel;
 
-        const handleMainLanguageChange = (item: LanguageSkills) => {
+        const handleMainLanguageChange = (item: Language) => {
             setMainLanguageSkills(item);
         };
 
@@ -59,7 +57,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         );
 
         const handleUpdateLanguage = useCallback(
-            (updatedItem: LanguageSkills, index: number) => {
+            (updatedItem: Language, index: number) => {
                 const newValue = value?.map((item, i) => (i === index ? updatedItem : item)) || [];
                 onChange(newValue);
             },
@@ -68,9 +66,8 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
 
         const renderLanguageLevelComponents = useMemo(
             () => value?.map((item, index) => (
-                <div className={styles.wrapperLanguageComponent}>
+                <div className={styles.wrapperLanguageComponent} key={index}>
                     <LanguageLevelComponent
-                        key={index}
                         value={item}
                         onChange={(updatedItem) => {
                             handleUpdateLanguage(updatedItem, index);
@@ -107,18 +104,12 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                 <div className={styles.container}>
                     {renderLanguageLevelComponents}
                 </div>
-                <IconButton
+                <AddButton
+                    text={t("volunteer-skills.Добавить язык")}
                     className={styles.button}
                     onClick={handleAddLanguage}
                     disabled={isDisabledButton}
-                >
-                    <IconComponent
-                        icon={plusIcon}
-                        className={styles.plus}
-                        alt="add"
-                    />
-                    {t("volunteer-skills.Добавить язык")}
-                </IconButton>
+                />
             </div>
         );
     },

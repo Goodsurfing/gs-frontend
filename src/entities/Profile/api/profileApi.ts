@@ -1,6 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { Profile } from "../model/types/profile";
+import { Profile, ProfileApi } from "../model/types/profile";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+
+interface UpdateProfileInfoRequest {
+    userId: string;
+    profileData: Partial<ProfileApi>
+}
 
 export const profileApi = createApi({
     reducerPath: "profileApi",
@@ -14,9 +19,16 @@ export const profileApi = createApi({
             }),
             providesTags: ["profile"],
         }),
-        updateProfileInfo: build.mutation<Profile, Partial<Profile>>({
-            query: (profileData) => ({
-                url: "personal/profile",
+        getProfileInfoById: build.query<Profile, string>({
+            query: (userId) => ({
+                url: `users/${userId}`,
+                method: "GET",
+            }),
+            providesTags: ["profile"],
+        }),
+        updateProfileInfo: build.mutation<Profile, UpdateProfileInfoRequest>({
+            query: ({ userId, profileData }) => ({
+                url: `users/${userId}`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
@@ -30,5 +42,6 @@ export const profileApi = createApi({
 
 export const {
     useGetProfileInfoQuery,
+    useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
 } = profileApi;

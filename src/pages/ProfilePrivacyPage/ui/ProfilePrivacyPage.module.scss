@@ -5,3 +5,19 @@
 .description {
     margin-top: 40px;
 }
+
+.title {
+    color: var(--color-black-primary);
+    font-size: 1.625rem;
+    font-weight: 400;
+}
+
+
+@media (max-width: 992px) {
+    .title {
+        text-align: center;
+    }
+    .description {
+        text-align: center;
+    }
+}

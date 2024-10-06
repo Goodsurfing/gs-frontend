@@ -6,9 +6,17 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-height: 80vh;
     padding-right: 50px;
     padding-left: 50px;
     padding-top: 36px;
+}
+
+.error {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .navMenu {

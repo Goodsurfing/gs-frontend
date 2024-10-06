@@ -5,6 +5,11 @@
     gap: 60px;
 }
 
+.content {
+    display: flex;
+    gap: 10px;
+}
+
 .stateButton {
     position: absolute;
     top: 0;
@@ -15,4 +20,17 @@
     outline: none;
     cursor: pointer;
     font: var(--font-label);
+}
+
+.formWrapper {
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+    .formWrapper {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        padding-top: 15px;
+    }
 }

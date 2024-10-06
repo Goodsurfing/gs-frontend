@@ -25,6 +25,12 @@
       font: var(--font-secondary);
     }
   }
+}
 
-  
+@media (max-width: 992px) {
+  .wrapper {
+    .title, .text {
+      text-align: center;
+    }
+  }
 }

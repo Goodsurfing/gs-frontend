@@ -36,7 +36,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     </div>
                 )}
                 <Avatar
-                    icon={getMediaContent(application.volunteer.profile.image?.contentUrl)}
+                    icon={getMediaContent(application.volunteer.profile.image)}
                     className={styles.image}
                     size="MEDIUM"
                 />

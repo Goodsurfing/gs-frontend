@@ -75,13 +75,15 @@ const HostOffersPageCard = memo(
                             <span className={styles.category}>{category}</span>
                         </div>
                         <div className={styles.stats}>
-                            <div className={styles.rating}>
-                                <img src={star} alt="star-icon" />
-                                <span>{rating}</span>
-                            </div>
-                            <div className={styles.likes}>
-                                <img src={like} alt="heart-icon" />
-                                <span>{likes}</span>
+                            <div className={styles.statsWrapper}>
+                                <div className={styles.rating}>
+                                    <img src={star} alt="star-icon" />
+                                    <span>{rating}</span>
+                                </div>
+                                <div className={styles.likes}>
+                                    <img src={like} alt="heart-icon" />
+                                    <span>{likes}</span>
+                                </div>
                             </div>
                             <div className={styles.extraInfo}>
                                 <span className={styles.review}>

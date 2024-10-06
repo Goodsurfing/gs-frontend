@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import {
     AcrossRussia,
     Activity,
-    InputSelectedCountries,
     PopularPlaces,
 } from "@/features/ProfilePreferences";
 
@@ -13,7 +12,7 @@ export const ProfilePreferencesForm: FC = () => (
     <div className={styles.wrapper}>
         <PopularPlaces />
         <AcrossRussia />
-        <InputSelectedCountries />
+        {/* <InputSelectedCountries /> */}
         <Activity />
     </div>
 );
