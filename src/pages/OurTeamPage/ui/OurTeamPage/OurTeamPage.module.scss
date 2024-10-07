@@ -19,3 +19,10 @@
     margin: 0 auto;
     max-width: 315px;
 }
+
+@media (max-width: 992px) {
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

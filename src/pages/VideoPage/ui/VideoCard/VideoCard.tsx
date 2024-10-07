@@ -7,6 +7,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 import comment from "@/shared/assets/icons/comment.svg";
 import styles from "./VideoCard.module.scss";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 
 interface VideoCardProps {
     video: Video;
@@ -20,12 +21,13 @@ export const VideoCard: FC<VideoCardProps> = (props) => {
         }, className,
     } = props;
     const { locale } = useLocale();
+    const { width } = useWindowDimensions();
     return (
         <Link className={styles.link} to={`/${locale}/video/1`}>
             <div className={cn(className, styles.wrapper)}>
                 <ReactPlayer
                     style={{ pointerEvents: "none" }}
-                    width="337px"
+                    width={width <= 576 ? "100%" : "337px"}
                     height="219px"
                     url={url}
                     light

@@ -164,6 +164,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                 control={control}
                 render={({ field }) => (
                     <OfferWhenSlider
+                        isMobile
                         value={field.value}
                         onChange={field.onChange}
                     />

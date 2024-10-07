@@ -63,6 +63,7 @@ const DateInputs: FC<DateInputsProps> = ({
                 value={value?.end}
                 min={new Date()}
                 max={max}
+                calendarWrapperClassName={styles.calendarWrapper}
             />
             {close}
         </Box>

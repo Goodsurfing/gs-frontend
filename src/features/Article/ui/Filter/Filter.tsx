@@ -18,7 +18,7 @@ export const Filter = () => {
                 exclusive
                 value={filterValue}
                 sx={{
-                    display: "flex", flexWrap: "wrap", maxWidth: "624px", gap: "10px", mt: "14px",
+                    display: "flex", flexWrap: "wrap", maxWidth: "624px", gap: "10px",
                 }}
             >
                 {tags.map((item, index) => (

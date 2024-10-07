@@ -2,3 +2,13 @@
     font-size: 0,875rem;
     color: var(--text-caption);
 }
+
+.group {
+    max-width: 624px;
+}
+
+@media (max-width: 992px) {
+    .group {
+        max-width: none;
+    }
+}

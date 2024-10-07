@@ -69,3 +69,9 @@
     font-size: 14px;
     border-radius: 40px;
 }
+
+@media(max-width:576px) {
+    .link {
+        max-width: none;
+    }
+}

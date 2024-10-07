@@ -24,3 +24,16 @@
     }
 }
 
+@media (max-width: 992px) {
+    .title, .description, .hint {
+        text-align: center;
+    }
+    .wrapper {   
+        .btn {
+            padding: 12px;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
+

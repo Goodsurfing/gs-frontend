@@ -31,7 +31,7 @@ const VideoPage = () => (
                     }}
                 >
                     <Category className={styles.category} />
-                    <MemberBanner />
+                    <MemberBanner className={styles.memberBanner} />
                 </div>
             </div>
         </div>

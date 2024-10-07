@@ -13,3 +13,9 @@
     color: var(--text-secondary-1);
     font-weight: 600;
 }
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 1.625rem;
+    }
+}

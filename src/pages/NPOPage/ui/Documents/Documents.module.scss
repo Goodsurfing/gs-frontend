@@ -1,6 +1,6 @@
 .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 60px;
     padding-left: 180px;
@@ -23,4 +23,11 @@
 .modalImgae {
     height: 80dvh;
     object-fit: cover;
+}
+
+@media (max-width: 992px) {
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

@@ -19,3 +19,16 @@
 .sideMenu {
     flex: 1 0 350px;
 }
+
+@media (max-width: 1200px) {
+    .wrapper {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sideMenu {
+        display: none;
+    }
+}

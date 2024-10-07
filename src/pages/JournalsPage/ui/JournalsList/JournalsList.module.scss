@@ -2,9 +2,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
+    justify-items: center;
 }
 
 
 .article {
     cursor: pointer;
+    max-width: 320px;
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 }

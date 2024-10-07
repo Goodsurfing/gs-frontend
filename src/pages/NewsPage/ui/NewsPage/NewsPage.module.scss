@@ -9,6 +9,8 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 60px;
+    flex-wrap: wrap;
+    gap: 10px
 }
 
 .content {
@@ -31,5 +33,16 @@
 
     .newsList {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}
+
+@media (max-width: 992px) {
+    .memberBanner {
+        max-width: none;
+    }
+    .content {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
     }
 }

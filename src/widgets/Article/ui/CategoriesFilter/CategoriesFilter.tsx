@@ -17,11 +17,12 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
         <div className={cn(className, styles.wrapper)}>
             <span className={styles.title}>Категория</span>
             <ToggleButtonGroup
+                className={styles.group}
                 value={value}
                 onChange={onChange}
                 exclusive
                 sx={{
-                    display: "flex", flexWrap: "wrap", maxWidth: "624px", gap: "10px", mt: "14px",
+                    display: "flex", flexWrap: "wrap", gap: "10px", mt: "14px",
                 }}
             >
                 {tags.map((item, index) => (

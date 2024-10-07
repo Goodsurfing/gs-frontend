@@ -1,6 +1,6 @@
 .wrapper {
     display: flex;
-    gap: 24px;
+    column-gap: 24px;
     border: 1px solid var(--text-caption);
     border-radius: 0.625rem;
     padding: 24px;
@@ -50,4 +50,10 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        flex-wrap: wrap;
+    }
 }

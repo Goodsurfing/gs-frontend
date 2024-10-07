@@ -19,3 +19,12 @@
     line-height: 130%;
     text-align: center;
 }
+
+@media(max-width: 576px) {
+    .title {
+        font-size: 16px;
+    }
+    .button {
+        padding: 10px;
+    }
+}

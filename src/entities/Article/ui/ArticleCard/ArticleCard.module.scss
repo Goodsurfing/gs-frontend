@@ -1,6 +1,8 @@
 .link {
     text-decoration: none;
     color: inherit;
+    width: 100%;
+    max-width: 480px;
 }
 .wrapper {
     display: flex;
@@ -11,6 +13,7 @@
 .image {
     max-width: 480px;
     object-fit: cover;
+    width: 100%;
 }
 
 .container {
