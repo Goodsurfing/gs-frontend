@@ -1,11 +1,12 @@
 import cn from "classnames";
-import React, { FC, useMemo } from "react";
+import React, { FC, useMemo, useState } from "react";
 
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 import { HeaderList } from "../HeaderList/HeaderList";
 import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import styles from "./OffersList.module.scss";
+import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface OffersListProps {
     className?: string;
@@ -15,9 +16,16 @@ interface OffersListProps {
 
 export const OffersList: FC<OffersListProps> = (props) => {
     const { mapOpenValue, onChangeMapOpen, className } = props;
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const itemsPerPage = 10;
+
+    const { data, isLoading } = useGetOffersQuery({
+        page: currentPage,
+        perPage: itemsPerPage,
+    });
 
     const renderOfferCards = useMemo(
-        () => mockedOffersData.map((offer) => (
+        () => data?.map((offer) => (
             <OfferCard
                 classNameCard={styles.offerCard}
                 className={cn(styles.offer, {
@@ -28,8 +36,16 @@ export const OffersList: FC<OffersListProps> = (props) => {
                 key={offer.id}
             />
         )),
-        [mapOpenValue],
+        [data, mapOpenValue],
     );
+
+    if (isLoading) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <Preloader />
+            </div>
+        );
+    }
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -42,7 +58,11 @@ export const OffersList: FC<OffersListProps> = (props) => {
             >
                 {renderOfferCards}
             </div>
-            <OfferPagination />
+            <OfferPagination
+                currentPage={currentPage}
+                totalPages={data?.totalPages || 1}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 };

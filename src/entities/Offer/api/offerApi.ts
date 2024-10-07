@@ -34,6 +34,11 @@ interface OfferGalleryItemRequest {
     galleryId: string;
 }
 
+interface GetOfferRequest {
+    page: number;
+    perPage: number;
+}
+
 export const offerApi = createApi({
     reducerPath: "offerApi",
     baseQuery: baseQueryAcceptJson,
@@ -83,9 +88,9 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getOffers: build.query<Offer[], void>({
-            query: () => ({
-                url: "vacancies",
+        getOffers: build.query<Offer[], GetOfferRequest>({
+            query: ({ page, perPage }) => ({
+                url: `vacancies?page=${page}&itemsPerPage=${perPage}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -131,6 +136,7 @@ export const offerApi = createApi({
 
 export const {
     useCreateOfferMutation,
+    useGetOffersQuery,
     useUpdateOfferMutation,
     useUpdateOfferStatusMutation,
     useDeleteOfferMutation,
