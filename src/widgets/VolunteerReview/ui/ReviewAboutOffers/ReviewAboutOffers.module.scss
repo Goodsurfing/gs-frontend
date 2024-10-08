@@ -13,7 +13,7 @@
     &::-webkit-scrollbar-track {
         background: var(--color-white);
     }
-    
+
     &::-webkit-scrollbar-thumb {
         border-radius: var(--radius);
         background-color: var(--bg-accent);
@@ -44,4 +44,12 @@
     flex-direction: column;
     row-gap: 20px;
     margin-top: 30px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+        height: auto;
+        overflow: auto;
+    }
 }

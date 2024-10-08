@@ -1,6 +1,7 @@
 .wrapper {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     width: 100%;
 }
 
@@ -17,4 +18,17 @@
 
 .ratingText{
     font-size: 14px;
+}
+
+@media(max-width: 992px) {
+    .wrapper {
+        text-align: center;
+    }
+}
+
+@media(max-width: 567px) {
+    .wrapper {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

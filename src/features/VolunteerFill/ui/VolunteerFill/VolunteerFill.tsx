@@ -37,7 +37,7 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
                 <div className={styles.leftSide}>
                     <StatsPoints pointsData={pointsData} />
                     <div>
-                        <EditVolunteer />
+                        <EditVolunteer className={styles.edit} />
                     </div>
                 </div>
                 <div className={styles.rightSide}>

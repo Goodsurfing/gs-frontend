@@ -57,9 +57,9 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
                     <Avatar icon={defaultAvatarImage} size="SMALL" />
                     <div className={styles.nameAddress}>
                         <span className={styles.name}>
-                            {textSlice(description?.title, 50, "title")}
+                            {description?.title}
                         </span>
-                        <span className={styles.address}>{textSlice(where?.address, 25, "title")}</span>
+                        <span className={styles.address}>{where?.address}</span>
                     </div>
                 </div>
                 <Button
