@@ -1,14 +1,13 @@
 .wrapper {
     width: 100%;
     display: flex;
-    // grid-template-columns: repeat(4, 1fr);
-    // grid-template-rows: 130px;
     gap: 1.25rem;
 }
 
 .imgItem {
     width: 130px;
     height: 130px;
+    object-fit: cover;
 }
 
 

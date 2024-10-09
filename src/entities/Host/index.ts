@@ -11,7 +11,7 @@ export {
     useDeleteHostMemberMutation,
 } from "./api/hostApi";
 export type {
-    Host, TeamUser, Application, FullHost, VideoGallery, HostMember,
+    Host, TeamUser, Application, FullHost, HostMember,
 } from "./model/types/host";
 
 export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";

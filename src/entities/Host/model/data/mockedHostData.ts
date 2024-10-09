@@ -7,7 +7,7 @@ import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
 import {
     Application,
-    FullHost, Host, VideoGallery,
+    FullHost, Host,
 } from "@/entities/Host";
 import { Review } from "@/entities/Review";
 
@@ -43,6 +43,8 @@ export const mockedHostData: Host = {
         facebook: "string",
         instagram: "string",
         telegram: "string",
+        galleryImages: [],
+        videoGallery: [],
     },
     team: [
         {
@@ -67,6 +69,8 @@ export const mockedHostData: Host = {
             telegram: "string",
             memberProfiles: [],
             membershipEndDate: "",
+            galleryImages: [],
+            videoGallery: [],
         },
     ],
     vacancies: [
@@ -77,12 +81,6 @@ export const mockedHostData: Host = {
 const mockedGallery: Gallery = {
     images: [defaultImageGallery, defaultImageGallery, defaultImageGallery],
 };
-
-const mockedVideoGallery: VideoGallery = [
-    { id: "1", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-    { id: "2", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-    { id: "3", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-];
 
 export const mockedReview: Review[] = [
     {
@@ -117,7 +115,6 @@ export const mockedFullHostData: FullHost = {
     articles: mockedArticlesData,
     offers: mockedOffersData,
     gallery: mockedGallery,
-    videoGallery: mockedVideoGallery,
     reviews: mockedReview,
 };
 
@@ -150,6 +147,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -188,6 +187,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -226,6 +227,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -264,6 +267,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -302,6 +307,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",

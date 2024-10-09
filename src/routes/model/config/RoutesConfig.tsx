@@ -22,7 +22,6 @@ import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
-import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
 import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
@@ -120,6 +119,7 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
+import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -230,7 +230,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "offer-layout",
-        element: <OfferLayoutPage />,
+        element: AuthRoutes.offers,
         path: (locale: string) => getOffersPageUrl(locale),
         children: [
             {
@@ -240,7 +240,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: AuthRoutes.offers_description,
+                element: <OfferDescriptionPage />,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {

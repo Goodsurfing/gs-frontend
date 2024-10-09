@@ -27,8 +27,6 @@ export interface Video {
     url: string;
 }
 
-export type VideoGallery = Video[];
-
 export type HostTeam = TeamUser[];
 
 export interface Application {
@@ -60,7 +58,6 @@ export interface FullHost {
     host: Host;
     offers?: Offer[];
     gallery?: Gallery;
-    videoGallery?: VideoGallery;
     team: HostMember[];
     reviews?: Review[];
     articles?: Article[];

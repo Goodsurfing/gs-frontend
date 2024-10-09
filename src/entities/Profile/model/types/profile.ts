@@ -1,5 +1,6 @@
 import { Host } from "@/entities/Host";
 import { VolunteerApi } from "@/entities/Volunteer";
+import { MediaObjectType } from "@/types/media";
 
 export type Gender = "male" | "female" | "other";
 
@@ -29,9 +30,14 @@ export interface Profile {
     volunteer?: Omit<VolunteerApi, "profile">;
     memberProfiles: MemberProfiles[];
     membershipEndDate: string;
+    videoGallery: string[]
+    galleryImages: MediaObjectType[];
 }
 
-export type ProfileApi = Omit<Profile, "image"> & { image?: string };
+export type ProfileApi = Omit<Profile, "image" | "galleryImages"> & {
+    image?: string;
+    galleryImages?: string[];
+};
 
 export interface ImageType {
     id: string;
