@@ -62,7 +62,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                     <span className={styles.title}>
                         {textSlice(
                             application.vacancy.description?.title,
-                            30,
+                            45,
                             "title",
                         )}
                     </span>
