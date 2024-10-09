@@ -34,3 +34,21 @@
     text-decoration: none;
     color: var(--text-primary-1);
 }
+
+@media (max-width: 992px) {
+    .bottom {
+        flex-direction: column-reverse;
+        row-gap: 10px;
+    }
+}
+
+@media (max-width: 567px) {
+    .top {
+        row-gap: 10px;
+    }
+    .edit {
+        padding: 10px;
+        width: 100%;
+    }
+}
+

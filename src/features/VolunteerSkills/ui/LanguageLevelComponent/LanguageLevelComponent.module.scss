@@ -1,7 +1,7 @@
 .wrapper {
     display: flex;
-    flex-wrap: wrap;
     gap: 24px;
+    width: 100%;
 }
 
 .titleSelect {
@@ -13,10 +13,27 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
 }
 
 .select {
-    min-width: 250px;
-    max-width: 300px;
+    width: 100%;
     min-height: 44px;
+}
+
+// @media (max-width: 992px) {
+//     .select {
+//         max-width: none;
+//         min-width: 225px;
+//     }
+// }
+
+@media (max-width: 567px) {
+    .wrapper {
+        width: auto;
+        gap: 10px;
+    }
+    .selectContainer {
+        width: 130px;
+    }
 }

@@ -1,6 +1,6 @@
 .dashboard {
     width: 100%;
-    max-width: 1520px;
+    max-width: 1000px;
     padding-right: 50px;
 }
 
@@ -15,4 +15,19 @@
     max-width: 468px;
     display: flex;
     flex-direction: column;
+}
+
+@media (max-width: 992px) {
+    .banner {
+        max-width: none;
+    }
+    .container {
+        max-width: none;
+    }
+    .notifications {
+        max-width: none;
+    }
+    .dashboard {
+        padding-right: 0;
+    }
 }

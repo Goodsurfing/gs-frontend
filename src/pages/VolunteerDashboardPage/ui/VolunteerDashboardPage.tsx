@@ -12,8 +12,8 @@ const VolunteerDashboardPage = () => (
         <div className={styles.columns}>
             <OffersRecomendationsWidget />
             <div className={styles.container}>
-                <MemberBanner />
-                <DashboardNotifications />
+                <MemberBanner className={styles.banner} />
+                <DashboardNotifications className={styles.notifications} />
             </div>
         </div>
     </div>

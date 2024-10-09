@@ -17,3 +17,9 @@
     color: var(--text-primary-1);
 }
 
+@media (max-width: 576px) {
+    .top {
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+}

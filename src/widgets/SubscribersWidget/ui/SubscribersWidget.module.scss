@@ -8,3 +8,9 @@
 .card {
     max-width: 260px;
 }
+
+@media(max-width: 567px) {
+    .card {
+        max-width: none;
+    }
+}

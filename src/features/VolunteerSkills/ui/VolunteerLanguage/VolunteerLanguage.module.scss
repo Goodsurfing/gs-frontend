@@ -20,28 +20,21 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .deleteIcon {
-    box-sizing: content-box;
-    padding: 10px;
-    margin-top: 20px;
+    margin: 10px;
     width: 14px;
     height: 14px;
     fill: var(--text-secondary-2);
     cursor: pointer;
 }
 
-.container {
-    .deleteIcon {
-        margin-top: 0;
-    }
-}
-
 
 @media (max-width: 768px) {
-    .container,
-    .wrapperLanguageComponent {
-        max-width: 250px;
-    }
+    // .container,
+    // .wrapperLanguageComponent {
+    //     max-width: 250px;
+    // }
 }
