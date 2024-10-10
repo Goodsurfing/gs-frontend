@@ -30,7 +30,7 @@ export interface Profile {
     volunteer?: Omit<VolunteerApi, "profile">;
     memberProfiles: MemberProfiles[];
     membershipEndDate: string;
-    videoGallery: string[]
+    videoGallery?: string[]
     galleryImages: MediaObjectType[];
 }
 

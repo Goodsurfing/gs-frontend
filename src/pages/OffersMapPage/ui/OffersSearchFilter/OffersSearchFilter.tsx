@@ -6,8 +6,8 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
-import styles from "./OffersSearchFilter.module.scss";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
+import styles from "./OffersSearchFilter.module.scss";
 
 export const OffersSearchFilter = () => {
     const defaultFilterValues: DefaultValues<OffersFilterFields> = {
@@ -55,9 +55,7 @@ export const OffersSearchFilter = () => {
                         />
                     )}
                 </div>
-                <FormProvider {...offerFilterForm}>
-                    <OffersSearchFilterMobile className={styles.mobile} />
-                </FormProvider>
+                <OffersSearchFilterMobile className={styles.mobile} />
             </div>
         </FormProvider>
     );
