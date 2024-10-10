@@ -131,6 +131,7 @@ export const offerApi = createApi({
 
 export const {
     useCreateOfferMutation,
+    useGetOffersQuery,
     useUpdateOfferMutation,
     useUpdateOfferStatusMutation,
     useDeleteOfferMutation,

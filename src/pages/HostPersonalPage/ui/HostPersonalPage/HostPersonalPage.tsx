@@ -1,20 +1,21 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
-import { Text } from "@/shared/ui/Text/Text";
-
 import { mockedHostData } from "@/entities/Host/model/data/mockedHostData";
-import { useSubmenuItems } from "../../model/data/submenuData";
-import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
-import styles from "./HostPersonalPage.module.scss";
-import { HostPageContent } from "../HostPageContent/HostPageContent";
+
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { Text } from "@/shared/ui/Text/Text";
+
+import { useSubmenuItems } from "../../model/data/submenuData";
+import { HostPageContent } from "../HostPageContent/HostPageContent";
+import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
+import styles from "./HostPersonalPage.module.scss";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 import { ErrorType } from "@/types/api/error";
@@ -25,6 +25,8 @@ import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface ChatProps {
     id?: string;
@@ -56,8 +58,31 @@ export const Chat: FC<ChatProps> = (props) => {
     const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string | undefined>();
     const [toast, setToast] = useState<ToastAlert>();
+    const [offerData, setOfferData] = useState<Offer>();
 
+    const [getOfferData, { isLoading: isOfferDataLoading }] = useLazyGetOfferByIdQuery();
     const [createApplicationForm] = useCreateApplicationFormMutation();
+
+    useEffect(() => {
+        if (isChatCreate && offerId) {
+            const fetchOffer = async () => {
+                const resultOfferData = await getOfferData(offerId).unwrap()
+                    .then((offerDataResult) => offerDataResult)
+                    .catch(() => {
+                        setToast({
+                            text: "Вакансия не была найдена",
+                            type: HintType.Error,
+                        });
+                        return undefined;
+                    });
+                if (resultOfferData) {
+                    setOfferData(resultOfferData);
+                }
+            };
+
+            fetchOffer();
+        }
+    }, [isChatCreate, offerId, getOfferData]);
 
     if (!id) {
         return (
@@ -141,30 +166,39 @@ export const Chat: FC<ChatProps> = (props) => {
     });
 
     const renderChat = () => {
-        if (id === "create") {
-            return (
-                <Controller
-                    name="applicationForm"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                        <OfferApplication
-                            terms={{
-                                start: value.startDate,
-                                end: value.endDate,
-                            }}
-                            onChange={({ start, end }) => onChange({
-                                ...value,
-                                startDate: start,
-                                endDate: end,
-                            })}
-                            isHost={false}
-                            username="Николай Николаевич"
-                            isClosed={false}
-                            onSubmit={handleVolunteerSubmitOfferApplication}
-                        />
-                    )}
-                />
-            );
+        if (isChatCreate && offerId) {
+            if (isOfferDataLoading) {
+                return (
+                    <MiniLoader className={styles.miniLoader} />
+                );
+            }
+
+            if (offerData) {
+                return (
+                    <Controller
+                        name="applicationForm"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <OfferApplication
+                                offerData={offerData}
+                                terms={{
+                                    start: value.startDate,
+                                    end: value.endDate,
+                                }}
+                                onChange={({ start, end }) => onChange({
+                                    ...value,
+                                    startDate: start,
+                                    endDate: end,
+                                })}
+                                isHost={false}
+                                username="Николай Николаевич"
+                                isClosed={false}
+                                onSubmit={handleVolunteerSubmitOfferApplication}
+                            />
+                        )}
+                    />
+                );
+            }
         }
         return (
             <>
