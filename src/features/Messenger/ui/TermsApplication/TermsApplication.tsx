@@ -74,7 +74,6 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                                 onDateChange={handleFromDateChange}
                                 value={terms?.start}
                                 min={min}
-                                inputDisabled
                                 isScrollTo
                             />
                         )}
@@ -94,7 +93,6 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                                     value={terms?.end}
                                     min={new Date()}
                                     max={max}
-                                    inputDisabled
                                     isScrollTo
                                 />
                                 <IconButtonComponent
