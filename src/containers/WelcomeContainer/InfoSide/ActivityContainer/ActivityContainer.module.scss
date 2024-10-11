@@ -6,6 +6,10 @@
 	max-width: 560px;
 }
 
+.other p {
+	color: var(--text-caption)
+}
+
 @media screen and (max-width: 1000px) {
 	.wrapper {
 		justify-content: center;

@@ -146,8 +146,11 @@
         "Спорт": "Sports",
         "Искусство": "Art",
         "Археология": "Archaeology",
+        "Оплачиваемая работа": "Paid work",
+        "Международные": "International",
         "Онлайн": "Online",
         "Другое": "Other",
+        "Другие категории": "Other categories",
         "вакансий": "vacancies",
         "вакансия": "vacancy",
         "вакансии": "vacancies"

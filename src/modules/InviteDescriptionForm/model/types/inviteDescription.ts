@@ -1,5 +1,5 @@
 import { ImageType } from "@/components/ImageInput/types";
-import { Category } from "@/entities/Offer";
+import { CategoryType } from "@/types/categories";
 
 export interface DescriptionImage {
     uuid: string | null
@@ -8,7 +8,7 @@ export interface DescriptionImage {
 
 export interface OfferDescriptionField {
     title: string;
-    category: Category[];
+    category: CategoryType[];
     shortDescription: string;
     fullDescription: string;
     coverImage: DescriptionImage;
