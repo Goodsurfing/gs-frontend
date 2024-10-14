@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Navigation, Pagination } from "swiper";
+import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -42,14 +42,15 @@ export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
             <Swiper
                 className={styles.swiper}
                 wrapperClass={styles.swiperWrapper}
-                modules={[Navigation, Pagination]}
+                modules={[Navigation]}
                 spaceBetween={20}
                 slidesPerView={3}
                 navigation
-                pagination={{ clickable: true }}
                 speed={1000}
             >
-                {renderSlides}
+                <div style={{ display: "flex" }}>
+                    {renderSlides}
+                </div>
             </Swiper>
         </section>
     );

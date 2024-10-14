@@ -26,7 +26,6 @@ export type {
 } from "./model/types/offerWhoNeeds";
 
 export type {
-    Category,
     OfferDescription,
 } from "./model/types/offerDescription";
 

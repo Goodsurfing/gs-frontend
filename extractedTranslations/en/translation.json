@@ -97,7 +97,9 @@
       "header": {
         "about-me": "about-me",
         "about-project": {
+          "about-goodsurfing": "about-goodsurfing",
           "about-npo": "about-npo",
+          "find-job": "find-job",
           "how-it-works": "how-it-works",
           "news": "news",
           "our-team": "our-team",

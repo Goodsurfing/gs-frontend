@@ -5,18 +5,25 @@ import { useTranslation } from "react-i18next";
 import { VideoListProps } from "@/widgets/VideoList";
 
 import styles from "./VideoList.module.scss";
+import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 
-export const VideoList: React.FC<VideoListProps> = ({ videosURL }) => {
+export const VideoList: React.FC<VideoListProps> = ({ videosURL, onDelete }) => {
     const { t } = useTranslation("volunteer");
     const renderVideoList = (videos: string[]) => videos
         .map((videoURL: string, index) => (
-            <ReactPlayer
-                key={index}
-                width="387px"
-                height="220px"
-                url={videoURL}
-                controls
-            />
+            <div className={styles.videoWrapper}>
+                <ReactPlayer
+                    key={index}
+                    width="387px"
+                    height="220px"
+                    url={videoURL}
+                    controls
+                />
+                <CloseButton
+                    className={styles.closeButton}
+                    onClick={() => onDelete(videoURL)}
+                />
+            </div>
         ));
 
     return (

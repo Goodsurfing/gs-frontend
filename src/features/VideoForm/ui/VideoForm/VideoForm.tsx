@@ -64,6 +64,30 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
         [updateProfile, profileId, videos, reset],
     );
 
+    const deleteVideo = useCallback((videoUrl: string) => {
+        const updatedVideos = videos.filter((video) => video !== videoUrl);
+
+        updateProfile({
+            userId: profileId,
+            profileData: {
+                videoGallery: updatedVideos,
+            },
+        })
+            .then(() => {
+                setVideos(updatedVideos);
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            })
+            .catch((error: ErrorType) => {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            });
+    }, [videos, updateProfile, profileId]);
+
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -72,7 +96,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                 addVideo={handleSubmit(addVideo)}
                 isLoading={isLoading}
             />
-            <VideoList videosURL={videos} />
+            <VideoList videosURL={[...videos, "https://www.youtube.com/watch?v=tN4dtvPu5fw"]} onDelete={deleteVideo} />
         </div>
     );
 };

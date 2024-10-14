@@ -131,7 +131,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                 <>
                     <div className={styles.offersCount}>1 055 вариантов</div>
                     <div className={styles.list}>{renderOfferCards}</div>
-                    <OfferPagination />
+                    <OfferPagination currentPage={1} totalPages={5} onPageChange={() => {}} />
                 </>
             )}
             {isMapTabOpened && (
