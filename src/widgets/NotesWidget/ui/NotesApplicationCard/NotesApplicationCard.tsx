@@ -1,13 +1,11 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
-
-import { Application } from "@/entities/Host";
-import { RequestCard } from "@/entities/Request";
+import { FullFormApplication, RequestCard } from "@/entities/Application";
 
 interface NotesApplicationCardProps {
     className?: string;
-    application: Application;
+    application: FullFormApplication;
     index: number;
     isDragDisable: boolean;
 }

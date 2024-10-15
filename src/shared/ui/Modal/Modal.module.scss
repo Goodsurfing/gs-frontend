@@ -29,10 +29,10 @@
     visibility: hidden;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .buttonClose {
         bottom: 110%;
-        right: 0;
-        top: auto;
+        right: 5%;
+        top: -12%;
     }
 }

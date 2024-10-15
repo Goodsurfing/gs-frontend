@@ -1,15 +1,12 @@
-import { Gallery } from "@/modules/Gallery/model/types/gallery";
-
-import { mockedArticlesData } from "@/entities/Article/model/data/mockedArticleData";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
 import {
-    Application,
-    FullHost, Host,
+    Host,
 } from "@/entities/Host";
 import { Review } from "@/entities/Review";
+import { FullFormApplication } from "@/entities/Application";
 
 export const mockedHostData: Host = {
     id: "1",
@@ -78,10 +75,6 @@ export const mockedHostData: Host = {
     ],
 };
 
-const mockedGallery: Gallery = {
-    images: [defaultImageGallery, defaultImageGallery, defaultImageGallery],
-};
-
 export const mockedReview: Review[] = [
     {
         reviewText:
@@ -109,16 +102,7 @@ export const mockedReview: Review[] = [
     },
 ];
 
-export const mockedFullHostData: FullHost = {
-    host: mockedHostData,
-    team: [],
-    articles: mockedArticlesData,
-    offers: mockedOffersData,
-    gallery: mockedGallery,
-    reviews: mockedReview,
-};
-
-export const mockedApplications: Application[] = [
+export const mockedApplications: FullFormApplication[] = [
     {
         id: 1,
         status: "new",

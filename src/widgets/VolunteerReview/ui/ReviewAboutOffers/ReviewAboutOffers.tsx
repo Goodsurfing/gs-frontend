@@ -6,7 +6,6 @@ import { ReviewCardInfo } from "@/types/review";
 import { VolunteerReviewFields } from "@/features/Notes";
 import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
-import { Application } from "@/entities/Host";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { VolunteerModalReview } from "@/entities/Review";
 
@@ -18,6 +17,7 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
 import { mockedReviewOfferData } from "../../model/data/mockedReviewData";
 import styles from "./ReviewAboutOffers.module.scss";
+import { FullFormApplication } from "@/entities/Application";
 
 export const ReviewAboutOffers: FC = () => {
     const { t } = useTranslation("volunteer");
@@ -64,7 +64,7 @@ export const ReviewAboutOffers: FC = () => {
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
                 data={mockedApplications}
-                renderItem={(item: Application) => (
+                renderItem={(item: FullFormApplication) => (
                     <ReviewMiniCard
                         data={item}
                         onReviewClick={onReviewClick}

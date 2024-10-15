@@ -11,20 +11,20 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { VolunteerReviewFields } from "../../model/types/notes";
+import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
-import { useGetMyHostApplicationsQuery } from "@/entities/Host";
+import { useGetMyHostApplicationsQuery } from "@/entities/Application";
 
 export const NotesHostForm = () => {
-    const defaultValues: DefaultValues<VolunteerReviewFields> = {
-        volunteerReview: {
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
 
     const [toast] = useState<ToastAlert>();
-    const form = useForm<VolunteerReviewFields>({
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -55,7 +55,7 @@ export const NotesHostForm = () => {
                 isDragDisable
             />
             <Controller
-                name="volunteerReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <HostModalReview

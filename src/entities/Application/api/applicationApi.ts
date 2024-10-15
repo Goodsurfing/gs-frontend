@@ -1,15 +1,19 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { FormApplicationResponse } from "@/entities/Chat";
-import { Application } from "@/entities/Host";
+import { FormApplication, FormApplicationStatus, FullFormApplication } from "../model/types/application";
+
+interface UpdateFormApplicationStatus {
+    applicationId: string;
+    status: FormApplicationStatus;
+}
 
 export const applicationApi = createApi({
     reducerPath: "applicationApi",
     baseQuery: baseQueryAcceptJson,
     tagTypes: ["application"],
     endpoints: (build) => ({
-        createApplicationForm: build.mutation<FormApplicationResponse, FormData>({
+        createApplicationForm: build.mutation<FormApplication, FormData>({
             query: (data) => ({
                 url: "application_forms",
                 method: "POST",
@@ -17,14 +21,23 @@ export const applicationApi = createApi({
             }),
             invalidatesTags: ["application"],
         }),
-        getApplicationFormById: build.query<Application, string>({
+        updateApplicationFormStatusById: build.mutation<FormApplication,
+        UpdateFormApplicationStatus>({
+            query: ({ applicationId, status }) => ({
+                url: `application_forms${applicationId}/status`,
+                method: "PATCH",
+                body: { status },
+            }),
+            invalidatesTags: ["application"],
+        }),
+        getApplicationFormById: build.query<FullFormApplication, string>({
             query: (applicationId) => ({
                 url: `application_forms/${applicationId}`,
                 method: "GET",
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<Application, string>({
+        getMyHostApplications: build.query<FullFormApplication[], void>({
             query: () => ({
                 url: "personal/organization/forms",
                 method: "GET",
@@ -36,4 +49,6 @@ export const applicationApi = createApi({
 
 export const {
     useCreateApplicationFormMutation,
+    useGetApplicationFormByIdQuery,
+    useGetMyHostApplicationsQuery,
 } = applicationApi;

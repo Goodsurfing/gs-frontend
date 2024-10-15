@@ -5,13 +5,12 @@ export {
     useGetHostsQuery,
     useUpdateHostMutation,
     useGetMyHostQuery,
-    useGetMyHostApplicationsQuery,
     useGetHostMembersByIdQuery,
     useAddMemberToOrganizationMutation,
     useDeleteHostMemberMutation,
 } from "./api/hostApi";
 export type {
-    Host, TeamUser, Application, FullHost, HostMember,
+    Host, TeamUser, HostMember,
 } from "./model/types/host";
 
 export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";

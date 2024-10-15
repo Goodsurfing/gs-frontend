@@ -62,7 +62,6 @@ export const mockedOffersData: Offer[] = [
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "active",
-        state: "accepted",
         galleryItems: ["image.png"],
         organization: {
             id: "123",
@@ -131,7 +130,6 @@ export const mockedOffersData: Offer[] = [
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "active",
-        state: "accepted",
         galleryItems: ["image.png"],
         organization: {
             id: "123",
@@ -200,7 +198,6 @@ export const mockedOffersData: Offer[] = [
         },
         contributors: [{ name: "Prikol Prikolovich", avatar: "" }],
         status: "active",
-        state: "accepted",
         galleryItems: ["image.png"],
         organization: {
             id: "123",

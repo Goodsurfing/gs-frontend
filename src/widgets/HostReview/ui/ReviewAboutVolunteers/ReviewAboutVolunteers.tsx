@@ -5,7 +5,7 @@ import { Review } from "@/types/review";
 import { HostReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { Application } from "@/entities/Host";
+import { FullFormApplication } from "@/entities/Application";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { HostModalReview } from "@/entities/Review";
 
@@ -60,8 +60,13 @@ export const ReviewAboutVolunteers: FC = () => {
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
                 data={mockedApplications}
-                renderItem={(item: Application) => (
-                    <ReviewMiniCard data={item} onReviewClick={onReviewClick} variant="volunteer" key={item.id} />
+                renderItem={(item: FullFormApplication) => (
+                    <ReviewMiniCard
+                        data={item}
+                        onReviewClick={onReviewClick}
+                        variant="volunteer"
+                        key={item.id}
+                    />
                 )}
             />
             <div className={styles.fullCardContainer}>

@@ -18,19 +18,19 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { VolunteerReviewFields } from "../../model/types/notes";
+import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
 
 export const NotesVolunteerForm = () => {
-    const defaultValues: DefaultValues<VolunteerReviewFields> = {
-        volunteerReview: {
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
 
     const [toast, setToast] = useState<ToastAlert>();
-    const form = useForm<VolunteerReviewFields>({
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -48,12 +48,12 @@ export const NotesVolunteerForm = () => {
                     selectedReviewId.toString(),
                 )
                     .unwrap()
-                    .then((resutlData) => {
+                    .then((resultData) => {
                         const {
                             stars, text, applicationForm, id,
-                        } = resutlData;
+                        } = resultData;
                         reset({
-                            volunteerReview: {
+                            review: {
                                 stars, text, applicationForm, id,
                             },
                         });
@@ -76,7 +76,7 @@ export const NotesVolunteerForm = () => {
 
     const onSendReview = handleSubmit(async (data) => {
         const {
-            volunteerReview: { stars, text },
+            review: { stars, text },
         } = data;
         if (selectedReviewId) {
             setToast(undefined);
@@ -111,7 +111,7 @@ export const NotesVolunteerForm = () => {
                 isDragDisable
             />
             <Controller
-                name="volunteerReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <VolunteerModalReview

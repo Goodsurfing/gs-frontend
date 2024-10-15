@@ -1,13 +1,11 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
-
-import { Application } from "@/entities/Host";
-import { RequestOfferCard } from "@/entities/Request";
+import { FullFormApplication, RequestOfferCard } from "@/entities/Application";
 
 interface NotesCardProps {
     className?: string;
-    application: Application;
+    application: FullFormApplication;
     index: number;
     isDragDisable: boolean;
     onReviewClick: (id: number) => void;

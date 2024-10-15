@@ -1,20 +1,19 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
-
 import { useTranslation } from "react-i18next";
-import { OfferState } from "@/entities/Offer";
-import styles from "./NotesContainer.module.scss";
-import { Application } from "@/entities/Host";
-import { NotesCard } from "../NotesCard/NotesCard";
+
 import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
+import { NotesCard } from "../NotesCard/NotesCard";
+import styles from "./NotesContainer.module.scss";
+import { FormApplicationStatus, FullFormApplication } from "@/entities/Application";
 
 export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
-    notes: Application[];
+    notes: FullFormApplication[];
     className?: string;
     color: string;
-    status: OfferState;
+    status: FormApplicationStatus;
     isDragDisable: boolean;
     variant: VariantType;
     onReviewClick: (id: number) => void;
@@ -64,12 +63,13 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                     style={{ borderBottom: `2px solid ${color}` }}
                 >
                     <span className={styles.title}>{t(`notes.${status}`)}</span>
-                    <span className={styles.number}>
-                        {notes?.length || 0}
-                    </span>
+                    <span className={styles.number}>{notes?.length || 0}</span>
                 </div>
                 <div className={styles.container}>
-                    <Droppable isDropDisabled={isDragDisable} droppableId={status}>
+                    <Droppable
+                        isDropDisabled={isDragDisable}
+                        droppableId={status}
+                    >
                         {(provided) => (
                             <div
                                 {...provided.droppableProps}

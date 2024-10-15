@@ -1,12 +1,14 @@
-import { memo } from "react";
 import cn from "classnames";
-
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { RequestCard } from "@/entities/Request";
+
+import {
+    RequestCard,
+    useGetMyHostApplicationsQuery,
+} from "@/entities/Application";
 
 import Button from "@/shared/ui/Button/Button";
 
-import { useGetMyHostApplicationsQuery } from "@/entities/Host";
 import styles from "./RequestsWidget.module.scss";
 
 interface RequestsWidgetProps {
@@ -40,20 +42,14 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                     {t("host-dashboard.Новых заявок")}
                     {": "}
                     <span className={styles.requestsCount}>
-                        {
-                            applications ? applications.length : 0
-                        }
+                        {applications ? applications.length : 0}
                     </span>
                 </p>
             </div>
             <div className={styles.requestsItems}>
                 {renderRequests()}
                 {applications?.length && (
-                    <Button
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                    >
+                    <Button variant="FILL" color="BLUE" size="MEDIUM">
                         {t("host-dashboard.Посмотреть все")}
                     </Button>
                 )}

@@ -9,27 +9,30 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
+import { useUser } from "@/entities/Profile";
+import { getUserAuthData } from "@/entities/User";
+
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 import {
-    getMainPageUrl, getMembershipPageUrl, getMessengerPageUrl, getSignInPageUrl,
+    getMainPageUrl,
+    getMembershipPageUrl,
+    getMessengerPageUrl,
+    getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { getUserAuthData } from "@/entities/User";
-
-import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
-import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { useAppSelector } from "@/shared/hooks/redux";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { useUser } from "@/entities/Profile";
+
 import styles from "./MainHeader.module.scss";
+import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
+import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { profile } = useUser();
+    const { profile, isLoading } = useUser();
 
     const isAuth = useAppSelector(getUserAuthData);
 
@@ -63,9 +66,14 @@ const MainHeader: FC = () => {
                                     <ReactSVG src={messagesIcon} />
                                 </LocaleLink>
                             </div>
-                            <MainHeaderProfile />
+                            <MainHeaderProfile
+                                profileData={profile}
+                                isLoading={isLoading}
+                            />
                             <LocaleLink to={getMembershipPageUrl(locale)}>
-                                <Button className={styles.membership}>Членство</Button>
+                                <Button className={styles.membership}>
+                                    Членство
+                                </Button>
                             </LocaleLink>
                         </>
                     ) : (

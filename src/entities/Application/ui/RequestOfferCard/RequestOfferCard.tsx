@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { Application } from "@/entities/Host";
-
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -15,9 +13,10 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestOfferCard.module.scss";
+import { FullFormApplication } from "../../model/types/application";
 
 interface RequestOfferCardProps {
-    application: Application;
+    application: FullFormApplication;
     className?: string;
     onReviewClick?: (id: number) => void;
     showStatus?: boolean;

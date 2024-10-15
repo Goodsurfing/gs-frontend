@@ -7,7 +7,6 @@ import { ErrorType } from "@/types/api/error";
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
 import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
-import { useCreateApplicationFormMutation } from "@/entities/Request";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
@@ -27,6 +26,7 @@ import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useCreateApplicationFormMutation } from "@/entities/Application";
 
 interface ChatProps {
     id?: string;

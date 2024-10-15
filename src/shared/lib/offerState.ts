@@ -1,7 +1,7 @@
-import { OfferState } from "@/entities/Offer";
+import { FormApplicationStatus } from "@/entities/Application";
 
 interface OfferStateType {
-    label: OfferState;
+    label: FormApplicationStatus;
     color: string
 }
 
@@ -20,7 +20,7 @@ const offerStateColors: OfferStateType[] = [
     },
 ];
 
-export const getOfferStateColor = (label: OfferState) => {
+export const getOfferStateColor = (label: FormApplicationStatus) => {
     const item = offerStateColors.find((offerState) => offerState.label === label);
     return item ? item.color : "";
 };

@@ -18,9 +18,11 @@ export const getMediaContent = (
     }
 };
 
-export const getMediaContentsArray = (images: (GalleryItem | MediaObjectType)[]) => {
+export const getMediaContentsArray = (images: (GalleryItem | MediaObjectType | string)[]) => {
     const newImages = images.map((image) => {
-        if ("mediaObject" in image) {
+        if (typeof image === "string") {
+            return image;
+        } if ("mediaObject" in image) {
             return `${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`;
         }
         return `${BASE_URL}${image.contentUrl.slice(1)}`;

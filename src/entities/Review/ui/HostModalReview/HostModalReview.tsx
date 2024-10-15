@@ -1,13 +1,15 @@
 import React, { FC } from "react";
-import { Application } from "@/entities/Host";
-import { RequestCard } from "@/entities/Request";
-import { HostReviewTypeFields } from "@/features/Notes";
+
+import { ReviewTypeFields } from "@/features/Notes";
+
+import { FullFormApplication, RequestCard } from "@/entities/Application";
+
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 
 interface HostModalReviewProps {
-    application: Application;
-    value: HostReviewTypeFields;
-    onChange: (value: HostReviewTypeFields) => void;
+    application: FullFormApplication;
+    value: ReviewTypeFields;
+    onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
     onClose: () => void;
     sendReview: () => void;
@@ -17,7 +19,14 @@ interface HostModalReviewProps {
 
 export const HostModalReview: FC<HostModalReviewProps> = (props) => {
     const {
-        application, value, onChange, isOpen, onClose, sendReview, successText, errorText,
+        application,
+        value,
+        onChange,
+        isOpen,
+        onClose,
+        sendReview,
+        successText,
+        errorText,
     } = props;
     const { stars, text } = value;
     return (

@@ -1,5 +1,5 @@
 export { NotesVolunteerForm } from "./ui/NotesVolunteerForm/NotesVolunteerForm";
 export { NotesHostForm } from "./ui/NotesHostForm/NotesHostForm";
 export type {
-    VolunteerReviewFields, HostReviewFields, HostReviewTypeFields, VolunteerReviewTypeFields,
+    ReviewFields, ReviewTypeFields,
 } from "./model/types/notes";

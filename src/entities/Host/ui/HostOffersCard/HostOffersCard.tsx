@@ -2,35 +2,37 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Offer, OfferCard } from "@/entities/Offer";
-
-import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
+import { OfferCard, useGetHostOffersByIdQuery } from "@/entities/Offer";
 
 import styles from "./HostOffersCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useCategories } from "@/shared/data/categories";
 
 interface HostOffersCardProps {
     className?: string;
-    offers: Offer[];
+    hostId: string;
 }
 
 export const HostOffersCard: FC<HostOffersCardProps> = memo(
     (props: HostOffersCardProps) => {
-        const { className, offers } = props;
+        const { className, hostId } = props;
         const { t } = useTranslation("host");
+        const { getTranslation } = useCategories();
+        const { data: hostOffers, isError } = useGetHostOffersByIdQuery(hostId);
 
         const renderOffers = useMemo(
             () => {
-                if (!offers) return "У организации пока нет вакансий";
+                if (!hostOffers) return null;
 
-                return offers
+                return hostOffers
                     .slice(0, 3)
-                    .map(({ description }, index) => (
+                    .map(({ description, where }, index) => (
                         <OfferCard
-                            image={offerDefaultImage}
+                            image={getMediaContent(description?.image)}
                             title={description?.title}
                             description={description?.shortDescription}
-                            location="Казань, Россия"
-                            category="Заповедники и нац. парки"
+                            location={where?.address}
+                            category={getTranslation(description?.categoryIds[0])}
                             rating="4.3"
                             likes="10"
                             reviews="14"
@@ -39,8 +41,12 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
                         />
                     ));
             },
-            [offers],
+            [getTranslation, hostOffers],
         );
+
+        if (!hostOffers || isError) {
+            return null;
+        }
 
         return (
             <div className={cn(className, styles.wrapper)}>

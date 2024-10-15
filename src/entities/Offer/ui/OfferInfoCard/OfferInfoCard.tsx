@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { memo } from "react";
-
 import { useTranslation } from "react-i18next";
+
 import { Offer } from "../../model/types/offer";
 import { OfferAddressCard } from "../OfferAddressCard/OfferAddressCard";
 import { OfferArticlesCard } from "../OfferArticlesCard/ui/OfferArticlesCard/OfferArticlesCard";
@@ -51,7 +51,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.wrapper}
                 />
             )}
-            {(offer.conditions && isShowPaymentCard) && (
+            {offer.conditions && isShowPaymentCard && (
                 <OfferPaymentCard
                     conditions={offer.conditions}
                     className={styles.container}
@@ -70,13 +70,16 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 />
             )}
             {offer.where && (
-                <OfferAddressCard address={offer.where} className={styles.container} />
+                <OfferAddressCard
+                    address={offer.where}
+                    className={styles.container}
+                />
             )}
             <OfferOrganizationCard
                 organization={offer.organization}
                 className={styles.container}
             />
-            {(offer.galleryItems && offer.galleryItems.length) ? (
+            {offer.galleryItems && offer.galleryItems.length ? (
                 <OfferGalleryCard
                     offerId={offer.id}
                     className={styles.container}
