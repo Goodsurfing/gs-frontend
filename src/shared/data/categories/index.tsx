@@ -44,7 +44,7 @@ export const useCategories = () => {
         {
             image: animalsImage,
             value: "animals",
-            color: "#F7EBAB",
+            color: "#C7C1E8",
             text: t("category-offer.Животные"),
             path: "/",
         },
@@ -100,14 +100,14 @@ export const useCategories = () => {
         {
             image: paidWork,
             value: "paid_work",
-            color: "#C6E7E6",
+            color: "#C0CCEB",
             text: t("category-offer.Оплачиваемая работа"),
             path: "/",
         },
         {
             image: international,
             value: "international",
-            color: "#EED6AC",
+            color: "#EBC8C0",
             text: t("category-offer.Международные"),
             path: "/",
         },

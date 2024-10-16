@@ -18,6 +18,7 @@ interface RequestCardProps {
     application: FullFormApplication;
     showStatus?: boolean;
     showButtons?: boolean;
+    onReviewClick?: (application: FullFormApplication) => void;
 }
 
 export const RequestCard = memo((props: RequestCardProps) => {
@@ -26,6 +27,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
         application,
         showStatus = true,
         showButtons = true,
+        onReviewClick,
     } = props;
     const { locale } = useLocale();
     const { volunteer, vacancy, status } = application;
@@ -74,6 +76,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                             className={styles.button}
                             type="outlined"
                             path={getMainPageUrl(locale)}
+                            onClick={() => onReviewClick?.(application)}
                         >
                             {t("notes.Написать отзыв")}
                         </ButtonLink>

@@ -8,7 +8,7 @@ interface NotesCardProps {
     application: FullFormApplication;
     index: number;
     isDragDisable: boolean;
-    onReviewClick: (id: number) => void;
+    onReviewClick: (application: FullFormApplication) => void;
 }
 
 export const NotesCard: FC<NotesCardProps> = memo((props: NotesCardProps) => {

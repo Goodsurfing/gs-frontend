@@ -18,7 +18,7 @@ import { FullFormApplication } from "../../model/types/application";
 interface RequestOfferCardProps {
     application: FullFormApplication;
     className?: string;
-    onReviewClick?: (id: number) => void;
+    onReviewClick?: (application: FullFormApplication) => void;
     showStatus?: boolean;
     showButtons?: boolean;
 }
@@ -95,7 +95,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                                 color="BLUE"
                                 size="SMALL"
                                 variant="OUTLINE"
-                                onClick={() => onReviewClick?.(application.id)}
+                                onClick={() => onReviewClick?.(application)}
                             >
                                 {t("notes.Написать отзыв")}
                             </Button>

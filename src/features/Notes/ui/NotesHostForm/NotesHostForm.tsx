@@ -13,7 +13,7 @@ import {
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
-import { useGetMyHostApplicationsQuery } from "@/entities/Application";
+import { FullFormApplication, useGetMyHostApplicationsQuery } from "@/entities/Application";
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -34,8 +34,8 @@ export const NotesHostForm = () => {
         null,
     );
 
-    const onReviewClick = (id: number) => {
-        setSelectedReviewId(id);
+    const onReviewClick = (application: FullFormApplication) => {
+        setSelectedReviewId(application.id);
     };
 
     const resetSelectedReview = () => {

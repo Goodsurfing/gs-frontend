@@ -16,7 +16,7 @@ interface NotesContainerProps {
     status: FormApplicationStatus;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (id: number) => void;
+    onReviewClick: (application: FullFormApplication) => void;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
@@ -41,6 +41,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                         className={styles.noteCard}
                         index={index}
                         isDragDisable={false}
+                        onReviewClick={onReviewClick}
                     />
                 ));
             }

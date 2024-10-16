@@ -18,7 +18,7 @@ interface NotesWidgetProps {
     className?: string;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (id: number) => void;
+    onReviewClick: (application: FullFormApplication) => void;
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(

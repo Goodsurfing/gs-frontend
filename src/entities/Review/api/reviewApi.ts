@@ -46,7 +46,7 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["volunteer"],
         }),
-        createToOrganizationsReview: build.mutation<ApplicationReview, Partial<ApplicationReview>>({
+        createToOrganizationsReview: build.mutation<ApplicationReview, FormData>({
             query: (body) => ({
                 url: "feedback_to_organizations",
                 method: "POST",
@@ -88,4 +88,9 @@ export const {
     useLazyGetToVolunteerReviewByIdQuery,
     useGetToVolunteerReviewsByIdQuery,
     useUpdateToVolunteerReviewByIdMutation,
+    useCreateToOrganizationsReviewMutation,
+    useGetToOrganizationsReviewByIdQuery,
+    useLazyGetToOrganizationsReviewByIdQuery,
+    useGetToOrganizationsReviewsByIdQuery,
+    useUpdateToOrganizationsReviewByIdMutation,
 } = reviewApi;

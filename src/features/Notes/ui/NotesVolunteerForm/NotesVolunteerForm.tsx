@@ -4,12 +4,15 @@ import { ErrorType } from "@/types/api/error";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
+import { FullFormApplication } from "@/entities/Application";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
+import { VolunteerModalReview } from "@/entities/Review";
 import {
-    VolunteerModalReview,
-    useCreateVolunteerReviewMutation,
-    useLazyGetVolunteerReviewByIdQuery,
-} from "@/entities/Review";
+    useCreateToOrganizationsReviewMutation,
+    useLazyGetToOrganizationsReviewByIdQuery,
+    useLazyGetToVolunteerReviewByIdQuery,
+    useUpdateToOrganizationsReviewByIdMutation,
+} from "@/entities/Review/api/reviewApi";
 
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -35,18 +38,17 @@ export const NotesVolunteerForm = () => {
         defaultValues,
     });
     const { handleSubmit, control, reset } = form;
-    const [getReviewData] = useLazyGetVolunteerReviewByIdQuery();
     const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
         null,
     );
-    const [createVolunteerReview] = useCreateVolunteerReviewMutation();
+    const [getReviewData] = useLazyGetToOrganizationsReviewByIdQuery();
+    const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
+    const [updateToOrganizationReview] = useUpdateToOrganizationsReviewByIdMutation();
 
     useEffect(() => {
         const fetchData = async () => {
             if (selectedReviewId) {
-                getReviewData(
-                    selectedReviewId.toString(),
-                )
+                await getReviewData(selectedReviewId.toString())
                     .unwrap()
                     .then((resultData) => {
                         const {
@@ -54,7 +56,10 @@ export const NotesVolunteerForm = () => {
                         } = resultData;
                         reset({
                             review: {
-                                stars, text, applicationForm, id,
+                                stars,
+                                text,
+                                applicationForm,
+                                id,
                             },
                         });
                     })
@@ -66,8 +71,8 @@ export const NotesVolunteerForm = () => {
         fetchData();
     }, [getReviewData, reset, selectedReviewId]);
 
-    const onReviewClick = (id: number) => {
-        setSelectedReviewId(id);
+    const onReviewClick = (application: FullFormApplication) => {
+        setSelectedReviewId(application.id);
     };
 
     const resetSelectedReview = () => {
@@ -80,24 +85,56 @@ export const NotesVolunteerForm = () => {
         } = data;
         if (selectedReviewId) {
             setToast(undefined);
-            await createVolunteerReview({
-                applicationForm: `${API_BASE_URL}application_forms/${selectedReviewId.toString()}`,
-                stars,
-                text,
-            })
+            const getReviewDataResult = await getReviewData(
+                selectedReviewId.toString(),
+            )
                 .unwrap()
-                .then(() => {
-                    setToast({
-                        text: "Ваш отзыв был отправлен",
-                        type: HintType.Success,
+                .then((resultData) => resultData)
+                .catch(() => undefined);
+
+            if (!getReviewDataResult) {
+                const formData = new FormData();
+                formData.append("applicationForm", `${API_BASE_URL}application_forms/${selectedReviewId.toString()}`);
+                if (stars) formData.append("stars", stars.toString());
+                formData.append("text", text);
+                await createToOrganizationReview(formData)
+                    .unwrap()
+                    .then(() => {
+                        setToast({
+                            text: "Ваш отзыв был отправлен",
+                            type: HintType.Success,
+                        });
+                    })
+                    .catch((error: ErrorType) => {
+                        setToast({
+                            text: getErrorText(error),
+                            type: HintType.Error,
+                        });
                     });
+            } else {
+                await updateToOrganizationReview({
+                    reviewId: selectedReviewId.toString(),
+                    data: {
+                        
+                    }
+                    applicationForm: `${API_BASE_URL}application_forms/${selectedReviewId.toString()}`,
+                    stars,
+                    text,
                 })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
+                    .unwrap()
+                    .then(() => {
+                        setToast({
+                            text: "Ваш отзыв был изменён",
+                            type: HintType.Success,
+                        });
+                    })
+                    .catch((error: ErrorType) => {
+                        setToast({
+                            text: getErrorText(error),
+                            type: HintType.Error,
+                        });
                     });
-                });
+            }
         }
     });
 
