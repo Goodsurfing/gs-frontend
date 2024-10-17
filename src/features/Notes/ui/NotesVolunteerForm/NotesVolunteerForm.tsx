@@ -7,9 +7,7 @@ import { NotesWidget } from "@/widgets/NotesWidget";
 import { FullFormApplication } from "@/entities/Application";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { VolunteerModalReview } from "@/entities/Review";
-import {
-    useCreateToOrganizationsReviewMutation,
-} from "@/entities/Review/api/reviewApi";
+import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -35,9 +33,8 @@ export const NotesVolunteerForm = () => {
         defaultValues,
     });
     const { handleSubmit, control } = form;
-    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
-        null,
-    );
+    const [selectedApplication,
+        setSelectedApplication] = useState<FullFormApplication | null>(null);
     // const [getReviewData] = useLazyGetToOrganizationsReviewByIdQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
@@ -82,7 +79,10 @@ export const NotesVolunteerForm = () => {
         if (selectedApplication) {
             setToast(undefined);
             const formData = new FormData();
-            formData.append("applicationForm", `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`);
+            formData.append(
+                "applicationForm",
+                `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
+            );
             if (stars) formData.append("stars", stars.toString());
             formData.append("text", text);
             await createToOrganizationReview(formData)

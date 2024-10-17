@@ -7,7 +7,7 @@ import { FullFormApplication, RequestCard } from "@/entities/Application";
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 
 interface HostModalReviewProps {
-    application: FullFormApplication;
+    application: FullFormApplication | null;
     value: ReviewTypeFields;
     onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
@@ -44,11 +44,13 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
             successText={successText}
             errorText={errorText}
         >
-            <RequestCard
-                application={application}
-                showButtons={false}
-                showStatus={false}
-            />
+            {application && (
+                <RequestCard
+                    application={application}
+                    showButtons={false}
+                    showStatus={false}
+                />
+            )}
         </ModalReview>
     );
 };

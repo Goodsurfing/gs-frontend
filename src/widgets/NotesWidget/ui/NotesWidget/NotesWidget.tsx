@@ -9,6 +9,8 @@ import {
     FullFormApplication,
 } from "@/entities/Application";
 
+import useDebounce from "@/shared/hooks/useDebounce";
+
 import { statusColors } from "../../model/lib/statusColors";
 import { NotesContainer, VariantType } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
@@ -19,6 +21,10 @@ interface NotesWidgetProps {
     isDragDisable: boolean;
     variant: VariantType;
     onReviewClick: (application: FullFormApplication) => void;
+    updateApplicationStatus?: (
+        applicationId: number,
+        status: FormApplicationStatus
+    ) => void;
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
@@ -29,6 +35,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             isDragDisable,
             variant,
             onReviewClick,
+            updateApplicationStatus,
         } = props;
 
         const [notes] = useState(initialNotes);
@@ -41,7 +48,10 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         });
 
         useEffect(() => {
-            const newColumns: Record<FormApplicationStatus, FullFormApplication[]> = {
+            const newColumns: Record<
+            FormApplicationStatus,
+            FullFormApplication[]
+            > = {
                 new: [],
                 accepted: [],
                 canceled: [],
@@ -53,6 +63,22 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
 
             setColumns(newColumns);
         }, [notes]);
+
+        const [pendingStatusChange, setPendingStatusChange] = useState<{
+            applicationId: number;
+            status: FormApplicationStatus;
+        } | null>(null);
+
+        const debouncedStatusChange = useDebounce(pendingStatusChange, 500);
+
+        useEffect(() => {
+            if (debouncedStatusChange) {
+                updateApplicationStatus?.(
+                    debouncedStatusChange.applicationId,
+                    debouncedStatusChange.status,
+                );
+            }
+        }, [debouncedStatusChange, updateApplicationStatus]);
 
         const onDragEnd = (result: DropResult) => {
             const { destination, source } = result;
@@ -103,6 +129,12 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             };
 
             setColumns(newColumns);
+
+            // Update application Status
+            setPendingStatusChange({
+                applicationId: removed.id,
+                status: removed.status,
+            });
         };
 
         return (
@@ -114,7 +146,9 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                             key={status}
                             status={status as FormApplicationStatus}
                             notes={columnNotes}
-                            color={statusColors[status as FormApplicationStatus]}
+                            color={
+                                statusColors[status as FormApplicationStatus]
+                            }
                             variant={variant}
                             isDragDisable={isDragDisable}
                         />

@@ -13,7 +13,7 @@ export const reviewApi = createApi({
     baseQuery: baseQueryAcceptJson,
     tagTypes: ["volunteer", "host"],
     endpoints: (build) => ({
-        createToVolunteerReview: build.mutation<ApplicationReview, Partial<ApplicationReview>>({
+        createToVolunteerReview: build.mutation<ApplicationReview, FormData>({
             query: (body) => ({
                 url: "feedback_to_volunteers",
                 method: "POST",

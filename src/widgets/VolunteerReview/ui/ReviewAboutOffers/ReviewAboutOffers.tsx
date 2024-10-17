@@ -3,7 +3,7 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ReviewCardInfo } from "@/types/review";
 
-import { VolunteerReviewFields } from "@/features/Notes";
+import { ReviewFields } from "@/features/Notes";
 import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
@@ -21,14 +21,14 @@ import { FullFormApplication } from "@/entities/Application";
 
 export const ReviewAboutOffers: FC = () => {
     const { t } = useTranslation("volunteer");
-    const defaultValues: DefaultValues<VolunteerReviewFields> = {
-        volunteerReview: {
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
     const [toast] = useState<ToastAlert>();
-    const form = useForm<VolunteerReviewFields>({
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -77,7 +77,7 @@ export const ReviewAboutOffers: FC = () => {
                 {renderFullCards(mockedReviewOfferData)}
             </div>
             <Controller
-                name="volunteerReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <VolunteerModalReview

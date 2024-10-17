@@ -51,4 +51,5 @@ export const {
     useCreateApplicationFormMutation,
     useGetApplicationFormByIdQuery,
     useGetMyHostApplicationsQuery,
+    useUpdateApplicationFormStatusByIdMutation,
 } = applicationApi;
