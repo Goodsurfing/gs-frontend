@@ -57,6 +57,7 @@ import {
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
@@ -120,6 +121,7 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
+import { FavoriteOffersPage } from "@/pages/FavoriteOffersPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -151,6 +153,11 @@ const publicRoutes: RouteType[] = [
         element: <CategoriesPage />,
         label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
+    },
+    {
+        element: <FavoriteOffersPage />,
+        label: "favorite-offers",
+        path: (locale: string) => getFavoriteOffersPageUrl(locale),
     },
     {
         element: <SignInPage />,
