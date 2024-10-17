@@ -1,13 +1,16 @@
 import React, { FC } from "react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+
 import { Modal } from "../Modal/Modal";
-import { GalleryItem } from "@/types/media";
 import styles from "./ModalGallery.module.scss";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 
 interface GalleryModalProps {
-    images?: GalleryItem[];
+    images?: string[];
     initialSlide?: number;
     isOpen: boolean;
     onClose: () => void;
@@ -17,32 +20,45 @@ export const ModalGallery: FC<GalleryModalProps> = (props) => {
     const {
         onClose, images, initialSlide = 0, isOpen,
     } = props;
+    const { width } = useWindowDimensions();
 
     if (!images || !isOpen) {
         return null;
     }
 
-    const gallery = getMediaContentsArray(images);
+    const renderImageZoom = (image: string, index: number) => {
+        if (width <= 768) {
+            return (
+                <Zoom>
+                    <img
+                        src={image}
+                        alt={`Slide ${index}`}
+                        className={styles.modalImage}
+                    />
+                </Zoom>
+            );
+        }
+        return (
+            <img
+                src={image}
+                alt={`Slide ${index}`}
+                className={styles.modalImage}
+            />
+        );
+    };
 
     return (
-        <Modal
-            onClose={onClose}
-            isShowCloseIcon
-        >
+        <Modal onClose={onClose} isShowCloseIcon>
             <div className={styles.wrapper}>
                 <Swiper
                     modules={[Navigation]}
                     initialSlide={initialSlide}
                     navigation
-                    pagination={{ clickable: true }}
+                    wrapperClass={styles.swiperWrapper}
                 >
-                    {gallery.map((image, index) => (
+                    {images.map((image, index) => (
                         <SwiperSlide key={index}>
-                            <img
-                                src={image}
-                                alt={`Slide ${index}`}
-                                className={styles.modalImage}
-                            />
+                            {renderImageZoom(image, index)}
                         </SwiperSlide>
                     ))}
                 </Swiper>

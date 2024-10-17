@@ -52,3 +52,16 @@
     font-size: 1.625rem;
     color: white;
 }
+
+@media (max-width: 992px) {
+    .wrapeprImage {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .buttonPrice {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}

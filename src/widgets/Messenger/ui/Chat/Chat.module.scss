@@ -130,6 +130,10 @@
     object-fit: contain;
 }
 
+.miniLoader {
+    padding: 20px;
+}
+
 @keyframes slideInFromRight {
     from {
         transform: translateX(100%);

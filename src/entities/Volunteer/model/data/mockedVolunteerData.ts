@@ -30,7 +30,7 @@ export const mockedVolunteerData: Volunteer = {
     reviews: mockedReview,
     offers: mockedOffersData,
     gallery: { images: [defaultImage, defaultImage, defaultImage] },
-    videoGallery: [{ id: "1", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }, { id: "2", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }, { id: "1", url: "https://www.youtube.com/watch?v=9jPAcn_l02g" }],
+    videoGallery: [],
     subscribers: [
         {
             id: "1",
@@ -42,6 +42,8 @@ export const mockedVolunteerData: Volunteer = {
             country: "Россия",
             memberProfiles: [],
             membershipEndDate: "",
+            galleryImages: [],
+            videoGallery: [],
         },
         {
             id: "2",
@@ -53,6 +55,8 @@ export const mockedVolunteerData: Volunteer = {
             country: "Россия",
             memberProfiles: [],
             membershipEndDate: "",
+            galleryImages: [],
+            videoGallery: [],
         },
         {
             id: "3",
@@ -64,8 +68,11 @@ export const mockedVolunteerData: Volunteer = {
             country: "Россия",
             memberProfiles: [],
             membershipEndDate: "",
+            galleryImages: [],
+            videoGallery: [],
         },
     ],
     memberProfiles: [],
     membershipEndDate: "",
+    galleryImages: [],
 };

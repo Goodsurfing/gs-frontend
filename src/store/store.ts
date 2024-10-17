@@ -18,8 +18,8 @@ import { hostApi } from "@/entities/Host";
 import { offerApi } from "@/entities/Offer";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { reviewApi } from "@/entities/Review";
-import { applicationApi } from "@/entities/Request";
 import { volunteerApi } from "@/entities/Volunteer";
+import { applicationApi } from "@/entities/Application";
 
 const rootReducer = combineReducers({
     register: registerReducer,

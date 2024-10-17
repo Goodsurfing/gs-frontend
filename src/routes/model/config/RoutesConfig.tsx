@@ -22,7 +22,6 @@ import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
-import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
 import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
@@ -58,6 +57,7 @@ import {
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
@@ -120,6 +120,8 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
+import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
+import { FavoriteOffersPage } from "@/pages/FavoriteOffersPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -151,6 +153,11 @@ const publicRoutes: RouteType[] = [
         element: <CategoriesPage />,
         label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
+    },
+    {
+        element: <FavoriteOffersPage />,
+        label: "favorite-offers",
+        path: (locale: string) => getFavoriteOffersPageUrl(locale),
     },
     {
         element: <SignInPage />,
@@ -230,7 +237,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "offer-layout",
-        element: <OfferLayoutPage />,
+        element: AuthRoutes.offers,
         path: (locale: string) => getOffersPageUrl(locale),
         children: [
             {
@@ -240,7 +247,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: AuthRoutes.offers_description,
+                element: <OfferDescriptionPage />,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {

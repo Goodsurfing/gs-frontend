@@ -1,15 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
-
-import cn from "classnames";
-import ExtraImagesItem from "../ExtraImagesItem/ExtraImagesItem";
-import ExtraImagesItemButton from "../ExtraImagesItem/ExtraImagesItemButton/ExtraImagesItemButton";
-import PictureReview from "../PictureReview/PictureReview";
 import { ImageType } from "@/components/ImageInput/types";
-import uploadFile from "@/shared/hooks/files/useUploadFile";
-import { BASE_URL } from "@/shared/constants/api";
-import styles from "./ExtraImagesUpload.module.scss";
-import { useCreateOfferGalleryItemMutation, useDeleteOfferGalleryItemMutation, useGetOfferGalleryItemsQuery } from "@/entities/Offer/api/offerApi";
 import { GalleryItem } from "@/types/media";
+
+import {
+    useCreateOfferGalleryItemMutation,
+    useDeleteOfferGalleryItemMutation,
+    useGetOfferGalleryItemsQuery,
+} from "@/entities/Offer/api/offerApi";
+
+import { BASE_URL } from "@/shared/constants/api";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
+import { GalleryImages } from "@/shared/ui/GalleryImages/GalleryImages";
 
 interface ExtraImagesUploadProps {
     label: string;
@@ -23,11 +24,20 @@ interface ExtraImagesUploadProps {
 
 const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     const {
-        classNameWrapper, label, isLoading, onChangeLoading,
-        onChangeError, onChangeSuccess, offerId,
+        classNameWrapper,
+        label,
+        isLoading,
+        onChangeLoading,
+        onChangeError,
+        onChangeSuccess,
+        offerId,
     } = props;
-    const [inputImg, setInputImg] = useState<ImageType>({ file: null, src: null });
+    const [inputImg, setInputImg] = useState<ImageType>({
+        file: null,
+        src: null,
+    });
     const [galleryImgs, setGalleryImgs] = useState<GalleryItem[]>([]);
+
     const [createGalleryItem] = useCreateOfferGalleryItemMutation();
     const [deleteGalleryItem] = useDeleteOfferGalleryItemMutation();
     const { data: galleryData } = useGetOfferGalleryItemsQuery(offerId);
@@ -50,10 +60,15 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
                 .then(async (result) => {
                     try {
                         if (result && result["@id"]) {
-                            const mediaObject = `${BASE_URL}${result["@id"].slice(1)}`;
+                            const mediaObject = `${BASE_URL}${result[
+                                "@id"
+                            ].slice(1)}`;
                             const formData = new FormData();
                             formData.append("mediaObject", mediaObject);
-                            await createGalleryItem({ offerId, formData }).unwrap();
+                            await createGalleryItem({
+                                offerId,
+                                formData,
+                            }).unwrap();
                             onChangeSuccess(true);
                         } else {
                             onChangeError(true);
@@ -75,7 +90,8 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     };
 
     const handleCloseBtnClick = (imageId: string) => {
-        deleteGalleryItem({ offerId, galleryId: imageId }).unwrap()
+        deleteGalleryItem({ offerId, galleryId: imageId })
+            .unwrap()
             .then(() => {
                 onChangeSuccess(true);
             })
@@ -85,28 +101,15 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
     };
 
     return (
-        <div className={cn(classNameWrapper, styles.wrapper)}>
-            <ExtraImagesItem
-                label={label}
-                img={inputImg}
-                setImg={handleImageUpload}
-                id="asd"
-            />
-            {galleryImgs.map((image, index) => (
-                <PictureReview
-                    className={styles.imgItem}
-                    key={index}
-                    img={`${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`}
-                    isLoading={isLoading} // change logic for personal image loading
-                    close={(
-                        <ExtraImagesItemButton
-                            className={styles.closeBtn}
-                            onClick={() => handleCloseBtnClick(image.id.toString())}
-                        />
-                    )}
-                />
-            ))}
-        </div>
+        <GalleryImages
+            label={label}
+            inputImg={inputImg}
+            galleryImgs={galleryImgs}
+            handleImageUpload={handleImageUpload}
+            handleCloseBtnClick={handleCloseBtnClick}
+            isLoading={isLoading}
+            classNameWrapper={classNameWrapper}
+        />
     );
 };
 

@@ -22,6 +22,9 @@ export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id",
 
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
 
+// Favorite offers page
+export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
+
 // Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email}`;
@@ -94,7 +97,7 @@ export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${loc
 
 export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}/:id`;
 
-export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offer_personal}/:id`;
+export const getOfferPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offer_personal}/${id}`;
 
 // Volunteer pages
 

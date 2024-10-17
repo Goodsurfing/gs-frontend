@@ -33,7 +33,7 @@ export const mockedUsers: UserType[] = [
 
 export const mockedChatUser: UserChatType = {
     id: "1",
-    name: "Александр Смирновffffffffffffffffffffffffffffffffffffffffff",
+    name: "Александр Смирнов",
     address: "Россия, Москва",
     avatar: defaultImage,
     arrivalDate: new Date(),

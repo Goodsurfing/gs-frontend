@@ -1,21 +1,25 @@
 import { memo, useCallback, useState } from "react";
 
+import { Offer } from "@/entities/Offer";
+import { useGetOfferGalleryItemsQuery } from "@/entities/Offer/api/offerApi";
 import { PersonalCard } from "@/entities/PersonalCard";
+
+import {
+    getMediaContent,
+    getMediaContentsArray,
+} from "@/shared/lib/getMediaContent";
+import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
 
 import { OfferPersonalCardCategory } from "../OfferPersonalCardCategory/OfferPersonalCardCategory";
 import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
-import { useGetOfferByIdQuery } from "@/entities/Offer";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { useGetOfferGalleryItemsQuery } from "@/entities/Offer/api/offerApi";
-import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
 
 interface OfferPersonalCardProps {
-    id: string
+    id: string;
+    offerData: Offer;
 }
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
-    const { id } = props;
-    const { data } = useGetOfferByIdQuery(id);
+    const { id, offerData } = props;
     const { data: gallery } = useGetOfferGalleryItemsQuery(id.toString());
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -35,22 +39,24 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
         <>
             <PersonalCard
                 offerId={id}
-                image={getMediaContent(data?.description?.image)}
-                title={data?.description?.title}
-                location={data?.where?.address}
+                image={getMediaContent(offerData.description?.image)}
+                title={offerData.description?.title}
+                location={offerData.where?.address}
                 rating={4.3}
                 categories={(
                     <OfferPersonalCardCategory
-                        categories={data?.description?.categoryIds}
+                        categories={offerData.description?.categoryIds}
                     />
                 )}
                 imageBlock={showImageBlock}
             />
-            <ModalGallery
-                isOpen={isModalOpen}
-                onClose={handleModalClose}
-                images={gallery}
-            />
+            {gallery && (
+                <ModalGallery
+                    isOpen={isModalOpen}
+                    onClose={handleModalClose}
+                    images={getMediaContentsArray(gallery)}
+                />
+            )}
         </>
     );
 });
