@@ -1,5 +1,9 @@
+import { CategoryType } from "@/types/categories";
+
 export interface InviteCategoryType {
-    value: string,
+    path: string;
+    image: string;
+    value: CategoryType,
     color: string,
     text: string,
 }

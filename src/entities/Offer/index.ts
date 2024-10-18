@@ -26,7 +26,6 @@ export type {
 } from "./model/types/offerWhoNeeds";
 
 export type {
-    Category,
     OfferDescription,
 } from "./model/types/offerDescription";
 
@@ -55,7 +54,7 @@ export type {
     OfferFinishingTouches,
 } from "./model/types/offerFinishingTouches";
 
-export type { OfferStatus, OfferState } from "./model/types/offerStatus";
+export type { OfferStatus } from "./model/types/offerStatus";
 
 export { OfferInfoCard } from "./ui/OfferInfoCard/OfferInfoCard";
 export { OfferCard } from "./ui/OfferCard/OfferCard";

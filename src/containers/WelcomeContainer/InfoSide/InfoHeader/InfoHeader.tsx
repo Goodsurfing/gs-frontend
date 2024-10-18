@@ -13,6 +13,8 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import { getUserAuthData, userActions } from "@/entities/User";
 
 import {
+    getAboutProjectPageUrl,
+    getFindJobPageUrl,
     getJournalsPageUrl,
     getMainPageUrl,
     getNPOPageUrl,
@@ -158,6 +160,12 @@ const InfoHeader = memo(() => {
                         </Link>
                         <Link to={getNewsPageUrl(locale)}>
                             {t("main.welcome.header.about-project.news")}
+                        </Link>
+                        <Link to={getAboutProjectPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.about-goodsurfing")}
+                        </Link>
+                        <Link to={getFindJobPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.find-job")}
                         </Link>
                     </Popup>
                 </div>

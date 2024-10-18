@@ -1,30 +1,21 @@
 import cn from "classnames";
 import { memo } from "react";
 
-import { OfferInfoCard, useGetOfferByIdQuery } from "@/entities/Offer";
+import { Offer, OfferInfoCard } from "@/entities/Offer";
 
 import styles from "./OfferPageContent.module.scss";
 
 interface OfferPageContentProps {
     className?: string;
-    id: string;
+    offerData: Offer;
 }
 
 export const OfferPageContent = memo((props: OfferPageContentProps) => {
-    const { className, id } = props;
-    const { data, isError } = useGetOfferByIdQuery(id);
-
-    if (!data || isError) {
-        return (
-            <div className={cn(className, styles.wrapper)}>
-                <span>Произошла ошибка в загрузке данных</span>
-            </div>
-        );
-    }
+    const { className, offerData } = props;
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <OfferInfoCard offer={data} />
+            <OfferInfoCard offer={offerData} />
         </div>
     );
 });

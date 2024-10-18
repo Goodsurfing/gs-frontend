@@ -9,6 +9,8 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
+    getAboutProjectPageUrl,
+    getFindJobPageUrl,
     getJournalsPageUrl, getMainPageUrl, getNPOPageUrl, getNewsPageUrl,
     getOffersMapPageUrl, getOurTeamPageUrl, getPrivacyPolicyPageUrl,
     getRulesPageUrl, getVideoPageUrl,
@@ -292,6 +294,18 @@ export const MainHeaderNav = () => {
                         to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getAboutProjectPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.about-project.about-goodsurfing")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getFindJobPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.about-project.find-job")}
                     </Link>
                 </Popup>
             </div>

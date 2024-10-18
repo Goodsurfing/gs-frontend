@@ -5,6 +5,7 @@
     flex-wrap: wrap;
     padding-left: 100px;
     padding-right: 100px;
+    gap: 30px;
 }
 
 .title {
@@ -14,4 +15,12 @@
 .button {
     margin: 0 auto;
     margin-top: 36px;
+}
+
+@media (max-width: 992px) {
+    .content {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

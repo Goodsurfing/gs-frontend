@@ -4,36 +4,54 @@ import React, {
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { OfferState } from "@/entities/Offer";
+import {
+    FormApplicationStatus,
+    FullFormApplication,
+} from "@/entities/Application";
+
+import useDebounce from "@/shared/hooks/useDebounce";
 
 import { statusColors } from "../../model/lib/statusColors";
 import { NotesContainer, VariantType } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
-import { Application } from "@/entities/Host";
 
 interface NotesWidgetProps {
-    notes: Application[];
+    notes: FullFormApplication[];
     className?: string;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (id: number) => void;
+    onReviewClick: (application: FullFormApplication) => void;
+    updateApplicationStatus?: (
+        applicationId: number,
+        status: FormApplicationStatus
+    ) => void;
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
     (props: NotesWidgetProps) => {
         const {
-            notes: initialNotes, className, isDragDisable, variant, onReviewClick,
+            notes: initialNotes,
+            className,
+            isDragDisable,
+            variant,
+            onReviewClick,
+            updateApplicationStatus,
         } = props;
 
         const [notes] = useState(initialNotes);
-        const [columns, setColumns] = useState<Record<OfferState, Application[]>>({
+        const [columns, setColumns] = useState<
+        Record<FormApplicationStatus, FullFormApplication[]>
+        >({
             new: [],
             accepted: [],
             canceled: [],
         });
 
         useEffect(() => {
-            const newColumns: Record<OfferState, Application[]> = {
+            const newColumns: Record<
+            FormApplicationStatus,
+            FullFormApplication[]
+            > = {
                 new: [],
                 accepted: [],
                 canceled: [],
@@ -45,6 +63,22 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
 
             setColumns(newColumns);
         }, [notes]);
+
+        const [pendingStatusChange, setPendingStatusChange] = useState<{
+            applicationId: number;
+            status: FormApplicationStatus;
+        } | null>(null);
+
+        const debouncedStatusChange = useDebounce(pendingStatusChange, 500);
+
+        useEffect(() => {
+            if (debouncedStatusChange) {
+                updateApplicationStatus?.(
+                    debouncedStatusChange.applicationId,
+                    debouncedStatusChange.status,
+                );
+            }
+        }, [debouncedStatusChange, updateApplicationStatus]);
 
         const onDragEnd = (result: DropResult) => {
             const { destination, source } = result;
@@ -63,8 +97,8 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             }
 
             // Start updating the state
-            const startNotes = columns[source.droppableId as OfferState];
-            const finishNotes = columns[destination.droppableId as OfferState];
+            const startNotes = columns[source.droppableId as FormApplicationStatus];
+            const finishNotes = columns[destination.droppableId as FormApplicationStatus];
 
             // If the item was dragged within the same column
             if (startNotes === finishNotes) {
@@ -84,7 +118,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             // If the item was dragged to another column
             const startNewNotes = Array.from(startNotes);
             const [removed] = startNewNotes.splice(source.index, 1);
-            removed.status = destination.droppableId as OfferState;
+            removed.status = destination.droppableId as FormApplicationStatus;
             const finishNewNotes = Array.from(finishNotes);
             finishNewNotes.splice(destination.index, 0, removed);
 
@@ -95,6 +129,12 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             };
 
             setColumns(newColumns);
+
+            // Update application Status
+            setPendingStatusChange({
+                applicationId: removed.id,
+                status: removed.status,
+            });
         };
 
         return (
@@ -104,9 +144,11 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                         <NotesContainer
                             onReviewClick={onReviewClick}
                             key={status}
-                            status={status as OfferState}
+                            status={status as FormApplicationStatus}
                             notes={columnNotes}
-                            color={statusColors[status as OfferState]}
+                            color={
+                                statusColors[status as FormApplicationStatus]
+                            }
                             variant={variant}
                             isDragDisable={isDragDisable}
                         />

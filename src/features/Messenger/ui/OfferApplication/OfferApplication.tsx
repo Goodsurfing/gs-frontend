@@ -1,11 +1,14 @@
 import React, { FC, useCallback } from "react";
 
-import { OfferCard } from "@/entities/Offer";
+import { Offer, OfferCard } from "@/entities/Offer";
+
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { TermsApplication } from "../TermsApplication/TermsApplication";
 import styles from "./OfferApplication.module.scss";
 
 interface OfferApplicationProps {
+    offerData: Offer;
     isHost: boolean;
     username: string;
     isClosed?: boolean;
@@ -21,8 +24,9 @@ interface DatesType {
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const {
-        isHost, username, isClosed, onSubmit, terms, onChange,
+        isHost, username, isClosed, onSubmit, terms, onChange, offerData,
     } = props;
+    const { description, where, id } = offerData;
 
     const handleDates = useCallback(
         (periods: DatesType) => {
@@ -56,16 +60,16 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         <div className={styles.wrapper}>
             {renderTitle()}
             <OfferCard
-                category="category"
-                description="description"
+                category={description?.categoryIds[0]}
+                description={description?.shortDescription}
                 likes="5"
-                location="Казань"
+                location={where?.address}
                 rating="4"
                 reviews="15"
-                title="Тестовая вакансия"
+                title={description?.title}
                 went="8"
                 isImageShow={false}
-                link="offer-personal/1"
+                link={getOfferPersonalPageUrl(id.toString())}
             />
             <TermsApplication
                 terms={terms}

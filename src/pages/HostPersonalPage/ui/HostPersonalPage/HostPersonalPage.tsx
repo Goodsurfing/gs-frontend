@@ -1,31 +1,33 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
-import { Text } from "@/shared/ui/Text/Text";
+import { useGetHostByIdQuery } from "@/entities/Host";
 
-import { mockedHostData } from "@/entities/Host/model/data/mockedHostData";
-import { useSubmenuItems } from "../../model/data/submenuData";
-import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
-import styles from "./HostPersonalPage.module.scss";
-import { HostPageContent } from "../HostPageContent/HostPageContent";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { Text } from "@/shared/ui/Text/Text";
+
+import { useSubmenuItems } from "../../model/data/submenuData";
+import { HostPageContent } from "../HostPageContent/HostPageContent";
+import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
+import styles from "./HostPersonalPage.module.scss";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
     const { t, ready } = useTranslation("host");
     const { submenuItems } = useSubmenuItems();
+    const { data: hostData, isError, isLoading } = useGetHostByIdQuery(id ?? "");
 
-    if (!ready) {
+    if (!ready || isLoading) {
         return <Preloader />;
     }
 
-    if (!id) {
+    if (!id || !hostData || isError) {
         return (
             <div className={styles.wrapper}>
                 <Text textSize="primary" text="Произошла ошибка" />
@@ -36,7 +38,7 @@ export const HostPersonalPage = () => {
         <div className={styles.wrapper}>
             <MainHeader />
             <div className={styles.content}>
-                <HostlHeaderCard host={mockedHostData} />
+                <HostlHeaderCard host={hostData} />
                 <Submenu
                     className={styles.navMenu}
                     items={submenuItems}
@@ -51,7 +53,7 @@ export const HostPersonalPage = () => {
                         </Button>
                     )}
                 />
-                <HostPageContent id={id} />
+                <HostPageContent hostData={hostData} />
             </div>
             <Footer />
         </div>
