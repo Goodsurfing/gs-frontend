@@ -10,6 +10,8 @@ import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import styles from "./OffersList.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 interface OffersListProps {
     className?: string;
@@ -23,6 +25,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
     const offersPerPage = 10;
 
     const { data, isLoading } = useGetOffersQuery();
+    const isAuth = useAppSelector(getUserAuthData);
 
     const currentOffers = useMemo(() => {
         const startIndex = (currentPage - 1) * offersPerPage;
@@ -40,9 +43,10 @@ export const OffersList: FC<OffersListProps> = (props) => {
                 status="opened"
                 data={offer}
                 key={offer.id}
+                isFavoriteIconShow={!!isAuth}
             />
         )),
-        [currentOffers, mapOpenValue],
+        [currentOffers, isAuth, mapOpenValue],
     );
 
     if (isLoading) {

@@ -2,27 +2,27 @@ import cn from "classnames";
 import React, { FC, useState } from "react";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
-import styles from "./OfferCard.module.scss";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
+
 import { useCategories } from "@/shared/data/categories";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+
+import styles from "./OfferCard.module.scss";
 
 interface OfferCardProps {
     data: Offer;
     status: "opened" | "closed";
     className?: string;
-    classNameCard?: string
+    classNameCard?: string;
+    isFavoriteIconShow: boolean;
 }
 
 export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
-        data: {
-            id,
-            description,
-            where,
-        },
+        data: { id, description, where },
         status,
         className,
         classNameCard,
+        isFavoriteIconShow,
     } = props;
     const imageCover = getMediaContent(description?.image);
     const { getTranslation } = useCategories();
@@ -52,7 +52,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 went="21"
                 link="offer-personal/1"
                 className={classNameCard}
-                isFavoriteIconShow
+                isFavoriteIconShow={isFavoriteIconShow}
                 isFavorite={isFavorite}
                 handleFavoriteClick={onFavoriteClick}
             />
