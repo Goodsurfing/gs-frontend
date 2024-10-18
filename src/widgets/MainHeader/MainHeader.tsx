@@ -16,6 +16,7 @@ import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 import {
+    getFavoriteOffersPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
     getMessengerPageUrl,
@@ -54,7 +55,7 @@ const MainHeader: FC = () => {
                         <>
                             <div className={styles.icons}>
                                 <LocaleLink
-                                    to={getMainPageUrl(locale)}
+                                    to={getFavoriteOffersPageUrl(locale)}
                                     className={styles.icon}
                                 >
                                     <ReactSVG src={heartIcon} />

@@ -1,9 +1,10 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
 import styles from "./OfferCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useCategories } from "@/shared/data/categories";
 
 interface OfferCardProps {
     data: Offer;
@@ -15,6 +16,7 @@ interface OfferCardProps {
 export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
         data: {
+            id,
             description,
             where,
         },
@@ -23,6 +25,14 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
         classNameCard,
     } = props;
     const imageCover = getMediaContent(description?.image);
+    const { getTranslation } = useCategories();
+    const [isFavorite, setFavorite] = useState<boolean>(false);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const onFavoriteClick = (offerId: number) => {
+        setFavorite((prev) => !prev);
+    };
+
     return (
         <div
             className={cn(styles.wrapper, className, {
@@ -30,9 +40,10 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             })}
         >
             <OfferCardComponent
+                offerId={id}
                 title={description?.title}
                 description={description?.shortDescription}
-                category={description?.categoryIds[0]}
+                category={getTranslation(description?.categoryIds[0])}
                 image={imageCover}
                 location={where?.address || ""}
                 likes="5"
@@ -42,6 +53,8 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 link="offer-personal/1"
                 className={classNameCard}
                 isFavoriteIconShow
+                isFavorite={isFavorite}
+                handleFavoriteClick={onFavoriteClick}
             />
         </div>
     );

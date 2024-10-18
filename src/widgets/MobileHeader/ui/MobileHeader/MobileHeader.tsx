@@ -15,6 +15,7 @@ import { getUserAuthData, userActions } from "@/entities/User";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
     getAboutProjectPageUrl,
+    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getJournalsPageUrl,
@@ -312,6 +313,12 @@ const MobileHeader: FC = () => {
                             className={styles.button}
                         >
                             {t("main.welcome.header.my-page")}
+                        </Button>
+                        <Button
+                            onClick={() => navigate(getFavoriteOffersPageUrl(locale))}
+                            className={styles.button}
+                        >
+                            {t("main.welcome.header.favorite")}
                         </Button>
                         <Button
                             onClick={() => navigate(getMessengerPageUrl(locale))}

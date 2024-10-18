@@ -23,7 +23,7 @@ export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id",
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
 
 // Favorite offers page
-export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
+export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.favorite_offers}`);
 
 // Auth bounded pages
 

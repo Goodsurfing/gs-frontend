@@ -119,6 +119,7 @@
           "video": "video"
         },
         "exit": "exit",
+        "favorite": "favorite",
         "host-dashboard": "host-dashboard",
         "how-it-work": "how-it-work",
         "messages": "messages",

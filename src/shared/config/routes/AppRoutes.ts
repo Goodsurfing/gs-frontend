@@ -3,7 +3,7 @@ export enum AppRoutes {
     OFFERS_MAP = "offers_map",
     MESSENGER = "messenger",
     CATEGORIES = "categories",
-    FAVORITE_OFFERS = "favorite-offers",
+    FAVORITE_OFFERS = "favorite_offers",
     SIGN_UP = "sign_up",
     SIGN_IN = "sign_in",
     RESET_PASSWORD = "reset_password",

@@ -1,21 +1,25 @@
 .wrapper {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	// justify-content: space-between;
 
 	width: 100%;
 	margin-top: 45px;
+	position: relative;
 }
 
 .slider {
 	width: 100%;
-	margin-left: 20px;
+	padding: 0 40px;
+	// margin-left: 20px;
 }
 
 .arrow {
 	cursor: pointer;
+	position: absolute;
 
 	&:last-child {
+		right: 0;
 		img {
 			transform: rotate(180deg);
 		}
@@ -23,7 +27,19 @@
 }
 
 @media screen and (max-width: 992px) {
+	.slider {
+		padding: 0 20px;
+	}
+	.swiper {
+		padding: 0 40px;
+	}
 	.arrow {
 		display: none;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.slider {
+		padding: 0;
 	}
 }

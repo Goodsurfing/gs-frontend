@@ -4,7 +4,7 @@
     display: flex;
     gap: 14px;
     align-items: flex-start;
-    box-shadow: 0px 5px 20px 0px #2121210D;
+    box-shadow: 0px 5px 20px 0px #2121210d;
     text-decoration: none;
     color: inherit;
 }
@@ -19,22 +19,49 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-      }
+    }
 }
 
 .favorite {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.3s ease, fill 0.3s ease;
 
-  svg {
-      fill: var(--bg-primary-1);
-  }
+    svg {
+        fill: var(--bg-primary-1);
+        transition: fill 0.3s ease;
+    }
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.favorite.active {
+    animation: heart-pulse 0.4s ease-in-out;
+
+    svg {
+        fill: var(--rejected-color);
+    }
+}
+
+@keyframes heart-pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .title {
-    font-family: 'Lato';
+    font-family: "Lato";
     font-size: 1.125rem;
     font-weight: 500;
     line-height: 22px;
@@ -44,108 +71,109 @@
 }
 
 .location {
-  font-family: 'Lato';
-  font-size: .875rem;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: var(--white-theme-color);
-}
-
-.subtitle {
-  margin-top: .75rem;
-  font-family: Lato;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: var(--white-theme-color);  
-}
-
-.category {
-  margin-left: 1.5rem;
-}
-
-.stats {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-
-.rating, .likes {
-  display: flex;
-  align-items: center;
-  img {
-    width: 13px;
-    height: 13px;
-  }
-  span {
-    margin-left: 6px;
-    font-family: Lato;
-    font-size: 14px;
-    font-weight: 900;
+    font-family: "Lato";
+    font-size: 0.875rem;
+    font-weight: 500;
     line-height: 20px;
     letter-spacing: 0px;
     text-align: left;
-  }
+    color: var(--white-theme-color);
+}
+
+.subtitle {
+    margin-top: 0.75rem;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: var(--white-theme-color);
+}
+
+.category {
+    margin-left: 1.5rem;
+}
+
+.stats {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.rating,
+.likes {
+    display: flex;
+    align-items: center;
+    img {
+        width: 13px;
+        height: 13px;
+    }
+    span {
+        margin-left: 6px;
+        font-family: Lato;
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 20px;
+        letter-spacing: 0px;
+        text-align: left;
+    }
 }
 
 .likes {
-  // margin-left: .75rem;
+    // margin-left: .75rem;
 
-  img {
-    width: 15px;
-  }
+    img {
+        width: 15px;
+    }
 }
 
 .extraInfo {
-  font-family: 'Lato';
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: 0px;
-  text-align: left;
+    font-family: "Lato";
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
 }
 
 .description {
-  margin-top: 12px;
-  max-width: 300px;
-  font-family: 'Lato';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 17px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: var(--white-theme-color);
+    margin-top: 12px;
+    max-width: 300px;
+    font-family: "Lato";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: var(--white-theme-color);
 }
 
 @media (max-width: 480px) {
-  .wrapper {
-    padding: 1rem;
-    flex-wrap: wrap;
-  }
+    .wrapper {
+        padding: 1rem;
+        flex-wrap: wrap;
+    }
 
-  .subtitle { 
-    display: flex;
-    flex-direction: column;
-  }
+    .subtitle {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .category {
-    margin-left: 0;
-  }
+    .category {
+        margin-left: 0;
+    }
 
-  .stats {
-    gap: .5rem;
-  }
+    .stats {
+        gap: 0.5rem;
+    }
 
-  .imageWrapper {
-    width: 100%;
-    height: 180px;
-  }
+    .imageWrapper {
+        width: 100%;
+        height: 180px;
+    }
 }

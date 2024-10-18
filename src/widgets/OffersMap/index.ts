@@ -9,3 +9,4 @@ export { OfferPagination } from "./ui/OfferPagination/OfferPagination";
 export { PeriodsFilter } from "./ui/PeriodsFilter/PeriodsFilter";
 export { ParticipationPeriod } from "./ui/ParticipationPeriod/ParticipationPeriod";
 export { ProvidedFilter } from "./ui/ProvidedFilter/ProvidedFilter";
+export { OfferCard } from "./ui/OfferCard/OfferCard";
