@@ -15,11 +15,13 @@ import { getUserAuthData, userActions } from "@/entities/User";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
     getAboutProjectPageUrl,
+    getBlogPageUrl,
     getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getJournalsPageUrl,
     getMainPageUrl,
+    getMembershipPageUrl,
     getMessengerPageUrl,
     getNPOPageUrl,
     getNewsPageUrl,
@@ -210,7 +212,7 @@ const MobileHeader: FC = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getBlogPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.blog")}
                     </Link>
@@ -271,7 +273,7 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
                     </Link>
@@ -297,7 +299,9 @@ const MobileHeader: FC = () => {
                         className={styles.dropdownLink}
                         to={getAboutProjectPageUrl(locale)}
                     >
-                        {t("main.welcome.header.about-project.about-goodsurfing")}
+                        {t(
+                            "main.welcome.header.about-project.about-goodsurfing",
+                        )}
                     </Link>
                     <Link
                         className={styles.dropdownLink}

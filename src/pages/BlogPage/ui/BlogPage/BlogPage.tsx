@@ -9,12 +9,12 @@ import { mockedArticlesData } from "@/entities/Article/model/data/mockedArticleD
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 
 import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
+import { ArticlesList } from "../ArticlesList/ArticlesList";
 import { Category } from "../Category/Category";
 import { Header } from "../Header/Header";
-import { NewsList } from "../NewsList/NewsList";
-import styles from "./NewsPage.module.scss";
+import styles from "./BlogPage.module.scss";
 
-const NewsPage = () => (
+const BlogPage = () => (
     <MainPageLayout>
         <Header />
         <div className={styles.container}>
@@ -23,13 +23,11 @@ const NewsPage = () => (
                 <SearchInput sx={{ maxWidth: "370px" }} />
             </div>
             <div className={styles.content}>
-                <NewsList
-                    className={styles.newsList}
+                <ArticlesList
+                    className={styles.articlesList}
                     data={mockedArticlesData}
                 />
-                <div
-                    className={styles.contentRight}
-                >
+                <div className={styles.contentRight}>
                     <Category className={styles.category} />
                     <MemberBanner className={styles.memberBanner} />
                 </div>
@@ -38,4 +36,4 @@ const NewsPage = () => (
     </MainPageLayout>
 );
 
-export default NewsPage;
+export default BlogPage;

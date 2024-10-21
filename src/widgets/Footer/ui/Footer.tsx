@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -11,8 +12,12 @@ import footerLogo from "@/shared/assets/icons/footer/logo.svg";
 import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
 import vkIcon from "@/shared/assets/icons/footer/vk.svg";
 import {
+    getAboutProjectPageUrl,
+    getBlogPageUrl,
+    getFindJobPageUrl,
     getJournalsPageUrl,
     getMainPageUrl,
+    getMembershipPageUrl,
     getNPOPageUrl,
     getNewsPageUrl,
     getOurTeamPageUrl,
@@ -25,6 +30,8 @@ import styles from "./Footer.module.scss";
 
 export const Footer = memo(() => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
+
     return (
         <>
             <footer className={styles.footer}>
@@ -74,121 +81,149 @@ export const Footer = memo(() => {
                             target="_blank"
                             rel="noreferrer"
                         >
-                            Напишите нам
+                            {t("main.welcome.header.write-us")}
                         </a>
                     </div>
 
                     <nav className={styles.menu}>
                         <div className={styles.menu__item}>
-                            <h4 className={styles.menu__title}>Сообщество</h4>
+                            <h4 className={styles.menu__title}>
+                                {t("main.welcome.header.community.title")}
+                            </h4>
                             <div className={styles.menu__content}>
                                 <Link
                                     className={styles.link}
-                                    to={getMainPageUrl(locale)}
+                                    to={getBlogPageUrl(locale)}
                                 >
-                                    Блог
+                                    {t("main.welcome.header.community.blog")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getVideoPageUrl(locale)}
                                 >
-                                    Видео
+                                    {t("main.welcome.header.community.video")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Эксперты
+                                    {t("main.welcome.header.community.experts")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Амбассадоры
+                                    {t(
+                                        "main.welcome.header.community.ambassadors",
+                                    )}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Курсы
+                                    {t("main.welcome.header.community.courses")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Клубы
+                                    {t("main.welcome.header.community.clubs")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getJournalsPageUrl(locale)}
                                 >
-                                    Журнал
-                                </Link>
-                            </div>
-                        </div>
-                        <div className={styles.menu__item}>
-                            <h4 className={styles.menu__title}>О проекте</h4>
-                            <div className={styles.menu__content}>
-                                <Link
-                                    className={styles.link}
-                                    to={getNPOPageUrl(locale)}
-                                >
-                                    О НКО
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getOurTeamPageUrl(locale)}
-                                >
-                                    Наша команда
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getMainPageUrl(locale)}
-                                >
-                                    Как это работает
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getRulesPageUrl(locale)}
-                                >
-                                    Правила
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getPrivacyPolicyPageUrl(locale)}
-                                >
-                                    Политика конфиденциальности
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getNewsPageUrl(locale)}
-                                >
-                                    Новости
+                                    {t("main.welcome.header.community.journal")}
                                 </Link>
                             </div>
                         </div>
                         <div className={styles.menu__item}>
                             <h4 className={styles.menu__title}>
-                                Для организаторов
+                                {t("main.welcome.header.about-project.title")}
+                            </h4>
+                            <div className={styles.menu__content}>
+                                <Link
+                                    className={styles.link}
+                                    to={getNPOPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.about-npo",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getOurTeamPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.our-team",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getMembershipPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.how-it-works",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getRulesPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.rules",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getPrivacyPolicyPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.privacy-policy",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getNewsPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.news",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getAboutProjectPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.about-goodsurfing",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getFindJobPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.find-job",
+                                    )}
+                                </Link>
+                            </div>
+                        </div>
+                        <div className={styles.menu__item}>
+                            <h4 className={styles.menu__title}>
+                                {t("main.welcome.header.for-organizers.title")}
                             </h4>
                             <div className={styles.menu__content}>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Стать хостом
+                                    {t("main.welcome.header.for-organizers.become-a-host")}
                                 </Link>
                                 <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
-                                    Как это работает
-                                </Link>
-                                <Link
-                                    className={styles.link}
-                                    to={getMainPageUrl(locale)}
-                                >
-                                    Курсы для организаторов
+                                    {t("main.welcome.header.for-organizers.courses-for-organizers")}
                                 </Link>
                             </div>
                         </div>

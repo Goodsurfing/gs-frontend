@@ -57,6 +57,12 @@
                     "about-goodsurfing": "О Гудсерфинге",
                     "find-job": "Найти работу"
                 },
+                "for-organizers": {
+                    "title": "Для организаторов",
+                    "become-a-host": "Стать хостом",
+                    "courses-for-organizers": "Курсы для организаторов"
+                },
+                "write-us": "Напишите нам",
                 "favorite": "Избранное",
                 "messages": "Сообщения",
                 "my-page": "Моя страница",

@@ -120,6 +120,11 @@
         },
         "exit": "exit",
         "favorite": "favorite",
+        "for-organizers": {
+          "become-a-host": "become-a-host",
+          "courses-for-organizers": "courses-for-organizers",
+          "title": "title"
+        },
         "host-dashboard": "host-dashboard",
         "how-it-work": "how-it-work",
         "messages": "messages",
@@ -145,7 +150,8 @@
         "profile": "profile",
         "sign-in": "sign-in",
         "sign-up": "sign-up",
-        "volunteer-dashboard": "volunteer-dashboard"
+        "volunteer-dashboard": "volunteer-dashboard",
+        "write-us": "write-us"
       },
       "offers-btn": "offers-btn",
       "title": "title"

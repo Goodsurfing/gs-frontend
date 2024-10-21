@@ -54,6 +54,8 @@ import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 import {
     getAboutProjectPageUrl,
+    getBlogPageUrl,
+    getBlogPersonalPageUrl,
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
@@ -121,7 +123,8 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
-import { FavoriteOffersPage } from "@/pages/FavoriteOffersPage";
+import { BlogPage } from "@/pages/BlogPage";
+import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -135,7 +138,8 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getOffersMapPageUrl(locale),
     },
     {
-        element: AuthRoutes.messenger, // refactor this three routes with children routes
+        // refactor this three Messenger page routes with children routes
+        element: AuthRoutes.messenger,
         label: "messenger",
         path: (locale: string) => getMessengerPageUrl(locale),
     },
@@ -155,7 +159,7 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getCategoriesPageUrl(locale),
     },
     {
-        element: <FavoriteOffersPage />,
+        element: AuthRoutes.favorite_offers,
         label: "favorite-offers",
         path: (locale: string) => getFavoriteOffersPageUrl(locale),
     },
@@ -364,9 +368,7 @@ const publicRoutes: RouteType[] = [
             {
                 label: "profile-info",
                 element: (
-                    <PrivateRouteGuard>
-                        <ProfileInfoPage />
-                    </PrivateRouteGuard>
+                    <ProfileInfoPage />
                 ),
                 path: (locale: string) => getProfileInfoPageUrl(locale),
             },
@@ -417,6 +419,16 @@ const publicRoutes: RouteType[] = [
         label: "find-job",
         element: <FindJobPage />,
         path: (locale: string) => getFindJobPageUrl(locale),
+    },
+    {
+        label: "blog",
+        element: <BlogPage />,
+        path: (locale: string) => getBlogPageUrl(locale),
+    },
+    {
+        label: "blog-personal",
+        element: <BlogPersonalPage />,
+        path: (locale: string) => getBlogPersonalPageUrl(locale),
     },
     {
         label: "news",

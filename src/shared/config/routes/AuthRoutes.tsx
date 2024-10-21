@@ -2,6 +2,7 @@ import { AuthProvider } from "@/routes/model/guards/AuthProvider";
 import { PrivateRouteGuard } from "@/routes/model/guards/PrivateRouteGuard";
 import { PrivateRouteVolunteerGuard } from "@/routes/model/guards/PrivateRouteVolunteerGuard";
 
+import { FavoriteOffersPage } from "@/pages/FavoriteOffersPage";
 import { MessengerPage } from "@/pages/MessengerPage";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
@@ -39,6 +40,13 @@ export const AuthRoutes = {
         <PrivateRouteGuard>
             <AuthProvider>
                 <MessengerPage />
+            </AuthProvider>
+        </PrivateRouteGuard>
+    ),
+    [AppRoutes.FAVORITE_OFFERS]: (
+        <PrivateRouteGuard>
+            <AuthProvider>
+                <FavoriteOffersPage />
             </AuthProvider>
         </PrivateRouteGuard>
     ),

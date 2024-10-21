@@ -133,9 +133,13 @@ export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 
 export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
 
+export const getBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.blog}`;
+
+export const getBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.blog}/${id}`;
+
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
-export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;
+export const getNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.news}/${id}`;
 
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
 

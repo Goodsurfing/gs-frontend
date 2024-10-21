@@ -57,6 +57,12 @@
                     "about-goodsurfing": "Sobre Goodsurfing",
                     "find-job": "Buscar trabajo"
                 },
+                "for-organizers": {
+                    "title": "Para los organizadores",
+                    "become-a-host": "Convertirse en anfitrión",
+                    "courses-for-organizers": "Cursos para organizadores"
+                },
+                "write-us": "Escríbenos",
                 "favorite": "Favoritos",
                 "my-page": "Mi página",
                 "profile": "Perfil",

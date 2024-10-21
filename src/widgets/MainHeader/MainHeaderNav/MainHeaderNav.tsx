@@ -10,14 +10,22 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
     getAboutProjectPageUrl,
+    getBlogPageUrl,
     getFindJobPageUrl,
-    getJournalsPageUrl, getMainPageUrl, getNPOPageUrl, getNewsPageUrl,
-    getOffersMapPageUrl, getOurTeamPageUrl, getPrivacyPolicyPageUrl,
-    getRulesPageUrl, getVideoPageUrl,
+    getJournalsPageUrl,
+    getMainPageUrl,
+    getMembershipPageUrl,
+    getNPOPageUrl,
+    getNewsPageUrl,
+    getOffersMapPageUrl,
+    getOurTeamPageUrl,
+    getPrivacyPolicyPageUrl,
+    getRulesPageUrl,
+    getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
 import Arrow from "@/shared/ui/Arrow/Arrow";
+
 import styles from "./MainHeaderNav.module.scss";
 
 interface DropdownState {
@@ -42,18 +50,15 @@ export const MainHeaderNav = () => {
         isOffersOpened: false,
     });
 
-    useOnClickOutside(
-        communityRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isCommunityOpened: false })),
-    );
-    useOnClickOutside(
-        aboutProjectRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
-    );
-    useOnClickOutside(
-        offersRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isOffersOpened: false })),
-    );
+    useOnClickOutside(communityRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isCommunityOpened: false }),
+    ));
+    useOnClickOutside(aboutProjectRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isAboutProjectOpened: false }),
+    ));
+    useOnClickOutside(offersRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isOffersOpened: false }),
+    ));
 
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
@@ -88,10 +93,7 @@ export const MainHeaderNav = () => {
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
-                    <ReactSVG
-                        className={styles.searchIcn}
-                        src={searchIcon}
-                    />
+                    <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </IconButton>
                 <Popup
                     className={styles.popup}
@@ -204,7 +206,7 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getBlogPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.blog")}
                     </Link>
@@ -273,7 +275,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
                     </Link>
@@ -299,7 +301,9 @@ export const MainHeaderNav = () => {
                         className={styles.dropdownLink}
                         to={getAboutProjectPageUrl(locale)}
                     >
-                        {t("main.welcome.header.about-project.about-goodsurfing")}
+                        {t(
+                            "main.welcome.header.about-project.about-goodsurfing",
+                        )}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
