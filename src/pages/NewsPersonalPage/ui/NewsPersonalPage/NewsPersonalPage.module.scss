@@ -24,3 +24,15 @@
 .content, .shareBlock {
     margin-top: 40px;
 }
+
+@media (max-width: 1200px) {
+    .wrapper {
+        padding-top: 30px;
+    }
+    .articleWrapper, .commentWrapper {
+        padding: 20px;
+    }
+    .navigation {
+        padding: 0 20px;
+    }
+}

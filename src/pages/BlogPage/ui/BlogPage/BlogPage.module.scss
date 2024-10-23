@@ -9,8 +9,15 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 60px;
-    flex-wrap: wrap;
-    gap: 10px
+    column-gap: 30px;
+    row-gap: 10px;
+}
+
+.articleFilter {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .content {
@@ -28,13 +35,16 @@
 .articlesList {
     max-width: 780px;
     width: 100%;
+}
 
+.search {
+    max-width: 370px;
 }
 
 @media (max-width: 1000px) {
     .container {
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .articlesList {
@@ -44,11 +54,23 @@
 }
 
 @media (max-width: 992px) {
+    .top {
+        flex-direction: column;
+    }
+    .search {
+        max-width: none;
+    }
     .memberBanner {
         max-width: none;
     }
     .content {
         flex-wrap: wrap;
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width: 576px) {
+    .articleFilter {
         flex-direction: column-reverse;
     }
 }

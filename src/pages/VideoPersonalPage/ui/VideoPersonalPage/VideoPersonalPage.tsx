@@ -26,6 +26,7 @@ const VideoPersonalPage = () => {
                     mainLink={getVideoPageUrl(locale)}
                     nameMain="Видео"
                     nameArticle="Тестовая статья"
+                    className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
                     <ArticleHeader

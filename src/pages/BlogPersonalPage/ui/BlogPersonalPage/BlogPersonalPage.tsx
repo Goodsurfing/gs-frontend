@@ -26,6 +26,7 @@ const BlogPersonalPage = () => {
                     mainLink={getBlogPageUrl(locale)}
                     nameMain="Блог"
                     nameArticle="Тестовая статья"
+                    className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
                     <ArticleHeader

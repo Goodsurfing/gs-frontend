@@ -19,8 +19,8 @@ const BlogPage = () => (
         <Header />
         <div className={styles.container}>
             <div className={styles.top}>
-                <ArticleFilter />
-                <SearchInput sx={{ maxWidth: "370px" }} />
+                <ArticleFilter className={styles.articleFilter} />
+                <SearchInput className={styles.search} />
             </div>
             <div className={styles.content}>
                 <ArticlesList
