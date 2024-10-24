@@ -22,7 +22,6 @@ import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
-import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
 import { OfferWhatToDoPage } from "@/pages/OfferWhatToDoPage";
@@ -55,9 +54,13 @@ import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 import {
     getAboutProjectPageUrl,
+    getBecomeHostPageUrl,
+    getBlogPageUrl,
+    getBlogPersonalPageUrl,
     getCategoriesPageUrl,
     getConfirmEmailPageUrl,
     getConfirmEmailSuccessPageUrl,
+    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
@@ -120,6 +123,10 @@ import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
 import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
+import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
+import { BlogPage } from "@/pages/BlogPage";
+import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
+import { BecomeHostPage } from "@/pages/BecomeHostPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -133,7 +140,8 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getOffersMapPageUrl(locale),
     },
     {
-        element: AuthRoutes.messenger, // refactor this three routes with children routes
+        // refactor this three Messenger page routes with children routes
+        element: AuthRoutes.messenger,
         label: "messenger",
         path: (locale: string) => getMessengerPageUrl(locale),
     },
@@ -151,6 +159,11 @@ const publicRoutes: RouteType[] = [
         element: <CategoriesPage />,
         label: "categories",
         path: (locale: string) => getCategoriesPageUrl(locale),
+    },
+    {
+        element: AuthRoutes.favorite_offers,
+        label: "favorite-offers",
+        path: (locale: string) => getFavoriteOffersPageUrl(locale),
     },
     {
         element: <SignInPage />,
@@ -230,7 +243,7 @@ const publicRoutes: RouteType[] = [
     },
     {
         label: "offer-layout",
-        element: <OfferLayoutPage />,
+        element: AuthRoutes.offers,
         path: (locale: string) => getOffersPageUrl(locale),
         children: [
             {
@@ -240,7 +253,7 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "offer-description",
-                element: AuthRoutes.offers_description,
+                element: <OfferDescriptionPage />,
                 path: (locale: string) => getOffersDescriptionPageUrl(locale),
             },
             {
@@ -357,9 +370,7 @@ const publicRoutes: RouteType[] = [
             {
                 label: "profile-info",
                 element: (
-                    <PrivateRouteGuard>
-                        <ProfileInfoPage />
-                    </PrivateRouteGuard>
+                    <ProfileInfoPage />
                 ),
                 path: (locale: string) => getProfileInfoPageUrl(locale),
             },
@@ -410,6 +421,21 @@ const publicRoutes: RouteType[] = [
         label: "find-job",
         element: <FindJobPage />,
         path: (locale: string) => getFindJobPageUrl(locale),
+    },
+    {
+        label: "become-host",
+        element: <BecomeHostPage />,
+        path: (locale: string) => getBecomeHostPageUrl(locale),
+    },
+    {
+        label: "blog",
+        element: <BlogPage />,
+        path: (locale: string) => getBlogPageUrl(locale),
+    },
+    {
+        label: "blog-personal",
+        element: <BlogPersonalPage />,
+        path: (locale: string) => getBlogPersonalPageUrl(locale),
     },
     {
         label: "news",

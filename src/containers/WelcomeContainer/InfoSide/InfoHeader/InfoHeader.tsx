@@ -13,8 +13,12 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import { getUserAuthData, userActions } from "@/entities/User";
 
 import {
+    getAboutProjectPageUrl,
+    getBlogPageUrl,
+    getFindJobPageUrl,
     getJournalsPageUrl,
     getMainPageUrl,
+    getMembershipPageUrl,
     getNPOPageUrl,
     getNewsPageUrl,
     getOurTeamPageUrl,
@@ -110,7 +114,7 @@ const InfoHeader = memo(() => {
                     <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={dropdownOpened.isCommunityOpened} />
                     <Popup isOpen={dropdownOpened.isCommunityOpened} className={styles.popup}>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getBlogPageUrl(locale)}>
                             {t("main.welcome.header.community.blog")}
                         </Link>
                         <Link to={getVideoPageUrl(locale)}>
@@ -147,7 +151,7 @@ const InfoHeader = memo(() => {
                         <Link to={getOurTeamPageUrl(locale)}>
                             {t("main.welcome.header.about-project.our-team")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getMembershipPageUrl(locale)}>
                             {t("main.welcome.header.about-project.how-it-works")}
                         </Link>
                         <Link to={getRulesPageUrl(locale)}>
@@ -158,6 +162,12 @@ const InfoHeader = memo(() => {
                         </Link>
                         <Link to={getNewsPageUrl(locale)}>
                             {t("main.welcome.header.about-project.news")}
+                        </Link>
+                        <Link to={getAboutProjectPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.about-goodsurfing")}
+                        </Link>
+                        <Link to={getFindJobPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.find-job")}
                         </Link>
                     </Popup>
                 </div>

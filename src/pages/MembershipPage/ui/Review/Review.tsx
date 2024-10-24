@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
-import { Navigation, Pagination } from "swiper";
+import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -50,7 +50,7 @@ export const Review: FC<ReviewProps> = (props: ReviewProps) => {
             <h2 className={styles.title}>{t("review.Отзывы")}</h2>
             <Swiper
                 className={styles.swiper}
-                modules={[Navigation, Pagination]}
+                modules={[Navigation]}
                 centeredSlides
                 spaceBetween={50}
                 slidesPerView={1}

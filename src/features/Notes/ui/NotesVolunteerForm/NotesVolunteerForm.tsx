@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ErrorType } from "@/types/api/error";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
+import { FullFormApplication } from "@/entities/Application";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
-import {
-    VolunteerModalReview,
-    useCreateVolunteerReviewMutation,
-    useLazyGetVolunteerReviewByIdQuery,
-} from "@/entities/Review";
+import { VolunteerModalReview } from "@/entities/Review";
+import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -18,73 +16,76 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { VolunteerReviewFields } from "../../model/types/notes";
+import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
 
 export const NotesVolunteerForm = () => {
-    const defaultValues: DefaultValues<VolunteerReviewFields> = {
-        volunteerReview: {
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
 
     const [toast, setToast] = useState<ToastAlert>();
-    const form = useForm<VolunteerReviewFields>({
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control, reset } = form;
-    const [getReviewData] = useLazyGetVolunteerReviewByIdQuery();
-    const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
-        null,
-    );
-    const [createVolunteerReview] = useCreateVolunteerReviewMutation();
+    const { handleSubmit, control } = form;
+    const [selectedApplication,
+        setSelectedApplication] = useState<FullFormApplication | null>(null);
+    // const [getReviewData] = useLazyGetToOrganizationsReviewByIdQuery();
+    const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (selectedReviewId) {
-                getReviewData(
-                    selectedReviewId.toString(),
-                )
-                    .unwrap()
-                    .then((resutlData) => {
-                        const {
-                            stars, text, applicationForm, id,
-                        } = resutlData;
-                        reset({
-                            volunteerReview: {
-                                stars, text, applicationForm, id,
-                            },
-                        });
-                    })
-                    .catch(() => {
-                        reset();
-                    });
-            }
-        };
-        fetchData();
-    }, [getReviewData, reset, selectedReviewId]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         if (selectedApplicationId) {
+    //             await getReviewData(selectedApplicationId.toString())
+    //                 .unwrap()
+    //                 .then((resultData) => {
+    //                     const {
+    //                         stars, text, applicationForm, id,
+    //                     } = resultData;
+    //                     reset({
+    //                         review: {
+    //                             stars,
+    //                             text,
+    //                             applicationForm,
+    //                             id,
+    //                         },
+    //                     });
+    //                 })
+    //                 .catch(() => {
+    //                     reset();
+    //                 });
+    //         }
+    //     };
+    //     fetchData();
+    // }, [getReviewData, reset, selectedApplicationId]);
 
-    const onReviewClick = (id: number) => {
-        setSelectedReviewId(id);
+    const onReviewClick = (application: FullFormApplication) => {
+        setSelectedApplication(application);
     };
 
     const resetSelectedReview = () => {
-        setSelectedReviewId(null);
+        setSelectedApplication(null);
     };
 
     const onSendReview = handleSubmit(async (data) => {
         const {
-            volunteerReview: { stars, text },
+            review: { stars, text },
         } = data;
-        if (selectedReviewId) {
+        if (selectedApplication) {
             setToast(undefined);
-            await createVolunteerReview({
-                applicationForm: `${API_BASE_URL}application_forms/${selectedReviewId.toString()}`,
-                stars,
-                text,
-            })
+            const formData = new FormData();
+            formData.append(
+                "applicationForm",
+                `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
+            );
+            if (stars) formData.append("stars", stars.toString());
+            formData.append("text", text);
+            await createToOrganizationReview(formData)
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -111,14 +112,14 @@ export const NotesVolunteerForm = () => {
                 isDragDisable
             />
             <Controller
-                name="volunteerReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <VolunteerModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={mockedApplications[0]}
-                        isOpen={!!selectedReviewId}
+                        application={selectedApplication}
+                        isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
                         successText={

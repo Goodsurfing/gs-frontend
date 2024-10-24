@@ -1,4 +1,4 @@
-import { OfferState } from "@/entities/Offer";
+import { FormApplicationStatus } from "@/entities/Application";
 import { Language } from "@/entities/Volunteer";
 import { Skills } from "@/shared/data/skills";
 
@@ -9,7 +9,7 @@ export interface UserType {
     date: string;
     lastMessage: string;
     newMessages: number;
-    state: OfferState
+    state: FormApplicationStatus;
 }
 
 export interface UserChatType {

@@ -14,7 +14,6 @@
     background-position: center;
     filter: brightness(50%);
     min-height: 346px;
-    padding: 6rem 10rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,6 +34,7 @@
     z-index: 2;
     width: 100%;
     max-width: 980px;
+    padding: 0 20px;
 }
 
 .title {

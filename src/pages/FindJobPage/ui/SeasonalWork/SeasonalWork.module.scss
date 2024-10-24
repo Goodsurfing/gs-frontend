@@ -7,3 +7,10 @@
 .description {
     margin-top: 30px;
 }
+
+@media (max-width: 992px) {
+    .wrapper {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

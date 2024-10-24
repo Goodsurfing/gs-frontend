@@ -53,10 +53,19 @@
                     "how-it-works": "Cómo funciona",
                     "rules": "Normas",
                     "privacy-policy": "Política de Privacidad",
-                    "news": "Noticias"
+                    "news": "Noticias",
+                    "about-goodsurfing": "Sobre Goodsurfing",
+                    "find-job": "Buscar trabajo"
                 },
-                "profile": "Perfil",
+                "for-organizers": {
+                    "title": "Para los organizadores",
+                    "become-a-host": "Convertirse en anfitrión",
+                    "courses-for-organizers": "Cursos para organizadores"
+                },
+                "write-us": "Escríbenos",
+                "favorite": "Favoritos",
                 "my-page": "Mi página",
+                "profile": "Perfil",
                 "about-me": "Acerca de mí",
                 "host-dashboard": "Panel de host",
                 "volunteer-dashboard": "Panel de control voluntario",
@@ -146,6 +155,9 @@
         "Искусство": "Arte",
         "Археология": "Arqueología",
         "Онлайн": "En línea",
+        "Оплачиваемая работа": "Trabajo remunerado",
+        "Международные": "Internacionales",
+        "Другие категории": "Otras categorías",
         "Другое": "Otros",
         "вакансий": "vacantes",
         "вакансия": "vacante",

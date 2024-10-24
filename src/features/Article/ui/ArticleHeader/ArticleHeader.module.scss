@@ -6,11 +6,15 @@
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .infoWrapper {
     display: flex;
-    gap: 30px;
+    column-gap: 30px;
+    row-gap: 10px;
+    flex-wrap: wrap;
     align-items: center;
 }
 

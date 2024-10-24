@@ -21,7 +21,7 @@ const MainPage: FC = () => (
         <Section title="Как это работает?">
             <HowItWorkContainer />
         </Section>
-        <Section title="Интересные предложения">
+        <Section title="Интересные предложения" className={styles.offersContainer}>
             <OffersContainer />
         </Section>
         <Section title="Наши преимущества">

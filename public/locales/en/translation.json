@@ -53,8 +53,17 @@
                     "how-it-works": "How it works",
                     "rules": "Rules",
                     "privacy-policy": "Privacy policy",
-                    "news": "News"
+                    "news": "News",
+                    "about-goodsurfing": "About Goodsurfing",
+                    "find-job": "Find a Job"
                 },
+                "for-organizers": {
+                    "title": "For organizers",
+                    "become-a-host": "Become a host",
+                    "courses-for-organizers": "Courses for organizers"
+                },
+                "write-us": "Write us",
+                "favorite": "Favorites",
                 "messages": "Messages",
                 "my-page": "My page",
                 "about-me": "About me",
@@ -146,8 +155,11 @@
         "Спорт": "Sports",
         "Искусство": "Art",
         "Археология": "Archaeology",
+        "Оплачиваемая работа": "Paid work",
+        "Международные": "International",
         "Онлайн": "Online",
         "Другое": "Other",
+        "Другие категории": "Other categories",
         "вакансий": "vacancies",
         "вакансия": "vacancy",
         "вакансии": "vacancies"

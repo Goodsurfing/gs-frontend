@@ -10,3 +10,15 @@
 .slide {
     margin: 0 auto;
 }
+
+@media (max-width: 992px) {
+    .swiper {
+        padding: 0 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .swiper {
+        padding: 0 10px;
+    }
+}

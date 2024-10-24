@@ -22,6 +22,9 @@ export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id",
 
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
 
+// Favorite offers page
+export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.favorite_offers}`);
+
 // Auth bounded pages
 
 export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email}`;
@@ -94,7 +97,7 @@ export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${loc
 
 export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}/:id`;
 
-export const getOfferPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offer_personal}/:id`;
+export const getOfferPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offer_personal}/${id}`;
 
 // Volunteer pages
 
@@ -130,9 +133,15 @@ export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 
 export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
 
+export const getBecomeHostPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.become_host}`;
+
+export const getBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.blog}`;
+
+export const getBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.blog}/${id}`;
+
 export const getNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}`;
 
-export const getNewsPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.news}/:id`;
+export const getNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.news}/${id}`;
 
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
 

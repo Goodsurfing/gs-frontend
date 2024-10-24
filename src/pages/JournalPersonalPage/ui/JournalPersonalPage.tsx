@@ -17,6 +17,7 @@ const JournalPersonalPage = () => {
                     mainLink={getJournalsPageUrl(locale)}
                     nameMain="Журнал"
                     nameArticle="Тестовая статья"
+                    className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
                     <ArticleHeader

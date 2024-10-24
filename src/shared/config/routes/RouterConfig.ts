@@ -12,6 +12,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFERS_MAP]: "/offers-map",
     [AppRoutes.MESSENGER]: "/messenger", // :id
     [AppRoutes.CATEGORIES]: "/categories",
+    [AppRoutes.FAVORITE_OFFERS]: "/favorite-offers",
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
     [AppRoutes.RESET_PASSWORD]: "/reset-password",
@@ -57,6 +58,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.RULES]: "/rules",
     [AppRoutes.ABOUT_PROJECT]: "/about-project",
     [AppRoutes.FIND_JOB]: "/find-job",
+    [AppRoutes.BECOME_HOST]: "/become-host",
+    [AppRoutes.BLOG]: "/blog",
     [AppRoutes.NEWS]: "/news",
     [AppRoutes.JOURNALS]: "/journals",
     [AppRoutes.VIDEO]: "/video",

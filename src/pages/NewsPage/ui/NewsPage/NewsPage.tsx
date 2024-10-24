@@ -28,11 +28,7 @@ const NewsPage = () => (
                     data={mockedArticlesData}
                 />
                 <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "30px",
-                    }}
+                    className={styles.contentRight}
                 >
                     <Category className={styles.category} />
                     <MemberBanner className={styles.memberBanner} />

@@ -79,6 +79,16 @@
         color: var(--accent-color);
         margin-top: 15px;
     }
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 20px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 10px solid var(--bg-field);
+    }
 }
 
 .offersWrapper {

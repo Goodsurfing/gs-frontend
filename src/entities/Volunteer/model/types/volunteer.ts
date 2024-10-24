@@ -1,5 +1,4 @@
 import { Article } from "@/entities/Article";
-import { VideoGallery } from "@/entities/Host/model/types/host";
 import { Offer } from "@/entities/Offer";
 import { Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
@@ -15,7 +14,6 @@ export interface Volunteer extends Profile {
     offers?: Offer[];
     reviews?: Review[];
     gallery?: Gallery;
-    videoGallery?: VideoGallery;
     certificates?: string[];
     articles?: Article[];
     favoriteOffers?: Offer[];

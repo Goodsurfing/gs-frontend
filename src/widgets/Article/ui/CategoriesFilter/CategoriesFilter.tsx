@@ -1,8 +1,8 @@
 import React, { FC, MouseEvent } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import cn from "classnames";
-import { tags } from "../../model/data/tags.data";
 import styles from "./CategoriesFilter.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
 interface CategoriesFilterProps {
     className?: string;
@@ -12,6 +12,7 @@ interface CategoriesFilterProps {
 
 export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
     const { className, value, onChange } = props;
+    const { tags } = useCategories();
 
     return (
         <div className={cn(className, styles.wrapper)}>

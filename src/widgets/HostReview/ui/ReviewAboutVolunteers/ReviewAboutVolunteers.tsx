@@ -2,10 +2,10 @@ import React, { FC, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { Review } from "@/types/review";
 
-import { HostReviewFields } from "@/features/Notes";
+import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { Application } from "@/entities/Host";
+import { FullFormApplication } from "@/entities/Application";
 import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { HostModalReview } from "@/entities/Review";
 
@@ -19,14 +19,14 @@ import { fakeUserData } from "../../model/data/mockedUsersData";
 import styles from "./ReviewAboutVolunteers.module.scss";
 
 export const ReviewAboutVolunteers: FC = () => {
-    const defaultValues: DefaultValues<HostReviewFields> = {
-        hostReview: {
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
     const [toast] = useState<ToastAlert>();
-    const form = useForm<HostReviewFields>({
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -60,15 +60,20 @@ export const ReviewAboutVolunteers: FC = () => {
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
                 data={mockedApplications}
-                renderItem={(item: Application) => (
-                    <ReviewMiniCard data={item} onReviewClick={onReviewClick} variant="volunteer" key={item.id} />
+                renderItem={(item: FullFormApplication) => (
+                    <ReviewMiniCard
+                        data={item}
+                        onReviewClick={onReviewClick}
+                        variant="volunteer"
+                        key={item.id}
+                    />
                 )}
             />
             <div className={styles.fullCardContainer}>
                 {renderFullCards(fakeUserData)}
             </div>
             <Controller
-                name="hostReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <HostModalReview

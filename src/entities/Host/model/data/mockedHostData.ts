@@ -1,15 +1,12 @@
-import { Gallery } from "@/modules/Gallery/model/types/gallery";
-
-import { mockedArticlesData } from "@/entities/Article/model/data/mockedArticleData";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 import defaultImageGallery from "@/shared/assets/images/offers/1.jpg";
 
 import {
-    Application,
-    FullHost, Host, VideoGallery,
+    Host,
 } from "@/entities/Host";
 import { Review } from "@/entities/Review";
+import { FullFormApplication } from "@/entities/Application";
 
 export const mockedHostData: Host = {
     id: "1",
@@ -43,6 +40,8 @@ export const mockedHostData: Host = {
         facebook: "string",
         instagram: "string",
         telegram: "string",
+        galleryImages: [],
+        videoGallery: [],
     },
     team: [
         {
@@ -67,22 +66,14 @@ export const mockedHostData: Host = {
             telegram: "string",
             memberProfiles: [],
             membershipEndDate: "",
+            galleryImages: [],
+            videoGallery: [],
         },
     ],
     vacancies: [
         "https://example.com/",
     ],
 };
-
-const mockedGallery: Gallery = {
-    images: [defaultImageGallery, defaultImageGallery, defaultImageGallery],
-};
-
-const mockedVideoGallery: VideoGallery = [
-    { id: "1", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-    { id: "2", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-    { id: "3", url: "https://www.youtube.com/watch?v=NcnTDLCX9bM" },
-];
 
 export const mockedReview: Review[] = [
     {
@@ -111,17 +102,7 @@ export const mockedReview: Review[] = [
     },
 ];
 
-export const mockedFullHostData: FullHost = {
-    host: mockedHostData,
-    team: [],
-    articles: mockedArticlesData,
-    offers: mockedOffersData,
-    gallery: mockedGallery,
-    videoGallery: mockedVideoGallery,
-    reviews: mockedReview,
-};
-
-export const mockedApplications: Application[] = [
+export const mockedApplications: FullFormApplication[] = [
     {
         id: 1,
         status: "new",
@@ -150,6 +131,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -188,6 +171,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -226,6 +211,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -264,6 +251,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",
@@ -302,6 +291,8 @@ export const mockedApplications: Application[] = [
                 vk: "",
                 memberProfiles: [],
                 membershipEndDate: "",
+                galleryImages: [],
+                videoGallery: [],
             },
             additionalSkills: [],
             externalInfo: "",

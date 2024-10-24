@@ -31,3 +31,9 @@
 
 	background-color: #ECF1F4;
 }
+
+@media (max-width: 768px) {
+	.offersContainer {
+		width: 100%;
+	}
+}

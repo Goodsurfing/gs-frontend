@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Application } from "@/entities/Host";
+import { FullFormApplication } from "@/entities/Application";
 
 import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 import { textSlice } from "@/shared/lib/textSlice";
@@ -11,7 +11,7 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./ReviewMiniCard.module.scss";
 
 interface ReviewMiniCardProps {
-    data: Application;
+    data: FullFormApplication;
     onReviewClick: (id: number) => void;
     variant: "offer" | "volunteer";
 }
@@ -32,9 +32,19 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
                     <Avatar icon={defaultAvatarImage} size="SMALL" />
                     <div className={styles.nameAddress}>
                         <span className={styles.name}>
-                            {textSlice(`${volunteer.profile.firstName} ${volunteer.profile.lastName}`, 50, "title")}
+                            {textSlice(
+                                `${volunteer.profile.firstName} ${volunteer.profile.lastName}`,
+                                50,
+                                "title",
+                            )}
                         </span>
-                        <span className={styles.address}>{textSlice(volunteer.profile.country, 25, "address")}</span>
+                        <span className={styles.address}>
+                            {textSlice(
+                                volunteer.profile.country,
+                                25,
+                                "address",
+                            )}
+                        </span>
                     </div>
                 </div>
                 <Button

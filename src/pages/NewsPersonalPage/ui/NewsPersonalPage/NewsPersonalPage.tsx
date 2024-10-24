@@ -23,6 +23,7 @@ const NewsPersonalPage = () => {
                     mainLink={getNewsPageUrl(locale)}
                     nameMain="Новости"
                     nameArticle="Тестовая статья"
+                    className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
                     <ArticleHeader
