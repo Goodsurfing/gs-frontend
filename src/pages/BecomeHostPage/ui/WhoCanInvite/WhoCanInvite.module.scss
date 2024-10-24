@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+
+    h2 {
+        font-weight: 400;
+        font-size: 26px;
+        text-align: center;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 18px;
+        text-align: center;
+        max-width: 875px;
+        margin: 0 auto;
+    }
+}

@@ -13,6 +13,7 @@ import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
 import vkIcon from "@/shared/assets/icons/footer/vk.svg";
 import {
     getAboutProjectPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
@@ -215,7 +216,7 @@ export const Footer = memo(() => {
                             <div className={styles.menu__content}>
                                 <Link
                                     className={styles.link}
-                                    to={getMainPageUrl(locale)}
+                                    to={getBecomeHostPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.for-organizers.become-a-host")}
                                 </Link>

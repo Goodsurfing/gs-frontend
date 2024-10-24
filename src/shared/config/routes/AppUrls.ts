@@ -133,6 +133,8 @@ export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 
 export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;
 
+export const getBecomeHostPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.become_host}`;
+
 export const getBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.blog}`;
 
 export const getBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.blog}/${id}`;

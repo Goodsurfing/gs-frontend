@@ -54,6 +54,7 @@ import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 import {
     getAboutProjectPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getBlogPersonalPageUrl,
     getCategoriesPageUrl,
@@ -125,6 +126,7 @@ import { RouteType } from "../types/langRouter";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { BlogPage } from "@/pages/BlogPage";
 import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
+import { BecomeHostPage } from "@/pages/BecomeHostPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -419,6 +421,11 @@ const publicRoutes: RouteType[] = [
         label: "find-job",
         element: <FindJobPage />,
         path: (locale: string) => getFindJobPageUrl(locale),
+    },
+    {
+        label: "become-host",
+        element: <BecomeHostPage />,
+        path: (locale: string) => getBecomeHostPageUrl(locale),
     },
     {
         label: "blog",

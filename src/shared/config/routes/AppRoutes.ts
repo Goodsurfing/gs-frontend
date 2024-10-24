@@ -52,6 +52,7 @@ export enum AppRoutes {
     OUR_TEAM = "our_team",
     RULES = "rules",
     FIND_JOB = "find_job",
+    BECOME_HOST = "become_host",
     BLOG = "blog",
     NEWS = "news",
     JOURNALS = "journals",

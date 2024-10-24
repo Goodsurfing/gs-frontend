@@ -1,0 +1,50 @@
+.wrapeprImage {
+    background-image: url('@/shared/assets/images/become-host/becomeHost.png');
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    min-height: 624px;
+    padding: 6rem 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-secondary-1);
+    max-width: 33rem;
+    line-height: 3rem;
+    text-align: center;
+}
+
+.description {
+    color: var(--text-secondary-1);
+    font-weight: 400;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    max-width: 770px;
+}
+
+.innerWrapper {
+    margin: 0 auto;
+}
+
+.buttonPrice {
+    margin-top: 60px;
+    display: flex;
+    gap: 28px;
+}
+
+
+@media(max-width: 992px) {
+    .wrapeprImage {
+        padding: 20px;
+        min-height: 424px;
+    }
+}
