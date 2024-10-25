@@ -1,6 +1,8 @@
 .wrapeprImage {
     background-image: url('@/shared/assets/images/become-host/becomeHost.png');
     width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

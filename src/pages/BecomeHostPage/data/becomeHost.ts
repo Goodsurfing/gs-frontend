@@ -4,6 +4,9 @@ import inviteVolunteer3 from "@/shared/assets/images/become-host/inviteVolunteer
 import inviteVolunteer4 from "@/shared/assets/images/become-host/inviteVolunteer4.svg";
 import inviteVolunteer5 from "@/shared/assets/images/become-host/inviteVolunteer5.svg";
 import inviteVolunteer6 from "@/shared/assets/images/become-host/inviteVolunteer6.svg";
+import howCanHelp1 from "@/shared/assets/images/become-host/howCanHelp1.svg";
+import howCanHelp2 from "@/shared/assets/images/become-host/howCanHelp2.svg";
+import howCanHelp3 from "@/shared/assets/images/become-host/howCanHelp3.svg";
 
 export const whoCanInviteVolunteersData = [
     {
@@ -29,5 +32,41 @@ export const whoCanInviteVolunteersData = [
     {
         image: inviteVolunteer6,
         text: "Центры работы с детьми",
+    },
+];
+
+export const howCanHelpData = [
+    {
+        image: howCanHelp1,
+        title: "Своим трудом",
+        marks: ["Копать и строить", "Работать с гостями", "Ухаживать за растениями и животными ", "Помогать с готовкой", "И многое другое"],
+    },
+    {
+        image: howCanHelp2,
+        title: "Своей профессией и навыками",
+        marks: ["Снимать фото и видео", "Как профессиональный инженер или архитектор ", "Наблюдать за птицами и животными ", "Как врач или медсестра", "И многое другое"],
+    },
+    {
+        image: howCanHelp3,
+        title: "Интеллектуальными усилиями",
+        marks: ["Переводить документы и материалы", "Вести социальные сети ", "Обучать участников проекта знаниям и языкам", "Руководить"],
+    },
+];
+
+export const betterProjectData = [
+    {
+        image: howCanHelp1,
+        title: "Своим трудом",
+        marks: ["Копать и строить", "Работать с гостями", "Ухаживать за растениями и животными ", "Помогать с готовкой", "И многое другое"],
+    },
+    {
+        image: howCanHelp2,
+        title: "Своей профессией и навыками",
+        marks: ["Снимать фото и видео", "Как профессиональный инженер или архитектор ", "Наблюдать за птицами и животными ", "Как врач или медсестра", "И многое другое"],
+    },
+    {
+        image: howCanHelp3,
+        title: "Интеллектуальными усилиями",
+        marks: ["Переводить документы и материалы", "Вести социальные сети ", "Обучать участников проекта знаниям и языкам", "Руководить"],
     },
 ];

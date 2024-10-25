@@ -17,3 +17,36 @@
         margin: 0 auto;
     }
 }
+
+.container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: baseline;
+    column-gap: 10px;
+    row-gap: 40px;
+}
+
+.markWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    span {
+        text-align: center;
+    }
+}
+
+@media (max-width: 1200px) {
+    .wrapper {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
