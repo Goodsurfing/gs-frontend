@@ -1,0 +1,36 @@
+.wrapper {
+    background-image: url("@/shared/assets/images/become-host/whoIsGoodsurfers.png");
+    width: 100%;
+    min-height: 391px;
+    max-width: 1920px;
+    margin: 0 auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 60px 0;
+
+    h2 {
+        font-weight: 400;
+        font-size: 26px;
+        text-align: center;
+        color: var(--text-secondary-1);
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 18px;
+        text-align: center;
+        max-width: 875px;
+        margin: 0 auto;
+        color: var(--text-secondary-1);
+    }
+}
+
+.button {
+    width: max-content;
+    margin: 0 auto;
+}

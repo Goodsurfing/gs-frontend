@@ -6,6 +6,7 @@ import { WhoCanInvite } from "../WhoCanInvite/WhoCanInvite";
 import { HowCanHelp } from "../HowCanHelp/HowCanHelp";
 import { WhatReturn } from "../WhatReturn/WhatReturn";
 import { ProjectBetter } from "../ProjectBetter/ProjectBetter";
+import { WhoIsGoodsurfers } from "../WhoIsGoodsurfers/WhoIsGoodsurfers";
 
 const BecomeHostPage = () => (
     <MainPageLayout>
@@ -15,6 +16,7 @@ const BecomeHostPage = () => (
             <HowCanHelp />
             <WhatReturn />
             <ProjectBetter />
+            <WhoIsGoodsurfers />
         </div>
     </MainPageLayout>
 );

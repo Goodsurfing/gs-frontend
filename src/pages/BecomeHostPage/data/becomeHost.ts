@@ -7,6 +7,9 @@ import inviteVolunteer6 from "@/shared/assets/images/become-host/inviteVolunteer
 import howCanHelp1 from "@/shared/assets/images/become-host/howCanHelp1.svg";
 import howCanHelp2 from "@/shared/assets/images/become-host/howCanHelp2.svg";
 import howCanHelp3 from "@/shared/assets/images/become-host/howCanHelp3.svg";
+import betterProject1 from "@/shared/assets/images/become-host/betterProject1.svg";
+import betterProject2 from "@/shared/assets/images/become-host/betterProject2.svg";
+import betterProject3 from "@/shared/assets/images/become-host/betterProject3.svg";
 
 export const whoCanInviteVolunteersData = [
     {
@@ -55,18 +58,18 @@ export const howCanHelpData = [
 
 export const betterProjectData = [
     {
-        image: howCanHelp1,
-        title: "Своим трудом",
-        marks: ["Копать и строить", "Работать с гостями", "Ухаживать за растениями и животными ", "Помогать с готовкой", "И многое другое"],
+        image: betterProject1,
+        title: "Проведение мероприятий",
+        marks: ["Экскурсии и туры", "Вечеринки", "Местные праздники"],
     },
     {
-        image: howCanHelp2,
-        title: "Своей профессией и навыками",
-        marks: ["Снимать фото и видео", "Как профессиональный инженер или архитектор ", "Наблюдать за птицами и животными ", "Как врач или медсестра", "И многое другое"],
+        image: betterProject2,
+        title: "Обучение",
+        marks: ["Познавательные лекции", "Обучение делу в проекте", "Языки", "Йога"],
     },
     {
-        image: howCanHelp3,
-        title: "Интеллектуальными усилиями",
-        marks: ["Переводить документы и материалы", "Вести социальные сети ", "Обучать участников проекта знаниям и языкам", "Руководить"],
+        image: betterProject3,
+        title: "Помощь с транспортом",
+        marks: ["Оплата проезда", "Трансфер до проекта с вокзала / аэропорта", "Предоставить велосипед"],
     },
 ];

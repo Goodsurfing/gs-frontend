@@ -40,6 +40,7 @@
     width: 100%;
     max-width: 1180px;
     margin: 0 auto;
+    padding: 0 40px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 10px;
@@ -78,6 +79,7 @@
 
 @media (max-width: 576px) {
     .container {
+        padding: 0 20px;
         grid-template-columns: 1fr;
     }
 }
