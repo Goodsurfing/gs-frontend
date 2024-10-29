@@ -7,6 +7,7 @@ import { HowCanHelp } from "../HowCanHelp/HowCanHelp";
 import { WhatReturn } from "../WhatReturn/WhatReturn";
 import { ProjectBetter } from "../ProjectBetter/ProjectBetter";
 import { WhoIsGoodsurfers } from "../WhoIsGoodsurfers/WhoIsGoodsurfers";
+import { ReviewAboutGoodsurfers } from "../ReviewAboutGoodsurfers/ReviewAboutGoodsurfers";
 
 const BecomeHostPage = () => (
     <MainPageLayout>
@@ -17,6 +18,7 @@ const BecomeHostPage = () => (
             <WhatReturn />
             <ProjectBetter />
             <WhoIsGoodsurfers />
+            <ReviewAboutGoodsurfers />
         </div>
     </MainPageLayout>
 );

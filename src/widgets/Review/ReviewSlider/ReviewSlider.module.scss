@@ -1,0 +1,16 @@
+.wrapper {
+    width: 100%;
+}
+
+.card {
+    width: 100%;
+    display: flex;
+    column-gap: 40px;
+    row-gap: 20px;
+    box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
+    background-color: var(--text-secondary-1);
+}
+
+.titleImage {
+    width: 100%;
+}
