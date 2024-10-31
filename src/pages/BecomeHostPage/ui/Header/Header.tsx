@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getProfileRolePagePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 
 export const Header = () => {
     const { locale } = useLocale();
     const navigate = useNavigate();
 
     const onBecomeHostClick = () => {
-        navigate(getProfileRolePagePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     return (

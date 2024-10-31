@@ -51,7 +51,7 @@ export const getProfilePrivacyPageUrl: RoutePathFunction = (locale) => `/${local
 
 export const getProfilePreferencesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_preferences}`;
 
-export const getProfileRolePagePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_role}`;
+export const getProfileRolePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.profile_role}`;
 
 // Host pages
 

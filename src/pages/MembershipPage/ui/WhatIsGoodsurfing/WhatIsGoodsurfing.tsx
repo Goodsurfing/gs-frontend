@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "@/shared/ui/Button/Button";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getProfileRolePagePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./WhatIsGoodsurfing.module.scss";
 
 interface WhatIsGoodsurfingProps {
@@ -22,7 +22,7 @@ export const WhatIsGoodsurfing: FC<WhatIsGoodsurfingProps> = (
     const { locale } = useLocale();
 
     const handleNavigateToRole = () => {
-        navigate(getProfileRolePagePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     return (

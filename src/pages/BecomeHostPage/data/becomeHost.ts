@@ -10,6 +10,11 @@ import howCanHelp3 from "@/shared/assets/images/become-host/howCanHelp3.svg";
 import betterProject1 from "@/shared/assets/images/become-host/betterProject1.svg";
 import betterProject2 from "@/shared/assets/images/become-host/betterProject2.svg";
 import betterProject3 from "@/shared/assets/images/become-host/betterProject3.svg";
+import whyUseIt1 from "@/shared/assets/images/become-host/whyUseIt1.svg";
+import whyUseIt2 from "@/shared/assets/images/become-host/whyUseIt2.svg";
+import whyUseIt3 from "@/shared/assets/images/become-host/whyUseIt3.svg";
+import whyUseIt4 from "@/shared/assets/images/become-host/whyUseIt4.svg";
+import whyUseIt5 from "@/shared/assets/images/become-host/whyUseIt5.svg";
 
 export const whoCanInviteVolunteersData = [
     {
@@ -71,5 +76,28 @@ export const betterProjectData = [
         image: betterProject3,
         title: "Помощь с транспортом",
         marks: ["Оплата проезда", "Трансфер до проекта с вокзала / аэропорта", "Предоставить велосипед"],
+    },
+];
+
+export const whyUseItData = [
+    {
+        image: whyUseIt1,
+        title: "Проведение мероприятий",
+    },
+    {
+        image: whyUseIt2,
+        title: "Обучение",
+    },
+    {
+        image: whyUseIt3,
+        title: "Помощь с транспортом",
+    },
+    {
+        image: whyUseIt4,
+        title: "Помощь с транспортом",
+    },
+    {
+        image: whyUseIt5,
+        title: "Помощь с транспортом",
     },
 ];

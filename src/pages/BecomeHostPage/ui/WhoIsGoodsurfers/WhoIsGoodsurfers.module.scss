@@ -34,3 +34,9 @@
     width: max-content;
     margin: 0 auto;
 }
+
+@media (max-width: 576px) {
+    .wrapper {
+        padding: 60px 20px;
+    }
+}

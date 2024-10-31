@@ -15,6 +15,7 @@ import {
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import styles from "./ReviewSlider.module.scss";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 
 export interface ReviewAuthor {
     name: string;
@@ -47,6 +48,7 @@ export const ReviewSlider: FC<ReviewSliderProps> = (props) => {
         wrapperClass,
     } = props;
     const { locale } = useLocale();
+    const { width } = useWindowDimensions();
 
     const linkTo = about === "host"
         ? getHostPersonalPageUrl(locale, "1")
@@ -89,7 +91,7 @@ export const ReviewSlider: FC<ReviewSliderProps> = (props) => {
                 spaceBetween={40}
                 slidesPerView={slidesPerView}
                 modules={[Navigation]}
-                navigation
+                navigation={width > 576}
                 className={styles.swiper}
                 wrapperClass={cn(styles.swiperWrapper, wrapperClass)}
                 breakpoints={{
@@ -101,12 +103,8 @@ export const ReviewSlider: FC<ReviewSliderProps> = (props) => {
                         slidesPerView: 1,
                         spaceBetween: 10,
                     },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 10,
-                    },
                     1024: {
-                        slidesPerView: 2,
+                        slidesPerView: 1,
                         spaceBetween: 40,
                     },
                     1200: {

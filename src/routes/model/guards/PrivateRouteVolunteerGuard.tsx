@@ -5,7 +5,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 
-import { getProfileRolePagePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 interface PrivateRouteVolunteerGuardProps {
@@ -26,7 +26,7 @@ export const PrivateRouteVolunteerGuard = memo(
             return (
                 <Navigate
                     replace
-                    to={getProfileRolePagePageUrl(locale)}
+                    to={getProfileRolePageUrl(locale)}
                     state={{ from: location }}
                 />
             );
@@ -39,7 +39,7 @@ export const PrivateRouteVolunteerGuard = memo(
         return (
             <Navigate
                 replace
-                to={getProfileRolePagePageUrl(locale)}
+                to={getProfileRolePageUrl(locale)}
                 state={{ from: location }}
             />
         );

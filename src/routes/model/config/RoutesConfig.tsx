@@ -100,7 +100,7 @@ import {
     getProfilePreferencesPageUrl,
     getProfilePrivacyPageUrl,
     getProfileResetPasswordPageUrl,
-    getProfileRolePagePageUrl,
+    getProfileRolePageUrl,
     getResetPasswordPageUrl,
     getResetPasswordVerifyPageUrl,
     getRulesPageUrl,
@@ -387,7 +387,7 @@ const publicRoutes: RouteType[] = [
             {
                 label: "profile-role",
                 element: <ProfileRolePage />,
-                path: (locale: string) => getProfileRolePagePageUrl(locale),
+                path: (locale: string) => getProfileRolePageUrl(locale),
             },
             {
                 label: "profile-privacy",

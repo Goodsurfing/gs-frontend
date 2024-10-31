@@ -7,7 +7,7 @@ import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForVolunteer.module.scss";
-import { getProfileRolePagePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface ForVolunteerProps {
@@ -23,7 +23,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
     const { locale } = useLocale();
 
     const handleNavigateToRole = () => {
-        navigate(getProfileRolePagePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     return (

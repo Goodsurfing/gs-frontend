@@ -63,3 +63,9 @@
         display: none;
     }
 }
+
+@media (max-width: 576px) {
+    .wrapper {
+        padding: 0;
+    }
+}

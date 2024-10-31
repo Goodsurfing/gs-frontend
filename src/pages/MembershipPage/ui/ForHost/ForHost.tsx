@@ -8,7 +8,7 @@ import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForHost.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getProfileRolePagePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 
 interface ForHostProps {
     className?: string;
@@ -21,7 +21,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const { locale } = useLocale();
 
     const handleNavigateToRole = () => {
-        navigate(getProfileRolePagePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     return (

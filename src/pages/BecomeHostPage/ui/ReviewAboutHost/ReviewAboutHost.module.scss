@@ -5,6 +5,7 @@
     width: 100%;
     max-width: 1920px;
     padding: 0 120px;
+    padding-bottom: 50px;
     margin: 0 auto;
 
     h2 {
@@ -14,8 +15,14 @@
     }
 }
 
+.button {
+    width: fit-content;
+    margin: 0 auto;
+}
+
 @media (max-width: 1200px) {
     .wrapper {
         padding: 0 20px;
+        padding-bottom: 50px;
     }
 }
