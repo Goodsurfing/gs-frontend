@@ -50,6 +50,7 @@ export enum AppRoutes {
     ABOUT_PROJECT = "about_project",
     NPO = "npo",
     OUR_TEAM = "our_team",
+    AMBASSADORS = "ambassadors",
     RULES = "rules",
     FIND_JOB = "find_job",
     BECOME_HOST = "become_host",

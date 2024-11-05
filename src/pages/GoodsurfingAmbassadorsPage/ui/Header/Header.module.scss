@@ -1,0 +1,21 @@
+.wrapper {
+    width: 100%;
+    min-height: 190px;
+    background-image: linear-gradient(257deg, #65FFE3 -1.78%, #1064A0 103.74%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--text-secondary-1);
+    font-weight: 600;
+}
+
+@media (max-width: 576px) {
+    .title {
+        font-size: 1.625rem;
+    }
+}

@@ -10,6 +10,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
     getAboutProjectPageUrl,
+    getAmbassadorsPageUrl,
     getBlogPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
@@ -224,7 +225,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
                     </Link>

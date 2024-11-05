@@ -38,7 +38,11 @@ export const AuthByEmailForm = memo(({
         try {
             const formData = {
                 email: data.email,
-                password: data.password,
+                security: {
+                    credentials: {
+                        password: data.password,
+                    },
+                },
             };
             const { token } = await loginUser(formData).unwrap();
 

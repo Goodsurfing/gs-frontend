@@ -54,6 +54,7 @@ import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 
 import {
     getAboutProjectPageUrl,
+    getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
     getBlogPersonalPageUrl,
@@ -127,6 +128,7 @@ import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { BlogPage } from "@/pages/BlogPage";
 import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
 import { BecomeHostPage } from "@/pages/BecomeHostPage";
+import { GoodsurfingAmbassadorsPage } from "@/pages/GoodsurfingAmbassadorsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -411,6 +413,11 @@ const publicRoutes: RouteType[] = [
         label: "our-team",
         element: <OurTeamPage />,
         path: (locale: string) => getOurTeamPageUrl(locale),
+    },
+    {
+        label: "ambassadors",
+        element: <GoodsurfingAmbassadorsPage />,
+        path: (locale: string) => getAmbassadorsPageUrl(locale),
     },
     {
         label: "rules",

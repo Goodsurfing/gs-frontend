@@ -129,6 +129,8 @@ export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePa
 
 export const getOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.our_team}`;
 
+export const getAmbassadorsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.ambassadors}`;
+
 export const getRulesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.rules}`;
 
 export const getFindJobPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.find_job}`;

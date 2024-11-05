@@ -96,7 +96,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                 addVideo={handleSubmit(addVideo)}
                 isLoading={isLoading}
             />
-            <VideoList videosURL={[...videos, "https://www.youtube.com/watch?v=tN4dtvPu5fw"]} onDelete={deleteVideo} />
+            <VideoList videosURL={[...videos]} onDelete={deleteVideo} />
         </div>
     );
 };
