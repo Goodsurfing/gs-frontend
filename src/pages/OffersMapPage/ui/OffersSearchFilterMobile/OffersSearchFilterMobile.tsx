@@ -46,6 +46,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                 status="opened"
                 data={offer}
                 key={offer.id}
+                isFavoriteIconShow
             />
         )),
         [],
