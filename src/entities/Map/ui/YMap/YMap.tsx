@@ -4,7 +4,8 @@ import React, {
 import { Map, YMaps } from "@pbe/react-yandex-maps";
 import classNames from "classnames";
 import { YMapsModules } from "@pbe/react-yandex-maps/typings/util/typing";
-import { MapDefaultState, YmapType } from "../../model/types/map";
+import ymaps from "yandex-maps";
+import { MapDefaultState } from "../../model/types/map";
 
 import styles from "./Ymap.module.scss";
 import { Locale } from "@/entities/Locale";
@@ -15,7 +16,7 @@ export interface MapProps {
     mapState?: MapDefaultState;
     className?: string;
     setLoading?: (isLoading: boolean) => void;
-    setYmap?: (ymap: YmapType) => void;
+    setYmap?: (ymap: typeof ymaps) => void;
     onClick?: (coords: [number, number]) => void;
     options?: any;
     children?: React.ReactNode;
@@ -69,15 +70,6 @@ export const YMap: FC<MapProps> = ({
     return (
         <YMaps key={locale} query={{ lang: languageList[locale] }}>
             <Map
-                instanceRef={(ref) => {
-                    mapRef.current = ref;
-                    if (ref) {
-                        ymapInstanceRef.current = ref;
-                        setLoading?.(true);
-                        setYmap?.(ref);
-                        setMapLoaded(true);
-                    }
-                }}
                 options={options}
                 onLoad={(ymap) => {
                     setLoading?.(true);

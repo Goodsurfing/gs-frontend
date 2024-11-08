@@ -17,7 +17,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
 
     const offersPlacemarkList = useMemo(
         () => data.map(({
-            id, geometry, image, title,
+            id, geometry, image, title, category,
         }) => (
             <OfferPlacemark
                 id={id}
@@ -25,6 +25,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
                 image={image}
                 title={title}
                 locale={locale}
+                category={category}
                 key={id}
             />
         )),

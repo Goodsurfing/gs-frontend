@@ -1,15 +1,18 @@
 import React, { FC, memo } from "react";
 
-import { Placemark } from "@pbe/react-yandex-maps";
+import { Placemark, useYMaps } from "@pbe/react-yandex-maps";
 import { useNavigate } from "react-router-dom";
 import styles from "./OfferPlacemark.module.scss";
+import { CategoryType } from "@/types/categories";
+import { useCategories } from "@/shared/data/categories";
 
 interface OfferPlacemarkProps {
     id: string;
     geometry: number[];
     image: string;
     title: string;
-    locale: string
+    locale: string;
+    category: CategoryType;
 }
 
 export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
@@ -18,11 +21,14 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
             id,
             title,
             image,
+            category,
             geometry,
             locale,
         } = props;
 
         const navigate = useNavigate();
+        const ymaps = useYMaps();
+        const { getColorByCategory } = useCategories();
 
         const handleClick = () => {
             navigate(`/${locale}/offer-personal/${id}`);
@@ -56,9 +62,12 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
                 </div>`,
                 }}
                 options={{
-                    preset: "islands#blueDotIcon",
+                    iconLayout: "default#imageWithContent",
+                    iconContentLayout: ymaps?.templateLayoutFactory.createClass(`<div style="background-color: ${getColorByCategory(category)};" class="${styles.customPlacemarkIcon}"></div>`),
                     hideIconOnBalloonOpen: false,
                     openEmptyBalloon: false,
+                    iconImageSize: [30, 30],
+                    iconImageOffset: [-15, -15],
                 }}
                 onBalloonOpen={handleBalloonOpen}
                 onBalloonClose={handleBalloonClose}
