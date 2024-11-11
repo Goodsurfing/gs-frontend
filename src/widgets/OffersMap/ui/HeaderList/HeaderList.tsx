@@ -10,7 +10,7 @@ import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface HeaderListProps {
     isShowMap: boolean;
-    onChangeShowMap: (value: boolean) => void
+    onChangeShowMap: () => void
 }
 
 export const HeaderList: FC<HeaderListProps> = (props) => {

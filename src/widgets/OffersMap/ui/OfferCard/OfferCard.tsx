@@ -7,6 +7,7 @@ import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import styles from "./OfferCard.module.scss";
+import { Locale } from "@/entities/Locale";
 
 interface OfferCardProps {
     data: Offer;
@@ -14,6 +15,7 @@ interface OfferCardProps {
     className?: string;
     classNameCard?: string;
     isFavoriteIconShow: boolean;
+    locale: Locale;
 }
 
 export const OfferCard: FC<OfferCardProps> = (props) => {
@@ -23,6 +25,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
         className,
         classNameCard,
         isFavoriteIconShow,
+        locale,
     } = props;
     const imageCover = getMediaContent(description?.image);
     const { getTranslation } = useCategories();
@@ -50,10 +53,11 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 rating="10"
                 reviews="8"
                 went="21"
-                link="offer-personal/1"
+                link={`offer-personal/${id}`}
                 className={classNameCard}
                 isFavoriteIconShow={isFavoriteIconShow}
                 isFavorite={isFavorite}
+                locale={locale}
                 handleFavoriteClick={onFavoriteClick}
             />
         </div>

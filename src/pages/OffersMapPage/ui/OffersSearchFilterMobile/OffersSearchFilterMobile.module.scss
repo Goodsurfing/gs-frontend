@@ -64,6 +64,16 @@
     height: calc(100vh - 212px);
 }
 
+.error {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+.miniLoader {
+    padding: 20px;
+}
+
 @media (max-width: 290px) {
     .buttons {
         flex-wrap: wrap;

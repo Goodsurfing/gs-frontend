@@ -3,8 +3,6 @@ import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
-
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -13,6 +11,7 @@ import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 
 import styles from "./OfferCard.module.scss";
+import { Locale } from "@/entities/Locale";
 
 interface OfferCardProps {
     offerId: number;
@@ -31,6 +30,7 @@ interface OfferCardProps {
     isFavoriteIconShow?: boolean;
     isFavorite: boolean;
     handleFavoriteClick: (offerId: number) => void;
+    locale: Locale;
 }
 
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
@@ -50,9 +50,9 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         isImageShow = true,
         isFavoriteIconShow = false,
         isFavorite,
+        locale,
         handleFavoriteClick,
     } = props;
-    const { locale } = useLocale();
 
     return (
         <Link

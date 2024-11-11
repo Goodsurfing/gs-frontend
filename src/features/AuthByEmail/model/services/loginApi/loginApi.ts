@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { AuthApiEndpoints } from "@/types/api/auth";
 
 import { API_BASE_URL } from "@/shared/constants/api";
+import { LoginByEmailProps } from "../../types/login";
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: API_BASE_URL,
@@ -16,21 +17,12 @@ interface LoginResponse {
     token: string;
 }
 
-interface LoginByEmail {
-    email: string;
-    security: {
-        credentials: {
-            password: string;
-        };
-    };
-}
-
 export const loginApi = createApi({
     reducerPath: "loginApi",
     baseQuery,
     endpoints: (build) => ({
-        loginUser: build.mutation<LoginResponse, LoginByEmail>({
-            query: (data: LoginByEmail) => ({
+        loginUser: build.mutation<LoginResponse, LoginByEmailProps>({
+            query: (data: LoginByEmailProps) => ({
                 url: AuthApiEndpoints.LOGIN,
                 method: "POST",
                 body: data,

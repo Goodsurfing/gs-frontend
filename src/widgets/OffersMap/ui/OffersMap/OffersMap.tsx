@@ -1,18 +1,16 @@
 import { Clusterer } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, { FC, useState } from "react";
-
 import ymaps from "yandex-maps";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { YMap } from "@/entities/Map";
 
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import styles from "./OffersMap.module.scss";
 import "./yandex-map-restyle-ballon.scss";
-import { useCategories } from "@/shared/data/categories";
+import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
 
 interface OffersMapProps {
     className?: string;
@@ -24,31 +22,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<typeof ymaps | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-    const { getColorByCategory } = useCategories();
-
-    const testData = [
-        {
-            id: "1",
-            geometry: [55.788028, 49.121729],
-            image: defaultImage,
-            title: "Тестовая вакансия1",
-            category: "farm",
-        },
-        {
-            id: "2",
-            geometry: [55.78979, 49.117149],
-            image: defaultImage,
-            title: "Тестовая вакансия2",
-            category: "teaching",
-        },
-        {
-            id: "3",
-            geometry: [55.788824, 49.114648],
-            image: defaultImage,
-            title: "Тестовая вакансия3",
-            category: "hostels",
-        },
-    ];
+    const { data } = useGetOffersQuery();
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -82,11 +56,12 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                     <Clusterer
                         options={{
                             iconLayout: "default#imageWithContent",
-                            clusterIconLayout: ymap?.templateLayoutFactory.createClass(
-                                `<div class="${styles.customClusterIcon}">
+                            clusterIconLayout:
+                                ymap?.templateLayoutFactory.createClass(
+                                    `<div class="${styles.customClusterIcon}">
                                 {{ properties.geoObjects.length }}
                             </div>`,
-                            ),
+                                ),
                             clusterIconShape: {
                                 type: "Circle",
                                 coordinates: [20, 20],
@@ -96,7 +71,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                             clusterIconOffset: [-20, -20],
                         }}
                     >
-                        <OffersPlacemarkList data={testData} />
+                        <OffersPlacemarkList data={data ?? []} />
                     </Clusterer>
                 )}
             </YMap>

@@ -15,11 +15,22 @@
     object-fit: cover;
 }
 
+.text {
+    display: flex;
+    flex-direction: column;
+}
+
 .ballonTitle {
     font-weight: 700;
     font-size: 1rem;
     line-height: 0.875rem;
     color: var(--text-primary-2);
+}
+
+.ballonCategory {
+    font-size: 0.625rem;
+    font-weight: 500;
+    color: var(--text-primary-1);
 }
 
 .customPlacemarkIcon {

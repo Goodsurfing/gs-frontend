@@ -4,28 +4,29 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { ErrorType } from "@/types/api/error";
 
 import { MapWithAddress } from "@/features/MapWithAddress";
 import { getGeoObjectByCoordinates } from "@/features/MapWithAddress/model/services/getGeoObjectCollection/getGeoObjectCollection";
+
 import {
     useLazyGetOfferByIdQuery,
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
+import { OFFER_WHERE_FORM } from "@/shared/constants/localstorage";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
+import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
-import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import { OFFER_WHERE_FORM } from "@/shared/constants/localstorage";
 
 interface AddressFormProps {
     className?: string;
@@ -63,7 +64,18 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 offerGeoObject.latitude,
             );
             if (geoObject) {
-                reset({ address: { address: `${geoObject.description}, ${geoObject.name}`, geoObject } });
+                reset({
+                    address: {
+                        address: `${geoObject.description}, ${geoObject.name}`,
+                        geoObject: {
+                            name: geoObject.name,
+                            description: geoObject.description,
+                            Point: {
+                                pos: `${offerGeoObject.longitude} ${offerGeoObject.latitude}`,
+                            },
+                        },
+                    },
+                });
             }
         } else {
             reset();
@@ -73,7 +85,8 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateOffer({ id: Number(id), body: { where: preparedData } }).unwrap()
+        updateOffer({ id: Number(id), body: { where: preparedData } })
+            .unwrap()
             .then(() => {
                 fetchGeoObject();
                 setToast({
