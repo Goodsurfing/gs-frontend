@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
@@ -166,7 +165,7 @@ const MapWithAddress = ({
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
-                    setYmap={(ymaps) => setYmap(ymaps)}
+                    setYmap={(ymapsMap) => setYmap(ymapsMap)}
                     onClick={handleMapClick}
                     setLoading={setLoading}
                 >

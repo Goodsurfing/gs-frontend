@@ -56,7 +56,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
 
     return (
         <Link
-            to={`/${locale}/${link}` || getMainPageUrl(locale)}
+            to={link ?? getMainPageUrl(locale)}
             className={cn(styles.wrapper, className)}
         >
             {isImageShow && (

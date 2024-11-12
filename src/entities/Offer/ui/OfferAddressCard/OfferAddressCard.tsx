@@ -33,7 +33,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                         zoom: 10,
                     }}
                     className={cn(styles.map)}
-                    setYmap={(ymaps) => setYmap(ymaps)}
+                    setYmap={(ymapsMap) => setYmap(ymapsMap)}
                     locale={locale}
                 >
                     <Placemark

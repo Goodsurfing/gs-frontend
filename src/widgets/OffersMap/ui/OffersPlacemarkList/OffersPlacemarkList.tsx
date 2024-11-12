@@ -22,7 +22,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
             id, where, description, status,
         }) => {
             if (status === "active" && where) {
-                const geometry = [where.longitude, where.latitude];
+                const geometry = [where.latitude, where.longitude];
 
                 return (
                     <OfferPlacemark

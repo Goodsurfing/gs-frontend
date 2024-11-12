@@ -7,6 +7,8 @@ import { ArticleCard } from "@/entities/Article/";
 import { Article } from "@/entities/Article";
 
 import styles from "./HostArticleCard.module.scss";
+import { getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface HostArticleCardProps {
     articles: Article[];
@@ -18,13 +20,19 @@ export const HostArticleCard: FC<HostArticleCardProps> = memo(
     (props: HostArticleCardProps) => {
         const { className, articles } = props;
         const { t } = useTranslation("host");
+        const { locale } = useLocale();
+
         const renderCards = useMemo(
             () => articles
                 .slice(...RENDER_TWO_ARTICLES)
                 .map((article, index) => (
-                    <ArticleCard article={article} key={index} />
+                    <ArticleCard
+                        path={getNewsPersonalPageUrl(locale, article.id.toString())}
+                        article={article}
+                        key={index}
+                    />
                 )),
-            [articles],
+            [articles, locale],
         );
 
         return (

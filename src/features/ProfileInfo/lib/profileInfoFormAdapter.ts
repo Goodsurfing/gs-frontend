@@ -1,8 +1,15 @@
 import type { Locale } from "@/entities/Locale";
 import type { Profile } from "@/entities/Profile";
-import { ProfileInfoFields } from "../model/types/profileInfo";
+import { ProfileInfoFields, ProfileDateOfBirth } from "../model/types/profileInfo";
 
 export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields {
+    const date = new Date(profileData?.birthDate ?? "");
+    const birthDate: ProfileDateOfBirth = {
+        day: date.getUTCDate(),
+        mounth: date.getUTCMonth() + 1,
+        year: date.getUTCFullYear(),
+    };
+
     return {
         about: {
             firstName: profileData?.firstName,
@@ -26,5 +33,6 @@ export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields
         },
         profileAvatar: profileData?.image,
         aboutMe: profileData?.aboutMe,
+        birthDate,
     };
 }

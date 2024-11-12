@@ -8,6 +8,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferCardProps {
     data: Offer;
@@ -53,7 +54,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 rating="10"
                 reviews="8"
                 went="21"
-                link={`offer-personal/${id}`}
+                link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={isFavoriteIconShow}
                 isFavorite={isFavorite}

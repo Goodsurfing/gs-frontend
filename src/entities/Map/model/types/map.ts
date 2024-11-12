@@ -1,3 +1,5 @@
+import ymaps from "yandex-maps";
+
 export type FeatureMember = {
     GeoObject: GeoObject;
 };
@@ -22,6 +24,7 @@ export interface GeoObjectCollection {
 }
 
 // export type YmapType = ymaps.Map | typeof ymaps;
+export type YmapType = typeof ymaps;
 
 export type YmapQueryType = {
     ns: string;

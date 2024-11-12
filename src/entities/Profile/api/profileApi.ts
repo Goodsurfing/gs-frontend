@@ -37,6 +37,18 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        changePassword: build.mutation<Profile, string>({
+            query: (plainPassword) => ({
+                url: "personal/profile/change-password",
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ plainPassword }),
+            }),
+
+            invalidatesTags: ["profile"],
+        }),
     }),
 });
 
@@ -44,4 +56,5 @@ export const {
     useGetProfileInfoQuery,
     useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
+    useChangePasswordMutation,
 } = profileApi;

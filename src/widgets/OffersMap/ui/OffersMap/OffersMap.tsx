@@ -1,11 +1,10 @@
 import { Clusterer } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, { FC, useState } from "react";
-import ymaps from "yandex-maps";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { YMap } from "@/entities/Map";
+import { YMap, YmapType } from "@/entities/Map";
 
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import styles from "./OffersMap.module.scss";
@@ -20,7 +19,7 @@ interface OffersMapProps {
 export const OffersMap: FC<OffersMapProps> = (props) => {
     const { className, classNameMap } = props;
     const { locale } = useLocale();
-    const [ymap, setYmap] = useState<typeof ymaps | undefined>(undefined);
+    const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
     const { data } = useGetOffersQuery();
 

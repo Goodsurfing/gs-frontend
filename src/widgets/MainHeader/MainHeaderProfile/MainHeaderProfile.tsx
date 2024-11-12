@@ -90,6 +90,8 @@ const MainHeaderProfile: FC<MainHeaderProfileProps> = (props) => {
                 icon={getMediaContent(profileData.image)}
                 text={profileData.firstName}
                 alt="avatar"
+                size="SMALL"
+                className={styles.avatar}
             />
             <Arrow isOpen={isProfileOpened} />
             <Popup className={styles.popup} isOpen={isProfileOpened}>

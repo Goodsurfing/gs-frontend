@@ -6,6 +6,7 @@ import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { TermsApplication } from "../TermsApplication/TermsApplication";
 import styles from "./OfferApplication.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferApplicationProps {
     offerData: Offer;
@@ -27,6 +28,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         isHost, username, isClosed, onSubmit, terms, onChange, offerData,
     } = props;
     const { description, where, id } = offerData;
+    const { locale } = useLocale();
 
     const handleDates = useCallback(
         (periods: DatesType) => {
@@ -60,6 +62,11 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         <div className={styles.wrapper}>
             {renderTitle()}
             <OfferCard
+                isFavoriteIconShow={false}
+                handleFavoriteClick={() => {}}
+                locale={locale}
+                isFavorite={false}
+                offerId={id}
                 category={description?.categoryIds[0]}
                 description={description?.shortDescription}
                 likes="5"
@@ -69,7 +76,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 title={description?.title}
                 went="8"
                 isImageShow={false}
-                link={getOfferPersonalPageUrl(id.toString())}
+                link={getOfferPersonalPageUrl(locale, id.toString())}
             />
             <TermsApplication
                 terms={terms}

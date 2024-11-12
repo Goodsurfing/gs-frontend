@@ -7,6 +7,7 @@ import { OfferCard, useGetHostOffersByIdQuery } from "@/entities/Offer";
 import styles from "./HostOffersCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useCategories } from "@/shared/data/categories";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface HostOffersCardProps {
     className?: string;
@@ -19,6 +20,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         const { t } = useTranslation("host");
         const { getTranslation } = useCategories();
         const { data: hostOffers, isError } = useGetHostOffersByIdQuery(hostId);
+        const { locale } = useLocale();
 
         const renderOffers = useMemo(
             () => {
@@ -26,8 +28,13 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
 
                 return hostOffers
                     .slice(0, 3)
-                    .map(({ description, where }, index) => (
+                    .map(({ description, where, id }, index) => (
                         <OfferCard
+                            isFavoriteIconShow={false}
+                            handleFavoriteClick={() => {}}
+                            locale={locale}
+                            isFavorite={false}
+                            offerId={id}
                             image={getMediaContent(description?.image)}
                             title={description?.title}
                             description={description?.shortDescription}
@@ -41,7 +48,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
                         />
                     ));
             },
-            [getTranslation, hostOffers],
+            [getTranslation, hostOffers, locale],
         );
 
         if (!hostOffers || isError) {

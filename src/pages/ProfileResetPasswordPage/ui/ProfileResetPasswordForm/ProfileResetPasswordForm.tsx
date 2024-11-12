@@ -4,8 +4,6 @@ import React, {
 import {
     Controller, SubmitHandler, useForm, useWatch,
 } from "react-hook-form";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { authApi } from "@/store/api/authApi";
 
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -13,6 +11,7 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 
 import styles from "./ProfileResetPasswordForm.module.scss";
+import { useChangePasswordMutation } from "@/entities/Profile/api/profileApi";
 
 interface FormDataImplemintaion {
     currentPassword: string;
@@ -26,9 +25,8 @@ interface ToastState {
 }
 
 const ProfileResetPasswordForm: FC = () => {
-    const [resetPasswordVerify, { isSuccess, isError }] = authApi.useResetPasswordVerifyMutation();
+    const [resetPasswordVerify, { isSuccess, isError }] = useChangePasswordMutation();
     const [toast, setToast] = useState<ToastState>();
-    const { token } = useAuth();
 
     const { handleSubmit, control, reset } = useForm<FormDataImplemintaion>();
 
@@ -40,14 +38,7 @@ const ProfileResetPasswordForm: FC = () => {
 
     const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(
         async ({ newPassword: plainPassword }) => {
-            if (!token) {
-                setToast({
-                    text: "Произошла ошибка",
-                    type: HintType.Error,
-                });
-                return;
-            }
-            await resetPasswordVerify({ token, plainPassword })
+            await resetPasswordVerify(plainPassword)
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -63,7 +54,7 @@ const ProfileResetPasswordForm: FC = () => {
                     });
                 });
         },
-        [resetPasswordVerify, reset, token],
+        [resetPasswordVerify, reset],
     );
 
     return (

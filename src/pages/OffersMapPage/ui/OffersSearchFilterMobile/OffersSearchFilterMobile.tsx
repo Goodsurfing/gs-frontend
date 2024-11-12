@@ -63,7 +63,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     className={cn(styles.offer, {
                         [styles.closed]: true,
                     })}
-                    status="opened"
+                    status={offer.status === "active" ? "opened" : "closed"}
                     data={offer}
                     key={offer.id}
                     isFavoriteIconShow={!!isAuth}
@@ -167,7 +167,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             </div>
             {isOffersTabOpened && (
                 <>
-                    <div className={styles.offersCount}>1 055 вариантов</div>
+                    <div className={styles.offersCount}>
+                        {data ? data.length : 0}
+                        {" "}
+                        вариантов
+                    </div>
                     <div className={styles.list}>{renderOfferCards}</div>
                     <OfferPagination
                         currentPage={currentPage}

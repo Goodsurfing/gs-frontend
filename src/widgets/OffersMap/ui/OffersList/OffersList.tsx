@@ -10,11 +10,11 @@ import { Text } from "@/shared/ui/Text/Text";
 import { HeaderList } from "../HeaderList/HeaderList";
 import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
-import styles from "./OffersList.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./OffersList.module.scss";
 
 interface OffersListProps {
     className?: string;
@@ -74,6 +74,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <HeaderList
+                    offersLength={0}
                     isShowMap={mapOpenValue}
                     onChangeShowMap={changeMapOpen}
                 />
@@ -97,6 +98,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <HeaderList
+                offersLength={data.length}
                 isShowMap={mapOpenValue}
                 onChangeShowMap={onChangeMapOpen}
             />

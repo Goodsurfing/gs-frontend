@@ -13,7 +13,7 @@ import { Article } from "@/entities/Article";
 import { ArticleCard } from "@/entities/Article/";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getBlogPersonalPageUrl, getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./ArticleEditCard.module.scss";
@@ -42,7 +42,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <ArticleCard article={article} />
+                <ArticleCard path={getBlogPersonalPageUrl(locale, article.id)} article={article} />
                 <div ref={popupRef} className={styles.buttonContent}>
                     <button
                         type="button"

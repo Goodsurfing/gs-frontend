@@ -6,6 +6,7 @@ import { Offer, OfferCard } from "@/entities/Offer";
 import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
 
 import styles from "./VolunteerOffersCard.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface VolunteerOffersCardProps {
     className?: string;
@@ -17,6 +18,7 @@ const RENDER_THREE_CARDS = [0, 3];
 export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
     (props: VolunteerOffersCardProps) => {
         const { className, offers } = props;
+        const { locale } = useLocale();
 
         const renderOffers = useMemo(
             () => {
@@ -24,8 +26,13 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
 
                 return offers
                     .slice(...RENDER_THREE_CARDS)
-                    .map(({ description }, index) => (
+                    .map(({ description, id }, index) => (
                         <OfferCard
+                            isFavoriteIconShow={false}
+                            handleFavoriteClick={() => {}}
+                            locale={locale}
+                            isFavorite={false}
+                            offerId={id}
                             image={offerDefaultImage}
                             title={description?.title}
                             description={description?.shortDescription}
@@ -39,7 +46,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                         />
                     ));
             },
-            [offers],
+            [locale, offers],
         );
 
         return (
