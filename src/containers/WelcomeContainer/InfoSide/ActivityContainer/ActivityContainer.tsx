@@ -29,7 +29,7 @@ const ActivityContainer: FC = () => {
                 <ActivityItem
                     title={item.text}
                     image={item.image}
-                    path={item.path}
+                    path={`/${locale}${item.path}`}
                     key={index}
                 />
             ))}

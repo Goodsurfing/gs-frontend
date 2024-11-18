@@ -7,6 +7,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { Category } from "../Category/Category";
 import styles from "./CategoriesWidget.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface CategoriesWidgetProps {
     className?: string;
@@ -17,6 +18,7 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
         const { className } = props;
         const { tags } = useCategories();
         const { ready } = useTranslation();
+        const { locale } = useLocale();
 
         const renderCategories = useMemo(
             () => tags.map((category, index) => (
@@ -26,9 +28,11 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
                     image={category.image}
                     vacancyNumber={9}
                     key={index}
+                    link={category.path}
+                    locale={locale}
                 />
             )),
-            [tags],
+            [locale, tags],
         );
 
         if (!ready) {
