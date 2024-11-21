@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { AuthApiEndpoints } from "@/types/api/auth";
 
-import { API_BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL_V2 } from "@/shared/constants/api";
 import { LoginByEmailProps } from "../../types/login";
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: API_BASE_URL,
+    baseUrl: API_BASE_URL_V2,
     prepareHeaders: (headers) => {
         headers.set("Content-Type", "application/json");
         headers.set("accept", "application/json");

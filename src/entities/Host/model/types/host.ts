@@ -4,6 +4,7 @@ export interface Host {
     id: string;
     name: string;
     address: string;
+    avatar?: string;
     type: string;
     website: string;
     description: string;

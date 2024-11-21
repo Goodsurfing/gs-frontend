@@ -109,7 +109,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         );
     }
 
-    if (error) {
+    if (!getHost || error) {
         return (
             <div className={cn(styles.form, className)}>
                 Произошла ошибка! Поробуйте перезагрузить страницу
@@ -125,7 +125,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className={styles.form}>
-                    <HostDescriptionFormContent />
+                    <HostDescriptionFormContent host={getHost} />
                 </div>
                 <div>
                     <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">
