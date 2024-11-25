@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { VideoGallery } from "@/widgets/VideoGallery";
 import { Video } from "../../model/types/host";
 import styles from "./HostVideoGalleryCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface HostVideoGalleryCardProps {
     className?: string;
-    videoGallery: Video[];
+    videoGallery: Video[] | string[];
 }
 
 export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
@@ -18,7 +19,7 @@ export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>{t("personalHost.Видео")}</h3>
+                <Text title={t("personalHost.Видео")} titleSize="h3" />
                 <VideoGallery videos={videoGallery} className={styles.swiper} />
             </div>
         );

@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { Title as HostGalleryTitle } from "./Title/Title";
 
 import styles from "./HostGalleryPage.module.scss";
-import { HostGalleryForm } from "@/features/HostGalleryForm/HostGalleryForm";
+import { HostGalleryForm } from "@/features/HostGalleryForm";
 
 const HostGalleryPage: FC = () => (
     <>

@@ -6,8 +6,8 @@ import { VideoForm } from "@/features/VideoForm";
 import { TitleCertificate } from "../TitleCertificate/TitleCertificate";
 import styles from "./VolunteerGalleryPage.module.scss";
 import { UploadCertificates } from "@/features/UploadCertificates";
-import { HostGalleryForm } from "@/features/HostGalleryForm/HostGalleryForm";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { VolunteerGalleryForm } from "@/features/VolunteerGalleryForm";
 
 const VolunteerGalleryPage = () => {
     const { data: profileData } = useGetProfileInfoQuery();
@@ -15,7 +15,7 @@ const VolunteerGalleryPage = () => {
     return (
         <div className={styles.wrapper}>
             <TitleGallery />
-            <HostGalleryForm className={styles.container} />
+            <VolunteerGalleryForm className={styles.container} />
             <TitleVideoGallery className={styles.container} />
             {(profileData) && (
                 <VideoForm

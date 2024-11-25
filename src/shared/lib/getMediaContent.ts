@@ -34,3 +34,18 @@ export const getMediaContentsApiArray = (images: MediaObjectType[]) => {
     const newImages = images.map((image) => `${BASE_URL}${image["@id"].slice(1)}`);
     return newImages;
 };
+
+export const getImageDetails = (image: GalleryItem | string | MediaObjectType) => {
+    if (typeof image === "string") {
+        return { imgUrl: image, imageId: "" };
+    }
+
+    if ("mediaObject" in image) {
+        return {
+            imgUrl: image.mediaObject.contentUrl,
+            imageId: image.id,
+        };
+    }
+
+    return { imgUrl: image.contentUrl, imageId: image.id };
+};

@@ -14,8 +14,8 @@ export const VideoList: React.FC<VideoListProps> = ({ videosURL, onDelete }) => 
             <div className={styles.videoWrapper}>
                 <ReactPlayer
                     key={index}
-                    width="387px"
-                    height="280px"
+                    width="auto"
+                    height="180px"
                     url={videoURL}
                     controls
                 />

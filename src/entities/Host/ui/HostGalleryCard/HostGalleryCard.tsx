@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 
 import styles from "./HostGalleryCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface HostGalleryCardProps {
     className?: string;
@@ -18,7 +19,7 @@ export const HostGalleryCard: FC<HostGalleryCardProps> = memo(
 
         return (
             <div className={cn(styles.wrapper, className)}>
-                <h3>{t("personalHost.Фото")}</h3>
+                <Text title={t("personalHost.Фото")} titleSize="h3" />
                 <ImageGallerySlider
                     images={images}
                     className={styles.container}

@@ -11,7 +11,7 @@
 .modalImage {
     width: 100%;
     max-height: calc(80vh - 100px);
-    object-fit: cover;
+    object-fit: contain;
     margin: 0 auto;
 }
 

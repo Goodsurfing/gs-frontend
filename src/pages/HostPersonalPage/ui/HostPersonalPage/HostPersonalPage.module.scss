@@ -21,3 +21,13 @@
 .button {
     width: 100%;
 }
+
+
+@media(max-width: 992px) {
+    .navMenu {
+        display: none;
+    }
+    .content {
+        padding: 20px;
+    }
+}

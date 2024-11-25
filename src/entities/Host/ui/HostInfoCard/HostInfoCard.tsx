@@ -10,6 +10,9 @@ import { HostOffersCard } from "../HostOffersCard/HostOffersCard";
 import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
 // import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 import styles from "./HostInfoCard.module.scss";
+import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
+import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 
 interface HostInfoCardProps {
     className?: string;
@@ -29,18 +32,18 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                     hostId={host.id}
                     className={styles.container}
                 />
-                {/* {host && (
+                {host && (
                     <HostGalleryCard
-                        images={host.gallery?.images}
+                        images={getMediaContentsArray(host.galleryImages)}
                         className={styles.container}
                     />
-                )} */}
-                {/* {host?.videoGallery && (
+                )}
+                {host?.videoGallery && (
                     <HostVideoGalleryCard
                         videoGallery={host.videoGallery}
                         className={styles.container}
                     />
-                )} */}
+                )}
                 <HostTeamCard
                     hostId={host.id}
                     className={styles.container}

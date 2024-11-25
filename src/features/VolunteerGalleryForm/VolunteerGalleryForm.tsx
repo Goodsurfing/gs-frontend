@@ -1,16 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
+import { UploadMultipleImages } from "@/modules/Gallery";
+
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { useGetMyHostQuery } from "@/entities/Host";
-import { HostUploadMultipleImages } from "@/modules/Gallery/ui/HostUploadMultipleImages/HostUploadMultipleImages";
 
-interface HostGalleryFormProps {
+interface VolunteerGalleryFormProps {
     className?: string;
 }
 
-export const HostGalleryForm: FC<HostGalleryFormProps> = (props) => {
+export const VolunteerGalleryForm: FC<VolunteerGalleryFormProps> = (props) => {
     const { className } = props;
-    const { data: myHost } = useGetMyHostQuery();
+    const { data: profileData } = useGetProfileInfoQuery();
 
     const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [isGalleryError, setGalleryError] = useState<boolean>(false);
@@ -45,13 +46,13 @@ export const HostGalleryForm: FC<HostGalleryFormProps> = (props) => {
         setGallerySuccess(value);
     };
 
-    if (!myHost) return null;
+    if (!profileData) return null;
 
     return (
         <>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <HostUploadMultipleImages
-                host={myHost}
+            <UploadMultipleImages
+                profileData={profileData}
                 label="Добавить фото"
                 isLoading={isGalleryLoading}
                 onChangeLoading={handleGalleryLoading}

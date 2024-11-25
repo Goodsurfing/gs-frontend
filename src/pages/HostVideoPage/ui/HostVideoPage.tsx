@@ -1,21 +1,21 @@
 import { FC } from "react";
 
-import { VideoForm } from "@/features/VideoForm";
+import { HostVideoForm } from "@/features/VideoForm";
 
 import { Text } from "./Text/Text";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
 import styles from "./HostVideoPage.module.scss";
+import { useGetMyHostQuery } from "@/entities/Host";
 
 const HostVideoPage: FC = () => {
-    const { data: profileData } = useGetProfileInfoQuery();
+    const { data: myHost } = useGetMyHostQuery();
 
     return (
         <div className={styles.wrapper}>
             <Text />
-            {(profileData) && (
-                <VideoForm
-                    profileId={profileData.id}
-                    videoGallery={profileData.videoGallery}
+            {(myHost) && (
+                <HostVideoForm
+                    host={myHost}
+                    videoGallery={myHost.videoGallery}
                 />
             )}
         </div>

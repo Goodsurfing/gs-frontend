@@ -1,10 +1,11 @@
-import { Profile, ProfileApi } from "@/entities/Profile";
+import { ImageType, Profile, ProfileApi } from "@/entities/Profile";
+import { MediaObjectType } from "@/types/media";
 
 export interface Host {
     id: string;
     name: string;
     address: string;
-    avatar?: string;
+    avatar?: ImageType;
     type: string;
     website: string;
     description: string;
@@ -15,7 +16,14 @@ export interface Host {
     team: Profile[];
     vacancies: string[]; // link to offers /api/vacancies/id
     owner: Omit<Profile, "memberProfiles" | "membershipEndDate">;
+    videoGallery: string[]
+    galleryImages: MediaObjectType[];
 }
+
+export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {
+    avatar?: string;
+    galleryImages: string[];
+};
 
 export interface Video {
     id: string;

@@ -8,6 +8,7 @@ import styles from "./HostOffersCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useCategories } from "@/shared/data/categories";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface HostOffersCardProps {
     className?: string;
@@ -57,8 +58,10 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>{t("personalHost.Вакансии")}</h3>
-                <div className={styles.container}>{renderOffers}</div>
+                <Text title={t("personalHost.Вакансии")} titleSize="h3" />
+                <div className={styles.container}>
+                    {renderOffers}
+                </div>
             </div>
         );
     },

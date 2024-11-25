@@ -1,14 +1,15 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getProfileInfoPageUrl } from "@/shared/config/routes/AppUrls";
+import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./HostDescriptionAvatar.module.scss";
 import { Host, useUpdateHostMutation } from "@/entities/Host";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { BASE_URL } from "@/shared/constants/api";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface HostDescriptionAvatarProps {
     className?: string;
@@ -18,7 +19,7 @@ interface HostDescriptionAvatarProps {
 export const HostDescriptionAvatar = memo(
     (props: HostDescriptionAvatarProps) => {
         const { className, host } = props;
-        const [avatar] = useState<string | undefined>();
+        const [avatar, setAvatar] = useState<string | undefined>();
         const { locale } = useLocale();
 
         const [updateHost] = useUpdateHostMutation();
@@ -39,6 +40,10 @@ export const HostDescriptionAvatar = memo(
             }
         };
 
+        useEffect(() => {
+            setAvatar(getMediaContent(host.avatar));
+        }, [host]);
+
         return (
             <ProfileInput
                 fileClassname={styles.fileInput}
@@ -46,7 +51,7 @@ export const HostDescriptionAvatar = memo(
                 id="host-file"
                 src={avatar}
                 setFile={handleImageUpload}
-                route={getProfileInfoPageUrl(locale)}
+                route={getHostPersonalPageUrl(locale, host.id)}
             />
         );
     },

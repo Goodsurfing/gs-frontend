@@ -4,6 +4,7 @@ import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Host } from "../../model/types/host";
 import styles from "./HostDescriptionCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface HostDescriptionCardProps {
     className?: string;
@@ -19,7 +20,7 @@ export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
         const { t } = useTranslation("host");
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>{t("personalHost.Об организации")}</h3>
+                <Text title={t("personalHost.Об организации")} titleSize="h3" />
                 <p className={styles.description}>{description || ""}</p>
             </div>
         );

@@ -1,27 +1,44 @@
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Host } from "@/entities/Host";
 
 import Button from "@/shared/ui/Button/Button";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import styles from "./HostlHeaderCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Profile } from "@/entities/Profile";
+import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { Locale } from "@/entities/Locale";
 
 interface HostlHeaderCardProps {
     host: Host;
+    profile: Profile;
+    locale: Locale;
 }
 
 export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
-            host: { name, type, address },
+            host: {
+                name, type, address, avatar, owner,
+            },
+            profile,
+            locale,
         } = props;
         const { t } = useTranslation("host");
+        const showButton = owner.id === profile.id;
+        const navigate = useNavigate();
+
+        const navigateTo = () => {
+            navigate(getHostRegistrationUrl(locale));
+        };
 
         return (
             <div className={styles.wrapper}>
-                <Avatar icon="" size="LARGE" className={styles.image} alt="avatar" />
+                <Avatar icon={getMediaContent(avatar)} size="DEFAULT" className={styles.image} alt="avatar" />
                 <div className={styles.containerInfo}>
                     <span className={styles.type}>
                         {t("personalHost.Организация/")}
@@ -32,9 +49,11 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                 </div>
                 <div className={styles.btnMedalsContainer}>
                     <span>MEDALS</span>
-                    <Button color="BLUE" size="SMALL" variant="FILL" className={styles.button}>
-                        {t("personalHost.Редактировать профиль")}
-                    </Button>
+                    {showButton && (
+                        <Button color="BLUE" size="SMALL" variant="FILL" className={styles.button} onClick={navigateTo}>
+                            {t("personalHost.Редактировать профиль")}
+                        </Button>
+                    )}
                 </div>
             </div>
         );

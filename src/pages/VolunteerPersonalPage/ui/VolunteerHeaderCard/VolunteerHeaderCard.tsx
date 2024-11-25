@@ -85,7 +85,9 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                             <span className={styles.birthDate}>
                                 Волонтёр
                                 {" "}
-                                {formatDate(locale, birthDate ?? "")}
+                                {birthDate && (
+                                    formatDate(locale, birthDate ?? "")
+                                )}
                             </span>
                             {/* {isMember && (
                                 <img

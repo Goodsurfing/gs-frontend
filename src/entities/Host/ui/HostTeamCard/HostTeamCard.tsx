@@ -25,7 +25,7 @@ export const HostTeamCard: FC<HostTeamCardProps> = memo(
             ));
         }, [hostMembers]);
 
-        if (!hostMembers || isError) {
+        if (!hostMembers || isError || hostMembers.length === 0) {
             return null;
         }
 

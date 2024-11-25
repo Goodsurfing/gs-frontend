@@ -4,15 +4,14 @@ import { ImageType } from "@/components/ImageInput/types";
 import ExtraImagesItem from "@/modules/InviteDescriptionForm/components/ExtraImagesItem/ExtraImagesItem";
 import ExtraImagesItemButton from "@/modules/InviteDescriptionForm/components/ExtraImagesItem/ExtraImagesItemButton/ExtraImagesItemButton";
 import PictureReview from "@/modules/InviteDescriptionForm/components/PictureReview/PictureReview";
-import { GalleryItem } from "@/types/media";
-
-import { BASE_URL } from "@/shared/constants/api";
+import { GalleryItem, MediaObjectType } from "@/types/media";
 
 import styles from "./GalleryImages.module.scss";
+import { getImageDetails, getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface GalleryImagesProps {
     inputImg: ImageType;
-    galleryImgs: (GalleryItem | string)[];
+    galleryImgs: (GalleryItem | string | MediaObjectType)[];
     label: string;
     isLoading: boolean;
     classNameWrapper?: string;
@@ -43,20 +42,18 @@ export const GalleryImages: FC<GalleryImagesProps> = (props) => {
                 checkImageSize={checkImageSize}
             />
             {galleryImgs.map((image, index) => {
-                const imgUrl = typeof image === "string"
-                    ? image
-                    : `${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`;
+                const { imgUrl, imageId } = getImageDetails(image);
 
                 return (
                     <PictureReview
                         className={styles.imgItem}
                         key={index}
-                        img={imgUrl}
-                        isLoading={isLoading} // change logic for personal image loading
+                        img={getMediaContent(imgUrl) ?? ""}
+                        isLoading={isLoading}
                         close={(
                             <ExtraImagesItemButton
                                 className={styles.closeBtn}
-                                onClick={() => handleCloseBtnClick(typeof image === "string" ? "" : image.id.toString())}
+                                onClick={() => handleCloseBtnClick(imageId.toString())}
                             />
                         )}
                     />

@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
 import { ImageType } from "@/components/ImageInput/types";
 
-import { Profile } from "@/entities/Profile";
-import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
+import { Host, useUpdateHostMutation } from "@/entities/Host";
 
 import { BASE_URL } from "@/shared/constants/api";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
+import {
+    getMediaContentsApiArray,
+} from "@/shared/lib/getMediaContent";
 import { GalleryImages } from "@/shared/ui/GalleryImages/GalleryImages";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import { MediaObjectType } from "@/types/media";
 
-interface UploadMultipleImagesProps {
-    profileData: Profile;
+interface HostUploadMultipleImagesProps {
+    host: Host;
     label: string;
     isLoading: boolean;
     onChangeLoading: (value: boolean) => void;
@@ -21,7 +21,9 @@ interface UploadMultipleImagesProps {
     className?: string;
 }
 
-export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
+export const HostUploadMultipleImages: FC<HostUploadMultipleImagesProps> = (
+    props,
+) => {
     const {
         label,
         isLoading,
@@ -29,7 +31,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
         onChangeLoading,
         onChangeSuccess,
         className,
-        profileData,
+        host,
     } = props;
     const [inputImg, setInputImg] = useState<ImageType>({
         file: null,
@@ -37,16 +39,15 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
     });
     const [galleryImgs, setGalleryImgs] = useState<MediaObjectType[]>([]);
 
-    const [updateProfile] = useUpdateProfileInfoMutation();
-    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileData.id);
+    const [updateHost] = useUpdateHostMutation();
 
     useEffect(() => {
-        if (profileData) {
-            setGalleryImgs(profileData.galleryImages);
+        if (host) {
+            setGalleryImgs(host.galleryImages);
         } else {
             setGalleryImgs([]);
         }
-    }, [profileData]);
+    }, [host]);
 
     const handleImageUpload = (img: ImageType) => {
         const { file } = img;
@@ -62,11 +63,11 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
                                 "@id"
                             ].slice(1)}`;
                             const currentGalleryImages = getMediaContentsApiArray(
-                                profileData.galleryImages,
+                                host.galleryImages,
                             );
-                            await updateProfile({
-                                userId: profileData.id,
-                                profileData: {
+                            await updateHost({
+                                id: host.id,
+                                body: {
                                     galleryImages: [
                                         ...currentGalleryImages,
                                         mediaObject,
@@ -74,7 +75,6 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
                                 },
                             }).unwrap();
                             onChangeSuccess(true);
-                            refetchVolunteer();
                         } else {
                             onChangeError(true);
                         }
@@ -95,15 +95,15 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
     };
 
     const handleCloseBtnClick = async (imageId: string) => {
-        const currentGalleryImages = profileData.galleryImages;
+        const currentGalleryImages = host.galleryImages;
 
         const updatedGalleryImages = currentGalleryImages.filter(
             (image) => image.id !== imageId,
         );
 
-        await updateProfile({
-            userId: profileData.id,
-            profileData: {
+        await updateHost({
+            id: host.id,
+            body: {
                 galleryImages: getMediaContentsApiArray(updatedGalleryImages),
             },
         })
