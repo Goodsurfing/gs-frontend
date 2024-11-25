@@ -6,10 +6,11 @@ import { VideoGallery } from "@/widgets/VideoGallery/ui/VideoGallery/VideoGaller
 import { Video } from "@/entities/Host/model/types/host";
 
 import styles from "./VolunteerVideoGalleryCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface VolunteerVideoGalleryCardProps {
     className?: string;
-    videoGallery?: Video[];
+    videoGallery?: Video[] | string[];
 }
 
 export const VolunteerVideoGalleryCard: FC<VolunteerVideoGalleryCardProps> = memo(
@@ -18,7 +19,7 @@ export const VolunteerVideoGalleryCard: FC<VolunteerVideoGalleryCardProps> = mem
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>Добавленные видео</h3>
+                <Text title="Добавленные видео" titleSize="h3" />
                 {videoGallery ? (
                     <VideoGallery
                         videos={videoGallery}

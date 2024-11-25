@@ -3,6 +3,7 @@ import React, { FC, memo } from "react";
 
 import styles from "./VolunteerGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface VolunteerGalleryCardProps {
     className?: string;
@@ -15,7 +16,7 @@ export const VolunteerGalleryCard: FC<VolunteerGalleryCardProps> = memo(
 
         return (
             <div className={cn(styles.wrapper, className)}>
-                <h3 className={styles.title}>Добавленные фотографии</h3>
+                <Text title="Добавленные фотографии" titleSize="h3" />
                 {images ? (
                     <ImageGallerySlider images={images} />
                 ) : (

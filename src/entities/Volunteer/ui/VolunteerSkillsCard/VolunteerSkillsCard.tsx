@@ -10,6 +10,7 @@ import { WhatToDoSkillType } from "@/types/skills";
 
 interface VolunteerSkillsCardProps {
     skills?: WhatToDoSkillType[];
+    additionalSkills?: string[];
     className?: string;
 }
 
@@ -21,6 +22,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
     (props: VolunteerSkillsCardProps) => {
         const {
             skills,
+            additionalSkills,
             className,
         } = props;
         const { skillsData } = useSkillsData();
@@ -52,11 +54,18 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             });
         }, [skills, skillsData]);
 
+        const renderAdditionalSkills = useMemo(() => {
+            if (!additionalSkills || additionalSkills.length === 0) return null;
+            return <span>{additionalSkills.join(", ")}</span>;
+        }, [additionalSkills]);
+
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.card}>
                     <Text title="Умения" titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
+                    <Text title="Дополнительные умения" titleSize="h3" />
+                    <div className={styles.cards}>{renderAdditionalSkills}</div>
                 </div>
             </div>
         );

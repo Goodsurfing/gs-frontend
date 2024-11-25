@@ -9,6 +9,9 @@ import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLangu
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
 import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
 import styles from "./VolunteerInfoCard.module.scss";
+import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
+import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 
 interface VolunteerInfoCardProps {
     className?: string;
@@ -19,6 +22,11 @@ interface VolunteerInfoCardProps {
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
     (props: VolunteerInfoCardProps) => {
         const { volunteer, className, host } = props;
+        const showImageGallery = volunteer?.profile.galleryImages
+        && volunteer?.profile.galleryImages.length !== 0;
+        const showVideoGallery = volunteer?.profile.videoGallery
+        && volunteer?.profile.videoGallery.length !== 0;
+
         return (
             <div className={cn(className)}>
                 <VolunteerDesctiptionCard
@@ -26,6 +34,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 />
                 <VolunteerSkillsCard
                     skills={volunteer?.skills}
+                    additionalSkills={volunteer?.additionalSkills}
                     className={styles.container}
                 />
                 <VolunteerLanguagesCard
@@ -39,16 +48,21 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 <VolunteerReviewsCard
                     reviews={volunteer.reviews}
                     className={styles.container}
-                />
-                <VolunteerGalleryCard
-                    images={volunteer.gallery?.images}
-                    className={styles.container}
-                />
-                <VolunteerVideoGalleryCard
-                    videoGallery={volunteer.videoGallery}
-                    className={styles.container}
-                />
-                <VolunteerCertificatesCard
+                /> */}
+                {showImageGallery
+                && (
+                    <VolunteerGalleryCard
+                        images={getMediaContentsArray(volunteer?.profile.galleryImages)}
+                        className={styles.container}
+                    />
+                )}
+                {showVideoGallery && (
+                    <VolunteerVideoGalleryCard
+                        videoGallery={volunteer?.profile.videoGallery}
+                        className={styles.container}
+                    />
+                )}
+                {/* <VolunteerCertificatesCard
                     certificates={volunteer.certificates}
                     classname={styles.container}
                 />

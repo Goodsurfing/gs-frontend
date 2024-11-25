@@ -18,6 +18,7 @@ interface GalleryImagesProps {
     classNameWrapper?: string;
     handleImageUpload: (img: ImageType) => void;
     handleCloseBtnClick: (imageId: string) => void;
+    checkImageSize?: boolean;
 }
 
 export const GalleryImages: FC<GalleryImagesProps> = (props) => {
@@ -29,6 +30,7 @@ export const GalleryImages: FC<GalleryImagesProps> = (props) => {
         handleCloseBtnClick,
         inputImg,
         galleryImgs,
+        checkImageSize,
     } = props;
 
     return (
@@ -38,6 +40,7 @@ export const GalleryImages: FC<GalleryImagesProps> = (props) => {
                 img={inputImg}
                 setImg={handleImageUpload}
                 id="asd"
+                checkImageSize={checkImageSize}
             />
             {galleryImgs.map((image, index) => {
                 const imgUrl = typeof image === "string"

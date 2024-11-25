@@ -6,8 +6,9 @@ import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi"
 
 import { BASE_URL } from "@/shared/constants/api";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContentsApiArray, getMediaContentsArray } from "@/shared/lib/getMediaContent";
 import { GalleryImages } from "@/shared/ui/GalleryImages/GalleryImages";
+import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 interface UploadMultipleImagesProps {
     profileData: Profile;
@@ -36,6 +37,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
     const [galleryImgs, setGalleryImgs] = useState<string[]>([]);
 
     const [updateProfile] = useUpdateProfileInfoMutation();
+    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileData.id);
 
     useEffect(() => {
         if (profileData) {
@@ -58,7 +60,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
                             const mediaObject = `${BASE_URL}${result[
                                 "@id"
                             ].slice(1)}`;
-                            const currentGalleryImages = getMediaContentsArray(
+                            const currentGalleryImages = getMediaContentsApiArray(
                                 profileData.galleryImages,
                             );
                             await updateProfile({
@@ -71,6 +73,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
                                 },
                             }).unwrap();
                             onChangeSuccess(true);
+                            refetchVolunteer();
                         } else {
                             onChangeError(true);
                         }
@@ -123,6 +126,7 @@ export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
             handleCloseBtnClick={handleCloseBtnClick}
             isLoading={isLoading}
             classNameWrapper={className}
+            checkImageSize={false}
         />
     );
 };

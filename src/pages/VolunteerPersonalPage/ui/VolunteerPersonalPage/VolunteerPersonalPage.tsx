@@ -22,7 +22,6 @@ import { SubmenuVolunteerData } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import styles from "./VolunteerPersonalPage.module.scss";
-import { useGetProfileInfoByIdQuery } from "@/entities/Profile/api/profileApi";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,7 +32,6 @@ export const VolunteerPersonalPage = () => {
         id || "",
     );
     const { data: myProfileData, isLoading: myProfileIsLoading } = useGetProfileInfoQuery();
-    const { data: profileData, isLoading: profileIsLoading } = useGetProfileInfoByIdQuery(id || "");
 
     const handleEditClick = useCallback(() => {
         navigate(getVolunteerDashboardPageUrl(locale));
@@ -43,7 +41,7 @@ export const VolunteerPersonalPage = () => {
         navigate(getMessengerPageUrl(locale));
     }, [locale, navigate]);
 
-    if (isLoading && profileIsLoading && myProfileIsLoading) {
+    if (isLoading && myProfileIsLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -51,7 +49,7 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    if (!id || !myProfileData || !profileData) {
+    if (!id || !myProfileData || !volunteerData) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
@@ -67,7 +65,9 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    const showButtons = myProfileData.id === id ? (
+    const showButtons = myProfileData.id === id;
+
+    const renderButtons = showButtons ? (
         <Button
             size="SMALL"
             color="BLUE"
@@ -96,14 +96,13 @@ export const VolunteerPersonalPage = () => {
             <div className={styles.content}>
                 <VolunteerHeaderCard
                     volunteer={volunteerData}
-                    profile={profileData}
-                    host={profileData.host}
-                    showButtons={profileData.id === id}
+                    showButtons={showButtons}
+                    locale={locale}
                 />
                 <Submenu
                     className={styles.navMenu}
                     items={SubmenuVolunteerData}
-                    buttons={showButtons}
+                    buttons={renderButtons}
                 />
                 <VolunteerPageContent volunteer={volunteerData} />
             </div>

@@ -32,6 +32,7 @@ export const ImageGallerySlider: FC<ImageGallerySliderProps> = (props) => {
                 spaceBetween={30}
                 slidesPerView={3}
                 modules={[Navigation]}
+                className={styles.swiper}
                 navigation
                 wrapperClass={styles.swiperWrapper}
                 breakpoints={{

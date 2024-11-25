@@ -9,7 +9,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
-import { useUser } from "@/entities/Profile";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
@@ -33,7 +33,7 @@ const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
 
-    const { profile, isLoading } = useUser();
+    const { data: profile, isLoading } = useGetProfileInfoQuery();
 
     const isAuth = useAppSelector(getUserAuthData);
 

@@ -18,6 +18,7 @@ import {
 import { VideoFormImplementation } from "../../model/types/videoForm";
 import { VideoInput } from "../VideoInput/VideoInput";
 import styles from "./VideoForm.module.scss";
+import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 interface VideoFormProps {
     profileId: string;
@@ -31,6 +32,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
     const [toast, setToast] = useState<ToastAlert>();
 
     const [updateProfile, { isLoading }] = useUpdateProfileInfoMutation();
+    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileId);
 
     useEffect(() => {
         if (videoGallery) {
@@ -51,6 +53,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                         text: "Данные успешно изменены",
                         type: HintType.Success,
                     });
+                    refetchVolunteer();
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -61,7 +64,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                     reset();
                 });
         },
-        [updateProfile, profileId, videos, reset],
+        [updateProfile, profileId, videos, refetchVolunteer, reset],
     );
 
     const deleteVideo = useCallback((videoUrl: string) => {

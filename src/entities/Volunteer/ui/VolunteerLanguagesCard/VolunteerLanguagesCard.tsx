@@ -3,6 +3,7 @@ import cn from "classnames";
 
 import styles from "./VolunteerLanguagesCard.module.scss";
 import { Language } from "@/types/languages";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface VolunteerLanguagesCardProps {
     className?: string;
@@ -25,7 +26,7 @@ export const VolunteerLanguagesCard: FC<VolunteerLanguagesCardProps> = memo((
                 /
                 {" "}
                 <span style={{ color: "#8494A1" }}>{languageLevel}</span>
-                ,
+                {index !== languages.length - 1 && ","}
                 {" "}
             </span>
         ));
@@ -33,7 +34,7 @@ export const VolunteerLanguagesCard: FC<VolunteerLanguagesCardProps> = memo((
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <h3>Языки</h3>
+            <Text title="Языки" titleSize="h3" />
             <div className={styles.container}>
                 {renderLanguages}
             </div>

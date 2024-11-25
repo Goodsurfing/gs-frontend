@@ -15,7 +15,7 @@ import styles from "./VideoGallery.module.scss";
 import { Video } from "@/entities/Host/model/types/host";
 
 interface VideoGalleryProps {
-    videos: Video[];
+    videos: Video[] | string[];
     className?: string;
 }
 
@@ -24,20 +24,30 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
         const { videos, className } = props;
         const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
+        const normalizedVideos = useMemo(
+            () => (typeof videos[0] === "string" ? (videos as string[]).map((url) => ({ url })) : (videos as Video[])),
+            [videos],
+        );
+
         const renderSlides = useMemo(
-            () => videos.map((video, index) => (
-                <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }} onClick={() => setSelectedVideo(video.url)}>
+            () => normalizedVideos.map((video, index) => (
+                <SwiperSlide
+                    className={styles.slide}
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSelectedVideo(video.url)}
+                >
                     <ReactPlayer
                         style={{ pointerEvents: "none" }}
-                        width="330px"
-                        height="193px"
+                        width="100%"
+                        height="180px"
                         url={video.url}
                         light
                         playing={false}
                     />
                 </SwiperSlide>
             )),
-            [videos],
+            [normalizedVideos],
         );
 
         return (
@@ -47,19 +57,24 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
                     wrapperClass={styles.containerSwiper}
                     navigation
                     modules={[Navigation]}
-                    slidesPerView={2}
-                    spaceBetween={150}
+                    slidesPerView={3}
+                    spaceBetween={10}
                     breakpoints={{
-                        640: {
-                            width: 500,
-                            slidesPerGroupAuto: true,
-                            spaceBetween: 30,
+                        0: {
                             slidesPerView: 1,
+                            spaceBetween: 10,
                         },
-                        // when window width is >= 768px
+                        640: {
+                            slidesPerView: 1,
+                            spaceBetween: 10,
+                        },
                         768: {
-                            width: 803,
                             slidesPerView: 2,
+                            spaceBetween: 10,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 10,
                         },
                     }}
                 >

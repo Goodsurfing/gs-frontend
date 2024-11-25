@@ -7,4 +7,5 @@ export interface ExtraImagesItemProps {
     label: string;
     closeBtn?: React.ReactNode;
     disabled?: boolean;
+    checkImageSize?: boolean;
 }

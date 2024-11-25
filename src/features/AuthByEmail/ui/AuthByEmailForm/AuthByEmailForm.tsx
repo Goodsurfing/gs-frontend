@@ -40,14 +40,14 @@ export const AuthByEmailForm = memo(({
                 email: data.email,
                 password: data.password,
             };
-            const { token } = await loginUser(formData).unwrap();
+            const { accessToken } = await loginUser(formData).unwrap();
 
             dispatch(userActions.setAuthData({ username: data.email }));
 
             localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({
                 username: data.email,
             }));
-            localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
+            localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(accessToken));
 
             onSuccess?.();
             reset();

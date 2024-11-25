@@ -29,3 +29,8 @@ export const getMediaContentsArray = (images: (GalleryItem | MediaObjectType | s
     });
     return newImages;
 };
+
+export const getMediaContentsApiArray = (images: MediaObjectType[]) => {
+    const newImages = images.map((image) => `${BASE_URL}${image["@id"].slice(1)}`);
+    return newImages;
+};

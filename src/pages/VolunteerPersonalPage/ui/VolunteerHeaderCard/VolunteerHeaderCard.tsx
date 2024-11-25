@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { Profile } from "@/entities/Profile";
 import { VolunteerApi } from "@/entities/Volunteer";
 
 import { medalsData } from "@/shared/data/medals";
@@ -11,29 +10,28 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import { getMessengerPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./VolunteerHeaderCard.module.scss";
+import { formatDate } from "@/shared/lib/formatDate";
+import { Locale } from "@/entities/Locale";
 
 interface VolunteerHeaderCardProps {
-    profile: Profile;
-    host?: string;
-    volunteer?: VolunteerApi;
+    volunteer: VolunteerApi;
     showButtons: boolean;
+    locale: Locale;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
     (props: VolunteerHeaderCardProps) => {
         const {
             volunteer,
-            profile,
             showButtons,
-            host,
+            locale,
         } = props;
-        const {
-            firstName, lastName, image, birthDate, country, city,
-        } = profile;
+
         const navigate = useNavigate();
-        const { locale } = useLocale();
+        const {
+            image, firstName, lastName, birthDate, country, city,
+        } = volunteer.profile;
 
         const renderLanguages = () => {
             if (
@@ -53,18 +51,6 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                 );
             }
             return <span>Языки не были указаны</span>;
-        };
-
-        const renderRole = () => {
-            const roles = [];
-            if (volunteer) {
-                roles.push("Волонтёр");
-            }
-            if (host) {
-                roles.push("Хост");
-            }
-
-            return roles.length > 0 ? roles.join(", ") : null;
         };
 
         const handleEditClick = useCallback(() => {
@@ -97,9 +83,9 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.containerInfo}>
                         <div>
                             <span className={styles.birthDate}>
-                                {renderRole()}
+                                Волонтёр
                                 {" "}
-                                {birthDate}
+                                {formatDate(locale, birthDate ?? "")}
                             </span>
                             {/* {isMember && (
                                 <img

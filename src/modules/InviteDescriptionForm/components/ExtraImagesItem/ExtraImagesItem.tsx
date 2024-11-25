@@ -12,6 +12,7 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
     id,
     closeBtn,
     label,
+    checkImageSize,
 }) => {
     const onBtnClick = () => {};
 
@@ -27,6 +28,7 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
                 labelChildren={
                     !img.src && <ExtraImagesItemBackground label={label} />
                 }
+                checkImageSize={checkImageSize}
             />
             {closeBtn && (
                 <ExtraImagesItemButton
