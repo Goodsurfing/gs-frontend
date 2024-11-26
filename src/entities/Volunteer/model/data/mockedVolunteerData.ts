@@ -3,7 +3,7 @@ import { mockedReview } from "@/entities/Host/model/data/mockedHostData";
 
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 
-import { Volunteer } from "../types/volunteer";
+import { Volunteer, VolunteerApi } from "../types/volunteer";
 import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 
 export const mockedVolunteerData: Volunteer = {
@@ -76,3 +76,48 @@ export const mockedVolunteerData: Volunteer = {
     membershipEndDate: "",
     galleryImages: [],
 };
+
+export const mockedVolunteerApiData: VolunteerApi[] = [
+    {
+        profile: {
+            id: "test1",
+            email: "test123@test.com",
+            galleryImages: [],
+            locale: "ru",
+            memberProfiles: [],
+            membershipEndDate: "",
+        },
+        additionalSkills: [],
+        externalInfo: "asfasf",
+        languages: [],
+        skills: [],
+    },
+    {
+        profile: {
+            id: "test2",
+            email: "test124@test.com",
+            galleryImages: [],
+            locale: "ru",
+            memberProfiles: [],
+            membershipEndDate: "",
+        },
+        additionalSkills: [],
+        externalInfo: "asfasf",
+        languages: [],
+        skills: [],
+    },
+    {
+        profile: {
+            id: "test2",
+            email: "test125@test.com",
+            galleryImages: [],
+            locale: "ru",
+            memberProfiles: [],
+            membershipEndDate: "",
+        },
+        additionalSkills: [],
+        externalInfo: "asfasf",
+        languages: [],
+        skills: [],
+    },
+];

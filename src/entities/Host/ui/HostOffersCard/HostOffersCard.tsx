@@ -9,6 +9,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useCategories } from "@/shared/data/categories";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Text } from "@/shared/ui/Text/Text";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface HostOffersCardProps {
     className?: string;
@@ -46,6 +47,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
                             reviews="14"
                             went="22"
                             key={index}
+                            link={getOfferPersonalPageUrl(locale, id.toString())}
                         />
                     ));
             },

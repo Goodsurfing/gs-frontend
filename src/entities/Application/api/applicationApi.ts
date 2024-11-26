@@ -24,9 +24,12 @@ export const applicationApi = createApi({
         updateApplicationFormStatusById: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `application_forms${applicationId}/status`,
+                url: `application_forms/${applicationId}/status`,
                 method: "PATCH",
-                body: { status },
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ status }),
             }),
             invalidatesTags: ["application"],
         }),

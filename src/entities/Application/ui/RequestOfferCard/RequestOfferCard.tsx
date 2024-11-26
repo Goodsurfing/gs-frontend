@@ -3,8 +3,6 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
-
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -14,6 +12,7 @@ import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestOfferCard.module.scss";
 import { FullFormApplication } from "../../model/types/application";
+import { Locale } from "@/entities/Locale";
 
 interface RequestOfferCardProps {
     application: FullFormApplication;
@@ -21,6 +20,7 @@ interface RequestOfferCardProps {
     onReviewClick?: (application: FullFormApplication) => void;
     showStatus?: boolean;
     showButtons?: boolean;
+    locale: Locale;
 }
 
 export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
@@ -30,10 +30,10 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
         onReviewClick,
         showButtons = true,
         showStatus,
+        locale,
     } = props;
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { locale } = useLocale();
     const imageCover = getMediaContent(
         getMediaContent(application.vacancy.description?.image),
     );

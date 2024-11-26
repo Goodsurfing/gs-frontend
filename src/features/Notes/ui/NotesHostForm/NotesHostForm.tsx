@@ -22,6 +22,8 @@ import {
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
 import { useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -40,9 +42,10 @@ export const NotesHostForm = () => {
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
 
-    const { data: applications } = useGetMyHostApplicationsQuery();
+    const { data: applications, isLoading } = useGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
+    const { locale } = useLocale();
 
     const onReviewClick = (application: FullFormApplication) => {
         setSelectedApplication(application);
@@ -99,6 +102,12 @@ export const NotesHostForm = () => {
             });
     };
 
+    if (isLoading) {
+        return (
+            <div><MiniLoader /></div>
+        );
+    }
+
     return (
         <div>
             <NotesWidget
@@ -107,7 +116,8 @@ export const NotesHostForm = () => {
                 variant="host"
                 onReviewClick={onReviewClick}
                 updateApplicationStatus={handleUpdateStatus}
-                isDragDisable
+                isDragDisable={false}
+                locale={locale}
             />
             <Controller
                 name="review"

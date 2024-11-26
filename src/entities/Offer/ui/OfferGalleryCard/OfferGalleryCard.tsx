@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useGetOfferGalleryItemsQuery } from "../../api/offerApi";
 import styles from "./OfferGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferGalleryCardProps {
     offerId: number;
@@ -23,7 +24,7 @@ export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)} id="gallery">
-                <h3>{t("personalOffer.Фотографии")}</h3>
+                <Text title={t("personalOffer.Фотографии")} titleSize="h3" />
                 <ImageGallerySlider images={gallery} className={styles.container} />
             </div>
         );

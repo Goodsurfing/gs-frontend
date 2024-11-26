@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { FullFormApplication, RequestCard } from "@/entities/Application";
+import { Locale } from "@/entities/Locale";
 
 interface NotesApplicationCardProps {
     className?: string;
@@ -9,6 +10,7 @@ interface NotesApplicationCardProps {
     index: number;
     isDragDisable: boolean;
     onReviewClick: (application: FullFormApplication) => void;
+    locale: Locale;
 }
 
 export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
@@ -18,6 +20,7 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
             index,
             className,
             isDragDisable,
+            locale,
         } = props;
 
         return (
@@ -37,7 +40,7 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
                             ...provided.draggableProps.style,
                         }}
                     >
-                        <RequestCard application={application} />
+                        <RequestCard application={application} locale={locale} />
                     </div>
                 )}
             </Draggable>

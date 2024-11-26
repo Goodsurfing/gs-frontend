@@ -21,6 +21,11 @@ export const HostFill = memo((props: HostFillProps) => {
     const { profile, isLoading, error } = useUser();
     const host = profile?.host;
 
+    const isDescirption = !!getHost?.name;
+    const isGallery = !!(getHost?.galleryImages && getHost?.galleryImages.length !== 0);
+    const isVideoGallery = !!(getHost?.videoGallery && getHost?.videoGallery.length !== 0);
+    const isOffers = !!(getHost?.vacancies && getHost?.vacancies.length !== 0);
+
     if (isLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
@@ -40,19 +45,19 @@ export const HostFill = memo((props: HostFillProps) => {
     // todo no backend here
     const pointsData: StatsChartPoints[] = [{
         text: "Описание",
-        completed: true,
+        completed: isDescirption,
     }, {
         text: "Фотографии",
-        completed: true,
+        completed: isGallery,
     }, {
         text: "Видео",
-        completed: true,
+        completed: isVideoGallery,
     }, {
         text: "Предложения",
-        completed: true,
+        completed: isOffers,
     }, {
         text: "Отзывы",
-        completed: true,
+        completed: false,
     }];
 
     return (

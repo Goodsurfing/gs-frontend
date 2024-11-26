@@ -14,6 +14,7 @@ import { getUserAuthData, userActions } from "@/entities/User";
 
 import {
     getAboutProjectPageUrl,
+    getAmbassadorsPageUrl,
     getBlogPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
@@ -123,7 +124,7 @@ const InfoHeader = memo(() => {
                         <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.experts")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to={getAmbassadorsPageUrl(locale)}>
                             {t("main.welcome.header.community.ambassadors")}
                         </Link>
                         <Link to={getMainPageUrl(locale)}>

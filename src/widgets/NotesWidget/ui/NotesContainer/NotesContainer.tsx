@@ -7,6 +7,7 @@ import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCa
 import { NotesCard } from "../NotesCard/NotesCard";
 import styles from "./NotesContainer.module.scss";
 import { FormApplicationStatus, FullFormApplication } from "@/entities/Application";
+import { Locale } from "@/entities/Locale";
 
 export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
@@ -17,6 +18,7 @@ interface NotesContainerProps {
     isDragDisable: boolean;
     variant: VariantType;
     onReviewClick: (application: FullFormApplication) => void;
+    locale: Locale;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
@@ -29,6 +31,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             isDragDisable,
             variant,
             onReviewClick,
+            locale,
         } = props;
         const { t } = useTranslation();
 
@@ -42,6 +45,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                         index={index}
                         isDragDisable={false}
                         onReviewClick={onReviewClick}
+                        locale={locale}
                     />
                 ));
             }
@@ -53,6 +57,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                     className={styles.noteCard}
                     index={index}
                     isDragDisable
+                    locale={locale}
                 />
             ));
         };

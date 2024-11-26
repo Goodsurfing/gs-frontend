@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getProfilePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./WhoIsGoodsurfers.module.scss";
@@ -14,7 +14,7 @@ export const WhoIsGoodsurfers = () => {
     const navigate = useNavigate();
 
     const navigateClick = () => {
-        navigate(getProfilePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     return (

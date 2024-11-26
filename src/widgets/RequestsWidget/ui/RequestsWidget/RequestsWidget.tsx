@@ -2,6 +2,7 @@ import cn from "classnames";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useNavigate } from "react-router-dom";
 import {
     RequestCard,
     useGetMyHostApplicationsQuery,
@@ -10,18 +11,26 @@ import {
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestsWidget.module.scss";
+import { getHostNotesPageUrl } from "@/shared/config/routes/AppUrls";
+import { Locale } from "@/entities/Locale";
 
 interface RequestsWidgetProps {
     className?: string;
+    locale: Locale;
 }
 
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
-    const { className } = props;
+    const { className, locale } = props;
     const {
         data: applications,
         isLoading: isApplicationsLoading,
     } = useGetMyHostApplicationsQuery();
     const { t } = useTranslation("host");
+    const navigate = useNavigate();
+
+    const navigateTo = () => {
+        navigate(getHostNotesPageUrl(locale));
+    };
 
     const renderRequests = () => {
         if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
@@ -49,7 +58,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
             <div className={styles.requestsItems}>
                 {renderRequests()}
                 {applications?.length && (
-                    <Button variant="FILL" color="BLUE" size="MEDIUM">
+                    <Button variant="FILL" color="BLUE" size="MEDIUM" onClick={navigateTo}>
                         {t("host-dashboard.Посмотреть все")}
                     </Button>
                 )}

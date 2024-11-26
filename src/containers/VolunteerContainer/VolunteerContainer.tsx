@@ -7,10 +7,8 @@ import { volunteerData } from "@/containers/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "@/containers/VolunteerContainer/VolunteerItem/VolunteerItem";
 
 import styles from "./VolunteerContainer.module.scss";
-import { getHostPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useAppSelector } from "@/shared/hooks/redux";
-import { getUserAuthData } from "@/entities/User";
 
 const VolunteerContainer = memo(() => {
     useEffect(() => {
@@ -26,10 +24,6 @@ const VolunteerContainer = memo(() => {
 
     const { locale } = useLocale();
 
-    const authData = useAppSelector(getUserAuthData);
-
-    const path = authData ? getSignInPageUrl(locale) : getHostPageUrl(locale);
-
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.title}>Стань волонтёром</h2>
@@ -43,7 +37,7 @@ const VolunteerContainer = memo(() => {
             <div className={styles.content}>
                 {volunteerDataList}
             </div>
-            <ButtonLink type="secondary" path={path}>
+            <ButtonLink type="secondary" path={getProfileRolePageUrl(locale)}>
                 Начать сейчас
             </ButtonLink>
         </div>

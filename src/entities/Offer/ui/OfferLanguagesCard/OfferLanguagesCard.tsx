@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useFormatLanguages } from "@/shared/data/languages";
 import styles from "./OfferLanguagesCard.module.scss";
 import { Language } from "@/types/languages";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferLanguagesCardProps {
     languages: Language[];
@@ -17,7 +18,7 @@ export const OfferLanguagesCard: FC<OfferLanguagesCardProps> = memo(
         const { t } = useTranslation("offer");
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>{t("personalOffer.Владение языками")}</h3>
+                <Text title={t("personalOffer.Владение языками")} titleSize="h3" />
                 <span className={styles.languages}>{useFormatLanguages(languages)}</span>
             </div>
         );

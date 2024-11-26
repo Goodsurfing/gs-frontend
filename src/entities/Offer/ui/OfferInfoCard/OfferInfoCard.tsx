@@ -116,7 +116,12 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            <OfferShareCard />
+            {offer.description && (
+                <OfferShareCard
+                    offerId={offer.id.toString()}
+                    offerTitle={offer.description?.title}
+                />
+            )}
         </div>
     );
 });

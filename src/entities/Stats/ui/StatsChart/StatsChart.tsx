@@ -48,6 +48,9 @@ export const StatsChart = memo((props: StatsChartProps) => {
         },
         plugins: {
             legend: { display: false },
+            tooltip: {
+                enabled: false,
+            },
         },
     };
 

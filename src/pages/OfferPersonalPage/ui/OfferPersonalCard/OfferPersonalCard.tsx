@@ -32,7 +32,10 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
     };
 
     const showImageBlock = gallery?.length ? (
-        <OfferPersonalCardImageBlock onImagesClick={onImagesClick} />
+        <OfferPersonalCardImageBlock
+            onImagesClick={onImagesClick}
+            images={getMediaContentsArray(gallery)}
+        />
     ) : null;
 
     return (

@@ -14,6 +14,7 @@ import useDebounce from "@/shared/hooks/useDebounce";
 import { statusColors } from "../../model/lib/statusColors";
 import { NotesContainer, VariantType } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
+import { Locale } from "@/entities/Locale";
 
 interface NotesWidgetProps {
     notes: FullFormApplication[];
@@ -25,6 +26,7 @@ interface NotesWidgetProps {
         applicationId: number,
         status: FormApplicationStatus
     ) => void;
+    locale: Locale;
 }
 
 export const NotesWidget: FC<NotesWidgetProps> = memo(
@@ -36,6 +38,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             variant,
             onReviewClick,
             updateApplicationStatus,
+            locale,
         } = props;
 
         const [notes] = useState(initialNotes);
@@ -72,23 +75,26 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         const debouncedStatusChange = useDebounce(pendingStatusChange, 500);
 
         useEffect(() => {
-            if (debouncedStatusChange) {
+            if (!debouncedStatusChange) return;
+
+            const changedNote = initialNotes.find(
+                (note) => note.id === debouncedStatusChange.applicationId
+                    && note.status === debouncedStatusChange.status,
+            );
+
+            if (!changedNote) {
                 updateApplicationStatus?.(
                     debouncedStatusChange.applicationId,
                     debouncedStatusChange.status,
                 );
             }
-        }, [debouncedStatusChange, updateApplicationStatus]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [debouncedStatusChange, initialNotes]);
 
         const onDragEnd = (result: DropResult) => {
             const { destination, source } = result;
 
-            // If note was not dragged to a valid area, do nothing
-            if (!destination) {
-                return;
-            }
-
-            // If the item was dragged back to its original place, do nothing
+            if (!destination) return;
             if (
                 destination.droppableId === source.droppableId
                 && destination.index === source.index
@@ -96,44 +102,29 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                 return;
             }
 
-            // Start updating the state
-            const startNotes = columns[source.droppableId as FormApplicationStatus];
-            const finishNotes = columns[destination.droppableId as FormApplicationStatus];
+            const startNotes = Array.from(
+                columns[source.droppableId as FormApplicationStatus],
+            );
+            const finishNotes = Array.from(
+                columns[destination.droppableId as FormApplicationStatus],
+            );
 
-            // If the item was dragged within the same column
-            if (startNotes === finishNotes) {
-                const newNotes = Array.from(startNotes);
-                const [removed] = newNotes.splice(source.index, 1);
-                newNotes.splice(destination.index, 0, removed);
-
-                const newColumns = {
-                    ...columns,
-                    [source.droppableId]: newNotes,
-                };
-
-                setColumns(newColumns);
-                return;
-            }
-
-            // If the item was dragged to another column
-            const startNewNotes = Array.from(startNotes);
-            const [removed] = startNewNotes.splice(source.index, 1);
-            removed.status = destination.droppableId as FormApplicationStatus;
-            const finishNewNotes = Array.from(finishNotes);
-            finishNewNotes.splice(destination.index, 0, removed);
-
-            const newColumns = {
-                ...columns,
-                [source.droppableId]: startNewNotes,
-                [destination.droppableId]: finishNewNotes,
+            const [removed] = startNotes.splice(source.index, 1);
+            const updatedNote = {
+                ...removed,
+                status: destination.droppableId as FormApplicationStatus,
             };
+            finishNotes.splice(destination.index, 0, updatedNote);
 
-            setColumns(newColumns);
+            setColumns({
+                ...columns,
+                [source.droppableId]: startNotes,
+                [destination.droppableId]: finishNotes,
+            });
 
-            // Update application Status
             setPendingStatusChange({
-                applicationId: removed.id,
-                status: removed.status,
+                applicationId: updatedNote.id,
+                status: updatedNote.status,
             });
         };
 
@@ -151,6 +142,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                             }
                             variant={variant}
                             isDragDisable={isDragDisable}
+                            locale={locale}
                         />
                     ))}
                 </div>
