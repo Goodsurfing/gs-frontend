@@ -1,19 +1,18 @@
 import React, { FC, memo } from "react";
 
-import { GoodsItems } from "@/features/OfferConditions/model/types/conditionsData";
-
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 
-import styles from "./FacilityCard.module.scss";
+import styles from "./TermsCard.module.scss";
 
-interface FacilityCardProps {
-    facility: GoodsItems;
+interface TermsCardProps {
+    icon: string;
+    text: string;
 }
 
-export const FacilityCard: FC<FacilityCardProps> = memo(
-    (props: FacilityCardProps) => {
+export const TermsCard: FC<TermsCardProps> = memo(
+    (props: TermsCardProps) => {
         const {
-            facility: { icon, text },
+            icon, text,
         } = props;
         return (
             <div className={styles.wrapper}>

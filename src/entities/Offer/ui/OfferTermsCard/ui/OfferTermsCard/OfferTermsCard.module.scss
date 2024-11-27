@@ -10,3 +10,10 @@
     gap: 20px;
     width: 100%;
 }
+
+
+@media(max-width: 576px) {
+    .container {
+        justify-content: center;
+    }
+}

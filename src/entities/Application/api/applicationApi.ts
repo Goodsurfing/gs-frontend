@@ -47,6 +47,13 @@ export const applicationApi = createApi({
             }),
             providesTags: ["application"],
         }),
+        getMyVolunteerApplications: build.query<FullFormApplication[], void>({
+            query: () => ({
+                url: "personal/volunteer/forms",
+                method: "GET",
+            }),
+            providesTags: ["application"],
+        }),
     }),
 });
 
@@ -54,5 +61,6 @@ export const {
     useCreateApplicationFormMutation,
     useGetApplicationFormByIdQuery,
     useGetMyHostApplicationsQuery,
+    useGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
 } = applicationApi;

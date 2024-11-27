@@ -5,7 +5,6 @@ import { ErrorType } from "@/types/api/error";
 import { NotesWidget } from "@/widgets/NotesWidget";
 
 import { FullFormApplication } from "@/entities/Application";
-import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { VolunteerModalReview } from "@/entities/Review";
 import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
@@ -18,6 +17,9 @@ import {
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 export const NotesVolunteerForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -27,6 +29,7 @@ export const NotesVolunteerForm = () => {
         },
     };
 
+    const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const form = useForm<ReviewFields>({
         mode: "onChange",
@@ -35,7 +38,7 @@ export const NotesVolunteerForm = () => {
     const { handleSubmit, control } = form;
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
-    // const [getReviewData] = useLazyGetToOrganizationsReviewByIdQuery();
+    const { data: applications, isLoading } = useGetMyVolunteerApplicationsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     // useEffect(() => {
@@ -102,14 +105,21 @@ export const NotesVolunteerForm = () => {
         }
     });
 
+    if (isLoading) {
+        return (
+            <div><MiniLoader /></div>
+        );
+    }
+
     return (
         <div>
             <NotesWidget
                 className={styles.notes}
-                notes={mockedApplications}
+                notes={applications ?? []}
                 variant="volunteer"
                 onReviewClick={onReviewClick}
                 isDragDisable
+                locale={locale}
             />
             <Controller
                 name="review"
@@ -121,6 +131,7 @@ export const NotesVolunteerForm = () => {
                         application={selectedApplication}
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
+                        locale={locale}
                         sendReview={() => onSendReview()}
                         successText={
                             toast?.type === HintType.Success

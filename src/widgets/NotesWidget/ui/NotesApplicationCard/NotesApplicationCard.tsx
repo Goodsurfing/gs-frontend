@@ -21,6 +21,7 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
             className,
             isDragDisable,
             locale,
+            onReviewClick,
         } = props;
 
         return (
@@ -40,7 +41,11 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
                             ...provided.draggableProps.style,
                         }}
                     >
-                        <RequestCard application={application} locale={locale} />
+                        <RequestCard
+                            application={application}
+                            locale={locale}
+                            onReviewClick={onReviewClick}
+                        />
                     </div>
                 )}
             </Draggable>

@@ -28,7 +28,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
         const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
-            if (!skills || !skills.length) {
+            if (!skills || skills.length === 0) {
                 return <span>Волонтёр не указал умения</span>;
             }
 
@@ -55,7 +55,9 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
         }, [skills, skillsData]);
 
         const renderAdditionalSkills = useMemo(() => {
-            if (!additionalSkills || additionalSkills.length === 0) return null;
+            if (!additionalSkills || additionalSkills.length === 0) {
+                return <span>Волонтёр не указал дополнительные умения</span>;
+            }
             return <span>{additionalSkills.join(", ")}</span>;
         }, [additionalSkills]);
 

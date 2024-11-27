@@ -95,6 +95,10 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 <>
                     <OfferTermsCard
                         facilities={offer.conditions.conveniences}
+                        housing={offer.conditions.housing}
+                        paidTravel={offer.conditions.paidTravel}
+                        nutrition={offer.conditions.food}
+                        extraFeatures={offer.conditions.additionalFeatures}
                         className={styles.container}
                     />
                     <OfferExtraConditionsCard

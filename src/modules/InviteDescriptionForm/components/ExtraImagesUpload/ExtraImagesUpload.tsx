@@ -109,6 +109,7 @@ const ExtraImagesUpload: FC<ExtraImagesUploadProps> = (props) => {
             handleCloseBtnClick={handleCloseBtnClick}
             isLoading={isLoading}
             classNameWrapper={classNameWrapper}
+            checkImageSize={false}
         />
     );
 };

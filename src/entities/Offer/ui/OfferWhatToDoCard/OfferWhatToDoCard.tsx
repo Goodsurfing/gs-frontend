@@ -12,6 +12,7 @@ import { OfferWhatToDo } from "../../model/types/offerWhatToDo";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 import styles from "./OfferWhatToDoCard.module.scss";
 import { useTranslateTimeType } from "@/shared/hooks/useTimeType";
+import { successIcon } from "@/shared/data/icons/skills";
 
 interface OfferWhatToDoCardProps {
     whatToDo: OfferWhatToDo;
@@ -26,7 +27,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
     (props: OfferWhatToDoCardProps) => {
         const {
             whatToDo: {
-                skills, hours, dayOff, timeType,
+                skills, hours, dayOff, timeType, additionalSkills, externalInfo,
             },
             className,
         } = props;
@@ -57,11 +58,27 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
             });
         }, [skills, skillsData]);
 
+        const renderAdditionalSkillsCard = useMemo(() => {
+            if (!additionalSkills) return null;
+            return additionalSkills.map((item, index) => (
+                <IconTextComponent
+                    text={item}
+                    icon={successIcon}
+                    alt={item}
+                    key={index}
+                />
+            ));
+        }, [additionalSkills]);
+
         return (
             <div className={cn(className, styles.wrapper)} id="whatToDo">
                 <div className={styles.card}>
                     <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
+                    <Text title={t("personalOffer.Дополнительные требования")} titleSize="h3" />
+                    <div className={styles.cards}>{renderAdditionalSkillsCard}</div>
+                    <Text title={t("personalOffer.Дополнительная информация")} titleSize="h3" />
+                    <p>{externalInfo}</p>
                 </div>
                 <div className={styles.card}>
                     <InfoCard>

@@ -1,18 +1,19 @@
 import cn from "classnames";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { getMainPageUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getMessengerPageUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import { FullFormApplication } from "../../model/types/application";
 import styles from "./RequestCard.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
-import { LinkVariant } from "@/shared/ui/Link/Link.interface";
 import { Locale } from "@/entities/Locale";
+import Button from "@/shared/ui/Button/Button";
 
 interface RequestCardProps {
     className?: string;
@@ -34,12 +35,17 @@ export const RequestCard = memo((props: RequestCardProps) => {
     } = props;
     const { volunteer, vacancy, status } = application;
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const username = (!volunteer.profile.firstName && !volunteer.profile.lastName)
         ? "Анонимный пользователь" : `${volunteer.profile.firstName} ${volunteer.profile.lastName}`;
 
     const address = (!volunteer.profile.city || !volunteer.profile.country)
         ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;
+
+    const onMessageClick = () => {
+        navigate(getMessengerPageUrl(locale));
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -51,7 +57,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 )}
                 <CustomLink
                     to={getVolunteerPersonalPageUrl(locale, volunteer.profile.id)}
-                    variant={LinkVariant.DEFAULT}
+                    variant="DEFAULT"
                 >
                     <Avatar
                         icon={getMediaContent(application.volunteer.profile.image)}
@@ -61,7 +67,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 </CustomLink>
                 <CustomLink
                     to={getVolunteerPersonalPageUrl(locale, volunteer.profile.id)}
-                    variant={LinkVariant.DEFAULT}
+                    variant="DEFAULT"
                 >
                     <div className={styles.text}>
                         <span
@@ -76,7 +82,6 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 </CustomLink>
             </div>
             <div className={styles.linkWrapper}>
-                {/* Make route to user profile */}
                 <Link
                     className={styles.link}
                     to={getOfferPersonalPageUrl(
@@ -90,21 +95,24 @@ export const RequestCard = memo((props: RequestCardProps) => {
             <div className={styles.buttons}>
                 {showButtons && status === "accepted" && (
                     <>
-                        <ButtonLink
+                        <Button
                             className={styles.button}
-                            type="outlined"
-                            path={getMainPageUrl(locale)}
+                            color="BLUE"
+                            variant="OUTLINE"
+                            size="SMALL"
+                            onClick={onMessageClick}
                         >
                             {t("notes.Сообщение")}
-                        </ButtonLink>
-                        <ButtonLink
+                        </Button>
+                        <Button
                             className={styles.button}
-                            type="outlined"
-                            path={getMainPageUrl(locale)}
+                            color="BLUE"
+                            variant="OUTLINE"
+                            size="SMALL"
                             onClick={() => onReviewClick?.(application)}
                         >
                             {t("notes.Написать отзыв")}
-                        </ButtonLink>
+                        </Button>
                     </>
                 )}
             </div>

@@ -2,6 +2,7 @@ import React, { FC, memo } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import styles from "./OfferExtraConditionsCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferExtraConditionsCardProps {
     extraConditions: string;
@@ -14,7 +15,7 @@ export const OfferExtraConditionsCard: FC<OfferExtraConditionsCardProps> = memo(
         const { t } = useTranslation("offer");
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>{t("personalOffer.Дополнительные условия")}</h3>
+                <Text title={t("personalOffer.Дополнительные условия")} titleSize="h3" />
                 <p className={styles.extraConditions}>{extraConditions}</p>
             </div>
         );

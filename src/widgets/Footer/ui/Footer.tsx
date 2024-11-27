@@ -48,28 +48,28 @@ export const Footer = memo(() => {
                         </div>
                         <div className={styles.socials}>
                             <a
-                                href="https://vk.com/"
+                                href="https://www.instagram.com/goodsurfing"
                                 target="_blank"
                                 rel="noreferrer"
                             >
                                 <img src={instaIcon} alt="Instagram" />
                             </a>
                             <a
-                                href="https://vk.com/"
+                                href="https://telegram.me/goodsurfing"
                                 target="_blank"
                                 rel="noreferrer"
                             >
                                 <img src={tgIcon} alt="Telegram" />
                             </a>
                             <a
-                                href="https://vk.com/"
+                                href="https://vk.com/goodsurfing"
                                 target="_blank"
                                 rel="noreferrer"
                             >
                                 <img src={vkIcon} alt="VK" />
                             </a>
                             <a
-                                href="https://vk.com/"
+                                href="https://www.facebook.com/goodsurfing"
                                 target="_blank"
                                 rel="noreferrer"
                             >
