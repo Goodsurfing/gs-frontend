@@ -109,7 +109,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         );
     }
 
-    if (!getHost || error) {
+    if (error) {
         return (
             <div className={cn(styles.form, className)}>
                 Произошла ошибка! Поробуйте перезагрузить страницу
