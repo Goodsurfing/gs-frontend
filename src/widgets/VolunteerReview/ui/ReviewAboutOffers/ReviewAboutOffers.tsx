@@ -18,6 +18,7 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { mockedReviewOfferData } from "../../model/data/mockedReviewData";
 import styles from "./ReviewAboutOffers.module.scss";
 import { FullFormApplication } from "@/entities/Application";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const ReviewAboutOffers: FC = () => {
     const { t } = useTranslation("volunteer");
@@ -28,6 +29,7 @@ export const ReviewAboutOffers: FC = () => {
         },
     };
     const [toast] = useState<ToastAlert>();
+    const { locale } = useLocale();
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -97,6 +99,7 @@ export const ReviewAboutOffers: FC = () => {
                                 ? toast?.text
                                 : undefined
                         }
+                        locale={locale}
                     />
                 )}
             />

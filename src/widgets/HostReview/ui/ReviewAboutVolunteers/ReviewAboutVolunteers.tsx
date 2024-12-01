@@ -17,6 +17,7 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
 import { fakeUserData } from "../../model/data/mockedUsersData";
 import styles from "./ReviewAboutVolunteers.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 export const ReviewAboutVolunteers: FC = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -31,6 +32,7 @@ export const ReviewAboutVolunteers: FC = () => {
         defaultValues,
     });
     const { handleSubmit, control } = form;
+    const { locale } = useLocale();
     const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
         null,
     );
@@ -93,6 +95,7 @@ export const ReviewAboutVolunteers: FC = () => {
                                 ? toast?.text
                                 : undefined
                         }
+                        locale={locale}
                     />
                 )}
             />

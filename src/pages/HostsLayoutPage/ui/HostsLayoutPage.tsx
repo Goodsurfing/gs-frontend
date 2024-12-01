@@ -6,30 +6,30 @@ import { useTranslation } from "react-i18next";
 import { useHostPagesSidebarData } from "@/shared/data/sidebar/host-pages";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
-import { useUser } from "@/entities/Profile";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
 import { FillSidebarData } from "../lib/fillSidebarData";
 
 export const HostsLayoutPage = () => {
-    const { profile, isLoading } = useUser();
+    const { data: myProfile, isLoading } = useGetProfileInfoQuery();
     const { HostPagesSidebarData } = useHostPagesSidebarData();
     const { t } = useTranslation();
 
     const hostSidebarContent = useCallback(() => {
-        if (!isLoading && profile?.host) {
+        if (!isLoading && myProfile?.host) {
             return HostPagesSidebarData;
         }
         return FillSidebarData(HostPagesSidebarData, t);
-    }, [isLoading, profile?.host, HostPagesSidebarData, t]);
+    }, [isLoading, myProfile?.host, HostPagesSidebarData, t]);
 
     const sidebarContent = hostSidebarContent();
 
     return (
         <>
             {isLoading && (<Preloader />)}
-            {!isLoading && profile && (
+            {!isLoading && myProfile && (
                 <PageLayout sidebarContent={sidebarContent}>
                     <Outlet />
                 </PageLayout>

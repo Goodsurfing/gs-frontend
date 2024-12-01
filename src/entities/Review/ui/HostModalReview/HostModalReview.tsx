@@ -5,6 +5,7 @@ import { ReviewTypeFields } from "@/features/Notes";
 import { FullFormApplication, RequestCard } from "@/entities/Application";
 
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
+import { Locale } from "@/entities/Locale";
 
 interface HostModalReviewProps {
     application: FullFormApplication | null;
@@ -15,6 +16,7 @@ interface HostModalReviewProps {
     sendReview: () => void;
     successText?: string;
     errorText?: string;
+    locale: Locale;
 }
 
 export const HostModalReview: FC<HostModalReviewProps> = (props) => {
@@ -27,6 +29,7 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
         sendReview,
         successText,
         errorText,
+        locale,
     } = props;
     const { stars, text } = value;
     return (
@@ -46,6 +49,7 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
         >
             {application && (
                 <RequestCard
+                    locale={locale}
                     application={application}
                     showButtons={false}
                     showStatus={false}

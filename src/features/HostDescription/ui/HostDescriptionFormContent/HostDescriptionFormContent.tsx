@@ -15,7 +15,7 @@ import styles from "./HostDescriptionFormContent.module.scss";
 import { Host } from "@/entities/Host";
 
 interface HostDescriptionFormContentProps {
-    host: Host;
+    host?: Host;
 }
 
 export const HostDescriptionFormContent = memo((props: HostDescriptionFormContentProps) => {

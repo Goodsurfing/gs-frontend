@@ -2,7 +2,7 @@ import React, { FC, memo } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
 
 interface ArticleShareProps {
@@ -16,9 +16,8 @@ export const ArticleShare: FC<ArticleShareProps> = memo((props: ArticleShareProp
         <ShareBlock
             className={className}
             label="Поделиться"
-            vk={getMainPageUrl(locale)}
-            instagram={getMainPageUrl(locale)}
-            telegram={getMainPageUrl(locale)}
+            textTitle="Статья"
+            url={getBlogPersonalPageUrl(locale)}
         />
     );
 });

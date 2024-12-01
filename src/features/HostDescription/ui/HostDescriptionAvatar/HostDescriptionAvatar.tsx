@@ -13,7 +13,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface HostDescriptionAvatarProps {
     className?: string;
-    host: Host;
+    host?: Host;
 }
 
 export const HostDescriptionAvatar = memo(
@@ -26,7 +26,7 @@ export const HostDescriptionAvatar = memo(
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const handleImageUpload = (file?: File) => {
-            if (file) {
+            if (file && host) {
                 uploadFile(file.name, file)
                     .then(async (result) => {
                         await updateHost({
@@ -41,7 +41,9 @@ export const HostDescriptionAvatar = memo(
         };
 
         useEffect(() => {
-            setAvatar(getMediaContent(host.avatar));
+            if (host) {
+                setAvatar(getMediaContent(host.avatar));
+            }
         }, [host]);
 
         return (
@@ -51,7 +53,7 @@ export const HostDescriptionAvatar = memo(
                 id="host-file"
                 src={avatar}
                 setFile={handleImageUpload}
-                route={getHostPersonalPageUrl(locale, host.id)}
+                route={getHostPersonalPageUrl(locale, host?.id)}
             />
         );
     },

@@ -84,6 +84,13 @@ export const ProfileInfoFormBirthDate = memo(
                                 className={styles.dayDropdown}
                                 disabled={isLocked}
                                 value={field.value}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            maxHeight: 300,
+                                        },
+                                    },
+                                }}
                             >
                                 {filteredDays.map((day) => (
                                     <MenuItem value={day} key={day}>

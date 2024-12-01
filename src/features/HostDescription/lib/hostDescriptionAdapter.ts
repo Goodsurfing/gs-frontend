@@ -1,4 +1,4 @@
-import { Host } from "@/entities/Host";
+import { Host, HostApi } from "@/entities/Host";
 import {
     HostDescriptionFormFields,
     HostDescriptionMainInfoFields,
@@ -47,6 +47,7 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
         mainInfo, socialMedia, type,
     } = data;
     const formData = new FormData();
+    const videoGallery: string[] = [];
     formData.append("name", mainInfo?.organization || "");
     formData.append("address", "test");
     formData.append("type", type?.organizationType || "");
@@ -56,10 +57,13 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
     formData.append("facebook", socialMedia?.facebook || "");
     formData.append("instagram", socialMedia?.instagram || "");
     formData.append("telegram", socialMedia?.telegram || "");
+    formData.append("videoGallery", JSON.stringify(videoGallery));
     return formData;
 };
 
-export const hostDescriptionApiAdapterUpdate = (data: HostDescriptionFormFields): Partial<Host> => {
+export const hostDescriptionApiAdapterUpdate = (
+    data: HostDescriptionFormFields,
+): Partial<HostApi> => {
     const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         address, avatar, mainInfo, socialMedia, type,
@@ -69,6 +73,7 @@ export const hostDescriptionApiAdapterUpdate = (data: HostDescriptionFormFields)
         type: type?.organizationType,
         description: mainInfo?.aboutInfo,
         // wip backend avatar,
+        avatar,
         vk: socialMedia?.vk,
         instagram: socialMedia?.instagram,
         facebook: socialMedia?.facebook,

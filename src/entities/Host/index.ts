@@ -10,7 +10,7 @@ export {
     useDeleteHostMemberMutation,
 } from "./api/hostApi";
 export type {
-    Host, TeamUser, HostMember,
+    Host, HostApi, TeamUser, HostMember,
 } from "./model/types/host";
 
 export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";

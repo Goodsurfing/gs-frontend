@@ -73,6 +73,8 @@ export const mockedHostData: Host = {
     vacancies: [
         "https://example.com/",
     ],
+    galleryImages: [],
+    videoGallery: [],
 };
 
 export const mockedReview: Review[] = [
