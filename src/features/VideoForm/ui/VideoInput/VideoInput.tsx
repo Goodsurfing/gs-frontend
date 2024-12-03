@@ -27,7 +27,7 @@ export const VideoInput = memo(({ control, addVideo, isLoading }: VideoInputProp
                 control={control}
                 rules={{
                     pattern: {
-                        value: /^(?:(?:https?:\/\/)?(?:www\.)?(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch?.+&v=))((\w|-){11})(?:\S+)?|(http:\/\/|https:\/\/)?(www\.)?(vimeo.com\/)([0-9]+))$/,
+                        value: /^(?:(?:https?:\/\/)?(?:www\.)?(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch?.+&v=))((\w|-){11})(?:\S+)?|(?:https?:\/\/)?(?:www\.)?(?:vimeo.com\/)(\d+)|(?:https?:\/\/)?(?:www\.)?(?:vk\.com\/(?:video|videos)-?\d+_\d+|vkvideo\.ru\/(?:video-?\d+_\d+|video_ext\.php\?(?:[^&]*&)?(?:oid|id)=-?\d+_\d+)))$/,
                         message: t("volunteer-gallery.Введите корректный URL"),
                     },
                 }}
