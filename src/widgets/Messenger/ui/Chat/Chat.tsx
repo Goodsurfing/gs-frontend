@@ -1,12 +1,14 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 import { ErrorType } from "@/types/api/error";
 
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
-import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
+import { mockedChatUser, UserInfoCard } from "@/entities/Messenger";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
@@ -27,14 +29,19 @@ import styles from "./Chat.module.scss";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useCreateApplicationFormMutation } from "@/entities/Application";
+import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { formatDate, formatMessageDate } from "@/shared/lib/formatDate";
+import { useLazyGetApplicationFormByIdQuery } from "@/entities/Application/api/applicationApi";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface ChatProps {
     id?: string;
     offerId?: string;
     onBackButton: (value?: string) => void;
     className?: string;
-    user: UserChatType;
-    messages: MessageType[];
+    locale: Locale;
 }
 
 const defaultValues: DefaultValues<ChatFormFields> = {
@@ -46,10 +53,10 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, offerId, className, onBackButton, user,
+        id, offerId, className, onBackButton, locale,
     } = props;
 
-    const { handleSubmit, control } = useForm<ChatFormFields>({
+    const { handleSubmit, control, reset } = useForm<ChatFormFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -59,9 +66,20 @@ export const Chat: FC<ChatProps> = (props) => {
     const [selectedImage, setSelectedImage] = useState<string | undefined>();
     const [toast, setToast] = useState<ToastAlert>();
     const [offerData, setOfferData] = useState<Offer>();
+    const [applicationIsClosed, setApplicationClosed] = useState<boolean>(false);
+    const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>([]);
+    const messegesEndRef = useRef<HTMLDivElement | null>(null);
+
+    const { mercureToken } = useAuth();
 
     const [getOfferData, { isLoading: isOfferDataLoading }] = useLazyGetOfferByIdQuery();
+    const { data: myProfileData } = useGetProfileInfoQuery();
+    const {
+        messages,
+        isLoading: isMessagesLoading,
+    } = useGetChatMessages(id, mercureToken, myProfileData?.id);
     const [createApplicationForm] = useCreateApplicationFormMutation();
+    const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
 
     useEffect(() => {
         if (isChatCreate && offerId) {
@@ -84,7 +102,83 @@ export const Chat: FC<ChatProps> = (props) => {
         }
     }, [isChatCreate, offerId, getOfferData]);
 
-    if (!id) {
+    useEffect(() => {
+        const processMessages = async () => {
+            let currentDate = "";
+            const elements = await Promise.all(messages.map(async (message) => {
+                const {
+                    createdAt, author, text, applicationForm,
+                } = message;
+                const messageDate = new Date(createdAt).toDateString();
+
+                const partsAuthor = author.split("/");
+                const authorId = partsAuthor.pop();
+                const isUser = myProfileData?.id !== authorId;
+
+                let dateLine = null;
+                if (messageDate !== currentDate) {
+                    currentDate = messageDate;
+                    dateLine = (
+                        <div className={styles.date}>
+                            {
+                                formatDate(locale, currentDate)
+                            }
+                        </div>
+                    );
+                }
+
+                if (applicationForm) {
+                    const partsApplicationForm = applicationForm.split("/");
+                    const applicationFormId = partsApplicationForm.pop();
+                    try {
+                        const applicationResult = await getApplicationData(applicationFormId ?? "").unwrap();
+                        const { vacancy, startDate, endDate } = applicationResult;
+
+                        return (
+                            <OfferApplication
+                                offerData={vacancy}
+                                terms={{
+                                    start: new Date(startDate),
+                                    end: new Date(endDate),
+                                }}
+                                isHost
+                                username="Николай Николаевич"
+                                isClosed
+                                onChange={() => {}}
+                            />
+                        );
+                    } catch {
+                        return null;
+                    }
+                }
+
+                return (
+                    <>
+                        {dateLine}
+                        <Message
+                            avatar=""
+                            date={formatMessageDate(locale, createdAt)}
+                            isUser={isUser}
+                            text={text}
+                            username={authorId ?? ""}
+                        />
+                    </>
+                );
+            }));
+            setProcessedMessages(elements.filter((el): el is JSX.Element => el !== null));
+        };
+
+        processMessages();
+    }, [messages, getApplicationData, myProfileData, locale]);
+
+    useEffect(() => {
+        messegesEndRef.current?.scrollIntoView({
+            behavior: "instant",
+            block: "nearest",
+        });
+    }, [messages, processedMessages, id]);
+
+    if (!id || !myProfileData) {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
                 <ReactSVG src={chatIcon} className={styles.chatIcon} />
@@ -109,33 +203,6 @@ export const Chat: FC<ChatProps> = (props) => {
         onBackButton(undefined);
     };
 
-    const renderMessages = () => {
-        let currentDate = "";
-
-        return user.messages.map((message) => {
-            const messageDate = new Date(message.date).toLocaleDateString();
-
-            let dateLine = null;
-            if (messageDate !== currentDate) {
-                currentDate = messageDate;
-                dateLine = <div className={styles.date}>{currentDate}</div>;
-            }
-
-            return (
-                <>
-                    {dateLine}
-                    <Message
-                        avatar={user.avatar}
-                        date={message.date}
-                        isUser={message.isUser}
-                        text={message.content}
-                        username={user.name}
-                    />
-                </>
-            );
-        });
-    };
-
     const handleVolunteerSubmitOfferApplication = handleSubmit(async (data) => {
         const {
             applicationForm: { startDate, endDate },
@@ -143,14 +210,15 @@ export const Chat: FC<ChatProps> = (props) => {
         if (startDate !== undefined && endDate !== undefined && offerId) {
             setToast(undefined);
             const preparedData = applicationOfferAdapter(data, offerId);
-            const result = createApplicationForm(preparedData)
+            await createApplicationForm(preparedData)
                 .unwrap()
-                .then((dataApplication) => {
+                .then(() => {
                     setToast({
                         text: "Заявка успешно отправлена",
                         type: HintType.Success,
                     });
-                    return dataApplication;
+                    setApplicationClosed(true);
+                    reset({ applicationForm: data.applicationForm });
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -158,19 +226,13 @@ export const Chat: FC<ChatProps> = (props) => {
                         type: HintType.Error,
                     });
                 });
-            if (result) {
-                // eslint-disable-next-line no-console
-                console.log(result);
-            }
         }
     });
 
     const renderChat = () => {
         if (isChatCreate && offerId) {
             if (isOfferDataLoading) {
-                return (
-                    <MiniLoader className={styles.miniLoader} />
-                );
+                return <MiniLoader className={styles.miniLoader} />;
             }
 
             if (offerData) {
@@ -192,7 +254,7 @@ export const Chat: FC<ChatProps> = (props) => {
                                 })}
                                 isHost={false}
                                 username="Николай Николаевич"
-                                isClosed={false}
+                                isClosed={applicationIsClosed}
                                 onSubmit={handleVolunteerSubmitOfferApplication}
                             />
                         )}
@@ -200,19 +262,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 );
             }
         }
-        return (
-            <>
-                <Message
-                    avatar=""
-                    date={new Date()}
-                    isUser
-                    image="https://corporate.walmart.com/content/corporate/en_us/purpose/sustainability/planet/nature/jcr:content/par/image_2_0.img.png/1693432526985.png"
-                    username={user.name}
-                    onImageClick={onImageChange}
-                />
-                {renderMessages()}
-            </>
-        );
+        return processedMessages;
     };
 
     return (
@@ -228,7 +278,7 @@ export const Chat: FC<ChatProps> = (props) => {
                             className={styles.back}
                             onClick={handleBackButton}
                         />
-                        <span className={styles.userName}>{user.name}</span>
+                        <span className={styles.userName}>Николай Николаевич</span>
                     </div>
                     <div className={styles.settingsInfo}>
                         <UserSettings />
@@ -240,12 +290,19 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    <div className={styles.chatList}>{renderChat()}</div>
+                    <div className={styles.chatList}>
+                        {isMessagesLoading || isOfferDataLoading ? <MiniLoader /> : (
+                            <>
+                                {renderChat()}
+                                <div className={styles.messegesEnd} ref={messegesEndRef} />
+                            </>
+                        )}
+                    </div>
                 </div>
-                <SendMessage disabled={isChatCreate} />
+                <SendMessage disabled={isChatCreate} chatId={id} />
             </div>
             <UserInfoCard
-                user={user}
+                user={mockedChatUser}
                 infoOpenedChange={infoOpenedChange}
                 className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
             />

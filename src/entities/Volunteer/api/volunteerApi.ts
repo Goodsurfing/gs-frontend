@@ -52,5 +52,6 @@ export const {
     useCreateVolunteerMutation,
     useGetMyVolunteerQuery,
     useGetVolunteerByIdQuery,
+    useLazyGetVolunteerByIdQuery,
     useUpdateVolunteerByIdMutation,
 } = volunteerApi;

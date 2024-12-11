@@ -1,4 +1,6 @@
-import { memo, useCallback, useState } from "react";
+import {
+    memo, useCallback, useEffect, useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
@@ -11,7 +13,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 export const AuthByEmail = memo(() => {
-    const [error, setError] = useState(false);
+    const [error, setError] = useState("");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const onSuccess = useCallback(() => {
@@ -19,9 +21,16 @@ export const AuthByEmail = memo(() => {
     }, [locale, navigate]);
     const { t, ready } = useTranslation();
 
-    const onError = useCallback(() => {
-        setError(true);
+    const onError = useCallback((errorText: string) => {
+        setError(errorText);
     }, []);
+
+    useEffect(() => {
+        if (error) {
+            const timeout = setTimeout(() => setError(""), 4000);
+            return () => clearTimeout(timeout);
+        }
+    }, [error]);
 
     if (!ready) {
         return null;
@@ -29,7 +38,7 @@ export const AuthByEmail = memo(() => {
 
     return (
         <div className={styles.wrapper}>
-            {error && <HintPopup text={t("login.Ошибка авторизации")} type={HintType.Error} />}
+            {error && <HintPopup text={t(`login.${error}`)} type={HintType.Error} />}
             <h2 className={styles.title}>{t("login.Вход")}</h2>
             <AuthByEmailForm
                 className={styles.form}

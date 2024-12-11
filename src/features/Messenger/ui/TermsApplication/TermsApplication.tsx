@@ -4,7 +4,8 @@ import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { successIcon } from "@/shared/data/icons/skills";
-import Button from "@/shared/ui/Button/Button";
+import { formatDate } from "@/shared/lib/formatDate";
+import { Locale } from "@/entities/Locale";
 
 interface DateType {
     start: Date | undefined;
@@ -18,13 +19,15 @@ interface TermsApplicationProps {
     terms: DateType;
     min?: Date;
     max?: Date;
+    locale: Locale;
     onChange: (terms: DateType) => void
     onSubmit?: () => void;
 }
 
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
-        className, onChange, onSubmit, terms, max, min, isHost, isSuccess = false,
+        className, onChange, onSubmit, terms, max, min, isHost,
+        isSuccess = false, locale,
     } = props;
 
     const handleFromDateChange = useCallback((date: Date) => {
@@ -64,7 +67,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                 <div className={styles.group}>
                     <span>Прибытие</span>
                     {isSuccess ? (
-                        <p>{terms.start?.toDateString()}</p>
+                        <p>{terms?.start && formatDate(locale, terms.start.toDateString())}</p>
                     )
                         : (
                             <DateInput
@@ -82,7 +85,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     <span>Отъезд</span>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
                         {isSuccess ? (
-                            <p>{terms.end?.toDateString()}</p>
+                            <p>{terms.end && formatDate(locale, terms.end.toDateString())}</p>
                         ) : (
                             <>
                                 <DateInput
@@ -108,7 +111,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     </div>
                 </div>
             </div>
-            { isHost && (
+            {/* { isHost && (
                 <div style={{
                     display: "flex",
                     gap: "10px",
@@ -120,7 +123,8 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     <Button color="BLUE" size="SMALL" variant="FILL">Принять</Button>
                     <Button color="GRAY" size="SMALL" variant="OUTLINE">Отклонить</Button>
                 </div>
-            )}
+            )} */}
+            {/* This logic has changed and is no longer used. */}
         </div>
     );
 };

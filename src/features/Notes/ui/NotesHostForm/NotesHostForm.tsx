@@ -140,6 +140,7 @@ export const NotesHostForm = () => {
                                 ? toast?.text
                                 : undefined
                         }
+                        locale={locale}
                     />
                 )}
             />

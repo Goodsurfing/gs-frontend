@@ -9,7 +9,7 @@ interface MessageProps {
     isUser?: boolean;
     text?: string;
     image?: string;
-    date: Date;
+    date: string;
     avatar: string;
     username: string;
     isError?: boolean;
@@ -20,9 +20,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     const {
         avatar, date, isUser, text, image, username, isError = false, onImageClick,
     } = props;
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const time = `${hours}:${minutes}`;
+
     const messageClass = cn(styles.message, {
         [styles.userMessage]: isUser,
         [styles.otherMessage]: !isUser,
@@ -41,7 +39,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                     {isUser && <span className={styles.name}>{username}</span>}
                     <img className={styles.image} src={image} alt="" onClick={() => onImageClick?.(image)} />
                     <span className={styles.date}>
-                        {time}
+                        {date}
                         {isError && <ReactSVG src={errorIcon} className={styles.error} />}
                     </span>
                 </div>
@@ -56,7 +54,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                 {isUser && <span className={styles.name}>{username}</span>}
                 <p className={styles.text}>{text}</p>
                 <span className={styles.date}>
-                    {time}
+                    {date}
                     {isError && <ReactSVG src={errorIcon} className={styles.error} />}
                 </span>
             </div>

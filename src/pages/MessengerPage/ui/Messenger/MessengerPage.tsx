@@ -7,8 +7,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Chat, MessengerList } from "@/widgets/Messenger";
 
-import { mockedChatUser, mockedMessages } from "@/entities/Messenger";
-
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./MessengerPage.module.scss";
@@ -48,8 +46,7 @@ const MessengerPage = () => {
                         className={cn(styles.chat, {
                             [styles.open]: selectedChat,
                         })}
-                        messages={mockedMessages}
-                        user={mockedChatUser}
+                        locale={locale}
                     />
                 </div>
             </div>

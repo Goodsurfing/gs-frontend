@@ -15,6 +15,7 @@ export const baseQuery = fetchBaseQuery({
 
 interface LoginResponse {
     accessToken: string;
+    mercureToken: string;
 }
 
 export const loginApi = createApi({

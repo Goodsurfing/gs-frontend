@@ -18,6 +18,19 @@
     }
 }
 
+.textField .MuiInputBase-input::-webkit-scrollbar {
+    width: 10px;
+}
+
+.textField .MuiInputBase-input::-webkit-scrollbar-track {
+    background: var(--color-white);
+}
+
+.textField .MuiInputBase-input::-webkit-scrollbar-thumb {
+    border-radius: var(--radius);
+    background-color: var(--bg-accent);
+}
+
 .emojiWrapper {
     position: absolute;
     bottom: 300%;
@@ -30,10 +43,24 @@
     padding: 0;
 }
 
+
+
 .icon > div {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.iconSend {
+    svg {
+        fill: var(--text-primary-1);
+    }
+}
+
+.iconSend.disabled {
+    svg {
+        fill: var(--text-caption);
+    }
 }
 
 @media (max-width: 992px) {

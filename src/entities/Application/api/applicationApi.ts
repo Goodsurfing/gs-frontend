@@ -60,6 +60,7 @@ export const applicationApi = createApi({
 export const {
     useCreateApplicationFormMutation,
     useGetApplicationFormByIdQuery,
+    useLazyGetApplicationFormByIdQuery,
     useGetMyHostApplicationsQuery,
     useGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,

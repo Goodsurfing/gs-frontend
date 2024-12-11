@@ -118,6 +118,7 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useLazyGetHostByIdQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
     useGetMyHostQuery,

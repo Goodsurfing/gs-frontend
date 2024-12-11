@@ -17,16 +17,19 @@ interface MessengerListProps {
 
 export const MessengerList: FC<MessengerListProps> = (props) => {
     const { className, onUserClick } = props;
-    const { token } = useAuth();
-    const { users } = useGetChatListData(token);
+    const { token, mercureToken } = useAuth();
+    const {
+        chatsListWithOrganizations,
+        chatsListWithVolunteers,
+    } = useGetChatListData(token, mercureToken);
 
     const renderUserCard = useMemo(
-        () => users.map((user) => (
-            <div onClick={() => onUserClick?.(user.id)} key={user.id}>
-                <UserCard data={user} />
+        () => [...chatsListWithOrganizations, ...chatsListWithVolunteers].map((chatItem) => (
+            <div onClick={() => onUserClick?.(chatItem.id.toString())} key={chatItem.id.toString()}>
+                <UserCard dataChat={chatItem} />
             </div>
         )),
-        [users, onUserClick],
+        [chatsListWithOrganizations, chatsListWithVolunteers, onUserClick],
     );
 
     return (

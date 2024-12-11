@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 import { VideoListProps } from "@/widgets/VideoList";
@@ -18,16 +18,7 @@ export const VideoList: React.FC<VideoListProps> = ({ videosURL, onDelete }) => 
                     height="180px"
                     url={videoURL}
                     controls
-                    playing={false}
-                    light
                 />
-                {/* <ReactPlayer
-                    width="auto"
-                    height="180px"
-                    url={videoURL}
-                    controls
-                    onReady={() => setRemainingVideos((prev) => prev - 1)}
-                /> */}
                 <CloseButton
                     className={styles.closeButton}
                     onClick={() => onDelete(videoURL)}

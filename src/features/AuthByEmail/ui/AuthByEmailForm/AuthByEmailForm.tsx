@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { loginApi } from "../../model/services/loginApi/loginApi";
 
-import { TOKEN_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import { MERCURE_TOKEN_LOCALSTORAGE_KEY, TOKEN_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { userActions } from "@/entities/User";
 
 import styles from "./AuthByEmailForm.module.scss";
@@ -19,7 +19,7 @@ import { AuthByEmailHelp } from "../AuthByEmailHelp/AuthByEmailHelp";
 interface AuthByEmailFormProps {
     className?: string;
     onSuccess?: () => void;
-    onError?: () => void;
+    onError?: (error: string) => void;
 }
 
 export const AuthByEmailForm = memo(({
@@ -40,7 +40,7 @@ export const AuthByEmailForm = memo(({
                 email: data.email,
                 password: data.password,
             };
-            const { accessToken } = await loginUser(formData).unwrap();
+            const { accessToken, mercureToken } = await loginUser(formData).unwrap();
 
             dispatch(userActions.setAuthData({ username: data.email }));
 
@@ -48,11 +48,12 @@ export const AuthByEmailForm = memo(({
                 username: data.email,
             }));
             localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(accessToken));
+            localStorage.setItem(MERCURE_TOKEN_LOCALSTORAGE_KEY, JSON.stringify(mercureToken));
 
             onSuccess?.();
             reset();
-        } catch (e) {
-            onError?.();
+        } catch (e: any) {
+            onError?.(e.data.title);
         }
     }, [dispatch, loginUser, onError, onSuccess, reset]);
 

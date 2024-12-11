@@ -2,13 +2,22 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { Message } from "@/entities/Chat";
+import { MessageType } from "@/entities/Messenger";
 
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
     tagTypes: ["chat"],
     endpoints: (build) => ({
-        getMessagesById: build.query<Message[], string>({
+        createMessage: build.mutation<Message[], FormData>({
+            query: (formData) => ({
+                url: "messages",
+                method: "POST",
+                body: formData,
+            }),
+            invalidatesTags: ["chat"],
+        }),
+        getMessagesByChatId: build.query<MessageType[], string>({
             query: (chatId) => ({
                 url: `chats/${chatId}/messages`,
                 method: "GET",
@@ -31,3 +40,5 @@ export const chatApi = createApi({
         }),
     }),
 });
+
+export const { useCreateMessageMutation, useGetMessagesByChatIdQuery } = chatApi;

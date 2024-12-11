@@ -7,9 +7,11 @@ import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { TermsApplication } from "../TermsApplication/TermsApplication";
 import styles from "./OfferApplication.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useCategories } from "@/shared/data/categories";
+import { FormApplicationOffer } from "@/entities/Application";
 
 interface OfferApplicationProps {
-    offerData: Offer;
+    offerData: Offer | FormApplicationOffer;
     isHost: boolean;
     username: string;
     isClosed?: boolean;
@@ -29,6 +31,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     } = props;
     const { description, where, id } = offerData;
     const { locale } = useLocale();
+    const { getTranslation } = useCategories();
 
     const handleDates = useCallback(
         (periods: DatesType) => {
@@ -47,7 +50,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 <span className={styles.line}>
                     {username}
                     {" "}
-                    подал заявку на вашу вакансию
+                    подал заявку на вакансию
                 </span>
             );
         }
@@ -67,7 +70,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 locale={locale}
                 isFavorite={false}
                 offerId={id}
-                category={description?.categoryIds[0]}
+                category={getTranslation(description?.categoryIds[0])}
                 description={description?.shortDescription}
                 likes="5"
                 location={where?.address}
@@ -79,6 +82,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 link={getOfferPersonalPageUrl(locale, id.toString())}
             />
             <TermsApplication
+                locale={locale}
                 terms={terms}
                 onChange={handleDates}
                 isSuccess={isClosed || false}

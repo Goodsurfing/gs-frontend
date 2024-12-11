@@ -95,6 +95,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             const { destination, source } = result;
 
             if (!destination) return;
+
             if (
                 destination.droppableId === source.droppableId
                 && destination.index === source.index
@@ -102,25 +103,28 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                 return;
             }
 
-            const startNotes = Array.from(
-                columns[source.droppableId as FormApplicationStatus],
-            );
-            const finishNotes = Array.from(
-                columns[destination.droppableId as FormApplicationStatus],
-            );
+            const sourceColumn = columns[source.droppableId as FormApplicationStatus];
+            const destinationColumn = columns[destination.droppableId as FormApplicationStatus];
 
-            const [removed] = startNotes.splice(source.index, 1);
+            const updatedSourceNotes = Array.from(sourceColumn);
+            const updatedDestinationNotes = sourceColumn === destinationColumn
+                ? updatedSourceNotes
+                : Array.from(destinationColumn);
+
+            const [movedNote] = updatedSourceNotes.splice(source.index, 1);
+
             const updatedNote = {
-                ...removed,
+                ...movedNote,
                 status: destination.droppableId as FormApplicationStatus,
             };
-            finishNotes.splice(destination.index, 0, updatedNote);
 
-            setColumns({
-                ...columns,
-                [source.droppableId]: startNotes,
-                [destination.droppableId]: finishNotes,
-            });
+            updatedDestinationNotes.splice(destination.index, 0, updatedNote);
+
+            setColumns((prevColumns) => ({
+                ...prevColumns,
+                [source.droppableId]: updatedSourceNotes,
+                [destination.droppableId]: updatedDestinationNotes,
+            }));
 
             setPendingStatusChange({
                 applicationId: updatedNote.id,

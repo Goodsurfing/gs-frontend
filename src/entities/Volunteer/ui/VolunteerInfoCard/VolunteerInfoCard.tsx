@@ -1,13 +1,10 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { Host } from "@/entities/Host";
-
 import { VolunteerApi } from "../../model/types/volunteer";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLanguagesCard";
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
-import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
 import styles from "./VolunteerInfoCard.module.scss";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
@@ -15,13 +12,12 @@ import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/Voluntee
 
 interface VolunteerInfoCardProps {
     className?: string;
-    volunteer?: VolunteerApi;
-    host?: Host;
+    volunteer: VolunteerApi;
 }
 
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
     (props: VolunteerInfoCardProps) => {
-        const { volunteer, className, host } = props;
+        const { volunteer, className } = props;
         const showImageGallery = volunteer?.profile.galleryImages
         && volunteer?.profile.galleryImages.length !== 0;
         const showVideoGallery = volunteer?.profile.videoGallery
@@ -33,12 +29,12 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     description={volunteer?.externalInfo}
                 />
                 <VolunteerSkillsCard
-                    skills={volunteer?.skills}
-                    additionalSkills={volunteer?.additionalSkills}
+                    skills={volunteer.skills}
+                    additionalSkills={volunteer.additionalSkills}
                     className={styles.container}
                 />
                 <VolunteerLanguagesCard
-                    languages={volunteer?.languages}
+                    languages={volunteer.languages}
                     className={styles.container}
                 />
                 {/* <VolunteerOffersCard
@@ -52,13 +48,13 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 {showImageGallery
                 && (
                     <VolunteerGalleryCard
-                        images={getMediaContentsArray(volunteer?.profile.galleryImages)}
+                        images={getMediaContentsArray(volunteer.profile.galleryImages)}
                         className={styles.container}
                     />
                 )}
                 {showVideoGallery && (
                     <VolunteerVideoGalleryCard
-                        videoGallery={volunteer?.profile.videoGallery}
+                        videoGallery={volunteer.profile.videoGallery}
                         className={styles.container}
                     />
                 )}
@@ -70,9 +66,9 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     articles={volunteer.articles}
                     className={styles.container}
                 /> */}
-                {host && (
+                {/* {host && (
                     <VolunteerHostCard host={host} className={styles.container} />
-                )}
+                )} */}
             </div>
         );
     },

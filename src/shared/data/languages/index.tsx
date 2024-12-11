@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { IOptionLevelLanguage, IOptionLanguage } from "@/types/select";
+import React from "react";
 import { Language } from "@/types/languages";
+import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
 export const useAllLangs = (): IOptionLanguage[] => {
     const { t } = useTranslation("offer");
@@ -221,26 +222,35 @@ export const useFormatLanguages = (languages: Language[]) => {
         { label: t("whoNeeds.Не важен"), value: "not_matter" },
         { label: t("whoNeeds.Начальный"), value: "beginner" },
         { label: t("whoNeeds.Элементарный"), value: "elementary" },
-        { label: t("whoNeeds.Слабый средний уровень"), value: "lower_intermediate" },
+        {
+            label: t("whoNeeds.Слабый средний уровень"),
+            value: "lower_intermediate",
+        },
         { label: t("whoNeeds.Выше среднего"), value: "upper_intermediate" },
         { label: t("whoNeeds.Продвинутый"), value: "advanced" },
         { label: t("whoNeeds.В совершенстве"), value: "proficiency" },
     ];
+
+    if (languages.length === 0) return null;
 
     if (languages[0].language === "not_matter") {
         return t("whoNeeds.Не важен");
     }
 
     return languages
-        .map(({ language, languageLevel }) => {
-            const languageLabel = languagesList.find(
-                (l) => l.value === language,
-            )?.label || language;
-            const levelLabel = levelOptions.find(
-                (l) => l.value === languageLevel,
-            )?.label || languageLevel;
+        .map(({ language, languageLevel }, index) => {
+            const languageLabel = languagesList.find((l) => l.value === language)?.label
+                || language;
+            const levelLabel = levelOptions.find((l) => l.value === languageLevel)?.label
+                || languageLevel;
 
-            return `${languageLabel}/${levelLabel}`;
-        })
-        .join(", ");
+            return (
+                <React.Fragment key={index}>
+                    <span>{languageLabel}</span>
+                    /
+                    <span>{levelLabel}</span>
+                    {index < languages.length - 1 && ", "}
+                </React.Fragment>
+            );
+        });
 };

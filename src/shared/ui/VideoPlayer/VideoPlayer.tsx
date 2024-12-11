@@ -46,7 +46,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
             if (oidAndIdMatch && oidAndIdMatch.length === 3) {
                 const oid = oidAndIdMatch[1];
                 const id = oidAndIdMatch[2];
-                return `https://vk.com/thumb/${oid}_${id}`; // Замените на правильный URL для превью, если известно
+                return `https://vk.com/thumb/${oid}_${id}`;
             }
             return null;
         } catch {
