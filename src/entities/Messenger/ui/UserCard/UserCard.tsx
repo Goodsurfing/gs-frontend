@@ -2,9 +2,7 @@ import cn from "classnames";
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
-
-import { Host } from "@/entities/Host";
+import { HostApi } from "@/entities/Host";
 import { VolunteerApi } from "@/entities/Volunteer";
 
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
@@ -19,18 +17,20 @@ import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer/api/volunteer
 import { useLazyGetHostByIdQuery } from "@/entities/Host/api/hostApi";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { formatMessageDate } from "@/shared/lib/formatDate";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { getOfferStateColor } from "@/shared/lib/offerState";
 
 interface UserCardProps {
     dataChat: ChatsListWithVolunteers | ChatsListWithOrganizations;
     className?: string;
+    locale: Locale;
 }
 
 export const UserCard: FC<UserCardProps> = (props) => {
-    const { dataChat, className } = props;
+    const { dataChat, className, locale } = props;
     const { id } = useParams();
-    const { locale } = useLocale();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
-    const [hostData, setHostData] = useState<Host>();
+    const [hostData, setHostData] = useState<HostApi>();
 
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [getHost] = useLazyGetHostByIdQuery();
@@ -51,9 +51,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
                 }
             } else {
                 try {
-                    const hostId = dataChat.organization.split("/").pop();
-                    const hostResult = await getHost(hostId as string).unwrap();
-                    setHostData(hostResult);
+                    // const hostId = dataChat.organization.split("/").pop();
+                    // const hostResult = await getHost(hostId as string).unwrap();
+                    setHostData(dataChat.organization);
                 } catch {
                     setHostData(undefined);
                 }
@@ -80,20 +80,21 @@ export const UserCard: FC<UserCardProps> = (props) => {
                         <span className={styles.name}>{`${volunteerData.profile.lastName} ${volunteerData.profile.firstName}`}</span>
                         <span className={styles.date}>
                             {formatMessageDate(
+                                locale,
                                 dataChat.lastMessage.createdAt,
                             )}
                         </span>
                     </div>
                     <div className={styles.dateNewLastMess}>
                         <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
-                        {/* {isHaveNewMessages && (
-                            <div className={styles.newMessages}>{newMessages}</div>
-                        )} */}
+                        {!dataChat.lastMessage.viewed && (
+                            <div className={styles.newMessages} />
+                        )}
                         {/* To do a number of Messages, backend issue */}
                     </div>
                 </div>
                 <div
-                    // style={{ backgroundColor: getOfferStateColor(state) }}
+                    style={{ backgroundColor: getOfferStateColor(dataChat.vacancyStatus ?? "new") }}
                     // {To do state color, backend issue}
                     className={styles.state}
                 />
@@ -118,21 +119,21 @@ export const UserCard: FC<UserCardProps> = (props) => {
                         <span className={styles.name}>{hostData.name}</span>
                         <span className={styles.date}>
                             {formatMessageDate(
+                                locale,
                                 dataChat.lastMessage.createdAt,
                             )}
                         </span>
                     </div>
                     <div className={styles.dateNewLastMess}>
                         <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
-                        {/* {isHaveNewMessages && (
-                            <div className={styles.newMessages}>{newMessages}</div>
-                        )} */}
+                        {!dataChat.lastMessage.viewed && (
+                            <div className={styles.newMessages} />
+                        )}
                         {/* To do a number of Messages, backend issue */}
                     </div>
                 </div>
                 <div
-                    // style={{ backgroundColor: getOfferStateColor(state) }}
-                    // {To do state color, backend issue}
+                    style={{ backgroundColor: getOfferStateColor(dataChat.vacancyStatus ?? "new") }}
                     className={styles.state}
                 />
             </Link>

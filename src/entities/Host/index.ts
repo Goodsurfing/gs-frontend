@@ -2,6 +2,7 @@ export {
     hostApi,
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useLazyGetHostByIdQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
     useGetMyHostQuery,

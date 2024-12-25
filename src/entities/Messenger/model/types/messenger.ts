@@ -1,4 +1,6 @@
-import { Language } from "@/entities/Volunteer";
+import { FormApplicationStatus } from "@/entities/Application";
+import { HostApi } from "@/entities/Host";
+import { Language, VolunteerApi } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
 
@@ -14,12 +16,14 @@ export interface ChatsListWithVolunteers {
     id: number;
     volunteer: string;
     lastMessage: MessageType;
+    vacancyStatus?: FormApplicationStatus;
 }
 
 export interface ChatsListWithOrganizations {
     id: number;
-    organization: string;
+    organization: HostApi;
     lastMessage: MessageType;
+    vacancyStatus?: FormApplicationStatus;
 }
 
 export interface UserChatType {
@@ -40,4 +44,12 @@ export interface MessageTypeMocked {
     date: Date;
     content: string;
     isUser: boolean;
+}
+
+export interface ChatType {
+    id: number;
+    lastMessage: MessageType;
+    organization: string;
+    vacancyStatus?: FormApplicationStatus;
+    volunteer: VolunteerApi;
 }

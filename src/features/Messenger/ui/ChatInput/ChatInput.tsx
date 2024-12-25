@@ -39,12 +39,12 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
         }
     };
 
-    // const handleKeyDown = (e: React.KeyboardEvent) => {
-    //     if (e.key === "Enter" && !e.shiftKey) {
-    //         e.preventDefault();
-    //         handleSendMessage();
-    //     }
-    // };
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -80,7 +80,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     InputProps={{
                         disableUnderline: true,
                     }}
-                    // onKeyDown={handleKeyDown}
+                    onKeyDown={handleKeyDown}
                 />
                 <IconButton
                     ref={emojiRef}

@@ -26,15 +26,10 @@ export const useGetChatMessages = (
 
         const eventSource = new EventSource(url);
 
-        eventSource.onmessage = (event) => {
-            console.log("onMessage", JSON.parse(event.data));
+        eventSource.addEventListener("messageOnChat", (event) => {
             const updatedMessage = JSON.parse(event.data);
             setMessages((prevMessages) => [...prevMessages, updatedMessage]);
-        };
-
-        eventSource.onerror = (error) => {
-            console.error("EventSource error:", error);
-        };
+        });
 
         return () => {
             eventSource.close();

@@ -9,14 +9,16 @@ import styles from "./MessengerList.module.scss";
 import { ListFilter } from "../ListFilter/ListFilter";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useGetChatListData } from "@/entities/Chat";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
+    locale: Locale;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props) => {
-    const { className, onUserClick } = props;
+    const { className, onUserClick, locale } = props;
     const { token, mercureToken } = useAuth();
     const {
         chatsListWithOrganizations,
@@ -26,10 +28,10 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     const renderUserCard = useMemo(
         () => [...chatsListWithOrganizations, ...chatsListWithVolunteers].map((chatItem) => (
             <div onClick={() => onUserClick?.(chatItem.id.toString())} key={chatItem.id.toString()}>
-                <UserCard dataChat={chatItem} />
+                <UserCard dataChat={chatItem} locale={locale} />
             </div>
         )),
-        [chatsListWithOrganizations, chatsListWithVolunteers, onUserClick],
+        [chatsListWithOrganizations, chatsListWithVolunteers, locale, onUserClick],
     );
 
     return (

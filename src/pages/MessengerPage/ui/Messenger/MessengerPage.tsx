@@ -38,6 +38,7 @@ const MessengerPage = () => {
                             [styles.open]: !selectedChat,
                         })}
                         onUserClick={handleOnUserClick}
+                        locale={locale}
                     />
                     <Chat
                         id={selectedChat}
