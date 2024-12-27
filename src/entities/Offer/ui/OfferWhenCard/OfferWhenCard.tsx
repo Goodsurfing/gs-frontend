@@ -16,10 +16,10 @@ interface OfferWhenProps {
 
 export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
-    const period = periods?.[0];
-    const offerPeriodStart = (period && period.start) ? period.start : "Точная дата не указана";
-    const offerPeriodEnd = (period && period.ending) ? period.ending : "Точная дата не указана";
     const { locale } = useLocale();
+    const period = periods?.[0];
+    const offerPeriodStart = (period && period.start) ? formatDate(locale, period.start) : "Точная дата не указана";
+    const offerPeriodEnd = (period && period.ending) ? formatDate(locale, period.ending) : "Точная дата не указана";
     const { t } = useTranslation("offer");
 
     return (
@@ -28,7 +28,7 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                 <InfoCardItem
                     className={styles.left}
                     title={t("personalOffer.Когда")}
-                    text={formatDate(locale, offerPeriodStart)}
+                    text={offerPeriodStart}
                 />
                 <div className={styles.right}>
                     <InfoCardItem
@@ -41,7 +41,7 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                     />
                     <InfoCardItem
                         title={t("personalOffer.Прием заявок до")}
-                        text={formatDate(locale, offerPeriodEnd)}
+                        text={offerPeriodEnd}
                     />
                 </div>
             </InfoCard>

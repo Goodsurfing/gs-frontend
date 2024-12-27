@@ -28,8 +28,8 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
-    const isShowPaymentCard = offer.conditions?.volunteerContributions
-        || offer.conditions?.volunteerRemuneration;
+    const isShowPaymentCard = (offer.conditions?.volunteerContributions ?? null) !== null
+    || (offer.conditions?.volunteerRemuneration ?? null) !== null;
     const { ready } = useTranslation("offer");
 
     if (!ready) {
@@ -51,7 +51,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.wrapper}
                 />
             )}
-            {offer.conditions && isShowPaymentCard && (
+            {(offer.conditions && isShowPaymentCard) && (
                 <OfferPaymentCard
                     conditions={offer.conditions}
                     className={styles.container}

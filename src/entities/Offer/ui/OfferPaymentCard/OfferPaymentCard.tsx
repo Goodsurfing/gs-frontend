@@ -17,6 +17,10 @@ export const OfferPaymentCard: FC<OfferPaymentCardProps> = memo(
         const { className, conditions } = props;
         const { t } = useTranslation("offer");
 
+        if ((!conditions.volunteerContributions) && (!conditions.volunteerRemuneration)) {
+            return (null);
+        }
+
         return (
             <div className={cn(className)}>
                 <InfoCard>
