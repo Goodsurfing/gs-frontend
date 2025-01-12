@@ -97,7 +97,6 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                 <div className={styles.right}>
                     <div className={styles.medals}>
                         {medals}
-                        MEDALS
                     </div>
                     <Button size="SMALL" variant="FILL" color="BLUE" onClick={handleParticipateClick}>
                         {t("personalOffer.Участвовать")}

@@ -9,10 +9,11 @@
     max-width: 1920px;
     align-self: center;
     padding: 36px 50px 50px 50px;
+    min-height: 80vh;
 }
 
 .navMenu {
-    padding: 8px 0;
+    padding: 8px;
     position: sticky;
     top: 5.563rem;
     z-index: 4;

@@ -1,7 +1,7 @@
 import {
     memo, useCallback, useEffect, useState,
 } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
@@ -35,10 +35,9 @@ interface AddressFormProps {
 export const AddressForm = memo(({ className }: AddressFormProps) => {
     const {
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
         control,
         reset,
-        watch,
     } = useForm<AddressFormFormFields>({
         mode: "onChange",
         defaultValues: {
@@ -48,6 +47,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             },
         },
     });
+    const formWatch = useWatch({ control });
 
     const { t } = useTranslation("offer");
     const { id } = useParams();
@@ -82,10 +82,26 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
         }
     }, [trigger, id, offerData?.where, reset]);
 
+    useEffect(() => {
+        const savedData = sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`);
+        if (savedData) {
+            reset(JSON.parse(savedData));
+        } else {
+            fetchGeoObject();
+        }
+    }, [fetchGeoObject, id, reset]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const formData = JSON.stringify(formWatch);
+            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
+        }
+    }, [isDirty, formWatch, id]);
+
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = addressFormApiAdapter(data);
-        updateOffer({ id: Number(id), body: { where: preparedData } })
+        await updateOffer({ id: Number(id), body: { where: preparedData } })
             .unwrap()
             .then(() => {
                 fetchGeoObject();
@@ -102,36 +118,6 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 });
             });
     });
-
-    useEffect(() => {
-        const savedData = sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`);
-        if (savedData) {
-            reset(JSON.parse(savedData));
-        } else {
-            fetchGeoObject();
-        }
-    }, [fetchGeoObject, id, reset]);
-
-    useEffect(() => {
-        const handleBeforeUnload = () => {
-            const formData = JSON.stringify(watch());
-            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, [id, watch]);
-
-    useEffect(() => {
-        const subscription = watch((value) => {
-            const formData = JSON.stringify(value);
-            sessionStorage.setItem(`${OFFER_WHERE_FORM}${id}`, formData);
-        });
-
-        return () => subscription.unsubscribe();
-    }, [id, watch]);
 
     const handleCoordinatesChange = (coordinates: string | undefined) => {
         if (coordinates) return coordinates;

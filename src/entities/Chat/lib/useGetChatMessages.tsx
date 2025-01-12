@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "@/shared/constants/api";
 import { useGetMessagesByChatIdQuery } from "../api/chatApi";
 import { MessageType } from "@/entities/Messenger";
@@ -8,12 +8,28 @@ export const useGetChatMessages = (
     mercureToken: string | null,
     profileId?: string,
 ) => {
-    const { data: messagesData, isLoading } = useGetMessagesByChatIdQuery(chatId ?? "", { skip: !chatId });
     const [messages, setMessages] = useState<MessageType[]>([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 30;
+
+    const { data: messagesData, isLoading } = useGetMessagesByChatIdQuery(
+        { chatId: chatId ?? "", page, itemsPerPage },
+        { skip: !chatId },
+    );
 
     useEffect(() => {
-        if (messagesData) {
-            setMessages(messagesData);
+        setMessages([]);
+        setPage(1);
+        setHasMore(true);
+    }, [chatId]);
+
+    useEffect(() => {
+        if (messagesData && messagesData.length > 0) {
+            setMessages((prevMessages) => [...prevMessages, ...messagesData]);
+        }
+        if (messagesData && messagesData.length < itemsPerPage) {
+            setHasMore(false);
         }
     }, [messagesData]);
 
@@ -36,5 +52,11 @@ export const useGetChatMessages = (
         };
     }, [chatId, mercureToken, profileId]);
 
-    return { messages, isLoading };
+    const fetchMoreMessages = () => {
+        setPage((prevPage) => prevPage + 1);
+    };
+
+    return {
+        messages, isLoading, fetchMoreMessages, hasMore,
+    };
 };

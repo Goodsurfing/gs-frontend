@@ -55,12 +55,11 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                     <Clusterer
                         options={{
                             iconLayout: "default#imageWithContent",
-                            clusterIconLayout:
-                                ymap?.templateLayoutFactory.createClass(
-                                    `<div class="${styles.customClusterIcon}">
+                            clusterIconLayout: ymap?.templateLayoutFactory.createClass(
+                                `<div class="${styles.customClusterIcon}">
                                 {{ properties.geoObjects.length }}
                             </div>`,
-                                ),
+                            ),
                             clusterIconShape: {
                                 type: "Circle",
                                 coordinates: [20, 20],
@@ -68,6 +67,18 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                             },
                             clusterIconSize: [40, 40],
                             clusterIconOffset: [-20, -20],
+                            clusterBalloonContentLayout: ymap?.templateLayoutFactory.createClass(`
+                            <div class="${styles.clusterBalloon}">
+                                <h3>Список вакансий:</h3>
+                                <ul>
+                                    {% for geoObject in properties.geoObjects %}
+                                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        `),
+                            clusterBalloonPanelMaxMapArea: Infinity,
+                            clusterBalloonContentLayoutHeight: 200,
                         }}
                     >
                         <OffersPlacemarkList data={data ?? []} />

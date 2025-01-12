@@ -18,8 +18,9 @@ export const offerWhenFormApiAdapter = (
         start: period.start ? period.start.toLocaleDateString() : null,
         ending: period.end ? period.end.toLocaleDateString() : null,
     }));
+
     let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
-    if ((!offerWhenPeriods[0].start || !offerWhenPeriods[0].ending) || isFullYearAcceptable) {
+    if ((offerWhenPeriods.length === 0) || isFullYearAcceptable) {
         offerTempWhenPeriods = [];
     }
 
@@ -62,7 +63,7 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
             });
         });
     } else {
-        offerWhenPeriods = [{ start: new Date(), end: new Date() }];
+        offerWhenPeriods = [{ start: undefined, end: undefined }];
     }
 
     const timeSettings: TimeSettingsControls = {

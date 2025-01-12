@@ -7,6 +7,7 @@ import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 import { useCategories } from "@/shared/data/categories";
 
 import styles from "./OfferPlacemark.module.scss";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferPlacemarkProps {
     id: string;
@@ -63,6 +64,8 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
                         </div>
                     </div>
                 </div>`,
+                    name: title,
+                    url: getOfferPersonalPageUrl(locale, id),
                 }}
                 options={{
                     iconLayout: "default#imageWithContent",

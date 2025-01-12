@@ -1,8 +1,9 @@
 import cn from "classnames";
 import React, {
-    FC, Fragment, useEffect, useRef, useState,
+    FC, Fragment, useCallback, useEffect, useRef, useState,
 } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReactSVG } from "react-svg";
 import { ErrorType } from "@/types/api/error";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
@@ -32,7 +33,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Modal } from "@/shared/ui/Modal/Modal";
 
 import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
@@ -81,9 +81,11 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const { mercureToken } = useAuth();
 
-    const [getOfferData, { isLoading: isOfferDataLoading }] = useLazyGetOfferByIdQuery();
+    const [getOfferData] = useLazyGetOfferByIdQuery();
     const { data: myProfileData } = useGetProfileInfoQuery();
-    const { messages, isLoading: isMessagesLoading } = useGetChatMessages(
+    const {
+        messages, fetchMoreMessages, hasMore,
+    } = useGetChatMessages(
         id,
         mercureToken,
         myProfileData?.id,
@@ -258,6 +260,43 @@ export const Chat: FC<ChatProps> = (props) => {
         });
     }, [messages, processedMessages, id]);
 
+    const renderChat = useCallback(() => {
+        if (isChatCreate && offerId) {
+            let username = "";
+            if (chatUser && ("profile" in chatUser)) {
+                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
+            }
+
+            if (offerData) {
+                return (
+                    <Controller
+                        name="applicationForm"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <OfferApplication
+                                offerData={offerData}
+                                terms={{
+                                    start: value.startDate,
+                                    end: value.endDate,
+                                }}
+                                onChange={({ start, end }) => onChange({
+                                    ...value,
+                                    startDate: start,
+                                    endDate: end,
+                                })}
+                                isHost={false}
+                                username={username}
+                                isClosed={applicationIsClosed}
+                                onSubmit={handleVolunteerSubmitOfferApplication}
+                            />
+                        )}
+                    />
+                );
+            }
+        }
+        return processedMessages;
+    });
+
     if (!id || !myProfileData) {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
@@ -309,53 +348,15 @@ export const Chat: FC<ChatProps> = (props) => {
         }
     });
 
-    const renderChat = () => {
-        if (isChatCreate && offerId) {
-            if (isOfferDataLoading) {
-                return <MiniLoader className={styles.miniLoader} />;
-            }
-
-            let username = "";
-            if (chatUser && ("profile" in chatUser)) {
-                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
-            }
-
-            if (offerData) {
-                return (
-                    <Controller
-                        name="applicationForm"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                            <OfferApplication
-                                offerData={offerData}
-                                terms={{
-                                    start: value.startDate,
-                                    end: value.endDate,
-                                }}
-                                onChange={({ start, end }) => onChange({
-                                    ...value,
-                                    startDate: start,
-                                    endDate: end,
-                                })}
-                                isHost={false}
-                                username={username}
-                                isClosed={applicationIsClosed}
-                                onSubmit={handleVolunteerSubmitOfferApplication}
-                            />
-                        )}
-                    />
-                );
-            }
-        }
-        return processedMessages;
-    };
-
     return (
         <div className={cn(styles.wrapper, className)}>
             {toast && (
                 <HintPopup text={toast.text} type={toast.type} timeout={6000} />
             )}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+            <div style={{
+                flex: 1, display: "flex", flexDirection: "column", height: "100%",
+            }}
+            >
                 <div className={styles.topTab}>
                     <div className={styles.topInner}>
                         <ReactSVG
@@ -380,19 +381,19 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    <div className={styles.chatList}>
-                        {isMessagesLoading || isOfferDataLoading ? (
-                            <MiniLoader />
-                        ) : (
-                            <>
-                                {renderChat()}
-                                <div
-                                    className={styles.messegesEnd}
-                                    ref={messegesEndRef}
-                                />
-                            </>
-                        )}
-                    </div>
+                    <InfiniteScroll
+                        className={styles.infiniteScroll}
+                        dataLength={messages.length}
+                        next={fetchMoreMessages}
+                        hasMore={hasMore}
+                        loader={null}
+                        height="100%"
+                        scrollableTarget="chat"
+                        inverse
+                        style={{ width: "100%" }}
+                    >
+                        {renderChat()}
+                    </InfiniteScroll>
                 </div>
                 <SendMessage disabled={isChatCreate} chatId={id} />
             </div>

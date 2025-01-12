@@ -48,7 +48,6 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     <span className={styles.address}>{address}</span>
                 </div>
                 <div className={styles.btnMedalsContainer}>
-                    <span>MEDALS</span>
                     {showButton && (
                         <Button color="BLUE" size="SMALL" variant="FILL" className={styles.button} onClick={navigateTo}>
                             {t("personalHost.Редактировать профиль")}

@@ -71,10 +71,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         defaultValues,
     });
 
-    const watchIsFullYearAcceptable = useWatch({ name: "timeSettings.isFullYearAcceptable", control });
-    const watchIsApplicableAtTheEnd = useWatch({ name: "timeSettings.isApplicableAtTheEnd", control });
-    const watchPeriods = useWatch({ name: "periods", control });
     const watch = useWatch({ control });
+    const { timeSettings: watchTimeSettings, periods: watchPeriods } = watch;
 
     const saveFormData = useCallback((data: OfferWhenFields) => {
         sessionStorage.setItem(`${OFFER_WHEN_FORM}${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
@@ -136,7 +134,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         <form className={styles.form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {
-                !watchIsFullYearAcceptable && (
+                !watchTimeSettings?.isFullYearAcceptable && (
                     <Controller
                         name="periods"
                         control={control}
@@ -177,8 +175,8 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenRequests
                         value={field.value}
                         onChange={field.onChange}
-                        periods={watchPeriods}
-                        isApplicableAtTheEnd={watchIsApplicableAtTheEnd}
+                        periods={watchPeriods as DatePeriods[]}
+                        isApplicableAtTheEnd={watchTimeSettings?.isApplicableAtTheEnd as boolean}
                     />
                 )}
             />

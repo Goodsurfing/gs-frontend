@@ -5,7 +5,7 @@ import cn from "classnames";
 import styles from "./CloseButton.module.scss";
 
 interface CloseButtonProps {
-    onClick: () => void;
+    onClick?: () => void;
     className?: string;
 }
 

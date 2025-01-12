@@ -46,6 +46,7 @@ const MapWithAddress = ({
 
     const handleValueChange = useCallback(
         (newValue: GeoObject | null) => {
+            console.log("newVale", newValue);
             setOptions(newValue ? [newValue, ...options] : options);
             field.onChange({ ...field.value, geoObject: newValue });
         },
@@ -62,7 +63,7 @@ const MapWithAddress = ({
             field.onChange({
                 ...field.value,
                 geoObject: { description: geoObject?.description, name: geoObject?.name, Point: { pos: `${longitude} ${latitude}` } },
-                address: `${geoObject?.description}, ${geoObject?.name}`,
+                address: `${geoObject?.description ? `${geoObject.description}, ` : ""}${geoObject?.name}`,
             });
         },
         [field],
@@ -129,7 +130,7 @@ const MapWithAddress = ({
                         field.onChange({ ...field.value, address: inputVal });
                     }}
                     options={options}
-                    getOptionLabel={(option) => `${option.description}, ${option.name}`}
+                    getOptionLabel={(option) => `${option.description ? `${option.description}, ` : ""}${option.name}`}
                     noOptionsText={t("where.Точек на карте не найдено")}
                     labelText={t("where.Введите адрес")}
                     onKeyDown={(event: React.KeyboardEvent) => handleKeyDown(event)}

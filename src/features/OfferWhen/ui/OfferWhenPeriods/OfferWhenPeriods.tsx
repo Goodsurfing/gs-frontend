@@ -1,6 +1,6 @@
 import cn from "classnames";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { Box } from "@mui/material";
 
@@ -21,6 +21,8 @@ interface OfferWhenPeriodsProps {
 export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps) => {
     const { t } = useTranslation("offer");
 
+    const [tempPeriod, setTempPeriod] = useState<DatePeriods>({ start: undefined, end: undefined });
+
     const handlePeriodsChange = (periods: DatePeriods, index: number) => {
         if (value) {
             onChange(value.map((period, i) => {
@@ -32,22 +34,43 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
         }
     };
 
+    const handleTempPeriodChange = (periods: DatePeriods) => {
+        setTempPeriod(periods);
+    };
+
+    const resetTempPeriod = () => {
+        setTempPeriod({ start: undefined, end: undefined });
+    };
+
     const handleDeleteInputClick = useCallback((index: number) => {
-        if (index === 0) return;
         onChange(value.filter((_, i) => i !== index));
     }, [onChange, value]);
 
     const onAddBtnClick = () => {
-        if ((value[0].start == null) || (value[0].end == null)) return;
-        if (value.length > 4) {
-            return;
-        }
-        onChange([...value, { start: new Date(), end: new Date() }]);
+        if (!tempPeriod.start || !tempPeriod.end) return;
+        if (value.length > 4) return;
+
+        onChange([...value, tempPeriod]);
+        resetTempPeriod();
     };
 
     return (
         <Box className={styles.wrapper}>
             <Box className={styles.dateWrapper}>
+                <DateInputs
+                    onDateChange={handleTempPeriodChange}
+                    value={tempPeriod}
+                    close={(
+                        <CloseButton
+                            className={cn(
+                                styles.btn,
+                                { [styles.active]: !!(tempPeriod.start || tempPeriod.end) },
+                            )}
+                            onClick={resetTempPeriod}
+                        />
+                    )}
+                />
+
                 {value.map((dates, index) => (
                     <DateInputs
                         key={index}
@@ -55,9 +78,7 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
                         value={dates}
                         close={(
                             <CloseButton
-                                className={cn(styles.btn, {
-                                    [styles.active]: index > 0,
-                                })}
+                                className={cn(styles.btn, styles.active)}
                                 onClick={() => handleDeleteInputClick(index)}
                             />
                         )}

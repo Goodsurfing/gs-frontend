@@ -4,6 +4,12 @@ import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { Message } from "@/entities/Chat";
 import { ChatType, MessageType } from "@/entities/Messenger";
 
+interface MessagesRequest {
+    chatId: string;
+    page: number;
+    itemsPerPage: number;
+}
+
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
@@ -15,11 +21,10 @@ export const chatApi = createApi({
                 method: "POST",
                 body: formData,
             }),
-            invalidatesTags: ["chat"],
         }),
-        getMessagesByChatId: build.query<MessageType[], string>({
-            query: (chatId) => ({
-                url: `chats/${chatId}/messages`,
+        getMessagesByChatId: build.query<MessageType[], MessagesRequest>({
+            query: ({ chatId, page = 1, itemsPerPage = 30 }) => ({
+                url: `chats/${chatId}/messages?page=${page}&itemsPerPage=${itemsPerPage}`,
                 method: "GET",
             }),
             providesTags: ["chat"],

@@ -40,7 +40,11 @@ export const HostPersonalPage = () => {
     if (!id || !hostData || isError || !myProfile) {
         return (
             <div className={styles.wrapper}>
-                <Text textSize="primary" text="Произошла ошибка" />
+                <MainHeader />
+                <div className={styles.content}>
+                    <Text textSize="primary" text="Произошла ошибка" />
+                </div>
+                <Footer />
             </div>
         );
     }

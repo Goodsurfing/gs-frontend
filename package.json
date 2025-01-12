@@ -124,6 +124,7 @@
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.45.2",
         "react-i18next": "^12.3.1",
+        "react-infinite-scroll-component": "^6.1.0",
         "react-medium-image-zoom": "^5.2.10",
         "react-player": "^2.13.0",
         "react-redux": "^8.1.3",
