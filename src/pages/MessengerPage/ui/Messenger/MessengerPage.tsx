@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import MainHeader from "@/widgets/MainHeader/MainHeader";
@@ -10,11 +11,13 @@ import { Chat, MessengerList } from "@/widgets/Messenger";
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./MessengerPage.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const { ready } = useTranslation("offer");
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
@@ -26,6 +29,15 @@ const MessengerPage = () => {
         },
         [locale, navigate],
     );
+
+    if (!ready) {
+        return (
+            <div className={styles.layout}>
+                <MainHeader />
+                <Preloader />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.layout}>

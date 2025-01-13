@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "@/shared/constants/api";
-import { useGetMessagesByChatIdQuery } from "../api/chatApi";
+import { useLazyGetMessagesByChatIdQuery } from "../api/chatApi";
 import { MessageType } from "@/entities/Messenger";
 
 export const useGetChatMessages = (
@@ -11,17 +11,22 @@ export const useGetChatMessages = (
     const [messages, setMessages] = useState<MessageType[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
+    const [loadingInitial, setLoadingInitial] = useState(true);
     const itemsPerPage = 30;
 
-    const { data: messagesData, isLoading } = useGetMessagesByChatIdQuery(
-        { chatId: chatId ?? "", page, itemsPerPage },
-        { skip: !chatId },
-    );
+    const [getMessagesData, { data: messagesData }] = useLazyGetMessagesByChatIdQuery();
+
+    useEffect(() => {
+        if (chatId) {
+            getMessagesData({ chatId, page, itemsPerPage });
+        }
+    }, [chatId, getMessagesData, page]);
 
     useEffect(() => {
         setMessages([]);
         setPage(1);
         setHasMore(true);
+        setLoadingInitial(true);
     }, [chatId]);
 
     useEffect(() => {
@@ -31,6 +36,7 @@ export const useGetChatMessages = (
         if (messagesData && messagesData.length < itemsPerPage) {
             setHasMore(false);
         }
+        setLoadingInitial(false);
     }, [messagesData]);
 
     useEffect(() => {
@@ -52,11 +58,13 @@ export const useGetChatMessages = (
         };
     }, [chatId, mercureToken, profileId]);
 
-    const fetchMoreMessages = () => {
-        setPage((prevPage) => prevPage + 1);
-    };
+    const fetchMoreMessages = useCallback(() => {
+        if (hasMore) {
+            setPage((prevPage) => prevPage + 1);
+        }
+    }, [hasMore]);
 
     return {
-        messages, isLoading, fetchMoreMessages, hasMore,
+        messages, fetchMoreMessages, hasMore, loadingInitial,
     };
 };

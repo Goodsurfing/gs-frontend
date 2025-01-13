@@ -53,4 +53,7 @@ export const chatApi = createApi({
     }),
 });
 
-export const { useCreateMessageMutation, useGetMessagesByChatIdQuery, useGetChatQuery } = chatApi;
+export const {
+    useCreateMessageMutation, useLazyGetMessagesByChatIdQuery,
+    useGetMessagesByChatIdQuery, useGetChatQuery,
+} = chatApi;

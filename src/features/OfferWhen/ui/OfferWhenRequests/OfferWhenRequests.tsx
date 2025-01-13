@@ -1,68 +1,42 @@
 import { Box, FormControlLabel, Typography } from "@mui/material";
 
-import { memo, useEffect } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Switch from "@/shared/ui/Switch/Switch";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 
 import styles from "./OfferWhenRequests.module.scss";
-import { DatePeriods, EndSettings } from "../../model/types/offerWhen";
+import { EndSettings } from "../../model/types/offerWhen";
 
 interface OfferWhenRequestsProps {
     value: EndSettings;
     onChange: (value: EndSettings) => void;
     isApplicableAtTheEnd: boolean;
-    periods: DatePeriods[];
 }
 
-export const OfferWhenRequests = memo(({
+export const OfferWhenRequests = ({
     onChange, value,
-    isApplicableAtTheEnd, periods,
+    isApplicableAtTheEnd,
 }: OfferWhenRequestsProps) => {
     const { t } = useTranslation("offer");
-    const handleEndDateChange = (date: Date) => {
+
+    const handleEndDateChange = useCallback((date: Date) => {
         if (!value.isWithoutApplicationDate) {
             onChange({ ...value, applicationEndDate: date });
         }
-    };
+    }, [onChange, value]);
 
-    const handleNoEndDateLabelChange = () => {
+    const handleNoEndDateLabelChange = useCallback(() => {
         if (!isApplicableAtTheEnd) {
-            if (value.isWithoutApplicationDate) {
-                onChange({
-                    ...value,
-                    isWithoutApplicationDate: !value.isWithoutApplicationDate,
-                    applicationEndDate: new Date(),
-                });
-            } else {
-                onChange({
-                    ...value,
-                    isWithoutApplicationDate: !value.isWithoutApplicationDate,
-                    applicationEndDate: undefined,
-                });
-            }
+            const newIsWithoutApplicationDate = !value.isWithoutApplicationDate;
+            const newApplicationEndDate = newIsWithoutApplicationDate ? undefined : new Date();
+            onChange({
+                ...value,
+                isWithoutApplicationDate: newIsWithoutApplicationDate,
+                applicationEndDate: newApplicationEndDate,
+            });
         }
-    };
-
-    useEffect(() => {
-        if (isApplicableAtTheEnd) {
-            if ((periods.length > 0)
-            && (periods[0].start !== undefined && periods[0].end !== undefined)) {
-                const lastPeriod = periods[periods.length - 1];
-                onChange({
-                    ...value,
-                    isWithoutApplicationDate: false,
-                    applicationEndDate: lastPeriod.end,
-                });
-            } else {
-                onChange({
-                    ...value,
-                    isWithoutApplicationDate: false,
-                    applicationEndDate: new Date(),
-                });
-            }
-        }
-    }, [isApplicableAtTheEnd, onChange, periods, value]);
+    }, [isApplicableAtTheEnd, onChange, value]);
 
     return (
         <Box className={styles.dateOfEndContainer}>
@@ -73,7 +47,7 @@ export const OfferWhenRequests = memo(({
                 <DateInput
                     onDateChange={handleEndDateChange}
                     value={value.applicationEndDate}
-                    inputDisabled={value.isWithoutApplicationDate || isApplicableAtTheEnd}
+                    inputDisabled={value.isWithoutApplicationDate}
                 />
                 <FormControlLabel
                     className={styles.noDate}
@@ -92,4 +66,4 @@ export const OfferWhenRequests = memo(({
             </Box>
         </Box>
     );
-});
+};

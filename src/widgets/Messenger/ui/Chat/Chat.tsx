@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, Fragment, useCallback, useEffect, useRef, useState,
+    FC, Fragment, useEffect, useRef, useState,
 } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -84,7 +84,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [getOfferData] = useLazyGetOfferByIdQuery();
     const { data: myProfileData } = useGetProfileInfoQuery();
     const {
-        messages, fetchMoreMessages, hasMore,
+        messages, fetchMoreMessages, hasMore, loadingInitial,
     } = useGetChatMessages(
         id,
         mercureToken,
@@ -260,43 +260,6 @@ export const Chat: FC<ChatProps> = (props) => {
         });
     }, [messages, processedMessages, id]);
 
-    const renderChat = useCallback(() => {
-        if (isChatCreate && offerId) {
-            let username = "";
-            if (chatUser && ("profile" in chatUser)) {
-                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
-            }
-
-            if (offerData) {
-                return (
-                    <Controller
-                        name="applicationForm"
-                        control={control}
-                        render={({ field: { value, onChange } }) => (
-                            <OfferApplication
-                                offerData={offerData}
-                                terms={{
-                                    start: value.startDate,
-                                    end: value.endDate,
-                                }}
-                                onChange={({ start, end }) => onChange({
-                                    ...value,
-                                    startDate: start,
-                                    endDate: end,
-                                })}
-                                isHost={false}
-                                username={username}
-                                isClosed={applicationIsClosed}
-                                onSubmit={handleVolunteerSubmitOfferApplication}
-                            />
-                        )}
-                    />
-                );
-            }
-        }
-        return processedMessages;
-    });
-
     if (!id || !myProfileData) {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
@@ -348,6 +311,43 @@ export const Chat: FC<ChatProps> = (props) => {
         }
     });
 
+    const renderChat = () => {
+        if (isChatCreate && offerId) {
+            let username = "";
+            if (chatUser && ("profile" in chatUser)) {
+                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
+            }
+
+            if (offerData) {
+                return (
+                    <Controller
+                        name="applicationForm"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <OfferApplication
+                                offerData={offerData}
+                                terms={{
+                                    start: value.startDate,
+                                    end: value.endDate,
+                                }}
+                                onChange={({ start, end }) => onChange({
+                                    ...value,
+                                    startDate: start,
+                                    endDate: end,
+                                })}
+                                isHost={false}
+                                username={username}
+                                isClosed={applicationIsClosed}
+                                onSubmit={handleVolunteerSubmitOfferApplication}
+                            />
+                        )}
+                    />
+                );
+            }
+        }
+        return processedMessages;
+    };
+
     return (
         <div className={cn(styles.wrapper, className)}>
             {toast && (
@@ -384,13 +384,14 @@ export const Chat: FC<ChatProps> = (props) => {
                     <InfiniteScroll
                         className={styles.infiniteScroll}
                         dataLength={messages.length}
-                        next={fetchMoreMessages}
+                        next={loadingInitial ? () => {} : fetchMoreMessages}
                         hasMore={hasMore}
                         loader={null}
                         height="100%"
                         scrollableTarget="chat"
                         inverse
                         style={{ width: "100%" }}
+
                     >
                         {renderChat()}
                     </InfiniteScroll>

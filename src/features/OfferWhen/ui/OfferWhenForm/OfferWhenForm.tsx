@@ -2,24 +2,31 @@ import {
     memo, useCallback, useEffect, useState,
 } from "react";
 import {
-    Controller,
-    DefaultValues,
-    useForm,
-    useWatch,
+    Controller, DefaultValues, useForm, useWatch,
 } from "react-hook-form";
-import { useParams } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
-import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
+import { useParams } from "react-router-dom";
+import { ErrorType } from "@/types/api/error";
 
+import {
+    useGetOfferByIdQuery,
+    useUpdateOfferMutation,
+} from "@/entities/Offer/api/offerApi";
+
+import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
-import { offerWhenFormAdapter, offerWhenFormApiAdapter } from "../../lib/offerWhenFormAdapter";
+import {
+    offerWhenFormAdapter,
+    offerWhenFormApiAdapter,
+} from "../../lib/offerWhenFormAdapter";
 import type {
     DatePeriods,
     EndSettings,
@@ -31,10 +38,6 @@ import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -48,7 +51,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { t } = useTranslation("offer");
 
     const initialSliderValue: number[] = [7, 186];
-    const initialPeriods: DatePeriods[] = [{ start: undefined, end: undefined }];
+    const initialPeriods: DatePeriods[] = [];
     const endSettings: EndSettings = {
         applicationEndDate: new Date(),
         isWithoutApplicationDate: false,
@@ -65,18 +68,32 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         timeSettings,
     };
     const {
-        handleSubmit, control, reset, formState: { isDirty },
+        handleSubmit,
+        control,
+        reset,
+        formState: { isDirty },
+        setValue,
     } = useForm<OfferWhenFields>({
         mode: "onChange",
         defaultValues,
     });
 
     const watch = useWatch({ control });
-    const { timeSettings: watchTimeSettings, periods: watchPeriods } = watch;
+    const {
+        timeSettings: watchTimeSettings,
+        periods: watchPeriods,
+        endSettings: watchEndSettings,
+    } = watch;
 
-    const saveFormData = useCallback((data: OfferWhenFields) => {
-        sessionStorage.setItem(`${OFFER_WHEN_FORM}${id}`, JSON.stringify(offerWhenFormApiAdapter(data)));
-    }, [id]);
+    const saveFormData = useCallback(
+        (data: OfferWhenFields) => {
+            sessionStorage.setItem(
+                `${OFFER_WHEN_FORM}${id}`,
+                JSON.stringify(offerWhenFormApiAdapter(data)),
+            );
+        },
+        [id],
+    );
 
     const loadFormData = useCallback((): OfferWhenFields | null => {
         const savedData = sessionStorage.getItem(`${OFFER_WHEN_FORM}${id}`);
@@ -133,20 +150,18 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     return (
         <form className={styles.form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            {
-                !watchTimeSettings?.isFullYearAcceptable && (
-                    <Controller
-                        name="periods"
-                        control={control}
-                        render={({ field }) => (
-                            <OfferWhenPeriods
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                )
-            }
+            {!watchTimeSettings?.isFullYearAcceptable && (
+                <Controller
+                    name="periods"
+                    control={control}
+                    render={({ field }) => (
+                        <OfferWhenPeriods
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
+            )}
             <Controller
                 name="timeSettings"
                 control={control}
@@ -154,6 +169,9 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenTimeSettings
                         value={field.value}
                         onChange={field.onChange}
+                        periods={watchPeriods as DatePeriods[]}
+                        endSettings={watchEndSettings as EndSettings}
+                        setValue={setValue}
                     />
                 )}
             />
@@ -175,8 +193,9 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     <OfferWhenRequests
                         value={field.value}
                         onChange={field.onChange}
-                        periods={watchPeriods as DatePeriods[]}
-                        isApplicableAtTheEnd={watchTimeSettings?.isApplicableAtTheEnd as boolean}
+                        isApplicableAtTheEnd={
+                            watchTimeSettings?.isApplicableAtTheEnd as boolean
+                        }
                     />
                 )}
             />
