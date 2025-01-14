@@ -16,6 +16,25 @@ export const useGetChatMessages = (
 
     const [getMessagesData, { data: messagesData }] = useLazyGetMessagesByChatIdQuery();
 
+    const groupMessagesByDate = (messagesItem: MessageType[]) => {
+        const groupedMessages: (MessageType | { isDateLine: true; date: string })[] = [];
+        let currentDate = "";
+
+        messagesItem.sort((a, b) => new Date(b.createdAt)
+            .getTime() - new Date(a.createdAt).getTime());
+
+        messagesItem.forEach((message) => {
+            const messageDate = new Date(message.createdAt).toDateString();
+            if (messageDate !== currentDate) {
+                currentDate = messageDate;
+                groupedMessages.push({ isDateLine: true, date: currentDate });
+            }
+            groupedMessages.push(message);
+        });
+
+        return groupedMessages;
+    };
+
     useEffect(() => {
         if (chatId) {
             getMessagesData({ chatId, page, itemsPerPage });
@@ -31,7 +50,10 @@ export const useGetChatMessages = (
 
     useEffect(() => {
         if (messagesData && messagesData.length > 0) {
-            setMessages((prevMessages) => [...prevMessages, ...messagesData]);
+            setMessages((prevMessages) => {
+                const newMessages = [...prevMessages, ...messagesData];
+                return groupMessagesByDate(newMessages);
+            });
         }
         if (messagesData && messagesData.length < itemsPerPage) {
             setHasMore(false);
@@ -50,7 +72,11 @@ export const useGetChatMessages = (
 
         eventSource.addEventListener("messageOnChat", (event) => {
             const updatedMessage = JSON.parse(event.data);
-            setMessages((prevMessages) => [...prevMessages, updatedMessage]);
+
+            setMessages((prevMessages) => {
+                const updatedMessages = [updatedMessage, ...prevMessages];
+                return groupMessagesByDate(updatedMessages);
+            });
         });
 
         return () => {

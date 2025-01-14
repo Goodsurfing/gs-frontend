@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import { Pagination } from "@mui/material";
 import { ErrorType } from "@/types/api/error";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
@@ -18,7 +19,7 @@ import {
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
+import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 export const NotesVolunteerForm = () => {
@@ -38,8 +39,29 @@ export const NotesVolunteerForm = () => {
     const { handleSubmit, control } = form;
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
-    const { data: applications, isLoading } = useGetMyVolunteerApplicationsQuery();
+
+    const applicationsPerPage = 2;
+    const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [getApplicationsData,
+        { data: applications, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
+
+    useEffect(() => {
+        getApplicationsData();
+    }, [getApplicationsData]);
+
+    useEffect(() => {
+        if (applications) {
+            const startIndex = (page - 1) * applicationsPerPage;
+            const endIndex = startIndex + applicationsPerPage;
+            setPageApplications(applications.slice(startIndex, endIndex));
+        } else {
+            setPageApplications([]);
+        }
+    }, [applications, page]);
+
+    const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -112,14 +134,20 @@ export const NotesVolunteerForm = () => {
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             <NotesWidget
                 className={styles.notes}
-                notes={applications ?? []}
+                notes={pageApplications}
                 variant="volunteer"
                 onReviewClick={onReviewClick}
                 isDragDisable
                 locale={locale}
+            />
+            <Pagination
+                count={totalPageCount}
+                page={page}
+                onChange={(_, newPage) => setPage(newPage)}
+                size="large"
             />
             <Controller
                 name="review"

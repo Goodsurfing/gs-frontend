@@ -7,7 +7,6 @@ interface UpdateFormApplicationStatus {
     applicationId: string;
     status: FormApplicationStatus;
 }
-
 export const applicationApi = createApi({
     reducerPath: "applicationApi",
     baseQuery: baseQueryAcceptJson,
@@ -62,6 +61,8 @@ export const {
     useGetApplicationFormByIdQuery,
     useLazyGetApplicationFormByIdQuery,
     useGetMyHostApplicationsQuery,
+    useLazyGetMyHostApplicationsQuery,
     useGetMyVolunteerApplicationsQuery,
+    useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
 } = applicationApi;

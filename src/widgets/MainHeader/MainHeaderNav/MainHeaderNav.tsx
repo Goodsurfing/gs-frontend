@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
@@ -51,6 +51,8 @@ export const MainHeaderNav = () => {
         isOffersOpened: false,
     });
 
+    const navigate = useNavigate();
+
     useOnClickOutside(communityRef, () => setDropdownOpened(
         (prev) => ({ ...prev, isCommunityOpened: false }),
     ));
@@ -85,18 +87,23 @@ export const MainHeaderNav = () => {
         });
     };
 
+    const handleNavigateOfferPage = () => {
+        navigate(getOffersMapPageUrl(locale));
+    };
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.offersWrapper}>
                 <IconButton
-                    onClick={() => handleOpenDropdown("OFFERS")}
+                    // onClick={() => handleOpenDropdown("OFFERS")}
+                    onClick={handleNavigateOfferPage}
                     ref={offersRef}
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
                     <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </IconButton>
-                <Popup
+                {/* <Popup
                     className={styles.popup}
                     isOpen={dropdownOpened.isOffersOpened}
                 >
@@ -190,7 +197,7 @@ export const MainHeaderNav = () => {
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
-                </Popup>
+                </Popup> */}
             </div>
             <div className={styles.btnCommunity}>
                 <div

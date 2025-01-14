@@ -25,6 +25,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import styles from "./MainHeaderProfile.module.scss";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface MainHeaderProfileProps {
     profileData?: Profile;
@@ -84,7 +85,7 @@ const MainHeaderProfile: FC<MainHeaderProfileProps> = (props) => {
             className={styles.info}
         >
             <p className={styles.name}>
-                {profileData.firstName || profileData.email}
+                {textSlice(profileData.firstName, 13, "none") || textSlice(profileData.email, 13, "none")}
             </p>
             <Avatar
                 icon={getMediaContent(profileData.image)}

@@ -37,39 +37,28 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
     const isVolunteerChat = (
         data: ChatsListWithVolunteers | ChatsListWithOrganizations,
-    ): data is ChatsListWithVolunteers => (data as ChatsListWithVolunteers).volunteer !== undefined;
+    ): data is ChatsListWithVolunteers => (data as ChatsListWithVolunteers).volunteer !== undefined
+        && (data as ChatsListWithVolunteers).countUnreadMessagesByOrganization !== undefined;
 
     useEffect(() => {
         const fetchData = async () => {
             if (isVolunteerChat(dataChat)) {
-                try {
-                    const volunteerId = dataChat.volunteer.split("/").pop();
-                    const volunteerResult = await getVolunteer(volunteerId as string).unwrap();
-                    setVolunteerData(volunteerResult);
-                } catch {
-                    setVolunteerData(undefined);
-                }
+                setVolunteerData(dataChat.volunteer);
             } else {
-                try {
-                    // const hostId = dataChat.organization.split("/").pop();
-                    // const hostResult = await getHost(hostId as string).unwrap();
-                    setHostData(dataChat.organization);
-                } catch {
-                    setHostData(undefined);
-                }
+                setHostData(dataChat.organization);
             }
         };
 
         fetchData();
     }, [dataChat, getHost, getVolunteer]);
 
-    if (volunteerData) {
+    if (volunteerData && isVolunteerChat(dataChat)) {
         return (
             <Link
                 to={`${getMessengerPageUrl(locale)}/${dataChat.id}`}
                 className={cn(
                     styles.wrapper,
-                    { [styles.newMess]: !dataChat.lastMessage.viewed },
+                    { [styles.newMess]: !!dataChat.countUnreadMessagesByOrganization },
                     { [styles.active]: id === dataChat.id.toString() },
                     className,
                 )}
@@ -87,28 +76,28 @@ export const UserCard: FC<UserCardProps> = (props) => {
                     </div>
                     <div className={styles.dateNewLastMess}>
                         <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
-                        {!dataChat.lastMessage.viewed && (
-                            <div className={styles.newMessages} />
+                        {!!dataChat.countUnreadMessagesByOrganization && (
+                            <div className={styles.newMessages}>
+                                {dataChat.countUnreadMessagesByOrganization > 9 ? "9+" : dataChat.countUnreadMessagesByOrganization}
+                            </div>
                         )}
-                        {/* To do a number of Messages, backend issue */}
                     </div>
                 </div>
                 <div
                     style={{ backgroundColor: getOfferStateColor(dataChat.vacancyStatus ?? "new") }}
-                    // {To do state color, backend issue}
                     className={styles.state}
                 />
             </Link>
         );
     }
 
-    if (hostData) {
+    if (hostData && !isVolunteerChat(dataChat)) {
         return (
             <Link
                 to={`${getMessengerPageUrl(locale)}/${dataChat.id}`}
                 className={cn(
                     styles.wrapper,
-                    { [styles.newMess]: !dataChat.lastMessage.viewed },
+                    { [styles.newMess]: !!dataChat.countUnreadMessagesByVolunteer },
                     { [styles.active]: id === dataChat.id.toString() },
                     className,
                 )}
@@ -126,8 +115,10 @@ export const UserCard: FC<UserCardProps> = (props) => {
                     </div>
                     <div className={styles.dateNewLastMess}>
                         <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
-                        {!dataChat.lastMessage.viewed && (
-                            <div className={styles.newMessages} />
+                        {!!dataChat.countUnreadMessagesByVolunteer && (
+                            <div className={styles.newMessages}>
+                                {dataChat.countUnreadMessagesByVolunteer > 9 ? "9+" : dataChat.countUnreadMessagesByVolunteer}
+                            </div>
                         )}
                         {/* To do a number of Messages, backend issue */}
                     </div>

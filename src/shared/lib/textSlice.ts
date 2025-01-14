@@ -1,4 +1,4 @@
-type TextSlice = "title" | "description" | "address";
+type TextSlice = "title" | "description" | "address" | "none";
 
 export const textSlice = (
     text: string | undefined,
@@ -13,6 +13,8 @@ export const textSlice = (
                 return "Без описания";
             case "address":
                 return "Без адреса";
+            case "none":
+                return "";
             default:
                 return "";
         }

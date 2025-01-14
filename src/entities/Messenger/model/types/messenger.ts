@@ -1,5 +1,5 @@
 import { FormApplicationStatus } from "@/entities/Application";
-import { HostApi } from "@/entities/Host";
+import { Host, HostApi } from "@/entities/Host";
 import { Language, VolunteerApi } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
@@ -9,14 +9,16 @@ export interface MessageType {
     author: string;
     text?: string;
     createdAt: string;
-    viewed: boolean;
+    viewedVolunteer: boolean;
+    viewedOrganization: boolean;
     applicationForm?: string;
 }
 export interface ChatsListWithVolunteers {
     id: number;
-    volunteer: string;
+    volunteer: VolunteerApi;
     lastMessage: MessageType;
     vacancyStatus?: FormApplicationStatus;
+    countUnreadMessagesByOrganization: number;
 }
 
 export interface ChatsListWithOrganizations {
@@ -24,6 +26,7 @@ export interface ChatsListWithOrganizations {
     organization: HostApi;
     lastMessage: MessageType;
     vacancyStatus?: FormApplicationStatus;
+    countUnreadMessagesByVolunteer: number;
 }
 
 export interface UserChatType {
@@ -49,7 +52,7 @@ export interface MessageTypeMocked {
 export interface ChatType {
     id: number;
     lastMessage: MessageType;
-    organization: string;
+    organization: Host;
     vacancyStatus?: FormApplicationStatus;
     volunteer: VolunteerApi;
 }

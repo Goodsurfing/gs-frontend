@@ -11,6 +11,7 @@ import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { PageLayout } from "@/widgets/PageLayout";
 
 import { FillSidebarData } from "../lib/fillSidebarData";
+import styles from "./HostsLayoutPage.module.scss";
 
 export const HostsLayoutPage = () => {
     const { data: myProfile, isLoading } = useGetProfileInfoQuery();
@@ -30,7 +31,7 @@ export const HostsLayoutPage = () => {
         <>
             {isLoading && (<Preloader />)}
             {!isLoading && myProfile && (
-                <PageLayout sidebarContent={sidebarContent}>
+                <PageLayout sidebarContent={sidebarContent} wrapperClassName={styles.wrapper}>
                     <Outlet />
                 </PageLayout>
             )}

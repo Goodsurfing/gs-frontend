@@ -17,17 +17,17 @@ const root = createRoot(document.getElementById("root")!);
 const store = setupStore();
 
 const Root = (
-    <StrictMode>
-        <BrowserRouter>
-            <Provider store={store}>
-                <StyledEngineProvider injectFirst>
-                    <LocaleProvider>
-                        <App />
-                    </LocaleProvider>
-                </StyledEngineProvider>
-            </Provider>
-        </BrowserRouter>
-    </StrictMode>
+    // <StrictMode>
+    <BrowserRouter>
+        <Provider store={store}>
+            <StyledEngineProvider injectFirst>
+                <LocaleProvider>
+                    <App />
+                </LocaleProvider>
+            </StyledEngineProvider>
+        </Provider>
+    </BrowserRouter>
+    // </StrictMode>
 );
 
 root.render(Root);

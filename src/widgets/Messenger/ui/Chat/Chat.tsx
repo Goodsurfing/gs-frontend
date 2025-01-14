@@ -75,7 +75,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
         [],
     );
-    const messegesEndRef = useRef<HTMLDivElement | null>(null);
+    // const messegesEndRef = useRef<HTMLDivElement | null>(null);
     const [organizationData, setOrganizationData] = useState<Host>();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
 
@@ -115,8 +115,7 @@ export const Chat: FC<ChatProps> = (props) => {
     useEffect(() => {
         if (chatData) {
             setVolunteerData(chatData.volunteer);
-            const urlPart = chatData.organization.split("/");
-            const organizationId = urlPart[urlPart.length - 1];
+            const organizationId = chatData.organization.id;
 
             const fetchOrganization = async () => {
                 const resultOrganizationData = await getHost(organizationId)
@@ -221,7 +220,6 @@ export const Chat: FC<ChatProps> = (props) => {
 
                     return (
                         <Fragment key={messageId}>
-                            {dateLine}
                             <Message
                                 avatar={userAvatar ?? ""}
                                 date={formatMessageDate(locale, createdAt)}
@@ -229,6 +227,7 @@ export const Chat: FC<ChatProps> = (props) => {
                                 text={text}
                                 username={userName ?? ""}
                             />
+                            {dateLine}
                         </Fragment>
                     );
                 }),
@@ -253,12 +252,12 @@ export const Chat: FC<ChatProps> = (props) => {
         organizationData?.owner.id,
     ]);
 
-    useEffect(() => {
-        messegesEndRef.current?.scrollIntoView({
-            behavior: "instant",
-            block: "nearest",
-        });
-    }, [messages, processedMessages, id]);
+    // useEffect(() => {
+    //     messegesEndRef.current?.scrollIntoView({
+    //         behavior: "instant",
+    //         block: "nearest",
+    //     });
+    // }, [messages, processedMessages, id]);
 
     if (!id || !myProfileData) {
         return (

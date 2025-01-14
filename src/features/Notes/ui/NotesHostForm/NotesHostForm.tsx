@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import { Pagination } from "@mui/material";
 import { ErrorType } from "@/types/api/error";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
@@ -7,7 +8,6 @@ import { NotesWidget } from "@/widgets/NotesWidget";
 import {
     FormApplicationStatus,
     FullFormApplication,
-    useGetMyHostApplicationsQuery,
 } from "@/entities/Application";
 import { HostModalReview } from "@/entities/Review";
 import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
@@ -21,7 +21,7 @@ import {
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
-import { useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
+import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -42,10 +42,31 @@ export const NotesHostForm = () => {
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
 
-    const { data: applications, isLoading } = useGetMyHostApplicationsQuery();
+    const applicationsPerPage = 10;
+    const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [getApplicationsData,
+        { data: applications, isLoading }] = useLazyGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
-    const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
+    const [updateApplicationStatus,
+        { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdMutation();
     const { locale } = useLocale();
+
+    useEffect(() => {
+        getApplicationsData();
+    }, [getApplicationsData]);
+
+    useEffect(() => {
+        if (applications) {
+            const startIndex = (page - 1) * applicationsPerPage;
+            const endIndex = startIndex + applicationsPerPage;
+            setPageApplications(applications.slice(startIndex, endIndex));
+        } else {
+            setPageApplications([]);
+        }
+    }, [applications, page]);
+
+    const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
 
     const onReviewClick = (application: FullFormApplication) => {
         setSelectedApplication(application);
@@ -109,15 +130,21 @@ export const NotesHostForm = () => {
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             <NotesWidget
                 className={styles.notes}
-                notes={applications ?? []}
+                notes={pageApplications}
                 variant="host"
                 onReviewClick={onReviewClick}
                 updateApplicationStatus={handleUpdateStatus}
-                isDragDisable={false}
+                isDragDisable={updateApplicationLoading}
                 locale={locale}
+            />
+            <Pagination
+                count={totalPageCount}
+                page={page}
+                onChange={(_, newPage) => setPage(newPage)}
+                size="large"
             />
             <Controller
                 name="review"

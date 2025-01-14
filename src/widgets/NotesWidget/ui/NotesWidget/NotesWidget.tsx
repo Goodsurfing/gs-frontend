@@ -3,7 +3,6 @@ import React, {
     FC, memo, useEffect, useState,
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-
 import {
     FormApplicationStatus,
     FullFormApplication,
@@ -41,7 +40,12 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             locale,
         } = props;
 
-        const [notes] = useState(initialNotes);
+        const [notes, setNotes] = useState<FullFormApplication[]>([]);
+
+        useEffect(() => {
+            setNotes([...initialNotes]);
+        }, [initialNotes]);
+
         const [columns, setColumns] = useState<
         Record<FormApplicationStatus, FullFormApplication[]>
         >({
