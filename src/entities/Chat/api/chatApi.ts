@@ -10,6 +10,10 @@ interface MessagesRequest {
     itemsPerPage: number;
 }
 
+interface MessageRequest {
+    message: string;
+}
+
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
@@ -20,6 +24,13 @@ export const chatApi = createApi({
                 url: "messages",
                 method: "POST",
                 body: formData,
+            }),
+        }),
+        readMessage: build.mutation<ChatType, MessageRequest>({
+            query: (data) => ({
+                url: "chats/read",
+                method: "POST",
+                body: data,
             }),
         }),
         getMessagesByChatId: build.query<MessageType[], MessagesRequest>({
@@ -56,4 +67,5 @@ export const chatApi = createApi({
 export const {
     useCreateMessageMutation, useLazyGetMessagesByChatIdQuery,
     useGetMessagesByChatIdQuery, useGetChatQuery,
+    useReadMessageMutation,
 } = chatApi;

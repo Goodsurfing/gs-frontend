@@ -98,7 +98,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                     </div>
                     <div className={styles.languages}>
                         <span className={styles.textCaption}>Владение языками</span>
-                        <div>{languages?.length !== 0 ? textLanguages : "Языки не были указаны"}</div>
+                        <div>{languages && (languages.length !== 0) ? textLanguages : "Языки не были указаны"}</div>
                     </div>
                     {/* <div className={styles.cases}>
                         <span className={styles.textCaption}>

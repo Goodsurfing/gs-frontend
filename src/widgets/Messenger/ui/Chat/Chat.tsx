@@ -14,7 +14,7 @@ import { OfferApplication, UserSettings } from "@/features/Messenger";
 
 import { useCreateApplicationFormMutation } from "@/entities/Application";
 import { useLazyGetApplicationFormByIdQuery } from "@/entities/Application/api/applicationApi";
-import { useGetChatQuery } from "@/entities/Chat/api/chatApi";
+import { useGetChatQuery, useReadMessageMutation } from "@/entities/Chat/api/chatApi";
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";
@@ -40,6 +40,7 @@ import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 interface ChatProps {
     id?: string;
@@ -75,7 +76,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
         [],
     );
-    // const messegesEndRef = useRef<HTMLDivElement | null>(null);
+    const messegesEndRef = useRef<HTMLDivElement | null>(null);
     const [organizationData, setOrganizationData] = useState<Host>();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
 
@@ -91,10 +92,20 @@ export const Chat: FC<ChatProps> = (props) => {
         myProfileData?.id,
     );
     const [createApplicationForm] = useCreateApplicationFormMutation();
+    const [readMessage] = useReadMessageMutation();
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
     const { data: chatData } = useGetChatQuery(id ?? "");
     const [getHost] = useLazyGetHostByIdQuery();
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
+
+    // useEffect(()=> {
+    //     if(id) {
+    //         messages.forEach((message)=> {
+    //             const isUser = myProfileData?.id !== authorId;
+    //             readMessage(`${BASE_URL}/api/v1/messages/${}`)
+    //         })
+    //     }
+    // }, [id])
 
     useEffect(() => {
         if (!myProfileData) return;
@@ -156,10 +167,13 @@ export const Chat: FC<ChatProps> = (props) => {
     useEffect(() => {
         const processMessages = async () => {
             let currentDate = "";
+            const today = new Date().toDateString();
+
             const elements = await Promise.all(
                 messages.map(async (message) => {
                     const {
                         createdAt, author, text, applicationForm, id: messageId,
+                        viewedOrganization, viewedVolunteer,
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
@@ -174,14 +188,19 @@ export const Chat: FC<ChatProps> = (props) => {
                         userName = organizationData?.name;
                         userAvatar = getMediaContent(organizationData?.avatar);
                     } else if (volunteerData?.profile.id === authorId) {
-                        userName = `${volunteerData?.profile.lastName} ${volunteerData?.profile.firstName} `;
+                        userName = `${volunteerData?.profile.lastName} ${volunteerData?.profile.firstName}`;
                         userAvatar = getMediaContent(
                             volunteerData?.profile.image,
                         );
                     }
 
+                    if (isUser) {
+                        console.log(text);
+                        await readMessage({ message: `${API_BASE_URL}messages/${messageId}` });
+                    }
+
                     let dateLine = null;
-                    if (messageDate !== currentDate) {
+                    if (messageDate !== currentDate && messageDate !== today) {
                         currentDate = messageDate;
                         dateLine = (
                             <div className={styles.date}>
@@ -232,32 +251,25 @@ export const Chat: FC<ChatProps> = (props) => {
                     );
                 }),
             );
+
             setProcessedMessages(
                 elements.filter((el): el is JSX.Element => el !== null),
             );
         };
 
         processMessages();
-    }, [
-        messages,
-        getApplicationData,
-        myProfileData,
-        locale,
-        volunteerData?.profile.id,
-        volunteerData?.profile.firstName,
-        volunteerData?.profile.lastName,
-        volunteerData?.profile.image,
+    }, [messages, getApplicationData, myProfileData,
+        locale, volunteerData?.profile.id, volunteerData?.profile.firstName,
+        volunteerData?.profile.lastName, volunteerData?.profile.image,
         organizationData?.name,
-        organizationData?.avatar,
-        organizationData?.owner.id,
-    ]);
+        organizationData?.avatar, organizationData?.owner.id, readMessage]);
 
-    // useEffect(() => {
-    //     messegesEndRef.current?.scrollIntoView({
-    //         behavior: "instant",
-    //         block: "nearest",
-    //     });
-    // }, [messages, processedMessages, id]);
+    useEffect(() => {
+        messegesEndRef.current?.scrollIntoView({
+            behavior: "instant",
+            block: "nearest",
+        });
+    }, [messages, processedMessages, id]);
 
     if (!id || !myProfileData) {
         return (
