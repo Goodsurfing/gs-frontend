@@ -40,7 +40,7 @@ export const NotesVolunteerForm = () => {
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
 
-    const applicationsPerPage = 2;
+    const applicationsPerPage = 10;
     const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
     const [getApplicationsData,

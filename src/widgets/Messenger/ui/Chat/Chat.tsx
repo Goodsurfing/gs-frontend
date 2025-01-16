@@ -165,6 +165,16 @@ export const Chat: FC<ChatProps> = (props) => {
     }, [isChatCreate, offerId, getOfferData]);
 
     useEffect(() => {
+        if (messages) {
+            messages.forEach(async (message, index) => {
+                if (index === 0) {
+                    readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                }
+            }, []);
+        }
+    }, [messages, readMessage]);
+
+    useEffect(() => {
         const processMessages = async () => {
             let currentDate = "";
             const today = new Date().toDateString();
@@ -173,7 +183,6 @@ export const Chat: FC<ChatProps> = (props) => {
                 messages.map(async (message) => {
                     const {
                         createdAt, author, text, applicationForm, id: messageId,
-                        viewedOrganization, viewedVolunteer,
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
@@ -192,11 +201,6 @@ export const Chat: FC<ChatProps> = (props) => {
                         userAvatar = getMediaContent(
                             volunteerData?.profile.image,
                         );
-                    }
-
-                    if (isUser) {
-                        console.log(text);
-                        await readMessage({ message: `${API_BASE_URL}messages/${messageId}` });
                     }
 
                     let dateLine = null;
