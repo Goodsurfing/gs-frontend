@@ -1,23 +1,31 @@
+import cn from "classnames";
 import React, { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
-import cn from "classnames";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+
+import { Host } from "@/entities/Host";
+import { VolunteerApi } from "@/entities/Volunteer";
 
 import exitIcon from "@/shared/assets/icons/delete.svg";
+import {
+    getHostPersonalPageUrl,
+    getVolunteerPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useFormatLanguages } from "@/shared/data/languages";
 import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 
 import styles from "./UserInfoCard.module.scss";
-import { VolunteerApi } from "@/entities/Volunteer";
-import { Host } from "@/entities/Host";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { useFormatLanguages } from "@/shared/data/languages";
 
 interface UserInfoCardProps {
     user?: Host | VolunteerApi;
     infoOpenedChange: () => void;
     className?: string;
+    locale: Locale;
 }
 
 type SkillsMap = {
@@ -25,14 +33,25 @@ type SkillsMap = {
 };
 
 export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
-    const { user, infoOpenedChange, className } = props;
+    const {
+        user, infoOpenedChange, className, locale,
+    } = props;
     const { skillsData } = useSkillsData();
     const languages = user && "languages" in user ? user.languages : null;
     const textLanguages = useFormatLanguages(languages ?? []);
+    const navigate = useNavigate();
 
     if (!user) {
         return null;
     }
+
+    const navigateToVolunteer = (id: string) => {
+        navigate(getVolunteerPersonalPageUrl(locale, id));
+    };
+
+    const navigateToHost = (id: string) => {
+        navigate(getHostPersonalPageUrl(locale, id));
+    };
 
     if ("profile" in user) {
         const { profile, skills } = user;
@@ -80,13 +99,23 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                     />
                 </div>
                 <div className={styles.content}>
-                    <div className={styles.info}>
-                        <Avatar icon={getMediaContent(profile.image)} size="LARGE" />
+                    <div
+                        className={styles.info}
+                        onClick={() => navigateToVolunteer(user.profile.id)}
+                    >
+                        <Avatar
+                            icon={getMediaContent(profile.image)}
+                            size="LARGE"
+                        />
                         <div className={styles.userInfo}>
                             <span className={styles.textCaption}>
                                 {`Волонтёр ${profile.birthDate ?? ""}`}
                             </span>
-                            <span className={styles.textPrimary}>{`${profile.lastName} ${profile.firstName}`}</span>
+                            <span
+                                className={styles.textPrimary}
+                            >
+                                {`${profile.lastName} ${profile.firstName}`}
+                            </span>
                             <span className={styles.textCaption}>
                                 {formatLocation(profile.country, profile.city)}
                             </span>
@@ -97,8 +126,14 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                         {renderSkillsCard()}
                     </div>
                     <div className={styles.languages}>
-                        <span className={styles.textCaption}>Владение языками</span>
-                        <div>{languages && (languages.length !== 0) ? textLanguages : "Языки не были указаны"}</div>
+                        <span className={styles.textCaption}>
+                            Владение языками
+                        </span>
+                        <div>
+                            {languages && languages.length !== 0
+                                ? textLanguages
+                                : "Языки не были указаны"}
+                        </div>
                     </div>
                     {/* <div className={styles.cases}>
                         <span className={styles.textCaption}>
@@ -137,12 +172,13 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                 />
             </div>
             <div className={styles.content}>
-                <div className={styles.info}>
+                <div
+                    className={styles.info}
+                    onClick={() => navigateToHost(user.id)}
+                >
                     <Avatar icon={getMediaContent(user.avatar)} size="LARGE" />
                     <div className={styles.userInfo}>
-                        <span className={styles.textCaption}>
-                            Организатор
-                        </span>
+                        <span className={styles.textCaption}>Организатор</span>
                         <span className={styles.textPrimary}>{user.name}</span>
                         <span className={styles.textCaption}>
                             {user.address}

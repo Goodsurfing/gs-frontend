@@ -430,6 +430,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 user={chatUser}
                 infoOpenedChange={infoOpenedChange}
                 className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
+                locale={locale}
             />
             {selectedImage && (
                 <Modal onClose={onClosePopup}>

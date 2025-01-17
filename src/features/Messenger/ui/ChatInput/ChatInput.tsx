@@ -1,7 +1,7 @@
 import {
     IconButton, Paper, SxProps, TextField, Theme,
 } from "@mui/material";
-import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import EmojiPicker, { Categories, EmojiClickData } from "emoji-picker-react";
 import React, { FC, useRef, useState } from "react";
 import { ReactSVG } from "react-svg";
 
@@ -99,6 +99,11 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                             <EmojiPicker
                                 onEmojiClick={onEmojiClick}
                                 lazyLoadEmojis
+                                categories={[
+                                    { category: Categories.SMILEYS_PEOPLE, name: "Смайлы" },
+                                    { category: Categories.ANIMALS_NATURE, name: "Животные" },
+                                    { category: Categories.FOOD_DRINK, name: "Еда" },
+                                ]}
                             />
                         </div>
                     )}
