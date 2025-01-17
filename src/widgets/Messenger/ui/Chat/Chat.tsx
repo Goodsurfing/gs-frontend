@@ -20,7 +20,7 @@ import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
-import { VolunteerApi } from "@/entities/Volunteer";
+import { useLazyGetVolunteerByIdQuery, VolunteerApi } from "@/entities/Volunteer";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
@@ -96,6 +96,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
     const { data: chatData } = useGetChatQuery(id ?? "");
     const [getHost] = useLazyGetHostByIdQuery();
+    const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
 
     // useEffect(()=> {
@@ -126,6 +127,7 @@ export const Chat: FC<ChatProps> = (props) => {
     useEffect(() => {
         if (chatData) {
             setVolunteerData(chatData.volunteer);
+            const volunteerId = chatData.volunteer.profile.id;
             const organizationId = chatData.organization.id;
 
             const fetchOrganization = async () => {
@@ -138,9 +140,20 @@ export const Chat: FC<ChatProps> = (props) => {
                 }
             };
 
+            const fetchVolunteer = async () => {
+                const resultVolunteerData = await getVolunteer(volunteerId)
+                    .unwrap()
+                    .then((volunteerDataResult) => volunteerDataResult)
+                    .catch(() => undefined);
+                if (resultVolunteerData) {
+                    setVolunteerData(resultVolunteerData);
+                }
+            };
+
+            fetchVolunteer();
             fetchOrganization();
         }
-    }, [chatData, getHost]);
+    }, [chatData, getHost, getVolunteer]);
 
     useEffect(() => {
         if (isChatCreate && offerId) {

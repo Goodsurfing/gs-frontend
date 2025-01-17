@@ -17,10 +17,25 @@ export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
         const { videoGallery, className } = props;
         const { t } = useTranslation("host");
 
+        const renderVideoGallery = () => {
+            if (videoGallery.length === 0) {
+                return (
+                    <p
+                        className={styles.container}
+                    >
+                        Видеогалерея не заполнена
+                    </p>
+                );
+            }
+            return (
+                <VideoGallery videos={videoGallery} className={styles.container} />
+            );
+        };
+
         return (
             <div className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Видео")} titleSize="h3" />
-                <VideoGallery videos={videoGallery} className={styles.swiper} />
+                {renderVideoGallery()}
             </div>
         );
     },

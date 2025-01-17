@@ -17,13 +17,28 @@ export const HostGalleryCard: FC<HostGalleryCardProps> = memo(
         const { className, images } = props;
         const { t } = useTranslation("host");
 
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <Text title={t("personalHost.Фото")} titleSize="h3" />
+        const renderImageGallery = () => {
+            if (images.length === 0) {
+                return (
+                    <p
+                        className={styles.container}
+                    >
+                        Галерея не заполнена
+                    </p>
+                );
+            }
+            return (
                 <ImageGallerySlider
                     images={images}
                     className={styles.container}
                 />
+            );
+        };
+
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <Text title={t("personalHost.Фото")} titleSize="h3" />
+                {renderImageGallery()}
             </div>
         );
     },

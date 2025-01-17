@@ -54,7 +54,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
             [getTranslation, hostOffers, locale],
         );
 
-        if (!hostOffers || isError) {
+        if ((hostOffers?.length === 0) || isError) {
             return null;
         }
 

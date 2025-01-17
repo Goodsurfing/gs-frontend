@@ -1,18 +1,16 @@
 import React, {
-    FC, memo, useMemo, useState,
+    FC, memo, useMemo,
 } from "react";
-import ReactPlayer from "react-player";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
-
-import { Modal } from "@/shared/ui/Modal/Modal";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 import styles from "./VideoGallery.module.scss";
 import { Video } from "@/entities/Host/model/types/host";
+import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
 
 interface VideoGalleryProps {
     videos: Video[] | string[];
@@ -22,7 +20,6 @@ interface VideoGalleryProps {
 export const VideoGallery: FC<VideoGalleryProps> = memo(
     (props: VideoGalleryProps) => {
         const { videos, className } = props;
-        const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
         const normalizedVideos = useMemo(
             () => (typeof videos[0] === "string" ? (videos as string[]).map((url) => ({ url })) : (videos as Video[])),
@@ -35,15 +32,12 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
                     className={styles.slide}
                     key={index}
                     style={{ cursor: "pointer" }}
-                    onClick={() => setSelectedVideo(video.url)}
                 >
-                    <ReactPlayer
-                        style={{ pointerEvents: "none" }}
+                    <VideoPlayer
                         width="100%"
                         height="180px"
                         url={video.url}
-                        light
-                        playing={false}
+                        controls
                     />
                 </SwiperSlide>
             )),
@@ -80,11 +74,6 @@ export const VideoGallery: FC<VideoGalleryProps> = memo(
                 >
                     {renderSlides}
                 </Swiper>
-                {selectedVideo && (
-                    <Modal onClose={() => setSelectedVideo(null)}>
-                        <ReactPlayer url={selectedVideo} playing controls />
-                    </Modal>
-                )}
             </div>
         );
     },

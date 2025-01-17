@@ -21,13 +21,17 @@ const MessengerPage = () => {
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
-            if (value) {
-                navigate(`/${locale}/messenger/${value}`);
+            if ((selectedChat !== value)) {
+                if (value) {
+                    navigate(`/${locale}/messenger/${value}`);
+                } else {
+                    navigate(getMessengerPageUrl(locale));
+                }
             } else {
                 navigate(getMessengerPageUrl(locale));
             }
         },
-        [locale, navigate],
+        [locale, navigate, selectedChat],
     );
 
     if (!ready) {
@@ -53,6 +57,7 @@ const MessengerPage = () => {
                         locale={locale}
                     />
                     <Chat
+                        key={selectedChat}
                         id={selectedChat}
                         offerId={offerId}
                         onBackButton={handleOnUserClick}

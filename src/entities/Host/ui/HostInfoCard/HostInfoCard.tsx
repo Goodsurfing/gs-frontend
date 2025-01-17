@@ -32,18 +32,14 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                     hostId={host.id}
                     className={styles.container}
                 />
-                {host && (
-                    <HostGalleryCard
-                        images={getMediaContentsArray(host.galleryImages)}
-                        className={styles.container}
-                    />
-                )}
-                {host?.videoGallery && (
-                    <HostVideoGalleryCard
-                        videoGallery={host.videoGallery}
-                        className={styles.container}
-                    />
-                )}
+                <HostGalleryCard
+                    images={getMediaContentsArray(host.galleryImages)}
+                    className={styles.container}
+                />
+                <HostVideoGalleryCard
+                    videoGallery={host.videoGallery}
+                    className={styles.container}
+                />
                 <HostTeamCard
                     hostId={host.id}
                     className={styles.container}

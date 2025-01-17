@@ -15,19 +15,18 @@ export const useGetChatMessages = (
     const itemsPerPage = 30;
 
     const [getMessagesData, { data: messagesData }] = useLazyGetMessagesByChatIdQuery();
-
-    useEffect(() => {
-        if (chatId) {
-            getMessagesData({ chatId, page, itemsPerPage });
-        }
-    }, [chatId, getMessagesData, page]);
-
     useEffect(() => {
         setMessages([]);
         setPage(1);
         setHasMore(true);
         setLoadingInitial(true);
     }, [chatId]);
+
+    useEffect(() => {
+        if (chatId) {
+            getMessagesData({ chatId, page, itemsPerPage });
+        }
+    }, [chatId, getMessagesData, page]);
 
     useEffect(() => {
         if (messagesData && messagesData.length > 0) {

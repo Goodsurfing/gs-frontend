@@ -27,10 +27,10 @@ export const useSubmenuItems = () => {
             text: t("personalHost.Отзывы"),
             id: "6",
         },
-        {
-            text: t("personalHost.Статьи"),
-            id: "7",
-        },
+        // {
+        //     text: t("personalHost.Статьи"),
+        //     id: "7",
+        // },
     ];
 
     return { submenuItems };
