@@ -80,16 +80,13 @@ export const NotesHostForm = () => {
         const {
             review: { stars, text },
         } = data;
-        if (selectedApplication) {
+        if (selectedApplication && stars) {
             setToast(undefined);
-            const formData = new FormData();
-            formData.append(
-                "applicationForm",
-                `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
-            );
-            if (stars) formData.append("stars", stars.toString());
-            formData.append("text", text);
-            await createToVolunteerReview(formData)
+            await createToVolunteerReview({
+                applicationForm: `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
+                stars,
+                text,
+            })
                 .unwrap()
                 .then(() => {
                     setToast({
