@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PageLayout } from "@/widgets/PageLayout";
 import { useVolunteerSidebarData } from "@/shared/data/sidebar/volunteer-pages";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import styles from "./VolunteerLayoutPage.module.scss";
 
 const VolunteerLayoutPage = () => {
     const { SideMenuData } = useVolunteerSidebarData();
@@ -17,7 +18,7 @@ const VolunteerLayoutPage = () => {
     }
 
     return (
-        <PageLayout sidebarContent={SideMenuData}>
+        <PageLayout sidebarContent={SideMenuData} wrapperClassName={styles.wrapper}>
             <Outlet />
         </PageLayout>
     );

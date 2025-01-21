@@ -12,3 +12,9 @@ export interface ApplicationReview {
     applicationForm: string;
     text: string;
 }
+
+export type ApplicationReviewResponse = ApplicationReview & {
+    volunteerId?: string;
+    organizationAuthorId?: string;
+    vacancyId?: number;
+};

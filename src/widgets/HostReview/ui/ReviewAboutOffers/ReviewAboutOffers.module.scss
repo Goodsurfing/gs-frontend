@@ -1,8 +1,9 @@
 .wrapper {
     border: 1px solid var(--bg-accent);
-    height: 100vh;
+    // height: 100vh;
     overflow: scroll;
     padding: 20px;
+    width: 100%;
 
     &::-webkit-scrollbar {
         width: 10px;

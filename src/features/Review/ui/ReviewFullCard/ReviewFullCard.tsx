@@ -1,46 +1,48 @@
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
-import { Review } from "@/types/review";
-
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
 
 import styles from "./ReviewFullCard.module.scss";
+import { ApplicationReviewResponse } from "@/entities/Review";
+import { useGetHostByIdQuery } from "@/entities/Host";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 interface ReviewFullCardProps {
-    review: Review;
+    review: ApplicationReviewResponse;
 }
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
-    const {
-        review: {
-            title, textReview, city, country,
-        },
-    } = props;
+    const { review } = props;
+    const { stars, text, organizationAuthorId } = review;
+    const { data: hostData } = useGetHostByIdQuery(organizationAuthorId ?? "");
+
+    if (!hostData) {
+        return null;
+    }
+    const { name, address, avatar } = hostData;
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
                 <div className={styles.avatarInfoUser}>
-                    <img
+                    <Avatar
                         className={styles.avatar}
-                        src={defaultAvatarImage}
+                        icon={getMediaContent(avatar)}
                         alt="AVATAR"
                     />
                     <div className={styles.userInfoContainer}>
                         <span className={styles.name}>
-                            {title}
+                            {name}
                         </span>
                         <span className={styles.address}>
-                            {country}
-                            {" "}
-                            {city}
+                            {address}
                         </span>
                     </div>
                 </div>
 
                 <div className={styles.ratingWrapper}>
                     <Rating
-                        value={3}
+                        value={stars}
                         readOnly
                         sx={{
                             "& .MuiRating-iconFilled": {
@@ -52,10 +54,10 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
                             },
                         }}
                     />
-                    <span className={styles.ratingNum}>4.4</span>
+                    <span className={styles.ratingNum}>{stars}</span>
                 </div>
             </div>
-            <p className={styles.textReview}>{textReview}</p>
+            <p className={styles.textReview}>{text}</p>
         </div>
     );
 };

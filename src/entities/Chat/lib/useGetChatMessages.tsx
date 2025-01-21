@@ -33,6 +33,7 @@ export const useGetChatMessages = (
             setMessages((prevMessages) => [...prevMessages, ...messagesData]);
         }
         if (messagesData && messagesData.length < itemsPerPage) {
+            setMessages([...messagesData]);
             setHasMore(false);
         }
         setLoadingInitial(false);

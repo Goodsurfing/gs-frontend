@@ -41,7 +41,7 @@ export const VolunteerPersonalPage = () => {
         navigate(getMessengerPageUrl(locale));
     }, [locale, navigate]);
 
-    if (isLoading && myProfileIsLoading) {
+    if (isLoading || myProfileIsLoading || !myProfileData || !volunteerData) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -49,7 +49,7 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    if (!id || !myProfileData || !volunteerData) {
+    if (!id) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />

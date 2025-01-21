@@ -1,12 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ReviewCardInfo } from "@/types/review";
 
 import { ReviewFields } from "@/features/Notes";
-import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
+import { ReviewMiniCard } from "@/features/Review/";
 
-import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
 import { VolunteerModalReview } from "@/entities/Review";
 
 import {
@@ -15,12 +13,17 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { mockedReviewOfferData } from "../../model/data/mockedReviewData";
-import styles from "./ReviewAboutOffers.module.scss";
 import { FullFormApplication } from "@/entities/Application";
-import { useLocale } from "@/app/providers/LocaleProvider";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./ReviewAboutOffers.module.scss";
+import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 
-export const ReviewAboutOffers: FC = () => {
+interface ReviewAboutOffersProps {
+    locale: Locale;
+}
+
+export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
+    const { locale } = props;
     const { t } = useTranslation("volunteer");
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -29,26 +32,39 @@ export const ReviewAboutOffers: FC = () => {
         },
     };
     const [toast] = useState<ToastAlert>();
-    const { locale } = useLocale();
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
     const { handleSubmit, control } = form;
-    const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
+    const [applications, setApplications] = useState<FullFormApplication[]>([]);
+    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
         null,
     );
 
-    const renderFullCards = (reviews: ReviewCardInfo[]) => reviews.map(
-        (review) => <ReviewCardOffer reviewOffer={review} />,
-    );
+    const { data: volunteerApplicationsData } = useGetMyVolunteerApplicationsQuery();
 
-    const onReviewClick = (id: number) => {
-        setSelectedReviewId(id);
+    useEffect(() => {
+        if (volunteerApplicationsData) {
+            const filteredApplications = volunteerApplicationsData.filter(
+                (volunteerApplication) => volunteerApplication.status === "accepted",
+            );
+            setApplications([...filteredApplications]);
+        } else {
+            setApplications([]);
+        }
+    }, [volunteerApplicationsData]);
+
+    // const renderFullCards = (reviews: ReviewCardInfo[]) => reviews.map(
+    //     (review) => <ReviewCardOffer reviewOffer={review} />,
+    // );
+
+    const onReviewClick = (application: FullFormApplication) => {
+        setSelectedApplication(application);
     };
 
     const resetSelectedReview = () => {
-        setSelectedReviewId(null);
+        setSelectedApplication(null);
     };
 
     const onSendReview = handleSubmit(() => {});
@@ -65,18 +81,19 @@ export const ReviewAboutOffers: FC = () => {
                 classNameSlide={styles.swiperSlide}
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
-                data={mockedApplications}
+                data={applications}
                 renderItem={(item: FullFormApplication) => (
                     <ReviewMiniCard
                         data={item}
                         onReviewClick={onReviewClick}
                         variant="offer"
                         key={item.id}
+                        locale={locale}
                     />
                 )}
             />
             <div className={styles.fullCardContainer}>
-                {renderFullCards(mockedReviewOfferData)}
+                {/* {renderFullCards(mockedReviewOfferData)} */}
             </div>
             <Controller
                 name="review"
@@ -85,8 +102,8 @@ export const ReviewAboutOffers: FC = () => {
                     <VolunteerModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={mockedApplications[0]}
-                        isOpen={!!selectedReviewId}
+                        application={selectedApplication}
+                        isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
                         successText={

@@ -37,8 +37,8 @@ const ProfileResetPasswordForm: FC = () => {
     });
 
     const onSubmit: SubmitHandler<FormDataImplemintaion> = useCallback(
-        async ({ newPassword: plainPassword }) => {
-            await resetPasswordVerify(plainPassword)
+        async ({ newPassword: plainPassword, currentPassword: oldPassword }) => {
+            await resetPasswordVerify({ oldPassword, plainPassword })
                 .unwrap()
                 .then(() => {
                     setToast({

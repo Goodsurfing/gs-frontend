@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { ApplicationReview } from "../model/types/review";
+import { ApplicationReview, ApplicationReviewResponse } from "../model/types/review";
 
 interface ReviewRequest {
     reviewId: string;
@@ -22,14 +22,14 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["volunteer"],
         }),
-        getToVolunteerReviewById: build.query<ApplicationReview, string>({
+        getToVolunteerReviewById: build.query<ApplicationReviewResponse, string>({
             query: (reviewId) => ({
                 url: `feedback_to_volunteers/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["volunteer"],
         }),
-        getToVolunteerReviewsById: build.query<ApplicationReview[], string>({
+        getToVolunteerReviewsById: build.query<ApplicationReviewResponse[], string>({
             query: (volunteerId) => ({
                 url: `volunteers/${volunteerId}/feedbacks`,
                 method: "GET",
@@ -47,7 +47,8 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["volunteer"],
         }),
-        createToOrganizationsReview: build.mutation<ApplicationReview, FormData>({
+        createToOrganizationsReview: build.mutation<ApplicationReview,
+        Omit<ApplicationReview, "id">>({
             query: (body) => ({
                 url: "feedback_to_organizations",
                 method: "POST",
@@ -62,7 +63,7 @@ export const reviewApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        getToOrganizationsReviewsById: build.query<ApplicationReview[], string>({
+        getToOrganizationsReviewsById: build.query<ApplicationReviewResponse[], string>({
             query: (hostId) => ({
                 url: `organizations/${hostId}/feedbacks`,
                 method: "GET",
@@ -93,5 +94,6 @@ export const {
     useGetToOrganizationsReviewByIdQuery,
     useLazyGetToOrganizationsReviewByIdQuery,
     useGetToOrganizationsReviewsByIdQuery,
+    useLazyGetToOrganizationsReviewsByIdQuery,
     useUpdateToOrganizationsReviewByIdMutation,
 } = reviewApi;

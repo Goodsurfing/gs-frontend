@@ -20,6 +20,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 
 import styles from "./UserInfoCard.module.scss";
+import { formatDate } from "@/shared/lib/formatDate";
 
 interface UserInfoCardProps {
     user?: Host | VolunteerApi;
@@ -109,7 +110,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                         />
                         <div className={styles.userInfo}>
                             <span className={styles.textCaption}>
-                                {`Волонтёр ${profile.birthDate ?? ""}`}
+                                {`Волонтёр ${formatDate(locale, profile.birthDate)}`}
                             </span>
                             <span
                                 className={styles.textPrimary}

@@ -8,7 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { StatsChartPoints, StatsPoints } from "@/entities/Stats";
 import { useGetMyVolunteerQuery } from "@/entities/Volunteer";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 
 import { EditVolunteer } from "../EditVolunteer/EditVolunteer";
@@ -60,11 +60,18 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
         },
     ];
 
+    if (!myVolunteer) {
+        return null;
+    }
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
                 <h3>{t("volunteer-dashboard.Заполненность профиля")}</h3>
-                <Link to={getMainPageUrl(locale)} className={styles.toProfile}>
+                <Link
+                    to={getVolunteerPersonalPageUrl(locale, myVolunteer.profile.id)}
+                    className={styles.toProfile}
+                >
                     {t("volunteer-dashboard.Посмотреть свой профиль")}
                 </Link>
             </div>
