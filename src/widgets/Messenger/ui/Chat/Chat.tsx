@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, Fragment, useEffect, useRef, useState,
+    FC, Fragment, useCallback, useEffect, useRef, useState,
 } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,8 +12,8 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
-import { useCreateApplicationFormMutation } from "@/entities/Application";
-import { useLazyGetApplicationFormByIdQuery } from "@/entities/Application/api/applicationApi";
+import { FormApplicationStatus, useCreateApplicationFormMutation } from "@/entities/Application";
+import { useLazyGetApplicationFormByIdQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
 import { useGetChatQuery, useReadMessageMutation } from "@/entities/Chat/api/chatApi";
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
@@ -79,6 +79,8 @@ export const Chat: FC<ChatProps> = (props) => {
     const messegesEndRef = useRef<HTMLDivElement | null>(null);
     const [organizationData, setOrganizationData] = useState<Host>();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
+    const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
+    const [isImHost, setImHost] = useState<boolean>(false);
 
     const { mercureToken } = useAuth();
 
@@ -92,12 +94,12 @@ export const Chat: FC<ChatProps> = (props) => {
         myProfileData?.id,
     );
     const [createApplicationForm] = useCreateApplicationFormMutation();
+    const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const [readMessage] = useReadMessageMutation();
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
     const { data: chatData } = useGetChatQuery(id ?? "");
     const [getHost] = useLazyGetHostByIdQuery();
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
-    const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
 
     // useEffect(()=> {
     //     if(id) {
@@ -156,6 +158,14 @@ export const Chat: FC<ChatProps> = (props) => {
     }, [chatData, getHost, getVolunteer]);
 
     useEffect(() => {
+        if (organizationData && myProfileData) {
+            if (organizationData.owner.id === myProfileData.id) {
+                setImHost(true);
+            }
+        }
+    }, [organizationData, myProfileData]);
+
+    useEffect(() => {
         if (isChatCreate && offerId) {
             const fetchOffer = async () => {
                 const resultOfferData = await getOfferData(offerId)
@@ -186,6 +196,13 @@ export const Chat: FC<ChatProps> = (props) => {
             }, []);
         }
     }, [messages, readMessage]);
+
+    const onApplicationSubmit = useCallback(async (
+        status: FormApplicationStatus,
+        applicationId: number,
+    ) => {
+        await updateApplicationStatus({});
+    }, [updateApplicationStatus]);
 
     useEffect(() => {
         const processMessages = async () => {
@@ -233,7 +250,10 @@ export const Chat: FC<ChatProps> = (props) => {
                             const applicationResult = await getApplicationData(
                                 applicationFormId ?? "",
                             ).unwrap();
-                            const { vacancy, startDate, endDate } = applicationResult;
+                            const {
+                                vacancy, startDate, endDate, status,
+                            } = applicationResult;
+                            const tempIsHost = (status === "new" && isImHost);
 
                             return (
                                 <OfferApplication
@@ -242,11 +262,12 @@ export const Chat: FC<ChatProps> = (props) => {
                                         start: new Date(startDate),
                                         end: new Date(endDate),
                                     }}
-                                    isHost
+                                    isHost={tempIsHost}
                                     username={userName ?? ""}
                                     isClosed
                                     onChange={() => {}}
                                     key={messageId}
+                                    onApplicationSubmit={() => onApplicationSubmit()}
                                 />
                             );
                         } catch {
@@ -276,10 +297,11 @@ export const Chat: FC<ChatProps> = (props) => {
 
         processMessages();
     }, [messages, getApplicationData, myProfileData,
-        locale, volunteerData?.profile.id, volunteerData?.profile.firstName,
-        volunteerData?.profile.lastName, volunteerData?.profile.image,
-        organizationData?.name,
-        organizationData?.avatar, organizationData?.owner.id, readMessage]);
+        locale, volunteerData?.profile.id,
+        volunteerData?.profile.firstName, volunteerData?.profile.lastName,
+        volunteerData?.profile.image, organizationData?.name,
+        organizationData?.avatar, organizationData?.owner.id,
+        readMessage, isImHost, onApplicationSubmit]);
 
     useEffect(() => {
         messegesEndRef.current?.scrollIntoView({

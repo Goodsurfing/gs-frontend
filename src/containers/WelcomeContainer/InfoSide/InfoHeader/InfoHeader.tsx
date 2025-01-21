@@ -52,7 +52,6 @@ const InfoHeader = memo(() => {
 
     const navigate = useNavigate();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { profile } = useUser();
 
     const communityRef = useRef(null);
@@ -106,7 +105,7 @@ const InfoHeader = memo(() => {
                 <MobileHeader />
             </div>
             <header className={styles.header}>
-                <ChangeLanguage />
+                <ChangeLanguage localeApi={profile?.locale} profileId={profile?.id} />
                 <div
                     ref={communityRef}
                     className={styles.link}

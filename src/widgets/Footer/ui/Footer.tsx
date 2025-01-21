@@ -28,10 +28,12 @@ import {
 } from "@/shared/config/routes/AppUrls";
 
 import styles from "./Footer.module.scss";
+import { useUser } from "@/entities/Profile";
 
 export const Footer = memo(() => {
     const { locale } = useLocale();
     const { t } = useTranslation();
+    const { profile } = useUser();
 
     return (
         <>
@@ -44,7 +46,7 @@ export const Footer = memo(() => {
                                 src={footerLogo}
                                 alt="GoodSurfing"
                             />
-                            <ChangeLanguage />
+                            <ChangeLanguage localeApi={profile?.locale} profileId={profile?.id} />
                         </div>
                         <div className={styles.socials}>
                             <a

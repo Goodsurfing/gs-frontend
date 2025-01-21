@@ -1,3 +1,4 @@
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Host } from "@/entities/Host";
 import { VolunteerApi } from "@/entities/Volunteer";
 import { MediaObjectType } from "@/types/media";
@@ -11,7 +12,7 @@ export interface MemberProfiles {
 export interface Profile {
     id: string;
     email: string;
-    locale: string;
+    locale: Locale;
     firstName?: string;
     lastName?: string;
     gender?: Gender;

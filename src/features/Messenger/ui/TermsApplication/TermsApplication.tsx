@@ -6,6 +6,8 @@ import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonCompo
 import { successIcon } from "@/shared/data/icons/skills";
 import { formatDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/entities/Locale";
+import Button from "@/shared/ui/Button/Button";
+import { FormApplicationStatus } from "@/entities/Application";
 
 interface DateType {
     start: Date | undefined;
@@ -22,11 +24,12 @@ interface TermsApplicationProps {
     locale: Locale;
     onChange: (terms: DateType) => void
     onSubmit?: () => void;
+    onApplicationSubmit?: (value: FormApplicationStatus) => void;
 }
 
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
-        className, onChange, onSubmit, terms, max, min, isHost,
+        className, onChange, onSubmit, onApplicationSubmit, terms, max, min, isHost,
         isSuccess = false, locale,
     } = props;
 
@@ -52,8 +55,12 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
         }
     }, [onChange, terms]);
 
+    const handleApplicationSubmit = useCallback((status: FormApplicationStatus) => {
+        onApplicationSubmit?.(status);
+    }, [onApplicationSubmit]);
+
     const renderLine = () => {
-        if (!isHost) {
+        if (!isSuccess) {
             return (
                 <span className={styles.line}>Укажите в какие даты вы хотите участвовать</span>
             );
@@ -111,7 +118,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     </div>
                 </div>
             </div>
-            {/* { isHost && (
+            { isHost && (
                 <div style={{
                     display: "flex",
                     gap: "10px",
@@ -120,11 +127,10 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     marginTop: "20px",
                 }}
                 >
-                    <Button color="BLUE" size="SMALL" variant="FILL">Принять</Button>
-                    <Button color="GRAY" size="SMALL" variant="OUTLINE">Отклонить</Button>
+                    <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => handleApplicationSubmit("accepted")}>Принять</Button>
+                    <Button color="GRAY" size="SMALL" variant="OUTLINE" onClick={() => handleApplicationSubmit("canceled")}>Отклонить</Button>
                 </div>
-            )} */}
-            {/* This logic has changed and is no longer used. */}
+            )}
         </div>
     );
 };

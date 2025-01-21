@@ -8,7 +8,7 @@ import { TermsApplication } from "../TermsApplication/TermsApplication";
 import styles from "./OfferApplication.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useCategories } from "@/shared/data/categories";
-import { FormApplicationOffer } from "@/entities/Application";
+import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
 
 interface OfferApplicationProps {
     offerData: Offer | FormApplicationOffer;
@@ -18,6 +18,7 @@ interface OfferApplicationProps {
     onSubmit?: () => void;
     terms: DatesType;
     onChange: (terms: DatesType) => void;
+    onApplicationSubmit?: (value: FormApplicationStatus) => void;
 }
 
 interface DatesType {
@@ -28,6 +29,7 @@ interface DatesType {
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const {
         isHost, username, isClosed, onSubmit, terms, onChange, offerData,
+        onApplicationSubmit,
     } = props;
     const { description, where, id } = offerData;
     const { locale } = useLocale();
@@ -45,7 +47,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     );
 
     const renderTitle = () => {
-        if (isHost) {
+        if (isClosed) {
             return (
                 <span className={styles.line}>
                     {username}
@@ -88,6 +90,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 isSuccess={isClosed || false}
                 isHost={isHost}
                 onSubmit={onSubmit}
+                onApplicationSubmit={onApplicationSubmit}
             />
         </div>
     );
