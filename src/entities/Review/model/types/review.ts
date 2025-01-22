@@ -15,6 +15,8 @@ export interface ApplicationReview {
 
 export type ApplicationReviewResponse = ApplicationReview & {
     volunteerId?: string;
+    volunteerAuthorId?: string;
+    organizationId?: string;
     organizationAuthorId?: string;
     vacancyId?: number;
 };

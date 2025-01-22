@@ -1,5 +1,4 @@
 import { Article } from "@/entities/Article";
-import { Review } from "@/entities/Review";
 
 import { OfferConditions } from "./offerConditions";
 import { OfferContributor } from "./offerContributor";
@@ -22,7 +21,7 @@ export interface Offer {
     conditions?: OfferConditions;
     finishingTouches?: OfferFinishingTouches;
     contributors: OfferContributor[];
-    reviews?: Review[];
+    // reviews?: Review[];
     articles?: Article[];
     status: OfferStatus;
     galleryItems: string[];

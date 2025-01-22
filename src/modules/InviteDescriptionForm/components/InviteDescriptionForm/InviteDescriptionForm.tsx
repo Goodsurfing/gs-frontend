@@ -162,7 +162,7 @@ export const InviteDescriptionForm = () => {
     return (
         <FormProvider {...form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className={styles.formWrapper}>
                     <EventName />
                     <Categories />

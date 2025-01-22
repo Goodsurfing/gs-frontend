@@ -21,7 +21,7 @@ import {
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
-import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
+import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -45,16 +45,11 @@ export const NotesHostForm = () => {
     const applicationsPerPage = 10;
     const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [getApplicationsData,
-        { data: applications, isLoading }] = useLazyGetMyHostApplicationsQuery();
+    const { data: applications, isLoading } = useGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus,
         { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdMutation();
     const { locale } = useLocale();
-
-    useEffect(() => {
-        getApplicationsData();
-    }, [getApplicationsData]);
 
     useEffect(() => {
         if (applications) {
@@ -134,7 +129,7 @@ export const NotesHostForm = () => {
                 variant="host"
                 onReviewClick={onReviewClick}
                 updateApplicationStatus={handleUpdateStatus}
-                isDragDisable={updateApplicationLoading}
+                isDragDisable={updateApplicationLoading || isLoading}
                 locale={locale}
             />
             <Pagination
