@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "@/shared/constants/api";
-import { useLazyGetMessagesByChatIdQuery } from "../api/chatApi";
+import { useGetMessagesByChatIdQuery } from "../api/chatApi";
 import { MessageType } from "@/entities/Messenger";
 
 export const useGetChatMessages = (
@@ -11,32 +11,26 @@ export const useGetChatMessages = (
     const [messages, setMessages] = useState<MessageType[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
-    const [loadingInitial, setLoadingInitial] = useState(true);
     const itemsPerPage = 30;
 
-    const [getMessagesData, { data: messagesData }] = useLazyGetMessagesByChatIdQuery();
+    const {
+        data: messagesData, isLoading, isFetching, error,
+    } = useGetMessagesByChatIdQuery(
+        { chatId: chatId ?? "", page, itemsPerPage },
+        { skip: !chatId },
+    );
+
     useEffect(() => {
         setMessages([]);
         setPage(1);
         setHasMore(true);
-        setLoadingInitial(true);
     }, [chatId]);
 
     useEffect(() => {
-        if (chatId) {
-            getMessagesData({ chatId, page, itemsPerPage });
-        }
-    }, [chatId, getMessagesData, page]);
-
-    useEffect(() => {
-        if (messagesData && messagesData.length > 0) {
+        if (messagesData) {
             setMessages((prevMessages) => [...prevMessages, ...messagesData]);
+            setHasMore(messagesData.length === itemsPerPage);
         }
-        if (messagesData && messagesData.length < itemsPerPage) {
-            setMessages([...messagesData]);
-            setHasMore(false);
-        }
-        setLoadingInitial(false);
     }, [messagesData]);
 
     useEffect(() => {
@@ -59,12 +53,17 @@ export const useGetChatMessages = (
     }, [chatId, mercureToken, profileId]);
 
     const fetchMoreMessages = useCallback(() => {
-        if (hasMore) {
+        if (hasMore && !isFetching) {
             setPage((prevPage) => prevPage + 1);
         }
-    }, [hasMore]);
+    }, [hasMore, isFetching]);
 
     return {
-        messages, fetchMoreMessages, hasMore, loadingInitial,
+        messages,
+        fetchMoreMessages,
+        hasMore,
+        loadingInitial: isLoading && page === 1,
+        loadingMore: isFetching && page > 1,
+        error,
     };
 };

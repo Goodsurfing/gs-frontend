@@ -87,7 +87,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [getOfferData] = useLazyGetOfferByIdQuery();
     const { data: myProfileData } = useGetProfileInfoQuery();
     const {
-        messages, fetchMoreMessages, hasMore, loadingInitial,
+        messages, fetchMoreMessages, hasMore,
     } = useGetChatMessages(
         id,
         mercureToken,
@@ -199,9 +199,11 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const onApplicationSubmit = useCallback(async (
         status: FormApplicationStatus,
-        applicationId: number,
+        applicationId?: string,
     ) => {
-        await updateApplicationStatus({});
+        if (applicationId) {
+            await updateApplicationStatus({ status, applicationId });
+        }
     }, [updateApplicationStatus]);
 
     useEffect(() => {
@@ -267,7 +269,12 @@ export const Chat: FC<ChatProps> = (props) => {
                                     isClosed
                                     onChange={() => {}}
                                     key={messageId}
-                                    onApplicationSubmit={() => onApplicationSubmit()}
+                                    onApplicationSubmit={
+                                        (statusValue) => onApplicationSubmit(
+                                            statusValue,
+                                            applicationFormId,
+                                        )
+                                    }
                                 />
                             );
                         } catch {
@@ -434,14 +441,13 @@ export const Chat: FC<ChatProps> = (props) => {
                     <InfiniteScroll
                         className={styles.infiniteScroll}
                         dataLength={messages.length}
-                        next={loadingInitial ? () => {} : fetchMoreMessages}
+                        next={fetchMoreMessages}
                         hasMore={hasMore}
                         loader={null}
                         height="100%"
                         scrollableTarget="chat"
                         inverse
                         style={{ width: "100%" }}
-
                     >
                         {renderChat()}
                     </InfiniteScroll>

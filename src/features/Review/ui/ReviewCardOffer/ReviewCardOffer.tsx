@@ -9,6 +9,7 @@ import { useGetApplicationFormByIdQuery } from "@/entities/Application";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface ReviewCardOfferProps {
     reviewOffer: ApplicationReviewResponse;
@@ -51,7 +52,9 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                         alt="offer"
                     />
                 </div>
-                {/* <span className={styles.date}>24 мая 2020</span> */}
+                <span className={styles.date}>
+                    {textSlice(vacancy.description?.shortDescription, 30, "none")}
+                </span>
             </div>
             <p className={styles.textReview}>{text}</p>
             <div className={styles.ratingUserContainer}>

@@ -81,9 +81,7 @@
     gap: 6px;
     width: 100%;
     padding: 20px 16px;
-    // height: calc(100% - 270px) !important;
     position: relative;
-    // max-width: 768px;
 
     &::-webkit-scrollbar {
         width: 10px;
@@ -104,7 +102,7 @@
     font-weight: 500;
     font-size: 0.75rem;
     text-align: center;
-    margin-bottom: 6px;
+    margin: 6px 0;
     max-width: 768px;
 }
 

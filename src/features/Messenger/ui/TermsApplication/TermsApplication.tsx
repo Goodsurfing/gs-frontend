@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
@@ -33,6 +33,8 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
         isSuccess = false, locale,
     } = props;
 
+    const [onSuccess, setOnSuccess] = useState<boolean>(false);
+
     const handleFromDateChange = useCallback((date: Date) => {
         if (terms.end) {
             if (date > terms.end) {
@@ -57,6 +59,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
 
     const handleApplicationSubmit = useCallback((status: FormApplicationStatus) => {
         onApplicationSubmit?.(status);
+        setOnSuccess(true);
     }, [onApplicationSubmit]);
 
     const renderLine = () => {
@@ -118,7 +121,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     </div>
                 </div>
             </div>
-            { isHost && (
+            { (isHost && !onSuccess) && (
                 <div style={{
                     display: "flex",
                     gap: "10px",
