@@ -23,7 +23,7 @@ export const mockedHostData: Host = {
     owner: {
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         email: "string",
-        locale: "string",
+        locale: "ru",
         firstName: "string",
         lastName: "string",
         birthDate: "2024-07-01T18:11:04.893Z",
@@ -47,7 +47,7 @@ export const mockedHostData: Host = {
         {
             id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             email: "string",
-            locale: "string",
+            locale: "ru",
             firstName: "string",
             lastName: "string",
             birthDate: "2024-07-01T18:23:44.318Z",

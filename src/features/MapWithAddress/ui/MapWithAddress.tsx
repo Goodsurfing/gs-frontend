@@ -46,7 +46,6 @@ const MapWithAddress = ({
 
     const handleValueChange = useCallback(
         (newValue: GeoObject | null) => {
-            console.log("newVale", newValue);
             setOptions(newValue ? [newValue, ...options] : options);
             field.onChange({ ...field.value, geoObject: newValue });
         },

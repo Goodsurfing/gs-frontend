@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useEffect, useState,
+    FC,
 } from "react";
 
 import { Anchor } from "../Anchor/Anchor";
@@ -13,25 +13,6 @@ interface SideMenuProps {
 
 const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
     const { items, className } = props;
-    const [activeItem, setActiveItem] = useState(items[0].id);
-
-    const handleScroll = useCallback(() => {
-        for (let i = 0; i < items.length; i++) {
-            const item = document.getElementById(items[i].id);
-            if (item) {
-                const rect = item.getBoundingClientRect();
-                if (rect.top <= 100 && rect.bottom >= 100) {
-                    setActiveItem(items[i].id);
-                    break;
-                }
-            }
-        }
-    }, [items]);
-
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
 
     return (
         <nav className={cn(className, styles.sideMenu)}>
@@ -41,8 +22,9 @@ const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
                         <Anchor
                             id={item.id}
                             key={item.id}
-                            activeId={activeItem}
                             title={item.title}
+                            className={styles.anchor}
+                            classNameActive={styles.active}
                         />
                         <br />
                     </>

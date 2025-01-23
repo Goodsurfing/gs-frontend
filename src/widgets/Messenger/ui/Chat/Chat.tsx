@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, Fragment, useCallback, useEffect, useRef, useState,
+    FC, Fragment, useCallback, useEffect, useState,
 } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -76,7 +76,6 @@ export const Chat: FC<ChatProps> = (props) => {
     const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
         [],
     );
-    const messegesEndRef = useRef<HTMLDivElement | null>(null);
     const [organizationData, setOrganizationData] = useState<Host>();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
@@ -309,13 +308,6 @@ export const Chat: FC<ChatProps> = (props) => {
         volunteerData?.profile.image, organizationData?.name,
         organizationData?.avatar, organizationData?.owner.id,
         readMessage, isImHost, onApplicationSubmit]);
-
-    useEffect(() => {
-        messegesEndRef.current?.scrollIntoView({
-            behavior: "instant",
-            block: "nearest",
-        });
-    }, [messages, processedMessages, id]);
 
     if (!id || !myProfileData) {
         return (

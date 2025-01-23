@@ -9,13 +9,14 @@ interface AnchorProps {
     id: string;
     title: string;
     className?: string;
+    classNameActive?: string;
     onClick?: () => void;
     topGap?: number;
 }
 
 export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     const {
-        id, title, className, onClick, topGap = 100,
+        id, title, className, classNameActive = "", onClick, topGap = 100,
     } = props;
 
     const [isActive, setIsActive] = useState(false);
@@ -52,7 +53,12 @@ export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     return (
         <div
             onClick={handleClick}
-            className={cn(className, styles.wrapper, { [styles.active]: isActive })}
+            className={cn(
+                className,
+                styles.wrapper,
+                { [styles.active]: isActive },
+                { [classNameActive]: isActive },
+            )}
         >
             {title}
         </div>

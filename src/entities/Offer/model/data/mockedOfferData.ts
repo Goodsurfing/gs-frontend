@@ -67,6 +67,7 @@ export const mockedOffersData: Offer[] = [
             id: "123",
             name: "exampleOrg",
             type: "ИП",
+            avatar: { id: "1", contentUrl: "" },
         },
     },
     {
@@ -135,6 +136,7 @@ export const mockedOffersData: Offer[] = [
             id: "123",
             name: "exampleOrg",
             type: "ИП",
+            avatar: { id: "1", contentUrl: "" },
         },
     },
     {
@@ -203,6 +205,7 @@ export const mockedOffersData: Offer[] = [
             id: "123",
             name: "exampleOrg",
             type: "ИП",
+            avatar: { id: "1", contentUrl: "" },
         },
     },
 ];

@@ -20,7 +20,7 @@ const BlogPage = () => (
         <div className={styles.container}>
             <div className={styles.top}>
                 <ArticleFilter className={styles.articleFilter} />
-                <SearchInput className={styles.search} />
+                <SearchInput className={styles.search} value="" onChange={() => {}} />
             </div>
             <div className={styles.content}>
                 <ArticlesList

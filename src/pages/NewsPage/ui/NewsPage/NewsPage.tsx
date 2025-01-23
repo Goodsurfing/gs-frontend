@@ -20,7 +20,7 @@ const NewsPage = () => (
         <div className={styles.container}>
             <div className={styles.top}>
                 <ArticleFilter />
-                <SearchInput sx={{ maxWidth: "370px" }} />
+                <SearchInput sx={{ maxWidth: "370px" }} value="" onChange={() => {}} />
             </div>
             <div className={styles.content}>
                 <NewsList
