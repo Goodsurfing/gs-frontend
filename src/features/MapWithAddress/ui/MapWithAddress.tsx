@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
@@ -62,8 +61,8 @@ const MapWithAddress = ({
             );
             field.onChange({
                 ...field.value,
-                geoObject,
-                address: `${geoObject?.description}, ${geoObject?.name}`,
+                geoObject: { description: geoObject?.description, name: geoObject?.name, Point: { pos: `${longitude} ${latitude}` } },
+                address: `${geoObject?.description ? `${geoObject.description}, ` : ""}${geoObject?.name}`,
             });
         },
         [field],
@@ -130,7 +129,7 @@ const MapWithAddress = ({
                         field.onChange({ ...field.value, address: inputVal });
                     }}
                     options={options}
-                    getOptionLabel={(option) => `${option.description}, ${option.name}`}
+                    getOptionLabel={(option) => `${option.description ? `${option.description}, ` : ""}${option.name}`}
                     noOptionsText={t("where.Точек на карте не найдено")}
                     labelText={t("where.Введите адрес")}
                     onKeyDown={(event: React.KeyboardEvent) => handleKeyDown(event)}
@@ -166,7 +165,7 @@ const MapWithAddress = ({
                     className={cn(styles.map, {
                         [styles.loading]: !loading,
                     })}
-                    setYmap={(ymaps) => setYmap(ymaps)}
+                    setYmap={(ymapsMap) => setYmap(ymapsMap)}
                     onClick={handleMapClick}
                     setLoading={setLoading}
                 >

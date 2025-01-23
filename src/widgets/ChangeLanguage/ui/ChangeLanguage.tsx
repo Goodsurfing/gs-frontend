@@ -2,7 +2,6 @@ import cn from "classnames";
 import {
     memo, useEffect, useRef, useState,
 } from "react";
-import { localeApi } from "@/store/api/localeApi";
 import { ILanguage } from "@/types/languages";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -12,19 +11,23 @@ import Arrow from "@/shared/ui/Arrow/Arrow";
 
 import { changeLanguageData, languageIconsData } from "../model/data/ChangeLanguage.data";
 import styles from "./ChangeLanguage.module.scss";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 
 interface ChangeLanguageProps {
     className?: string;
+    localeApi?: Locale;
+    profileId?: string;
 }
 
-export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
+export const ChangeLanguage = memo(({ className, localeApi, profileId }: ChangeLanguageProps) => {
     const { locale, updateLocale } = useLocale();
 
-    const [changeLocale] = localeApi.useChangeLocaleMutation();
+    const [updateProfile] = useUpdateProfileInfoMutation();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const [language, setLanguage] = useState(locale);
+    const [language, setLanguage] = useState(localeApi ?? locale);
 
     const menuRef = useRef(null);
 
@@ -36,9 +39,9 @@ export const ChangeLanguage = memo(({ className }: ChangeLanguageProps) => {
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
         updateLocale(lang.code);
-        await changeLocale({
-            locale: lang.code,
-        });
+        if (profileId) {
+            await updateProfile({ userId: profileId, profileData: { locale: lang.code } });
+        }
         setIsOpen(false);
     };
 

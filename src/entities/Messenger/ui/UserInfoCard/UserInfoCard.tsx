@@ -1,52 +1,166 @@
-import React, { FC, useMemo } from "react";
+import cn from "classnames";
+import React, { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
-import cn from "classnames";
-import { UserChatType } from "@/entities/Messenger";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+
+import { Host } from "@/entities/Host";
+import { VolunteerApi } from "@/entities/Volunteer";
 
 import exitIcon from "@/shared/assets/icons/delete.svg";
-import { useSkillsData } from "@/shared/data/skills";
+import {
+    getHostPersonalPageUrl,
+    getVolunteerPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useFormatLanguages } from "@/shared/data/languages";
+import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 
 import styles from "./UserInfoCard.module.scss";
+import { formatDate } from "@/shared/lib/formatDate";
 
 interface UserInfoCardProps {
-    user: UserChatType;
+    user?: Host | VolunteerApi;
     infoOpenedChange: () => void;
     className?: string;
+    locale: Locale;
 }
 
+type SkillsMap = {
+    [key in Skills]?: SkillsData;
+};
+
 export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
-    const { user, infoOpenedChange, className } = props;
+    const {
+        user, infoOpenedChange, className, locale,
+    } = props;
     const { skillsData } = useSkillsData();
+    const languages = user && "languages" in user ? user.languages : null;
+    const textLanguages = useFormatLanguages(languages ?? []);
+    const navigate = useNavigate();
 
-    const renderLanguagesList = useMemo(
-        () => user.languages.map((lang, index) => (
-            <span key={index}>
-                <span className={styles.lang}>{lang.language}</span>
-                <span className={styles.langLevel}>
-                    {" "}
-                    /
-                    {lang.level}
-                </span>
-                {index < user.languages.length - 1 ? ", " : ""}
-            </span>
-        )),
-        [user.languages],
-    );
+    if (!user) {
+        return null;
+    }
 
-    const renderCasesList = useMemo(() => {
-        if (user.cases.length === 0) {
-            return <span>-</span>;
-        }
-        return user.cases.map((caseItem, index) => (
-            <div key={index} className={styles.caseItem}>
-                <div className={styles.circle} />
-                {caseItem}
+    const navigateToVolunteer = (id: string) => {
+        navigate(getVolunteerPersonalPageUrl(locale, id));
+    };
+
+    const navigateToHost = (id: string) => {
+        navigate(getHostPersonalPageUrl(locale, id));
+    };
+
+    if ("profile" in user) {
+        const { profile, skills } = user;
+
+        const renderSkillsCard = () => {
+            if (!skills || skills.length === 0) {
+                return <span>Волонтёр не указал умения</span>;
+            }
+
+            const skillsMap: SkillsMap = skillsData.reduce(
+                (acc: SkillsMap, cur) => {
+                    acc[cur.id] = cur;
+                    return acc;
+                },
+                {},
+            );
+            return skills.map((item) => {
+                const skill = skillsMap[item];
+                return (
+                    skill && (
+                        <IconTextComponent
+                            text={skill.text}
+                            icon={skill.icon}
+                            alt={skill.text}
+                            key={skill.id}
+                        />
+                    )
+                );
+            });
+        };
+
+        const formatLocation = (country?: string, city?: string) => {
+            if (country && city) return `${country}, ${city}`;
+            return country ?? city ?? "";
+        };
+
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <div className={styles.top}>
+                    <span>Информация</span>
+                    <ReactSVG
+                        src={exitIcon}
+                        className={styles.exitIcon}
+                        onClick={() => infoOpenedChange()}
+                    />
+                </div>
+                <div className={styles.content}>
+                    <div
+                        className={styles.info}
+                        onClick={() => navigateToVolunteer(user.profile.id)}
+                    >
+                        <Avatar
+                            icon={getMediaContent(profile.image)}
+                            size="LARGE"
+                        />
+                        <div className={styles.userInfo}>
+                            <span className={styles.textCaption}>
+                                {`Волонтёр ${formatDate(locale, profile.birthDate)}`}
+                            </span>
+                            <span
+                                className={styles.textPrimary}
+                            >
+                                {`${profile.lastName} ${profile.firstName}`}
+                            </span>
+                            <span className={styles.textCaption}>
+                                {formatLocation(profile.country, profile.city)}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.skills}>
+                        <span className={styles.textCaption}>Умения</span>
+                        {renderSkillsCard()}
+                    </div>
+                    <div className={styles.languages}>
+                        <span className={styles.textCaption}>
+                            Владение языками
+                        </span>
+                        <div>
+                            {languages && languages.length !== 0
+                                ? textLanguages
+                                : "Языки не были указаны"}
+                        </div>
+                    </div>
+                    {/* <div className={styles.cases}>
+                        <span className={styles.textCaption}>
+                            Участвовал в проектах
+                        </span>
+                        <div className={styles.casesList}>{renderCasesList}</div>
+                    </div> */}
+                    {/* Not in backend */}
+                    {/* <div className={styles.dates}>
+                        <div className={styles.date}>
+                            <span className={styles.textCaption}>
+                                Дата прибытия
+                            </span>
+                            <span className={styles.text}>20.10.2023</span>
+                        </div>
+                        <div className={styles.date}>
+                            <span className={styles.textCaption}>
+                                Дата окончания
+                            </span>
+                            <span className={styles.text}>30.10.2023</span>
+                        </div>
+                    </div> */}
+                </div>
             </div>
-        ));
-    }, [user.cases]);
+        );
+    }
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -59,61 +173,17 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                 />
             </div>
             <div className={styles.content}>
-                <div className={styles.info}>
-                    <Avatar icon={user.avatar} size="LARGE" />
+                <div
+                    className={styles.info}
+                    onClick={() => navigateToHost(user.id)}
+                >
+                    <Avatar icon={getMediaContent(user.avatar)} size="LARGE" />
                     <div className={styles.userInfo}>
-                        <span className={styles.textCaption}>
-                            {user.description}
-                        </span>
+                        <span className={styles.textCaption}>Организатор</span>
                         <span className={styles.textPrimary}>{user.name}</span>
                         <span className={styles.textCaption}>
                             {user.address}
                         </span>
-                    </div>
-                </div>
-                <div className={styles.skills}>
-                    <span className={styles.textCaption}>Умения</span>
-                    <IconTextComponent
-                        text={skillsData[0].text}
-                        icon={skillsData[0].icon}
-                        alt={skillsData[0].text}
-                        key={skillsData[0].id}
-                    />
-                    <IconTextComponent
-                        text={skillsData[1].text}
-                        icon={skillsData[1].icon}
-                        alt={skillsData[1].text}
-                        key={skillsData[1].id}
-                    />
-                    <IconTextComponent
-                        text={skillsData[2].text}
-                        icon={skillsData[2].icon}
-                        alt={skillsData[2].text}
-                        key={skillsData[2].id}
-                    />
-                </div>
-                <div className={styles.languages}>
-                    <span className={styles.textCaption}>Владение языками</span>
-                    <div>{renderLanguagesList}</div>
-                </div>
-                <div className={styles.cases}>
-                    <span className={styles.textCaption}>
-                        Участвовал в проектах
-                    </span>
-                    <div className={styles.casesList}>{renderCasesList}</div>
-                </div>
-                <div className={styles.dates}>
-                    <div className={styles.date}>
-                        <span className={styles.textCaption}>
-                            Дата прибытия
-                        </span>
-                        <span className={styles.text}>20.10.2023</span>
-                    </div>
-                    <div className={styles.date}>
-                        <span className={styles.textCaption}>
-                            Дата окончания
-                        </span>
-                        <span className={styles.text}>30.10.2023</span>
                     </div>
                 </div>
             </div>

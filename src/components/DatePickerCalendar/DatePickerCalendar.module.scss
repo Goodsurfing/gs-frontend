@@ -52,3 +52,9 @@
     right: 2%;
     cursor: pointer;
 }
+
+@media (max-width: 992px) {
+    .calendar {
+        max-width: 100%;
+    }
+}

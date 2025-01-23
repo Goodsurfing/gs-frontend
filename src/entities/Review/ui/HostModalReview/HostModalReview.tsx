@@ -1,23 +1,35 @@
 import React, { FC } from "react";
-import { Application } from "@/entities/Host";
-import { RequestCard } from "@/entities/Request";
-import { HostReviewTypeFields } from "@/features/Notes";
+
+import { ReviewTypeFields } from "@/features/Notes";
+
+import { FullFormApplication, RequestCard } from "@/entities/Application";
+
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
+import { Locale } from "@/entities/Locale";
 
 interface HostModalReviewProps {
-    application: Application;
-    value: HostReviewTypeFields;
-    onChange: (value: HostReviewTypeFields) => void;
+    application: FullFormApplication | null;
+    value: ReviewTypeFields;
+    onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
     onClose: () => void;
     sendReview: () => void;
     successText?: string;
     errorText?: string;
+    locale: Locale;
 }
 
 export const HostModalReview: FC<HostModalReviewProps> = (props) => {
     const {
-        application, value, onChange, isOpen, onClose, sendReview, successText, errorText,
+        application,
+        value,
+        onChange,
+        isOpen,
+        onClose,
+        sendReview,
+        successText,
+        errorText,
+        locale,
     } = props;
     const { stars, text } = value;
     return (
@@ -35,11 +47,14 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
             successText={successText}
             errorText={errorText}
         >
-            <RequestCard
-                application={application}
-                showButtons={false}
-                showStatus={false}
-            />
+            {application && (
+                <RequestCard
+                    locale={locale}
+                    application={application}
+                    showButtons={false}
+                    showStatus={false}
+                />
+            )}
         </ModalReview>
     );
 };

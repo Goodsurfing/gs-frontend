@@ -7,6 +7,11 @@ interface UpdateProfileInfoRequest {
     profileData: Partial<ProfileApi>
 }
 
+interface ChangePasswordRequest {
+    plainPassword: string;
+    oldPassword: string;
+}
+
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -37,6 +42,14 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        changePassword: build.mutation<Profile, ChangePasswordRequest>({
+            query: (body) => ({
+                url: "personal/profile/change-password",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
     }),
 });
 
@@ -44,4 +57,5 @@ export const {
     useGetProfileInfoQuery,
     useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
+    useChangePasswordMutation,
 } = profileApi;

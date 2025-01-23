@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { API_BASE_URL } from "@/shared/constants/api";
 import { AuthApiEndpoints } from "@/types/api/auth";
+
+import { API_BASE_URL } from "@/shared/constants/api";
 import { LoginByEmailProps } from "../../types/login";
 
 export const baseQuery = fetchBaseQuery({
@@ -13,7 +14,8 @@ export const baseQuery = fetchBaseQuery({
 });
 
 interface LoginResponse {
-    token: string;
+    accessToken: string;
+    mercureToken: string;
 }
 
 export const loginApi = createApi({

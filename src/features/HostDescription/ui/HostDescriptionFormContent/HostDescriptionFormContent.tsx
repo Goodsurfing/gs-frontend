@@ -12,14 +12,14 @@ import {
 } from "../HostDescriptionAvatar/HostDescriptionAvatar";
 
 import styles from "./HostDescriptionFormContent.module.scss";
+import { Host } from "@/entities/Host";
 
 interface HostDescriptionFormContentProps {
-    className?: string;
+    host?: Host;
 }
 
 export const HostDescriptionFormContent = memo((props: HostDescriptionFormContentProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { className } = props;
+    const { host } = props;
 
     return (
         <>
@@ -27,7 +27,7 @@ export const HostDescriptionFormContent = memo((props: HostDescriptionFormConten
                 <HostDescriptionOrganization />
                 <HostDescriptionSocial />
             </div>
-            <HostDescriptionAvatar />
+            <HostDescriptionAvatar host={host} />
         </>
     );
 });

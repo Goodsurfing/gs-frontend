@@ -7,6 +7,8 @@ import { ArticleCard } from "@/entities/Article/";
 import { Article } from "@/entities/Article";
 
 import styles from "./OfferArticlesCard.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferArticlesCardProps {
     articles: Article[];
@@ -17,14 +19,19 @@ export const OfferArticlesCard: FC<OfferArticlesCardProps> = memo(
     (props: OfferArticlesCardProps) => {
         const { articles, className } = props;
         const { t } = useTranslation("offer");
+        const { locale } = useLocale();
 
         const renderCards = useMemo(
             () => articles
                 .slice(0, 2)
                 .map((article, index) => (
-                    <ArticleCard article={article} key={index} />
+                    <ArticleCard
+                        path={getBlogPersonalPageUrl(locale, article.id)}
+                        article={article}
+                        key={index}
+                    />
                 )),
-            [articles],
+            [articles, locale],
         );
 
         return (

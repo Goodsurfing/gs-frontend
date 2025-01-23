@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TOKEN_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import { TOKEN_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_KEY, MERCURE_TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { User, UserSchema } from "../types/userSchema";
 
 const initialState: UserSchema = {
@@ -25,6 +25,7 @@ export const userSlice = createSlice({
             state.authData = undefined;
             localStorage.removeItem(USER_LOCALSTORAGE_KEY);
             localStorage.removeItem(TOKEN_LOCALSTORAGE_KEY);
+            localStorage.removeItem(MERCURE_TOKEN_LOCALSTORAGE_KEY);
         },
     },
 });

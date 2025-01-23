@@ -1,24 +1,28 @@
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
+import AOS from "aos";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import "aos/dist/aos.css";
 
 import { volunteerData } from "@/containers/VolunteerContainer/Volunteer.data";
 import VolunteerItem from "@/containers/VolunteerContainer/VolunteerItem/VolunteerItem";
 
 import styles from "./VolunteerContainer.module.scss";
-import { getHostPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useAppSelector } from "@/shared/hooks/redux";
-import { getUserAuthData } from "@/entities/User";
 
 const VolunteerContainer = memo(() => {
-    const volunteerDataList = useMemo(() => volunteerData.map((item) => (
-        <VolunteerItem key={item.number} {...item} />)), []);
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+
+        return () => {
+            AOS.refreshHard();
+        };
+    }, []);
+
+    const volunteerDataList = useMemo(() => volunteerData.map((item, index) => (
+        <VolunteerItem key={item.number} dataAos={index % 2 === 0 ? "fade-up" : "fade-down"} {...item} />)), []);
 
     const { locale } = useLocale();
-
-    const authData = useAppSelector(getUserAuthData);
-
-    const path = authData ? getSignInPageUrl(locale) : getHostPageUrl(locale);
 
     return (
         <div className={styles.wrapper}>
@@ -33,7 +37,7 @@ const VolunteerContainer = memo(() => {
             <div className={styles.content}>
                 {volunteerDataList}
             </div>
-            <ButtonLink type="secondary" path={path}>
+            <ButtonLink type="secondary" path={getProfileRolePageUrl(locale)}>
                 Начать сейчас
             </ButtonLink>
         </div>

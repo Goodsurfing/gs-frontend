@@ -14,7 +14,7 @@ interface PageLayoutProps {
 export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent, wrapperClassName }) => {
     const { isOpen } = useSidebarContext();
     return (
-        <div className={styles.layout}>
+        <div id="page-layout" className={styles.layout}>
             <MainHeader />
             <Sidebar content={sidebarContent} />
             <div

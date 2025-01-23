@@ -1,22 +1,41 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
-import { fakeReviewData } from "../../model/data/mockedReviewData";
 import { ReviewCardOffer } from "@/features/Review/";
-import { ReviewCardInfo } from "@/types/review";
 import styles from "./ReviewAboutOffers.module.scss";
+import { ApplicationReviewResponse, useLazyGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-export const ReviewAboutOffers: FC = () => {
-    const [data] = useState<ReviewCardInfo[]>(fakeReviewData);
+interface ReviewAboutOffersProps {
+    hostId: string;
+    locale: Locale;
+}
 
-    const renderCardOffers = (reviewOffers: ReviewCardInfo[]) => reviewOffers
-        .map((reviewOffer, index) => (
-            <ReviewCardOffer reviewOffer={reviewOffer} key={index} />
+export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
+    const { hostId, locale } = props;
+    const [getReviewsData, { data }] = useLazyGetToOrganizationsReviewsByIdQuery();
+    const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
+
+    useEffect(() => {
+        getReviewsData(hostId);
+    }, [getReviewsData, hostId]);
+
+    useEffect(() => {
+        if (data) {
+            setReviews([...data]);
+        } else {
+            setReviews([]);
+        }
+    }, [data]);
+
+    const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => reviewOffers
+        .map((reviewOffer) => (
+            <ReviewCardOffer reviewOffer={reviewOffer} key={reviewOffer.id} locale={locale} />
         ));
 
     return (
         <div className={styles.wrapper}>
             <h3 className={styles.h3}>Отзывы о проектах</h3>
-            <div className={styles.cardContainer}>{renderCardOffers(data)}</div>
+            <div className={styles.cardContainer}>{renderCardOffers(reviews)}</div>
         </div>
     );
 };

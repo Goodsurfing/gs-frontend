@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -30,6 +31,7 @@ const SignUpForm: FC = () => {
 
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation();
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -43,25 +45,19 @@ const SignUpForm: FC = () => {
         formData.append("email", data.email);
         formData.append("plainPassword", data.password);
         formData.append("locale", locale);
-        try {
-            await registerUser(formData)
-                .unwrap()
-                .then((response) => {
-                    dispatch(setRegisterUserData(response));
-                    navigate(getConfirmEmailPageUrl(locale));
-                })
-                .catch(() => {
-                    setToast({
-                        text: "Некорректно введены данные",
-                        type: HintType.Error,
-                    });
+        await registerUser(formData)
+            .unwrap()
+            .then((response) => {
+                dispatch(setRegisterUserData(response));
+                navigate(getConfirmEmailPageUrl(locale));
+            })
+            .catch((e: any) => {
+                const textError = (e.status === 422) ? t("login.Данный пользователь уже существует") : t("login.Некорректно введены данные");
+                setToast({
+                    text: textError,
+                    type: HintType.Error,
                 });
-        } catch (e) {
-            setToast({
-                text: "Произошла ошибка",
-                type: HintType.Error,
             });
-        }
         reset();
     };
 

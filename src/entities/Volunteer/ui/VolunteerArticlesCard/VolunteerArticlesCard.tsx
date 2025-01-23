@@ -6,6 +6,8 @@ import { ArticleCard } from "@/entities/Article/";
 import { Article } from "@/entities/Article";
 
 import styles from "./VolunteerArticlesCard.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface VolunteerArticlesCardProps {
     articles?: Article[];
@@ -16,6 +18,8 @@ const RENDER_TWO_ARTICLES = [0, 2];
 export const VolunteerArticlesCard: FC<VolunteerArticlesCardProps> = memo(
     (props: VolunteerArticlesCardProps) => {
         const { className, articles } = props;
+        const { locale } = useLocale();
+
         const renderCards = useMemo(
             () => {
                 if (!articles) {
@@ -24,10 +28,14 @@ export const VolunteerArticlesCard: FC<VolunteerArticlesCardProps> = memo(
                 return articles
                     .slice(...RENDER_TWO_ARTICLES)
                     .map((article, index) => (
-                        <ArticleCard article={article} key={index} />
+                        <ArticleCard
+                            path={getBlogPersonalPageUrl(locale, article.id)}
+                            article={article}
+                            key={index}
+                        />
                     ));
             },
-            [articles],
+            [articles, locale],
         );
 
         return (

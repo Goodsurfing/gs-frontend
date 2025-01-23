@@ -51,7 +51,7 @@ export const useConditionItems = () => {
 
     const payedRideItems: PayedRideItems[] = [
         { text: t("conditions.Полная оплата проезда"), icon: fullIcon, id: "full" },
-        { text: t("conditions.Компенсация строимостри проезда"), icon: breakfastIcon, id: "partial" },
+        { text: t("conditions.Компенсация стоимости проезда"), icon: breakfastIcon, id: "partial" },
         { text: t("conditions.Частичная компенсация затрат"), icon: partPaymentIcon, id: "reimbursement" },
         { text: t("conditions.Заброска из пункта сбора"), icon: placeIcon, id: "pick-up" },
         { text: t("conditions.Трансфер из/в аэропорта/вокзала"), icon: transferIcon, id: "transfer" },

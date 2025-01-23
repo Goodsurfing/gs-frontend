@@ -6,10 +6,13 @@ interface HowItWorkItemProps {
     title: string;
     text: string;
     image: string;
+    dataAos?: string;
 }
 
-const HowItWorkItem: FC<HowItWorkItemProps> = ({ title, text, image }) => (
-    <div className={styles.item}>
+const HowItWorkItem: FC<HowItWorkItemProps> = ({
+    title, text, image, dataAos,
+}) => (
+    <div className={styles.item} data-aos={dataAos}>
         <div className={styles.text}>
             <h4>{title}</h4>
             <p>{text}</p>

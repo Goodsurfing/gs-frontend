@@ -1,10 +1,13 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { successIcon } from "@/shared/data/icons/skills";
+import { formatDate } from "@/shared/lib/formatDate";
+import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
+import { FormApplicationStatus } from "@/entities/Application";
 
 interface DateType {
     start: Date | undefined;
@@ -18,14 +21,19 @@ interface TermsApplicationProps {
     terms: DateType;
     min?: Date;
     max?: Date;
+    locale: Locale;
     onChange: (terms: DateType) => void
     onSubmit?: () => void;
+    onApplicationSubmit?: (value: FormApplicationStatus) => void;
 }
 
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
-        className, onChange, onSubmit, terms, max, min, isHost, isSuccess = false,
+        className, onChange, onSubmit, onApplicationSubmit, terms, max, min, isHost,
+        isSuccess = false, locale,
     } = props;
+
+    const [onSuccess, setOnSuccess] = useState<boolean>(false);
 
     const handleFromDateChange = useCallback((date: Date) => {
         if (terms.end) {
@@ -49,8 +57,13 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
         }
     }, [onChange, terms]);
 
+    const handleApplicationSubmit = useCallback((status: FormApplicationStatus) => {
+        onApplicationSubmit?.(status);
+        setOnSuccess(true);
+    }, [onApplicationSubmit]);
+
     const renderLine = () => {
-        if (!isHost) {
+        if (!isSuccess) {
             return (
                 <span className={styles.line}>Укажите в какие даты вы хотите участвовать</span>
             );
@@ -64,7 +77,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                 <div className={styles.group}>
                     <span>Прибытие</span>
                     {isSuccess ? (
-                        <p>{terms.start?.toDateString()}</p>
+                        <p>{terms?.start && formatDate(locale, terms.start.toDateString())}</p>
                     )
                         : (
                             <DateInput
@@ -74,7 +87,6 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                                 onDateChange={handleFromDateChange}
                                 value={terms?.start}
                                 min={min}
-                                inputDisabled
                                 isScrollTo
                             />
                         )}
@@ -83,7 +95,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     <span>Отъезд</span>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
                         {isSuccess ? (
-                            <p>{terms.end?.toDateString()}</p>
+                            <p>{terms.end && formatDate(locale, terms.end.toDateString())}</p>
                         ) : (
                             <>
                                 <DateInput
@@ -94,7 +106,6 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                                     value={terms?.end}
                                     min={new Date()}
                                     max={max}
-                                    inputDisabled
                                     isScrollTo
                                 />
                                 <IconButtonComponent
@@ -110,7 +121,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     </div>
                 </div>
             </div>
-            { isHost && (
+            { (isHost && !onSuccess) && (
                 <div style={{
                     display: "flex",
                     gap: "10px",
@@ -119,8 +130,8 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                     marginTop: "20px",
                 }}
                 >
-                    <Button color="BLUE" size="SMALL" variant="FILL">Принять</Button>
-                    <Button color="GRAY" size="SMALL" variant="OUTLINE">Отклонить</Button>
+                    <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => handleApplicationSubmit("accepted")}>Принять</Button>
+                    <Button color="GRAY" size="SMALL" variant="OUTLINE" onClick={() => handleApplicationSubmit("canceled")}>Отклонить</Button>
                 </div>
             )}
         </div>

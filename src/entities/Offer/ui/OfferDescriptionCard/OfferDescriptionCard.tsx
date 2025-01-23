@@ -4,6 +4,7 @@ import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { OfferDescription } from "../../model/types/offerDescription";
 import styles from "./OfferDescriptionCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferDescriptionCardProps {
     className?: string;
@@ -18,13 +19,13 @@ export const OfferDescriptionCard: FC<OfferDescriptionCardProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)} id="description">
                 <div className={styles.container}>
-                    <h3 className={styles.title}>{t("personalOffer.Описание")}</h3>
+                    <Text title={t("personalOffer.Описание")} titleSize="h3" />
                     <p className={styles.description}>
                         {description.description}
                     </p>
                 </div>
                 <div className={styles.container}>
-                    <h3 className={styles.title}>{t("personalOffer.Дополнительная информация")}</h3>
+                    <Text title={t("personalOffer.Дополнительная информация")} titleSize="h3" />
                     <p className={styles.description}>
                         {description.shortDescription}
                     </p>

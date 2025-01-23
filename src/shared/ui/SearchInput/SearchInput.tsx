@@ -9,10 +9,15 @@ import styles from "./SearchInput.module.scss";
 
 interface SearchInputProps {
     sx?: SxProps<Theme>;
+    className?: string;
+    value: string;
+    onChange: (value: string) => void;
 }
 
 export const SearchInput: FC<SearchInputProps> = (props) => {
-    const { sx } = props;
+    const {
+        sx, className, value, onChange,
+    } = props;
     return (
         <Paper
             component="form"
@@ -27,8 +32,14 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
                 borderRadius: "10px",
                 ...sx,
             }}
+            className={className}
         >
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Поиск" />
+            <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Поиск"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+            />
             <IconButton aria-label="menu" className={styles.searchIcon}>
                 <ReactSVG src={searchIcon} className={styles.searchIconSVG} />
             </IconButton>

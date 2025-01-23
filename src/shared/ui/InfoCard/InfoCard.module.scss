@@ -24,3 +24,10 @@
 .text {
     font: var(--font);
 }
+
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+}

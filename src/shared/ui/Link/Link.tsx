@@ -15,6 +15,7 @@ const CustomLink: FC<ILinkProps> = ({
     <Link
         className={cn(className, styles.link, {
             [styles.blue]: variant === "BLUE",
+            [styles.default]: variant === "DEFAULT",
         })}
         to={to}
         {...restLinkProps}

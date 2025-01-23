@@ -2,10 +2,13 @@ import cn from "classnames";
 import React, { FC } from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForHost.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 
 interface ForHostProps {
     className?: string;
@@ -14,6 +17,13 @@ interface ForHostProps {
 export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const { className } = props;
     const { t } = useTranslation("membership");
+    const navigate = useNavigate();
+    const { locale } = useLocale();
+
+    const handleNavigateToRole = () => {
+        navigate(getProfileRolePageUrl(locale));
+    };
+
     return (
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>{t("for-host.Для организатора")}</h2>
@@ -64,7 +74,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                         </div>
                     </div>
                     <div className={styles.columnFooter}>
-                        <Button color="BLUE" size="SMALL" variant="FILL">
+                        <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleNavigateToRole}>
                             {t("for-host.Зарегистрироваться")}
                         </Button>
                     </div>

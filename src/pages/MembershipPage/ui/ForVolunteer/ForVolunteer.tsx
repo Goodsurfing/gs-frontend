@@ -2,10 +2,13 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useNavigate } from "react-router-dom";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForVolunteer.module.scss";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface ForVolunteerProps {
     className?: string;
@@ -16,6 +19,13 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
 ) => {
     const { className } = props;
     const { t } = useTranslation("membership");
+    const navigate = useNavigate();
+    const { locale } = useLocale();
+
+    const handleNavigateToRole = () => {
+        navigate(getProfileRolePageUrl(locale));
+    };
+
     return (
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>{t("for-volunteer.Для волонтёра")}</h2>
@@ -72,7 +82,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                         </div>
                     </div>
                     <div className={styles.columnFooter}>
-                        <Button color="BLUE" size="SMALL" variant="FILL">
+                        <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleNavigateToRole}>
                             {t("for-volunteer.Зарегистрироваться")}
                         </Button>
                     </div>

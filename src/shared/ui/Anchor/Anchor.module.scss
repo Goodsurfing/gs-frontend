@@ -1,14 +1,11 @@
 .wrapper {
-    color: gray;
+    color: var(--accent-color);
     cursor: pointer;
-}
 
-.active {
-    color: black;
-}
-
-.wrapper {
-    color: grey; 
+    &:hover {
+        text-decoration: underline;
+        transition: text-decoration 0.3s ease-in-out;
+    }
 }
 
 .wrapper.active {

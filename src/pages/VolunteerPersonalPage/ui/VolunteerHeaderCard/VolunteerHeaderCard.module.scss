@@ -41,6 +41,11 @@
     height: 150px;
 }
 
+.name {
+    font-weight: 400;
+    font-size: 26px;
+}
+
 .memberIcon {
     width: 20px;
     height: 20px;
@@ -71,4 +76,19 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        padding: 20px;
+    }
+    .mainInfo {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        justify-content: center;
+    }
 }

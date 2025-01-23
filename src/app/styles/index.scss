@@ -80,3 +80,17 @@ body::-webkit-scrollbar-thumb {
 .swiper-pagination-bullet-active {
 	opacity: 1;
 }
+
+.MuiInputBase-input::-webkit-scrollbar {
+	width: 10px;
+}
+
+.MuiInputBase-input::-webkit-scrollbar-track {
+	background: var(--color-white);
+}
+
+.MuiInputBase-input::-webkit-scrollbar-thumb {
+	border-radius: var(--radius);
+	background-color: var(--bg-accent);
+	cursor: pointer;
+}

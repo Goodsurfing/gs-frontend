@@ -28,13 +28,15 @@ export const ProfileRoleWidget: FC = () => {
     const [modalDescription, setModalDescription] = useState<string>("");
     const [selectedRole, setSelectedRole] = useState<string>("");
     const [toast, setToast] = useState<ToastAlert>();
+
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { t } = useTranslation("profile");
+
     const { roleData } = useRoleData();
 
     const [createVolunteer, { isLoading }] = useCreateVolunteerMutation();
-    const { data } = useGetProfileInfoQuery();
+    const { data: myProfile, refetch: profileRefetch } = useGetProfileInfoQuery();
 
     const handleVolunteerClick = () => {
         setModalOpen(true);
@@ -78,6 +80,7 @@ export const ProfileRoleWidget: FC = () => {
                         text: "Вы успешно стали волонтёром",
                         type: HintType.Success,
                     });
+                    profileRefetch();
                 })
                 .catch((error: ErrorType) => {
                     setModalOpen(false);
@@ -96,10 +99,10 @@ export const ProfileRoleWidget: FC = () => {
     };
 
     const renderRole = (rolesProfile: RoleInfo[]) => {
-        if (!data) return;
+        if (!myProfile) return;
         return rolesProfile.map((role, index) => {
-            const isDisabled = (role.id === "volunteer" && data.volunteer !== undefined)
-                || (role.id === "host" && data.host !== undefined);
+            const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== undefined)
+                || (role.id === "host" && myProfile.host !== undefined);
 
             return (
                 <RoleCard

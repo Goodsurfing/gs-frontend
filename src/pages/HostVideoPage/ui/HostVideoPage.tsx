@@ -1,25 +1,24 @@
 import { FC } from "react";
 
-import { VideoForm } from "@/features/VideoForm";
+import { HostVideoForm } from "@/features/VideoForm";
 
-import Button from "@/shared/ui/Button/Button";
-
-import styles from "./HostVideoPage.module.scss";
 import { Text } from "./Text/Text";
+import styles from "./HostVideoPage.module.scss";
+import { useGetMyHostQuery } from "@/entities/Host";
 
-const HostVideoPage: FC = () => (
-    <div className={styles.wrapper}>
-        <Text />
-        <VideoForm />
-        <Button
-            className={styles.btn}
-            variant="FILL"
-            color="BLUE"
-            size="MEDIUM"
-        >
-            Сохранить
-        </Button>
-    </div>
-);
+const HostVideoPage: FC = () => {
+    const { data: myHost } = useGetMyHostQuery();
 
+    return (
+        <div className={styles.wrapper}>
+            <Text />
+            {(myHost) && (
+                <HostVideoForm
+                    host={myHost}
+                    videoGallery={myHost.videoGallery}
+                />
+            )}
+        </div>
+    );
+};
 export default HostVideoPage;

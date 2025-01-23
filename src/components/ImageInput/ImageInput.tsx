@@ -21,6 +21,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     wrapperClassName,
     isLoading,
     labelClassName,
+    checkImageSize = true,
     ...restInputProps
 }) => {
     const [error, setError] = useState<boolean>(false);
@@ -34,10 +35,12 @@ const ImageInput: FC<ImageInputComponentProps> = ({
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
             try {
-                const size = await checkWidthAndHeight(file);
-                if (size.width < 1280 || size.height < 720) {
-                    setError(true);
-                    return;
+                if (checkImageSize) {
+                    const size = await checkWidthAndHeight(file);
+                    if (size.width < 1280 || size.height < 720) {
+                        setError(true);
+                        return;
+                    }
                 }
 
                 const validExtensions = [".png", ".jpeg", ".jpg"];

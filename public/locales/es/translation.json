@@ -11,6 +11,9 @@
         "Регистрация пользователя": "Registro de usuario",
         "Мы не постим ничего без вашего ведома": "No publicamos nada sin tu consentimiento",
         "Ошибка авторизации": "Error de autorización",
+        "Invalid password": "Inicio de sesión o contraseña inválidos",
+        "Данный пользователь уже существует": "Este usuario ya existe",
+        "Некорректно введены данные": "Datos introducidos incorrectamente",
         "Нажимая кнопку «Зарегистрироваться», я принимаю": "Al hacer clic en el botón 'Registrarse', acepto",
         "Политику конфеденциальности ГудСёрфинга": "Política de privacidad de GoodSurfing"
     },
@@ -53,10 +56,19 @@
                     "how-it-works": "Cómo funciona",
                     "rules": "Normas",
                     "privacy-policy": "Política de Privacidad",
-                    "news": "Noticias"
+                    "news": "Noticias",
+                    "about-goodsurfing": "Sobre Goodsurfing",
+                    "find-job": "Buscar trabajo"
                 },
-                "profile": "Perfil",
+                "for-organizers": {
+                    "title": "Para los organizadores",
+                    "become-a-host": "Convertirse en anfitrión",
+                    "courses-for-organizers": "Cursos para organizadores"
+                },
+                "write-us": "Escríbenos",
+                "favorite": "Favoritos",
                 "my-page": "Mi página",
+                "profile": "Perfil",
                 "about-me": "Acerca de mí",
                 "host-dashboard": "Panel de host",
                 "volunteer-dashboard": "Panel de control voluntario",
@@ -146,6 +158,9 @@
         "Искусство": "Arte",
         "Археология": "Arqueología",
         "Онлайн": "En línea",
+        "Оплачиваемая работа": "Trabajo remunerado",
+        "Международные": "Internacionales",
+        "Другие категории": "Otras categorías",
         "Другое": "Otros",
         "вакансий": "vacantes",
         "вакансия": "vacante",

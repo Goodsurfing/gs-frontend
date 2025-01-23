@@ -1,70 +1,131 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC, useCallback, useState } from "react";
-import cn from "classnames";
+import React, { FC, useEffect, useState } from "react";
+import { ImageType } from "@/components/ImageInput/types";
 
-import { useTranslation } from "react-i18next";
-import UploadButton from "../UploadButton/UploadButton";
+import { Profile } from "@/entities/Profile";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 
-import styles from "./UploadMultipleImages.module.scss";
-import UploadedImage from "../UploadedImage/UploadedImage";
-import { galleryApi } from "../../model/services/galleryApi";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
-import { getGalleryImages } from "../../model/selectors/getGalleryImages/getGalleryImages";
-import { galleryActions } from "../../model/slice/gallerySlice";
+import { BASE_URL } from "@/shared/constants/api";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
+import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
+import { GalleryImages } from "@/shared/ui/GalleryImages/GalleryImages";
+import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
+import { MediaObjectType } from "@/types/media";
 
 interface UploadMultipleImagesProps {
+    profileData: Profile;
+    label: string;
+    isLoading: boolean;
+    onChangeLoading: (value: boolean) => void;
+    onChangeError: (value: boolean) => void;
+    onChangeSuccess: (value: boolean) => void;
     className?: string;
-    id: string;
-    onUpload?: (img: string) => void;
 }
 
-export const UploadMultipleImages: FC<UploadMultipleImagesProps> = ({
-    className,
-    id,
-    onUpload,
-}) => {
-    const [uploadedImg, setUploadedImg] = useState<string[]>([]);
-    const [isError, setError] = useState<boolean>(false);
-    const { t } = useTranslation("volunteer");
+export const UploadMultipleImages: FC<UploadMultipleImagesProps> = (props) => {
+    const {
+        label,
+        isLoading,
+        onChangeError,
+        onChangeLoading,
+        onChangeSuccess,
+        className,
+        profileData,
+    } = props;
+    const [inputImg, setInputImg] = useState<ImageType>({
+        file: null,
+        src: null,
+    });
+    const [galleryImgs, setGalleryImgs] = useState<MediaObjectType[]>([]);
 
-    const dispatch = useAppDispatch();
+    const [updateProfile] = useUpdateProfileInfoMutation();
+    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileData.id);
 
-    const images = useAppSelector(getGalleryImages);
+    useEffect(() => {
+        if (profileData) {
+            setGalleryImgs(profileData.galleryImages);
+        } else {
+            setGalleryImgs([]);
+        }
+    }, [profileData]);
 
-    const handleUpdateImages = useCallback((image: File) => {
-        setError(false);
-        uploadFile(image.name, image)
-            .then((res) => {
-                if (res) {
-                    dispatch(galleryActions.addImage(res.contentUrl));
-                }
+    const handleImageUpload = (img: ImageType) => {
+        const { file } = img;
+        onChangeLoading(true);
+        onChangeError(false);
+        onChangeSuccess(false);
+        if (file) {
+            uploadFile(file.name, file)
+                .then(async (result) => {
+                    try {
+                        if (result && result["@id"]) {
+                            const mediaObject = `${BASE_URL}${result[
+                                "@id"
+                            ].slice(1)}`;
+                            const currentGalleryImages = getMediaContentsApiArray(
+                                profileData.galleryImages,
+                            );
+                            await updateProfile({
+                                userId: profileData.id,
+                                profileData: {
+                                    galleryImages: [
+                                        ...currentGalleryImages,
+                                        mediaObject,
+                                    ],
+                                },
+                            }).unwrap();
+                            onChangeSuccess(true);
+                            refetchVolunteer();
+                        } else {
+                            onChangeError(true);
+                        }
+                    } catch {
+                        onChangeError(true);
+                    }
+                })
+                .catch(() => {
+                    onChangeError(true);
+                })
+                .finally(() => {
+                    onChangeLoading(false);
+                    setInputImg((prev) => ({ ...prev, file: null, src: null }));
+                });
+        } else {
+            onChangeLoading(false);
+        }
+    };
+
+    const handleCloseBtnClick = async (imageId: string) => {
+        const currentGalleryImages = profileData.galleryImages;
+
+        const updatedGalleryImages = currentGalleryImages.filter(
+            (image) => image.id !== imageId,
+        );
+
+        await updateProfile({
+            userId: profileData.id,
+            profileData: {
+                galleryImages: getMediaContentsApiArray(updatedGalleryImages),
+            },
+        })
+            .unwrap()
+            .then(() => {
+                onChangeSuccess(true);
             })
             .catch(() => {
-                setError(true);
+                onChangeError(true);
             });
-        onUpload?.(image.name);
-    }, [onUpload, dispatch]);
-
-    const handleDeleteImg = useCallback((index: number) => {
-        setUploadedImg((items) => items.filter((_, i) => i !== index));
-    }, []);
+    };
 
     return (
-        <>
-            <div className={cn(className, styles.wrapper)}>
-                <div className={styles.images}>
-                    {uploadedImg.map((img, index) => (
-                        <UploadedImage
-                            onCloseClick={() => handleDeleteImg(index)}
-                            key={img}
-                            img={img}
-                        />
-                    ))}
-                    <UploadButton onUpload={handleUpdateImages} id={id} />
-                </div>
-            </div>
-            {isError && <p className={styles.error}>{t("volunteer-gallery.Произошла ошибка при загрузке изображения")}</p>}
-        </>
+        <GalleryImages
+            label={label}
+            inputImg={inputImg}
+            galleryImgs={galleryImgs}
+            handleImageUpload={handleImageUpload}
+            handleCloseBtnClick={handleCloseBtnClick}
+            isLoading={isLoading}
+            classNameWrapper={className}
+            checkImageSize={false}
+        />
     );
 };

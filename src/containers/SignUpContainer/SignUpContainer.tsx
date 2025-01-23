@@ -10,10 +10,15 @@ import { getPrivacyPolicyPageUrl } from "@/shared/config/routes/AppUrls";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import styles from "./SignUpContainer.module.scss";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const SignUpContainer: FC = () => {
     const { locale } = useLocale();
-    const { t } = useTranslation();
+    const { t, ready } = useTranslation();
+
+    if (!ready) {
+        return (<Preloader />);
+    }
 
     return (
         <div className={styles.wrapper}>

@@ -40,7 +40,6 @@ export const Submenu = memo((props: SubmenuProps) => {
                         <Anchor
                             id={item.id}
                             key={item.id}
-                            activeId={item.id}
                             title={item.text}
                             topGap={300}
                         />

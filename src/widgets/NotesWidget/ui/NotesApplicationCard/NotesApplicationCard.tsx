@@ -1,15 +1,16 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
-
-import { Application } from "@/entities/Host";
-import { RequestCard } from "@/entities/Request";
+import { FullFormApplication, RequestCard } from "@/entities/Application";
+import { Locale } from "@/entities/Locale";
 
 interface NotesApplicationCardProps {
     className?: string;
-    application: Application;
+    application: FullFormApplication;
     index: number;
     isDragDisable: boolean;
+    onReviewClick: (application: FullFormApplication) => void;
+    locale: Locale;
 }
 
 export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
@@ -19,6 +20,8 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
             index,
             className,
             isDragDisable,
+            locale,
+            onReviewClick,
         } = props;
 
         return (
@@ -38,7 +41,11 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
                             ...provided.draggableProps.style,
                         }}
                     >
-                        <RequestCard application={application} />
+                        <RequestCard
+                            application={application}
+                            locale={locale}
+                            onReviewClick={onReviewClick}
+                        />
                     </div>
                 )}
             </Draggable>

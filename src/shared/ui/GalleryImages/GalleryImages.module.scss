@@ -1,0 +1,22 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    gap: 1.25rem;
+}
+
+.imgItem {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+}
+
+
+.closeBtn {
+    position: absolute;
+    top: 8%;
+    right: 5%;
+    z-index: 5;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+}

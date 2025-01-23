@@ -1,6 +1,6 @@
-import { OfferState } from "@/entities/Offer";
+import { FormApplicationStatus } from "@/entities/Application";
 
-export type FilterValue = OfferState | "communication" | "archive" | null;
+export type FilterValue = FormApplicationStatus | "communication" | "archive" | null;
 
 interface FilterData {
     text: string;

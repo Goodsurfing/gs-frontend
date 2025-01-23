@@ -7,6 +7,9 @@
 .content {
     padding: 36px 50px 50px 50px;
     min-height: 500px;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,8 +22,8 @@
     justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media(max-width: 992px) {
     .content {
-        padding: 10px 15px 70px 15px;
+        padding: 20px;
     }
 }

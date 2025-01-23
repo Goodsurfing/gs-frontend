@@ -66,6 +66,10 @@
 }
 
 @media screen and (max-width: 450px) {
+	.wrapper {
+		padding: 20px;
+	}
+
 	.btn {
 		font-size: 0.875rem;
 	}

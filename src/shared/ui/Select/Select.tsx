@@ -9,7 +9,7 @@ type SelectProps = MuiSelectProps & {
 
 export const SelectComponent = (props: SelectProps) => {
     const {
-        children, label, className, id, disabled, ...restSelectProps
+        children, label, className, id, disabled, sx, ...restSelectProps
     } = props;
     return (
         <div className={styles.wrapper}>
@@ -26,6 +26,7 @@ export const SelectComponent = (props: SelectProps) => {
                 disabled={disabled}
                 className={cn(className, styles.select, { [styles.disabled]: disabled })}
                 {...restSelectProps}
+                sx={sx}
             >
                 {children}
             </Select>

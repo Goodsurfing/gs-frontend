@@ -1,18 +1,33 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, {
+    FC, Fragment, useCallback, useEffect, useState,
+} from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReactSVG } from "react-svg";
 import { ErrorType } from "@/types/api/error";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
-import { MessageType, UserChatType, UserInfoCard } from "@/entities/Messenger";
-import { useCreateApplicationFormMutation } from "@/entities/Request";
+import { FormApplicationStatus, useCreateApplicationFormMutation } from "@/entities/Application";
+import { useLazyGetApplicationFormByIdQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
+import { useGetChatQuery, useReadMessageMutation } from "@/entities/Chat/api/chatApi";
+import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
+import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
+import { UserInfoCard } from "@/entities/Messenger";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { useLazyGetVolunteerByIdQuery, VolunteerApi } from "@/entities/Volunteer";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
 import chatIcon from "@/shared/assets/icons/chat.svg";
+import { formatDate, formatMessageDate } from "@/shared/lib/formatDate";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
@@ -25,14 +40,14 @@ import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 interface ChatProps {
     id?: string;
     offerId?: string;
     onBackButton: (value?: string) => void;
     className?: string;
-    user: UserChatType;
-    messages: MessageType[];
+    locale: Locale;
 }
 
 const defaultValues: DefaultValues<ChatFormFields> = {
@@ -44,10 +59,10 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, offerId, className, onBackButton, user,
+        id, offerId, className, onBackButton, locale,
     } = props;
 
-    const { handleSubmit, control } = useForm<ChatFormFields>({
+    const { handleSubmit, control, reset } = useForm<ChatFormFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -56,10 +71,245 @@ export const Chat: FC<ChatProps> = (props) => {
     const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<string | undefined>();
     const [toast, setToast] = useState<ToastAlert>();
+    const [offerData, setOfferData] = useState<Offer>();
+    const [applicationIsClosed, setApplicationClosed] = useState<boolean>(false);
+    const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
+        [],
+    );
+    const [organizationData, setOrganizationData] = useState<Host>();
+    const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
+    const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
+    const [isImHost, setImHost] = useState<boolean>(false);
 
+    const { mercureToken } = useAuth();
+
+    const [getOfferData] = useLazyGetOfferByIdQuery();
+    const { data: myProfileData } = useGetProfileInfoQuery();
+    const {
+        messages, fetchMoreMessages, hasMore,
+    } = useGetChatMessages(
+        id,
+        mercureToken,
+        myProfileData?.id,
+    );
     const [createApplicationForm] = useCreateApplicationFormMutation();
+    const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
+    const [readMessage] = useReadMessageMutation();
+    const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
+    const { data: chatData } = useGetChatQuery(id ?? "");
+    const [getHost] = useLazyGetHostByIdQuery();
+    const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
-    if (!id) {
+    // useEffect(()=> {
+    //     if(id) {
+    //         messages.forEach((message)=> {
+    //             const isUser = myProfileData?.id !== authorId;
+    //             readMessage(`${BASE_URL}/api/v1/messages/${}`)
+    //         })
+    //     }
+    // }, [id])
+
+    useEffect(() => {
+        if (!myProfileData) return;
+
+        if (
+            organizationData?.owner.id
+            && organizationData?.owner.id !== myProfileData.id
+        ) {
+            setChatUser(organizationData);
+        } else if (
+            volunteerData?.profile.id
+            && volunteerData?.profile.id !== myProfileData.id
+        ) {
+            setChatUser(volunteerData);
+        }
+    }, [myProfileData, organizationData, volunteerData]);
+
+    useEffect(() => {
+        if (chatData) {
+            setVolunteerData(chatData.volunteer);
+            const volunteerId = chatData.volunteer.profile.id;
+            const organizationId = chatData.organization.id;
+
+            const fetchOrganization = async () => {
+                const resultOrganizationData = await getHost(organizationId)
+                    .unwrap()
+                    .then((organizationDataResult) => organizationDataResult)
+                    .catch(() => undefined);
+                if (resultOrganizationData) {
+                    setOrganizationData(resultOrganizationData);
+                }
+            };
+
+            const fetchVolunteer = async () => {
+                const resultVolunteerData = await getVolunteer(volunteerId)
+                    .unwrap()
+                    .then((volunteerDataResult) => volunteerDataResult)
+                    .catch(() => undefined);
+                if (resultVolunteerData) {
+                    setVolunteerData(resultVolunteerData);
+                }
+            };
+
+            fetchVolunteer();
+            fetchOrganization();
+        }
+    }, [chatData, getHost, getVolunteer]);
+
+    useEffect(() => {
+        if (organizationData && myProfileData) {
+            if (organizationData.owner.id === myProfileData.id) {
+                setImHost(true);
+            }
+        }
+    }, [organizationData, myProfileData]);
+
+    useEffect(() => {
+        if (isChatCreate && offerId) {
+            const fetchOffer = async () => {
+                const resultOfferData = await getOfferData(offerId)
+                    .unwrap()
+                    .then((offerDataResult) => offerDataResult)
+                    .catch(() => {
+                        setToast({
+                            text: "Вакансия не была найдена",
+                            type: HintType.Error,
+                        });
+                        return undefined;
+                    });
+                if (resultOfferData) {
+                    setOfferData(resultOfferData);
+                }
+            };
+
+            fetchOffer();
+        }
+    }, [isChatCreate, offerId, getOfferData]);
+
+    useEffect(() => {
+        if (messages) {
+            messages.forEach(async (message, index) => {
+                if (index === 0) {
+                    readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                }
+            }, []);
+        }
+    }, [messages, readMessage]);
+
+    const onApplicationSubmit = useCallback(async (
+        status: FormApplicationStatus,
+        applicationId?: string,
+    ) => {
+        if (applicationId) {
+            await updateApplicationStatus({ status, applicationId });
+        }
+    }, [updateApplicationStatus]);
+
+    useEffect(() => {
+        const processMessages = async () => {
+            let currentDate = "";
+            const today = new Date().toDateString();
+
+            const elements = await Promise.all(
+                messages.map(async (message) => {
+                    const {
+                        createdAt, author, text, applicationForm, id: messageId,
+                    } = message;
+                    const messageDate = new Date(createdAt).toDateString();
+
+                    const partsAuthor = author.split("/");
+                    const authorId = partsAuthor.pop();
+                    const isUser = myProfileData?.id !== authorId;
+
+                    let userName;
+                    let userAvatar;
+
+                    if (organizationData?.owner.id === authorId) {
+                        userName = organizationData?.name;
+                        userAvatar = getMediaContent(organizationData?.avatar);
+                    } else if (volunteerData?.profile.id === authorId) {
+                        userName = `${volunteerData?.profile.lastName} ${volunteerData?.profile.firstName}`;
+                        userAvatar = getMediaContent(
+                            volunteerData?.profile.image,
+                        );
+                    }
+
+                    let dateLine = null;
+                    if (messageDate !== currentDate && messageDate !== today) {
+                        currentDate = messageDate;
+                        dateLine = (
+                            <div className={styles.date}>
+                                {formatDate(locale, currentDate)}
+                            </div>
+                        );
+                    }
+
+                    if (applicationForm) {
+                        const partsApplicationForm = applicationForm.split("/");
+                        const applicationFormId = partsApplicationForm.pop();
+                        try {
+                            const applicationResult = await getApplicationData(
+                                applicationFormId ?? "",
+                            ).unwrap();
+                            const {
+                                vacancy, startDate, endDate, status,
+                            } = applicationResult;
+                            const tempIsHost = (status === "new" && isImHost);
+
+                            return (
+                                <OfferApplication
+                                    offerData={vacancy}
+                                    terms={{
+                                        start: new Date(startDate),
+                                        end: new Date(endDate),
+                                    }}
+                                    isHost={tempIsHost}
+                                    username={userName ?? ""}
+                                    isClosed
+                                    onChange={() => {}}
+                                    key={messageId}
+                                    onApplicationSubmit={
+                                        (statusValue) => onApplicationSubmit(
+                                            statusValue,
+                                            applicationFormId,
+                                        )
+                                    }
+                                />
+                            );
+                        } catch {
+                            return null;
+                        }
+                    }
+
+                    return (
+                        <Fragment key={messageId}>
+                            <Message
+                                avatar={userAvatar ?? ""}
+                                date={formatMessageDate(locale, createdAt)}
+                                isUser={isUser}
+                                text={text}
+                                username={userName ?? ""}
+                            />
+                            {dateLine}
+                        </Fragment>
+                    );
+                }),
+            );
+
+            setProcessedMessages(
+                elements.filter((el): el is JSX.Element => el !== null),
+            );
+        };
+
+        processMessages();
+    }, [messages, getApplicationData, myProfileData,
+        locale, volunteerData?.profile.id,
+        volunteerData?.profile.firstName, volunteerData?.profile.lastName,
+        volunteerData?.profile.image, organizationData?.name,
+        organizationData?.avatar, organizationData?.owner.id,
+        readMessage, isImHost, onApplicationSubmit]);
+
+    if (!id || !myProfileData) {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
                 <ReactSVG src={chatIcon} className={styles.chatIcon} />
@@ -72,9 +322,9 @@ export const Chat: FC<ChatProps> = (props) => {
         setInfoOpened((prev) => !prev);
     };
 
-    const onImageChange = (src: string) => {
-        setSelectedImage(src);
-    };
+    // const onImageChange = (src: string) => {
+    //     setSelectedImage(src);
+    // };
 
     const onClosePopup = () => {
         setSelectedImage(undefined);
@@ -84,33 +334,6 @@ export const Chat: FC<ChatProps> = (props) => {
         onBackButton(undefined);
     };
 
-    const renderMessages = () => {
-        let currentDate = "";
-
-        return user.messages.map((message) => {
-            const messageDate = new Date(message.date).toLocaleDateString();
-
-            let dateLine = null;
-            if (messageDate !== currentDate) {
-                currentDate = messageDate;
-                dateLine = <div className={styles.date}>{currentDate}</div>;
-            }
-
-            return (
-                <>
-                    {dateLine}
-                    <Message
-                        avatar={user.avatar}
-                        date={message.date}
-                        isUser={message.isUser}
-                        text={message.content}
-                        username={user.name}
-                    />
-                </>
-            );
-        });
-    };
-
     const handleVolunteerSubmitOfferApplication = handleSubmit(async (data) => {
         const {
             applicationForm: { startDate, endDate },
@@ -118,14 +341,15 @@ export const Chat: FC<ChatProps> = (props) => {
         if (startDate !== undefined && endDate !== undefined && offerId) {
             setToast(undefined);
             const preparedData = applicationOfferAdapter(data, offerId);
-            const result = createApplicationForm(preparedData)
+            await createApplicationForm(preparedData)
                 .unwrap()
-                .then((dataApplication) => {
+                .then(() => {
                     setToast({
                         text: "Заявка успешно отправлена",
                         type: HintType.Success,
                     });
-                    return dataApplication;
+                    setApplicationClosed(true);
+                    reset({ applicationForm: data.applicationForm });
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -133,52 +357,44 @@ export const Chat: FC<ChatProps> = (props) => {
                         type: HintType.Error,
                     });
                 });
-            if (result) {
-                // eslint-disable-next-line no-console
-                console.log(result);
-            }
         }
     });
 
     const renderChat = () => {
-        if (id === "create") {
-            return (
-                <Controller
-                    name="applicationForm"
-                    control={control}
-                    render={({ field: { value, onChange } }) => (
-                        <OfferApplication
-                            terms={{
-                                start: value.startDate,
-                                end: value.endDate,
-                            }}
-                            onChange={({ start, end }) => onChange({
-                                ...value,
-                                startDate: start,
-                                endDate: end,
-                            })}
-                            isHost={false}
-                            username="Николай Николаевич"
-                            isClosed={false}
-                            onSubmit={handleVolunteerSubmitOfferApplication}
-                        />
-                    )}
-                />
-            );
+        if (isChatCreate && offerId) {
+            let username = "";
+            if (chatUser && ("profile" in chatUser)) {
+                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
+            }
+
+            if (offerData) {
+                return (
+                    <Controller
+                        name="applicationForm"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <OfferApplication
+                                offerData={offerData}
+                                terms={{
+                                    start: value.startDate,
+                                    end: value.endDate,
+                                }}
+                                onChange={({ start, end }) => onChange({
+                                    ...value,
+                                    startDate: start,
+                                    endDate: end,
+                                })}
+                                isHost={false}
+                                username={username}
+                                isClosed={applicationIsClosed}
+                                onSubmit={handleVolunteerSubmitOfferApplication}
+                            />
+                        )}
+                    />
+                );
+            }
         }
-        return (
-            <>
-                <Message
-                    avatar=""
-                    date={new Date()}
-                    isUser
-                    image="https://corporate.walmart.com/content/corporate/en_us/purpose/sustainability/planet/nature/jcr:content/par/image_2_0.img.png/1693432526985.png"
-                    username={user.name}
-                    onImageClick={onImageChange}
-                />
-                {renderMessages()}
-            </>
-        );
+        return processedMessages;
     };
 
     return (
@@ -186,7 +402,10 @@ export const Chat: FC<ChatProps> = (props) => {
             {toast && (
                 <HintPopup text={toast.text} type={toast.type} timeout={6000} />
             )}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+            <div style={{
+                flex: 1, display: "flex", flexDirection: "column", height: "100%",
+            }}
+            >
                 <div className={styles.topTab}>
                     <div className={styles.topInner}>
                         <ReactSVG
@@ -194,7 +413,12 @@ export const Chat: FC<ChatProps> = (props) => {
                             className={styles.back}
                             onClick={handleBackButton}
                         />
-                        <span className={styles.userName}>{user.name}</span>
+                        <span className={styles.userName}>
+                            {chatUser
+                                && ("profile" in chatUser
+                                    ? `${chatUser.profile.lastName} ${chatUser.profile.firstName}`
+                                    : `${chatUser.name}`)}
+                        </span>
                     </div>
                     <div className={styles.settingsInfo}>
                         <UserSettings />
@@ -206,14 +430,27 @@ export const Chat: FC<ChatProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.chat}>
-                    <div className={styles.chatList}>{renderChat()}</div>
+                    <InfiniteScroll
+                        className={styles.infiniteScroll}
+                        dataLength={messages.length}
+                        next={fetchMoreMessages}
+                        hasMore={hasMore}
+                        loader={null}
+                        height="100%"
+                        scrollableTarget="chat"
+                        inverse
+                        style={{ width: "100%" }}
+                    >
+                        {renderChat()}
+                    </InfiniteScroll>
                 </div>
-                <SendMessage disabled={isChatCreate} />
+                <SendMessage disabled={isChatCreate} chatId={id} />
             </div>
             <UserInfoCard
-                user={user}
+                user={chatUser}
                 infoOpenedChange={infoOpenedChange}
                 className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
+                locale={locale}
             />
             {selectedImage && (
                 <Modal onClose={onClosePopup}>

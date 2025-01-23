@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { memo, useEffect, useState } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+    FormProvider, get, SubmitHandler, useForm,
+} from "react-hook-form";
 import cn from "classnames";
 
 import Button from "@/shared/ui/Button/Button";
@@ -27,17 +29,20 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 import styles from "./HostDescriptionForm.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
+import { Profile, useGetProfileInfoQuery } from "@/entities/Profile";
 
 interface HostDescriptionFormProps {
     className?: string;
     host?: string;
+    myProfile?: Profile;
     isLoading?: boolean;
-    error?: string;
+    isError?: boolean;
+    profileRefetch: () => void;
 }
 
 export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
-        className, host, error, isLoading = true,
+        className, host, myProfile, isLoading = true, isError, profileRefetch,
     } = props;
     const [createHost, {
         isLoading: isCreateHostLoading,
@@ -49,7 +54,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         error: hostUpdateError,
     }] = useUpdateHostMutation();
 
-    const { data: getHost } = useGetMyHostQuery();
+    const { data: getHost, refetch: hostRefetch } = useGetMyHostQuery();
 
     const [toast, setToast] = useState<ToastAlert>();
 
@@ -64,7 +69,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     text: "Организация создана",
                     type: HintType.Success,
                 });
-                window.location.reload();
+                profileRefetch();
             } catch {
                 setToast({
                     text: "Ошибка при создании организации",
@@ -96,10 +101,20 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const { handleSubmit, reset } = form;
 
     useEffect(() => {
-        if (getHost) {
+        if (getHost && host) {
             reset(hostDescriptionFormAdapter(getHost));
+        } else {
+            reset();
         }
-    }, [getHost, reset]);
+    }, [getHost, host, myProfile, reset]);
+
+    useEffect(() => {
+        if (myProfile) {
+            hostRefetch();
+        } else {
+            reset();
+        }
+    }, [hostRefetch, myProfile, reset]);
 
     if (isLoading) {
         return (
@@ -109,7 +124,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
         );
     }
 
-    if (error) {
+    if (isError) {
         return (
             <div className={cn(styles.form, className)}>
                 Произошла ошибка! Поробуйте перезагрузить страницу
@@ -125,7 +140,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <div className={styles.form}>
-                    <HostDescriptionFormContent />
+                    <HostDescriptionFormContent host={getHost} />
                 </div>
                 <div>
                     <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">

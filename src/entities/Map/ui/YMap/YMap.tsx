@@ -69,14 +69,9 @@ export const YMap: FC<MapProps> = ({
     return (
         <YMaps key={locale} query={{ lang: languageList[locale] }}>
             <Map
-                instanceRef={(ref) => {
-                    mapRef.current = ref;
-                    if (ref) {
-                        ymapInstanceRef.current = ref;
-                        setLoading?.(true);
-                        setYmap?.(ref);
-                        setMapLoaded(true);
-                    }
+                instanceRef={(instance) => {
+                    mapRef.current = instance;
+                    ymapInstanceRef.current = instance;
                 }}
                 options={options}
                 onLoad={(ymap) => {

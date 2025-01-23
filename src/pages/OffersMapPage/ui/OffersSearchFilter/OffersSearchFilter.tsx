@@ -1,13 +1,15 @@
 import cn from "classnames";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
+import { useSearchParams } from "react-router-dom";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
-import styles from "./OffersSearchFilter.module.scss";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
+import styles from "./OffersSearchFilter.module.scss";
+import { CategoryType, categoryValues } from "@/types/categories";
 
 export const OffersSearchFilter = () => {
     const defaultFilterValues: DefaultValues<OffersFilterFields> = {
@@ -23,12 +25,53 @@ export const OffersSearchFilter = () => {
         provided: [],
     };
 
+    const [isMapOpened, setMapOpened] = useState<boolean>(true);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const initialCategories = searchParams.get("category")
+        ?.split(",")
+        .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
+
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
-        defaultValues: defaultFilterValues,
+        defaultValues: {
+            ...defaultFilterValues,
+            category: initialCategories as CategoryType[],
+        },
     });
 
-    const [isMapOpened, setMapOpened] = useState<boolean>(true);
+    const { watch, setValue } = offerFilterForm;
+
+    const [isSyncing, setIsSyncing] = useState(false);
+
+    // Sync form to URL params
+    useEffect(() => {
+        const subscription = watch((value, { name }) => {
+            if (!isSyncing && name === "category") {
+                const newCategory = (value.category || []).join(",");
+                setSearchParams((prev) => {
+                    const updated = new URLSearchParams(prev);
+                    if (newCategory) {
+                        updated.set("category", newCategory);
+                    } else {
+                        updated.delete("category");
+                    }
+                    return updated;
+                });
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, [watch, setSearchParams, isSyncing]);
+
+    // Sync URL params to form
+    useEffect(() => {
+        setIsSyncing(true);
+        const categoriesFromURL = searchParams.get("category")
+            ?.split(",")
+            .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
+        setValue("category", categoriesFromURL as CategoryType[]);
+        setIsSyncing(false);
+    }, [searchParams, setValue]);
 
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
@@ -55,9 +98,7 @@ export const OffersSearchFilter = () => {
                         />
                     )}
                 </div>
-                <FormProvider {...offerFilterForm}>
-                    <OffersSearchFilterMobile className={styles.mobile} />
-                </FormProvider>
+                <OffersSearchFilterMobile className={styles.mobile} />
             </div>
         </FormProvider>
     );

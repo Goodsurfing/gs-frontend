@@ -1,17 +1,24 @@
 import React, { FC, useCallback } from "react";
 
-import { OfferCard } from "@/entities/Offer";
+import { Offer, OfferCard } from "@/entities/Offer";
+
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { TermsApplication } from "../TermsApplication/TermsApplication";
 import styles from "./OfferApplication.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { useCategories } from "@/shared/data/categories";
+import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
 
 interface OfferApplicationProps {
+    offerData: Offer | FormApplicationOffer;
     isHost: boolean;
     username: string;
     isClosed?: boolean;
     onSubmit?: () => void;
     terms: DatesType;
     onChange: (terms: DatesType) => void;
+    onApplicationSubmit?: (value: FormApplicationStatus) => void;
 }
 
 interface DatesType {
@@ -21,8 +28,12 @@ interface DatesType {
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const {
-        isHost, username, isClosed, onSubmit, terms, onChange,
+        isHost, username, isClosed, onSubmit, terms, onChange, offerData,
+        onApplicationSubmit,
     } = props;
+    const { description, where, id } = offerData;
+    const { locale } = useLocale();
+    const { getTranslation } = useCategories();
 
     const handleDates = useCallback(
         (periods: DatesType) => {
@@ -36,12 +47,12 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     );
 
     const renderTitle = () => {
-        if (isHost) {
+        if (isClosed) {
             return (
                 <span className={styles.line}>
                     {username}
                     {" "}
-                    подал заявку на вашу вакансию
+                    подал заявку на вакансию
                 </span>
             );
         }
@@ -56,23 +67,30 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         <div className={styles.wrapper}>
             {renderTitle()}
             <OfferCard
-                category="category"
-                description="description"
+                isFavoriteIconShow={false}
+                handleFavoriteClick={() => {}}
+                locale={locale}
+                isFavorite={false}
+                offerId={id}
+                category={getTranslation(description?.categoryIds[0])}
+                description={description?.shortDescription}
                 likes="5"
-                location="Казань"
+                location={where?.address}
                 rating="4"
                 reviews="15"
-                title="Тестовая вакансия"
+                title={description?.title}
                 went="8"
                 isImageShow={false}
-                link="offer-personal/1"
+                link={getOfferPersonalPageUrl(locale, id.toString())}
             />
             <TermsApplication
+                locale={locale}
                 terms={terms}
                 onChange={handleDates}
                 isSuccess={isClosed || false}
                 isHost={isHost}
                 onSubmit={onSubmit}
+                onApplicationSubmit={onApplicationSubmit}
             />
         </div>
     );

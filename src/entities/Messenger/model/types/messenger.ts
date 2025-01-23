@@ -1,15 +1,32 @@
-import { OfferState } from "@/entities/Offer";
-import { Language } from "@/entities/Volunteer";
+import { FormApplicationStatus } from "@/entities/Application";
+import { Host, HostApi } from "@/entities/Host";
+import { Language, VolunteerApi } from "@/entities/Volunteer";
+
 import { Skills } from "@/shared/data/skills";
 
-export interface UserType {
-    id: string;
-    avatar: string;
-    name: string;
-    date: string;
-    lastMessage: string;
-    newMessages: number;
-    state: OfferState
+export interface MessageType {
+    id: number;
+    author: string;
+    text?: string;
+    createdAt: string;
+    viewedVolunteer: boolean;
+    viewedOrganization: boolean;
+    applicationForm?: string;
+}
+export interface ChatsListWithVolunteers {
+    id: number;
+    volunteer: VolunteerApi;
+    lastMessage: MessageType;
+    vacancyStatus?: FormApplicationStatus;
+    countUnreadMessagesByOrganization: number;
+}
+
+export interface ChatsListWithOrganizations {
+    id: number;
+    organization: HostApi;
+    lastMessage: MessageType;
+    vacancyStatus?: FormApplicationStatus;
+    countUnreadMessagesByVolunteer: number;
 }
 
 export interface UserChatType {
@@ -20,14 +37,22 @@ export interface UserChatType {
     address: string;
     skills: Skills[];
     languages: Language[];
-    cases: string[]
+    cases: string[];
     arrivalDate: Date;
     expirationDate: Date;
-    messages: MessageType[];
+    messages: MessageTypeMocked[];
 }
 
-export interface MessageType {
+export interface MessageTypeMocked {
     date: Date;
     content: string;
     isUser: boolean;
+}
+
+export interface ChatType {
+    id: number;
+    lastMessage: MessageType;
+    organization: Host;
+    vacancyStatus?: FormApplicationStatus;
+    volunteer: VolunteerApi;
 }

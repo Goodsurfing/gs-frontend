@@ -19,6 +19,12 @@
     gap: 30px;
 }
 
+.contentRight {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .newsList {
     max-width: 780px;
     width: 100%;

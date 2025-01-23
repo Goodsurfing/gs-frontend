@@ -9,9 +9,11 @@ import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 
 import styles from "./HostDashboard.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const HostDashboardPage: FC = () => {
     const { ready } = useTranslation("host");
+    const { locale } = useLocale();
 
     if (!ready) {
         return (
@@ -25,7 +27,7 @@ const HostDashboardPage: FC = () => {
         <div className={styles.dashboard}>
             <HostFill />
             <div className={styles.columns}>
-                <RequestsWidget />
+                <RequestsWidget locale={locale} />
                 {/* <CalendarWidget /> add this logic in future */}
                 <DashboardNotifications />
             </div>

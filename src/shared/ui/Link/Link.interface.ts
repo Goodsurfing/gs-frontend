@@ -1,8 +1,6 @@
 import { LinkProps } from "react-router-dom";
 
-export enum LinkVariant {
-    BLUE = "BLUE",
-}
+type LinkVariant = "BLUE" | "DEFAULT";
 
 export interface ILinkProps extends LinkProps {
     variant: LinkVariant;

@@ -1,9 +1,13 @@
-import React, { useRef, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
+import React, {
+    FC, useCallback, useRef, useState,
+} from "react";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 import Popup from "@/components/Popup/Popup";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+
+import { Profile } from "@/entities/Profile";
 import { userActions } from "@/entities/User";
 
 import {
@@ -13,19 +17,23 @@ import {
     getVolunteerDashboardPageUrl,
     getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
-
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { profileApi } from "@/entities/Profile";
-
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import Arrow from "@/shared/ui/Arrow/Arrow";
-import styles from "./MainHeaderProfile.module.scss";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
-const MainHeaderProfile = () => {
+import styles from "./MainHeaderProfile.module.scss";
+import { textSlice } from "@/shared/lib/textSlice";
+
+interface MainHeaderProfileProps {
+    profileData?: Profile;
+    isLoading: boolean;
+}
+
+const MainHeaderProfile: FC<MainHeaderProfileProps> = (props) => {
+    const { profileData, isLoading } = props;
     const [isProfileOpened, setProfileOpened] = useState<boolean>(false);
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -33,7 +41,6 @@ const MainHeaderProfile = () => {
     const profileRef = useRef(null);
 
     const { locale } = useLocale();
-    const { data: userInfo, isLoading } = profileApi.useGetProfileInfoQuery();
 
     const dispatch = useAppDispatch();
 
@@ -57,7 +64,7 @@ const MainHeaderProfile = () => {
         setProfileOpened(!isProfileOpened);
     }, [isProfileOpened]);
 
-    if (!userInfo || isLoading) {
+    if (!profileData || isLoading) {
         return (
             <div
                 ref={profileRef}
@@ -77,17 +84,21 @@ const MainHeaderProfile = () => {
             onKeyDown={handleCloseDropdown}
             className={styles.info}
         >
-            <p className={styles.name}>{userInfo?.firstName || "Анон"}</p>
-            <img
-                src={defaultAvatarImage}
-                alt="NAME"
+            <p className={styles.name}>
+                {textSlice(profileData.firstName, 13, "none") || textSlice(profileData.email, 13, "none")}
+            </p>
+            <Avatar
+                icon={getMediaContent(profileData.image)}
+                text={profileData.firstName}
+                alt="avatar"
+                size="SMALL"
                 className={styles.avatar}
             />
             <Arrow isOpen={isProfileOpened} />
             <Popup className={styles.popup} isOpen={isProfileOpened}>
                 <Link
                     className={styles.dropdownLink}
-                    to={getVolunteerPersonalPageUrl(locale, userInfo.id)}
+                    to={getVolunteerPersonalPageUrl(locale, profileData.id)}
                     replace
                 >
                     {t("main.welcome.header.my-page")}

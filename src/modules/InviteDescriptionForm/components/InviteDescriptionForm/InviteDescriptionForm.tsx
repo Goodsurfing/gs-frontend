@@ -63,10 +63,12 @@ export const InviteDescriptionForm = () => {
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
+
     const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
     const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [isGalleryError, setGalleryError] = useState<boolean>(false);
     const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
+
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
@@ -138,12 +140,6 @@ export const InviteDescriptionForm = () => {
             });
     });
 
-    // useEffect(() => {
-    //     if (getOfferData?.description) {
-    //         reset(inviteDescriptionAdapter(getOfferData.description));
-    //     }
-    // }, [getOfferData?.description, reset]);
-
     useEffect(() => {
         if (isGalleryError) {
             setToast({
@@ -166,7 +162,7 @@ export const InviteDescriptionForm = () => {
     return (
         <FormProvider {...form}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className={styles.formWrapper}>
                     <EventName />
                     <Categories />

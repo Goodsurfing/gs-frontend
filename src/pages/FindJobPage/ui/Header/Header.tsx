@@ -5,7 +5,6 @@ import Button from "@/shared/ui/Button/Button";
 
 export const Header = () => (
     <section className={styles.wrapeprImage}>
-        {/* <div className={styles.innerWrapper}> */}
         <h1 className={styles.title}>Совмещай работу и путешествие!</h1>
         <h2 className={styles.description}>
             Выездная сезонная работа на море, в горах и на природе!
@@ -15,6 +14,5 @@ export const Header = () => (
                 Найти работу
             </Button>
         </div>
-        {/* </div> */}
     </section>
 );

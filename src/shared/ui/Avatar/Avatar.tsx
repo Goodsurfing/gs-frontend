@@ -14,6 +14,7 @@ interface AvatarProps {
     alt?: string;
     color?: string;
     text?: string;
+    onClick?: () => void;
 }
 
 export const Avatar = memo((props: AvatarProps) => {
@@ -24,10 +25,11 @@ export const Avatar = memo((props: AvatarProps) => {
         icon,
         color = "#DFE6EB",
         text,
+        onClick,
     } = props;
 
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={cn(styles.wrapper, className)} onClick={onClick}>
             {icon && <img src={icon} alt={alt} className={styles[size]} />}
             {!icon
                 && (text ? (

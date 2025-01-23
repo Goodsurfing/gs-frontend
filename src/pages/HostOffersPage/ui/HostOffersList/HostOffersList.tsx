@@ -11,12 +11,12 @@ import { useCategories } from "@/shared/data/categories";
 interface HostOffersListProps {
     offers?: Offer[]
     onCloseClick: (value: number) => void;
-    onEveryOpenClick: (value: number) => void;
+    // onEveryOpenClick: (value: number) => void;
 }
 
 export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersListProps) => {
     const {
-        offers, onCloseClick, onEveryOpenClick,
+        offers, onCloseClick,
     } = props;
     const { getTranslation } = useCategories();
 
@@ -43,8 +43,8 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     key={index}
                     onCloseClick={() => onCloseClick(offer.id)}
                     isCloseButtonActive={offer.status !== "disabled"}
-                    onEveryOpenClick={() => onEveryOpenClick(offer.id)}
-                    isEveryOpenActive
+                    // onEveryOpenClick={() => onEveryOpenClick(offer.id)}
+                    // isEveryOpenActive
                 />
             );
         });

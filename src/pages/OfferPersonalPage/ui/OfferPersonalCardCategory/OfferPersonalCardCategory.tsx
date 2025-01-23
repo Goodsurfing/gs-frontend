@@ -1,14 +1,13 @@
 import cn from "classnames";
 import { memo, useMemo } from "react";
 
-import { Category } from "@/entities/Offer";
-
 import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferPersonalCardCategory.module.scss";
+import { CategoryType } from "@/types/categories";
 
 interface OfferPersonalCardCategoryProps {
     className?: string;
-    categories?: Category[];
+    categories?: CategoryType[];
 }
 
 export const OfferPersonalCardCategory = memo(

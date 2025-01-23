@@ -62,10 +62,11 @@ const HostOffersPage = () => {
         setSelectedBtnOffer("delete");
     };
 
-    const handleEveryOpenClick = (offerId: number) => {
-        setSelectedOffer(offerId);
-        setSelectedBtnOffer("every_open");
-    };
+    // const handleEveryOpenClick = (offerId: number) => {
+    //     setSelectedOffer(offerId);
+    //     setSelectedBtnOffer("every_open");
+    // };
+    // Hide this function for now
 
     const handleModalClose = () => {
         setSelectedOffer(null);
@@ -107,7 +108,7 @@ const HostOffersPage = () => {
             <HostOffersList
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
-                onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
+                // onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
             />
             {!!offersWithClosedStatus.length && (
                 <div className={styles.drafts}>
@@ -116,7 +117,7 @@ const HostOffersPage = () => {
                         <HostOffersList
                             offers={offersWithClosedStatus}
                             onCloseClick={(offerId) => handleCloseClick(offerId)}
-                            onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
+                            // onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
                         />
                     </div>
                 </div>

@@ -1,12 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
-import { Application, Host, HostMember } from "@/entities/Host";
+import { Host, HostMember } from "@/entities/Host";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { HostApi } from "../model/types/host";
 
 interface UpdateHostParams {
     id: string;
-    body: Partial<Host>;
+    body: Partial<HostApi>;
 }
 
 interface CreateHostResponse {
@@ -79,13 +80,6 @@ export const hostApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
-        getMyHostApplications: build.query<Application[], void>({
-            query: () => ({
-                url: "personal/organization/forms",
-                method: "GET",
-            }),
-            providesTags: ["host"],
-        }),
         addMemberToOrganization: build.mutation<
         MemberOrganizationResponse,
         CreateMemberOrganizationParams
@@ -124,10 +118,10 @@ export const hostApi = createApi({
 export const {
     useCreateHostMutation,
     useGetHostByIdQuery,
+    useLazyGetHostByIdQuery,
     useGetHostsQuery,
     useUpdateHostMutation,
     useGetMyHostQuery,
-    useGetMyHostApplicationsQuery,
     useGetHostMembersByIdQuery,
     useAddMemberToOrganizationMutation,
     useDeleteHostMemberMutation,

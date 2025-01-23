@@ -10,6 +10,7 @@ import { YMap, YmapType } from "@/entities/Map";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferWhere } from "../../model/types/offerWhere";
 import styles from "./OfferAddressCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferAddressCardProps {
     address: OfferWhere;
@@ -25,7 +26,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3 className={styles.title}>{t("personalOffer.Местоположение")}</h3>
+                <Text title={t("personalOffer.Местоположение")} titleSize="h3" />
                 <span>{address.address}</span>
                 <YMap
                     mapState={{
@@ -33,7 +34,7 @@ export const OfferAddressCard: FC<OfferAddressCardProps> = memo(
                         zoom: 10,
                     }}
                     className={cn(styles.map)}
-                    setYmap={(ymaps) => setYmap(ymaps)}
+                    setYmap={(ymapsMap) => setYmap(ymapsMap)}
                     locale={locale}
                 >
                     <Placemark

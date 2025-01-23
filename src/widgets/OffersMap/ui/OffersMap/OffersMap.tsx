@@ -1,16 +1,15 @@
 import { Clusterer } from "@pbe/react-yandex-maps";
 import cn from "classnames";
-import React, {
-    FC, useState,
-} from "react";
+import React, { FC, useState } from "react";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { YMap, YmapType } from "@/entities/Map";
 
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import "./yandex-map-restyle-ballon.scss";
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import styles from "./OffersMap.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
+import "./yandex-map-restyle-ballon.scss";
+import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
 
 interface OffersMapProps {
     className?: string;
@@ -22,26 +21,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-    const testData = [
-        {
-            id: "1",
-            geometry: [55.788028, 49.121729],
-            image: defaultImage,
-            title: "Тестовая вакансия1",
-        },
-        {
-            id: "2",
-            geometry: [55.78979, 49.117149],
-            image: defaultImage,
-            title: "Тестовая вакансия2",
-        },
-        {
-            id: "3",
-            geometry: [55.788824, 49.114648],
-            image: defaultImage,
-            title: "Тестовая вакансия3",
-        },
-    ];
+    const { data } = useGetOffersQuery();
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -53,24 +33,55 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                 }}
                 options={{
                     suppressMapOpenBlock: true,
-                    restrictMapArea: [[85.23618, -178.9], [-73.87011, 181]],
+                    restrictMapArea: [
+                        [85.23618, -178.9],
+                        [-73.87011, 181],
+                    ],
                     maxZoom: 18,
                 }}
                 className={cn(styles.map, classNameMap, {
                     [styles.loading]: !loading,
                 })}
-                setYmap={(ymaps) => setYmap(ymaps)}
+                setYmap={(ymapsMap) => setYmap(ymapsMap)}
                 setLoading={setLoading}
-                modules={["geoObject.addon.balloon"]}
+                modules={[
+                    "geoObject.addon.balloon",
+                    "templateLayoutFactory",
+                    "clusterer.addon.balloon",
+                    "layout.ImageWithContent",
+                ]}
             >
                 {ymap && (
                     <Clusterer
                         options={{
-                            zoomMargin: 15,
-                            maxZoom: 18,
+                            iconLayout: "default#imageWithContent",
+                            clusterIconLayout: ymap?.templateLayoutFactory.createClass(
+                                `<div class="${styles.customClusterIcon}">
+                                {{ properties.geoObjects.length }}
+                            </div>`,
+                            ),
+                            clusterIconShape: {
+                                type: "Circle",
+                                coordinates: [20, 20],
+                                radius: 20,
+                            },
+                            clusterIconSize: [40, 40],
+                            clusterIconOffset: [-20, -20],
+                            clusterBalloonContentLayout: ymap?.templateLayoutFactory.createClass(`
+                            <div class="${styles.clusterBalloon}">
+                                <h3>Список вакансий:</h3>
+                                <ul>
+                                    {% for geoObject in properties.geoObjects %}
+                                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        `),
+                            clusterBalloonPanelMaxMapArea: Infinity,
+                            clusterBalloonContentLayoutHeight: 200,
                         }}
                     >
-                        <OffersPlacemarkList data={testData} />
+                        <OffersPlacemarkList data={data ?? []} />
                     </Clusterer>
                 )}
             </YMap>

@@ -1,28 +1,50 @@
 import cn from "classnames";
-import React, { FC, useCallback } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 
 import styles from "./Anchor.module.scss";
 
 interface AnchorProps {
     id: string;
     title: string;
-    activeId: string;
     className?: string;
+    classNameActive?: string;
     onClick?: () => void;
     topGap?: number;
 }
 
 export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     const {
-        id, title, activeId, className, onClick, topGap = 100,
+        id, title, className, classNameActive = "", onClick, topGap = 100,
     } = props;
+
+    const [isActive, setIsActive] = useState(false);
+
+    const handleScroll = useCallback(() => {
+        const element = document.getElementById(id);
+        if (element) {
+            const rect = element.getBoundingClientRect();
+            const isInView = rect.top - topGap <= 100 && rect.bottom > 100;
+            setIsActive(isInView);
+        }
+    }, [id, topGap]);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [handleScroll]);
 
     const handleClick = useCallback(() => {
         onClick?.();
         const element = document.getElementById(id);
         if (element) {
             window.scrollTo({
-                top: element.offsetTop - (topGap),
+                top: element.offsetTop - topGap,
                 behavior: "smooth",
             });
         }
@@ -31,9 +53,12 @@ export const Anchor: FC<AnchorProps> = (props: AnchorProps) => {
     return (
         <div
             onClick={handleClick}
-            className={cn(className, styles.wrapper, {
-                [styles.active]: id === activeId,
-            })}
+            className={cn(
+                className,
+                styles.wrapper,
+                { [styles.active]: isActive },
+                { [classNameActive]: isActive },
+            )}
         >
             {title}
         </div>

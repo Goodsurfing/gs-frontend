@@ -1,42 +1,65 @@
 import React, { FC } from "react";
 import { Rating } from "@mui/material";
 
-import defaultReviewPhoto from "@/shared/assets/images/reviews/review-photo-1.png";
-import defaultAvatarImage from "@/shared/assets/images/default-avatar.jpg";
-
+import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import { ReviewCardInfo } from "@/types/review";
 import styles from "./ReviewCardOffer.module.scss";
+import { ApplicationReviewResponse } from "@/entities/Review";
+import { useGetApplicationFormByIdQuery } from "@/entities/Application";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface ReviewCardOfferProps {
-    reviewOffer: ReviewCardInfo;
+    reviewOffer: ApplicationReviewResponse;
+    locale: Locale;
 }
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
+    const { reviewOffer, locale } = props;
     const {
-        reviewOffer: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            textReview, title, image, city, country, author, date, rating,
-        },
-    } = props;
+        applicationForm, stars, text, vacancyId,
+    } = reviewOffer;
+    const partsApplicationUrl = applicationForm.split("/");
+    const applicationId = partsApplicationUrl.pop();
+    const { data: applicationData } = useGetApplicationFormByIdQuery(applicationId ?? "");
+    const navigate = useNavigate();
+
+    if (!applicationData) {
+        return null;
+    }
+    const { vacancy, volunteer } = applicationData;
+
+    const navigateToVolunteer = () => {
+        navigate(getVolunteerPersonalPageUrl(locale, volunteer.profile.id));
+    };
+
+    const navigateToOffer = () => {
+        if (vacancyId) {
+            navigate(getOfferPersonalPageUrl(locale, vacancyId.toString()));
+        }
+    };
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.header}>
+            <div className={styles.header} onClick={navigateToOffer}>
                 <div className={styles.titleImg}>
-                    <span className={styles.title}>{title}</span>
+                    <span className={styles.title}>{vacancy.description?.title}</span>
                     <img
                         className={styles.img}
-                        src={defaultReviewPhoto}
+                        src={getMediaContent(vacancy.description?.image)}
                         alt="offer"
                     />
                 </div>
-                <span className={styles.date}>24 мая 2020</span>
+                <span className={styles.date}>
+                    {textSlice(vacancy.description?.shortDescription, 30, "none")}
+                </span>
             </div>
-            <p className={styles.textReview}>{textReview}</p>
+            <p className={styles.textReview}>{text}</p>
             <div className={styles.ratingUserContainer}>
                 <Rating
-                    value={3}
+                    value={stars}
                     readOnly
                     sx={{
                         "& .MuiRating-iconFilled": {
@@ -48,10 +71,10 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                         },
                     }}
                 />
-                <span className={styles.ratingNum}>4.4</span>
-                <div className={styles.avatarInfoUser}>
-                    <Avatar icon={defaultAvatarImage} alt="avatar" className={styles.avatar} />
-                    <span className={styles.author}>{author}</span>
+                <span className={styles.ratingNum}>{stars}</span>
+                <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
+                    <Avatar icon={getMediaContent(volunteer.profile.image)} alt="avatar" className={styles.avatar} />
+                    <span className={styles.author}>{`${volunteer.profile.lastName} ${volunteer.profile.firstName}`}</span>
                 </div>
             </div>
         </div>

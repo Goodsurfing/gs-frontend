@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
@@ -9,13 +9,24 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
-    getJournalsPageUrl, getMainPageUrl, getNPOPageUrl, getNewsPageUrl,
-    getOffersMapPageUrl, getOurTeamPageUrl, getPrivacyPolicyPageUrl,
-    getRulesPageUrl, getVideoPageUrl,
+    getAboutProjectPageUrl,
+    getAmbassadorsPageUrl,
+    getBlogPageUrl,
+    getFindJobPageUrl,
+    getJournalsPageUrl,
+    getMainPageUrl,
+    getMembershipPageUrl,
+    getNPOPageUrl,
+    getNewsPageUrl,
+    getOffersMapPageUrl,
+    getOurTeamPageUrl,
+    getPrivacyPolicyPageUrl,
+    getRulesPageUrl,
+    getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-
 import Arrow from "@/shared/ui/Arrow/Arrow";
+
 import styles from "./MainHeaderNav.module.scss";
 
 interface DropdownState {
@@ -40,18 +51,17 @@ export const MainHeaderNav = () => {
         isOffersOpened: false,
     });
 
-    useOnClickOutside(
-        communityRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isCommunityOpened: false })),
-    );
-    useOnClickOutside(
-        aboutProjectRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
-    );
-    useOnClickOutside(
-        offersRef,
-        () => setDropdownOpened((prev) => ({ ...prev, isOffersOpened: false })),
-    );
+    const navigate = useNavigate();
+
+    useOnClickOutside(communityRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isCommunityOpened: false }),
+    ));
+    useOnClickOutside(aboutProjectRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isAboutProjectOpened: false }),
+    ));
+    useOnClickOutside(offersRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isOffersOpened: false }),
+    ));
 
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
@@ -77,21 +87,23 @@ export const MainHeaderNav = () => {
         });
     };
 
+    const handleNavigateOfferPage = () => {
+        navigate(getOffersMapPageUrl(locale));
+    };
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.offersWrapper}>
                 <IconButton
-                    onClick={() => handleOpenDropdown("OFFERS")}
+                    // onClick={() => handleOpenDropdown("OFFERS")}
+                    onClick={handleNavigateOfferPage}
                     ref={offersRef}
                     className={styles.btnOffers}
                 >
                     {t("main.welcome.header.offers.title")}
-                    <ReactSVG
-                        className={styles.searchIcn}
-                        src={searchIcon}
-                    />
+                    <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </IconButton>
-                <Popup
+                {/* <Popup
                     className={styles.popup}
                     isOpen={dropdownOpened.isOffersOpened}
                 >
@@ -185,7 +197,7 @@ export const MainHeaderNav = () => {
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
-                </Popup>
+                </Popup> */}
             </div>
             <div className={styles.btnCommunity}>
                 <div
@@ -202,7 +214,7 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getBlogPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.blog")}
                     </Link>
@@ -220,7 +232,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
                     </Link>
@@ -271,7 +283,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
                     </Link>
@@ -292,6 +304,20 @@ export const MainHeaderNav = () => {
                         to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getAboutProjectPageUrl(locale)}
+                    >
+                        {t(
+                            "main.welcome.header.about-project.about-goodsurfing",
+                        )}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getFindJobPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.about-project.find-job")}
                     </Link>
                 </Popup>
             </div>

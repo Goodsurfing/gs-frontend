@@ -9,10 +9,10 @@
     max-width: 1920px;
     align-self: center;
     padding: 36px 50px 50px 50px;
+    min-height: 80vh;
 }
 
 .navMenu {
-    padding: 26px 50px 16px 50px;
     position: sticky;
     top: 5.563rem;
     z-index: 4;
@@ -20,4 +20,14 @@
 
 .button {
     width: 100%;
+}
+
+
+@media(max-width: 992px) {
+    .navMenu {
+        display: none;
+    }
+    .content {
+        padding: 20px;
+    }
 }

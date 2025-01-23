@@ -25,8 +25,8 @@ interface IHostOffersPageCard {
     status: OfferStatus;
     onCloseClick: MouseEventHandler<HTMLButtonElement>;
     isCloseButtonActive: boolean;
-    onEveryOpenClick: MouseEventHandler<HTMLButtonElement>;
-    isEveryOpenActive: boolean;
+    // onEveryOpenClick?: MouseEventHandler<HTMLButtonElement>;
+    // isEveryOpenActive?: boolean;
 }
 
 const HostOffersPageCard = memo(
@@ -44,8 +44,6 @@ const HostOffersPageCard = memo(
         status,
         onCloseClick,
         isCloseButtonActive,
-        isEveryOpenActive,
-        onEveryOpenClick,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
@@ -114,7 +112,7 @@ const HostOffersPageCard = memo(
                         Редактировать
                     </Button>
                     <Button
-                        color="GRAY"
+                        color={isCloseButtonActive ? "GRAY" : "BLACK"}
                         variant="OUTLINE"
                         size="SMALL"
                         className={styles.gray}
@@ -122,7 +120,7 @@ const HostOffersPageCard = memo(
                     >
                         {isCloseButtonActive ? "Закрыть" : "Открыть"}
                     </Button>
-                    <Button
+                    {/* <Button
                         className={styles.black}
                         variant={isEveryOpenActive ? "FILL" : "OUTLINE"}
                         color="BLACK"
@@ -130,7 +128,8 @@ const HostOffersPageCard = memo(
                         onClick={onEveryOpenClick}
                     >
                         Стать «всегда открытым»
-                    </Button>
+                    </Button> */}
+                    {/* Hide for now */}
                 </div>
             </div>
         );

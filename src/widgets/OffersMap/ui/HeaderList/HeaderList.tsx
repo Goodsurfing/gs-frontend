@@ -10,17 +10,22 @@ import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface HeaderListProps {
     isShowMap: boolean;
-    onChangeShowMap: (value: boolean) => void
+    onChangeShowMap: () => void;
+    offersLength: number;
 }
 
 export const HeaderList: FC<HeaderListProps> = (props) => {
-    const { isShowMap, onChangeShowMap } = props;
+    const { isShowMap, onChangeShowMap, offersLength } = props;
     const { control } = useFormContext<OffersFilterFields>();
     const { width } = useWindowDimensions();
 
     return (
         <div className={styles.wrapper}>
-            <span className={styles.offerCount}>2 059 вариантов</span>
+            <span className={styles.offerCount}>
+                {offersLength}
+                {" "}
+                вариантов
+            </span>
             <Controller
                 name="offersSort.showClosedOffers"
                 control={control}

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfilePreferencesPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./OffersRecomendationsWidget.module.scss";
 
@@ -24,7 +24,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 <div className={styles.top}>
                     <h3>{t("volunteer-dashboard.Возможности, которые вам понравятся")}</h3>
                     <Link
-                        to={getMainPageUrl(locale)}
+                        to={getProfilePreferencesPageUrl(locale)}
                         className={styles.settings}
                     >
                         {t("volunteer-dashboard.Настроить")}

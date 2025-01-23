@@ -1,5 +1,5 @@
 .navMenu {
-    padding: 26px 50px 16px 50px;
+    // padding: 26px 50px 16px 50px;
     position: sticky;
     top: 5.563rem;
     z-index: 4;
@@ -9,4 +9,11 @@
     width: 100%;
     max-width: 150px;
     max-height: 36px;
+}
+
+
+@media (max-width: 992px) {
+    .navMenu {
+        display: none !important;
+    }
 }

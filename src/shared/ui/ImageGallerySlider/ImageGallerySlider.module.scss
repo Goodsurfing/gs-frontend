@@ -1,0 +1,25 @@
+.wrapper {
+    padding: 0 50px;
+    position: relative;
+}
+
+.swiper {
+    position: static;
+}
+
+.image {
+    width: 100%;
+    object-fit: cover;
+    max-height: 180px;
+    cursor: pointer;
+}
+
+.swiperWrapper {
+    align-items: center;
+}
+
+@media (max-width: 576px) {
+    .wrapper {
+        padding: 0;
+    }
+}

@@ -13,3 +13,9 @@
 .category {
     flex-shrink: 0;
 }
+
+@media (max-width: 992px) {
+    .container {
+        justify-content: center;
+    }
+}

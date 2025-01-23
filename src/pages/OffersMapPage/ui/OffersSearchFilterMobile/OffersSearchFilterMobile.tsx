@@ -11,13 +11,18 @@ import {
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
+import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
+import { getUserAuthData } from "@/entities/User";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
+import { Text } from "@/shared/ui/Text/Text";
 
 import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
 import styles from "./OffersSearchFilterMobile.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 type SelectedTabType = "filter" | "map" | "offers";
 
@@ -30,26 +35,49 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
 ) => {
     const { className } = props;
     const { control } = useFormContext();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const offersPerPage = 10;
+
+    const { data, isLoading } = useGetOffersQuery();
+    const isAuth = useAppSelector(getUserAuthData);
+    const { locale } = useLocale();
+
     const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
+
+    const currentOffers = useMemo(() => {
+        const startIndex = (currentPage - 1) * offersPerPage;
+        const endIndex = startIndex + offersPerPage;
+        return data?.slice(startIndex, endIndex);
+    }, [data, currentPage]);
 
     const isOffersTabOpened = selectedTab === "offers";
     const isFilterTabOpened = selectedTab === "filter";
     const isMapTabOpened = selectedTab === "map";
 
-    const renderOfferCards = useMemo(
-        () => mockedOffersData.map((offer) => (
-            <OfferCard
-                classNameCard={styles.offerCard}
-                className={cn(styles.offer, {
-                    [styles.closed]: true,
-                })}
-                status="opened"
-                data={offer}
-                key={offer.id}
+    const renderOfferCards = useMemo(() => {
+        if (data) {
+            return currentOffers?.map((offer) => (
+                <OfferCard
+                    locale={locale}
+                    classNameCard={styles.offerCard}
+                    className={cn(styles.offer, {
+                        [styles.closed]: true,
+                    })}
+                    status={offer.status === "active" ? "opened" : "closed"}
+                    data={offer}
+                    key={offer.id}
+                    isFavoriteIconShow={!!isAuth}
+                />
+            ));
+        }
+        return (
+            <Text
+                className={styles.error}
+                textSize="primary"
+                text="Вакансии не были найдены"
             />
-        )),
-        [],
-    );
+        );
+    }, [currentOffers, data, isAuth, locale]);
 
     const handleOffersTab = () => {
         if (selectedTab !== "offers") {
@@ -68,6 +96,16 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             setSelectedTab("map");
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <MiniLoader className={styles.miniLoader} />
+            </div>
+        );
+    }
+
+    const totalPages = data ? Math.ceil(data.length / offersPerPage) : 1;
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -129,9 +167,17 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             </div>
             {isOffersTabOpened && (
                 <>
-                    <div className={styles.offersCount}>1 055 вариантов</div>
+                    <div className={styles.offersCount}>
+                        {data ? data.length : 0}
+                        {" "}
+                        вариантов
+                    </div>
                     <div className={styles.list}>{renderOfferCards}</div>
-                    <OfferPagination />
+                    <OfferPagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                    />
                 </>
             )}
             {isMapTabOpened && (

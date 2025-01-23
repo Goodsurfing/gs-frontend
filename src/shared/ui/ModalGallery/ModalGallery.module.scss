@@ -1,11 +1,23 @@
 .wrapper {
     width: 80vw;
+    max-width: 1600px;
     margin: 0 auto;
+}
+
+.swiperWrapper {
+    align-items: center;
 }
 
 .modalImage {
     width: 100%;
-    height: calc(80vh - 100px);
-    object-fit: cover;
+    max-height: calc(80vh - 100px);
+    object-fit: contain;
     margin: 0 auto;
+}
+
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: 100vw;
+    }
 }

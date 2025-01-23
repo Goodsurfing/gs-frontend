@@ -1,12 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
-import { Review } from "@/types/review";
 
-import { HostReviewFields } from "@/features/Notes";
-import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
+import { ReviewFields } from "@/features/Notes";
+import { ReviewMiniCard } from "@/features/Review";
 
-import { Application } from "@/entities/Host";
-import { mockedApplications } from "@/entities/Host/model/data/mockedHostData";
+import { FullFormApplication, useGetMyHostApplicationsQuery } from "@/entities/Application";
 import { HostModalReview } from "@/entities/Review";
 
 import {
@@ -14,40 +12,91 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
-
-import { fakeUserData } from "../../model/data/mockedUsersData";
 import styles from "./ReviewAboutVolunteers.module.scss";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
+import { API_BASE_URL } from "@/shared/constants/api";
+import { ErrorType } from "@/types/api/error";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
-export const ReviewAboutVolunteers: FC = () => {
-    const defaultValues: DefaultValues<HostReviewFields> = {
-        hostReview: {
+interface ReviewAboutVolunteersProps {
+    locale: Locale;
+}
+
+export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
+    const { locale } = props;
+    const defaultValues: DefaultValues<ReviewFields> = {
+        review: {
             stars: undefined,
             text: "",
         },
     };
-    const [toast] = useState<ToastAlert>();
-    const form = useForm<HostReviewFields>({
+    const [toast, setToast] = useState<ToastAlert>();
+    const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
-    const [selectedReviewId, setSelectedReviewId] = useState<number | null>(
+    const { handleSubmit, control, reset } = form;
+    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
         null,
     );
+    const [applications, setApplications] = useState<FullFormApplication[]>([]);
 
-    const renderFullCards = (reviews: Review[]) => reviews.map(
-        (review) => <ReviewFullCard review={review} />,
-    );
+    const { data: hostApplicationsData } = useGetMyHostApplicationsQuery();
+    const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
-    const onReviewClick = (id: number) => {
-        setSelectedReviewId(id);
+    useEffect(() => {
+        if (hostApplicationsData) {
+            const filteredApplications = hostApplicationsData.filter(
+                (hostApplication) => hostApplication.status === "accepted",
+            );
+            setApplications([...filteredApplications]);
+        } else {
+            setApplications([]);
+        }
+    }, [hostApplicationsData]);
+
+    // const renderFullCards = (reviews: Review[]) => reviews.map(
+    //     (review) => <ReviewFullCard review={review} />,
+    // );
+
+    const onReviewClick = (application: FullFormApplication) => {
+        setSelectedApplication(application);
     };
 
     const resetSelectedReview = () => {
-        setSelectedReviewId(null);
+        setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
-    const onSendReview = handleSubmit(() => {});
+    const onSendReview = handleSubmit(async (data) => {
+        const {
+            review: { stars, text },
+        } = data;
+        if (selectedApplication && stars) {
+            setToast(undefined);
+            await createToVolunteerReview({
+                applicationForm: `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
+                stars,
+                text,
+            })
+                .unwrap()
+                .then(() => {
+                    setToast({
+                        text: "Ваш отзыв был отправлен",
+                        type: HintType.Success,
+                    });
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
+                })
+                .finally(() => { reset(); });
+        }
+    });
 
     return (
         <div className={styles.wrapper}>
@@ -59,23 +108,29 @@ export const ReviewAboutVolunteers: FC = () => {
                 classNameSlide={styles.swiperSlide}
                 classNameWrapper={styles.swiperWrapper}
                 className={styles.slider}
-                data={mockedApplications}
-                renderItem={(item: Application) => (
-                    <ReviewMiniCard data={item} onReviewClick={onReviewClick} variant="volunteer" key={item.id} />
+                data={applications}
+                renderItem={(item: FullFormApplication) => (
+                    <ReviewMiniCard
+                        data={item}
+                        onReviewClick={onReviewClick}
+                        variant="volunteer"
+                        key={item.id}
+                        locale={locale}
+                    />
                 )}
             />
             <div className={styles.fullCardContainer}>
-                {renderFullCards(fakeUserData)}
+                {/* {renderFullCards(fakeUserData)} */}
             </div>
             <Controller
-                name="hostReview"
+                name="review"
                 control={control}
                 render={({ field }) => (
                     <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={mockedApplications[0]}
-                        isOpen={!!selectedReviewId}
+                        application={selectedApplication}
+                        isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
                         successText={
@@ -88,6 +143,7 @@ export const ReviewAboutVolunteers: FC = () => {
                                 ? toast?.text
                                 : undefined
                         }
+                        locale={locale}
                     />
                 )}
             />

@@ -3,9 +3,18 @@ import styles from "./ListFilter.module.scss";
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 import { UserListFilter } from "@/features/Messenger";
 
-export const ListFilter: FC = () => (
-    <div className={styles.wrapper}>
-        <SearchInput />
-        <UserListFilter />
-    </div>
-);
+interface ListFilterProps {
+    value: string;
+    onChange: (value: string) => void
+}
+
+export const ListFilter: FC<ListFilterProps> = (props) => {
+    const { value, onChange } = props;
+
+    return (
+        <div className={styles.wrapper}>
+            <SearchInput value={value} onChange={onChange} />
+            <UserListFilter />
+        </div>
+    );
+};

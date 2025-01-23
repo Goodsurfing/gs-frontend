@@ -2,50 +2,68 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Offer, OfferCard } from "@/entities/Offer";
-
-import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
+import { OfferCard, useGetHostOffersByIdQuery } from "@/entities/Offer";
 
 import styles from "./HostOffersCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useCategories } from "@/shared/data/categories";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { Text } from "@/shared/ui/Text/Text";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface HostOffersCardProps {
     className?: string;
-    offers: Offer[];
+    hostId: string;
 }
 
 export const HostOffersCard: FC<HostOffersCardProps> = memo(
     (props: HostOffersCardProps) => {
-        const { className, offers } = props;
+        const { className, hostId } = props;
         const { t } = useTranslation("host");
+        const { getTranslation } = useCategories();
+        const { data: hostOffers, isError } = useGetHostOffersByIdQuery(hostId);
+        const { locale } = useLocale();
 
         const renderOffers = useMemo(
             () => {
-                if (!offers) return "У организации пока нет вакансий";
+                if (!hostOffers) return null;
 
-                return offers
+                return hostOffers
                     .slice(0, 3)
-                    .map(({ description }, index) => (
+                    .map(({ description, where, id }, index) => (
                         <OfferCard
-                            image={offerDefaultImage}
+                            isFavoriteIconShow={false}
+                            handleFavoriteClick={() => {}}
+                            locale={locale}
+                            isFavorite={false}
+                            offerId={id}
+                            image={getMediaContent(description?.image)}
                             title={description?.title}
                             description={description?.shortDescription}
-                            location="Казань, Россия"
-                            category="Заповедники и нац. парки"
+                            location={where?.address}
+                            category={getTranslation(description?.categoryIds[0])}
                             rating="4.3"
                             likes="10"
                             reviews="14"
                             went="22"
                             key={index}
+                            link={getOfferPersonalPageUrl(locale, id.toString())}
                         />
                     ));
             },
-            [offers],
+            [getTranslation, hostOffers, locale],
         );
 
+        if ((hostOffers?.length === 0) || isError) {
+            return null;
+        }
+
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <h3>{t("personalHost.Вакансии")}</h3>
-                <div className={styles.container}>{renderOffers}</div>
+            <div id="2" className={cn(className, styles.wrapper)}>
+                <Text title={t("personalHost.Вакансии")} titleSize="h3" />
+                <div className={styles.container}>
+                    {renderOffers}
+                </div>
             </div>
         );
     },

@@ -7,7 +7,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 
-import { getProfileInfoPageUrl } from "@/shared/config/routes/AppUrls";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { BASE_URL } from "@/shared/constants/api";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 
@@ -66,7 +66,7 @@ export const ProfileInfoFormAvatar = memo(
                     id="profile-file"
                     src={avatar ?? undefined}
                     setFile={handleImageUpload}
-                    route={getProfileInfoPageUrl(locale)}
+                    route={getVolunteerPersonalPageUrl(locale, userId)}
                 />
             </div>
         );

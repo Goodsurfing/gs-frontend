@@ -56,6 +56,10 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
             });
         }, [additionalConditions, extraConditionsData]);
 
+        if (additionalConditions.length === 0) {
+            return null;
+        }
+
         return (
             <div className={cn(className, styles.wrapper)}>
                 <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />

@@ -1,23 +1,35 @@
 import React, { FC } from "react";
-import { Application } from "@/entities/Host";
-import { RequestOfferCard } from "@/entities/Request";
-import { VolunteerReviewTypeFields } from "@/features/Notes";
+
+import { ReviewTypeFields } from "@/features/Notes";
+
+import { FullFormApplication, RequestOfferCard } from "@/entities/Application";
+
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
+import { Locale } from "@/entities/Locale";
 
 interface VolunteerModalReviewProps {
-    application: Application;
-    value: VolunteerReviewTypeFields;
-    onChange: (value: VolunteerReviewTypeFields) => void;
+    application: FullFormApplication | null;
+    value: ReviewTypeFields;
+    onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
     onClose: () => void;
     sendReview: () => void;
     successText?: string;
     errorText?: string;
+    locale: Locale;
 }
 
 export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
     const {
-        application, value, onChange, isOpen, onClose, sendReview, successText, errorText,
+        application,
+        value,
+        onChange,
+        isOpen,
+        onClose,
+        sendReview,
+        successText,
+        errorText,
+        locale,
     } = props;
     const { stars, text } = value;
     return (
@@ -35,11 +47,14 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
             successText={successText}
             errorText={errorText}
         >
-            <RequestOfferCard
-                application={application}
-                showButtons={false}
-                showStatus={false}
-            />
+            {application && (
+                <RequestOfferCard
+                    application={application}
+                    showButtons={false}
+                    showStatus={false}
+                    locale={locale}
+                />
+            )}
         </ModalReview>
     );
 };

@@ -1,9 +1,11 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
-
 import { useTranslation } from "react-i18next";
+
+import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
+
 import styles from "./HostGalleryCard.module.scss";
-import { ImageGallery } from "@/widgets/ImageGallery";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface HostGalleryCardProps {
     className?: string;
@@ -15,10 +17,28 @@ export const HostGalleryCard: FC<HostGalleryCardProps> = memo(
         const { className, images } = props;
         const { t } = useTranslation("host");
 
+        const renderImageGallery = () => {
+            if (images.length === 0) {
+                return (
+                    <p
+                        className={styles.container}
+                    >
+                        Галерея не заполнена
+                    </p>
+                );
+            }
+            return (
+                <ImageGallerySlider
+                    images={images}
+                    className={styles.container}
+                />
+            );
+        };
+
         return (
-            <div className={cn(styles.wrapper, className)}>
-                <h3>{t("personalHost.Фото")}</h3>
-                <ImageGallery images={images} className={styles.container} />
+            <div id="3" className={cn(styles.wrapper, className)}>
+                <Text title={t("personalHost.Фото")} titleSize="h3" />
+                {renderImageGallery()}
             </div>
         );
     },

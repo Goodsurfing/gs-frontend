@@ -95,6 +95,12 @@
     justify-content: space-between;
 }
 
+@media (max-width: 992px) {
+    .content {
+        padding: 20px;
+    }
+}
+
 @media (max-width: 768px) {
     .content {
         padding: 40px 10px;
@@ -108,5 +114,9 @@
         .title {
             font-size: 26px;
         }
+    }
+
+    .info {
+        flex-direction: column;
     }
 }

@@ -35,9 +35,53 @@
 .chat {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    overflow: auto;
+}
 
-    overflow-y: auto;
-    overflow-x: hidden;
+.chat > div {
+    width: 100%;
+}
+
+.messegesEnd {
+    position: absolute;
+    top: 100%;
+}
+
+.chatList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    // padding: 20px 16px;
+    // max-width: 768px;
+    position: relative;
+    height: 100%;
+
+    // overflow-y: auto;
+    // overflow-x: hidden;
+
+    // &::-webkit-scrollbar {
+    //     width: 10px;
+    // }
+
+    // &::-webkit-scrollbar-track {
+    //     background: var(--color-white);
+    // }
+
+    // &::-webkit-scrollbar-thumb {
+    //     border-radius: var(--radius);
+    //     background-color: var(--bg-accent);
+    // }
+}
+
+.infiniteScroll {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    width: 100%;
+    padding: 20px 16px;
+    position: relative;
 
     &::-webkit-scrollbar {
         width: 10px;
@@ -53,22 +97,14 @@
     }
 }
 
-.chatList {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 20px 16px;
-    max-width: 768px;
-}
-
 .date {
     color: var(--text-caption);
     font-weight: 500;
     font-size: 0.75rem;
     text-align: center;
-    margin-bottom: 6px;
+    margin: 6px 0;
+    max-width: 768px;
 }
-
 
 .adminMessage {
     color: var(--text-primary-1);
@@ -105,7 +141,7 @@
 
     svg {
         fill: var(--text-primary-1);
-        stroke: var(--text-primary-1);;
+        stroke: var(--text-primary-1);
         width: 20px;
         cursor: pointer;
         padding: 5px;
@@ -128,6 +164,10 @@
     width: auto;
     max-width: 80vw;
     object-fit: contain;
+}
+
+.miniLoader {
+    padding: 20px;
 }
 
 @keyframes slideInFromRight {
@@ -171,7 +211,7 @@
     }
 }
 
-@media(max-width: 480px) {
+@media (max-width: 480px) {
     .imagePopup {
         max-width: 90vw;
     }

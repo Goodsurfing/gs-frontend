@@ -62,6 +62,10 @@
         align-items: flex-start;
     }
 
+    .messageContent {
+        margin-left: auto;
+    }
+
     .avatar {
         align-self: flex-end;
         display: none;

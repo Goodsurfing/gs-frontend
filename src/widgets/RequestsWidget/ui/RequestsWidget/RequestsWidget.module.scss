@@ -28,13 +28,19 @@
     margin-left: 6px;
 }
 
-.requestsItems {
-    min-height: 450px;
+.requestsWrapper {
     display: flex;
     flex-direction: column;
-    gap: 14px;
     padding: 30px;
+    gap: 30px;
     background-color: var(--color-white);
+    min-height: 450px;
+}
+
+.requestsItems {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 14px;
 }
 
 @media (max-width: 992px) {
