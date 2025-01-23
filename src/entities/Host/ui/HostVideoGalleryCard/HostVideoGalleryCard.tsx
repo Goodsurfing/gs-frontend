@@ -33,7 +33,7 @@ export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
         };
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div id="4" className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Видео")} titleSize="h3" />
                 {renderVideoGallery()}
             </div>

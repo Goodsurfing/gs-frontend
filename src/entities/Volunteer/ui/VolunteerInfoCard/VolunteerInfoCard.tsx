@@ -43,7 +43,10 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     offers={volunteer.offers}
                     className={styles.container}
                 /> */}
-                <VolunteerReviewsCard className={styles.container} />
+                <VolunteerReviewsCard
+                    volunteerId={volunteer.profile.id}
+                    className={styles.container}
+                />
                 {showImageGallery && (
                     <VolunteerGalleryCard
                         images={getMediaContentsArray(

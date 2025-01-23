@@ -7,8 +7,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { ApplicationReviewResponse } from "@/entities/Review";
-import { useGetToOrganizationsReviewsByIdQuery } from "@/entities/Review/api/reviewApi";
+import { ApplicationReviewResponse, useGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -66,7 +65,9 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                                     ).unwrap();
                                     if (volunteerData) {
                                         const { profile } = volunteerData;
-                                        const { image, firstName, lastName } = profile;
+                                        const {
+                                            image, firstName, lastName, id: profileId,
+                                        } = profile;
 
                                         return (
                                             <ReviewWidget
@@ -79,7 +80,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                                                 )}
                                                 url={getVolunteerPersonalPageUrl(
                                                     locale,
-                                                    volunteerAuthorId,
+                                                    profileId,
                                                 )}
                                                 key={id}
                                             />

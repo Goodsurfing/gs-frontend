@@ -30,7 +30,7 @@ export const HostTeamCard: FC<HostTeamCardProps> = memo(
         }
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div id="5" className={cn(className, styles.wrapper)}>
                 <h3>{t("personalHost.Команда")}</h3>
                 <div className={styles.container}>{renderCard}</div>
             </div>

@@ -1,12 +1,23 @@
 import cn from "classnames";
-import React, { FC, memo, useMemo } from "react";
+import React, {
+    FC, memo, useEffect, useState,
+} from "react";
 
-import { Link } from "react-router-dom";
+import { useLocale } from "@/app/providers/LocaleProvider";
+
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import arrowDownIcon from "@/shared/assets/icons/arrow-down.svg";
+import { useLazyGetHostByIdQuery } from "@/entities/Host";
+import {
+    ApplicationReviewResponse,
+    useGetToVolunteerReviewsByIdQuery,
+} from "@/entities/Review";
+
+import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
+import { Text } from "@/shared/ui/Text/Text";
+
 import styles from "./VolunteerReviewsCard.module.scss";
 
 interface VolunteerReviewsCardProps {
@@ -17,22 +28,86 @@ interface VolunteerReviewsCardProps {
 export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
     (props: VolunteerReviewsCardProps) => {
         const { className, volunteerId } = props;
+        const [filteredReviews, setFilteredReviews] = useState<
+        ApplicationReviewResponse[]
+        >([]);
+        const [visibleCount, setVisibleCount] = useState(5);
+        const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
 
-        const renderCards = useMemo(
-            () => reviews
-                .slice(0, 2)
-                .map((reviewItem, index) => (
-                    <ReviewWidget review={reviewItem} key={index} />
-                )),
-            [reviews],
-        );
+        const { data: reviewsData } = useGetToVolunteerReviewsByIdQuery(volunteerId);
+        const [getHost] = useLazyGetHostByIdQuery();
+
+        useEffect(() => {
+            if (reviewsData) {
+                setFilteredReviews([...reviewsData]);
+            } else {
+                setFilteredReviews([]);
+            }
+        }, [reviewsData]);
+
+        useEffect(() => {
+            const fetchCards = async () => {
+                const cards = await Promise.all(
+                    filteredReviews
+                        .slice(0, visibleCount)
+                        .map(async (review) => {
+                            const {
+                                stars, text, id, organizationAuthorId,
+                            } = review;
+                            try {
+                                const hostData = await getHost(
+                                    organizationAuthorId ?? "",
+                                ).unwrap();
+                                if (hostData) {
+                                    const {
+                                        avatar,
+                                        name,
+                                        id: hostId,
+                                    } = hostData;
+
+                                    return (
+                                        <ReviewWidget
+                                            stars={stars}
+                                            reviewText={text}
+                                            avatar={getMediaContent(avatar)}
+                                            name={name}
+                                            url={getHostPersonalPageUrl(
+                                                locale,
+                                                hostId,
+                                            )}
+                                            key={id}
+                                        />
+                                    );
+                                }
+                            } catch {
+                                return undefined;
+                            }
+                        }),
+                );
+                setRenderCards(
+                    cards.filter((card) => card !== undefined) as JSX.Element[],
+                );
+            };
+
+            fetchCards();
+        }, [filteredReviews, visibleCount, locale, getHost]);
+
+        const handleShowNext = () => {
+            setVisibleCount((prev) => prev + 5);
+        };
+
+        if (!reviewsData || reviewsData.length === 0) {
+            return null;
+        }
 
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <h3>Отзывы о волонтёре</h3>
+            <div id="3" className={cn(className, styles.wrapper)}>
+                <Text title="Отзывы" titleSize="h3" />
                 <div className={styles.container}>{renderCards}</div>
-
+                {visibleCount < filteredReviews.length && (
+                    <ShowNext onClick={handleShowNext} />
+                )}
             </div>
         );
     },

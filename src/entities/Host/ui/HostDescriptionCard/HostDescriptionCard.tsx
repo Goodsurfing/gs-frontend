@@ -19,7 +19,7 @@ export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
         } = props;
         const { t } = useTranslation("host");
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div id="1" className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Об организации")} titleSize="h3" />
                 <p className={styles.description}>{description || "Организатор не указал данную информацию"}</p>
             </div>

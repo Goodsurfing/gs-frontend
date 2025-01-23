@@ -1,35 +1,33 @@
 import React, { FC, memo } from "react";
-
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Host } from "@/entities/Host";
 
+import { Host } from "@/entities/Host";
+import { Locale } from "@/entities/Locale";
+
+import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import styles from "./HostlHeaderCard.module.scss";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { Profile } from "@/entities/Profile";
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
-import { Locale } from "@/entities/Locale";
 
 interface HostlHeaderCardProps {
     host: Host;
-    profile: Profile;
     locale: Locale;
+    isEdit: boolean;
 }
 
 export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
             host: {
-                name, type, address, avatar, owner,
+                name, type, address, avatar,
             },
-            profile,
             locale,
+            isEdit,
         } = props;
         const { t } = useTranslation("host");
-        const showButton = owner.id === profile.id;
         const navigate = useNavigate();
 
         const navigateTo = () => {
@@ -38,7 +36,12 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
 
         return (
             <div className={styles.wrapper}>
-                <Avatar icon={getMediaContent(avatar)} size="DEFAULT" className={styles.image} alt="avatar" />
+                <Avatar
+                    icon={getMediaContent(avatar)}
+                    size="DEFAULT"
+                    className={styles.image}
+                    alt="avatar"
+                />
                 <div className={styles.containerInfo}>
                     <span className={styles.type}>
                         {t("personalHost.Организация/")}
@@ -48,8 +51,14 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     <span className={styles.address}>{address}</span>
                 </div>
                 <div className={styles.btnMedalsContainer}>
-                    {showButton && (
-                        <Button color="BLUE" size="SMALL" variant="FILL" className={styles.button} onClick={navigateTo}>
+                    {isEdit && (
+                        <Button
+                            color="BLUE"
+                            size="SMALL"
+                            variant="FILL"
+                            className={styles.button}
+                            onClick={navigateTo}
+                        >
                             {t("personalHost.Редактировать профиль")}
                         </Button>
                     )}

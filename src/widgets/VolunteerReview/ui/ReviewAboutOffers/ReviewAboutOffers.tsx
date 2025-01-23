@@ -17,6 +17,11 @@ import { FullFormApplication } from "@/entities/Application";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./ReviewAboutOffers.module.scss";
 import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { ErrorType } from "@/types/api/error";
+import { API_BASE_URL } from "@/shared/constants/api";
+import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
@@ -31,18 +36,19 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             text: "",
         },
     };
-    const [toast] = useState<ToastAlert>();
+    const [toast, setToast] = useState<ToastAlert>();
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
     const [applications, setApplications] = useState<FullFormApplication[]>([]);
     const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
         null,
     );
 
-    const { data: volunteerApplicationsData } = useGetMyVolunteerApplicationsQuery();
+    const { data: volunteerApplicationsData, isLoading } = useGetMyVolunteerApplicationsQuery();
+    const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
         if (volunteerApplicationsData) {
@@ -65,9 +71,44 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
 
     const resetSelectedReview = () => {
         setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
-    const onSendReview = handleSubmit(() => {});
+    const onSendReview = handleSubmit(async (data) => {
+        const {
+            review: { stars, text },
+        } = data;
+        if (selectedApplication && stars) {
+            setToast(undefined);
+            const applicationForm = `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`;
+            await createToOrganizationReview({ applicationForm, stars, text })
+                .unwrap()
+                .then(() => {
+                    setToast({
+                        text: "Ваш отзыв был отправлен",
+                        type: HintType.Success,
+                    });
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
+                })
+                .finally(() => {
+                    reset();
+                });
+        }
+    });
+
+    if (isLoading) {
+        return (
+            <div className={styles.wrapper}>
+                <MiniLoader />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.wrapper}>

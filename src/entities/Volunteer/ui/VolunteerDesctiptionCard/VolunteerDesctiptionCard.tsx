@@ -11,7 +11,7 @@ export const VolunteerDesctiptionCard: FC<VolunteerDesctiptionCardProps> = memo(
     (props: VolunteerDesctiptionCardProps) => {
         const { description } = props;
         return (
-            <div>
+            <div id="1">
                 <Text title="О себе" titleSize="h3" />
                 <p className={styles.description}>{description || "Волонтёр не указал информацию о себе"}</p>
             </div>

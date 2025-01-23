@@ -38,7 +38,7 @@ export const NotesHostForm = () => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
 
@@ -69,6 +69,8 @@ export const NotesHostForm = () => {
 
     const resetSelectedReview = () => {
         setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
     const onSendReview = handleSubmit(async (data) => {
@@ -94,7 +96,8 @@ export const NotesHostForm = () => {
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
-                });
+                })
+                .finally(() => { reset(); });
         }
     });
 

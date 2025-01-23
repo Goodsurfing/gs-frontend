@@ -36,7 +36,7 @@ export const HostGalleryCard: FC<HostGalleryCardProps> = memo(
         };
 
         return (
-            <div className={cn(styles.wrapper, className)}>
+            <div id="3" className={cn(styles.wrapper, className)}>
                 <Text title={t("personalHost.Фото")} titleSize="h3" />
                 {renderImageGallery()}
             </div>

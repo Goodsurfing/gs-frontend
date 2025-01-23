@@ -9,7 +9,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import { getMessengerPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./VolunteerHeaderCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/entities/Locale";
@@ -57,20 +57,12 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             navigate(getVolunteerDashboardPageUrl(locale));
         }, [locale, navigate]);
 
-        const handleMessageClick = useCallback(() => {
-            navigate(getMessengerPageUrl(locale));
-        }, [locale, navigate]);
-
         const renderButtons = showButtons ? (
             <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
                 Редактировать
             </Button>
 
-        ) : (
-            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleMessageClick}>
-                Написать
-            </Button>
-        );
+        ) : null;
 
         return (
             <div className={styles.wrapper}>

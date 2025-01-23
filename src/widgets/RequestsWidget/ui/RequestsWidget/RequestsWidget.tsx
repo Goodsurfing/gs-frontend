@@ -54,7 +54,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
 
     const navigateTo = () => {
         navigate(getHostNotesPageUrl(locale));
@@ -66,6 +66,8 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
 
     const resetSelectedReview = () => {
         setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
     const renderRequests = () => {
@@ -109,7 +111,8 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
-                });
+                })
+                .finally(() => { reset(); });
         }
     });
 

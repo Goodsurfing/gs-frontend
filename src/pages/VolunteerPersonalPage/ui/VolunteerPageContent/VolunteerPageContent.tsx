@@ -1,9 +1,10 @@
 import React, { FC, memo } from "react";
 
-import { VolunteerApi, VolunteerInfoCard } from "@/entities/Volunteer";
+import { VolunteerApi } from "@/entities/Volunteer";
 
 import styles from "./VolunteerPageContent.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
+import { VolunteerInfoCard } from "@/entities/Volunteer/ui/VolunteerInfoCard/VolunteerInfoCard";
 
 interface VolunteerPageContentProps {
     volunteer?: VolunteerApi;

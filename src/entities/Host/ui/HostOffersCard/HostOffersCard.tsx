@@ -59,7 +59,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         }
 
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div id="2" className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Вакансии")} titleSize="h3" />
                 <div className={styles.container}>
                     {renderOffers}

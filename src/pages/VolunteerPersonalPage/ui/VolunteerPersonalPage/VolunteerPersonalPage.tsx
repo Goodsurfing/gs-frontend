@@ -11,7 +11,6 @@ import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import {
-    getMessengerPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
@@ -35,10 +34,6 @@ export const VolunteerPersonalPage = () => {
 
     const handleEditClick = useCallback(() => {
         navigate(getVolunteerDashboardPageUrl(locale));
-    }, [locale, navigate]);
-
-    const handleMessageClick = useCallback(() => {
-        navigate(getMessengerPageUrl(locale));
     }, [locale, navigate]);
 
     if (isLoading || myProfileIsLoading || !myProfileData || !volunteerData) {
@@ -78,17 +73,7 @@ export const VolunteerPersonalPage = () => {
             Редактировать
         </Button>
 
-    ) : (
-        <Button
-            size="SMALL"
-            color="BLUE"
-            variant="OUTLINE"
-            className={styles.button}
-            onClick={handleMessageClick}
-        >
-            Написать
-        </Button>
-    );
+    ) : null;
 
     return (
         <div className={styles.wrapper}>

@@ -1,11 +1,14 @@
+import { Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
-import { Pagination } from "@mui/material";
 import { ErrorType } from "@/types/api/error";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
 import { FullFormApplication } from "@/entities/Application";
+import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 import { VolunteerModalReview } from "@/entities/Review";
 import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
@@ -15,12 +18,10 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 export const NotesVolunteerForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -36,12 +37,14 @@ export const NotesVolunteerForm = () => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
     const [selectedApplication,
         setSelectedApplication] = useState<FullFormApplication | null>(null);
 
     const applicationsPerPage = 10;
-    const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
+    const [pageApplications, setPageApplications] = useState<
+    FullFormApplication[]
+    >([]);
     const [page, setPage] = useState<number>(1);
     const [getApplicationsData,
         { data: applications, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
@@ -61,7 +64,9 @@ export const NotesVolunteerForm = () => {
         }
     }, [applications, page]);
 
-    const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
+    const totalPageCount = applications
+        ? Math.ceil(applications.length / applicationsPerPage)
+        : 0;
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -95,6 +100,8 @@ export const NotesVolunteerForm = () => {
 
     const resetSelectedReview = () => {
         setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
     const onSendReview = handleSubmit(async (data) => {
@@ -117,13 +124,18 @@ export const NotesVolunteerForm = () => {
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
+                })
+                .finally(() => {
+                    reset();
                 });
         }
     });
 
     if (isLoading) {
         return (
-            <div><MiniLoader /></div>
+            <div className={styles.wrapper}>
+                <MiniLoader />
+            </div>
         );
     }
 

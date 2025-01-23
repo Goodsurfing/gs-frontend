@@ -9,6 +9,7 @@ import { OfferWhatToDo } from "./offerWhatToDo";
 import { OfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
+import { ImageType } from "@/entities/Profile";
 
 export interface Offer {
     id: number;
@@ -31,6 +32,7 @@ export interface OfferOrganization {
     id: string;
     name: string;
     type: string;
+    avatar: ImageType;
 }
 export interface AddressAutoComplete {
     list: string[];

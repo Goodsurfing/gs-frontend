@@ -73,6 +73,13 @@
 
 .button {
     width: 100%;
-    padding: 7px;
+    padding: 7px !important;
     text-align: center;
+}
+
+
+@media(max-width: 500px) {
+    .buttons {
+        flex-direction: column;
+    } 
 }

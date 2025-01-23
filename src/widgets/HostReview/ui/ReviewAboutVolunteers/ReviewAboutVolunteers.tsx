@@ -36,7 +36,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
     const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
         null,
     );
@@ -66,6 +66,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
 
     const resetSelectedReview = () => {
         setSelectedApplication(null);
+        setToast(undefined);
+        reset();
     };
 
     const onSendReview = handleSubmit(async (data) => {
@@ -91,7 +93,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
-                });
+                })
+                .finally(() => { reset(); });
         }
     });
 

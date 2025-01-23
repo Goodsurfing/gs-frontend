@@ -15,7 +15,7 @@ export const VolunteerGalleryCard: FC<VolunteerGalleryCardProps> = memo(
         const { className, images } = props;
 
         return (
-            <div className={cn(styles.wrapper, className)}>
+            <div id="4" className={cn(styles.wrapper, className)}>
                 <Text title="Добавленные фотографии" titleSize="h3" />
                 {images ? (
                     <ImageGallerySlider images={images} />
