@@ -152,7 +152,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                             )}
                         />
                         <Controller
-                            name="showClosedOffers"
+                            name="offersSort.showClosedOffers"
                             control={control}
                             render={({ field }) => (
                                 <SwitchClosedOffers
