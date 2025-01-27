@@ -79,7 +79,6 @@ export const OffersSearchFilter = () => {
         <FormProvider {...offerFilterForm}>
             <div className={styles.wrapper}>
                 <OffersFilter className={styles.filter} />
-
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
                         onChangeMapOpen={handleMapOpen}
@@ -88,7 +87,6 @@ export const OffersSearchFilter = () => {
                             [styles.closed]: !isMapOpened,
                         })}
                     />
-
                     {isMapOpened && (
                         <OffersMap
                             className={styles.offersMap}

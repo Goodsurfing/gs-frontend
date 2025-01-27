@@ -2,6 +2,7 @@ import React, {
     forwardRef, MouseEventHandler,
 } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import styles from "./Categories.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
@@ -20,6 +21,7 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
     const {
         className, isOpen, onClick, value, onChange,
     } = props;
+    const { t } = useTranslation("offers-map");
 
     return (
         <div className={cn(styles.wrapper, className)} ref={ref}>
@@ -28,7 +30,7 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
                 className={cn(styles.btn, { [styles.open]: isOpen })}
             >
                 <div className={styles.inner}>
-                    Направление деятельности
+                    {t("Направление деятельности")}
                     <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
                 </div>
                 <Arrow isOpen={isOpen} className={cn(styles.arrow, { [styles.open]: isOpen })} />
