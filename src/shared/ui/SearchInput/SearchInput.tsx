@@ -3,6 +3,7 @@ import {
     IconButton, InputBase, Paper, SxProps, Theme,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
+import { useTranslation } from "react-i18next";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 
 import styles from "./SearchInput.module.scss";
@@ -18,6 +19,8 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
     const {
         sx, className, value, onChange,
     } = props;
+    const { t } = useTranslation();
+
     return (
         <Paper
             component="form"
@@ -36,7 +39,7 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
         >
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
-                placeholder="Поиск"
+                placeholder={t("Поиск")}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             />

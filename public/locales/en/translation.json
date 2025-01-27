@@ -176,5 +176,11 @@
         "canceled": "Rejected",
         "Сообщение": "Message",
         "Написать отзыв": "Write a review"
-    }
+    },
+    "journals": "Journals",
+    "news": "News",
+    "Видео": "Video",
+    "Свежее": "Fresh",
+    "Популярное": "Popular",
+    "Поиск": "Search"
 }
