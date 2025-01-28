@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo, useCallback } from "react";
 
 import { DatePeriods } from "@/features/OfferWhen/model/types/offerWhen";
 
@@ -10,22 +10,26 @@ interface PeriodsFilterProps {
     wrapperClassName?: string;
 }
 
-export const PeriodsFilter: FC<PeriodsFilterProps> = (props) => {
+export const PeriodsFilter: FC<PeriodsFilterProps> = memo((props: PeriodsFilterProps) => {
     const { value, onChange, wrapperClassName } = props;
 
-    const handlePeriodsChange = (periods: DatePeriods) => {
+    const handlePeriodsChange = useCallback((periods: DatePeriods) => {
         if (value) {
             onChange(periods);
         }
-    };
+    }, [value, onChange]);
 
     return (
         <div>
             <Periods
                 wrapperClassName={wrapperClassName}
-                onDateChange={(periods) => handlePeriodsChange(periods)}
+                onDateChange={handlePeriodsChange}
                 value={value}
             />
         </div>
     );
-};
+}, (prevProps, nextProps) => (
+    prevProps.value === nextProps.value
+        && prevProps.onChange === nextProps.onChange
+        && prevProps.wrapperClassName === nextProps.wrapperClassName
+));

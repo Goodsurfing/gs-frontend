@@ -14,7 +14,7 @@ export const Header: FC<HeaderProps> = memo((props: HeaderProps) => {
     return (
         <section className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>
-                {t("video")}
+                {t("Видео")}
             </h1>
         </section>
     );

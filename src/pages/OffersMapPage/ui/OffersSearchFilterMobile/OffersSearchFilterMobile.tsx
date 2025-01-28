@@ -3,6 +3,7 @@ import React, { FC, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 
+import { useTranslation } from "react-i18next";
 import {
     OfferPagination,
     OffersMap,
@@ -35,6 +36,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
 ) => {
     const { className } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("offers-map");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
@@ -117,7 +119,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     isActive={isOffersTabOpened}
                     onClick={handleOffersTab}
                 >
-                    Список вакансий
+                    {t("Список вакансий")}
                     <ReactSVG src={searchIcon} />
                 </SquareButton>
                 <div className={styles.buttons}>
@@ -126,14 +128,14 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                         isActive={isMapTabOpened}
                         onClick={handleMapTab}
                     >
-                        Карта
+                        {t("Карта")}
                     </SquareButton>
                     <SquareButton
                         className={cn(styles.button)}
                         isActive={isFilterTabOpened}
                         onClick={handleFilterTab}
                     >
-                        Фильтр
+                        {t("Фильтр")}
                     </SquareButton>
                 </div>
                 {isOffersTabOpened && (
@@ -170,7 +172,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     <div className={styles.offersCount}>
                         {data ? data.length : 0}
                         {" "}
-                        вариантов
+                        {t("вариантов")}
                     </div>
                     <div className={styles.list}>{renderOfferCards}</div>
                     <OfferPagination
