@@ -8,8 +8,8 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import styles from "./OffersSearchFilter.module.scss";
 import { CategoryType, categoryValues } from "@/types/categories";
+import styles from "./OffersSearchFilter.module.scss";
 
 export const OffersSearchFilter = () => {
     const defaultFilterValues: DefaultValues<OffersFilterFields> = {
@@ -44,7 +44,6 @@ export const OffersSearchFilter = () => {
 
     const [isSyncing, setIsSyncing] = useState(false);
 
-    // Sync form to URL params
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (!isSyncing && name === "category") {
@@ -63,7 +62,6 @@ export const OffersSearchFilter = () => {
         return () => subscription.unsubscribe();
     }, [watch, setSearchParams, isSyncing]);
 
-    // Sync URL params to form
     useEffect(() => {
         setIsSyncing(true);
         const categoriesFromURL = searchParams.get("category")
@@ -81,7 +79,6 @@ export const OffersSearchFilter = () => {
         <FormProvider {...offerFilterForm}>
             <div className={styles.wrapper}>
                 <OffersFilter className={styles.filter} />
-
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
                         onChangeMapOpen={handleMapOpen}
@@ -90,7 +87,6 @@ export const OffersSearchFilter = () => {
                             [styles.closed]: !isMapOpened,
                         })}
                     />
-
                     {isMapOpened && (
                         <OffersMap
                             className={styles.offersMap}

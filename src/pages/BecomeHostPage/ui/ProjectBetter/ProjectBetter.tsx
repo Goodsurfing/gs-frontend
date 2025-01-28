@@ -4,7 +4,7 @@ import { ReactSVG } from "react-svg";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getProfilePageUrl } from "@/shared/config/routes/AppUrls";
+import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 
 import { betterProjectData } from "../../data/becomeHost";
@@ -16,7 +16,7 @@ export const ProjectBetter = () => {
     const navigate = useNavigate();
 
     const navigateClick = () => {
-        navigate(getProfilePageUrl(locale));
+        navigate(getProfileRolePageUrl(locale));
     };
 
     const renderMarks = () => betterProjectData.map((item) => {

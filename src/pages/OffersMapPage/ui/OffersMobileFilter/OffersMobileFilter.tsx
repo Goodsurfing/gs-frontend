@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import styles from "./OffersMobileFilter.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { OffersFilterFields } from "../../model/types";
@@ -11,14 +12,16 @@ import { ProvidedFilter } from "@/widgets/OffersMap/ui/ProvidedFilter/ProvidedFi
 
 export const OffersMobileFilter: FC = () => {
     const { control } = useFormContext<OffersFilterFields>();
+    const { t } = useTranslation("offers-map");
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.filterControls}>
                 <Button variant="TEXT" color="BLUE" size="MEDIUM">
-                    Применить
+                    {t("Применить")}
                 </Button>
                 <Button variant="TEXT" color="BLUE" size="MEDIUM">
-                    Очистить все
+                    {t("Очистить все")}
                 </Button>
             </div>
             <Controller
@@ -27,7 +30,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Период (от-до)
+                            {t("Период (от-до)")}
                         </Typography>
                         <PeriodsFilter
                             wrapperClassName={styles.wrapperClassName}
@@ -55,7 +58,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Направление деятельности
+                            {t("Направление деятельности")}
                         </Typography>
                         <OfferCategories value={field.value} onChange={field.onChange} />
                     </div>
@@ -67,7 +70,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Знание языка
+                            {t("Знание языка")}
                         </Typography>
                         <LanguagesGroup value={field.value} onChange={field.onChange} />
                     </div>

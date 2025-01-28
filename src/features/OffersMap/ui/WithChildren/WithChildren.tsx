@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { FormControlLabel, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import styles from "./WithChildren.module.scss";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
@@ -10,6 +11,8 @@ interface WithChildrenProps {
 
 export const WithChildren: FC<WithChildrenProps> = (props) => {
     const { value, onChange } = props;
+    const { t } = useTranslation("offers-map");
+
     return (
         <div className={styles.wrapper}>
             <FormControlLabel
@@ -22,7 +25,7 @@ export const WithChildren: FC<WithChildrenProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        Можно с детьми
+                        {t("Можно с детьми")}
                     </Typography>
                 )}
                 control={(

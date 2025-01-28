@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { goodSurfingData } from "../../model/data/ourTeam";
 import { TeamItem } from "../TeamItem/TeamItem";
 import styles from "./GoodsurfingTeam.module.scss";
@@ -11,6 +12,8 @@ interface GoodsurfingTeamProps {
 
 export const GoodsurfingTeam: FC<GoodsurfingTeamProps> = memo((props: GoodsurfingTeamProps) => {
     const { className } = props;
+    const { t } = useTranslation("our-team");
+
     const renderItems = useMemo(
         () => goodSurfingData.map((item, index) => (
             <TeamItem
@@ -25,7 +28,7 @@ export const GoodsurfingTeam: FC<GoodsurfingTeamProps> = memo((props: Goodsurfin
     );
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Команда Гудсёрфинга</h2>
+            <h2 className={styles.title}>{t("Команда Гудсёрфинга")}</h2>
             <div className={styles.container}>{renderItems}</div>
         </section>
     );
