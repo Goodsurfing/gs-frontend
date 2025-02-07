@@ -175,5 +175,12 @@
         "canceled": "Rechazado",
         "Сообщение": "Mensaje",
         "Написать отзыв": "Escribir una reseña"
-    }
+    },
+    "Не задано": "No especificado",
+    "journals": "Revistas",
+    "news": "Noticias",
+    "Видео": "Video",
+    "Свежее": "Reciente",
+    "Популярное": "Popular",
+    "Поиск": "Buscar"
 }

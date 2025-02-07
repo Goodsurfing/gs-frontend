@@ -3,11 +3,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import BenefitItem from "@/containers/BenefitsContainer/BenefitItem/BenefitItem";
-import { benefitsData } from "@/containers/BenefitsContainer/Benefits.data";
+import { useBenefitsData } from "@/containers/BenefitsContainer/Benefits.data";
 
 import styles from "./BenefitsContainer.module.scss";
 
 const BenefitsContainer: FC = () => {
+    const benefitsData = useBenefitsData();
+
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
 

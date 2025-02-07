@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useRef, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { Categories, ExtraFilters } from "@/widgets/OffersMap";
 import { ButtonFilter } from "@/widgets/OffersMap/ui/ButtonFilter/ButtonFilter";
 import { ParticipationPeriod } from "@/widgets/OffersMap/ui/ParticipationPeriod/ParticipationPeriod";
@@ -26,6 +27,7 @@ interface OffersFilterProps {
 export const OffersFilter: FC<OffersFilterProps> = (props) => {
     const { className } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("offers-map");
 
     const categoriesRef = useRef(null);
 
@@ -98,7 +100,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     )}
                 />
                 <ButtonFilter
-                    text="Срок участия"
+                    text={t("Срок участия")}
                     isShowBluePoint={
                         !(
                             watchParticipationPeriod[0] === 7
@@ -109,7 +111,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     onClick={() => handleOpenDropdown("PERIODS")}
                 />
                 <ButtonFilter
-                    text="Доп. фильтры"
+                    text={t("Доп. фильтры")}
                     isShowBluePoint={false}
                     isOpen={dropdownOpened.isExtraFiltersOpened}
                     onClick={() => handleOpenDropdown("EXTRAFILTERS")}
