@@ -24,38 +24,22 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     const {
         chatsListWithOrganizations,
         chatsListWithVolunteers,
+        searchValue,
+        statusValue,
+        onChangeSearchValue,
+        onChangeStatusValue,
     } = useGetChatListData(token, mercureToken);
     const [filteredChatList,
         setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]
     >([]);
-    const [searchChats, setSearchChats] = useState<string>("");
 
     const handleTextChange = (text: string) => {
-        setSearchChats(text);
+        onChangeSearchValue(text);
     };
 
     useEffect(() => {
-        if (searchChats) {
-            const lowerSearch = searchChats.toLowerCase();
-
-            const tempChatsListWithOrganizations = chatsListWithOrganizations.filter(
-                (chatItem) => chatItem.organization.name.toLowerCase().includes(lowerSearch),
-            );
-
-            const tempChatsListWithVolunteers = chatsListWithVolunteers.filter(
-                (chatItem) => {
-                    const name = `${chatItem.volunteer.profile.lastName} ${chatItem.volunteer.profile.firstName}`;
-                    return name.toLowerCase().includes(lowerSearch);
-                },
-            );
-
-            setFilteredChatList([...tempChatsListWithOrganizations,
-                ...tempChatsListWithVolunteers]);
-        } else {
-            setFilteredChatList([...chatsListWithOrganizations,
-                ...chatsListWithVolunteers]);
-        }
-    }, [chatsListWithOrganizations, chatsListWithVolunteers, searchChats]);
+        setFilteredChatList([...chatsListWithOrganizations, ...chatsListWithVolunteers]);
+    }, [chatsListWithOrganizations, chatsListWithVolunteers]);
 
     const renderUserCard = useMemo(
         () => filteredChatList.map(
@@ -74,7 +58,12 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     return (
         <div className={cn(styles.layout, className)}>
             <div className={styles.topList}>
-                <ListFilter value={searchChats} onChange={handleTextChange} />
+                <ListFilter
+                    value={searchValue}
+                    valueStatus={statusValue}
+                    onChange={handleTextChange}
+                    onChangeStatus={onChangeStatusValue}
+                />
             </div>
             <div className={cn(styles.wrapper)}>{renderUserCard}</div>
         </div>
