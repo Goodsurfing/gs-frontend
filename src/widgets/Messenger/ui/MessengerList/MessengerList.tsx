@@ -38,6 +38,10 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
     };
 
     useEffect(() => {
+        setFilteredChatList([]);
+    }, [statusValue]);
+
+    useEffect(() => {
         setFilteredChatList([...chatsListWithOrganizations, ...chatsListWithVolunteers]);
     }, [chatsListWithOrganizations, chatsListWithVolunteers]);
 
