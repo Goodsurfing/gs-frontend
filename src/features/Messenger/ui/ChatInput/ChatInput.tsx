@@ -9,22 +9,39 @@ import cn from "classnames";
 import clipIcon from "@/shared/assets/icons/clip.svg";
 import sendIcon from "@/shared/assets/icons/send-arrow.svg";
 import smileIcon from "@/shared/assets/icons/chat-smile.svg";
+import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import styles from "./ChatInput.module.scss";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import uploadFile, { ObjectMediaResponse } from "@/shared/hooks/files/useUploadFile";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+
+interface AttachmentType {
+    filename: string;
+    objectMedia: ObjectMediaResponse;
+}
+
+export interface SendMessageType {
+    text: string;
+    attachments: string[];
+}
 
 interface ChatInputProps {
     sx?: SxProps<Theme>;
     disabled?: boolean;
-    onSendMessage: (message: string) => void;
+    onSendMessage: (message: SendMessageType) => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = (props) => {
     const { sx, disabled = false, onSendMessage } = props;
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
+    const [attachmentValue, setAttachmentValue] = useState<AttachmentType>();
+    const [isAttachmentLoading, setAttachmentLoading] = useState<boolean>(false);
+
     const emojiRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useOnClickOutside(emojiRef, () => setShowEmojiPicker(() => false));
 
@@ -33,9 +50,14 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     };
 
     const handleSendMessage = () => {
-        if (inputValue.trim()) {
-            onSendMessage(inputValue);
+        if (inputValue.trim() || attachmentValue) {
+            const formMessage: SendMessageType = {
+                text: inputValue,
+                attachments: attachmentValue?.objectMedia ? [attachmentValue.objectMedia["@id"]] : [],
+            };
+            onSendMessage(formMessage);
             setInputValue("");
+            setAttachmentValue(undefined);
         }
     };
 
@@ -44,6 +66,36 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
             e.preventDefault();
             handleSendMessage();
         }
+    };
+
+    const handleAttachmentValue = async (file?: File) => {
+        setAttachmentLoading(true);
+        if (file) {
+            await uploadFile(file.name, file)
+                .then((objectMedia) => {
+                    if (objectMedia) {
+                        setAttachmentValue({ filename: file.name, objectMedia });
+                    }
+                })
+                .catch(() => {
+                    // empty
+                })
+                .finally(() => setAttachmentLoading(false));
+        }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files?.length) {
+            handleAttachmentValue(event.target.files[0]);
+        }
+    };
+
+    const handleFileClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleDeleteAttachment = () => {
+        setAttachmentValue(undefined);
     };
 
     return (
@@ -65,9 +117,21 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     ...sx,
                 }}
             >
-                <IconButton aria-label="menu" className={styles.button}>
-                    <ReactSVG src={clipIcon} className={styles.icon} />
-                </IconButton>
+                {isAttachmentLoading ? <MiniLoader />
+                    : (
+                        <IconButton aria-label="menu" className={styles.button} onClick={handleFileClick}>
+                            <ReactSVG
+                                src={clipIcon}
+                                className={styles.icon}
+                            />
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ display: "none" }}
+                                onChange={handleFileChange}
+                            />
+                        </IconButton>
+                    )}
                 <TextField
                     className="chatInput"
                     sx={{ ml: 1, flex: 1 }}
@@ -124,6 +188,17 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     )}
                 />
             </IconButton>
+            {attachmentValue && (
+                <div className={styles.attachmentFile}>
+                    {attachmentValue.filename}
+                    <IconButton onClick={handleDeleteAttachment}>
+                        <ReactSVG
+                            src={deleteIcon}
+                            className={cn(styles.icon, deleteIcon)}
+                        />
+                    </IconButton>
+                </div>
+            )}
         </div>
     );
 };
