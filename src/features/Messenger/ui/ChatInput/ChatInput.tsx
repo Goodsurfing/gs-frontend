@@ -40,6 +40,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     const [attachmentValue, setAttachmentValue] = useState<AttachmentType>();
     const [isAttachmentLoading, setAttachmentLoading] = useState<boolean>(false);
 
+    const textFieldRef = useRef<HTMLInputElement>(null);
     const emojiRef = useRef(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -80,7 +81,12 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                 .catch(() => {
                     // empty
                 })
-                .finally(() => setAttachmentLoading(false));
+                .finally(() => {
+                    setAttachmentLoading(false);
+                    if (textFieldRef.current) {
+                        textFieldRef.current.focus();
+                    }
+                });
         }
     };
 
@@ -145,6 +151,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                         disableUnderline: true,
                     }}
                     onKeyDown={handleKeyDown}
+                    inputRef={textFieldRef}
                 />
                 <IconButton
                     ref={emojiRef}
@@ -194,7 +201,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     <IconButton onClick={handleDeleteAttachment}>
                         <ReactSVG
                             src={deleteIcon}
-                            className={cn(styles.icon, deleteIcon)}
+                            className={cn(styles.icon, styles.deleteIcon)}
                         />
                     </IconButton>
                 </div>

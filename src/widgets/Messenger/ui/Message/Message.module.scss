@@ -22,10 +22,37 @@
 .messageContent.image {
     padding: 8px;
     max-width: 420px;
+    gap: 8px;
 }
 
 .messageContent.userMessage {
     background-color: var(--text-secondary-1);
+}
+
+.fileContainer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    word-break: break-all;
+}
+
+.fileContainer:hover {
+    color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.fileWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .text {
