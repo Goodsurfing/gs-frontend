@@ -14,16 +14,22 @@ interface MessageRequest {
     message: string;
 }
 
+export interface CreateMessageType {
+    text?: string;
+    chat: string;
+    attachments: string[];
+}
+
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
     tagTypes: ["chat"],
     endpoints: (build) => ({
-        createMessage: build.mutation<Message[], FormData>({
-            query: (formData) => ({
+        createMessage: build.mutation<Message[], CreateMessageType>({
+            query: (body) => ({
                 url: "messages",
                 method: "POST",
-                body: formData,
+                body,
             }),
         }),
         readMessage: build.mutation<ChatType, MessageRequest>({

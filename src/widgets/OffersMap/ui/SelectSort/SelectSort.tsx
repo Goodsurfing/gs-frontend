@@ -4,7 +4,7 @@ import SelectField from "@/components/SelectField/SelectField";
 
 import { SortValue } from "@/entities/Offer";
 
-import { sortOffers } from "../../model/sortOffers.data";
+import { useSortOffers } from "../../model/sortOffers.data";
 import styles from "./SelectSort.module.scss";
 
 interface SelectSortProps {
@@ -19,6 +19,7 @@ export const SelectSort: FC<SelectSortProps> = (props) => {
     const {
         value, onChange, className, classNameControl, classNameDropdown,
     } = props;
+    const sortOffers = useSortOffers();
 
     const findValueSort = (valueSort: SortValue) => sortOffers
         .find((option) => option.value === valueSort);

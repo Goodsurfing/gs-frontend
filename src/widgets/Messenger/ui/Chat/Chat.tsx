@@ -205,6 +205,10 @@ export const Chat: FC<ChatProps> = (props) => {
         }
     }, [updateApplicationStatus]);
 
+    const onImageChange = (src: string) => {
+        setSelectedImage(src);
+    };
+
     useEffect(() => {
         const processMessages = async () => {
             let currentDate = "";
@@ -213,7 +217,7 @@ export const Chat: FC<ChatProps> = (props) => {
             const elements = await Promise.all(
                 messages.map(async (message) => {
                     const {
-                        createdAt, author, text, applicationForm, id: messageId,
+                        createdAt, author, text, attachments, applicationForm, id: messageId,
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
@@ -288,7 +292,9 @@ export const Chat: FC<ChatProps> = (props) => {
                                 date={formatMessageDate(locale, createdAt)}
                                 isUser={isUser}
                                 text={text}
+                                attachments={attachments}
                                 username={userName ?? ""}
+                                onImageClick={onImageChange}
                             />
                             {dateLine}
                         </Fragment>
@@ -321,10 +327,6 @@ export const Chat: FC<ChatProps> = (props) => {
     const infoOpenedChange = () => {
         setInfoOpened((prev) => !prev);
     };
-
-    // const onImageChange = (src: string) => {
-    //     setSelectedImage(src);
-    // };
 
     const onClosePopup = () => {
         setSelectedImage(undefined);

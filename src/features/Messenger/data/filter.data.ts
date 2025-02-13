@@ -1,6 +1,6 @@
 import { FormApplicationStatus } from "@/entities/Application";
 
-export type FilterValue = FormApplicationStatus | "communication" | "archive" | null;
+export type FilterValue = FormApplicationStatus | null;
 
 interface FilterData {
     text: string;
@@ -23,13 +23,5 @@ export const filterData: FilterData[] = [
         text: "Отклоненные",
         color: "#FCC3C3",
         value: "canceled",
-    },
-    {
-        text: "Общение",
-        value: "communication",
-    },
-    {
-        text: "Архив",
-        value: "archive",
     },
 ];

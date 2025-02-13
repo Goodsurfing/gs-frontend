@@ -9,16 +9,18 @@ import Popup from "@/components/Popup/Popup";
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import { FilterValue, filterData } from "../../data/filter.data";
+import { filterData } from "../../data/filter.data";
 import styles from "./UserListFilter.module.scss";
+import { FormApplicationStatus } from "@/entities/Application";
 
 interface UserListFilterProps {
+    filterValue: FormApplicationStatus | null
     onChange?: (value: any) => void;
 }
 
 export const UserListFilter: FC<UserListFilterProps> = (props) => {
-    const { onChange } = props;
-    const [filterValue, setFilterValue] = useState<FilterValue>(null);
+    const { filterValue, onChange } = props;
+    // const [filterValue, setFilterValue] = useState<FilterValue>(null);
     const [isDropdownOpened, setDropdownOpened] = useState<boolean>(false);
     const buttonRef = useRef(null);
 
@@ -29,12 +31,12 @@ export const UserListFilter: FC<UserListFilterProps> = (props) => {
     };
 
     const selectFilter = useCallback(
-        (value: FilterValue) => {
+        (value: FormApplicationStatus | null) => {
             if (value === filterValue) {
-                setFilterValue(null);
+                // setFilterValue(null);
                 onChange?.(null);
             } else {
-                setFilterValue(value);
+                // setFilterValue(value);
                 onChange?.(value);
             }
             setDropdownOpened(false);

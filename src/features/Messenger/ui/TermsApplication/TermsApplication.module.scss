@@ -43,7 +43,19 @@
     text-align: center;
 }
 
+.buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 @media (max-width: 480px) {
+    .buttons {
+        flex-direction: column;
+    }
+
     .wrapper {
         padding: 1rem;
     }

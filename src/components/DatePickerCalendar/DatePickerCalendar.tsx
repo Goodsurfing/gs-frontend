@@ -7,6 +7,7 @@ import React, {
     useRef,
     useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 
 import calendarIcon from "@/shared/assets/icons/calendar.svg";
@@ -38,6 +39,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     const calendarRef = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
     const { locale } = useLocale();
+    const { t } = useTranslation();
 
     useLayoutEffect(() => {
         setInputValue(getInputValueFromDate(value));
@@ -131,7 +133,7 @@ const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
                     readOnly
                     type="text"
                     value={inputValue}
-                    placeholder="Не задано"
+                    placeholder={t("Не задано")}
                     onChange={onInputValueChange}
                     className={cn(styles.input, {
                         [styles.invalid]: !isValueDate,

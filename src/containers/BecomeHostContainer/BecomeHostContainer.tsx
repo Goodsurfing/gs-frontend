@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getBecomeHostPageUrl } from "@/shared/config/routes/AppUrls";
@@ -10,17 +11,16 @@ import styles from "./BecomeHostContainer.module.scss";
 
 const BecomeHostContainer: FC = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation("main");
+
     return (
         <div className={styles.wrapper}>
-            <SectionTitle>Прими гудсёрферов</SectionTitle>
+            <SectionTitle>{t("Прими гудсёрферов")}</SectionTitle>
             <p className={styles.text}>
-                Получайте помощь в своём деле и знакомьтесь с людьми со всего
-                мира. Гудсёрферы не только принесут пользу, но и помогут
-                познакомиться с новыми культурами, распространить информацию о
-                вас, получить экспертов по различным направлениям.
+                {t("Получайте помощь")}
             </p>
             <ButtonLink path={getBecomeHostPageUrl(locale)} type="primary">
-                Стать хостом
+                {t("Стать хостом")}
             </ButtonLink>
         </div>
     );

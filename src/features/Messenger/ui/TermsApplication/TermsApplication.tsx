@@ -122,14 +122,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                 </div>
             </div>
             { (isHost && !onSuccess) && (
-                <div style={{
-                    display: "flex",
-                    gap: "10px",
-                    width: "100%",
-                    justifyContent: "center",
-                    marginTop: "20px",
-                }}
-                >
+                <div className={styles.buttons}>
                     <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => handleApplicationSubmit("accepted")}>Принять</Button>
                     <Button color="GRAY" size="SMALL" variant="OUTLINE" onClick={() => handleApplicationSubmit("canceled")}>Отклонить</Button>
                 </div>

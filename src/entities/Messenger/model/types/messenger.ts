@@ -3,11 +3,13 @@ import { Host, HostApi } from "@/entities/Host";
 import { Language, VolunteerApi } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
+import { MediaObjectType } from "@/types/media";
 
 export interface MessageType {
     id: number;
     author: string;
     text?: string;
+    attachments: string[] | MediaObjectType[];
     createdAt: string;
     viewedVolunteer: boolean;
     viewedOrganization: boolean;
