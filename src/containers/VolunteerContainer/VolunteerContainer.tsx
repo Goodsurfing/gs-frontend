@@ -32,7 +32,7 @@ const VolunteerContainer = memo(() => {
                 {...item}
             />
         )),
-        [],
+        [volunteerData],
     );
 
     const { locale } = useLocale();
