@@ -2,11 +2,12 @@ import React, { FC, memo, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
-import { activityData } from "../../model/data/mockedPopularPlacesData";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
 export const Activity: FC = memo(() => {
+    const { tags } = useCategories();
     const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
     return (
@@ -16,14 +17,15 @@ export const Activity: FC = memo(() => {
             </h2>
             <div className={styles.wrapper}>
                 <SelectableGroup
-                    data={activityData}
+                    data={tags}
                     getKey={(item) => item.value}
                     onSelect={(value) => setSelectedActivities(value)}
                     renderItem={(category, onClick, isSelect) => (
                         <CategoryCard
-                            category={category}
+                            category={{ image: category.image, text: category.text }}
                             onClick={onClick}
                             isSelect={isSelect}
+                            key={category.value}
                         />
                     )}
                     selectedItems={selectedActivities}

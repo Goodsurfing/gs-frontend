@@ -91,6 +91,8 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         externalInfo: "asfasf",
         languages: [],
         skills: [],
+        certificates: [],
+        favoriteCategories: [],
     },
     {
         profile: {
@@ -105,6 +107,8 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         externalInfo: "asfasf",
         languages: [],
         skills: [],
+        certificates: [],
+        favoriteCategories: [],
     },
     {
         profile: {
@@ -114,10 +118,13 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             locale: "ru",
             memberProfiles: [],
             membershipEndDate: "",
+
         },
         additionalSkills: [],
         externalInfo: "asfasf",
         languages: [],
         skills: [],
+        certificates: [],
+        favoriteCategories: [],
     },
 ];

@@ -9,14 +9,6 @@
     row-gap: 30px;
     margin-top: 20px;
     cursor: pointer;
-
-    div {
-        &:last-child {
-            h4 {
-                color: var(--text-caption);
-            }
-        }
-    }
 }
 
 .title {
