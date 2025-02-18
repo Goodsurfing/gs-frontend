@@ -1,10 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { VolunteerApi } from "../model/types/volunteer";
+import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
 
 interface UpdateVolunteerParams {
     profileId: string;
-    body: Partial<Omit<VolunteerApi, "profile">>
+    body: Partial<VolunteerType>;
 }
 
 export const volunteerApi = createApi({

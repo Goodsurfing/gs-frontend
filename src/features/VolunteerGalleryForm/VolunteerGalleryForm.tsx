@@ -1,17 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
 import { UploadMultipleImages } from "@/modules/Gallery";
 
-import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile } from "@/entities/Profile";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface VolunteerGalleryFormProps {
     className?: string;
+    profileData: Profile;
 }
 
 export const VolunteerGalleryForm: FC<VolunteerGalleryFormProps> = (props) => {
-    const { className } = props;
-    const { data: profileData } = useGetProfileInfoQuery();
+    const { className, profileData } = props;
 
     const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [isGalleryError, setGalleryError] = useState<boolean>(false);

@@ -8,6 +8,27 @@
     object-fit: cover;
 }
 
+.fileWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 130px;
+    background-color: var(--accent-elements);
+    cursor: pointer;
+}
+
 .closeBtn {
     position: absolute;
     border: none;

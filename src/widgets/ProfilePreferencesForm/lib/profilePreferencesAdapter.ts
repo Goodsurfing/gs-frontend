@@ -1,9 +1,9 @@
-import { VolunteerApi } from "@/entities/Volunteer";
+import { VolunteerApi, VolunteerType } from "@/entities/Volunteer";
 import { ProfilePreferencesField } from "../model/types/profilePreferences";
 
 export const profilePreferencesApiAdapter = (
     data: ProfilePreferencesField,
-): Partial<VolunteerApi> => {
+): Partial<VolunteerType> => {
     const { favoriteCategories } = data;
     return {
         favoriteCategories,

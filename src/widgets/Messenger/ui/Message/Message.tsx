@@ -41,8 +41,8 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
         [styles.otherMessage]: !isUser,
     });
 
-    const [image, setImage] = useState<MediaObjectType >();
-    const [file, setFile] = useState<MediaObjectType >();
+    const [image, setImage] = useState<MediaObjectType>();
+    const [file, setFile] = useState<MediaObjectType>();
 
     const [getMediaObject, { data }] = useLazyGetMediaObjectByIdQuery();
 

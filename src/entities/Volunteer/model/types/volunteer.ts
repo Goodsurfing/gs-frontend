@@ -8,6 +8,7 @@ import { Language } from "./language";
 import { Language as LanguageApi } from "@/types/languages";
 import { WhatToDoSkillType } from "@/types/skills";
 import { CategoryType } from "@/types/categories";
+import { MediaObjectType } from "@/types/media";
 
 export interface Volunteer extends Profile {
     skills?: SkillsData[];
@@ -29,5 +30,9 @@ export interface VolunteerApi {
     additionalSkills: string[];
     languages: LanguageApi[];
     favoriteCategories: CategoryType[];
-    certificates: string[];
+    certificates: MediaObjectType[];
 }
+
+export type VolunteerType = Omit<VolunteerApi, "profile" | "certificates"> & {
+    certificates: string[];
+};
