@@ -1,3 +1,10 @@
 .wrapper{
     max-width: 950px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.button {
+    width: fit-content;
 }

@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
@@ -6,9 +6,14 @@ import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
 import { useCategories } from "@/shared/data/categories";
 
-export const Activity: FC = memo(() => {
+interface ActivityProps {
+    value: string[];
+    onChange: (value: string[]) => void;
+}
+
+export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
+    const { value, onChange } = props;
     const { tags } = useCategories();
-    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
 
     return (
         <div className={styles.wrapper}>
@@ -19,7 +24,7 @@ export const Activity: FC = memo(() => {
                 <SelectableGroup
                     data={tags}
                     getKey={(item) => item.value}
-                    onSelect={(value) => setSelectedActivities(value)}
+                    onSelect={(valueItem) => onChange(valueItem)}
                     renderItem={(category, onClick, isSelect) => (
                         <CategoryCard
                             category={{ image: category.image, text: category.text }}
@@ -28,7 +33,7 @@ export const Activity: FC = memo(() => {
                             key={category.value}
                         />
                     )}
-                    selectedItems={selectedActivities}
+                    selectedItems={value}
                     containerStyle={styles.container}
                     multiSelect
                 />
