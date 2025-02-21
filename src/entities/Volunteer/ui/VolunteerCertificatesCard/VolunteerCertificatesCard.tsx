@@ -6,10 +6,14 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import styles from "./VolunteerCertificatesCard.module.scss";
+import { MediaObjectType } from "@/types/media";
+import { UploadedCertificate } from "@/features/UploadCertificates";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface VolunteerCertificatesCardProps {
     classname?: string;
-    certificates?: string[];
+    certificates?: MediaObjectType[];
 }
 
 export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = memo((
@@ -24,7 +28,13 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
             }
             return certificates.map((certificate, index) => (
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
-                    <img src={certificate} alt="certificate" className={styles.image} key={index} />
+                    <UploadedCertificate
+                        certificate={getMediaContent(certificate) ?? ""}
+                        isFile
+                        download={getMediaContent(certificate)}
+                        disableCloseButton
+                        classNameItem={styles.certificate}
+                    />
                 </SwiperSlide>
             ));
         },
@@ -32,32 +42,41 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
     );
 
     return (
-        <div className={cn(classname, styles.wrapper)}>
-            <h3 className={styles.title}>Сертификаты и грамоты</h3>
-            <Swiper
-                className={styles.swiper}
-                wrapperClass={styles.containerSwiper}
-                navigation
-                modules={[Navigation]}
-                slidesPerView={5}
-                spaceBetween={28}
-                slidesPerGroupAuto
-                breakpoints={{
-                    640: {
-                        width: 500,
-                        slidesPerGroupAuto: true,
-                        spaceBetween: 30,
-                        slidesPerView: 1,
-                    },
-                    // when window width is >= 768px
-                    768: {
-                        width: 803,
-                        slidesPerView: 2,
-                    },
-                }}
-            >
-                {renderSlides}
-            </Swiper>
+        <div id="6" className={cn(classname, styles.wrapper)}>
+            <Text title="Сертификаты и грамоты" titleSize="h3" />
+            <div className={styles.container}>
+                <Swiper
+                    className={styles.swiper}
+                    wrapperClass={styles.swiperWrapper}
+                    navigation
+                    modules={[Navigation]}
+                    slidesPerView={6}
+                    spaceBetween={10}
+                    slidesPerGroupAuto
+                    breakpoints={{
+                        0: {
+                            slidesPerView: 1,
+                        },
+                        400: {
+                            slidesPerView: 2,
+                        },
+                        576: {
+                            slidesPerView: 3,
+                        },
+                        640: {
+                            slidesPerView: 4,
+                        },
+                        768: {
+                            slidesPerView: 5,
+                        },
+                        1000: {
+                            slidesPerView: 6,
+                        },
+                    }}
+                >
+                    {renderSlides}
+                </Swiper>
+            </div>
         </div>
     );
 });

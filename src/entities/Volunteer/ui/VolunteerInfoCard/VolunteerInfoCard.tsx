@@ -11,6 +11,7 @@ import { VolunteerReviewsCard } from "../VolunteerReviewsCard/VolunteerReviewsCa
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
 import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 import styles from "./VolunteerInfoCard.module.scss";
+import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 
 interface VolunteerInfoCardProps {
     className?: string;
@@ -24,6 +25,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
             && volunteer?.profile.galleryImages.length !== 0;
         const showVideoGallery = volunteer?.profile.videoGallery
             && volunteer?.profile.videoGallery.length !== 0;
+        const showCertificates = volunteer.certificates.length !== 0;
 
         return (
             <div className={cn(className)}>
@@ -61,11 +63,13 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                         className={styles.container}
                     />
                 )}
-                {/* <VolunteerCertificatesCard
-                    certificates={volunteer.certificates}
-                    classname={styles.container}
-                />
-                <VolunteerArticlesCard
+                {showCertificates && (
+                    <VolunteerCertificatesCard
+                        certificates={volunteer.certificates}
+                        classname={styles.container}
+                    />
+                )}
+                {/* <VolunteerArticlesCard
                     articles={volunteer.articles}
                     className={styles.container}
                 /> */}

@@ -17,7 +17,7 @@ export const VolunteerPageContent: FC<VolunteerPageContentProps> = memo(
         if (!volunteer) {
             return (
                 <div className={styles.wrapper}>
-                    <Text text="Информация о пользователе ограничена, так как он не волонтёр или организатор" />
+                    <Text text="Информация о пользователе ограничена, так как он не волонтёр" />
                 </div>
             );
         }

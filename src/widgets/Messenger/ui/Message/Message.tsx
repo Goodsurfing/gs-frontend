@@ -90,7 +90,13 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                 )}
                 >
                     {isUser && <span className={styles.name}>{username}</span>}
-                    <a href={getMediaContent(file)} download className={styles.fileContainer}>
+                    <a
+                        href={getMediaContent(file)}
+                        download
+                        target="_blank"
+                        className={styles.fileContainer}
+                        rel="noreferrer"
+                    >
                         <div className={styles.fileWrapper}>
                             <ReactSVG src={fileIcon} />
                         </div>

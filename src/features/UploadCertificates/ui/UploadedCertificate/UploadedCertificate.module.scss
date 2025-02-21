@@ -29,7 +29,7 @@
     cursor: pointer;
 }
 
-.closeBtn {
+.closeBtn, .closeBtnFile {
     position: absolute;
     border: none;
     background: none;
@@ -42,9 +42,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
 
-    &:hover {
-        background-color: white;
-        cursor: pointer;
+.closeBtnFile {
+    svg {
+        fill: var(--text-secondary-2);
     }
+}
+
+.hidden {
+    display: none;
 }

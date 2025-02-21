@@ -13,9 +13,10 @@ import styles from "./UploadButton.module.scss";
 interface UploadButtonProps {
     id: string;
     onUpload?: (img: File) => void;
+    disabled?: boolean;
 }
 
-export const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
+export const UploadButton: FC<UploadButtonProps> = ({ id, onUpload, disabled }) => {
     const [img, setImg] = useState<string>();
     const { t } = useTranslation("volunteer");
     const handleUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,7 @@ export const UploadButton: FC<UploadButtonProps> = ({ id, onUpload }) => {
 
     return (
         <InputFile
+            disabled={disabled}
             onChange={handleUpload}
             imageURL={img}
             id={id}
