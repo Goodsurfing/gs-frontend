@@ -23,7 +23,7 @@ export const VolunteerLanguagesCard: FC<VolunteerLanguagesCardProps> = memo((
         <div className={cn(className, styles.wrapper)}>
             <Text title="Языки" titleSize="h3" />
             <div className={styles.container}>
-                {languages.length !== 0 ? textLanguages : "Языки не были указаны"}
+                {languages.length !== 0 ? <div className={styles.languages}>{textLanguages}</div> : "Языки не были указаны"}
             </div>
 
         </div>

@@ -11,6 +11,7 @@ import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilte
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./OffersFilter.module.scss";
+import Button from "@/shared/ui/Button/Button";
 
 interface DropdownState {
     isCategoriesOpened: boolean;
@@ -22,10 +23,11 @@ type ButtonNav = "CATEGORIES" | "PERIODS" | "EXTRAFILTERS";
 
 interface OffersFilterProps {
     className?: string;
+    onResetFilters: () => void;
 }
 
 export const OffersFilter: FC<OffersFilterProps> = (props) => {
-    const { className } = props;
+    const { className, onResetFilters } = props;
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
 
@@ -103,8 +105,8 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     text={t("Срок участия")}
                     isShowBluePoint={
                         !(
-                            watchParticipationPeriod[0] === 7
-                            && watchParticipationPeriod[1] === 186
+                            watchParticipationPeriod[0] === 1
+                            && watchParticipationPeriod[1] === 190
                         )
                     }
                     isOpen={dropdownOpened.isPeriodsOpened}
@@ -116,6 +118,11 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     isOpen={dropdownOpened.isExtraFiltersOpened}
                     onClick={() => handleOpenDropdown("EXTRAFILTERS")}
                 />
+
+                <div className={styles.buttons}>
+                    <Button className={styles.button} type="submit" color="BLUE" size="SMALL" variant="FILL">Применить</Button>
+                    <Button className={styles.button} onClick={onResetFilters} color="BLUE" size="SMALL" variant="TEXT">Очистить все</Button>
+                </div>
             </div>
             <div className={styles.bottom}>
                 <Controller

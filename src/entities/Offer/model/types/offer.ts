@@ -10,6 +10,7 @@ import { OfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
 import { ImageType } from "@/entities/Profile";
+import { CategoryType } from "@/types/categories";
 
 export interface Offer {
     id: number;
@@ -44,3 +45,16 @@ export interface OfferSchema {
 }
 
 export type SortValue = "urgency" | "popularity" | "novelty";
+
+export interface OffersFilters {
+    start_date: string;
+    end_date: string;
+    min_duration_days: string;
+    max_duration_days: string;
+    languages: string[];
+    skills: CategoryType[];
+    additionalConditions: string[];
+    housing: string[];
+    food: string[];
+    paidTravel: string[];
+}

@@ -10,17 +10,23 @@ import { OfferCategories } from "@/widgets/OfferCategories";
 import { LanguagesGroup, WithChildren } from "@/features/OffersMap";
 import { ProvidedFilter } from "@/widgets/OffersMap/ui/ProvidedFilter/ProvidedFilter";
 
-export const OffersMobileFilter: FC = () => {
+interface OffersMobileFilterProps {
+    onSubmitFilters: () => void;
+    onResetFilters: () => void;
+}
+
+export const OffersMobileFilter: FC<OffersMobileFilterProps> = (props) => {
+    const { onSubmitFilters, onResetFilters } = props;
     const { control } = useFormContext<OffersFilterFields>();
     const { t } = useTranslation("offers-map");
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.filterControls}>
-                <Button variant="TEXT" color="BLUE" size="MEDIUM">
+                <Button type="submit" onClick={onSubmitFilters} variant="TEXT" color="BLUE" size="MEDIUM">
                     {t("Применить")}
                 </Button>
-                <Button variant="TEXT" color="BLUE" size="MEDIUM">
+                <Button onClick={onResetFilters} variant="TEXT" color="BLUE" size="MEDIUM">
                     {t("Очистить все")}
                 </Button>
             </div>

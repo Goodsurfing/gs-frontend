@@ -3,8 +3,6 @@ import React, {
     FC, useCallback, useMemo, useState,
 } from "react";
 
-import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
-
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
@@ -15,19 +13,23 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./OffersList.module.scss";
+import { Offer } from "@/entities/Offer";
 
 interface OffersListProps {
     className?: string;
     mapOpenValue: boolean;
     onChangeMapOpen: () => void;
+    data?: Offer[];
+    isLoading: boolean;
 }
 
 export const OffersList: FC<OffersListProps> = (props) => {
-    const { mapOpenValue, onChangeMapOpen, className } = props;
+    const {
+        mapOpenValue, onChangeMapOpen, data, isLoading, className,
+    } = props;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
-    const { data, isLoading } = useGetOffersQuery();
     const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
 
@@ -46,19 +48,30 @@ export const OffersList: FC<OffersListProps> = (props) => {
     }, []);
 
     const renderOfferCards = useMemo(
-        () => currentOffers?.map((offer) => (
-            <OfferCard
-                locale={locale}
-                classNameCard={styles.offerCard}
-                className={cn(styles.offer, {
-                    [styles.closed]: !mapOpenValue,
-                })}
-                status={offer.status === "active" ? "opened" : "closed"}
-                data={offer}
-                key={offer.id}
-                isFavoriteIconShow={!!isAuth}
-            />
-        )),
+        () => {
+            if (!currentOffers || currentOffers.length === 0) {
+                return (
+                    <Text
+                        className={styles.error}
+                        textSize="primary"
+                        text="Вакансии не были найдены"
+                    />
+                );
+            }
+            return currentOffers?.map((offer) => (
+                <OfferCard
+                    locale={locale}
+                    classNameCard={styles.offerCard}
+                    className={cn(styles.offer, {
+                        [styles.closed]: !mapOpenValue,
+                    })}
+                    status={offer.status === "active" ? "opened" : "closed"}
+                    data={offer}
+                    key={offer.id}
+                    isFavoriteIconShow={!!isAuth}
+                />
+            ));
+        },
         [currentOffers, isAuth, locale, mapOpenValue],
     );
 

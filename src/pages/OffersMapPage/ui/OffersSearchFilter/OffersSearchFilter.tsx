@@ -10,23 +10,26 @@ import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 import { CategoryType, categoryValues } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
+import { useLazyGetOffersQuery } from "@/entities/Offer";
+import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
+
+const defaultFilterValues: DefaultValues<OffersFilterFields> = {
+    offersSort: {
+        showClosedOffers: false,
+        sortValue: "novelty",
+    },
+    category: [],
+    languages: [],
+    participationPeriod: [1, 190],
+    periods: { start: undefined, end: undefined },
+    withChildren: false,
+    provided: [],
+};
 
 export const OffersSearchFilter = () => {
-    const defaultFilterValues: DefaultValues<OffersFilterFields> = {
-        offersSort: {
-            showClosedOffers: false,
-            sortValue: "novelty",
-        },
-        category: [],
-        languages: [],
-        participationPeriod: [7, 186],
-        periods: { start: undefined, end: undefined },
-        withChildren: false,
-        provided: [],
-    };
-
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [fetchOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
 
     const initialCategories = searchParams.get("category")
         ?.split(",")
@@ -40,9 +43,15 @@ export const OffersSearchFilter = () => {
         },
     });
 
-    const { watch, setValue } = offerFilterForm;
+    const {
+        watch, setValue, reset, handleSubmit,
+    } = offerFilterForm;
 
     const [isSyncing, setIsSyncing] = useState(false);
+
+    useEffect(() => {
+        fetchOffers(undefined);
+    }, [fetchOffers]);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
@@ -71,16 +80,29 @@ export const OffersSearchFilter = () => {
         setIsSyncing(false);
     }, [searchParams, setValue]);
 
+    const onApplyFilters = handleSubmit((data: OffersFilterFields) => {
+        const preparedData = offersFilterApiAdapter(data);
+        fetchOffers(preparedData);
+    });
+
+    const onResetFilters = () => {
+        reset(defaultFilterValues);
+        setSearchParams(new URLSearchParams());
+        fetchOffers(undefined);
+    };
+
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
     }, []);
 
     return (
         <FormProvider {...offerFilterForm}>
-            <div className={styles.wrapper}>
-                <OffersFilter className={styles.filter} />
+            <form onSubmit={onApplyFilters} className={styles.wrapper}>
+                <OffersFilter onResetFilters={onResetFilters} className={styles.filter} />
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
+                        data={offersData}
+                        isLoading={isLoading}
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
                         className={cn(styles.offersList, {
@@ -94,8 +116,14 @@ export const OffersSearchFilter = () => {
                         />
                     )}
                 </div>
-                <OffersSearchFilterMobile className={styles.mobile} />
-            </div>
+                <OffersSearchFilterMobile
+                    data={offersData}
+                    isLoading={isLoading}
+                    className={styles.mobile}
+                    onSubmit={onApplyFilters}
+                    onResetFilters={onResetFilters}
+                />
+            </form>
         </FormProvider>
     );
 };

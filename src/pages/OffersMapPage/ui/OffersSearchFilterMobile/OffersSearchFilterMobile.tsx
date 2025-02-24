@@ -12,7 +12,6 @@ import {
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
 import { getUserAuthData } from "@/entities/User";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -24,23 +23,29 @@ import { Text } from "@/shared/ui/Text/Text";
 import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
 import styles from "./OffersSearchFilterMobile.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Offer } from "@/entities/Offer";
 
 type SelectedTabType = "filter" | "map" | "offers";
 
 interface OffersSearchFilterMobileProps {
     className?: string;
+    data?: Offer[];
+    isLoading: boolean;
+    onSubmit: () => void;
+    onResetFilters: () => void;
 }
 
 export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     props,
 ) => {
-    const { className } = props;
+    const {
+        className, data, isLoading, onSubmit, onResetFilters,
+    } = props;
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
-    const { data, isLoading } = useGetOffersQuery();
     const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
 
@@ -55,6 +60,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     const isOffersTabOpened = selectedTab === "offers";
     const isFilterTabOpened = selectedTab === "filter";
     const isMapTabOpened = selectedTab === "map";
+
+    const handleSubmit = () => {
+        onSubmit();
+        setSelectedTab("offers");
+    };
 
     const renderOfferCards = useMemo(() => {
         if (data) {
@@ -188,7 +198,12 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     classNameMap={styles.offersMap}
                 />
             )}
-            {isFilterTabOpened && <OffersMobileFilter />}
+            {isFilterTabOpened && (
+                <OffersMobileFilter
+                    onSubmitFilters={handleSubmit}
+                    onResetFilters={onResetFilters}
+                />
+            )}
         </div>
     );
 };
