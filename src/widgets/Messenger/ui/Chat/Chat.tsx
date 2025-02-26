@@ -100,15 +100,6 @@ export const Chat: FC<ChatProps> = (props) => {
     const [getHost] = useLazyGetHostByIdQuery();
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
-    // useEffect(()=> {
-    //     if(id) {
-    //         messages.forEach((message)=> {
-    //             const isUser = myProfileData?.id !== authorId;
-    //             readMessage(`${BASE_URL}/api/v1/messages/${}`)
-    //         })
-    //     }
-    // }, [id])
-
     useEffect(() => {
         if (!myProfileData) return;
 

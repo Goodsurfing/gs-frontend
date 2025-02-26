@@ -14,7 +14,7 @@ export const getOffersMapPageUrl: RoutePathFunction = (locale) => (`/${locale}${
 
 export const getMessengerPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}`);
 
-export const getMessengerPageIdUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.messenger}/:id`);
+export const getMessengerPageIdUrl: RoutePathFunction = (locale, id = ":id") => (`/${locale}${RoutePath.messenger}/${id}`);
 
 export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id", offerId = ":offerId") => (`/${locale}${RoutePath.messenger}/${id}/${offerId}`);
 
@@ -85,7 +85,7 @@ export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale
 
 export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}/:id`;
 
-export const getOffersWherePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_where}/:id`;
+export const getOffersWherePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_where}/${id}`;
 
 export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_who_needs}/:id`;
 

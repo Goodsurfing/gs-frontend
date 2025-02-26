@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 
@@ -30,7 +29,6 @@ interface TeamFormProps {
 export const TeamForm: FC<TeamFormProps> = (props) => {
     const { hostId } = props;
     const [toast, setToast] = useState<ToastAlert>();
-    const { control } = useForm({ mode: "onChange" });
     const { t, ready } = useTranslation("host");
 
     const {
@@ -82,6 +80,24 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
         ));
     };
 
+    const onError = () => {
+        setToast({
+            text: t("hostTeam.Произошла ошибка"),
+            type: HintType.Error,
+        });
+    };
+
+    const onSuccess = () => {
+        setToast({
+            text: t("hostTeam.Участник был добавлен"),
+            type: HintType.Success,
+        });
+    };
+
+    const refreshToast = () => {
+        setToast(undefined);
+    };
+
     if (!ready) {
         return (
             <div className={styles.wrapper}>
@@ -94,16 +110,11 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Text />
-            <Controller
-                control={control}
-                name="team"
-                render={({ field }) => (
-                    <TeamInput
-                        inputValue={field.value}
-                        onInputChange={field.onChange}
-                        teamUsers={hostMembers ?? []}
-                    />
-                )}
+            <TeamInput
+                hostId={hostId}
+                refreshToast={refreshToast}
+                onError={onError}
+                onSuccess={onSuccess}
             />
             <div className={styles.containerList}>
                 {renderTeamUsers(hostMembers)}

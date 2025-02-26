@@ -10,6 +10,7 @@ export interface FormApplication {
     startDate: string;
     endDate: string;
     status: FormApplicationStatus;
+    chat: string;
 }
 
 // export type CreateFormApplicationRequest = Pick<FormApplication,

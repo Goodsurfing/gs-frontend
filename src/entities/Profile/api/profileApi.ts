@@ -12,6 +12,12 @@ interface ChangePasswordRequest {
     oldPassword: string;
 }
 
+interface ProfileSearchByEmailRequest {
+    itemsPerPage?: number;
+    page?: number;
+    email: string;
+}
+
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -50,6 +56,14 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        getProfileSearchByEmail: build.query<Profile[], ProfileSearchByEmailRequest>({
+            query: (params) => ({
+                url: "users/search",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["profile"],
+        }),
     }),
 });
 
@@ -58,4 +72,6 @@ export const {
     useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
     useChangePasswordMutation,
+    useGetProfileSearchByEmailQuery,
+    useLazyGetProfileSearchByEmailQuery,
 } = profileApi;

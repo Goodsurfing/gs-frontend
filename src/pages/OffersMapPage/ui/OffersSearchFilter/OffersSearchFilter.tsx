@@ -13,9 +13,9 @@ import styles from "./OffersSearchFilter.module.scss";
 import { useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
 
-const defaultFilterValues: DefaultValues<OffersFilterFields> = {
+const defaultValues: OffersFilterFields = {
     offersSort: {
-        showClosedOffers: false,
+        showClosedOffers: true,
         sortValue: "novelty",
     },
     category: [],
@@ -25,6 +25,8 @@ const defaultFilterValues: DefaultValues<OffersFilterFields> = {
     withChildren: false,
     provided: [],
 };
+
+const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
@@ -50,7 +52,8 @@ export const OffersSearchFilter = () => {
     const [isSyncing, setIsSyncing] = useState(false);
 
     useEffect(() => {
-        fetchOffers(undefined);
+        const preparedData = offersFilterApiAdapter(defaultValues);
+        fetchOffers(preparedData);
     }, [fetchOffers]);
 
     useEffect(() => {

@@ -72,6 +72,7 @@ export const ProfileRoleWidget: FC = () => {
             emptyFieldsFormData.append("externalInfo", "");
             emptyFieldsFormData.append("skills", JSON.stringify([]));
             emptyFieldsFormData.append("additionalSkills", JSON.stringify([]));
+            emptyFieldsFormData.append("favoriteCategories", JSON.stringify([]));
             createVolunteer(emptyFieldsFormData)
                 .unwrap()
                 .then(() => {

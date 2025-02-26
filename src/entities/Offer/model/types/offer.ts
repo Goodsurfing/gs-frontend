@@ -27,6 +27,8 @@ export interface Offer {
     articles?: Article[];
     status: OfferStatus;
     galleryItems: string[];
+    canEdit: boolean;
+    canParticipate: boolean;
 }
 
 export interface OfferOrganization {

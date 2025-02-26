@@ -9,7 +9,7 @@ import styles from "./PersonalCard.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getMessengerPageCreateUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageCreateUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
 
 interface PersonalCardProps {
     offerId: string;
@@ -20,7 +20,8 @@ interface PersonalCardProps {
     rating?: number;
     location?: string;
     imageBlock?: ReactNode;
-    medals?: ReactNode;
+    canEdit: boolean;
+    canParticipate: boolean;
 }
 
 export const PersonalCard = memo((props: PersonalCardProps) => {
@@ -33,7 +34,8 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         title,
         location,
         image,
-        medals,
+        canEdit,
+        canParticipate,
     } = props;
     const { t } = useTranslation("offer");
     const isImage = image !== undefined;
@@ -52,6 +54,12 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
     const handleParticipateClick = useCallback(() => {
         navigate(getMessengerPageCreateUrl(locale, "create", offerId));
     }, [locale, navigate, offerId]);
+
+    const handleEditClick = useCallback(() => {
+        if (canEdit) {
+            navigate(getOffersWherePageUrl(locale, offerId));
+        }
+    }, [canEdit, locale, navigate, offerId]);
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -95,12 +103,17 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                     </div>
                 </div>
                 <div className={styles.right}>
-                    <div className={styles.medals}>
+                    {/* <div className={styles.medals}>
                         {medals}
-                    </div>
-                    <Button size="SMALL" variant="FILL" color="BLUE" onClick={handleParticipateClick}>
+                    </div> */}
+                    <Button disabled={!canParticipate} size="SMALL" variant="FILL" color="BLUE" onClick={handleParticipateClick}>
                         {t("personalOffer.Участвовать")}
                     </Button>
+                    {canEdit && (
+                        <Button size="SMALL" variant="FILL" color="BLUE" onClick={handleEditClick}>
+                            {t("personalOffer.Редактировать")}
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

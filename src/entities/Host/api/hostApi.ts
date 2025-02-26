@@ -22,7 +22,9 @@ interface GetHostsResponse {
 
 interface CreateMemberOrganizationParams {
     organizationId: string;
-    formData: FormData;
+    body: {
+        profile: string;
+    };
 }
 
 interface MemberOrganizationParams {
@@ -84,10 +86,10 @@ export const hostApi = createApi({
         MemberOrganizationResponse,
         CreateMemberOrganizationParams
         >({
-            query: ({ organizationId, formData }) => ({
+            query: ({ organizationId, body }) => ({
                 url: `organization/${organizationId}/members`,
                 method: "POST",
-                body: formData,
+                body,
             }),
             invalidatesTags: ["host"],
         }),

@@ -27,6 +27,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 40px 60px;
+    gap: 15px;
 }
 
 .left {
@@ -91,8 +92,11 @@
 
 .right {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    gap: 15px;
+    align-self: flex-end;
+    height: fit-content;
+    flex-wrap: wrap;
 }
 
 @media (max-width: 992px) {

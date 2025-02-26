@@ -36,7 +36,7 @@ export const VolunteerPersonalPage = () => {
         navigate(getVolunteerDashboardPageUrl(locale));
     }, [locale, navigate]);
 
-    if (isLoading || myProfileIsLoading || !myProfileData || !volunteerData) {
+    if (isLoading || myProfileIsLoading || !myProfileData) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -53,6 +53,22 @@ export const VolunteerPersonalPage = () => {
                         className={styles.error}
                         textSize="primary"
                         text="Произошла ошибка"
+                    />
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (!volunteerData) {
+        return (
+            <div className={styles.wrapper}>
+                <MainHeader />
+                <div className={styles.content}>
+                    <Text
+                        className={styles.error}
+                        textSize="primary"
+                        text="Произошла ошибка или пользователь не зарегистрирован как волонтёр"
                     />
                 </div>
                 <Footer />
