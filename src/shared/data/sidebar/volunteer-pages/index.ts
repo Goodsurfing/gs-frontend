@@ -3,7 +3,7 @@ import { SidebarContentProps } from "@/widgets/Sidebar";
 import aboutMeIcon from "@/shared/assets/icons/navbar/volunteer/about-me.svg";
 import skillsIcon from "@/shared/assets/icons/navbar/volunteer/skills.svg";
 import reviewsIcon from "@/shared/assets/icons/navbar/volunteer/reviews.svg";
-import feedbackIcon from "@/shared/assets/icons/navbar/volunteer/feedback.svg";
+import feedbackIcon from "@/shared/assets/icons/navbar/mail.svg";
 import friendsIcon from "@/shared/assets/icons/navbar/volunteer/friends.svg";
 import galleryIcon from "@/shared/assets/icons/navbar/volunteer/photo-gallery.svg";
 import blogIcon from "@/shared/assets/icons/navbar/volunteer/blog.svg";

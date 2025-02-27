@@ -173,6 +173,9 @@
         "Сохранить в черновики": "Save as draft"
     },
     "personalOffer": {
+        "active": "Active",
+        "draft": "Draft",
+        "disabled": "Inactive",
         "male": "Male",
         "female": "Female",
         "other": "Other",
@@ -183,7 +186,7 @@
         "Прием заявок до": "Application deadline",
         "Кто нужен": "Who is needed",
         "Требования к участнику": "Participant Requirements",
-        "Дополнительные требования" :"Additional Requirements",
+        "Дополнительные требования": "Additional Requirements",
         "Необходимый взнос": "Required Contribution",
         "Денежное вознаграждение": "Monetary Reward",
         "Количество рабочих часов": "Number of Working Hours",

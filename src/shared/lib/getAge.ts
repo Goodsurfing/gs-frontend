@@ -11,5 +11,5 @@ export const getAge = (dateString?: string) => {
         age -= 1;
     }
 
-    return `${age}`;
+    return `${age} лет`;
 };

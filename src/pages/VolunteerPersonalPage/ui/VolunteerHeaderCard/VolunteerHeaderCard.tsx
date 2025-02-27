@@ -69,7 +69,6 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 Волонтёр
                                 {" "}
                                 {getAge(birthDate)}
-                                {" лет"}
                             </span>
                             {/* {isMember && (
                                 <img

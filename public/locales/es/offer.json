@@ -173,6 +173,9 @@
         "Сохранить в черновики": "Guardar como borrador"
     },
     "personalOffer": {
+        "active": "Activo",
+        "draft": "Borrador",
+        "disabled": "Inactivo",
         "male": "Hombre",
         "female": "Mujer",
         "other": "Otro",
@@ -183,7 +186,7 @@
         "Прием заявок до": "Fecha límite de solicitudes",
         "Кто нужен": "Quién se necesita",
         "Требования к участнику": "Requisitos para el Participante",
-        "Дополнительные требования" :"Requisitos adicionales",
+        "Дополнительные требования": "Requisitos adicionales",
         "Необходимый взнос": "Contribución Requerida",
         "Денежное вознаграждение": "Recompensa Monetaria",
         "Количество рабочих часов": "Número de Horas de Trabajo",

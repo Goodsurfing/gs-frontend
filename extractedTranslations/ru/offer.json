@@ -99,6 +99,9 @@
   },
   "offerPersonalКто нужен": "offerPersonalКто нужен",
   "personalOffer": {
+    "active": "active",
+    "disabled": "disabled",
+    "draft": "draft",
     "Владение языками": "Владение языками",
     "Все фотографии": "Все фотографии",
     "Выходных дней в неделю": "Выходных дней в неделю",

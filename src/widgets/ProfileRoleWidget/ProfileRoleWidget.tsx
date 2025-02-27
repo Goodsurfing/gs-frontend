@@ -8,7 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { RoleCard } from "@/features/ProfileRole";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
-import { useCreateVolunteerMutation } from "@/entities/Volunteer";
+import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
 
 import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -68,11 +68,14 @@ export const ProfileRoleWidget: FC = () => {
 
     const handleConfirmClick = () => {
         if (selectedRole === "volunteer") {
-            const emptyFieldsFormData = new FormData(); // Crutch on backend
-            emptyFieldsFormData.append("externalInfo", "");
-            emptyFieldsFormData.append("skills", JSON.stringify([]));
-            emptyFieldsFormData.append("additionalSkills", JSON.stringify([]));
-            emptyFieldsFormData.append("favoriteCategories", JSON.stringify([]));
+            // Crutch on backend
+            const emptyFieldsFormData: CreateVolunteerRequest = {
+                externalInfo: "",
+                skills: [],
+                additionalSkills: [],
+
+            };
+
             createVolunteer(emptyFieldsFormData)
                 .unwrap()
                 .then(() => {

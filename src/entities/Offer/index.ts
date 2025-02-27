@@ -8,6 +8,7 @@ export {
     useLazyGetHostOffersByIdQuery,
     useLazyGetOfferByIdQuery,
     useLazyGetOffersQuery,
+    useGetOffersQuery,
 } from "./api/offerApi";
 
 export type {
