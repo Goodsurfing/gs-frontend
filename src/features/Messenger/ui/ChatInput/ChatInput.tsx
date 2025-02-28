@@ -31,10 +31,13 @@ interface ChatInputProps {
     sx?: SxProps<Theme>;
     disabled?: boolean;
     onSendMessage: (message: SendMessageType) => void;
+    onError: (error: string) => void;
 }
 
 export const ChatInput: FC<ChatInputProps> = (props) => {
-    const { sx, disabled = false, onSendMessage } = props;
+    const {
+        sx, disabled = false, onSendMessage, onError,
+    } = props;
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [attachmentValue, setAttachmentValue] = useState<AttachmentType>();
@@ -72,6 +75,12 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     const handleAttachmentValue = async (file?: File) => {
         setAttachmentLoading(true);
         if (file) {
+            const maxSize = 2 * 1024 * 1024;
+            if (file.size > maxSize) {
+                onError("Файл слишком большой. Максимальный размер: 2MB");
+                setAttachmentLoading(false);
+                return;
+            }
             await uploadFile(file.name, file)
                 .then((objectMedia) => {
                     if (objectMedia) {
@@ -79,7 +88,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     }
                 })
                 .catch(() => {
-                    // empty
+                    onError("Произошла ошибка");
                 })
                 .finally(() => {
                     setAttachmentLoading(false);

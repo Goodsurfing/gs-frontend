@@ -327,6 +327,16 @@ export const Chat: FC<ChatProps> = (props) => {
         onBackButton(undefined);
     };
 
+    const onSendMessageError = (error: string) => {
+        setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: error,
+                type: HintType.Error,
+            });
+        }, 0);
+    };
+
     const handleVolunteerSubmitOfferApplication = handleSubmit(async (data) => {
         const {
             applicationForm: { startDate, endDate },
@@ -437,7 +447,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         {renderChat()}
                     </InfiniteScroll>
                 </div>
-                <SendMessage disabled={isChatCreate} chatId={id} />
+                <SendMessage disabled={isChatCreate} chatId={id} onError={onSendMessageError} />
             </div>
             <UserInfoCard
                 user={chatUser}

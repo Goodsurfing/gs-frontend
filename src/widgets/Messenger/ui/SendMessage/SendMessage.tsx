@@ -7,11 +7,14 @@ interface SendMessageProps {
     className?: string;
     disabled?: boolean;
     chatId: string;
+    onError: (error: string) => void;
 }
 
 export const SendMessage: FC<SendMessageProps> = (props) => {
-    const { className, disabled, chatId } = props;
-    const [createMessage] = useCreateMessageMutation();
+    const {
+        className, disabled, chatId, onError,
+    } = props;
+    const [createMessage, { isLoading }] = useCreateMessageMutation();
 
     const handleSendMessage = async (message: SendMessageType) => {
         const { text, attachments } = message;
@@ -20,12 +23,20 @@ export const SendMessage: FC<SendMessageProps> = (props) => {
             text,
             attachments,
         };
-        await createMessage(formData);
+        try {
+            await createMessage(formData).unwrap();
+        } catch {
+            onError("Произошла ошибка при отправке сообщения");
+        }
     };
 
     return (
         <div className={cn(className)}>
-            <ChatInput disabled={disabled} onSendMessage={handleSendMessage} />
+            <ChatInput
+                disabled={disabled || isLoading}
+                onSendMessage={handleSendMessage}
+                onError={onError}
+            />
         </div>
     );
 };
