@@ -2,10 +2,10 @@ import React from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import { Header } from "../Header/Header";
-import styles from "./GoodsurfingAmbassadorsPage.module.scss";
 import { Ambassador } from "../Ambassador/Ambassador";
+import { Header } from "../Header/Header";
 import { Text } from "../Text/Text";
+import styles from "./GoodsurfingAmbassadorsPage.module.scss";
 
 const GoodsurfingAmbassadorsPage = () => (
     <MainPageLayout>

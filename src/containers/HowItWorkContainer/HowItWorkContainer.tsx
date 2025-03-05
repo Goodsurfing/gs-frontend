@@ -2,7 +2,8 @@ import React, { FC, useEffect } from "react";
 import cn from "classnames";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { howItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";
+import { useTranslation } from "react-i18next";
+import { useHowItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";
 import HowItWorkItem from "@/containers/HowItWorkContainer/HowItWorkItem/HowItWorkItem";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -19,6 +20,8 @@ interface HowItWorkContainerProps {
 const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
     const { className } = props;
     const { locale } = useLocale();
+    const howItWorkData = useHowItWorkData();
+    const { t } = useTranslation("main");
 
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
@@ -43,7 +46,7 @@ const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
                     ))}
             </div>
             <ButtonLink path={getMembershipPageUrl(locale)} type="primary">
-                Как это работает
+                {t("Как это работает")}
             </ButtonLink>
         </div>
     );

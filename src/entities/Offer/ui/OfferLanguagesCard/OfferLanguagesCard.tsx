@@ -15,6 +15,7 @@ interface OfferLanguagesCardProps {
 export const OfferLanguagesCard: FC<OfferLanguagesCardProps> = memo(
     (props: OfferLanguagesCardProps) => {
         const { languages, className } = props;
+
         const { t } = useTranslation("offer");
         return (
             <div className={cn(className, styles.wrapper)}>

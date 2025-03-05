@@ -1,9 +1,10 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { Host, HostInfoCard } from "@/entities/Host";
+import { Host } from "@/entities/Host";
 
 import styles from "./HostPageContent.module.scss";
+import { HostInfoCard } from "@/entities/Host/ui/HostInfoCard/HostInfoCard";
 
 interface HostPageContentProps {
     className?: string;

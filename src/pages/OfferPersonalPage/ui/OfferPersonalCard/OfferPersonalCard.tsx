@@ -52,6 +52,9 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                     />
                 )}
                 imageBlock={showImageBlock}
+                canEdit={offerData.canEdit}
+                canParticipate={offerData.canParticipate}
+                status={offerData.status}
             />
             {gallery && (
                 <ModalGallery

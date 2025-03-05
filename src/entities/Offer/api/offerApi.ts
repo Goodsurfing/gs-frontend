@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Offer } from "../model/types/offer";
+import { Offer, OffersFilters } from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
 
@@ -83,10 +83,11 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getOffers: build.query<Offer[], void>({
-            query: () => ({
+        getOffers: build.query<Offer[], Partial<OffersFilters> | undefined>({
+            query: (params) => ({
                 url: "vacancies",
                 method: "GET",
+                params,
             }),
             providesTags: ["offer"],
         }),
@@ -132,6 +133,7 @@ export const offerApi = createApi({
 export const {
     useCreateOfferMutation,
     useGetOffersQuery,
+    useLazyGetOffersQuery,
     useUpdateOfferMutation,
     useUpdateOfferStatusMutation,
     useDeleteOfferMutation,

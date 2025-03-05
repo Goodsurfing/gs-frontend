@@ -58,7 +58,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             if (!additionalSkills || additionalSkills.length === 0) {
                 return <span>Волонтёр не указал дополнительные умения</span>;
             }
-            return <span>{additionalSkills.join(", ")}</span>;
+            return <div className={styles.cards}><span>{additionalSkills.join(", ")}</span></div>;
         }, [additionalSkills]);
 
         return (
@@ -67,7 +67,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                     <Text title="Умения" titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
                     <Text title="Дополнительные умения" titleSize="h3" />
-                    <div className={styles.cards}>{renderAdditionalSkills}</div>
+                    {renderAdditionalSkills}
                 </div>
             </div>
         );

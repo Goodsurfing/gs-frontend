@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import styles from "./OffersMobileFilter.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { OffersFilterFields } from "../../model/types";
@@ -9,16 +10,24 @@ import { OfferCategories } from "@/widgets/OfferCategories";
 import { LanguagesGroup, WithChildren } from "@/features/OffersMap";
 import { ProvidedFilter } from "@/widgets/OffersMap/ui/ProvidedFilter/ProvidedFilter";
 
-export const OffersMobileFilter: FC = () => {
+interface OffersMobileFilterProps {
+    onSubmitFilters: () => void;
+    onResetFilters: () => void;
+}
+
+export const OffersMobileFilter: FC<OffersMobileFilterProps> = (props) => {
+    const { onSubmitFilters, onResetFilters } = props;
     const { control } = useFormContext<OffersFilterFields>();
+    const { t } = useTranslation("offers-map");
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.filterControls}>
-                <Button variant="TEXT" color="BLUE" size="MEDIUM">
-                    Применить
+                <Button type="submit" onClick={onSubmitFilters} variant="TEXT" color="BLUE" size="MEDIUM">
+                    {t("Применить")}
                 </Button>
-                <Button variant="TEXT" color="BLUE" size="MEDIUM">
-                    Очистить все
+                <Button onClick={onResetFilters} variant="TEXT" color="BLUE" size="MEDIUM">
+                    {t("Очистить все")}
                 </Button>
             </div>
             <Controller
@@ -27,7 +36,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Период (от-до)
+                            {t("Период (от-до)")}
                         </Typography>
                         <PeriodsFilter
                             wrapperClassName={styles.wrapperClassName}
@@ -55,7 +64,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Направление деятельности
+                            {t("Направление деятельности")}
                         </Typography>
                         <OfferCategories value={field.value} onChange={field.onChange} />
                     </div>
@@ -67,7 +76,7 @@ export const OffersMobileFilter: FC = () => {
                 render={({ field }) => (
                     <div>
                         <Typography className={styles.helpText}>
-                            Знание языка
+                            {t("Знание языка")}
                         </Typography>
                         <LanguagesGroup value={field.value} onChange={field.onChange} />
                     </div>

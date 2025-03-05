@@ -11,7 +11,7 @@ export interface Periods {
     end: Date | undefined;
 }
 
-export type Provided = "housing" | "food" | "padidTravel";
+export type Provided = "housing" | "food" | "paidTravel";
 
 export interface OffersFilterFields {
     offersSort: OffersSortFields;

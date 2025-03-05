@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { useTranslation } from "react-i18next";
 import { communityNewsData } from "@/containers/CommunityNewsContainer/CommunityNews.data";
 import CommunityNewsItem from "@/containers/CommunityNewsContainer/CommunityNewsItem/CommunityNewsItem";
 
@@ -12,12 +13,12 @@ import styles from "./CommunityNewsContainer.module.scss";
 const CommunityNewsContainer: FC = () => {
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
+    const { t } = useTranslation("main");
 
     return (
         <div className={styles.wrapper}>
             <p className={styles.description}>
-                Объединяет всех, кто увлечён путешествиями и готов поделиться
-                своим опытом.
+                {t("Объединяет всех, кто увлечён путешествиями и готов поделиться своим опытом.")}
             </p>
             <div className={styles.container}>
                 <div

@@ -5,6 +5,7 @@ import React, {
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ReactSVG } from "react-svg";
+import { useNavigate } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -41,6 +42,7 @@ import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
+import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 
 interface ChatProps {
     id?: string;
@@ -80,6 +82,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const { mercureToken } = useAuth();
 
@@ -99,15 +102,6 @@ export const Chat: FC<ChatProps> = (props) => {
     const { data: chatData } = useGetChatQuery(id ?? "");
     const [getHost] = useLazyGetHostByIdQuery();
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
-
-    // useEffect(()=> {
-    //     if(id) {
-    //         messages.forEach((message)=> {
-    //             const isUser = myProfileData?.id !== authorId;
-    //             readMessage(`${BASE_URL}/api/v1/messages/${}`)
-    //         })
-    //     }
-    // }, [id])
 
     useEffect(() => {
         if (!myProfileData) return;
@@ -205,6 +199,10 @@ export const Chat: FC<ChatProps> = (props) => {
         }
     }, [updateApplicationStatus]);
 
+    const onImageChange = (src: string) => {
+        setSelectedImage(src);
+    };
+
     useEffect(() => {
         const processMessages = async () => {
             let currentDate = "";
@@ -213,7 +211,7 @@ export const Chat: FC<ChatProps> = (props) => {
             const elements = await Promise.all(
                 messages.map(async (message) => {
                     const {
-                        createdAt, author, text, applicationForm, id: messageId,
+                        createdAt, author, text, attachments, applicationForm, id: messageId,
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
@@ -288,7 +286,9 @@ export const Chat: FC<ChatProps> = (props) => {
                                 date={formatMessageDate(locale, createdAt)}
                                 isUser={isUser}
                                 text={text}
+                                attachments={attachments}
                                 username={userName ?? ""}
+                                onImageClick={onImageChange}
                             />
                             {dateLine}
                         </Fragment>
@@ -322,16 +322,22 @@ export const Chat: FC<ChatProps> = (props) => {
         setInfoOpened((prev) => !prev);
     };
 
-    // const onImageChange = (src: string) => {
-    //     setSelectedImage(src);
-    // };
-
     const onClosePopup = () => {
         setSelectedImage(undefined);
     };
 
     const handleBackButton = () => {
         onBackButton(undefined);
+    };
+
+    const onSendMessageError = (error: string) => {
+        setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: error,
+                type: HintType.Error,
+            });
+        }, 0);
     };
 
     const handleVolunteerSubmitOfferApplication = handleSubmit(async (data) => {
@@ -343,13 +349,15 @@ export const Chat: FC<ChatProps> = (props) => {
             const preparedData = applicationOfferAdapter(data, offerId);
             await createApplicationForm(preparedData)
                 .unwrap()
-                .then(() => {
+                .then((result) => {
                     setToast({
                         text: "Заявка успешно отправлена",
                         type: HintType.Success,
                     });
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
+                    const chatId = result.chat.split("/").pop();
+                    if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -444,7 +452,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         {renderChat()}
                     </InfiniteScroll>
                 </div>
-                <SendMessage disabled={isChatCreate} chatId={id} />
+                <SendMessage disabled={isChatCreate} chatId={id} onError={onSendMessageError} />
             </div>
             <UserInfoCard
                 user={chatUser}

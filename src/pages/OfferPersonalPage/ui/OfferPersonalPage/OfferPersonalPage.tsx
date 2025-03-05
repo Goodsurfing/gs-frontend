@@ -62,7 +62,7 @@ export const OfferPersonalPage = () => {
             <MainHeader />
             <div className={styles.content}>
                 <OfferPersonalCard id={id} offerData={offerData} />
-                <OfferSubmenu id={id} />
+                <OfferSubmenu offerData={offerData} />
                 <OfferPageContent offerData={offerData} />
             </div>
             <Footer />

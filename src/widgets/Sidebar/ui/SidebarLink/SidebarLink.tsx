@@ -2,6 +2,7 @@ import cn from "classnames";
 import { memo } from "react";
 import { NavLink, useParams } from "react-router-dom";
 
+import { ReactSVG } from "react-svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
@@ -41,7 +42,7 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
                     },
                 )}
             >
-                <img className={styles.img} src={icon} alt={text} />
+                <ReactSVG className={styles.img} src={icon} />
                 <span className={cn(styles.text, { [styles.opened]: isOpen })}>
                     {text}
                 </span>

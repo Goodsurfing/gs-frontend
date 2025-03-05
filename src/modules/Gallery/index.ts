@@ -4,4 +4,4 @@ export { getGalleryImages } from "./model/selectors/getGalleryImages/getGalleryI
 
 export { galleryReducer, galleryActions } from "./model/slice/gallerySlice";
 
-export { galleryApi } from "./model/services/galleryApi";
+export { galleryApi, useLazyGetMediaObjectByIdQuery } from "./model/services/galleryApi";

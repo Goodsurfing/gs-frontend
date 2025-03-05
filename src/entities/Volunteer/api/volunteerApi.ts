@@ -1,10 +1,17 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { VolunteerApi } from "../model/types/volunteer";
+import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
+import { WhatToDoSkillType } from "@/types/skills";
 
 interface UpdateVolunteerParams {
     profileId: string;
-    body: Partial<Omit<VolunteerApi, "profile">>
+    body: Partial<VolunteerType>;
+}
+
+export interface CreateVolunteerRequest {
+    externalInfo: string,
+    skills: WhatToDoSkillType[],
+    additionalSkills: string[],
 }
 
 export const volunteerApi = createApi({
@@ -19,7 +26,7 @@ export const volunteerApi = createApi({
             }),
             providesTags: ["volunteer"],
         }),
-        createVolunteer: build.mutation<VolunteerApi, FormData>({
+        createVolunteer: build.mutation<VolunteerApi, CreateVolunteerRequest>({
             query: (body) => ({
                 url: "personal/volunteer",
                 method: "POST",

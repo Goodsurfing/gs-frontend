@@ -1,9 +1,23 @@
 .wrapper {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
     border-top: 1px solid var(--bg-accent);
+}
+
+.attachmentFile {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    padding: 20px;
+    background-color: var(--text-secondary-1);
+    width: 100%;
+    color: var(--text-primary-1);
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 
 .button {
@@ -49,6 +63,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.deleteIcon {
+    svg {
+        fill: var(--text-caption);
+    }
 }
 
 .iconSend {

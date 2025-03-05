@@ -11,3 +11,14 @@
     align-items: center;
     border-bottom: 1px solid var(--bg-accent);
 }
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.button {
+    padding: 10px 12px;
+    font-size: 14px;
+}

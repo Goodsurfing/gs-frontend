@@ -3,18 +3,22 @@ import React, { FC, memo } from "react";
 
 import selectCheckIcon from "@/shared/assets/icons/select-check.svg";
 
-import { PreferenceCategory } from "../../model/types/profilePreferences";
 import styles from "./CategoryCard.module.scss";
 
+interface CategoryType {
+    image: string;
+    text: string;
+}
+
 interface CategoryCardProps {
-    category: PreferenceCategory;
+    category: CategoryType;
     isSelect: boolean;
     onClick: () => void;
 }
 
 export const CategoryCard: FC<CategoryCardProps> = memo(
     ({ category, isSelect, onClick }: CategoryCardProps) => {
-        const { image, title } = category;
+        const { image, text } = category;
         return (
             <div
                 className={styles.wrapper}
@@ -26,7 +30,7 @@ export const CategoryCard: FC<CategoryCardProps> = memo(
                         [styles.selected]: isSelect,
                     })}
                 >
-                    {title}
+                    {text}
                 </h4>
                 <img
                     src={selectCheckIcon}

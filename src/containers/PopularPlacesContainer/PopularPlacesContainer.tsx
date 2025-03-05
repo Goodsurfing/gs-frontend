@@ -3,11 +3,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import PopularPlaceItem from "@/containers/PopularPlacesContainer/PopularPlaceItem/PopularPlaceItem";
-import { popularPlacesData } from "@/containers/PopularPlacesContainer/PopularPlaces.data";
+import { usePopularPlacesData } from "@/containers/PopularPlacesContainer/PopularPlaces.data";
 
 import styles from "./PopularPlacesContainer.module.scss";
 
 const PopularPlacesContainer: FC = () => {
+    const popularPlacesData = usePopularPlacesData();
+
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
 

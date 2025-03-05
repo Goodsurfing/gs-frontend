@@ -12,6 +12,7 @@ interface SelectableGroupProps<T> {
     getKey: (item: T) => string | number; // Key extraction from object
     multiSelect?: boolean;
     containerStyle?: string;
+    selectLimit?: number;
 }
 
 /**
@@ -43,24 +44,29 @@ export const SelectableGroup = <T,>({
     getKey,
     multiSelect,
     containerStyle,
+    selectLimit = 10,
 }: SelectableGroupProps<T>) => {
     const isSelected = (item: T) => selectedItems.includes(getKey(item).toString());
     const handleSelection = useCallback(
         (item: T) => {
             const itemKey = getKey(item).toString();
+            const isItemSelected = selectedItems.includes(itemKey);
 
             if (multiSelect) {
-                const updatedSelection = selectedItems.includes(itemKey)
-                    ? selectedItems.filter(
-                        (selectedItem) => selectedItem !== itemKey,
-                    )
-                    : [...selectedItems, itemKey];
-                onSelect(updatedSelection);
+                if (isItemSelected) {
+                    onSelect(
+                        selectedItems.filter(
+                            (selectedItem) => selectedItem !== itemKey,
+                        ),
+                    );
+                } else if (selectedItems.length < selectLimit) {
+                    onSelect([...selectedItems, itemKey]);
+                }
             } else {
-                onSelect([itemKey]);
+                onSelect(isItemSelected ? [] : [itemKey]);
             }
         },
-        [multiSelect, onSelect, getKey, selectedItems],
+        [getKey, multiSelect, selectedItems, onSelect, selectLimit],
     );
 
     return (

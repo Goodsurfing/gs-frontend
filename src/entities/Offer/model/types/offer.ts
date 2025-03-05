@@ -1,15 +1,23 @@
-import { Article } from "@/entities/Article";
+import { CategoryType } from "@/types/categories";
+import { WhatToDoSkillType } from "@/types/skills";
 
-import { OfferConditions } from "./offerConditions";
+import { Article } from "@/entities/Article";
+import { ImageType } from "@/entities/Profile";
+
+import {
+    Housing, Nutrition, OfferConditions, Travel,
+} from "./offerConditions";
 import { OfferContributor } from "./offerContributor";
 import { OfferDescription } from "./offerDescription";
-import { OfferFinishingTouches } from "./offerFinishingTouches";
+import {
+    ExtraConditions,
+    OfferFinishingTouches,
+} from "./offerFinishingTouches";
 import { OfferStatus } from "./offerStatus";
 import { OfferWhatToDo } from "./offerWhatToDo";
 import { OfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
-import { ImageType } from "@/entities/Profile";
 
 export interface Offer {
     id: number;
@@ -26,6 +34,8 @@ export interface Offer {
     articles?: Article[];
     status: OfferStatus;
     galleryItems: string[];
+    canEdit: boolean;
+    canParticipate: boolean;
 }
 
 export interface OfferOrganization {
@@ -44,3 +54,17 @@ export interface OfferSchema {
 }
 
 export type SortValue = "urgency" | "popularity" | "novelty";
+
+export interface OffersFilters {
+    start_date: string;
+    end_date: string;
+    min_duration_days: string;
+    max_duration_days: string;
+    languages: string[];
+    skills: WhatToDoSkillType[];
+    additionalConditions: ExtraConditions[];
+    housing: Housing[];
+    food: Nutrition[];
+    paidTravel: Travel[];
+    categories: CategoryType[];
+}

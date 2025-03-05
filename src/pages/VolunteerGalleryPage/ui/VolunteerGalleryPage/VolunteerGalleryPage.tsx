@@ -8,23 +8,38 @@ import styles from "./VolunteerGalleryPage.module.scss";
 import { UploadCertificates } from "@/features/UploadCertificates";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { VolunteerGalleryForm } from "@/features/VolunteerGalleryForm";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const VolunteerGalleryPage = () => {
-    const { data: profileData } = useGetProfileInfoQuery();
+    const { data: profileData, isLoading } = useGetProfileInfoQuery();
+
+    if (isLoading) {
+        return (
+            <div className={styles.wrapper}>
+                <Preloader />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.wrapper}>
-            <TitleGallery />
-            <VolunteerGalleryForm className={styles.container} />
-            <TitleVideoGallery className={styles.container} />
-            {(profileData) && (
-                <VideoForm
-                    profileId={profileData.id}
-                    videoGallery={profileData.videoGallery}
-                />
+            {profileData && (
+                <>
+                    <TitleGallery />
+                    <VolunteerGalleryForm className={styles.container} profileData={profileData} />
+                    <TitleVideoGallery className={styles.container} />
+                    <VideoForm
+                        profileId={profileData.id}
+                        videoGallery={profileData.videoGallery}
+                    />
+                    <TitleCertificate className={styles.container} />
+                    <UploadCertificates
+                        profileId={profileData.id}
+                        id="upload-certificate"
+                        className={styles.container}
+                    />
+                </>
             )}
-            <TitleCertificate className={styles.container} />
-            <UploadCertificates id="upload-certificate" className={styles.container} />
         </div>
     );
 };

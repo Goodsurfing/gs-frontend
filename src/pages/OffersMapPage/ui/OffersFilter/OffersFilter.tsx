@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, useRef, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { Categories, ExtraFilters } from "@/widgets/OffersMap";
 import { ButtonFilter } from "@/widgets/OffersMap/ui/ButtonFilter/ButtonFilter";
 import { ParticipationPeriod } from "@/widgets/OffersMap/ui/ParticipationPeriod/ParticipationPeriod";
@@ -10,6 +11,7 @@ import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilte
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./OffersFilter.module.scss";
+import Button from "@/shared/ui/Button/Button";
 
 interface DropdownState {
     isCategoriesOpened: boolean;
@@ -21,11 +23,13 @@ type ButtonNav = "CATEGORIES" | "PERIODS" | "EXTRAFILTERS";
 
 interface OffersFilterProps {
     className?: string;
+    onResetFilters: () => void;
 }
 
 export const OffersFilter: FC<OffersFilterProps> = (props) => {
-    const { className } = props;
+    const { className, onResetFilters } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("offers-map");
 
     const categoriesRef = useRef(null);
 
@@ -98,22 +102,27 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     )}
                 />
                 <ButtonFilter
-                    text="Срок участия"
+                    text={t("Срок участия")}
                     isShowBluePoint={
                         !(
-                            watchParticipationPeriod[0] === 7
-                            && watchParticipationPeriod[1] === 186
+                            watchParticipationPeriod[0] === 1
+                            && watchParticipationPeriod[1] === 190
                         )
                     }
                     isOpen={dropdownOpened.isPeriodsOpened}
                     onClick={() => handleOpenDropdown("PERIODS")}
                 />
                 <ButtonFilter
-                    text="Доп. фильтры"
+                    text={t("Доп. фильтры")}
                     isShowBluePoint={false}
                     isOpen={dropdownOpened.isExtraFiltersOpened}
                     onClick={() => handleOpenDropdown("EXTRAFILTERS")}
                 />
+
+                <div className={styles.buttons}>
+                    <Button className={styles.button} type="submit" color="BLUE" size="SMALL" variant="FILL">Применить</Button>
+                    <Button className={styles.button} onClick={onResetFilters} color="BLUE" size="SMALL" variant="TEXT">Очистить все</Button>
+                </div>
             </div>
             <div className={styles.bottom}>
                 <Controller

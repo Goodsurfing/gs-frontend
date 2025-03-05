@@ -29,7 +29,7 @@ interface OfferCardProps {
     isImageShow?: boolean;
     isFavoriteIconShow?: boolean;
     isFavorite: boolean;
-    handleFavoriteClick: (offerId: number) => void;
+    handleFavoriteClick?: (offerId: number) => void;
     locale: Locale;
 }
 
@@ -68,7 +68,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handleFavoriteClick(offerId);
+                                handleFavoriteClick?.(offerId);
                             }}
                             className={cn(styles.favorite, {
                                 [styles.active]: isFavorite,
@@ -81,6 +81,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 <p className={styles.title}>{textSlice(title, 88, "title")}</p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
+                    <br />
                     <span className={styles.category}>{category}</span>
                 </div>
                 <div className={styles.stats}>

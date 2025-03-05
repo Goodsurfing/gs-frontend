@@ -13,7 +13,3 @@ export {
 export type {
     Host, HostApi, TeamUser, HostMember,
 } from "./model/types/host";
-
-export { HostInfoCard } from "./ui/HostInfoCard/HostInfoCard";
-
-export { HostTeamCard } from "./ui/HostTeamCard/HostTeamCard";

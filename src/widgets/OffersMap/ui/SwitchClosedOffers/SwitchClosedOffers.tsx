@@ -2,6 +2,7 @@ import { FormControlLabel, Typography } from "@mui/material";
 import React, { FC } from "react";
 
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 interface SwitchClosedOffersProps {
@@ -12,6 +13,8 @@ interface SwitchClosedOffersProps {
 
 export const SwitchClosedOffers: FC<SwitchClosedOffersProps> = (props) => {
     const { value, onChange, className } = props;
+    const { t } = useTranslation("offers-map");
+
     return (
         <div className={cn(className)}>
             <FormControlLabel
@@ -24,7 +27,7 @@ export const SwitchClosedOffers: FC<SwitchClosedOffersProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        Показать прошедние
+                        {t("Показать прошедние")}
                     </Typography>
                 )}
                 control={(

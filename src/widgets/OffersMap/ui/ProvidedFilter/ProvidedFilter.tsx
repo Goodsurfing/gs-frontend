@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { FormControlLabel, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import styles from "./ProvidedFilter.module.scss";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { Provided } from "@/pages/OffersMapPage";
@@ -11,6 +12,7 @@ interface ProvidedFilterProps {
 
 export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
     const { value, onChange } = props;
+    const { t } = useTranslation("offers-map");
 
     const handleChange = (selectedValue: Provided) => {
         if (value.includes(selectedValue)) {
@@ -22,7 +24,10 @@ export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <span>Предоставляется:</span>
+            <span>
+                {t("Предоставляется")}
+                :
+            </span>
             <FormControlLabel
                 label={(
                     <Typography
@@ -33,7 +38,7 @@ export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        Проживание
+                        {t("Проживание")}
                     </Typography>
                 )}
                 control={(
@@ -53,7 +58,7 @@ export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        Питание
+                        {t("Питание")}
                     </Typography>
                 )}
                 control={(
@@ -73,13 +78,13 @@ export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
                             color: "#212121",
                         }}
                     >
-                        Проезд
+                        {t("Проезд")}
                     </Typography>
                 )}
                 control={(
                     <SwitchComponent
-                        checked={value.includes("padidTravel")}
-                        onChange={() => handleChange("padidTravel")}
+                        checked={value.includes("paidTravel")}
+                        onChange={() => handleChange("paidTravel")}
                     />
                 )}
             />

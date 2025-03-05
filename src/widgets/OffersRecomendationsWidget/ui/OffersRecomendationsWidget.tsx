@@ -1,11 +1,23 @@
 import cn from "classnames";
-import React, { FC, memo } from "react";
+import React, {
+    FC, memo, useEffect, useState,
+} from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getProfilePreferencesPageUrl } from "@/shared/config/routes/AppUrls";
+import { OfferCard } from "@/widgets/OffersMap";
+
+import { Offer, useLazyGetOffersQuery } from "@/entities/Offer";
+import { getUserAuthData } from "@/entities/User";
+import { useGetMyVolunteerQuery } from "@/entities/Volunteer";
+
+import {
+    getProfilePreferencesPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import styles from "./OffersRecomendationsWidget.module.scss";
 
@@ -16,13 +28,57 @@ interface OffersRecomendationsWidgetProps {
 export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = memo(
     (props: OffersRecomendationsWidgetProps) => {
         const { className } = props;
+        const isAuth = useAppSelector(getUserAuthData);
         const { locale } = useLocale();
         const { t } = useTranslation("volunteer");
+        const [filteredOffers, setFilteredOffers] = useState<Offer[]>([]);
+
+        const { data: myVolunteerData, isLoading: isVolunteerLoading } = useGetMyVolunteerQuery();
+        const [getOffers, { isLoading: isOffersLoading }] = useLazyGetOffersQuery();
+
+        useEffect(() => {
+            const fetchOffers = async () => {
+                try {
+                    if (myVolunteerData) {
+                        const resultOffers = await getOffers(
+                            undefined,
+                        ).unwrap();
+                        setFilteredOffers(resultOffers.slice(0, 10));
+                    }
+                } catch {
+                    setFilteredOffers([]);
+                }
+            };
+            fetchOffers();
+        }, [getOffers, myVolunteerData]);
+
+        const renderOffers = () => {
+            if (isVolunteerLoading || isOffersLoading) {
+                return <MiniLoader />;
+            }
+
+            if (filteredOffers.length > 0) {
+                return filteredOffers.map((offer) => (
+                    <OfferCard
+                        locale={locale}
+                        status={offer.status === "active" ? "opened" : "closed"}
+                        data={offer}
+                        key={offer.id}
+                        isFavoriteIconShow={!!isAuth}
+                    />
+                ));
+            }
+            return null;
+        };
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.top}>
-                    <h3>{t("volunteer-dashboard.Возможности, которые вам понравятся")}</h3>
+                    <h3>
+                        {t(
+                            "volunteer-dashboard.Возможности, которые вам понравятся",
+                        )}
+                    </h3>
                     <Link
                         to={getProfilePreferencesPageUrl(locale)}
                         className={styles.settings}
@@ -30,9 +86,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                         {t("volunteer-dashboard.Настроить")}
                     </Link>
                 </div>
-                <div className={styles.container}>
-                    {/* render offers items */}
-                </div>
+                <div className={styles.container}>{renderOffers()}</div>
             </div>
         );
     },

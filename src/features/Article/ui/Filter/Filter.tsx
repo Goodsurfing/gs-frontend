@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { TagsOption, tags } from "../../model/data/tags";
+import { TagsOption, useFilterTags } from "../../model/data/tags";
 
 export const Filter = () => {
     const [filterValue, setFilterValue] = useState<TagsOption>("Свежее");
+    const tags = useFilterTags();
 
     const handleFilterChange = (event: React.MouseEvent<HTMLElement>, newValue: TagsOption) => {
         if (newValue) setFilterValue(newValue);

@@ -91,9 +91,10 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
             }
         }, [isDirty, saveFormData, watch]);
 
-        const onSubmit: SubmitHandler<VolunteerSkillsField> = (data) => {
+        const onSubmit: SubmitHandler<VolunteerSkillsField> = async (data) => {
+            setToast(undefined);
             const formattedData = volunteerSkillsAdapter(data);
-            updateVolunteer({ profileId, body: formattedData })
+            await updateVolunteer({ profileId, body: formattedData })
                 .unwrap()
                 .then(() => {
                     setToast({

@@ -21,20 +21,25 @@ const uploadFile = async (fileName: string, data: File) => {
                     body: formData,
                 },
             );
-            const dataResult: ObjectMediaResponse = await response.json();
 
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+            }
+
+            const dataResult: ObjectMediaResponse = await response.json();
             return dataResult;
         } catch (error) {
             return null;
         }
     };
+
     if (fileName && data) {
-        const uploadedFile: ObjectMediaResponse | null = await
-        sendRequestForGenerateUploadLink();
+        const uploadedFile: ObjectMediaResponse | null = await sendRequestForGenerateUploadLink();
         if (uploadedFile) {
             return uploadedFile;
         }
     }
+    return null;
 };
 
 export default uploadFile;

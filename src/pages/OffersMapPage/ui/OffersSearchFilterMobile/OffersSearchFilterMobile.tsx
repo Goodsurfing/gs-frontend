@@ -3,6 +3,7 @@ import React, { FC, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 
+import { useTranslation } from "react-i18next";
 import {
     OfferPagination,
     OffersMap,
@@ -11,7 +12,6 @@ import {
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
 import { getUserAuthData } from "@/entities/User";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -23,22 +23,29 @@ import { Text } from "@/shared/ui/Text/Text";
 import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
 import styles from "./OffersSearchFilterMobile.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Offer } from "@/entities/Offer";
 
 type SelectedTabType = "filter" | "map" | "offers";
 
 interface OffersSearchFilterMobileProps {
     className?: string;
+    data?: Offer[];
+    isLoading: boolean;
+    onSubmit: () => void;
+    onResetFilters: () => void;
 }
 
 export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     props,
 ) => {
-    const { className } = props;
+    const {
+        className, data, isLoading, onSubmit, onResetFilters,
+    } = props;
     const { control } = useFormContext();
+    const { t } = useTranslation("offers-map");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
-    const { data, isLoading } = useGetOffersQuery();
     const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
 
@@ -53,6 +60,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     const isOffersTabOpened = selectedTab === "offers";
     const isFilterTabOpened = selectedTab === "filter";
     const isMapTabOpened = selectedTab === "map";
+
+    const handleSubmit = () => {
+        onSubmit();
+        setSelectedTab("offers");
+    };
 
     const renderOfferCards = useMemo(() => {
         if (data) {
@@ -117,7 +129,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     isActive={isOffersTabOpened}
                     onClick={handleOffersTab}
                 >
-                    Список вакансий
+                    {t("Список вакансий")}
                     <ReactSVG src={searchIcon} />
                 </SquareButton>
                 <div className={styles.buttons}>
@@ -126,14 +138,14 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                         isActive={isMapTabOpened}
                         onClick={handleMapTab}
                     >
-                        Карта
+                        {t("Карта")}
                     </SquareButton>
                     <SquareButton
                         className={cn(styles.button)}
                         isActive={isFilterTabOpened}
                         onClick={handleFilterTab}
                     >
-                        Фильтр
+                        {t("Фильтр")}
                     </SquareButton>
                 </div>
                 {isOffersTabOpened && (
@@ -152,7 +164,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                             )}
                         />
                         <Controller
-                            name="showClosedOffers"
+                            name="offersSort.showClosedOffers"
                             control={control}
                             render={({ field }) => (
                                 <SwitchClosedOffers
@@ -170,7 +182,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     <div className={styles.offersCount}>
                         {data ? data.length : 0}
                         {" "}
-                        вариантов
+                        {t("вариантов")}
                     </div>
                     <div className={styles.list}>{renderOfferCards}</div>
                     <OfferPagination
@@ -186,7 +198,12 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     classNameMap={styles.offersMap}
                 />
             )}
-            {isFilterTabOpened && <OffersMobileFilter />}
+            {isFilterTabOpened && (
+                <OffersMobileFilter
+                    onSubmitFilters={handleSubmit}
+                    onResetFilters={onResetFilters}
+                />
+            )}
         </div>
     );
 };

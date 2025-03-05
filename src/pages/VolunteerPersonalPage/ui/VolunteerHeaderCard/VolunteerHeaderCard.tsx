@@ -11,8 +11,9 @@ import Button from "@/shared/ui/Button/Button";
 
 import { getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./VolunteerHeaderCard.module.scss";
-import { formatDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/entities/Locale";
+import { useLanguagesWithComma } from "@/shared/data/languages";
+import { getAge } from "@/shared/lib/getAge";
 
 interface VolunteerHeaderCardProps {
     volunteer: VolunteerApi;
@@ -32,23 +33,13 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         const {
             image, firstName, lastName, birthDate, country, city,
         } = volunteer.profile;
+        const languages = useLanguagesWithComma(volunteer.languages);
 
         const renderLanguages = () => {
             if (
-                volunteer
-                && volunteer.languages
-                && volunteer.languages.length > 0
+                volunteer.languages.length > 0
             ) {
-                return (
-                    <span style={{ color: "black" }}>
-                        {volunteer.languages.map(({ language }, index) => (
-                            <React.Fragment key={index}>
-                                {language}
-                                {index < volunteer.languages.length - 1 && ", "}
-                            </React.Fragment>
-                        ))}
-                    </span>
-                );
+                return <span>{languages}</span>;
             }
             return <span>Языки не были указаны</span>;
         };
@@ -77,9 +68,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                             <span className={styles.birthDate}>
                                 Волонтёр
                                 {" "}
-                                {birthDate && (
-                                    formatDate(locale, birthDate ?? "")
-                                )}
+                                {getAge(birthDate)}
                             </span>
                             {/* {isMember && (
                                 <img

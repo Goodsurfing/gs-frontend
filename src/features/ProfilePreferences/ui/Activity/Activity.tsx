@@ -1,13 +1,19 @@
-import React, { FC, memo, useState } from "react";
+import React, { FC, memo } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
-import { activityData } from "../../model/data/mockedPopularPlacesData";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
+import { useCategories } from "@/shared/data/categories";
 
-export const Activity: FC = memo(() => {
-    const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+interface ActivityProps {
+    value: string[];
+    onChange: (value: string[]) => void;
+}
+
+export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
+    const { value, onChange } = props;
+    const { tags } = useCategories();
 
     return (
         <div className={styles.wrapper}>
@@ -16,17 +22,18 @@ export const Activity: FC = memo(() => {
             </h2>
             <div className={styles.wrapper}>
                 <SelectableGroup
-                    data={activityData}
+                    data={tags}
                     getKey={(item) => item.value}
-                    onSelect={(value) => setSelectedActivities(value)}
+                    onSelect={(valueItem) => onChange(valueItem)}
                     renderItem={(category, onClick, isSelect) => (
                         <CategoryCard
-                            category={category}
+                            category={{ image: category.image, text: category.text }}
                             onClick={onClick}
                             isSelect={isSelect}
+                            key={category.value}
                         />
                     )}
-                    selectedItems={selectedActivities}
+                    selectedItems={value}
                     containerStyle={styles.container}
                     multiSelect
                 />

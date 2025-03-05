@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import styles from "./HeaderList.module.scss";
 import { SwitchClosedOffers } from "../SwitchClosedOffers/SwitchClosedOffers";
 import { SelectSort } from "../SelectSort/SelectSort";
@@ -18,13 +19,14 @@ export const HeaderList: FC<HeaderListProps> = (props) => {
     const { isShowMap, onChangeShowMap, offersLength } = props;
     const { control } = useFormContext<OffersFilterFields>();
     const { width } = useWindowDimensions();
+    const { t } = useTranslation("offers-map");
 
     return (
         <div className={styles.wrapper}>
             <span className={styles.offerCount}>
                 {offersLength}
                 {" "}
-                вариантов
+                {t("вариантов")}
             </span>
             <Controller
                 name="offersSort.showClosedOffers"

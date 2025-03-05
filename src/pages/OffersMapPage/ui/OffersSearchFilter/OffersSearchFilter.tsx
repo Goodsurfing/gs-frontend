@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
@@ -8,25 +9,30 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import styles from "./OffersSearchFilter.module.scss";
 import { CategoryType, categoryValues } from "@/types/categories";
+import styles from "./OffersSearchFilter.module.scss";
+import { useLazyGetOffersQuery } from "@/entities/Offer";
+import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
+
+const defaultValues: OffersFilterFields = {
+    offersSort: {
+        showClosedOffers: true,
+        sortValue: "novelty",
+    },
+    category: [],
+    languages: [],
+    participationPeriod: [1, 190],
+    periods: { start: undefined, end: undefined },
+    withChildren: false,
+    provided: [],
+};
+
+const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
 export const OffersSearchFilter = () => {
-    const defaultFilterValues: DefaultValues<OffersFilterFields> = {
-        offersSort: {
-            showClosedOffers: false,
-            sortValue: "novelty",
-        },
-        category: [],
-        languages: [],
-        participationPeriod: [7, 186],
-        periods: { start: undefined, end: undefined },
-        withChildren: false,
-        provided: [],
-    };
-
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [fetchOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
 
     const initialCategories = searchParams.get("category")
         ?.split(",")
@@ -40,11 +46,18 @@ export const OffersSearchFilter = () => {
         },
     });
 
-    const { watch, setValue } = offerFilterForm;
+    const {
+        watch, setValue, reset, handleSubmit,
+    } = offerFilterForm;
 
     const [isSyncing, setIsSyncing] = useState(false);
 
-    // Sync form to URL params
+    useEffect(() => {
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
+        fetchOffers(preparedData);
+    }, [fetchOffers]);
+
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (!isSyncing && name === "category") {
@@ -63,7 +76,6 @@ export const OffersSearchFilter = () => {
         return () => subscription.unsubscribe();
     }, [watch, setSearchParams, isSyncing]);
 
-    // Sync URL params to form
     useEffect(() => {
         setIsSyncing(true);
         const categoriesFromURL = searchParams.get("category")
@@ -73,33 +85,51 @@ export const OffersSearchFilter = () => {
         setIsSyncing(false);
     }, [searchParams, setValue]);
 
+    const onApplyFilters = handleSubmit((data: OffersFilterFields) => {
+        const preparedData = offersFilterApiAdapter(data);
+        fetchOffers(preparedData);
+    });
+
+    const onResetFilters = () => {
+        reset(defaultFilterValues);
+        setSearchParams(new URLSearchParams());
+        fetchOffers(undefined);
+    };
+
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
     }, []);
 
     return (
         <FormProvider {...offerFilterForm}>
-            <div className={styles.wrapper}>
-                <OffersFilter className={styles.filter} />
-
+            <form onSubmit={onApplyFilters} className={styles.wrapper}>
+                <OffersFilter onResetFilters={onResetFilters} className={styles.filter} />
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
+                        data={offersData}
+                        isLoading={isLoading}
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
                         className={cn(styles.offersList, {
                             [styles.closed]: !isMapOpened,
                         })}
                     />
-
                     {isMapOpened && (
                         <OffersMap
+                            offersData={offersData}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
                     )}
                 </div>
-                <OffersSearchFilterMobile className={styles.mobile} />
-            </div>
+                <OffersSearchFilterMobile
+                    data={offersData}
+                    isLoading={isLoading}
+                    className={styles.mobile}
+                    onSubmit={onApplyFilters}
+                    onResetFilters={onResetFilters}
+                />
+            </form>
         </FormProvider>
     );
 };

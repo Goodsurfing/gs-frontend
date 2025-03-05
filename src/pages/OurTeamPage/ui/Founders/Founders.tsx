@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { foundersData } from "../../model/data/ourTeam";
 import { TeamItem } from "../TeamItem/TeamItem";
 import styles from "./Founders.module.scss";
@@ -11,6 +12,8 @@ interface FoundersProps {
 
 export const Founders: FC<FoundersProps> = memo((props: FoundersProps) => {
     const { className } = props;
+    const { t } = useTranslation("our-team");
+
     const renderItems = useMemo(
         () => foundersData.map((item, index) => (
             <TeamItem
@@ -26,7 +29,7 @@ export const Founders: FC<FoundersProps> = memo((props: FoundersProps) => {
     );
     return (
         <section className={cn(className, styles.wrapper)}>
-            <h2 className={styles.title}>Основатели</h2>
+            <h2 className={styles.title}>{t("Основатели")}</h2>
             <div className={styles.container}>{renderItems}</div>
         </section>
     );

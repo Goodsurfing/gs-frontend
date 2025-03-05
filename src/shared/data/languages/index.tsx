@@ -254,3 +254,33 @@ export const useFormatLanguages = (languages: Language[]) => {
             );
         });
 };
+
+export const useLanguagesWithComma = (languages: Language[]) => {
+    const { t } = useTranslation("offer");
+
+    const languagesList: IOptionLanguage[] = [
+        { label: t("whoNeeds.Не важен"), value: "not_matter" },
+        { label: t("whoNeeds.Английский"), value: "english" },
+        { label: t("whoNeeds.Русский"), value: "russian" },
+        { label: t("whoNeeds.Испанский"), value: "spanish" },
+        { label: t("whoNeeds.Немецкий"), value: "german" },
+        { label: t("whoNeeds.Итальянский"), value: "italian" },
+        { label: t("whoNeeds.Французский"), value: "french" },
+        { label: t("whoNeeds.Португальский"), value: "portuguese" },
+        { label: t("whoNeeds.Турецкий"), value: "turkish" },
+        { label: t("whoNeeds.Арабский"), value: "arabic" },
+        { label: t("whoNeeds.Шведский"), value: "swedish" },
+        { label: t("whoNeeds.Датский"), value: "danish" },
+        { label: t("whoNeeds.Норвежский"), value: "norwegian" },
+        { label: t("whoNeeds.Украинский"), value: "ukrainian" },
+        { label: t("whoNeeds.Иврит"), value: "hebrew" },
+    ];
+
+    const languagesWithoutLevel = languages.map(({ language }) => {
+        const languageLabel = languagesList.find((l) => l.value === language);
+        return languageLabel ? languageLabel.label : language;
+    });
+
+    const languagesWithComma = languagesWithoutLevel.join(", ");
+    return languagesWithComma;
+};

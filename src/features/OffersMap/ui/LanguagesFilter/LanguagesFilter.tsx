@@ -3,6 +3,7 @@ import React, {
     useState,
 } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import styles from "./LanguagesFilter.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
@@ -22,6 +23,7 @@ export const LanguagesFilter: FC<LanguagesFilterProps> = (props) => {
     } = props;
     const languagesRef = useRef(null);
     const [isShowDropdown, setShowDropdown] = useState<boolean>(false);
+    const { t } = useTranslation("offers-map");
 
     useOnClickOutside(languagesRef, () => {
         setShowDropdown(() => (false));
@@ -38,7 +40,7 @@ export const LanguagesFilter: FC<LanguagesFilterProps> = (props) => {
                 className={cn(styles.btn, { [styles.open]: isShowDropdown })}
             >
                 <div className={styles.inner}>
-                    Знание языков
+                    {t("Знание языков")}
                     <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
                 </div>
                 <Arrow

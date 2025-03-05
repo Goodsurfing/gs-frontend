@@ -7,10 +7,12 @@ export {
     useGetOfferByIdQuery,
     useLazyGetHostOffersByIdQuery,
     useLazyGetOfferByIdQuery,
+    useLazyGetOffersQuery,
+    useGetOffersQuery,
 } from "./api/offerApi";
 
 export type {
-    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization,
+    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OffersFilters,
 } from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";
