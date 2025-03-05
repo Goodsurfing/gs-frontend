@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
     FC,
+    FocusEvent,
     memo, useCallback, useEffect, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { useAddMemberToOrganizationMutation } from "@/entities/Host";
+import { HostMember, useAddMemberToOrganizationMutation } from "@/entities/Host";
 import {
     Profile,
 } from "@/entities/Profile";
@@ -26,14 +27,15 @@ const ITEMS_PER_PAGE = 10;
 
 interface TeamInputProps {
     hostId: string;
-    refreshToast: () => void;
+    hostEmail: string;
+    hostMembers: HostMember[];
     onSuccess: () => void;
     onError: () => void;
 }
 
 export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
     const {
-        hostId, refreshToast, onSuccess, onError,
+        hostId, hostEmail, hostMembers, onSuccess, onError,
     } = props;
     const dropwownRef = useRef(null);
     const { t } = useTranslation("host");
@@ -76,20 +78,34 @@ export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
         setSelectedProfile(null);
     }, []);
 
-    const onBlur = useCallback(() => {
+    const refreshData = useCallback(() => {
         setInputValue("");
         setSearchedProfiles([]);
+        setSelectedProfile(null);
         setPage(1);
         setHasMore(true);
     }, []);
 
-    const onClickCard = useCallback((profileId: string, email: string) => {
-        setInputValue(email);
-        setSelectedProfile(`${API_BASE_URL}users/${profileId}`);
+    const onBlur = useCallback((e: FocusEvent<HTMLInputElement, Element>) => {
+        if (e.relatedTarget && e.relatedTarget.id === "add-button") {
+            return;
+        }
+        refreshData();
     }, []);
 
+    const onClickCard = useCallback((profileId: string, email: string) => {
+        let memberAlredyExist = false;
+        hostMembers.forEach((hostMember) => {
+            if (hostMember.profile.email === email) memberAlredyExist = true;
+        });
+        if (hostEmail === email) memberAlredyExist = true;
+        if (!memberAlredyExist) {
+            setInputValue(email);
+            setSelectedProfile(`${API_BASE_URL}users/${profileId}`);
+        }
+    }, [hostMembers]);
+
     const onAddUserToOrganization = useCallback(() => {
-        refreshToast();
         if (selectedProfile) {
             addMemberToOrganization({ organizationId: hostId, body: { profile: selectedProfile } })
                 .unwrap()
@@ -100,7 +116,7 @@ export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
                     onError();
                 })
                 .finally(() => {
-                    setSelectedProfile(null);
+                    refreshData();
                 });
         }
     }, [selectedProfile]);
@@ -180,6 +196,7 @@ export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
                     </InfiniteScroll>
                 </div>
                 <AddButton
+                    id="add-button"
                     disabled={!selectedProfile || isLoading}
                     text={t("hostTeam.Добавить участника")}
                     onClick={() => onAddUserToOrganization()}

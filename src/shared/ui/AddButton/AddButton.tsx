@@ -10,11 +10,12 @@ import styles from "./AddButton.module.scss";
 interface AddButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text?: string;
     classNameIcon?: string;
+    id?: string;
 }
 
 export const AddButton = memo(
     ({
-        className, onClick, text, classNameIcon, disabled,
+        className, onClick, text, classNameIcon, disabled, id,
     }: AddButtonProps) => {
         const onBtnClick = (
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -28,6 +29,7 @@ export const AddButton = memo(
                 className={cn(className, styles.button)}
                 onClick={onBtnClick}
                 disabled={disabled}
+                id={id}
             >
                 <IconComponent
                     icon={plusIcon}

@@ -8,8 +8,8 @@ const HostTeamPage: FC = () => {
     const { data: hostData } = useGetMyHostQuery();
     return (
         <div className={styles.wrapper}>
-            {hostData?.id && (
-                <TeamForm hostId={hostData.id} />
+            {hostData && (
+                <TeamForm hostId={hostData.id} hostEmail={hostData.owner.email} />
             )}
         </div>
     );

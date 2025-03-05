@@ -24,10 +24,11 @@ import styles from "./TeamForm.module.scss";
 
 interface TeamFormProps {
     hostId: string;
+    hostEmail: string;
 }
 
 export const TeamForm: FC<TeamFormProps> = (props) => {
-    const { hostId } = props;
+    const { hostId, hostEmail } = props;
     const [toast, setToast] = useState<ToastAlert>();
     const { t, ready } = useTranslation("host");
 
@@ -46,7 +47,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: t("hostTeam.Участник был добавлен"),
+                        text: t("hostTeam.Участник был удалён"),
                         type: HintType.Success,
                     });
                 })
@@ -81,21 +82,23 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
     };
 
     const onError = () => {
-        setToast({
-            text: t("hostTeam.Произошла ошибка"),
-            type: HintType.Error,
-        });
+        setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: t("hostTeam.Произошла ошибка"),
+                type: HintType.Error,
+            });
+        }, 0);
     };
 
     const onSuccess = () => {
-        setToast({
-            text: t("hostTeam.Участник был добавлен"),
-            type: HintType.Success,
-        });
-    };
-
-    const refreshToast = () => {
         setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: t("hostTeam.Участник был добавлен"),
+                type: HintType.Success,
+            });
+        }, 0);
     };
 
     if (!ready) {
@@ -112,7 +115,8 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
             <Text />
             <TeamInput
                 hostId={hostId}
-                refreshToast={refreshToast}
+                hostEmail={hostEmail}
+                hostMembers={hostMembers ?? []}
                 onError={onError}
                 onSuccess={onSuccess}
             />

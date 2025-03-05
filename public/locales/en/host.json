@@ -21,6 +21,7 @@
         "Команда организации": "Organization team",
         "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site.",
         "Участник был добавлен": "Member was added",
+        "Участник был удалён": "Member was removed",
         "Введите ФИО участника": "Enter the participant's full name"
     },
     "personalHost": {
