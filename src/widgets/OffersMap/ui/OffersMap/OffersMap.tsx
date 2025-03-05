@@ -9,19 +9,19 @@ import { YMap, YmapType } from "@/entities/Map";
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import styles from "./OffersMap.module.scss";
 import "./yandex-map-restyle-ballon.scss";
-import { useGetOffersQuery } from "@/entities/Offer/api/offerApi";
+import { Offer } from "@/entities/Offer";
 
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
+    offersData?: Offer[]
 }
 
 export const OffersMap: FC<OffersMapProps> = (props) => {
-    const { className, classNameMap } = props;
+    const { className, classNameMap, offersData } = props;
     const { locale } = useLocale();
     const [ymap, setYmap] = useState<YmapType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
-    const { data } = useGetOffersQuery();
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -81,7 +81,7 @@ export const OffersMap: FC<OffersMapProps> = (props) => {
                             clusterBalloonContentLayoutHeight: 200,
                         }}
                     >
-                        <OffersPlacemarkList data={data ?? []} />
+                        <OffersPlacemarkList data={offersData ?? []} />
                     </Clusterer>
                 )}
             </YMap>

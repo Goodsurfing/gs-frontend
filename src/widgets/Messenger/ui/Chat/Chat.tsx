@@ -5,6 +5,7 @@ import React, {
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ReactSVG } from "react-svg";
+import { useNavigate } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -41,6 +42,7 @@ import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
+import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 
 interface ChatProps {
     id?: string;
@@ -80,6 +82,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const { mercureToken } = useAuth();
 
@@ -346,13 +349,15 @@ export const Chat: FC<ChatProps> = (props) => {
             const preparedData = applicationOfferAdapter(data, offerId);
             await createApplicationForm(preparedData)
                 .unwrap()
-                .then(() => {
+                .then((result) => {
                     setToast({
                         text: "Заявка успешно отправлена",
                         type: HintType.Success,
                     });
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
+                    const chatId = result.chat.split("/").pop();
+                    if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
                 })
                 .catch((error: ErrorType) => {
                     setToast({

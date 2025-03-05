@@ -20,7 +20,8 @@ interface TeamCardProps {
 
 export const TeamCard: FC<TeamCardProps> = memo(
     ({
-        teamUser, profileData, disableDeleteIcn, onDeleteClick,
+        teamUser, profileData,
+        disableDeleteIcn, onDeleteClick,
     }: TeamCardProps) => {
         if (teamUser) {
             const { id, profile } = teamUser;
@@ -69,5 +70,7 @@ export const TeamCard: FC<TeamCardProps> = memo(
                 </div>
             );
         }
+
+        return null;
     },
 );

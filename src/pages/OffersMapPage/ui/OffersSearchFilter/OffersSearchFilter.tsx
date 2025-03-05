@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
@@ -52,7 +53,8 @@ export const OffersSearchFilter = () => {
     const [isSyncing, setIsSyncing] = useState(false);
 
     useEffect(() => {
-        const preparedData = offersFilterApiAdapter(defaultValues);
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
         fetchOffers(preparedData);
     }, [fetchOffers]);
 
@@ -114,6 +116,7 @@ export const OffersSearchFilter = () => {
                     />
                     {isMapOpened && (
                         <OffersMap
+                            offersData={offersData}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />

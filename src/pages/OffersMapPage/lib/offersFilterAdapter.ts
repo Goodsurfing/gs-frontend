@@ -5,7 +5,7 @@ import { OffersFilterFields } from "../model/types";
 export const offersFilterApiAdapter = (data: OffersFilterFields): Partial<OffersFilters> => {
     const {
         category, languages,
-        participationPeriod, periods, offersSort,
+        participationPeriod, periods, offersSort, withChildren, provided,
     } = data;
     const { showClosedOffers } = offersSort;
     const currentDate = new Date();
@@ -30,8 +30,21 @@ export const offersFilterApiAdapter = (data: OffersFilterFields): Partial<Offers
         end_date,
     };
 
-    if (category.length > 0) queryParams.skills = category;
+    if (category.length > 0) queryParams.categories = category;
     if (languages.length > 0) queryParams.languages = languages;
+    if (withChildren) queryParams.additionalConditions = ["allow-kids"];
+
+    provided.forEach((value) => {
+        if (value === "food") {
+            queryParams.food = ["full", "breakfast"];
+        }
+        if (value === "housing") {
+            queryParams.housing = ["house", "room"];
+        }
+        if (value === "paidTravel") {
+            queryParams.paidTravel = ["full", "partial"];
+        }
+    });
 
     return queryParams;
 };

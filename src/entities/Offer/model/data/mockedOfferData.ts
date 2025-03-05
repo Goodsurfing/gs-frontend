@@ -69,6 +69,8 @@ export const mockedOffersData: Offer[] = [
             type: "ИП",
             avatar: { id: "1", contentUrl: "" },
         },
+        canEdit: true,
+        canParticipate: true,
     },
     {
         id: 2,
@@ -138,6 +140,8 @@ export const mockedOffersData: Offer[] = [
             type: "ИП",
             avatar: { id: "1", contentUrl: "" },
         },
+        canEdit: true,
+        canParticipate: true,
     },
     {
         id: 3,
@@ -207,5 +211,7 @@ export const mockedOffersData: Offer[] = [
             type: "ИП",
             avatar: { id: "1", contentUrl: "" },
         },
+        canEdit: true,
+        canParticipate: true,
     },
 ];

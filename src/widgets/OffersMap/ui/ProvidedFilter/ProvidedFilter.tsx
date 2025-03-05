@@ -83,8 +83,8 @@ export const ProvidedFilter: FC<ProvidedFilterProps> = (props) => {
                 )}
                 control={(
                     <SwitchComponent
-                        checked={value.includes("padidTravel")}
-                        onChange={() => handleChange("padidTravel")}
+                        checked={value.includes("paidTravel")}
+                        onChange={() => handleChange("paidTravel")}
                     />
                 )}
             />

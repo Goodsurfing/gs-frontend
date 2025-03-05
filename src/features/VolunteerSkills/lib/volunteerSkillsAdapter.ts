@@ -1,8 +1,8 @@
-import { VolunteerApi } from "@/entities/Volunteer";
+import { VolunteerApi, VolunteerType } from "@/entities/Volunteer";
 import { VolunteerSkillsField } from "../model/types/volunteerSkills";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
 
-export const volunteerSkillsAdapter = (data: VolunteerSkillsField): Partial<Omit<VolunteerApi, "profile">> => {
+export const volunteerSkillsAdapter = (data: VolunteerSkillsField): Partial<Omit<VolunteerType, "profile">> => {
     const {
         languages, skills, additionalSkills, extraInfo,
     } = data;
