@@ -42,7 +42,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
     const onSubmit = handleSubmit(async (data) => {
         const preparedData = profilePreferencesApiAdapter(data);
         try {
-            await updateVolunteer({ profileId, body: preparedData });
+            await updateVolunteer({ profileId, body: preparedData }).unwrap();
             setToast({
                 text: "Данные успешно изменены",
                 type: HintType.Success,

@@ -39,9 +39,9 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
         useEffect(() => {
             const fetchOffers = async () => {
                 try {
-                    if (myVolunteerData) {
+                    if (myVolunteerData && myVolunteerData.favoriteCategories.length > 0) {
                         const resultOffers = await getOffers(
-                            undefined,
+                            { categories: myVolunteerData.favoriteCategories },
                         ).unwrap();
                         setFilteredOffers(resultOffers.slice(0, 10));
                     }
