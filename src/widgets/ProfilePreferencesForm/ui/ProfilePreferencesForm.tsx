@@ -40,6 +40,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
     }, [reset, volunteerData]);
 
     const onSubmit = handleSubmit(async (data) => {
+        setToast(undefined);
         const preparedData = profilePreferencesApiAdapter(data);
         try {
             await updateVolunteer({ profileId, body: preparedData }).unwrap();
