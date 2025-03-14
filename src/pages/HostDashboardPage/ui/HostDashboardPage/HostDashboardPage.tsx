@@ -8,17 +8,18 @@ import { RequestsWidget } from "@/widgets/RequestsWidget";
 import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 
 import styles from "./HostDashboard.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const HostDashboardPage: FC = () => {
     const { ready } = useTranslation("host");
+    const { ready: volunteerReady } = useTranslation("volunteer");
     const { locale } = useLocale();
 
-    if (!ready) {
+    if (!ready || !volunteerReady) {
         return (
             <div className={styles.dashboard}>
-                <Preloader />
+                <MiniLoader />
             </div>
         );
     }

@@ -5,8 +5,8 @@ import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/entities/Profile";
 import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import styles from "./ProfileInfo.module.scss";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface ProfileInfoProps {
     className?: string;
@@ -31,7 +31,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.header} />
                 <div className={styles.body}>
-                    <Preloader />
+                    <MiniLoader />
                 </div>
             </div>
         );
