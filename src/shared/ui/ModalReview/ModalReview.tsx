@@ -3,6 +3,7 @@ import React, {
     FC, ReactNode,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import Textarea from "../Textarea/Textarea";
@@ -41,6 +42,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     const {
         stars, text,
     } = value;
+    const { t } = useTranslation("host");
 
     if (!isOpen) {
         return null;
@@ -87,7 +89,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                         text: event.target.value,
                         stars,
                     })}
-                    label="Напишите ваш отзыв"
+                    label={t("host-dashboard.Напишите ваш отзыв")}
                     maxLength={500}
                 />
                 {errorText && (<ErrorText text={errorText} />)}
@@ -98,7 +100,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                     color="BLUE"
                     disabled={!stars || !text}
                 >
-                    Оставить отзыв
+                    {t("host-dashboard.Оставить отзыв")}
                 </Button>
             </div>
         </Modal>

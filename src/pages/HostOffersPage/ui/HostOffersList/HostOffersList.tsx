@@ -2,6 +2,7 @@ import React, {
     FC, memo,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { Offer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -19,10 +20,11 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
         offers, onCloseClick,
     } = props;
     const { getTranslation } = useCategories();
+    const { t } = useTranslation("host");
 
     const renderMyOffers = () => {
         if (!offers || !offers.length) {
-            return <span>Нет списка вакансий</span>;
+            return <span>{t("hostOffers.Нет списка вакансий")}</span>;
         }
 
         return offers.map((offer, index) => {

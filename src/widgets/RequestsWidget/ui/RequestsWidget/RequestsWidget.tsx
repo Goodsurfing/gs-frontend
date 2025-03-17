@@ -73,7 +73,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const renderRequests = () => {
         if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
         if (!applications || applications.length === 0) {
-            return <Text text="На данный момент заявки отсутсвуют" />;
+            return <Text text={t("host-dashboard.На данный момент заявки отсутсвуют")} />;
         }
 
         const limitedApplications = applications.slice(-5);
@@ -102,7 +102,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Ваш отзыв был отправлен",
+                        text: t("host-dashboard.Ваш отзыв был отправлен"),
                         type: HintType.Success,
                     });
                 })
@@ -162,6 +162,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
+                        titleText={t("host-dashboard.Оставьте отзыв")}
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

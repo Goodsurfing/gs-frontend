@@ -1,6 +1,7 @@
 import { MouseEventHandler, memo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 
@@ -47,6 +48,7 @@ const HostOffersPageCard = memo(
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
+        const { t } = useTranslation("host");
 
         const onEditClick = () => {
             if (status === "draft") {
@@ -85,12 +87,12 @@ const HostOffersPageCard = memo(
                             </div>
                             <div className={styles.extraInfo}>
                                 <span className={styles.review}>
-                                    Отзывов:
+                                    {t("hostOffers.Отзывов")}
                                     {" "}
                                     {reviews}
                                 </span>
                                 <span className={styles.went}>
-                                    Отправились:
+                                    {t("hostOffers.Отправились")}
                                     {" "}
                                     {went}
                                 </span>
@@ -109,7 +111,7 @@ const HostOffersPageCard = memo(
                         size="SMALL"
                         onClick={onEditClick}
                     >
-                        Редактировать
+                        {t("hostOffers.Редактировать")}
                     </Button>
                     <Button
                         color={isCloseButtonActive ? "GRAY" : "BLACK"}
@@ -118,7 +120,7 @@ const HostOffersPageCard = memo(
                         className={styles.gray}
                         onClick={onCloseClick}
                     >
-                        {isCloseButtonActive ? "Закрыть" : "Открыть"}
+                        {isCloseButtonActive ? t("hostOffers.Закрыть") : t("hostOffers.Открыть")}
                     </Button>
                     {/* <Button
                         className={styles.black}

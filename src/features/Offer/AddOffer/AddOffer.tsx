@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCreateOfferMutation } from "@/entities/Offer";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -9,6 +10,7 @@ import styles from "./AddOffer.module.scss";
 import { useUser } from "@/entities/Profile";
 
 export const AddOffer = () => {
+    const { t } = useTranslation("host");
     const [createOffer, { isLoading, isError }] = useCreateOfferMutation();
     const [createOfferError, setCreateOfferError] = useState<boolean>(false);
     const [disabledButton, setDisabledButton] = useState<boolean>(true);
@@ -41,7 +43,7 @@ export const AddOffer = () => {
         <div className={styles.btnWrapper}>
             {(isError || createOfferError) && (
                 <HintPopup
-                    text="Ошибка создания вакансии"
+                    text={t("hostOffers.Ошибка создания вакансии")}
                     type={HintType.Error}
                 />
             )}
@@ -53,7 +55,7 @@ export const AddOffer = () => {
                 className={styles.btn}
                 onClick={addOfferHandle}
             >
-                {isLoading ? "Создание..." : "Добавить предложение"}
+                {t("hostOffers.Добавить предложение")}
             </Button>
         </div>
     );

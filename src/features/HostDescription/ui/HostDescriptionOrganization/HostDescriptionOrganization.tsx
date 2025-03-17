@@ -5,6 +5,7 @@ import cn from "classnames";
 
 import { MenuItem } from "@mui/material";
 
+import { useTranslation } from "react-i18next";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { SelectComponent } from "@/shared/ui/Select/Select";
@@ -19,6 +20,7 @@ interface HostDescriptionOrganizationProps {
 
 export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizationProps) => {
     const { className } = props;
+    const { t } = useTranslation("host");
 
     const { control } = useFormContext();
 
@@ -26,14 +28,14 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.name}>
                 <InputControl
-                    label="Название организации"
+                    label={t("hostDescription.Название организации")}
                     control={control}
                     name="mainInfo.organization"
                 />
             </div>
             <div className={styles.oneSentence}>
                 <TextAreaControl
-                    label="Опишите организацию в одно предложение"
+                    label={t("hostDescription.Опишите организацию в одно предложение")}
                     name="mainInfo.shortOrganization"
                     control={control}
                 />
@@ -48,7 +50,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                             className={styles.dropdown}
                             onChange={field.onChange}
                             value={field.value}
-                            label="Тип организации"
+                            label={t("hostDescription.Тип организации")}
                         >
                             {organizationTypeData.map((item) => (
                                 <MenuItem value={item.id} key={item.id}>{item.id}</MenuItem>
@@ -57,14 +59,14 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     )}
                 />
                 <InputControl
-                    label="Другое"
+                    label={t("hostDescription.Другое")}
                     name="type.otherOrganizationType"
                     control={control}
                 />
             </div>
             <div className={styles.website}>
                 <InputControl
-                    label="Сайт организации"
+                    label={t("hostDescription.Сайт организации")}
                     name="mainInfo.website"
                     control={control}
                 />
@@ -72,8 +74,8 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
             <div className={styles.about}>
                 <TextAreaControl
                     name="mainInfo.aboutInfo"
-                    label="Расскажите об организации"
-                    description="Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия"
+                    label={t("hostDescription.Расскажите об организации")}
+                    description={t("hostDescription.Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия")}
                     control={control}
                 />
             </div>

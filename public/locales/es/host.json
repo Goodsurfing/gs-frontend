@@ -12,7 +12,35 @@
         "Видео": "Videos",
         "Предложения": "Ofertas",
         "Отзывы": "Opiniones",
-        "Заявки": "Solicitudes"
+        "Заявки": "Solicitudes",
+        "Оставьте отзыв": "Deje una reseña",
+        "Оставить отзыв": "Dejar una reseña",
+        "Напишите ваш отзыв": "Escriba su reseña",
+        "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
+        "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
+    },
+    "hostOffers": {
+        "Мои вакансии": "Mis ofertas de trabajo",
+        "Черновики": "Borradores",
+        "Нет списка вакансий": "No hay ofertas de trabajo",
+        "Добавить предложение": "Agregar una oferta",
+        "Редактировать": "Editar",
+        "Отзывов": "Reseñas:",
+        "Отправились": "Enviados:",
+        "Закрыть": "Cerrar",
+        "Открыть": "Abrir",
+        "Вы уверены что хотите изменить вакансию?": "¿Está seguro de que quiere modificar la oferta de trabajo?",
+        "Ок": "Ok",
+        "Отмена": "Cancelar"
+    },
+    "hostNotes": {
+        "Мои заявки": "Mis aplicaciones",
+        "Статус был изменён": "El estado fue cambiado",
+        "Оставьте отзыв": "Deje una reseña",
+        "Оставить отзыв": "Dejar una reseña",
+        "Напишите ваш отзыв": "Escriba su reseña",
+        "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
+        "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
     },
     "hostTeam": {
         "Произошла ошибка": "Ocurrió un error",
@@ -23,6 +51,24 @@
         "Участник был добавлен": "El miembro fue agregado",
         "Участник был удалён": "El miembro fue eliminado",
         "Введите ФИО участника": "Ingrese el nombre completo del participante"
+    },
+    "hostDescription": {
+        "Организация создана": "Organización creada",
+        "Ошибка при создании организации": "Error al crear la organización",
+        "Данные успешно изменены": "Datos actualizados con éxito",
+        "Произошла ошибка! Поробуйте перезагрузить страницу": "¡Ocurrió un error! Intenta recargar la página",
+        "Основная информация": "Main information",
+        "Название организации": "Nombre de la organización",
+        "Опишите организацию в одно предложение": "Describe la organización en una frase",
+        "Тип организации": "Tipo de organización",
+        "ИП": "Emprendedor individual",
+        "ОАО": "Sociedad anónima pública",
+        "ООО": "Sociedad de responsabilidad limitada",
+        "ООПТ": "Áreas protegidas",
+        "Другое": "Otro",
+        "Сайт организации": "Sitio web de la organización",
+        "Расскажите об организации": "Cuéntanos sobre la organización",
+        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar"
     },
     "personalHost": {
         "Написать организатору": "Contactar al organizador",

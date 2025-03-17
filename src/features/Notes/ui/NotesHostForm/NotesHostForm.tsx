@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { Pagination } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
@@ -33,6 +34,7 @@ export const NotesHostForm = () => {
         },
     };
 
+    const { t } = useTranslation("host");
     const [toast, setToast] = useState<ToastAlert>();
     const form = useForm<ReviewFields>({
         mode: "onChange",
@@ -87,7 +89,7 @@ export const NotesHostForm = () => {
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Ваш отзыв был отправлен",
+                        text: t("hostNotes.Ваш отзыв был отправлен"),
                         type: HintType.Success,
                     });
                 })
@@ -101,12 +103,12 @@ export const NotesHostForm = () => {
         }
     });
 
-    const handleUpdateStatus = (applicationId: number, status: FormApplicationStatus) => {
-        updateApplicationStatus({ applicationId: applicationId.toString(), status })
+    const handleUpdateStatus = async (applicationId: number, status: FormApplicationStatus) => {
+        await updateApplicationStatus({ applicationId: applicationId.toString(), status })
             .unwrap()
             .then(() => {
                 setToast({
-                    text: "Статус был отправлен",
+                    text: t("hostNotes.Статус был изменён"),
                     type: HintType.Success,
                 });
             })
@@ -152,6 +154,7 @@ export const NotesHostForm = () => {
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
+                        titleText={t("hostNotes.Оставьте отзыв")}
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

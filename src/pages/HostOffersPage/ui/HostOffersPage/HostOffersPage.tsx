@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 
 import {
@@ -20,6 +21,7 @@ import { useGetMyHostQuery } from "@/entities/Host";
 type SeletecBtnType = "delete" | "every_open";
 
 const HostOffersPage = () => {
+    const { t } = useTranslation("host");
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
@@ -104,7 +106,7 @@ const HostOffersPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.abilities}>Мои вакансии</h2>
+            <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
             <HostOffersList
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
@@ -112,7 +114,7 @@ const HostOffersPage = () => {
             />
             {!!offersWithClosedStatus.length && (
                 <div className={styles.drafts}>
-                    <h2 className={styles.draftsTitle}>Черновики</h2>
+                    <h2 className={styles.draftsTitle}>{t("hostOffers.Черновики")}</h2>
                     <div className={styles.cards}>
                         <HostOffersList
                             offers={offersWithClosedStatus}
@@ -125,10 +127,12 @@ const HostOffersPage = () => {
             <AddOffer />
             <ConfirmActionModal
                 isModalOpen={isModalOpen}
-                description="Вы уверены что хотите изменить вакансию?"
+                description={t("hostOffers.Вы уверены что хотите изменить вакансию?")}
                 onConfirm={() => handleConfirmClick()}
                 onClose={() => handleModalClose()}
                 isLoading={isOfferLoading}
+                confirmTextButton={t("hostOffers.Ок")}
+                cancelTextButton={t("hostOffers.Отмена")}
             />
         </div>
     );

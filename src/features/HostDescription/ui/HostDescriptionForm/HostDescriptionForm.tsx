@@ -5,6 +5,7 @@ import {
 } from "react-hook-form";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
@@ -44,6 +45,9 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
         className, host, myProfile, isLoading = true, isError, profileRefetch,
     } = props;
+
+    const { t, ready } = useTranslation("host");
+
     const [createHost, {
         isLoading: isCreateHostLoading,
         error: createHostError,
@@ -66,13 +70,13 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 preparedData = hostDescriptionApiAdapterCreate(data);
                 await createHost(preparedData).unwrap();
                 setToast({
-                    text: "Организация создана",
+                    text: t("hostDescription.Организация создана"),
                     type: HintType.Success,
                 });
                 profileRefetch();
             } catch {
                 setToast({
-                    text: "Ошибка при создании организации",
+                    text: t("hostDescription.Ошибка при создании организации"),
                     type: HintType.Error,
                 });
             }
@@ -82,12 +86,12 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 preparedData = hostDescriptionApiAdapterUpdate(data);
                 await updateHost({ id: getHost.id, body: { ...preparedData } }).unwrap();
                 setToast({
-                    text: "Данные успешно изменены",
+                    text: t("hostDescription.Данные успешно изменены"),
                     type: HintType.Success,
                 });
             } catch {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: t("hostDescription.Произошла ошибка"),
                     type: HintType.Error,
                 });
             }
@@ -127,7 +131,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     if (isError) {
         return (
             <div className={cn(styles.form, className)}>
-                Произошла ошибка! Поробуйте перезагрузить страницу
+                {t("hostDescription.Произошла ошибка! Поробуйте перезагрузить страницу")}
             </div>
         );
     }
@@ -144,7 +148,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 </div>
                 <div>
                     <Button type="submit" disabled={isCreateHostLoading || isHostUpdateLoading} color="BLUE" size="MEDIUM" variant="FILL">
-                        Сохранить
+                        {t("hostDescription.Сохранить")}
                     </Button>
                 </div>
             </form>
