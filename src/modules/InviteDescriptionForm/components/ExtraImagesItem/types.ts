@@ -8,4 +8,6 @@ export interface ExtraImagesItemProps {
     closeBtn?: React.ReactNode;
     disabled?: boolean;
     checkImageSize?: boolean;
+    onError?: () => void;
+    onSuccess?: () => void;
 }

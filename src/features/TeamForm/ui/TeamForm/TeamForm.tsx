@@ -21,6 +21,7 @@ import { TeamCard } from "../TeamCard/TeamCard";
 import { TeamInput } from "../TeamInput/TeamInput";
 import { Text } from "../Text/Text";
 import styles from "./TeamForm.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface TeamFormProps {
     hostId: string;
@@ -31,6 +32,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
     const { hostId, hostEmail } = props;
     const [toast, setToast] = useState<ToastAlert>();
     const { t, ready } = useTranslation("host");
+    const { locale } = useLocale();
 
     const {
         data: hostMembers,
@@ -77,6 +79,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                 key={teamUser.id}
                 teamUser={teamUser}
                 onDeleteClick={handleDeleteClick}
+                locale={locale}
             />
         ));
     };

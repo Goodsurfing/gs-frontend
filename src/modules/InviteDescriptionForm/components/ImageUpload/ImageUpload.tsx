@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ImageInput from "@/components/ImageInput/ImageInput";
 import { ImageType } from "@/components/ImageInput/types";
@@ -8,6 +8,7 @@ import styles from "./ImageUpload.module.scss";
 import { DescriptionImage } from "../../model/types/inviteDescription";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { BASE_URL } from "@/shared/constants/api";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface ImageUploadProps {
     value: DescriptionImage;
@@ -22,6 +23,15 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
         onChange, childrenLabel, value, onChangeLoading, isLoading,
     } = props;
     const { t } = useTranslation("offer");
+    const [error, setError] = useState<boolean>(false);
+
+    const onSuccess = () => {
+        setError(false);
+    };
+
+    const onError = () => {
+        setError(true);
+    };
 
     const handleImageUpload = (image: ImageType) => {
         onChangeLoading(true);
@@ -50,8 +60,11 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             isLoading={isLoading}
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground text={childrenLabel} />}
+            onError={onError}
+            onSuccess={onSuccess}
             description={(
                 <span className={styles.description}>
+                    {error && (<ErrorText text="Неверный формат файла или ширина фото меньше 1280 пикселей" />)}
                     {t(
                         "description.Ширина фотографии для обложки не меньше 1280 пикселей",
                     )}

@@ -12,4 +12,6 @@ export interface ImageInputComponentProps extends InputFileProps {
     extraWrapperClassName?: string;
     isLoading?: boolean;
     checkImageSize?: boolean;
+    onError?: () => void;
+    onSuccess?: () => void;
 }

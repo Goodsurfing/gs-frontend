@@ -1,4 +1,4 @@
 export interface VideoListProps {
     videosURL: string[];
-    onDelete: (videoURL: string) => void;
+    onDelete: (videoIndex: number) => void;
 }

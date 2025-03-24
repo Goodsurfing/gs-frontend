@@ -50,7 +50,7 @@ export const VideoInput = memo(({ control, addVideo, isLoading }: VideoInputProp
                             )}
                         </div>
                         <AddButton
-                            disabled={fieldState.invalid || isLoading}
+                            disabled={fieldState.invalid || isLoading || !field.value}
                             type="submit"
                             text="Добавить видео"
                             onClick={addVideo}

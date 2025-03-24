@@ -2,9 +2,12 @@ import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 
 import { VideoList } from "@/widgets/VideoList/ui/VideoList";
+
+import { Host, useUpdateHostMutation } from "@/entities/Host";
 
 import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -17,8 +20,6 @@ import { VideoFormImplementation } from "../../model/types/videoForm";
 import { VideoInput } from "../VideoInput/VideoInput";
 import styles from "./HostVideoForm.module.scss";
 
-import { Host, useUpdateHostMutation } from "@/entities/Host";
-
 interface HostVideoFormProps {
     host: Host;
     videoGallery?: string[];
@@ -29,6 +30,7 @@ export const HostVideoForm: FC<HostVideoFormProps> = (props) => {
     const { control, handleSubmit, reset } = useForm<VideoFormImplementation>();
     const [videos, setVideos] = useState<string[]>([]);
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("host");
 
     const [updateHost, { isLoading }] = useUpdateHostMutation();
 
@@ -40,15 +42,17 @@ export const HostVideoForm: FC<HostVideoFormProps> = (props) => {
 
     const addVideo = useCallback(
         (newVideo: VideoFormImplementation) => {
+            setToast(undefined);
             updateHost({
                 id: host.id,
                 body: {
                     videoGallery: [...videos, newVideo.video],
                 },
             })
+                .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Данные успешно изменены",
+                        text: t("hostVideo.Данные успешно изменены"),
                         type: HintType.Success,
                     });
                 })
@@ -57,36 +61,44 @@ export const HostVideoForm: FC<HostVideoFormProps> = (props) => {
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
-                }).finally(() => {
+                })
+                .finally(() => {
                     reset();
                 });
         },
-        [updateHost, host.id, videos, reset],
+        [updateHost, host.id, videos, t, reset],
     );
 
-    const deleteVideo = useCallback((videoUrl: string) => {
-        const updatedVideos = videos.filter((video) => video !== videoUrl);
+    const deleteVideo = useCallback(
+        (videoIndex: number) => {
+            setToast(undefined);
+            const updatedVideos = videos.filter(
+                (video, index) => index !== videoIndex,
+            );
 
-        updateHost({
-            id: host.id,
-            body: {
-                videoGallery: updatedVideos,
-            },
-        })
-            .then(() => {
-                setVideos(updatedVideos);
-                setToast({
-                    text: "Данные успешно изменены",
-                    type: HintType.Success,
-                });
+            updateHost({
+                id: host.id,
+                body: {
+                    videoGallery: updatedVideos,
+                },
             })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
+                .unwrap()
+                .then(() => {
+                    setVideos(updatedVideos);
+                    setToast({
+                        text: t("hostVideo.Данные успешно изменены"),
+                        type: HintType.Success,
+                    });
+                })
+                .catch((error: ErrorType) => {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
                 });
-            });
-    }, [videos, updateHost, host.id]);
+        },
+        [videos, updateHost, host.id, t],
+    );
 
     return (
         <div className={styles.wrapper}>

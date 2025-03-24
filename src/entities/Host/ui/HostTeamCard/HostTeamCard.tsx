@@ -6,6 +6,8 @@ import { TeamCard } from "@/features/TeamForm/ui/TeamCard/TeamCard";
 
 import { useGetHostMembersByIdQuery } from "../../api/hostApi";
 import styles from "./HostTeamCard.module.scss";
+import { Text } from "@/shared/ui/Text/Text";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface HostTeamCardProps {
     hostId: string;
@@ -17,13 +19,14 @@ export const HostTeamCard: FC<HostTeamCardProps> = memo(
         const { hostId, className } = props;
         const { t } = useTranslation("host");
         const { data: hostMembers, isError } = useGetHostMembersByIdQuery(hostId);
+        const { locale } = useLocale();
 
         const renderCard = useMemo(() => {
             if (!hostMembers) return null;
             return hostMembers.map((user) => (
-                <TeamCard teamUser={user} disableDeleteIcn key={user.id} />
+                <TeamCard teamUser={user} disableDeleteIcn key={user.id} locale={locale} />
             ));
-        }, [hostMembers]);
+        }, [hostMembers, locale]);
 
         if (!hostMembers || isError || hostMembers.length === 0) {
             return null;
@@ -31,7 +34,7 @@ export const HostTeamCard: FC<HostTeamCardProps> = memo(
 
         return (
             <div id="5" className={cn(className, styles.wrapper)}>
-                <h3>{t("personalHost.Команда")}</h3>
+                <Text title={t("personalHost.Команда")} titleSize="h3" />
                 <div className={styles.container}>{renderCard}</div>
             </div>
         );

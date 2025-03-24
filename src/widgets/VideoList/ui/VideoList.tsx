@@ -21,7 +21,7 @@ export const VideoList: React.FC<VideoListProps> = ({ videosURL, onDelete }) => 
                 />
                 <CloseButton
                     className={styles.closeButton}
-                    onClick={() => onDelete(videoURL)}
+                    onClick={() => onDelete(index)}
                 />
             </div>
         ));

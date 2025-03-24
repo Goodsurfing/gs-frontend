@@ -1,6 +1,7 @@
 import React, { FC, memo } from "react";
 import { ReactSVG } from "react-svg";
 
+import { useNavigate } from "react-router-dom";
 import { HostMember } from "@/entities/Host";
 
 import deleteIcn from "@/shared/assets/icons/delete.svg";
@@ -10,23 +11,34 @@ import styles from "./TeamCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Profile } from "@/entities/Profile";
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { Locale } from "@/entities/Locale";
 
 interface TeamCardProps {
     teamUser?: HostMember;
     profileData?: Profile;
     disableDeleteIcn?: boolean;
     onDeleteClick?: (id: number) => void;
+    locale: Locale;
 }
 
 export const TeamCard: FC<TeamCardProps> = memo(
     ({
         teamUser, profileData,
-        disableDeleteIcn, onDeleteClick,
+        disableDeleteIcn, onDeleteClick, locale,
     }: TeamCardProps) => {
+        const navigate = useNavigate();
+
+        const navigateTo = (userId: string) => {
+            if (userId) {
+                navigate(getVolunteerPersonalPageUrl(locale, userId));
+            }
+        };
+
         if (teamUser) {
             const { id, profile } = teamUser;
             return (
-                <div className={styles.wrapper}>
+                <div className={styles.wrapper} onClick={() => navigateTo(profile.id)}>
                     <Avatar icon={getMediaContent(profile.image)} text={profile.firstName} size="MEDIUM" />
                     <div className={styles.userInfo}>
                         {/* <span className={styles.role}>{teamUser.role}</span> */}
@@ -53,10 +65,10 @@ export const TeamCard: FC<TeamCardProps> = memo(
         }
         if (profileData) {
             const {
-                image, firstName, lastName, country, city,
+                image, firstName, lastName, country, city, id,
             } = profileData;
             return (
-                <div className={styles.wrapper}>
+                <div className={styles.wrapper} onClick={() => navigateTo(id)}>
                     <Avatar icon={getMediaContent(image)} text={firstName} size="MEDIUM" />
                     <div className={styles.userInfo}>
                         {/* <span className={styles.role}>{teamUser.role}</span> */}

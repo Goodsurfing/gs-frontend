@@ -42,6 +42,18 @@
         "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
         "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
     },
+    "hostGallery": {
+        "Фотогалерея организации": "Galería de fotos de la organización",
+        "Добавьте сюда не менее 6 фотографий": "Agregue al menos 6 fotos aquí que representen su organización y sus ofertas. Los voluntarios prestan mucha atención a las fotos al elegir un proyecto. Incluya fotos del alojamiento de los voluntarios, el lugar de trabajo y los eventos que se realizan en su organización.",
+        "Произошла ошибка с обновлением галереи": "Se produjo un error al actualizar la galería",
+        "Галерея успешно обновлена": "Galería actualizada con éxito",
+        "Добавить фото": "Agregar foto"
+    },
+    "hostVideo": {
+        "Видеогалерея организации": "Galería de videos de la organización",
+        "Добавьте ссылки на видеоролики с Youtube или Vimeo": "Agregue enlaces a videos de YouTube o Vimeo para que aparezcan en su perfil. Asegúrese de que la configuración del video permita la visualización pública.",
+        "Данные успешно изменены": "Datos actualizados con éxito"
+    },
     "hostTeam": {
         "Произошла ошибка": "Ocurrió un error",
         "Команда не была заполнена": "El equipo no ha sido completado",

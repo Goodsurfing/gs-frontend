@@ -196,6 +196,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                 <OffersMap
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
+                    offersData={data}
                 />
             )}
             {isFilterTabOpened && (
