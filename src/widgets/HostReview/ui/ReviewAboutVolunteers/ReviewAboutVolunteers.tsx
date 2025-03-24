@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewMiniCard } from "@/features/Review";
 
@@ -32,6 +33,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         },
     };
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("host");
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -84,7 +86,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Ваш отзыв был отправлен",
+                        text: t("hostReviews.Ваш отзыв был отправлен"),
                         type: HintType.Success,
                     });
                 })
@@ -100,9 +102,9 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
 
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.h3}>Отзывы про волонтёров</h3>
+            <h3 className={styles.h3}>{t("hostReviews.Отзывы про волонтёров")}</h3>
             <p className={styles.description}>
-                Волонтёры, которых вы недавно принимали
+                {t("hostReviews.Волонтёры, которых вы недавно принимали")}
             </p>
             <VerticalSlider
                 classNameSlide={styles.swiperSlide}
@@ -133,6 +135,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
+                        titleText=""
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

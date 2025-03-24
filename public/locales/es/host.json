@@ -82,6 +82,15 @@
         "Расскажите об организации": "Cuéntanos sobre la organización",
         "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar"
     },
+    "hostReviews": {
+        "Отзывы": "Reseñas",
+        "Ваш рейтинг": "Tu calificación",
+        "Отзывы про волонтёров": "Reseñas sobre voluntarios",
+        "Отзывы о проектах": "Reseñas sobre proyectos",
+        "Ваш отзыв был отправлен": "Tu reseña ha sido enviada",
+        "Оставьте отзыв": "Deja una reseña",
+        "Волонтёры, которых вы недавно принимали": "Voluntarios que alojaste recientemente"
+    },
     "personalHost": {
         "Написать организатору": "Contactar al organizador",
         "Организация/": "Organización/",
