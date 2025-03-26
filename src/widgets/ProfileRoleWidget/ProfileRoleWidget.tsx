@@ -10,7 +10,7 @@ import { RoleCard } from "@/features/ProfileRole";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
 
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegistrationUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -85,6 +85,9 @@ export const ProfileRoleWidget: FC = () => {
                         type: HintType.Success,
                     });
                     profileRefetch();
+                    setTimeout(() => {
+                        navigate(getVolunteerDashboardPageUrl(locale));
+                    }, 3000);
                 })
                 .catch((error: ErrorType) => {
                     setModalOpen(false);
@@ -108,12 +111,13 @@ export const ProfileRoleWidget: FC = () => {
             const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== undefined)
                 || (role.id === "host" && myProfile.host !== undefined);
 
+            const buttonText = isDisabled ? role.disabledButtonText : role.buttonText;
             return (
                 <RoleCard
                     titleRole={role.titleRole}
                     descriptionRole={role.descriptionRole}
                     imageRole={role.imageRole}
-                    buttonText={role.buttonText}
+                    buttonText={buttonText}
                     buttonDisabled={isDisabled}
                     key={index}
                     onClick={() => handleCardClick(role.id)}

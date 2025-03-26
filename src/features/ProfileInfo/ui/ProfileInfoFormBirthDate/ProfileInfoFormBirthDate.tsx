@@ -50,7 +50,12 @@ export const ProfileInfoFormBirthDate = memo(
         const validateDay = (value: number) => {
             if (!isAnyFieldFilled) return true;
             if (!value) return t("info.Укажите день");
-            if (value > maxDays) return t("info.День_не_может_быть_больше", { maxDays, month: birthMounthData[selectedMonth] });
+            if (value > maxDays) {
+                return t("info.День_не_может_быть_больше", {
+                    maxDays,
+                    month: birthMounthData[selectedMonth],
+                });
+            }
             return true;
         };
 
@@ -72,6 +77,27 @@ export const ProfileInfoFormBirthDate = memo(
             <div className={cn(className, styles.wrapper)}>
                 <span className={styles.text}>{t("info.День рождения")}</span>
                 <div className={styles.container}>
+                    <Controller
+                        name="birthDate.mounth"
+                        control={control}
+                        rules={{
+                            validate: validateMonth,
+                        }}
+                        render={({ field }) => (
+                            <SelectComponent
+                                onChange={field.onChange}
+                                className={styles.mounthDropdown}
+                                disabled={isLocked}
+                                value={field.value}
+                            >
+                                {birthMounthData.map((mounth, index) => (
+                                    <MenuItem value={index + 1} key={index}>
+                                        {t(`info.${mounth}`)}
+                                    </MenuItem>
+                                ))}
+                            </SelectComponent>
+                        )}
+                    />
                     <Controller
                         name="birthDate.day"
                         control={control}
@@ -100,27 +126,7 @@ export const ProfileInfoFormBirthDate = memo(
                             </SelectComponent>
                         )}
                     />
-                    <Controller
-                        name="birthDate.mounth"
-                        control={control}
-                        rules={{
-                            validate: validateMonth,
-                        }}
-                        render={({ field }) => (
-                            <SelectComponent
-                                onChange={field.onChange}
-                                className={styles.mounthDropdown}
-                                disabled={isLocked}
-                                value={field.value}
-                            >
-                                {birthMounthData.map((mounth, index) => (
-                                    <MenuItem value={index + 1} key={index}>
-                                        {t(`info.${mounth}`)}
-                                    </MenuItem>
-                                ))}
-                            </SelectComponent>
-                        )}
-                    />
+
                     <Controller
                         name="birthDate.year"
                         control={control}

@@ -1,5 +1,6 @@
 import React from "react";
 
+import cn from "classnames";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
 import Header from "../Header/Header";
@@ -16,8 +17,8 @@ const AboutProjectPage = () => (
             <Header />
             <Mission className={styles.section} />
             <HowItStarted className={styles.section} />
-            <Principles className={styles.section} />
-            <GoodsurfingNow className={styles.section} />
+            <Principles className={cn(styles.section, styles.extraPadding)} />
+            <GoodsurfingNow className={cn(styles.section, styles.extraPadding)} />
             <Gallery className={styles.section} />
         </div>
     </MainPageLayout>

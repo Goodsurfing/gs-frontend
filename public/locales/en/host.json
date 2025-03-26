@@ -65,7 +65,9 @@
         "Добавьте сюда не менее 6 фотографий": "Add at least 6 photos here that represent your organization and offerings. Volunteers pay close attention to photos when choosing a project. Include photos of the volunteers' accommodation, workplace, and events taking place at your organization.",
         "Произошла ошибка с обновлением галереи": "An error occurred while updating the gallery",
         "Галерея успешно обновлена": "Gallery successfully updated",
-        "Добавить фото": "Add photo"
+        "Добавить фото": "Add photo",
+        "Не более 200 знаков": "No more than 200 characters",
+        "Не более 1000 знаков": "No more than 1000 characters"
     },
     "hostVideo": {
         "Видеогалерея организации": "Organization video gallery",
@@ -80,7 +82,7 @@
         "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site.",
         "Участник был добавлен": "Member was added",
         "Участник был удалён": "Member was removed",
-        "Введите ФИО участника": "Enter the participant's full name"
+        "Введите ФИО участника": "Enter participant's email"
     },
     "hostReviews": {
         "Отзывы": "Reviews",

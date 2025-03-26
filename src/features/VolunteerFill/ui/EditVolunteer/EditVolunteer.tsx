@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getVolunteerSkillsPageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 
 interface EditVolunteerProps {
@@ -19,7 +19,7 @@ export const EditVolunteer: FC<EditVolunteerProps> = memo(
         const { locale } = useLocale();
 
         const onEditClick = () => {
-            navigate(getMainPageUrl(locale));
+            navigate(getVolunteerSkillsPageUrl(locale));
         };
 
         return (

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -6,10 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import cn from "classnames";
 import Offer from "@/containers/OffersContainer/Offer/Offer";
-import { offersData } from "@/containers/OffersContainer/Offers.data";
 
 import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 import styles from "./OffersContainer.module.scss";
+import { Offer as OfferType, useLazyGetOffersQuery } from "@/entities/Offer";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OffersContainerProps {
     className?: string;
@@ -19,6 +20,28 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
     const { className } = props;
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
+    const [offers, setOffers] = useState<OfferType[]>([]);
+    const [getOffersData, isLoading] = useLazyGetOffersQuery();
+
+    useEffect(() => {
+        const fetchOffers = async () => {
+            await getOffersData(undefined)
+                .unwrap()
+                .then((result) => {
+                    setOffers(result);
+                })
+                .catch(() => {
+                    setOffers([]);
+                });
+        };
+        fetchOffers();
+    }, [getOffersData]);
+
+    if (isLoading) {
+        <div className={cn(className, styles.wrapper)}>
+            <MiniLoader />
+        </div>;
+    }
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -57,10 +80,10 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
                         },
                     }}
                 >
-                    {offersData
-                        && offersData.map((item, index) => (
+                    {offers
+                        && offers.map((item, index) => (
                             <SwiperSlide key={index}>
-                                <Offer {...item} />
+                                <Offer offer={item} />
                             </SwiperSlide>
                         ))}
                 </Swiper>

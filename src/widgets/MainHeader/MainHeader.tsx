@@ -71,7 +71,10 @@ const MainHeader: FC = () => {
                                 profileData={profile}
                                 isLoading={isLoading}
                             />
-                            <LocaleLink to={getMembershipPageUrl(locale)}>
+                            <LocaleLink
+                                className={styles.membershipWrapper}
+                                to={getMembershipPageUrl(locale)}
+                            >
                                 <Button className={styles.membership}>
                                     Членство
                                 </Button>

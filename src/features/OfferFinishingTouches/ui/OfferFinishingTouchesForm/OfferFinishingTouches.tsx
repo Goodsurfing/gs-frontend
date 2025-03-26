@@ -7,7 +7,7 @@ import {
     Controller, DefaultValues, useForm, useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
 
 import { OfferStatus } from "@/entities/Offer";
@@ -39,6 +39,8 @@ import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
 import styles from "./OfferFinishingTouches.module.scss";
 import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
+import { getMyOffersPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -68,6 +70,9 @@ export const OfferFinishingTouchesForm = memo(
 
         const { className, onSuccess } = props;
         const { id } = useParams();
+        const navigate = useNavigate();
+        const { locale } = useLocale();
+
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
         const [updateOfferStatus] = useUpdateOfferStatusMutation();
         const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
@@ -121,12 +126,13 @@ export const OfferFinishingTouchesForm = memo(
                 })
                     .unwrap()
                     .then(async () => {
-                        await updateOfferStatus({ id, status: offerStatus });
+                        await updateOfferStatus({ id, status: offerStatus }).unwrap();
                         setToast({
                             text: "Данные успешно изменены",
                             type: HintType.Success,
                         });
                         sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
+                        navigate(getMyOffersPageUrl(locale));
                     })
                     .catch((error: ErrorType) => {
                         setToast({
@@ -145,14 +151,6 @@ export const OfferFinishingTouchesForm = memo(
         const onDraftHandle = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "draft");
         });
-
-        // useEffect(() => {
-        //     if (getOfferData?.finishingTouches) {
-        //         reset(
-        //             offerFinishingTouchesAdapter(getOfferData.finishingTouches),
-        //         );
-        //     }
-        // }, [getOfferData?.finishingTouches, reset]);
 
         if (isOfferDataLoading) {
             return (

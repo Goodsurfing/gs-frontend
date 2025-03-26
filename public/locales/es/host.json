@@ -62,7 +62,7 @@
         "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Los propietarios de equipos pueden agregar miembros al equipo de su organización agregando sus direcciones de correo electrónico. Deben tener una cuenta en el sitio.",
         "Участник был добавлен": "El miembro fue agregado",
         "Участник был удалён": "El miembro fue eliminado",
-        "Введите ФИО участника": "Ingrese el nombre completo del participante"
+        "Введите ФИО участника": "Ingrese el correo electrónico del participante"
     },
     "hostDescription": {
         "Организация создана": "Organización creada",
@@ -80,7 +80,9 @@
         "Другое": "Otro",
         "Сайт организации": "Sitio web de la organización",
         "Расскажите об организации": "Cuéntanos sobre la organización",
-        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar"
+        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar",
+        "Не более 200 знаков": "No más de 200 caracteres",
+        "Не более 1000 знаков": "No más de 1000 caracteres"
     },
     "hostReviews": {
         "Отзывы": "Reseñas",

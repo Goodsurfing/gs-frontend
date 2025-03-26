@@ -4,4 +4,5 @@ export interface RoleInfo {
     titleRole: string;
     descriptionRole: string;
     buttonText: string;
+    disabledButtonText: string;
 }

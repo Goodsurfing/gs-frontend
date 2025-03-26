@@ -51,6 +51,8 @@
         "Стать гудсёрфером": "Become a goodsurfer",
         "Организатор": "Organizer",
         "Чтобы принимать гудсёрферов как организатор": "To host good surfers as an organizer",
-        "Стать организатором": "Become an organizer"
+        "Стать организатором": "Become an organizer",
+        "Вы уже стали гудсёрфером": "You have already become a goodsurfer",
+        "Вы уже стали организатором": "You have already become an host"
     }
 }

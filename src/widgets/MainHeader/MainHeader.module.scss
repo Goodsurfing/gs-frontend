@@ -50,6 +50,10 @@
     }
 }
 
+.membershipWrapper {
+    margin-left: 24px;
+}
+
 .membership {
     background-color: var(--button-1);
     color: var(--text-secondary-1);
@@ -60,7 +64,6 @@
     box-sizing: border-box;
     font-family: Lato;
     text-transform: none;
-    margin-left: 24px;
 
     &:hover {
         background-color: #2fd8ae;
