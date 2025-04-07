@@ -156,5 +156,8 @@ export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;
 
 // Academy pages
+export const getAcademyMainPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.academy_main}`;
+
+// Academy pages
 
 export const getAcademyCoursePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.academy_course}/:id`;
