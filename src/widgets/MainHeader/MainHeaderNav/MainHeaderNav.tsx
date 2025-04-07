@@ -10,11 +10,11 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
     getAboutProjectPageUrl,
+    getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
-    getMainPageUrl,
     getMembershipPageUrl,
     getNPOPageUrl,
     getNewsPageUrl,
@@ -226,27 +226,15 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.experts")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
                         to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAcademyMainPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.courses")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.clubs")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}

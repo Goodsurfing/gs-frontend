@@ -15,10 +15,11 @@ import styles from "./HowItWorkContainer.module.scss";
 
 interface HowItWorkContainerProps {
     className?: string;
+    showButton?: boolean;
 }
 
 const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
-    const { className } = props;
+    const { className, showButton = true } = props;
     const { locale } = useLocale();
     const howItWorkData = useHowItWorkData();
     const { t } = useTranslation("main");
@@ -45,9 +46,11 @@ const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
                         />
                     ))}
             </div>
-            <ButtonLink path={getMembershipPageUrl(locale)} type="primary">
-                {t("Как это работает")}
-            </ButtonLink>
+            { showButton && (
+                <ButtonLink path={getMembershipPageUrl(locale)} type="primary">
+                    {t("Как это работает")}
+                </ButtonLink>
+            )}
         </div>
     );
 };

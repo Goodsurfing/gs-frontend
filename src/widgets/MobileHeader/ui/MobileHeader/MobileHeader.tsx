@@ -15,6 +15,8 @@ import { getUserAuthData, userActions } from "@/entities/User";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
     getAboutProjectPageUrl,
+    getAcademyMainPageUrl,
+    getAmbassadorsPageUrl,
     getBlogPageUrl,
     getFavoriteOffersPageUrl,
     getFindJobPageUrl,
@@ -224,27 +226,15 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.experts")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAcademyMainPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.courses")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.clubs")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
