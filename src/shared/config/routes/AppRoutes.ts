@@ -59,5 +59,6 @@ export enum AppRoutes {
     JOURNALS = "journals",
     VIDEO = "video",
     PRIVACY_POLICY = "privacy_policy",
+    ACADEMY_MAIN = "academy_main",
     NOT_FOUND = "not_found",
 }

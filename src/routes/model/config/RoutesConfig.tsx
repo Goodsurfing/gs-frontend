@@ -51,9 +51,11 @@ import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
+import { AcademyMainPage } from "@/pages/AcademyMainPage";
 
 import {
     getAboutProjectPageUrl,
+    getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
@@ -478,6 +480,11 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <PrivacyPolicyPage />,
         path: (locale: string) => getPrivacyPolicyPageUrl(locale),
+    },
+    {
+        label: "academy-main",
+        element: <AcademyMainPage />,
+        path: (locale: string) => getAcademyMainPageUrl(locale),
     },
 ];
 
