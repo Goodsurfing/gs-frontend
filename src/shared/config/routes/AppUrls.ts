@@ -160,4 +160,4 @@ export const getAcademyMainPageUrl: RoutePathFunction = (locale) => `/${locale}$
 
 // Academy pages
 
-export const getAcademyCoursePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.academy_course}/:id`;
+export const getAcademyCoursePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_course}/${id}`;

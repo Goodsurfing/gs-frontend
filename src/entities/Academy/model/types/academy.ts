@@ -13,21 +13,21 @@ export interface Lesson {
     title: string;
     description: string;
     duration: string;
-    review: Review[]
+    reviews: Review[]
 }
 
 export interface Course {
     id: number;
-    cover: string;
+    cover?: string;
     title: string;
-    description: string;
-    aboutAuthor: string;
+    description?: string;
+    author: string;
+    aboutAuthor?: string;
+    experts: Exptert[];
+    lessons: Lesson[];
     numberLessons: number;
     progress: number;
     duration: string;
     rating: number;
-    author: string;
-    experts: Exptert[];
-    lessons: Lesson[];
-    review: Review[];
+    reviews: Review[];
 }
