@@ -62,7 +62,6 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                     </div>
                     <span className={styles.gray}>
                         Автор:
-                        {" "}
                         {author}
                     </span>
                     <p className={styles.description}>{description}</p>
