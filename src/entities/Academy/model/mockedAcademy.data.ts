@@ -1,6 +1,23 @@
 import mockCourseImg from "@/shared/assets/images/mock-course.png";
+import dmitryImage from "@/shared/assets/images/our-team/dmitry.png";
+import milanaImage from "@/shared/assets/images/our-team/milana.png";
 
-import { Course } from "./types/academy";
+import { Course, Exptert } from "./types/academy";
+
+const mockedExprets: Exptert[] = [
+    {
+        image: dmitryImage,
+        name: "Дмитрий Иоффе",
+        description: "Проект «Чистые игры»",
+        address: "Санкт-Петербург, Россия",
+    },
+    {
+        image: milanaImage,
+        name: "Милана Фурман",
+        description: "Клуб международного взаимодействия Passage Zebra",
+        address: "Воронеж, Россия",
+    },
+];
 
 export const mockedAcademyCourses: Course[] = [
     {
@@ -12,11 +29,12 @@ export const mockedAcademyCourses: Course[] = [
         author: "Ася Репрева",
         aboutAuthor:
             "Миссия Гудсёрфинга – развитие выездного добровольчества в России и мире с помощью создания удобного веб-сервиса и распространения информации о подобных возможностях. Национальные парки и заповедники, археологические экспедиции, туристические станции и кемпинги, фермы и благотворительные организации часто привлекают к своей деятельности волонтёров. Это помогает их развитию и вовлекает новых людей в их деятельность. Волонтёры, таким образом не просто помогают своим трудом, но и узнают много нового о принципах работы этих организаций, получают навыки экспедиционной и природоохранной деятельности.",
+        forWho: "Для организаторов волонтерской деятельности и опытных волонтёров.",
         numberLessons: 5,
         lessons: [],
         duration: "1 час",
         progress: 2,
-        experts: [],
+        experts: mockedExprets,
         rating: 4.5,
         reviews: [],
     },
@@ -33,7 +51,7 @@ export const mockedAcademyCourses: Course[] = [
         lessons: [],
         duration: "1 час 45 мин",
         progress: 2,
-        experts: [],
+        experts: mockedExprets,
         rating: 4.5,
         reviews: [],
     },

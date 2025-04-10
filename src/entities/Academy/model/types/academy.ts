@@ -23,6 +23,7 @@ export interface Course {
     description?: string;
     author: string;
     aboutAuthor?: string;
+    forWho?: string;
     experts: Exptert[];
     lessons: Lesson[];
     numberLessons: number;
