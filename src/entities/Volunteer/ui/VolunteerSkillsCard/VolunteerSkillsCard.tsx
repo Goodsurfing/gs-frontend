@@ -4,6 +4,7 @@ import React, { FC, memo, useMemo } from "react";
 import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
+import additionalSkillIcon from "@/shared/assets/icons/skills/success.svg";
 
 import styles from "./VolunteerSkillsCard.module.scss";
 import { WhatToDoSkillType } from "@/types/skills";
@@ -58,7 +59,15 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             if (!additionalSkills || additionalSkills.length === 0) {
                 return <span>Волонтёр не указал дополнительные умения</span>;
             }
-            return <div className={styles.cards}><span>{additionalSkills.join(", ")}</span></div>;
+            const renderAdditionSkils = additionalSkills.map((skill, index) => (
+                <IconTextComponent
+                    text={skill}
+                    icon={additionalSkillIcon}
+                    alt={skill}
+                    key={index}
+                />
+            ));
+            return <div className={styles.cards}>{renderAdditionSkils}</div>;
         }, [additionalSkills]);
 
         return (

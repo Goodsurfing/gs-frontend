@@ -81,7 +81,7 @@ export const getHostPersonalPageUrl: RoutePathFunction = (locale, id = ":id") =>
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
 
-export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_welcome}/:id`;
+export const getOffersWelcomePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_welcome}/${id}`;
 
 export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}/:id`;
 

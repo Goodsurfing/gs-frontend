@@ -1,5 +1,6 @@
 import { MenuItem } from "@mui/material";
 import cn from "classnames";
+import { isExists } from "date-fns";
 import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,6 @@ import { SelectComponent } from "@/shared/ui/Select/Select";
 import {
     birthDateData,
     birthMounthData,
-    getMaxDaysInMonth,
 } from "../../model/data/birthData";
 import { ProfileInfoFields } from "../../model/types/profileInfo";
 import styles from "./ProfileInfoFormBirthDate.module.scss";
@@ -38,9 +38,6 @@ export const ProfileInfoFormBirthDate = memo(
         const selectedMonth = watch("birthDate.mounth");
         const selectedYear = watch("birthDate.year");
 
-        const maxDays = getMaxDaysInMonth(selectedMonth, selectedYear);
-        const filteredDays = birthDateData.filter((day) => day <= maxDays);
-
         const isAnyFieldFilled = !!(
             selectedDay
             || selectedMonth
@@ -50,11 +47,9 @@ export const ProfileInfoFormBirthDate = memo(
         const validateDay = (value: number) => {
             if (!isAnyFieldFilled) return true;
             if (!value) return t("info.Укажите день");
-            if (value > maxDays) {
-                return t("info.День_не_может_быть_больше", {
-                    maxDays,
-                    month: birthMounthData[selectedMonth],
-                });
+            if (!selectedMonth || !selectedYear) return true;
+            if (!isExists(selectedYear, selectedMonth - 1, value)) {
+                return t("info.Укажите корректно день");
             }
             return true;
         };
@@ -78,32 +73,11 @@ export const ProfileInfoFormBirthDate = memo(
                 <span className={styles.text}>{t("info.День рождения")}</span>
                 <div className={styles.container}>
                     <Controller
-                        name="birthDate.mounth"
-                        control={control}
-                        rules={{
-                            validate: validateMonth,
-                        }}
-                        render={({ field }) => (
-                            <SelectComponent
-                                onChange={field.onChange}
-                                className={styles.mounthDropdown}
-                                disabled={isLocked}
-                                value={field.value}
-                            >
-                                {birthMounthData.map((mounth, index) => (
-                                    <MenuItem value={index + 1} key={index}>
-                                        {t(`info.${mounth}`)}
-                                    </MenuItem>
-                                ))}
-                            </SelectComponent>
-                        )}
-                    />
-                    <Controller
                         name="birthDate.day"
-                        control={control}
                         rules={{
                             validate: validateDay,
                         }}
+                        control={control}
                         render={({ field }) => (
                             <SelectComponent
                                 onChange={field.onChange}
@@ -118,7 +92,7 @@ export const ProfileInfoFormBirthDate = memo(
                                     },
                                 }}
                             >
-                                {filteredDays.map((day) => (
+                                {birthDateData.map((day) => (
                                     <MenuItem value={day} key={day}>
                                         {day}
                                     </MenuItem>
@@ -126,7 +100,34 @@ export const ProfileInfoFormBirthDate = memo(
                             </SelectComponent>
                         )}
                     />
-
+                    <Controller
+                        name="birthDate.mounth"
+                        control={control}
+                        rules={{
+                            validate: validateMonth,
+                        }}
+                        render={({ field }) => (
+                            <SelectComponent
+                                onChange={field.onChange}
+                                className={styles.mounthDropdown}
+                                disabled={isLocked}
+                                value={field.value}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            maxHeight: 300,
+                                        },
+                                    },
+                                }}
+                            >
+                                {birthMounthData.map((mounth, index) => (
+                                    <MenuItem value={index + 1} key={index}>
+                                        {t(`info.${mounth}`)}
+                                    </MenuItem>
+                                ))}
+                            </SelectComponent>
+                        )}
+                    />
                     <Controller
                         name="birthDate.year"
                         control={control}
@@ -148,6 +149,12 @@ export const ProfileInfoFormBirthDate = memo(
                                     const input = event.target as HTMLInputElement;
                                     if (input.value.length > 4) {
                                         input.value = input.value.slice(0, 4);
+                                    }
+                                }}
+                                onBlur={(event) => {
+                                    const value = Number(event.target.value);
+                                    if (value < 0) {
+                                        field.onChange("");
                                     }
                                 }}
                             />

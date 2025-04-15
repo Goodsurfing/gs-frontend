@@ -1,15 +1,18 @@
 import { MouseEventHandler, memo } from "react";
-import { useNavigate, Link } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+
+import { OfferStatus } from "@/entities/Offer";
 
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
-import Button from "@/shared/ui/Button/Button";
-import { OfferStatus } from "@/entities/Offer";
+import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import { getOfferPersonalPageUrl, getOffersWelcomePageUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
+import Button from "@/shared/ui/Button/Button";
+
 import styles from "./HostOffersPageCard.module.scss";
 
 interface IHostOffersPageCard {
@@ -52,15 +55,18 @@ const HostOffersPageCard = memo(
 
         const onEditClick = () => {
             if (status === "draft") {
-                navigate(`/${locale}/offers/welcome/${id}`);
+                navigate(getOffersWelcomePageUrl(locale, id.toString()));
             } else {
-                navigate(`/${locale}/offers/where/${id}`);
+                navigate(getOffersWherePageUrl(locale, id.toString()));
             }
         };
 
         return (
             <div className={styles.cardWrapper}>
-                <Link to={`/${locale}/offer-personal/${id}`} className={styles.cardInner}>
+                <Link
+                    to={getOfferPersonalPageUrl(locale, id.toString())}
+                    className={styles.cardInner}
+                >
                     <div className={styles.imageWrapper}>
                         <img src={image || defaultImage} alt="travel-img" />
                     </div>
@@ -120,7 +126,9 @@ const HostOffersPageCard = memo(
                         className={styles.gray}
                         onClick={onCloseClick}
                     >
-                        {isCloseButtonActive ? t("hostOffers.Закрыть") : t("hostOffers.Открыть")}
+                        {isCloseButtonActive
+                            ? t("hostOffers.Закрыть")
+                            : t("hostOffers.Открыть")}
                     </Button>
                     {/* <Button
                         className={styles.black}

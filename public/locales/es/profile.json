@@ -31,6 +31,7 @@
         "December": "Diciembre",
         "Это поле является обязательным": "Este campo es obligatorio",
         "Укажите день": "Por favor, especifique el día",
+        "Укажите корректно день": "Por favor, introduzca un día válido",
         "День_не_может_быть_больше": "El día no puede ser mayor que {{maxDays}} en el mes de {{month}}",
         "Укажите месяц": "Por favor, especifique el mes",
         "Укажите год": "Por favor, especifique el año",

@@ -64,7 +64,6 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     label={t("hostDescription.Другое")}
                     name="type.otherOrganizationType"
                     control={control}
-                    description={t("hostDescription.Не более 1000 знаков")}
                     maxLength={1000}
                 />
             </div>
@@ -80,6 +79,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     name="mainInfo.aboutInfo"
                     label={t("hostDescription.Расскажите об организации")}
                     description={t("hostDescription.Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия")}
+                    extraDescription={t("hostDescription.Не более 1000 знаков")}
                     control={control}
                 />
             </div>

@@ -43,28 +43,32 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     <UploadArticleCover id="upload cover" />
                     <span className={styles.smallDescription}>
                         {t(
-                            "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 5МБ",
+                            "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 2МБ",
                         )}
                     </span>
                 </div>
-                <span className={styles.title}>
-                    {t("volunteer-create-article.Название статьи")}
-                </span>
-                <InputField
-                    name="title"
-                    register={register}
-                    error={Boolean(errors.title)}
-                    helperText={errors.title?.message && t(`volunteer-create-article.${errors.title?.message}`)}
-                    variant="outlined"
-                    placeholder={t(
-                        "volunteer-create-article.Заголовок вашей статьи",
-                    )}
-                    className={styles.input}
-                />
-                <span className={styles.title}>
-                    {t("volunteer-create-article.Категория статьи")}
-                </span>
-                <OfferCategories />
+                <div className={styles.field}>
+                    <span className={styles.title}>
+                        {t("volunteer-create-article.Название статьи")}
+                    </span>
+                    <InputField
+                        name="title"
+                        register={register}
+                        error={Boolean(errors.title)}
+                        helperText={errors.title?.message && t(`volunteer-create-article.${errors.title?.message}`)}
+                        variant="outlined"
+                        placeholder={t(
+                            "volunteer-create-article.Заголовок вашей статьи",
+                        )}
+                        className={styles.input}
+                    />
+                </div>
+                <div className={styles.field}>
+                    <span className={styles.title}>
+                        {t("volunteer-create-article.Категория статьи")}
+                    </span>
+                    <OfferCategories />
+                </div>
                 <Controller
                     name="description"
                     control={control}
@@ -78,16 +82,18 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                 {errors.description && (
                     <p className={styles.error}>{t(`volunteer-create-article.${errors.description.message}`)}</p>
                 )}
-                <span className={styles.title}>{t("volunteer-create-article.Ссылка на проект")}</span>
-                <InputField
-                    name="offerLink"
-                    register={register}
-                    error={Boolean(errors.offerLink)}
-                    helperText={errors.offerLink?.message && t(`volunteer-create-article.${errors.offerLink?.message}`)}
-                    variant="outlined"
-                    placeholder={t("volunteer-create-article.Ваша ссылка на заявку")}
-                    className={styles.input}
-                />
+                <div className={styles.field}>
+                    <span className={styles.title}>{t("volunteer-create-article.Ссылка на проект гудсёрфинга")}</span>
+                    <InputField
+                        name="offerLink"
+                        register={register}
+                        error={Boolean(errors.offerLink)}
+                        helperText={errors.offerLink?.message && t(`volunteer-create-article.${errors.offerLink?.message}`)}
+                        variant="outlined"
+                        placeholder={t("volunteer-create-article.Ваша ссылка на вакансию")}
+                        className={styles.input}
+                    />
+                </div>
                 <div className={styles.containerButtons}>
                     <Button color="BLUE" variant="FILL" size="SMALL">
                         {t("volunteer-create-article.Опубликовать")}

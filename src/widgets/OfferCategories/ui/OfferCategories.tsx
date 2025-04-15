@@ -29,7 +29,6 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                     flexWrap: "wrap",
                     maxWidth: "624px",
                     gap: "10px",
-                    mt: "14px",
                 }}
             >
                 {tags.map((item, index) => (

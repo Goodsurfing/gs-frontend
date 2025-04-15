@@ -3,7 +3,7 @@ import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
 import { foundersData } from "../../model/data/ourTeam";
-import { TeamItem } from "../TeamItem/TeamItem";
+import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 import styles from "./Founders.module.scss";
 
 interface FoundersProps {
