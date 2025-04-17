@@ -58,7 +58,8 @@
         "Другое": "Other",
         "Сайт организации": "Organization Website",
         "Расскажите об организации": "Tell us about the organization",
-        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Tell us about you, your team, and why volunteers should choose you to participate"
+        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Tell us about you, your team, and why volunteers should choose you to participate",
+        "Это поле является обязательным": "This field is required"
     },
     "hostGallery": {
         "Фотогалерея организации": "Organization photo gallery",

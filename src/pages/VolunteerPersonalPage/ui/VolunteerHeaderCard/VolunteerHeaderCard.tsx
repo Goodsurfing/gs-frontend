@@ -14,6 +14,7 @@ import styles from "./VolunteerHeaderCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface VolunteerHeaderCardProps {
     volunteer: VolunteerApi;
@@ -34,6 +35,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             image, firstName, lastName, birthDate, country, city,
         } = volunteer.profile;
         const languages = useLanguagesWithComma(volunteer.languages);
+        const renderName = firstName ? getFullName(firstName, lastName) : "Анонимный пользователь";
 
         const renderLanguages = () => {
             if (
@@ -79,9 +81,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                             )} */}
                         </div>
                         <h3 className={styles.name}>
-                            {firstName}
-                            {" "}
-                            {lastName}
+                            {renderName}
                         </h3>
                         <div className={styles.info}>
                             <span className={styles.address}>

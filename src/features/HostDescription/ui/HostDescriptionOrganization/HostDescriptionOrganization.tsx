@@ -13,6 +13,8 @@ import { SelectComponent } from "@/shared/ui/Select/Select";
 import { organizationTypeData } from "../../model/data/organizationTypeData";
 
 import styles from "./HostDescriptionOrganization.module.scss";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { HostDescriptionFormFields } from "../../model/types/hostDescription";
 
 interface HostDescriptionOrganizationProps {
     className?: string;
@@ -22,16 +24,25 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
     const { className } = props;
     const { t } = useTranslation("host");
 
-    const { control } = useFormContext();
+    const { control, formState: { errors } } = useFormContext<HostDescriptionFormFields>();
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.name}>
                 <InputControl
                     label={t("hostDescription.Название организации")}
+                    rules={{ required: t("hostDescription.Это поле является обязательным") }}
                     control={control}
                     name="mainInfo.organization"
+                    minLength={3}
+                    maxLength={60}
                 />
+                {errors.mainInfo?.organization?.message && (
+                    <ErrorText
+                        text={errors.mainInfo.organization.message}
+                        className={styles.error}
+                    />
+                )}
             </div>
             <div className={styles.oneSentence}>
                 <TextAreaControl

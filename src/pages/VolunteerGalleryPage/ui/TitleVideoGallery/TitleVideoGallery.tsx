@@ -16,7 +16,7 @@ export const TitleVideoGallery: FC<TitleVideoGalleryProps> = memo(
             <div className={cn(className, styles.wrapper)}>
                 <h2>{t("volunteer-gallery.Видео о себе")}</h2>
                 <p className={styles.description}>
-                    {t("volunteer-gallery.Запишите и добавьте через Youtube небольшое презентационное видео. В видео расскажите о себе, о своих навыках и опыте и мотивации путешествовать со смыслом. Видео может быть несколько.")}
+                    {t("volunteer-gallery.Добавьте одно или несколько видео через URL (например, с YouTube, Vk, Vimeo). В видео расскажите о себе, о своих навыках и опыте и мотивации путешествовать со смыслом. Видео может быть несколько.")}
                 </p>
             </div>
         );

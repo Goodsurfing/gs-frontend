@@ -82,7 +82,8 @@
         "Расскажите об организации": "Cuéntanos sobre la organización",
         "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar",
         "Не более 200 знаков": "No más de 200 caracteres",
-        "Не более 1000 знаков": "No más de 1000 caracteres"
+        "Не более 1000 знаков": "No más de 1000 caracteres",
+        "Это поле является обязательным": "Este campo es obligatorio"
     },
     "hostReviews": {
         "Отзывы": "Reseñas",

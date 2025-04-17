@@ -9,14 +9,17 @@ import styles from "./OfferCategories.module.scss";
 interface OfferCategoriesProps {
     value?: string[];
     onChange?: (value: string[]) => void;
+    maxLength?: number;
 }
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
-    const { value, onChange } = props;
+    const { value, onChange, maxLength = 5 } = props;
     const { tags } = useCategories();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
-        onChange?.(newValues.filter(Boolean));
+        if (newValues.length <= maxLength) {
+            onChange?.(newValues.filter(Boolean));
+        }
     };
 
     return (

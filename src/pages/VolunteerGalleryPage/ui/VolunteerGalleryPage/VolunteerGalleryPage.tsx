@@ -1,14 +1,17 @@
 import React from "react";
 
+import { UploadCertificates } from "@/features/UploadCertificates";
+import { VideoForm } from "@/features/VideoForm";
+import { VolunteerGalleryForm } from "@/features/VolunteerGalleryForm";
+
+import { useGetProfileInfoQuery } from "@/entities/Profile";
+
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import { TitleCertificate } from "../TitleCertificate/TitleCertificate";
 import { TitleGallery } from "../TitleGallery/TitleGallery";
 import { TitleVideoGallery } from "../TitleVideoGallery/TitleVideoGallery";
-import { VideoForm } from "@/features/VideoForm";
-import { TitleCertificate } from "../TitleCertificate/TitleCertificate";
 import styles from "./VolunteerGalleryPage.module.scss";
-import { UploadCertificates } from "@/features/UploadCertificates";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
-import { VolunteerGalleryForm } from "@/features/VolunteerGalleryForm";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const VolunteerGalleryPage = () => {
     const { data: profileData, isLoading } = useGetProfileInfoQuery();
@@ -26,7 +29,10 @@ const VolunteerGalleryPage = () => {
             {profileData && (
                 <>
                     <TitleGallery />
-                    <VolunteerGalleryForm className={styles.container} profileData={profileData} />
+                    <VolunteerGalleryForm
+                        className={styles.container}
+                        profileData={profileData}
+                    />
                     <TitleVideoGallery className={styles.container} />
                     <VideoForm
                         profileId={profileData.id}
