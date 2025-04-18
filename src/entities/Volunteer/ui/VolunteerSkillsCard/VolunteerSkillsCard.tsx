@@ -1,13 +1,13 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
+import { WhatToDoSkillType } from "@/types/skills";
 
+import additionalSkillIcon from "@/shared/assets/icons/skills/success.svg";
 import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
-import additionalSkillIcon from "@/shared/assets/icons/skills/success.svg";
 
 import styles from "./VolunteerSkillsCard.module.scss";
-import { WhatToDoSkillType } from "@/types/skills";
 
 interface VolunteerSkillsCardProps {
     skills?: WhatToDoSkillType[];
@@ -21,11 +21,7 @@ type SkillsMap = {
 
 export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
     (props: VolunteerSkillsCardProps) => {
-        const {
-            skills,
-            additionalSkills,
-            className,
-        } = props;
+        const { skills, additionalSkills, className } = props;
         const { skillsData } = useSkillsData();
 
         const renderSkillsCard = useMemo(() => {
@@ -75,6 +71,8 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                 <div className={styles.card}>
                     <Text title="Умения" titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
+                </div>
+                <div className={styles.card}>
                     <Text title="Дополнительные умения" titleSize="h3" />
                     {renderAdditionalSkills}
                 </div>

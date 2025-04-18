@@ -15,12 +15,30 @@ interface OfferWhenProps {
 }
 
 export const OfferWhenCard = memo((props: OfferWhenProps) => {
-    const { className, offerWhen: { periods, durationMinDays, durationMaxDays } } = props;
+    const {
+        className,
+        offerWhen: {
+            periods, durationMinDays,
+            durationMaxDays, applicationEndDate,
+        },
+    } = props;
     const { locale } = useLocale();
-    const period = periods?.[0];
-    const offerPeriodStart = (period && period.start) ? formatDate(locale, period.start) : "Точная дата не указана";
-    const offerPeriodEnd = (period && period.ending) ? formatDate(locale, period.ending) : "Точная дата не указана";
     const { t } = useTranslation("offer");
+    const emptyMessage = "Точная дата не указана";
+    const offerPeriodEnd = applicationEndDate
+        ? formatDate(locale, applicationEndDate) : emptyMessage;
+    const isHavePeriods = periods.length > 0;
+    const isRenderGridPeriods = periods.length > 3;
+
+    const renderItemPeriods = periods.map((period) => {
+        const { start, ending } = period;
+
+        return (
+            <p>{`${formatDate(locale, start ?? "")} — ${formatDate(locale, ending ?? "")}`}</p>
+        );
+    });
+
+    const renderPeriods = isHavePeriods ? renderItemPeriods : emptyMessage;
 
     return (
         <div className={cn(className)}>
@@ -28,8 +46,13 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                 <InfoCardItem
                     className={styles.left}
                     title={t("personalOffer.Когда")}
-                    text={offerPeriodStart}
-                />
+                >
+                    {isRenderGridPeriods ? (
+                        <div className={styles.grid}>
+                            {renderPeriods}
+                        </div>
+                    ) : renderPeriods}
+                </InfoCardItem>
                 <div className={styles.right}>
                     <InfoCardItem
                         title={t("personalOffer.Минимум дней")}
