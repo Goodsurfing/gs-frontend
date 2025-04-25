@@ -121,6 +121,8 @@ export const getVolunteerArticlesPageUrl: RoutePathFunction = (locale) => `/${lo
 
 export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.volunteer_personal}/${id}`;
 
+// Other pages
+
 export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;
 
 export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.about_project}`;
@@ -156,8 +158,9 @@ export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${Route
 export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;
 
 // Academy pages
+
 export const getAcademyMainPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.academy_main}`;
 
-// Academy pages
-
 export const getAcademyCoursePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_course}/${id}`;
+
+export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_lesson}/${id}`;

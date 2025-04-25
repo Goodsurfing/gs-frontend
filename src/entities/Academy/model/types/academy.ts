@@ -13,6 +13,7 @@ export interface Lesson {
     title: string;
     description: string;
     duration: string;
+    rating: number;
     reviews: Review[]
 }
 

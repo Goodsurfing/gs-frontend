@@ -61,5 +61,6 @@ export enum AppRoutes {
     PRIVACY_POLICY = "privacy_policy",
     ACADEMY_MAIN = "academy_main",
     ACADEMY_COURSE = "academy_course",
+    ACADEMY_LESSON = "academy_lesson",
     NOT_FOUND = "not_found",
 }

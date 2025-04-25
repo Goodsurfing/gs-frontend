@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Course } from "@/entities/Academy/model/types/academy";
 import { Locale } from "@/entities/Locale";
@@ -8,7 +8,7 @@ import { Locale } from "@/entities/Locale";
 import star from "@/shared/assets/icons/offers/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { getAcademyCoursePageUrl } from "@/shared/config/routes/AppUrls";
-import Button from "@/shared/ui/Button/Button";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./CourseCard.module.scss";
 
@@ -30,15 +30,14 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
         rating,
         cover,
     } = course;
-    const navigate = useNavigate();
+
     const coverImg = cover || defaultImage;
 
-    const onNavigate = () => {
-        navigate(getAcademyCoursePageUrl(locale, id.toString()));
-    };
-
     return (
-        <div className={cn(styles.wrapper, className)} onClick={onNavigate}>
+        <Link
+            to={getAcademyCoursePageUrl(locale, id.toString())}
+            className={cn(styles.wrapper, className)}
+        >
             <img className={styles.cover} src={coverImg} alt={title} />
             <div className={styles.content}>
                 <div className={styles.info}>
@@ -66,16 +65,14 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                     </span>
                     <p className={styles.description}>{description}</p>
                 </div>
-                <Button
+                <ButtonLink
                     className={styles.button}
-                    color="BLUE"
-                    size="SMALL"
-                    variant="FILL"
-                    onClick={onNavigate}
+                    type="primary"
+                    path={getAcademyCoursePageUrl(locale, id.toString())}
                 >
                     Пройти курс
-                </Button>
+                </ButtonLink>
             </div>
-        </div>
+        </Link>
     );
 };

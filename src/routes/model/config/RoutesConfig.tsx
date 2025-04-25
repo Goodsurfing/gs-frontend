@@ -124,6 +124,7 @@ import {
     getVolunteerSubscribersPageUrl,
     getAcademyMainPageUrl,
     getAcademyCoursePageUrl,
+    getAcademyLessonPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -134,6 +135,7 @@ import { BlogPage } from "@/pages/BlogPage";
 import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
 import { BecomeHostPage } from "@/pages/BecomeHostPage";
 import { GoodsurfingAmbassadorsPage } from "@/pages/GoodsurfingAmbassadorsPage";
+import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -493,6 +495,11 @@ const publicRoutes: RouteType[] = [
         label: "academy-course",
         element: <AcademyCoursePage />,
         path: (locale: string) => getAcademyCoursePageUrl(locale),
+    },
+    {
+        label: "academy-lesson",
+        element: <AcademyLessonPage />,
+        path: (locale: string) => getAcademyLessonPageUrl(locale),
     },
 ];
 

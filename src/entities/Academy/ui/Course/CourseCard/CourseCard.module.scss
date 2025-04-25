@@ -3,6 +3,8 @@
     display: flex;
     gap: 30px;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .cover {
@@ -56,6 +58,7 @@
 
 .button {
     width: fit-content;
+    padding: 10px 40px;
 }
 
 @media (max-width: 992px) {

@@ -3,3 +3,4 @@ export { CourseCard } from "./ui/Course/CourseCard/CourseCard";
 export { LessonCard } from "./ui/Lesson/LessonCard/LessonCard";
 export { TextCard } from "./ui/Course/TextCard/TextCard";
 export { ExpertsCard } from "./ui/Course/ExpertsCard/ExpertsCard";
+export { CourseProgressBar } from "./ui/Course/CourseProgressBar/CourseProgressBar";

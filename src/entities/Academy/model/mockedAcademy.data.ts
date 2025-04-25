@@ -2,7 +2,7 @@ import mockCourseImg from "@/shared/assets/images/mock-course.png";
 import dmitryImage from "@/shared/assets/images/our-team/dmitry.png";
 import milanaImage from "@/shared/assets/images/our-team/milana.png";
 
-import { Course, Exptert } from "./types/academy";
+import { Course, Exptert, Lesson } from "./types/academy";
 
 const mockedExprets: Exptert[] = [
     {
@@ -19,6 +19,39 @@ const mockedExprets: Exptert[] = [
     },
 ];
 
+export const mockedAcademyLessons: Lesson[] = [
+    {
+        id: 1,
+        title: "Волонтерский лагерь «онлайн». Часть 1. Зачем и как работать с соцсетями",
+        description:
+            "В первой части курса мы поговорим о том, зачем работать в формате соцсетей, как правильно \"упаковать\" контент и выбрать площадку, а также о частоте выхода постов.",
+        duration: "14 мин",
+        reviews: [],
+        rating: 5,
+        thumbnail: mockCourseImg,
+    },
+    {
+        id: 2,
+        title: "Волонтерский лагерь «онлайн». Часть 2. Контент",
+        description:
+            "Этот урок расскажет о том, как создавать контент, о чем писать. Уделим особое внимание сторителлингу.",
+        duration: "14 мин",
+        rating: 5,
+        reviews: [],
+        thumbnail: mockCourseImg,
+    },
+    {
+        id: 3,
+        title: "Волонтерский лагерь «онлайн». Часть 3. Структура",
+        description:
+            "Эта часть курса научит правильно структурировать контент и подавать историю аудитории и расскажет о том, как следует избегать слов-паразитов и стоп-слов.",
+        duration: "14 мин",
+        rating: 5,
+        reviews: [],
+        thumbnail: mockCourseImg,
+    },
+];
+
 export const mockedAcademyCourses: Course[] = [
     {
         id: 1,
@@ -31,7 +64,7 @@ export const mockedAcademyCourses: Course[] = [
             "Миссия Гудсёрфинга – развитие выездного добровольчества в России и мире с помощью создания удобного веб-сервиса и распространения информации о подобных возможностях. Национальные парки и заповедники, археологические экспедиции, туристические станции и кемпинги, фермы и благотворительные организации часто привлекают к своей деятельности волонтёров. Это помогает их развитию и вовлекает новых людей в их деятельность. Волонтёры, таким образом не просто помогают своим трудом, но и узнают много нового о принципах работы этих организаций, получают навыки экспедиционной и природоохранной деятельности.",
         forWho: "Для организаторов волонтерской деятельности и опытных волонтёров.",
         numberLessons: 5,
-        lessons: [],
+        lessons: mockedAcademyLessons,
         duration: "1 час",
         progress: 2,
         experts: mockedExprets,
@@ -48,7 +81,7 @@ export const mockedAcademyCourses: Course[] = [
         aboutAuthor:
             "Миссия Гудсёрфинга – развитие выездного добровольчества в России и мире с помощью создания удобного веб-сервиса и распространения информации о подобных возможностях. Национальные парки и заповедники, археологические экспедиции, туристические станции и кемпинги, фермы и благотворительные организации часто привлекают к своей деятельности волонтёров. Это помогает их развитию и вовлекает новых людей в их деятельность. Волонтёры, таким образом не просто помогают своим трудом, но и узнают много нового о принципах работы этих организаций, получают навыки экспедиционной и природоохранной деятельности.",
         numberLessons: 3,
-        lessons: [],
+        lessons: mockedAcademyLessons,
         duration: "1 час 45 мин",
         progress: 2,
         experts: mockedExprets,
@@ -60,7 +93,7 @@ export const mockedAcademyCourses: Course[] = [
         title: "Тестовый курс",
         author: "Ася Репрева",
         numberLessons: 5,
-        lessons: [],
+        lessons: mockedAcademyLessons,
         duration: "1 час",
         progress: 2,
         experts: [],
