@@ -73,7 +73,7 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
 
     const parsedDate = applicationEndDate
         ? new Date(applicationEndDate.split(".").reverse().join("-"))
-        : new Date();
+        : undefined;
 
     const endSettings: EndSettings = {
         applicationEndDate: parsedDate,

@@ -7,7 +7,9 @@ export const offersFilterApiAdapter = (data: OffersFilterFields): Partial<Offers
         category, languages,
         participationPeriod, periods, offersSort, withChildren, provided,
     } = data;
-    const { showClosedOffers } = offersSort;
+    const { showClosedOffers, sortValue } = offersSort;
+    const popularity = sortValue === "popularity" ? "desc" : undefined;
+    const updatedAt = sortValue === "novelty" ? "desc" : undefined;
     const currentDate = new Date();
 
     const min_duration_days = participationPeriod[0].toString();
@@ -28,6 +30,8 @@ export const offersFilterApiAdapter = (data: OffersFilterFields): Partial<Offers
         max_duration_days,
         start_date: result_start_date,
         end_date,
+        "order[popularity]": popularity,
+        "order[updatedAt]": updatedAt,
     };
 
     if (category.length > 0) queryParams.categories = category;

@@ -67,4 +67,6 @@ export interface OffersFilters {
     food: Nutrition[];
     paidTravel: Travel[];
     categories: CategoryType[];
+    "order[popularity]": string;
+    "order[updatedAt]": string;
 }

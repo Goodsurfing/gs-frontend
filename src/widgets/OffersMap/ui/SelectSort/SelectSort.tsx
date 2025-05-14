@@ -31,6 +31,7 @@ export const SelectSort: FC<SelectSortProps> = (props) => {
     return (
         <div className={styles.wrapper}>
             <SelectField
+                isSearchable={false}
                 name="sort"
                 className={cn(styles.sort, className)}
                 classNameDropdown={cn(styles.dropdown, classNameDropdown)}

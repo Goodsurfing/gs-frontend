@@ -7,7 +7,6 @@ import { SkillsData } from "@/shared/data/skills";
 import { Language } from "./language";
 import { Language as LanguageApi } from "@/types/languages";
 import { WhatToDoSkillType } from "@/types/skills";
-import { CategoryType } from "@/types/categories";
 import { MediaObjectType } from "@/types/media";
 
 export interface Volunteer extends Profile {
@@ -29,7 +28,6 @@ export interface VolunteerApi {
     skills: WhatToDoSkillType[];
     additionalSkills: string[];
     languages: LanguageApi[];
-    favoriteCategories: CategoryType[];
     certificates: MediaObjectType[];
 }
 

@@ -210,6 +210,8 @@
         "Фото": "Fotos",
         "Что делать": "Qué hacer",
         "Участники": "Participantes",
-        "Статьи": "Artículos"
+        "Статьи": "Artículos",
+        "Точная дата не указана": "Fecha exacta no especificada",
+        "Не имеет даты окончания": "Sin fecha de finalización"
     }
 }

@@ -1,13 +1,14 @@
 import cn from "classnames";
 import { memo } from "react";
-
 import { useTranslation } from "react-i18next";
+
+import { useLocale } from "@/app/providers/LocaleProvider";
+
+import { formatDate } from "@/shared/lib/formatDate";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { OfferWhen } from "../../model/types/offerWhen";
 import styles from "./OfferWhenCard.module.scss";
-import { formatDate } from "@/shared/lib/formatDate";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferWhenProps {
     className?: string;
@@ -18,15 +19,24 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const {
         className,
         offerWhen: {
-            periods, durationMinDays,
-            durationMaxDays, applicationEndDate,
+            periods,
+            durationMinDays,
+            durationMaxDays,
+            applicationEndDate,
         },
     } = props;
     const { locale } = useLocale();
     const { t } = useTranslation("offer");
-    const emptyMessage = "Точная дата не указана";
-    const offerPeriodEnd = applicationEndDate
-        ? formatDate(locale, applicationEndDate) : emptyMessage;
+    const emptyMessage = t("personalOffer.Точная дата не указана");
+    const offerPeriodEnd = () => {
+        if (!applicationEndDate) {
+            return t("personalOffer.Не имеет даты окончания");
+        }
+        return applicationEndDate
+            ? formatDate(locale, applicationEndDate)
+            : emptyMessage;
+    };
+
     const isHavePeriods = periods.length > 0;
     const isRenderGridPeriods = periods.length > 3;
 
@@ -34,7 +44,12 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
         const { start, ending } = period;
 
         return (
-            <p>{`${formatDate(locale, start ?? "")} — ${formatDate(locale, ending ?? "")}`}</p>
+            <p>
+                {`${formatDate(locale, start ?? "")} — ${formatDate(
+                    locale,
+                    ending ?? "",
+                )}`}
+            </p>
         );
     });
 
@@ -48,10 +63,10 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                     title={t("personalOffer.Когда")}
                 >
                     {isRenderGridPeriods ? (
-                        <div className={styles.grid}>
-                            {renderPeriods}
-                        </div>
-                    ) : renderPeriods}
+                        <div className={styles.grid}>{renderPeriods}</div>
+                    ) : (
+                        renderPeriods
+                    )}
                 </InfoCardItem>
                 <div className={styles.right}>
                     <InfoCardItem
@@ -64,7 +79,7 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                     />
                     <InfoCardItem
                         title={t("personalOffer.Прием заявок до")}
-                        text={offerPeriodEnd}
+                        text={offerPeriodEnd()}
                     />
                 </div>
             </InfoCard>
