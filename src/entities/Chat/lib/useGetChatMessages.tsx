@@ -17,7 +17,7 @@ export const useGetChatMessages = (
         data: messagesData, isLoading, isFetching, error,
     } = useGetMessagesByChatIdQuery(
         { chatId: chatId ?? "", page, itemsPerPage },
-        { skip: !chatId },
+        { skip: !chatId, refetchOnMountOrArgChange: true },
     );
 
     useEffect(() => {

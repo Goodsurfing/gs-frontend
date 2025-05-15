@@ -356,6 +356,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     });
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
+
                     const chatId = result.chat.split("/").pop();
                     if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
                 })

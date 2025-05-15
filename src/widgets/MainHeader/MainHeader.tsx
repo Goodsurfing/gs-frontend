@@ -14,7 +14,6 @@ import { getUserAuthData } from "@/entities/User";
 
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
-import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 import {
     getFavoriteOffersPageUrl,
     getMainPageUrl,
@@ -25,9 +24,10 @@ import {
 import { useAppSelector } from "@/shared/hooks/redux";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
-import styles from "./MainHeader.module.scss";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
+import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
@@ -62,9 +62,8 @@ const MainHeader: FC = () => {
                                 </LocaleLink>
                                 <LocaleLink
                                     to={getMessengerPageUrl(locale)}
-                                    className={styles.icon}
                                 >
-                                    <ReactSVG src={messagesIcon} />
+                                    <MessangerInfo />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile

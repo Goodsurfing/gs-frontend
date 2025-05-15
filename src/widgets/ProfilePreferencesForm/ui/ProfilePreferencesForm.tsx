@@ -5,13 +5,14 @@ import { Activity } from "@/features/ProfilePreferences";
 
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./ProfilePreferencesForm.module.scss";
 import { ProfilePreferencesField } from "../model/types/profilePreferences";
-import { useGetVolunteerByIdQuery, useUpdateVolunteerByIdMutation } from "@/entities/Volunteer";
 import { profilePreferencesAdapter, profilePreferencesApiAdapter } from "../lib/profilePreferencesAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
+import styles from "./ProfilePreferencesForm.module.scss";
 
 const defaultValues: DefaultValues<ProfilePreferencesField> = {
     favoriteCategories: [],
@@ -29,21 +30,21 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
     });
 
     const [toast, setToast] = useState<ToastAlert>();
-    const { data: volunteerData } = useGetVolunteerByIdQuery(profileId);
-    const [updateVolunteer] = useUpdateVolunteerByIdMutation();
+    const { data: profileData } = useGetProfileInfoQuery();
+    const [updateProfile] = useUpdateProfileInfoMutation();
 
     useEffect(() => {
-        if (volunteerData) {
-            const preparedData = profilePreferencesAdapter(volunteerData);
+        if (profileData) {
+            const preparedData = profilePreferencesAdapter(profileData);
             reset(preparedData);
         }
-    }, [reset, volunteerData]);
+    }, [reset, profileData]);
 
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = profilePreferencesApiAdapter(data);
         try {
-            await updateVolunteer({ profileId, body: preparedData }).unwrap();
+            await updateProfile({ userId: profileId, profileData: preparedData }).unwrap();
             setToast({
                 text: "Данные успешно изменены",
                 type: HintType.Success,

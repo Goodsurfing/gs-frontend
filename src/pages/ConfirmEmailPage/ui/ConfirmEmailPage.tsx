@@ -20,7 +20,9 @@ const ConfirmEmailPage: FC = () => {
                 <div className={styles.content}>
                     <div className={styles.notification}>
                         На
+                        {" "}
                         <span>{email}</span>
+                        {" "}
                         было отправлено письмо со
                         ссылкой для подтверждения почты.
                     </div>

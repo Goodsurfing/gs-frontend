@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 import cn from "classnames";
 
@@ -25,6 +25,16 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
     const { t } = useTranslation("host");
 
     const { control, formState: { errors } } = useFormContext<HostDescriptionFormFields>();
+    const formWatch = useWatch<HostDescriptionFormFields>({ control });
+
+    const otherInputDisabled = () => {
+        if (formWatch.type && formWatch.type.organizationType) {
+            if (formWatch.type.organizationType !== "Другое") {
+                return true;
+            }
+        }
+        return false;
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -57,7 +67,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                 <Controller
                     name="type.organizationType"
                     control={control}
-                    defaultValue={organizationTypeData[0].id}
+                    defaultValue={organizationTypeData[1].id}
                     render={({ field }) => (
                         <SelectComponent
                             className={styles.dropdown}
@@ -76,6 +86,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     name="type.otherOrganizationType"
                     control={control}
                     maxLength={1000}
+                    disabled={otherInputDisabled()}
                 />
             </div>
             <div className={styles.website}>

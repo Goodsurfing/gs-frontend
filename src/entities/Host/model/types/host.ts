@@ -7,8 +7,10 @@ export interface Host {
     address: string;
     avatar?: ImageType;
     type: string;
+    otherType: string;
     website: string;
     description: string;
+    shortDescription: string;
     vk: string;
     facebook: string;
     instagram: string;

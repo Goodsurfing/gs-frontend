@@ -1,19 +1,31 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { OffersFilters } from "@/entities/Offer";
+
 import { OffersFilterFields } from "../model/types";
 
-export const offersFilterApiAdapter = (data: OffersFilterFields): Partial<OffersFilters> => {
+export const offersFilterApiAdapter = (
+    data: OffersFilterFields,
+): Partial<OffersFilters> => {
     const {
-        category, languages,
-        participationPeriod, periods, offersSort, withChildren, provided,
+        category,
+        languages,
+        participationPeriod,
+        periods,
+        offersSort,
+        withChildren,
+        provided,
     } = data;
     const { showClosedOffers, sortValue } = offersSort;
     const popularity = sortValue === "popularity" ? "desc" : undefined;
     const updatedAt = sortValue === "novelty" ? "desc" : undefined;
     const currentDate = new Date();
 
-    const min_duration_days = participationPeriod[0].toString();
-    const max_duration_days = participationPeriod[1].toString();
+    const min_duration_days = participationPeriod[0] !== 1
+        ? participationPeriod[0].toString()
+        : undefined;
+    const max_duration_days = participationPeriod[1] !== 190
+        ? participationPeriod[1].toString()
+        : undefined;
 
     const start_date = periods.start?.toISOString().split("T")[0];
     const end_date = periods.end?.toISOString().split("T")[0];

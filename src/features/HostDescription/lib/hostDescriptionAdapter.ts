@@ -15,15 +15,20 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
     if (!data) {
         return {};
     }
-    const hostTypeFields: HostDescriptionTypeFields = {};
+    const hostTypeFields: HostDescriptionTypeFields = {
+        organizationType: "ИП",
+        otherOrganizationType: "",
+    };
     if (isOrganizationType(data.type)) {
         hostTypeFields.organizationType = data.type;
     } else {
+        hostTypeFields.organizationType = "Другое";
         hostTypeFields.otherOrganizationType = data.type;
     }
 
     const hostInfoFields: HostDescriptionMainInfoFields = {
         aboutInfo: data.description,
+        shortOrganization: data.shortDescription,
         organization: data.name,
         website: data.website,
     };
@@ -48,11 +53,14 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
     } = data;
     const formData = new FormData();
     const videoGallery: string[] = [];
+    const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
+
     formData.append("name", mainInfo?.organization || "");
     formData.append("address", "test");
-    formData.append("type", type?.organizationType || "");
+    formData.append("type", formType);
     formData.append("website", mainInfo?.website || "");
     formData.append("description", mainInfo?.aboutInfo || "");
+    formData.append("shortDescription", mainInfo?.shortOrganization || "");
     formData.append("vk", socialMedia?.vk || "");
     formData.append("facebook", socialMedia?.facebook || "");
     formData.append("instagram", socialMedia?.instagram || "");
@@ -68,11 +76,12 @@ export const hostDescriptionApiAdapterUpdate = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         address, avatar, mainInfo, socialMedia, type,
     } = data;
+    const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
     return {
         name: mainInfo?.organization,
-        type: type?.organizationType,
+        type: formType,
         description: mainInfo?.aboutInfo,
-        // wip backend avatar,
+        shortDescription: mainInfo?.shortOrganization,
         avatar,
         vk: socialMedia?.vk,
         instagram: socialMedia?.instagram,

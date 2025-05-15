@@ -120,6 +120,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                 hostId={hostId}
                 hostEmail={hostEmail}
                 hostMembers={hostMembers ?? []}
+                locale={locale}
                 onError={onError}
                 onSuccess={onSuccess}
             />

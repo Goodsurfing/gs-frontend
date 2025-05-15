@@ -18,6 +18,10 @@ interface ProfileSearchByEmailRequest {
     email: string;
 }
 
+interface UnreadMessagesResponse {
+    unreadMessagesCount: number;
+}
+
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -64,6 +68,12 @@ export const profileApi = createApi({
             }),
             providesTags: ["profile"],
         }),
+        getUnreadMessages: build.query<UnreadMessagesResponse, void>({
+            query: () => ({
+                url: "personal/unread-messages",
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -74,4 +84,5 @@ export const {
     useChangePasswordMutation,
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
+    useLazyGetUnreadMessagesQuery,
 } = profileApi;

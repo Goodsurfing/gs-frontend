@@ -11,7 +11,7 @@ interface CourseProgressBarProps {
 export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
     const { className } = props;
     const totalLessons = 7;
-    const finishedLessons = 7;
+    const finishedLessons = 0;
 
     const step = 100 / totalLessons;
 
@@ -28,9 +28,6 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
     } else {
         thumbValue = marks[finishedLessons - 1].value;
     }
-
-    console.log("thumbValue", thumbValue);
-    console.log("marks", marks);
 
     return (
         <div className={cn(styles.wrapper, className)}>

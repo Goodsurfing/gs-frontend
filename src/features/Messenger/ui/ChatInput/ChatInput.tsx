@@ -200,7 +200,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     className={cn(
                         styles.icon,
                         styles.iconSend,
-                        { [styles.disabled]: !inputValue || disabled },
+                        { [styles.disabled]: !(inputValue || attachmentValue) || disabled },
                     )}
                 />
             </IconButton>

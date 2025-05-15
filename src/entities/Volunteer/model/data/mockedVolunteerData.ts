@@ -9,6 +9,7 @@ import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 export const mockedVolunteerData: Volunteer = {
     id: "1",
     image: { id: "", contentUrl: defaultImage },
+    favoriteCategories: [],
     firstName: "Станислав",
     lastName: "Старовойтов",
     aboutMe: "about me",
@@ -38,6 +39,7 @@ export const mockedVolunteerData: Volunteer = {
             lastName: "Воттакович",
             email: "example@gmail.com",
             locale: "ru",
+            favoriteCategories: [],
             city: "Казань",
             country: "Россия",
             memberProfiles: [],
@@ -51,6 +53,7 @@ export const mockedVolunteerData: Volunteer = {
             lastName: "Воттакович",
             email: "example@gmail.com",
             locale: "ru",
+            favoriteCategories: [],
             city: "Казань",
             country: "Россия",
             memberProfiles: [],
@@ -64,6 +67,7 @@ export const mockedVolunteerData: Volunteer = {
             lastName: "Воттакович",
             email: "example@gmail.com",
             locale: "ru",
+            favoriteCategories: [],
             city: "Казань",
             country: "Россия",
             memberProfiles: [],
@@ -82,6 +86,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         profile: {
             id: "test1",
             email: "test123@test.com",
+            favoriteCategories: [],
             galleryImages: [],
             locale: "ru",
             memberProfiles: [],
@@ -92,7 +97,6 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
-        favoriteCategories: [],
     },
     {
         profile: {
@@ -100,6 +104,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             email: "test124@test.com",
             galleryImages: [],
             locale: "ru",
+            favoriteCategories: [],
             memberProfiles: [],
             membershipEndDate: "",
         },
@@ -108,7 +113,6 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
-        favoriteCategories: [],
     },
     {
         profile: {
@@ -116,6 +120,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             email: "test125@test.com",
             galleryImages: [],
             locale: "ru",
+            favoriteCategories: [],
             memberProfiles: [],
             membershipEndDate: "",
 
@@ -125,6 +130,5 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
-        favoriteCategories: [],
     },
 ];
