@@ -8,6 +8,10 @@ interface ReviewRequest {
     data: Partial<ApplicationReview>;
 }
 
+interface ReviewParams {
+    author: string;
+}
+
 export const reviewApi = createApi({
     reducerPath: "reviewApi",
     baseQuery: baseQueryAcceptJson,
@@ -21,6 +25,14 @@ export const reviewApi = createApi({
                 body,
             }),
             invalidatesTags: ["volunteer"],
+        }),
+        getToVolunteerReviews: build.query<ApplicationReviewResponse[], ReviewParams>({
+            query: (params) => ({
+                url: "feedback_to_volunteers",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["volunteer"],
         }),
         getToVolunteerReviewById: build.query<ApplicationReviewResponse, string>({
             query: (reviewId) => ({
@@ -56,6 +68,14 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
+        getToOrganizationsReviews: build.query<ApplicationReview[], ReviewParams>({
+            query: (params) => ({
+                url: "feedback_to_organizations",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["host"],
+        }),
         getToOrganizationsReviewById: build.query<ApplicationReview, string>({
             query: (reviewId) => ({
                 url: `feedback_to_organizations/${reviewId}`,
@@ -86,11 +106,13 @@ export const reviewApi = createApi({
 
 export const {
     useCreateToVolunteerReviewMutation,
+    useGetToVolunteerReviewsQuery,
     useGetToVolunteerReviewByIdQuery,
     useLazyGetToVolunteerReviewByIdQuery,
     useGetToVolunteerReviewsByIdQuery,
     useUpdateToVolunteerReviewByIdMutation,
     useCreateToOrganizationsReviewMutation,
+    useGetToOrganizationsReviewsQuery,
     useGetToOrganizationsReviewByIdQuery,
     useLazyGetToOrganizationsReviewByIdQuery,
     useGetToOrganizationsReviewsByIdQuery,

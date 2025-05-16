@@ -35,7 +35,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             image, firstName, lastName, birthDate, country, city,
         } = volunteer.profile;
         const languages = useLanguagesWithComma(volunteer.languages);
-        const renderName = firstName ? getFullName(firstName, lastName) : "Анонимный пользователь";
+        const renderName = getFullName(firstName, lastName);
 
         const renderLanguages = () => {
             if (
