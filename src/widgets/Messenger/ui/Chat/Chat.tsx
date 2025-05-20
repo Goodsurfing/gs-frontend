@@ -48,6 +48,7 @@ interface ChatProps {
     id?: string;
     offerId?: string;
     onBackButton: (value?: string) => void;
+    onReadMessage: (chatId: string) => void;
     className?: string;
     locale: Locale;
 }
@@ -61,7 +62,7 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, offerId, className, onBackButton, locale,
+        id, offerId, className, onBackButton, onReadMessage, locale,
     } = props;
 
     const { handleSubmit, control, reset } = useForm<ChatFormFields>({
@@ -185,10 +186,11 @@ export const Chat: FC<ChatProps> = (props) => {
             messages.forEach(async (message, index) => {
                 if (index === 0) {
                     readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                    onReadMessage(message.chat);
                 }
             }, []);
         }
-    }, [messages, readMessage]);
+    }, [messages, onReadMessage, readMessage]);
 
     const onApplicationSubmit = useCallback(async (
         status: FormApplicationStatus,

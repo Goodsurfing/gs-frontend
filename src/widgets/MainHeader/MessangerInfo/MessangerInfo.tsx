@@ -17,7 +17,7 @@ export const MessangerInfo = () => {
 
         fetchMessages();
 
-        const interval = setInterval(fetchMessages, 6000);
+        const interval = setInterval(fetchMessages, 10000);
 
         return () => clearInterval(interval);
     }, [getUnreadMessages]);

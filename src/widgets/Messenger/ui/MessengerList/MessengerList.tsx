@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, useEffect, useMemo, useState,
+    FC, forwardRef, useEffect, useMemo, useState,
 } from "react";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -18,8 +18,10 @@ interface MessengerListProps {
     locale: Locale;
 }
 
-export const MessengerList: FC<MessengerListProps> = (props) => {
-    const { className, onUserClick, locale } = props;
+export const MessengerList: FC<MessengerListProps> = forwardRef((props, ref) => {
+    const {
+        className, onUserClick, onReadMessage, locale,
+    } = props;
     const { token, mercureToken } = useAuth();
     const {
         chatsListWithOrganizations,
@@ -28,7 +30,7 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
         statusValue,
         onChangeSearchValue,
         onChangeStatusValue,
-    } = useGetChatListData(token, mercureToken);
+    } = useGetChatListData(token, mercureToken, onReadMessage);
     const [filteredChatList,
         setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]
     >([]);
@@ -72,4 +74,4 @@ export const MessengerList: FC<MessengerListProps> = (props) => {
             <div className={cn(styles.wrapper)}>{renderUserCard}</div>
         </div>
     );
-};
+});

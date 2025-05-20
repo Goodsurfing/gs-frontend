@@ -28,7 +28,15 @@ export const useGetChatMessages = (
 
     useEffect(() => {
         if (messagesData) {
-            setMessages((prevMessages) => [...prevMessages, ...messagesData]);
+            setMessages((prevMessages) => {
+                const merged = [...prevMessages, ...messagesData];
+                const uniqueMessagesMap = new Map();
+                merged.forEach((msg) => {
+                    uniqueMessagesMap.set(msg.id, msg);
+                });
+
+                return Array.from(uniqueMessagesMap.values());
+            });
             setHasMore(messagesData.length === itemsPerPage);
         }
     }, [messagesData]);
