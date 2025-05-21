@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, forwardRef, useEffect, useMemo, useState,
+    FC, useEffect, useMemo, useState,
 } from "react";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -11,16 +11,19 @@ import { ChatsListWithOrganizations, ChatsListWithVolunteers, UserCard } from "@
 
 import { ListFilter } from "../ListFilter/ListFilter";
 import styles from "./MessengerList.module.scss";
+import { Profile } from "@/entities/Profile";
+import { useMessenger } from "@/app/providers/MessengerProvider";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
     locale: Locale;
+    myProfileData: Profile;
 }
 
-export const MessengerList: FC<MessengerListProps> = forwardRef((props, ref) => {
+export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps) => {
     const {
-        className, onUserClick, onReadMessage, locale,
+        className, onUserClick, locale, myProfileData,
     } = props;
     const { token, mercureToken } = useAuth();
     const {
@@ -30,10 +33,18 @@ export const MessengerList: FC<MessengerListProps> = forwardRef((props, ref) => 
         statusValue,
         onChangeSearchValue,
         onChangeStatusValue,
-    } = useGetChatListData(token, mercureToken, onReadMessage);
+        fetchChats,
+    } = useGetChatListData(token, mercureToken, myProfileData);
+    const { registerMessageUpdateCallback } = useMessenger();
     const [filteredChatList,
         setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]
     >([]);
+
+    useEffect(() => {
+        registerMessageUpdateCallback(() => {
+            fetchChats();
+        });
+    }, [fetchChats, registerMessageUpdateCallback]);
 
     const handleTextChange = (text: string) => {
         onChangeSearchValue(text);
@@ -74,4 +85,4 @@ export const MessengerList: FC<MessengerListProps> = forwardRef((props, ref) => 
             <div className={cn(styles.wrapper)}>{renderUserCard}</div>
         </div>
     );
-});
+};

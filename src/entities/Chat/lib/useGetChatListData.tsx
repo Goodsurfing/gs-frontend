@@ -8,11 +8,12 @@ import {
 } from "@/entities/Messenger";
 
 import { BASE_URL } from "@/shared/constants/api";
+import { Profile } from "@/entities/Profile";
 
 export const useGetChatListData = (
     token: string | null,
     mercureToken: string | null,
-    onReadMessage: (chatId: string) => void,
+    myProfile: Profile,
 ) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [statusValue, setStatusValue] = useState<FormApplicationStatus | null>(null);
@@ -64,7 +65,7 @@ export const useGetChatListData = (
 
     useEffect(() => {
         fetchChats();
-    }, [fetchChats, onReadMessage]);
+    }, [fetchChats]);
 
     useEffect(() => {
         if (!mercureToken) return;
@@ -72,7 +73,7 @@ export const useGetChatListData = (
         const url = new URL(`${BASE_URL}.well-known/mercure`);
         url.searchParams.append(
             "topic",
-            `${BASE_URL}api/v1/users/01963848-8806-75cb-a5d1-ea09debd39a6/messages/{?chat}`,
+            `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`,
         );
         url.searchParams.append("authorization", mercureToken);
 
@@ -111,7 +112,7 @@ export const useGetChatListData = (
         return () => {
             eventSource.close();
         };
-    }, [mercureToken]);
+    }, [mercureToken, myProfile.id]);
 
     const onChangeSearchValue = (value: string) => {
         setSearchValue(value);
@@ -128,5 +129,6 @@ export const useGetChatListData = (
         statusValue,
         onChangeSearchValue,
         onChangeStatusValue,
+        fetchChats,
     };
 };

@@ -20,7 +20,7 @@ import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile } from "@/entities/Profile";
 import { useLazyGetVolunteerByIdQuery, VolunteerApi } from "@/entities/Volunteer";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
@@ -43,14 +43,15 @@ import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import { useMessenger } from "@/app/providers/MessengerProvider";
 
 interface ChatProps {
     id?: string;
     offerId?: string;
     onBackButton: (value?: string) => void;
-    onReadMessage: (chatId: string) => void;
     className?: string;
     locale: Locale;
+    myProfileData: Profile;
 }
 
 const defaultValues: DefaultValues<ChatFormFields> = {
@@ -62,7 +63,8 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, offerId, className, onBackButton, onReadMessage, locale,
+        id, offerId, className, onBackButton,
+        locale, myProfileData,
     } = props;
 
     const { handleSubmit, control, reset } = useForm<ChatFormFields>({
@@ -84,11 +86,11 @@ export const Chat: FC<ChatProps> = (props) => {
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { onReadMessage } = useMessenger();
 
     const { mercureToken } = useAuth();
 
     const [getOfferData] = useLazyGetOfferByIdQuery();
-    const { data: myProfileData } = useGetProfileInfoQuery();
     const {
         messages, fetchMoreMessages, hasMore,
     } = useGetChatMessages(
@@ -185,8 +187,8 @@ export const Chat: FC<ChatProps> = (props) => {
         if (messages) {
             messages.forEach(async (message, index) => {
                 if (index === 0) {
-                    readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
-                    onReadMessage(message.chat);
+                    await readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                    onReadMessage();
                 }
             }, []);
         }

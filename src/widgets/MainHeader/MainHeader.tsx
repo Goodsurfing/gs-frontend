@@ -51,7 +51,7 @@ const MainHeader: FC = () => {
                 </div>
                 <MainHeaderNav />
                 <div className={styles.right}>
-                    {isAuth ? (
+                    {(isAuth && profile) ? (
                         <>
                             <div className={styles.icons}>
                                 <LocaleLink
@@ -63,7 +63,7 @@ const MainHeader: FC = () => {
                                 <LocaleLink
                                     to={getMessengerPageUrl(locale)}
                                 >
-                                    <MessangerInfo />
+                                    <MessangerInfo myProfile={profile} />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile

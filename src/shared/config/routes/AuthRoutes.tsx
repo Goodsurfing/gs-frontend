@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/routes/model/guards/AuthProvider";
 import { PrivateRouteGuard } from "@/routes/model/guards/PrivateRouteGuard";
 import { PrivateRouteVolunteerGuard } from "@/routes/model/guards/PrivateRouteVolunteerGuard";
 
@@ -18,9 +17,7 @@ export const AuthRoutes = {
         </PrivateRouteGuard>
     ),
     [AppRoutes.PROFILE_RESET_PASSWORD]: (
-        <AuthProvider>
-            <ProfileResetPasswordPage />
-        </AuthProvider>
+        <ProfileResetPasswordPage />
     ),
     [AppRoutes.VOLUNTEER]: (
         <PrivateRouteGuard>
@@ -31,23 +28,17 @@ export const AuthRoutes = {
     ),
     [AppRoutes.OFFERS]: (
         <PrivateRouteGuard>
-            <AuthProvider>
-                <OfferLayoutPage />
-            </AuthProvider>
+            <OfferLayoutPage />
         </PrivateRouteGuard>
     ),
     [AppRoutes.MESSENGER]: (
         <PrivateRouteGuard>
-            <AuthProvider>
-                <MessengerPage />
-            </AuthProvider>
+            <MessengerPage />
         </PrivateRouteGuard>
     ),
     [AppRoutes.FAVORITE_OFFERS]: (
         <PrivateRouteGuard>
-            <AuthProvider>
-                <FavoriteOffersPage />
-            </AuthProvider>
+            <FavoriteOffersPage />
         </PrivateRouteGuard>
     ),
 };

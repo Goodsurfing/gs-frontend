@@ -31,12 +31,16 @@ export const useGetChatMessages = (
             setMessages((prevMessages) => {
                 const merged = [...prevMessages, ...messagesData];
                 const uniqueMessagesMap = new Map();
+
                 merged.forEach((msg) => {
                     uniqueMessagesMap.set(msg.id, msg);
                 });
 
-                return Array.from(uniqueMessagesMap.values());
+                return Array.from(uniqueMessagesMap.values()).sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                );
             });
+
             setHasMore(messagesData.length === itemsPerPage);
         }
     }, [messagesData]);
@@ -52,7 +56,13 @@ export const useGetChatMessages = (
 
         eventSource.addEventListener("messageOnChat", (event) => {
             const updatedMessage = JSON.parse(event.data);
-            setMessages((prevMessages) => [updatedMessage, ...prevMessages]);
+            setMessages((prevMessages) => {
+                if (prevMessages.some((msg) => msg.id === updatedMessage.id)) {
+                    return prevMessages;
+                }
+
+                return [updatedMessage, ...prevMessages];
+            });
         });
 
         return () => {

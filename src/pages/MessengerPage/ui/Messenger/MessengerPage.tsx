@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,17 +12,15 @@ import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import styles from "./MessengerPage.module.scss";
-
-interface ReadRef {
-    onReadMessage: () => void
-}
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
-    const readRef = useRef<ReadRef | null>(null);
+
+    const { data: myProfileData } = useGetProfileInfoQuery();
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
@@ -39,13 +37,7 @@ const MessengerPage = () => {
         [locale, navigate, selectedChat],
     );
 
-    const handleReadMessage = useCallback(() => {
-        if (readRef.current) {
-            readRef.current.onReadMessage();
-        }
-    }, []);
-
-    if (!ready) {
+    if (!ready || !myProfileData) {
         return (
             <div className={styles.layout}>
                 <MainHeader />
@@ -65,15 +57,15 @@ const MessengerPage = () => {
                             [styles.open]: !selectedChat,
                         })}
                         onUserClick={handleOnUserClick}
+                        myProfileData={myProfileData}
                         locale={locale}
-                        ref={readRef}
                     />
                     <Chat
                         key={selectedChat}
                         id={selectedChat}
                         offerId={offerId}
+                        myProfileData={myProfileData}
                         onBackButton={handleOnUserClick}
-                        onReadMessage={handleReadMessage}
                         className={cn(styles.chat, {
                             [styles.open]: selectedChat,
                         })}
