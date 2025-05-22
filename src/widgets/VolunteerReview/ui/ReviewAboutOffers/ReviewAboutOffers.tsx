@@ -16,12 +16,12 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { FullFormApplication } from "@/entities/Application";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./ReviewAboutOffers.module.scss";
-import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { useCreateToOrganizationsReviewMutation, useGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
+import { useGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutOffersProps {
     locale: Locale;

@@ -8,7 +8,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { NotesWidget } from "@/widgets/NotesWidget";
 
 import { FullFormApplication } from "@/entities/Application";
-import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 import { VolunteerModalReview } from "@/entities/Review";
 import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
@@ -22,6 +21,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
+import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 
 export const NotesVolunteerForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {

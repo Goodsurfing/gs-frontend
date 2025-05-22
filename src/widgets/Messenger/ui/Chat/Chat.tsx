@@ -13,9 +13,12 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
-import { FormApplicationStatus, useCreateApplicationFormMutation } from "@/entities/Application";
-import { useLazyGetApplicationFormByIdQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
-import { useGetChatQuery, useReadMessageMutation } from "@/entities/Chat/api/chatApi";
+import { FormApplicationStatus } from "@/entities/Application";
+import {
+    useCreateApplicationFormMutation, useGetChatQuery,
+    useLazyGetApplicationFormByIdQuery,
+    useReadMessageMutation, useUpdateApplicationFormStatusByIdMutation,
+} from "@/entities/Chat/api/chatApi";
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";

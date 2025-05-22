@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { FullFormApplication, useGetMyHostApplicationsQuery } from "@/entities/Application";
+import { FullFormApplication } from "@/entities/Application";
 import { ApplicationReviewResponse, HostModalReview } from "@/entities/Review";
 
 import {
@@ -19,6 +19,7 @@ import { useCreateToVolunteerReviewMutation, useGetToVolunteerReviewsQuery } fro
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { useGetMyHostApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutVolunteersProps {
     locale: Locale;

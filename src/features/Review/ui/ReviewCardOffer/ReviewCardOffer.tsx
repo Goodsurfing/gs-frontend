@@ -4,13 +4,13 @@ import { Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { ApplicationReviewResponse } from "@/entities/Review";
-import { useGetApplicationFormByIdQuery } from "@/entities/Application";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
 import { getFullName } from "@/shared/lib/getFullName";
 import styles from "./ReviewCardOffer.module.scss";
+import { useGetApplicationFormByIdQuery } from "@/entities/Chat";
 
 interface ReviewCardOfferProps {
     reviewOffer: ApplicationReviewResponse;

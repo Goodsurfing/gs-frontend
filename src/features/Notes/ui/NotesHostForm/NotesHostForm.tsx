@@ -22,9 +22,9 @@ import {
 
 import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
-import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
