@@ -92,25 +92,34 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                             gap: "0.75rem",
                         }}
                     >
-                        <div className={styles.rating}>
-                            <img src={star} alt="star-icon" />
-                            <span>{rating}</span>
-                        </div>
-                        <div className={styles.likes}>
-                            <img src={like} alt="heart-icon" />
-                            <span>{likes}</span>
-                        </div>
+                        {rating && (
+                            <div className={styles.rating}>
+                                <img src={star} alt="star-icon" />
+                                <span>{rating}</span>
+                            </div>
+                        )}
+                        {likes && (
+                            <div className={styles.likes}>
+                                <img src={like} alt="heart-icon" />
+                                <span>{likes}</span>
+                            </div>
+                        )}
                     </div>
                     <div className={styles.extraInfo}>
-                        <span className={styles.review}>
-                            Отзывов:
-                            {" "}
-                            {reviews}
-                        </span>
-                        <span className={styles.went}>
-                            Отправились:
-                            {went}
-                        </span>
+                        {reviews && (
+                            <span className={styles.review}>
+                                Отзывов:
+                                {" "}
+                                {reviews}
+                            </span>
+                        )}
+                        {went && (
+                            <span className={styles.went}>
+                                Отправились:
+                                {" "}
+                                {went}
+                            </span>
+                        )}
                     </div>
                 </div>
                 <p className={styles.description}>

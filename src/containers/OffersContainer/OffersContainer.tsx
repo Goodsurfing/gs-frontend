@@ -11,6 +11,7 @@ import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 import styles from "./OffersContainer.module.scss";
 import { Offer as OfferType, useLazyGetOffersQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OffersContainerProps {
     className?: string;
@@ -22,13 +23,14 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
     const [offers, setOffers] = useState<OfferType[]>([]);
     const [getOffersData, isLoading] = useLazyGetOffersQuery();
+    const { locale } = useLocale();
 
     useEffect(() => {
         const fetchOffers = async () => {
             await getOffersData(undefined)
                 .unwrap()
                 .then((result) => {
-                    setOffers(result);
+                    setOffers(result.slice(0, 10));
                 })
                 .catch(() => {
                     setOffers([]);
@@ -83,7 +85,7 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
                     {offers
                         && offers.map((item, index) => (
                             <SwiperSlide key={index}>
-                                <Offer offer={item} />
+                                <Offer offer={item} locale={locale} />
                             </SwiperSlide>
                         ))}
                 </Swiper>

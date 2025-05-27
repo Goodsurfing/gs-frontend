@@ -2,7 +2,7 @@
     "name": "webpack-react-typescript",
     "version": "1.0.0",
     "license": "ISC",
-    "author": "kuromukade",
+    "author": "GS",
     "scripts": {
         "lint": "eslint src/ --cache --color --ext .jsx,.js,.tsx,.ts --ignore-pattern node_modules",
         "start": "webpack serve --env port=3000",
@@ -115,6 +115,7 @@
         "i18next-browser-languagedetector": "^7.0.2",
         "i18next-http-backend": "^2.2.1",
         "interactjs": "^1.10.26",
+        "qs": "^6.14.0",
         "react": "^18.2.0",
         "react-beautiful-dnd": "^13.1.1",
         "react-calendar": "^4.2.1",

@@ -36,6 +36,9 @@ export interface Offer {
     galleryItems: string[];
     canEdit: boolean;
     canParticipate: boolean;
+    averageRating?: number;
+    feedbacksCountinteger?: number;
+    acceptedApplicationsCount: number;
 }
 
 export interface OfferOrganization {

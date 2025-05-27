@@ -21,6 +21,7 @@ import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextCompone
 
 import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface UserInfoCardProps {
     user?: Host | VolunteerApi;
@@ -115,7 +116,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                             <span
                                 className={styles.textPrimary}
                             >
-                                {`${profile.lastName} ${profile.firstName}`}
+                                {getFullName(profile.firstName, profile.lastName)}
                             </span>
                             <span className={styles.textCaption}>
                                 {formatLocation(profile.country, profile.city)}

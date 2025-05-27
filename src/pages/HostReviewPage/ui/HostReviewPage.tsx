@@ -23,7 +23,7 @@ const HostReviewPage: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <Title />
+            <Title rating={hostData.averageRating} />
             <div className={styles.container}>
                 <ReviewAboutVolunteers id={hostData.id} locale={locale} />
                 <ReviewAboutOffers hostId={hostData.id} locale={locale} />
