@@ -47,6 +47,7 @@ import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { useMessenger } from "@/app/providers/MessengerProvider";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface ChatProps {
     id?: string;
@@ -233,7 +234,10 @@ export const Chat: FC<ChatProps> = (props) => {
                         userName = organizationData?.name;
                         userAvatar = getMediaContent(organizationData?.avatar);
                     } else if (volunteerData?.profile.id === authorId) {
-                        userName = `${volunteerData?.profile.lastName} ${volunteerData?.profile.firstName}`;
+                        userName = getFullName(
+                            volunteerData?.profile.firstName,
+                            volunteerData?.profile.lastName,
+                        );
                         userAvatar = getMediaContent(
                             volunteerData?.profile.image,
                         );
@@ -432,7 +436,10 @@ export const Chat: FC<ChatProps> = (props) => {
                         <span className={styles.userName}>
                             {chatUser
                                 && ("profile" in chatUser
-                                    ? `${chatUser.profile.lastName} ${chatUser.profile.firstName}`
+                                    ? getFullName(
+                                        chatUser.profile.firstName,
+                                        chatUser.profile.lastName,
+                                    )
                                     : `${chatUser.name}`)}
                         </span>
                     </div>

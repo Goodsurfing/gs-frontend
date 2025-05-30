@@ -1,4 +1,5 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import qs from "qs";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
@@ -26,4 +27,8 @@ export const baseQueryAcceptJson = fetchBaseQuery({
         headers.set("accept", "application/json");
         return headers;
     },
+    paramsSerializer: (params) => qs.stringify(params, {
+        arrayFormat: "brackets",
+        encode: true,
+    }),
 });

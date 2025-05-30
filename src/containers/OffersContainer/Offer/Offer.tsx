@@ -1,56 +1,82 @@
 import React, { FC } from "react";
-
+import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
+
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+
+import { Offer as OfferType } from "@/entities/Offer";
+
 import starIcon from "@/shared/assets/icons/star.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useCategories } from "@/shared/data/categories";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { textSlice } from "@/shared/lib/textSlice";
 
 import styles from "./Offer.module.scss";
-import { Offer as OfferType } from "@/entities/Offer";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { useCategories } from "@/shared/data/categories";
 
 interface OfferProps {
     offer: OfferType;
+    locale: Locale;
 }
 
 const Offer: FC<OfferProps> = (props) => {
-    const { offer } = props;
-    const { description, where } = offer;
+    const { offer, locale } = props;
+    const {
+        id,
+        description,
+        where,
+        acceptedApplicationsCount,
+        averageRating,
+        feedbacksCountinteger,
+    } = offer;
     const { getTranslation } = useCategories();
 
     const image = description?.image;
-    const title = description?.title ?? "Без заголовка";
     const category = getTranslation(description?.categoryIds[0]) ?? "Без категории";
-    const location = where?.address ?? "Без адреса";
 
     return (
-        <div className={styles.item}>
-            <img src={getMediaContent(image)} className={styles.image} alt={title} />
+        <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>
+            <img
+                src={image ? getMediaContent(image) : defaultImage}
+                className={styles.image}
+                alt={description?.title}
+            />
             <div className={styles.content}>
-                <h4 className={styles.title}>{title}</h4>
-                <p className={styles.location}>{location}</p>
+                <h4 className={styles.title}>
+                    {textSlice(description?.title, 30, "title")}
+                </h4>
+                <p className={styles.location}>
+                    {textSlice(where?.address, 30, "address")}
+                </p>
                 <p className={styles.type}>{category}</p>
             </div>
             <div className={styles.info}>
-                <div className={styles.rating}>
-                    <ReactSVG src={starIcon} />
-                    <span>{5}</span>
-                </div>
-                <div className={styles.reviews}>
-                    <span>
-                        Отзывов:
-                        {" "}
-                        {5}
-                    </span>
-                </div>
+                {averageRating && (
+                    <div className={styles.rating}>
+                        <ReactSVG src={starIcon} />
+                        <span>{averageRating}</span>
+                    </div>
+                )}
+                {feedbacksCountinteger && (
+                    <div className={styles.reviews}>
+
+                        <span>
+                            Отзывов:
+                            {" "}
+                            {feedbacksCountinteger}
+                        </span>
+                    </div>
+                )}
                 <div className={styles.success}>
                     <span>
                         Отправилось:
                         {" "}
-                        {5}
+                        {acceptedApplicationsCount}
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

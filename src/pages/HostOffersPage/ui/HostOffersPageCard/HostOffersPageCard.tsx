@@ -21,9 +21,9 @@ interface IHostOffersPageCard {
     title?: string;
     location?: string;
     category?: string;
-    rating: string;
+    rating?: string;
     likes: string;
-    reviews: string;
+    reviews?: string;
     went: string;
     description?: string;
     status: OfferStatus;
@@ -82,21 +82,25 @@ const HostOffersPageCard = memo(
                         </div>
                         <div className={styles.stats}>
                             <div className={styles.statsWrapper}>
-                                <div className={styles.rating}>
-                                    <img src={star} alt="star-icon" />
-                                    <span>{rating}</span>
-                                </div>
+                                {rating && (
+                                    <div className={styles.rating}>
+                                        <img src={star} alt="star-icon" />
+                                        <span>{rating}</span>
+                                    </div>
+                                )}
                                 <div className={styles.likes}>
                                     <img src={like} alt="heart-icon" />
                                     <span>{likes}</span>
                                 </div>
                             </div>
                             <div className={styles.extraInfo}>
-                                <span className={styles.review}>
-                                    {t("hostOffers.Отзывов")}
-                                    {" "}
-                                    {reviews}
-                                </span>
+                                {reviews && (
+                                    <span className={styles.review}>
+                                        {t("hostOffers.Отзывов")}
+                                        {" "}
+                                        {reviews}
+                                    </span>
+                                )}
                                 <span className={styles.went}>
                                     {t("hostOffers.Отправились")}
                                     {" "}
