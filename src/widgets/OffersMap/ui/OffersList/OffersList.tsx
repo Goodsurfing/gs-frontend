@@ -12,8 +12,9 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./OffersList.module.scss";
 import { Offer } from "@/entities/Offer";
+import { SearchOffers } from "../SearchOffers/SearchOffers";
+import styles from "./OffersList.module.scss";
 
 interface OffersListProps {
     className?: string;
@@ -86,6 +87,9 @@ export const OffersList: FC<OffersListProps> = (props) => {
     if (!data) {
         return (
             <div className={cn(styles.wrapper, className)}>
+                <div className={styles.searchWrapper}>
+                    <SearchOffers value="Поиск" onChange={() => {}} />
+                </div>
                 <HeaderList
                     offersLength={0}
                     isShowMap={mapOpenValue}
@@ -110,6 +114,9 @@ export const OffersList: FC<OffersListProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
+            <div className={styles.searchWrapper}>
+                <SearchOffers value="Поиск" onChange={() => {}} />
+            </div>
             <HeaderList
                 offersLength={data.length}
                 isShowMap={mapOpenValue}
