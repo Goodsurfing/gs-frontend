@@ -125,6 +125,9 @@ import {
     getAcademyMainPageUrl,
     getAcademyCoursePageUrl,
     getAcademyLessonPageUrl,
+    getEmailExpiredPageUrl,
+    getConfirmErrorPageUrl,
+    getEmailAlreadyConfirmedPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -136,6 +139,9 @@ import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
 import { BecomeHostPage } from "@/pages/BecomeHostPage";
 import { GoodsurfingAmbassadorsPage } from "@/pages/GoodsurfingAmbassadorsPage";
 import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
+import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
+import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
+import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -193,6 +199,21 @@ const publicRoutes: RouteType[] = [
         label: "confirm-email-success",
         element: <ConfirmEmailSuccessPage />,
         path: (locale: string) => getConfirmEmailSuccessPageUrl(locale),
+    },
+    {
+        label: "email-expired",
+        element: <EmailExpiredPage />,
+        path: (locale: string) => getEmailExpiredPageUrl(locale),
+    },
+    {
+        label: "confirm-email",
+        element: <ConfirmErrorPage />,
+        path: (locale: string) => getConfirmErrorPageUrl(locale),
+    },
+    {
+        label: "email-already-confirmed",
+        element: <EmailAlreadyConfirmedPage />,
+        path: (locale: string) => getEmailAlreadyConfirmedPageUrl(locale),
     },
     {
         label: "host-layout",

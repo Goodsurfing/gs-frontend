@@ -31,6 +31,12 @@ export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}
 
 export const getConfirmEmailSuccessPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email_success}`;
 
+export const getEmailExpiredPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_expired}`;
+
+export const getEmailAlreadyConfirmedPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_already_confirmed}`;
+
+export const getConfirmErrorPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_error}`;
+
 export const getResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.reset_password}`;
 
 export const getResetPasswordVerifyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.reset_password_verify}`;
