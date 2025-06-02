@@ -24,6 +24,7 @@ import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
 import styles from "./OffersSearchFilterMobile.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Offer } from "@/entities/Offer";
+import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 type SelectedTabType = "filter" | "map" | "offers";
 
@@ -179,6 +180,9 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             </div>
             {isOffersTabOpened && (
                 <>
+                    <div className={styles.searchWrapper}>
+                        <SearchOffers value="Поиск" onChange={() => {}} />
+                    </div>
                     <div className={styles.offersCount}>
                         {data ? data.length : 0}
                         {" "}
