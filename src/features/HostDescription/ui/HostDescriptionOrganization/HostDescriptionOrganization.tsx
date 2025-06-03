@@ -10,11 +10,10 @@ import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
-import { organizationTypeData } from "../../model/data/organizationTypeData";
-
-import styles from "./HostDescriptionOrganization.module.scss";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { HostDescriptionFormFields } from "../../model/types/hostDescription";
+import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
+import styles from "./HostDescriptionOrganization.module.scss";
 
 interface HostDescriptionOrganizationProps {
     className?: string;
@@ -23,6 +22,7 @@ interface HostDescriptionOrganizationProps {
 export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizationProps) => {
     const { className } = props;
     const { t } = useTranslation("host");
+    const { hostTypes } = useGetTypeOrganization();
 
     const { control, formState: { errors } } = useFormContext<HostDescriptionFormFields>();
     const formWatch = useWatch<HostDescriptionFormFields>({ control });
@@ -67,7 +67,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                 <Controller
                     name="type.organizationType"
                     control={control}
-                    defaultValue={organizationTypeData[1].id}
+                    defaultValue={hostTypes[1].value}
                     render={({ field }) => (
                         <SelectComponent
                             className={styles.dropdown}
@@ -75,8 +75,8 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                             value={field.value}
                             label={t("hostDescription.Тип организации")}
                         >
-                            {organizationTypeData.map((item) => (
-                                <MenuItem value={item.id} key={item.id}>{item.id}</MenuItem>
+                            {hostTypes.map((item) => (
+                                <MenuItem value={item.value} key={item.value}>{item.text}</MenuItem>
                             ))}
                         </SelectComponent>
                     )}

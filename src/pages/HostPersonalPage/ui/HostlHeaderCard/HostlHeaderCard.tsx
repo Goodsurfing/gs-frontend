@@ -11,6 +11,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./HostlHeaderCard.module.scss";
+import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
 
 interface HostlHeaderCardProps {
     host: Host;
@@ -29,6 +30,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
         } = props;
         const { t } = useTranslation("host");
         const navigate = useNavigate();
+        const { getTranslate } = useGetTypeOrganization();
 
         const navigateTo = () => {
             navigate(getHostRegistrationUrl(locale));
@@ -45,7 +47,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                 <div className={styles.containerInfo}>
                     <span className={styles.type}>
                         {t("personalHost.Организация/")}
-                        {type}
+                        {getTranslate(type)}
                     </span>
                     <h3 className={styles.name}>{name}</h3>
                     <span className={styles.address}>{address}</span>
