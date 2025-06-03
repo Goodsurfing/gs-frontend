@@ -13,18 +13,19 @@ import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
 import vkIcon from "@/shared/assets/icons/footer/vk.svg";
 import {
     getAboutProjectPageUrl,
+    getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
-    getBlogPageUrl,
+    // getBlogPageUrl,
     getFindJobPageUrl,
-    getJournalsPageUrl,
+    // getJournalsPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
     getNPOPageUrl,
-    getNewsPageUrl,
+    // getNewsPageUrl,
     getOurTeamPageUrl,
     getPrivacyPolicyPageUrl,
     getRulesPageUrl,
-    getVideoPageUrl,
+    // getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import styles from "./Footer.module.scss";
@@ -96,25 +97,25 @@ export const Footer = memo(() => {
                             <div className={styles.menu__content}>
                                 <Link
                                     className={styles.link}
-                                    to={getBlogPageUrl(locale)}
+                                    to="https://community.goodsurfing.org/category/post/"
                                 >
                                     {t("main.welcome.header.community.blog")}
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to={getVideoPageUrl(locale)}
+                                    to="https://community.goodsurfing.org/filmy/"
                                 >
                                     {t("main.welcome.header.community.video")}
                                 </Link>
-                                <Link
+                                {/* <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.experts")}
-                                </Link>
+                                </Link> */}
                                 <Link
                                     className={styles.link}
-                                    to={getMainPageUrl(locale)}
+                                    to={getAmbassadorsPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.community.ambassadors",
@@ -122,22 +123,22 @@ export const Footer = memo(() => {
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to={getMainPageUrl(locale)}
+                                    to="https://community.goodsurfing.org/courses/"
                                 >
                                     {t("main.welcome.header.community.courses")}
                                 </Link>
-                                <Link
+                                {/* <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.clubs")}
-                                </Link>
-                                <Link
+                                </Link> */}
+                                {/* <Link
                                     className={styles.link}
                                     to={getJournalsPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.journal")}
-                                </Link>
+                                </Link> */}
                             </div>
                         </div>
                         <div className={styles.menu__item}>
@@ -187,7 +188,7 @@ export const Footer = memo(() => {
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to={getNewsPageUrl(locale)}
+                                    to="https://community.goodsurfing.org/"
                                 >
                                     {t(
                                         "main.welcome.header.about-project.news",

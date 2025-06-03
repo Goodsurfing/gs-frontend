@@ -54,14 +54,15 @@ const MainHeader: FC = () => {
                     {(isAuth && profile) ? (
                         <>
                             <div className={styles.icons}>
-                                <LocaleLink
+                                {/* <LocaleLink
                                     to={getFavoriteOffersPageUrl(locale)}
                                     className={styles.icon}
                                 >
                                     <ReactSVG src={heartIcon} />
-                                </LocaleLink>
+                                </LocaleLink> */}
                                 <LocaleLink
                                     to={getMessengerPageUrl(locale)}
+                                    className={styles.icon}
                                 >
                                     <MessangerInfo myProfile={profile} />
                                 </LocaleLink>

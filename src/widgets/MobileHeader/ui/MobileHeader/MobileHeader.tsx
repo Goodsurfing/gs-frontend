@@ -18,7 +18,6 @@ import {
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
-    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getJournalsPageUrl,
@@ -107,7 +106,13 @@ const MobileHeader: FC = () => {
                 })}
             >
                 <div className={styles.container} />
-                <MobileSelect
+                <Button
+                    onClick={() => navigate(getOffersMapPageUrl(locale))}
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.offers.title")}
+                </Button>
+                {/* <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     className={styles.select}
                     style={{ backgroundColor: "#ecf1f4" }}
@@ -205,7 +210,7 @@ const MobileHeader: FC = () => {
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
-                </MobileSelect>
+                </MobileSelect> */}
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     isOpen={dropdownOpened.isCommunityOpened}
@@ -308,12 +313,12 @@ const MobileHeader: FC = () => {
                         >
                             {t("main.welcome.header.my-page")}
                         </Button>
-                        <Button
+                        {/* <Button
                             onClick={() => navigate(getFavoriteOffersPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.favorite")}
-                        </Button>
+                        </Button> */}
                         <Button
                             onClick={() => navigate(getMessengerPageUrl(locale))}
                             className={styles.button}
