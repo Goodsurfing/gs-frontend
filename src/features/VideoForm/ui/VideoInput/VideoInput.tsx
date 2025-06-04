@@ -12,9 +12,13 @@ export interface VideoInputProps {
     control: Control<VideoFormImplementation>;
     addVideo: () => void;
     isLoading: boolean;
+    disabled?: boolean;
 }
 
-export const VideoInput = memo(({ control, addVideo, isLoading }: VideoInputProps) => {
+export const VideoInput = memo(({
+    control, addVideo, isLoading,
+    disabled = false,
+}: VideoInputProps) => {
     const { t } = useTranslation("volunteer");
 
     return (
@@ -50,7 +54,7 @@ export const VideoInput = memo(({ control, addVideo, isLoading }: VideoInputProp
                             )}
                         </div>
                         <AddButton
-                            disabled={fieldState.invalid || isLoading}
+                            disabled={fieldState.invalid || isLoading || !field.value || disabled}
                             type="submit"
                             text="Добавить видео"
                             onClick={addVideo}

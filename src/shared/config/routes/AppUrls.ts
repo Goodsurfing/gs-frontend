@@ -31,6 +31,12 @@ export const getConfirmEmailPageUrl: RoutePathFunction = (locale) => `/${locale}
 
 export const getConfirmEmailSuccessPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_email_success}`;
 
+export const getEmailExpiredPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_expired}`;
+
+export const getEmailAlreadyConfirmedPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_already_confirmed}`;
+
+export const getConfirmErrorPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_error}`;
+
 export const getResetPasswordPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.reset_password}`;
 
 export const getResetPasswordVerifyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.reset_password_verify}`;
@@ -81,7 +87,7 @@ export const getHostPersonalPageUrl: RoutePathFunction = (locale, id = ":id") =>
 
 export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers}`;
 
-export const getOffersWelcomePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_welcome}/:id`;
+export const getOffersWelcomePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_welcome}/${id}`;
 
 export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}/:id`;
 
@@ -121,6 +127,8 @@ export const getVolunteerArticlesPageUrl: RoutePathFunction = (locale) => `/${lo
 
 export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.volunteer_personal}/${id}`;
 
+// Other pages
+
 export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;
 
 export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.about_project}`;
@@ -154,3 +162,11 @@ export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${loca
 export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}`;
 
 export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;
+
+// Academy pages
+
+export const getAcademyMainPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.academy_main}`;
+
+export const getAcademyCoursePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_course}/${id}`;
+
+export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_lesson}/${id}`;

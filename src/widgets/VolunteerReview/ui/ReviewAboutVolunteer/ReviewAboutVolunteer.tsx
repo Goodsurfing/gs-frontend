@@ -26,7 +26,7 @@ export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
     }, [volunteerReviewsData]);
 
     const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => reviewOffers.map(
-        (review) => <ReviewFullCard review={review} />,
+        (review) => <ReviewFullCard type="host" review={review} />,
     );
 
     return (

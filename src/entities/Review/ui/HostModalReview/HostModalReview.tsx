@@ -14,6 +14,7 @@ interface HostModalReviewProps {
     isOpen: boolean;
     onClose: () => void;
     sendReview: () => void;
+    titleText: string;
     successText?: string;
     errorText?: string;
     locale: Locale;
@@ -27,6 +28,7 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
         isOpen,
         onClose,
         sendReview,
+        titleText,
         successText,
         errorText,
         locale,
@@ -42,7 +44,7 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
             })}
             isOpen={isOpen}
             onClose={onClose}
-            titleText="Оставьте отзыв"
+            titleText={titleText}
             sendReview={sendReview}
             successText={successText}
             errorText={errorText}

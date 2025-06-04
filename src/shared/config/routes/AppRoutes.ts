@@ -10,6 +10,9 @@ export enum AppRoutes {
     RESET_PASSWORD_VERIFY = "reset_password_verify",
     CONFIRM_EMAIL = "confirm_email",
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
+    EMAIL_EXPIRED = "email_expired",
+    EMAIL_ALREADY_CONFIRMED = "email_already_confirmed",
+    CONFIRM_ERROR = "confirm_error",
     PROFILE = "profile",
     PROFILE_INFO = "profile_info",
     PROFILE_PREFERENCES = "profile_preferences",
@@ -59,5 +62,8 @@ export enum AppRoutes {
     JOURNALS = "journals",
     VIDEO = "video",
     PRIVACY_POLICY = "privacy_policy",
+    ACADEMY_MAIN = "academy_main",
+    ACADEMY_COURSE = "academy_course",
+    ACADEMY_LESSON = "academy_lesson",
     NOT_FOUND = "not_found",
 }

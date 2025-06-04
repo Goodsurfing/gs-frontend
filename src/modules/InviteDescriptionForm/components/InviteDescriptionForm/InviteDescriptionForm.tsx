@@ -8,22 +8,28 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { ErrorType } from "@/types/api/error";
 
 import {
     useGetOfferByIdQuery,
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 
+import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import {
     inviteDescriptionAdapter,
     inviteDescriptionApiAdapter,
+    inviteDescriptionStorageAdapter,
 } from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
@@ -33,10 +39,6 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -89,13 +91,23 @@ export const InviteDescriptionForm = () => {
         setGallerySuccess(value);
     };
 
-    const saveFormData = useCallback((data: OfferDescriptionField) => {
-        sessionStorage.setItem(`${OFFER_DESCRIPTION_FORM}${id}`, JSON.stringify(inviteDescriptionApiAdapter(data, true)));
-    }, [id]);
+    const saveFormData = useCallback(
+        (data: OfferDescriptionField) => {
+            sessionStorage.setItem(
+                `${OFFER_DESCRIPTION_FORM}${id}`,
+                JSON.stringify(inviteDescriptionApiAdapter(data, true)),
+            );
+        },
+        [id],
+    );
 
     const loadFormData = useCallback((): Partial<OfferDescriptionField> | null => {
-        const savedData = sessionStorage.getItem(`${OFFER_DESCRIPTION_FORM}${id}`);
-        return savedData ? inviteDescriptionAdapter(JSON.parse(savedData)) : null;
+        const savedData = sessionStorage.getItem(
+            `${OFFER_DESCRIPTION_FORM}${id}`,
+        );
+        return savedData
+            ? inviteDescriptionStorageAdapter(JSON.parse(savedData))
+            : null;
     }, [id]);
 
     const initializeForm = useCallback(() => {
@@ -190,12 +202,13 @@ export const InviteDescriptionForm = () => {
                                         "description.Добавить фото обложки",
                                     )}
                                 />
-                                <p className={styles.error}>
-                                    {errors.coverImage
-                                        && t(
+                                {errors.coverImage && (
+                                    <ErrorText
+                                        text={t(
                                             `description.${errors.coverImage?.message?.toString()}`,
                                         )}
-                                </p>
+                                    />
+                                )}
                             </div>
                         )}
                     />
@@ -210,7 +223,9 @@ export const InviteDescriptionForm = () => {
                 </div>
                 <Button
                     className={styles.btn}
-                    disabled={isLoading || isCoverImageLoading || isGalleryLoading}
+                    disabled={
+                        isLoading || isCoverImageLoading || isGalleryLoading
+                    }
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"

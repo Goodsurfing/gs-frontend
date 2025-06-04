@@ -9,7 +9,7 @@ import CommunityNewsContainer from "@/containers/CommunityNewsContainer/Communit
 import { Footer } from "@/widgets/Footer";
 import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 import OffersContainer from "@/containers/OffersContainer/OffersContainer";
-import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
+// import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
 import ReviewsContainer from "@/containers/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
@@ -38,9 +38,9 @@ const MainPage: FC = () => {
             <Section title={t("Наши преимущества")}>
                 <BenefitsContainer />
             </Section>
-            <Section title={t("Популярные места")}>
+            {/* <Section title={t("Популярные места")}>
                 <PopularPlacesContainer />
-            </Section>
+            </Section> */}
             <section className={styles.volunteer}>
                 <VolunteerContainer />
             </section>

@@ -1,17 +1,18 @@
 import cn from "classnames";
 import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Chat, MessengerList } from "@/widgets/Messenger";
 
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import styles from "./MessengerPage.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
@@ -19,9 +20,11 @@ const MessengerPage = () => {
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
 
+    const { data: myProfileData } = useGetProfileInfoQuery();
+
     const handleOnUserClick = useCallback(
         (value?: string) => {
-            if ((selectedChat !== value)) {
+            if (selectedChat !== value) {
                 if (value) {
                     navigate(`/${locale}/messenger/${value}`);
                 } else {
@@ -34,7 +37,7 @@ const MessengerPage = () => {
         [locale, navigate, selectedChat],
     );
 
-    if (!ready) {
+    if (!ready || !myProfileData) {
         return (
             <div className={styles.layout}>
                 <MainHeader />
@@ -54,12 +57,14 @@ const MessengerPage = () => {
                             [styles.open]: !selectedChat,
                         })}
                         onUserClick={handleOnUserClick}
+                        myProfileData={myProfileData}
                         locale={locale}
                     />
                     <Chat
                         key={selectedChat}
                         id={selectedChat}
                         offerId={offerId}
+                        myProfileData={myProfileData}
                         onBackButton={handleOnUserClick}
                         className={cn(styles.chat, {
                             [styles.open]: selectedChat,

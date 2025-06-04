@@ -14,20 +14,21 @@ import { getUserAuthData, userActions } from "@/entities/User";
 
 import {
     getAboutProjectPageUrl,
+    // getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
-    getBlogPageUrl,
+    // getBlogPageUrl,
     getFindJobPageUrl,
-    getJournalsPageUrl,
+    // getJournalsPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
     getNPOPageUrl,
-    getNewsPageUrl,
+    // getNewsPageUrl,
     getOurTeamPageUrl,
     getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
     getRulesPageUrl,
     getSignInPageUrl,
-    getVideoPageUrl,
+    // getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
@@ -114,27 +115,24 @@ const InfoHeader = memo(() => {
                     <p>{t("main.welcome.header.community.title")}</p>
                     <Arrow isOpen={dropdownOpened.isCommunityOpened} />
                     <Popup isOpen={dropdownOpened.isCommunityOpened} className={styles.popup}>
-                        <Link to={getBlogPageUrl(locale)}>
+                        <Link to="https://community.goodsurfing.org/category/post/">
                             {t("main.welcome.header.community.blog")}
                         </Link>
-                        <Link to={getVideoPageUrl(locale)}>
+                        <Link to="https://community.goodsurfing.org/filmy/">
                             {t("main.welcome.header.community.video")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        {/* <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.experts")}
-                        </Link>
+                        </Link> */}
                         <Link to={getAmbassadorsPageUrl(locale)}>
                             {t("main.welcome.header.community.ambassadors")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
+                        <Link to="https://community.goodsurfing.org/courses/">
                             {t("main.welcome.header.community.courses")}
                         </Link>
-                        <Link to={getMainPageUrl(locale)}>
-                            {t("main.welcome.header.community.clubs")}
-                        </Link>
-                        <Link to={getJournalsPageUrl(locale)}>
+                        {/* <Link to={getJournalsPageUrl(locale)}>
                             {t("main.welcome.header.community.journal")}
-                        </Link>
+                        </Link> */}
                     </Popup>
                 </div>
                 <div
@@ -160,7 +158,7 @@ const InfoHeader = memo(() => {
                         <Link to={getPrivacyPolicyPageUrl(locale)}>
                             {t("main.welcome.header.about-project.privacy-policy")}
                         </Link>
-                        <Link to={getNewsPageUrl(locale)}>
+                        <Link to="https://community.goodsurfing.org/">
                             {t("main.welcome.header.about-project.news")}
                         </Link>
                         <Link to={getAboutProjectPageUrl(locale)}>

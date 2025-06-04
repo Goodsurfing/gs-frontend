@@ -3,6 +3,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { Message } from "@/entities/Chat";
 import { ChatType, MessageType } from "@/entities/Messenger";
+import { FormApplication, FormApplicationStatus, FullFormApplication } from "@/entities/Application";
 
 interface MessagesRequest {
     chatId: string;
@@ -20,10 +21,15 @@ export interface CreateMessageType {
     attachments: string[];
 }
 
+interface UpdateFormApplicationStatus {
+    applicationId: string;
+    status: FormApplicationStatus;
+}
+
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
-    tagTypes: ["chat"],
+    tagTypes: ["chat", "application"],
     endpoints: (build) => ({
         createMessage: build.mutation<Message[], CreateMessageType>({
             query: (body) => ({
@@ -67,6 +73,48 @@ export const chatApi = createApi({
             }),
             providesTags: ["chat"],
         }),
+        // applications
+        createApplicationForm: build.mutation<FormApplication, FormData>({
+            query: (data) => ({
+                url: "application_forms",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["application", "chat"],
+        }),
+        updateApplicationFormStatusById: build.mutation<FormApplication,
+        UpdateFormApplicationStatus>({
+            query: ({ applicationId, status }) => ({
+                url: `application_forms/${applicationId}/status`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ status }),
+            }),
+            invalidatesTags: ["application"],
+        }),
+        getApplicationFormById: build.query<FullFormApplication, string>({
+            query: (applicationId) => ({
+                url: `application_forms/${applicationId}`,
+                method: "GET",
+            }),
+            providesTags: ["application"],
+        }),
+        getMyHostApplications: build.query<FullFormApplication[], void>({
+            query: () => ({
+                url: "personal/organization/forms",
+                method: "GET",
+            }),
+            providesTags: ["application"],
+        }),
+        getMyVolunteerApplications: build.query<FullFormApplication[], void>({
+            query: () => ({
+                url: "personal/volunteer/forms",
+                method: "GET",
+            }),
+            providesTags: ["application"],
+        }),
     }),
 });
 
@@ -74,4 +122,12 @@ export const {
     useCreateMessageMutation, useLazyGetMessagesByChatIdQuery,
     useGetMessagesByChatIdQuery, useGetChatQuery,
     useReadMessageMutation,
+    useCreateApplicationFormMutation,
+    useGetApplicationFormByIdQuery,
+    useLazyGetApplicationFormByIdQuery,
+    useGetMyHostApplicationsQuery,
+    useLazyGetMyHostApplicationsQuery,
+    useGetMyVolunteerApplicationsQuery,
+    useLazyGetMyVolunteerApplicationsQuery,
+    useUpdateApplicationFormStatusByIdMutation,
 } = chatApi;

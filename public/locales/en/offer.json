@@ -210,6 +210,8 @@
         "Фото": "Photos",
         "Что делать": "What to do",
         "Участники": "Participants",
-        "Статьи": "Articles"
+        "Статьи": "Articles",
+        "Точная дата не указана": "Exact date not specified",
+        "Не имеет даты окончания": "No end date"
     }
 }

@@ -10,19 +10,19 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import {
     getAboutProjectPageUrl,
+    // getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
-    getBlogPageUrl,
+    // getBlogPageUrl,
     getFindJobPageUrl,
-    getJournalsPageUrl,
-    getMainPageUrl,
+    // getJournalsPageUrl,
     getMembershipPageUrl,
     getNPOPageUrl,
-    getNewsPageUrl,
+    // getNewsPageUrl,
     getOffersMapPageUrl,
     getOurTeamPageUrl,
     getPrivacyPolicyPageUrl,
     getRulesPageUrl,
-    getVideoPageUrl,
+    // getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
@@ -214,21 +214,15 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getBlogPageUrl(locale)}
+                        to="https://community.goodsurfing.org/category/post/"
                     >
                         {t("main.welcome.header.community.blog")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getVideoPageUrl(locale)}
+                        to="https://community.goodsurfing.org/filmy/"
                     >
                         {t("main.welcome.header.community.video")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.experts")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
@@ -238,22 +232,16 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to="https://community.goodsurfing.org/courses/"
                     >
                         {t("main.welcome.header.community.courses")}
                     </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.clubs")}
-                    </Link>
-                    <Link
+                    {/* <Link
                         className={styles.dropdownLink}
                         to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
-                    </Link>
+                    </Link> */}
                 </Popup>
             </div>
             <div className={styles.btnAbout}>
@@ -301,7 +289,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getNewsPageUrl(locale)}
+                        to="https://community.goodsurfing.org/"
                     >
                         {t("main.welcome.header.about-project.news")}
                     </Link>

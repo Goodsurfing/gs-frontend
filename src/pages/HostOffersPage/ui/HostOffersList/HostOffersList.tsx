@@ -2,6 +2,7 @@ import React, {
     FC, memo,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { Offer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -19,30 +20,36 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
         offers, onCloseClick,
     } = props;
     const { getTranslation } = useCategories();
+    const { t } = useTranslation("host");
 
     const renderMyOffers = () => {
         if (!offers || !offers.length) {
-            return <span>Нет списка вакансий</span>;
+            return <span>{t("hostOffers.Нет списка вакансий")}</span>;
         }
 
         return offers.map((offer, index) => {
-            const mediaObjectCover = getMediaContent(offer.description?.image);
+            const {
+                id, description, where, status,
+                averageRating, acceptedApplicationsCount, feedbacksCountinteger,
+            } = offer;
+            const mediaObjectCover = getMediaContent(description?.image);
+
             return (
                 <HostOffersPageCard
-                    id={offer.id}
-                    title={offer?.description?.title}
-                    description={offer?.description?.shortDescription}
+                    id={id}
+                    title={description?.title}
+                    description={description?.shortDescription}
                     image={mediaObjectCover}
-                    location={offer?.where?.address}
-                    category={getTranslation(offer.description?.categoryIds[0])}
-                    rating="5"
-                    likes="4"
-                    reviews="2"
-                    went="8"
-                    status={offer.status}
+                    location={where?.address}
+                    category={getTranslation(description?.categoryIds[0])}
+                    rating={averageRating?.toString()}
+                    likes="5"
+                    reviews={feedbacksCountinteger?.toString()}
+                    went={acceptedApplicationsCount.toString()}
+                    status={status}
                     key={index}
-                    onCloseClick={() => onCloseClick(offer.id)}
-                    isCloseButtonActive={offer.status !== "disabled"}
+                    onCloseClick={() => onCloseClick(id)}
+                    isCloseButtonActive={status !== "disabled"}
                     // onEveryOpenClick={() => onEveryOpenClick(offer.id)}
                     // isEveryOpenActive
                 />

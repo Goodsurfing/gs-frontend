@@ -9,11 +9,10 @@ import { HeaderList } from "../HeaderList/HeaderList";
 import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { useAppSelector } from "@/shared/hooks/redux";
-import { getUserAuthData } from "@/entities/User";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./OffersList.module.scss";
 import { Offer } from "@/entities/Offer";
+import { SearchOffers } from "../SearchOffers/SearchOffers";
+import styles from "./OffersList.module.scss";
 
 interface OffersListProps {
     className?: string;
@@ -30,7 +29,6 @@ export const OffersList: FC<OffersListProps> = (props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
-    const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
 
     const currentOffers = useMemo(() => {
@@ -68,11 +66,12 @@ export const OffersList: FC<OffersListProps> = (props) => {
                     status={offer.status === "active" ? "opened" : "closed"}
                     data={offer}
                     key={offer.id}
-                    isFavoriteIconShow={!!isAuth}
+                    // isFavoriteIconShow={!!isAuth}
+                    isFavoriteIconShow={false}
                 />
             ));
         },
-        [currentOffers, isAuth, locale, mapOpenValue],
+        [currentOffers, locale, mapOpenValue],
     );
 
     if (isLoading) {
@@ -86,6 +85,9 @@ export const OffersList: FC<OffersListProps> = (props) => {
     if (!data) {
         return (
             <div className={cn(styles.wrapper, className)}>
+                <div className={styles.searchWrapper}>
+                    <SearchOffers value="Поиск" onChange={() => {}} />
+                </div>
                 <HeaderList
                     offersLength={0}
                     isShowMap={mapOpenValue}
@@ -110,6 +112,9 @@ export const OffersList: FC<OffersListProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
+            <div className={styles.searchWrapper}>
+                <SearchOffers value="Поиск" onChange={() => {}} />
+            </div>
             <HeaderList
                 offersLength={data.length}
                 isShowMap={mapOpenValue}

@@ -3,13 +3,14 @@ import { Rating } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import styles from "./ReviewCardOffer.module.scss";
 import { ApplicationReviewResponse } from "@/entities/Review";
-import { useGetApplicationFormByIdQuery } from "@/entities/Application";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
+import { getFullName } from "@/shared/lib/getFullName";
+import styles from "./ReviewCardOffer.module.scss";
+import { useGetApplicationFormByIdQuery } from "@/entities/Chat";
 
 interface ReviewCardOfferProps {
     reviewOffer: ApplicationReviewResponse;
@@ -74,7 +75,9 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                 <span className={styles.ratingNum}>{stars}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
                     <Avatar icon={getMediaContent(volunteer.profile.image)} alt="avatar" className={styles.avatar} />
-                    <span className={styles.author}>{`${volunteer.profile.lastName} ${volunteer.profile.firstName}`}</span>
+                    <span className={styles.author}>
+                        {textSlice(`${getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}`, 50, "title")}
+                    </span>
                 </div>
             </div>
         </div>

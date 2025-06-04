@@ -7,6 +7,7 @@ interface InfoCardItemProps {
     className?: string;
     title?: string;
     text?: string | number;
+    children?: ReactNode;
 }
 
 interface InfoCardProps {
@@ -15,11 +16,16 @@ interface InfoCardProps {
 }
 
 export const InfoCardItem = memo((props: InfoCardItemProps) => {
-    const { className, title, text } = props;
+    const {
+        className, title, text, children,
+    } = props;
     return (
         <div className={cn(styles.infoCardItem, className)}>
             <span className={styles.title}>{title}</span>
-            <span className={styles.text}>{text}</span>
+            {text && (
+                <span className={styles.text}>{text}</span>
+            )}
+            {children}
         </div>
     );
 });

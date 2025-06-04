@@ -7,12 +7,14 @@ export interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement>
     img?: string;
     label: string;
     description?: string;
+    extraDescription?: string;
     classNameTextarea?: string;
 }
 
 const Textarea: FC<IText> = ({
     img,
     label,
+    extraDescription,
     description,
     children,
     placeholder,
@@ -53,6 +55,10 @@ const Textarea: FC<IText> = ({
             />
             {description && (
                 <label htmlFor={id} className={styles.description}>{description}</label>
+            )}
+            <br />
+            {extraDescription && (
+                <label htmlFor={id} className={styles.description}>{extraDescription}</label>
             )}
             {children}
         </div>

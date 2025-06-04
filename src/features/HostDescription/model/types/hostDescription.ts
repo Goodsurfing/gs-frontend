@@ -1,8 +1,8 @@
-export type OrganizationType = "ООО" | "ООПТ" | "ОАО" | "ИП";
+export type OrganizationType = "ООО" | "ООПТ" | "ОАО" | "ИП" | "Другое";
 
 export type HostDescriptionTypeFields = {
-    organizationType?: string;
-    otherOrganizationType?: string;
+    organizationType: OrganizationType;
+    otherOrganizationType: string;
 };
 
 export type HostDescriptionMainInfoFields = {
@@ -23,6 +23,6 @@ export interface HostDescriptionFormFields {
     address?: string;
     avatar?: string;
     mainInfo?: HostDescriptionMainInfoFields;
-    type?: HostDescriptionTypeFields;
+    type: HostDescriptionTypeFields;
     socialMedia?: HostDescriptionSocialFields;
 }

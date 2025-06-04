@@ -1,14 +1,18 @@
 import { MouseEventHandler, memo } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+
+import { OfferStatus } from "@/entities/Offer";
 
 import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
-import Button from "@/shared/ui/Button/Button";
-import { OfferStatus } from "@/entities/Offer";
+import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import { getOfferPersonalPageUrl, getOffersWelcomePageUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
+import Button from "@/shared/ui/Button/Button";
+
 import styles from "./HostOffersPageCard.module.scss";
 
 interface IHostOffersPageCard {
@@ -17,9 +21,9 @@ interface IHostOffersPageCard {
     title?: string;
     location?: string;
     category?: string;
-    rating: string;
+    rating?: string;
     likes: string;
-    reviews: string;
+    reviews?: string;
     went: string;
     description?: string;
     status: OfferStatus;
@@ -47,18 +51,22 @@ const HostOffersPageCard = memo(
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
         const { locale } = useLocale();
+        const { t } = useTranslation("host");
 
         const onEditClick = () => {
             if (status === "draft") {
-                navigate(`/${locale}/offers/welcome/${id}`);
+                navigate(getOffersWelcomePageUrl(locale, id.toString()));
             } else {
-                navigate(`/${locale}/offers/where/${id}`);
+                navigate(getOffersWherePageUrl(locale, id.toString()));
             }
         };
 
         return (
             <div className={styles.cardWrapper}>
-                <Link to={`/${locale}/offer-personal/${id}`} className={styles.cardInner}>
+                <Link
+                    to={getOfferPersonalPageUrl(locale, id.toString())}
+                    className={styles.cardInner}
+                >
                     <div className={styles.imageWrapper}>
                         <img src={image || defaultImage} alt="travel-img" />
                     </div>
@@ -74,23 +82,27 @@ const HostOffersPageCard = memo(
                         </div>
                         <div className={styles.stats}>
                             <div className={styles.statsWrapper}>
-                                <div className={styles.rating}>
-                                    <img src={star} alt="star-icon" />
-                                    <span>{rating}</span>
-                                </div>
+                                {rating && (
+                                    <div className={styles.rating}>
+                                        <img src={star} alt="star-icon" />
+                                        <span>{rating}</span>
+                                    </div>
+                                )}
                                 <div className={styles.likes}>
                                     <img src={like} alt="heart-icon" />
                                     <span>{likes}</span>
                                 </div>
                             </div>
                             <div className={styles.extraInfo}>
-                                <span className={styles.review}>
-                                    Отзывов:
-                                    {" "}
-                                    {reviews}
-                                </span>
+                                {reviews && (
+                                    <span className={styles.review}>
+                                        {t("hostOffers.Отзывов")}
+                                        {" "}
+                                        {reviews}
+                                    </span>
+                                )}
                                 <span className={styles.went}>
-                                    Отправились:
+                                    {t("hostOffers.Отправились")}
                                     {" "}
                                     {went}
                                 </span>
@@ -109,7 +121,7 @@ const HostOffersPageCard = memo(
                         size="SMALL"
                         onClick={onEditClick}
                     >
-                        Редактировать
+                        {t("hostOffers.Редактировать")}
                     </Button>
                     <Button
                         color={isCloseButtonActive ? "GRAY" : "BLACK"}
@@ -118,7 +130,9 @@ const HostOffersPageCard = memo(
                         className={styles.gray}
                         onClick={onCloseClick}
                     >
-                        {isCloseButtonActive ? "Закрыть" : "Открыть"}
+                        {isCloseButtonActive
+                            ? t("hostOffers.Закрыть")
+                            : t("hostOffers.Открыть")}
                     </Button>
                     {/* <Button
                         className={styles.black}

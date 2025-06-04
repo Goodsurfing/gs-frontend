@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { ReviewFields } from "@/features/Notes";
-import { ReviewMiniCard } from "@/features/Review";
+import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { FullFormApplication, useGetMyHostApplicationsQuery } from "@/entities/Application";
-import { HostModalReview } from "@/entities/Review";
+import { FullFormApplication } from "@/entities/Application";
+import { ApplicationReviewResponse, HostModalReview } from "@/entities/Review";
 
 import {
     HintType,
@@ -14,17 +15,19 @@ import {
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import styles from "./ReviewAboutVolunteers.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
+import { useCreateToVolunteerReviewMutation, useGetToVolunteerReviewsQuery } from "@/entities/Review/api/reviewApi";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { useGetMyHostApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutVolunteersProps {
     locale: Locale;
+    id: string;
 }
 
 export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
-    const { locale } = props;
+    const { locale, id } = props;
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
             stars: undefined,
@@ -32,6 +35,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         },
     };
     const [toast, setToast] = useState<ToastAlert>();
+    const { t } = useTranslation("host");
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -43,6 +47,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     const [applications, setApplications] = useState<FullFormApplication[]>([]);
 
     const { data: hostApplicationsData } = useGetMyHostApplicationsQuery();
+    const { data: myReviewsData } = useGetToVolunteerReviewsQuery({ author: id });
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
     useEffect(() => {
@@ -56,9 +61,12 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         }
     }, [hostApplicationsData]);
 
-    // const renderFullCards = (reviews: Review[]) => reviews.map(
-    //     (review) => <ReviewFullCard review={review} />,
-    // );
+    const renderFullCards = (reviews?: ApplicationReviewResponse[]) => {
+        if (!reviews) return null;
+        return reviews.map(
+            (review) => <ReviewFullCard type="volunteer" key={review.id} review={review} />,
+        );
+    };
 
     const onReviewClick = (application: FullFormApplication) => {
         setSelectedApplication(application);
@@ -84,7 +92,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Ваш отзыв был отправлен",
+                        text: t("hostReviews.Ваш отзыв был отправлен"),
                         type: HintType.Success,
                     });
                 })
@@ -98,29 +106,46 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         }
     });
 
+    const disableRenderVerticalSlider = applications.length < 4;
+    const renderApplications = applications.map((item) => (
+        <ReviewMiniCard
+            data={item}
+            onReviewClick={onReviewClick}
+            variant="volunteer"
+            key={item.id}
+            locale={locale}
+        />
+    ));
+
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.h3}>Отзывы про волонтёров</h3>
+            <h3 className={styles.h3}>{t("hostReviews.Отзывы про волонтёров")}</h3>
             <p className={styles.description}>
-                Волонтёры, которых вы недавно принимали
+                {t("hostReviews.Волонтёры, которых вы недавно принимали")}
             </p>
-            <VerticalSlider
-                classNameSlide={styles.swiperSlide}
-                classNameWrapper={styles.swiperWrapper}
-                className={styles.slider}
-                data={applications}
-                renderItem={(item: FullFormApplication) => (
-                    <ReviewMiniCard
-                        data={item}
-                        onReviewClick={onReviewClick}
-                        variant="volunteer"
-                        key={item.id}
-                        locale={locale}
-                    />
-                )}
-            />
+            {!disableRenderVerticalSlider ? (
+                <VerticalSlider
+                    classNameSlide={styles.swiperSlide}
+                    classNameWrapper={styles.swiperWrapper}
+                    className={styles.slider}
+                    data={applications}
+                    renderItem={(item: FullFormApplication) => (
+                        <ReviewMiniCard
+                            data={item}
+                            onReviewClick={onReviewClick}
+                            variant="volunteer"
+                            key={item.id}
+                            locale={locale}
+                        />
+                    )}
+                />
+            ) : (
+                <div className={styles.applicationContainer}>
+                    {renderApplications}
+                </div>
+            )}
             <div className={styles.fullCardContainer}>
-                {/* {renderFullCards(fakeUserData)} */}
+                {renderFullCards(myReviewsData)}
             </div>
             <Controller
                 name="review"
@@ -133,6 +158,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
+                        titleText=""
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

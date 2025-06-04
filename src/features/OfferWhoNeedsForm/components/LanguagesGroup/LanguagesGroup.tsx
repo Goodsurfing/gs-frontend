@@ -1,44 +1,64 @@
-import { FC, useCallback } from "react";
-
+import { FC, useCallback, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Language } from "@/types/languages";
+
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-import ExtraControls from "../ExtraControls/ExtraControls";
 
-import styles from "./LanguagesGroup.module.scss";
+import ExtraControls from "../ExtraControls/ExtraControls";
 import Languages from "../Languages/Languages";
-import { Language } from "@/types/languages";
+import styles from "./LanguagesGroup.module.scss";
 
 interface LanguagesGroupProps {
     value: Language[];
-    onChange: (value: Language[]) => void
+    onChange: (value: Language[]) => void;
 }
+
+const defaultInput: Language = { language: "not_matter", languageLevel: "not_matter" };
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
     const { control } = useFormContext();
     const { t } = useTranslation("offer");
+    const [inputValue, setInputValue] = useState<Language>(defaultInput);
 
     const onAddBtnClick = useCallback(() => {
-        if ((value[0].language === "not_matter") && (value[0].languageLevel === "not_matter")) {
+        if (
+            inputValue.language === "not_matter"
+            && inputValue.languageLevel === "not_matter"
+        ) {
             return;
         }
         if (value.length < 10) {
-            onChange([...value, { language: "english", languageLevel: "not_matter" } as Language]);
+            onChange([
+                ...value,
+                inputValue,
+            ]);
+            setInputValue(defaultInput);
         }
-    }, [onChange, value]);
+    }, [inputValue, onChange, value]);
 
-    const onCloseBtnClick = useCallback((index: number) => {
-        if (index === 0) return;
-        const newValue = [...value];
-        newValue.splice(index, 1);
-        onChange(newValue);
-    }, [value, onChange]);
+    const onCloseBtnClick = useCallback(
+        (index: number) => {
+            if (index === 0) return;
+            const newValue = [...value];
+            newValue.splice(index, 1);
+            onChange(newValue);
+        },
+        [value, onChange],
+    );
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.langsWrapper}>
+                <Languages
+                    value={inputValue}
+                    selectedLanguages={value}
+                    onChange={(newValue) => {
+                        setInputValue(newValue);
+                    }}
+                />
                 {value.map((valueLanguage, index) => (
                     <Languages
                         key={index}
@@ -66,7 +86,10 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
                         control={control}
                         name="needAllLanguages"
                         render={({ field }) => (
-                            <ExtraControls value={field.value} onChange={field.onChange} />
+                            <ExtraControls
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
                         )}
                     />
                 )}

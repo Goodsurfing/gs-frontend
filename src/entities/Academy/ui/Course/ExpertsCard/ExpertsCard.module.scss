@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.content {
+    display: grid;
+    width: 100%;
+    gap: 30px;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+@media (max-width: 1000px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+}

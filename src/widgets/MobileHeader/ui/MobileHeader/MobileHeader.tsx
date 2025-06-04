@@ -15,8 +15,9 @@ import { getUserAuthData, userActions } from "@/entities/User";
 import mobileLogotype from "@/shared/assets/icons/mobile-header-logo.svg";
 import {
     getAboutProjectPageUrl,
+    getAcademyMainPageUrl,
+    getAmbassadorsPageUrl,
     getBlogPageUrl,
-    getFavoriteOffersPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getJournalsPageUrl,
@@ -105,7 +106,13 @@ const MobileHeader: FC = () => {
                 })}
             >
                 <div className={styles.container} />
-                <MobileSelect
+                <Button
+                    onClick={() => navigate(getOffersMapPageUrl(locale))}
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.offers.title")}
+                </Button>
+                {/* <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     className={styles.select}
                     style={{ backgroundColor: "#ecf1f4" }}
@@ -203,7 +210,7 @@ const MobileHeader: FC = () => {
                     >
                         {t("main.welcome.header.offers.view-all")}
                     </Link>
-                </MobileSelect>
+                </MobileSelect> */}
                 <MobileSelect
                     classNameSelectContainer={styles.selectContainer}
                     isOpen={dropdownOpened.isCommunityOpened}
@@ -224,27 +231,15 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.experts")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAmbassadorsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.ambassadors")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getAcademyMainPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.courses")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.community.clubs")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
@@ -318,12 +313,12 @@ const MobileHeader: FC = () => {
                         >
                             {t("main.welcome.header.my-page")}
                         </Button>
-                        <Button
+                        {/* <Button
                             onClick={() => navigate(getFavoriteOffersPageUrl(locale))}
                             className={styles.button}
                         >
                             {t("main.welcome.header.favorite")}
-                        </Button>
+                        </Button> */}
                         <Button
                             onClick={() => navigate(getMessengerPageUrl(locale))}
                             className={styles.button}

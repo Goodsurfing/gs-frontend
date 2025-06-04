@@ -7,8 +7,10 @@ export interface Host {
     address: string;
     avatar?: ImageType;
     type: string;
+    otherType: string;
     website: string;
     description: string;
+    shortDescription: string;
     vk: string;
     facebook: string;
     instagram: string;
@@ -18,6 +20,8 @@ export interface Host {
     owner: Omit<Profile, "memberProfiles" | "membershipEndDate">;
     videoGallery: string[]
     galleryImages: MediaObjectType[];
+    averageRating?: number;
+    feedbacksCount: number;
 }
 
 export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {

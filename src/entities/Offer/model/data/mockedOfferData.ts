@@ -3,6 +3,7 @@ import { Offer } from "../types/offer";
 export const mockedOffersData: Offer[] = [
     {
         id: 1,
+        acceptedApplicationsCount: 3,
         when: {
             applicationEndDate: null,
             durationMinDays: 26,
@@ -74,6 +75,7 @@ export const mockedOffersData: Offer[] = [
     },
     {
         id: 2,
+        acceptedApplicationsCount: 3,
         when: {
             applicationEndDate: null,
             durationMinDays: 26,
@@ -145,6 +147,7 @@ export const mockedOffersData: Offer[] = [
     },
     {
         id: 3,
+        acceptedApplicationsCount: 3,
         when: {
             applicationEndDate: null,
             durationMinDays: 26,

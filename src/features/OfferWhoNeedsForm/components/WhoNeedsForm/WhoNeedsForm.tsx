@@ -1,3 +1,4 @@
+import cn from "classnames";
 import {
     memo, useCallback, useEffect, useState,
 } from "react";
@@ -10,15 +11,19 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { ErrorType } from "@/types/api/error";
 
-import cn from "classnames";
 import {
     useGetOfferByIdQuery,
     useUpdateOfferMutation,
 } from "@/entities/Offer/api/offerApi";
 import { Age } from "@/entities/Offer/model/types/offerWhoNeeds";
 
+import { OFFER_WHO_NEEDS_FORM } from "@/shared/constants/localstorage";
+import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
@@ -38,24 +43,14 @@ import { AgeComponent } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
 import styles from "./WhoNeedsForm.module.scss";
-import { OFFER_WHO_NEEDS_FORM } from "@/shared/constants/localstorage";
-import { Language } from "@/types/languages";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
-
-const languagesDefaultValue: Language[] = [
-    { language: "not_matter", languageLevel: "not_matter" },
-];
 
 const defaultValues: DefaultValues<OfferWhoNeedsFields> = {
     gender: [],
     age: ageDefaultValue,
-    languages: languagesDefaultValue,
+    languages: [],
     receptionPlace: "any",
     volunteerPlaces: 0,
     needAllLanguages: false,
@@ -72,18 +67,31 @@ export const WhoNeedsForm = memo(() => {
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
     const {
-        handleSubmit, control, reset, formState: { errors, isDirty },
+        handleSubmit,
+        control,
+        reset,
+        formState: { errors, isDirty },
     } = form;
     const [toast, setToast] = useState<ToastAlert>();
     const watch = useWatch({ control });
 
-    const saveFormData = useCallback((data: OfferWhoNeedsFields) => {
-        sessionStorage.setItem(`${OFFER_WHO_NEEDS_FORM}${id}`, JSON.stringify(offerWhoNeedsAdapter(data)));
-    }, [id]);
+    const saveFormData = useCallback(
+        (data: OfferWhoNeedsFields) => {
+            sessionStorage.setItem(
+                `${OFFER_WHO_NEEDS_FORM}${id}`,
+                JSON.stringify(offerWhoNeedsAdapter(data)),
+            );
+        },
+        [id],
+    );
 
     const loadFormData = useCallback((): OfferWhoNeedsFields | null => {
-        const savedData = sessionStorage.getItem(`${OFFER_WHO_NEEDS_FORM}${id}`);
-        return savedData ? offerWhoNeedsApiAdapter(JSON.parse(savedData)) : null;
+        const savedData = sessionStorage.getItem(
+            `${OFFER_WHO_NEEDS_FORM}${id}`,
+        );
+        return savedData
+            ? offerWhoNeedsApiAdapter(JSON.parse(savedData))
+            : null;
     }, [id]);
 
     const initializeForm = useCallback(() => {
@@ -147,7 +155,9 @@ export const WhoNeedsForm = memo(() => {
                                 onChange={field.onChange}
                             />
                             {errors.gender && (
-                                <ErrorText text={errors.gender.message?.toString()} />
+                                <ErrorText
+                                    text={errors.gender.message?.toString()}
+                                />
                             )}
                         </>
                     )}
@@ -163,7 +173,9 @@ export const WhoNeedsForm = memo(() => {
                                 onChange={field.onChange}
                             />
                             {errors.age && (
-                                <ErrorText text={errors.age.message?.toString()} />
+                                <ErrorText
+                                    text={errors.age.message?.toString()}
+                                />
                             )}
                         </>
                     )}
@@ -202,7 +214,9 @@ export const WhoNeedsForm = memo(() => {
                                 }}
                             />
                             {errors.volunteerPlaces && (
-                                <ErrorText text={errors.volunteerPlaces.message?.toString()} />
+                                <ErrorText
+                                    text={errors.volunteerPlaces.message?.toString()}
+                                />
                             )}
                         </>
                     )}

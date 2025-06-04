@@ -20,7 +20,7 @@ type RangeSliderProps = {
 } & SliderProps;
 
 export const RangeSlider: FC<RangeSliderProps> = ({
-    minDistanсe = 10,
+    minDistanсe = 0,
     value,
     onValueChange,
     track,

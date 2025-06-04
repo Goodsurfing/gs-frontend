@@ -9,7 +9,6 @@ import { ReviewFields } from "@/features/Notes";
 import {
     FullFormApplication,
     RequestCard,
-    useGetMyHostApplicationsQuery,
 } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 import { HostModalReview } from "@/entities/Review";
@@ -24,6 +23,7 @@ import styles from "./RequestsWidget.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { useGetMyHostApplicationsQuery } from "@/entities/Chat";
 
 interface RequestsWidgetProps {
     className?: string;
@@ -73,7 +73,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const renderRequests = () => {
         if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
         if (!applications || applications.length === 0) {
-            return <Text text="На данный момент заявки отсутсвуют" />;
+            return <Text text={t("host-dashboard.На данный момент заявки отсутсвуют")} />;
         }
 
         const limitedApplications = applications.slice(-5);
@@ -102,7 +102,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Ваш отзыв был отправлен",
+                        text: t("host-dashboard.Ваш отзыв был отправлен"),
                         type: HintType.Success,
                     });
                 })
@@ -162,6 +162,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
+                        titleText={t("host-dashboard.Оставьте отзыв")}
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

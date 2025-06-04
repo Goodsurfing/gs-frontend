@@ -1,0 +1,18 @@
+.wrapper {
+    padding-bottom: 70px;
+}
+
+.courseList {
+    padding: 60px 0;
+}
+
+.list {
+    padding: 40px 0;
+}
+
+
+@media(max-width: 1000px) {
+    .wrapper, .courseList {
+        padding-bottom: 0;
+    }
+}

@@ -11,6 +11,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./OfferOrganizationCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
 
 interface OfferOrganizationCardProps {
     organization: OfferOrganization;
@@ -22,6 +23,8 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
         const { organization, className } = props;
         const { locale } = useLocale();
         const { t } = useTranslation("offer");
+        const { getTranslate } = useGetTypeOrganization();
+
         return (
             <div className={cn(className, styles.wrapper)} id="organization">
                 <h3 className={styles.title}>
@@ -44,7 +47,7 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                             </span>
                         </div>
                         <p className={styles.description}>
-                            {organization.type}
+                            {getTranslate(organization.type)}
                         </p>
                     </div>
                     <ButtonLink

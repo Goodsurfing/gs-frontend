@@ -11,7 +11,6 @@ import { OfferCard } from "@/widgets/OffersMap";
 
 import { Offer, useLazyGetOffersQuery } from "@/entities/Offer";
 import { getUserAuthData } from "@/entities/User";
-import { useGetMyVolunteerQuery } from "@/entities/Volunteer";
 
 import {
     getProfilePreferencesPageUrl,
@@ -20,6 +19,7 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import styles from "./OffersRecomendationsWidget.module.scss";
+import { useGetProfileInfoQuery } from "@/entities/Profile";
 
 interface OffersRecomendationsWidgetProps {
     className?: string;
@@ -33,15 +33,15 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
         const { t } = useTranslation("volunteer");
         const [filteredOffers, setFilteredOffers] = useState<Offer[]>([]);
 
-        const { data: myVolunteerData, isLoading: isVolunteerLoading } = useGetMyVolunteerQuery();
+        const { data: myProfileData, isLoading: isProfileLoading } = useGetProfileInfoQuery();
         const [getOffers, { isLoading: isOffersLoading }] = useLazyGetOffersQuery();
 
         useEffect(() => {
             const fetchOffers = async () => {
                 try {
-                    if (myVolunteerData && myVolunteerData.favoriteCategories.length > 0) {
+                    if (myProfileData && myProfileData.favoriteCategories.length > 0) {
                         const resultOffers = await getOffers(
-                            { categories: myVolunteerData.favoriteCategories },
+                            { categories: myProfileData.favoriteCategories },
                         ).unwrap();
                         setFilteredOffers(resultOffers.slice(0, 10));
                     }
@@ -50,10 +50,10 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 }
             };
             fetchOffers();
-        }, [getOffers, myVolunteerData]);
+        }, [getOffers, myProfileData]);
 
         const renderOffers = () => {
-            if (isVolunteerLoading || isOffersLoading) {
+            if (isProfileLoading || isOffersLoading) {
                 return <MiniLoader />;
             }
 

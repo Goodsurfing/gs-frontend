@@ -51,9 +51,12 @@ import { VolunteerPersonalPage } from "@/pages/VolunteerPersonalPage";
 import { VolunteerReviewPage } from "@/pages/VolunteerReviewPage";
 import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
+import { AcademyMainPage } from "@/pages/AcademyMainPage";
+import { AcademyCoursePage } from "@/pages/AcademyCoursePage";
 
 import {
     getAboutProjectPageUrl,
+
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
@@ -119,6 +122,12 @@ import {
     getVolunteerReviewPageUrl,
     getVolunteerSkillsPageUrl,
     getVolunteerSubscribersPageUrl,
+    getAcademyMainPageUrl,
+    getAcademyCoursePageUrl,
+    getAcademyLessonPageUrl,
+    getEmailExpiredPageUrl,
+    getConfirmErrorPageUrl,
+    getEmailAlreadyConfirmedPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -129,6 +138,10 @@ import { BlogPage } from "@/pages/BlogPage";
 import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
 import { BecomeHostPage } from "@/pages/BecomeHostPage";
 import { GoodsurfingAmbassadorsPage } from "@/pages/GoodsurfingAmbassadorsPage";
+import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
+import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
+import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
+import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -186,6 +199,21 @@ const publicRoutes: RouteType[] = [
         label: "confirm-email-success",
         element: <ConfirmEmailSuccessPage />,
         path: (locale: string) => getConfirmEmailSuccessPageUrl(locale),
+    },
+    {
+        label: "email-expired",
+        element: <EmailExpiredPage />,
+        path: (locale: string) => getEmailExpiredPageUrl(locale),
+    },
+    {
+        label: "confirm-email",
+        element: <ConfirmErrorPage />,
+        path: (locale: string) => getConfirmErrorPageUrl(locale),
+    },
+    {
+        label: "email-already-confirmed",
+        element: <EmailAlreadyConfirmedPage />,
+        path: (locale: string) => getEmailAlreadyConfirmedPageUrl(locale),
     },
     {
         label: "host-layout",
@@ -478,6 +506,21 @@ const publicRoutes: RouteType[] = [
         label: "rules",
         element: <PrivacyPolicyPage />,
         path: (locale: string) => getPrivacyPolicyPageUrl(locale),
+    },
+    {
+        label: "academy-main",
+        element: <AcademyMainPage />,
+        path: (locale: string) => getAcademyMainPageUrl(locale),
+    },
+    {
+        label: "academy-course",
+        element: <AcademyCoursePage />,
+        path: (locale: string) => getAcademyCoursePageUrl(locale),
+    },
+    {
+        label: "academy-lesson",
+        element: <AcademyLessonPage />,
+        path: (locale: string) => getAcademyLessonPageUrl(locale),
     },
 ];
 

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 import { CircularProgress } from "@mui/material";
@@ -9,7 +9,6 @@ import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
-import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
@@ -22,15 +21,16 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     isLoading,
     labelClassName,
     checkImageSize = true,
+    onError,
+    onSuccess,
     ...restInputProps
 }) => {
-    const [error, setError] = useState<boolean>(false);
     const { t } = useTranslation("offer");
 
     const handleFileChange = async (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
-        setError(false);
+        onSuccess?.();
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
@@ -38,7 +38,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 if (checkImageSize) {
                     const size = await checkWidthAndHeight(file);
                     if (size.width < 1280 || size.height < 720) {
-                        setError(true);
+                        onError?.();
                         return;
                     }
                 }
@@ -48,15 +48,15 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     .toLowerCase()
                     .slice(file.name.lastIndexOf("."));
                 if (!validExtensions.includes(fileExtension)) {
-                    setError(true);
+                    onError?.();
                     return;
                 }
 
                 const url = URL.createObjectURL(file);
-                setError(false);
+                onSuccess?.();
                 setImg({ ...img, file, src: url });
             } catch (e) {
-                setError(true);
+                onError?.();
             }
         }
         event.target.value = "";
@@ -67,7 +67,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     };
 
     return (
-        <div className={styles.main}>
+        <div className={cn(styles.main)}>
             {img.src && (
                 <div className={cn(styles.imageWrapper)}>
                     <div className={cn({ [styles.imageLoading]: isLoading })}>
@@ -128,9 +128,6 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     styles.extraWrapper,
                 )}
             >
-                {error && (
-                    <ErrorText text="Неверный формат файла или ширина фото меньше 1280 пикселей" />
-                )}
                 {description}
             </div>
         </div>

@@ -96,19 +96,21 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                             >
                                 {location}
                             </span>
-                            <div className={styles.rating}>
-                                <IconComponent
-                                    className={styles.star}
-                                    icon={star}
-                                />
-                                <span
-                                    className={cn(styles.ratingText, {
-                                        [styles.black]: !isImage,
-                                    })}
-                                >
-                                    {rating}
-                                </span>
-                            </div>
+                            {rating && (
+                                <div className={styles.rating}>
+                                    <IconComponent
+                                        className={styles.star}
+                                        icon={star}
+                                    />
+                                    <span
+                                        className={cn(styles.ratingText, {
+                                            [styles.black]: !isImage,
+                                        })}
+                                    >
+                                        {rating}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className={styles.botPart}>{imageBlock}</div>

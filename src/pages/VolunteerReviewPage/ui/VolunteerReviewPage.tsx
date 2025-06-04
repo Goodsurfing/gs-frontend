@@ -30,7 +30,7 @@ const VolunteerReviewPage: FC = () => {
         <div className={styles.wrapper}>
             <Title />
             <div className={styles.container}>
-                <ReviewAboutOffers locale={locale} />
+                <ReviewAboutOffers id={volunteerData.profile.id} locale={locale} />
                 <ReviewAboutVolunteer volunteerId={volunteerData.profile.id} />
             </div>
         </div>

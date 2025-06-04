@@ -1,73 +1,118 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { FormApplicationStatus } from "@/entities/Application";
 import {
     ChatsListWithOrganizations,
     ChatsListWithVolunteers,
+    MessageType,
 } from "@/entities/Messenger";
 
 import { BASE_URL } from "@/shared/constants/api";
+import { Profile } from "@/entities/Profile";
 
 export const useGetChatListData = (
     token: string | null,
     mercureToken: string | null,
+    myProfile: Profile,
 ) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [statusValue, setStatusValue] = useState<FormApplicationStatus | null>(null);
-    const [chatsListWithVolunteers,
-        setChatsListWithVolunteers] = useState<
+    const [chatsListWithVolunteers, setChatsListWithVolunteers] = useState<
     ChatsListWithVolunteers[]
     >([]);
     const [chatsListWithOrganizations,
         setChatsListWithOrganizations] = useState<ChatsListWithOrganizations[]>([]);
 
-    useEffect(() => {
-        if (!token || !mercureToken) return;
-        const fetchChats = async () => {
-            try {
-                const params = new URLSearchParams();
-                if (searchValue) {
-                    params.append("search", searchValue);
-                }
-                if (statusValue) {
-                    params.append("status", statusValue);
-                }
-                const queryString = params.toString();
-                const queryPart = queryString ? `?${queryString}` : "";
-
-                const orgResponse = await fetch(
-                    `${BASE_URL}api/v1/personal/chats/with-organizations${queryPart}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
-                const orgData = await orgResponse.json();
-
-                const volResponse = await fetch(
-                    `${BASE_URL}api/v1/personal/chats/with-volunteers${queryPart}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
-                const volData = await volResponse.json();
-
-                setChatsListWithOrganizations([...orgData]);
-                setChatsListWithVolunteers([...volData]);
-            } catch {
-                /* empty */
+    const fetchChats = useCallback(async () => {
+        try {
+            if (!token || !mercureToken) return;
+            const params = new URLSearchParams();
+            if (searchValue) {
+                params.append("search", searchValue);
             }
-        };
+            if (statusValue) {
+                params.append("status", statusValue);
+            }
+            const queryString = params.toString();
+            const queryPart = queryString ? `?${queryString}` : "";
 
-        const intervalId = setInterval(fetchChats, 10000);
+            const orgResponse = await fetch(
+                `${BASE_URL}api/v1/personal/chats/with-organizations${queryPart}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            const orgData = await orgResponse.json();
 
-        fetchChats();
+            const volResponse = await fetch(
+                `${BASE_URL}api/v1/personal/chats/with-volunteers${queryPart}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            const volData = await volResponse.json();
 
-        return () => clearInterval(intervalId);
+            setChatsListWithOrganizations([...orgData]);
+            setChatsListWithVolunteers([...volData]);
+        } catch {
+            /* empty */
+        }
     }, [mercureToken, searchValue, statusValue, token]);
+
+    useEffect(() => {
+        fetchChats();
+    }, [fetchChats]);
+
+    useEffect(() => {
+        if (!mercureToken) return;
+
+        const url = new URL(`${BASE_URL}.well-known/mercure`);
+        url.searchParams.append(
+            "topic",
+            `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`,
+        );
+        url.searchParams.append("authorization", mercureToken);
+
+        const eventSource = new EventSource(url);
+
+        eventSource.addEventListener("messageOnChat", (event) => {
+            const updatedMessage: MessageType = JSON.parse(event.data);
+            const tempUpdatedChatId = updatedMessage.chat.split("/").pop();
+            if (tempUpdatedChatId) {
+                const updatedChatId = parseInt(tempUpdatedChatId, 10);
+                setChatsListWithVolunteers((prev) => prev.map(
+                    (chat) => (chat.id === updatedChatId
+                        ? {
+                            ...chat,
+                            lastMessage: updatedMessage,
+                            countUnreadMessagesByOrganization:
+                                      chat.countUnreadMessagesByOrganization
+                                      + 1,
+                        }
+                        : chat),
+                ));
+
+                setChatsListWithOrganizations((prev) => prev.map(
+                    (chat) => (chat.id === updatedChatId
+                        ? {
+                            ...chat,
+                            lastMessage: updatedMessage,
+                            countUnreadMessagesByVolunteer:
+                                      chat.countUnreadMessagesByVolunteer + 1,
+                        }
+                        : chat),
+                ));
+            }
+        });
+
+        return () => {
+            eventSource.close();
+        };
+    }, [mercureToken, myProfile.id]);
 
     const onChangeSearchValue = (value: string) => {
         setSearchValue(value);
@@ -84,5 +129,6 @@ export const useGetChatListData = (
         statusValue,
         onChangeSearchValue,
         onChangeStatusValue,
+        fetchChats,
     };
 };

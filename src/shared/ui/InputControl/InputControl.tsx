@@ -10,24 +10,25 @@ interface InputControlProps<T extends FieldValues> extends Omit<InputProps, "nam
     rules?: RegisterOptions<T>;
 }
 
-export const InputControl = memo(<T extends FieldValues>(props: InputControlProps<T>) => {
-    const {
-        name, control, rules, ...restInputProps
-    } = props;
+const InputControlComponent = <T extends FieldValues>({
+    name,
+    control,
+    rules,
+    ...restInputProps
+}: InputControlProps<T>) => (
+    <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+            <Input
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                {...restInputProps}
+            />
+        )}
+    />
+);
 
-    return (
-        <Controller
-            control={control}
-            name={name}
-            rules={rules}
-            render={({ field }) => (
-                <Input
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    {...restInputProps}
-                />
-            )}
-        />
-    );
-});
+export const InputControl = memo(InputControlComponent) as typeof InputControlComponent;

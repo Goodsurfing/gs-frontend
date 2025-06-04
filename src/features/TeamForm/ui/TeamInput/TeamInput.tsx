@@ -22,6 +22,7 @@ import { TeamCard } from "../TeamCard/TeamCard";
 // import { TeamCard } from "../TeamCard/TeamCard";
 import styles from "./TeamInput.module.scss";
 import { useLazyGetProfileSearchByEmailQuery } from "@/entities/Profile/api/profileApi";
+import { Locale } from "@/entities/Locale";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -29,13 +30,14 @@ interface TeamInputProps {
     hostId: string;
     hostEmail: string;
     hostMembers: HostMember[];
+    locale: Locale;
     onSuccess: () => void;
     onError: () => void;
 }
 
 export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
     const {
-        hostId, hostEmail, hostMembers, onSuccess, onError,
+        hostId, hostEmail, hostMembers, locale, onSuccess, onError,
     } = props;
     const dropwownRef = useRef(null);
     const { t } = useTranslation("host");
@@ -131,7 +133,7 @@ export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
                     onClick={() => onClickCard(profile.id, profile.email)}
                     className={styles.wrapperCard}
                 >
-                    <TeamCard profileData={profile} />
+                    <TeamCard locale={locale} profileData={profile} />
                 </button>
             ));
         },

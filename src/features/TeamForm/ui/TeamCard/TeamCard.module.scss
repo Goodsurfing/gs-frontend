@@ -9,6 +9,7 @@
     border: 1px solid var(--bg-accent);
     background-color: var(--bg-primary-1);
     transition: 0.3s;
+    cursor: pointer;
 
     &:hover {
         border-color: var(--text-caption);

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ReactSVG } from "react-svg";
+// import { ReactSVG } from "react-svg";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -12,11 +12,10 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 
-import heartIcon from "@/shared/assets/icons/heart-icon.svg";
+// import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
-import messagesIcon from "@/shared/assets/icons/message_icon.svg";
 import {
-    getFavoriteOffersPageUrl,
+    // getFavoriteOffersPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
     getMessengerPageUrl,
@@ -25,9 +24,10 @@ import {
 import { useAppSelector } from "@/shared/hooks/redux";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
-import styles from "./MainHeader.module.scss";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
+import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
@@ -51,27 +51,30 @@ const MainHeader: FC = () => {
                 </div>
                 <MainHeaderNav />
                 <div className={styles.right}>
-                    {isAuth ? (
+                    {(isAuth && profile) ? (
                         <>
                             <div className={styles.icons}>
-                                <LocaleLink
+                                {/* <LocaleLink
                                     to={getFavoriteOffersPageUrl(locale)}
                                     className={styles.icon}
                                 >
                                     <ReactSVG src={heartIcon} />
-                                </LocaleLink>
+                                </LocaleLink> */}
                                 <LocaleLink
                                     to={getMessengerPageUrl(locale)}
                                     className={styles.icon}
                                 >
-                                    <ReactSVG src={messagesIcon} />
+                                    <MessangerInfo myProfile={profile} />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile
                                 profileData={profile}
                                 isLoading={isLoading}
                             />
-                            <LocaleLink to={getMembershipPageUrl(locale)}>
+                            <LocaleLink
+                                className={styles.membershipWrapper}
+                                to={getMembershipPageUrl(locale)}
+                            >
                                 <Button className={styles.membership}>
                                     Членство
                                 </Button>

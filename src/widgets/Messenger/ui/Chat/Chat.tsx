@@ -13,14 +13,17 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { OfferApplication, UserSettings } from "@/features/Messenger";
 
-import { FormApplicationStatus, useCreateApplicationFormMutation } from "@/entities/Application";
-import { useLazyGetApplicationFormByIdQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Application/api/applicationApi";
-import { useGetChatQuery, useReadMessageMutation } from "@/entities/Chat/api/chatApi";
+import { FormApplicationStatus } from "@/entities/Application";
+import {
+    useCreateApplicationFormMutation, useGetChatQuery,
+    useLazyGetApplicationFormByIdQuery,
+    useReadMessageMutation, useUpdateApplicationFormStatusByIdMutation,
+} from "@/entities/Chat/api/chatApi";
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile } from "@/entities/Profile";
 import { useLazyGetVolunteerByIdQuery, VolunteerApi } from "@/entities/Volunteer";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
@@ -43,6 +46,8 @@ import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import { useMessenger } from "@/app/providers/MessengerProvider";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface ChatProps {
     id?: string;
@@ -50,6 +55,7 @@ interface ChatProps {
     onBackButton: (value?: string) => void;
     className?: string;
     locale: Locale;
+    myProfileData: Profile;
 }
 
 const defaultValues: DefaultValues<ChatFormFields> = {
@@ -61,7 +67,8 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 
 export const Chat: FC<ChatProps> = (props) => {
     const {
-        id, offerId, className, onBackButton, locale,
+        id, offerId, className, onBackButton,
+        locale, myProfileData,
     } = props;
 
     const { handleSubmit, control, reset } = useForm<ChatFormFields>({
@@ -83,11 +90,11 @@ export const Chat: FC<ChatProps> = (props) => {
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { onReadMessage } = useMessenger();
 
     const { mercureToken } = useAuth();
 
     const [getOfferData] = useLazyGetOfferByIdQuery();
-    const { data: myProfileData } = useGetProfileInfoQuery();
     const {
         messages, fetchMoreMessages, hasMore,
     } = useGetChatMessages(
@@ -184,11 +191,12 @@ export const Chat: FC<ChatProps> = (props) => {
         if (messages) {
             messages.forEach(async (message, index) => {
                 if (index === 0) {
-                    readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                    await readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
+                    onReadMessage();
                 }
             }, []);
         }
-    }, [messages, readMessage]);
+    }, [messages, onReadMessage, readMessage]);
 
     const onApplicationSubmit = useCallback(async (
         status: FormApplicationStatus,
@@ -226,7 +234,10 @@ export const Chat: FC<ChatProps> = (props) => {
                         userName = organizationData?.name;
                         userAvatar = getMediaContent(organizationData?.avatar);
                     } else if (volunteerData?.profile.id === authorId) {
-                        userName = `${volunteerData?.profile.lastName} ${volunteerData?.profile.firstName}`;
+                        userName = getFullName(
+                            volunteerData?.profile.firstName,
+                            volunteerData?.profile.lastName,
+                        );
                         userAvatar = getMediaContent(
                             volunteerData?.profile.image,
                         );
@@ -356,6 +367,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     });
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
+
                     const chatId = result.chat.split("/").pop();
                     if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
                 })
@@ -424,7 +436,10 @@ export const Chat: FC<ChatProps> = (props) => {
                         <span className={styles.userName}>
                             {chatUser
                                 && ("profile" in chatUser
-                                    ? `${chatUser.profile.lastName} ${chatUser.profile.firstName}`
+                                    ? getFullName(
+                                        chatUser.profile.firstName,
+                                        chatUser.profile.lastName,
+                                    )
                                     : `${chatUser.name}`)}
                         </span>
                     </div>

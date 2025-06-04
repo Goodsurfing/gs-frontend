@@ -31,6 +31,7 @@
         "December": "December",
         "Это поле является обязательным": "This field is required",
         "Укажите день": "Please specify the day",
+        "Укажите корректно день": "Please enter a valid day",
         "День_не_может_быть_больше": "Day cannot be greater than {{maxDays}} in the month of {{month}}",
         "Укажите месяц": "Please specify the month",
         "Укажите год": "Please specify the year",
@@ -51,6 +52,8 @@
         "Стать гудсёрфером": "Become a goodsurfer",
         "Организатор": "Organizer",
         "Чтобы принимать гудсёрферов как организатор": "To host good surfers as an organizer",
-        "Стать организатором": "Become an organizer"
+        "Стать организатором": "Become an organizer",
+        "Вы уже стали гудсёрфером": "You have already become a goodsurfer",
+        "Вы уже стали организатором": "You have already become an host"
     }
 }

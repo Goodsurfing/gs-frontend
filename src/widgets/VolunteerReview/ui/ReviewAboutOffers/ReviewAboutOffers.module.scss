@@ -40,6 +40,14 @@
     justify-content: center;
 }
 
+.applicationContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
 .fullCardContainer {
     display: flex;
     flex-direction: column;

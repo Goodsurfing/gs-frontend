@@ -45,7 +45,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 image={getMediaContent(offerData.description?.image)}
                 title={offerData.description?.title}
                 location={offerData.where?.address}
-                rating={4.3}
+                rating={offerData.averageRating}
                 categories={(
                     <OfferPersonalCardCategory
                         categories={offerData.description?.categoryIds}

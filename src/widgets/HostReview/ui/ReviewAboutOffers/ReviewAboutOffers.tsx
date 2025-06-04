@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { ReviewCardOffer } from "@/features/Review/";
 import styles from "./ReviewAboutOffers.module.scss";
 import { ApplicationReviewResponse, useLazyGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
@@ -12,6 +13,7 @@ interface ReviewAboutOffersProps {
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const { hostId, locale } = props;
+    const { t } = useTranslation("host");
     const [getReviewsData, { data }] = useLazyGetToOrganizationsReviewsByIdQuery();
     const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
 
@@ -34,7 +36,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <h3 className={styles.h3}>Отзывы о проектах</h3>
+            <h3 className={styles.h3}>{t("hostReviews.Отзывы о проектах")}</h3>
             <div className={styles.cardContainer}>{renderCardOffers(reviews)}</div>
         </div>
     );

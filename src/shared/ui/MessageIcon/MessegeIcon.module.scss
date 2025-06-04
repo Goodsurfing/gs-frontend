@@ -1,0 +1,25 @@
+.wrapper {
+    position: relative;
+}
+
+.messageCounter {
+    border-radius: 50%;
+    background-color: #EB5757;
+    color: white;
+    line-height: 100%;
+    padding: 2px 3px;
+    border: 2px solid white;
+    text-align: center;
+    font-weight: 800;
+    font-size: 6px;
+    position: absolute;
+    top: -5px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon > div {
+    display: flex;
+}

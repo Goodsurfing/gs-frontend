@@ -1,18 +1,17 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 import Button from "@/shared/ui/Button/Button";
 
 import InputField from "@/components/InputField/InputField";
 
-import useQuery from "@/shared/hooks/useQuery";
+// import useQuery from "@/shared/hooks/useQuery";
 
-import { authApi } from "@/store/api/authApi";
+// import { authApi } from "@/store/api/authApi";
 
 import styles from "./ResetPasswordThirdStep.module.scss";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
+// import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface IFormData {
     password: string;
@@ -20,40 +19,38 @@ interface IFormData {
 }
 
 const ResetPasswordThirdStep: FC = () => {
-    const navigate = useNavigate();
-    const query = useQuery();
-    const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
+    // const navigate = useNavigate();
+    // const query = useQuery();
+    // const [resetPasswordVerify] = authApi.useResetPasswordVerifyMutation();
 
-    const { locale } = useLocale();
-
-    const { control, reset, handleSubmit } = useForm<IFormData>({
+    const { control, handleSubmit } = useForm<IFormData>({
         mode: "onChange",
     });
 
-    useEffect(() => {
-        if (!query.get("token")) {
-            navigate(getMainPageUrl(locale));
-        }
-    }, [navigate, query, locale]);
+    // useEffect(() => {
+    //     if (!query.get("token")) {
+    //         navigate(getMainPageUrl(locale));
+    //     }
+    // }, [navigate, query, locale]);
 
-    const onSubmit = async (data: IFormData) => {
-        const token = query.get("token");
-        if (!token) {
-            return;
-        }
-        if (data.password !== data.confirmPassword) {
-            alert("Пароли не совпадают");
-            return;
-        }
-        await resetPasswordVerify({
-            token,
-            plainPassword: data.password,
-        })
-            .unwrap()
-            .then(() => {
-                navigate(getMainPageUrl(locale));
-                reset();
-            });
+    const onSubmit = async () => {
+        // const token = query.get("token");
+        // if (!token) {
+        //     return;
+        // }
+        // if (data.password !== data.confirmPassword) {
+        //     alert("Пароли не совпадают");
+        //     return;
+        // }
+        // await resetPasswordVerify({
+        //     token,
+        //     plainPassword: data.password,
+        // })
+        //     .unwrap()
+        //     .then(() => {
+        //         navigate(getMainPageUrl(locale));
+        //         reset();
+        //     });
     };
 
     return (

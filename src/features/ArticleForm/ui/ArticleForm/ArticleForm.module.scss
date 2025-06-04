@@ -14,6 +14,12 @@
     color: var(--text-caption);
 }
 
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .input {
     &:focus {
         border: 1px solid var(--text-primary-1);

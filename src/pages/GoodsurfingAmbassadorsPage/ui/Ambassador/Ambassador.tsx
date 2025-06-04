@@ -3,8 +3,8 @@ import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
 import { ambassadorsData } from "../../model/data/ambassadors";
-import { TeamItem } from "../TeamItem/TeamItem";
 import styles from "./Ambassador.module.scss";
+import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 
 interface AmbassadorProps {
     className?: string;

@@ -8,9 +8,12 @@ import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 import { FindOffer } from "../FindOffer/FindOffer";
 import styles from "./FindJobPage.module.scss";
 import { SeasonalWork } from "../SeasonalWork/SeasonalWork";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const FindJobPage = () => {
     const { t } = useTranslation("find-job");
+    const { locale } = useLocale();
+
     return (
         <MainPageLayout>
             <div className={styles.wrapper}>
@@ -21,7 +24,7 @@ const FindJobPage = () => {
                     <h2 className={styles.title}>{t("Интересные вакансии")}</h2>
                     <OffersContainer className={styles.container} />
                 </div>
-                <FindOffer />
+                <FindOffer locale={locale} />
                 <div className={styles.content}>
                     <SeasonalWork />
                 </div>

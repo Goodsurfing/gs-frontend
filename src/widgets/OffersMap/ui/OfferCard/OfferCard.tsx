@@ -21,7 +21,10 @@ interface OfferCardProps {
 
 export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
-        data: { id, description, where },
+        data: {
+            id, description, where,
+            acceptedApplicationsCount, feedbacksCountinteger, averageRating,
+        },
         status,
         className,
         classNameCard,
@@ -51,9 +54,9 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 image={imageCover}
                 location={where?.address || ""}
                 likes="5"
-                rating="10"
-                reviews="8"
-                went="21"
+                rating={averageRating?.toString()}
+                reviews={feedbacksCountinteger?.toString()}
+                went={acceptedApplicationsCount.toString()}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={isFavoriteIconShow}

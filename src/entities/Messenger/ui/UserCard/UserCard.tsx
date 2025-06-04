@@ -19,6 +19,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { formatMessageDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getOfferStateColor } from "@/shared/lib/offerState";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface UserCardProps {
     dataChat: ChatsListWithVolunteers | ChatsListWithOrganizations;
@@ -66,7 +67,14 @@ export const UserCard: FC<UserCardProps> = (props) => {
                 <Avatar icon={getMediaContent(volunteerData.profile.image)} text={volunteerData.profile.firstName} size="MEDIUM" />
                 <div className={styles.content}>
                     <div className={styles.nameDate}>
-                        <span className={styles.name}>{`${volunteerData.profile.lastName} ${volunteerData.profile.firstName}`}</span>
+                        <span className={styles.name}>
+                            {
+                                getFullName(
+                                    volunteerData.profile.firstName,
+                                    volunteerData.profile.lastName,
+                                )
+                            }
+                        </span>
                         <span className={styles.date}>
                             {formatMessageDate(
                                 locale,

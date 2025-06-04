@@ -12,7 +12,68 @@
         "Видео": "Videos",
         "Предложения": "Offers",
         "Отзывы": "Reviews",
-        "Заявки": "Applications"
+        "Заявки": "Applications",
+        "Оставьте отзыв": "Leave a review",
+        "Оставить отзыв": "Leave a review",
+        "Напишите ваш отзыв": "Write your review",
+        "На данный момент заявки отсутствуют": "There are no requests at the moment",
+        "Ваш отзыв был отправлен": "Your review has been submitted"
+    },
+    "hostOffers": {
+        "Мои вакансии": "My Offers",
+        "Черновики": "Drafts",
+        "Нет списка вакансий": "No offers listings",
+        "Добавить предложение": "Add an offer",
+        "Редактировать": "Edit",
+        "Отзывов": "Reviews:",
+        "Отправились": "Sent:",
+        "Закрыть": "Close",
+        "Открыть": "Open",
+        "Вы уверены что хотите изменить вакансию?": "Are you sure you want to edit the job posting?",
+        "Ок": "Ok",
+        "Отмена": "Cancel"
+    },
+    "hostNotes": {
+        "Мои заявки": "My applications",
+        "Статус был изменён": "The status was changed",
+        "Оставьте отзыв": "Leave a review",
+        "Оставить отзыв": "Leave a review",
+        "Напишите ваш отзыв": "Write your review",
+        "На данный момент заявки отсутствуют": "There are no requests at the moment",
+        "Ваш отзыв был отправлен": "Your review has been submitted"
+    },
+    "hostDescription": {
+        "Организация создана": "Organization created",
+        "Ошибка при создании организации": "Error creating organization",
+        "Данные успешно изменены": "Data successfully updated",
+        "Произошла ошибка! Поробуйте перезагрузить страницу": "An error occurred! Try reloading the page",
+        "Основная информация": "Información principal",
+        "Название организации": "Organization Name",
+        "Опишите организацию в одно предложение": "Describe the organization in one sentence",
+        "Тип организации": "Type of Organization",
+        "ИП": "Individual Entrepreneur",
+        "ОАО": "Public Joint-Stock Company",
+        "ООО": "Limited Liability Company",
+        "ООПТ": "Protected Areas",
+        "Другое": "Other",
+        "Сайт организации": "Organization Website",
+        "Расскажите об организации": "Tell us about the organization",
+        "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Tell us about you, your team, and why volunteers should choose you to participate",
+        "Это поле является обязательным": "This field is required"
+    },
+    "hostGallery": {
+        "Фотогалерея организации": "Organization photo gallery",
+        "Добавьте сюда не менее 6 фотографий": "Add at least 6 photos here that represent your organization and offerings. Volunteers pay close attention to photos when choosing a project. Include photos of the volunteers' accommodation, workplace, and events taking place at your organization.",
+        "Произошла ошибка с обновлением галереи": "An error occurred while updating the gallery",
+        "Галерея успешно обновлена": "Gallery successfully updated",
+        "Добавить фото": "Add photo",
+        "Не более 200 знаков": "No more than 200 characters",
+        "Не более 1000 знаков": "No more than 1000 characters"
+    },
+    "hostVideo": {
+        "Видеогалерея организации": "Organization video gallery",
+        "Добавьте ссылки на видеоролики с Youtube или Vimeo": "Add links to YouTube or Vimeo videos so they appear in your profile. Make sure the video settings allow public viewing.",
+        "Данные успешно изменены": "Data successfully updated"
     },
     "hostTeam": {
         "Произошла ошибка": "An error occurred",
@@ -22,7 +83,16 @@
         "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site.",
         "Участник был добавлен": "Member was added",
         "Участник был удалён": "Member was removed",
-        "Введите ФИО участника": "Enter the participant's full name"
+        "Введите ФИО участника": "Enter participant's email"
+    },
+    "hostReviews": {
+        "Отзывы": "Reviews",
+        "Ваш рейтинг": "Your rating",
+        "Отзывы про волонтёров": "Reviews about volunteers",
+        "Отзывы о проектах": "Reviews about projects",
+        "Ваш отзыв был отправлен": "Your review has been submitted",
+        "Оставьте отзыв": "Leave a review",
+        "Волонтёры, которых вы недавно принимали": "Volunteers you recently hosted"
     },
     "personalHost": {
         "Написать организатору": "Contact the organizer",

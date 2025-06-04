@@ -25,6 +25,14 @@
     margin-top: 30px;
 }
 
+.applicationContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 20px;
+}
+
 .slider {
     margin-top: 20px;
     display: flex;

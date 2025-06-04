@@ -3,9 +3,9 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { ReviewFields } from "@/features/Notes";
-import { ReviewMiniCard } from "@/features/Review/";
+import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
-import { VolunteerModalReview } from "@/entities/Review";
+import { ApplicationReview, VolunteerModalReview } from "@/entities/Review";
 
 import {
     HintType,
@@ -16,19 +16,20 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { FullFormApplication } from "@/entities/Application";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./ReviewAboutOffers.module.scss";
-import { useGetMyVolunteerApplicationsQuery } from "@/entities/Application/api/applicationApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
-import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
+import { useCreateToOrganizationsReviewMutation, useGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
+import { useGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
+    id: string;
 }
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
-    const { locale } = props;
+    const { locale, id } = props;
     const { t } = useTranslation("volunteer");
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -48,6 +49,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     );
 
     const { data: volunteerApplicationsData, isLoading } = useGetMyVolunteerApplicationsQuery();
+    const { data: myReviewsData } = useGetToOrganizationsReviewsQuery({ author: id });
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
@@ -61,9 +63,9 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         }
     }, [volunteerApplicationsData]);
 
-    // const renderFullCards = (reviews: ReviewCardInfo[]) => reviews.map(
-    //     (review) => <ReviewCardOffer reviewOffer={review} />,
-    // );
+    const renderFullCards = (reviews?: ApplicationReview[]) => reviews?.map(
+        (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
+    );
 
     const onReviewClick = (application: FullFormApplication) => {
         setSelectedApplication(application);
@@ -110,6 +112,17 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         );
     }
 
+    const disableRenderVerticalSlider = applications.length < 4;
+    const renderApplications = applications.map((item) => (
+        <ReviewMiniCard
+            data={item}
+            onReviewClick={onReviewClick}
+            variant="offer"
+            key={item.id}
+            locale={locale}
+        />
+    ));
+
     return (
         <div className={styles.wrapper}>
             <h3 className={styles.h3}>
@@ -118,23 +131,29 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             <p className={styles.description}>
                 {t("volunteer-review.Проекты, которые вы недавно посещали")}
             </p>
-            <VerticalSlider
-                classNameSlide={styles.swiperSlide}
-                classNameWrapper={styles.swiperWrapper}
-                className={styles.slider}
-                data={applications}
-                renderItem={(item: FullFormApplication) => (
-                    <ReviewMiniCard
-                        data={item}
-                        onReviewClick={onReviewClick}
-                        variant="offer"
-                        key={item.id}
-                        locale={locale}
-                    />
-                )}
-            />
+            {!disableRenderVerticalSlider ? (
+                <VerticalSlider
+                    classNameSlide={styles.swiperSlide}
+                    classNameWrapper={styles.swiperWrapper}
+                    className={styles.slider}
+                    data={applications}
+                    renderItem={(item: FullFormApplication) => (
+                        <ReviewMiniCard
+                            data={item}
+                            onReviewClick={onReviewClick}
+                            variant="offer"
+                            key={item.id}
+                            locale={locale}
+                        />
+                    )}
+                />
+            ) : (
+                <div className={styles.applicationContainer}>
+                    {renderApplications}
+                </div>
+            )}
             <div className={styles.fullCardContainer}>
-                {/* {renderFullCards(mockedReviewOfferData)} */}
+                {renderFullCards(myReviewsData)}
             </div>
             <Controller
                 name="review"

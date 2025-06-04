@@ -17,7 +17,7 @@ export const useGetChatMessages = (
         data: messagesData, isLoading, isFetching, error,
     } = useGetMessagesByChatIdQuery(
         { chatId: chatId ?? "", page, itemsPerPage },
-        { skip: !chatId },
+        { skip: !chatId, refetchOnMountOrArgChange: true },
     );
 
     useEffect(() => {
@@ -28,7 +28,19 @@ export const useGetChatMessages = (
 
     useEffect(() => {
         if (messagesData) {
-            setMessages((prevMessages) => [...prevMessages, ...messagesData]);
+            setMessages((prevMessages) => {
+                const merged = [...prevMessages, ...messagesData];
+                const uniqueMessagesMap = new Map();
+
+                merged.forEach((msg) => {
+                    uniqueMessagesMap.set(msg.id, msg);
+                });
+
+                return Array.from(uniqueMessagesMap.values()).sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                );
+            });
+
             setHasMore(messagesData.length === itemsPerPage);
         }
     }, [messagesData]);
@@ -44,7 +56,13 @@ export const useGetChatMessages = (
 
         eventSource.addEventListener("messageOnChat", (event) => {
             const updatedMessage = JSON.parse(event.data);
-            setMessages((prevMessages) => [updatedMessage, ...prevMessages]);
+            setMessages((prevMessages) => {
+                if (prevMessages.some((msg) => msg.id === updatedMessage.id)) {
+                    return prevMessages;
+                }
+
+                return [updatedMessage, ...prevMessages];
+            });
         });
 
         return () => {
