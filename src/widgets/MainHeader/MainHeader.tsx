@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ReactSVG } from "react-svg";
+// import { ReactSVG } from "react-svg";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -12,10 +12,10 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 
-import heartIcon from "@/shared/assets/icons/heart-icon.svg";
+// import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import {
-    getFavoriteOffersPageUrl,
+    // getFavoriteOffersPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
     getMessengerPageUrl,
