@@ -126,4 +126,6 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
             </div>
         );
     }
+
+    return null;
 };

@@ -22,6 +22,7 @@ export const mockedHostData: Host = {
     website: "",
     otherType: "",
     shortDescription: "",
+    feedbacksCount: 5,
     owner: {
         id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         email: "string",
@@ -113,6 +114,7 @@ export const mockedApplications: FullFormApplication[] = [
         id: 1,
         status: "new",
         volunteer: {
+            feedbacksCount: 5,
             profile: {
                 id: "1",
                 host: "",
@@ -155,6 +157,7 @@ export const mockedApplications: FullFormApplication[] = [
         id: 2,
         status: "new",
         volunteer: {
+            feedbacksCount: 5,
             profile: {
                 id: "1",
                 host: "",
@@ -197,6 +200,7 @@ export const mockedApplications: FullFormApplication[] = [
         id: 3,
         status: "accepted",
         volunteer: {
+            feedbacksCount: 5,
             profile: {
                 id: "1",
                 host: "",
@@ -239,6 +243,7 @@ export const mockedApplications: FullFormApplication[] = [
         id: 4,
         status: "accepted",
         volunteer: {
+            feedbacksCount: 5,
             profile: {
                 id: "1",
                 host: "",
@@ -281,6 +286,7 @@ export const mockedApplications: FullFormApplication[] = [
         id: 5,
         status: "accepted",
         volunteer: {
+            feedbacksCount: 5,
             profile: {
                 id: "1",
                 host: "",

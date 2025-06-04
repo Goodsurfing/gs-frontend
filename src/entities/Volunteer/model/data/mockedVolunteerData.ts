@@ -92,6 +92,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             memberProfiles: [],
             membershipEndDate: "",
         },
+        feedbacksCount: 5,
         additionalSkills: [],
         externalInfo: "asfasf",
         languages: [],
@@ -108,6 +109,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             memberProfiles: [],
             membershipEndDate: "",
         },
+        feedbacksCount: 5,
         additionalSkills: [],
         externalInfo: "asfasf",
         languages: [],
@@ -125,6 +127,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
             membershipEndDate: "",
 
         },
+        feedbacksCount: 5,
         additionalSkills: [],
         externalInfo: "asfasf",
         languages: [],
