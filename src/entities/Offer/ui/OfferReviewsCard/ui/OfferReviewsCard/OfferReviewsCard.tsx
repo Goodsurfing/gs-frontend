@@ -111,7 +111,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
-                <div className={styles.container}>{renderCards}</div>
+                <div className={styles.container}>{renderCards.length > 0 ? renderCards : "На данный момент отзывов нет"}</div>
                 {visibleCount < filteredReviews.length && (
                     <ShowNext onClick={handleShowNext} />
                 )}

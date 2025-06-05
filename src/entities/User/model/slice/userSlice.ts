@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TOKEN_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_KEY, MERCURE_TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
+import {
+    TOKEN_LOCALSTORAGE_KEY,
+    USER_LOCALSTORAGE_KEY,
+    MERCURE_TOKEN_LOCALSTORAGE_KEY,
+} from "@/shared/constants/localstorage";
 import { User, UserSchema } from "../types/userSchema";
 
 const initialState: UserSchema = {
@@ -12,13 +16,31 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setAuthData: (state, action: PayloadAction<User>) => {
+            const { username, token, mercureToken } = action.payload;
+
             state.authData = action.payload;
+
+            localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({ username }));
+            localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
+            localStorage.setItem(MERCURE_TOKEN_LOCALSTORAGE_KEY, JSON.stringify(mercureToken));
         },
         initAuthData: (state) => {
-            const user = localStorage.getItem(USER_LOCALSTORAGE_KEY);
-            if (user) {
-                state.authData = JSON.parse(user);
+            const userRaw = localStorage.getItem(USER_LOCALSTORAGE_KEY);
+            const tokenRaw = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
+            const mercureTokenRaw = localStorage.getItem(MERCURE_TOKEN_LOCALSTORAGE_KEY);
+
+            if (userRaw && tokenRaw && mercureTokenRaw) {
+                const user = JSON.parse(userRaw);
+                const token = JSON.parse(tokenRaw);
+                const mercureToken = JSON.parse(mercureTokenRaw);
+
+                state.authData = {
+                    ...user,
+                    token,
+                    mercureToken,
+                };
             }
+
             state._inited = true;
         },
         logout: (state) => {

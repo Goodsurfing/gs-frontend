@@ -11,19 +11,17 @@ import { ChatsListWithOrganizations, ChatsListWithVolunteers, UserCard } from "@
 
 import { ListFilter } from "../ListFilter/ListFilter";
 import styles from "./MessengerList.module.scss";
-import { Profile } from "@/entities/Profile";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
     locale: Locale;
-    myProfileData: Profile;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps) => {
     const {
-        className, onUserClick, locale, myProfileData,
+        className, onUserClick, locale,
     } = props;
     const { token, mercureToken } = useAuth();
     const {
@@ -34,7 +32,7 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
         onChangeSearchValue,
         onChangeStatusValue,
         fetchChats,
-    } = useGetChatListData(token, mercureToken, myProfileData);
+    } = useGetChatListData(token, mercureToken);
     const { registerMessageUpdateCallback } = useMessenger();
     const [filteredChatList,
         setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]

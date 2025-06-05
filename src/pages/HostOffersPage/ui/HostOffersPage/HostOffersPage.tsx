@@ -42,7 +42,7 @@ const HostOffersPage = () => {
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
-            const result = await triggerHost(myHostId).unwrap();
+            const result = await triggerHost({ organizationId: myHostId }).unwrap();
             setOffersWithOpenStatus(filterOffersByStatus(result, "active"));
             setoffersWithClosedStatus(filterOffersByStatus(result, "draft"));
         }

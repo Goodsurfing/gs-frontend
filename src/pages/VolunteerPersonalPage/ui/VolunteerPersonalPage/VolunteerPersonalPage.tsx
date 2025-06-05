@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -30,13 +30,13 @@ export const VolunteerPersonalPage = () => {
     const { data: volunteerData, isLoading } = useGetVolunteerByIdQuery(
         id || "",
     );
-    const { data: myProfileData, isLoading: myProfileIsLoading } = useGetProfileInfoQuery();
+    const { data: myProfileData } = useGetProfileInfoQuery();
 
-    const handleEditClick = useCallback(() => {
+    const handleEditClick = () => {
         navigate(getVolunteerDashboardPageUrl(locale));
-    }, [locale, navigate]);
+    };
 
-    if (isLoading || myProfileIsLoading || !myProfileData) {
+    if (isLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -76,7 +76,8 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    const showButtons = myProfileData.id === id;
+    const showButtons = myProfileData ? (
+        myProfileData.id === id) : false;
 
     const renderButtons = showButtons ? (
         <Button

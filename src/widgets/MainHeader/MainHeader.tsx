@@ -64,7 +64,7 @@ const MainHeader: FC = () => {
                                     to={getMessengerPageUrl(locale)}
                                     className={styles.icon}
                                 >
-                                    <MessangerInfo myProfile={profile} />
+                                    <MessangerInfo />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile

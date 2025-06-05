@@ -104,7 +104,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
         return (
             <div id="3" className={cn(className, styles.wrapper)}>
                 <Text title="Отзывы" titleSize="h3" />
-                <div className={styles.container}>{renderCards}</div>
+                <div className={styles.container}>{renderCards.length > 0 ? renderCards : "На данный момент отзывов нет"}</div>
                 {visibleCount < filteredReviews.length && (
                     <ShowNext onClick={handleShowNext} />
                 )}

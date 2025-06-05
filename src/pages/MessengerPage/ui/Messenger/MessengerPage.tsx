@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,15 +12,25 @@ import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import styles from "./MessengerPage.module.scss";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile, useLazyGetProfileInfoQuery } from "@/entities/Profile";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
+    const [myProfileData, setMyProfileData] = useState<Profile | null>();
 
-    const { data: myProfileData } = useGetProfileInfoQuery();
+    const [getMyProfileData] = useLazyGetProfileInfoQuery();
+
+    const fetchMyProfileData = useCallback(async () => {
+        const result = await getMyProfileData().unwrap();
+        setMyProfileData(result);
+    }, [getMyProfileData]);
+
+    useEffect(() => {
+        fetchMyProfileData();
+    }, [fetchMyProfileData]);
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
@@ -57,7 +67,6 @@ const MessengerPage = () => {
                             [styles.open]: !selectedChat,
                         })}
                         onUserClick={handleOnUserClick}
-                        myProfileData={myProfileData}
                         locale={locale}
                     />
                     <Chat
