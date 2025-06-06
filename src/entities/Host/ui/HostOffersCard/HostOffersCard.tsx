@@ -76,7 +76,6 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
                         locale={locale}
                         status={offer.status === "active" ? "opened" : "closed"}
                         data={offer}
-                        isFavoriteIconShow={false}
                     />
                 ))}
             </InfiniteScroll>

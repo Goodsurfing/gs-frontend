@@ -11,7 +11,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-import { OfferApplication, UserSettings } from "@/features/Messenger";
+import { OfferApplication } from "@/features/Messenger";
 
 import { FormApplicationStatus } from "@/entities/Application";
 import {
@@ -444,7 +444,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         </span>
                     </div>
                     <div className={styles.settingsInfo}>
-                        <UserSettings />
+                        {/* <UserSettings /> */}
                         <ReactSVG
                             src={arrowIcon}
                             className={styles.openInfo}

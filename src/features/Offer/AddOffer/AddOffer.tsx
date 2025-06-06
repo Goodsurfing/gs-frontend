@@ -24,7 +24,7 @@ export const AddOffer = () => {
             return;
         }
         const formData = new FormData();
-        createOffer(formData).unwrap()
+        await createOffer(formData).unwrap()
             .then((result) => {
                 navigate(`/${locale}/offers/welcome/${result.id}`);
             })

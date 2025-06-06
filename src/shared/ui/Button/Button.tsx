@@ -9,7 +9,7 @@ export type ButtonVariant = "FILL" | "OUTLINE" | "TEXT";
 
 export type ButtonSize = "LARGE" | "MEDIUM" | "SMALL" | "EXTRA-SMALL";
 
-export type ButtonColor = "BLUE" | "GREEN" | "GRAY" | "BLACK";
+export type ButtonColor = "BLUE" | "GREEN" | "GRAY" | "BLACK" | "RED";
 
 type ButtonBase = ButtonHTMLAttributes<HTMLButtonElement> & {
     color: ButtonColor;

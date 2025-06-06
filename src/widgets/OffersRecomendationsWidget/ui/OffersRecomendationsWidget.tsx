@@ -10,12 +10,10 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferCard } from "@/widgets/OffersMap";
 
 import { Offer, useLazyGetOffersQuery } from "@/entities/Offer";
-import { getUserAuthData } from "@/entities/User";
 
 import {
     getProfilePreferencesPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { useAppSelector } from "@/shared/hooks/redux";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import styles from "./OffersRecomendationsWidget.module.scss";
@@ -28,7 +26,6 @@ interface OffersRecomendationsWidgetProps {
 export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = memo(
     (props: OffersRecomendationsWidgetProps) => {
         const { className } = props;
-        const isAuth = useAppSelector(getUserAuthData);
         const { locale } = useLocale();
         const { t } = useTranslation("volunteer");
         const [filteredOffers, setFilteredOffers] = useState<Offer[]>([]);
@@ -64,7 +61,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                         status={offer.status === "active" ? "opened" : "closed"}
                         data={offer}
                         key={offer.id}
-                        isFavoriteIconShow={!!isAuth}
+                        // isFavoriteIconShow={!!isAuth}
                     />
                 ));
             }

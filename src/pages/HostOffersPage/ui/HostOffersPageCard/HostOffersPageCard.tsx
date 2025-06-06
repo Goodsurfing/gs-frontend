@@ -6,7 +6,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferStatus } from "@/entities/Offer";
 
-import like from "@/shared/assets/icons/offers/like.svg";
+// import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { getOfferPersonalPageUrl, getOffersWelcomePageUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
@@ -22,12 +22,13 @@ interface IHostOffersPageCard {
     location?: string;
     category?: string;
     rating?: string;
-    likes: string;
+    // likes: string;
     reviews?: string;
     went: string;
     description?: string;
     status: OfferStatus;
     onCloseClick: MouseEventHandler<HTMLButtonElement>;
+    onDeleteClick: MouseEventHandler<HTMLButtonElement>;
     isCloseButtonActive: boolean;
     // onEveryOpenClick?: MouseEventHandler<HTMLButtonElement>;
     // isEveryOpenActive?: boolean;
@@ -41,12 +42,12 @@ const HostOffersPageCard = memo(
         location,
         category,
         rating,
-        likes,
         reviews,
         went,
         description,
         status,
         onCloseClick,
+        onDeleteClick,
         isCloseButtonActive,
     }: IHostOffersPageCard) => {
         const navigate = useNavigate();
@@ -81,18 +82,19 @@ const HostOffersPageCard = memo(
                             <span className={styles.category}>{category}</span>
                         </div>
                         <div className={styles.stats}>
-                            <div className={styles.statsWrapper}>
-                                {rating && (
-                                    <div className={styles.rating}>
-                                        <img src={star} alt="star-icon" />
-                                        <span>{rating}</span>
-                                    </div>
-                                )}
+                            {rating && (
+                                <div className={styles.rating}>
+                                    <img src={star} alt="star-icon" />
+                                    <span>{rating}</span>
+                                </div>
+                            )}
+                            {/* <div className={styles.statsWrapper}>
+
                                 <div className={styles.likes}>
                                     <img src={like} alt="heart-icon" />
                                     <span>{likes}</span>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className={styles.extraInfo}>
                                 {reviews && (
                                     <span className={styles.review}>
@@ -133,6 +135,15 @@ const HostOffersPageCard = memo(
                         {isCloseButtonActive
                             ? t("hostOffers.Закрыть")
                             : t("hostOffers.Открыть")}
+                    </Button>
+                    <Button
+                        className={styles.red}
+                        variant="FILL"
+                        color="RED"
+                        size="SMALL"
+                        onClick={onDeleteClick}
+                    >
+                        Удалить
                     </Button>
                     {/* <Button
                         className={styles.black}

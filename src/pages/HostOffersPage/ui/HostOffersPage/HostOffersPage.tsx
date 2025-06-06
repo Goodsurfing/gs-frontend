@@ -5,10 +5,11 @@ import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 
 import {
     Offer,
-    useLazyGetHostOffersByIdQuery,
+    useDeleteOfferMutation,
+    useLazyGetHostAllOffersByIdQuery,
     useLazyGetOfferByIdQuery,
+    useUpdateOfferStatusMutation,
 } from "@/entities/Offer";
-import { useUpdateOfferStatusMutation } from "@/entities/Offer/api/offerApi";
 
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import Preloader from "@/shared/ui/Preloader/Preloader";
@@ -17,16 +18,19 @@ import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { HostOffersList } from "../HostOffersList/HostOffersList";
 import styles from "./HostOffersPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-type SeletecBtnType = "delete" | "every_open";
+type SeletecBtnType = "delete" | "every_open" | "close";
 
 const HostOffersPage = () => {
     const { t } = useTranslation("host");
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
+    const [deleteOffer] = useDeleteOfferMutation();
 
-    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostOffersByIdQuery();
+    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostAllOffersByIdQuery();
     const [triggerOffer, { isLoading: isOfferLoading }] = useLazyGetOfferByIdQuery();
 
     const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>(
@@ -38,11 +42,12 @@ const HostOffersPage = () => {
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
+    const [deleteOfferError, setDeleteOfferError] = useState<boolean>(false);
     const isModalOpen = selectedOffer !== null && selectedBtnOffer !== null;
 
     const fetchOffers = useCallback(async () => {
         if (myHostId) {
-            const result = await triggerHost({ organizationId: myHostId }).unwrap();
+            const result = await triggerHost(myHostId).unwrap();
             setOffersWithOpenStatus(filterOffersByStatus(result, "active"));
             setoffersWithClosedStatus(filterOffersByStatus(result, "draft"));
         }
@@ -61,6 +66,11 @@ const HostOffersPage = () => {
 
     const handleCloseClick = (offerId: number) => {
         setSelectedOffer(offerId);
+        setSelectedBtnOffer("close");
+    };
+
+    const handleDeleteClick = (offerId: number) => {
+        setSelectedOffer(offerId);
         setSelectedBtnOffer("delete");
     };
 
@@ -76,7 +86,7 @@ const HostOffersPage = () => {
     };
 
     const handleConfirmClick = async () => {
-        if (selectedOffer && selectedBtnOffer === "delete") {
+        if (selectedOffer && selectedBtnOffer === "close") {
             await triggerOffer(selectedOffer.toString())
                 .unwrap()
                 .then(async (result) => {
@@ -96,6 +106,13 @@ const HostOffersPage = () => {
                     }
                 });
         }
+        if (selectedOffer && selectedBtnOffer === "delete") {
+            await deleteOffer(selectedOffer.toString())
+                .unwrap()
+                .catch(() => {
+                    setDeleteOfferError(true);
+                });
+        }
         setSelectedOffer(null);
         setSelectedBtnOffer(null);
     };
@@ -106,10 +123,17 @@ const HostOffersPage = () => {
 
     return (
         <div className={styles.wrapper}>
+            {(deleteOfferError) && (
+                <HintPopup
+                    text={t("hostOffers.Ошибка изменения вакансии")}
+                    type={HintType.Error}
+                />
+            )}
             <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
             <HostOffersList
                 offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
+                onDeleteClick={(offerId) => handleDeleteClick(offerId)}
                 // onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
             />
             {!!offersWithClosedStatus.length && (
@@ -119,6 +143,7 @@ const HostOffersPage = () => {
                         <HostOffersList
                             offers={offersWithClosedStatus}
                             onCloseClick={(offerId) => handleCloseClick(offerId)}
+                            onDeleteClick={(offerId) => handleDeleteClick(offerId)}
                             // onEveryOpenClick={(offerId) => handleEveryOpenClick(offerId)}
                         />
                     </div>

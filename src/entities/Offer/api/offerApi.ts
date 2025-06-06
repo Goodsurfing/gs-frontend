@@ -105,6 +105,13 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
+        getHostAllOffersById: build.query<Offer[], string>({
+            query: (organizationId) => ({
+                url: `organizations/${organizationId}/vacancies`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
         createOfferGalleryItem: build.mutation<GalleryItem, CreateOfferGalleryItemRequest>({
             query: (data) => ({
                 url: `/vacancies/${data.offerId}/gallery`,
@@ -146,6 +153,7 @@ export const {
     useDeleteOfferMutation,
     useGetHostOffersByIdQuery,
     useLazyGetHostOffersByIdQuery,
+    useLazyGetHostAllOffersByIdQuery,
     useGetOfferByIdQuery,
     useLazyGetOfferByIdQuery,
     useCreateOfferGalleryItemMutation,
