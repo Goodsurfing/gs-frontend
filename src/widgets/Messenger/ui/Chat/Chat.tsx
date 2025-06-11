@@ -47,7 +47,7 @@ import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { useMessenger } from "@/app/providers/MessengerProvider";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface ChatProps {
     id?: string;
@@ -90,6 +90,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { getFullName } = useGetFullName();
     const { onReadMessage } = useMessenger();
 
     const { mercureToken } = useAuth();
@@ -313,12 +314,10 @@ export const Chat: FC<ChatProps> = (props) => {
         };
 
         processMessages();
-    }, [messages, getApplicationData, myProfileData,
-        locale, volunteerData?.profile.id,
+    }, [messages, getApplicationData, myProfileData, locale, volunteerData?.profile.id,
         volunteerData?.profile.firstName, volunteerData?.profile.lastName,
-        volunteerData?.profile.image, organizationData?.name,
-        organizationData?.avatar, organizationData?.owner.id,
-        readMessage, isImHost, onApplicationSubmit]);
+        volunteerData?.profile.image, organizationData?.name, organizationData?.avatar,
+        organizationData?.owner.id, readMessage, isImHost, onApplicationSubmit, getFullName]);
 
     if (!id || !myProfileData) {
         return (

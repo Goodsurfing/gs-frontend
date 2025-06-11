@@ -8,7 +8,7 @@ import { useGetHostByIdQuery } from "@/entities/Host";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
-import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
+import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 
 interface ReviewFullCardProps {
     review: ApplicationReviewResponse;
@@ -20,6 +20,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
     const {
         stars, text, organizationAuthorId, volunteerId,
     } = review;
+    const { getFullName } = useGetFullName();
     const skipVolunteerQuery = !volunteerId;
     const { data: volunteerData } = useGetVolunteerByIdQuery(volunteerId!, {
         skip: skipVolunteerQuery,

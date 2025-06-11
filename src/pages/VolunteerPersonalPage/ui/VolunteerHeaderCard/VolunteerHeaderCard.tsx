@@ -14,7 +14,7 @@ import styles from "./VolunteerHeaderCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface VolunteerHeaderCardProps {
     volunteer: VolunteerApi;
@@ -30,6 +30,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             locale,
         } = props;
 
+        const { getFullName } = useGetFullName();
         const navigate = useNavigate();
         const {
             image, firstName, lastName, birthDate, country, city,

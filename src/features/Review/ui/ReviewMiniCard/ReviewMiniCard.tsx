@@ -12,7 +12,7 @@ import styles from "./ReviewMiniCard.module.scss";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface ReviewMiniCardProps {
     data: FullFormApplication;
@@ -30,6 +30,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
     const { vacancy, volunteer } = data;
     const { description, where } = vacancy;
     const { t } = useTranslation("volunteer");
+    const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
     const navigateToVolunteer = () => {

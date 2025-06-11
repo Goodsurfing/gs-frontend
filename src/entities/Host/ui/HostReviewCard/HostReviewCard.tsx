@@ -12,7 +12,7 @@ import styles from "./HostReviewCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Text } from "@/shared/ui/Text/Text";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
@@ -32,6 +32,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo(
         const [visibleCount, setVisibleCount] = useState(5);
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
+        const { getFullName } = useGetFullName();
 
         const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery(hostId);
         const [getVolunteer] = useLazyGetVolunteerByIdQuery();
@@ -94,7 +95,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo(
             };
 
             fetchCards();
-        }, [filteredReviews, visibleCount, getVolunteer, locale]);
+        }, [filteredReviews, visibleCount, getVolunteer, locale, getFullName]);
 
         const handleShowNext = () => {
             setVisibleCount((prev) => prev + 5);

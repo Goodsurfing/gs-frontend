@@ -8,7 +8,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./ReviewCardOffer.module.scss";
 import { useGetApplicationFormByIdQuery } from "@/entities/Chat";
 
@@ -25,6 +25,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
     const partsApplicationUrl = applicationForm.split("/");
     const applicationId = partsApplicationUrl.pop();
     const { data: applicationData } = useGetApplicationFormByIdQuery(applicationId ?? "");
+    const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
     if (!applicationData) {

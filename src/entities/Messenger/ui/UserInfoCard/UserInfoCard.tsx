@@ -21,7 +21,7 @@ import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextCompone
 
 import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface UserInfoCardProps {
     user?: Host | VolunteerApi;
@@ -41,6 +41,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const { skillsData } = useSkillsData();
     const languages = user && "languages" in user ? user.languages : null;
     const textLanguages = useFormatLanguages(languages ?? []);
+    const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
     if (!user) {

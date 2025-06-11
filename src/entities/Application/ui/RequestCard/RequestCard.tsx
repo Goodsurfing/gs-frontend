@@ -38,7 +38,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const username = useGetFullName(volunteer.profile.firstName, volunteer.profile.lastName);
+    const { getFullName } = useGetFullName();
 
     const address = (!volunteer.profile.city || !volunteer.profile.country)
         ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;
@@ -73,7 +73,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                         <span
                             className={styles.name}
                         >
-                            {username}
+                            {getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}
                         </span>
                         <span className={styles.location}>
                             {address}

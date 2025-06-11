@@ -19,7 +19,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { formatMessageDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getOfferStateColor } from "@/shared/lib/offerState";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface UserCardProps {
     dataChat: ChatsListWithVolunteers | ChatsListWithOrganizations;
@@ -32,6 +32,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
     const { id } = useParams();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
     const [hostData, setHostData] = useState<HostApi>();
+    const { getFullName } = useGetFullName();
 
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [getHost] = useLazyGetHostByIdQuery();

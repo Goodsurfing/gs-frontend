@@ -1,15 +1,19 @@
 import { useTranslation } from "react-i18next";
 
-export const useGetFullName = (
-    firstName?: string,
-    lastName?: string,
-): string => {
+export const useGetFullName = () => {
     const { t } = useTranslation();
 
-    if (!firstName && !lastName) return t("Анонимный пользователь");
+    const getFullName = (
+        firstName?: string,
+        lastName?: string,
+    ) => {
+        if (!firstName && !lastName) return t("Анонимный пользователь");
 
-    const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
-    return (renderFullName);
+        const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
+        return (renderFullName);
+    };
+
+    return { getFullName };
 };
 
 export const getFullAddress = (city?: string, country?: string): string => {
