@@ -53,7 +53,7 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
             .unwrap()
             .then(() => {
                 setToast({
-                    text: "Данные успешно изменены",
+                    text: t("info.Данные успешно изменены"),
                     type: HintType.Success,
                 });
             })

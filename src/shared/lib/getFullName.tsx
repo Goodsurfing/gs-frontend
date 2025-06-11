@@ -1,8 +1,12 @@
-export const getFullName = (
+import { useTranslation } from "react-i18next";
+
+export const useGetFullName = (
     firstName?: string,
     lastName?: string,
 ): string => {
-    if (!firstName && !lastName) return "Анонимный пользователь";
+    const { t } = useTranslation();
+
+    if (!firstName && !lastName) return t("Анонимный пользователь");
 
     const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
     return (renderFullName);

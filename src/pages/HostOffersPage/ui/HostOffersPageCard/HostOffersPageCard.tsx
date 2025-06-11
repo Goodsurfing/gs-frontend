@@ -143,7 +143,7 @@ const HostOffersPageCard = memo(
                         size="SMALL"
                         onClick={onDeleteClick}
                     >
-                        Удалить
+                        {t("hostOffers.Удалить")}
                     </Button>
                     {/* <Button
                         className={styles.black}

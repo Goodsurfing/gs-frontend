@@ -14,7 +14,7 @@ import styles from "./RequestCard.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface RequestCardProps {
     className?: string;
@@ -38,7 +38,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const username = getFullName(volunteer.profile.firstName, volunteer.profile.lastName);
+    const username = useGetFullName(volunteer.profile.firstName, volunteer.profile.lastName);
 
     const address = (!volunteer.profile.city || !volunteer.profile.country)
         ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;

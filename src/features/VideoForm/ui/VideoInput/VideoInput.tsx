@@ -56,7 +56,7 @@ export const VideoInput = memo(({
                         <AddButton
                             disabled={fieldState.invalid || isLoading || !field.value || disabled}
                             type="submit"
-                            text="Добавить видео"
+                            text={t("volunteer-gallery.Добавить видео")}
                             onClick={addVideo}
                             className={styles.add}
                         />

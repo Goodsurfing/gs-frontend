@@ -1,5 +1,6 @@
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import {
     ProfileDeleteSwitch,
     ProfileHideSwitch,
@@ -8,34 +9,32 @@ import {
 
 import styles from "./ProfilePrivacy.module.scss";
 
-export const ProfilePrivacy: FC = memo(() => (
-    <div className={styles.wrapper}>
-        <div className={styles.container}>
-            <ProfileHideSwitch />
-            <p className={styles.description}>
-                Деактивировав аккаунт вы делаете его недоступным для остальных.
-                Функции Гудсёрфинга становятся недоступными для вас. Если вы
-                хост, то ваши проекты также деактивируются. Вы можете
-                активировать аккаунт позже и всё вернуть.
-            </p>
-        </div>
-        <div className={styles.container}>
-            <ProfileNewsletterSwitch />
-            <p className={styles.description}>
-                Отказавшись от рассылки вы можете пропустить важные новости
-                проекта, а также уникальные возможности.
-            </p>
-        </div>
-        <div className={styles.container}>
-            <ProfileDeleteSwitch />
-            <div className={styles.iconContainer}>
-                <div className={styles.errorLineIcon} />
+export const ProfilePrivacy: FC = memo(() => {
+    const { t } = useTranslation("profile");
+
+    return (
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <ProfileHideSwitch />
                 <p className={styles.description}>
-                    Нажимая эту кнопку вы удаляете ваш аккаунт со всей
-                    заполненной вами информацией. Восстановить её будет нельзя.
-                    Только заново зарегистрироваться.
+                    {t("privacy.Деактивировав аккаунт вы делаете его недоступным для остальных")}
                 </p>
             </div>
+            <div className={styles.container}>
+                <ProfileNewsletterSwitch />
+                <p className={styles.description}>
+                    {t("privacy.Отказавшись от рассылки вы можете пропустить важные новости проекта, а также уникальные возможности")}
+                </p>
+            </div>
+            <div className={styles.container}>
+                <ProfileDeleteSwitch />
+                <div className={styles.iconContainer}>
+                    <div className={styles.errorLineIcon} />
+                    <p className={styles.description}>
+                        {t("privacy.Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией")}
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-));
+    );
+});

@@ -1,5 +1,6 @@
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
 import { CategoryCard } from "../CategoryCard/CategoryCard";
@@ -14,11 +15,12 @@ interface ActivityProps {
 export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
     const { value, onChange } = props;
     const { tags } = useCategories();
+    const { t } = useTranslation("profile");
 
     return (
         <div className={styles.wrapper}>
             <h2 className={styles.title}>
-                Какой тип путешествий вы предпочитаете
+                {t("preferences.Какой тип путешествий вы предпочитаете")}
             </h2>
             <div className={styles.wrapper}>
                 <SelectableGroup

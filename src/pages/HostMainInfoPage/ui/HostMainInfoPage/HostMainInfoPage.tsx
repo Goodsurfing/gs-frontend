@@ -10,11 +10,13 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const HostMainInfoPage: FC = () => {
     const { t, ready } = useTranslation("host");
+    const { ready: profileIsReady } = useTranslation("profile");
+
     const {
         data: myProfile, isLoading, isError, refetch: profileRefetch,
     } = useGetProfileInfoQuery();
 
-    if (!ready) {
+    if (!ready || !profileIsReady) {
         return (
             <div className={styles.wrapper}>
                 <MiniLoader />

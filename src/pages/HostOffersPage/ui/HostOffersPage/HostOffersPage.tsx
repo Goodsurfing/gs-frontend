@@ -24,7 +24,7 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 type SeletecBtnType = "delete" | "every_open" | "close";
 
 const HostOffersPage = () => {
-    const { t } = useTranslation("host");
+    const { t, ready } = useTranslation("host");
     const { data: myHost } = useGetMyHostQuery();
     const myHostId = myHost?.id;
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
@@ -117,7 +117,7 @@ const HostOffersPage = () => {
         setSelectedBtnOffer(null);
     };
 
-    if (isLoading) {
+    if (isLoading || !ready) {
         return <Preloader />;
     }
 

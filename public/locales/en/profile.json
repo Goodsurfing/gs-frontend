@@ -38,7 +38,15 @@
         "Год должен быть больше или равен 1900": "The year must be greater than or equal to 1900",
         "Не верно указан год": "The year is invalid",
         "Посмотреть профиль": "View Profile",
-        "Максимальный_размер": "Maximum size is {{size}} MB"
+        "Максимальный_размер": "Maximum size is {{size}} MB",
+        "Данные успешно изменены": "Data updated successfully",
+        "Не более 1000 знаков": "No more than 1000 characters"
+    },
+    "preferences": {
+        "Куда бы вы хотели поехать": "Where would you like to go",
+        "Какой тип путешествий вы предпочитаете": "What type of travel do you prefer",
+        "Сохранить": "Save",
+        "Данные успешно изменены": "Data updated successfully"
     },
     "role": {
         "Заполните аккаунт гудсёрфера или организатора": "Complete your good surfer or organizer account",
@@ -55,5 +63,27 @@
         "Стать организатором": "Become an organizer",
         "Вы уже стали гудсёрфером": "You have already become a goodsurfer",
         "Вы уже стали организатором": "You have already become an host"
+    },
+    "password": {
+        "Изменение пароля": "Change password",
+        "Текущий пароль": "Current password",
+        "Новый пароль": "New password",
+        "Повторите новый пароль": "Repeat new password",
+        "Произошла ошибка": "An error occurred",
+        "Изменение пароля произошло успешно": "Password change was successful",
+        "Текущий пароль обязателен": "Current password is required",
+        "Новый пароль обязателен": "New password is required",
+        "Пароли должны совпадать": "Passwords must match",
+        "Сохранить": "Save"
+    },
+    "privacy": {
+        "Заполните аккаунт гудсёрфера или организатора": "Complete the profile of a Goodsurfer or an Organizer",
+        "Гудсёрфинг — это социальная сеть людей, которые уже путешествуют": "Goodsurfing is a social network for people who already travel with purpose or want to start doing so. It helps discover new opportunities, meet people, and tell your story. Its development depends on your participation and openness. You choose your level of openness.",
+        "Деактивировать и скрыть мой аккаунт": "Deactivate and hide my account",
+        "Деактивировав аккаунт вы делаете его недоступным для остальных": "By deactivating your account, it becomes unavailable to others. Goodsurfing functions will be inaccessible to you. If you’re a host, your projects will also be deactivated. You can reactivate later and restore everything.",
+        "Не присылать мне рассылку от Гусдёрфинга с новостями и обновлениями": "Don’t send me Goodsurfing newsletters with news and updates",
+        "Отказавшись от рассылки вы можете пропустить важные новости проекта, а также уникальные возможности": "By unsubscribing, you may miss important news and unique opportunities",
+        "Удалить аккаунт": "Delete account",
+        "Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией": "By clicking this button, you delete your account and all information you’ve entered. It cannot be restored. Only re-registration is possible."
     }
 }
