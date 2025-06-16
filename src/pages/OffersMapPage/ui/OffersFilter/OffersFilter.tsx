@@ -120,8 +120,12 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                 />
 
                 <div className={styles.buttons}>
-                    <Button className={styles.button} type="submit" color="BLUE" size="SMALL" variant="FILL">Применить</Button>
-                    <Button className={styles.button} onClick={onResetFilters} color="BLUE" size="SMALL" variant="TEXT">Очистить все</Button>
+                    <Button className={styles.button} type="submit" color="BLUE" size="SMALL" variant="FILL">
+                        {t("Применить")}
+                    </Button>
+                    <Button className={styles.button} onClick={onResetFilters} color="BLUE" size="SMALL" variant="TEXT">
+                        {t("Очистить все")}
+                    </Button>
                 </div>
             </div>
             <div className={styles.bottom}>

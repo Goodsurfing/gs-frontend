@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, {
     FC, Fragment, useCallback, useEffect, useState,
@@ -317,7 +318,7 @@ export const Chat: FC<ChatProps> = (props) => {
     }, [messages, getApplicationData, myProfileData, locale, volunteerData?.profile.id,
         volunteerData?.profile.firstName, volunteerData?.profile.lastName,
         volunteerData?.profile.image, organizationData?.name, organizationData?.avatar,
-        organizationData?.owner.id, readMessage, isImHost, onApplicationSubmit, getFullName]);
+        organizationData?.owner.id, readMessage, isImHost, onApplicationSubmit]);
 
     if (!id || !myProfileData) {
         return (

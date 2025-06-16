@@ -13,11 +13,15 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./SearchOffers.module.scss";
 
 interface SearchOffersProps {
-    value?: string;
-    onChange?: (value: string) => void;
+    // value?: string;
+    // onChange?: (value: string) => void;
+    placeholder?: string;
+    buttonText?: string;
 }
 
-export const SearchOffers: FC<SearchOffersProps> = () => {
+export const SearchOffers: FC<SearchOffersProps> = (props) => {
+    const { placeholder = "Поиск", buttonText = "Посмотреть все" } = props;
+
     const [valueSearch, setValueSearch] = useState<string>("");
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
@@ -75,7 +79,7 @@ export const SearchOffers: FC<SearchOffersProps> = () => {
                     onClick={handleInputClick}
                     inputRef={inputRef}
                     sx={{ flex: 1, width: "100%" }}
-                    placeholder="Поиск"
+                    placeholder={placeholder}
                     inputProps={{ "aria-label": "Поиск вакансий" }}
                 />
                 <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -108,7 +112,7 @@ export const SearchOffers: FC<SearchOffersProps> = () => {
                         path={getOffersMapPageUrl(locale)}
                         type="primary"
                     >
-                        Посмотреть все
+                        {buttonText}
                     </ButtonLink>
                 </div>
             )}

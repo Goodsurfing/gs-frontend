@@ -3,6 +3,7 @@ import React, {
     FC, useCallback, useMemo, useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
@@ -30,6 +31,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
     const offersPerPage = 10;
 
     const { locale } = useLocale();
+    const { t } = useTranslation("offers-map");
 
     const currentOffers = useMemo(() => {
         const startIndex = (currentPage - 1) * offersPerPage;
@@ -67,7 +69,6 @@ export const OffersList: FC<OffersListProps> = (props) => {
                     data={offer}
                     key={offer.id}
                     // isFavoriteIconShow={!!isAuth}
-                    isFavoriteIconShow={false}
                 />
             ));
         },
@@ -86,7 +87,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <div className={styles.searchWrapper}>
-                    <SearchOffers value="Поиск" onChange={() => {}} />
+                    <SearchOffers placeholder={t("Поиск")} buttonText={t("Посмотреть все")} />
                 </div>
                 <HeaderList
                     offersLength={0}
@@ -101,7 +102,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text="Вакансии не были найдены"
+                        text={t("Вакансии не были найдены")}
                     />
                 </div>
             </div>
@@ -113,7 +114,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.searchWrapper}>
-                <SearchOffers value="Поиск" onChange={() => {}} />
+                <SearchOffers placeholder={t("Поиск")} buttonText={t("Посмотреть все")} />
             </div>
             <HeaderList
                 offersLength={data.length}

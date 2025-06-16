@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
     FC, memo, useEffect, useState,
 } from "react";
@@ -99,7 +100,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
             };
 
             fetchCards();
-        }, [filteredReviews, visibleCount, getVolunteer, offerId, locale, getFullName]);
+        }, [filteredReviews, visibleCount, getVolunteer, offerId, locale]);
 
         const handleShowNext = () => {
             setVisibleCount((prev) => prev + 5);
