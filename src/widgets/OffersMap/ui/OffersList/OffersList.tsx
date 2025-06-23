@@ -4,6 +4,7 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
+import { Controller, useFormContext } from "react-hook-form";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
@@ -14,22 +15,25 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { Offer } from "@/entities/Offer";
 import { SearchOffers } from "../SearchOffers/SearchOffers";
 import styles from "./OffersList.module.scss";
+import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface OffersListProps {
     className?: string;
     mapOpenValue: boolean;
     onChangeMapOpen: () => void;
+    onSubmit: () => void;
     data?: Offer[];
     isLoading: boolean;
 }
 
 export const OffersList: FC<OffersListProps> = (props) => {
     const {
-        mapOpenValue, onChangeMapOpen, data, isLoading, className,
+        mapOpenValue, onChangeMapOpen, data, onSubmit, isLoading, className,
     } = props;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
+    const { control } = useFormContext<OffersFilterFields>();
     const { locale } = useLocale();
     const { t } = useTranslation("offers-map");
 
@@ -87,7 +91,19 @@ export const OffersList: FC<OffersListProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <div className={styles.searchWrapper}>
-                    <SearchOffers placeholder={t("Поиск")} buttonText={t("Посмотреть все")} />
+                    <Controller
+                        name="search"
+                        control={control}
+                        render={({ field }) => (
+                            <SearchOffers
+                                onSubmit={onSubmit}
+                                value={field.value}
+                                onChange={field.onChange}
+                                placeholder={t("Поиск")}
+                                buttonText={t("Посмотреть все")}
+                            />
+                        )}
+                    />
                 </div>
                 <HeaderList
                     offersLength={0}
@@ -114,7 +130,19 @@ export const OffersList: FC<OffersListProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.searchWrapper}>
-                <SearchOffers placeholder={t("Поиск")} buttonText={t("Посмотреть все")} />
+                <Controller
+                    name="search"
+                    control={control}
+                    render={({ field }) => (
+                        <SearchOffers
+                            onSubmit={onSubmit}
+                            value={field.value}
+                            onChange={field.onChange}
+                            placeholder={t("Поиск")}
+                            buttonText={t("Посмотреть все")}
+                        />
+                    )}
+                />
             </div>
             <HeaderList
                 offersLength={data.length}

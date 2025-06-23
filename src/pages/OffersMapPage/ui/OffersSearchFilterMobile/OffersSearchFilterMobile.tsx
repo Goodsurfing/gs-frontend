@@ -181,7 +181,19 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             {isOffersTabOpened && (
                 <>
                     <div className={styles.searchWrapper}>
-                        <SearchOffers placeholder={t("Поиск")} buttonText={t("Посмотреть все")} />
+                        <Controller
+                            name="search"
+                            control={control}
+                            render={({ field }) => (
+                                <SearchOffers
+                                    onSubmit={() => handleSubmit()}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder={t("Поиск")}
+                                    buttonText={t("Посмотреть все")}
+                                />
+                            )}
+                        />
                     </div>
                     <div className={styles.offersCount}>
                         {data ? data.length : 0}

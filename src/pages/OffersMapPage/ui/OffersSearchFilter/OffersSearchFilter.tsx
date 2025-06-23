@@ -25,6 +25,7 @@ const defaultValues: OffersFilterFields = {
     periods: { start: undefined, end: undefined },
     withChildren: false,
     provided: [],
+    search: "",
 };
 
 const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
@@ -102,11 +103,12 @@ export const OffersSearchFilter = () => {
 
     return (
         <FormProvider {...offerFilterForm}>
-            <form onSubmit={onApplyFilters} className={styles.wrapper}>
+            <div className={styles.wrapper}>
                 <OffersFilter onResetFilters={onResetFilters} className={styles.filter} />
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
                         data={offersData}
+                        onSubmit={onApplyFilters}
                         isLoading={isLoading}
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
@@ -129,7 +131,7 @@ export const OffersSearchFilter = () => {
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
                 />
-            </form>
+            </div>
         </FormProvider>
     );
 };

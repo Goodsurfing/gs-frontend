@@ -14,6 +14,7 @@ export const offersFilterApiAdapter = (
         offersSort,
         withChildren,
         provided,
+        search,
     } = data;
     const { showClosedOffers, sortValue } = offersSort;
     const popularity = sortValue === "popularity" ? "desc" : undefined;
@@ -44,6 +45,7 @@ export const offersFilterApiAdapter = (
         end_date,
         "order[popularity]": popularity,
         "order[updatedAt]": updatedAt,
+        "description.title": search,
     };
 
     if (category.length > 0) queryParams.categories = category;

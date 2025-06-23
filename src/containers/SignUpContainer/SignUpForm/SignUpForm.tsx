@@ -16,7 +16,7 @@ import { getConfirmEmailPageUrl } from "@/shared/config/routes/AppUrls";
 import { authApi } from "@/store/api/authApi";
 import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
-import { IAuthFormData } from "@/types/api/auth/register.interface";
+import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.interface";
 
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -41,10 +41,11 @@ const SignUpForm: FC = () => {
     });
 
     const onSubmit: SubmitHandler<IAuthFormData> = async (data) => {
-        const formData = new FormData();
-        formData.append("email", data.email);
-        formData.append("plainPassword", data.password);
-        formData.append("locale", locale);
+        const formData: IRegisterFormData = {
+            email: data.email,
+            plainPassword: data.password,
+            locale,
+        };
         await registerUser(formData)
             .unwrap()
             .then((response) => {

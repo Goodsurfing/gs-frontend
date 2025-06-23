@@ -5,25 +5,36 @@ import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
-import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 import { useCategories } from "@/shared/data/categories";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./SearchOffers.module.scss";
+import { useLazyGetOffersQuery } from "@/entities/Offer";
+import useDebounce from "@/shared/hooks/useDebounce";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import Button from "@/shared/ui/Button/Button";
+import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 
 interface SearchOffersProps {
-    // value?: string;
-    // onChange?: (value: string) => void;
+    onSubmit: () => void;
+    value: string;
+    onChange: (value: string) => void;
     placeholder?: string;
     buttonText?: string;
 }
 
 export const SearchOffers: FC<SearchOffersProps> = (props) => {
-    const { placeholder = "Поиск", buttonText = "Посмотреть все" } = props;
+    const {
+        onSubmit,
+        value, onChange,
+        placeholder = "Поиск", buttonText = "Посмотреть все",
+    } = props;
 
-    const [valueSearch, setValueSearch] = useState<string>("");
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+    const [isDebouncing, setIsDebouncing] = useState(false);
+    const debouncedValue = useDebounce(value, 500);
+    const [getOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -31,9 +42,21 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
     const { getTranslation } = useCategories();
     const { locale } = useLocale();
 
-    const filteredOffers = mockedOffersData.filter(
-        (offer) => offer.description?.title.toLowerCase().includes(valueSearch.toLowerCase()),
-    );
+    useEffect(() => {
+        if (value.trim().length > 0) {
+            setIsDebouncing(true);
+        } else {
+            setDropdownVisible(false);
+        }
+    }, [value]);
+
+    useEffect(() => {
+        if (debouncedValue.trim().length > 0) {
+            setIsDebouncing(false);
+            getOffers({ "description.title": debouncedValue.toLowerCase() });
+            setDropdownVisible(true);
+        }
+    }, [debouncedValue, getOffers]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -48,14 +71,26 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
         };
     }, []);
 
+    const handleSubmit = () => {
+        onSubmit();
+        setDropdownVisible(false);
+    };
+
+    const handleClear = () => {
+        onChange("");
+        onSubmit();
+    };
+
     const handleInputClick = () => {
         setDropdownVisible(true);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValueSearch(e.target.value);
+        onChange(e.target.value);
         setDropdownVisible(true);
     };
+
+    const filteredOffers = offersData?.slice(0, 3) || [];
 
     return (
         <div ref={containerRef} style={{ position: "relative" }}>
@@ -71,49 +106,64 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
                         borderColor: "var(--accent-color)",
                     },
                 }}
-                component="form"
             >
                 <InputBase
-                    value={valueSearch}
+                    value={value}
                     onChange={handleInputChange}
                     onClick={handleInputClick}
                     inputRef={inputRef}
                     sx={{ flex: 1, width: "100%" }}
                     placeholder={placeholder}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleSubmit();
+                        }
+                    }}
                     inputProps={{ "aria-label": "Поиск вакансий" }}
                 />
-                <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+                {value.length > 0 && <CloseButton onClick={() => handleClear()} />}
+                <IconButton onClick={() => handleSubmit()} type="button" sx={{ p: "10px" }} aria-label="search">
                     <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </IconButton>
             </Paper>
 
-            {dropdownVisible && valueSearch && filteredOffers.length > 0 && (
+            {dropdownVisible && value && filteredOffers.length > 0 && (
                 <div className={styles.dropdown}>
-                    {filteredOffers.map((offer) => (
-                        <a
-                            href={getOffersMapPageUrl(locale)}
-                            key={offer.id}
-                            className={styles.dropdownItem}
-                        >
-                            <img
-                                src={offer.description?.image || defaultImage}
-                                alt={offer.description?.title}
-                            />
-                            <div className={styles.dropdownContent}>
-                                <p className={styles.offerTitle}>{offer.description?.title}</p>
-                                <p className={styles.offerCategory}>
-                                    {getTranslation(offer.description?.categoryIds[0])}
-                                </p>
-                            </div>
-                        </a>
-                    ))}
-                    <ButtonLink
-                        className={styles.button}
-                        path={getOffersMapPageUrl(locale)}
-                        type="primary"
-                    >
-                        {buttonText}
-                    </ButtonLink>
+                    {(isDebouncing || isLoading) ? (<MiniLoader />) : (
+                        <>
+                            {filteredOffers.map((offer) => (
+                                <a
+                                    href={getOffersMapPageUrl(locale)}
+                                    key={offer.id}
+                                    className={styles.dropdownItem}
+                                >
+                                    <img
+                                        src={getMediaContent(offer.description?.image)
+                                            || defaultImage}
+                                        alt={offer.description?.title}
+                                    />
+                                    <div className={styles.dropdownContent}>
+                                        <p className={styles.offerTitle}>
+                                            {
+                                                offer.description?.title
+                                            }
+                                        </p>
+                                        <p className={styles.offerCategory}>
+                                            {getTranslation(offer.description?.categoryIds[0])}
+                                        </p>
+                                    </div>
+                                </a>
+                            ))}
+                            <Button
+                                onClick={() => handleSubmit()}
+                                color="BLUE"
+                                size="SMALL"
+                                variant="FILL"
+                            >
+                                {buttonText}
+                            </Button>
+                        </>
+                    )}
                 </div>
             )}
         </div>
