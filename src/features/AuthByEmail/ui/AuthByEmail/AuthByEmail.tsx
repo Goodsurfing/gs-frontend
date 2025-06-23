@@ -21,6 +21,12 @@ export const AuthByEmail = memo(() => {
     }, [locale, navigate]);
     const { t, ready } = useTranslation();
 
+    const errorMessages: Record<string, string> = {
+        "Ошибка авторизации": "login.Ошибка авторизации",
+        "Invalid password": "login.Invalid password",
+        "Данный пользователь уже существует": "login.Данный пользователь уже существует",
+    };
+
     const onError = useCallback((errorText: string) => {
         setError(errorText);
     }, []);
@@ -38,7 +44,7 @@ export const AuthByEmail = memo(() => {
 
     return (
         <div className={styles.wrapper}>
-            {error && <HintPopup text={t(`login.${error}`)} type={HintType.Error} />}
+            {error && <HintPopup text={t(errorMessages[error])} type={HintType.Error} />}
             <h2 className={styles.title}>{t("login.Вход")}</h2>
             <AuthByEmailForm
                 className={styles.form}

@@ -9,7 +9,7 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { OfferWhoNeeds } from "../../model/types/offerWhoNeeds";
 import styles from "./OfferWhoNeedsCard.module.scss";
-import { useFormatGenders } from "@/shared/lib/formatGenders";
+import { useFormatGenders } from "@/shared/hooks/useFormatGenders";
 
 interface OfferWhoNeedsCardProps {
     className?: string;

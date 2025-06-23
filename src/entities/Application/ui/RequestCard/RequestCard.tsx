@@ -10,11 +10,12 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import { FullFormApplication } from "../../model/types/application";
-import styles from "./RequestCard.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
+import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {
     className?: string;
@@ -36,6 +37,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     } = props;
     const { volunteer, vacancy, status } = application;
     const { t } = useTranslation();
+    const { getApplicationStatus } = useApplicationStatus();
     const navigate = useNavigate();
 
     const { getFullName } = useGetFullName();
@@ -52,7 +54,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
             <div className={styles.cardHead}>
                 {showStatus && (
                     <div className={cn(styles.notification, styles[status])}>
-                        {t(`notes.${status}`)}
+                        {getApplicationStatus(status)}
                     </div>
                 )}
                 <CustomLink
