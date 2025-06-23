@@ -5,7 +5,7 @@ export interface IResetPasswordRequestFormData
 
 export interface IResetPasswordVerifyData {
     token: string;
-    plainPassword: string;
+    password: string;
 }
 
 export interface IResetPasswordRequestResponse {

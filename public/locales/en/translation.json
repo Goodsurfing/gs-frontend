@@ -13,6 +13,7 @@
         "Ошибка авторизации": "Authorization error",
         "Invalid password": "Invalid login or password",
         "Данный пользователь уже существует": "This user already exists",
+                "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "To log in, you need to confirm your email address. Please check your inbox.",
         "Некорректно введены данные": "Incorrect data entered",
         "Нажимая кнопку «Зарегистрироваться», я принимаю": "By clicking the 'Register' button, I accept",
         "Политику конфеденциальности ГудСёрфинга": "GoodSurfing Privacy Policy"

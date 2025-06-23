@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
+// import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -32,9 +32,9 @@ const SignUpContainer: FC = () => {
                 </Link>
                 .
             </div>
-            <div className={styles.socials}>
+            {/* <div className={styles.socials}>
                 <SocialAuthContainer />
-            </div>
+            </div> */}
             <p className={styles.attention}>
                 {t("login.Мы не постим ничего без вашего ведома")}
             </p>

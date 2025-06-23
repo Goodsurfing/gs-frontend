@@ -7,7 +7,7 @@ import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./AuthByEmail.module.scss";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
+// import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -25,6 +25,8 @@ export const AuthByEmail = memo(() => {
         "Ошибка авторизации": "login.Ошибка авторизации",
         "Invalid password": "login.Invalid password",
         "Данный пользователь уже существует": "login.Данный пользователь уже существует",
+        "Некорректно введены данные": "login.Некорректно введены данные",
+        "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "login.Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.",
     };
 
     const onError = useCallback((errorText: string) => {
@@ -44,16 +46,21 @@ export const AuthByEmail = memo(() => {
 
     return (
         <div className={styles.wrapper}>
-            {error && <HintPopup text={t(errorMessages[error])} type={HintType.Error} />}
+            {error && (
+                <HintPopup
+                    text={t(errorMessages[error])}
+                    type={HintType.Error}
+                />
+            )}
             <h2 className={styles.title}>{t("login.Вход")}</h2>
             <AuthByEmailForm
                 className={styles.form}
                 onSuccess={onSuccess}
                 onError={onError}
             />
-            <div className={styles.socials}>
+            {/* <div className={styles.socials}>
                 <SocialAuthContainer />
-            </div>
+            </div> */}
             <div className={styles.redirect}>
                 {t("login.Не зарегистрированы на Гудсерфинге?")}
                 {" "}

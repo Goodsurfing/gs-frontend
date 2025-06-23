@@ -39,7 +39,6 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                             location="Казань, Россия"
                             category="Заповедники и нац. парки"
                             rating="4.3"
-                            likes="10"
                             reviews="14"
                             went="22"
                             key={index}

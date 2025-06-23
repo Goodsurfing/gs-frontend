@@ -9,6 +9,9 @@ import { authApi } from "@/store/api/authApi";
 import { IResetPasswordRequestFormData } from "@/types/api/auth/resetPassword.interface";
 
 import styles from "./ResetPasswordFirstStep.module.scss";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ResetPasswordFirstStepProps {
     changeStep: (email: string) => void;
@@ -21,21 +24,25 @@ const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
         mode: "onChange",
     });
 
-    const [resetPasswordRequest] = authApi.useResetPasswordRequestMutation();
+    const [resetPasswordRequest, { error }] = authApi.useResetPasswordRequestMutation();
 
     const onSubmit: SubmitHandler<IResetPasswordRequestFormData> = async (
         data,
     ) => {
         await resetPasswordRequest(data)
             .unwrap()
-            .then((response) => {
-                changeStep(response.email);
+            .then(() => {
+                changeStep(data.email);
                 reset();
+            })
+            .catch(() => {
+                // empty
             });
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            {error && <HintPopup text={getErrorText(error)} type={HintType.Error} />}
             <Controller
                 control={control}
                 name="email"
