@@ -50,7 +50,6 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
 
     const renderOffers = (offers: Offer[]) => offers.map((offer) => (
         <OfferCard
-            isFavoriteIconShow
             locale={locale}
             classNameCard={styles.offerCard}
             className={cn(styles.offer)}

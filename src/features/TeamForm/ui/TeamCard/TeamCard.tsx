@@ -10,7 +10,7 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import styles from "./TeamCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Profile } from "@/entities/Profile";
-import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
+import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/entities/Locale";
 
@@ -28,6 +28,7 @@ export const TeamCard: FC<TeamCardProps> = memo(
         disableDeleteIcn, onDeleteClick, locale,
     }: TeamCardProps) => {
         const navigate = useNavigate();
+        const { getFullName } = useGetFullName();
 
         const navigateTo = (userId: string) => {
             if (userId) {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, {
     FC, Fragment, useCallback, useEffect, useState,
@@ -11,7 +12,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-import { OfferApplication, UserSettings } from "@/features/Messenger";
+import { OfferApplication } from "@/features/Messenger";
 
 import { FormApplicationStatus } from "@/entities/Application";
 import {
@@ -47,7 +48,7 @@ import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { useMessenger } from "@/app/providers/MessengerProvider";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 
 interface ChatProps {
     id?: string;
@@ -90,6 +91,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
     const [isImHost, setImHost] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { getFullName } = useGetFullName();
     const { onReadMessage } = useMessenger();
 
     const { mercureToken } = useAuth();
@@ -313,12 +315,10 @@ export const Chat: FC<ChatProps> = (props) => {
         };
 
         processMessages();
-    }, [messages, getApplicationData, myProfileData,
-        locale, volunteerData?.profile.id,
+    }, [messages, getApplicationData, myProfileData, locale, volunteerData?.profile.id,
         volunteerData?.profile.firstName, volunteerData?.profile.lastName,
-        volunteerData?.profile.image, organizationData?.name,
-        organizationData?.avatar, organizationData?.owner.id,
-        readMessage, isImHost, onApplicationSubmit]);
+        volunteerData?.profile.image, organizationData?.name, organizationData?.avatar,
+        organizationData?.owner.id, readMessage, isImHost, onApplicationSubmit]);
 
     if (!id || !myProfileData) {
         return (
@@ -444,7 +444,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         </span>
                     </div>
                     <div className={styles.settingsInfo}>
-                        <UserSettings />
+                        {/* <UserSettings /> */}
                         <ReactSVG
                             src={arrowIcon}
                             className={styles.openInfo}

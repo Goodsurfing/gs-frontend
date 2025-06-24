@@ -4,17 +4,18 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-    getMessengerPageUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl,
+    getMessengerPageIdUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import { FullFormApplication } from "../../model/types/application";
-import styles from "./RequestCard.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
+import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
+import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {
     className?: string;
@@ -36,15 +37,18 @@ export const RequestCard = memo((props: RequestCardProps) => {
     } = props;
     const { volunteer, vacancy, status } = application;
     const { t } = useTranslation();
+    const { getApplicationStatus } = useApplicationStatus();
     const navigate = useNavigate();
 
-    const username = getFullName(volunteer.profile.firstName, volunteer.profile.lastName);
+    const { getFullName } = useGetFullName();
 
     const address = (!volunteer.profile.city || !volunteer.profile.country)
         ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;
 
     const onMessageClick = () => {
-        navigate(getMessengerPageUrl(locale));
+        if (application.chatId) {
+            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        }
     };
 
     return (
@@ -52,7 +56,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
             <div className={styles.cardHead}>
                 {showStatus && (
                     <div className={cn(styles.notification, styles[status])}>
-                        {t(`notes.${status}`)}
+                        {getApplicationStatus(status)}
                     </div>
                 )}
                 <CustomLink
@@ -73,7 +77,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                         <span
                             className={styles.name}
                         >
-                            {username}
+                            {getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}
                         </span>
                         <span className={styles.location}>
                             {address}
@@ -95,24 +99,28 @@ export const RequestCard = memo((props: RequestCardProps) => {
             <div className={styles.buttons}>
                 {showButtons && status === "accepted" && (
                     <>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            variant="OUTLINE"
-                            size="SMALL"
-                            onClick={onMessageClick}
-                        >
-                            {t("notes.Сообщение")}
-                        </Button>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            variant="OUTLINE"
-                            size="SMALL"
-                            onClick={() => onReviewClick?.(application)}
-                        >
-                            {t("notes.Написать отзыв")}
-                        </Button>
+                        {application.chatId && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                variant="OUTLINE"
+                                size="SMALL"
+                                onClick={onMessageClick}
+                            >
+                                {t("notes.Сообщение")}
+                            </Button>
+                        )}
+                        {!application.hasFeedbackFromOrganization && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                variant="OUTLINE"
+                                size="SMALL"
+                                onClick={() => onReviewClick?.(application)}
+                            >
+                                {t("notes.Написать отзыв")}
+                            </Button>
+                        )}
                     </>
                 )}
             </div>

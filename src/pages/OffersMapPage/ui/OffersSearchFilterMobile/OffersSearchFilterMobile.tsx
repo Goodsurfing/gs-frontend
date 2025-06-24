@@ -12,10 +12,10 @@ import {
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { getUserAuthData } from "@/entities/User";
+// import { getUserAuthData } from "@/entities/User";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import { useAppSelector } from "@/shared/hooks/redux";
+// import { useAppSelector } from "@/shared/hooks/redux";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
 import { Text } from "@/shared/ui/Text/Text";
@@ -47,7 +47,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     const [currentPage, setCurrentPage] = useState<number>(1);
     const offersPerPage = 10;
 
-    const isAuth = useAppSelector(getUserAuthData);
+    // const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
 
     const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
@@ -79,7 +79,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     status={offer.status === "active" ? "opened" : "closed"}
                     data={offer}
                     key={offer.id}
-                    isFavoriteIconShow={!!isAuth}
+                    // isFavoriteIconShow={!!isAuth}
                 />
             ));
         }
@@ -90,7 +90,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                 text="Вакансии не были найдены"
             />
         );
-    }, [currentOffers, data, isAuth, locale]);
+    }, [currentOffers, data, locale]);
 
     const handleOffersTab = () => {
         if (selectedTab !== "offers") {
@@ -181,7 +181,19 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             {isOffersTabOpened && (
                 <>
                     <div className={styles.searchWrapper}>
-                        <SearchOffers value="Поиск" onChange={() => {}} />
+                        <Controller
+                            name="search"
+                            control={control}
+                            render={({ field }) => (
+                                <SearchOffers
+                                    onSubmit={() => handleSubmit()}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder={t("Поиск")}
+                                    buttonText={t("Посмотреть все")}
+                                />
+                            )}
+                        />
                     </div>
                     <div className={styles.offersCount}>
                         {data ? data.length : 0}

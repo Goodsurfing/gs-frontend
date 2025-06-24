@@ -1,5 +1,6 @@
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
 
 interface ProfileDeleteSwitchProps {
@@ -9,6 +10,8 @@ interface ProfileDeleteSwitchProps {
 export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(
     (props: ProfileDeleteSwitchProps) => {
         const { className } = props;
+        const { t } = useTranslation("profile");
+
         return (
             <Button
                 className={className}
@@ -16,7 +19,7 @@ export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(
                 variant="FILL"
                 size="SMALL"
             >
-                Удалить аккаунт
+                {t("privacy.Удалить аккаунт")}
             </Button>
         );
     },

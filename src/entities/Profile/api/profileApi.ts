@@ -79,6 +79,7 @@ export const profileApi = createApi({
 
 export const {
     useGetProfileInfoQuery,
+    useLazyGetProfileInfoQuery,
     useGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
     useChangePasswordMutation,

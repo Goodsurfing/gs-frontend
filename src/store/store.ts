@@ -8,7 +8,6 @@ import { userReducer } from "@/entities/User";
 
 import { profileApi, profileReducer } from "@/entities/Profile";
 
-import { loginApi } from "@/features/AuthByEmail";
 import { galleryApi, galleryReducer } from "@/modules/Gallery";
 
 import registerReducer from "./reducers/registerSlice";
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
     user: userReducer,
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
-    [loginApi.reducerPath]: loginApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
     [organizationApi.reducerPath]: organizationApi.reducer,
     [userOrganizationInfoApi.reducerPath]: userOrganizationInfoApi.reducer,
@@ -44,7 +42,6 @@ export const setupStore = () => configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
         authApi.middleware,
-        loginApi.middleware,
         organizationApi.middleware,
         userOrganizationInfoApi.middleware,
         localeApi.middleware,

@@ -152,6 +152,8 @@ export const mockedApplications: FullFormApplication[] = [
         endDate: "",
         startDate: "",
         vacancy: mockedOffersData[0],
+        hasFeedbackFromOrganization: false,
+        hasFeedbackFromVolunteer: false,
     },
     {
         id: 2,
@@ -195,6 +197,8 @@ export const mockedApplications: FullFormApplication[] = [
         endDate: "",
         startDate: "",
         vacancy: mockedOffersData[0],
+        hasFeedbackFromOrganization: false,
+        hasFeedbackFromVolunteer: false,
     },
     {
         id: 3,
@@ -238,6 +242,8 @@ export const mockedApplications: FullFormApplication[] = [
         endDate: "",
         startDate: "",
         vacancy: mockedOffersData[0],
+        hasFeedbackFromOrganization: false,
+        hasFeedbackFromVolunteer: false,
     },
     {
         id: 4,
@@ -281,6 +287,8 @@ export const mockedApplications: FullFormApplication[] = [
         endDate: "",
         startDate: "",
         vacancy: mockedOffersData[0],
+        hasFeedbackFromOrganization: false,
+        hasFeedbackFromVolunteer: false,
     },
     {
         id: 5,
@@ -324,5 +332,7 @@ export const mockedApplications: FullFormApplication[] = [
         endDate: "",
         startDate: "",
         vacancy: mockedOffersData[0],
+        hasFeedbackFromOrganization: false,
+        hasFeedbackFromVolunteer: false,
     },
 ];

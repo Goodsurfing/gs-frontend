@@ -55,8 +55,8 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     useEffect(() => {
         if (volunteerApplicationsData) {
             const filteredApplications = volunteerApplicationsData.filter(
-                (volunteerApplication) => volunteerApplication.status === "accepted",
-            );
+                (volunteerApplication) => (volunteerApplication.status === "accepted" && !volunteerApplication.hasFeedbackFromVolunteer),
+            ).slice(0, 10);
             setApplications([...filteredApplications]);
         } else {
             setApplications([]);

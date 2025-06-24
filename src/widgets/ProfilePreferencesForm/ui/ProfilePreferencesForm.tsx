@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
+import { useTranslation } from "react-i18next";
 import { Activity } from "@/features/ProfilePreferences";
 
 import Button from "@/shared/ui/Button/Button";
@@ -28,6 +29,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
         mode: "onChange",
         defaultValues,
     });
+    const { t } = useTranslation("profile");
 
     const [toast, setToast] = useState<ToastAlert>();
     const { data: profileData } = useGetProfileInfoQuery();
@@ -46,7 +48,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
         try {
             await updateProfile({ userId: profileId, profileData: preparedData }).unwrap();
             setToast({
-                text: "Данные успешно изменены",
+                text: t("preferences.Данные успешно изменены"),
                 type: HintType.Success,
             });
         } catch (error) {
@@ -79,7 +81,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
                 onClick={onSubmit}
                 className={styles.button}
             >
-                Сохранить
+                {t("preferences.Сохранить")}
             </Button>
         </form>
     );

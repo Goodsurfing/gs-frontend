@@ -8,9 +8,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 
-import { goodsurfingNowData } from "../../model/data/aboutproject";
 import { GoodsurfingNowItem } from "../GoodsurfingNowItem/GoodsurfingNowItem";
 import styles from "./GoodsurfingNow.module.scss";
+import { useAboutProjects } from "../../model/data/useAboutProject";
 
 interface GoodsurfingNowProps {
     className?: string;
@@ -21,6 +21,7 @@ export const GoodsurfingNow: FC<GoodsurfingNowProps> = (props) => {
     const { t } = useTranslation("about-project");
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const { goodsurfingNowData } = useAboutProjects();
 
     const handleNavigateToRole = () => {
         navigate(getMembershipPageUrl(locale));
@@ -34,7 +35,7 @@ export const GoodsurfingNow: FC<GoodsurfingNowProps> = (props) => {
                 key={index}
             />
         )),
-        [],
+        [goodsurfingNowData],
     );
 
     return (

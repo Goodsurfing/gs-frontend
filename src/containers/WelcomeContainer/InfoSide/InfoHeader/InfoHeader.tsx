@@ -37,7 +37,7 @@ import Button from "@/shared/ui/Button/Button";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./InfoHeader.module.scss";
-import { useUser } from "@/entities/Profile";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface DropdownState {
     isCommunityOpened: boolean;
@@ -48,12 +48,9 @@ type ButtonNav = "COMMUNITY" | "ABOUT";
 
 const InfoHeader = memo(() => {
     const { t } = useTranslation();
-
     const { locale } = useLocale();
-
     const navigate = useNavigate();
-
-    const { profile } = useUser();
+    const { myProfile } = useAuth();
 
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
@@ -106,7 +103,7 @@ const InfoHeader = memo(() => {
                 <MobileHeader />
             </div>
             <header className={styles.header}>
-                <ChangeLanguage localeApi={profile?.locale} profileId={profile?.id} />
+                <ChangeLanguage localeApi={myProfile?.locale} profileId={myProfile?.id} />
                 <div
                     ref={communityRef}
                     className={styles.link}

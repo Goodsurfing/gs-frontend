@@ -31,7 +31,8 @@
         "Открыть": "Abrir",
         "Вы уверены что хотите изменить вакансию?": "¿Está seguro de que quiere modificar la oferta de trabajo?",
         "Ок": "Ok",
-        "Отмена": "Cancelar"
+        "Отмена": "Cancelar",
+        "Удалить": "Borrar"
     },
     "hostNotes": {
         "Мои заявки": "Mis aplicaciones",
@@ -69,7 +70,7 @@
         "Ошибка при создании организации": "Error al crear la organización",
         "Данные успешно изменены": "Datos actualizados con éxito",
         "Произошла ошибка! Поробуйте перезагрузить страницу": "¡Ocurrió un error! Intenta recargar la página",
-        "Основная информация": "Main information",
+        "Основная информация": "Información principal",
         "Название организации": "Nombre de la organización",
         "Опишите организацию в одно предложение": "Describe la organización en una frase",
         "Тип организации": "Tipo de organización",

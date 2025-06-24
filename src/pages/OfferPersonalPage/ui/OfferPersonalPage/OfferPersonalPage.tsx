@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 
+import { useEffect, useState } from "react";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { OfferSubmenu } from "@/widgets/OfferSubmenu";
 
-import { useGetOfferByIdQuery } from "@/entities/Offer";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -15,7 +16,22 @@ import styles from "./OfferPersonalPage.module.scss";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
-    const { data: offerData, isLoading } = useGetOfferByIdQuery(id || "");
+    const [offerData, setOfferData] = useState<Offer>();
+
+    const [getOfferData, { isLoading }] = useLazyGetOfferByIdQuery();
+
+    useEffect(() => {
+        const fetchOffers = async () => {
+            try {
+                const result = await getOfferData(id ?? "");
+                if (result.data) {
+                    setOfferData(result.data);
+                }
+            } catch { /* empty */ }
+        };
+
+        fetchOffers();
+    }, [getOfferData, id]);
 
     if (isLoading) {
         return (

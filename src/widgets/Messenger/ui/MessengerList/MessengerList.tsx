@@ -10,22 +10,21 @@ import { useGetChatListData } from "@/entities/Chat";
 import { ChatsListWithOrganizations, ChatsListWithVolunteers, UserCard } from "@/entities/Messenger";
 
 import { ListFilter } from "../ListFilter/ListFilter";
-import styles from "./MessengerList.module.scss";
-import { Profile } from "@/entities/Profile";
 import { useMessenger } from "@/app/providers/MessengerProvider";
+import styles from "./MessengerList.module.scss";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
     locale: Locale;
-    myProfileData: Profile;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps) => {
     const {
-        className, onUserClick, locale, myProfileData,
+        className, onUserClick, locale,
     } = props;
     const { token, mercureToken } = useAuth();
+
     const {
         chatsListWithOrganizations,
         chatsListWithVolunteers,
@@ -34,8 +33,8 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
         onChangeSearchValue,
         onChangeStatusValue,
         fetchChats,
-    } = useGetChatListData(token, mercureToken, myProfileData);
-    const { registerMessageUpdateCallback } = useMessenger();
+    } = useGetChatListData(token, mercureToken);
+    const { registerMessageUpdateCallback, registerOnMessageCallback } = useMessenger();
     const [filteredChatList,
         setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]
     >([]);
@@ -45,6 +44,12 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
             fetchChats();
         });
     }, [fetchChats, registerMessageUpdateCallback]);
+
+    useEffect(() => {
+        registerOnMessageCallback(() => {
+            fetchChats();
+        });
+    }, [fetchChats, registerOnMessageCallback]);
 
     const handleTextChange = (text: string) => {
         onChangeSearchValue(text);

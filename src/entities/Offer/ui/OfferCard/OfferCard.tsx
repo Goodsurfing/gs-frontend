@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
-import like from "@/shared/assets/icons/offers/like.svg";
+// import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
@@ -20,7 +20,7 @@ interface OfferCardProps {
     location?: string;
     category?: string;
     rating?: string;
-    likes?: string;
+    // likes?: string;
     reviews?: string;
     went?: string;
     description?: string;
@@ -40,7 +40,6 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         title,
         description,
         category,
-        likes,
         location,
         rating,
         reviews,
@@ -85,7 +84,13 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                     <span className={styles.category}>{category}</span>
                 </div>
                 <div className={styles.stats}>
-                    <div
+                    {rating && (
+                        <div className={styles.rating}>
+                            <img src={star} alt="star-icon" />
+                            <span>{rating}</span>
+                        </div>
+                    )}
+                    {/* <div
                         style={{
                             display: "flex",
                             flexWrap: "wrap",
@@ -104,7 +109,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                                 <span>{likes}</span>
                             </div>
                         )}
-                    </div>
+                    </div> */}
                     <div className={styles.extraInfo}>
                         {reviews && (
                             <span className={styles.review}>

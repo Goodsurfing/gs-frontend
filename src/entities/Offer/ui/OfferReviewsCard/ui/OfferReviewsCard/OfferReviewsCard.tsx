@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
     FC, memo, useEffect, useState,
 } from "react";
@@ -11,7 +12,7 @@ import { ApplicationReviewResponse, useGetToOrganizationsReviewsByIdQuery } from
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import { getFullName } from "@/shared/lib/getFullName";
+import { useGetFullName } from "@/shared/lib/getFullName";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import { Text } from "@/shared/ui/Text/Text";
@@ -33,6 +34,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const [visibleCount, setVisibleCount] = useState(5);
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
+        const { getFullName } = useGetFullName();
 
         const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery(hostId);
         const [getVolunteer] = useLazyGetVolunteerByIdQuery();
@@ -111,7 +113,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
-                <div className={styles.container}>{renderCards}</div>
+                <div className={styles.container}>{renderCards.length > 0 ? renderCards : "На данный момент отзывов нет"}</div>
                 {visibleCount < filteredReviews.length && (
                     <ShowNext onClick={handleShowNext} />
                 )}

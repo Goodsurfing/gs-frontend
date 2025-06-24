@@ -8,12 +8,11 @@ import {
 } from "@/entities/Messenger";
 
 import { BASE_URL } from "@/shared/constants/api";
-import { Profile } from "@/entities/Profile";
+import { useMessenger } from "@/app/providers/MessengerProvider";
 
 export const useGetChatListData = (
     token: string | null,
     mercureToken: string | null,
-    myProfile: Profile,
 ) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [statusValue, setStatusValue] = useState<FormApplicationStatus | null>(null);
@@ -22,6 +21,8 @@ export const useGetChatListData = (
     >([]);
     const [chatsListWithOrganizations,
         setChatsListWithOrganizations] = useState<ChatsListWithOrganizations[]>([]);
+
+    const { registerOnMessageCallback } = useMessenger();
 
     const fetchChats = useCallback(async () => {
         try {
@@ -61,58 +62,43 @@ export const useGetChatListData = (
         } catch {
             /* empty */
         }
-    }, [mercureToken, searchValue, statusValue, token]);
+    }, [mercureToken, searchValue,
+        statusValue, token]);
 
     useEffect(() => {
         fetchChats();
     }, [fetchChats]);
 
     useEffect(() => {
-        if (!mercureToken) return;
-
-        const url = new URL(`${BASE_URL}.well-known/mercure`);
-        url.searchParams.append(
-            "topic",
-            `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`,
-        );
-        url.searchParams.append("authorization", mercureToken);
-
-        const eventSource = new EventSource(url);
-
-        eventSource.addEventListener("messageOnChat", (event) => {
-            const updatedMessage: MessageType = JSON.parse(event.data);
+        const unsubscribe = registerOnMessageCallback((updatedMessage: MessageType) => {
             const tempUpdatedChatId = updatedMessage.chat.split("/").pop();
-            if (tempUpdatedChatId) {
-                const updatedChatId = parseInt(tempUpdatedChatId, 10);
-                setChatsListWithVolunteers((prev) => prev.map(
-                    (chat) => (chat.id === updatedChatId
-                        ? {
-                            ...chat,
-                            lastMessage: updatedMessage,
-                            countUnreadMessagesByOrganization:
-                                      chat.countUnreadMessagesByOrganization
-                                      + 1,
-                        }
-                        : chat),
-                ));
+            if (!tempUpdatedChatId) return;
 
-                setChatsListWithOrganizations((prev) => prev.map(
-                    (chat) => (chat.id === updatedChatId
-                        ? {
-                            ...chat,
-                            lastMessage: updatedMessage,
-                            countUnreadMessagesByVolunteer:
-                                      chat.countUnreadMessagesByVolunteer + 1,
-                        }
-                        : chat),
-                ));
-            }
+            const updatedChatId = parseInt(tempUpdatedChatId, 10);
+
+            setChatsListWithVolunteers((prev) => prev.map((chat) => (chat.id === updatedChatId
+                ? {
+                    ...chat,
+                    lastMessage: updatedMessage,
+                    countUnreadMessagesByOrganization:
+                              chat.countUnreadMessagesByOrganization + 1,
+                }
+                : chat)));
+
+            setChatsListWithOrganizations((prev) => prev.map((chat) => (chat.id === updatedChatId
+                ? {
+                    ...chat,
+                    lastMessage: updatedMessage,
+                    countUnreadMessagesByVolunteer:
+                              chat.countUnreadMessagesByVolunteer + 1,
+                }
+                : chat)));
         });
 
         return () => {
-            eventSource.close();
+            unsubscribe();
         };
-    }, [mercureToken, myProfile.id]);
+    }, [registerOnMessageCallback]);
 
     const onChangeSearchValue = (value: string) => {
         setSearchValue(value);

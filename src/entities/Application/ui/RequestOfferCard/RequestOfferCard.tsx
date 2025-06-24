@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { getMessengerPageUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageIdUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { textSlice } from "@/shared/lib/textSlice";
@@ -14,6 +14,7 @@ import styles from "./RequestOfferCard.module.scss";
 import { FullFormApplication } from "../../model/types/application";
 import { Locale } from "@/entities/Locale";
 import CustomLink from "@/shared/ui/Link/Link";
+import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 
 interface RequestOfferCardProps {
     application: FullFormApplication;
@@ -38,16 +39,19 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
     const imageCover = getMediaContent(application.vacancy.description?.image);
     const { status, vacancy } = application;
     const { getTranslation } = useCategories();
+    const { getApplicationStatus } = useApplicationStatus();
 
     const onMessageClick = () => {
-        navigate(getMessengerPageUrl(locale));
+        if (application.chatId) {
+            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        }
     };
 
     return (
         <div className={cn(className, styles.wrapper)}>
             {showStatus && (
                 <div className={cn(styles.status, styles[status])}>
-                    {t(`notes.${status}`)}
+                    {getApplicationStatus(status)}
                 </div>
             )}
             <CustomLink to={getOfferPersonalPageUrl(locale, vacancy.id.toString())} variant="DEFAULT">
@@ -81,16 +85,18 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
             <div className={styles.buttons}>
                 {showButtons && (
                     <>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            size="SMALL"
-                            variant="OUTLINE"
-                            onClick={onMessageClick}
-                        >
-                            {t("notes.Сообщение")}
-                        </Button>
-                        {application.status === "accepted" && (
+                        {application.chatId && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                size="SMALL"
+                                variant="OUTLINE"
+                                onClick={onMessageClick}
+                            >
+                                {t("notes.Сообщение")}
+                            </Button>
+                        )}
+                        {(application.status === "accepted" && !application.hasFeedbackFromVolunteer) && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"

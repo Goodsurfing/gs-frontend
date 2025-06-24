@@ -1,14 +1,15 @@
 import cn from "classnames";
-import React, { FC, memo, useMemo } from "react";
+import React, {
+    FC, memo, useCallback, useEffect, useRef, useState,
+} from "react";
 
 import { useTranslation } from "react-i18next";
-import { useGetHostOffersByIdQuery } from "@/entities/Offer";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Offer, useLazyGetHostOffersByIdQuery } from "@/entities/Offer";
 
 import styles from "./HostOffersCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Text } from "@/shared/ui/Text/Text";
-import { useAppSelector } from "@/shared/hooks/redux";
-import { getUserAuthData } from "@/entities/User";
 import { OfferCard } from "@/widgets/OffersMap";
 
 interface HostOffersCardProps {
@@ -16,45 +17,68 @@ interface HostOffersCardProps {
     hostId: string;
 }
 
-export const HostOffersCard: FC<HostOffersCardProps> = memo(
-    (props: HostOffersCardProps) => {
-        const { className, hostId } = props;
-        const { t } = useTranslation("host");
-        const isAuth = useAppSelector(getUserAuthData);
-        const { data: hostOffers, isError } = useGetHostOffersByIdQuery(hostId);
-        const { locale } = useLocale();
+const ITEMS_PER_PAGE = 4;
 
-        const renderOffers = useMemo(
-            () => {
-                if (!hostOffers) return null;
+export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCardProps) => {
+    const { className, hostId } = props;
+    const { t } = useTranslation("host");
+    const { locale } = useLocale();
 
-                return hostOffers
-                    .slice(0, 3)
-                    .map((offer) => (
-                        <OfferCard
-                            locale={locale}
-                            status={offer.status === "active" ? "opened" : "closed"}
-                            data={offer}
-                            key={offer.id}
-                            isFavoriteIconShow={!!isAuth}
-                        />
+    const loadedPagesRef = useRef<Set<number>>(new Set());
+    const [hostOffers, setHostOffers] = useState<Offer[]>([]);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [getHostOffers] = useLazyGetHostOffersByIdQuery();
 
-                    ));
-            },
-            [hostOffers, isAuth, locale],
-        );
+    const fetchHostOffers = useCallback(async () => {
+        if (loadedPagesRef.current.has(page)) return;
 
-        if ((hostOffers?.length === 0) || isError) {
-            return null;
+        const result = await getHostOffers({
+            organizationId: hostId,
+            itemsPerPage: ITEMS_PER_PAGE,
+            page,
+        }).unwrap();
+
+        if (result.length < ITEMS_PER_PAGE) {
+            setHasMore(false);
         }
 
-        return (
-            <div id="2" className={cn(className, styles.wrapper)}>
-                <Text title={t("personalHost.Вакансии")} titleSize="h3" />
-                <div className={styles.container}>
-                    {renderOffers}
-                </div>
-            </div>
-        );
-    },
-);
+        loadedPagesRef.current.add(page);
+        setHostOffers((prev) => {
+            const merged = [...prev, ...result];
+            const unique = Array.from(new Map(merged.map((o) => [o.id, o])).values());
+            return unique;
+        });
+    }, [getHostOffers, hostId, page]);
+
+    useEffect(() => {
+        fetchHostOffers();
+    }, [fetchHostOffers, page]);
+
+    const fetchMoreHostOffers = () => {
+        setPage((prevPage) => prevPage + 1);
+    };
+
+    return (
+        <div id="2" className={cn(className, styles.wrapper)}>
+            <Text title={t("personalHost.Вакансии")} titleSize="h3" />
+            <InfiniteScroll
+                className={styles.container}
+                dataLength={hostOffers.length}
+                next={fetchMoreHostOffers}
+                hasMore={hasMore}
+                loader={<Text text="Загрузка..." />}
+                scrollThreshold={0.6}
+            >
+                {hostOffers.map((offer) => (
+                    <OfferCard
+                        key={offer.id}
+                        locale={locale}
+                        status={offer.status === "active" ? "opened" : "closed"}
+                        data={offer}
+                    />
+                ))}
+            </InfiniteScroll>
+        </div>
+    );
+});

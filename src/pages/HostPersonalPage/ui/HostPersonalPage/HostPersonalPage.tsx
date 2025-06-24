@@ -42,7 +42,7 @@ export const HostPersonalPage = () => {
         return <Preloader />;
     }
 
-    if (!id || !hostData || isError || !myProfile) {
+    if (!id || !hostData || isError) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
@@ -54,7 +54,10 @@ export const HostPersonalPage = () => {
         );
     }
 
-    const isEdit = myProfile.id === hostData.owner.id;
+    const isEdit = () => {
+        if (!myProfile) return false;
+        return myProfile.id === hostData.owner.id;
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -62,14 +65,14 @@ export const HostPersonalPage = () => {
             <div className={styles.content}>
                 <HostlHeaderCard
                     host={hostData}
-                    isEdit={isEdit}
+                    isEdit={isEdit()}
                     locale={locale}
                 />
                 <Submenu
                     className={styles.navMenu}
                     items={submenuItems}
                     buttons={
-                        isEdit ? (
+                        isEdit() ? (
                             <Button
                                 size="SMALL"
                                 color="BLUE"

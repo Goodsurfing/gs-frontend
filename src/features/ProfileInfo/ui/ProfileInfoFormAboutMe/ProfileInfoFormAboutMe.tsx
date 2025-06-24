@@ -27,7 +27,7 @@ export const ProfileInfoFormAboutMe = memo((props: ProfileInfoFormAboutMeProps) 
                 name="aboutMe"
                 label={t("info.Расскажите о себе")}
                 maxLength={1000}
-                description="Не более 1000 знаков"
+                description={t("info.Не более 1000 знаков")}
             />
         </div>
     );

@@ -15,7 +15,7 @@ interface OfferCardProps {
     status: "opened" | "closed";
     className?: string;
     classNameCard?: string;
-    isFavoriteIconShow: boolean;
+    // isFavoriteIconShow: boolean;
     locale: Locale;
 }
 
@@ -28,7 +28,6 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
         status,
         className,
         classNameCard,
-        isFavoriteIconShow,
         locale,
     } = props;
     const imageCover = getMediaContent(description?.image);
@@ -53,13 +52,12 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 category={getTranslation(description?.categoryIds[0])}
                 image={imageCover}
                 location={where?.address || ""}
-                likes="5"
                 rating={averageRating?.toString()}
                 reviews={feedbacksCountinteger?.toString()}
                 went={acceptedApplicationsCount.toString()}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
-                isFavoriteIconShow={isFavoriteIconShow}
+                isFavoriteIconShow={false}
                 isFavorite={isFavorite}
                 locale={locale}
                 handleFavoriteClick={onFavoriteClick}

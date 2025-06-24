@@ -74,7 +74,6 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 offerId={id}
                 category={getTranslation(description?.categoryIds[0])}
                 description={description?.shortDescription}
-                likes="5"
                 location={where?.address}
                 rating="4"
                 reviews="15"

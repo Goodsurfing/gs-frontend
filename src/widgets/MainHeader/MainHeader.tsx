@@ -9,7 +9,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
-import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { getUserAuthData } from "@/entities/User";
 
 // import heartIcon from "@/shared/assets/icons/heart-icon.svg";
@@ -28,12 +27,14 @@ import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
 import styles from "./MainHeader.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
+    const { myProfile, profileIsLoading } = useAuth();
 
-    const { data: profile, isLoading } = useGetProfileInfoQuery();
+    // const { data: profile, isLoading } = useGetProfileInfoQuery();
 
     const isAuth = useAppSelector(getUserAuthData);
 
@@ -47,11 +48,11 @@ const MainHeader: FC = () => {
                     >
                         <img src={logotypeIcon} alt="GoodSurfing" />
                     </LocaleLink>
-                    <ChangeLanguage localeApi={profile?.locale} profileId={profile?.id} />
+                    <ChangeLanguage localeApi={myProfile?.locale} profileId={myProfile?.id} />
                 </div>
                 <MainHeaderNav />
                 <div className={styles.right}>
-                    {(isAuth && profile) ? (
+                    {(isAuth && myProfile) ? (
                         <>
                             <div className={styles.icons}>
                                 {/* <LocaleLink
@@ -64,12 +65,12 @@ const MainHeader: FC = () => {
                                     to={getMessengerPageUrl(locale)}
                                     className={styles.icon}
                                 >
-                                    <MessangerInfo myProfile={profile} />
+                                    <MessangerInfo />
                                 </LocaleLink>
                             </div>
                             <MainHeaderProfile
-                                profileData={profile}
-                                isLoading={isLoading}
+                                profileData={myProfile}
+                                isLoading={profileIsLoading}
                             />
                             <LocaleLink
                                 className={styles.membershipWrapper}

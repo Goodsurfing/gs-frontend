@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 import styles from "./ProfileHideSwitch.module.scss";
@@ -12,11 +13,14 @@ interface ProfileHideSwitchProps {
 export const ProfileHideSwitch: FC<ProfileHideSwitchProps> = ({
     checked,
     onChange,
-}) => (
-    <div className={styles.wrapper}>
-        <SwitchComponent checked={checked} onChange={onChange} />
-        <span className={styles.title}>
-            Деактивировать и скрыть мой аккаунт
-        </span>
-    </div>
-);
+}) => {
+    const { t } = useTranslation("profile");
+    return (
+        <div className={styles.wrapper}>
+            <SwitchComponent checked={checked} onChange={onChange} />
+            <span className={styles.title}>
+                {t("privacy.Деактивировать и скрыть мой аккаунт")}
+            </span>
+        </div>
+    );
+};
