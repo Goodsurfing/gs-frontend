@@ -23,11 +23,12 @@ type ButtonNav = "CATEGORIES" | "PERIODS" | "EXTRAFILTERS";
 
 interface OffersFilterProps {
     className?: string;
+    onSubmit: () => void;
     onResetFilters: () => void;
 }
 
 export const OffersFilter: FC<OffersFilterProps> = (props) => {
-    const { className, onResetFilters } = props;
+    const { className, onResetFilters, onSubmit } = props;
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
 
@@ -120,7 +121,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                 />
 
                 <div className={styles.buttons}>
-                    <Button type="submit" className={styles.button} color="BLUE" size="SMALL" variant="FILL">
+                    <Button onClick={onSubmit} className={styles.button} color="BLUE" size="SMALL" variant="FILL">
                         {t("Применить")}
                     </Button>
                     <Button className={styles.button} onClick={onResetFilters} color="BLUE" size="SMALL" variant="TEXT">

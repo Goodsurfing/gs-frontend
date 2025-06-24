@@ -3,6 +3,7 @@ import React, {
 } from "react";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
+import { useFormContext, useWatch } from "react-hook-form";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { useCategories } from "@/shared/data/categories";
@@ -15,6 +16,8 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import Button from "@/shared/ui/Button/Button";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
+import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
+import { offersFilterApiAdapter } from "@/pages/OffersMapPage/lib/offersFilterAdapter";
 
 interface SearchOffersProps {
     onSubmit: () => void;
@@ -34,6 +37,10 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
     const [isDebouncing, setIsDebouncing] = useState(false);
     const debouncedValue = useDebounce(value, 500);
+
+    const { control } = useFormContext<OffersFilterFields>();
+    const offersFilters = useWatch({ control }) as OffersFilterFields;
+
     const [getOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -53,9 +60,11 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
     useEffect(() => {
         if (debouncedValue.trim().length > 0) {
             setIsDebouncing(false);
-            getOffers({ "description.title": debouncedValue.toLowerCase() });
+            const preparedData = offersFilterApiAdapter(offersFilters);
+            getOffers({ ...preparedData, "description.title": debouncedValue.toLowerCase() });
             setDropdownVisible(true);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue, getOffers]);
 
     useEffect(() => {

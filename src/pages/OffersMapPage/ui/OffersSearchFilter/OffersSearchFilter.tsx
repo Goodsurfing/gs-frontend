@@ -104,7 +104,11 @@ export const OffersSearchFilter = () => {
     return (
         <FormProvider {...offerFilterForm}>
             <div className={styles.wrapper}>
-                <OffersFilter onResetFilters={onResetFilters} className={styles.filter} />
+                <OffersFilter
+                    onSubmit={onApplyFilters}
+                    onResetFilters={onResetFilters}
+                    className={styles.filter}
+                />
                 <div className={styles.wrapperOffersMap}>
                     <OffersList
                         data={offersData}
