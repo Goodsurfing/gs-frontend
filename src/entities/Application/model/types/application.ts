@@ -24,6 +24,9 @@ export interface FullFormApplication {
     startDate: string;
     endDate: string;
     status: FormApplicationStatus;
+    chatId?: number;
+    hasFeedbackFromVolunteer: boolean;
+    hasFeedbackFromOrganization: boolean;
 }
 
 export type FormApplicationStatus = "new" | "accepted" | "canceled";

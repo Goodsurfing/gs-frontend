@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { getMessengerPageUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageIdUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { textSlice } from "@/shared/lib/textSlice";
@@ -42,7 +42,9 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
     const { getApplicationStatus } = useApplicationStatus();
 
     const onMessageClick = () => {
-        navigate(getMessengerPageUrl(locale));
+        if (application.chatId) {
+            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        }
     };
 
     return (
@@ -83,16 +85,18 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
             <div className={styles.buttons}>
                 {showButtons && (
                     <>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            size="SMALL"
-                            variant="OUTLINE"
-                            onClick={onMessageClick}
-                        >
-                            {t("notes.Сообщение")}
-                        </Button>
-                        {application.status === "accepted" && (
+                        {application.chatId && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                size="SMALL"
+                                variant="OUTLINE"
+                                onClick={onMessageClick}
+                            >
+                                {t("notes.Сообщение")}
+                            </Button>
+                        )}
+                        {(application.status === "accepted" && !application.hasFeedbackFromVolunteer) && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"

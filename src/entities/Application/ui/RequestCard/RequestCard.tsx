@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-    getMessengerPageUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl,
+    getMessengerPageIdUrl, getOfferPersonalPageUrl, getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -46,7 +46,9 @@ export const RequestCard = memo((props: RequestCardProps) => {
         ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;
 
     const onMessageClick = () => {
-        navigate(getMessengerPageUrl(locale));
+        if (application.chatId) {
+            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        }
     };
 
     return (
@@ -97,24 +99,28 @@ export const RequestCard = memo((props: RequestCardProps) => {
             <div className={styles.buttons}>
                 {showButtons && status === "accepted" && (
                     <>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            variant="OUTLINE"
-                            size="SMALL"
-                            onClick={onMessageClick}
-                        >
-                            {t("notes.Сообщение")}
-                        </Button>
-                        <Button
-                            className={styles.button}
-                            color="BLUE"
-                            variant="OUTLINE"
-                            size="SMALL"
-                            onClick={() => onReviewClick?.(application)}
-                        >
-                            {t("notes.Написать отзыв")}
-                        </Button>
+                        {application.chatId && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                variant="OUTLINE"
+                                size="SMALL"
+                                onClick={onMessageClick}
+                            >
+                                {t("notes.Сообщение")}
+                            </Button>
+                        )}
+                        {!application.hasFeedbackFromOrganization && (
+                            <Button
+                                className={styles.button}
+                                color="BLUE"
+                                variant="OUTLINE"
+                                size="SMALL"
+                                onClick={() => onReviewClick?.(application)}
+                            >
+                                {t("notes.Написать отзыв")}
+                            </Button>
+                        )}
                     </>
                 )}
             </div>

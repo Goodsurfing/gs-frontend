@@ -28,7 +28,7 @@ const VolunteerReviewPage: FC = () => {
 
     return (
         <div className={styles.wrapper}>
-            <Title />
+            <Title rating={volunteerData.averageRating} />
             <div className={styles.container}>
                 <ReviewAboutOffers id={volunteerData.profile.id} locale={locale} />
                 <ReviewAboutVolunteer volunteerId={volunteerData.profile.id} />
