@@ -61,7 +61,7 @@ export const SearchOffers: FC<SearchOffersProps> = (props) => {
         if (debouncedValue.trim().length > 0) {
             setIsDebouncing(false);
             const preparedData = offersFilterApiAdapter(offersFilters);
-            getOffers({ ...preparedData, "description.title": debouncedValue.toLowerCase() });
+            getOffers({ ...preparedData, search: debouncedValue.toLowerCase() });
             setDropdownVisible(true);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -72,6 +72,5 @@ export interface OffersFilters {
     categories: CategoryType[];
     "order[popularity]": string;
     "order[updatedAt]": string;
-    "description.title": string;
-    "where.address": string;
+    search: string;
 }
