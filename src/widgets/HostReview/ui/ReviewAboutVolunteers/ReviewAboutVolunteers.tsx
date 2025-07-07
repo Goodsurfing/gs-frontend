@@ -16,7 +16,10 @@ import {
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import styles from "./ReviewAboutVolunteers.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { useCreateToVolunteerReviewMutation, useGetToVolunteerReviewsQuery } from "@/entities/Review/api/reviewApi";
+import {
+    useCreateToVolunteerReviewMutation,
+    useLazyGetToVolunteerReviewsQuery,
+} from "@/entities/Review/api/reviewApi";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -26,6 +29,8 @@ interface ReviewAboutVolunteersProps {
     locale: Locale;
     id: string;
 }
+
+const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
     const { locale, id } = props;
@@ -46,9 +51,13 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         null,
     );
     const [applications, setApplications] = useState<FullFormApplication[]>([]);
+    const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
+
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const { data: hostApplicationsData } = useGetMyHostApplicationsQuery();
-    const { data: myReviewsData } = useGetToVolunteerReviewsQuery({ author: id });
+    const [getMyReviews] = useLazyGetToVolunteerReviewsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
     useEffect(() => {
@@ -61,6 +70,35 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
             setApplications([]);
         }
     }, [hostApplicationsData]);
+
+    const fetchMyReviews = async (isInitial: boolean) => {
+        try {
+            const currentPage = isInitial ? 1 : page;
+
+            const result = await getMyReviews({
+                author: id,
+                page: currentPage,
+                itemsPerPage: ITEMS_PER_PAGE,
+            }).unwrap();
+
+            if (result.length < ITEMS_PER_PAGE) {
+                setHasMore(false);
+            }
+
+            if (isInitial) {
+                setMyReviews(result);
+                setPage(2);
+            } else {
+                setMyReviews((prev) => [...prev, ...result]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch { /* empty */ }
+    };
+
+    useEffect(() => {
+        fetchMyReviews(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const renderFullCards = (reviews?: ApplicationReviewResponse[]) => {
         if (!reviews) return null;
@@ -119,7 +157,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     ));
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} id="applications-scroll-wrapper">
             <h3 className={styles.h3}>{t("hostReviews.Отзывы про волонтёров")}</h3>
             <p className={styles.description}>
                 {t("hostReviews.Волонтёры, которых вы недавно принимали")}
@@ -141,21 +179,21 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     )}
                 />
             ) : (
-                <div className={styles.applicationContainer} id="applications-scroll-container">
-                    <InfiniteScroll
-                        dataLength={displayedAppli.length}
-                        next={loadMore}
-                        hasMore={displayedChats.length < filteredChatList.length}
-                        scrollThreshold="70%"
-                        loader={null}
-                        scrollableTarget="applications-scroll-container"
-                    >
-                        {renderApplications}
-                    </InfiniteScroll>
+                <div className={styles.applicationContainer}>
+                    {renderApplications}
                 </div>
             )}
             <div className={styles.fullCardContainer}>
-                {renderFullCards(myReviewsData)}
+                <InfiniteScroll
+                    dataLength={myReviews.length}
+                    next={() => fetchMyReviews(false)}
+                    hasMore={hasMore}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="applications-scroll-wrapper"
+                >
+                    {renderFullCards(myReviews)}
+                </InfiniteScroll>
             </div>
             <Controller
                 name="review"

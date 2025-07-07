@@ -106,17 +106,8 @@ export const NotesHostForm = () => {
     const handleUpdateStatus = async (applicationId: number, status: FormApplicationStatus) => {
         await updateApplicationStatus({ applicationId: applicationId.toString(), status })
             .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("hostNotes.Статус был изменён"),
-                    type: HintType.Success,
-                });
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
+            .catch(() => {
+                // empty
             });
     };
 

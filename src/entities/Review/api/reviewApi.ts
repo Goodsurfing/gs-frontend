@@ -10,6 +10,14 @@ interface ReviewRequest {
 
 interface ReviewParams {
     author: string;
+    itemsPerPage?: number;
+    page?: number;
+}
+
+interface ReviewHostRequest {
+    hostId: string;
+    itemsPerPage?: number;
+    page?: number;
 }
 
 export const reviewApi = createApi({
@@ -83,10 +91,11 @@ export const reviewApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        getToOrganizationsReviewsById: build.query<ApplicationReviewResponse[], string>({
-            query: (hostId) => ({
+        getToOrganizationsReviewsById: build.query<ApplicationReviewResponse[], ReviewHostRequest>({
+            query: ({ hostId, itemsPerPage, page }) => ({
                 url: `organizations/${hostId}/feedbacks`,
                 method: "GET",
+                params: { itemsPerPage, page },
             }),
             providesTags: ["host"],
         }),
@@ -107,6 +116,7 @@ export const reviewApi = createApi({
 export const {
     useCreateToVolunteerReviewMutation,
     useGetToVolunteerReviewsQuery,
+    useLazyGetToVolunteerReviewsQuery,
     useGetToVolunteerReviewByIdQuery,
     useLazyGetToVolunteerReviewByIdQuery,
     useGetToVolunteerReviewsByIdQuery,
