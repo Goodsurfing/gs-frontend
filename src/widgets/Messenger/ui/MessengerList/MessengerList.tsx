@@ -2,32 +2,34 @@ import cn from "classnames";
 import React, {
     FC, useEffect, useMemo, useState,
 } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { useGetChatListData } from "@/entities/Chat";
-import { ChatsListWithOrganizations, ChatsListWithVolunteers, UserCard } from "@/entities/Messenger";
+import { ChatsList, UserCard } from "@/entities/Messenger";
 
 import { ListFilter } from "../ListFilter/ListFilter";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import styles from "./MessengerList.module.scss";
+import { Profile } from "@/entities/Profile";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
     locale: Locale;
+    myProfileData: Profile;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps) => {
     const {
-        className, onUserClick, locale,
+        className, onUserClick, locale, myProfileData,
     } = props;
     const { token, mercureToken } = useAuth();
 
     const {
-        chatsListWithOrganizations,
-        chatsListWithVolunteers,
+        chatsList,
         searchValue,
         statusValue,
         onChangeSearchValue,
@@ -35,9 +37,9 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
         fetchChats,
     } = useGetChatListData(token, mercureToken);
     const { registerMessageUpdateCallback, registerOnMessageCallback } = useMessenger();
-    const [filteredChatList,
-        setFilteredChatList] = useState<(ChatsListWithVolunteers | ChatsListWithOrganizations)[]
-    >([]);
+
+    const [visibleCount, setVisibleCount] = useState(20);
+    const [filteredChatList, setFilteredChatList] = useState<ChatsList[]>([]);
 
     useEffect(() => {
         registerMessageUpdateCallback(() => {
@@ -60,21 +62,32 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
     }, [statusValue]);
 
     useEffect(() => {
-        setFilteredChatList([...chatsListWithOrganizations, ...chatsListWithVolunteers]);
-    }, [chatsListWithOrganizations, chatsListWithVolunteers]);
+        setFilteredChatList([...chatsList]);
+    }, [chatsList]);
+
+    const loadMore = () => {
+        setVisibleCount((prev) => prev + 20);
+    };
+
+    const displayedChats = useMemo(
+        () => filteredChatList.slice(0, visibleCount),
+        [filteredChatList, visibleCount],
+    );
 
     const renderUserCard = useMemo(
-        () => filteredChatList.map(
-            (chatItem) => (
-                <div
-                    onClick={() => onUserClick?.(chatItem.id.toString())}
-                    key={chatItem.id.toString()}
-                >
-                    <UserCard dataChat={chatItem} locale={locale} />
-                </div>
-            ),
-        ),
-        [filteredChatList, locale, onUserClick],
+        () => displayedChats.map((chatItem) => (
+            <div
+                onClick={() => onUserClick?.(chatItem.id.toString())}
+                key={chatItem.id.toString()}
+            >
+                <UserCard
+                    dataChat={chatItem}
+                    locale={locale}
+                    myProfileData={myProfileData}
+                />
+            </div>
+        )),
+        [displayedChats, locale, onUserClick, myProfileData],
     );
 
     return (
@@ -87,7 +100,18 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
                     onChangeStatus={onChangeStatusValue}
                 />
             </div>
-            <div className={cn(styles.wrapper)}>{renderUserCard}</div>
+            <div className={styles.wrapper} id="chat-scroll-wrapper">
+                <InfiniteScroll
+                    dataLength={displayedChats.length}
+                    next={loadMore}
+                    hasMore={displayedChats.length < filteredChatList.length}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="chat-scroll-wrapper"
+                >
+                    {renderUserCard}
+                </InfiniteScroll>
+            </div>
         </div>
     );
 };

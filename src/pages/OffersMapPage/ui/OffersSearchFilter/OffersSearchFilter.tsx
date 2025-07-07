@@ -91,10 +91,11 @@ export const OffersSearchFilter = () => {
         fetchOffers(preparedData);
     });
 
-    const onResetFilters = () => {
+    const onResetFilters = async () => {
         reset(defaultFilterValues);
         setSearchParams(new URLSearchParams());
-        fetchOffers(undefined);
+        const preparedData = offersFilterApiAdapter(defaultValues);
+        await fetchOffers(preparedData);
     };
 
     const handleMapOpen = useCallback(() => {

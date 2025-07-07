@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
@@ -140,8 +141,17 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     )}
                 />
             ) : (
-                <div className={styles.applicationContainer}>
-                    {renderApplications}
+                <div className={styles.applicationContainer} id="applications-scroll-container">
+                    <InfiniteScroll
+                        dataLength={displayedAppli.length}
+                        next={loadMore}
+                        hasMore={displayedChats.length < filteredChatList.length}
+                        scrollThreshold="70%"
+                        loader={null}
+                        scrollableTarget="applications-scroll-container"
+                    >
+                        {renderApplications}
+                    </InfiniteScroll>
                 </div>
             )}
             <div className={styles.fullCardContainer}>

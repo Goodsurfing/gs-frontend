@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { HostApi } from "@/entities/Host";
@@ -9,8 +11,7 @@ import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import {
-    ChatsListWithOrganizations,
-    ChatsListWithVolunteers,
+    ChatsList,
 } from "../../model/types/messenger";
 import styles from "./UserCard.module.scss";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer/api/volunteerApi";
@@ -20,15 +21,19 @@ import { formatMessageDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getOfferStateColor } from "@/shared/lib/offerState";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { Profile } from "@/entities/Profile";
 
 interface UserCardProps {
-    dataChat: ChatsListWithVolunteers | ChatsListWithOrganizations;
+    dataChat: ChatsList;
     className?: string;
     locale: Locale;
+    myProfileData: Profile;
 }
 
 export const UserCard: FC<UserCardProps> = (props) => {
-    const { dataChat, className, locale } = props;
+    const {
+        dataChat, className, locale, myProfileData,
+    } = props;
     const { id } = useParams();
     const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
     const [hostData, setHostData] = useState<HostApi>();
@@ -37,10 +42,8 @@ export const UserCard: FC<UserCardProps> = (props) => {
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [getHost] = useLazyGetHostByIdQuery();
 
-    const isVolunteerChat = (
-        data: ChatsListWithVolunteers | ChatsListWithOrganizations,
-    ): data is ChatsListWithVolunteers => (data as ChatsListWithVolunteers).volunteer !== undefined
-        && (data as ChatsListWithVolunteers).countUnreadMessagesByOrganization !== undefined;
+    const isVolunteerChat = useCallback((data: ChatsList):
+    boolean => data.volunteer.profile.id !== myProfileData.id, [myProfileData.id]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,7 +55,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
         };
 
         fetchData();
-    }, [dataChat, getHost, getVolunteer]);
+    }, [dataChat, getHost, getVolunteer, isVolunteerChat]);
 
     if (volunteerData && isVolunteerChat(dataChat)) {
         return (
@@ -79,12 +82,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
                         <span className={styles.date}>
                             {formatMessageDate(
                                 locale,
-                                dataChat.lastMessage.createdAt,
+                                dataChat.lastMessage?.createdAt,
                             )}
                         </span>
                     </div>
                     <div className={styles.dateNewLastMess}>
-                        <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
+                        <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
                         {!!dataChat.countUnreadMessagesByOrganization && (
                             <div className={styles.newMessages}>
                                 {dataChat.countUnreadMessagesByOrganization > 9 ? "9+" : dataChat.countUnreadMessagesByOrganization}
@@ -118,12 +121,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
                         <span className={styles.date}>
                             {formatMessageDate(
                                 locale,
-                                dataChat.lastMessage.createdAt,
+                                dataChat.lastMessage?.createdAt,
                             )}
                         </span>
                     </div>
                     <div className={styles.dateNewLastMess}>
-                        <span className={styles.lastMessage}>{dataChat.lastMessage.text ?? "Заявка"}</span>
+                        <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
                         {!!dataChat.countUnreadMessagesByVolunteer && (
                             <div className={styles.newMessages}>
                                 {dataChat.countUnreadMessagesByVolunteer > 9 ? "9+" : dataChat.countUnreadMessagesByVolunteer}

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
@@ -44,17 +44,17 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
+    const navigateToVolunteer = useCallback((id: string) => {
+        navigate(getVolunteerPersonalPageUrl(locale, id));
+    }, [locale, navigate]);
+
+    const navigateToHost = useCallback((id: string) => {
+        navigate(getHostPersonalPageUrl(locale, id));
+    }, [locale, navigate]);
+
     if (!user) {
         return null;
     }
-
-    const navigateToVolunteer = (id: string) => {
-        navigate(getVolunteerPersonalPageUrl(locale, id));
-    };
-
-    const navigateToHost = (id: string) => {
-        navigate(getHostPersonalPageUrl(locale, id));
-    };
 
     if ("profile" in user) {
         const { profile, skills } = user;

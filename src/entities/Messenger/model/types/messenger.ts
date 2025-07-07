@@ -16,6 +16,16 @@ export interface MessageType {
     viewedOrganization: boolean;
     applicationForm?: string;
 }
+
+export interface ChatsList {
+    id: number;
+    organization: HostApi;
+    volunteer: VolunteerApi;
+    lastMessage?: MessageType;
+    vacancyStatus?: FormApplicationStatus;
+    countUnreadMessagesByOrganization: number;
+    countUnreadMessagesByVolunteer: number;
+}
 export interface ChatsListWithVolunteers {
     id: number;
     volunteer: VolunteerApi;
