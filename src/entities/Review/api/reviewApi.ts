@@ -20,6 +20,12 @@ interface ReviewHostRequest {
     page?: number;
 }
 
+interface ReviewVolunteerRequest {
+    volunteerId: string;
+    itemsPerPage?: number;
+    page?: number;
+}
+
 export const reviewApi = createApi({
     reducerPath: "reviewApi",
     baseQuery: baseQueryAcceptJson,
@@ -49,10 +55,12 @@ export const reviewApi = createApi({
             }),
             providesTags: ["volunteer"],
         }),
-        getToVolunteerReviewsById: build.query<ApplicationReviewResponse[], string>({
-            query: (volunteerId) => ({
+        getToVolunteerReviewsById: build.query<ApplicationReviewResponse[],
+        ReviewVolunteerRequest>({
+            query: ({ volunteerId, itemsPerPage, page }) => ({
                 url: `volunteers/${volunteerId}/feedbacks`,
                 method: "GET",
+                params: { itemsPerPage, page },
             }),
             providesTags: ["volunteer"],
         }),
@@ -120,9 +128,11 @@ export const {
     useGetToVolunteerReviewByIdQuery,
     useLazyGetToVolunteerReviewByIdQuery,
     useGetToVolunteerReviewsByIdQuery,
+    useLazyGetToVolunteerReviewsByIdQuery,
     useUpdateToVolunteerReviewByIdMutation,
     useCreateToOrganizationsReviewMutation,
     useGetToOrganizationsReviewsQuery,
+    useLazyGetToOrganizationsReviewsQuery,
     useGetToOrganizationsReviewByIdQuery,
     useLazyGetToOrganizationsReviewByIdQuery,
     useGetToOrganizationsReviewsByIdQuery,

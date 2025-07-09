@@ -12,6 +12,7 @@ import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard"
 import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 import styles from "./VolunteerInfoCard.module.scss";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
+import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
 
 interface VolunteerInfoCardProps {
     className?: string;
@@ -41,10 +42,10 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     languages={volunteer.languages}
                     className={styles.container}
                 />
-                {/* <VolunteerOffersCard
-                    offers={volunteer.offers}
+                <VolunteerOffersCard
+                    offers={volunteer.participatedVacancies}
                     className={styles.container}
-                /> */}
+                />
                 <VolunteerReviewsCard
                     volunteerId={volunteer.profile.id}
                     className={styles.container}

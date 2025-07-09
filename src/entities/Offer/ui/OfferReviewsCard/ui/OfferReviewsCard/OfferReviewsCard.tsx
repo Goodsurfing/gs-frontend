@@ -36,7 +36,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
 
-        const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery(hostId);
+        const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery({ hostId });
         const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
         useEffect(() => {

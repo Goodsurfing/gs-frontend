@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback, useEffect, useRef, useState,
+} from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
@@ -34,6 +36,7 @@ export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const [fetchOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const initialCategories = searchParams.get("category")
         ?.split(",")
@@ -101,6 +104,28 @@ export const OffersSearchFilter = () => {
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
     }, []);
+
+    useEffect(() => {
+        const subscription = watch((value, { name, type }) => {
+            if ((name === "offersSort.showClosedOffers" || name === "offersSort.sortValue") && type === "change") {
+                if (debounceTimeoutRef.current) {
+                    clearTimeout(debounceTimeoutRef.current);
+                }
+
+                debounceTimeoutRef.current = setTimeout(() => {
+                    const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
+                    fetchOffers(preparedData);
+                }, 300);
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
+    }, [watch, fetchOffers]);
 
     return (
         <FormProvider {...offerFilterForm}>

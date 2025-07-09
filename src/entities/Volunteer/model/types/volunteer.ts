@@ -31,6 +31,7 @@ export interface VolunteerApi {
     certificates: MediaObjectType[];
     averageRating?: number;
     feedbacksCount: number;
+    participatedVacancies: string[];
 }
 
 export type VolunteerType = Omit<VolunteerApi, "profile" | "certificates"> & {

@@ -3,7 +3,7 @@
     background-color: var(--bg-primary-1);
     border: 1px solid var(--bg-accent);
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
     padding: 20px;
 
     &::-webkit-scrollbar {

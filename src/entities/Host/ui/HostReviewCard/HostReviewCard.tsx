@@ -28,7 +28,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCa
     const { t } = useTranslation("host");
     const { locale } = useLocale();
     const { getFullName } = useGetFullName();
-    const { data: reviewsData = [] } = useGetToOrganizationsReviewsByIdQuery(hostId);
+    const { data: reviewsData = [] } = useGetToOrganizationsReviewsByIdQuery({ hostId });
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [visibleCount, setVisibleCount] = useState(5);
     const [volunteerData, setVolunteerData] = useState<Record<string, any>>({});

@@ -35,7 +35,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
 
-        const { data: reviewsData } = useGetToVolunteerReviewsByIdQuery(volunteerId);
+        const { data: reviewsData } = useGetToVolunteerReviewsByIdQuery({ volunteerId });
         const [getHost] = useLazyGetHostByIdQuery();
 
         useEffect(() => {

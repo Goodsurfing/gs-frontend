@@ -65,7 +65,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                     dataLength={reviews.length}
                     next={() => fetchReviews(false)}
                     hasMore={hasMore}
-                    // scrollThreshold="70%"
+                    scrollThreshold="70%"
                     loader={null}
                     scrollableTarget="applications-scroll-wrapper"
                 >

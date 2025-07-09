@@ -4,4 +4,23 @@
 
 .container {
     margin-top: 20px;
+    max-height: 560px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: var(--color-white);
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--color-blue);
+      }
+  
+      &:empty{
+        border: none;
+      }
 }

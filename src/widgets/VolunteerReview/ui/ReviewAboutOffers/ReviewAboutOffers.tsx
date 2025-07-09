@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
@@ -20,13 +21,15 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
-import { useCreateToOrganizationsReviewMutation, useGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
+import { useCreateToOrganizationsReviewMutation, useLazyGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
 import { useGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
     id: string;
 }
+
+const ITEMS_PER_PAGE = 3;
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const { locale, id } = props;
@@ -44,12 +47,16 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     });
     const { handleSubmit, control, reset } = form;
     const [applications, setApplications] = useState<FullFormApplication[]>([]);
+    const [myReviews, setMyReviews] = useState<ApplicationReview[]>([]);
     const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
         null,
     );
 
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     const { data: volunteerApplicationsData, isLoading } = useGetMyVolunteerApplicationsQuery();
-    const { data: myReviewsData } = useGetToOrganizationsReviewsQuery({ author: id });
+    const [getMyReviews] = useLazyGetToOrganizationsReviewsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
@@ -62,6 +69,35 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             setApplications([]);
         }
     }, [volunteerApplicationsData]);
+
+    const fetchMyReviews = async (isInitial: boolean) => {
+        try {
+            const currentPage = isInitial ? 1 : page;
+
+            const result = await getMyReviews({
+                author: id,
+                page: currentPage,
+                itemsPerPage: ITEMS_PER_PAGE,
+            }).unwrap();
+
+            if (result.length < ITEMS_PER_PAGE) {
+                setHasMore(false);
+            }
+
+            if (isInitial) {
+                setMyReviews(result);
+                setPage(2);
+            } else {
+                setMyReviews((prev) => [...prev, ...result]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch { /* empty */ }
+    };
+
+    useEffect(() => {
+        fetchMyReviews(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const renderFullCards = (reviews?: ApplicationReview[]) => reviews?.map(
         (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
@@ -124,7 +160,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     ));
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} id="applications-scroll-wrapper">
             <h3 className={styles.h3}>
                 {t("volunteer-review.Отзывы о проектах")}
             </h3>
@@ -153,7 +189,16 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                 </div>
             )}
             <div className={styles.fullCardContainer}>
-                {renderFullCards(myReviewsData)}
+                <InfiniteScroll
+                    dataLength={myReviews.length}
+                    next={() => fetchMyReviews(false)}
+                    hasMore={hasMore}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="applications-scroll-wrapper"
+                >
+                    {renderFullCards(myReviews)}
+                </InfiniteScroll>
             </div>
             <Controller
                 name="review"
