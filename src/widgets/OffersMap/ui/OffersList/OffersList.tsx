@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useMemo, useState,
+    FC, useCallback, useMemo,
 } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -24,14 +24,18 @@ interface OffersListProps {
     onSubmit: () => void;
     data?: Offer[];
     isLoading: boolean;
+    currentPage: number;
+    offersPerPage: number;
+    onChangePage: (pageItem: number) => void;
 }
 
 export const OffersList: FC<OffersListProps> = (props) => {
     const {
-        mapOpenValue, onChangeMapOpen, data, onSubmit, isLoading, className,
+        mapOpenValue, onChangeMapOpen, data,
+        onSubmit, isLoading, className,
+        currentPage, offersPerPage,
+        onChangePage,
     } = props;
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const offersPerPage = 10;
 
     const { control } = useFormContext<OffersFilterFields>();
     const { locale } = useLocale();
@@ -41,15 +45,15 @@ export const OffersList: FC<OffersListProps> = (props) => {
         const startIndex = (currentPage - 1) * offersPerPage;
         const endIndex = startIndex + offersPerPage;
         return data?.slice(startIndex, endIndex);
-    }, [data, currentPage]);
+    }, [currentPage, offersPerPage, data]);
 
     const changeMapOpen = useCallback(() => {
         onChangeMapOpen();
     }, [onChangeMapOpen]);
 
     const changeCurrentPage = useCallback((page: number) => {
-        setCurrentPage(page);
-    }, []);
+        onChangePage(page);
+    }, [onChangePage]);
 
     const renderOfferCards = useMemo(
         () => {
@@ -79,53 +83,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
         [currentOffers, locale, mapOpenValue],
     );
 
-    if (isLoading) {
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <MiniLoader className={styles.miniLoader} />
-            </div>
-        );
-    }
-
-    if (!data) {
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <div className={styles.searchWrapper}>
-                    <Controller
-                        name="search"
-                        control={control}
-                        render={({ field }) => (
-                            <SearchOffers
-                                onSubmit={onSubmit}
-                                value={field.value}
-                                onChange={field.onChange}
-                                placeholder={t("Поиск")}
-                                buttonText={t("Посмотреть все")}
-                            />
-                        )}
-                    />
-                </div>
-                <HeaderList
-                    offersLength={0}
-                    isShowMap={mapOpenValue}
-                    onChangeShowMap={changeMapOpen}
-                />
-                <div
-                    className={cn(styles.list, {
-                        [styles.closed]: !mapOpenValue,
-                    })}
-                >
-                    <Text
-                        className={styles.error}
-                        textSize="primary"
-                        text={t("Вакансии не были найдены")}
-                    />
-                </div>
-            </div>
-        );
-    }
-
-    const totalPages = Math.ceil(data.length / offersPerPage);
+    const totalPages = data ? Math.ceil(data.length / offersPerPage) : 0;
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -140,19 +98,31 @@ export const OffersList: FC<OffersListProps> = (props) => {
                             onChange={field.onChange}
                             placeholder={t("Поиск")}
                             buttonText={t("Посмотреть все")}
+                            offers={data}
+                            isLoading={isLoading}
                         />
                     )}
                 />
             </div>
             <HeaderList
-                offersLength={data.length}
+                offersLength={data ? data.length : 0}
                 isShowMap={mapOpenValue}
-                onChangeShowMap={onChangeMapOpen}
+                onChangeShowMap={changeMapOpen}
             />
             <div
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}
             >
-                {renderOfferCards}
+                {isLoading && <MiniLoader className={styles.miniLoader} />}
+
+                {!isLoading && (!data || data.length === 0) && (
+                    <Text
+                        className={styles.error}
+                        textSize="primary"
+                        text={t("Вакансии не были найдены")}
+                    />
+                )}
+
+                {!isLoading && data && data.length > 0 && renderOfferCards}
             </div>
             <OfferPagination
                 currentPage={currentPage}

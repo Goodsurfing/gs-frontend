@@ -32,11 +32,15 @@ const defaultValues: OffersFilterFields = {
 
 const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
+const OFFERS_PER_PAGE = 10;
+
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [fetchOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
+    const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initialCategories = searchParams.get("category")
         ?.split(",")
@@ -89,9 +93,14 @@ export const OffersSearchFilter = () => {
         setIsSyncing(false);
     }, [searchParams, setValue]);
 
-    const onApplyFilters = handleSubmit((data: OffersFilterFields) => {
+    const onChangePage = useCallback((pageItem: number) => {
+        setCurrentPage(pageItem);
+    }, []);
+
+    const onApplyFilters = handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
-        fetchOffers(preparedData);
+        await fetchOffers(preparedData);
+        onChangePage(1);
     });
 
     const onResetFilters = async () => {
@@ -99,6 +108,7 @@ export const OffersSearchFilter = () => {
         setSearchParams(new URLSearchParams());
         const preparedData = offersFilterApiAdapter(defaultValues);
         await fetchOffers(preparedData);
+        onChangePage(1);
     };
 
     const handleMapOpen = useCallback(() => {
@@ -125,7 +135,7 @@ export const OffersSearchFilter = () => {
                 clearTimeout(debounceTimeoutRef.current);
             }
         };
-    }, [watch, fetchOffers]);
+    }, []);
 
     return (
         <FormProvider {...offerFilterForm}>
@@ -139,12 +149,15 @@ export const OffersSearchFilter = () => {
                     <OffersList
                         data={offersData}
                         onSubmit={onApplyFilters}
-                        isLoading={isLoading}
+                        isLoading={isLoading || isFetching}
                         onChangeMapOpen={handleMapOpen}
                         mapOpenValue={isMapOpened}
                         className={cn(styles.offersList, {
                             [styles.closed]: !isMapOpened,
                         })}
+                        currentPage={currentPage}
+                        offersPerPage={OFFERS_PER_PAGE}
+                        onChangePage={onChangePage}
                     />
                     {isMapOpened && (
                         <OffersMap
@@ -156,7 +169,7 @@ export const OffersSearchFilter = () => {
                 </div>
                 <OffersSearchFilterMobile
                     data={offersData}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isFetching}
                     className={styles.mobile}
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
