@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { VolunteerApi } from "@/entities/Volunteer";
 
 import { medalsData } from "@/shared/data/medals";
@@ -30,6 +31,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             locale,
         } = props;
 
+        const { t } = useTranslation("volunteer");
         const { getFullName } = useGetFullName();
         const navigate = useNavigate();
         const {
@@ -44,7 +46,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             ) {
                 return <span>{languages}</span>;
             }
-            return <span>Языки не были указаны</span>;
+            return <span>{t("personalVolunteer.Языки не были указаны")}</span>;
         };
 
         const handleEditClick = useCallback(() => {
@@ -53,7 +55,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
 
         const renderButtons = showButtons ? (
             <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
-                Редактировать
+                {t("personalVolunteer.Редактировать")}
             </Button>
 
         ) : null;
@@ -69,7 +71,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.containerInfo}>
                         <div>
                             <span className={styles.birthDate}>
-                                Волонтёр
+                                {t("personalVolunteer.Волонтёр")}
                                 {" "}
                                 {getAge(birthDate)}
                             </span>
@@ -86,17 +88,19 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         </h3>
                         <div className={styles.info}>
                             <span className={styles.address}>
-                                Город:
+                                {t("personalVolunteer.Город")}
+                                :
                                 {" "}
                                 <span className={styles.subText}>
-                                    {country || "Страна не указана"}
+                                    {country || t("personalVolunteer.Страна не указана")}
                                     ,
                                     {" "}
-                                    {city || "Город не указан"}
+                                    {city || t("personalVolunteer.Город не указан")}
                                 </span>
                             </span>
                             <span className={styles.languages}>
-                                Языки:
+                                {t("personalVolunteer.Языки")}
+                                :
                                 {" "}
                                 <span className={styles.subText}>
                                     {renderLanguages()}

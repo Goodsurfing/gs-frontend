@@ -24,7 +24,7 @@ import { OfferPagination } from "@/widgets/OffersMap";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 
 const HostOffersPage = () => {
     const { t, ready } = useTranslation("host");

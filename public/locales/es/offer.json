@@ -94,7 +94,9 @@
         "Изображение не должно превышать 2 МБ": "La imagen no debe exceder los 2 MB",
         "Неверный формат файла": "Formato de archivo incorrecto",
         "Добавить фото": "Agregar foto",
-        "Сохранить": "Guardar"
+        "Сохранить": "Guardar",
+        "Произошла ошибка с обновлением галереи": "An error occurred while updating the gallery",
+        "Галерея успешно обновлена": "The gallery has been successfully updated"
     },
     "whatToDo": {
         "Расскажите, чем нужно будет заниматься": "Cuéntanos en qué consistirá",
@@ -213,5 +215,6 @@
         "Статьи": "Artículos",
         "Точная дата не указана": "Fecha exacta no especificada",
         "Не имеет даты окончания": "Sin fecha de finalización"
-    }
+    },
+    "Данные успешно изменены": "Data has been successfully updated"
 }

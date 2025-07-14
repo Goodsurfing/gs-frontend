@@ -139,7 +139,7 @@ export const InviteDescriptionForm = () => {
             .unwrap()
             .then(() => {
                 setToast({
-                    text: "Данные успешно изменены",
+                    text: t("Данные успешно изменены"),
                     type: HintType.Success,
                 });
                 sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
@@ -155,17 +155,17 @@ export const InviteDescriptionForm = () => {
     useEffect(() => {
         if (isGalleryError) {
             setToast({
-                text: "Произошла ошибка с обновлением галереи",
+                text: t("description.Произошла ошибка с обновлением галереи"),
                 type: HintType.Error,
             });
         }
         if (isGallerySuccess) {
             setToast({
-                text: "Галерея успешно обновлена",
+                text: t("description.Галерея успешно обновлена"),
                 type: HintType.Success,
             });
         }
-    }, [isGalleryError, isGallerySuccess]);
+    }, [isGalleryError, isGallerySuccess, t]);
 
     if (isLoadingGetDescription) {
         return <Preloader className={styles.loading} />;
@@ -186,7 +186,7 @@ export const InviteDescriptionForm = () => {
                         rules={{
                             validate: (value) => {
                                 if (!value?.image.src) {
-                                    return "Загрузите обложку";
+                                    return t("description.Загрузите обложку");
                                 }
                                 return true;
                             },

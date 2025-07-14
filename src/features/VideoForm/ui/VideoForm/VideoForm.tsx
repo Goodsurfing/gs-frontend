@@ -2,6 +2,7 @@ import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 
 import { VideoList } from "@/widgets/VideoList/ui/VideoList";
@@ -27,6 +28,8 @@ interface VideoFormProps {
 
 export const VideoForm: FC<VideoFormProps> = (props) => {
     const { profileId, videoGallery } = props;
+
+    const { t } = useTranslation("volunteer");
     const { control, handleSubmit, reset } = useForm<VideoFormImplementation>();
     const [videos, setVideos] = useState<string[]>([]);
     const [toast, setToast] = useState<ToastAlert>();
@@ -53,7 +56,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                 })
                     .then(() => {
                         setToast({
-                            text: "Данные успешно изменены",
+                            text: t("volunteer-gallery.Данные успешно изменены"),
                             type: HintType.Success,
                         });
                         refetchVolunteer();
@@ -69,7 +72,8 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                     });
             }
         },
-        [isCanAddVideo, updateProfile, profileId, videos, refetchVolunteer, reset],
+        [isCanAddVideo, updateProfile,
+            profileId, videos, refetchVolunteer, reset, t],
     );
 
     const deleteVideo = useCallback(
@@ -88,7 +92,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                 .then(() => {
                     setVideos(updatedVideos);
                     setToast({
-                        text: "Данные успешно изменены",
+                        text: t("volunteer-gallery.Данные успешно изменены"),
                         type: HintType.Success,
                     });
                 })
@@ -99,7 +103,7 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                     });
                 });
         },
-        [videos, updateProfile, profileId],
+        [videos, updateProfile, profileId, t],
     );
 
     return (

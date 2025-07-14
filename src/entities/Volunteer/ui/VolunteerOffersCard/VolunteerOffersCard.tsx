@@ -5,6 +5,7 @@ import React, {
 } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useTranslation } from "react-i18next";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
 import styles from "./VolunteerOffersCard.module.scss";
@@ -25,6 +26,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
         const { className, offers } = props;
         const { locale } = useLocale();
         const [getOfferById] = useLazyGetOfferByIdQuery();
+        const { t } = useTranslation("volunteer");
 
         const [offersData, setOffersData] = useState<Offer[]>([]);
         const [loading, setLoading] = useState(false);
@@ -86,16 +88,14 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
         };
 
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <Text title="Вакансии" titleSize="h3" />
-
-                {loading && <MiniLoader />}
-
-                {!loading && offersData.length === 0 && (
-                    <div>У организации пока нет вакансий</div>
-                )}
+            <div className={cn(className, styles.wrapper)} id="2">
+                <Text title={t("personalVolunteer.Вакансии")} titleSize="h3" />
 
                 <div className={styles.container} id="offers-scroll-container">
+                    {loading && <MiniLoader />}
+                    {!loading && offersData.length === 0 && (
+                        <div>{t("personalVolunteer.У волонтера пока нет вакансий в которых он участвовал")}</div>
+                    )}
                     <InfiniteScroll
                         dataLength={offersData.length}
                         next={loadMore}

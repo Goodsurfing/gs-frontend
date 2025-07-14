@@ -33,12 +33,12 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
         setError(true);
     };
 
-    const handleImageUpload = (image: ImageType) => {
+    const handleImageUpload = async (image: ImageType) => {
         onChangeLoading(true);
         const { file, src } = image;
         onChange({ ...value, image: { src, file } });
         if (file) {
-            uploadFile(file.name, file)
+            await uploadFile(file.name, file)
                 .then((result) => {
                     onChange({
                         uuid: `${BASE_URL}${result?.["@id"].slice(1)}` || null,
