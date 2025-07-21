@@ -173,6 +173,9 @@ export const OffersSearchFilter = () => {
                     className={styles.mobile}
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
+                    currentPage={currentPage}
+                    offersPerPage={OFFERS_PER_PAGE}
+                    onChangePage={onChangePage}
                 />
             </div>
         </FormProvider>

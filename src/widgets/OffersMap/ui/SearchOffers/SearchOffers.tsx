@@ -3,6 +3,7 @@ import React, {
 } from "react";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
+import cn from "classnames";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { useCategories } from "@/shared/data/categories";
@@ -129,30 +130,33 @@ export const SearchOffers: FC<SearchOffersProps> = ({
                         <MiniLoader />
                     ) : (
                         <>
-                            {offers.slice(0, 3).map((offer) => (
-                                <a
-                                    href={getOffersMapPageUrl(locale)}
-                                    key={offer.id}
-                                    className={styles.dropdownItem}
-                                >
-                                    <img
-                                        src={getMediaContent(
-                                            offer.description?.image,
-                                        ) || defaultImage}
-                                        alt={offer.description?.title}
-                                    />
-                                    <div className={styles.dropdownContent}>
-                                        <p className={styles.offerTitle}>
-                                            {
-                                                offer.description?.title
-                                            }
-                                        </p>
-                                        <p className={styles.offerCategory}>
-                                            {getTranslation(offer.description?.categoryIds[0])}
-                                        </p>
-                                    </div>
-                                </a>
-                            ))}
+                            {offers.slice(0, 3).map((offer) => {
+                                const offerStatus = offer.status === "active" ? "opened" : "closed";
+                                return (
+                                    <a
+                                        href={getOffersMapPageUrl(locale)}
+                                        key={offer.id}
+                                        className={cn(styles.dropdownItem, { [styles.closed]: offerStatus === "closed" })}
+                                    >
+                                        <img
+                                            src={getMediaContent(
+                                                offer.description?.image,
+                                            ) || defaultImage}
+                                            alt={offer.description?.title}
+                                        />
+                                        <div className={styles.dropdownContent}>
+                                            <p className={styles.offerTitle}>
+                                                {
+                                                    offer.description?.title
+                                                }
+                                            </p>
+                                            <p className={styles.offerCategory}>
+                                                {getTranslation(offer.description?.categoryIds[0])}
+                                            </p>
+                                        </div>
+                                    </a>
+                                );
+                            })}
                             <Button
                                 onClick={handleSubmit}
                                 color="BLUE"

@@ -19,6 +19,7 @@ const MessengerPage = () => {
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
+    const { t, ready: isMessengerReady } = useTranslation("messenger");
     const { myProfile } = useAuth();
 
     const handleOnUserClick = useCallback(
@@ -36,7 +37,7 @@ const MessengerPage = () => {
         [locale, navigate, selectedChat],
     );
 
-    if (!ready || !myProfile) {
+    if (!ready || !myProfile || !isMessengerReady) {
         return (
             <div className={styles.layout}>
                 <MainHeader />
@@ -49,7 +50,7 @@ const MessengerPage = () => {
         <div className={styles.layout}>
             <MainHeader />
             <div className={styles.wrapper}>
-                <h2 className={styles.title}>Сообщения</h2>
+                <h2 className={styles.title}>{t("Сообщения")}</h2>
                 <div className={styles.content}>
                     <MessengerList
                         className={cn(styles.userList, {

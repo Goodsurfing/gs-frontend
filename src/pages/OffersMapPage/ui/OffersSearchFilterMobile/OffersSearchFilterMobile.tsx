@@ -34,18 +34,21 @@ interface OffersSearchFilterMobileProps {
     isLoading: boolean;
     onSubmit: () => void;
     onResetFilters: () => void;
+    currentPage: number;
+    offersPerPage: number;
+    onChangePage: (pageItem: number) => void;
 }
 
 export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
     props,
 ) => {
     const {
-        className, data, isLoading, onSubmit, onResetFilters,
+        className, data, isLoading, onSubmit,
+        onResetFilters, currentPage, offersPerPage,
+        onChangePage,
     } = props;
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const offersPerPage = 10;
 
     // const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
@@ -56,7 +59,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
         const startIndex = (currentPage - 1) * offersPerPage;
         const endIndex = startIndex + offersPerPage;
         return data?.slice(startIndex, endIndex);
-    }, [data, currentPage]);
+    }, [currentPage, offersPerPage, data]);
 
     const isOffersTabOpened = selectedTab === "offers";
     const isFilterTabOpened = selectedTab === "filter";
@@ -87,10 +90,10 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
             <Text
                 className={styles.error}
                 textSize="primary"
-                text="Вакансии не были найдены"
+                text={t("Вакансии не были найдены")}
             />
         );
-    }, [currentOffers, data, locale]);
+    }, [currentOffers, data, locale, t]);
 
     const handleOffersTab = () => {
         if (selectedTab !== "offers") {
@@ -191,6 +194,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                                     onChange={field.onChange}
                                     placeholder={t("Поиск")}
                                     buttonText={t("Посмотреть все")}
+                                    offers={data}
+                                    isLoading={isLoading}
                                 />
                             )}
                         />
@@ -204,7 +209,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     <OfferPagination
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        onPageChange={setCurrentPage}
+                        onPageChange={onChangePage}
                     />
                 </>
             )}

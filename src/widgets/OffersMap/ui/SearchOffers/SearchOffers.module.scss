@@ -34,6 +34,10 @@
     color: inherit;
 }
 
+.dropdownItem.closed {
+    opacity: .45;
+}
+
 .dropdownItem img {
     width: 80px;
     height: 60px;

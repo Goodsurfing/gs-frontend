@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
@@ -33,6 +34,8 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
         isSuccess = false, locale,
     } = props;
 
+    const { t } = useTranslation("messenger");
+
     const [onSuccess, setOnSuccess] = useState<boolean>(false);
 
     const handleFromDateChange = useCallback((date: Date) => {
@@ -65,7 +68,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const renderLine = () => {
         if (!isSuccess) {
             return (
-                <span className={styles.line}>Укажите в какие даты вы хотите участвовать</span>
+                <span className={styles.line}>{t("Укажите в какие даты вы хотите участвовать")}</span>
             );
         }
     };
@@ -75,7 +78,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
             {renderLine()}
             <div className={cn(styles.wrapper, className)}>
                 <div className={styles.group}>
-                    <span>Прибытие</span>
+                    <span>{t("Прибытие")}</span>
                     {isSuccess ? (
                         <p>{terms?.start && formatDate(locale, terms.start.toDateString())}</p>
                     )
@@ -92,7 +95,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
                         )}
                 </div>
                 <div className={styles.group}>
-                    <span>Отъезд</span>
+                    <span>{t("Отъезд")}</span>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
                         {isSuccess ? (
                             <p>{terms.end && formatDate(locale, terms.end.toDateString())}</p>
@@ -123,8 +126,8 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
             </div>
             { (isHost && !onSuccess) && (
                 <div className={styles.buttons}>
-                    <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => handleApplicationSubmit("accepted")}>Принять</Button>
-                    <Button color="GRAY" size="SMALL" variant="OUTLINE" onClick={() => handleApplicationSubmit("canceled")}>Отклонить</Button>
+                    <Button color="BLUE" size="SMALL" variant="FILL" onClick={() => handleApplicationSubmit("accepted")}>{t("Принять")}</Button>
+                    <Button color="GRAY" size="SMALL" variant="OUTLINE" onClick={() => handleApplicationSubmit("canceled")}>{t("Отклонить")}</Button>
                 </div>
             )}
         </div>

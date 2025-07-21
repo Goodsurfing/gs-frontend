@@ -3,6 +3,7 @@ import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
+import { useTranslation } from "react-i18next";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 // import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -19,10 +20,10 @@ interface OfferCardProps {
     title?: string;
     location?: string;
     category?: string;
-    rating?: string;
+    rating?: number;
     // likes?: string;
-    reviews?: string;
-    went?: string;
+    reviews?: number;
+    went?: number;
     description?: string;
     link?: string;
     className?: string;
@@ -52,6 +53,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         locale,
         handleFavoriteClick,
     } = props;
+    const { t } = useTranslation();
 
     return (
         <Link
@@ -113,14 +115,16 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                     <div className={styles.extraInfo}>
                         {reviews && (
                             <span className={styles.review}>
-                                Отзывов:
+                                {t("Отзывов")}
+                                :
                                 {" "}
                                 {reviews}
                             </span>
                         )}
                         {went && (
                             <span className={styles.went}>
-                                Отправились:
+                                {t("Отправились")}
+                                :
                                 {" "}
                                 {went}
                             </span>

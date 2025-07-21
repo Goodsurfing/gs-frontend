@@ -1,7 +1,7 @@
 import { Offer } from "@/entities/Offer";
 import { VolunteerApi } from "@/entities/Volunteer";
 
-export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description" | "status">;
+export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description" | "status" | "averageRating" | "feedbacksCount" | "acceptedApplicationsCount">;
 
 export interface FormApplication {
     id: number;

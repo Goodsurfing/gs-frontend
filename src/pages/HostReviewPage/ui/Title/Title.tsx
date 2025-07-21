@@ -28,7 +28,7 @@ export const Title: FC<TitleProps> = (props) => {
                         }}
                     />
                     {rating && (
-                        <span className={styles.ratingNum}>{rating}</span>
+                        <span className={styles.ratingNum}>{Number(rating.toFixed(1))}</span>
                     )}
                 </div>
             )}

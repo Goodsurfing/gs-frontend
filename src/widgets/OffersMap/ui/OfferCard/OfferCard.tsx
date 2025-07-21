@@ -23,7 +23,7 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
     const {
         data: {
             id, description, where,
-            acceptedApplicationsCount, feedbacksCountinteger, averageRating,
+            acceptedApplicationsCount, feedbacksCount, averageRating,
         },
         status,
         className,
@@ -52,9 +52,9 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 category={getTranslation(description?.categoryIds[0])}
                 image={imageCover}
                 location={where?.address || ""}
-                rating={averageRating?.toString()}
-                reviews={feedbacksCountinteger?.toString()}
-                went={acceptedApplicationsCount.toString()}
+                rating={averageRating}
+                reviews={feedbacksCount}
+                went={acceptedApplicationsCount}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={false}

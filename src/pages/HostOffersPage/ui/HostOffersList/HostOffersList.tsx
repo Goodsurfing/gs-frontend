@@ -31,7 +31,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
         return offers.map((offer, index) => {
             const {
                 id, description, where, status,
-                averageRating, acceptedApplicationsCount, feedbacksCountinteger,
+                averageRating, acceptedApplicationsCount, feedbacksCount,
             } = offer;
             const mediaObjectCover = getMediaContent(description?.image);
 
@@ -44,7 +44,7 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
                     location={where?.address}
                     category={getTranslation(description?.categoryIds[0])}
                     rating={averageRating?.toString()}
-                    reviews={feedbacksCountinteger?.toString()}
+                    reviews={feedbacksCount?.toString()}
                     went={acceptedApplicationsCount.toString()}
                     status={status}
                     key={index}

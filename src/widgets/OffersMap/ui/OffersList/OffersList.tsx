@@ -62,7 +62,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text="Вакансии не были найдены"
+                        text={t("Вакансии не были найдены")}
                     />
                 );
             }
@@ -80,7 +80,7 @@ export const OffersList: FC<OffersListProps> = (props) => {
                 />
             ));
         },
-        [currentOffers, locale, mapOpenValue],
+        [currentOffers, locale, mapOpenValue, t],
     );
 
     const totalPages = data ? Math.ceil(data.length / offersPerPage) : 0;

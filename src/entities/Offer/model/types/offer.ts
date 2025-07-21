@@ -37,7 +37,7 @@ export interface Offer {
     canEdit: boolean;
     canParticipate: boolean;
     averageRating?: number;
-    feedbacksCountinteger?: number;
+    feedbacksCount?: number;
     acceptedApplicationsCount: number;
 }
 

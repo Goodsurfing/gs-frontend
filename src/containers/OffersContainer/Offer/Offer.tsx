@@ -28,7 +28,7 @@ const Offer: FC<OfferProps> = (props) => {
         where,
         acceptedApplicationsCount,
         averageRating,
-        feedbacksCountinteger,
+        feedbacksCount,
     } = offer;
     const { getTranslation } = useCategories();
 
@@ -58,13 +58,13 @@ const Offer: FC<OfferProps> = (props) => {
                         <span>{averageRating}</span>
                     </div>
                 )}
-                {feedbacksCountinteger && (
+                {feedbacksCount && (
                     <div className={styles.reviews}>
 
                         <span>
                             Отзывов:
                             {" "}
-                            {feedbacksCountinteger}
+                            {feedbacksCount}
                         </span>
                     </div>
                 )}

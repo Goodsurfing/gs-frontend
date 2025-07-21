@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { ChatInput, SendMessageType } from "@/features/Messenger";
 import { CreateMessageType, useCreateMessageMutation } from "@/entities/Chat/api/chatApi";
 
@@ -15,6 +16,7 @@ export const SendMessage: FC<SendMessageProps> = (props) => {
         className, disabled, chatId, onError,
     } = props;
     const [createMessage, { isLoading }] = useCreateMessageMutation();
+    const { t } = useTranslation("messenger");
 
     const handleSendMessage = async (message: SendMessageType) => {
         const { text, attachments } = message;
@@ -26,7 +28,7 @@ export const SendMessage: FC<SendMessageProps> = (props) => {
         try {
             await createMessage(formData).unwrap();
         } catch {
-            onError("Произошла ошибка при отправке сообщения");
+            onError(t("Произошла ошибка при отправке сообщения"));
         }
     };
 
