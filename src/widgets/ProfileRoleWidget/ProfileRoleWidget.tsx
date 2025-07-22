@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ErrorType } from "@/types/api/error";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -10,7 +10,7 @@ import { RoleCard } from "@/features/ProfileRole";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
 
-import { getHostRegistrationUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegistrationUrl, getOfferPersonalPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -24,6 +24,8 @@ import { useRoleData } from "./model/data/roleData";
 import { RoleInfo } from "./model/types/profileRoleWidget";
 
 export const ProfileRoleWidget: FC = () => {
+    const [searchParams] = useSearchParams();
+    const next = searchParams.get("next");
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [modalDescription, setModalDescription] = useState<string>("");
     const [selectedRole, setSelectedRole] = useState<string>("");
@@ -66,17 +68,16 @@ export const ProfileRoleWidget: FC = () => {
         }
     };
 
-    const handleConfirmClick = () => {
+    const handleConfirmClick = async () => {
         if (selectedRole === "volunteer") {
             // Crutch on backend
             const emptyFieldsFormData: CreateVolunteerRequest = {
                 externalInfo: "",
                 skills: [],
                 additionalSkills: [],
-
             };
 
-            createVolunteer(emptyFieldsFormData)
+            await createVolunteer(emptyFieldsFormData)
                 .unwrap()
                 .then(() => {
                     setModalOpen(false);
@@ -86,7 +87,11 @@ export const ProfileRoleWidget: FC = () => {
                     });
                     profileRefetch();
                     setTimeout(() => {
-                        navigate(getVolunteerDashboardPageUrl(locale));
+                        if (next) {
+                            navigate(getOfferPersonalPageUrl(locale, next));
+                        } else {
+                            navigate(getVolunteerDashboardPageUrl(locale));
+                        }
                     }, 3000);
                 })
                 .catch((error: ErrorType) => {

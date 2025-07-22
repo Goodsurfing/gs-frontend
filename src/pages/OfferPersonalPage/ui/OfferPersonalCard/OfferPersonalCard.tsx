@@ -16,10 +16,11 @@ import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/Offe
 interface OfferPersonalCardProps {
     id: string;
     offerData: Offer;
+    isVolunteer: boolean;
 }
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
-    const { id, offerData } = props;
+    const { id, offerData, isVolunteer } = props;
     const { data: gallery } = useGetOfferGalleryItemsQuery(id.toString());
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -55,6 +56,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 canEdit={offerData.canEdit}
                 canParticipate={offerData.canParticipate}
                 status={offerData.status}
+                isVolunteer={isVolunteer}
             />
             {gallery && (
                 <ModalGallery

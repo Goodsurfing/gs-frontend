@@ -13,12 +13,14 @@ import { Text } from "@/shared/ui/Text/Text";
 import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
 import styles from "./OfferPersonalPage.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
     const [offerData, setOfferData] = useState<Offer>();
+    const { myProfile } = useAuth();
 
-    const [getOfferData, { isLoading }] = useLazyGetOfferByIdQuery();
+    const [getOfferData, { isLoading, isError }] = useLazyGetOfferByIdQuery();
 
     useEffect(() => {
         const fetchOffers = async () => {
@@ -33,7 +35,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading) {
+    if (isLoading || !offerData) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -41,7 +43,7 @@ export const OfferPersonalPage = () => {
         );
     }
 
-    if (!id || !offerData) {
+    if (!id || isError) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
@@ -77,8 +79,12 @@ export const OfferPersonalPage = () => {
         <div className={styles.wrapper}>
             <MainHeader />
             <div className={styles.content}>
-                <OfferPersonalCard id={id} offerData={offerData} />
-                <OfferSubmenu offerData={offerData} />
+                <OfferPersonalCard
+                    id={id}
+                    offerData={offerData}
+                    isVolunteer={!!myProfile?.volunteer}
+                />
+                <OfferSubmenu offerData={offerData} isVolunteer={!!myProfile?.volunteer} />
                 <OfferPageContent offerData={offerData} />
             </div>
             <Footer />
