@@ -1,10 +1,10 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useMemo,
+    FC, memo, useCallback, useMemo,
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
@@ -27,17 +27,18 @@ interface OffersListProps {
     currentPage: number;
     offersPerPage: number;
     onChangePage: (pageItem: number) => void;
+    control: Control<OffersFilterFields, any>;
 }
 
-export const OffersList: FC<OffersListProps> = (props) => {
+export const OffersList: FC<OffersListProps> = memo((props: OffersListProps) => {
     const {
         mapOpenValue, onChangeMapOpen, data,
         onSubmit, isLoading, className,
         currentPage, offersPerPage,
         onChangePage,
+        control,
     } = props;
 
-    const { control } = useFormContext<OffersFilterFields>();
     const { locale } = useLocale();
     const { t } = useTranslation("offers-map");
 
@@ -98,8 +99,6 @@ export const OffersList: FC<OffersListProps> = (props) => {
                             onChange={field.onChange}
                             placeholder={t("Поиск")}
                             buttonText={t("Посмотреть все")}
-                            offers={data}
-                            isLoading={isLoading}
                         />
                     )}
                 />
@@ -131,4 +130,4 @@ export const OffersList: FC<OffersListProps> = (props) => {
             />
         </div>
     );
-};
+});

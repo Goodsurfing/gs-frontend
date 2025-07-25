@@ -194,8 +194,6 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                                     onChange={field.onChange}
                                     placeholder={t("Поиск")}
                                     buttonText={t("Посмотреть все")}
-                                    offers={data}
-                                    isLoading={isLoading}
                                 />
                             )}
                         />

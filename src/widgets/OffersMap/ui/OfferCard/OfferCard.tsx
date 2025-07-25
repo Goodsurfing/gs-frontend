@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, memo, useState } from "react";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
@@ -19,7 +19,7 @@ interface OfferCardProps {
     locale: Locale;
 }
 
-export const OfferCard: FC<OfferCardProps> = (props) => {
+export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     const {
         data: {
             id, description, where,
@@ -64,4 +64,4 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             />
         </div>
     );
-};
+});

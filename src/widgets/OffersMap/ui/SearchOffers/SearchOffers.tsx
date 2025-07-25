@@ -1,5 +1,5 @@
 import React, {
-    FC, useCallback, useEffect, useRef, useState,
+    FC, memo, useCallback, useEffect, useRef, useState,
 } from "react";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
@@ -10,7 +10,7 @@ import { useCategories } from "@/shared/data/categories";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./SearchOffers.module.scss";
-import { Offer } from "@/entities/Offer";
+import { useLazyGetOffersQuery } from "@/entities/Offer";
 import useDebounce from "@/shared/hooks/useDebounce";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -23,22 +23,24 @@ interface SearchOffersProps {
     onChange: (value: string) => void;
     placeholder?: string;
     buttonText?: string;
-    isLoading?: boolean;
-    offers?: Offer[];
 }
 
-export const SearchOffers: FC<SearchOffersProps> = ({
+export const SearchOffers: FC<SearchOffersProps> = memo(({
     onSubmit,
     value,
     onChange,
     placeholder = "Поиск",
     buttonText = "Посмотреть все",
-    isLoading,
-    offers = [],
-}) => {
+}: SearchOffersProps) => {
+    const [fetchOffersDropdown, {
+        data: offersDropdown,
+        isLoading: offersDropdownIsLoading, isFetching: offersDropdownIsFetching,
+    }] = useLazyGetOffersQuery(); // Нужно заменить на отдельный запрос от основного
+    const isLoading = offersDropdownIsLoading || offersDropdownIsFetching;
+    const [searchInput, setSearchInput] = useState<string>("");
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isDebouncing, setIsDebouncing] = useState(false);
-    const debouncedValue = useDebounce(value, 500);
+    const debouncedValue = useDebounce(searchInput, 500);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -47,19 +49,26 @@ export const SearchOffers: FC<SearchOffersProps> = ({
     const { locale } = useLocale();
 
     useEffect(() => {
-        if (value.trim().length > 0) {
+        setSearchInput(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (searchInput.trim().length > 0) {
             setIsDebouncing(true);
         } else {
             setDropdownVisible(false);
         }
-    }, [value]);
+    }, [searchInput]);
 
     useEffect(() => {
         if (debouncedValue.trim().length > 0) {
             setIsDebouncing(false);
             setDropdownVisible(true);
+            onChange(debouncedValue);
+            fetchOffersDropdown({ search: debouncedValue });
         }
-    }, [debouncedValue]);
+    }, [debouncedValue, fetchOffersDropdown, onChange]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -80,12 +89,14 @@ export const SearchOffers: FC<SearchOffersProps> = ({
     }, [onSubmit]);
 
     const handleClear = useCallback(() => {
+        setSearchInput("");
         onChange("");
         onSubmit();
-    }, [onChange, onSubmit]);
+    }, [onSubmit, onChange]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.value);
+        // onChange(e.target.value);
+        setSearchInput(e.target.value);
         setDropdownVisible(true);
     };
 
@@ -105,7 +116,7 @@ export const SearchOffers: FC<SearchOffersProps> = ({
                 }}
             >
                 <InputBase
-                    value={value}
+                    value={searchInput}
                     onChange={handleInputChange}
                     onClick={() => setDropdownVisible(true)}
                     inputRef={inputRef}
@@ -118,19 +129,19 @@ export const SearchOffers: FC<SearchOffersProps> = ({
                     }}
                     inputProps={{ "aria-label": "Поиск вакансий" }}
                 />
-                {value.length > 0 && <CloseButton onClick={handleClear} />}
+                {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
                 <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
                     <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </IconButton>
             </Paper>
 
-            {dropdownVisible && value && offers.length > 0 && (
+            {dropdownVisible && !!offersDropdown && offersDropdown.length > 0 && (
                 <div className={styles.dropdown}>
                     {(isDebouncing || isLoading) ? (
                         <MiniLoader />
                     ) : (
                         <>
-                            {offers.slice(0, 3).map((offer) => {
+                            {offersDropdown.slice(0, 3).map((offer) => {
                                 const offerStatus = offer.status === "active" ? "opened" : "closed";
                                 return (
                                     <a
@@ -171,4 +182,4 @@ export const SearchOffers: FC<SearchOffersProps> = ({
             )}
         </div>
     );
-};
+});

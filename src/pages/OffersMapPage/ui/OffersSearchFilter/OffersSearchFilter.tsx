@@ -32,7 +32,7 @@ const defaultValues: OffersFilterFields = {
 
 const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
-const OFFERS_PER_PAGE = 10;
+const OFFERS_PER_PAGE = 20;
 
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
@@ -55,7 +55,7 @@ export const OffersSearchFilter = () => {
     });
 
     const {
-        watch, setValue, reset, handleSubmit,
+        watch, setValue, reset, handleSubmit, control,
     } = offerFilterForm;
 
     const [isSyncing, setIsSyncing] = useState(false);
@@ -99,6 +99,11 @@ export const OffersSearchFilter = () => {
 
     const onApplyFilters = handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
+        if (data.search !== "") {
+            await fetchOffers({ search: data.search });
+            reset({ ...defaultValues, search: data.search });
+            onChangePage(1);
+        }
         await fetchOffers(preparedData);
         onChangePage(1);
     });
@@ -158,6 +163,7 @@ export const OffersSearchFilter = () => {
                         currentPage={currentPage}
                         offersPerPage={OFFERS_PER_PAGE}
                         onChangePage={onChangePage}
+                        control={control}
                     />
                     {isMapOpened && (
                         <OffersMap
