@@ -2,7 +2,7 @@
     display: flex;
 }
 
-.offersList, .offersMap {
+.searchOffersList, .offersMap {
     flex: 1;
     height: calc(100vh - 12rem);
 }
@@ -11,7 +11,7 @@
     display: none;
 }
 
-.offersList {
+.searchOffersList {
     max-width: 1000px;
 }
 
@@ -21,6 +21,15 @@
 
 .mobile {
     display: none;
+}
+
+.searchOffersList {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchWrapper {
+    padding: 12px 30px;
 }
 
 @media (max-width: 1200px) {

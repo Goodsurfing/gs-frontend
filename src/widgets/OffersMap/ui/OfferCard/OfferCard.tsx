@@ -30,6 +30,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         classNameCard,
         locale,
     } = props;
+
     const imageCover = getMediaContent(description?.image);
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
