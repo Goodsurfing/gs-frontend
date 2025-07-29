@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useMemo, useState } from "react";
+import React, {
+    FC, useCallback, useMemo, useState,
+} from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 
@@ -32,6 +34,7 @@ interface OffersSearchFilterMobileProps {
     className?: string;
     data?: Offer[];
     isLoading: boolean;
+    onApplySearch: (search: string) => void;
     onSubmit: () => void;
     onResetFilters: () => void;
     currentPage: number;
@@ -39,98 +42,114 @@ interface OffersSearchFilterMobileProps {
     onChangePage: (pageItem: number) => void;
 }
 
-export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
-    props,
-) => {
-    const {
-        className, data, isLoading, onSubmit,
-        onResetFilters, currentPage, offersPerPage,
-        onChangePage,
-    } = props;
+// Мемоизируем дочерние компоненты, чтобы избежать ненужных перерендеров
+const MemoizedOfferCard = React.memo(OfferCard);
+const MemoizedSearchOffers = React.memo(SearchOffers);
+
+export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
+    className,
+    data,
+    isLoading,
+    onApplySearch,
+    onSubmit,
+    onResetFilters,
+    currentPage,
+    offersPerPage,
+    onChangePage,
+}) => {
     const { control } = useFormContext();
     const { t } = useTranslation("offers-map");
-
-    // const isAuth = useAppSelector(getUserAuthData);
     const { locale } = useLocale();
-
     const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
+
+    const handleApplySearch = useCallback((search: string) => {
+        onApplySearch(search);
+    }, [onApplySearch]);
+
+    const handleSubmit = useCallback(() => {
+        onSubmit();
+        setSelectedTab("offers");
+    }, [onSubmit]);
+
+    const handleReset = useCallback(() => {
+        onResetFilters();
+        setSelectedTab("offers");
+    }, [onResetFilters]);
+
+    const handleOffersTab = useCallback(() => {
+        setSelectedTab("offers");
+    }, []);
+
+    const handleFilterTab = useCallback(() => {
+        setSelectedTab("filter");
+    }, []);
+
+    const handleMapTab = useCallback(() => {
+        setSelectedTab("map");
+    }, []);
+
+    const tabStates = useMemo(
+        () => ({
+            isOffersTabOpened: selectedTab === "offers",
+            isFilterTabOpened: selectedTab === "filter",
+            isMapTabOpened: selectedTab === "map",
+        }),
+        [selectedTab],
+    );
 
     const currentOffers = useMemo(() => {
         const startIndex = (currentPage - 1) * offersPerPage;
         const endIndex = startIndex + offersPerPage;
-        return data?.slice(startIndex, endIndex);
+        return data?.slice(startIndex, endIndex) || [];
     }, [currentPage, offersPerPage, data]);
 
-    const isOffersTabOpened = selectedTab === "offers";
-    const isFilterTabOpened = selectedTab === "filter";
-    const isMapTabOpened = selectedTab === "map";
-
-    const handleSubmit = () => {
-        onSubmit();
-        setSelectedTab("offers");
-    };
-
     const renderOfferCards = useMemo(() => {
-        if (data) {
-            return currentOffers?.map((offer) => (
-                <OfferCard
-                    locale={locale}
-                    classNameCard={styles.offerCard}
-                    className={cn(styles.offer, {
-                        [styles.closed]: true,
-                    })}
-                    status={offer.status === "active" ? "opened" : "closed"}
-                    data={offer}
-                    key={offer.id}
-                    // isFavoriteIconShow={!!isAuth}
+        if (isLoading) {
+            return (
+                <div className={cn(styles.wrapper, className)}>
+                    <MiniLoader className={styles.miniLoader} />
+                </div>
+            );
+        }
+        if (!data || data.length === 0) {
+            return (
+                <Text
+                    className={styles.error}
+                    textSize="primary"
+                    text={t("Вакансии не были найдены")}
                 />
-            ));
+            );
         }
-        return (
-            <Text
-                className={styles.error}
-                textSize="primary"
-                text={t("Вакансии не были найдены")}
+
+        return currentOffers.map((offer) => (
+            <MemoizedOfferCard
+                locale={locale}
+                classNameCard={styles.offerCard}
+                className={cn(styles.offer, {
+                    [styles.closed]: offer.status !== "active",
+                })}
+                status={offer.status === "active" ? "opened" : "closed"}
+                data={offer}
+                key={offer.id}
             />
-        );
-    }, [currentOffers, data, locale, t]);
+        ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentOffers, locale, t]);
 
-    const handleOffersTab = () => {
-        if (selectedTab !== "offers") {
-            setSelectedTab("offers");
-        }
-    };
-
-    const handleFilterTab = () => {
-        if (selectedTab !== "filter") {
-            setSelectedTab("filter");
-        }
-    };
-
-    const handleMapTab = () => {
-        if (selectedTab !== "map") {
-            setSelectedTab("map");
-        }
-    };
-
-    if (isLoading) {
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <MiniLoader className={styles.miniLoader} />
-            </div>
-        );
-    }
-
-    const totalPages = data ? Math.ceil(data.length / offersPerPage) : 1;
+    // Вычисляем totalPages
+    const totalPages = useMemo(
+        () => (data ? Math.ceil(data.length / offersPerPage) : 1),
+        [data, offersPerPage],
+    );
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
                 <SquareButton
                     className={cn(styles.button, styles.icon, {
-                        [styles.active]: isOffersTabOpened,
+                        [styles.active]: tabStates.isOffersTabOpened,
                     })}
-                    isActive={isOffersTabOpened}
+                    isActive={tabStates.isOffersTabOpened}
                     onClick={handleOffersTab}
                 >
                     {t("Список вакансий")}
@@ -139,20 +158,20 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                 <div className={styles.buttons}>
                     <SquareButton
                         className={cn(styles.button)}
-                        isActive={isMapTabOpened}
+                        isActive={tabStates.isMapTabOpened}
                         onClick={handleMapTab}
                     >
                         {t("Карта")}
                     </SquareButton>
                     <SquareButton
                         className={cn(styles.button)}
-                        isActive={isFilterTabOpened}
+                        isActive={tabStates.isFilterTabOpened}
                         onClick={handleFilterTab}
                     >
                         {t("Фильтр")}
                     </SquareButton>
                 </div>
-                {isOffersTabOpened && (
+                {tabStates.isOffersTabOpened && (
                     <>
                         <Controller
                             name="offersSort.sortValue"
@@ -181,21 +200,14 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     </>
                 )}
             </div>
-            {isOffersTabOpened && (
+            {tabStates.isOffersTabOpened && (
                 <>
                     <div className={styles.searchWrapper}>
-                        <Controller
-                            name="search"
-                            control={control}
-                            render={({ field }) => (
-                                <SearchOffers
-                                    onSubmit={() => handleSubmit()}
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    placeholder={t("Поиск")}
-                                    buttonText={t("Посмотреть все")}
-                                />
-                            )}
+                        <MemoizedSearchOffers
+                            onSubmit={handleApplySearch}
+                            onResetFilters={handleReset}
+                            placeholder={t("Поиск")}
+                            buttonText={t("Посмотреть все")}
                         />
                     </div>
                     <div className={styles.offersCount}>
@@ -211,14 +223,14 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = (
                     />
                 </>
             )}
-            {isMapTabOpened && (
+            {tabStates.isMapTabOpened && (
                 <OffersMap
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
                     offersData={data}
                 />
             )}
-            {isFilterTabOpened && (
+            {tabStates.isFilterTabOpened && (
                 <OffersMobileFilter
                     onSubmitFilters={handleSubmit}
                     onResetFilters={onResetFilters}

@@ -10,7 +10,6 @@ export {
     useLazyGetHostOffersByIdQuery,
     useLazyGetOfferByIdQuery,
     useLazyGetOffersQuery,
-    useLazyGetSearchOffersQuery,
     useGetOffersQuery,
 } from "./api/offerApi";
 

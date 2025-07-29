@@ -21,5 +21,5 @@ export interface OffersFilterFields {
     withChildren: boolean;
     languages: string[];
     provided: Provided[];
-    search: string;
+    // search: string;
 }

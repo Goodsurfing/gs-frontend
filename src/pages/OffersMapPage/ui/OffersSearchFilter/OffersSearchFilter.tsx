@@ -16,7 +16,7 @@ import { CategoryType, categoryValues } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
 import { useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
-import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
+import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 const defaultValues: OffersFilterFields = {
     offersSort: {
@@ -29,7 +29,6 @@ const defaultValues: OffersFilterFields = {
     periods: { start: undefined, end: undefined },
     withChildren: false,
     provided: [],
-    search: "",
 };
 
 const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
@@ -42,6 +41,7 @@ export const OffersSearchFilter = () => {
     const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
+    const searchRef = useRef<SearchOffersRef>(null);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -101,8 +101,9 @@ export const OffersSearchFilter = () => {
     }, []);
 
     const onApplySearch = useCallback(async (search: string) => {
+        setSearchParams(new URLSearchParams());
         await fetchOffers({ "order[updatedAt]": "desc", search });
-        reset({ ...defaultValues, search });
+        reset(defaultValues);
         onChangePage(1);
     }, []);
 
@@ -113,10 +114,11 @@ export const OffersSearchFilter = () => {
     }), []);
 
     const onResetFilters = useCallback(async () => {
-        reset(defaultValues);
         setSearchParams(new URLSearchParams());
+        searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
         await fetchOffers(preparedData);
+        reset(defaultValues);
         onChangePage(1);
     }, []);
 
@@ -155,20 +157,22 @@ export const OffersSearchFilter = () => {
                     className={styles.filter}
                 />
                 <div className={styles.wrapperOffersMap}>
-                    <div className={styles.searchOffersList}>
+                    <div className={cn(styles.searchOffersList, {
+                        [styles.closed]: !isMapOpened,
+                    })}
+                    >
                         <SearchOffers
                             className={styles.searchWrapper}
                             onSubmit={onApplySearch}
                             onResetFilters={onResetFilters}
                             placeholder={t("Поиск")}
                             buttonText={t("Посмотреть все")}
+                            ref={searchRef}
                         />
                         <OffersList
                             data={offersData}
                             isLoading={isLoading || isFetching}
-                            className={cn(styles.offersList, {
-                                [styles.closed]: !isMapOpened,
-                            })}
+                            className={cn(styles.offersList)}
                             onChangeMapOpen={handleMapOpen}
                             mapOpenValue={isMapOpened}
                             currentPage={currentPage}
@@ -188,6 +192,7 @@ export const OffersSearchFilter = () => {
                     data={offersData}
                     isLoading={isLoading || isFetching}
                     className={styles.mobile}
+                    onApplySearch={onApplySearch}
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
                     currentPage={currentPage}

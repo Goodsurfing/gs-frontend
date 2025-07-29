@@ -97,14 +97,6 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getSearchOffers: build.query<Offer[], Partial<OffersFilters> | undefined>({
-            query: (params) => ({
-                url: "vacancies",
-                method: "GET",
-                params,
-            }),
-            providesTags: ["offer"],
-        }),
         getHostOffersById: build.query<Offer[], OfferParams>({
             query: ({ organizationId, itemsPerPage, page }) => ({
                 url: `organizations/${organizationId}/vacancies`,
@@ -156,7 +148,6 @@ export const {
     useCreateOfferMutation,
     useGetOffersQuery,
     useLazyGetOffersQuery,
-    useLazyGetSearchOffersQuery,
     useUpdateOfferMutation,
     useUpdateOfferStatusMutation,
     useDeleteOfferMutation,
