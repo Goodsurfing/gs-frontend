@@ -25,12 +25,14 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
     const partsApplicationUrl = applicationForm.split("/");
     const applicationId = partsApplicationUrl.pop();
     const { data: applicationData } = useGetApplicationFormByIdQuery(applicationId ?? "");
+
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
     if (!applicationData) {
         return null;
     }
+
     const { vacancy, volunteer } = applicationData;
 
     const navigateToVolunteer = () => {

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
-import { FullFormApplication } from "@/entities/Application";
+import { SimpleFormApplication } from "@/entities/Application";
 
 import { textSlice } from "@/shared/lib/textSlice";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -13,10 +13,11 @@ import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/c
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 interface ReviewMiniCardProps {
-    data: FullFormApplication;
-    onReviewClick: (id: FullFormApplication) => void;
+    data: SimpleFormApplication;
+    onReviewClick: (id: SimpleFormApplication) => void;
     variant: "offer" | "volunteer";
     locale: Locale;
 }
@@ -30,11 +31,22 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
     const { vacancy, volunteer } = data;
     const { description, where } = vacancy;
     const { t } = useTranslation("volunteer");
+    let volunteerId: string;
+    if (typeof volunteer === "string") {
+        volunteerId = volunteer.split("/").pop() || "";
+    } else {
+        volunteerId = volunteer.profile.id;
+    }
+    const { data: volunteerData } = useGetVolunteerByIdQuery(volunteerId ?? "");
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
+    if (!volunteerData) {
+        return null;
+    }
+
     const navigateToVolunteer = () => {
-        navigate(getVolunteerPersonalPageUrl(locale, volunteer.profile.id));
+        navigate(getVolunteerPersonalPageUrl(locale, volunteerData.profile.id));
     };
 
     const navigateToOffer = () => {
@@ -45,18 +57,18 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
         return (
             <div className={styles.wrapper}>
                 <div className={styles.userInfoContainer} onClick={navigateToVolunteer}>
-                    <Avatar icon={getMediaContent(volunteer.profile.image)} size="SMALL" />
+                    <Avatar icon={getMediaContent(volunteerData.profile.image)} size="SMALL" />
                     <div className={styles.nameAddress}>
                         <span className={styles.name}>
                             {textSlice(
-                                `${getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}`,
+                                `${getFullName(volunteerData.profile.firstName, volunteerData.profile.lastName)}`,
                                 50,
                                 "title",
                             )}
                         </span>
                         <span className={styles.address}>
                             {textSlice(
-                                volunteer.profile.country,
+                                volunteerData.profile.country,
                                 25,
                                 "address",
                             )}

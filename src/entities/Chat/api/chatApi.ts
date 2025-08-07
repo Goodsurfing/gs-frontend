@@ -3,7 +3,9 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { Message } from "@/entities/Chat";
 import { ChatType, MessageType } from "@/entities/Messenger";
-import { FormApplication, FormApplicationStatus, FullFormApplication } from "@/entities/Application";
+import {
+    FormApplication, FormApplicationStatus, FullFormApplication, SimpleFormApplication,
+} from "@/entities/Application";
 
 interface MessagesRequest {
     chatId: string;
@@ -101,16 +103,16 @@ export const chatApi = createApi({
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<FullFormApplication[], void>({
+        getMyHostApplications: build.query<SimpleFormApplication[], void>({
             query: () => ({
-                url: "personal/organization/forms",
+                url: "personal/forms/with-organization",
                 method: "GET",
             }),
             providesTags: ["application"],
         }),
-        getMyVolunteerApplications: build.query<FullFormApplication[], void>({
+        getMyVolunteerApplications: build.query<SimpleFormApplication[], void>({
             query: () => ({
-                url: "personal/volunteer/forms",
+                url: "personal/forms/with-volunteer",
                 method: "GET",
             }),
             providesTags: ["application"],

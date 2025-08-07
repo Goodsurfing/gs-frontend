@@ -8,7 +8,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { useGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
 import styles from "./HostReviewCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
@@ -17,6 +16,7 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Text } from "@/shared/ui/Text/Text";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
+import { useGetToOrganizationsReviewsQuery } from "@/entities/Review";
 
 interface HostReviewCardProps {
     hostId: string;
@@ -28,7 +28,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCa
     const { t } = useTranslation("host");
     const { locale } = useLocale();
     const { getFullName } = useGetFullName();
-    const { data: reviewsData = [] } = useGetToOrganizationsReviewsByIdQuery({ hostId });
+    const { data: reviewsData = [] } = useGetToOrganizationsReviewsQuery({ organization: hostId });
     const [getVolunteer] = useLazyGetVolunteerByIdQuery();
     const [visibleCount, setVisibleCount] = useState(5);
     const [volunteerData, setVolunteerData] = useState<Record<string, any>>({});

@@ -163,6 +163,7 @@ const HostOffersPage = () => {
                     currentPage={currentOpenPage}
                     onPageChange={setCurrentOpenPage}
                     totalPages={totalOpenPages}
+                    className={styles.pagination}
                 />
             )}
             {!!offersWithClosedStatus.length && (
@@ -181,6 +182,7 @@ const HostOffersPage = () => {
                             currentPage={currentDraftPage}
                             onPageChange={setCurrentDraftPage}
                             totalPages={totalDraftPages}
+                            className={styles.pagination}
                         />
                     )}
                 </div>

@@ -204,9 +204,7 @@ export const InviteDescriptionForm = () => {
                                 />
                                 {errors.coverImage && (
                                     <ErrorText
-                                        text={t(
-                                            `description.${errors.coverImage?.message?.toString()}`,
-                                        )}
+                                        text={errors.coverImage?.message}
                                     />
                                 )}
                             </div>

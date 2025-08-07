@@ -8,7 +8,7 @@ import { NotesWidget } from "@/widgets/NotesWidget";
 
 import {
     FormApplicationStatus,
-    FullFormApplication,
+    SimpleFormApplication,
 } from "@/entities/Application";
 import { HostModalReview } from "@/entities/Review";
 import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
@@ -42,11 +42,11 @@ export const NotesHostForm = () => {
     });
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
-        setSelectedApplication] = useState<FullFormApplication | null>(null);
+        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
 
     const applicationsPerPage = 10;
-    const [applications, setApplications] = useState<FullFormApplication[]>([]);
-    const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
+    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
+    const [pageApplications, setPageApplications] = useState<SimpleFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
     const [getApplications, { isLoading }] = useLazyGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
@@ -78,7 +78,7 @@ export const NotesHostForm = () => {
 
     const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 

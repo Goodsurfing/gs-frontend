@@ -29,4 +29,22 @@ export interface FullFormApplication {
     hasFeedbackFromOrganization: boolean;
 }
 
+export type SimpleFormApplication = Omit<FullFormApplication, "volunteer"> & {
+    volunteer: string | VolunteerApi;
+};
+
+export interface Feedback {
+    id: number;
+    stars: number;
+    applicationForm: string;
+    text: string;
+    createdAt: string;
+    updatedAt: string;
+    volunteerId?: string;
+    organizationAuthorId?: string;
+    organizationId?: string;
+    volunteerAuthorId?: string;
+    vacancyId: number;
+}
+
 export type FormApplicationStatus = "new" | "accepted" | "canceled";

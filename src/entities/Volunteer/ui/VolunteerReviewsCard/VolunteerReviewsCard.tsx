@@ -10,7 +10,6 @@ import { ReviewWidget } from "@/widgets/ReviewWidget";
 import { useLazyGetHostByIdQuery } from "@/entities/Host";
 import {
     ApplicationReviewResponse,
-    useGetToVolunteerReviewsByIdQuery,
 } from "@/entities/Review";
 
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -19,6 +18,7 @@ import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import { Text } from "@/shared/ui/Text/Text";
 
 import styles from "./VolunteerReviewsCard.module.scss";
+import { useGetToVolunteerReviewsQuery } from "@/entities/Review/api/reviewApi";
 
 interface VolunteerReviewsCardProps {
     volunteerId: string;
@@ -35,7 +35,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
 
-        const { data: reviewsData } = useGetToVolunteerReviewsByIdQuery({ volunteerId });
+        const { data: reviewsData } = useGetToVolunteerReviewsQuery({ volunteer: volunteerId });
         const [getHost] = useLazyGetHostByIdQuery();
 
         useEffect(() => {

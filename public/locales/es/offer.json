@@ -96,7 +96,8 @@
         "Добавить фото": "Agregar foto",
         "Сохранить": "Guardar",
         "Произошла ошибка с обновлением галереи": "An error occurred while updating the gallery",
-        "Галерея успешно обновлена": "The gallery has been successfully updated"
+        "Галерея успешно обновлена": "The gallery has been successfully updated",
+        "Это поле является обязательным": "Este campo es obligatorio"
     },
     "whatToDo": {
         "Расскажите, чем нужно будет заниматься": "Cuéntanos en qué consistirá",

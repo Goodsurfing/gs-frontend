@@ -8,7 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { ApplicationReviewResponse, useGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
+import { ApplicationReviewResponse, useGetToOrganizationsReviewsQuery } from "@/entities/Review";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -36,7 +36,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
 
-        const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery({ hostId });
+        const { data: reviewsData } = useGetToOrganizationsReviewsQuery({ organization: hostId });
         const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
         useEffect(() => {

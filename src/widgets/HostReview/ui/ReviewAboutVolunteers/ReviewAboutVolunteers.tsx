@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { FullFormApplication } from "@/entities/Application";
+import { SimpleFormApplication } from "@/entities/Application";
 import { ApplicationReviewResponse, HostModalReview } from "@/entities/Review";
 
 import {
@@ -47,10 +47,10 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         defaultValues,
     });
     const { handleSubmit, control, reset } = form;
-    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
+    const [selectedApplication, setSelectedApplication] = useState<SimpleFormApplication | null>(
         null,
     );
-    const [applications, setApplications] = useState<FullFormApplication[]>([]);
+    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
     const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
 
     const [page, setPage] = useState(1);
@@ -107,7 +107,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         );
     };
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 
@@ -157,7 +157,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     ));
 
     return (
-        <div className={styles.wrapper} id="applications-scroll-wrapper">
+        <div className={styles.wrapper} id="applications-scroll-wrapper1">
             <h3 className={styles.h3}>{t("hostReviews.Отзывы про волонтёров")}</h3>
             <p className={styles.description}>
                 {t("hostReviews.Волонтёры, которых вы недавно принимали")}
@@ -167,8 +167,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     classNameSlide={styles.swiperSlide}
                     classNameWrapper={styles.swiperWrapper}
                     className={styles.slider}
-                    data={applications}
-                    renderItem={(item: FullFormApplication) => (
+                    data={applications.slice(0, 15)}
+                    renderItem={(item: SimpleFormApplication) => (
                         <ReviewMiniCard
                             data={item}
                             onReviewClick={onReviewClick}
@@ -190,7 +190,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     hasMore={hasMore}
                     scrollThreshold="70%"
                     loader={null}
-                    scrollableTarget="applications-scroll-wrapper"
+                    scrollableTarget="applications-scroll-wrapper1"
                 >
                     {renderFullCards(myReviews)}
                 </InfiniteScroll>

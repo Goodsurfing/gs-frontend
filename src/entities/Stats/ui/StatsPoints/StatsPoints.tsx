@@ -17,6 +17,18 @@ export const StatsPoints = memo((props: StatsPointsProps) => {
     const { className, pointsData, isLoading } = props;
     const { t } = useTranslation("translation");
 
+    const transalteLib: Record<string, string> = {
+        Описание: t("stats-points.Описание"),
+        Предложения: t("stats-points.Предложения"),
+        "О себе": t("stats-points.О себе"),
+        Отзывы: t("stats-points.Отзывы"),
+        Навыки: t("stats-points.Навыки"),
+        Фотографии: t("stats-points.Фотографии"),
+        Видео: t("stats-points.Видео"),
+        "Публикации в блоге": t("stats-points.Публикации в блоге"),
+        Членство: t("stats-points.Членство"),
+    };
+
     if (isLoading) {
         return (
             <ul className={cn(styles.wrapper, className)}>
@@ -31,7 +43,7 @@ export const StatsPoints = memo((props: StatsPointsProps) => {
                 <TextWithPoint
                     active={item.completed}
                     key={item.text}
-                    text={t(`stats-points.${item.text}`)}
+                    text={transalteLib[item.text]}
                 />
             ))}
         </ul>

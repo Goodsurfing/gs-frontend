@@ -29,6 +29,12 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
         navigate(`/${locale}${link}`);
     };
 
+    const translateLib: Record<string, string> = {
+        вакансий: t("category-offer.вакансий"),
+        вакансия: t("category-offer.вакансия"),
+        вакансии: t("category-offer.вакансии"),
+    };
+
     if (!image) {
         return (
             <div className={cn(styles.wrapper, styles.other)}>
@@ -41,7 +47,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
                     <span className={cn(styles.vacancy, styles.otherVacancy)}>
                         {vacancyNumber}
                         {" "}
-                        {t(`category-offer.${getVacancyText(vacancyNumber)}`)}
+                        {translateLib[getVacancyText(vacancyNumber)]}
                     </span>
                 </div>
             </div>
@@ -62,7 +68,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
                 <span className={styles.vacancy}>
                     {vacancyNumber}
                     {" "}
-                    {t(`category-offer.${getVacancyText(vacancyNumber)}`)}
+                    {translateLib[getVacancyText(vacancyNumber)]}
                 </span>
             </div>
         </div>

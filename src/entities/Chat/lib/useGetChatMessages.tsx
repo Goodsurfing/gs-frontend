@@ -11,7 +11,7 @@ export const useGetChatMessages = (
     const [messages, setMessages] = useState<MessageType[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
-    const itemsPerPage = 30;
+    const itemsPerPage = 50;
 
     const {
         data: messagesData, isLoading, isFetching, error,

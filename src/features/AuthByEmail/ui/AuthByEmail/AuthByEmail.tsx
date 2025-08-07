@@ -22,11 +22,11 @@ export const AuthByEmail = memo(() => {
     const { t, ready } = useTranslation();
 
     const errorMessages: Record<string, string> = {
-        "Ошибка авторизации": "login.Ошибка авторизации",
-        "Invalid password": "login.Invalid password",
-        "Данный пользователь уже существует": "login.Данный пользователь уже существует",
-        "Некорректно введены данные": "login.Некорректно введены данные",
-        "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "login.Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.",
+        "Ошибка авторизации": t("login.Ошибка авторизации"),
+        "Invalid password": t("login.Invalid password"),
+        "Данный пользователь уже существует": t("login.Данный пользователь уже существует"),
+        "Некорректно введены данные": t("login.Некорректно введены данные"),
+        "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": t("login.Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту."),
     };
 
     const onError = useCallback((errorText: string) => {
@@ -48,7 +48,7 @@ export const AuthByEmail = memo(() => {
         <div className={styles.wrapper}>
             {error && (
                 <HintPopup
-                    text={t(errorMessages[error])}
+                    text={errorMessages[error]}
                     type={HintType.Error}
                 />
             )}

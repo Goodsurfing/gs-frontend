@@ -11,15 +11,15 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestOfferCard.module.scss";
-import { FullFormApplication } from "../../model/types/application";
+import { SimpleFormApplication } from "../../model/types/application";
 import { Locale } from "@/entities/Locale";
 import CustomLink from "@/shared/ui/Link/Link";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 
 interface RequestOfferCardProps {
-    application: FullFormApplication;
+    application: SimpleFormApplication;
     className?: string;
-    onReviewClick?: (application: FullFormApplication) => void;
+    onReviewClick?: (application: SimpleFormApplication) => void;
     showStatus?: boolean;
     showButtons?: boolean;
     locale: Locale;

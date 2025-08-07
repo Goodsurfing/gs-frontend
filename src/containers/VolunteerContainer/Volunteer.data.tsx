@@ -6,38 +6,38 @@ export const useVolunteerData = () => {
     const volunteerData = [
         {
             number: 1,
-            title: "Поиск по карте",
+            title: t("Поиск по карте"),
         },
         {
             number: 2,
-            title: "Встречи с гудсёрферами",
+            title: t("Встречи с гудсёрферами"),
         },
         {
             number: 3,
-            title: "Поиск попутчиков",
+            title: t("Поиск попутчиков"),
         },
         {
             number: 4,
-            title: "Общение на сервисе",
+            title: t("Общение на сервисе"),
         },
         {
             number: 5,
-            title: "Отзывы волонтёров",
+            title: t("Отзывы волонтёров"),
         },
         {
             number: 6,
-            title: "Система рейтинга",
+            title: t("Система рейтинга"),
         },
         {
             number: 7,
-            title: "Лист пожеланий",
+            title: t("Лист пожеланий"),
         },
     ];
 
-    const translatedData = volunteerData.map((item) => ({
-        ...item,
-        title: t(item.title),
-    }));
+    // const translatedData = volunteerData.map((item) => ({
+    //     ...item,
+    //     title: t(item.title),
+    // }));
 
-    return translatedData;
+    return volunteerData;
 };

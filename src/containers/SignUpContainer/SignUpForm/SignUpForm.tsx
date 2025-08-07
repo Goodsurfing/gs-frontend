@@ -84,12 +84,20 @@ const SignUpForm: FC = () => {
                 control={control}
                 name="password"
                 defaultValue=""
-                render={({ field }) => (
+                rules={{
+                    required: t("login.ПолеОбязательно"),
+                    pattern: {
+                        value: /^(?=.*\d).{6,}$/,
+                        message: t("login.НедостаточноСложныйПароль"),
+                    },
+                }}
+                render={({ field, fieldState }) => (
                     <InputField
                         onChange={(e) => field.onChange(e)}
                         value={field.value}
                         type="password"
-                        text="Пароль"
+                        text={t("login.Пароль")}
+                        error={fieldState.error?.message}
                     />
                 )}
             />
@@ -100,7 +108,7 @@ const SignUpForm: FC = () => {
                 size="MEDIUM"
                 className={styles.btn}
             >
-                Зарегистрироваться
+                {t("login.Зарегистрироваться")}
             </Button>
         </form>
     );

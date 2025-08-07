@@ -9,20 +9,21 @@ import {
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import { FullFormApplication } from "../../model/types/application";
+import { SimpleFormApplication } from "../../model/types/application";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 import styles from "./RequestCard.module.scss";
+import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 interface RequestCardProps {
     className?: string;
-    application: FullFormApplication;
+    application: SimpleFormApplication;
     showStatus?: boolean;
     showButtons?: boolean;
-    onReviewClick?: (application: FullFormApplication) => void;
+    onReviewClick?: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -36,14 +37,25 @@ export const RequestCard = memo((props: RequestCardProps) => {
         locale,
     } = props;
     const { volunteer, vacancy, status } = application;
+    let volunteerId: string;
+    if (typeof volunteer === "string") {
+        volunteerId = volunteer.split("/").pop() || "";
+    } else {
+        volunteerId = volunteer.profile.id;
+    }
+    const { data: volunteerData } = useGetVolunteerByIdQuery(volunteerId ?? "");
     const { t } = useTranslation();
     const { getApplicationStatus } = useApplicationStatus();
     const navigate = useNavigate();
 
     const { getFullName } = useGetFullName();
 
-    const address = (!volunteer.profile.city || !volunteer.profile.country)
-        ? "Адрес не указан" : `${volunteer.profile.country}, ${volunteer.profile.city}`;
+    if (!volunteerData) {
+        return null;
+    }
+
+    const address = (!volunteerData.profile.city || !volunteerData.profile.country)
+        ? "Адрес не указан" : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
 
     const onMessageClick = () => {
         if (application.chatId) {
@@ -60,24 +72,27 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     </div>
                 )}
                 <CustomLink
-                    to={getVolunteerPersonalPageUrl(locale, volunteer.profile.id)}
+                    to={getVolunteerPersonalPageUrl(locale, volunteerData.profile.id)}
                     variant="DEFAULT"
                 >
                     <Avatar
-                        icon={getMediaContent(application.volunteer.profile.image)}
+                        icon={getMediaContent(volunteerData.profile.image)}
                         className={styles.image}
                         size="MEDIUM"
                     />
                 </CustomLink>
                 <CustomLink
-                    to={getVolunteerPersonalPageUrl(locale, volunteer.profile.id)}
+                    to={getVolunteerPersonalPageUrl(locale, volunteerData.profile.id)}
                     variant="DEFAULT"
                 >
                     <div className={styles.text}>
                         <span
                             className={styles.name}
                         >
-                            {getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}
+                            {getFullName(
+                                volunteerData.profile.firstName,
+                                volunteerData.profile.lastName,
+                            )}
                         </span>
                         <span className={styles.location}>
                             {address}
