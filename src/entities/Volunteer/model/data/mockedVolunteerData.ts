@@ -98,6 +98,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
+        participatedVacancies: [],
     },
     {
         profile: {
@@ -115,6 +116,7 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
+        participatedVacancies: [],
     },
     {
         profile: {
@@ -133,5 +135,6 @@ export const mockedVolunteerApiData: VolunteerApi[] = [
         languages: [],
         skills: [],
         certificates: [],
+        participatedVacancies: [],
     },
 ];

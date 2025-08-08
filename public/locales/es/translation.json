@@ -13,10 +13,12 @@
         "Ошибка авторизации": "Error de autorización",
         "Invalid password": "Inicio de sesión o contraseña inválidos",
         "Данный пользователь уже существует": "Este usuario ya existe",
-                "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "Para iniciar sesión, necesitas confirmar tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada.",
+        "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "Para iniciar sesión, necesitas confirmar tu dirección de correo electrónico. Por favor, revisa tu bandeja de entrada.",
         "Некорректно введены данные": "Datos introducidos incorrectamente",
         "Нажимая кнопку «Зарегистрироваться», я принимаю": "Al hacer clic en el botón 'Registrarse', acepto",
-        "Политику конфеденциальности ГудСёрфинга": "Política de privacidad de GoodSurfing"
+        "Политику конфеденциальности ГудСёрфинга": "Política de privacidad de GoodSurfing",
+        "ПолеОбязательно": "Este campo es obligatorio",
+        "НедостаточноСложныйПароль": "La contraseña debe tener al menos 6 caracteres y contener al menos un número"
     },
     "main": {
         "welcome": {
@@ -184,5 +186,7 @@
     "Свежее": "Reciente",
     "Популярное": "Popular",
     "Поиск": "Buscar",
-    "Анонимный пользователь": "Usuario anónimo"
+    "Анонимный пользователь": "Usuario anónimo",
+    "Отзывов": "Reseñas",
+    "Отправились": "Partieron"
 }

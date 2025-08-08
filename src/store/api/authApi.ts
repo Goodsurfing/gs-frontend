@@ -4,6 +4,7 @@ import { AuthApiEndpoints } from "@/types/api/auth";
 import {
     LoginByEmailProps,
     LoginResponse,
+    ResendVerificationRequest,
 } from "@/types/api/auth/login.interface";
 import {
     IRegisterFormData,
@@ -57,6 +58,13 @@ export const authApi = createApi({
         >({
             query: (data: IResetPasswordVerifyData) => ({
                 url: AuthApiEndpoints.RESET_PASSWORD,
+                method: "POST",
+                body: data,
+            }),
+        }),
+        resendEmailVerification: build.mutation<unknown, ResendVerificationRequest>({
+            query: (data: ResendVerificationRequest) => ({
+                url: AuthApiEndpoints.RESEND_EMAIL_VERIFICATION,
                 method: "POST",
                 body: data,
             }),

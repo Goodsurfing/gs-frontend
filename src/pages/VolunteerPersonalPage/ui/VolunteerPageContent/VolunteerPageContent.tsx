@@ -1,5 +1,6 @@
 import React, { FC, memo } from "react";
 
+import { useTranslation } from "react-i18next";
 import { VolunteerApi } from "@/entities/Volunteer";
 
 import styles from "./VolunteerPageContent.module.scss";
@@ -13,11 +14,12 @@ interface VolunteerPageContentProps {
 export const VolunteerPageContent: FC<VolunteerPageContentProps> = memo(
     (props: VolunteerPageContentProps) => {
         const { volunteer } = props;
+        const { t } = useTranslation("volunteer");
 
         if (!volunteer) {
             return (
                 <div className={styles.wrapper}>
-                    <Text text="Информация о пользователе ограничена, так как он не волонтёр" />
+                    <Text text={t("personalVolunteer.Информация о пользователе ограничена, так как он не волонтёр")} />
                 </div>
             );
         }

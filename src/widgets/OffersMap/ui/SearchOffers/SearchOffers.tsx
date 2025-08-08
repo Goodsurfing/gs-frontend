@@ -1,9 +1,10 @@
 import React, {
-    FC, useEffect, useRef, useState,
+    forwardRef,
+    useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState,
 } from "react";
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
-import { useFormContext, useWatch } from "react-hook-form";
+import cn from "classnames";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.svg";
 import { useCategories } from "@/shared/data/categories";
@@ -16,165 +17,189 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import Button from "@/shared/ui/Button/Button";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
-import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
-import { offersFilterApiAdapter } from "@/pages/OffersMapPage/lib/offersFilterAdapter";
 
 interface SearchOffersProps {
-    onSubmit: () => void;
-    value: string;
-    onChange: (value: string) => void;
+    onSubmit: (search: string) => void;
+    onResetFilters: () => void;
     placeholder?: string;
     buttonText?: string;
+    className?: string;
 }
 
-export const SearchOffers: FC<SearchOffersProps> = (props) => {
-    const {
-        onSubmit,
-        value, onChange,
-        placeholder = "Поиск", buttonText = "Посмотреть все",
-    } = props;
+export interface SearchOffersRef {
+    clearSearch: () => void;
+}
 
-    const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-    const [isDebouncing, setIsDebouncing] = useState(false);
-    const debouncedValue = useDebounce(value, 500);
+export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
+    (
+        {
+            onSubmit, onResetFilters,
+            placeholder = "Поиск", buttonText = "Посмотреть все", className,
+        },
+        ref,
+    ) => {
+        const [fetchOffersDropdown, {
+            data: offersDropdown,
+            isLoading: offersDropdownIsLoading, isFetching: offersDropdownIsFetching,
+        }] = useLazyGetOffersQuery(); // Нужно заменить на отдельный запрос от основного
+        const isLoading = useMemo(() => offersDropdownIsLoading
+    || offersDropdownIsFetching, [offersDropdownIsFetching,
+            offersDropdownIsLoading]);
+        const [searchInput, setSearchInput] = useState<string>("");
+        const [dropdownVisible, setDropdownVisible] = useState(false);
+        const [isDebouncing, setIsDebouncing] = useState(false);
+        const debouncedValue = useDebounce(searchInput, 500);
 
-    const { control } = useFormContext<OffersFilterFields>();
-    const offersFilters = useWatch({ control }) as OffersFilterFields;
+        const containerRef = useRef<HTMLDivElement>(null);
+        const inputRef = useRef<HTMLInputElement>(null);
 
-    const [getOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
+        const { getTranslation } = useCategories();
+        const { locale } = useLocale();
 
-    const containerRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+        useImperativeHandle(ref, () => ({
+            clearSearch() {
+                setSearchInput("");
+            },
+        }));
 
-    const { getTranslation } = useCategories();
-    const { locale } = useLocale();
-
-    useEffect(() => {
-        if (value.trim().length > 0) {
-            setIsDebouncing(true);
-        } else {
-            setDropdownVisible(false);
-        }
-    }, [value]);
-
-    useEffect(() => {
-        if (debouncedValue.trim().length > 0) {
-            setIsDebouncing(false);
-            const preparedData = offersFilterApiAdapter(offersFilters);
-            getOffers({ ...preparedData, "description.title": debouncedValue.toLowerCase() });
-            setDropdownVisible(true);
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedValue, getOffers]);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        useEffect(() => {
+            if (searchInput.trim().length > 0) {
+                setIsDebouncing(true);
+            } else {
                 setDropdownVisible(false);
             }
-        };
+        }, [searchInput]);
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+        useEffect(() => {
+            const fetchOffers = async () => {
+                if (debouncedValue.trim().length > 0) {
+                    setIsDebouncing(false);
+                    // onChange(debouncedValue);
+                    await fetchOffersDropdown({ "order[updatedAt]": "desc", search: debouncedValue });
+                }
+            };
+            fetchOffers();
+        }, [debouncedValue, fetchOffersDropdown]);
 
-    const handleSubmit = () => {
-        onSubmit();
-        setDropdownVisible(false);
-    };
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                    setDropdownVisible(false);
+                }
+            };
 
-    const handleClear = () => {
-        onChange("");
-        onSubmit();
-    };
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, []);
 
-    const handleInputClick = () => {
-        setDropdownVisible(true);
-    };
+        const handleSubmit = useCallback(() => {
+            setDropdownVisible(false);
+            onSubmit(searchInput);
+        }, [onSubmit, searchInput]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.value);
-        setDropdownVisible(true);
-    };
+        const handleClear = useCallback(async () => {
+            setSearchInput("");
+            // onChange("");
+            await onResetFilters();
+        }, [onResetFilters]);
 
-    const filteredOffers = offersData?.slice(0, 3) || [];
+        const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        // onChange(e.target.value);
+            setSearchInput(e.target.value);
+            setDropdownVisible(true);
+        }, []);
 
-    return (
-        <div ref={containerRef} style={{ position: "relative" }}>
-            <Paper
-                sx={{
-                    p: "3px 6px",
-                    border: "1px solid var(--bg-field)",
-                    display: "flex",
-                    gap: "6px",
-                    boxShadow: "none",
-                    transition: "border-color 0.2s ease-in-out",
-                    "&:focus-within": {
-                        borderColor: "var(--accent-color)",
-                    },
-                }}
-            >
-                <InputBase
-                    value={value}
-                    onChange={handleInputChange}
-                    onClick={handleInputClick}
-                    inputRef={inputRef}
-                    sx={{ flex: 1, width: "100%" }}
-                    placeholder={placeholder}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleSubmit();
-                        }
+        return (
+            <div ref={containerRef} className={cn(className)} style={{ position: "relative" }}>
+                <Paper
+                    sx={{
+                        p: "3px 6px",
+                        border: "1px solid var(--bg-field)",
+                        display: "flex",
+                        gap: "6px",
+                        boxShadow: "none",
+                        transition: "border-color 0.2s ease-in-out",
+                        "&:focus-within": {
+                            borderColor: "var(--accent-color)",
+                        },
                     }}
-                    inputProps={{ "aria-label": "Поиск вакансий" }}
-                />
-                {value.length > 0 && <CloseButton onClick={() => handleClear()} />}
-                <IconButton onClick={() => handleSubmit()} type="button" sx={{ p: "10px" }} aria-label="search">
-                    <ReactSVG className={styles.searchIcn} src={searchIcon} />
-                </IconButton>
-            </Paper>
+                >
+                    <InputBase
+                        value={searchInput}
+                        onChange={handleInputChange}
+                        onClick={() => setDropdownVisible(true)}
+                        inputRef={inputRef}
+                        sx={{ flex: 1, width: "100%" }}
+                        placeholder={placeholder}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleSubmit();
+                            }
+                        }}
+                        inputProps={{ "aria-label": "Поиск вакансий" }}
+                    />
+                    {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
+                    <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
+                        <ReactSVG className={styles.searchIcn} src={searchIcon} />
+                    </IconButton>
+                </Paper>
 
-            {dropdownVisible && value && filteredOffers.length > 0 && (
-                <div className={styles.dropdown}>
-                    {(isDebouncing || isLoading) ? (<MiniLoader />) : (
-                        <>
-                            {filteredOffers.map((offer) => (
-                                <a
-                                    href={getOffersMapPageUrl(locale)}
-                                    key={offer.id}
-                                    className={styles.dropdownItem}
+                {(dropdownVisible && searchInput.length > 0) && (
+                    <div className={styles.dropdown}>
+                        {(isDebouncing || isLoading) ? (
+                            <MiniLoader />
+                        ) : (
+                            <>
+                                {(!!offersDropdown && offersDropdown.length > 0) ? (
+                                    <>
+                                        {offersDropdown.slice(0, 3).map((offer) => {
+                                            const offerStatus = offer.status === "active" ? "opened" : "closed";
+                                            return (
+                                                <a
+                                                    href={getOffersMapPageUrl(locale)}
+                                                    key={offer.id}
+                                                    className={cn(styles.dropdownItem, { [styles.closed]: offerStatus === "closed" })}
+                                                >
+                                                    <img
+                                                        src={getMediaContent(
+                                                            offer.description?.image,
+                                                        ) || defaultImage}
+                                                        alt={offer.description?.title}
+                                                    />
+                                                    <div className={styles.dropdownContent}>
+                                                        <p className={styles.offerTitle}>
+                                                            {
+                                                                offer.description?.title
+                                                            }
+                                                        </p>
+                                                        <p className={styles.offerCategory}>
+                                                            {getTranslation(
+                                                                offer.description?.categoryIds[0],
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            );
+                                        })}
+                                    </>
+                                ) : (
+                                    <span>Данные вакансии отсутсвуют </span>
+                                )}
+                                <Button
+                                    onClick={handleSubmit}
+                                    color="BLUE"
+                                    size="SMALL"
+                                    variant="FILL"
                                 >
-                                    <img
-                                        src={getMediaContent(offer.description?.image)
-                                            || defaultImage}
-                                        alt={offer.description?.title}
-                                    />
-                                    <div className={styles.dropdownContent}>
-                                        <p className={styles.offerTitle}>
-                                            {
-                                                offer.description?.title
-                                            }
-                                        </p>
-                                        <p className={styles.offerCategory}>
-                                            {getTranslation(offer.description?.categoryIds[0])}
-                                        </p>
-                                    </div>
-                                </a>
-                            ))}
-                            <Button
-                                onClick={() => handleSubmit()}
-                                color="BLUE"
-                                size="SMALL"
-                                variant="FILL"
-                            >
-                                {buttonText}
-                            </Button>
-                        </>
-                    )}
-                </div>
-            )}
-        </div>
-    );
-};
+                                    {buttonText}
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    },
+);

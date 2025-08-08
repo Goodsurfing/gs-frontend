@@ -8,7 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { ApplicationReviewResponse, useGetToOrganizationsReviewsByIdQuery } from "@/entities/Review";
+import { ApplicationReviewResponse, useGetToOrganizationsReviewsQuery } from "@/entities/Review";
 import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -24,19 +24,19 @@ interface OfferReviewsCardProps {
     offerId: number;
 }
 
+const VISIBLE_COUNT = 5;
+
 export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
     (props: OfferReviewsCardProps) => {
         const { hostId, offerId } = props;
         const { t } = useTranslation("offer");
-        const [filteredReviews, setFilteredReviews] = useState<
-        ApplicationReviewResponse[]
-        >([]);
-        const [visibleCount, setVisibleCount] = useState(5);
+        const [filteredReviews, setFilteredReviews] = useState<ApplicationReviewResponse[]>([]);
+        const [visibleCount, setVisibleCount] = useState(VISIBLE_COUNT);
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
 
-        const { data: reviewsData } = useGetToOrganizationsReviewsByIdQuery(hostId);
+        const { data: reviewsData } = useGetToOrganizationsReviewsQuery({ organization: hostId });
         const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
         useEffect(() => {
@@ -49,61 +49,51 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
 
         useEffect(() => {
             const fetchCards = async () => {
-                const cards = await Promise.all(
-                    filteredReviews
-                        .slice(0, visibleCount)
-                        .map(async (review) => {
-                            const {
-                                stars,
-                                text,
-                                id,
-                                volunteerAuthorId,
-                                vacancyId,
-                            } = review;
-                            if (offerId === vacancyId) {
-                                try {
-                                    const volunteerData = await getVolunteer(
-                                        volunteerAuthorId ?? "",
-                                    ).unwrap();
-                                    if (volunteerData) {
-                                        const { profile } = volunteerData;
-                                        const {
-                                            image, firstName, lastName, id: profileId,
-                                        } = profile;
+                const relevantReviews = filteredReviews.filter((r) => r.vacancyId === offerId);
 
-                                        return (
-                                            <ReviewWidget
-                                                stars={stars}
-                                                reviewText={text}
-                                                avatar={getMediaContent(image)}
-                                                name={getFullName(
-                                                    firstName,
-                                                    lastName,
-                                                )}
-                                                url={getVolunteerPersonalPageUrl(
-                                                    locale,
-                                                    profileId,
-                                                )}
-                                                key={id}
-                                            />
-                                        );
-                                    }
-                                } catch {
-                                    return undefined;
-                                }
+                const cards = await Promise.all(
+                    relevantReviews.slice(0, visibleCount).map(async (review) => {
+                        const {
+                            stars,
+                            text,
+                            id,
+                            volunteerAuthorId,
+                        } = review;
+
+                        try {
+                            const volunteerData = await getVolunteer(volunteerAuthorId ?? "").unwrap();
+
+                            if (volunteerData) {
+                                const { profile } = volunteerData;
+                                const {
+                                    image, firstName, lastName, id: profileId,
+                                } = profile;
+
+                                return (
+                                    <ReviewWidget
+                                        key={id}
+                                        stars={stars}
+                                        reviewText={text}
+                                        avatar={getMediaContent(image)}
+                                        name={getFullName(firstName, lastName)}
+                                        url={getVolunteerPersonalPageUrl(locale, profileId)}
+                                    />
+                                );
                             }
-                        }),
+                        } catch (err) {
+                            return undefined;
+                        }
+                    }),
                 );
-                setRenderCards(
-                    cards.filter((card) => card !== undefined) as JSX.Element[],
-                );
+
+                setRenderCards(cards.filter(Boolean) as JSX.Element[]);
             };
 
             fetchCards();
-        }, [filteredReviews, visibleCount, getVolunteer, offerId, locale]);
+        }, [filteredReviews, offerId, visibleCount, locale]);
 
         const handleShowNext = () => {
-            setVisibleCount((prev) => prev + 5);
+            setVisibleCount((prev) => prev + VISIBLE_COUNT);
         };
 
         if (!reviewsData || reviewsData.length === 0) {
@@ -113,8 +103,14 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
-                <div className={styles.container}>{renderCards.length > 0 ? renderCards : "На данный момент отзывов нет"}</div>
-                {visibleCount < filteredReviews.length && (
+                <div className={styles.container}>
+                    {renderCards.length > 0
+                        ? renderCards
+                        : "На данный момент отзывов нет"}
+                </div>
+                {renderCards.length > 0 && visibleCount < filteredReviews.filter(
+                    (r) => r.vacancyId === offerId,
+                ).length && (
                     <ShowNext onClick={handleShowNext} />
                 )}
             </div>

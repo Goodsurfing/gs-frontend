@@ -11,12 +11,15 @@ import star from "@/shared/assets/icons/star.svg";
 import {
     getMessengerPageCreateUrl,
     getOffersWherePageUrl,
+    getProfileRolePageUrl,
 } from "@/shared/config/routes/AppUrls";
-import Button from "@/shared/ui/Button/Button";
+import Button, { ButtonSize, ButtonColor, ButtonVariant } from "@/shared/ui/Button/Button";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 import { OfferStatus } from "@/shared/ui/OfferStatus/OfferStatus";
 
 import styles from "./PersonalCard.module.scss";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 interface PersonalCardProps {
     offerId: string;
@@ -30,6 +33,7 @@ interface PersonalCardProps {
     canEdit: boolean;
     canParticipate: boolean;
     status: OfferStatusType;
+    isVolunteer: boolean;
 }
 
 export const PersonalCard = memo((props: PersonalCardProps) => {
@@ -45,8 +49,12 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         canEdit,
         canParticipate,
         status,
+        isVolunteer,
     } = props;
     const { t } = useTranslation("offer");
+    const isAuth = useAppSelector(getUserAuthData);
+    const isNeedToBecomeVolunteer = !!isAuth && !isVolunteer;
+
     const isImage = image !== undefined;
     const backgroundImageStyle = isImage
         ? {
@@ -61,14 +69,30 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
     const navigate = useNavigate();
 
     const handleParticipateClick = useCallback(() => {
-        navigate(getMessengerPageCreateUrl(locale, "create", offerId));
-    }, [locale, navigate, offerId]);
+        if (isNeedToBecomeVolunteer) {
+            navigate(`${getProfileRolePageUrl(locale)}?next=${offerId}`);
+        } else {
+            navigate(getMessengerPageCreateUrl(locale, "create", offerId));
+        }
+    }, [locale, navigate, offerId, isNeedToBecomeVolunteer]);
 
     const handleEditClick = useCallback(() => {
         if (canEdit) {
             navigate(getOffersWherePageUrl(locale, offerId));
         }
     }, [canEdit, locale, navigate, offerId]);
+
+    const buttonProps = {
+        size: "SMALL" as ButtonSize,
+        variant: "FILL" as ButtonVariant,
+        color: "BLUE" as ButtonColor,
+        onClick: handleParticipateClick,
+        disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+    };
+
+    const buttonText = isNeedToBecomeVolunteer
+        ? t("personalOffer.Чтобы участвовать, станьте гудсёрфером")
+        : t("personalOffer.Участвовать");
 
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -119,15 +143,30 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                     {/* <div className={styles.medals}>
                         {medals}
                     </div> */}
-                    <Button
-                        disabled={!canParticipate}
-                        size="SMALL"
-                        variant="FILL"
-                        color="BLUE"
-                        onClick={handleParticipateClick}
-                    >
-                        {t("personalOffer.Участвовать")}
+                    <Button {...buttonProps}>
+                        {buttonText}
                     </Button>
+                    {/* {(!!isAuth && !isVolunteer) ? (
+                        <Button
+                            size="SMALL"
+                            variant="FILL"
+                            color="BLUE"
+                            onClick={handleRoleClick}
+                        >
+                            {t("personalOffer.Чтобы участвовать, станьте гудсёрфером")}
+                        </Button>
+                    )
+                        : (
+                            <Button
+                                disabled={!canParticipate}
+                                size="SMALL"
+                                variant="FILL"
+                                color="BLUE"
+                                onClick={handleParticipateClick}
+                            >
+                                {t("personalOffer.Участвовать")}
+                            </Button>
+                        )} */}
                     {canEdit && (
                         <Button
                             size="SMALL"

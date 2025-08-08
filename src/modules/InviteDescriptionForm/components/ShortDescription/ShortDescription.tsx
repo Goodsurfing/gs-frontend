@@ -7,15 +7,18 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { ShortDescriptionProps } from "./types";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 
 const ShortDescription: FC<ShortDescriptionProps> = () => {
     const { control, formState: { errors } } = useFormContext();
     const { t } = useTranslation("offer");
+    const { translate } = useErrorTranslate();
+
     return (
         <Controller
             name="shortDescription"
             control={control}
-            rules={{ required: THIS_FIELD_IS_REQUIRED }}
+            rules={{ required: translate(THIS_FIELD_IS_REQUIRED) }}
             render={({ field }) => (
                 <div>
                     <Textarea

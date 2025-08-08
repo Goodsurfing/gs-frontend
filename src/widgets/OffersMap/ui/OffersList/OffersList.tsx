@@ -1,10 +1,9 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useMemo, useState,
+    FC, useCallback, useMemo,
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Controller, useFormContext } from "react-hook-form";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
@@ -13,27 +12,26 @@ import { OfferPagination } from "../OfferPagination/OfferPagination";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Offer } from "@/entities/Offer";
-import { SearchOffers } from "../SearchOffers/SearchOffers";
 import styles from "./OffersList.module.scss";
-import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface OffersListProps {
     className?: string;
     mapOpenValue: boolean;
     onChangeMapOpen: () => void;
-    onSubmit: () => void;
     data?: Offer[];
     isLoading: boolean;
+    currentPage: number;
+    offersPerPage: number;
+    onChangePage: (pageItem: number) => void;
 }
 
-export const OffersList: FC<OffersListProps> = (props) => {
+export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
     const {
-        mapOpenValue, onChangeMapOpen, data, onSubmit, isLoading, className,
+        mapOpenValue, onChangeMapOpen, data, className,
+        currentPage, offersPerPage,
+        onChangePage, isLoading,
     } = props;
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const offersPerPage = 10;
 
-    const { control } = useFormContext<OffersFilterFields>();
     const { locale } = useLocale();
     const { t } = useTranslation("offers-map");
 
@@ -41,113 +39,64 @@ export const OffersList: FC<OffersListProps> = (props) => {
         const startIndex = (currentPage - 1) * offersPerPage;
         const endIndex = startIndex + offersPerPage;
         return data?.slice(startIndex, endIndex);
-    }, [data, currentPage]);
+    }, [currentPage, offersPerPage, data]);
 
     const changeMapOpen = useCallback(() => {
         onChangeMapOpen();
     }, [onChangeMapOpen]);
 
     const changeCurrentPage = useCallback((page: number) => {
-        setCurrentPage(page);
-    }, []);
+        onChangePage(page);
+    }, [onChangePage]);
 
     const renderOfferCards = useMemo(
         () => {
-            if (!currentOffers || currentOffers.length === 0) {
-                return (
-                    <Text
-                        className={styles.error}
-                        textSize="primary"
-                        text="Вакансии не были найдены"
-                    />
-                );
+            if (isLoading) {
+                return (<MiniLoader className={styles.miniLoader} />);
             }
-            return currentOffers?.map((offer) => (
-                <OfferCard
-                    locale={locale}
-                    classNameCard={styles.offerCard}
-                    className={cn(styles.offer, {
-                        [styles.closed]: !mapOpenValue,
-                    })}
-                    status={offer.status === "active" ? "opened" : "closed"}
-                    data={offer}
-                    key={offer.id}
-                    // isFavoriteIconShow={!!isAuth}
+            if (data) {
+                if (data.length === 0) {
+                    return (
+                        <Text
+                            className={styles.error}
+                            textSize="primary"
+                            text={t("Вакансии не были найдены")}
+                        />
+                    );
+                }
+                return currentOffers?.map((offer) => (
+                    <OfferCard
+                        locale={locale}
+                        classNameCard={styles.offerCard}
+                        className={cn(styles.offer, {
+                            [styles.closed]: !mapOpenValue,
+                        })}
+                        status={offer.status === "active" ? "opened" : "closed"}
+                        data={offer}
+                        key={offer.id}
+                        // isFavoriteIconShow={!!isAuth}
+                    />
+                ));
+            }
+            return (
+                <Text
+                    className={styles.error}
+                    textSize="primary"
+                    text={t("Вакансии не были найдены")}
                 />
-            ));
+            );
         },
-        [currentOffers, locale, mapOpenValue],
+        [currentOffers, data, isLoading, locale, mapOpenValue, t],
     );
 
-    if (isLoading) {
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <MiniLoader className={styles.miniLoader} />
-            </div>
-        );
-    }
-
-    if (!data) {
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <div className={styles.searchWrapper}>
-                    <Controller
-                        name="search"
-                        control={control}
-                        render={({ field }) => (
-                            <SearchOffers
-                                onSubmit={onSubmit}
-                                value={field.value}
-                                onChange={field.onChange}
-                                placeholder={t("Поиск")}
-                                buttonText={t("Посмотреть все")}
-                            />
-                        )}
-                    />
-                </div>
-                <HeaderList
-                    offersLength={0}
-                    isShowMap={mapOpenValue}
-                    onChangeShowMap={changeMapOpen}
-                />
-                <div
-                    className={cn(styles.list, {
-                        [styles.closed]: !mapOpenValue,
-                    })}
-                >
-                    <Text
-                        className={styles.error}
-                        textSize="primary"
-                        text={t("Вакансии не были найдены")}
-                    />
-                </div>
-            </div>
-        );
-    }
-
-    const totalPages = Math.ceil(data.length / offersPerPage);
+    const totalPages = data ? Math.ceil(data.length / offersPerPage) : 0;
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div className={styles.searchWrapper}>
-                <Controller
-                    name="search"
-                    control={control}
-                    render={({ field }) => (
-                        <SearchOffers
-                            onSubmit={onSubmit}
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder={t("Поиск")}
-                            buttonText={t("Посмотреть все")}
-                        />
-                    )}
-                />
-            </div>
             <HeaderList
-                offersLength={data.length}
+                offersLength={data ? data.length : 0}
                 isShowMap={mapOpenValue}
-                onChangeShowMap={onChangeMapOpen}
+                onChangeShowMap={changeMapOpen}
             />
             <div
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}

@@ -13,6 +13,7 @@ import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 import { HostReviewCard } from "../HostReviewCard/HostReviewCard";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface HostInfoCardProps {
     className?: string;
@@ -22,6 +23,8 @@ interface HostInfoCardProps {
 export const HostInfoCard: FC<HostInfoCardProps> = memo(
     (props: HostInfoCardProps) => {
         const { className, host } = props;
+        const { locale } = useLocale();
+
         return (
             <div className={cn(className, styles.wrapper)}>
                 <HostDescriptionCard
@@ -31,6 +34,7 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                 <HostOffersCard
                     hostId={host.id}
                     className={styles.container}
+                    locale={locale}
                 />
                 <HostGalleryCard
                     images={getMediaContentsArray(host.galleryImages)}

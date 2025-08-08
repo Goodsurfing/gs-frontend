@@ -2,13 +2,13 @@ import React, { FC } from "react";
 
 import { ReviewTypeFields } from "@/features/Notes";
 
-import { FullFormApplication, RequestOfferCard } from "@/entities/Application";
+import { RequestOfferCard, SimpleFormApplication } from "@/entities/Application";
 
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
 
 interface VolunteerModalReviewProps {
-    application: FullFormApplication | null;
+    application: SimpleFormApplication | null;
     value: ReviewTypeFields;
     onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;

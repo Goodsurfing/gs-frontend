@@ -1,8 +1,10 @@
+/* eslint-disable react/no-danger */
 import cn from "classnames";
 import React, {
     FC, memo, useEffect, useState,
 } from "react";
 import { ReactSVG } from "react-svg";
+import twemoji from "twemoji";
 import { MediaObjectType } from "@/types/media";
 import { useLazyGetMediaObjectByIdQuery } from "@/modules/Gallery";
 
@@ -24,6 +26,14 @@ interface MessageProps {
     onImageClick?: (src: string) => void;
 }
 
+function renderTextWithEmoji(text: string) {
+    return twemoji.parse(text, {
+        folder: "svg",
+        ext: ".svg",
+        base: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/",
+    });
+}
+
 export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     const {
         avatar,
@@ -36,7 +46,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
         onImageClick,
     } = props;
 
-    const messageClass = cn(styles.message, {
+    const messageClass = cn("message", styles.message, {
         [styles.userMessage]: isUser,
         [styles.otherMessage]: !isUser,
     });
@@ -148,7 +158,10 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                 })}
             >
                 {isUser && <span className={styles.name}>{username}</span>}
-                <p className={styles.text}>{text}</p>
+                <p
+                    className={styles.text}
+                    dangerouslySetInnerHTML={{ __html: renderTextWithEmoji(text ?? "") }}
+                />
                 <span className={styles.date}>
                     {date}
                     {isError && (

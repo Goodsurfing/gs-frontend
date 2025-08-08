@@ -3,6 +3,7 @@ import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import {
     useGetVolunteerByIdQuery,
     useUpdateVolunteerByIdMutation,
@@ -33,6 +34,7 @@ export const UploadCertificates: FC<UploadCertificateProps> = ({
     id,
     profileId,
 }) => {
+    const { t } = useTranslation("volunteer");
     const [uploadedCertificates, setUploadedSertificates] = useState<MediaObjectType[]>(
         [],
     );
@@ -51,17 +53,17 @@ export const UploadCertificates: FC<UploadCertificateProps> = ({
                     body: { certificates: preparedData },
                 }).unwrap();
                 setToast({
-                    text: "Диплом или сертификат были успешно добавлены",
+                    text: t("volunteer-gallery.Диплом или сертификат были успешно добавлены"),
                     type: HintType.Success,
                 });
             } catch (error) {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: t("volunteer-gallery.Произошла ошибка"),
                     type: HintType.Error,
                 });
             }
         },
-        [profileId, updateVolunteer, uploadedCertificates],
+        [profileId, updateVolunteer, uploadedCertificates, t],
     );
 
     const uploadCertificates = useCallback(
@@ -74,12 +76,12 @@ export const UploadCertificates: FC<UploadCertificateProps> = ({
                 }
             } catch (error) {
                 setToast({
-                    text: "Произошла ошибка",
+                    text: t("volunteer-gallery.Произошла ошибка"),
                     type: HintType.Error,
                 });
             }
         },
-        [handleUpdateCertificates],
+        [handleUpdateCertificates, t],
     );
 
     useEffect(() => {

@@ -33,6 +33,8 @@ export const AuthByEmailForm = memo(({
     const dispatch = useAppDispatch();
 
     const [loginUser, { isLoading }] = authApi.useLoginUserMutation();
+    const [resendEmailVerification,
+        { isLoading: isVerificationLoading }] = authApi.useResendEmailVerificationMutation();
 
     const onSubmit: SubmitHandler<LoginByEmailFields> = useCallback(async (data) => {
         try {
@@ -52,9 +54,17 @@ export const AuthByEmailForm = memo(({
             onSuccess?.();
             reset();
         } catch (e: any) {
+            const errorType = e?.data?.type;
+
+            if (errorType === "email_not_verified") {
+                try {
+                    await resendEmailVerification({ email: data.email }).unwrap();
+                } catch (resendError) { /* empty */ }
+            }
+
             onError?.(getErrorText(e));
         }
-    }, [dispatch, loginUser, onError, onSuccess, reset]);
+    }, [dispatch, loginUser, resendEmailVerification, onError, onSuccess, reset]);
 
     return (
         <form className={cn(styles.form, className)} onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +93,7 @@ export const AuthByEmailForm = memo(({
                 )}
             />
             <Button
-                disabled={isLoading}
+                disabled={isLoading || isVerificationLoading}
                 type="submit"
                 variant="FILL"
                 color="BLUE"

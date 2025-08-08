@@ -5,7 +5,7 @@ import React, {
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
     FormApplicationStatus,
-    FullFormApplication,
+    SimpleFormApplication,
 } from "@/entities/Application";
 
 import useDebounce from "@/shared/hooks/useDebounce";
@@ -16,11 +16,11 @@ import styles from "./NotesWidget.module.scss";
 import { Locale } from "@/entities/Locale";
 
 interface NotesWidgetProps {
-    notes: FullFormApplication[];
+    notes: SimpleFormApplication[];
     className?: string;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (application: FullFormApplication) => void;
+    onReviewClick: (application: SimpleFormApplication) => void;
     updateApplicationStatus?: (
         applicationId: number,
         status: FormApplicationStatus
@@ -40,14 +40,14 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             locale,
         } = props;
 
-        const [notes, setNotes] = useState<FullFormApplication[]>([]);
+        const [notes, setNotes] = useState<SimpleFormApplication[]>([]);
 
         useEffect(() => {
             setNotes([...initialNotes]);
         }, [initialNotes]);
 
         const [columns, setColumns] = useState<
-        Record<FormApplicationStatus, FullFormApplication[]>
+        Record<FormApplicationStatus, SimpleFormApplication[]>
         >({
             new: [],
             accepted: [],
@@ -57,7 +57,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         useEffect(() => {
             const newColumns: Record<
             FormApplicationStatus,
-            FullFormApplication[]
+            SimpleFormApplication[]
             > = {
                 new: [],
                 accepted: [],

@@ -8,15 +8,18 @@ import { FullDescriptionProps } from "./types";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
 import styles from "./FullDescription.module.scss";
+import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 
 const ShortDescription: FC<FullDescriptionProps> = () => {
     const { control, formState: { errors } } = useFormContext();
     const { t } = useTranslation("offer");
+    const { translate } = useErrorTranslate();
+
     return (
         <Controller
             name="fullDescription"
             control={control}
-            rules={{ required: THIS_FIELD_IS_REQUIRED }}
+            rules={{ required: translate(THIS_FIELD_IS_REQUIRED) }}
             render={({ field }) => (
                 <div>
                     <Textarea

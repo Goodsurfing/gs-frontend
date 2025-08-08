@@ -9,8 +9,24 @@ interface ReviewRequest {
 }
 
 interface ReviewParams {
-    author: string;
+    author?: string;
+    volunteer?: string;
+    organization?: string;
+    itemsPerPage?: number;
+    page?: number;
 }
+
+// interface ReviewHostRequest {
+//     hostId: string;
+//     itemsPerPage?: number;
+//     page?: number;
+// }
+
+// interface ReviewVolunteerRequest {
+//     volunteerId: string;
+//     itemsPerPage?: number;
+//     page?: number;
+// }
 
 export const reviewApi = createApi({
     reducerPath: "reviewApi",
@@ -41,13 +57,6 @@ export const reviewApi = createApi({
             }),
             providesTags: ["volunteer"],
         }),
-        getToVolunteerReviewsById: build.query<ApplicationReviewResponse[], string>({
-            query: (volunteerId) => ({
-                url: `volunteers/${volunteerId}/feedbacks`,
-                method: "GET",
-            }),
-            providesTags: ["volunteer"],
-        }),
         updateToVolunteerReviewById: build.mutation<ApplicationReview, ReviewRequest>({
             query: ({ reviewId, data }) => ({
                 url: `organizations/${reviewId}`,
@@ -68,7 +77,7 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
-        getToOrganizationsReviews: build.query<ApplicationReview[], ReviewParams>({
+        getToOrganizationsReviews: build.query<ApplicationReviewResponse[], ReviewParams>({
             query: (params) => ({
                 url: "feedback_to_organizations",
                 method: "GET",
@@ -79,13 +88,6 @@ export const reviewApi = createApi({
         getToOrganizationsReviewById: build.query<ApplicationReview, string>({
             query: (reviewId) => ({
                 url: `feedback_to_organizations/${reviewId}`,
-                method: "GET",
-            }),
-            providesTags: ["host"],
-        }),
-        getToOrganizationsReviewsById: build.query<ApplicationReviewResponse[], string>({
-            query: (hostId) => ({
-                url: `organizations/${hostId}/feedbacks`,
                 method: "GET",
             }),
             providesTags: ["host"],
@@ -107,15 +109,15 @@ export const reviewApi = createApi({
 export const {
     useCreateToVolunteerReviewMutation,
     useGetToVolunteerReviewsQuery,
+    useLazyGetToVolunteerReviewsQuery,
     useGetToVolunteerReviewByIdQuery,
     useLazyGetToVolunteerReviewByIdQuery,
-    useGetToVolunteerReviewsByIdQuery,
     useUpdateToVolunteerReviewByIdMutation,
     useCreateToOrganizationsReviewMutation,
     useGetToOrganizationsReviewsQuery,
+    useLazyGetToOrganizationsReviewsQuery,
     useGetToOrganizationsReviewByIdQuery,
     useLazyGetToOrganizationsReviewByIdQuery,
-    useGetToOrganizationsReviewsByIdQuery,
-    useLazyGetToOrganizationsReviewsByIdQuery,
     useUpdateToOrganizationsReviewByIdMutation,
+
 } = reviewApi;

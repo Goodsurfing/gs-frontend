@@ -6,18 +6,18 @@ import { useTranslation } from "react-i18next";
 import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
 import { NotesCard } from "../NotesCard/NotesCard";
 import styles from "./NotesContainer.module.scss";
-import { FormApplicationStatus, FullFormApplication } from "@/entities/Application";
+import { FormApplicationStatus, SimpleFormApplication } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 
 export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
-    notes: FullFormApplication[];
+    notes: SimpleFormApplication[];
     className?: string;
     color: string;
     status: FormApplicationStatus;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (application: FullFormApplication) => void;
+    onReviewClick: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -34,6 +34,12 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             locale,
         } = props;
         const { t } = useTranslation();
+
+        const translateLib: Record<string, string> = {
+            new: t("notes.new"),
+            accepted: t("notes.accepted"),
+            canceled: t("notes.canceled"),
+        };
 
         const renderNotes = () => {
             if (variant === "host") {
@@ -68,7 +74,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                     className={styles.top}
                     style={{ borderBottom: `2px solid ${color}` }}
                 >
-                    <span className={styles.title}>{t(`notes.${status}`)}</span>
+                    <span className={styles.title}>{translateLib[status]}</span>
                     <span className={styles.number}>{notes?.length || 0}</span>
                 </div>
                 <div className={styles.container}>

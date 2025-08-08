@@ -1,21 +1,28 @@
+.wrapper {
+    height: 100%;
+}
+
 .wrapperOffersMap {
     display: flex;
 }
 
-.offersList, .offersMap {
+.searchOffersList, .offersMap {
     flex: 1;
     height: calc(100vh - 12rem);
+    // height: 100%;
 }
 
 .offersMap.close {
     display: none;
 }
 
-.offersList {
+.searchOffersList {
     max-width: 1000px;
+    display: flex;
+    flex-direction: column;
 }
 
-.offersList.closed {
+.searchOffersList.closed {
     max-width: 100%;
 }
 
@@ -23,14 +30,18 @@
     display: none;
 }
 
-@media (max-width: 1200px) {
-    .offersList, .offersMap {
+.searchWrapper {
+    padding: 12px 30px;
+}
+
+@media (max-width: 1400px) {
+    .searchOffersList, .offersMap {
         height: calc(100vh - 16.125rem);
     }
 }
 
 @media (max-width: 992px) {
-    .offersMap, .filter, .offersList{
+    .wrapperOffersMap, .filter {
         display: none;
     }
 

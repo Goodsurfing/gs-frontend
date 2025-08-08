@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { ReviewFields } from "@/features/Notes";
 
 import {
-    FullFormApplication,
     RequestCard,
+    SimpleFormApplication,
 } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 import { HostModalReview } from "@/entities/Review";
@@ -49,7 +49,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
 
     const [toast, setToast] = useState<ToastAlert>();
     const [selectedApplication,
-        setSelectedApplication] = useState<FullFormApplication | null>(null);
+        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -60,7 +60,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         navigate(getHostNotesPageUrl(locale));
     };
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 

@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
-import { ApplicationReview, VolunteerModalReview } from "@/entities/Review";
+import { ApplicationReviewResponse, VolunteerModalReview } from "@/entities/Review";
 
 import {
     HintType,
@@ -13,20 +14,22 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { FullFormApplication } from "@/entities/Application";
+import { SimpleFormApplication } from "@/entities/Application";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import styles from "./ReviewAboutOffers.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
-import { useCreateToOrganizationsReviewMutation, useGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
+import { useCreateToOrganizationsReviewMutation, useLazyGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
 import { useGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import styles from "./ReviewAboutOffers.module.scss";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
     id: string;
 }
+
+const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const { locale, id } = props;
@@ -43,13 +46,17 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         defaultValues,
     });
     const { handleSubmit, control, reset } = form;
-    const [applications, setApplications] = useState<FullFormApplication[]>([]);
-    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
+    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
+    const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
+    const [selectedApplication, setSelectedApplication] = useState<SimpleFormApplication | null>(
         null,
     );
 
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     const { data: volunteerApplicationsData, isLoading } = useGetMyVolunteerApplicationsQuery();
-    const { data: myReviewsData } = useGetToOrganizationsReviewsQuery({ author: id });
+    const [getMyReviews] = useLazyGetToOrganizationsReviewsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
@@ -63,11 +70,40 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         }
     }, [volunteerApplicationsData]);
 
-    const renderFullCards = (reviews?: ApplicationReview[]) => reviews?.map(
+    const fetchMyReviews = async (isInitial: boolean) => {
+        try {
+            const currentPage = isInitial ? 1 : page;
+
+            const result = await getMyReviews({
+                author: id,
+                page: currentPage,
+                itemsPerPage: ITEMS_PER_PAGE,
+            }).unwrap();
+
+            if (result.length < ITEMS_PER_PAGE) {
+                setHasMore(false);
+            }
+
+            if (isInitial) {
+                setMyReviews(result);
+                setPage(2);
+            } else {
+                setMyReviews((prev) => [...prev, ...result]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch { /* empty */ }
+    };
+
+    useEffect(() => {
+        fetchMyReviews(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const renderFullCards = (reviews?: ApplicationReviewResponse[]) => reviews?.map(
         (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
     );
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 
@@ -124,7 +160,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     ));
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} id="applications-scroll-wrapper1">
             <h3 className={styles.h3}>
                 {t("volunteer-review.Отзывы о проектах")}
             </h3>
@@ -136,8 +172,8 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                     classNameSlide={styles.swiperSlide}
                     classNameWrapper={styles.swiperWrapper}
                     className={styles.slider}
-                    data={applications}
-                    renderItem={(item: FullFormApplication) => (
+                    data={applications.slice(0, 15)}
+                    renderItem={(item: SimpleFormApplication) => (
                         <ReviewMiniCard
                             data={item}
                             onReviewClick={onReviewClick}
@@ -153,7 +189,16 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                 </div>
             )}
             <div className={styles.fullCardContainer}>
-                {renderFullCards(myReviewsData)}
+                <InfiniteScroll
+                    dataLength={myReviews.length}
+                    next={() => fetchMyReviews(false)}
+                    hasMore={hasMore}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="applications-scroll-wrapper1"
+                >
+                    {renderFullCards(myReviews)}
+                </InfiniteScroll>
             </div>
             <Controller
                 name="review"

@@ -3,6 +3,7 @@ import React, {
 } from "react";
 import cn from "classnames";
 
+import { useTranslation } from "react-i18next";
 import styles from "./VolunteerLanguagesCard.module.scss";
 import { Language } from "@/types/languages";
 import { Text } from "@/shared/ui/Text/Text";
@@ -18,12 +19,13 @@ export const VolunteerLanguagesCard: FC<VolunteerLanguagesCardProps> = memo((
 ) => {
     const { className, languages } = props;
     const textLanguages = useFormatLanguages(languages);
+    const { t } = useTranslation("volunteer");
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Text title="Языки" titleSize="h3" />
+            <Text title={t("personalVolunteer.Языки")} titleSize="h3" />
             <div className={styles.container}>
-                {languages.length !== 0 ? <div className={styles.languages}>{textLanguages}</div> : "Языки не были указаны"}
+                {languages.length !== 0 ? <div className={styles.languages}>{textLanguages}</div> : t("personalVolunteer.Языки не были указаны")}
             </div>
 
         </div>

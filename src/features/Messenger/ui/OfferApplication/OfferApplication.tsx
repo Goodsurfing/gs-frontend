@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from "react";
 
+import { useTranslation } from "react-i18next";
 import { Offer, OfferCard } from "@/entities/Offer";
 
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -31,9 +32,13 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         isHost, username, isClosed, onSubmit, terms, onChange, offerData,
         onApplicationSubmit,
     } = props;
-    const { description, where, id } = offerData;
+    const {
+        description, where, id, acceptedApplicationsCount,
+        feedbacksCount, averageRating,
+    } = offerData;
     const { locale } = useLocale();
     const { getTranslation } = useCategories();
+    const { t } = useTranslation("messenger");
 
     const handleDates = useCallback(
         (periods: DatesType) => {
@@ -52,13 +57,13 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 <span className={styles.line}>
                     {username}
                     {" "}
-                    подал заявку на вакансию
+                    {t("подал заявку на вакансию")}
                 </span>
             );
         }
         return (
             <span className={styles.line}>
-                Вы подали заявку на данную вакансию
+                {t("Вы подали заявку на данную вакансию")}
             </span>
         );
     };
@@ -75,10 +80,10 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 category={getTranslation(description?.categoryIds[0])}
                 description={description?.shortDescription}
                 location={where?.address}
-                rating="4"
-                reviews="15"
+                rating={Number(averageRating?.toFixed(1))}
+                reviews={feedbacksCount}
                 title={description?.title}
-                went="8"
+                went={acceptedApplicationsCount}
                 isImageShow={false}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
             />

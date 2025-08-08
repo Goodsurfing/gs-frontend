@@ -20,6 +20,7 @@ export const OfferPersonalCardCategory = memo(
                 <span
                     className={cn(styles.category, styles.text)}
                     style={{ backgroundColor: getColorByCategory(category) }}
+                    key={category}
                 >
                     {getTranslation(category)}
                 </span>

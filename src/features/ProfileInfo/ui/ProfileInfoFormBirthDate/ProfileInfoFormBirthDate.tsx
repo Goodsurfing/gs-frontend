@@ -18,6 +18,7 @@ import {
 } from "../../model/data/birthData";
 import { ProfileInfoFields } from "../../model/types/profileInfo";
 import styles from "./ProfileInfoFormBirthDate.module.scss";
+import { MounthType } from "@/app/types/shared-kernel";
 
 interface ProfileInfoFormBirthDateProps {
     className?: string;
@@ -33,6 +34,21 @@ export const ProfileInfoFormBirthDate = memo(
             formState: { errors },
         } = useFormContext<ProfileInfoFields>();
         const { t } = useTranslation("profile");
+
+        const translateMonthLib: Record<MounthType, string> = {
+            January: t("info.January"),
+            February: t("info.February"),
+            March: t("info.March"),
+            April: t("info.April"),
+            May: t("info.May"),
+            June: t("info.June"),
+            July: t("info.July"),
+            August: t("info.August"),
+            September: t("info.September"),
+            October: t("info.October"),
+            November: t("info.November"),
+            December: t("info.December"),
+        };
 
         const selectedDay = watch("birthDate.day");
         const selectedMonth = watch("birthDate.mounth");
@@ -122,7 +138,7 @@ export const ProfileInfoFormBirthDate = memo(
                             >
                                 {birthMounthData.map((mounth, index) => (
                                     <MenuItem value={index + 1} key={index}>
-                                        {t(`info.${mounth}`)}
+                                        {translateMonthLib[mounth]}
                                     </MenuItem>
                                 ))}
                             </SelectComponent>

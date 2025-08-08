@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
-import { FullFormApplication } from "@/entities/Application";
+import { SimpleFormApplication } from "@/entities/Application";
 import { ApplicationReviewResponse, HostModalReview } from "@/entities/Review";
 
 import {
@@ -15,7 +16,10 @@ import {
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import styles from "./ReviewAboutVolunteers.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { useCreateToVolunteerReviewMutation, useGetToVolunteerReviewsQuery } from "@/entities/Review/api/reviewApi";
+import {
+    useCreateToVolunteerReviewMutation,
+    useLazyGetToVolunteerReviewsQuery,
+} from "@/entities/Review/api/reviewApi";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -25,6 +29,8 @@ interface ReviewAboutVolunteersProps {
     locale: Locale;
     id: string;
 }
+
+const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
     const { locale, id } = props;
@@ -41,13 +47,17 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         defaultValues,
     });
     const { handleSubmit, control, reset } = form;
-    const [selectedApplication, setSelectedApplication] = useState<FullFormApplication | null>(
+    const [selectedApplication, setSelectedApplication] = useState<SimpleFormApplication | null>(
         null,
     );
-    const [applications, setApplications] = useState<FullFormApplication[]>([]);
+    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
+    const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
+
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const { data: hostApplicationsData } = useGetMyHostApplicationsQuery();
-    const { data: myReviewsData } = useGetToVolunteerReviewsQuery({ author: id });
+    const [getMyReviews] = useLazyGetToVolunteerReviewsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
     useEffect(() => {
@@ -61,6 +71,35 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         }
     }, [hostApplicationsData]);
 
+    const fetchMyReviews = async (isInitial: boolean) => {
+        try {
+            const currentPage = isInitial ? 1 : page;
+
+            const result = await getMyReviews({
+                author: id,
+                page: currentPage,
+                itemsPerPage: ITEMS_PER_PAGE,
+            }).unwrap();
+
+            if (result.length < ITEMS_PER_PAGE) {
+                setHasMore(false);
+            }
+
+            if (isInitial) {
+                setMyReviews(result);
+                setPage(2);
+            } else {
+                setMyReviews((prev) => [...prev, ...result]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch { /* empty */ }
+    };
+
+    useEffect(() => {
+        fetchMyReviews(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const renderFullCards = (reviews?: ApplicationReviewResponse[]) => {
         if (!reviews) return null;
         return reviews.map(
@@ -68,7 +107,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         );
     };
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 
@@ -118,7 +157,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     ));
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} id="applications-scroll-wrapper1">
             <h3 className={styles.h3}>{t("hostReviews.Отзывы про волонтёров")}</h3>
             <p className={styles.description}>
                 {t("hostReviews.Волонтёры, которых вы недавно принимали")}
@@ -128,8 +167,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     classNameSlide={styles.swiperSlide}
                     classNameWrapper={styles.swiperWrapper}
                     className={styles.slider}
-                    data={applications}
-                    renderItem={(item: FullFormApplication) => (
+                    data={applications.slice(0, 15)}
+                    renderItem={(item: SimpleFormApplication) => (
                         <ReviewMiniCard
                             data={item}
                             onReviewClick={onReviewClick}
@@ -145,7 +184,16 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                 </div>
             )}
             <div className={styles.fullCardContainer}>
-                {renderFullCards(myReviewsData)}
+                <InfiniteScroll
+                    dataLength={myReviews.length}
+                    next={() => fetchMyReviews(false)}
+                    hasMore={hasMore}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="applications-scroll-wrapper1"
+                >
+                    {renderFullCards(myReviews)}
+                </InfiniteScroll>
             </div>
             <Controller
                 name="review"

@@ -1,9 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback, useEffect, useRef, useState,
+} from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
 import { OffersFilterFields } from "../../model/types";
@@ -13,6 +16,7 @@ import { CategoryType, categoryValues } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
 import { useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
+import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 const defaultValues: OffersFilterFields = {
     offersSort: {
@@ -25,15 +29,21 @@ const defaultValues: OffersFilterFields = {
     periods: { start: undefined, end: undefined },
     withChildren: false,
     provided: [],
-    search: "",
 };
 
 const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
+const OFFERS_PER_PAGE = 20;
+
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [fetchOffers, { data: offersData, isLoading }] = useLazyGetOffersQuery();
+    const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const { t } = useTranslation("offers-map");
+    const searchRef = useRef<SearchOffersRef>(null);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initialCategories = searchParams.get("category")
         ?.split(",")
@@ -57,7 +67,7 @@ export const OffersSearchFilter = () => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
         fetchOffers(preparedData);
-    }, [fetchOffers]);
+    }, []);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
@@ -86,19 +96,56 @@ export const OffersSearchFilter = () => {
         setIsSyncing(false);
     }, [searchParams, setValue]);
 
-    const onApplyFilters = handleSubmit((data: OffersFilterFields) => {
-        const preparedData = offersFilterApiAdapter(data);
-        fetchOffers(preparedData);
-    });
+    const onChangePage = useCallback((pageItem: number) => {
+        setCurrentPage(pageItem);
+    }, []);
 
-    const onResetFilters = () => {
-        reset(defaultFilterValues);
+    const onApplySearch = useCallback(async (search: string) => {
         setSearchParams(new URLSearchParams());
-        fetchOffers(undefined);
-    };
+        await fetchOffers({ "order[updatedAt]": "desc", search });
+        reset(defaultValues);
+        onChangePage(1);
+    }, []);
+
+    const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
+        const preparedData = offersFilterApiAdapter(data);
+        await fetchOffers(preparedData);
+        onChangePage(1);
+    }), []);
+
+    const onResetFilters = useCallback(async () => {
+        setSearchParams(new URLSearchParams());
+        searchRef.current?.clearSearch();
+        const preparedData = offersFilterApiAdapter(defaultValues);
+        await fetchOffers(preparedData);
+        reset(defaultValues);
+        onChangePage(1);
+    }, []);
 
     const handleMapOpen = useCallback(() => {
         setMapOpened((prev) => !prev);
+    }, []);
+
+    useEffect(() => {
+        const subscription = watch((value, { name, type }) => {
+            if ((name === "offersSort.showClosedOffers" || name === "offersSort.sortValue") && type === "change") {
+                if (debounceTimeoutRef.current) {
+                    clearTimeout(debounceTimeoutRef.current);
+                }
+
+                debounceTimeoutRef.current = setTimeout(() => {
+                    const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
+                    fetchOffers(preparedData);
+                }, 300);
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
     }, []);
 
     return (
@@ -110,16 +157,29 @@ export const OffersSearchFilter = () => {
                     className={styles.filter}
                 />
                 <div className={styles.wrapperOffersMap}>
-                    <OffersList
-                        data={offersData}
-                        onSubmit={onApplyFilters}
-                        isLoading={isLoading}
-                        onChangeMapOpen={handleMapOpen}
-                        mapOpenValue={isMapOpened}
-                        className={cn(styles.offersList, {
-                            [styles.closed]: !isMapOpened,
-                        })}
-                    />
+                    <div className={cn(styles.searchOffersList, {
+                        [styles.closed]: !isMapOpened,
+                    })}
+                    >
+                        <SearchOffers
+                            className={styles.searchWrapper}
+                            onSubmit={onApplySearch}
+                            onResetFilters={onResetFilters}
+                            placeholder={t("Поиск")}
+                            buttonText={t("Посмотреть все")}
+                            ref={searchRef}
+                        />
+                        <OffersList
+                            data={offersData}
+                            isLoading={isLoading || isFetching}
+                            className={cn(styles.offersList)}
+                            onChangeMapOpen={handleMapOpen}
+                            mapOpenValue={isMapOpened}
+                            currentPage={currentPage}
+                            offersPerPage={OFFERS_PER_PAGE}
+                            onChangePage={onChangePage}
+                        />
+                    </div>
                     {isMapOpened && (
                         <OffersMap
                             offersData={offersData}
@@ -130,10 +190,14 @@ export const OffersSearchFilter = () => {
                 </div>
                 <OffersSearchFilterMobile
                     data={offersData}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isFetching}
                     className={styles.mobile}
+                    onApplySearch={onApplySearch}
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
+                    currentPage={currentPage}
+                    offersPerPage={OFFERS_PER_PAGE}
+                    onChangePage={onChangePage}
                 />
             </div>
         </FormProvider>

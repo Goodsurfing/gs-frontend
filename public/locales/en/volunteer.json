@@ -55,7 +55,12 @@
         "Добавить сертификат": "Add certificate",
         "Произошла ошибка при загрузке изображения": "An error occurred while uploading the image",
         "Введите корректный URL": "Enter a valid URL",
-        "Вы ещё не добавили ни одного видео": "You haven't added any videos yet"
+        "Вы ещё не добавили ни одного видео": "You haven't added any videos yet",
+        "Произошла ошибка с обновлением галереи": "An error occurred while updating the gallery",
+        "Галерея успешно обновлена": "The gallery has been successfully updated",
+        "Данные успешно изменены": "Data has been successfully updated",
+        "Диплом или сертификат были успешно добавлены": "The diploma or certificate has been successfully added",
+        "Произошла ошибка": "An error occurred"
     },
     "volunteer-create-article": {
         "Написать в блог": "Write in the blog",
@@ -80,5 +85,31 @@
         "Мои статьи": "My articles",
         "Редактировать": "Edit",
         "Удалить": "Delete"
+    },
+    "personalVolunteer": {
+        "Произошла ошибка": "An error occurred",
+        "Произошла ошибка или пользователь не зарегистрирован как волонтёр": "An error occurred or the user is not registered as a volunteer",
+        "Редактировать": "Edit",
+        "О себе": "About me",
+        "Заявки": "Applications",
+        "Отзывы": "Reviews",
+        "Фото": "Photos",
+        "Видео": "Videos",
+        "Сертификаты": "Certificates",
+        "Статьи": "Articles",
+        "Умения": "Skills",
+        "Дополнительные умения": "Additional skills",
+        "Языки": "Languages",
+        "Вакансии": "Vacancies",
+        "Волонтёр не указал информацию о себе": "The volunteer has not provided any information about themselves",
+        "Волонтёр не указал умения": "The volunteer has not listed any skills",
+        "Волонтёр не указал дополнительные умения": "The volunteer has not listed any additional skills",
+        "Языки не были указаны": "Languages have not been specified",
+        "У волонтера пока нет вакансий в которых он участвовал": "The volunteer has not participated in any vacancies yet",
+        "Волонтёр": "Volunteer",
+        "Город": "City",
+        "Страна не указана": "Country not specified",
+        "Город не указан": "City not specified",
+        "Информация о пользователе ограничена, так как он не волонтёр": "User information is limited because they are not a volunteer"
     }
 }

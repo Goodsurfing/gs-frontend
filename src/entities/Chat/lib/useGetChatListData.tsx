@@ -2,8 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { FormApplicationStatus } from "@/entities/Application";
 import {
-    ChatsListWithOrganizations,
-    ChatsListWithVolunteers,
+    ChatsList,
     MessageType,
 } from "@/entities/Messenger";
 
@@ -16,11 +15,9 @@ export const useGetChatListData = (
 ) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [statusValue, setStatusValue] = useState<FormApplicationStatus | null>(null);
-    const [chatsListWithVolunteers, setChatsListWithVolunteers] = useState<
-    ChatsListWithVolunteers[]
+    const [chatsList, setChatsList] = useState<
+    ChatsList[]
     >([]);
-    const [chatsListWithOrganizations,
-        setChatsListWithOrganizations] = useState<ChatsListWithOrganizations[]>([]);
 
     const { registerOnMessageCallback } = useMessenger();
 
@@ -37,28 +34,17 @@ export const useGetChatListData = (
             const queryString = params.toString();
             const queryPart = queryString ? `?${queryString}` : "";
 
-            const orgResponse = await fetch(
-                `${BASE_URL}api/v1/personal/chats/with-organizations${queryPart}`,
+            const chatListResponse = await fetch(
+                `${BASE_URL}api/v1/personal/chats${queryPart}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 },
             );
-            const orgData = await orgResponse.json();
+            const chatListData = await chatListResponse.json();
 
-            const volResponse = await fetch(
-                `${BASE_URL}api/v1/personal/chats/with-volunteers${queryPart}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            );
-            const volData = await volResponse.json();
-
-            setChatsListWithOrganizations([...orgData]);
-            setChatsListWithVolunteers([...volData]);
+            setChatsList([...chatListData]);
         } catch {
             /* empty */
         }
@@ -76,19 +62,12 @@ export const useGetChatListData = (
 
             const updatedChatId = parseInt(tempUpdatedChatId, 10);
 
-            setChatsListWithVolunteers((prev) => prev.map((chat) => (chat.id === updatedChatId
+            setChatsList((prev) => prev.map((chat) => (chat.id === updatedChatId
                 ? {
                     ...chat,
                     lastMessage: updatedMessage,
                     countUnreadMessagesByOrganization:
                               chat.countUnreadMessagesByOrganization + 1,
-                }
-                : chat)));
-
-            setChatsListWithOrganizations((prev) => prev.map((chat) => (chat.id === updatedChatId
-                ? {
-                    ...chat,
-                    lastMessage: updatedMessage,
                     countUnreadMessagesByVolunteer:
                               chat.countUnreadMessagesByVolunteer + 1,
                 }
@@ -109,8 +88,7 @@ export const useGetChatListData = (
     };
 
     return {
-        chatsListWithVolunteers,
-        chatsListWithOrganizations,
+        chatsList,
         searchValue,
         statusValue,
         onChangeSearchValue,

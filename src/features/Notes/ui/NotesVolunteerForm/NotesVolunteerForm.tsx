@@ -7,7 +7,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
-import { FullFormApplication } from "@/entities/Application";
+import { SimpleFormApplication } from "@/entities/Application";
 import { VolunteerModalReview } from "@/entities/Review";
 import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
 
@@ -39,11 +39,11 @@ export const NotesVolunteerForm = () => {
     });
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
-        setSelectedApplication] = useState<FullFormApplication | null>(null);
+        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
 
     const applicationsPerPage = 10;
     const [pageApplications, setPageApplications] = useState<
-    FullFormApplication[]
+    SimpleFormApplication[]
     >([]);
     const [page, setPage] = useState<number>(1);
     const [getApplicationsData,
@@ -94,7 +94,7 @@ export const NotesVolunteerForm = () => {
     //     fetchData();
     // }, [getReviewData, reset, selectedApplicationId]);
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 

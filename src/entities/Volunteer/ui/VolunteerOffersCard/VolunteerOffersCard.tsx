@@ -1,57 +1,119 @@
 import cn from "classnames";
-import React, { FC, memo, useMemo } from "react";
+import React, {
+    FC, memo, useEffect,
+    useState,
+} from "react";
 
-import { Offer, OfferCard } from "@/entities/Offer";
-
-import offerDefaultImage from "@/shared/assets/images/default-offer-image.svg";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useTranslation } from "react-i18next";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
 import styles from "./VolunteerOffersCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { OfferCard } from "@/widgets/OffersMap";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Text } from "@/shared/ui/Text/Text";
 
 interface VolunteerOffersCardProps {
     className?: string;
-    offers?: Offer[];
+    offers: string[];
 }
 
-const RENDER_THREE_CARDS = [0, 3];
+const ITEMS_PER_PAGE = 10;
 
 export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
     (props: VolunteerOffersCardProps) => {
         const { className, offers } = props;
         const { locale } = useLocale();
+        const [getOfferById] = useLazyGetOfferByIdQuery();
+        const { t } = useTranslation("volunteer");
 
-        const renderOffers = useMemo(
-            () => {
-                if (!offers) return "У организации пока нет вакансий";
+        const [offersData, setOffersData] = useState<Offer[]>([]);
+        const [loading, setLoading] = useState(false);
+        const [page, setPage] = useState(1);
+        const [hasMore, setHasMore] = useState(true);
 
-                return offers
-                    .slice(...RENDER_THREE_CARDS)
-                    .map(({ description, id }, index) => (
-                        <OfferCard
-                            isFavoriteIconShow={false}
-                            handleFavoriteClick={() => {}}
-                            locale={locale}
-                            isFavorite={false}
-                            offerId={id}
-                            image={offerDefaultImage}
-                            title={description?.title}
-                            description={description?.shortDescription}
-                            location="Казань, Россия"
-                            category="Заповедники и нац. парки"
-                            rating="4.3"
-                            reviews="14"
-                            went="22"
-                            key={index}
-                        />
-                    ));
-            },
-            [locale, offers],
-        );
+        const fetchOffers = async (isInitial: boolean = false) => {
+            if (!offers || offers.length === 0) return;
+
+            setLoading(true);
+            try {
+                const currentPage = isInitial ? 1 : page;
+                const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+                const endIndex = startIndex + ITEMS_PER_PAGE;
+
+                const currentOffers = offers.slice(startIndex, endIndex);
+
+                const newHasMore = endIndex < offers.length;
+                setHasMore(newHasMore);
+
+                if (currentOffers.length === 0) {
+                    return;
+                }
+
+                const ids = currentOffers.map((url) => {
+                    const parts = url.split("/");
+                    return parts.pop();
+                });
+
+                const promises = ids.map((id) => {
+                    if (!id) return null;
+                    return getOfferById(id).unwrap().catch(() => null);
+                });
+
+                const results = await Promise.all(promises);
+                const filtered = results.filter((offer): offer is Offer => offer !== null);
+
+                if (isInitial) {
+                    setOffersData(filtered);
+                    setPage(2);
+                } else {
+                    setOffersData((prev) => [...prev, ...filtered]);
+                    setPage((prev) => prev + 1);
+                }
+            } catch { /* empty */ } finally {
+                setLoading(false);
+            }
+        };
+
+        useEffect(() => {
+            fetchOffers(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [offers]);
+
+        const loadMore = () => {
+            if (!loading && hasMore) {
+                fetchOffers(false);
+            }
+        };
 
         return (
-            <div className={cn(className, styles.wrapper)}>
-                <h3>Вакансии</h3>
-                <div className={styles.container}>{renderOffers}</div>
+            <div className={cn(className, styles.wrapper)} id="2">
+                <Text title={t("personalVolunteer.Вакансии")} titleSize="h3" />
+
+                <div className={styles.container} id="offers-scroll-container">
+                    {loading && <MiniLoader />}
+                    {!loading && offersData.length === 0 && (
+                        <div>{t("personalVolunteer.У волонтера пока нет вакансий в которых он участвовал")}</div>
+                    )}
+                    <InfiniteScroll
+                        dataLength={offersData.length}
+                        next={loadMore}
+                        hasMore={hasMore}
+                        loader={null}
+                        // scrollThreshold="70%"
+                        scrollableTarget="offers-scroll-container"
+                    >
+                        {offersData.map((offer) => (
+                            <OfferCard
+                                key={offer.id}
+                                locale={locale}
+                                status={offer.status === "active" ? "opened" : "closed"}
+                                data={offer}
+                            />
+                        ))}
+                    </InfiniteScroll>
+                </div>
             </div>
         );
     },

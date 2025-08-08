@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useState } from "react";
+import React, { FC, memo, useState } from "react";
 
 import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
@@ -19,17 +19,18 @@ interface OfferCardProps {
     locale: Locale;
 }
 
-export const OfferCard: FC<OfferCardProps> = (props) => {
+export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     const {
         data: {
             id, description, where,
-            acceptedApplicationsCount, feedbacksCountinteger, averageRating,
+            acceptedApplicationsCount, feedbacksCount, averageRating,
         },
         status,
         className,
         classNameCard,
         locale,
     } = props;
+
     const imageCover = getMediaContent(description?.image);
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
@@ -52,9 +53,9 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
                 category={getTranslation(description?.categoryIds[0])}
                 image={imageCover}
                 location={where?.address || ""}
-                rating={averageRating?.toString()}
-                reviews={feedbacksCountinteger?.toString()}
-                went={acceptedApplicationsCount.toString()}
+                rating={averageRating}
+                reviews={feedbacksCount}
+                went={acceptedApplicationsCount}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={false}
@@ -64,4 +65,4 @@ export const OfferCard: FC<OfferCardProps> = (props) => {
             />
         </div>
     );
-};
+});

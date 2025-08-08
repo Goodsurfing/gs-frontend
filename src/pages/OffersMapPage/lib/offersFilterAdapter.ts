@@ -14,7 +14,7 @@ export const offersFilterApiAdapter = (
         offersSort,
         withChildren,
         provided,
-        search,
+        // search,
     } = data;
     const { showClosedOffers, sortValue } = offersSort;
     const popularity = sortValue === "popularity" ? "desc" : undefined;
@@ -50,7 +50,7 @@ export const offersFilterApiAdapter = (
     if (category.length > 0) queryParams.categories = category;
     if (languages.length > 0) queryParams.languages = languages;
     if (withChildren) queryParams.additionalConditions = ["allow-kids"];
-    if (search !== "") queryParams["description.title"] = search;
+    // if (search !== "") queryParams.search = search;
 
     provided.forEach((value) => {
         if (value === "food") {

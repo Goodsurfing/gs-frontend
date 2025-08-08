@@ -1,11 +1,12 @@
 import {
     IconButton, Paper, SxProps, TextField, Theme,
 } from "@mui/material";
-import EmojiPicker, { Categories, EmojiClickData } from "emoji-picker-react";
+import EmojiPicker, { Categories, EmojiClickData, EmojiStyle } from "emoji-picker-react";
 import React, { FC, useRef, useState } from "react";
 import { ReactSVG } from "react-svg";
 
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import clipIcon from "@/shared/assets/icons/clip.svg";
 import sendIcon from "@/shared/assets/icons/send-arrow.svg";
 import smileIcon from "@/shared/assets/icons/chat-smile.svg";
@@ -38,6 +39,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     const {
         sx, disabled = false, onSendMessage, onError,
     } = props;
+    const { t } = useTranslation("messenger");
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>("");
     const [attachmentValue, setAttachmentValue] = useState<AttachmentType>();
@@ -77,7 +79,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
         if (file) {
             const maxSize = 2 * 1024 * 1024;
             if (file.size > maxSize) {
-                onError("Файл слишком большой. Максимальный размер: 2MB");
+                onError(t("Файл слишком большой. Максимальный размер: 2MB"));
                 setAttachmentLoading(false);
                 return;
             }
@@ -88,7 +90,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                     }
                 })
                 .catch(() => {
-                    onError("Произошла ошибка");
+                    onError(t("Произошла ошибка"));
                 })
                 .finally(() => {
                     setAttachmentLoading(false);
@@ -150,7 +152,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                 <TextField
                     className="chatInput"
                     sx={{ ml: 1, flex: 1 }}
-                    placeholder="Написать сообщение"
+                    placeholder={t("Написать сообщение")}
                     value={inputValue}
                     multiline
                     maxRows={10}
@@ -180,10 +182,12 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
                                 onEmojiClick={onEmojiClick}
                                 lazyLoadEmojis
                                 categories={[
-                                    { category: Categories.SMILEYS_PEOPLE, name: "Смайлы" },
-                                    { category: Categories.ANIMALS_NATURE, name: "Животные" },
-                                    { category: Categories.FOOD_DRINK, name: "Еда" },
+                                    { category: Categories.SMILEYS_PEOPLE, name: t("Смайлы") },
+                                    { category: Categories.ANIMALS_NATURE, name: t("Животные") },
+                                    { category: Categories.FOOD_DRINK, name: t("Еда") },
                                 ]}
+                                emojiStyle={EmojiStyle.TWITTER}
+
                             />
                         </div>
                     )}

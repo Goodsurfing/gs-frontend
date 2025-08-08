@@ -8,7 +8,7 @@ import { NotesWidget } from "@/widgets/NotesWidget";
 
 import {
     FormApplicationStatus,
-    FullFormApplication,
+    SimpleFormApplication,
 } from "@/entities/Application";
 import { HostModalReview } from "@/entities/Review";
 import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
@@ -24,7 +24,7 @@ import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
+import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -42,16 +42,29 @@ export const NotesHostForm = () => {
     });
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
-        setSelectedApplication] = useState<FullFormApplication | null>(null);
+        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
 
     const applicationsPerPage = 10;
-    const [pageApplications, setPageApplications] = useState<FullFormApplication[]>([]);
+    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
+    const [pageApplications, setPageApplications] = useState<SimpleFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
-    const { data: applications, isLoading } = useGetMyHostApplicationsQuery();
+    const [getApplications, { isLoading }] = useLazyGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus,
         { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdMutation();
     const { locale } = useLocale();
+
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const result = await getApplications().unwrap();
+                setApplications(result);
+            } catch { /* empty */ }
+        };
+
+        fetchApplications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (applications) {
@@ -65,7 +78,7 @@ export const NotesHostForm = () => {
 
     const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
 
-    const onReviewClick = (application: FullFormApplication) => {
+    const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
     };
 
@@ -106,17 +119,8 @@ export const NotesHostForm = () => {
     const handleUpdateStatus = async (applicationId: number, status: FormApplicationStatus) => {
         await updateApplicationStatus({ applicationId: applicationId.toString(), status })
             .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("hostNotes.Статус был изменён"),
-                    type: HintType.Success,
-                });
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
+            .catch(() => {
+                // empty
             });
     };
 

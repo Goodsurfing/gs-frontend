@@ -1,8 +1,9 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
+import { useTranslation } from "react-i18next";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 import { Host } from "@/entities/Host";
@@ -38,30 +39,32 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const {
         user, infoOpenedChange, className, locale,
     } = props;
+
+    const { t } = useTranslation("messenger");
     const { skillsData } = useSkillsData();
     const languages = user && "languages" in user ? user.languages : null;
     const textLanguages = useFormatLanguages(languages ?? []);
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
+    const navigateToVolunteer = useCallback((id: string) => {
+        navigate(getVolunteerPersonalPageUrl(locale, id));
+    }, [locale, navigate]);
+
+    const navigateToHost = useCallback((id: string) => {
+        navigate(getHostPersonalPageUrl(locale, id));
+    }, [locale, navigate]);
+
     if (!user) {
         return null;
     }
-
-    const navigateToVolunteer = (id: string) => {
-        navigate(getVolunteerPersonalPageUrl(locale, id));
-    };
-
-    const navigateToHost = (id: string) => {
-        navigate(getHostPersonalPageUrl(locale, id));
-    };
 
     if ("profile" in user) {
         const { profile, skills } = user;
 
         const renderSkillsCard = () => {
             if (!skills || skills.length === 0) {
-                return <span>Волонтёр не указал умения</span>;
+                return <span>{t("Волонтёр не указал умения")}</span>;
             }
 
             const skillsMap: SkillsMap = skillsData.reduce(
@@ -94,7 +97,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <div className={styles.top}>
-                    <span>Информация</span>
+                    <span>{t("Информация")}</span>
                     <ReactSVG
                         src={exitIcon}
                         className={styles.exitIcon}
@@ -112,7 +115,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                         />
                         <div className={styles.userInfo}>
                             <span className={styles.textCaption}>
-                                {`Волонтёр ${formatDate(locale, profile.birthDate)}`}
+                                {`${t("Волонтёр")} ${formatDate(locale, profile.birthDate)}`}
                             </span>
                             <span
                                 className={styles.textPrimary}
@@ -125,17 +128,17 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                         </div>
                     </div>
                     <div className={styles.skills}>
-                        <span className={styles.textCaption}>Умения</span>
+                        <span className={styles.textCaption}>{t("Умения")}</span>
                         {renderSkillsCard()}
                     </div>
                     <div className={styles.languages}>
                         <span className={styles.textCaption}>
-                            Владение языками
+                            {t("Владение языками")}
                         </span>
                         <div>
                             {languages && languages.length !== 0
                                 ? textLanguages
-                                : "Языки не были указаны"}
+                                : t("Языки не были указаны")}
                         </div>
                     </div>
                     {/* <div className={styles.cases}>
@@ -167,7 +170,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
-                <span>Информация</span>
+                <span>{t("Информация")}</span>
                 <ReactSVG
                     src={exitIcon}
                     className={styles.exitIcon}
@@ -181,7 +184,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                 >
                     <Avatar icon={getMediaContent(user.avatar)} size="LARGE" />
                     <div className={styles.userInfo}>
-                        <span className={styles.textCaption}>Организатор</span>
+                        <span className={styles.textCaption}>{t("Организатор")}</span>
                         <span className={styles.textPrimary}>{user.name}</span>
                         <span className={styles.textCaption}>
                             {user.address}

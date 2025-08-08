@@ -8,27 +8,36 @@ import { Submenu } from "@/widgets/Submenu";
 
 import { Offer } from "@/entities/Offer";
 
-import { getMessengerPageCreateUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageCreateUrl, getOffersWherePageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
-import Button from "@/shared/ui/Button/Button";
+import Button, { ButtonColor, ButtonSize, ButtonVariant } from "@/shared/ui/Button/Button";
 
 import styles from "./OfferSubmenu.module.scss";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 interface OfferSubmenuProps {
     offerData: Offer;
+    isVolunteer: boolean;
 }
 
 export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
-    const { offerData } = props;
+    const { offerData, isVolunteer } = props;
     const { id, canEdit, canParticipate } = offerData;
     const { t } = useTranslation("offer");
     const { SubmenuItemsOffer } = useTranslateSubmenu();
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const isAuth = useAppSelector(getUserAuthData);
+    const isNeedToBecomeVolunteer = !!isAuth && !isVolunteer;
 
     const handleParticipateClick = useCallback(() => {
-        navigate(getMessengerPageCreateUrl(locale, "create", id.toString()));
-    }, [id, locale, navigate]);
+        if (isNeedToBecomeVolunteer) {
+            navigate(getProfileRolePageUrl(locale));
+        } else {
+            navigate(getMessengerPageCreateUrl(locale, "create", id.toString()));
+        }
+    }, [id, isNeedToBecomeVolunteer, locale, navigate]);
 
     const handleEditClick = useCallback(() => {
         if (canEdit) {
@@ -36,21 +45,26 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
         }
     }, [canEdit, id, locale, navigate]);
 
+    const buttonProps = {
+        size: "SMALL" as ButtonSize,
+        variant: "FILL" as ButtonVariant,
+        color: "BLUE" as ButtonColor,
+        onClick: handleParticipateClick,
+        disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+    };
+
+    const buttonText = isNeedToBecomeVolunteer
+        ? t("personalOffer.Чтобы участвовать, станьте гудсёрфером")
+        : t("personalOffer.Участвовать");
+
     return (
         <Submenu
             className={styles.navMenu}
             items={SubmenuItemsOffer}
             buttons={(
                 <>
-                    <Button
-                        disabled={!canParticipate}
-                        size="SMALL"
-                        color="BLUE"
-                        variant="FILL"
-                        className={styles.button}
-                        onClick={handleParticipateClick}
-                    >
-                        {t("personalOffer.Участвовать")}
+                    <Button {...buttonProps}>
+                        {buttonText}
                     </Button>
                     {canEdit && (
                         <Button

@@ -7,6 +7,7 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ReactSVG } from "react-svg";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -76,6 +77,7 @@ export const Chat: FC<ChatProps> = (props) => {
         mode: "onChange",
         defaultValues,
     });
+    const { t } = useTranslation("messenger");
 
     const isChatCreate = id === "create";
     const [isInfoOpened, setInfoOpened] = useState<boolean>(false);
@@ -175,7 +177,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     .then((offerDataResult) => offerDataResult)
                     .catch(() => {
                         setToast({
-                            text: "Вакансия не была найдена",
+                            text: t("Вакансия не была найдена"),
                             type: HintType.Error,
                         });
                         return undefined;
@@ -324,7 +326,7 @@ export const Chat: FC<ChatProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, styles.empty, className)}>
                 <ReactSVG src={chatIcon} className={styles.chatIcon} />
-                <span>Выберите, кому хотели бы написать</span>
+                <span>{t("Выберите, кому хотели бы написать")}</span>
             </div>
         );
     }
@@ -362,7 +364,7 @@ export const Chat: FC<ChatProps> = (props) => {
                 .unwrap()
                 .then((result) => {
                     setToast({
-                        text: "Заявка успешно отправлена",
+                        text: t("Заявка успешно отправлена"),
                         type: HintType.Success,
                     });
                     setApplicationClosed(true);

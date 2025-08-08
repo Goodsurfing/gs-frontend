@@ -1,38 +1,75 @@
 import React, { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFullCard } from "@/features/Review/";
 
-import { ApplicationReviewResponse } from "@/entities/Review";
-import { useGetToVolunteerReviewsByIdQuery } from "@/entities/Review/api/reviewApi";
+import { ApplicationReviewResponse, useLazyGetToVolunteerReviewsQuery } from "@/entities/Review";
+
 import styles from "./ReviewAboutVolunteer.module.scss";
 
 interface ReviewAboutVolunteerProps {
     volunteerId: string;
 }
 
+const ITEMS_PER_PAGE = 20;
+
 export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
     const { volunteerId } = props;
     const { t } = useTranslation("volunteer");
-    const { data: volunteerReviewsData } = useGetToVolunteerReviewsByIdQuery(volunteerId);
+    const [getReviewsData] = useLazyGetToVolunteerReviewsQuery();
     const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
 
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
+    const fetchReviews = async (isInitial: boolean) => {
+        try {
+            const currentPage = isInitial ? 1 : page;
+
+            const result = await getReviewsData({
+                volunteer: volunteerId,
+                page: currentPage,
+                itemsPerPage: ITEMS_PER_PAGE,
+            }).unwrap();
+
+            if (result.length < ITEMS_PER_PAGE) {
+                setHasMore(false);
+            }
+
+            if (isInitial) {
+                setReviews(result);
+                setPage(2);
+            } else {
+                setReviews((prev) => [...prev, ...result]);
+                setPage((prevPage) => prevPage + 1);
+            }
+        } catch { /* empty */ }
+    };
+
     useEffect(() => {
-        if (volunteerReviewsData) {
-            setReviews([...volunteerReviewsData]);
-        } else {
-            setReviews([]);
-        }
-    }, [volunteerReviewsData]);
+        fetchReviews(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => reviewOffers.map(
-        (review) => <ReviewFullCard type="host" review={review} />,
+        (review) => <ReviewFullCard type="host" review={review} key={review.id} />,
     );
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} id="applications-scroll-wrapper2">
             <h3 className={styles.h3}>{t("volunteer-review.Отзывы о вас")}</h3>
             <div className={styles.cardContainer}>
+                <InfiniteScroll
+                    dataLength={reviews.length}
+                    next={() => fetchReviews(false)}
+                    hasMore={hasMore}
+                    scrollThreshold="70%"
+                    loader={null}
+                    scrollableTarget="applications-scroll-wrapper2"
+                >
+                    {renderCardOffers(reviews)}
+                </InfiniteScroll>
                 {renderCardOffers(reviews)}
             </div>
         </div>

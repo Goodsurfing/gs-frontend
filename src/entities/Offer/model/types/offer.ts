@@ -37,7 +37,7 @@ export interface Offer {
     canEdit: boolean;
     canParticipate: boolean;
     averageRating?: number;
-    feedbacksCountinteger?: number;
+    feedbacksCount?: number;
     acceptedApplicationsCount: number;
 }
 
@@ -72,6 +72,5 @@ export interface OffersFilters {
     categories: CategoryType[];
     "order[popularity]": string;
     "order[updatedAt]": string;
-    "description.title": string;
-    "where.address": string;
+    search: string;
 }

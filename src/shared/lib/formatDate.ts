@@ -19,7 +19,9 @@ export const formatDate = (locale: Locale, date?: string) => {
     return formattedDate.replace(/[-/]/g, ".");
 };
 
-export const formatMessageDate = (locale: Locale, isoDate: string) => {
+export const formatMessageDate = (locale: Locale, isoDate?: string) => {
+    if (!isoDate) return "Без даты";
+
     const localeList: Record<Locale, string> = {
         ru: "ru-RU",
         en: "en-US",

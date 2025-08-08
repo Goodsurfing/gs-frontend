@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { UploadMultipleImages } from "@/modules/Gallery";
 
 import { Profile } from "@/entities/Profile";
@@ -13,6 +14,7 @@ interface VolunteerGalleryFormProps {
 export const VolunteerGalleryForm: FC<VolunteerGalleryFormProps> = (props) => {
     const { className, profileData } = props;
 
+    const { t } = useTranslation("volunteer");
     const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
     const [isGalleryError, setGalleryError] = useState<boolean>(false);
     const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
@@ -22,17 +24,17 @@ export const VolunteerGalleryForm: FC<VolunteerGalleryFormProps> = (props) => {
         setToast(undefined);
         if (isGalleryError) {
             setToast({
-                text: "Произошла ошибка с обновлением галереи",
+                text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
                 type: HintType.Error,
             });
         }
         if (isGallerySuccess) {
             setToast({
-                text: "Галерея успешно обновлена",
+                text: t("volunteer-gallery.Галерея успешно обновлена"),
                 type: HintType.Success,
             });
         }
-    }, [isGalleryError, isGallerySuccess]);
+    }, [isGalleryError, isGallerySuccess, t]);
 
     const handleGalleryLoading = (value: boolean) => {
         setGalleryLoading(value);
@@ -53,7 +55,7 @@ export const VolunteerGalleryForm: FC<VolunteerGalleryFormProps> = (props) => {
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <UploadMultipleImages
                 profileData={profileData}
-                label="Добавить фото"
+                label={t("volunteer-gallery.Добавить фото")}
                 isLoading={isGalleryLoading}
                 onChangeLoading={handleGalleryLoading}
                 onChangeError={handleGalleryError}

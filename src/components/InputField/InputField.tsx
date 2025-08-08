@@ -2,10 +2,12 @@ import cn from "classnames";
 import React, { FC } from "react";
 
 import styles from "./InputField.module.scss";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
     text?: string;
+    error?: string;
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -14,6 +16,7 @@ const InputField: FC<InputFieldProps> = ({
     value,
     defaultValue,
     onChange,
+    error,
     ...rest
 }) => (
     <div className={styles.box}>
@@ -34,6 +37,7 @@ const InputField: FC<InputFieldProps> = ({
         >
             {text}
         </label>
+        {error && (<ErrorText text={error} />)}
     </div>
 );
 

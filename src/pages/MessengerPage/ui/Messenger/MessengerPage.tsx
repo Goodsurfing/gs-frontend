@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -12,25 +12,15 @@ import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import styles from "./MessengerPage.module.scss";
-import { Profile, useLazyGetProfileInfoQuery } from "@/entities/Profile";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
-    const [myProfileData, setMyProfileData] = useState<Profile | null>();
-
-    const [getMyProfileData] = useLazyGetProfileInfoQuery();
-
-    const fetchMyProfileData = useCallback(async () => {
-        const result = await getMyProfileData().unwrap();
-        setMyProfileData(result);
-    }, [getMyProfileData]);
-
-    useEffect(() => {
-        fetchMyProfileData();
-    }, [fetchMyProfileData]);
+    const { t, ready: isMessengerReady } = useTranslation("messenger");
+    const { myProfile } = useAuth();
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
@@ -47,7 +37,7 @@ const MessengerPage = () => {
         [locale, navigate, selectedChat],
     );
 
-    if (!ready || !myProfileData) {
+    if (!ready || !myProfile || !isMessengerReady) {
         return (
             <div className={styles.layout}>
                 <MainHeader />
@@ -60,7 +50,7 @@ const MessengerPage = () => {
         <div className={styles.layout}>
             <MainHeader />
             <div className={styles.wrapper}>
-                <h2 className={styles.title}>Сообщения</h2>
+                <h2 className={styles.title}>{t("Сообщения")}</h2>
                 <div className={styles.content}>
                     <MessengerList
                         className={cn(styles.userList, {
@@ -68,12 +58,13 @@ const MessengerPage = () => {
                         })}
                         onUserClick={handleOnUserClick}
                         locale={locale}
+                        myProfileData={myProfile}
                     />
                     <Chat
                         key={selectedChat}
                         id={selectedChat}
                         offerId={offerId}
-                        myProfileData={myProfileData}
+                        myProfileData={myProfile}
                         onBackButton={handleOnUserClick}
                         className={cn(styles.chat, {
                             [styles.open]: selectedChat,

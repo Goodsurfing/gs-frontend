@@ -14,6 +14,7 @@ import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import styles from "./ArticleForm.module.scss";
+import { useTranslateError } from "../../hooks/useErrorTranslate";
 
 interface ArticleFormProps {
     className?: string;
@@ -23,6 +24,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
         const { className } = props;
         const { t } = useTranslation("volunteer");
+        const { translate } = useTranslateError();
         const {
             register,
             formState: { errors },
@@ -55,7 +57,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         name="title"
                         register={register}
                         error={Boolean(errors.title)}
-                        helperText={errors.title?.message && t(`volunteer-create-article.${errors.title?.message}`)}
+                        helperText={errors.title?.message && translate(errors.title.message)}
                         variant="outlined"
                         placeholder={t(
                             "volunteer-create-article.Заголовок вашей статьи",
@@ -80,7 +82,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     )}
                 />
                 {errors.description && (
-                    <p className={styles.error}>{t(`volunteer-create-article.${errors.description.message}`)}</p>
+                    <p className={styles.error}>{translate(errors.description.message)}</p>
                 )}
                 <div className={styles.field}>
                     <span className={styles.title}>{t("volunteer-create-article.Ссылка на проект гудсёрфинга")}</span>
@@ -88,7 +90,8 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         name="offerLink"
                         register={register}
                         error={Boolean(errors.offerLink)}
-                        helperText={errors.offerLink?.message && t(`volunteer-create-article.${errors.offerLink?.message}`)}
+                        helperText={errors.offerLink?.message
+                            && translate(errors.offerLink?.message)}
                         variant="outlined"
                         placeholder={t("volunteer-create-article.Ваша ссылка на вакансию")}
                         className={styles.input}

@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { WhatToDoSkillType } from "@/types/skills";
 
 import additionalSkillIcon from "@/shared/assets/icons/skills/success.svg";
@@ -23,10 +24,11 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
     (props: VolunteerSkillsCardProps) => {
         const { skills, additionalSkills, className } = props;
         const { skillsData } = useSkillsData();
+        const { t } = useTranslation("volunteer");
 
         const renderSkillsCard = useMemo(() => {
             if (!skills || skills.length === 0) {
-                return <span>Волонтёр не указал умения</span>;
+                return <span>{t("personalVolunteer.Волонтёр не указал умения")}</span>;
             }
 
             const skillsMap: SkillsMap = skillsData.reduce(
@@ -49,11 +51,11 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                     )
                 );
             });
-        }, [skills, skillsData]);
+        }, [skills, skillsData, t]);
 
         const renderAdditionalSkills = useMemo(() => {
             if (!additionalSkills || additionalSkills.length === 0) {
-                return <span>Волонтёр не указал дополнительные умения</span>;
+                return <span>{t("personalVolunteer.Волонтёр не указал дополнительные умения")}</span>;
             }
             const renderAdditionSkils = additionalSkills.map((skill, index) => (
                 <IconTextComponent
@@ -64,16 +66,16 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
                 />
             ));
             return <div className={styles.cards}>{renderAdditionSkils}</div>;
-        }, [additionalSkills]);
+        }, [additionalSkills, t]);
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.card}>
-                    <Text title="Умения" titleSize="h3" />
+                    <Text title={t("personalVolunteer.Умения")} titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
                 </div>
                 <div className={styles.card}>
-                    <Text title="Дополнительные умения" titleSize="h3" />
+                    <Text title={t("personalVolunteer.Дополнительные умения")} titleSize="h3" />
                     {renderAdditionalSkills}
                 </div>
             </div>

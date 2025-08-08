@@ -94,3 +94,9 @@ body::-webkit-scrollbar-thumb {
 	background-color: var(--bg-accent);
 	cursor: pointer;
 }
+
+.message img.emoji {
+  height: 16px;
+  width: 16px;
+  margin: 0 0.1em;
+}
