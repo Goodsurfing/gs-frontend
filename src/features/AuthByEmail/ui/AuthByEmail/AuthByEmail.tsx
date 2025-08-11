@@ -11,6 +11,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { AuthByVk } from "@/features/AuthByVk";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");
@@ -58,6 +59,7 @@ export const AuthByEmail = memo(() => {
                 onSuccess={onSuccess}
                 onError={onError}
             />
+            <AuthByVk/>
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

@@ -5,7 +5,7 @@
     "author": "GS",
     "scripts": {
         "lint": "eslint src/ --cache --color --ext .jsx,.js,.tsx,.ts --ignore-pattern node_modules",
-        "start": "webpack serve --env port=3000",
+        "start": "webpack serve --env port=443",
         "start:analyze": "concurrently \"npm run start --env analyze=true\"",
         "build:prod": "webpack --env mode=production",
         "clean": "rm -rf dist",
