@@ -13,6 +13,8 @@ import { useGetProfileInfoQuery, useLazyGetUnreadMessagesQuery } from "@/entitie
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { BASE_URL } from "@/shared/constants/api";
 import { MessageType } from "@/entities/Messenger";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 interface MessengerContextType {
     unreadMessages: number;
@@ -39,6 +41,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     const [unreadMessages, setUnreadMessages] = useState<number>(0);
     const updateCallbacksRef = useRef<Set<() => void>>(new Set());
     const onMessageCallbacksRef = useRef<Set<(msg: MessageType) => void>>(new Set());
+    const isAuth = useAppSelector(getUserAuthData);
 
     const { mercureToken } = useAuth();
     const { data: myProfile } = useGetProfileInfoQuery();
@@ -67,6 +70,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     }, []);
 
     useEffect(() => {
+        if(!isAuth) return;
         fetchMessages();
         registerMessageUpdateCallback(() => {
             fetchMessages();

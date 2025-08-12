@@ -1,5 +1,5 @@
 import * as VKID from "@vkid/sdk";
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -15,7 +15,12 @@ const langLib: Record<Locale, VKID.Languages> = {
     es: VKID.Languages.SPA,
 };
 
-export const AuthByVk = () => {
+interface AuthByVkProps {
+    redirect: string;
+}
+
+export const AuthByVk: FC<AuthByVkProps> = (props) => {
+    const {redirect} = props;
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -33,8 +38,8 @@ export const AuthByVk = () => {
                 app: Number(process.env.REACT_VKID_CLIENT_ID),
                 redirectUrl:
                     process.env.NODE_ENV === "development"
-                        ? `https://localhost/${locale}/signin`
-                        : `${process.env.REACT_APP_MAIN_URL}/${locale}/signin`,
+                        ? `https://localhost/${locale}/${redirect}`
+                        : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`,
                 scope: "email phone",
                 codeVerifier: codeVerifier,
                 // codeChallenge: challenge,

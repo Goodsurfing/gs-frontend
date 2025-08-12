@@ -59,7 +59,7 @@ export const AuthByEmail = memo(() => {
                 onSuccess={onSuccess}
                 onError={onError}
             />
-            <AuthByVk/>
+            <AuthByVk redirect="signin"/>
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

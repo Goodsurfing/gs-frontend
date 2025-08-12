@@ -15,6 +15,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { useTranslation } from "react-i18next";
 
 interface IFormData {
     password: string;
@@ -23,6 +24,7 @@ interface IFormData {
 
 const ResetPasswordThirdStep: FC = () => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
     const query = useQuery();
     const [resetPasswordVerify, { error }] = authApi.useResetPasswordVerifyMutation();
     const { locale } = useLocale();
@@ -43,7 +45,7 @@ const ResetPasswordThirdStep: FC = () => {
             return;
         }
         if (data.password !== data.confirmPassword) {
-            alert("Пароли не совпадают");
+            alert(t("login.Пароли не совпадают"));
             return;
         }
         await resetPasswordVerify({
@@ -69,7 +71,7 @@ const ResetPasswordThirdStep: FC = () => {
                         onChange={field.onChange}
                         value={field.value}
                         type="password"
-                        text="Новый пароль"
+                        text={t("login.Новый пароль")}
                     />
                 )}
             />
@@ -82,7 +84,7 @@ const ResetPasswordThirdStep: FC = () => {
                         onChange={field.onChange}
                         value={field.value}
                         type="password"
-                        text="Повторите новый пароль"
+                        text={t("login.Повторите новый пароль")}
                     />
                 )}
             />
@@ -93,7 +95,7 @@ const ResetPasswordThirdStep: FC = () => {
                 color="BLUE"
                 size="MEDIUM"
             >
-                Отправить
+                {t("login.Отправить")}
             </Button>
         </form>
     );
