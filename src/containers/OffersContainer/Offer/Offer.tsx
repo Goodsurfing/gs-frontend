@@ -52,13 +52,13 @@ const Offer: FC<OfferProps> = (props) => {
                 <p className={styles.type}>{category}</p>
             </div>
             <div className={styles.info}>
-                {averageRating && (
+                {averageRating ? (
                     <div className={styles.rating}>
                         <ReactSVG src={starIcon} />
                         <span>{averageRating}</span>
                     </div>
-                )}
-                {feedbacksCount && (
+                ) : null}
+                {feedbacksCount ? (
                     <div className={styles.reviews}>
 
                         <span>
@@ -67,7 +67,7 @@ const Offer: FC<OfferProps> = (props) => {
                             {feedbacksCount}
                         </span>
                     </div>
-                )}
+                ): null}
                 <div className={styles.success}>
                     <span>
                         Отправилось:

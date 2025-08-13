@@ -62,7 +62,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
-                    <img src={image || defaultImage} alt="offer-img" />
+                    <img src={image || defaultImage} alt="offer-img" loading="lazy"/>
                     {isFavoriteIconShow && (
                         <ReactSVG
                             src={heartIcon}
