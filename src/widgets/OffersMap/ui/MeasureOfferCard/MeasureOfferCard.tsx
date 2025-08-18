@@ -1,16 +1,20 @@
-import { Offer } from "@/entities/Offer";
+import cn from "classnames";
 import { FC, useEffect, useRef } from "react";
-import { OfferCard } from "../OfferCard/OfferCard";
+
 import { Locale } from "@/entities/Locale";
-import cn from 'classnames'
-import styles from './MeasuredOfferCard.module.scss'
+import { Offer } from "@/entities/Offer";
+
+import { OfferCard } from "../OfferCard/OfferCard";
+import styles from "./MeasuredOfferCard.module.scss";
 
 export const MeasuredOfferCard: FC<{
     offer: Offer;
     locale: Locale;
     mapOpenValue: boolean;
     setSize: (h: number) => void;
-}> = ({ offer, locale, mapOpenValue, setSize }) => {
+}> = ({
+    offer, locale, mapOpenValue, setSize,
+}) => {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

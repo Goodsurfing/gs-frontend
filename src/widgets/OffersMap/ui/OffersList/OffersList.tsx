@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useCallback, useMemo, useRef, useTransition } from "react";
+import React, {
+    FC, useCallback, useMemo, useRef, useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
@@ -15,10 +17,9 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
-import { OfferCard } from "../OfferCard/OfferCard";
+import { MeasuredOfferCard } from "../MeasureOfferCard/MeasureOfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import styles from "./OffersList.module.scss";
-import { MeasuredOfferCard } from "../MeasureOfferCard/MeasureOfferCard";
 
 interface OffersListProps {
     className?: string;
@@ -65,7 +66,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                 onChangePage(page);
             });
         },
-        [onChangePage]
+        [onChangePage],
     );
 
     const getSize = (index: number) => sizeMap.current[index] || 200;
@@ -77,7 +78,6 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
     };
 
     const Row = ({ index, style }: ListChildComponentProps) => {
-        if (!data) return (null);
         const offer = data[index];
         return (
             <div style={style}>
@@ -90,6 +90,9 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
             </div>
         );
     };
+
+    // TODO: Переписать и убрать этот react window, он мне не нравится :/
+    // нужно бека попросить сделать динамический фетч изображений
 
     const totalPages = data ? Math.ceil(data.length / offersPerPage) : 0;
 
@@ -130,7 +133,6 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                     </AutoSizer>
                 )}
             </div>
-
             <OfferPagination
                 currentPage={currentPage}
                 totalPages={totalPages}

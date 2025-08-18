@@ -75,10 +75,10 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
         registerMessageUpdateCallback(() => {
             fetchMessages();
         });
-    }, [fetchMessages, registerMessageUpdateCallback]);
+    }, [fetchMessages, registerMessageUpdateCallback, isAuth]);
 
     useEffect(() => {
-        if (!mercureToken || !myProfile?.id) return;
+        if (!mercureToken || !myProfile?.id || !isAuth) return;
 
         const url = new URL(`${BASE_URL}.well-known/mercure`);
         url.searchParams.append("topic", `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`);
@@ -96,7 +96,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
         return () => {
             eventSource.close();
         };
-    }, [mercureToken, myProfile?.id]);
+    }, [mercureToken, myProfile?.id, isAuth]);
 
     const contextValue = useMemo(() => ({
         unreadMessages,
