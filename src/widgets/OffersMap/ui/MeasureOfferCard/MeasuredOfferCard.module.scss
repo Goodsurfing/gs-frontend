@@ -1,0 +1,14 @@
+.offer {
+    width: 100%;
+    min-width: 520px;
+}
+
+.offerCard {
+    padding: 10px;
+    height: 100%;
+}
+
+.offer.closed {
+    width: 50%;
+    border-left: 1px solid var(--bg-accent);
+}

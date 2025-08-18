@@ -6,7 +6,7 @@ import { Course } from "@/entities/Academy/model/types/academy";
 import { Locale } from "@/entities/Locale";
 
 import star from "@/shared/assets/icons/offers/star.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getAcademyCoursePageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 

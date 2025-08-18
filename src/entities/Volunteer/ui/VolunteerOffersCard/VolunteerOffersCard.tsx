@@ -3,7 +3,7 @@ import React, {
     FC, memo, useEffect,
     useState,
 } from "react";
-
+import { FixedSizeList as List, ListChildComponentProps } from "react-window";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useTranslation } from "react-i18next";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
@@ -19,7 +19,7 @@ interface VolunteerOffersCardProps {
     offers: string[];
 }
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 
 export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
     (props: VolunteerOffersCardProps) => {
@@ -87,6 +87,20 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
             }
         };
 
+        const Row = ({ index, style }: ListChildComponentProps) => {
+            const offer = offersData[index];
+            return (
+                <div style={style}>
+                    <OfferCard
+                        key={offer.id}
+                        locale={locale}
+                        status={offer.status === "active" ? "opened" : "closed"}
+                        data={offer}
+                    />
+                </div>
+            );
+        };
+
         return (
             <div className={cn(className, styles.wrapper)} id="2">
                 <Text title={t("personalVolunteer.Вакансии")} titleSize="h3" />
@@ -94,24 +108,25 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                 <div className={styles.container} id="offers-scroll-container">
                     {loading && <MiniLoader />}
                     {!loading && offersData.length === 0 && (
-                        <div>{t("personalVolunteer.У волонтера пока нет вакансий в которых он участвовал")}</div>
+                        <div>
+                            {t("personalVolunteer.У волонтера пока нет вакансий в которых он участвовал")}
+                        </div>
                     )}
                     <InfiniteScroll
                         dataLength={offersData.length}
                         next={loadMore}
                         hasMore={hasMore}
                         loader={null}
-                        // scrollThreshold="70%"
                         scrollableTarget="offers-scroll-container"
                     >
-                        {offersData.map((offer) => (
-                            <OfferCard
-                                key={offer.id}
-                                locale={locale}
-                                status={offer.status === "active" ? "opened" : "closed"}
-                                data={offer}
-                            />
-                        ))}
+                        <List
+                            height={offersData.length > 3 ? 560 : 200 * offersData.length}
+                            itemCount={offersData.length}
+                            itemSize={200} 
+                            width="100%"
+                        >
+                            {Row}
+                        </List>
                     </InfiniteScroll>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useMemo, useState, useTransition } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
@@ -61,12 +61,20 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     const { locale } = useLocale();
     const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
 
+    const [isPending, startTransition] = useTransition();
+
     const handleApplySearch = useCallback(
         (search: string) => {
             onApplySearch(search);
         },
         [onApplySearch]
     );
+
+    const changeCurrentPage = useCallback((page: number) => {
+        startTransition(() => {
+            onChangePage(page);
+        });
+    }, [onChangePage]);
 
     const handleSubmit = useCallback(() => {
         onSubmit();
@@ -106,7 +114,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     }, [currentPage, offersPerPage, data]);
 
     const renderOfferCards = useMemo(() => {
-        if (isLoading) {
+        if (isLoading || isPending) {
             return (
                 <div className={cn(styles.wrapper, className)}>
                     <MiniLoader className={styles.miniLoader} />
@@ -136,9 +144,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             />
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentOffers, locale, t, isLoading, data]);
+    }, [currentOffers, locale, t, isLoading, isPending, data]);
 
-    // Вычисляем totalPages
     const totalPages = useMemo(
         () => (data ? Math.ceil(data.length / offersPerPage) : 1),
         [data, offersPerPage]
@@ -219,7 +226,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     <OfferPagination
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        onPageChange={onChangePage}
+                        onPageChange={changeCurrentPage}
                     />
                 </>
             )}
