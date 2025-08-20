@@ -1,7 +1,5 @@
 import cn from "classnames";
-import React, {
-    FC, useCallback, useMemo, useRef, useTransition,
-} from "react";
+import React, { FC, useCallback, useMemo, useRef, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
@@ -18,6 +16,7 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
 import { MeasuredOfferCard } from "../MeasureOfferCard/MeasureOfferCard";
+import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import styles from "./OffersList.module.scss";
 
@@ -47,8 +46,6 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
     const { locale } = useLocale();
     const { t } = useTranslation("offers-map");
     const [isPending, startTransition] = useTransition();
-    const listRef = useRef<List>(null);
-    const sizeMap = useRef<{ [index: number]: number }>({});
 
     const currentOffers = useMemo(() => {
         const startIndex = (currentPage - 1) * offersPerPage;
@@ -66,30 +63,45 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                 onChangePage(page);
             });
         },
-        [onChangePage],
+        [onChangePage]
     );
 
-    const getSize = (index: number) => sizeMap.current[index] || 200;
-    const setSize = (index: number, size: number) => {
-        if (sizeMap.current[index] !== size) {
-            sizeMap.current[index] = size;
-            listRef.current?.resetAfterIndex(index);
+    const renderOfferCards = useMemo(() => {
+        if (isLoading || isPending) {
+            return <MiniLoader className={styles.miniLoader} />;
         }
-    };
-
-    const Row = ({ index, style }: ListChildComponentProps) => {
-        const offer = data[index];
-        return (
-            <div style={style}>
-                <MeasuredOfferCard
-                    offer={offer}
+        if (data) {
+            if (data.length === 0) {
+                return (
+                    <Text
+                        className={styles.error}
+                        textSize="primary"
+                        text={t("Вакансии не были найдены")}
+                    />
+                );
+            }
+            return currentOffers?.map((offer) => (
+                <OfferCard
                     locale={locale}
-                    mapOpenValue={mapOpenValue}
-                    setSize={(h) => setSize(index, h)}
+                    classNameCard={styles.offerCard}
+                    className={cn(styles.offer, {
+                        [styles.closed]: !mapOpenValue,
+                    })}
+                    status={offer.status === "active" ? "opened" : "closed"}
+                    data={offer}
+                    key={offer.id}
+                    // isFavoriteIconShow={!!isAuth}
                 />
-            </div>
+            ));
+        }
+        return (
+            <Text
+                className={styles.error}
+                textSize="primary"
+                text={t("Вакансии не были найдены")}
+            />
         );
-    };
+    }, [currentOffers, data, isLoading, locale, mapOpenValue, t]);
 
     // TODO: Переписать и убрать этот react window, он мне не нравится :/
     // нужно бека попросить сделать динамический фетч изображений
@@ -107,31 +119,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
             <div
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}
             >
-                {isLoading || isPending ? (
-                    <MiniLoader className={styles.miniLoader} />
-                ) : data && data.length === 0 ? (
-                    <Text
-                        className={styles.error}
-                        textSize="primary"
-                        text={t("Вакансии не были найдены")}
-                    />
-                ) : (
-                    <AutoSizer>
-                        {({ height, width }) => (
-                            <List
-                                ref={listRef}
-                                itemSize={getSize}
-                                className={styles.listContainer}
-                                height={height}
-                                itemCount={currentOffers.length}
-                                estimatedItemSize={200}
-                                width={width}
-                            >
-                                {Row}
-                            </List>
-                        )}
-                    </AutoSizer>
-                )}
+               {renderOfferCards}
             </div>
             <OfferPagination
                 currentPage={currentPage}
