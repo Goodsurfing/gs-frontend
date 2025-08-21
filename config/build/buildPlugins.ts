@@ -33,7 +33,6 @@ export function buildPlugins({
 
     if (isDev) {
         plugins.push(new ReactRefreshWebpackPlugin());
-        plugins.push(new webpack.HotModuleReplacementPlugin());
         plugins.push(new CircularDependencyPlugin({
             onStart({ compilation }) {
                 numCyclesDetected = 0;

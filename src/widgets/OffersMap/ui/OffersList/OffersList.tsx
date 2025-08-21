@@ -1,11 +1,8 @@
 import cn from "classnames";
-import React, { FC, useCallback, useMemo, useRef, useTransition } from "react";
+import React, {
+    FC, useCallback, useMemo, useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
-import AutoSizer from "react-virtualized-auto-sizer";
-import {
-    VariableSizeList as List,
-    ListChildComponentProps,
-} from "react-window";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -15,7 +12,6 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { HeaderList } from "../HeaderList/HeaderList";
-import { MeasuredOfferCard } from "../MeasureOfferCard/MeasureOfferCard";
 import { OfferCard } from "../OfferCard/OfferCard";
 import { OfferPagination } from "../OfferPagination/OfferPagination";
 import styles from "./OffersList.module.scss";
@@ -63,7 +59,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                 onChangePage(page);
             });
         },
-        [onChangePage]
+        [onChangePage],
     );
 
     const renderOfferCards = useMemo(() => {
@@ -101,6 +97,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                 text={t("Вакансии не были найдены")}
             />
         );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentOffers, data, isLoading, locale, mapOpenValue, t]);
 
     // TODO: Переписать и убрать этот react window, он мне не нравится :/
@@ -119,7 +116,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
             <div
                 className={cn(styles.list, { [styles.closed]: !mapOpenValue })}
             >
-               {renderOfferCards}
+                {renderOfferCards}
             </div>
             <OfferPagination
                 currentPage={currentPage}

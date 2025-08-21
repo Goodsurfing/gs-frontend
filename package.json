@@ -31,7 +31,7 @@
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
-        "@trivago/prettier-plugin-sort-imports": "^3.4.0",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@types/aos": "^3.0.7",
         "@types/circular-dependency-plugin": "^5.0.5",
         "@types/crypto-js": "^4.2.2",
@@ -81,8 +81,8 @@
         "typescript-plugin-css-modules": "^5.0.1",
         "webpack": "^5.85.0",
         "webpack-bundle-analyzer": "^4.9.0",
-        "webpack-cli": "^4.10.0",
-        "webpack-dev-server": "^4.15.1"
+        "webpack-cli": "^6.0.1",
+        "webpack-dev-server": "^5.2.2"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
@@ -92,6 +92,7 @@
         "@mui/material": "^5.14.1",
         "@pbe/react-yandex-maps": "^1.2.4",
         "@reduxjs/toolkit": "^1.9.5",
+        "@tanstack/react-virtual": "^3.13.12",
         "@tiptap/extension-bullet-list": "^2.1.13",
         "@tiptap/extension-image": "^2.1.13",
         "@tiptap/extension-link": "^2.1.13",
@@ -135,8 +136,6 @@
         "react-select": "^5.7.3",
         "react-svg": "^16.1.34",
         "react-transition-group": "^4.4.5",
-        "react-virtualized-auto-sizer": "^1.0.26",
-        "react-window": "^1.8.11",
         "swiper": "^9.3.2",
         "twemoji": "^14.0.2",
         "url-loader": "^4.1.1",
