@@ -1,5 +1,9 @@
 import cn from "classnames";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+
+import { ReactSVG } from "react-svg";
+import eye from "@/shared/assets/icons/eye.svg";
+import eyeHide from "@/shared/assets/icons/eye-hide.svg";
 
 import styles from "./InputField.module.scss";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
@@ -18,27 +22,49 @@ const InputField: FC<InputFieldProps> = ({
     onChange,
     error,
     ...rest
-}) => (
-    <div className={styles.box}>
-        <input
-            type={type}
-            required
-            onChange={onChange}
-            value={value}
-            defaultValue={defaultValue}
-            name="main"
-            {...rest}
-        />
-        <label
-            htmlFor="main"
-            className={cn({
-                [styles.empty]: value || defaultValue,
-            })}
-        >
-            {text}
-        </label>
-        {error && (<ErrorText text={error} />)}
-    </div>
-);
+}) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
+    return (
+        <div className={styles.box}>
+            <div className={styles.wrapper}>
+                <input
+                    type={inputType}
+                    required
+                    onChange={onChange}
+                    value={value}
+                    defaultValue={defaultValue}
+                    name="main"
+                    {...rest}
+                />
+                {type === "password" && (
+                    <button
+                        type="button"
+                        className={styles.eyeBtn}
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        title={showPassword ? "Показать пароль" : "Скрыть пароль"}
+                    >
+                        {showPassword ? (
+                            <ReactSVG
+                                src={eyeHide}
+                                className={styles.eye}
+                                fontSize={14}
+                            />
+                        ) : <ReactSVG src={eye} fontSize={14} className={styles.eye} />}
+                    </button>
+                )}
+            </div>
+            <label
+                htmlFor="main"
+                className={cn({
+                    [styles.empty]: value || defaultValue,
+                })}
+            >
+                {text}
+            </label>
+            {error && (<ErrorText text={error} />)}
+        </div>
+    );
+};
 
 export default InputField;

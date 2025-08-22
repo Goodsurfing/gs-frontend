@@ -33,7 +33,7 @@ const SignUpContainer: FC = () => {
                 </Link>
                 .
             </div>
-            <AuthByVk redirect="signup"/>
+            <AuthByVk redirect="signup" />
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

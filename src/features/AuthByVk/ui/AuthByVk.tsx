@@ -1,5 +1,7 @@
 import * as VKID from "@vkid/sdk";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -17,10 +19,11 @@ const langLib: Record<Locale, VKID.Languages> = {
 
 interface AuthByVkProps {
     redirect: string;
+    onSuccess?: () => void;
 }
 
 export const AuthByVk: FC<AuthByVkProps> = (props) => {
-    const {redirect} = props;
+    const { redirect, onSuccess } = props;
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [user, setUser] = useState<any>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -31,9 +34,6 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             const codeVerifier = generateCodeVerifier();
             const state = generateState(32);
 
-            console.log("state", state);
-            console.log("verifier", codeVerifier);
-
             VKID.Config.init({
                 app: Number(process.env.REACT_VKID_CLIENT_ID),
                 redirectUrl:
@@ -41,7 +41,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                         ? `https://localhost/${locale}/${redirect}`
                         : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`,
                 scope: "email phone",
-                codeVerifier: codeVerifier,
+                codeVerifier,
                 // codeChallenge: challenge,
                 state,
             });
@@ -60,12 +60,10 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
 
             const tryAuth = () => {
                 const urlParams = new URLSearchParams(window.location.search);
-                console.log("data params", urlParams);
+
                 const code = urlParams.get("code");
                 const deviceId = urlParams.get("device_id");
                 const responseType = urlParams.get("type");
-
-                console.log("code", code);
 
                 if (deviceId && code && responseType === "code_v2") {
                     VKID.Auth.exchangeCode(code, deviceId)
@@ -78,12 +76,11 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                             window.history.replaceState(
                                 {},
                                 document.title,
-                                window.location.pathname
+                                window.location.pathname,
                             );
+                            onSuccess?.();
                         })
-                        .catch((e: any) =>
-                            console.error("Ошибка Auth.exchangeCode()", e)
-                        );
+                        .catch((e: any) => console.error("Ошибка Auth.exchangeCode()", e));
                 } else {
                     renderOneTapButton();
                 }
@@ -93,7 +90,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
         };
 
         vkIdInit();
-    }, [locale]);
+    }, [locale, redirect, onSuccess]);
 
     const handleLogout = async () => {
         if (!token) return;
@@ -113,9 +110,18 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             {!user && <div ref={containerRef} />}
             {user && (
                 <div>
-                    <p>Имя: {user.first_name}</p>
-                    <p>Фамилия: {user.last_name}</p>
-                    <p>Телефон: {user.phone}</p>
+                    <p>
+                        Имя:
+                        {user.first_name}
+                    </p>
+                    <p>
+                        Фамилия:
+                        {user.last_name}
+                    </p>
+                    <p>
+                        Телефон:
+                        {user.phone}
+                    </p>
                     <button onClick={handleLogout}>Выйти</button>
                 </div>
             )}

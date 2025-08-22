@@ -1,6 +1,6 @@
 import { RoutePath } from "./RouterConfig";
 
-type RoutePathFunction = (locale: string | Locale, id?: string, extraId?: string) => string;
+export type RoutePathFunction = (locale: string | Locale, id?: string, extraId?: string) => string;
 
 // Main page
 
