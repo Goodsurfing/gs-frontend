@@ -31,7 +31,13 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
 
     useEffect(() => {
         const vkIdInit = async () => {
-            const codeVerifier = generateCodeVerifier();
+            // Получаем или генерируем codeVerifier и сохраняем в sessionStorage
+            let codeVerifier = sessionStorage.getItem("vk_code_verifier"); // TODO: лучше вот это засунуть в redux
+            if (!codeVerifier) {
+                codeVerifier = generateCodeVerifier();
+                sessionStorage.setItem("vk_code_verifier", codeVerifier);
+            }
+
             const state = generateState(32);
 
             VKID.Config.init({
@@ -42,7 +48,6 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                         : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`,
                 scope: "email phone",
                 codeVerifier,
-                // codeChallenge: challenge,
                 state,
             });
 
@@ -60,19 +65,27 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
 
             const tryAuth = () => {
                 const urlParams = new URLSearchParams(window.location.search);
-
                 const code = urlParams.get("code");
                 const deviceId = urlParams.get("device_id");
                 const responseType = urlParams.get("type");
 
                 if (deviceId && code && responseType === "code_v2") {
-                    VKID.Auth.exchangeCode(code, deviceId)
+                    // Берём codeVerifier из sessionStorage
+                    const storedVerifier = sessionStorage.getItem("vk_code_verifier");
+                    if (!storedVerifier) {
+                        renderOneTapButton();
+                        return;
+                    }
+
+                    VKID.Auth.exchangeCode(code, deviceId, storedVerifier)
                         .then((result: any) => {
                             setToken(result.access_token);
                             return VKID.Auth.userInfo(result.access_token);
                         })
                         .then((result: any) => setUser(result.user))
                         .then(() => {
+                            // После успешной авторизации можно удалить codeVerifier
+                            sessionStorage.removeItem("vk_code_verifier");
                             window.history.replaceState(
                                 {},
                                 document.title,

@@ -24,7 +24,8 @@ const InputField: FC<InputFieldProps> = ({
     ...rest
 }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
+    const isPassword = type === "password";
+    const inputType = isPassword && showPassword ? "text" : type;
     return (
         <div className={styles.box}>
             <div className={styles.wrapper}>
