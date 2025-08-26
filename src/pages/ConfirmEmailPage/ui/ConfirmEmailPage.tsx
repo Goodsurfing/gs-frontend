@@ -1,5 +1,8 @@
+import {
+    FC, useCallback, useEffect, useRef, useState,
+} from "react";
+import { useTranslation } from "react-i18next";
 import { authApi } from "@/store/api/authApi";
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -15,13 +18,12 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import styles from "./ConfirmEmailPage.module.scss";
-import { useTranslation } from "react-i18next";
 
 const ConfirmEmailPage: FC = () => {
     const { email } = useAppSelector((state) => state.register);
     const { locale } = useLocale();
     const [resendEmail] = authApi.useResendEmailVerificationMutation();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     const [cooldown, setCooldown] = useState(0);
     const [firstAttempt, setFirstAttempt] = useState(true);
@@ -29,7 +31,7 @@ const ConfirmEmailPage: FC = () => {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const resendEmailVerification = async () => {
-        if(!email) return;
+        if (!email) return;
         try {
             await resendEmail({ email }).unwrap();
 
@@ -65,7 +67,11 @@ const ConfirmEmailPage: FC = () => {
                 <SignTitle>{t("login.Регистрация пользователя")}</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        {t("login.На")} <span>{email}</span> {t("login.было отправлено письмо со ссылкой для подтверждения почты.")}
+                        {t("login.На")}
+                        {" "}
+                        <span>{email}</span>
+                        {" "}
+                        {t("login.было отправлено письмо со ссылкой для подтверждения почты.")}
                     </div>
                     <p>
                         {t("Если вы не видите письмо, проверьте, не попало ли оно в папку «Спам».")}

@@ -17,7 +17,7 @@ const root = createRoot(document.getElementById("root")!);
 const store = setupStore();
 
 const Root = (
-    // <StrictMode>
+    <StrictMode>
         <BrowserRouter>
             <Provider store={store}>
                 <StyledEngineProvider injectFirst>
@@ -27,7 +27,7 @@ const Root = (
                 </StyledEngineProvider>
             </Provider>
         </BrowserRouter>
-    // </StrictMode>
+    </StrictMode>
 );
 
 root.render(Root);

@@ -93,7 +93,9 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                             );
                             onSuccess?.();
                         })
-                        .catch((e: any) => console.error("Ошибка Auth.exchangeCode()", e));
+                        .catch(() => {
+                            // empty
+                        });
                 } else {
                     renderOneTapButton();
                 }
@@ -113,8 +115,8 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             setUser(null);
             setToken(null);
             window.location.reload();
-        } catch (error) {
-            console.error("Ошибка при выходе из VKID:", error);
+        } catch {
+            // epmty
         }
     };
 

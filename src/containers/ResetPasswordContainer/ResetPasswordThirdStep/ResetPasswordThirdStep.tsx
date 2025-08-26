@@ -2,6 +2,7 @@ import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
 
 import InputField from "@/components/InputField/InputField";
@@ -15,7 +16,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { useTranslation } from "react-i18next";
 
 interface IFormData {
     password: string;
@@ -24,7 +24,7 @@ interface IFormData {
 
 const ResetPasswordThirdStep: FC = () => {
     const navigate = useNavigate();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const query = useQuery();
     const [resetPasswordVerify, { error }] = authApi.useResetPasswordVerifyMutation();
     const { locale } = useLocale();

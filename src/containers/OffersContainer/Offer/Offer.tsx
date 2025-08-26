@@ -67,7 +67,7 @@ const Offer: FC<OfferProps> = (props) => {
                             {feedbacksCount}
                         </span>
                     </div>
-                ): null}
+                ) : null}
                 <div className={styles.success}>
                     <span>
                         Отправилось:

@@ -1,9 +1,9 @@
-import InputField from "@/components/InputField/InputField";
-import { authApi } from "@/store/api/authApi";
-import { IResetPasswordRequestFormData } from "@/types/api/auth/resetPassword.interface";
 import React, { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import InputField from "@/components/InputField/InputField";
+import { authApi } from "@/store/api/authApi";
+import { IResetPasswordRequestFormData } from "@/types/api/auth/resetPassword.interface";
 
 import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
@@ -19,17 +19,15 @@ interface ResetPasswordFirstStepProps {
 const ResetPasswordFirstStep: FC<ResetPasswordFirstStepProps> = ({
     changeStep,
 }) => {
-    const { control, reset, handleSubmit } =
-        useForm<IResetPasswordRequestFormData>({
-            mode: "onChange",
-        });
+    const { control, reset, handleSubmit } = useForm<IResetPasswordRequestFormData>({
+        mode: "onChange",
+    });
     const { t } = useTranslation();
 
-    const [resetPasswordRequest, { error }] =
-        authApi.useResetPasswordRequestMutation();
+    const [resetPasswordRequest, { error }] = authApi.useResetPasswordRequestMutation();
 
     const onSubmit: SubmitHandler<IResetPasswordRequestFormData> = async (
-        data
+        data,
     ) => {
         await resetPasswordRequest(data)
             .unwrap()

@@ -70,7 +70,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if(!isAuth) return;
+        if (!isAuth) return;
         fetchMessages();
         registerMessageUpdateCallback(() => {
             fetchMessages();

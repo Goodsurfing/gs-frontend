@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useCallback, useMemo, useState, useTransition } from "react";
+import React, {
+    FC, useCallback, useMemo, useState, useTransition,
+} from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
@@ -67,7 +69,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
         (search: string) => {
             onApplySearch(search);
         },
-        [onApplySearch]
+        [onApplySearch],
     );
 
     const changeCurrentPage = useCallback((page: number) => {
@@ -104,7 +106,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             isFilterTabOpened: selectedTab === "filter",
             isMapTabOpened: selectedTab === "map",
         }),
-        [selectedTab]
+        [selectedTab],
     );
 
     const currentOffers = useMemo(() => {
@@ -148,7 +150,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
 
     const totalPages = useMemo(
         () => (data ? Math.ceil(data.length / offersPerPage) : 1),
-        [data, offersPerPage]
+        [data, offersPerPage],
     );
 
     return (
@@ -220,7 +222,9 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                         />
                     </div>
                     <div className={styles.offersCount}>
-                        {data ? data.length : 0} {t("вариантов")}
+                        {data ? data.length : 0}
+                        {" "}
+                        {t("вариантов")}
                     </div>
                     <div className={styles.list}>{renderOfferCards}</div>
                     <OfferPagination
