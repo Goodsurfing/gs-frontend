@@ -218,5 +218,6 @@
         "Точная дата не указана": "Exact date not specified",
         "Не имеет даты окончания": "No end date"
     },
-    "Данные успешно изменены": "Data has been successfully updated"
+    "Данные успешно изменены": "Data has been successfully updated",
+    "Дальше": "Next"
 }

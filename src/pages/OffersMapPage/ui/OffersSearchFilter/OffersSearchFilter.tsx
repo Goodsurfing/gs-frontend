@@ -2,7 +2,6 @@
 import cn from "classnames";
 import React, {
     useCallback, useEffect, useRef, useState,
-    useTransition,
 } from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
@@ -43,8 +42,6 @@ export const OffersSearchFilter = () => {
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
-
-    const [isPending, startTransition] = useTransition();
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 

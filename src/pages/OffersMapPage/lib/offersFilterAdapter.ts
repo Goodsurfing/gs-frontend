@@ -2,6 +2,7 @@
 import { OffersFilters } from "@/entities/Offer";
 
 import { OffersFilterFields } from "../model/types";
+import { formattingDate } from "@/shared/lib/formatDate";
 
 export const offersFilterApiAdapter = (
     data: OffersFilterFields,
@@ -28,8 +29,8 @@ export const offersFilterApiAdapter = (
         ? participationPeriod[1].toString()
         : undefined;
 
-    const start_date = periods.start?.toISOString().split("T")[0];
-    const end_date = periods.end?.toISOString().split("T")[0];
+    const start_date = formattingDate(periods.start);
+    const end_date = formattingDate(periods.end);
 
     let result_start_date = start_date;
 
@@ -41,8 +42,8 @@ export const offersFilterApiAdapter = (
     const queryParams: Partial<OffersFilters> = {
         min_duration_days,
         max_duration_days,
-        start_date: result_start_date,
-        end_date,
+        start_date: result_start_date ?? undefined,
+        end_date: end_date ?? undefined,
         "order[popularity]": popularity,
         "order[updatedAt]": updatedAt,
     };

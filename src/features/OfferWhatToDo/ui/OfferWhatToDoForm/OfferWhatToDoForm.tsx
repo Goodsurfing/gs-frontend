@@ -26,6 +26,9 @@ import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import styles from "./OfferWhatToDoForm.module.scss";
 import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
+import { getOffersConditionsPageUrl } from "@/shared/config/routes/AppUrls";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -47,6 +50,8 @@ export const OfferWhatToDoForm = memo(
             defaultValues,
         });
         const { id } = useParams();
+        const { locale } = useLocale();
+
         const [updateOffer, { isLoading }] = useUpdateOfferMutation();
         const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
@@ -92,7 +97,7 @@ export const OfferWhatToDoForm = memo(
                 .unwrap()
                 .then(() => {
                     setToast({
-                        text: "Данные успешно изменены",
+                        text: t("Данные успешно изменены"),
                         type: HintType.Success,
                     });
                     sessionStorage.removeItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
@@ -152,7 +157,7 @@ export const OfferWhatToDoForm = memo(
                         />
                     )}
                 />
-                <div>
+                <div className={styles.buttons}>
                     <Button
                         onClick={onSubmit}
                         disabled={isLoading}
@@ -163,6 +168,13 @@ export const OfferWhatToDoForm = memo(
                     >
                         {t("whatToDo.Сохранить")}
                     </Button>
+                    <ButtonLink
+                        path={getOffersConditionsPageUrl(locale, id ?? "")}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
                 </div>
             </form>
         );

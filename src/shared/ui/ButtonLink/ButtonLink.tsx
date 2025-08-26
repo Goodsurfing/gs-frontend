@@ -7,6 +7,7 @@ import styles from "./ButtonLink.module.scss";
 
 export interface ButtonLinkProps {
     type: "primary" | "secondary" | "outlined";
+    size?: "LARGE" | "MEDIUM" | "SMALL" | "EXTRA-SMALL";
     path: string;
     className?: string;
     onClick?: MouseEventHandler<HTMLAnchorElement>
@@ -14,6 +15,7 @@ export interface ButtonLinkProps {
 
 const ButtonLink = memo(({
     type,
+    size,
     path,
     className,
     children,
@@ -29,6 +31,8 @@ const ButtonLink = memo(({
                 [styles.primary]: type === "primary",
                 [styles.secondary]: type === "secondary",
                 [styles.outlined]: type === "outlined",
+                ...(size && styles[size] ? { [styles[size]]: size } : {}),
+                // [styles[size]]: size,
             },
         )}
     >

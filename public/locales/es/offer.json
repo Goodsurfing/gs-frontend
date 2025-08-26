@@ -218,5 +218,6 @@
         "Точная дата не указана": "Fecha exacta no especificada",
         "Не имеет даты окончания": "Sin fecha de finalización"
     },
-    "Данные успешно изменены": "Data has been successfully updated"
+    "Данные успешно изменены": "Data has been successfully updated",
+    "Дальше": "Siguiente"
 }

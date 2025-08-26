@@ -89,19 +89,19 @@ export const getOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${Rout
 
 export const getOffersWelcomePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_welcome}/${id}`;
 
-export const getOffersWhenPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_when}/:id`;
+export const getOffersWhenPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_when}/${id}`;
 
 export const getOffersWherePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_where}/${id}`;
 
-export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_who_needs}/:id`;
+export const getOffersWhoNeedsPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_who_needs}/${id}`;
 
-export const getOffersDescriptionPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_description}/:id`;
+export const getOffersDescriptionPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_description}/${id}`;
 
-export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_what_to_do}/:id`;
+export const getOffersWhatToDoPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_what_to_do}/${id}`;
 
-export const getOffersConditionsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_conditions}/:id`;
+export const getOffersConditionsPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_conditions}/${id}`;
 
-export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_finishing_touches}/:id`;
+export const getOffersFinishingTouchesPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offers_finishing_touches}/${id}`;
 
 export const getOfferPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.offer_personal}/${id}`;
 

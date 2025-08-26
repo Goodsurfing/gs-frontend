@@ -3,6 +3,7 @@ import { OfferWhen, OfferWhenPeriods } from "@/entities/Offer";
 import {
     DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "../model/types/offerWhen";
+import { formattingDate } from "@/shared/lib/formatDate";
 
 export const offerWhenFormApiAdapter = (
     offerWhenForm: OfferWhenFields,
@@ -15,8 +16,8 @@ export const offerWhenFormApiAdapter = (
     const { applicationEndDate } = endSettings;
 
     const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
-        start: period.start ? period.start.toLocaleDateString() : null,
-        ending: period.end ? period.end.toLocaleDateString() : null,
+        start: formattingDate(period.start),
+        ending: formattingDate(period.end),
     }));
 
     let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
@@ -24,14 +25,13 @@ export const offerWhenFormApiAdapter = (
         offerTempWhenPeriods = [];
     }
 
-    const formattedEndDate = applicationEndDate?.toLocaleDateString();
+    const formattedEndDate = formattingDate(applicationEndDate);
 
     const offerWhen: OfferWhen = {
         periods: offerTempWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
-        // isWithoutApplicationEndDate: isWithoutApplicationDate,
-        applicationEndDate: formattedEndDate || null,
+        applicationEndDate: formattedEndDate,
         isFullYearAcceptable,
         isApplicableAtTheEnd, // backend issue
     };
@@ -48,35 +48,20 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
         periods,
     } = offerWhen;
 
-    let offerWhenPeriods: DatePeriods[] = [];
-    if (periods.length > 0) {
-        offerWhenPeriods = periods.map((period) => {
-            if (period.start && period.ending) {
-                return ({
-                    start: new Date(period.start.split(".").reverse().join("-")),
-                    end: new Date(period.ending.split(".").reverse().join("-")),
-                });
-            }
-            return ({
-                start: new Date(),
-                end: new Date(),
-            });
-        });
-    } else {
-        offerWhenPeriods = [];
-    }
+    const parseDate = (dateStr?: string) => (dateStr ? new Date(dateStr) : undefined);
+
+    const offerWhenPeriods: DatePeriods[] = periods.map((period) => ({
+        start: parseDate(period.start ?? undefined) || new Date(),
+        end: parseDate(period.ending ?? undefined) || new Date(),
+    }));
 
     const timeSettings: TimeSettingsControls = {
         isFullYearAcceptable,
         isApplicableAtTheEnd,
     };
 
-    const parsedDate = applicationEndDate
-        ? new Date(applicationEndDate.split(".").reverse().join("-"))
-        : undefined;
-
     const endSettings: EndSettings = {
-        applicationEndDate: parsedDate,
+        applicationEndDate: parseDate(applicationEndDate ?? undefined),
         isWithoutApplicationDate: !applicationEndDate,
     };
 

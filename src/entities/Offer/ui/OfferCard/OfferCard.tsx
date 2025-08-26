@@ -62,7 +62,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
-                    <img src={image || defaultImage} alt="offer-img" loading="lazy"/>
+                    <img src={image || defaultImage} alt="offer-img" loading="lazy" />
                     {isFavoriteIconShow && (
                         <ReactSVG
                             src={heartIcon}
@@ -79,16 +79,16 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 </div>
             )}
             <div className={styles.content}>
-                <p className={styles.title}>{textSlice(title, 30, "title")}</p>
+                <p className={styles.title}>{textSlice(title, 50, "title")}</p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
                     <br />
                     <span className={styles.category}>{category}</span>
                 </div>
                 <div className={styles.stats}>
-                    {rating && (
+                    {!!rating && (
                         <div className={styles.rating}>
-                            <img src={star} alt="star-icon" loading="lazy"/>
+                            <img src={star} alt="star-icon" loading="lazy" />
                             <span>{rating}</span>
                         </div>
                     )}

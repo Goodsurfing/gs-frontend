@@ -39,6 +39,9 @@ import {
 } from "@/shared/constants/messages";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersFinishingTouchesPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -57,6 +60,8 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     });
     const { onSuccess, className } = props;
     const { id } = useParams();
+    const { locale } = useLocale();
+
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
@@ -101,7 +106,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
             .unwrap()
             .then(() => {
                 setToast({
-                    text: "Данные успешно изменены",
+                    text: t("Данные успешно изменены"),
                     type: HintType.Success,
                 });
                 sessionStorage.removeItem(`${OFFER_CONDITIONS_FORM}${id}`);
@@ -238,7 +243,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     <Textarea className={styles.textarea} value={field.value} onChange={field.onChange} label={t("conditions.Дополнительные условия")} description={t("conditions.Не более 1000 знаков")} />
                 )}
             />
-            <div>
+            <div className={styles.buttons}>
                 <Button
                     disabled={isLoading}
                     onClick={onSubmit}
@@ -249,6 +254,13 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 >
                     Сохранить
                 </Button>
+                <ButtonLink
+                    path={getOffersFinishingTouchesPageUrl(locale, id ?? "")}
+                    size="MEDIUM"
+                    type="outlined"
+                >
+                    {t("Дальше")}
+                </ButtonLink>
             </div>
         </form>
     );
