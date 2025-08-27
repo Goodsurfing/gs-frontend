@@ -10,7 +10,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
-import { getUserAuthData, userActions } from "@/entities/User";
+import { userActions } from "@/entities/User";
 
 import {
     getAboutProjectPageUrl,
@@ -30,7 +30,7 @@ import {
     getSignInPageUrl,
     // getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
+import { useAppDispatch } from "@/shared/hooks/redux";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Button from "@/shared/ui/Button/Button";
@@ -50,7 +50,7 @@ const InfoHeader = memo(() => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { myProfile } = useAuth();
+    const { myProfile, isAuth } = useAuth();
 
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
@@ -59,8 +59,6 @@ const InfoHeader = memo(() => {
         isCommunityOpened: false,
         isAboutProjectOpened: false,
     });
-
-    const isAuth = useAppSelector(getUserAuthData);
 
     const dispatch = useAppDispatch();
 

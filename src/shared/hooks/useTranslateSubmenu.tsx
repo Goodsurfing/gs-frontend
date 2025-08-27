@@ -32,10 +32,10 @@ export const useTranslateSubmenu = () => {
             text: t("personalOffer.Участники", "Участники"),
             id: "participants",
         },
-        {
-            text: t("personalOffer.Статьи", "Статьи"),
-            id: "articles",
-        },
+        // {
+        //     text: t("personalOffer.Статьи", "Статьи"),
+        //     id: "articles",
+        // },
     ];
 
     return { SubmenuItemsOffer };

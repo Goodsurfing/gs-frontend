@@ -1,3 +1,9 @@
+.buttons {
+  margin-top: 60px;
+  display: flex;
+  gap: 10px;
+}
+
 .title {
     font-family: 'Lato';
     font-size: 26px;
@@ -13,7 +19,6 @@
 }
 
 .btn {
-    margin-top: 60px;
     padding: 12px 100px;
 }
 
@@ -27,4 +32,10 @@
 
 .loading {
     max-width: 1280px;
+}
+
+@media(max-width: 576px) {
+  .buttons {
+    flex-direction: column;
+  }
 }

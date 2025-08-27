@@ -3,7 +3,7 @@ import React, { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { CategoryType } from "@/types/categories";
 
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
 
 import styles from "./OfferPlacemark.module.scss";

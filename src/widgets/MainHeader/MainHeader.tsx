@@ -9,8 +9,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 
-import { getUserAuthData } from "@/entities/User";
-
 // import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import {
@@ -20,7 +18,6 @@ import {
     getMessengerPageUrl,
     getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import { useAppSelector } from "@/shared/hooks/redux";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
@@ -32,11 +29,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
-    const { myProfile, profileIsLoading } = useAuth();
-
-    // const { data: profile, isLoading } = useGetProfileInfoQuery();
-
-    const isAuth = useAppSelector(getUserAuthData);
+    const { myProfile, profileIsLoading, isAuth } = useAuth();
 
     return (
         <>

@@ -8,7 +8,9 @@ import { Submenu } from "@/widgets/Submenu";
 
 import { Offer } from "@/entities/Offer";
 
-import { getMessengerPageCreateUrl, getOffersWherePageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getMessengerPageCreateUrl, getOffersWherePageUrl, getProfileRolePageUrl, getSignInPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 import Button, { ButtonColor, ButtonSize, ButtonVariant } from "@/shared/ui/Button/Button";
 
@@ -33,11 +35,13 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
 
     const handleParticipateClick = useCallback(() => {
         if (isNeedToBecomeVolunteer) {
-            navigate(getProfileRolePageUrl(locale));
-        } else {
+            navigate(`${getProfileRolePageUrl(locale)}?next=${id.toString()}`);
+        } else if (isAuth) {
             navigate(getMessengerPageCreateUrl(locale, "create", id.toString()));
+        } else {
+            navigate(`${getSignInPageUrl(locale)}?next=offer&nextId=${id.toString()}`);
         }
-    }, [id, isNeedToBecomeVolunteer, locale, navigate]);
+    }, [id, isNeedToBecomeVolunteer, locale, navigate, isAuth]);
 
     const handleEditClick = useCallback(() => {
         if (canEdit) {
@@ -50,7 +54,8 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
         variant: "FILL" as ButtonVariant,
         color: "BLUE" as ButtonColor,
         onClick: handleParticipateClick,
-        disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+        // disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+        disabled: isAuth && !isNeedToBecomeVolunteer && !canParticipate,
     };
 
     const buttonText = isNeedToBecomeVolunteer

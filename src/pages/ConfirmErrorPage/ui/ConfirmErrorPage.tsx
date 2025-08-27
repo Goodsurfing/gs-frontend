@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
@@ -9,14 +10,15 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 const ConfirmErrorPage: FC = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
 
     return (
-        <SignLayout cancelText="Отменить" cancelPath={getSignInPageUrl(locale)}>
+        <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignInPageUrl(locale)}>
             <div className={styles.wrapper}>
-                <SignTitle>Произошла неизвестная ошибка!</SignTitle>
+                <SignTitle>{t("login.Произошла неизвестная ошибка!")}</SignTitle>
                 <div className={styles.content}>
                     <div className={styles.notification}>
-                        <a href={getSignInPageUrl(locale)}>Попробуйте ещё раз.</a>
+                        <a href={getSignInPageUrl(locale)}>{t("login.Попробуйте ещё раз.")}</a>
                     </div>
                 </div>
             </div>

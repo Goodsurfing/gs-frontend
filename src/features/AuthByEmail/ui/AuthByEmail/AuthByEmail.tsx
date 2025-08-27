@@ -1,7 +1,7 @@
 import {
     memo, useCallback, useEffect, useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -11,14 +11,26 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { AuthByVk } from "@/features/AuthByVk";
+import { NextRouteType, useNextRoutes } from "@/routes/model/lib/useNextRoutes";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");
     const { locale } = useLocale();
     const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+    const next = searchParams.get("next");
+    const nextId = searchParams.get("nextId");
+    const { getNextRoute } = useNextRoutes();
+
     const onSuccess = useCallback(() => {
+        if (next && nextId) {
+            navigate(getNextRoute(next as NextRouteType, nextId));
+            return;
+        }
         navigate(getProfileInfoPageUrl(locale));
-    }, [locale, navigate]);
+    }, [getNextRoute, locale, navigate, next, nextId]);
     const { t, ready } = useTranslation();
 
     const errorMessages: Record<string, string> = {
@@ -58,6 +70,7 @@ export const AuthByEmail = memo(() => {
                 onSuccess={onSuccess}
                 onError={onError}
             />
+            <AuthByVk redirect="signin" />
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

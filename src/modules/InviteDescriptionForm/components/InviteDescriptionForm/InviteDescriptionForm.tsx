@@ -39,6 +39,9 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import styles from "./InviteDescriptionForm.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -63,6 +66,8 @@ export const InviteDescriptionForm = () => {
         reset,
     } = form;
     const { id } = useParams();
+    const { locale } = useLocale();
+
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
 
@@ -219,18 +224,27 @@ export const InviteDescriptionForm = () => {
                         onChangeSuccess={handleGallerySuccess}
                     />
                 </div>
-                <Button
-                    className={styles.btn}
-                    disabled={
-                        isLoading || isCoverImageLoading || isGalleryLoading
-                    }
-                    variant="FILL"
-                    color="BLUE"
-                    size="MEDIUM"
-                    onClick={onSubmit}
-                >
-                    {t("description.Сохранить")}
-                </Button>
+                <div className={styles.buttons}>
+                    <Button
+                        className={styles.btn}
+                        disabled={
+                            isLoading || isCoverImageLoading || isGalleryLoading
+                        }
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                        onClick={onSubmit}
+                    >
+                        {t("description.Сохранить")}
+                    </Button>
+                    <ButtonLink
+                        path={getOffersWhatToDoPageUrl(locale, id ?? "")}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
+                </div>
             </form>
         </FormProvider>
     );

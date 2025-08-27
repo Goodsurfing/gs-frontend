@@ -1,5 +1,7 @@
-.btn {
+.buttons {
   margin-top: 60px;
+  display: flex;
+  gap: 10px;
 }
 
 .error {
@@ -10,4 +12,11 @@
 
 .loading {
   max-width: 1280px;
+}
+
+
+@media(max-width: 576px) {
+  .buttons {
+    flex-direction: column;
+  }
 }

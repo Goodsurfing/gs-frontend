@@ -1,21 +1,25 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useMemo, useState,
+    FC, useCallback, useMemo, useState, useTransition,
 } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ReactSVG } from "react-svg";
 
-import { useTranslation } from "react-i18next";
+import { useLocale } from "@/app/providers/LocaleProvider";
+
 import {
     OfferPagination,
     OffersMap,
     SwitchClosedOffers,
 } from "@/widgets/OffersMap";
 import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
+import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-// import { getUserAuthData } from "@/entities/User";
+import { Offer } from "@/entities/Offer";
 
+// import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 // import { useAppSelector } from "@/shared/hooks/redux";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -24,9 +28,6 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
 import styles from "./OffersSearchFilterMobile.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { Offer } from "@/entities/Offer";
-import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 type SelectedTabType = "filter" | "map" | "offers";
 
@@ -62,9 +63,20 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     const { locale } = useLocale();
     const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
 
-    const handleApplySearch = useCallback((search: string) => {
-        onApplySearch(search);
-    }, [onApplySearch]);
+    const [isPending, startTransition] = useTransition();
+
+    const handleApplySearch = useCallback(
+        (search: string) => {
+            onApplySearch(search);
+        },
+        [onApplySearch],
+    );
+
+    const changeCurrentPage = useCallback((page: number) => {
+        startTransition(() => {
+            onChangePage(page);
+        });
+    }, [onChangePage]);
 
     const handleSubmit = useCallback(() => {
         onSubmit();
@@ -104,7 +116,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     }, [currentPage, offersPerPage, data]);
 
     const renderOfferCards = useMemo(() => {
-        if (isLoading) {
+        if (isLoading || isPending) {
             return (
                 <div className={cn(styles.wrapper, className)}>
                     <MiniLoader className={styles.miniLoader} />
@@ -133,10 +145,9 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                 key={offer.id}
             />
         ));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentOffers, locale, t]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentOffers, locale, t, isLoading, isPending, data]);
 
-    // Вычисляем totalPages
     const totalPages = useMemo(
         () => (data ? Math.ceil(data.length / offersPerPage) : 1),
         [data, offersPerPage],
@@ -219,7 +230,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     <OfferPagination
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        onPageChange={onChangePage}
+                        onPageChange={changeCurrentPage}
                     />
                 </>
             )}

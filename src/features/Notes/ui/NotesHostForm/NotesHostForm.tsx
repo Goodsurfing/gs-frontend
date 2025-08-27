@@ -68,9 +68,11 @@ export const NotesHostForm = () => {
 
     useEffect(() => {
         if (applications) {
+            // Тут получаю сначала новые заявки, по хорошему это надо делать на беке
+            const reversed = [...applications].reverse();
             const startIndex = (page - 1) * applicationsPerPage;
             const endIndex = startIndex + applicationsPerPage;
-            setPageApplications(applications.slice(startIndex, endIndex));
+            setPageApplications(reversed.slice(startIndex, endIndex));
         } else {
             setPageApplications([]);
         }

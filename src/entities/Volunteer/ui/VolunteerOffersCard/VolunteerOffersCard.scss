@@ -1,15 +1,4 @@
-.wrapper {
-    width: 100%;
-}
-
-.container, .containerList {
-  margin-top: 20px;
-}
-
-.containerList {
-    max-height: 560px;
-    overflow: auto;
-
+.infinite-scroll-component > div {
     &::-webkit-scrollbar {
         width: 5px;
       }

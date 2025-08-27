@@ -1,5 +1,6 @@
 import React, {
-    createContext, FC, ReactNode, useMemo,
+    createContext, FC, ReactNode, useEffect, useMemo,
+    useState,
 } from "react";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
@@ -10,6 +11,7 @@ interface AuthContextProps {
     mercureToken: string | null;
     myProfile: Profile | null;
     profileIsLoading: boolean;
+    isAuth: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -21,18 +23,25 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const authData = useAppSelector(getUserAuthData);
 
+    const [isAuth, setAuth] = useState<boolean>(false);
+    const [token, setToken] = useState<string | null>(null);
+    const [mercureToken, setMercureToken] = useState<string | null>(null);
     const { data: myProfileData, isLoading: profileDataIsLoading } = useGetProfileInfoQuery();
+
+    useEffect(() => {
+        setAuth(!!authData);
+        setToken(authData?.token ?? null);
+        setMercureToken(authData?.mercureToken ?? null);
+    }, [authData]);
 
     const myProfile = myProfileData ?? null;
     const profileIsLoading = profileDataIsLoading;
-    const token = authData?.token ?? null;
-    const mercureToken = authData?.mercureToken ?? null;
 
     const value = useMemo(
         () => ({
-            token, mercureToken, myProfile, profileIsLoading,
+            token, mercureToken, myProfile, profileIsLoading, isAuth,
         }),
-        [token, mercureToken, myProfile, profileIsLoading],
+        [token, mercureToken, myProfile, profileIsLoading, isAuth],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

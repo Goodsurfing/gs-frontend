@@ -1,57 +1,77 @@
 .box {
-	position: relative;
+    position: relative;
 
-	box-sizing: border-box;
+    box-sizing: border-box;
 
-	width: 100%;
+    width: 100%;
+	
+    margin-bottom: 25px;
 
-	margin-bottom: 25px;
-
-	input {
+	.wrapper {
 		width: 100%;
-		padding: 15px 0;
-
-		color: var(--color-black-primary);
-
-		border: none;
-
-		border-bottom: 1px solid #82949F;
-
-		outline: none;
-
-		font-size: 1rem;
-		font-weight: 600;
-
-		line-height: 138%;
-		mix-blend-mode: normal;
+		display: flex;
+		gap: 6px;
+		border-bottom: 1px solid #82949f;
 	}
 
-	label {
-		position: absolute;
-		top: 10px;
-		left: 0;
+    .eye {
+        svg {
+            width: 18px;
+            height: auto;
+        }
+    }
 
-		transition: all 0.2s ease-in-out;
+    .eyeBtn {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
 
-		pointer-events: none;
+    input {
+        width: 100%;
+        padding: 15px 0;
 
-		opacity: 0.5;
+        color: var(--color-black-primary);
 
-		color: var(--color-black-primary);
+        border: none;
 
-		font-size: 1.125rem;
+        
 
-		font-weight: 500;
-		line-height: 138%;
-		mix-blend-mode: normal;
-	}
+        outline: none;
 
-	input:focus ~ label,
-	.empty {
-		top: -5px;
+        font-size: 1rem;
+        font-weight: 600;
 
-		opacity: 0.8;
+        line-height: 138%;
+        mix-blend-mode: normal;
+    }
 
-		font-size: 0.875rem;
-	}
+    label {
+        position: absolute;
+        top: 10px;
+        left: 0;
+
+        transition: all 0.2s ease-in-out;
+
+        pointer-events: none;
+
+        opacity: 0.5;
+
+        color: var(--color-black-primary);
+
+        font-size: 1.125rem;
+
+        font-weight: 500;
+        line-height: 138%;
+        mix-blend-mode: normal;
+    }
+
+    input:focus ~ label,
+    .empty {
+        top: -5px;
+
+        opacity: 0.8;
+
+        font-size: 0.875rem;
+    }
 }

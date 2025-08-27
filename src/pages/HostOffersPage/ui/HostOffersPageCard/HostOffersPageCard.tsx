@@ -8,7 +8,7 @@ import { OfferStatus } from "@/entities/Offer";
 
 // import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getOfferPersonalPageUrl, getOffersWelcomePageUrl, getOffersWherePageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 import Button from "@/shared/ui/Button/Button";

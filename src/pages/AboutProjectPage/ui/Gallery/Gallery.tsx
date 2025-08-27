@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import "swiper/swiper.min.css";
 
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import defaultImage1 from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage1 from "@/shared/assets/images/default-offer-image.png";
 import defaultImage2 from "@/shared/assets/images/findJobHeader.png";
 
 import styles from "./Gallery.module.scss";

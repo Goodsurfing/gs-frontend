@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
@@ -10,11 +11,13 @@ import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 
 const ResetPasswordVerifyPage: FC = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
+
     return (
         <SignLayout cancelText="Отменить" cancelPath={getSignInPageUrl(locale)}>
             <div className={styles.wrapper}>
                 <div className={styles.container}>
-                    <SignTitle>Восстановление пароля</SignTitle>
+                    <SignTitle>{t("login.Восстановление пароля")}</SignTitle>
                     <ResetPasswordThirdStep />
                 </div>
             </div>

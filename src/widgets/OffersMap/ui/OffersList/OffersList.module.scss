@@ -10,8 +10,8 @@
     flex-direction: column;
     // height: calc(100vh - rem);
     flex: 1;
-    overflow: auto;
-
+    overflow: scroll;
+    will-change: transform;
     &::-webkit-scrollbar {
         width: 10px;
     }
@@ -19,7 +19,7 @@
     &::-webkit-scrollbar-track {
         background: var(--color-white);
     }
-    
+
     &::-webkit-scrollbar-thumb {
         border-radius: var(--radius);
         background-color: var(--bg-accent);

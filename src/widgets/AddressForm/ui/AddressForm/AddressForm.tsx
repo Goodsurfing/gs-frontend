@@ -27,6 +27,9 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import { AddressFormFormFields } from "../../model/types/addressForm";
 import styles from "./AddressForm.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersWhenPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AddressFormProps {
     className?: string;
@@ -49,6 +52,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     });
     const formWatch = useWatch({ control });
 
+    const { locale } = useLocale();
     const { t } = useTranslation("offer");
     const { id } = useParams();
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
@@ -146,17 +150,20 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             {errors.address && (
                 <p className={styles.error}>{errors.address.message}</p>
             )}
-            <Button
-                variant="FILL"
-                disabled={isLoading}
-                color="BLUE"
-                size="MEDIUM"
-                className={styles.btn}
-                onClick={onSubmit}
-                type="submit"
-            >
-                {t("where.Сохранить")}
-            </Button>
+            <div className={styles.buttons}>
+                <Button
+                    variant="FILL"
+                    disabled={isLoading}
+                    color="BLUE"
+                    size="MEDIUM"
+                    className={styles.btn}
+                    onClick={onSubmit}
+                    type="submit"
+                >
+                    {t("where.Сохранить")}
+                </Button>
+                <ButtonLink path={getOffersWhenPageUrl(locale, id ?? "")} size="MEDIUM" type="outlined">{t("Дальше")}</ButtonLink>
+            </div>
         </form>
     );
 });

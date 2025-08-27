@@ -6,7 +6,7 @@ import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";

@@ -7,7 +7,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Offer as OfferType } from "@/entities/Offer";
 
 import starIcon from "@/shared/assets/icons/star.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -52,13 +52,13 @@ const Offer: FC<OfferProps> = (props) => {
                 <p className={styles.type}>{category}</p>
             </div>
             <div className={styles.info}>
-                {averageRating && (
+                {averageRating ? (
                     <div className={styles.rating}>
                         <ReactSVG src={starIcon} />
                         <span>{averageRating}</span>
                     </div>
-                )}
-                {feedbacksCount && (
+                ) : null}
+                {feedbacksCount ? (
                     <div className={styles.reviews}>
 
                         <span>
@@ -67,7 +67,7 @@ const Offer: FC<OfferProps> = (props) => {
                             {feedbacksCount}
                         </span>
                     </div>
-                )}
+                ) : null}
                 <div className={styles.success}>
                     <span>
                         Отправилось:

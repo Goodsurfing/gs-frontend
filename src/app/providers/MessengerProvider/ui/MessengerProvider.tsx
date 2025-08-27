@@ -13,6 +13,8 @@ import { useGetProfileInfoQuery, useLazyGetUnreadMessagesQuery } from "@/entitie
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { BASE_URL } from "@/shared/constants/api";
 import { MessageType } from "@/entities/Messenger";
+import { useAppSelector } from "@/shared/hooks/redux";
+import { getUserAuthData } from "@/entities/User";
 
 interface MessengerContextType {
     unreadMessages: number;
@@ -39,6 +41,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     const [unreadMessages, setUnreadMessages] = useState<number>(0);
     const updateCallbacksRef = useRef<Set<() => void>>(new Set());
     const onMessageCallbacksRef = useRef<Set<(msg: MessageType) => void>>(new Set());
+    const isAuth = useAppSelector(getUserAuthData);
 
     const { mercureToken } = useAuth();
     const { data: myProfile } = useGetProfileInfoQuery();
@@ -67,14 +70,15 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     }, []);
 
     useEffect(() => {
+        if (!isAuth) return;
         fetchMessages();
         registerMessageUpdateCallback(() => {
             fetchMessages();
         });
-    }, [fetchMessages, registerMessageUpdateCallback]);
+    }, [fetchMessages, registerMessageUpdateCallback, isAuth]);
 
     useEffect(() => {
-        if (!mercureToken || !myProfile?.id) return;
+        if (!mercureToken || !myProfile?.id || !isAuth) return;
 
         const url = new URL(`${BASE_URL}.well-known/mercure`);
         url.searchParams.append("topic", `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`);
@@ -92,7 +96,7 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
         return () => {
             eventSource.close();
         };
-    }, [mercureToken, myProfile?.id]);
+    }, [mercureToken, myProfile?.id, isAuth]);
 
     const contextValue = useMemo(() => ({
         unreadMessages,

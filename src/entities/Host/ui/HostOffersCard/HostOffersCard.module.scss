@@ -3,9 +3,14 @@
 }
 
 .container {
+  margin-top: 20px;
+}
+
+.containerList {
     margin-top: 20px;
-    max-height: 560px;
-    overflow: auto;
+    height: 560px;
+    overflow: scroll;
+    will-change: transform;
 
     &::-webkit-scrollbar {
         width: 5px;

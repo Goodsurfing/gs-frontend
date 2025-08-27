@@ -44,3 +44,30 @@
 		background-color: var(--color-blue) !important;
 	}
 }
+
+.LARGE {
+	padding: 16px 70px;
+	font: var(--font-label);
+}
+
+.MEDIUM {
+	padding: 12px 100px;
+	font: var(--font-label);
+}
+
+.SMALL {
+	padding: 10px 50px;
+	font: var(--font-label);
+}
+
+.EXTRA-SMALL {
+	padding: 6px 20px;
+	font: var(--font-caption);
+}
+
+@media (max-width: 992px) {
+	.MEDIUM {
+		padding: 12px 15px;
+		width: 100%;
+	}
+}

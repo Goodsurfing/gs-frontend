@@ -1,3 +1,4 @@
+
 .wrapper {
   margin-top: 30px;
   display: flex;
@@ -5,8 +6,19 @@
   gap: 30px;
 }
 
+.buttons {
+  margin-top: 60px;
+  display: flex;
+  gap: 10px;
+}
+
 .skillsText {
   color: var(--text-caption);
   font: var(--text-secondary);
 }
 
+@media(max-width: 576px) {
+  .buttons {
+    flex-direction: column;
+  }
+}

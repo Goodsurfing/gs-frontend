@@ -44,6 +44,9 @@ import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
 import styles from "./WhoNeedsForm.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getOffersDescriptionPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -63,6 +66,8 @@ export const WhoNeedsForm = memo(() => {
         defaultValues,
     });
     const { id } = useParams();
+    const { locale } = useLocale();
+
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
@@ -245,16 +250,25 @@ export const WhoNeedsForm = memo(() => {
                         />
                     )}
                 />
-                <Button
-                    disabled={isLoading}
-                    onClick={onSubmit}
-                    className={styles.btn}
-                    variant="FILL"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    {t("whoNeeds.Сохранить")}
-                </Button>
+                <div className={styles.buttons}>
+                    <Button
+                        disabled={isLoading}
+                        onClick={onSubmit}
+                        className={styles.btn}
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        {t("whoNeeds.Сохранить")}
+                    </Button>
+                    <ButtonLink
+                        path={getOffersDescriptionPageUrl(locale, id ?? "")}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
+                </div>
             </form>
         </FormProvider>
     );

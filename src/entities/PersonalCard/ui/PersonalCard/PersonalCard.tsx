@@ -12,6 +12,7 @@ import {
     getMessengerPageCreateUrl,
     getOffersWherePageUrl,
     getProfileRolePageUrl,
+    getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import Button, { ButtonSize, ButtonColor, ButtonVariant } from "@/shared/ui/Button/Button";
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
@@ -71,10 +72,12 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
     const handleParticipateClick = useCallback(() => {
         if (isNeedToBecomeVolunteer) {
             navigate(`${getProfileRolePageUrl(locale)}?next=${offerId}`);
-        } else {
+        } else if (isAuth) {
             navigate(getMessengerPageCreateUrl(locale, "create", offerId));
+        } else {
+            navigate(`${getSignInPageUrl(locale)}?next=offer&nextId=${offerId}`);
         }
-    }, [locale, navigate, offerId, isNeedToBecomeVolunteer]);
+    }, [locale, navigate, offerId, isNeedToBecomeVolunteer, isAuth]);
 
     const handleEditClick = useCallback(() => {
         if (canEdit) {
@@ -87,7 +90,8 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         variant: "FILL" as ButtonVariant,
         color: "BLUE" as ButtonColor,
         onClick: handleParticipateClick,
-        disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+        // disabled: isNeedToBecomeVolunteer ? false : !canParticipate,
+        disabled: isAuth && !isNeedToBecomeVolunteer && !canParticipate,
     };
 
     const buttonText = isNeedToBecomeVolunteer

@@ -38,6 +38,9 @@ import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
 import styles from "./OfferWhenForm.module.scss";
+import { getOffersWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -45,6 +48,8 @@ interface OfferWhenFormProps {
 
 export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const { id } = useParams();
+    const { locale } = useLocale();
+
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
     const [toast, setToast] = useState<ToastAlert>();
@@ -125,7 +130,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerWhenFormApiAdapter(data);
         setToast(undefined);
-        updateOffer({ id: Number(id), body: { when: preparedData } })
+        await updateOffer({ id: Number(id), body: { when: preparedData } })
             .unwrap()
             .then(() => {
                 setToast({
@@ -199,16 +204,25 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
                     />
                 )}
             />
-            <Button
-                disabled={isLoading}
-                onClick={onSubmit}
-                className={styles.btn}
-                variant="FILL"
-                color="BLUE"
-                size="MEDIUM"
-            >
-                {t("when.Сохранить")}
-            </Button>
+            <div className={styles.buttons}>
+                <Button
+                    disabled={isLoading}
+                    onClick={onSubmit}
+                    className={styles.btn}
+                    variant="FILL"
+                    color="BLUE"
+                    size="MEDIUM"
+                >
+                    {t("when.Сохранить")}
+                </Button>
+                <ButtonLink
+                    path={getOffersWhoNeedsPageUrl(locale, id ?? "")}
+                    size="MEDIUM"
+                    type="outlined"
+                >
+                    {t("Дальше")}
+                </ButtonLink>
+            </div>
         </form>
     );
 });

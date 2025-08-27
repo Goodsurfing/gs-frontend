@@ -2,8 +2,10 @@
     padding-top: 20px;
 }
 
-.btn {
-    margin-top: 60px;
+.buttons {
+  margin-top: 60px;
+  display: flex;
+  gap: 10px;
 }
 
 .container {
@@ -20,4 +22,10 @@
 
 .loading {
     max-width: 1280px;
+}
+
+@media(max-width: 576px) {
+  .buttons {
+    flex-direction: column;
+  }
 }

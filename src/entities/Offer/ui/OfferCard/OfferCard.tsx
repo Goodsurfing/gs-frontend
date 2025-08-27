@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 // import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.svg";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 
@@ -62,7 +62,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
-                    <img src={image || defaultImage} alt="offer-img" />
+                    <img src={image || defaultImage} alt="offer-img" loading="lazy" />
                     {isFavoriteIconShow && (
                         <ReactSVG
                             src={heartIcon}
@@ -79,16 +79,16 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 </div>
             )}
             <div className={styles.content}>
-                <p className={styles.title}>{textSlice(title, 88, "title")}</p>
+                <p className={styles.title}>{textSlice(title, 50, "title")}</p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
                     <br />
                     <span className={styles.category}>{category}</span>
                 </div>
                 <div className={styles.stats}>
-                    {rating && (
+                    {!!rating && (
                         <div className={styles.rating}>
-                            <img src={star} alt="star-icon" />
+                            <img src={star} alt="star-icon" loading="lazy" />
                             <span>{rating}</span>
                         </div>
                     )}
