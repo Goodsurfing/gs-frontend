@@ -15,7 +15,7 @@
 
 	background-size: cover;
 
-	word-break: break-word;
+	// word-break: break-word;
 
 	&:hover {
 		transition: 0.3s ease;
@@ -25,5 +25,7 @@
 
 	p {
 		color: var(--color-white);
+		hyphens: auto;
+  		overflow-wrap: break-word;
 	}
 }

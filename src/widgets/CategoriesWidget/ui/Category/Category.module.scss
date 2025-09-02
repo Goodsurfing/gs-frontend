@@ -23,7 +23,9 @@
     font-weight: 500;
     line-height: 1.4rem;
     color: white;
-    word-break: break-word;
+    // word-break: break-word;
+    hyphens: auto;
+    overflow-wrap: break-word;
 }
 
 .vacancy {

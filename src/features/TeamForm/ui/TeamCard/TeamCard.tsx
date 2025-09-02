@@ -20,18 +20,20 @@ interface TeamCardProps {
     disableDeleteIcn?: boolean;
     onDeleteClick?: (id: number) => void;
     locale: Locale;
+    isNavigate?: boolean;
 }
 
 export const TeamCard: FC<TeamCardProps> = memo(
     ({
         teamUser, profileData,
         disableDeleteIcn, onDeleteClick, locale,
+        isNavigate = true,
     }: TeamCardProps) => {
         const navigate = useNavigate();
         const { getFullName } = useGetFullName();
 
         const navigateTo = (userId: string) => {
-            if (userId) {
+            if (userId && isNavigate) {
                 navigate(getVolunteerPersonalPageUrl(locale, userId));
             }
         };

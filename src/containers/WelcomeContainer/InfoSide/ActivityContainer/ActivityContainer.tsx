@@ -31,6 +31,7 @@ const ActivityContainer: FC = () => {
                     image={item.image}
                     path={`/${locale}${item.path}`}
                     key={index}
+                    locale={locale}
                 />
             ))}
             <ActivityItem
@@ -38,6 +39,7 @@ const ActivityContainer: FC = () => {
                 title={t("category-offer.Другие категории")}
                 image={defaultImage}
                 path={getCategoriesPageUrl(locale)}
+                locale={locale}
             />
         </div>
     );
