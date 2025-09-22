@@ -17,7 +17,7 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
                 ca: fs.readFileSync(
                     path.resolve(
                         __dirname,
-                        "C:/Users/admin/AppData/Local/mkcert/rootCA.pem"
+                        "C:/Users/70-7-/AppData/Local/mkcert/rootCA.pem"
                     )
                 ),
             },

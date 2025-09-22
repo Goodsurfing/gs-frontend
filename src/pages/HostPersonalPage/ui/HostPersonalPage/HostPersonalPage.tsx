@@ -20,6 +20,7 @@ import { useSubmenuItems } from "../../model/data/submenuData";
 import { HostPageContent } from "../HostPageContent/HostPageContent";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
 import styles from "./HostPersonalPage.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,9 +34,14 @@ export const HostPersonalPage = () => {
     const { data: myProfile } = useGetProfileInfoQuery();
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const { isAuth } = useAuth();
 
-    const navigateTo = () => {
+    const handleEditClick = () => {
         navigate(getHostRegistrationUrl(locale));
+    };
+
+    const handleWriteClick = () => {
+        navigate(`/${locale}/messenger/create?recipientOrganization=${id}`);
     };
 
     if (!ready || isLoading) {
@@ -54,10 +60,35 @@ export const HostPersonalPage = () => {
         );
     }
 
-    const isEdit = () => {
-        if (!myProfile) return false;
-        return myProfile.id === hostData.owner.id;
-    };
+    const showEditButton = !!myProfile && myProfile.id === hostData.owner.id;
+
+    const renderButtons = (
+        <>
+            {(showEditButton && isAuth) && (
+                <Button
+                    size="SMALL"
+                    color="BLUE"
+                    variant="OUTLINE"
+                    className={styles.button}
+                    onClick={handleEditClick}
+                >
+                    {t("personalHost.Редактировать профиль")}
+                </Button>
+            )}
+
+            {(!showEditButton && isAuth) && (
+                <Button
+                    size="SMALL"
+                    color="BLUE"
+                    variant="FILL"
+                    className={styles.button}
+                    onClick={handleWriteClick}
+                >
+                    {t("personalHost.Написать")}
+                </Button>
+            )}
+        </>
+    );
 
     return (
         <div className={styles.wrapper}>
@@ -65,25 +96,14 @@ export const HostPersonalPage = () => {
             <div className={styles.content}>
                 <HostlHeaderCard
                     host={hostData}
-                    isEdit={isEdit()}
+                    isEdit={showEditButton}
                     locale={locale}
+                    isAuth={isAuth}
                 />
                 <Submenu
                     className={styles.navMenu}
                     items={submenuItems}
-                    buttons={
-                        isEdit() ? (
-                            <Button
-                                size="SMALL"
-                                color="BLUE"
-                                variant="OUTLINE"
-                                className={styles.button}
-                                onClick={navigateTo}
-                            >
-                                {t("personalHost.Редактировать профиль")}
-                            </Button>
-                        ) : null
-                    }
+                    buttons={renderButtons}
                 />
                 <HostPageContent hostData={hostData} />
             </div>

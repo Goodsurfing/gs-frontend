@@ -17,24 +17,58 @@ interface HostlHeaderCardProps {
     host: Host;
     locale: Locale;
     isEdit: boolean;
+    isAuth: boolean;
 }
 
 export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
             host: {
-                name, type, address, avatar,
+                name, type, address, avatar, id,
             },
             locale,
             isEdit,
+            isAuth,
         } = props;
         const { t } = useTranslation("host");
         const navigate = useNavigate();
         const { getTranslate } = useGetTypeOrganization();
 
-        const navigateTo = () => {
+        const handleEditClick = () => {
             navigate(getHostRegistrationUrl(locale));
         };
+
+        const handleWriteClick = () => {
+            navigate(`/${locale}/messenger/create?recipientOrganization=${id}`);
+        };
+
+        const renderButtons = (
+            <>
+                {(isEdit && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="OUTLINE"
+                        className={styles.button}
+                        onClick={handleEditClick}
+                    >
+                        {t("personalHost.Редактировать профиль")}
+                    </Button>
+                )}
+
+                {(!isEdit && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="FILL"
+                        className={styles.button}
+                        onClick={handleWriteClick}
+                    >
+                        {t("personalHost.Написать")}
+                    </Button>
+                )}
+            </>
+        );
 
         return (
             <div className={styles.wrapper}>
@@ -53,17 +87,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     <span className={styles.address}>{address}</span>
                 </div>
                 <div className={styles.btnMedalsContainer}>
-                    {isEdit && (
-                        <Button
-                            color="BLUE"
-                            size="SMALL"
-                            variant="FILL"
-                            className={styles.button}
-                            onClick={navigateTo}
-                        >
-                            {t("personalHost.Редактировать профиль")}
-                        </Button>
-                    )}
+                    {renderButtons}
                 </div>
             </div>
         );

@@ -21,6 +21,7 @@ interface VolunteerHeaderCardProps {
     volunteer: VolunteerApi;
     showButtons: boolean;
     locale: Locale;
+    isAuth: boolean;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
@@ -29,6 +30,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             volunteer,
             showButtons,
             locale,
+            isAuth,
         } = props;
 
         const { t } = useTranslation("volunteer");
@@ -53,12 +55,36 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             navigate(getVolunteerDashboardPageUrl(locale));
         }, [locale, navigate]);
 
-        const renderButtons = showButtons ? (
-            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
-                {t("personalVolunteer.Редактировать")}
-            </Button>
+        const handleWriteClick = useCallback(() => {
+            navigate(`/${locale}/messenger/create?recipientVolunteer=${volunteer.profile.id}`);
+        }, [locale, navigate, volunteer.profile.id]);
 
-        ) : null;
+        const renderButtons = (
+            <>
+                {(showButtons && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="FILL"
+                        onClick={handleEditClick}
+                    >
+                        {t("personalVolunteer.Редактировать")}
+                    </Button>
+                )}
+
+                {(!showButtons && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="FILL"
+                        className={styles.button}
+                        onClick={handleWriteClick}
+                    >
+                        {t("personalVolunteer.Написать")}
+                    </Button>
+                )}
+            </>
+        );
 
         return (
             <div className={styles.wrapper}>
