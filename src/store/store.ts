@@ -8,7 +8,7 @@ import { userReducer } from "@/entities/User";
 
 import { profileApi, profileReducer } from "@/entities/Profile";
 
-import { galleryApi, galleryReducer } from "@/modules/Gallery";
+import { galleryApi, galleryReducer } from "@/entities/Gallery";
 
 import registerReducer from "./reducers/registerSlice";
 import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";

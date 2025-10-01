@@ -34,7 +34,6 @@ import {
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";
-// import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
 import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";

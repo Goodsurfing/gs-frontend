@@ -6,7 +6,6 @@ import React, {
 import { ReactSVG } from "react-svg";
 import twemoji from "twemoji";
 import { MediaObjectType } from "@/types/media";
-import { useLazyGetMediaObjectByIdQuery } from "@/modules/Gallery";
 
 import errorIcon from "@/shared/assets/icons/error.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -14,6 +13,7 @@ import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 
 import styles from "./Message.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useLazyGetMediaObjectByIdQuery } from "@/entities/Gallery";
 
 interface MessageProps {
     isUser?: boolean;
