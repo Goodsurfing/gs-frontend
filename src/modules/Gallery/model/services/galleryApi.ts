@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { API_BASE_URL } from "@/shared/constants/api";
+import { MediaObjectType } from "@/types/media";
 
-interface MediaObjectResponse {
-    "@id": string;
-    id: string;
-    contentUrl: string;
-}
+// interface MediaObjectResponse {
+//     "@id": string;
+//     id: string;
+//     contentUrl: string;
+// }
 
 export const galleryApi = createApi({
     reducerPath: "galleryApi",
@@ -23,7 +24,7 @@ export const galleryApi = createApi({
         },
     }),
     endpoints: (build) => ({
-        getMediaObjectById: build.query<MediaObjectResponse, string>({
+        getMediaObjectById: build.query<MediaObjectType, string>({
             query: (mediaId) => ({
                 url: `/media_objects/${mediaId}`,
                 method: "GET",

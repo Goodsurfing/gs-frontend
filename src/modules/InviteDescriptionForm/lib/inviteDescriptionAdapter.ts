@@ -19,7 +19,15 @@ export const inviteDescriptionApiAdapter = (
     }
 
     if (isSession) {
-        result.image = { "@id": data.coverImage.uuid ?? "", id: data.coverImage.uuid ?? "", contentUrl: data.coverImage.image.src ?? "" };
+        result.image = {
+            "@id": data.coverImage.uuid ?? "",
+            id: data.coverImage.uuid ?? "",
+            contentUrl: data.coverImage.image.src ?? "",
+            isImage: true,
+            mimeType: "",
+            originalHeight: 0,
+            originalWidth: 0,
+        };
     }
 
     return result;

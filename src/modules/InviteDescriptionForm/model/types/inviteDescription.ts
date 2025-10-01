@@ -3,7 +3,7 @@ import { CategoryType } from "@/types/categories";
 
 export interface DescriptionImage {
     uuid: string | null
-    image: ImageType
+    image: ImageType;
 }
 
 export interface OfferDescriptionField {

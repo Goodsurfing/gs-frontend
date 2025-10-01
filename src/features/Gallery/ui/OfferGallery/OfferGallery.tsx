@@ -30,7 +30,6 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
 
     useEffect(() => {
         if (galleryData) {
-            // const mediaObjects = galleryData.map((img) => img.mediaObject);
             setImgs(galleryData);
         } else {
             setImgs([]);

@@ -1,12 +1,15 @@
 import cn from "classnames";
-import React, { LabelHTMLAttributes, useCallback, useMemo } from "react";
+import React, {
+    forwardRef, LabelHTMLAttributes, useCallback, useMemo,
+} from "react";
 
+import { useDropzone } from "react-dropzone";
 import { stringifyAllowedExtensions } from "@/shared/utils/files/stringifyAllowedExtensions";
 
 import { InputFileProps } from "./InputFile.interfaces";
 import styles from "./InputFile.module.scss";
 
-const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
+const InputFile = forwardRef<HTMLInputElement, InputFileProps>(
     (
         {
             id,
@@ -14,6 +17,7 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             className,
             disabled = false,
             onChange,
+            onDropFiles,
             value,
             wrapperClassName,
             uploadedImageClassName,
@@ -23,7 +27,8 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
             onLabelClick,
             accept,
             allowedExtensions,
-        }: InputFileProps,
+            disableDropzone = false,
+        },
         fileInputRef,
     ) => {
         const onLabelClickHandler = useCallback<
@@ -38,25 +43,56 @@ const InputFile = React.forwardRef<HTMLInputElement, InputFileProps>(
 
         const fileInputAccept = useMemo(() => {
             if (accept) return accept;
-            return (
-                allowedExtensions
-                && stringifyAllowedExtensions(allowedExtensions)
-            );
+            if (allowedExtensions) return stringifyAllowedExtensions(allowedExtensions);
+            return "image/*"; // по умолчанию разрешаем только изображения
         }, [accept, allowedExtensions]);
 
+        // dropzone
+        const onDrop = useCallback(
+            (acceptedFiles: File[]) => {
+                onDropFiles?.(acceptedFiles);
+            },
+            [onDropFiles],
+        );
+
+        const dropzoneProps = useDropzone({
+            onDrop,
+            disabled: disabled || disableDropzone,
+            accept: { "image/*": [".jpeg", ".jpg", ".png", ".gif", ".webp"] }, // ограничиваем только изображениями
+            multiple: false,
+        });
+
+        const { getRootProps, getInputProps, isDragActive } = dropzoneProps;
+
         return (
-            <div className={cn(styles.fileInputGroup, wrapperClassName)}>
+            <div
+                {...(!disableDropzone
+                    ? getRootProps({
+                        className: cn(
+                            styles.fileInputGroup,
+                            wrapperClassName,
+                            isDragActive && styles.fileInputGroupDragActive,
+                        ),
+                    })
+                    : { className: cn(styles.fileInputGroup, wrapperClassName) })}
+            >
                 <input
+                    {...(!disableDropzone ? getInputProps() : {})}
                     ref={fileInputRef}
                     className={cn(styles.fileInputGroup__fileInput, className)}
                     onChange={onChange}
                     value={value}
-                    type="file"
                     id={id}
-                    disabled={disabled}
                     accept={fileInputAccept}
+                    disabled={disabled}
                 />
-                {imageURL && <img className={cn(uploadedImageClassName, styles.uploadedImage)} src={imageURL} alt="Uploaded" />}
+                {imageURL && (
+                    <img
+                        className={cn(uploadedImageClassName, styles.uploadedImage)}
+                        src={imageURL}
+                        alt="Uploaded"
+                    />
+                )}
                 <label
                     className={cn(
                         styles.fileInputGroup__label,
