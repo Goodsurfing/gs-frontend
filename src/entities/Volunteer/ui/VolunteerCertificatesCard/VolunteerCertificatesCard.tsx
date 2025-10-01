@@ -30,7 +30,7 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
                     <UploadedCertificate
                         certificate={getMediaContent(certificate) ?? ""}
-                        isFile
+                        isFile={!certificate.isImage}
                         download={getMediaContent(certificate)}
                         disableCloseButton
                         classNameItem={styles.certificate}

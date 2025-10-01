@@ -40,9 +40,11 @@ export const UploadedCertificate: FC<UploadedCertificateProps> = ({
             <div className={styles.wrapper}>
                 <a
                     href={download}
+                    target="_blank"
                     download
                     className={cn(styles.file, classNameItem)}
                     onClick={onImageClick}
+                    rel="noreferrer"
                 >
                     <div className={styles.fileWrapper}>
                         <ReactSVG src={fileIcon} />
@@ -61,9 +63,9 @@ export const UploadedCertificate: FC<UploadedCertificateProps> = ({
 
     return (
         <div className={styles.wrapper}>
-            <a href={certificate} download>
+            <a href={certificate} download target="_blank" rel="noreferrer">
                 <img
-                    className={styles.img}
+                    className={cn(styles.img, classNameItem)}
                     src={certificate}
                     alt="your upload"
                     onClick={onImageClick}

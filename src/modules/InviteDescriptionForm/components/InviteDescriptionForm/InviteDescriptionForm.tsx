@@ -34,7 +34,7 @@ import {
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
 import EventName from "../EventName/EventName";
-import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
+// import ExtraImagesUpload from "../ExtraImagesUpload/ExtraImagesUpload";
 import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
@@ -42,6 +42,7 @@ import styles from "./InviteDescriptionForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { OfferGallery } from "@/features/Gallery";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -72,9 +73,6 @@ export const InviteDescriptionForm = () => {
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
 
     const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
-    const [isGalleryLoading, setGalleryLoading] = useState<boolean>(false);
-    const [isGalleryError, setGalleryError] = useState<boolean>(false);
-    const [isGallerySuccess, setGallerySuccess] = useState<boolean>(false);
 
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
@@ -82,18 +80,6 @@ export const InviteDescriptionForm = () => {
 
     const handleCoverImageLoading = (value: boolean) => {
         setCoverImageLoading(value);
-    };
-
-    const handleGalleryLoading = (value: boolean) => {
-        setGalleryLoading(value);
-    };
-
-    const handleGalleryError = (value: boolean) => {
-        setGalleryError(value);
-    };
-
-    const handleGallerySuccess = (value: boolean) => {
-        setGallerySuccess(value);
     };
 
     const saveFormData = useCallback(
@@ -157,21 +143,6 @@ export const InviteDescriptionForm = () => {
             });
     });
 
-    useEffect(() => {
-        if (isGalleryError) {
-            setToast({
-                text: t("description.Произошла ошибка с обновлением галереи"),
-                type: HintType.Error,
-            });
-        }
-        if (isGallerySuccess) {
-            setToast({
-                text: t("description.Галерея успешно обновлена"),
-                type: HintType.Success,
-            });
-        }
-    }, [isGalleryError, isGallerySuccess, t]);
-
     if (isLoadingGetDescription) {
         return <Preloader className={styles.loading} />;
     }
@@ -215,20 +186,13 @@ export const InviteDescriptionForm = () => {
                             </div>
                         )}
                     />
-                    <ExtraImagesUpload
-                        offerId={id || ""}
-                        label={t("description.Добавить фото")}
-                        isLoading={isGalleryLoading}
-                        onChangeLoading={handleGalleryLoading}
-                        onChangeError={handleGalleryError}
-                        onChangeSuccess={handleGallerySuccess}
-                    />
+                    <OfferGallery offerId={id ?? ""} />
                 </div>
                 <div className={styles.buttons}>
                     <Button
                         className={styles.btn}
                         disabled={
-                            isLoading || isCoverImageLoading || isGalleryLoading
+                            isLoading || isCoverImageLoading
                         }
                         variant="FILL"
                         color="BLUE"
