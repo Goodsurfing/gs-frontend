@@ -1,4 +1,4 @@
-import { InviteDescriptionForm } from "@/modules/InviteDescriptionForm";
+import { InviteDescriptionForm } from "@/features/Offer";
 
 import styles from "./OfferDescriptionPage.module.scss";
 
