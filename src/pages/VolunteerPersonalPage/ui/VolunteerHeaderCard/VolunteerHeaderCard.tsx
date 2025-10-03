@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { VolunteerApi } from "@/entities/Volunteer";
 
-import { medalsData } from "@/shared/data/medals";
+// import { medalsData } from "@/shared/data/medals";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 // import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -137,7 +137,8 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                 </div>
                 <div className={styles.btnMedalsContainer}>
                     <div className={styles.medalContainer}>
-                        {medalsData.slice(0, 2).map((medal, index) => (
+                        {/* fake data achievements */}
+                        {/* {medalsData.slice(0, 2).map((medal, index) => (
                             <div className={styles.medal} key={index}>
                                 <img
                                     className={styles.medalIcon}
@@ -146,7 +147,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 />
                                 <span>{medal.text}</span>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                     {renderButtons}
                 </div>

@@ -46,9 +46,9 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
     }, [videoGallery]);
 
     const addVideo = useCallback(
-        (newVideo: VideoFormImplementation) => {
+        async (newVideo: VideoFormImplementation) => {
             if (isCanAddVideo) {
-                updateProfile({
+                await updateProfile({
                     userId: profileId,
                     profileData: {
                         videoGallery: [...videos, newVideo.video],
@@ -77,13 +77,13 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
     );
 
     const deleteVideo = useCallback(
-        (videoIndex: number) => {
+        async (videoIndex: number) => {
             setToast(undefined);
             const updatedVideos = videos.filter(
                 (video, index) => index !== videoIndex,
             );
 
-            updateProfile({
+            await updateProfile({
                 userId: profileId,
                 profileData: {
                     videoGallery: updatedVideos,

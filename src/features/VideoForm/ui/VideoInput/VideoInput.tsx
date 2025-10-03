@@ -31,7 +31,7 @@ export const VideoInput = memo(({
                 control={control}
                 rules={{
                     pattern: {
-                        value: /^(?:(?:https?:\/\/)?(?:www\.)?(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch?.+&v=))((\w|-){11})(?:\S+)?|(?:https?:\/\/)?(?:www\.)?(?:vimeo.com\/)(\d+)|(?:https?:\/\/)?(?:www\.)?(?:vk\.com\/(?:video|videos)-?\d+_\d+|vkvideo\.ru\/(?:video-?\d+_\d+|video_ext\.php\?(?:[^&]*&)?(?:oid|id)=-?\d+_\d+)))$/,
+                        value: /^(?:(?:https?:\/\/)?(?:www\.)?(?:youtu.be\/|youtube.com\/(?:embed\/|v\/|watch\?v=|watch?.+&v=))((\w|-){11})(?:\S+)?|(?:https?:\/\/)?(?:www\.)?(?:vimeo.com\/)(\d+)|(?:https?:\/\/)?(?:www\.)?(?:vk\.com\/(?:video|videos)-?\d+_\d+|vkvideo\.ru\/(?:video-?\d+_\d+|video_ext\.php\?(?:[^&]*&)?(?:oid|id)=-?\d+_\d+))|(?:https?:\/\/)?(?:www\.)?(?:rutube.ru\/video\/)([a-f0-9]{32})(?:\/\S*)?)$/,
                         message: t("volunteer-gallery.Введите корректный URL"),
                     },
                 }}
