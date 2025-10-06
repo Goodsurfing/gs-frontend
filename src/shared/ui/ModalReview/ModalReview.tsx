@@ -1,9 +1,11 @@
 import { Rating } from "@mui/material";
 import React, {
     FC, ReactNode,
+    useEffect,
 } from "react";
 
 import { useTranslation } from "react-i18next";
+import cn from "classnames";
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import Textarea from "../Textarea/Textarea";
@@ -44,9 +46,12 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     } = value;
     const { t } = useTranslation("host");
 
-    if (!isOpen) {
-        return null;
-    }
+    // if (!isOpen) {
+    //     return null;
+    // }
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? "hidden" : "";
+    }, [isOpen]);
 
     if (successText) {
         return (
@@ -64,8 +69,15 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     };
 
     return (
-        <Modal onClose={onClose} isShowCloseIcon>
-            <div className={styles.wrapper}>
+        <Modal
+            onClose={onClose}
+            isShowCloseIcon
+            className={cn(
+                styles.modalWrapper,
+                { [styles.active]: isOpen },
+            )}
+        >
+            <div className={cn(styles.wrapper, { [styles.active]: isOpen })}>
                 <h2>{titleText}</h2>
                 {children}
                 <Rating

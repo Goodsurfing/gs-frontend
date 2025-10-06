@@ -2,7 +2,17 @@
     padding: 0.875rem;
     border: 1px solid var(--dark-theme-color);
     background-color: var(--text-secondary-1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        border: 1px solid var(--text-caption);
+    }
 }
+
+// .wrapper:hover {
+
+//     border: 1px solid var(--text-secondary-2);
+// }
 
 .image {
     width: 56px;
@@ -32,6 +42,12 @@
 .location {
     margin-top: 8px;
     color: #8494a1;
+    font-size: 12px;
+}
+
+.date {
+    margin-top: 8px;
+    color: var(--text-secondary-2);;
     font-size: 12px;
 }
 
@@ -81,5 +97,5 @@
 @media(max-width: 500px) {
     .buttons {
         flex-direction: column;
-    } 
+    }
 }

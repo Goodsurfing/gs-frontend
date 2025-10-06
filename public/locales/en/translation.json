@@ -202,7 +202,8 @@
         "Сообщение": "Message",
         "Написать отзыв": "Write a review",
         "Принять": "Accept",
-        "Отклонить": "Reject"
+        "Отклонить": "Reject",
+        "Адрес не указан": "Address not specified"
     },
     "Не задано": "Not specified",
     "journals": "Journals",

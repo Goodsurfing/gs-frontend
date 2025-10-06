@@ -17,6 +17,7 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 import styles from "./RequestCard.module.scss";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
+import { formatDate } from "@/shared/lib/formatDate";
 
 interface RequestCardProps {
     className?: string;
@@ -40,7 +41,9 @@ export const RequestCard = memo((props: RequestCardProps) => {
         onCancelClick,
         locale,
     } = props;
-    const { volunteer, vacancy, status } = application;
+    const {
+        volunteer, vacancy, status, startDate, endDate,
+    } = application;
     let volunteerId: string;
     if (typeof volunteer === "string") {
         volunteerId = volunteer.split("/").pop() || "";
@@ -59,7 +62,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     }
 
     const address = (!volunteerData.profile.city || !volunteerData.profile.country)
-        ? "Адрес не указан" : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
+        ? t("notes.Адрес не указан") : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
 
     const onMessageClick = () => {
         if (application.chatId) {
@@ -100,6 +103,13 @@ export const RequestCard = memo((props: RequestCardProps) => {
                         </span>
                         <span className={styles.location}>
                             {address}
+                        </span>
+                        <span className={styles.date}>
+                            {formatDate(locale, startDate)}
+                            {" "}
+                            -
+                            {" "}
+                            {formatDate(locale, endDate)}
                         </span>
                     </div>
                 </CustomLink>

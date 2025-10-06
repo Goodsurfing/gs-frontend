@@ -201,7 +201,8 @@
         "Сообщение": "Mensaje",
         "Написать отзыв": "Escribir una reseña",
         "Принять": "Aceptar",
-        "Отклонить": "Rechazar"
+        "Отклонить": "Rechazar",
+        "Адрес не указан": "Dirección no especificada"
     },
     "Не задано": "No especificado",
     "journals": "Revistas",
