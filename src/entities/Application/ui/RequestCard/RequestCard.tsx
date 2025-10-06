@@ -24,6 +24,8 @@ interface RequestCardProps {
     showStatus?: boolean;
     showButtons?: boolean;
     onReviewClick?: (application: SimpleFormApplication) => void;
+    onAcceptClick?: (application: SimpleFormApplication) => void;
+    onCancelClick?: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -34,6 +36,8 @@ export const RequestCard = memo((props: RequestCardProps) => {
         showStatus = true,
         showButtons = true,
         onReviewClick,
+        onAcceptClick,
+        onCancelClick,
         locale,
     } = props;
     const { volunteer, vacancy, status } = application;
@@ -139,6 +143,32 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     </>
                 )}
             </div>
+            {showButtons && (
+                <div className={styles.buttons}>
+                    {(application.status === "new" || application.status === "canceled") && (
+                        <Button
+                            className={styles.button}
+                            color="GREEN"
+                            variant="FILL"
+                            size="SMALL"
+                            onClick={() => onAcceptClick?.(application)}
+                        >
+                            {t("notes.Принять")}
+                        </Button>
+                    )}
+                    {(application.status === "new" || application.status === "accepted") && (
+                        <Button
+                            className={styles.button}
+                            color="RED"
+                            variant="FILL"
+                            size="SMALL"
+                            onClick={() => onCancelClick?.(application)}
+                        >
+                            {t("notes.Отклонить")}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     );
 });

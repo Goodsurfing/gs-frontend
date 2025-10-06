@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { Pagination } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,7 @@ import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesHostForm.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
+import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdWithoutTagsMutation } from "@/entities/Chat";
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -51,28 +51,31 @@ export const NotesHostForm = () => {
     const [getApplications, { isLoading }] = useLazyGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus,
-        { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdMutation();
+        // eslint-disable-next-line max-len
+        { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdWithoutTagsMutation();
     const { locale } = useLocale();
 
-    useEffect(() => {
-        const fetchApplications = async () => {
-            try {
-                const result = await getApplications().unwrap();
-                setApplications(result);
-            } catch { /* empty */ }
-        };
+    const fetchApplications = useCallback(async () => {
+        await getApplications().unwrap()
+            .then((result) => {
+                // Тут получаю сначала новые заявки, по хорошему это надо делать на беке
+                setApplications([...result].reverse());
+            })
+            .catch(() => {
+                // empty
+            });
+    }, [getApplications]);
 
+    useEffect(() => {
         fetchApplications();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (applications) {
-            // Тут получаю сначала новые заявки, по хорошему это надо делать на беке
-            const reversed = [...applications].reverse();
             const startIndex = (page - 1) * applicationsPerPage;
             const endIndex = startIndex + applicationsPerPage;
-            setPageApplications(reversed.slice(startIndex, endIndex));
+            setPageApplications(applications.slice(startIndex, endIndex));
         } else {
             setPageApplications([]);
         }
@@ -118,7 +121,10 @@ export const NotesHostForm = () => {
         }
     });
 
-    const handleUpdateStatus = async (applicationId: number, status: FormApplicationStatus) => {
+    const handleUpdateStatus = async (
+        applicationId: number,
+        status: FormApplicationStatus,
+    ) => {
         await updateApplicationStatus({ applicationId: applicationId.toString(), status })
             .unwrap()
             .catch(() => {

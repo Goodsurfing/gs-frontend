@@ -90,6 +90,17 @@ export const chatApi = createApi({
             }),
             invalidatesTags: ["application"],
         }),
+        updateApplicationFormStatusByIdWithoutTags: build.mutation<FormApplication,
+        UpdateFormApplicationStatus>({
+            query: ({ applicationId, status }) => ({
+                url: `application_forms/${applicationId}/status`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ status }),
+            }),
+        }),
         getApplicationFormById: build.query<FullFormApplication, string>({
             query: (applicationId) => ({
                 url: `application_forms/${applicationId}`,
@@ -126,4 +137,5 @@ export const {
     useGetMyVolunteerApplicationsQuery,
     useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
+    useUpdateApplicationFormStatusByIdWithoutTagsMutation,
 } = chatApi;

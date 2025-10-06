@@ -44,10 +44,10 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
     const [deleteMember, { isLoading: isDeleteLoading }] = useDeleteHostMemberMutation();
 
     const handleDeleteClick = useCallback(
-        (id: number) => {
+        async (id: number) => {
             setToast(undefined);
             if (isDeleteLoading) return;
-            deleteMember({ organizationId: hostId, memberId: id.toString() })
+            await deleteMember({ organizationId: hostId, memberId: id.toString() })
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -118,7 +118,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Text />
-            <h3>Функция станет доступна позже :(</h3>
+            <h3>Функция станет доступна позже.</h3>
             {/* <TeamInput
                 hostId={hostId}
                 hostEmail={hostEmail}

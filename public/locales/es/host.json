@@ -60,7 +60,8 @@
         "Команда не была заполнена": "El equipo no ha sido completado",
         "Добавить участника": "Agregar un miembro",
         "Команда организации": "Equipo de la organización",
-        "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Los propietarios de equipos pueden agregar miembros al equipo de su organización agregando sus direcciones de correo electrónico. Deben tener una cuenta en el sitio.",
+        "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Los propietarios de equipos pueden agregar miembros al equipo de su organización agregando sus direcciones de correo electrónico. Deben tener una cuenta en el sitio y seleccionar el rol \"Goodsurfer\".",
+        "Функция станет доступна позже.": "La función estará disponible más adelante.",
         "Участник был добавлен": "El miembro fue agregado",
         "Участник был удалён": "El miembro fue eliminado",
         "Введите ФИО участника": "Ingrese el correo electrónico del participante"

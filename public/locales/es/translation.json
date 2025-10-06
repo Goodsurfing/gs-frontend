@@ -199,7 +199,9 @@
         "confirmed": "Confirmado",
         "canceled": "Rechazado",
         "Сообщение": "Mensaje",
-        "Написать отзыв": "Escribir una reseña"
+        "Написать отзыв": "Escribir una reseña",
+        "Принять": "Aceptar",
+        "Отклонить": "Rechazar"
     },
     "Не задано": "No especificado",
     "journals": "Revistas",

@@ -200,7 +200,9 @@
         "confirmed": "Confirmed",
         "canceled": "Rejected",
         "Сообщение": "Message",
-        "Написать отзыв": "Write a review"
+        "Написать отзыв": "Write a review",
+        "Принять": "Accept",
+        "Отклонить": "Reject"
     },
     "Не задано": "Not specified",
     "journals": "Journals",
