@@ -12,6 +12,7 @@ import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import {
+    getMessengerPageIdUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
@@ -21,8 +22,8 @@ import { Text } from "@/shared/ui/Text/Text";
 import { useSubmenuVolunteerItems } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
-import styles from "./VolunteerPersonalPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./VolunteerPersonalPage.module.scss";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -42,7 +43,7 @@ export const VolunteerPersonalPage = () => {
     };
 
     const handleWriteClick = () => {
-        navigate(`/${locale}/messenger/create?recipientVolunteer=${id}`);
+        navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
     };
 
     if (isLoading || !ready) {

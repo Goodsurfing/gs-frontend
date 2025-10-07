@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Host } from "@/entities/Host";
 import { Locale } from "@/entities/Locale";
 
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegistrationUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
@@ -39,7 +39,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
         };
 
         const handleWriteClick = () => {
-            navigate(`/${locale}/messenger/create?recipientOrganization=${id}`);
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
         };
 
         const renderButtons = (

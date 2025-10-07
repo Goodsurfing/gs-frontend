@@ -39,6 +39,14 @@
     gap: 28px;
 }
 
+.button {
+    background-color: var(--button-1);
+
+    &:hover {
+        background-color: var(--hover-green);
+    }
+}
+
 
 @media(max-width: 992px) {
     .wrapeprImage {

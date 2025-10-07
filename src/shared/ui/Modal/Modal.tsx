@@ -32,10 +32,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
         useEffect(() => {
             const modal = modalRef.current!;
             document.body.appendChild(modal);
-            // document.body.style.overflow = "hidden";
             return () => {
                 document.body.removeChild(modal);
-                // document.body.style.overflow = "";
             };
         }, []);
 

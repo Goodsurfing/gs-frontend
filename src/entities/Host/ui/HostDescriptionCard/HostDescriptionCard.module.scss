@@ -4,4 +4,33 @@
 
 .description {
     margin-top: 20px;
+    white-space: pre-line;
+}
+
+.socials {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 250px;
+    gap: 8px;
+}
+
+.social {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    text-decoration: none;
+}
+
+.social p{
+    color: var(--color-gray);
+    font-size: 14px;
+    font-weight: 700;
+    display: contents;
+}
+
+@media(max-width:576px) {
+    .socials {
+        grid-template-columns: 1fr;
+    }
 }

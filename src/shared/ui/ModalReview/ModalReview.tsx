@@ -46,9 +46,6 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     } = value;
     const { t } = useTranslation("host");
 
-    // if (!isOpen) {
-    //     return null;
-    // }
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
     }, [isOpen]);

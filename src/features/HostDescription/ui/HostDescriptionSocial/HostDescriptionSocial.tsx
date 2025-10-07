@@ -28,6 +28,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 id="vk"
                 name="socialMedia.vk"
                 control={control}
+                type="url"
             />
             <InputControl
                 label="Facebook"
@@ -35,6 +36,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 id="fb"
                 name="socialMedia.facebook"
                 control={control}
+                type="url"
             />
             <InputControl
                 className={styles.telegram}
@@ -43,6 +45,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 id="inst"
                 name="socialMedia.instagram"
                 control={control}
+                type="url"
             />
             <InputControl
                 className={styles.instagram}
@@ -51,6 +54,7 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 id="tg"
                 name="socialMedia.telegram"
                 control={control}
+                type="url"
             />
         </div>
     );

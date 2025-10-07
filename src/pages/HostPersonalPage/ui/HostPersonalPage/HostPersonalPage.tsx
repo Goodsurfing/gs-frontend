@@ -11,7 +11,7 @@ import { Submenu } from "@/widgets/Submenu";
 import { useGetHostByIdQuery } from "@/entities/Host";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegistrationUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -41,7 +41,7 @@ export const HostPersonalPage = () => {
     };
 
     const handleWriteClick = () => {
-        navigate(`/${locale}/messenger/create?recipientOrganization=${id}`);
+        navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
     };
 
     if (!ready || isLoading) {

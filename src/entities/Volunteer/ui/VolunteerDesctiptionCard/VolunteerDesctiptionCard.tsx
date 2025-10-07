@@ -1,8 +1,8 @@
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import styles from "./VolunteerDesctiptionCard.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./VolunteerDesctiptionCard.module.scss";
 
 interface VolunteerDesctiptionCardProps {
     description?: string;

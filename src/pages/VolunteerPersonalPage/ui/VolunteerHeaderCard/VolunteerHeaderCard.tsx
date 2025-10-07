@@ -10,7 +10,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import { getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageIdUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./VolunteerHeaderCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
@@ -56,11 +56,11 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         }, [locale, navigate]);
 
         const handleWriteClick = useCallback(() => {
-            navigate(`/${locale}/messenger/create?recipientVolunteer=${volunteer.profile.id}`);
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${volunteer.profile.id}`);
         }, [locale, navigate, volunteer.profile.id]);
 
         const renderButtons = (
-            <>
+            <div className={styles.buttons}>
                 {(showButtons && isAuth) && (
                     <Button
                         size="SMALL"
@@ -83,7 +83,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         {t("personalVolunteer.Написать")}
                     </Button>
                 )}
-            </>
+            </div>
         );
 
         return (

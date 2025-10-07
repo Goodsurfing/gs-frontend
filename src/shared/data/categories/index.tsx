@@ -60,7 +60,7 @@ export const useCategories = () => {
             value: "children",
             color: "#C4D8E9",
             text: t("category-offer.Дети"),
-            path: "/offers-map?category=reserves_and_parks",
+            path: "/offers-map?category=children",
         },
         {
             image: charityImage,
