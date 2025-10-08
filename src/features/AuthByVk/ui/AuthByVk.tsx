@@ -10,7 +10,7 @@ import { Locale } from "@/entities/Locale";
 import { generateCodeVerifier, generateState } from "@/shared/lib/pkce";
 
 import styles from "./AuthByVk.module.scss";
-import { API_BASE_URL, BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 const langLib: Record<Locale, VKID.Languages> = {
     ru: VKID.Languages.RUS,
