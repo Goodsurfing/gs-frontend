@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { OfferWhenForm } from "@/features/OfferWhen";
+import { OfferWhenForm } from "@/features/Offer";
 
 import styles from "./OfferWhenPage.module.scss";
 

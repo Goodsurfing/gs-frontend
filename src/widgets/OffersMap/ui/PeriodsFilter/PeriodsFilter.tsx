@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback } from "react";
 
-import { DatePeriods } from "@/features/OfferWhen/model/types/offerWhen";
+import { DatePeriods } from "@/features/Offer/OfferWhen/model/types/offerWhen";
 
 import { Periods } from "../Periods/Periods";
 

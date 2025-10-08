@@ -13,11 +13,14 @@ import styles from "./Modal.module.scss";
 interface ModalProps {
     onClose: () => void;
     isShowCloseIcon?: boolean;
+    className?: string;
 }
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
     (props: PropsWithChildren<ModalProps>) => {
-        const { onClose, children, isShowCloseIcon = true } = props;
+        const {
+            onClose, children, isShowCloseIcon = true, className,
+        } = props;
 
         const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -29,15 +32,13 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = memo(
         useEffect(() => {
             const modal = modalRef.current!;
             document.body.appendChild(modal);
-            document.body.style.overflow = "hidden";
             return () => {
                 document.body.removeChild(modal);
-                document.body.style.overflow = "";
             };
         }, []);
 
         return createPortal(
-            <div className={styles.wrapper} onClick={onClose}>
+            <div className={cn(styles.wrapper, className)} onClick={onClose}>
                 <div
                     className={styles.container}
                     onClick={(event) => event.stopPropagation()}

@@ -2,20 +2,33 @@ import { GalleryItem, MediaObjectType } from "@/types/media";
 import { BASE_URL } from "../constants/api";
 import { ImageType } from "@/entities/Profile";
 
+type MediaContentSize = "SMALL" | "MEDIUM" | "LARGE" | "ORIGINAL";
+
 export const getMediaContent = (
     value: string | MediaObjectType | ImageType | undefined,
+    size: MediaContentSize = "ORIGINAL",
 ): string | undefined => {
-    switch (typeof value) {
-        case "string":
-            return `${BASE_URL}${value.slice(1)}`;
-        case "object":
-            if (value && "contentUrl" in value) {
-                return `${BASE_URL}${value.contentUrl.slice(1)}`;
-            }
-            return undefined;
-        default:
-            return undefined;
+    if (!value) return undefined;
+
+    if (typeof value === "string") {
+        return `${BASE_URL}${value.slice(1)}`;
     }
+
+    if (typeof value === "object" && "contentUrl" in value) {
+        if (size === "ORIGINAL") {
+            return `${BASE_URL}${value.contentUrl.slice(1)}`;
+        }
+
+        if (value.thumbnails
+            && value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails]) {
+            return `${BASE_URL}${value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails].slice(1)}`;
+        }
+
+        // fallback на оригинал, если нужного thumbnail нет
+        return `${BASE_URL}${value.contentUrl.slice(1)}`;
+    }
+
+    return undefined;
 };
 
 export const getMediaContentsArray = (images: (GalleryItem | MediaObjectType | string)[]) => {

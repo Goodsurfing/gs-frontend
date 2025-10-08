@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import cn from "classnames";
-import React, { FC, MouseEventHandler } from "react";
+import React, { FC, MouseEventHandler, useEffect } from "react";
 
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
@@ -31,52 +31,49 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
         className,
     } = props;
 
-    if (!isModalOpen) {
-        return null;
-    }
-
-    if (isLoading) {
-        <Modal onClose={onClose} isShowCloseIcon={false}>
-            <div className={styles.wrapper}>
-                <CircularProgress style={{ color: "var(--accent-color)" }} />
-            </div>
-        </Modal>;
-    }
-
-    if (isLoading) {
-        <Modal onClose={onClose} isShowCloseIcon={false}>
-            <div className={styles.wrapper}>
-                <CircularProgress style={{ color: "var(--accent-color)" }} />
-            </div>
-        </Modal>;
-    }
+    useEffect(() => {
+        document.body.style.overflow = isModalOpen ? "hidden" : "";
+    }, [isModalOpen]);
 
     return (
-        <Modal onClose={onClose} isShowCloseIcon={false}>
-            <div className={cn(styles.wrapper, className)}>
-                <span className={styles.description}>{description}</span>
-                <div className={styles.buttons}>
-                    <Button
-                        className={styles.blue}
-                        color="BLUE"
-                        size="MEDIUM"
-                        variant="FILL"
-                        onClick={onConfirm}
-                        disabled={buttonsDisabled}
-                    >
-                        {confirmTextButton}
-                    </Button>
-                    <Button
-                        className={styles.gray}
-                        color="GRAY"
-                        size="MEDIUM"
-                        variant="OUTLINE"
-                        onClick={onClose}
-                        disabled={buttonsDisabled}
-                    >
-                        {cancelTextButton}
-                    </Button>
-                </div>
+        <Modal
+            onClose={onClose}
+            isShowCloseIcon={false}
+            className={cn(
+                styles.modalWrapper,
+                { [styles.active]: isModalOpen },
+            )}
+        >
+            <div className={cn(styles.wrapper, className, { [styles.active]: isModalOpen })}>
+                {isLoading ? (
+                    <CircularProgress style={{ color: "var(--accent-color)" }} />
+                ) : (
+                    <>
+                        <span className={styles.description}>{description}</span>
+                        <div className={styles.buttons}>
+                            <Button
+                                className={styles.blue}
+                                color="BLUE"
+                                size="MEDIUM"
+                                variant="FILL"
+                                onClick={onConfirm}
+                                disabled={buttonsDisabled}
+                            >
+                                {confirmTextButton}
+                            </Button>
+                            <Button
+                                className={styles.gray}
+                                color="GRAY"
+                                size="MEDIUM"
+                                variant="OUTLINE"
+                                onClick={onClose}
+                                disabled={buttonsDisabled}
+                            >
+                                {cancelTextButton}
+                            </Button>
+                        </div>
+                    </>
+                )}
             </div>
         </Modal>
     );

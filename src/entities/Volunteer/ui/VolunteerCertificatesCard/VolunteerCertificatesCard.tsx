@@ -7,9 +7,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import styles from "./VolunteerCertificatesCard.module.scss";
 import { MediaObjectType } from "@/types/media";
-import { UploadedCertificate } from "@/features/UploadCertificates";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Text } from "@/shared/ui/Text/Text";
+import { UploadedCertificate } from "./ui/UploadedCertificate/UploadedCertificate";
 
 interface VolunteerCertificatesCardProps {
     classname?: string;
@@ -30,7 +30,7 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
                     <UploadedCertificate
                         certificate={getMediaContent(certificate) ?? ""}
-                        isFile
+                        isFile={!certificate.isImage}
                         download={getMediaContent(certificate)}
                         disableCloseButton
                         classNameItem={styles.certificate}

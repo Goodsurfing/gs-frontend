@@ -25,6 +25,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(playing);
 
     const isVkVideo = url.includes("vk.com") || url.includes("vkvideo.ru");
+    const isRutubeVideo = url.includes("rutube.ru");
 
     const getVkEmbedUrl = (urlVideo: string): string | null => {
         try {
@@ -53,6 +54,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
             return null;
         }
     };
+
+    const getRutubeVideoId = (urlVideo: string): string | null => {
+        try {
+            const match = urlVideo.match(/\/video\/([a-f0-9-]+)/i);
+            return match ? match[1] : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const getRutubeEmbedUrl = (videoId: string): string => `https://rutube.ru/play/embed/${videoId}`;
+
+    const getRutubePreviewUrl = (videoId: string): string => `https://rutube.ru/api/video/${videoId}/thumbnail/`;
 
     if (isVkVideo) {
         const vkEmbedUrl = getVkEmbedUrl(url);
@@ -87,8 +101,54 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
         return (
             <div className={styles.wrapper} style={style}>
                 <iframe
-                    title={vkEmbedUrl}
+                    title="vk-video"
                     src={vkEmbedUrl}
+                    width={width}
+                    height={height}
+                    frameBorder="0"
+                    allow="encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    allowFullScreen
+                />
+            </div>
+        );
+    }
+
+    if (isRutubeVideo) {
+        const videoId = getRutubeVideoId(url);
+        if (!videoId) {
+            return (
+                <div className={styles.error}>
+                    <p>Неподдерживаемая ссылка на Rutube-видео.</p>
+                </div>
+            );
+        }
+
+        const embedUrl = getRutubeEmbedUrl(videoId);
+        const previewUrl = getRutubePreviewUrl(videoId);
+
+        if (light && !isPlaying) {
+            return (
+                <div
+                    className={styles.lightPreview}
+                    style={{
+                        width,
+                        height,
+                        backgroundImage: `url(${previewUrl})`,
+                        backgroundSize: "cover",
+                        position: "relative",
+                    }}
+                    onClick={() => setIsPlaying(true)}
+                >
+                    <div className={styles.playButton} aria-label="Play" />
+                </div>
+            );
+        }
+
+        return (
+            <div className={styles.wrapper} style={style}>
+                <iframe
+                    title="rutube-video"
+                    src={embedUrl}
                     width={width}
                     height={height}
                     frameBorder="0"

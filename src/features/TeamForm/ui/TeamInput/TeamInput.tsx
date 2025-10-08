@@ -133,7 +133,7 @@ export const TeamInput: FC<TeamInputProps> = memo((props: TeamInputProps) => {
                     onClick={() => onClickCard(profile.id, profile.email)}
                     className={styles.wrapperCard}
                 >
-                    <TeamCard locale={locale} profileData={profile} />
+                    <TeamCard locale={locale} profileData={profile} isNavigate={false} />
                 </button>
             ));
         },

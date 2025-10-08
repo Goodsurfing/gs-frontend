@@ -12,6 +12,7 @@ import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 
 import {
+    getMessengerPageIdUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
@@ -21,6 +22,7 @@ import { Text } from "@/shared/ui/Text/Text";
 import { useSubmenuVolunteerItems } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./VolunteerPersonalPage.module.scss";
 
 export const VolunteerPersonalPage = () => {
@@ -29,6 +31,7 @@ export const VolunteerPersonalPage = () => {
     const { locale } = useLocale();
     const { t, ready } = useTranslation("volunteer");
     const { submenuItems } = useSubmenuVolunteerItems();
+    const { isAuth } = useAuth();
 
     const { data: volunteerData, isLoading } = useGetVolunteerByIdQuery(
         id || "",
@@ -37,6 +40,10 @@ export const VolunteerPersonalPage = () => {
 
     const handleEditClick = () => {
         navigate(getVolunteerDashboardPageUrl(locale));
+    };
+
+    const handleWriteClick = () => {
+        navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
     };
 
     if (isLoading || !ready) {
@@ -79,21 +86,35 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    const showButtons = myProfileData ? (
-        myProfileData.id === id) : false;
+    const showEditButton = !!myProfileData && myProfileData.id === id;
 
-    const renderButtons = showButtons ? (
-        <Button
-            size="SMALL"
-            color="BLUE"
-            variant="FILL"
-            className={styles.button}
-            onClick={handleEditClick}
-        >
-            {t("personalVolunteer.Редактировать")}
-        </Button>
+    const renderButtons = (
+        <>
+            {(showEditButton && isAuth) && (
+                <Button
+                    size="SMALL"
+                    color="BLUE"
+                    variant="FILL"
+                    className={styles.button}
+                    onClick={handleEditClick}
+                >
+                    {t("personalVolunteer.Редактировать")}
+                </Button>
+            )}
 
-    ) : null;
+            {(!showEditButton && isAuth) && (
+                <Button
+                    size="SMALL"
+                    color="BLUE"
+                    variant="FILL"
+                    className={styles.button}
+                    onClick={handleWriteClick}
+                >
+                    {t("personalVolunteer.Написать")}
+                </Button>
+            )}
+        </>
+    );
 
     return (
         <div className={styles.wrapper}>
@@ -101,8 +122,9 @@ export const VolunteerPersonalPage = () => {
             <div className={styles.content}>
                 <VolunteerHeaderCard
                     volunteer={volunteerData}
-                    showButtons={showButtons}
+                    showButtons={showEditButton}
                     locale={locale}
+                    isAuth={isAuth}
                 />
                 <Submenu
                     className={styles.navMenu}

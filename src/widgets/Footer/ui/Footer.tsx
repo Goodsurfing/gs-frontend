@@ -6,8 +6,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 
-import fbIcon from "@/shared/assets/icons/footer/fb.svg";
-import instaIcon from "@/shared/assets/icons/footer/instagram.svg";
 import footerLogo from "@/shared/assets/icons/footer/logo.svg";
 import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
 import vkIcon from "@/shared/assets/icons/footer/vk.svg";
@@ -54,13 +52,6 @@ export const Footer = memo(() => {
                         </div>
                         <div className={styles.socials}>
                             <a
-                                href="https://www.instagram.com/goodsurfing"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <img src={instaIcon} alt="Instagram" />
-                            </a>
-                            <a
                                 href="https://telegram.me/goodsurfing"
                                 target="_blank"
                                 rel="noreferrer"
@@ -73,13 +64,6 @@ export const Footer = memo(() => {
                                 rel="noreferrer"
                             >
                                 <img src={vkIcon} alt="VK" />
-                            </a>
-                            <a
-                                href="https://www.facebook.com/goodsurfing"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <img src={fbIcon} alt="Facebook" />
                             </a>
                         </div>
                         <a

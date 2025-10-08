@@ -37,7 +37,7 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
         facebook: data.facebook,
         instagram: data.instagram,
         telegram: data.telegram,
-        vk: data.telegram,
+        vk: data.vk,
     };
 
     return {

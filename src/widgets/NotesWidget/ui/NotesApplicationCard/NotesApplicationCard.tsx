@@ -10,6 +10,8 @@ interface NotesApplicationCardProps {
     index: number;
     isDragDisable: boolean;
     onReviewClick: (application: SimpleFormApplication) => void;
+    onAcceptClick?: (application: SimpleFormApplication) => void;
+    onCancelClick?: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -22,6 +24,8 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
             isDragDisable,
             locale,
             onReviewClick,
+            onAcceptClick,
+            onCancelClick,
         } = props;
 
         return (
@@ -45,6 +49,8 @@ export const NotesApplicationCard: FC<NotesApplicationCardProps> = memo(
                             application={application}
                             locale={locale}
                             onReviewClick={onReviewClick}
+                            onAcceptClick={onAcceptClick}
+                            onCancelClick={onCancelClick}
                         />
                     </div>
                 )}

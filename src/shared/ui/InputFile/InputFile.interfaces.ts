@@ -8,6 +8,8 @@ export type InputFileProps = {
     labelClassName?: string;
     labelDisableClassName?: string;
     labelChildren?: React.ReactNode | ReactNode[];
+    onDropFiles?: (files: File[]) => void;
+    disableDropzone?: boolean;
     onLabelClick?: MouseEventHandler<HTMLLabelElement>;
     allowedExtensions?: AllowedFilesExtensions[];
 } & Required<Pick<InputHTMLAttributes<HTMLInputElement>, "id">> &

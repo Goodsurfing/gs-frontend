@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { OfferWhenSlider } from "@/features/OfferWhen";
+import { OfferWhenSlider } from "@/features/Offer";
 
 import styles from "./ParticipationPeriod.module.scss";
 

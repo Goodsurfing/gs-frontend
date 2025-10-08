@@ -17,6 +17,7 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 import styles from "./RequestCard.module.scss";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
+import { formatDate } from "@/shared/lib/formatDate";
 
 interface RequestCardProps {
     className?: string;
@@ -24,6 +25,8 @@ interface RequestCardProps {
     showStatus?: boolean;
     showButtons?: boolean;
     onReviewClick?: (application: SimpleFormApplication) => void;
+    onAcceptClick?: (application: SimpleFormApplication) => void;
+    onCancelClick?: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -34,9 +37,13 @@ export const RequestCard = memo((props: RequestCardProps) => {
         showStatus = true,
         showButtons = true,
         onReviewClick,
+        onAcceptClick,
+        onCancelClick,
         locale,
     } = props;
-    const { volunteer, vacancy, status } = application;
+    const {
+        volunteer, vacancy, status, startDate, endDate,
+    } = application;
     let volunteerId: string;
     if (typeof volunteer === "string") {
         volunteerId = volunteer.split("/").pop() || "";
@@ -55,7 +62,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     }
 
     const address = (!volunteerData.profile.city || !volunteerData.profile.country)
-        ? "Адрес не указан" : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
+        ? t("notes.Адрес не указан") : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
 
     const onMessageClick = () => {
         if (application.chatId) {
@@ -96,6 +103,13 @@ export const RequestCard = memo((props: RequestCardProps) => {
                         </span>
                         <span className={styles.location}>
                             {address}
+                        </span>
+                        <span className={styles.date}>
+                            {formatDate(locale, startDate)}
+                            {" "}
+                            -
+                            {" "}
+                            {formatDate(locale, endDate)}
                         </span>
                     </div>
                 </CustomLink>
@@ -139,6 +153,32 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     </>
                 )}
             </div>
+            {showButtons && (
+                <div className={styles.buttons}>
+                    {(application.status === "new" || application.status === "canceled") && (
+                        <Button
+                            className={styles.button}
+                            color="GREEN"
+                            variant="FILL"
+                            size="SMALL"
+                            onClick={() => onAcceptClick?.(application)}
+                        >
+                            {t("notes.Принять")}
+                        </Button>
+                    )}
+                    {(application.status === "new" || application.status === "accepted") && (
+                        <Button
+                            className={styles.button}
+                            color="RED"
+                            variant="FILL"
+                            size="SMALL"
+                            onClick={() => onCancelClick?.(application)}
+                        >
+                            {t("notes.Отклонить")}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     );
 });

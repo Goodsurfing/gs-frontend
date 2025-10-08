@@ -28,7 +28,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
                     <OfferPlacemark
                         id={id.toString()}
                         geometry={geometry}
-                        image={getMediaContent(description?.image)}
+                        image={getMediaContent(description?.image, "SMALL")}
                         title={description?.title ?? ""}
                         locale={locale}
                         category={description?.categoryIds[0]}

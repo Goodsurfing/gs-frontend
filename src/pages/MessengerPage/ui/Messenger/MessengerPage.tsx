@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -20,7 +20,11 @@ const MessengerPage = () => {
     const { locale } = useLocale();
     const { ready } = useTranslation("offer");
     const { t, ready: isMessengerReady } = useTranslation("messenger");
+    const [searchParams] = useSearchParams();
     const { myProfile } = useAuth();
+
+    const recipientVolunteer = searchParams.get("recipientVolunteer");
+    const recipientOrganization = searchParams.get("recipientOrganization");
 
     const handleOnUserClick = useCallback(
         (value?: string) => {
@@ -70,6 +74,8 @@ const MessengerPage = () => {
                             [styles.open]: selectedChat,
                         })}
                         locale={locale}
+                        recipientVolunteer={recipientVolunteer ?? undefined}
+                        recipientOrganization={recipientOrganization ?? undefined}
                     />
                 </div>
             </div>

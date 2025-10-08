@@ -10,6 +10,7 @@ import { Locale } from "@/entities/Locale";
 import { generateCodeVerifier, generateState } from "@/shared/lib/pkce";
 
 import styles from "./AuthByVk.module.scss";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 const langLib: Record<Locale, VKID.Languages> = {
     ru: VKID.Languages.RUS,
@@ -79,12 +80,18 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
 
                     VKID.Auth.exchangeCode(code, deviceId, storedVerifier)
                         .then((result: any) => {
-                            setToken(result.access_token);
-                            return VKID.Auth.userInfo(result.access_token);
+                            const vkAccessToken = result.access_token;
+                            return fetch(`${API_BASE_URL}vk/profile`, {
+                                method: "GET",
+                                headers: {
+                                    Authorization: `Bearer ${vkAccessToken}`,
+                                },
+                            }).then((res) => res.json());
                         })
-                        .then((result: any) => setUser(result.user))
-                        .then(() => {
-                            // После успешной авторизации можно удалить codeVerifier
+                        .then((jwtResponse: any) => {
+                            setToken(jwtResponse.jwt);
+                            setUser(jwtResponse.user);
+
                             sessionStorage.removeItem("vk_code_verifier");
                             window.history.replaceState(
                                 {},
@@ -94,7 +101,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                             onSuccess?.();
                         })
                         .catch(() => {
-                            // empty
+                            renderOneTapButton();
                         });
                 } else {
                     renderOneTapButton();

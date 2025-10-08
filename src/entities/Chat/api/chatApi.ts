@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { Message } from "@/entities/Chat";
 import { ChatType, MessageType } from "@/entities/Messenger";
 import {
     FormApplication, FormApplicationStatus, FullFormApplication, SimpleFormApplication,
 } from "@/entities/Application";
+import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 
 interface MessagesRequest {
     chatId: string;
@@ -15,12 +15,6 @@ interface MessagesRequest {
 
 interface MessageRequest {
     message: string;
-}
-
-export interface CreateMessageType {
-    text?: string;
-    chat: string;
-    attachments: string[];
 }
 
 interface UpdateFormApplicationStatus {
@@ -33,7 +27,7 @@ export const chatApi = createApi({
     baseQuery: baseQueryAcceptJson,
     tagTypes: ["chat", "application"],
     endpoints: (build) => ({
-        createMessage: build.mutation<Message[], CreateMessageType>({
+        createMessage: build.mutation<CreateMessageResponse, CreateMessageType>({
             query: (body) => ({
                 url: "messages",
                 method: "POST",
@@ -96,6 +90,17 @@ export const chatApi = createApi({
             }),
             invalidatesTags: ["application"],
         }),
+        updateApplicationFormStatusByIdWithoutTags: build.mutation<FormApplication,
+        UpdateFormApplicationStatus>({
+            query: ({ applicationId, status }) => ({
+                url: `application_forms/${applicationId}/status`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                },
+                body: JSON.stringify({ status }),
+            }),
+        }),
         getApplicationFormById: build.query<FullFormApplication, string>({
             query: (applicationId) => ({
                 url: `application_forms/${applicationId}`,
@@ -132,4 +137,5 @@ export const {
     useGetMyVolunteerApplicationsQuery,
     useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
+    useUpdateApplicationFormStatusByIdWithoutTagsMutation,
 } = chatApi;

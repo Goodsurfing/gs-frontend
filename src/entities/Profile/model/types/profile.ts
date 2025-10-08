@@ -45,6 +45,14 @@ export type ProfileApi = Omit<Profile, "image" | "galleryImages"> & {
 export interface ImageType {
     id: string;
     contentUrl: string;
+    isImage: boolean;
+    originalHeight: number;
+    originalWidth: number;
+    thumbnails?: {
+        large: string;
+        medium: string;
+        small: string;
+    }
 }
 
 export interface ProfileSchema {

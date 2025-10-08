@@ -42,6 +42,7 @@ export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
                             disabled={isLocked}
                             minLength={2}
                             maxLength={30}
+                            isError={!!errors.about?.firstName?.message}
                         />
                     )}
                 />
@@ -62,6 +63,7 @@ export const ProfileInfoFormAbout = memo((props: ProfileInfoFormAboutProps) => {
                             onBlur={field.onBlur}
                             disabled={isLocked}
                             maxLength={30}
+                            isError={!!errors.about?.firstName?.message}
                         />
                     )}
                 />

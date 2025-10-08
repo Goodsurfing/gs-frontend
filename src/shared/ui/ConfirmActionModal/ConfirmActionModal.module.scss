@@ -1,3 +1,14 @@
+.modalWrapper {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
 .wrapper {
     background-color: #fff;
     border-radius: 10px;
@@ -7,6 +18,16 @@
     flex-direction: column;
     justify-content: center;
     max-width: 600px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+
+    &.active {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
 }
 
 .buttons {

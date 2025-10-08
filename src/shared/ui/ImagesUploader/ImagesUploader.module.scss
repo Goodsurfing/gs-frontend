@@ -1,0 +1,114 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.buttonUpload {
+    width: 130px;
+    height: 130px;
+    background-color: #ECF1F4;
+    border: 1px dashed var(--white-theme-color);
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-theme-color);
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.buttonUpload:hover {
+    opacity: 0.8;
+}
+
+.buttonUpload.active {
+    background-color: var(--accent-color);
+    color: white;
+
+    .plusIcon svg{
+    fill: white;
+}
+}
+
+.plusIcon svg{
+    fill: var(--white-theme-color);
+}
+
+.imgWrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.imgWrapper img {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imgWrapper button {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+     width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.fileWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accent-elements);
+    cursor: pointer;
+}
+
+.errorText {
+    color: red; 
+    font-size: 12px; 
+    margin-top: 4px;
+}
+
+.progressWrapper {
+    height: 6px;
+    background-color: #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.progressInner {
+    height: 100%;
+    transition: width 0.3s ease;
+    background: var(--accent-color);
+}
+
+.progressInner.error {
+    background: red;
+}

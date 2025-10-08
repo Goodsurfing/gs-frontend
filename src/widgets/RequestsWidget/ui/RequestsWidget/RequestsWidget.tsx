@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { ReviewFields } from "@/features/Notes";
 
 import {
+    FormApplicationStatus,
     RequestCard,
     SimpleFormApplication,
 } from "@/entities/Application";
@@ -23,7 +24,7 @@ import styles from "./RequestsWidget.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { useGetMyHostApplicationsQuery } from "@/entities/Chat";
+import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
 
 interface RequestsWidgetProps {
     className?: string;
@@ -37,6 +38,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         isLoading: isApplicationsLoading,
     } = useGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
+    const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const { t } = useTranslation("host");
     const navigate = useNavigate();
 
@@ -70,6 +72,17 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         reset();
     };
 
+    const handleUpdateApplicationStatus = async (
+        applicationId: number,
+        status: FormApplicationStatus,
+    ) => {
+        await updateApplicationStatus({ applicationId: applicationId.toString(), status })
+            .unwrap()
+            .catch(() => {
+                // empty
+            });
+    };
+
     const renderRequests = () => {
         if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
         if (!applications || applications.length === 0) {
@@ -84,6 +97,8 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                 application={application}
                 locale={locale}
                 onReviewClick={onReviewClick}
+                onAcceptClick={(app) => { handleUpdateApplicationStatus(app.id, "accepted"); }}
+                onCancelClick={(app) => { handleUpdateApplicationStatus(app.id, "canceled"); }}
             />
         ));
     };

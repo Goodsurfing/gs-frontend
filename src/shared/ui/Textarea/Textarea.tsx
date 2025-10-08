@@ -9,6 +9,7 @@ export interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement>
     description?: string;
     extraDescription?: string;
     classNameTextarea?: string;
+    isError?: boolean;
 }
 
 const Textarea: FC<IText> = ({
@@ -24,45 +25,36 @@ const Textarea: FC<IText> = ({
     maxLength = 1000,
     id,
     name,
+    isError = false,
     ...restTextAreaProps
-}) => {
-    const handleTextAreaChange = (
-        event: React.KeyboardEvent<HTMLTextAreaElement>,
-    ) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-        }
-    };
-    return (
-        <div className={cn(styles.texarea, className)}>
-            <div className={styles.labelWrapper}>
-                {img && (
-                    <img className={styles.image} src={img} alt={img} />
-                )}
-                <label className={styles.label} htmlFor={id}>
-                    {label}
-                </label>
-            </div>
-            <textarea
-                onKeyDown={(e) => handleTextAreaChange(e)}
-                className={cn(styles.textarea, classNameTextarea)}
-                required={required}
-                placeholder={placeholder}
-                name={name}
-                id={id}
-                maxLength={maxLength}
-                {...restTextAreaProps}
-            />
-            {description && (
-                <label htmlFor={id} className={styles.description}>{description}</label>
+}) => (
+    <div className={cn(styles.texarea, className)}>
+        <div className={styles.labelWrapper}>
+            {img && (
+                <img className={styles.image} src={img} alt={img} />
             )}
-            <br />
-            {extraDescription && (
-                <label htmlFor={id} className={styles.description}>{extraDescription}</label>
-            )}
-            {children}
+            <label className={styles.label} htmlFor={id}>
+                {label}
+            </label>
         </div>
-    );
-};
+        <textarea
+            className={cn(styles.textarea, classNameTextarea, { [styles.error]: isError })}
+            required={required}
+            placeholder={placeholder}
+            name={name}
+            id={id}
+            maxLength={maxLength}
+            {...restTextAreaProps}
+        />
+        {description && (
+            <label htmlFor={id} className={styles.description}>{description}</label>
+        )}
+        <br />
+        {extraDescription && (
+            <label htmlFor={id} className={styles.description}>{extraDescription}</label>
+        )}
+        {children}
+    </div>
+);
 
 export default React.memo(Textarea);

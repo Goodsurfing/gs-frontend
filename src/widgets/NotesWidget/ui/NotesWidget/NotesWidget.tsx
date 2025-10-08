@@ -23,7 +23,7 @@ interface NotesWidgetProps {
     onReviewClick: (application: SimpleFormApplication) => void;
     updateApplicationStatus?: (
         applicationId: number,
-        status: FormApplicationStatus
+        status: FormApplicationStatus,
     ) => void;
     locale: Locale;
 }
@@ -81,19 +81,42 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         useEffect(() => {
             if (!debouncedStatusChange) return;
 
-            const changedNote = initialNotes.find(
-                (note) => note.id === debouncedStatusChange.applicationId
-                    && note.status === debouncedStatusChange.status,
+            updateApplicationStatus?.(
+                debouncedStatusChange.applicationId,
+                debouncedStatusChange.status,
             );
-
-            if (!changedNote) {
-                updateApplicationStatus?.(
-                    debouncedStatusChange.applicationId,
-                    debouncedStatusChange.status,
-                );
-            }
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [debouncedStatusChange, initialNotes]);
+
+        const changeApplicationStatus = (
+            applicationId: number,
+            newStatus: FormApplicationStatus,
+        ) => {
+            const note = notes.find((n) => n.id === applicationId);
+            if (!note) return;
+            const updatedNote = { ...note, status: newStatus };
+
+            setNotes((prev) => prev.map((n) => (n.id === applicationId ? updatedNote : n)));
+
+            setColumns((prevColumns) => {
+                const newColumns = { ...prevColumns };
+
+                Object.keys(newColumns).forEach((key) => {
+                    newColumns[key as FormApplicationStatus] = newColumns[
+                        key as FormApplicationStatus
+                    ].filter((n) => n.id !== applicationId);
+                });
+
+                newColumns[newStatus].push(updatedNote);
+
+                return newColumns;
+            });
+
+            setPendingStatusChange({
+                applicationId,
+                status: newStatus,
+            });
+        };
 
         const onDragEnd = (result: DropResult) => {
             const { destination, source } = result;
@@ -102,38 +125,29 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
 
             if (
                 destination.droppableId === source.droppableId
-                && destination.index === source.index
+        && destination.index === source.index
             ) {
                 return;
             }
 
-            const sourceColumn = columns[source.droppableId as FormApplicationStatus];
-            const destinationColumn = columns[destination.droppableId as FormApplicationStatus];
+            const sourceStatus = source.droppableId as FormApplicationStatus;
+            const destStatus = destination.droppableId as FormApplicationStatus;
 
-            const updatedSourceNotes = Array.from(sourceColumn);
-            const updatedDestinationNotes = sourceColumn === destinationColumn
-                ? updatedSourceNotes
-                : Array.from(destinationColumn);
+            if (sourceStatus === destStatus) {
+                const updatedNotes = Array.from(columns[sourceStatus]);
+                const [movedNote] = updatedNotes.splice(source.index, 1);
+                updatedNotes.splice(destination.index, 0, movedNote);
 
-            const [movedNote] = updatedSourceNotes.splice(source.index, 1);
+                setColumns((prev) => ({
+                    ...prev,
+                    [sourceStatus]: updatedNotes,
+                }));
 
-            const updatedNote = {
-                ...movedNote,
-                status: destination.droppableId as FormApplicationStatus,
-            };
+                return;
+            }
 
-            updatedDestinationNotes.splice(destination.index, 0, updatedNote);
-
-            setColumns((prevColumns) => ({
-                ...prevColumns,
-                [source.droppableId]: updatedSourceNotes,
-                [destination.droppableId]: updatedDestinationNotes,
-            }));
-
-            setPendingStatusChange({
-                applicationId: updatedNote.id,
-                status: updatedNote.status,
-            });
+            const movedNote = columns[sourceStatus][source.index];
+            changeApplicationStatus(movedNote.id, destStatus);
         };
 
         return (
@@ -142,6 +156,8 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                     {Object.entries(columns).map(([status, columnNotes]) => (
                         <NotesContainer
                             onReviewClick={onReviewClick}
+                            onAcceptClick={(app) => { changeApplicationStatus(app.id, "accepted"); }}
+                            onCancelClick={(app) => { changeApplicationStatus(app.id, "canceled"); }}
                             key={status}
                             status={status as FormApplicationStatus}
                             notes={columnNotes}

@@ -13,3 +13,5 @@ export const OFFER_CONDITIONS_FORM = "offerConditionsForm-";
 export const OFFER_FINISHING_TOUCHES_FORM = "offerFinishingTouchesForm-";
 
 export const VOLUNTEER_SKILLS_FORM = "volunteerSkillsForm";
+
+export const HOST_DESCRIPTION_FORM = "hostDescriptionForm";

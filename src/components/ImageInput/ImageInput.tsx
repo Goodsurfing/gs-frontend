@@ -27,37 +27,40 @@ const ImageInput: FC<ImageInputComponentProps> = ({
 }) => {
     const { t } = useTranslation("offer");
 
+    const handleUpload = async (file: File) => {
+        try {
+            if (checkImageSize) {
+                const size = await checkWidthAndHeight(file);
+                if (size.width < 1280 || size.height < 720) {
+                    onError?.();
+                    return;
+                }
+            }
+
+            const validExtensions = [".png", ".jpeg", ".jpg", ".webp"];
+            const fileExtension = file.name
+                .toLowerCase()
+                .slice(file.name.lastIndexOf("."));
+            if (!validExtensions.includes(fileExtension)) {
+                onError?.();
+                return;
+            }
+
+            const url = URL.createObjectURL(file);
+            onSuccess?.();
+            setImg({ ...img, file, src: url });
+        } catch (e) {
+            onError?.();
+        }
+    };
+
     const handleFileChange = async (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         onSuccess?.();
         const fileList = event.target.files;
         if (fileList && fileList.length > 0) {
-            const file = fileList[0];
-            try {
-                if (checkImageSize) {
-                    const size = await checkWidthAndHeight(file);
-                    if (size.width < 1280 || size.height < 720) {
-                        onError?.();
-                        return;
-                    }
-                }
-
-                const validExtensions = [".png", ".jpeg", ".jpg"];
-                const fileExtension = file.name
-                    .toLowerCase()
-                    .slice(file.name.lastIndexOf("."));
-                if (!validExtensions.includes(fileExtension)) {
-                    onError?.();
-                    return;
-                }
-
-                const url = URL.createObjectURL(file);
-                onSuccess?.();
-                setImg({ ...img, file, src: url });
-            } catch (e) {
-                onError?.();
-            }
+            await handleUpload(fileList[0]);
         }
         event.target.value = "";
     };
@@ -80,7 +83,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     {!isLoading && (
                         <div className={styles.containerButtons}>
                             <InputFile
-                                id="upload image"
+                                id="upload-image"
                                 onChange={handleFileChange}
                                 wrapperClassName={styles.inputButton}
                                 uploadedImageClassName={styles.hiddenImg}
@@ -90,6 +93,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                                         {t("description.Изменить")}
                                     </div>
                                 )}
+                                disableDropzone
                             />
                             <Button
                                 className={styles.buttons}
@@ -113,6 +117,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
             {!img.src && (
                 <InputFile
                     onChange={handleFileChange}
+                    onDropFiles={(files) => handleUpload(files[0])}
                     imageURL={img.src}
                     uploadedImageClassName={styles.uploadedImg}
                     wrapperClassName={cn(styles.wrapper, wrapperClassName)}

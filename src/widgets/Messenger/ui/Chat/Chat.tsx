@@ -58,6 +58,8 @@ interface ChatProps {
     className?: string;
     locale: Locale;
     myProfileData: Profile;
+    recipientVolunteer?: string;
+    recipientOrganization?: string;
 }
 
 const defaultValues: DefaultValues<ChatFormFields> = {
@@ -70,7 +72,7 @@ const defaultValues: DefaultValues<ChatFormFields> = {
 export const Chat: FC<ChatProps> = (props) => {
     const {
         id, offerId, className, onBackButton,
-        locale, myProfileData,
+        locale, myProfileData, recipientVolunteer, recipientOrganization,
     } = props;
 
     const { handleSubmit, control, reset } = useForm<ChatFormFields>({
@@ -188,6 +190,30 @@ export const Chat: FC<ChatProps> = (props) => {
             };
 
             fetchOffer();
+        }
+        if (isChatCreate && !!recipientVolunteer) {
+            const fetchVolunteer = async () => {
+                const resultVolunteerData = await getVolunteer(recipientVolunteer)
+                    .unwrap()
+                    .then((volunteerDataResult) => volunteerDataResult)
+                    .catch(() => undefined);
+                if (resultVolunteerData) {
+                    setChatUser(resultVolunteerData);
+                }
+            };
+            fetchVolunteer();
+        }
+        if (isChatCreate && !!recipientOrganization) {
+            const fetchOrganization = async () => {
+                const resultHostData = await getHost(recipientOrganization)
+                    .unwrap()
+                    .then((hostDataResult) => hostDataResult)
+                    .catch(() => undefined);
+                if (resultHostData) {
+                    setChatUser(resultHostData);
+                }
+            };
+            fetchOrganization();
         }
     }, [isChatCreate, offerId, getOfferData]);
 
@@ -469,7 +495,14 @@ export const Chat: FC<ChatProps> = (props) => {
                         {renderChat()}
                     </InfiniteScroll>
                 </div>
-                <SendMessage disabled={isChatCreate} chatId={id} onError={onSendMessageError} />
+                <SendMessage
+                    disabled={isChatCreate && !!offerId}
+                    chatId={id}
+                    recipientVolunteer={recipientVolunteer}
+                    recipientOrganization={recipientOrganization}
+                    onError={onSendMessageError}
+                    locale={locale}
+                />
             </div>
             <UserInfoCard
                 user={chatUser}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ErrorType } from "@/types/api/error";
@@ -22,6 +23,7 @@ import { TeamInput } from "../TeamInput/TeamInput";
 import { Text } from "../Text/Text";
 import styles from "./TeamForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Text as TextShared } from "@/shared/ui/Text/Text";
 
 interface TeamFormProps {
     hostId: string;
@@ -42,10 +44,10 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
     const [deleteMember, { isLoading: isDeleteLoading }] = useDeleteHostMemberMutation();
 
     const handleDeleteClick = useCallback(
-        (id: number) => {
+        async (id: number) => {
             setToast(undefined);
             if (isDeleteLoading) return;
-            deleteMember({ organizationId: hostId, memberId: id.toString() })
+            await deleteMember({ organizationId: hostId, memberId: id.toString() })
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -116,7 +118,8 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Text />
-            <TeamInput
+            <h3>Функция станет доступна позже.</h3>
+            {/* <TeamInput
                 hostId={hostId}
                 hostEmail={hostEmail}
                 hostMembers={hostMembers ?? []}
@@ -126,7 +129,7 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
             />
             <div className={styles.containerList}>
                 {renderTeamUsers(hostMembers)}
-            </div>
+            </div> */}
             {/* <Button
                 className={styles.btn}
                 variant="FILL"

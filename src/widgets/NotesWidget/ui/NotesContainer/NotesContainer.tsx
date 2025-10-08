@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 
 import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
 import { NotesCard } from "../NotesCard/NotesCard";
-import styles from "./NotesContainer.module.scss";
 import { FormApplicationStatus, SimpleFormApplication } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
+import styles from "./NotesContainer.module.scss";
 
 export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
@@ -18,6 +18,8 @@ interface NotesContainerProps {
     isDragDisable: boolean;
     variant: VariantType;
     onReviewClick: (application: SimpleFormApplication) => void;
+    onAcceptClick?: (application: SimpleFormApplication) => void;
+    onCancelClick?: (application: SimpleFormApplication) => void;
     locale: Locale;
 }
 
@@ -31,6 +33,8 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             isDragDisable,
             variant,
             onReviewClick,
+            onAcceptClick,
+            onCancelClick,
             locale,
         } = props;
         const { t } = useTranslation();
@@ -51,6 +55,8 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                         index={index}
                         isDragDisable={false}
                         onReviewClick={onReviewClick}
+                        onAcceptClick={onAcceptClick}
+                        onCancelClick={onCancelClick}
                         locale={locale}
                     />
                 ));

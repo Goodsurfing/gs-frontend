@@ -40,7 +40,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
             <div className={cn(styles.wrapper, styles.other)}>
                 <img src={threeDots} alt="" className={styles.threeDots} />
                 <div>
-                    <span className={cn(styles.title, styles.otherTitle)}>
+                    <span lang={locale} className={cn(styles.title, styles.otherTitle)}>
                         {title}
                     </span>
                     <br />

@@ -15,12 +15,13 @@ import deleteIcon from "@/shared/assets/icons/delete.svg";
 import styles from "./ChatInput.module.scss";
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
-import uploadFile, { ObjectMediaResponse } from "@/shared/hooks/files/useUploadFile";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { MediaObjectType } from "@/types/media";
 
 interface AttachmentType {
     filename: string;
-    objectMedia: ObjectMediaResponse;
+    objectMedia: MediaObjectType;
 }
 
 export interface SendMessageType {

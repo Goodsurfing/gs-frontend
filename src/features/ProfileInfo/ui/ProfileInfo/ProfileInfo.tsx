@@ -3,10 +3,10 @@ import { memo } from "react";
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import { useUser } from "@/entities/Profile";
 import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
-import styles from "./ProfileInfo.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./ProfileInfo.module.scss";
 
 interface ProfileInfoProps {
     className?: string;
@@ -15,9 +15,9 @@ interface ProfileInfoProps {
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
     const { t } = useTranslation("profile");
-    const { error, isLoading, profile } = useUser();
+    const { myProfile, profileIsLoading, profileIsError } = useAuth();
 
-    if (error) {
+    if (profileIsError) {
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
             <div className={styles.body}>
@@ -26,7 +26,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
         </div>;
     }
 
-    if (isLoading) {
+    if (profileIsLoading) {
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.header} />
@@ -41,7 +41,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
             <div className={styles.body}>
-                {profile && <ProfileInfoForm profile={profile} />}
+                {myProfile && <ProfileInfoForm profile={myProfile} />}
             </div>
         </div>
     );

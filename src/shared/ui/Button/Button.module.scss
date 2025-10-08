@@ -16,8 +16,10 @@
 
 	&.BLUE {
 		background-color: var(--accent-color);
+		transition: all 0.3s ease;
 		&:hover {
 			cursor: pointer;
+			opacity: 0.7;
 		}
 		&:disabled {
 			opacity: 0.7;
@@ -28,6 +30,7 @@
 		background-color: var(--button-1);
 		&:hover {
 			cursor: pointer;
+			opacity: 0.7;
 		}
 		&:disabled {
 			opacity: 0.7;
@@ -38,6 +41,7 @@
 		background-color: var(--text-caption);
 		&:hover {
 			cursor: pointer;
+			opacity: 0.7;
 		}
 		&:disabled {
 			opacity: 0.7;
@@ -48,6 +52,7 @@
 		background-color: var(--text-primary-2);
 		&:hover {
 			cursor: pointer;
+			opacity: 0.7;
 		}
 		&:disabled {
 			opacity: 0.7;	
@@ -58,6 +63,7 @@
 		background-color: var(--error-color);
 		&:hover {
 			cursor: pointer;
+			opacity: 0.7;
 		}
 		&:disabled {
 			opacity: 0.7;	

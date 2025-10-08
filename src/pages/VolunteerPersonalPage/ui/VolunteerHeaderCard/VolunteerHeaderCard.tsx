@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { VolunteerApi } from "@/entities/Volunteer";
 
-import { medalsData } from "@/shared/data/medals";
+// import { medalsData } from "@/shared/data/medals";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 // import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import { getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMessengerPageIdUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./VolunteerHeaderCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
@@ -21,6 +21,7 @@ interface VolunteerHeaderCardProps {
     volunteer: VolunteerApi;
     showButtons: boolean;
     locale: Locale;
+    isAuth: boolean;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
@@ -29,6 +30,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             volunteer,
             showButtons,
             locale,
+            isAuth,
         } = props;
 
         const { t } = useTranslation("volunteer");
@@ -53,12 +55,36 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             navigate(getVolunteerDashboardPageUrl(locale));
         }, [locale, navigate]);
 
-        const renderButtons = showButtons ? (
-            <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleEditClick}>
-                {t("personalVolunteer.Редактировать")}
-            </Button>
+        const handleWriteClick = useCallback(() => {
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${volunteer.profile.id}`);
+        }, [locale, navigate, volunteer.profile.id]);
 
-        ) : null;
+        const renderButtons = (
+            <div className={styles.buttons}>
+                {(showButtons && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="FILL"
+                        onClick={handleEditClick}
+                    >
+                        {t("personalVolunteer.Редактировать")}
+                    </Button>
+                )}
+
+                {(!showButtons && isAuth) && (
+                    <Button
+                        size="SMALL"
+                        color="BLUE"
+                        variant="FILL"
+                        className={styles.button}
+                        onClick={handleWriteClick}
+                    >
+                        {t("personalVolunteer.Написать")}
+                    </Button>
+                )}
+            </div>
+        );
 
         return (
             <div className={styles.wrapper}>
@@ -111,7 +137,8 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                 </div>
                 <div className={styles.btnMedalsContainer}>
                     <div className={styles.medalContainer}>
-                        {medalsData.slice(0, 2).map((medal, index) => (
+                        {/* fake data achievements */}
+                        {/* {medalsData.slice(0, 2).map((medal, index) => (
                             <div className={styles.medal} key={index}>
                                 <img
                                     className={styles.medalIcon}
@@ -120,7 +147,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 />
                                 <span>{medal.text}</span>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                     {renderButtons}
                 </div>

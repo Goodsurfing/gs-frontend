@@ -1,11 +1,14 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./Header.module.scss";
-import Button from "@/shared/ui/Button/Button";
 
 export const Header = () => {
     const { t } = useTranslation("find-job");
+    const { locale } = useLocale();
+
     return (
         <section className={styles.wrapeprImage}>
             <h1 className={styles.title}>{t("Совмещай работу и путешествие!")}</h1>
@@ -13,9 +16,14 @@ export const Header = () => {
                 {t("Выездная сезонная работа на море, в горах и на природе!")}
             </h2>
             <div className={styles.buttonPrice}>
-                <Button color="GREEN" size="SMALL" variant="FILL">
+                <ButtonLink
+                    path={`/${locale}/offers-map?category=paid_work`}
+                    type="primary"
+                    size="MEDIUM"
+                    className={styles.button}
+                >
                     {t("Найти работу")}
-                </Button>
+                </ButtonLink>
             </div>
         </section>
     );

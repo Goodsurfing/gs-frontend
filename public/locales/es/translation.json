@@ -199,7 +199,10 @@
         "confirmed": "Confirmado",
         "canceled": "Rechazado",
         "Сообщение": "Mensaje",
-        "Написать отзыв": "Escribir una reseña"
+        "Написать отзыв": "Escribir una reseña",
+        "Принять": "Aceptar",
+        "Отклонить": "Rechazar",
+        "Адрес не указан": "Dirección no especificada"
     },
     "Не задано": "No especificado",
     "journals": "Revistas",
@@ -210,5 +213,10 @@
     "Поиск": "Buscar",
     "Анонимный пользователь": "Usuario anónimo",
     "Отзывов": "Reseñas",
-    "Отправились": "Partieron"
+    "Отправились": "Partieron",
+    "Добавить фото": "Agregar foto",
+    "Добавить сертификат": "Agregar certificado",
+    "Отпусти файлы здесь": "Suelta los archivos aquí",
+    "Файл больше 2MB": "El archivo es mayor de 2MB",
+    "Нельзя загрузить больше 10 файлов": "No se pueden subir más de 10 archivos"
 }

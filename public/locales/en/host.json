@@ -83,7 +83,8 @@
         "Команда не была заполнена": "The team has not been filled",
         "Добавить участника": "Add a member",
         "Команда организации": "Organization team",
-        "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site.",
+        "Владельцы команд могут добавлять участников в команду своей организации, добавляя их адреса электронной почты. У них должна быть учетная запись на сайте.": "Team owners can add members to their organization's team by adding their email addresses. They must have an account on the site. They must have an account on the site and select the \"Goodsurfer\" role.",
+        "Функция станет доступна позже.": "The feature will become available later.",
         "Участник был добавлен": "Member was added",
         "Участник был удалён": "Member was removed",
         "Введите ФИО участника": "Enter participant's email"
@@ -100,6 +101,7 @@
     "personalHost": {
         "Написать организатору": "Contact the organizer",
         "Организация/": "Organization/",
+        "Написать": "Write",
         "Редактировать профиль": "Edit profile",
         "Об организации": "About the organization",
         "Вакансии": "Vacancies",

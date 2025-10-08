@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { memo, useEffect, useState } from "react";
 import {
+    memo, useCallback, useEffect, useState,
+} from "react";
+import {
+    DefaultValues,
     FormProvider, get, SubmitHandler, useForm,
+    useWatch,
 } from "react-hook-form";
 import cn from "classnames";
 
@@ -31,6 +35,8 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./HostDescriptionForm.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import { Profile, useGetProfileInfoQuery } from "@/entities/Profile";
+import { usePersistForm } from "@/shared/hooks/usePersistForm ";
+import { HOST_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 
 interface HostDescriptionFormProps {
     className?: string;
@@ -41,32 +47,63 @@ interface HostDescriptionFormProps {
     profileRefetch: () => void;
 }
 
+const defaultValues: DefaultValues<HostDescriptionFormFields> = {
+    avatar: "",
+    address: "",
+    mainInfo: {
+        aboutInfo: "",
+        organization: "",
+        shortOrganization: "",
+        website: "",
+    },
+    socialMedia: {
+        facebook: "",
+        instagram: "",
+        telegram: "",
+        vk: "",
+    },
+    type: {
+        organizationType: "ИП",
+        otherOrganizationType: "",
+    },
+};
+
 export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
         className, host, myProfile, isLoading = true, isError, profileRefetch,
     } = props;
 
-    const { t, ready } = useTranslation("host");
+    const { t } = useTranslation("host");
 
     const [createHost, {
         isLoading: isCreateHostLoading,
-        error: createHostError,
     }] = useCreateHostMutation();
 
     const [updateHost, {
         isLoading: isHostUpdateLoading,
-        error: hostUpdateError,
     }] = useUpdateHostMutation();
 
     const { data: getHost, refetch: hostRefetch } = useGetMyHostQuery();
 
     const [toast, setToast] = useState<ToastAlert>();
 
+    const form = useForm<HostDescriptionFormFields>({
+        mode: "onChange",
+        defaultValues,
+    });
+
+    const {
+        handleSubmit, reset, formState: { isDirty },
+        control,
+    } = form;
+
+    const watch = useWatch({ control });
+
     const onSubmit: SubmitHandler<HostDescriptionFormFields> = async (data) => {
         setToast(undefined);
-        let preparedData;
-        if (!host) {
-            try {
+        try {
+            let preparedData;
+            if (!host) {
                 preparedData = hostDescriptionApiAdapterCreate(data);
                 await createHost(preparedData).unwrap();
                 setToast({
@@ -74,43 +111,62 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     type: HintType.Success,
                 });
                 profileRefetch();
-            } catch {
-                setToast({
-                    text: t("hostDescription.Ошибка при создании организации"),
-                    type: HintType.Error,
-                });
-            }
-        }
-        if (host && getHost) {
-            try {
+            } else if (getHost) {
                 preparedData = hostDescriptionApiAdapterUpdate(data);
                 await updateHost({ id: getHost.id, body: { ...preparedData } }).unwrap();
                 setToast({
                     text: t("hostDescription.Данные успешно изменены"),
                     type: HintType.Success,
                 });
-            } catch {
-                setToast({
-                    text: t("hostDescription.Произошла ошибка"),
-                    type: HintType.Error,
-                });
             }
+            sessionStorage.removeItem(HOST_DESCRIPTION_FORM);
+        } catch {
+            setToast({
+                text: t("hostDescription.Произошла ошибка"),
+                type: HintType.Error,
+            });
         }
     };
 
-    const form = useForm<HostDescriptionFormFields>({
-        mode: "onChange",
-    });
+    const saveFormData = useCallback(
+        (data: HostDescriptionFormFields) => {
+            sessionStorage.setItem(
+                `${HOST_DESCRIPTION_FORM}`,
+                JSON.stringify(data),
+            );
+        },
+        [],
+    );
 
-    const { handleSubmit, reset } = form;
+    const loadFormData = useCallback((): Partial<HostDescriptionFormFields> | null => {
+        const savedData = sessionStorage.getItem(
+            `${HOST_DESCRIPTION_FORM}`,
+        );
+        if (savedData) {
+            return JSON.parse(savedData);
+        }
+        return null;
+    }, []);
 
     useEffect(() => {
+        const savedData = loadFormData();
+        if (savedData) {
+            reset(savedData);
+            return;
+        }
         if (getHost && host) {
             reset(hostDescriptionFormAdapter(getHost));
         } else {
             reset();
         }
-    }, [getHost, host, myProfile, reset]);
+    }, [getHost, host, loadFormData, myProfile, reset]);
+
+    useEffect(() => {
+        if (isDirty) {
+            const currentData = watch;
+            saveFormData(currentData as HostDescriptionFormFields);
+        }
+    }, [isDirty, saveFormData, watch]);
 
     useEffect(() => {
         if (myProfile) {
