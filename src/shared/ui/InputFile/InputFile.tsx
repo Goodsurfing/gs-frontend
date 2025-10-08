@@ -44,7 +44,7 @@ const InputFile = forwardRef<HTMLInputElement, InputFileProps>(
         const fileInputAccept = useMemo(() => {
             if (accept) return accept;
             if (allowedExtensions) return stringifyAllowedExtensions(allowedExtensions);
-            return "image/*"; // по умолчанию разрешаем только изображения
+            return "image/*";
         }, [accept, allowedExtensions]);
 
         // dropzone
@@ -58,7 +58,7 @@ const InputFile = forwardRef<HTMLInputElement, InputFileProps>(
         const dropzoneProps = useDropzone({
             onDrop,
             disabled: disabled || disableDropzone,
-            accept: { "image/*": [".jpeg", ".jpg", ".png", ".gif", ".webp"] }, // ограничиваем только изображениями
+            accept: { "image/*": [".jpeg", ".jpg", ".png", ".webp"] },
             multiple: false,
         });
 
@@ -77,7 +77,7 @@ const InputFile = forwardRef<HTMLInputElement, InputFileProps>(
                     : { className: cn(styles.fileInputGroup, wrapperClassName) })}
             >
                 <input
-                    {...(!disableDropzone ? getInputProps() : {})}
+                    {...(!disableDropzone ? getInputProps() : { type: "file" })}
                     ref={fileInputRef}
                     className={cn(styles.fileInputGroup__fileInput, className)}
                     onChange={onChange}

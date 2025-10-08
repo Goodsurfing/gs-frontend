@@ -38,7 +38,9 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <div className={styles.name}>
+            <div
+                className={styles.name}
+            >
                 <InputControl
                     label={t("hostDescription.Название организации")}
                     rules={{ required: t("hostDescription.Это поле является обязательным") }}
@@ -46,6 +48,7 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     name="mainInfo.organization"
                     minLength={3}
                     maxLength={60}
+                    isError={!!errors.mainInfo?.organization?.message}
                 />
                 {errors.mainInfo?.organization?.message && (
                     <ErrorText

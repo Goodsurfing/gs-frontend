@@ -37,7 +37,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 }
             }
 
-            const validExtensions = [".png", ".jpeg", ".jpg"];
+            const validExtensions = [".png", ".jpeg", ".jpg", ".webp"];
             const fileExtension = file.name
                 .toLowerCase()
                 .slice(file.name.lastIndexOf("."));
@@ -83,7 +83,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     {!isLoading && (
                         <div className={styles.containerButtons}>
                             <InputFile
-                                id="upload image"
+                                id="upload-image"
                                 onChange={handleFileChange}
                                 wrapperClassName={styles.inputButton}
                                 uploadedImageClassName={styles.hiddenImg}

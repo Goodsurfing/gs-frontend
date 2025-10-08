@@ -11,6 +11,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     isDirty?: boolean;
     isValid?: boolean;
     id?: string;
+    isError?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -29,6 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         className,
         description,
         children,
+        isError = false,
         ...restInputProps
     }, inputRef) => (
         <div className={cn(styles.wrapper, className)}>
@@ -52,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 required={required}
                 value={value || ""}
                 onChange={onChange}
-                className={cn(styles.input, inputClassName)}
+                className={cn(styles.input, inputClassName, { [styles.error]: isError })}
                 type={type}
                 placeholder={placeholder}
                 {...restInputProps}

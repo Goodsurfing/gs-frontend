@@ -8,12 +8,14 @@ interface InputControlProps<T extends FieldValues> extends Omit<InputProps, "nam
     name: Path<T>;
     control: Control<T>;
     rules?: RegisterOptions<T>;
+    isError?: boolean;
 }
 
 const InputControlComponent = <T extends FieldValues>({
     name,
     control,
     rules,
+    isError = false,
     ...restInputProps
 }: InputControlProps<T>) => (
     <Controller
@@ -25,6 +27,7 @@ const InputControlComponent = <T extends FieldValues>({
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
+                isError={isError}
                 {...restInputProps}
             />
         )}

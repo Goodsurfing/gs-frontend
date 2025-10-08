@@ -27,6 +27,7 @@ const ShortDescription: FC<ShortDescriptionProps> = () => {
                         label={t("description.Краткое описание")}
                         description={t("description.Не более 250 знаков")}
                         maxLength={250}
+                        isError={!!errors.shortDescription}
                     />
                     {errors.shortDescription && (
                         <ErrorText text={errors.shortDescription.message?.toString()} />

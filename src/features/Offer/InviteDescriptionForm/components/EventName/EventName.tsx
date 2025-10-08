@@ -29,6 +29,7 @@ const EventName = () => {
                         label={t("description.Название мероприятия")}
                         value={field.value}
                         onChange={field.onChange}
+                        isError={!!errors.title?.message}
                     />
                     {errors.title?.message && (
                         <ErrorText text={errors.title.message.toString()} />

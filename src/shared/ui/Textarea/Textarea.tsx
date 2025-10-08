@@ -9,6 +9,7 @@ export interface IText extends React.TextareaHTMLAttributes<HTMLTextAreaElement>
     description?: string;
     extraDescription?: string;
     classNameTextarea?: string;
+    isError?: boolean;
 }
 
 const Textarea: FC<IText> = ({
@@ -24,6 +25,7 @@ const Textarea: FC<IText> = ({
     maxLength = 1000,
     id,
     name,
+    isError = false,
     ...restTextAreaProps
 }) => (
     <div className={cn(styles.texarea, className)}>
@@ -36,7 +38,7 @@ const Textarea: FC<IText> = ({
             </label>
         </div>
         <textarea
-            className={cn(styles.textarea, classNameTextarea)}
+            className={cn(styles.textarea, classNameTextarea, { [styles.error]: isError })}
             required={required}
             placeholder={placeholder}
             name={name}
