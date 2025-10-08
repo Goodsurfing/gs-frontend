@@ -13,11 +13,13 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AuthByVk } from "@/features/AuthByVk";
 import { NextRouteType, useNextRoutes } from "@/routes/model/lib/useNextRoutes";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const { refetchProfile } = useAuth();
 
     const [searchParams] = useSearchParams();
     const next = searchParams.get("next");
@@ -25,12 +27,13 @@ export const AuthByEmail = memo(() => {
     const { getNextRoute } = useNextRoutes();
 
     const onSuccess = useCallback(() => {
+        refetchProfile();
         if (next && nextId) {
             navigate(getNextRoute(next as NextRouteType, nextId));
             return;
         }
         navigate(getProfileInfoPageUrl(locale));
-    }, [getNextRoute, locale, navigate, next, nextId]);
+    }, [getNextRoute, locale, navigate, next, nextId, refetchProfile]);
     const { t, ready } = useTranslation();
 
     const errorMessages: Record<string, string> = {

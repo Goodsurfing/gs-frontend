@@ -1,6 +1,6 @@
 import React, {
     createContext, FC, ReactNode, useEffect, useMemo,
-    useState,
+    useState, useCallback,
 } from "react";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
@@ -13,6 +13,7 @@ interface AuthContextProps {
     profileIsLoading: boolean;
     profileIsError: boolean;
     isAuth: boolean;
+    refetchProfile: () => void;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -30,7 +31,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const {
         data: myProfileData,
         isLoading: profileDataIsLoading, isError: profileDataIsError,
+        refetch: refetchProfileData,
     } = useGetProfileInfoQuery();
+
+    const refetchProfile = useCallback(async () => {
+        await refetchProfileData();
+    }, [refetchProfileData]);
 
     useEffect(() => {
         setAuth(!!authData);
@@ -44,9 +50,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const value = useMemo(
         () => ({
-            token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth,
+            token,
+            mercureToken,
+            myProfile,
+            profileIsLoading,
+            profileIsError,
+            isAuth,
+            refetchProfile,
         }),
-        [token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth],
+        [token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth, refetchProfile],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
