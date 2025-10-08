@@ -47,9 +47,9 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
 
     const dispatch = useAppDispatch();
 
-    const onSubmit: SubmitHandler<ProfileInfoFields> = (data) => {
+    const onSubmit: SubmitHandler<ProfileInfoFields> = async (data) => {
         const formattedData = profileFormApiAdapter(data);
-        updateProfile({ userId: profile.id, profileData: formattedData })
+        await updateProfile({ userId: profile.id, profileData: formattedData })
             .unwrap()
             .then(() => {
                 setToast({

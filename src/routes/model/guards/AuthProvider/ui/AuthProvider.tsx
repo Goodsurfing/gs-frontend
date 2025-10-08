@@ -11,6 +11,7 @@ interface AuthContextProps {
     mercureToken: string | null;
     myProfile: Profile | null;
     profileIsLoading: boolean;
+    profileIsError: boolean;
     isAuth: boolean;
 }
 
@@ -26,7 +27,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [isAuth, setAuth] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null);
     const [mercureToken, setMercureToken] = useState<string | null>(null);
-    const { data: myProfileData, isLoading: profileDataIsLoading } = useGetProfileInfoQuery();
+    const {
+        data: myProfileData,
+        isLoading: profileDataIsLoading, isError: profileDataIsError,
+    } = useGetProfileInfoQuery();
 
     useEffect(() => {
         setAuth(!!authData);
@@ -36,12 +40,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const myProfile = myProfileData ?? null;
     const profileIsLoading = profileDataIsLoading;
+    const profileIsError = profileDataIsError;
 
     const value = useMemo(
         () => ({
-            token, mercureToken, myProfile, profileIsLoading, isAuth,
+            token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth,
         }),
-        [token, mercureToken, myProfile, profileIsLoading, isAuth],
+        [token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
