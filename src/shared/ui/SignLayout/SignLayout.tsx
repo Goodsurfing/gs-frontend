@@ -8,16 +8,16 @@ import EmptyHeader from "@/shared/ui/EmptyHeader/EmptyHeader";
 
 import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 
-import styles from "./SignLayout.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
     cancelPath: string;
     cancelText: string;
-    disableRedirectIfIsAuth: boolean;
+    disableRedirectIfIsAuth?: boolean;
 }
 
 const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
