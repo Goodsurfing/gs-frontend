@@ -17,11 +17,13 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 interface SignLayoutProps {
     cancelPath: string;
     cancelText: string;
+    disableRedirectIfIsAuth: boolean;
 }
 
 const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     cancelText,
     cancelPath,
+    disableRedirectIfIsAuth = false,
     children,
 }) => {
     const { locale } = useLocale();
@@ -29,7 +31,7 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     const isAuth = useAppSelector(getUserAuthData);
 
     useEffect(() => {
-        if (isAuth) {
+        if (isAuth && !disableRedirectIfIsAuth) {
             navigate(getMainPageUrl(locale));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

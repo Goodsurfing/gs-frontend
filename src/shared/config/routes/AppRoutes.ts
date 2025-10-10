@@ -12,6 +12,7 @@ export enum AppRoutes {
     CONFIRM_EMAIL_SUCCESS = "confirm_email_success",
     EMAIL_EXPIRED = "email_expired",
     EMAIL_ALREADY_CONFIRMED = "email_already_confirmed",
+    VERIFY_EMAIL = "verify_email",
     CONFIRM_ERROR = "confirm_error",
     PROFILE = "profile",
     PROFILE_INFO = "profile_info",

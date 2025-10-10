@@ -40,7 +40,9 @@
         "Посмотреть профиль": "View Profile",
         "Максимальный_размер": "Maximum size is {{size}} MB",
         "Данные успешно изменены": "Data updated successfully",
-        "Не более 1000 знаков": "No more than 1000 characters"
+        "Не более 1000 знаков": "No more than 1000 characters",
+        "Вам нужно подтвердить вашу электронную почту.": "You need to confirm your email.",
+        "Подтвердить": "Confirm"
     },
     "preferences": {
         "Куда бы вы хотели поехать": "Where would you like to go",
