@@ -25,6 +25,7 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     gallery: galleryReducer,
     user: userReducer,
+    // admin: adminRe
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,
