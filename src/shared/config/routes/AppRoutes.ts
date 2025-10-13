@@ -66,4 +66,5 @@ export enum AppRoutes {
     ACADEMY_COURSE = "academy_course",
     ACADEMY_LESSON = "academy_lesson",
     NOT_FOUND = "not_found",
+    ADMIN_SIGN_IN = "admin_sign_in",
 }

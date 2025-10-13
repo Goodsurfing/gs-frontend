@@ -53,10 +53,10 @@ import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { AcademyMainPage } from "@/pages/AcademyMainPage";
 import { AcademyCoursePage } from "@/pages/AcademyCoursePage";
+import { AdminSignInPage } from "@/pages/AdminSignInPage";
 
 import {
     getAboutProjectPageUrl,
-
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
@@ -128,6 +128,7 @@ import {
     getEmailExpiredPageUrl,
     getConfirmErrorPageUrl,
     getEmailAlreadyConfirmedPageUrl,
+    getAdminSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -521,6 +522,12 @@ const publicRoutes: RouteType[] = [
         label: "academy-lesson",
         element: <AcademyLessonPage />,
         path: (locale: string) => getAcademyLessonPageUrl(locale),
+    },
+    // Admin dashboard
+    {
+        label: "admin-sign-in",
+        element: <AdminSignInPage />,
+        path: (locale: string) => getAdminSignInPageUrl(locale),
     },
 ];
 

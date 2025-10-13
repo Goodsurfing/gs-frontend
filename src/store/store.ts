@@ -19,13 +19,14 @@ import { authMiddleware } from "./middlewares/authMiddleware";
 import { reviewApi } from "@/entities/Review";
 import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
+import { adminReducer } from "@/entities/Admin";
 
 const rootReducer = combineReducers({
     register: registerReducer,
     profile: profileReducer,
     gallery: galleryReducer,
     user: userReducer,
-    // admin: adminRe
+    admin: adminReducer,
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
     [localeApi.reducerPath]: localeApi.reducer,

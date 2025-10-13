@@ -122,6 +122,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={changeCurrentPage}
+                className={styles.pagination}
             />
         </div>
     );

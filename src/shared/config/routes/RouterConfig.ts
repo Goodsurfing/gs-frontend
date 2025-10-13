@@ -75,4 +75,5 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",
+    [AppRoutes.ADMIN_SIGN_IN]: "/admin",
 };

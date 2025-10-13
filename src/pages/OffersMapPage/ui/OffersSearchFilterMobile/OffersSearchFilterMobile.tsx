@@ -231,6 +231,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={changeCurrentPage}
+                        className={styles.pagination}
                     />
                 </>
             )}

@@ -80,6 +80,10 @@
     padding: 20px;
 }
 
+.pagination {
+    justify-content:center;
+}
+
 @media (max-width: 290px) {
     .buttons {
         flex-wrap: wrap;
