@@ -40,7 +40,9 @@
         "Посмотреть профиль": "Ver perfil",
         "Максимальный_размер": "El tamaño máximo es de {{size}} MB",
         "Данные успешно изменены": "Datos actualizados con éxito",
-        "Не более 1000 знаков": "No más de 1000 caracteres"
+        "Не более 1000 знаков": "No más de 1000 caracteres",
+        "Вам нужно подтвердить вашу электронную почту.": "Necesitas confirmar tu correo electrónico.",
+        "Подтвердить": "Confirmar"
     },
     "preferences": {
         "Куда бы вы хотели поехать": "¿A dónde le gustaría ir?",

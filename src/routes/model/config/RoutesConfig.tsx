@@ -128,6 +128,7 @@ import {
     getEmailExpiredPageUrl,
     getConfirmErrorPageUrl,
     getEmailAlreadyConfirmedPageUrl,
+    getVerifyEmailPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -142,6 +143,7 @@ import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
 import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
 import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
 import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
+import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -214,6 +216,11 @@ const publicRoutes: RouteType[] = [
         label: "email-already-confirmed",
         element: <EmailAlreadyConfirmedPage />,
         path: (locale: string) => getEmailAlreadyConfirmedPageUrl(locale),
+    },
+    {
+        label: "verify-email",
+        element: <VerifyEmailPage />,
+        path: (locale: string) => getVerifyEmailPageUrl(locale),
     },
     {
         label: "host-layout",

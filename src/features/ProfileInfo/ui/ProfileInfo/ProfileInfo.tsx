@@ -7,6 +7,7 @@ import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./ProfileInfo.module.scss";
+import { ProfileInfoVerifyEmail } from "../ProfileInfoVerifyEmail/ProfileInfoVerifyEmail";
 
 interface ProfileInfoProps {
     className?: string;
@@ -40,6 +41,10 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
+            {/* {!myProfile?.email && (
+                <ProfileInfoVerifyEmail />
+            )} */}
+            <ProfileInfoVerifyEmail />
             <div className={styles.body}>
                 {myProfile && <ProfileInfoForm profile={myProfile} />}
             </div>

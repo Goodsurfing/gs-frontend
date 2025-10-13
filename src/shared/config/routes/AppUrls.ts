@@ -23,6 +23,7 @@ export const getMessengerPageCreateUrl: RoutePathFunction = (locale, id = ":id",
 export const getCategoriesPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.categories}`);
 
 // Favorite offers page
+
 export const getFavoriteOffersPageUrl: RoutePathFunction = (locale) => (`/${locale}${RoutePath.favorite_offers}`);
 
 // Auth bounded pages
@@ -34,6 +35,8 @@ export const getConfirmEmailSuccessPageUrl: RoutePathFunction = (locale) => `/${
 export const getEmailExpiredPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_expired}`;
 
 export const getEmailAlreadyConfirmedPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.email_already_confirmed}`;
+
+export const getVerifyEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.verify_email}`;
 
 export const getConfirmErrorPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_error}`;
 

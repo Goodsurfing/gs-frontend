@@ -9,17 +9,12 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getPrivacyPolicyPageUrl } from "@/shared/config/routes/AppUrls";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import styles from "./SignUpContainer.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { AuthByVk } from "@/features/AuthByVk";
+import styles from "./SignUpContainer.module.scss";
 
 const SignUpContainer: FC = () => {
     const { locale } = useLocale();
-    const { t, ready } = useTranslation();
-
-    if (!ready) {
-        return (<Preloader />);
-    }
+    const { t } = useTranslation();
 
     return (
         <div className={styles.wrapper}>
