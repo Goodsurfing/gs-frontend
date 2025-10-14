@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminUsersPageUrl } from "@/shared/config/routes/AppUrls";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { LoginAdminFields } from "@/types/api/auth/login.interface";
@@ -21,7 +21,7 @@ export const AdminAuth = () => {
     const { control, reset, handleSubmit } = useForm<LoginAdminFields>({ mode: "onChange" });
 
     const onSuccess = useCallback(() => {
-        navigate(getMainPageUrl(locale));
+        navigate(getAdminUsersPageUrl(locale));
     }, [locale, navigate]);
 
     // const onError = useCallback((errorText: string) => {

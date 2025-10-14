@@ -174,3 +174,5 @@ export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") =
 // Admin pages
 
 export const getAdminSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_sign_in}`;
+
+export const getAdminUsersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_users}`;
