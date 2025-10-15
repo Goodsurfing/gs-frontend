@@ -130,6 +130,7 @@ import {
     getEmailAlreadyConfirmedPageUrl,
     getAdminSignInPageUrl,
     getAdminUsersPageUrl,
+    getAdminPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -145,6 +146,7 @@ import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
 import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
 import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
 import { AdminUsersPage } from "@/pages/AdminUsersPage";
+import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -402,9 +404,7 @@ const publicRoutes: RouteType[] = [
         children: [
             {
                 label: "profile-info",
-                element: (
-                    <ProfileInfoPage />
-                ),
+                element: <ProfileInfoPage />,
                 path: (locale: string) => getProfileInfoPageUrl(locale),
             },
             {
@@ -532,9 +532,16 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getAdminSignInPageUrl(locale),
     },
     {
-        label: "admin-users",
-        element: <AdminUsersPage />,
-        path: (locale: string) => getAdminUsersPageUrl(locale),
+        label: "admin",
+        element: <AdminLayoutPage />,
+        path: (locale: string) => getAdminPageUrl(locale),
+        children: [
+            {
+                label: "admin-users",
+                element: <AdminUsersPage />,
+                path: (locale: string) => getAdminUsersPageUrl(locale),
+            },
+        ],
     },
 ];
 

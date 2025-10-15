@@ -173,6 +173,16 @@ export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") =
 
 // Admin pages
 
+export const getAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin}`;
+
 export const getAdminSignInPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_sign_in}`;
 
 export const getAdminUsersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_users}`;
+
+export const getAdminOrganizationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_organizations}`;
+
+export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancies}`;
+
+export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}`;
+
+export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;

@@ -5,7 +5,7 @@ export interface DropdownItem {
 
 export interface SidebarContentProps {
     text: string;
-    icon: string;
+    icon?: string;
     route: string;
     dropdownItems?: DropdownItem[];
 }
