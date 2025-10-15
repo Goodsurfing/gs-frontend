@@ -11,7 +11,7 @@ import { isSidebarLinkBack } from "../../lib/isSidebarLinkBack";
 
 interface SidebarLinkProps {
     text: string;
-    icon: string;
+    icon?: string;
     route: string;
 }
 
@@ -42,7 +42,9 @@ export const SidebarLink = memo(({ icon, route, text }: SidebarLinkProps) => {
                     },
                 )}
             >
-                <ReactSVG className={styles.img} src={icon} />
+                {icon && (
+                    <ReactSVG className={styles.img} src={icon} />
+                )}
                 <span className={cn(styles.text, { [styles.opened]: isOpen })}>
                     {text}
                 </span>

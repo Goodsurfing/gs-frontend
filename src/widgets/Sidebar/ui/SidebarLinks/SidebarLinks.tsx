@@ -8,9 +8,16 @@ import styles from "./SidebarLinks.module.scss";
 
 interface SidebarLinksProps {
     content: SidebarContentProps[];
+    classNameSidebarLinks?: string;
+    classNameDropdownContainer?: string;
+    classNameDropdownItem?: string;
 }
 
-export const SidebarLinks = memo(({ content }: SidebarLinksProps) => {
+export const SidebarLinks = memo(({
+    content, classNameDropdownContainer,
+    classNameDropdownItem,
+    classNameSidebarLinks,
+}: SidebarLinksProps) => {
     const linksList = useMemo(() => content.map((item) => {
         if (item.dropdownItems) {
             return (
@@ -20,6 +27,8 @@ export const SidebarLinks = memo(({ content }: SidebarLinksProps) => {
                     route={item.route}
                     dropdownItems={item.dropdownItems}
                     key={item.text}
+                    classNameDropdownContainer={classNameDropdownContainer}
+                    classNameDropdownItem={classNameDropdownItem}
                 />
             );
         }
@@ -31,10 +40,10 @@ export const SidebarLinks = memo(({ content }: SidebarLinksProps) => {
                 route={item.route}
             />
         );
-    }), [content]);
+    }), [classNameDropdownContainer, classNameDropdownItem, content]);
 
     return (
-        <ul className={cn(styles.sidebarLinks)}>
+        <ul className={cn(styles.sidebarLinks, classNameSidebarLinks)}>
             {linksList}
         </ul>
     );

@@ -13,3 +13,9 @@ export interface LoginResponse {
     accessToken: string;
     mercureToken: string;
 }
+
+export interface LoginAdminFields {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+}

@@ -5,7 +5,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./AuthByEmail.module.scss";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 // import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
@@ -14,12 +13,14 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AuthByVk } from "@/features/AuthByVk";
 import { NextRouteType, useNextRoutes } from "@/routes/model/lib/useNextRoutes";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./AuthByEmail.module.scss";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { refetchProfile } = useAuth();
+    const { t, ready } = useTranslation();
 
     const [searchParams] = useSearchParams();
     const next = searchParams.get("next");
@@ -34,7 +35,6 @@ export const AuthByEmail = memo(() => {
         }
         navigate(getProfileInfoPageUrl(locale));
     }, [getNextRoute, locale, navigate, next, nextId, refetchProfile]);
-    const { t, ready } = useTranslation();
 
     const errorMessages: Record<string, string> = {
         "Ошибка авторизации": t("login.Ошибка авторизации"),

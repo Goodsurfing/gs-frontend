@@ -1,0 +1,27 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	.title {
+		margin-bottom: 55px;
+	}
+}
+
+.form {
+	width: 100%;
+	max-width: 400px;
+
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	.btn {
+		margin-top: 20px;
+	}
+}
+
+.checkbox {
+	width: 100%;
+	margin-top: 20px;
+}

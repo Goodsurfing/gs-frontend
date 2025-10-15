@@ -53,10 +53,10 @@ import { VolunteerSkillsPage } from "@/pages/VolunteerSkillsPage";
 import { VolunteerSubscribersPage } from "@/pages/VolunteerSubscribersPage";
 import { AcademyMainPage } from "@/pages/AcademyMainPage";
 import { AcademyCoursePage } from "@/pages/AcademyCoursePage";
+import { AdminSignInPage } from "@/pages/AdminSignInPage";
 
 import {
     getAboutProjectPageUrl,
-
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
@@ -128,6 +128,9 @@ import {
     getEmailExpiredPageUrl,
     getConfirmErrorPageUrl,
     getEmailAlreadyConfirmedPageUrl,
+    getAdminSignInPageUrl,
+    getAdminUsersPageUrl,
+    getAdminPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -142,6 +145,8 @@ import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
 import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
 import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
 import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
+import { AdminUsersPage } from "@/pages/AdminUsersPage";
+import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -399,9 +404,7 @@ const publicRoutes: RouteType[] = [
         children: [
             {
                 label: "profile-info",
-                element: (
-                    <ProfileInfoPage />
-                ),
+                element: <ProfileInfoPage />,
                 path: (locale: string) => getProfileInfoPageUrl(locale),
             },
             {
@@ -521,6 +524,24 @@ const publicRoutes: RouteType[] = [
         label: "academy-lesson",
         element: <AcademyLessonPage />,
         path: (locale: string) => getAcademyLessonPageUrl(locale),
+    },
+    // Admin dashboard
+    {
+        label: "admin-sign-in",
+        element: <AdminSignInPage />,
+        path: (locale: string) => getAdminSignInPageUrl(locale),
+    },
+    {
+        label: "admin",
+        element: <AdminLayoutPage />,
+        path: (locale: string) => getAdminPageUrl(locale),
+        children: [
+            {
+                label: "admin-users",
+                element: <AdminUsersPage />,
+                path: (locale: string) => getAdminUsersPageUrl(locale),
+            },
+        ],
     },
 ];
 
