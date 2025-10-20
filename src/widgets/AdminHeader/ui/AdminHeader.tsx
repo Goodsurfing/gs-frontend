@@ -7,7 +7,7 @@ export const AdminHeader = () => {
     const onLogout = () => {};
 
     return (
-        <EmptyHeader>
+        <EmptyHeader className={styles.header}>
             <div className={styles.button}>
                 <Button onClick={onLogout} color="BLUE" size="SMALL" variant="FILL">Выйти</Button>
             </div>
