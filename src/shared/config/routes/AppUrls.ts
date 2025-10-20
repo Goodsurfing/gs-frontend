@@ -179,6 +179,8 @@ export const getAdminSignInPageUrl: RoutePathFunction = (locale) => `/${locale}$
 
 export const getAdminUsersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_users}`;
 
+export const getAdminPersonalUserPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_users}/${id}`;
+
 export const getAdminOrganizationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_organizations}`;
 
 export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancies}`;

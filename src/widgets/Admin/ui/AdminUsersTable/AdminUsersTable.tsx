@@ -1,51 +1,150 @@
-import { Profile } from "@/entities/Profile";
-import { Button, Stack } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
+import { Stack } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+import { ReactSVG } from "react-svg";
+import cn from "classnames";
+import { mockedProfileData } from "@/entities/Profile/model/data/mockedProfileData";
+import showIcon from "@/shared/assets/icons/admin/show.svg";
+import blockIcon from "@/shared/assets/icons/admin/block.svg";
+import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
+import styles from "./AdminUsersTable.module.scss";
+import { adminUsersAdapter } from "../../lib/AdminUsersAdapter";
+import { AdminUsersFields } from "../../model/types";
+import { getAdminPersonalUserPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
-const rows: Profile[] = [
-
-];
+const rows: AdminUsersFields[] = adminUsersAdapter(mockedProfileData);
 
 export const AdminUsersTable = () => {
     const [pageSize, setPageSize] = useState(50);
     const navigate = useNavigate();
+    const { locale } = useLocale();
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", width: 70 },
-        { field: "firstName", headerName: "First name", width: 130 },
-        { field: "lastName", headerName: "Last name", width: 130 },
+        { field: "id", headerName: "ID", disableColumnMenu: true },
+        { field: "email", headerName: "E-mail", disableColumnMenu: true },
         {
-            field: "age", headerName: "Age", type: "number", width: 90,
+            field: "name", headerName: "Имя", disableColumnMenu: true, width: 150,
+        },
+        {
+            field: "dateRegistration",
+            headerName: "Дата регистрации",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 140,
+        },
+        {
+            field: "dateLogin",
+            headerName: "Дата последнего входа",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 140,
+        },
+        {
+            field: "isConfirmed",
+            headerName: "Пользователь подтвержден",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "isVolunteer",
+            headerName: "Роль \"Гудсёрфер\"",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "isHost",
+            headerName: "Роль \"Хост\"",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "isBlock",
+            headerName: "Пользователь заблокирован",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "isMembership",
+            headerName: "Членство",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "dataEndMembership",
+            headerName: "Окончание членства",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
         },
         {
             field: "actions",
             headerName: "Действия",
-            width: 320,
+            width: 160,
             sortable: false,
             filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
             renderCell: (params) => {
-                const handleView = () => navigate(`/admin/users/${params.row.id}`);
-                const handleEdit = () => navigate(`/admin/users/${params.row.id}/edit`);
+                const handleView = () => navigate(
+                    getAdminPersonalUserPageUrl(locale, params.row.id),
+                );
+                const handleBlock = () => alert(`Заблокировать пользователя ${params.row.id}?`);
                 const handleDelete = () => alert(`Удалить пользователя ${params.row.id}?`);
 
                 return (
                     <Stack direction="row" spacing={1}>
-                        <Button variant="outlined" size="small" onClick={handleView}>
-                            Редакт.
-                        </Button>
-                        <Button variant="contained" size="small" color="primary" onClick={handleEdit}>
-                            Блокировать
-                        </Button>
-                        <Button variant="contained" size="small" color="error" onClick={handleDelete}>
-                            Удалить
-                        </Button>
+                        <button
+                            onClick={handleView}
+                            type="button"
+                            title="Показать пользователя"
+                            className={cn(styles.btnIcon, styles.btnShow)}
+                        >
+                            <ReactSVG src={showIcon} />
+                        </button>
+                        <button
+                            onClick={handleBlock}
+                            type="button"
+                            title="Заблокировать пользователя"
+                            className={cn(styles.btnIcon, styles.btnBlock)}
+                        >
+                            <ReactSVG src={blockIcon} />
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            type="button"
+                            title="Удалить пользователя"
+                            className={cn(styles.btnIcon, styles.btnDelete)}
+                        >
+                            <ReactSVG src={deleteIcon} />
+                        </button>
                     </Stack>
                 );
             },
         },
     ];
+
     return (
         <div style={{ height: "80vh" }}>
             <DataGrid
@@ -55,6 +154,8 @@ export const AdminUsersTable = () => {
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 pagination
                 sx={{ border: 0 }}
+                rowsPerPageOptions={[]}
+                disableSelectionOnClick
             />
         </div>
     );
