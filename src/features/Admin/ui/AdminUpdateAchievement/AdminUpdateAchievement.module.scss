@@ -1,0 +1,22 @@
+.modalWrapper {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.modal {
+    padding: 20px;
+    background-color: var(--bg-primary-1);
+    border-radius: 20px;
+}
+
+.list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-top: 15px;
+}

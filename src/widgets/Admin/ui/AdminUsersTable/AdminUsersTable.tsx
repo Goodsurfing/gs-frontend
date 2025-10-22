@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import { mockedProfileData } from "@/entities/Profile/model/data/mockedProfileData";
+import { getAdminPersonalUserPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { adminUsersAdapter, AdminUsersFields } from "@/entities/Admin";
+
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import styles from "./AdminUsersTable.module.scss";
-import { adminUsersAdapter } from "../../lib/AdminUsersAdapter";
-import { AdminUsersFields } from "../../model/types";
-import { getAdminPersonalUserPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 const rows: AdminUsersFields[] = adminUsersAdapter(mockedProfileData);
 
@@ -146,7 +146,7 @@ export const AdminUsersTable = () => {
     ];
 
     return (
-        <div style={{ height: "80vh" }}>
+        <div className={styles.wrapper}>
             <DataGrid
                 rows={rows}
                 columns={columns}

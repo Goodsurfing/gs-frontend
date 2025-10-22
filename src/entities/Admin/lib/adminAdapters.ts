@@ -1,6 +1,6 @@
 import { Profile } from "@/entities/Profile";
-import { AdminUsersFields } from "../model/types";
 import { getFullName } from "@/shared/lib/getFullName";
+import { AdminUsersFields } from "../model/types/adminSchema";
 
 export const adminUsersAdapter = (data: Profile[]): AdminUsersFields[] => {
     const result: AdminUsersFields[] = data.map((user) => {
