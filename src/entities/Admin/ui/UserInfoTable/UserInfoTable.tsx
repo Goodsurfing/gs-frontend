@@ -1,33 +1,39 @@
 import React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+    Paper, Table, TableBody, TableCell, TableContainer, TableRow,
+} from "@mui/material";
 import { adminUsersAdapter } from "../../lib/adminAdapters";
 import { mockedProfileData } from "@/entities/Profile/model/data/mockedProfileData";
 import styles from "./UserInfoTable.module.scss";
 
 const user = adminUsersAdapter(mockedProfileData)[0];
+const YesText = <div className={styles.yes}>Да</div>;
+const NoText = <div className={styles.no}>Нет</div>;
+const rows = [
+    { label: "ID", value: user.id },
+    { label: "Дата регистрации", value: user.dateRegistration },
+    { label: "Последний вход", value: user.dateLogin },
+    { label: "Окончание членства", value: user.dateEndMembership },
+    { label: "Активное членство", value: user.isMembership ? YesText : NoText },
+    { label: "Блокировка", value: user.isBlock ? YesText : NoText },
+    { label: "Подтверждён", value: user.isConfirmed ? YesText : NoText },
+    { label: "Хост", value: user.isHost ? YesText : NoText },
+    { label: "Волонтёр", value: user.isVolunteer ? YesText : NoText },
+];
 
-const rows = Object.entries(user).map(([key, value], index) => ({
-    id: index,
-    field: key,
-    value: String(value),
-}));
-
-export const UserInfoTable = () => {
-    const columns: GridColDef[] = [
-        { field: "field", headerName: "Поле", flex: 1 },
-        { field: "value", headerName: "Значение", flex: 2 },
-    ];
-
-    return (
-        <div className={styles.wrapper}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                sx={{ border: 0 }}
-                disableSelectionOnClick
-                hideFooter
-                disableColumnMenu
-            />
-        </div>
-    );
-};
+export const UserInfoTable = () => (
+    <div className={styles.wrapper}>
+        <TableContainer component={Paper}>
+            <Table>
+                <TableBody>
+                    {rows.map((row) => (
+                        <TableRow key={row.label}>
+                            <TableCell className={styles.labelCell}><b>{row.label}</b></TableCell>
+                            <TableCell className={styles.valueCell}>{row.value}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    </div>
+);

@@ -1,3 +1,19 @@
 .wrapper {
-    height: 80vh;
+    padding-bottom: 20px;
+}
+
+.yes,
+.no {
+    padding: 6px 8px;
+    border-radius: 30px;
+    width: fit-content;
+    color: white;
+}
+
+.yes {
+    background-color: var(--accepted-color);
+}
+
+.no {
+    background-color: var(--error-color);
 }
