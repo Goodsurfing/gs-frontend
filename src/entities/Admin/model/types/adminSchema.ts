@@ -19,3 +19,12 @@ export interface AdminUsersFields {
     isMembership: boolean;
     dateEndMembership: string;
 }
+
+export interface AdminOrganizationsFields {
+    id: string;
+    name?: string;
+    owner: string;
+    countMembers: number;
+    countVacancies: number;
+    countVolunteers: number;
+}

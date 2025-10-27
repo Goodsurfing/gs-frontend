@@ -1,102 +1,68 @@
 import React, { useState } from "react";
-import { Stack } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { ReactSVG } from "react-svg";
+import { Stack } from "@mui/material";
 import cn from "classnames";
-import { mockedProfileData } from "@/entities/Profile/model/data/mockedProfileData";
-import { getAdminPersonalUserPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { adminUsersAdapter, AdminUsersFields } from "@/entities/Admin";
-
+import { mockedHostData } from "@/entities/Host/model/data/mockedHostData";
+import { adminOrganizationsAdapter, AdminOrganizationsFields } from "@/entities/Admin";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
-import styles from "./AdminUsersTable.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminOrganizationsTable.module.scss";
+import { getAdminPersonalOrganizationPageUrl } from "@/shared/config/routes/AppUrls";
 
-const rows: AdminUsersFields[] = adminUsersAdapter(mockedProfileData);
+const rows: AdminOrganizationsFields[] = adminOrganizationsAdapter([mockedHostData]);
 
-export const AdminUsersTable = () => {
+export const AdminOrganizationsTable = () => {
     const [pageSize, setPageSize] = useState(50);
     const navigate = useNavigate();
     const { locale } = useLocale();
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", disableColumnMenu: false },
-        { field: "email", headerName: "E-mail", disableColumnMenu: false },
         {
-            field: "name", headerName: "Имя", disableColumnMenu: false, width: 150,
+            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
         },
         {
-            field: "dateRegistration",
-            headerName: "Дата регистрации",
+            field: "owner",
+            headerName: "Владелец",
             sortable: false,
+            filterable: true,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 240,
+        },
+        {
+            field: "countMembers",
+            headerName: "Кол-во участников",
+            type: "number",
+            sortable: true,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 140,
+            width: 180,
         },
         {
-            field: "dateLogin",
-            headerName: "Дата последнего входа",
-            sortable: false,
+            field: "countVacancies",
+            headerName: "Кол-во вакансий",
+            type: "number",
+            sortable: true,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 140,
+            width: 180,
         },
         {
-            field: "isConfirmed",
-            headerName: "Пользователь подтвержден",
-            type: "boolean",
-            sortable: false,
+            field: "countVolunteers",
+            headerName: "Кол-вл гудсёрферов",
+            type: "number",
+            sortable: true,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-        },
-        {
-            field: "isVolunteer",
-            headerName: "Роль \"Гудсёрфер\"",
-            type: "boolean",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-        },
-        {
-            field: "isHost",
-            headerName: "Роль \"Хост\"",
-            type: "boolean",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-        },
-        {
-            field: "isBlock",
-            headerName: "Пользователь заблокирован",
-            type: "boolean",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-        },
-        {
-            field: "isMembership",
-            headerName: "Членство",
-            type: "boolean",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-        },
-        {
-            field: "dataEndMembership",
-            headerName: "Окончание членства",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
+            width: 180,
         },
         {
             field: "actions",
@@ -108,17 +74,17 @@ export const AdminUsersTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminPersonalUserPageUrl(locale, params.row.id),
+                    getAdminPersonalOrganizationPageUrl(locale, params.row.id),
                 );
-                const handleBlock = () => alert(`Заблокировать пользователя ${params.row.id}?`);
-                const handleDelete = () => alert(`Удалить пользователя ${params.row.id}?`);
+                const handleBlock = () => alert(`Заблокировать организацию ${params.row.id}?`);
+                const handleDelete = () => alert(`Удалить организацию ${params.row.id}?`);
 
                 return (
                     <Stack direction="row" spacing={1}>
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Показать пользователя"
+                            title="Показать организацию"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
@@ -126,7 +92,7 @@ export const AdminUsersTable = () => {
                         <button
                             onClick={handleBlock}
                             type="button"
-                            title="Заблокировать пользователя"
+                            title="Заблокировать организацию"
                             className={cn(styles.btnIcon, styles.btnBlock)}
                         >
                             <ReactSVG src={blockIcon} />
@@ -134,7 +100,7 @@ export const AdminUsersTable = () => {
                         <button
                             onClick={handleDelete}
                             type="button"
-                            title="Удалить пользователя"
+                            title="Удалить организацию"
                             className={cn(styles.btnIcon, styles.btnDelete)}
                         >
                             <ReactSVG src={deleteIcon} />

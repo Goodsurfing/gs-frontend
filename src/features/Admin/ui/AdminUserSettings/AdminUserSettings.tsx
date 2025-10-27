@@ -84,7 +84,6 @@ export const AdminUserSettings: FC = () => {
             >
                 Заблокировать пользователя
             </Button>
-
             <Button
                 className={styles.button}
                 color="RED"
@@ -94,7 +93,6 @@ export const AdminUserSettings: FC = () => {
             >
                 Удалить пользователя
             </Button>
-
             <Button
                 className={styles.button}
                 color="GREEN"
@@ -104,7 +102,6 @@ export const AdminUserSettings: FC = () => {
             >
                 Активировать членство
             </Button>
-
             <Button
                 className={styles.button}
                 color="BLUE"
@@ -114,14 +111,12 @@ export const AdminUserSettings: FC = () => {
             >
                 Присвоить достижение
             </Button>
-
             <ConfirmActionModal
                 description={modalDescription}
                 onConfirm={handleConfirm}
                 onClose={handleCloseConfirmModal}
                 isModalOpen={isConfirmModalOpen}
             />
-
             <AdminUpdateAchievement
                 achievements={achievementsList}
                 isModalOpen={isAchievementModalOpen}
