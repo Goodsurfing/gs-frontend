@@ -1,5 +1,6 @@
 import { FormApplicationStatus } from "@/entities/Application";
-import { Host, HostApi } from "@/entities/Host";
+import { HostApi } from "@/entities/Host";
+import { Profile } from "@/entities/Profile";
 import { Language, VolunteerApi } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
@@ -7,24 +8,21 @@ import { MediaObjectType } from "@/types/media";
 
 export interface MessageType {
     id: number;
-    author: string;
+    author: Profile;
     text?: string;
     attachments: string[] | MediaObjectType[];
     createdAt: string;
-    chat: string;
-    viewedVolunteer: boolean;
-    viewedOrganization: boolean;
+    // chat: string;
     applicationForm?: string;
+    readByUserIds: string[];
 }
 
 export interface ChatsList {
     id: number;
-    organization: HostApi;
-    volunteer: VolunteerApi;
     lastMessage?: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByOrganization: number;
-    countUnreadMessagesByVolunteer: number;
+    applicationStatus?: FormApplicationStatus;
+    otherParticipants: Profile[];
+    countUnreadMessages: number;
 }
 export interface ChatsListWithVolunteers {
     id: number;
@@ -65,7 +63,7 @@ export interface MessageTypeMocked {
 export interface ChatType {
     id: number;
     lastMessage: MessageType;
-    organization: Host;
-    vacancyStatus?: FormApplicationStatus;
-    volunteer: VolunteerApi;
+    applicationStatus?: FormApplicationStatus;
+    otherParticipants: Profile[];
+    countUnreadMessages: number;
 }

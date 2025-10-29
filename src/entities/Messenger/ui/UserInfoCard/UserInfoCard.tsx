@@ -6,9 +6,6 @@ import { ReactSVG } from "react-svg";
 import { useTranslation } from "react-i18next";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-import { Host } from "@/entities/Host";
-import { VolunteerApi } from "@/entities/Volunteer";
-
 import exitIcon from "@/shared/assets/icons/delete.svg";
 import {
     getHostPersonalPageUrl,
@@ -23,9 +20,10 @@ import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextCompone
 import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { Profile } from "@/entities/Profile";
 
 interface UserInfoCardProps {
-    user?: Host | VolunteerApi;
+    user: Profile;
     infoOpenedChange: () => void;
     className?: string;
     locale: Locale;
@@ -42,8 +40,8 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
 
     const { t } = useTranslation("messenger");
     const { skillsData } = useSkillsData();
-    const languages = user && "languages" in user ? user.languages : null;
-    const textLanguages = useFormatLanguages(languages ?? []);
+    const languages = user.volunteer?.languages ?? null;
+    const textLanguages = useFormatLanguages(user.volunteer?.languages ?? []);
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
@@ -54,10 +52,6 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const navigateToHost = useCallback((id: string) => {
         navigate(getHostPersonalPageUrl(locale, id));
     }, [locale, navigate]);
-
-    if (!user) {
-        return null;
-    }
 
     if ("profile" in user) {
         const { profile, skills } = user;

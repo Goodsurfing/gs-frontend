@@ -81,6 +81,7 @@ export const {
     useGetProfileInfoQuery,
     useLazyGetProfileInfoQuery,
     useGetProfileInfoByIdQuery,
+    useLazyGetProfileInfoByIdQuery,
     useUpdateProfileInfoMutation,
     useChangePasswordMutation,
     useGetProfileSearchByEmailQuery,

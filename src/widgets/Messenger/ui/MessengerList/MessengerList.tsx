@@ -13,18 +13,16 @@ import { ChatsList, UserCard } from "@/entities/Messenger";
 import { ListFilter } from "../ListFilter/ListFilter";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import styles from "./MessengerList.module.scss";
-import { Profile } from "@/entities/Profile";
 
 interface MessengerListProps {
     className?: string;
     onUserClick?: (value: string) => void;
     locale: Locale;
-    myProfileData: Profile;
 }
 
 export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps) => {
     const {
-        className, onUserClick, locale, myProfileData,
+        className, onUserClick, locale,
     } = props;
     const { token, mercureToken } = useAuth();
 
@@ -83,11 +81,10 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
                 <UserCard
                     dataChat={chatItem}
                     locale={locale}
-                    myProfileData={myProfileData}
                 />
             </div>
         )),
-        [displayedChats, locale, onUserClick, myProfileData],
+        [displayedChats, locale, onUserClick],
     );
 
     return (
