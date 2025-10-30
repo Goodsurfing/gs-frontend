@@ -8,8 +8,7 @@ import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
-import { useGetProfileInfoQuery } from "@/entities/Profile";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
+import { useGetProfileInfoQuery, useGetProfileInfoByIdQuery } from "@/entities/Profile";
 
 import {
     getMessengerPageIdUrl,
@@ -29,11 +28,11 @@ export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { locale } = useLocale();
-    const { t, ready } = useTranslation("volunteer");
+    const { t, ready } = useTranslation("profile");
     const { submenuItems } = useSubmenuVolunteerItems();
     const { isAuth } = useAuth();
 
-    const { data: volunteerData, isLoading } = useGetVolunteerByIdQuery(
+    const { data: profileData, isLoading } = useGetProfileInfoByIdQuery(
         id || "",
     );
     const { data: myProfileData } = useGetProfileInfoQuery();
@@ -62,7 +61,7 @@ export const VolunteerPersonalPage = () => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text={t("personalVolunteer.Произошла ошибка")}
+                        text={t("personal.Произошла ошибка")}
                     />
                 </div>
                 <Footer />
@@ -70,7 +69,7 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    if (!volunteerData) {
+    if (!profileData) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
@@ -78,7 +77,7 @@ export const VolunteerPersonalPage = () => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text={t("personalVolunteer.Произошла ошибка или пользователь не зарегистрирован как волонтёр")}
+                        text={t("personal.Произошла ошибка или пользователь не зарегистрирован как волонтёр")}
                     />
                 </div>
                 <Footer />
@@ -98,7 +97,7 @@ export const VolunteerPersonalPage = () => {
                     className={styles.button}
                     onClick={handleEditClick}
                 >
-                    {t("personalVolunteer.Редактировать")}
+                    {t("personal.Редактировать")}
                 </Button>
             )}
 
@@ -110,7 +109,7 @@ export const VolunteerPersonalPage = () => {
                     className={styles.button}
                     onClick={handleWriteClick}
                 >
-                    {t("personalVolunteer.Написать")}
+                    {t("personal.Написать")}
                 </Button>
             )}
         </>
@@ -121,7 +120,7 @@ export const VolunteerPersonalPage = () => {
             <MainHeader />
             <div className={styles.content}>
                 <VolunteerHeaderCard
-                    volunteer={volunteerData}
+                    profileData={profileData}
                     showButtons={showEditButton}
                     locale={locale}
                     isAuth={isAuth}
@@ -131,7 +130,7 @@ export const VolunteerPersonalPage = () => {
                     items={submenuItems}
                     buttons={renderButtons}
                 />
-                <VolunteerPageContent volunteer={volunteerData} />
+                <VolunteerPageContent profileData={profileData} />
             </div>
             <Footer />
         </div>

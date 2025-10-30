@@ -3,5 +3,5 @@ export { UserInfoCard } from "./ui/UserInfoCard/UserInfoCard";
 export { mockedChatUser, mockedMessages } from "./model/data/mockedUsers";
 export type {
     MessageType, UserChatType, ChatsList,
-    ChatsListWithOrganizations, ChatsListWithVolunteers, ChatType,
+    ChatType,
 } from "./model/types/messenger";

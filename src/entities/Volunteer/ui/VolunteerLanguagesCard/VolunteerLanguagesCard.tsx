@@ -19,13 +19,13 @@ export const VolunteerLanguagesCard: FC<VolunteerLanguagesCardProps> = memo((
 ) => {
     const { className, languages } = props;
     const textLanguages = useFormatLanguages(languages);
-    const { t } = useTranslation("volunteer");
+    const { t } = useTranslation("profile");
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Text title={t("personalVolunteer.Языки")} titleSize="h3" />
+            <Text title={t("personal.Языки")} titleSize="h3" />
             <div className={styles.container}>
-                {languages.length !== 0 ? <div className={styles.languages}>{textLanguages}</div> : t("personalVolunteer.Языки не были указаны")}
+                {languages.length !== 0 ? <div className={styles.languages}>{textLanguages}</div> : t("personal.Языки не были указаны")}
             </div>
 
         </div>

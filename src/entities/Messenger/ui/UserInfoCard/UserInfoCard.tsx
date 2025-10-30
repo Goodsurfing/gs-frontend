@@ -21,6 +21,7 @@ import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { Profile } from "@/entities/Profile";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface UserInfoCardProps {
     user: Profile;
@@ -37,6 +38,10 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const {
         user, infoOpenedChange, className, locale,
     } = props;
+    const {
+        host, volunteer, image, birthDate, firstName, lastName,
+        country, city,
+    } = user;
 
     const { t } = useTranslation("messenger");
     const { skillsData } = useSkillsData();
@@ -49,117 +54,46 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
         navigate(getVolunteerPersonalPageUrl(locale, id));
     }, [locale, navigate]);
 
-    const navigateToHost = useCallback((id: string) => {
-        navigate(getHostPersonalPageUrl(locale, id));
-    }, [locale, navigate]);
+    const renderSkillsCard = () => {
+        if (!volunteer) return null;
+        if (!volunteer.skills || volunteer.skills.length === 0) {
+            return <span>{t("Волонтёр не указал умения")}</span>;
+        }
 
-    if ("profile" in user) {
-        const { profile, skills } = user;
-
-        const renderSkillsCard = () => {
-            if (!skills || skills.length === 0) {
-                return <span>{t("Волонтёр не указал умения")}</span>;
-            }
-
-            const skillsMap: SkillsMap = skillsData.reduce(
-                (acc: SkillsMap, cur) => {
-                    acc[cur.id] = cur;
-                    return acc;
-                },
-                {},
-            );
-            return skills.map((item) => {
-                const skill = skillsMap[item];
-                return (
-                    skill && (
-                        <IconTextComponent
-                            text={skill.text}
-                            icon={skill.icon}
-                            alt={skill.text}
-                            key={skill.id}
-                        />
-                    )
-                );
-            });
-        };
-
-        const formatLocation = (country?: string, city?: string) => {
-            if (country && city) return `${country}, ${city}`;
-            return country ?? city ?? "";
-        };
-
-        return (
-            <div className={cn(styles.wrapper, className)}>
-                <div className={styles.top}>
-                    <span>{t("Информация")}</span>
-                    <ReactSVG
-                        src={exitIcon}
-                        className={styles.exitIcon}
-                        onClick={() => infoOpenedChange()}
-                    />
-                </div>
-                <div className={styles.content}>
-                    <div
-                        className={styles.info}
-                        onClick={() => navigateToVolunteer(user.profile.id)}
-                    >
-                        <Avatar
-                            icon={getMediaContent(profile.image)}
-                            size="LARGE"
-                        />
-                        <div className={styles.userInfo}>
-                            <span className={styles.textCaption}>
-                                {`${t("Волонтёр")} ${formatDate(locale, profile.birthDate)}`}
-                            </span>
-                            <span
-                                className={styles.textPrimary}
-                            >
-                                {getFullName(profile.firstName, profile.lastName)}
-                            </span>
-                            <span className={styles.textCaption}>
-                                {formatLocation(profile.country, profile.city)}
-                            </span>
-                        </div>
-                    </div>
-                    <div className={styles.skills}>
-                        <span className={styles.textCaption}>{t("Умения")}</span>
-                        {renderSkillsCard()}
-                    </div>
-                    <div className={styles.languages}>
-                        <span className={styles.textCaption}>
-                            {t("Владение языками")}
-                        </span>
-                        <div>
-                            {languages && languages.length !== 0
-                                ? textLanguages
-                                : t("Языки не были указаны")}
-                        </div>
-                    </div>
-                    {/* <div className={styles.cases}>
-                        <span className={styles.textCaption}>
-                            Участвовал в проектах
-                        </span>
-                        <div className={styles.casesList}>{renderCasesList}</div>
-                    </div> */}
-                    {/* Not in backend */}
-                    {/* <div className={styles.dates}>
-                        <div className={styles.date}>
-                            <span className={styles.textCaption}>
-                                Дата прибытия
-                            </span>
-                            <span className={styles.text}>20.10.2023</span>
-                        </div>
-                        <div className={styles.date}>
-                            <span className={styles.textCaption}>
-                                Дата окончания
-                            </span>
-                            <span className={styles.text}>30.10.2023</span>
-                        </div>
-                    </div> */}
-                </div>
-            </div>
+        const skillsMap: SkillsMap = skillsData.reduce(
+            (acc: SkillsMap, cur) => {
+                acc[cur.id] = cur;
+                return acc;
+            },
+            {},
         );
-    }
+        return volunteer.skills.map((item) => {
+            const skill = skillsMap[item];
+            return (
+                skill && (
+                    <IconTextComponent
+                        text={skill.text}
+                        icon={skill.icon}
+                        alt={skill.text}
+                        key={skill.id}
+                    />
+                )
+            );
+        });
+    };
+
+    const formatLocation = (countryParam?: string, cityParam?: string) => {
+        if (countryParam && cityParam) return `${countryParam}, ${cityParam}`;
+        return countryParam ?? cityParam ?? "";
+    };
+
+    const getRole = () => {
+        const roles = [];
+        if (user.volunteer) roles.push(t("Волонтёр"));
+        if (user.host) roles.push(t("Организатор"));
+
+        return roles.length ? roles.join(", ") : "";
+    };
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -174,18 +108,104 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
             <div className={styles.content}>
                 <div
                     className={styles.info}
-                    onClick={() => navigateToHost(user.id)}
+                    onClick={() => navigateToVolunteer(user.id)}
                 >
-                    <Avatar icon={getMediaContent(user.avatar)} size="LARGE" />
+                    <Avatar
+                        icon={getMediaContent(image)}
+                        size="LARGE"
+                    />
                     <div className={styles.userInfo}>
-                        <span className={styles.textCaption}>{t("Организатор")}</span>
-                        <span className={styles.textPrimary}>{user.name}</span>
                         <span className={styles.textCaption}>
-                            {user.address}
+                            {getRole()}
+                            {" "}
+                            <br />
+                            {formatDate(locale, birthDate)}
+                        </span>
+                        <span
+                            className={styles.textPrimary}
+                        >
+                            {getFullName(firstName, lastName)}
+                        </span>
+                        <span className={styles.textCaption}>
+                            {formatLocation(country, city)}
                         </span>
                     </div>
                 </div>
+                {host && (
+                    <ButtonLink
+                        className={styles.buttonHost}
+                        type="outlined"
+                        path={getHostPersonalPageUrl(locale, host.split("/").pop())}
+                    >
+                        {
+                            t("Посмотреть организацию")
+                        }
+                    </ButtonLink>
+                )}
+                <div className={styles.skills}>
+                    <span className={styles.textCaption}>{t("Умения")}</span>
+                    {renderSkillsCard()}
+                </div>
+                <div className={styles.languages}>
+                    <span className={styles.textCaption}>
+                        {t("Владение языками")}
+                    </span>
+                    <div>
+                        {languages && languages.length !== 0
+                            ? textLanguages
+                            : t("Языки не были указаны")}
+                    </div>
+                </div>
+                {/* <div className={styles.cases}>
+                        <span className={styles.textCaption}>
+                            Участвовал в проектах
+                        </span>
+                        <div className={styles.casesList}>{renderCasesList}</div>
+                    </div> */}
+                {/* Not in backend */}
+                {/* <div className={styles.dates}>
+                        <div className={styles.date}>
+                            <span className={styles.textCaption}>
+                                Дата прибытия
+                            </span>
+                            <span className={styles.text}>20.10.2023</span>
+                        </div>
+                        <div className={styles.date}>
+                            <span className={styles.textCaption}>
+                                Дата окончания
+                            </span>
+                            <span className={styles.text}>30.10.2023</span>
+                        </div>
+                    </div> */}
             </div>
         </div>
     );
+
+    // return (
+    //     <div className={cn(styles.wrapper, className)}>
+    //         <div className={styles.top}>
+    //             <span>{t("Информация")}</span>
+    //             <ReactSVG
+    //                 src={exitIcon}
+    //                 className={styles.exitIcon}
+    //                 onClick={() => infoOpenedChange()}
+    //             />
+    //         </div>
+    //         <div className={styles.content}>
+    //             <div
+    //                 className={styles.info}
+    //                 onClick={() => navigateToHost(user.id)}
+    //             >
+    //                 <Avatar icon={getMediaContent(user.avatar)} size="LARGE" />
+    //                 <div className={styles.userInfo}>
+    //                     <span className={styles.textCaption}>{t("Организатор")}</span>
+    //                     <span className={styles.textPrimary}>{user.name}</span>
+    //                     <span className={styles.textCaption}>
+    //                         {user.address}
+    //                     </span>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>
+    // );
 };

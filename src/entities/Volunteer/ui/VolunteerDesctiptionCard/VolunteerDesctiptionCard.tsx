@@ -11,12 +11,12 @@ interface VolunteerDesctiptionCardProps {
 export const VolunteerDesctiptionCard: FC<VolunteerDesctiptionCardProps> = memo(
     (props: VolunteerDesctiptionCardProps) => {
         const { description } = props;
-        const { t } = useTranslation("volunteer");
+        const { t } = useTranslation("profile");
 
         return (
             <div id="1">
-                <Text title={t("personalVolunteer.О себе")} titleSize="h3" />
-                <p className={styles.description}>{description || t("personalVolunteer.Волонтёр не указал информацию о себе")}</p>
+                <Text title={t("personal.О себе")} titleSize="h3" />
+                <p className={styles.description}>{description || t("personal.Пользователь не указал информацию о себе")}</p>
             </div>
         );
     },

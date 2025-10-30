@@ -1,14 +1,13 @@
 import { FormApplicationStatus } from "@/entities/Application";
-import { HostApi } from "@/entities/Host";
 import { Profile } from "@/entities/Profile";
-import { Language, VolunteerApi } from "@/entities/Volunteer";
+import { Language } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
 import { MediaObjectType } from "@/types/media";
 
 export interface MessageType {
     id: number;
-    author: Profile;
+    author: string;
     text?: string;
     attachments: string[] | MediaObjectType[];
     createdAt: string;
@@ -19,26 +18,26 @@ export interface MessageType {
 
 export interface ChatsList {
     id: number;
-    lastMessage?: MessageType;
+    lastMessage?: Omit<MessageType, "author"> & { author: Profile };
     applicationStatus?: FormApplicationStatus;
     otherParticipants: Profile[];
     countUnreadMessages: number;
 }
-export interface ChatsListWithVolunteers {
-    id: number;
-    volunteer: VolunteerApi;
-    lastMessage: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByOrganization: number;
-}
+// export interface ChatsListWithVolunteers {
+//     id: number;
+//     volunteer: VolunteerApi;
+//     lastMessage: MessageType;
+//     vacancyStatus?: FormApplicationStatus;
+//     countUnreadMessagesByOrganization: number;
+// }
 
-export interface ChatsListWithOrganizations {
-    id: number;
-    organization: HostApi;
-    lastMessage: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByVolunteer: number;
-}
+// export interface ChatsListWithOrganizations {
+//     id: number;
+//     organization: HostApi;
+//     lastMessage: MessageType;
+//     vacancyStatus?: FormApplicationStatus;
+//     countUnreadMessagesByVolunteer: number;
+// }
 
 export interface UserChatType {
     id: string;

@@ -85,32 +85,5 @@
         "Мои статьи": "Mis artículos",
         "Редактировать": "Editar",
         "Удалить": "Borrar"
-    },
-    "personalVolunteer": {
-        "Произошла ошибка": "Ocurrió un error",
-        "Произошла ошибка или пользователь не зарегистрирован как волонтёр": "Ocurrió un error o el usuario no está registrado como voluntario",
-        "Редактировать": "Editar",
-        "Написать": "Escribir",
-        "О себе": "Sobre mí",
-        "Заявки": "Solicitudes",
-        "Отзывы": "Reseñas",
-        "Фото": "Fotos",
-        "Видео": "Videos",
-        "Сертификаты": "Certificados",
-        "Статьи": "Artículos",
-        "Умения": "Habilidades",
-        "Дополнительные умения": "Habilidades adicionales",
-        "Языки": "Idiomas",
-        "Вакансии": "Vacantes",
-        "Волонтёр не указал информацию о себе": "El voluntario no ha proporcionado información sobre sí mismo",
-        "Волонтёр не указал умения": "El voluntario no ha indicado habilidades",
-        "Волонтёр не указал дополнительные умения": "El voluntario no ha indicado habilidades adicionales",
-        "Языки не были указаны": "Los idiomas no han sido especificados",
-        "У волонтера пока нет вакансий в которых он участвовал": "El voluntario aún no ha participado en ninguna vacante",
-        "Волонтёр": "Voluntario",
-        "Город": "Ciudad",
-        "Страна не указана": "País no especificado",
-        "Город не указан": "Ciudad no especificada",
-        "Информация о пользователе ограничена, так как он не волонтёр": "La información del usuario es limitada porque no es voluntario"
     }
 }

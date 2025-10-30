@@ -24,11 +24,11 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
     (props: VolunteerSkillsCardProps) => {
         const { skills, additionalSkills, className } = props;
         const { skillsData } = useSkillsData();
-        const { t } = useTranslation("volunteer");
+        const { t } = useTranslation("profile");
 
         const renderSkillsCard = useMemo(() => {
             if (!skills || skills.length === 0) {
-                return <span>{t("personalVolunteer.Волонтёр не указал умения")}</span>;
+                return <span>{t("personal.Пользователь не указал умения")}</span>;
             }
 
             const skillsMap: SkillsMap = skillsData.reduce(
@@ -55,7 +55,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
 
         const renderAdditionalSkills = useMemo(() => {
             if (!additionalSkills || additionalSkills.length === 0) {
-                return <span>{t("personalVolunteer.Волонтёр не указал дополнительные умения")}</span>;
+                return <span>{t("personal.Пользователь не указал дополнительные умения")}</span>;
             }
             const renderAdditionSkils = additionalSkills.map((skill, index) => (
                 <IconTextComponent
@@ -71,11 +71,11 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.card}>
-                    <Text title={t("personalVolunteer.Умения")} titleSize="h3" />
+                    <Text title={t("personal.Умения")} titleSize="h3" />
                     <div className={styles.cards}>{renderSkillsCard}</div>
                 </div>
                 <div className={styles.card}>
-                    <Text title={t("personalVolunteer.Дополнительные умения")} titleSize="h3" />
+                    <Text title={t("personal.Дополнительные умения")} titleSize="h3" />
                     {renderAdditionalSkills}
                 </div>
             </div>

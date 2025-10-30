@@ -110,8 +110,6 @@ export const Chat: FC<ChatProps> = (props) => {
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
     const { data: chatData } = useGetChatQuery(id ?? "");
     const [getProfileData] = useLazyGetProfileInfoByIdQuery();
-    // const [getHost] = useLazyGetHostByIdQuery();
-    // const [getVolunteer] = useLazyGetVolunteerByIdQuery();
 
     useEffect(() => {
         if (chatData) {
@@ -212,7 +210,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
-                    const authorId = author.id;
+                    const authorId = author.split("/").pop();
                     const isUserCompanion = myProfileData?.id !== authorId;
 
                     let userName;

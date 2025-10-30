@@ -18,7 +18,7 @@
         "lint:ts": "npx eslint ./src --fix",
         "lint:scss": "npx stylelint ./src --fix",
         "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
-        "type-check": "tsc --noEmit"
+        "type-check": "set NODE_OPTIONS=--max-old-space-size=8192 && tsc --noEmit"
     },
     "devDependencies": {
         "@babel/core": "^7.22.1",
