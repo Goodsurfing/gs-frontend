@@ -29,7 +29,7 @@ export const HostDescriptionCard: FC<HostDescriptionCardProps> = memo(
         return (
             <div id="1" className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Об организации")} titleSize="h3" />
-                <p className={styles.description}>{description || "Организатор не указал данную информацию"}</p>
+                <p className={styles.description}>{description || t("personalHost.Организатор не указал данную информацию")}</p>
                 <div className={styles.socials}>
                     {vk !== "" && (
                         <a href={vk} target="_blank" rel="noreferrer" className={styles.social}>

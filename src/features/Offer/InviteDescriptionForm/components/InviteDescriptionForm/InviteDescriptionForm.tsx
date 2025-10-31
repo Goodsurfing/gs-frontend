@@ -24,7 +24,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import {
     inviteDescriptionAdapter,
@@ -42,6 +41,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferGallery } from "@/features/Gallery";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -143,7 +143,7 @@ export const InviteDescriptionForm = () => {
     });
 
     if (isLoadingGetDescription) {
-        return <Preloader className={styles.loading} />;
+        return <MiniLoader />;
     }
 
     return (

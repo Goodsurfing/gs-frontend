@@ -22,7 +22,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import { AddressFormFormFields } from "../../model/types/addressForm";
@@ -30,6 +29,7 @@ import styles from "./AddressForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhenPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface AddressFormProps {
     className?: string;
@@ -128,7 +128,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     };
 
     if (isLoadingGetData) {
-        return <Preloader className={styles.loading} />;
+        return <MiniLoader />;
     }
 
     return (

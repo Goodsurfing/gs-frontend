@@ -4,13 +4,12 @@ import { VideoForm } from "@/features/VideoForm";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 
-import Preloader from "@/shared/ui/Preloader/Preloader";
-
 import { TitleCertificate } from "../TitleCertificate/TitleCertificate";
 import { TitleGallery } from "../TitleGallery/TitleGallery";
 import { TitleVideoGallery } from "../TitleVideoGallery/TitleVideoGallery";
 import { VolunteerCertificateGallery, VolunteerGallery } from "@/features/Gallery";
 import styles from "./VolunteerGalleryPage.module.scss";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const VolunteerGalleryPage = () => {
     const { data: profileData, isLoading } = useGetProfileInfoQuery();
@@ -18,7 +17,7 @@ const VolunteerGalleryPage = () => {
     if (isLoading) {
         return (
             <div className={styles.wrapper}>
-                <Preloader />
+                <MiniLoader />
             </div>
         );
     }

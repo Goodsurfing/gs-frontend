@@ -21,7 +21,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import {
     offerWhenFormAdapter,
@@ -41,6 +40,7 @@ import styles from "./OfferWhenForm.module.scss";
 import { getOffersWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferWhenFormProps {
     onComplete?: () => void;
@@ -149,7 +149,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     });
 
     if (isLoadingGetWhenData) {
-        return <Preloader className={styles.loading} />;
+        return <MiniLoader />;
     }
 
     return (

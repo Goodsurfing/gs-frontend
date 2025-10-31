@@ -38,6 +38,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         const [isPending, startTransition] = useTransition();
 
         const [hostOffers, setHostOffers] = useState<Offer[]>([]);
+        const [loading, setLoading] = useState(false);
         const [page, setPage] = useState(1);
         const [hasMore, setHasMore] = useState(true);
         const [getHostOffers] = useLazyGetHostOffersByIdQuery();
@@ -46,6 +47,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
 
         const fetchHostOffers = useCallback(
             async (isInitial: boolean) => {
+                setLoading(true);
                 try {
                     const currentPage = isInitial ? 1 : page;
                     const result = await getHostOffers({
@@ -69,6 +71,8 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
                     });
                 } catch {
                     /* empty */
+                } finally {
+                    setLoading(false);
                 }
             },
             [getHostOffers, hostId, page],
@@ -90,6 +94,14 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo(
         return (
             <div id="2" className={cn(className, styles.wrapper)}>
                 <Text title={t("personalHost.Вакансии")} titleSize="h3" />
+                <div className={styles.container}>
+                    {loading && <MiniLoader />}
+                    {(!loading && hostOffers.length === 0) && (
+                        <div>
+                            {t("personalHost.У организации пока нет вакансий")}
+                        </div>
+                    )}
+                </div>
                 {(hostOffers.length <= 3) ? (
                     <div className={styles.container}>
                         {hostOffers.map((offer) => (

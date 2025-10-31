@@ -109,7 +109,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
 
                 <div className={styles.container} id="offers-scroll-container">
                     {loading && <MiniLoader />}
-                    {!loading && offersData.length === 0 && (
+                    {(!loading && offersData.length === 0) && (
                         <div>
                             {t("personal.У волонтера пока нет вакансий в которых он участвовал")}
                         </div>

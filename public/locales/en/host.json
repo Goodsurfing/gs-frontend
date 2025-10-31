@@ -109,6 +109,10 @@
         "Видео": "Videos",
         "Команда": "Team",
         "Отзывы": "Reviews",
-        "Статьи": "Articles"
+        "Статьи": "Articles",
+        "У организации пока нет вакансий": "The organization currently has no job openings",
+        "Организатор не указал данную информацию": "The organizer did not provide this information",
+        "Галерея не заполнена": "The gallery is empty",
+        "Видеогалерея не заполнена": "The video gallery is empty"
     }
 }

@@ -5,14 +5,14 @@ import { Outlet } from "react-router-dom";
 import { useProfileSidebarData } from "@/shared/data/sidebar/profile-pages";
 
 import { PageLayout } from "@/widgets/PageLayout";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const ProfileLayoutPage: FC = () => {
     const { ready } = useTranslation("profile");
     const { SideMenuData } = useProfileSidebarData();
 
     if (!ready) {
-        return <MiniLoader />;
+        return <Preloader />;
     }
 
     return (

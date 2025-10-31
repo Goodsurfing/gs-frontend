@@ -30,7 +30,6 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
@@ -47,6 +46,7 @@ import styles from "./WhoNeedsForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersDescriptionPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -142,7 +142,7 @@ export const WhoNeedsForm = memo(() => {
     });
 
     if (isLoadingGetWhoNeedsData) {
-        return <Preloader className={styles.loading} />;
+        return <MiniLoader />;
     }
 
     return (

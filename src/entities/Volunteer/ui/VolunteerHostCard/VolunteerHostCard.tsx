@@ -6,11 +6,12 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { Host } from "@/entities/Host";
 
-import organizationDefaultImage from "@/shared/assets/images/offers/organizationSmallMOCK.png";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 import styles from "./VolunteerHostCard.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 interface VolunteerHostCardProps {
     host: Host;
@@ -30,11 +31,7 @@ export const VolunteerHostCard: FC<VolunteerHostCardProps> = memo(
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
                         <div className={styles.nameContainer}>
-                            <img
-                                className={styles.image}
-                                src={organizationDefaultImage}
-                                alt="organization"
-                            />
+                            <Avatar icon={getMediaContent(host.avatar?.contentUrl)} size="SMALL" />
                             <span className={styles.name}>
                                 {host.name}
                             </span>

@@ -23,7 +23,7 @@ export const HostVideoGalleryCard: FC<HostVideoGalleryCardProps> = memo(
                     <p
                         className={styles.container}
                     >
-                        Видеогалерея не заполнена
+                        {t("personalHost.Видеогалерея не заполнена")}
                     </p>
                 );
             }

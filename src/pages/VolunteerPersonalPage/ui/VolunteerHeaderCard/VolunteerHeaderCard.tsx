@@ -63,9 +63,10 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             <div className={styles.buttons}>
                 {(showButtons && isAuth) && (
                     <Button
+                        className={styles.buttonEdit}
                         size="SMALL"
                         color="BLUE"
-                        variant="FILL"
+                        variant="OUTLINE"
                         onClick={handleEditClick}
                     >
                         {t("personal.Редактировать")}

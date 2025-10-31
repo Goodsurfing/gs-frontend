@@ -3,9 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { VolunteerSkillsForm } from "@/features/VolunteerSkills";
 
-import styles from "./VolunteerSkillsPage.module.scss";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./VolunteerSkillsPage.module.scss";
 
 const VolunteerSkillsPage = () => {
     const { t, ready } = useTranslation("volunteer");
@@ -14,7 +14,7 @@ const VolunteerSkillsPage = () => {
     if (!ready || isLoading) {
         return (
             <div className={styles.wrapper}>
-                <Preloader />
+                <MiniLoader />
             </div>
         );
     }

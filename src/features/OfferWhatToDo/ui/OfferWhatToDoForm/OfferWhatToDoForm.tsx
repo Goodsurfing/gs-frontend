@@ -21,7 +21,6 @@ import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/o
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import styles from "./OfferWhatToDoForm.module.scss";
@@ -29,6 +28,7 @@ import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 import { getOffersConditionsPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
@@ -111,16 +111,10 @@ export const OfferWhatToDoForm = memo(
             onSuccess?.();
         });
 
-        // useEffect(() => {
-        //     if (getOfferData?.whatToDo && !Array.isArray(getOfferData.whatToDo)) {
-        //         reset(offerWhatToDoAdapter(getOfferData.whatToDo));
-        //     }
-        // }, [getOfferData?.whatToDo, reset]);
-
         if (isOfferDataLoading) {
             return (
                 <div className={styles.wrapper}>
-                    <Preloader />
+                    <MiniLoader />
                 </div>
             );
         }

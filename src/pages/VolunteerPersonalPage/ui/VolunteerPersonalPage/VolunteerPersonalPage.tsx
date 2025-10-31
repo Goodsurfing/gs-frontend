@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import cn from "classnames";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { Footer } from "@/widgets/Footer";
@@ -93,8 +94,8 @@ export const VolunteerPersonalPage = () => {
                 <Button
                     size="SMALL"
                     color="BLUE"
-                    variant="FILL"
-                    className={styles.button}
+                    variant="OUTLINE"
+                    className={cn(styles.button, styles.buttonEdit)}
                     onClick={handleEditClick}
                 >
                     {t("personal.Редактировать")}
