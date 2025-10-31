@@ -42,6 +42,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             const state = generateState(32);
 
             VKID.Config.init({
+                // app: 54011426, // Number(process.env.REACT_VKID_CLIENT_ID),
                 app: Number(process.env.REACT_VKID_CLIENT_ID),
                 redirectUrl:
                     process.env.NODE_ENV === "development"
