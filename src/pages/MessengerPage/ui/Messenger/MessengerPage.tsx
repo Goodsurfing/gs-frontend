@@ -62,7 +62,6 @@ const MessengerPage = () => {
                         })}
                         onUserClick={handleOnUserClick}
                         locale={locale}
-                        myProfileData={myProfile}
                     />
                     <Chat
                         key={selectedChat}

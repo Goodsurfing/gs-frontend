@@ -1,32 +1,32 @@
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { VolunteerApi } from "@/entities/Volunteer";
 
 import styles from "./VolunteerPageContent.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
 import { VolunteerInfoCard } from "@/entities/Volunteer/ui/VolunteerInfoCard/VolunteerInfoCard";
+import { Profile } from "@/entities/Profile";
 
 interface VolunteerPageContentProps {
-    volunteer?: VolunteerApi;
+    profileData?: Profile;
 }
 
 export const VolunteerPageContent: FC<VolunteerPageContentProps> = memo(
     (props: VolunteerPageContentProps) => {
-        const { volunteer } = props;
-        const { t } = useTranslation("volunteer");
+        const { profileData } = props;
+        const { t } = useTranslation("profile");
 
-        if (!volunteer) {
+        if (!profileData) {
             return (
                 <div className={styles.wrapper}>
-                    <Text text={t("personalVolunteer.Информация о пользователе ограничена, так как он не волонтёр")} />
+                    <Text text={t("personal.Информация о пользователе ограничена, так как он не волонтёр")} />
                 </div>
             );
         }
 
         return (
             <div className={styles.wrapper}>
-                <VolunteerInfoCard volunteer={volunteer} className={styles.container} />
+                <VolunteerInfoCard profileData={profileData} className={styles.container} />
             </div>
         );
     },

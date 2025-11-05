@@ -37,6 +37,7 @@ import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import { Profile, useGetProfileInfoQuery } from "@/entities/Profile";
 import { usePersistForm } from "@/shared/hooks/usePersistForm ";
 import { HOST_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface HostDescriptionFormProps {
     className?: string;
@@ -179,7 +180,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     if (isLoading) {
         return (
             <div className={cn(styles.form, className)}>
-                <Preloader />
+                <MiniLoader />
             </div>
         );
     }

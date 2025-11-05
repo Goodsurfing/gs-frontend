@@ -3,6 +3,7 @@ import React, {
     FC, memo, useEffect, useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
@@ -34,6 +35,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
         const [visibleCount, setVisibleCount] = useState(5);
         const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
         const { locale } = useLocale();
+        const { t } = useTranslation("profile");
 
         const { data: reviewsData } = useGetToVolunteerReviewsQuery({ volunteer: volunteerId });
         const [getHost] = useLazyGetHostByIdQuery();
@@ -103,8 +105,8 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
 
         return (
             <div id="3" className={cn(className, styles.wrapper)}>
-                <Text title="Отзывы" titleSize="h3" />
-                <div className={styles.container}>{renderCards.length > 0 ? renderCards : "На данный момент отзывов нет"}</div>
+                <Text title={t("personal.Отзывы")} titleSize="h3" />
+                <div className={styles.container}>{renderCards.length > 0 ? renderCards : t("personal.На данный момент отзывов нет")}</div>
                 {visibleCount < filteredReviews.length && (
                     <ShowNext onClick={handleShowNext} />
                 )}

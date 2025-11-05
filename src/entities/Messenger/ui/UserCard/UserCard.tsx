@@ -1,11 +1,8 @@
 import cn from "classnames";
 import React, {
-    FC, useCallback, useEffect, useState,
+    FC,
 } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import { HostApi } from "@/entities/Host";
-import { VolunteerApi } from "@/entities/Volunteer";
 
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -14,134 +11,76 @@ import {
     ChatsList,
 } from "../../model/types/messenger";
 import styles from "./UserCard.module.scss";
-import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer/api/volunteerApi";
-import { useLazyGetHostByIdQuery } from "@/entities/Host/api/hostApi";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { formatMessageDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getOfferStateColor } from "@/shared/lib/offerState";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import { Profile } from "@/entities/Profile";
+import { useGetProfileInfoByIdQuery } from "@/entities/Profile/api/profileApi";
 
 interface UserCardProps {
     dataChat: ChatsList;
     className?: string;
     locale: Locale;
-    myProfileData: Profile;
 }
 
 export const UserCard: FC<UserCardProps> = (props) => {
     const {
-        dataChat, className, locale, myProfileData,
+        dataChat, className, locale,
     } = props;
     const { id } = useParams();
-    const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
-    const [hostData, setHostData] = useState<HostApi>();
+    const { data: companionData } = useGetProfileInfoByIdQuery(dataChat.otherParticipants[0].id);
     const { getFullName } = useGetFullName();
 
-    const [getVolunteer] = useLazyGetVolunteerByIdQuery();
-    const [getHost] = useLazyGetHostByIdQuery();
-
-    const isVolunteerChat = useCallback((data: ChatsList):
-    boolean => data.volunteer.profile.id !== myProfileData.id, [myProfileData.id]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (isVolunteerChat(dataChat)) {
-                setVolunteerData(dataChat.volunteer);
-            } else {
-                setHostData(dataChat.organization);
-            }
-        };
-
-        fetchData();
-    }, [dataChat, getHost, getVolunteer, isVolunteerChat]);
-
-    if (volunteerData && isVolunteerChat(dataChat)) {
-        return (
-            <Link
-                to={`${getMessengerPageUrl(locale)}/${dataChat.id}`}
-                className={cn(
-                    styles.wrapper,
-                    { [styles.newMess]: !!dataChat.countUnreadMessagesByOrganization },
-                    { [styles.active]: id === dataChat.id.toString() },
-                    className,
-                )}
-            >
-                <Avatar icon={getMediaContent(volunteerData.profile.image)} text={volunteerData.profile.firstName} size="MEDIUM" />
-                <div className={styles.content}>
-                    <div className={styles.nameDate}>
-                        <span className={styles.name}>
-                            {
-                                getFullName(
-                                    volunteerData.profile.firstName,
-                                    volunteerData.profile.lastName,
-                                )
-                            }
-                        </span>
-                        <span className={styles.date}>
-                            {formatMessageDate(
-                                locale,
-                                dataChat.lastMessage?.createdAt,
-                            )}
-                        </span>
-                    </div>
-                    <div className={styles.dateNewLastMess}>
-                        <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
-                        {!!dataChat.countUnreadMessagesByOrganization && (
-                            <div className={styles.newMessages}>
-                                {dataChat.countUnreadMessagesByOrganization > 9 ? "9+" : dataChat.countUnreadMessagesByOrganization}
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div
-                    style={{ backgroundColor: getOfferStateColor(dataChat.vacancyStatus ?? "new") }}
-                    className={styles.state}
-                />
-            </Link>
-        );
+    if (!companionData) {
+        return null;
     }
 
-    if (hostData && !isVolunteerChat(dataChat)) {
-        return (
-            <Link
-                to={`${getMessengerPageUrl(locale)}/${dataChat.id}`}
-                className={cn(
-                    styles.wrapper,
-                    { [styles.newMess]: !!dataChat.countUnreadMessagesByVolunteer },
-                    { [styles.active]: id === dataChat.id.toString() },
-                    className,
-                )}
-            >
-                <Avatar icon={getMediaContent(hostData.avatar)} size="MEDIUM" />
-                <div className={styles.content}>
-                    <div className={styles.nameDate}>
-                        <span className={styles.name}>{hostData.name}</span>
-                        <span className={styles.date}>
-                            {formatMessageDate(
-                                locale,
-                                dataChat.lastMessage?.createdAt,
-                            )}
-                        </span>
-                    </div>
-                    <div className={styles.dateNewLastMess}>
-                        <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
-                        {!!dataChat.countUnreadMessagesByVolunteer && (
-                            <div className={styles.newMessages}>
-                                {dataChat.countUnreadMessagesByVolunteer > 9 ? "9+" : dataChat.countUnreadMessagesByVolunteer}
-                            </div>
-                        )}
-                        {/* To do a number of Messages, backend issue */}
-                    </div>
-                </div>
-                <div
-                    style={{ backgroundColor: getOfferStateColor(dataChat.vacancyStatus ?? "new") }}
-                    className={styles.state}
-                />
-            </Link>
-        );
-    }
+    const {
+        image, firstName, lastName,
+    } = companionData;
 
-    return null;
+    return (
+        <Link
+            to={`${getMessengerPageUrl(locale)}/${dataChat.id}`}
+            className={cn(
+                styles.wrapper,
+                { [styles.newMess]: !!dataChat.countUnreadMessages },
+                { [styles.active]: id === dataChat.id.toString() },
+                className,
+            )}
+        >
+            <Avatar icon={getMediaContent(image)} text={firstName} size="MEDIUM" />
+            <div className={styles.content}>
+                <div className={styles.nameDate}>
+                    <span className={styles.name}>
+                        {
+                            getFullName(
+                                firstName,
+                                lastName,
+                            )
+                        }
+                    </span>
+                    <span className={styles.date}>
+                        {formatMessageDate(
+                            locale,
+                            dataChat.lastMessage?.createdAt,
+                        )}
+                    </span>
+                </div>
+                <div className={styles.dateNewLastMess}>
+                    <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
+                    {!!dataChat.countUnreadMessages && (
+                        <div className={styles.newMessages}>
+                            {dataChat.countUnreadMessages > 9 ? "9+" : dataChat.countUnreadMessages}
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div
+                style={{ backgroundColor: getOfferStateColor(dataChat.applicationStatus ?? "new") }}
+                className={styles.state}
+            />
+        </Link>
+    );
 };

@@ -12,7 +12,6 @@ import {
 } from "@/entities/Offer";
 
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { HostOffersList } from "../HostOffersList/HostOffersList";
@@ -21,6 +20,7 @@ import { useGetMyHostQuery } from "@/entities/Host";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { OfferPagination } from "@/widgets/OffersMap";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
@@ -141,7 +141,7 @@ const HostOffersPage = () => {
     };
 
     if (isLoading || !ready) {
-        return <Preloader />;
+        return <MiniLoader />;
     }
 
     return (

@@ -85,32 +85,5 @@
         "Мои статьи": "My articles",
         "Редактировать": "Edit",
         "Удалить": "Delete"
-    },
-    "personalVolunteer": {
-        "Произошла ошибка": "An error occurred",
-        "Произошла ошибка или пользователь не зарегистрирован как волонтёр": "An error occurred or the user is not registered as a volunteer",
-        "Редактировать": "Edit",
-        "Написать": "Write",
-        "О себе": "About me",
-        "Заявки": "Applications",
-        "Отзывы": "Reviews",
-        "Фото": "Photos",
-        "Видео": "Videos",
-        "Сертификаты": "Certificates",
-        "Статьи": "Articles",
-        "Умения": "Skills",
-        "Дополнительные умения": "Additional skills",
-        "Языки": "Languages",
-        "Вакансии": "Vacancies",
-        "Волонтёр не указал информацию о себе": "The volunteer has not provided any information about themselves",
-        "Волонтёр не указал умения": "The volunteer has not listed any skills",
-        "Волонтёр не указал дополнительные умения": "The volunteer has not listed any additional skills",
-        "Языки не были указаны": "Languages have not been specified",
-        "У волонтера пока нет вакансий в которых он участвовал": "The volunteer has not participated in any vacancies yet",
-        "Волонтёр": "Volunteer",
-        "Город": "City",
-        "Страна не указана": "Country not specified",
-        "Город не указан": "City not specified",
-        "Информация о пользователе ограничена, так как он не волонтёр": "User information is limited because they are not a volunteer"
     }
 }

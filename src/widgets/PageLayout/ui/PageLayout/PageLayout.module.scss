@@ -26,6 +26,18 @@
 	border: none;
 }
 
+.sidebar {
+	overflow-y: visible;
+
+}
+
+.sidebarLinks {	
+	padding: 30px;
+	padding-bottom: 80px;
+	margin: 0;
+	overflow-y: auto;
+}
+
 @media (max-width: 992px) {
 	.wrapper {
 		padding: 2.25rem 20px 0 2.25rem;

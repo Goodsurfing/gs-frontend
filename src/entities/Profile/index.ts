@@ -11,6 +11,8 @@ export {
     profileApi,
     useGetProfileInfoQuery,
     useLazyGetProfileInfoQuery,
+    useLazyGetProfileInfoByIdQuery,
+    useGetProfileInfoByIdQuery,
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
 } from "./api/profileApi";

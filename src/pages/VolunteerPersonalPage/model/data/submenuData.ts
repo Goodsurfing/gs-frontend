@@ -1,30 +1,30 @@
 import { useTranslation } from "react-i18next";
 
 export const useSubmenuVolunteerItems = () => {
-    const { t } = useTranslation("volunteer");
+    const { t } = useTranslation("profile");
     const submenuItems = [
         {
-            text: t("personalVolunteer.О себе"),
+            text: t("personal.О себе"),
             id: "1",
         },
         {
-            text: t("personalVolunteer.Заявки"),
+            text: t("personal.Заявки"),
             id: "2",
         },
         {
-            text: t("personalVolunteer.Отзывы"),
+            text: t("personal.Отзывы"),
             id: "3",
         },
         {
-            text: t("personalVolunteer.Фото"),
+            text: t("personal.Фото"),
             id: "4",
         },
         {
-            text: t("personalVolunteer.Видео"),
+            text: t("personal.Видео"),
             id: "5",
         },
         {
-            text: t("personalVolunteer.Сертификаты"),
+            text: t("personal.Сертификаты"),
             id: "6",
         },
     // {

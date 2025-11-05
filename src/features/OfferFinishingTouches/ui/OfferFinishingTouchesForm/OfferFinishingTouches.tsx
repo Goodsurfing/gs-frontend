@@ -25,7 +25,6 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
@@ -41,6 +40,7 @@ import styles from "./OfferFinishingTouches.module.scss";
 import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
 import { getMyOffersPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferFinishingTouchesFormProps {
     className?: string;
@@ -155,7 +155,7 @@ export const OfferFinishingTouchesForm = memo(
         if (isOfferDataLoading) {
             return (
                 <div className={cn(styles.wrapper, className)}>
-                    <Preloader />
+                    <MiniLoader />
                 </div>
             );
         }

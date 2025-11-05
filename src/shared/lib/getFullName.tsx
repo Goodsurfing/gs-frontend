@@ -16,6 +16,16 @@ export const useGetFullName = () => {
     return { getFullName };
 };
 
+export const getFullName = (
+    firstName?: string,
+    lastName?: string,
+) => {
+    if (!firstName && !lastName) return "Не указан";
+
+    const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
+    return (renderFullName);
+};
+
 export const getFullAddress = (city?: string, country?: string): string => {
     if (country && city) return `${country}, ${city}`;
     return country || city || "";

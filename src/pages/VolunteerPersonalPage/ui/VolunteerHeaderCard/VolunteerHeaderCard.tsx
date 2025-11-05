@@ -2,7 +2,6 @@ import React, { FC, memo, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { VolunteerApi } from "@/entities/Volunteer";
 
 // import { medalsData } from "@/shared/data/medals";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -11,14 +10,15 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import { getMessengerPageIdUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./VolunteerHeaderCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { Profile } from "@/entities/Profile";
+import styles from "./VolunteerHeaderCard.module.scss";
 
 interface VolunteerHeaderCardProps {
-    volunteer: VolunteerApi;
+    profileData: Profile;
     showButtons: boolean;
     locale: Locale;
     isAuth: boolean;
@@ -27,28 +27,28 @@ interface VolunteerHeaderCardProps {
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
     (props: VolunteerHeaderCardProps) => {
         const {
-            volunteer,
+            profileData,
             showButtons,
             locale,
             isAuth,
         } = props;
 
-        const { t } = useTranslation("volunteer");
+        const { t } = useTranslation("profile");
         const { getFullName } = useGetFullName();
         const navigate = useNavigate();
         const {
-            image, firstName, lastName, birthDate, country, city,
-        } = volunteer.profile;
-        const languages = useLanguagesWithComma(volunteer.languages);
+            id, image, firstName, lastName, birthDate, country, city, volunteer, host,
+        } = profileData;
+        const languages = useLanguagesWithComma(volunteer?.languages ?? []);
         const renderName = getFullName(firstName, lastName);
 
         const renderLanguages = () => {
             if (
-                volunteer.languages.length > 0
+                volunteer && volunteer.languages.length > 0
             ) {
                 return <span>{languages}</span>;
             }
-            return <span>{t("personalVolunteer.Языки не были указаны")}</span>;
+            return <span>{t("personal.Языки не были указаны")}</span>;
         };
 
         const handleEditClick = useCallback(() => {
@@ -56,19 +56,20 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         }, [locale, navigate]);
 
         const handleWriteClick = useCallback(() => {
-            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${volunteer.profile.id}`);
-        }, [locale, navigate, volunteer.profile.id]);
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
+        }, [id, locale, navigate]);
 
         const renderButtons = (
             <div className={styles.buttons}>
                 {(showButtons && isAuth) && (
                     <Button
+                        className={styles.buttonEdit}
                         size="SMALL"
                         color="BLUE"
-                        variant="FILL"
+                        variant="OUTLINE"
                         onClick={handleEditClick}
                     >
-                        {t("personalVolunteer.Редактировать")}
+                        {t("personal.Редактировать")}
                     </Button>
                 )}
 
@@ -80,11 +81,19 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         className={styles.button}
                         onClick={handleWriteClick}
                     >
-                        {t("personalVolunteer.Написать")}
+                        {t("personal.Написать")}
                     </Button>
                 )}
             </div>
         );
+
+        const getRole = () => {
+            const roles = [];
+            if (volunteer) roles.push(t("personal.Волонтёр"));
+            if (host) roles.push(t("personal.Организатор"));
+
+            return roles.length ? roles.join(", ") : "";
+        };
 
         return (
             <div className={styles.wrapper}>
@@ -97,7 +106,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.containerInfo}>
                         <div>
                             <span className={styles.birthDate}>
-                                {t("personalVolunteer.Волонтёр")}
+                                {getRole()}
                                 {" "}
                                 {getAge(birthDate)}
                             </span>
@@ -114,18 +123,18 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         </h3>
                         <div className={styles.info}>
                             <span className={styles.address}>
-                                {t("personalVolunteer.Город")}
+                                {t("personal.Город")}
                                 :
                                 {" "}
                                 <span className={styles.subText}>
-                                    {country || t("personalVolunteer.Страна не указана")}
+                                    {country || t("personal.Страна не указана")}
                                     ,
                                     {" "}
-                                    {city || t("personalVolunteer.Город не указан")}
+                                    {city || t("personal.Город не указан")}
                                 </span>
                             </span>
                             <span className={styles.languages}>
-                                {t("personalVolunteer.Языки")}
+                                {t("personal.Языки")}
                                 :
                                 {" "}
                                 <span className={styles.subText}>

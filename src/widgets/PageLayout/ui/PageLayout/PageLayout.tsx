@@ -16,7 +16,11 @@ export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent, wrap
     return (
         <div id="page-layout" className={styles.layout}>
             <MainHeader />
-            <Sidebar content={sidebarContent} />
+            <Sidebar
+                content={sidebarContent}
+                classNameSidebar={styles.sidebar}
+                classNameSidebarLinks={styles.sidebarLinks}
+            />
             <div
                 className={cn(styles.wrapper, {
                     [styles.opened]: isOpen,

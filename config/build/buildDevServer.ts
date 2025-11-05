@@ -14,12 +14,6 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
             options: {
                 key: fs.readFileSync("localhost+1-key.pem"),
                 cert: fs.readFileSync("localhost+1.pem"),
-                ca: fs.readFileSync(
-                    path.resolve(
-                        __dirname,
-                        "C:/Users/70-7-/AppData/Local/mkcert/rootCA.pem"
-                    )
-                ),
             },
         },
     };

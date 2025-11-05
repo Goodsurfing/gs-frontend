@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { useTranslation } from "react-i18next";
 import styles from "./VolunteerCertificatesCard.module.scss";
 import { MediaObjectType } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -20,11 +21,12 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
     props: VolunteerCertificatesCardProps,
 ) => {
     const { certificates, classname } = props;
+    const { t } = useTranslation();
 
     const renderSlides = useMemo(
         () => {
             if (!certificates) {
-                return <span>Здесь будут размещены сертификаты и грамоты волонтера.</span>;
+                return <span>{t("personal.Здесь будут размещены сертификаты и грамоты волонтера.")}</span>;
             }
             return certificates.map((certificate, index) => (
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
@@ -38,12 +40,12 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
                 </SwiperSlide>
             ));
         },
-        [certificates],
+        [certificates, t],
     );
 
     return (
         <div id="6" className={cn(classname, styles.wrapper)}>
-            <Text title="Сертификаты и грамоты" titleSize="h3" />
+            <Text title={t("personal.Сертификаты и грамоты")} titleSize="h3" />
             <div className={styles.container}>
                 <Swiper
                     className={styles.swiper}

@@ -32,7 +32,6 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
 import { ErrorType } from "@/types/api/error";
-import Preloader from "@/shared/ui/Preloader/Preloader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import {
     NOT_SELECTED,
@@ -42,6 +41,7 @@ import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersFinishingTouchesPageUrl } from "@/shared/config/routes/AppUrls";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -129,7 +129,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     if (isOfferDataLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
-                <Preloader />
+                <MiniLoader />
             </div>
         );
     }

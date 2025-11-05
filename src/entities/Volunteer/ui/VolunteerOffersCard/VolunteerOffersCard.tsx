@@ -28,7 +28,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
         const { className, offers } = props;
         const { locale } = useLocale();
         const [getOfferById] = useLazyGetOfferByIdQuery();
-        const { t } = useTranslation("volunteer");
+        const { t } = useTranslation("profile");
         const [isPending, startTransition] = useTransition();
 
         const [offersData, setOffersData] = useState<Offer[]>([]);
@@ -105,13 +105,13 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)} id="2">
-                <Text title={t("personalVolunteer.Вакансии")} titleSize="h3" />
+                <Text title={t("personal.Вакансии")} titleSize="h3" />
 
                 <div className={styles.container} id="offers-scroll-container">
                     {loading && <MiniLoader />}
-                    {!loading && offersData.length === 0 && (
+                    {(!loading && offersData.length === 0) && (
                         <div>
-                            {t("personalVolunteer.У волонтера пока нет вакансий в которых он участвовал")}
+                            {t("personal.У волонтера пока нет вакансий в которых он участвовал")}
                         </div>
                     )}
                     <div

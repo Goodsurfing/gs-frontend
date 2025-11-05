@@ -18,7 +18,7 @@
         "lint:ts": "npx eslint ./src --fix",
         "lint:scss": "npx stylelint ./src --fix",
         "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
-        "type-check": "tsc --noEmit"
+        "type-check": "set NODE_OPTIONS=--max-old-space-size=8192 && tsc --noEmit"
     },
     "devDependencies": {
         "@babel/core": "^7.22.1",
@@ -90,6 +90,7 @@
         "@handy-ones/handy-svg": "^1.0.2",
         "@hookform/resolvers": "^3.3.2",
         "@mui/material": "^5.14.1",
+        "@mui/x-data-grid": "^5.17.24",
         "@pbe/react-yandex-maps": "^1.2.4",
         "@reduxjs/toolkit": "^1.9.5",
         "@tanstack/react-virtual": "^3.13.12",

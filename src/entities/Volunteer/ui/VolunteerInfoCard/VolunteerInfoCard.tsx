@@ -1,32 +1,61 @@
 import cn from "classnames";
-import React, { FC, memo } from "react";
+import React, {
+    FC, memo, useEffect,
+} from "react";
 
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 
-import { VolunteerApi } from "../../model/types/volunteer";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
 import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLanguagesCard";
 import { VolunteerReviewsCard } from "../VolunteerReviewsCard/VolunteerReviewsCard";
 import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard";
 import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
-import styles from "./VolunteerInfoCard.module.scss";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
+import { Profile } from "@/entities/Profile";
+import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
+import { useLazyGetHostByIdQuery } from "@/entities/Host";
+import styles from "./VolunteerInfoCard.module.scss";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface VolunteerInfoCardProps {
     className?: string;
-    volunteer: VolunteerApi;
+    profileData: Profile;
 }
 
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
     (props: VolunteerInfoCardProps) => {
-        const { volunteer, className } = props;
-        const showImageGallery = volunteer?.profile.galleryImages
-            && volunteer?.profile.galleryImages.length !== 0;
-        const showVideoGallery = volunteer?.profile.videoGallery
-            && volunteer?.profile.videoGallery.length !== 0;
-        const showCertificates = volunteer.certificates.length !== 0;
+        const { profileData, className } = props;
+        const [getHost, { data: hostData, isLoading }] = useLazyGetHostByIdQuery();
+        const {
+            id, volunteer, galleryImages, videoGallery,
+        } = profileData;
+        const showImageGallery = galleryImages
+            && galleryImages.length !== 0;
+        const showVideoGallery = videoGallery
+            && videoGallery.length !== 0;
+        const showCertificates = volunteer && volunteer.certificates.length !== 0;
+
+        useEffect(() => {
+            const fetchHost = () => {
+                if (profileData.host) {
+                    const hostId = profileData.host.split("/").pop();
+                    if (hostId) {
+                        getHost(hostId);
+                    }
+                }
+            };
+            fetchHost();
+        }, [getHost, profileData.host]);
+
+        if (isLoading) {
+            return (
+                <div className={cn(className)}>
+                    <MiniLoader />
+                </div>
+            );
+        }
 
         return (
             <div className={cn(className)}>
@@ -34,33 +63,37 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     description={volunteer?.externalInfo}
                 />
                 <VolunteerSkillsCard
-                    skills={volunteer.skills}
-                    additionalSkills={volunteer.additionalSkills}
+                    skills={volunteer?.skills}
+                    additionalSkills={volunteer?.additionalSkills}
                     className={styles.container}
                 />
-                <VolunteerLanguagesCard
-                    languages={volunteer.languages}
-                    className={styles.container}
-                />
-                <VolunteerOffersCard
-                    offers={volunteer.participatedVacancies}
-                    className={styles.container}
-                />
+                {volunteer && (
+                    <VolunteerLanguagesCard
+                        languages={volunteer.languages}
+                        className={styles.container}
+                    />
+                )}
+                {volunteer && (
+                    <VolunteerOffersCard
+                        offers={volunteer.participatedVacancies}
+                        className={styles.container}
+                    />
+                )}
                 <VolunteerReviewsCard
-                    volunteerId={volunteer.profile.id}
+                    volunteerId={id}
                     className={styles.container}
                 />
                 {showImageGallery && (
                     <VolunteerGalleryCard
                         images={getMediaContentsArray(
-                            volunteer.profile.galleryImages,
+                            galleryImages,
                         )}
                         className={styles.container}
                     />
                 )}
                 {showVideoGallery && (
                     <VolunteerVideoGalleryCard
-                        videoGallery={volunteer.profile.videoGallery}
+                        videoGallery={videoGallery}
                         className={styles.container}
                     />
                 )}
@@ -74,9 +107,9 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     articles={volunteer.articles}
                     className={styles.container}
                 /> */}
-                {/* {host && (
-                    <VolunteerHostCard host={host} className={styles.container} />
-                )} */}
+                {hostData && (
+                    <VolunteerHostCard host={hostData} className={styles.container} />
+                )}
             </div>
         );
     },

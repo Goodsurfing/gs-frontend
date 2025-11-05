@@ -22,11 +22,9 @@ import {
     useReadMessageMutation, useUpdateApplicationFormStatusByIdMutation,
 } from "@/entities/Chat/api/chatApi";
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
-import { Host, useLazyGetHostByIdQuery } from "@/entities/Host";
 import { UserInfoCard } from "@/entities/Messenger";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
-import { Profile } from "@/entities/Profile";
-import { useLazyGetVolunteerByIdQuery, VolunteerApi } from "@/entities/Volunteer";
+import { Profile, useLazyGetProfileInfoByIdQuery } from "@/entities/Profile";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
@@ -45,11 +43,11 @@ import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
 import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
-import styles from "./Chat.module.scss";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import styles from "./Chat.module.scss";
 
 interface ChatProps {
     id?: string;
@@ -90,10 +88,8 @@ export const Chat: FC<ChatProps> = (props) => {
     const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
         [],
     );
-    const [organizationData, setOrganizationData] = useState<Host>();
-    const [volunteerData, setVolunteerData] = useState<VolunteerApi>();
-    const [chatUser, setChatUser] = useState<Host | VolunteerApi>();
-    const [isImHost, setImHost] = useState<boolean>(false);
+    const [companionData, setCompanionData] = useState<Profile>();
+
     const navigate = useNavigate();
     const { getFullName } = useGetFullName();
     const { onReadMessage } = useMessenger();
@@ -113,63 +109,24 @@ export const Chat: FC<ChatProps> = (props) => {
     const [readMessage] = useReadMessageMutation();
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
     const { data: chatData } = useGetChatQuery(id ?? "");
-    const [getHost] = useLazyGetHostByIdQuery();
-    const [getVolunteer] = useLazyGetVolunteerByIdQuery();
-
-    useEffect(() => {
-        if (!myProfileData) return;
-
-        if (
-            organizationData?.owner.id
-            && organizationData?.owner.id !== myProfileData.id
-        ) {
-            setChatUser(organizationData);
-        } else if (
-            volunteerData?.profile.id
-            && volunteerData?.profile.id !== myProfileData.id
-        ) {
-            setChatUser(volunteerData);
-        }
-    }, [myProfileData, organizationData, volunteerData]);
+    const [getProfileData] = useLazyGetProfileInfoByIdQuery();
 
     useEffect(() => {
         if (chatData) {
-            setVolunteerData(chatData.volunteer);
-            const volunteerId = chatData.volunteer.profile.id;
-            const organizationId = chatData.organization.id;
-
-            const fetchOrganization = async () => {
-                const resultOrganizationData = await getHost(organizationId)
+            const fetchCompanion = async () => {
+                const companionId = chatData.otherParticipants[0].id;
+                const resultCompanionData = await getProfileData(companionId)
                     .unwrap()
-                    .then((organizationDataResult) => organizationDataResult)
+                    .then((companioDataResult) => companioDataResult)
                     .catch(() => undefined);
-                if (resultOrganizationData) {
-                    setOrganizationData(resultOrganizationData);
+                if (resultCompanionData) {
+                    setCompanionData(resultCompanionData);
                 }
             };
 
-            const fetchVolunteer = async () => {
-                const resultVolunteerData = await getVolunteer(volunteerId)
-                    .unwrap()
-                    .then((volunteerDataResult) => volunteerDataResult)
-                    .catch(() => undefined);
-                if (resultVolunteerData) {
-                    setVolunteerData(resultVolunteerData);
-                }
-            };
-
-            fetchVolunteer();
-            fetchOrganization();
+            fetchCompanion();
         }
-    }, [chatData, getHost, getVolunteer]);
-
-    useEffect(() => {
-        if (organizationData && myProfileData) {
-            if (organizationData.owner.id === myProfileData.id) {
-                setImHost(true);
-            }
-        }
-    }, [organizationData, myProfileData]);
+    }, [chatData]);
 
     useEffect(() => {
         if (isChatCreate && offerId) {
@@ -193,24 +150,24 @@ export const Chat: FC<ChatProps> = (props) => {
         }
         if (isChatCreate && !!recipientVolunteer) {
             const fetchVolunteer = async () => {
-                const resultVolunteerData = await getVolunteer(recipientVolunteer)
+                const resultVolunteerData = await getProfileData(recipientVolunteer)
                     .unwrap()
                     .then((volunteerDataResult) => volunteerDataResult)
                     .catch(() => undefined);
                 if (resultVolunteerData) {
-                    setChatUser(resultVolunteerData);
+                    setCompanionData(resultVolunteerData);
                 }
             };
             fetchVolunteer();
         }
         if (isChatCreate && !!recipientOrganization) {
             const fetchOrganization = async () => {
-                const resultHostData = await getHost(recipientOrganization)
+                const resultHostData = await getProfileData(recipientOrganization)
                     .unwrap()
                     .then((hostDataResult) => hostDataResult)
                     .catch(() => undefined);
                 if (resultHostData) {
-                    setChatUser(resultHostData);
+                    setCompanionData(resultHostData);
                 }
             };
             fetchOrganization();
@@ -253,23 +210,22 @@ export const Chat: FC<ChatProps> = (props) => {
                     } = message;
                     const messageDate = new Date(createdAt).toDateString();
 
-                    const partsAuthor = author.split("/");
-                    const authorId = partsAuthor.pop();
-                    const isUser = myProfileData?.id !== authorId;
+                    const authorId = author.split("/").pop();
+                    const isUserCompanion = myProfileData?.id !== authorId;
 
                     let userName;
                     let userAvatar;
 
-                    if (organizationData?.owner.id === authorId) {
-                        userName = organizationData?.name;
-                        userAvatar = getMediaContent(organizationData?.avatar);
-                    } else if (volunteerData?.profile.id === authorId) {
+                    if (isUserCompanion) {
+                        userName = getFullName(companionData?.firstName, companionData?.lastName);
+                        userAvatar = getMediaContent(companionData?.image);
+                    } else {
                         userName = getFullName(
-                            volunteerData?.profile.firstName,
-                            volunteerData?.profile.lastName,
+                            myProfileData.firstName,
+                            myProfileData.lastName,
                         );
                         userAvatar = getMediaContent(
-                            volunteerData?.profile.image,
+                            myProfileData.image,
                         );
                     }
 
@@ -293,6 +249,8 @@ export const Chat: FC<ChatProps> = (props) => {
                             const {
                                 vacancy, startDate, endDate, status,
                             } = applicationResult;
+                            const volunteerApplicationId = applicationResult.volunteer.profile.id;
+                            const isImHost = volunteerApplicationId !== myProfileData.id;
                             const tempIsHost = (status === "new" && isImHost);
 
                             return (
@@ -325,7 +283,7 @@ export const Chat: FC<ChatProps> = (props) => {
                             <Message
                                 avatar={userAvatar ?? ""}
                                 date={formatMessageDate(locale, createdAt)}
-                                isUser={isUser}
+                                isUser={isUserCompanion}
                                 text={text}
                                 attachments={attachments}
                                 username={userName ?? ""}
@@ -343,10 +301,8 @@ export const Chat: FC<ChatProps> = (props) => {
         };
 
         processMessages();
-    }, [messages, getApplicationData, myProfileData, locale, volunteerData?.profile.id,
-        volunteerData?.profile.firstName, volunteerData?.profile.lastName,
-        volunteerData?.profile.image, organizationData?.name, organizationData?.avatar,
-        organizationData?.owner.id, readMessage, isImHost, onApplicationSubmit]);
+    }, [messages, getApplicationData, myProfileData, locale,
+        readMessage, onApplicationSubmit]);
 
     if (!id || !myProfileData) {
         return (
@@ -410,10 +366,7 @@ export const Chat: FC<ChatProps> = (props) => {
 
     const renderChat = () => {
         if (isChatCreate && offerId) {
-            let username = "";
-            if (chatUser && ("profile" in chatUser)) {
-                username = `${chatUser.profile.lastName} ${chatUser.profile.firstName}`;
-            }
+            const username = getFullName(companionData?.firstName, companionData?.lastName);
 
             if (offerData) {
                 return (
@@ -462,13 +415,7 @@ export const Chat: FC<ChatProps> = (props) => {
                             onClick={handleBackButton}
                         />
                         <span className={styles.userName}>
-                            {chatUser
-                                && ("profile" in chatUser
-                                    ? getFullName(
-                                        chatUser.profile.firstName,
-                                        chatUser.profile.lastName,
-                                    )
-                                    : `${chatUser.name}`)}
+                            {getFullName(companionData?.firstName, companionData?.lastName)}
                         </span>
                     </div>
                     <div className={styles.settingsInfo}>
@@ -504,12 +451,14 @@ export const Chat: FC<ChatProps> = (props) => {
                     locale={locale}
                 />
             </div>
-            <UserInfoCard
-                user={chatUser}
-                infoOpenedChange={infoOpenedChange}
-                className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
-                locale={locale}
-            />
+            {companionData && (
+                <UserInfoCard
+                    user={companionData}
+                    infoOpenedChange={infoOpenedChange}
+                    className={cn(styles.userInfo, { [styles.open]: isInfoOpened })}
+                    locale={locale}
+                />
+            )}
             {selectedImage && (
                 <Modal onClose={onClosePopup}>
                     <img

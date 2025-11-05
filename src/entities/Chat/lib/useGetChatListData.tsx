@@ -3,11 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { FormApplicationStatus } from "@/entities/Application";
 import {
     ChatsList,
-    MessageType,
 } from "@/entities/Messenger";
 
 import { BASE_URL } from "@/shared/constants/api";
-import { useMessenger } from "@/app/providers/MessengerProvider";
 
 export const useGetChatListData = (
     token: string | null,
@@ -18,8 +16,6 @@ export const useGetChatListData = (
     const [chatsList, setChatsList] = useState<
     ChatsList[]
     >([]);
-
-    const { registerOnMessageCallback } = useMessenger();
 
     const fetchChats = useCallback(async () => {
         try {
@@ -55,29 +51,27 @@ export const useGetChatListData = (
         fetchChats();
     }, [fetchChats]);
 
-    useEffect(() => {
-        const unsubscribe = registerOnMessageCallback((updatedMessage: MessageType) => {
-            const tempUpdatedChatId = updatedMessage.chat.split("/").pop();
-            if (!tempUpdatedChatId) return;
+    // useEffect(() => {
+    //     const unsubscribe = registerOnMessageCallback((updatedMessage: MessageType) => {
+    //         const tempUpdatedChatId = updatedMessage.chat.split("/").pop();
+    //         if (!tempUpdatedChatId) return;
 
-            const updatedChatId = parseInt(tempUpdatedChatId, 10);
+    //         console.log("updatedMessage", updatedMessage);
+    //         const updatedChatId = parseInt(tempUpdatedChatId, 10);
 
-            setChatsList((prev) => prev.map((chat) => (chat.id === updatedChatId
-                ? {
-                    ...chat,
-                    lastMessage: updatedMessage,
-                    countUnreadMessagesByOrganization:
-                              chat.countUnreadMessagesByOrganization + 1,
-                    countUnreadMessagesByVolunteer:
-                              chat.countUnreadMessagesByVolunteer + 1,
-                }
-                : chat)));
-        });
+    //         // setChatsList((prev) => prev.map((chat) => (chat.id === updatedChatId
+    //         //     ? {
+    //         //         ...chat,
+    //         //         lastMessage: updatedMessage,
+    //         //         countUnreadMessages: chat.countUnreadMessages + 1,
+    //         //     }
+    //         //     : chat)));
+    //     });
 
-        return () => {
-            unsubscribe();
-        };
-    }, [registerOnMessageCallback]);
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, [registerOnMessageCallback]);
 
     const onChangeSearchValue = (value: string) => {
         setSearchValue(value);

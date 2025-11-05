@@ -1,6 +1,6 @@
 import { FormApplicationStatus } from "@/entities/Application";
-import { Host, HostApi } from "@/entities/Host";
-import { Language, VolunteerApi } from "@/entities/Volunteer";
+import { Profile } from "@/entities/Profile";
+import { Language } from "@/entities/Volunteer";
 
 import { Skills } from "@/shared/data/skills";
 import { MediaObjectType } from "@/types/media";
@@ -11,36 +11,33 @@ export interface MessageType {
     text?: string;
     attachments: string[] | MediaObjectType[];
     createdAt: string;
-    chat: string;
-    viewedVolunteer: boolean;
-    viewedOrganization: boolean;
+    // chat: string;
     applicationForm?: string;
+    readByUserIds: string[];
 }
 
 export interface ChatsList {
     id: number;
-    organization: HostApi;
-    volunteer: VolunteerApi;
-    lastMessage?: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByOrganization: number;
-    countUnreadMessagesByVolunteer: number;
+    lastMessage?: Omit<MessageType, "author"> & { author: Profile };
+    applicationStatus?: FormApplicationStatus;
+    otherParticipants: Profile[];
+    countUnreadMessages: number;
 }
-export interface ChatsListWithVolunteers {
-    id: number;
-    volunteer: VolunteerApi;
-    lastMessage: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByOrganization: number;
-}
+// export interface ChatsListWithVolunteers {
+//     id: number;
+//     volunteer: VolunteerApi;
+//     lastMessage: MessageType;
+//     vacancyStatus?: FormApplicationStatus;
+//     countUnreadMessagesByOrganization: number;
+// }
 
-export interface ChatsListWithOrganizations {
-    id: number;
-    organization: HostApi;
-    lastMessage: MessageType;
-    vacancyStatus?: FormApplicationStatus;
-    countUnreadMessagesByVolunteer: number;
-}
+// export interface ChatsListWithOrganizations {
+//     id: number;
+//     organization: HostApi;
+//     lastMessage: MessageType;
+//     vacancyStatus?: FormApplicationStatus;
+//     countUnreadMessagesByVolunteer: number;
+// }
 
 export interface UserChatType {
     id: string;
@@ -65,7 +62,7 @@ export interface MessageTypeMocked {
 export interface ChatType {
     id: number;
     lastMessage: MessageType;
-    organization: Host;
-    vacancyStatus?: FormApplicationStatus;
-    volunteer: VolunteerApi;
+    applicationStatus?: FormApplicationStatus;
+    otherParticipants: Profile[];
+    countUnreadMessages: number;
 }

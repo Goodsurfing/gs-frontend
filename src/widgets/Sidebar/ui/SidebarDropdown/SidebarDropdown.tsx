@@ -10,13 +10,16 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface SidebarDropdownProps {
     route: string;
-    icon: string;
+    icon?: string;
     text: string;
     dropdownItems: DropdownItem[];
+    classNameDropdownContainer?: string;
+    classNameDropdownItem?: string;
 }
 
 export const SidebarDropdown = memo(({
-    dropdownItems, icon, route, text,
+    dropdownItems, icon, route, text, classNameDropdownContainer,
+    classNameDropdownItem,
 }: SidebarDropdownProps) => {
     const { locale } = useLocale();
     const { isOpen } = useSidebarContext();
@@ -30,7 +33,7 @@ export const SidebarDropdown = memo(({
     return (
         <li className={styles.wrapper}>
             <div className={cn(styles.link, { [styles.linkOpen]: isOpen })}>
-                <img className={styles.img} src={icon} alt={text} />
+                {icon && <img className={styles.img} src={icon} alt={text} />}
                 <span className={cn(styles.text, {
                     [styles.opened]: isOpen,
                     [styles.matchRoute]: isMatchRoutes,
@@ -40,7 +43,7 @@ export const SidebarDropdown = memo(({
                 </span>
             </div>
             {canOpen && (
-                <div className={styles.dropdownContainer}>
+                <div className={cn(styles.dropdownContainer, classNameDropdownContainer)}>
                     <div className={styles.dropdownLine} />
                     <div className={styles.dropdown}>
                         {dropdownItems.map((item) => (
@@ -50,7 +53,7 @@ export const SidebarDropdown = memo(({
                                 replace
                                 className={({ isActive }) => cn(styles.dropdownItem, {
                                     [styles.activeDropdownItem]: isActive,
-                                })}
+                                }, classNameDropdownItem)}
                             >
                                 {item.text}
                             </NavLink>
