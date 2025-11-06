@@ -7,3 +7,5 @@ export { getAdminAuthData } from "./model/selectors/adminSelectors";
 export { adminUsersAdapter, adminOrganizationsAdapter } from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
+
+export { OrganizationInfoTable } from "./ui/OrganizationInfoTable/OrganizationInfoTable";

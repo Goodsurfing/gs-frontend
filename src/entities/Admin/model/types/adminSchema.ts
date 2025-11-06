@@ -27,4 +27,5 @@ export interface AdminOrganizationsFields {
     countMembers: number;
     countVacancies: number;
     countVolunteers: number;
+    isBlock: boolean;
 }
