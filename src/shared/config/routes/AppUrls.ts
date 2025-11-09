@@ -185,6 +185,8 @@ export const getAdminOrganizationsPageUrl: RoutePathFunction = (locale) => `/${l
 
 export const getAdminPersonalOrganizationPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_organizations}/${id}`;
 
+export const getAdminSkillsAchievementsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skills_achievements}`;
+
 export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancies}`;
 
 export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}`;

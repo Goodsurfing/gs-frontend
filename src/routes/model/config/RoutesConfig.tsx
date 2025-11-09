@@ -134,6 +134,7 @@ import {
     getAdminPersonalUserPageUrl,
     getAdminOrganizationsPageUrl,
     getAdminPersonalOrganizationPageUrl,
+    getAdminSkillsAchievementsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -153,6 +154,7 @@ import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
 import { AdminUserPersonalPage } from "@/pages/AdminUserPersonalPage";
 import { AdminOrganizationsPage } from "@/pages/AdminOrganizationsPage";
 import { AdminPersonalOrganizationPage } from "@/pages/AdminPersonalOrganizationPage";
+import { AdminSkillsAchievementsPage } from "@/pages/AdminSkillAchievementsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -561,6 +563,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-organization-personal",
                 element: <AdminPersonalOrganizationPage />,
                 path: (locale: string) => getAdminPersonalOrganizationPageUrl(locale),
+            },
+            {
+                label: "admin-skills-achievements",
+                element: <AdminSkillsAchievementsPage />,
+                path: (locale: string) => getAdminSkillsAchievementsPageUrl(locale),
             },
         ],
     },

@@ -80,6 +80,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_USERS]: "/admin/users",
     [AppRoutes.ADMIN_ORGANIZATIONS]: "/admin/organizations",
     [AppRoutes.ADMIN_VACANCIES]: "/admin/vacancies",
+    [AppRoutes.ADMIN_SKILLS_ACHIEVEMENTS]: "/admin/skills-achievements",
     [AppRoutes.ADMIN_CATEGORIES_VACANCIES]: "/admin/categories-vacancies",
     [AppRoutes.ADMIN_REVIEWS]: "/admin/reviews",
 };
