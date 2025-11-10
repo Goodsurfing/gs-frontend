@@ -1,0 +1,39 @@
+.wrapper {
+    height: 40vh;
+}
+
+.btnIcon {
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnIcon svg {
+    width: 25px;
+    height: auto;
+    transition: all 0.3 ease;
+}
+
+.btnIcon:hover {
+    scale: 1.05;
+}
+
+.btnShow g {
+    fill: var(--accent-color);
+}
+
+.btnBlock g {
+    fill: var(--text-caption);
+}
+
+.btnDelete g {
+    fill: var(--error-color);
+}
+
+.skillImg svg {
+    width: 20px;
+    fill: var(--text-primary-1);
+}

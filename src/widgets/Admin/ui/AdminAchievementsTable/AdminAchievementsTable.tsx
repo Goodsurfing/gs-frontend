@@ -1,41 +1,41 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Stack } from "@mui/material";
 import { ReactSVG } from "react-svg";
+import { useNavigate } from "react-router-dom";
 import cn from "classnames";
-import cookingIcon from "@/shared/assets/icons/skills/cooking.svg";
+import styles from "./AdminAchievementsTable.module.scss";
+import medalIcon from "@/shared/assets/icons/medals/ambassador.svg";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./AdminSkillsTable.module.scss";
-import { getAdminSkillPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminAchievementPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
-interface SkillType {
+interface AchievementType {
     id: number;
     name: string;
     img: string;
 }
 
-const rows: SkillType[] = [
+const rows: AchievementType[] = [
     {
         id: 1,
-        name: "Навык 1",
-        img: cookingIcon,
+        name: "Достижение 1",
+        img: medalIcon,
     },
     {
         id: 2,
-        name: "Навык 2",
-        img: cookingIcon,
+        name: "Достижение 2",
+        img: medalIcon,
     },
     {
         id: 3,
-        name: "Навык 3",
-        img: cookingIcon,
+        name: "Достижение 3",
+        img: medalIcon,
     },
 ];
 
-export const AdminSkillsTable = () => {
+export const AdminAchievementsTable = () => {
     const [pageSize, setPageSize] = useState(50);
     const navigate = useNavigate();
     const { locale } = useLocale();
@@ -54,7 +54,7 @@ export const AdminSkillsTable = () => {
             hideable: false,
             width: 180,
             renderCell: (params) => (
-                <ReactSVG className={styles.skillImg} src={params.row.img} />
+                <ReactSVG className={styles.achivImg} src={params.row.img} />
             ),
         },
         {
@@ -67,16 +67,16 @@ export const AdminSkillsTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminSkillPersonalPageUrl(locale, params.row.id),
+                    getAdminAchievementPersonalPageUrl(locale, params.row.id),
                 );
-                const handleDelete = () => alert(`Удалить навык ${params.row.id}?`);
+                const handleDelete = () => alert(`Удалить достижение ${params.row.id}?`);
 
                 return (
                     <Stack direction="row" spacing={1}>
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Редактировать навык"
+                            title="Редактировать достижение"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
@@ -84,7 +84,7 @@ export const AdminSkillsTable = () => {
                         <button
                             onClick={handleDelete}
                             type="button"
-                            title="Удалить наывк"
+                            title="Удалить достижение"
                             className={cn(styles.btnIcon, styles.btnDelete)}
                         >
                             <ReactSVG src={deleteIcon} />

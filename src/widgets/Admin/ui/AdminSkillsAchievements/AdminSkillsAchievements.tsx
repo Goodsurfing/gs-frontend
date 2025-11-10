@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./AdminSkillsAchievements.module.scss";
 import Button from "@/shared/ui/Button/Button";
+import { AdminSkillsTable } from "../AdminSkillsTable/AdminSkillsTable";
+import { AdminAchievementsTable } from "../AdminAchievementsTable/AdminAchievementsTable";
 
 export const AdminSkillsAchievements = () => {
     const [isSkillsTableOpen, setSkillsTableOpen] = useState(false);
@@ -23,8 +25,8 @@ export const AdminSkillsAchievements = () => {
                 <Button onClick={handleSkillsTableOpen} color="BLUE" size="SMALL" variant="FILL">{skillsTextButton}</Button>
                 <Button onClick={handleAchievementsTableOpen} color="GREEN" size="SMALL" variant="FILL">{achievementsTextButton}</Button>
             </div>
-            {isSkillsTableOpen && <div>Таблица навыков</div>}
-            {isAchievementsTableOpen && <div>Таблица достижений</div>}
+            {isSkillsTableOpen && <AdminSkillsTable />}
+            {isAchievementsTableOpen && <AdminAchievementsTable />}
         </div>
     );
 };
