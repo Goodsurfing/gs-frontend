@@ -9,15 +9,12 @@ export const VerifyEmailWidget = () => {
 
     return (
         <div className={styles.wrapper}>
-            <SignTitle>{t("login.Регистрация пользователя")}</SignTitle>
+            <SignTitle>{t("login.Подтверждение почты")}</SignTitle>
             <VerifyEmailForm />
             <div className={styles.confirm}>
-                {t("login.Нажимая кнопку «Зарегистрироваться», я принимаю")}
+                {t("login.Вам на почту придёт письмо с подтверждением")}
                 .
             </div>
-            {/* <div className={styles.socials}>
-                    <SocialAuthContainer />
-                </div> */}
         </div>
     );
 };

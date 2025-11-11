@@ -40,7 +40,16 @@
         "было отправлено письмо со ссылкой для восстановления пароля.": "An email with a password reset link has been sent.",
         "Пароли не совпадают": "Passwords do not match",
         "Новый пароль": "New password",
-        "Повторите новый пароль": "Repeat new password"
+        "Повторите новый пароль": "Repeat new password",
+        "Почта уже была подтверждена": "Email has already been verified",
+        "Похоже, эта почта уже подтверждена.": "It looks like this email has already been verified.",
+        "Перейти ко входу": "Go to login",
+        "Перейти в профиль": "Go to profile",
+        "Подтверждение почты": "Email confirmation",
+        "Вам на почту придёт письмо с подтверждением": "You will receive a confirmation email",
+        "Сообщение с подтверждением отправлено на ваш email": "A confirmation message has been sent to your E-mail",
+        "Отправить ещё раз": "Resend",
+        "Подтвердить": "Confirm"
     },
     "main": {
         "welcome": {

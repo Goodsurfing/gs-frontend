@@ -1,6 +1,6 @@
 import * as VKID from "@vkid/sdk";
 import React, {
-    FC, useEffect, useRef, useState,
+    FC, useEffect, useRef,
 } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -10,7 +10,9 @@ import { Locale } from "@/entities/Locale";
 import { generateCodeVerifier, generateState } from "@/shared/lib/pkce";
 
 import styles from "./AuthByVk.module.scss";
-import { API_BASE_URL } from "@/shared/constants/api";
+import { BASE_VK_URI } from "@/shared/constants/api";
+import { userActions } from "@/entities/User";
+import { useAppDispatch } from "@/shared/hooks/redux";
 
 const langLib: Record<Locale, VKID.Languages> = {
     ru: VKID.Languages.RUS,
@@ -26,28 +28,28 @@ interface AuthByVkProps {
 export const AuthByVk: FC<AuthByVkProps> = (props) => {
     const { redirect, onSuccess } = props;
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const [user, setUser] = useState<any>(null);
-    const [token, setToken] = useState<string | null>(null);
     const { locale } = useLocale();
+    const dispatch = useAppDispatch();
+    const hasTriedAuth = useRef(false);
+    const redirectUrl = process.env.NODE_ENV === "development"
+        ? `https://localhost/${locale}/${redirect}`
+        : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`;
 
     useEffect(() => {
+        if (hasTriedAuth.current) return;
+
         const vkIdInit = async () => {
-            // Получаем или генерируем codeVerifier и сохраняем в sessionStorage
-            let codeVerifier = sessionStorage.getItem("vk_code_verifier"); // TODO: лучше вот это засунуть в redux
+            let codeVerifier = localStorage.getItem("vk_code_verifier");
             if (!codeVerifier) {
                 codeVerifier = generateCodeVerifier();
-                sessionStorage.setItem("vk_code_verifier", codeVerifier);
+                localStorage.setItem("vk_code_verifier", codeVerifier);
             }
 
             const state = generateState(32);
 
             VKID.Config.init({
-                // app: 54011426, // Number(process.env.REACT_VKID_CLIENT_ID),
                 app: Number(process.env.REACT_VKID_CLIENT_ID),
-                redirectUrl:
-                    process.env.NODE_ENV === "development"
-                        ? `https://localhost/${locale}/${redirect}`
-                        : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`,
+                redirectUrl,
                 scope: "email phone",
                 codeVerifier,
                 state,
@@ -56,7 +58,6 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             const renderOneTapButton = () => {
                 if (!containerRef.current) return;
                 containerRef.current.innerHTML = "";
-
                 const oneTap = new VKID.OneTap();
                 oneTap.render({
                     container: containerRef.current,
@@ -65,89 +66,69 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                 });
             };
 
-            const tryAuth = () => {
+            const tryAuth = async () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const code = urlParams.get("code");
                 const deviceId = urlParams.get("device_id");
                 const responseType = urlParams.get("type");
 
                 if (deviceId && code && responseType === "code_v2") {
-                    // Берём codeVerifier из sessionStorage
-                    const storedVerifier = sessionStorage.getItem("vk_code_verifier");
+                    const storedVerifier = localStorage.getItem("vk_code_verifier");
                     if (!storedVerifier) {
                         renderOneTapButton();
                         return;
                     }
 
-                    VKID.Auth.exchangeCode(code, deviceId, storedVerifier)
-                        .then((result: any) => {
-                            const vkAccessToken = result.access_token;
-                            return fetch(`${API_BASE_URL}vk/profile`, {
-                                method: "GET",
-                                headers: {
-                                    Authorization: `Bearer ${vkAccessToken}`,
-                                },
-                            }).then((res) => res.json());
-                        })
-                        .then((jwtResponse: any) => {
-                            setToken(jwtResponse.jwt);
-                            setUser(jwtResponse.user);
-
-                            sessionStorage.removeItem("vk_code_verifier");
-                            window.history.replaceState(
-                                {},
-                                document.title,
-                                window.location.pathname,
-                            );
-                            onSuccess?.();
-                        })
-                        .catch(() => {
-                            renderOneTapButton();
+                    try {
+                        const responseAccessToken = await fetch(`${BASE_VK_URI}access-token`, {
+                            method: "POST",
+                            body: JSON.stringify({
+                                code,
+                                deviceId,
+                                codeVerifier: storedVerifier,
+                                redirectUri: redirectUrl,
+                            }),
                         });
+                        const { accessToken } = await responseAccessToken.json();
+
+                        const responseJwtToken = await fetch(`${BASE_VK_URI}jwt-token`, {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                            },
+                        });
+                        const data = await responseJwtToken.json();
+
+                        if (data) {
+                            dispatch(userActions.setAuthData({
+                                token: data.accessToken,
+                                mercureToken: data.mercureToken,
+                                rememberMe: true,
+                                username: data.firstName,
+                            }));
+                            localStorage.removeItem("vk_code_verifier");
+                            onSuccess?.();
+                        } else {
+                            renderOneTapButton();
+                        }
+                    } catch (err) {
+                        renderOneTapButton();
+                    }
                 } else {
                     renderOneTapButton();
                 }
             };
 
-            tryAuth();
+            hasTriedAuth.current = true;
+            await tryAuth();
         };
 
         vkIdInit();
-    }, [locale, redirect, onSuccess]);
-
-    const handleLogout = async () => {
-        if (!token) return;
-
-        try {
-            await VKID.Auth.logout(token);
-            setUser(null);
-            setToken(null);
-            window.location.reload();
-        } catch {
-            // epmty
-        }
-    };
+    }, [locale, redirect, onSuccess, redirectUrl, dispatch]);
 
     return (
         <div className={styles.wrapper}>
-            {!user && <div ref={containerRef} />}
-            {user && (
-                <div>
-                    <p>
-                        Имя:
-                        {user.first_name}
-                    </p>
-                    <p>
-                        Фамилия:
-                        {user.last_name}
-                    </p>
-                    <p>
-                        Телефон:
-                        {user.phone}
-                    </p>
-                    <button onClick={handleLogout}>Выйти</button>
-                </div>
-            )}
+            <div ref={containerRef} />
         </div>
     );
 };
