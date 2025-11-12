@@ -63,3 +63,34 @@ export interface GetAdminSkillsResponse {
     data: AdminSkill[];
     pagination: AdminSkillPagination
 }
+
+export interface SearchUsersParams {
+    limit: string;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+}
+
+export interface SearchUsersResponse {
+    id: string;
+    firstName: string;
+    lastName: string;
+}
+
+export interface EditReviewVacancy {
+    reviewId: number;
+    body: {
+        score: number;
+        description: string;
+    }
+}
+
+export interface GetAdminReviewVacancyListParams {
+    sort?: "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "vacancy.name:asc" |
+    "vacancy.name:desc" | "score:asc" | "score:desc" | "created:asc" | "created:desc";
+    authorLastName: string;
+    authorFirstName: string;
+    vacancyName: string;
+    page: number;
+    limit: number;
+}

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import cn from "classnames";
 import {
-    FormProvider, useForm, DefaultValues, SubmitHandler,
+    FormProvider, useForm, DefaultValues,
     Controller,
 } from "react-hook-form";
 import styles from "./AdminSkillForm.module.scss";
@@ -67,9 +67,9 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
                             control={control}
                             name="imagePath"
                             rules={{ required: "Это поле является обязательным" }}
-                            render={({ field }) => (
+                            render={() => {
                                 // TODO: Input for upload images
-                            )}
+                            }}
                         />
                         {errors.imagePath?.message && (
                             <ErrorText text={errors.imagePath.message} className={styles.error} />

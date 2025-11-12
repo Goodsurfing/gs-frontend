@@ -4,4 +4,5 @@ export { mockedChatUser, mockedMessages } from "./model/data/mockedUsers";
 export type {
     MessageType, UserChatType, ChatsList,
     ChatType,
+    GetChatsListRequest,
 } from "./model/types/messenger";

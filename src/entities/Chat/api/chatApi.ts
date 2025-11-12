@@ -1,9 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { ChatType, MessageType } from "@/entities/Messenger";
 import {
-    FormApplication, FormApplicationStatus, FullFormApplication, SimpleFormApplication,
+    ChatsList, ChatType, MessageType, GetChatsListRequest,
+} from "@/entities/Messenger";
+import {
+    FormApplication, FormApplicationStatus, FullFormApplication,
+    SimpleFormApplication,
 } from "@/entities/Application";
 import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 
@@ -48,24 +51,18 @@ export const chatApi = createApi({
             }),
             providesTags: ["chat"],
         }),
-        getChatsWithOrganizations: build.query<any, string>({
-            query: () => ({
-                url: "chats/my/with-organizations",
-                method: "GET",
-            }),
-            providesTags: ["chat"],
-        }),
-        getChatsWithVolunteers: build.query<any, string>({
-            query: () => ({
-                url: "chats/my/with-volunteers",
-                method: "GET",
-            }),
-            providesTags: ["chat"],
-        }),
         getChat: build.query<ChatType, string>({
             query: (chatId) => ({
                 url: `chats/${chatId}`,
                 method: "GET",
+            }),
+            providesTags: ["chat"],
+        }),
+        getMyChatsList: build.query<ChatsList[], GetChatsListRequest>({
+            query: (request) => ({
+                url: "personal/chats",
+                method: "GET",
+                params: request.params,
             }),
             providesTags: ["chat"],
         }),
@@ -138,4 +135,6 @@ export const {
     useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
     useUpdateApplicationFormStatusByIdWithoutTagsMutation,
+    useGetMyChatsListQuery,
+    useLazyGetMyChatsListQuery,
 } = chatApi;

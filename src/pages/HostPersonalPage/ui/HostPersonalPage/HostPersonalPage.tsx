@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -21,9 +21,11 @@ import { HostPageContent } from "../HostPageContent/HostPageContent";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
 import styles from "./HostPersonalPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
+    const [getMyChatsList, { data: myChatsListData }] = useLazyGetMyChatsListQuery();
     const { t, ready } = useTranslation("host");
     const { submenuItems } = useSubmenuItems();
     const {
@@ -41,8 +43,26 @@ export const HostPersonalPage = () => {
     };
 
     const handleWriteClick = () => {
-        navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
+        if (myChatsListData) {
+            const isChatExist = myChatsListData.length > 0;
+            if (isChatExist) {
+                const chatId = myChatsListData[0].id;
+                navigate(getMessengerPageIdUrl(locale, chatId.toString()));
+                return;
+            }
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
+        }
     };
+
+    const fetchMyChatsList = useCallback(async () => {
+        if (id) {
+            await getMyChatsList({ params: { participantId: id } });
+        }
+    }, [getMyChatsList, id]);
+
+    useEffect(() => {
+        fetchMyChatsList();
+    }, [fetchMyChatsList, id]);
 
     if (!ready || isLoading) {
         return <Preloader />;
@@ -97,8 +117,10 @@ export const HostPersonalPage = () => {
                 <HostlHeaderCard
                     host={hostData}
                     isEdit={showEditButton}
-                    locale={locale}
                     isAuth={isAuth}
+                    handleEditClick={handleEditClick}
+                    handleWriteClick={handleWriteClick}
+                    isShowWriteButton={!!myChatsListData}
                 />
                 <Submenu
                     className={styles.navMenu}

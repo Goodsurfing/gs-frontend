@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
@@ -24,9 +24,11 @@ import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard"
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./VolunteerPersonalPage.module.scss";
+import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
+    const [getMyChatsList, { data: myChatsListData }] = useLazyGetMyChatsListQuery();
     const navigate = useNavigate();
     const { locale } = useLocale();
     const { t, ready } = useTranslation("profile");
@@ -43,8 +45,26 @@ export const VolunteerPersonalPage = () => {
     };
 
     const handleWriteClick = () => {
-        navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
+        if (myChatsListData) {
+            const isChatExist = myChatsListData.length > 0;
+            if (isChatExist) {
+                const chatId = myChatsListData[0].id;
+                navigate(getMessengerPageIdUrl(locale, chatId.toString()));
+                return;
+            }
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
+        }
     };
+
+    const fetchMyChatsList = useCallback(async () => {
+        if (id) {
+            await getMyChatsList({ params: { participantId: id } });
+        }
+    }, [getMyChatsList, id]);
+
+    useEffect(() => {
+        fetchMyChatsList();
+    }, [fetchMyChatsList, id]);
 
     if (isLoading || !ready) {
         return (
@@ -102,7 +122,7 @@ export const VolunteerPersonalPage = () => {
                 </Button>
             )}
 
-            {(!showEditButton && isAuth) && (
+            {(myChatsListData && (!showEditButton && isAuth)) && (
                 <Button
                     size="SMALL"
                     color="BLUE"
@@ -123,8 +143,10 @@ export const VolunteerPersonalPage = () => {
                 <VolunteerHeaderCard
                     profileData={profileData}
                     showButtons={showEditButton}
-                    locale={locale}
                     isAuth={isAuth}
+                    isShowWriteButton={!!myChatsListData}
+                    handleEditClick={handleEditClick}
+                    handleWriteClick={handleWriteClick}
                 />
                 <Submenu
                     className={styles.navMenu}

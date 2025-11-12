@@ -23,6 +23,16 @@ export interface ChatsList {
     otherParticipants: Profile[];
     countUnreadMessages: number;
 }
+
+export interface GetChatsListRequest {
+    params: {
+        page?: number;
+        itemsPerPage?: number;
+        search?: string;
+        status?: FormApplicationStatus;
+        participantId?: string;
+    }
+}
 // export interface ChatsListWithVolunteers {
 //     id: number;
 //     volunteer: VolunteerApi;
