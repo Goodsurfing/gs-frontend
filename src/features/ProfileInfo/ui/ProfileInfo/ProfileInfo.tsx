@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import styles from "./ProfileInfo.module.scss";
 import { ProfileInfoVerifyEmail } from "../ProfileInfoVerifyEmail/ProfileInfoVerifyEmail";
 
 interface ProfileInfoProps {
@@ -35,12 +34,11 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
     }
 
     return (
-        <div className={cn(className, styles.wrapper)}>
-            <div className={styles.header} />
+        <div className={cn(className)}>
             {!isUserVerified && (
                 <ProfileInfoVerifyEmail />
             )}
-            <div className={styles.body}>
+            <div>
                 {myProfile && <ProfileInfoForm profile={myProfile} />}
             </div>
         </div>
