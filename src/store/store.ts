@@ -19,7 +19,7 @@ import { authMiddleware } from "./middlewares/authMiddleware";
 import { reviewApi } from "@/entities/Review";
 import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
-import { adminReducer } from "@/entities/Admin";
+import { adminReducer, adminApi } from "@/entities/Admin";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -38,6 +38,7 @@ const rootReducer = combineReducers({
     [offerApi.reducerPath]: offerApi.reducer,
     [reviewApi.reducerPath]: reviewApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -54,6 +55,7 @@ export const setupStore = () => configureStore({
         offerApi.middleware,
         reviewApi.middleware,
         chatApi.middleware,
+        adminApi.middleware,
         authMiddleware,
     ]),
 });

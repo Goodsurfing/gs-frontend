@@ -9,3 +9,10 @@ export { adminUsersAdapter, adminOrganizationsAdapter } from "./lib/adminAdapter
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
 export { OrganizationInfoTable } from "./ui/OrganizationInfoTable/OrganizationInfoTable";
+
+export type { AdminSkill } from "./model/types/adminSchema";
+
+export {
+    adminApi, useCreateSkillMutation,
+    useDeleteSkillMutation, useEditSkillMutation, useLazyGetSkillsQuery,
+} from "./api/adminApi";
