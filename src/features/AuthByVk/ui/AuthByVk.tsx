@@ -104,7 +104,8 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                                 token: data.accessToken,
                                 mercureToken: data.mercureToken,
                                 rememberMe: true,
-                                username: data.firstName,
+                                username: data.user.email,
+                                isVerified: data.user.isVerified,
                             }));
                             localStorage.removeItem("vk_code_verifier");
                             onSuccess?.();

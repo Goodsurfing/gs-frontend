@@ -16,7 +16,9 @@ interface ProfileInfoProps {
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
     const { t } = useTranslation("profile");
-    const { myProfile, profileIsLoading, profileIsError } = useAuth();
+    const {
+        myProfile, profileIsLoading, profileIsError, isUserVerified,
+    } = useAuth();
 
     if (profileIsError) {
         <div className={cn(className, styles.wrapper)}>
@@ -41,10 +43,9 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <div className={styles.header} />
-            {/* {!myProfile?.email && (
+            {!isUserVerified && (
                 <ProfileInfoVerifyEmail />
-            )} */}
-            <ProfileInfoVerifyEmail />
+            )}
             <div className={styles.body}>
                 {myProfile && <ProfileInfoForm profile={myProfile} />}
             </div>

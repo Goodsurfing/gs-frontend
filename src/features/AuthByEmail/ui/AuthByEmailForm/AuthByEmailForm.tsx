@@ -49,6 +49,7 @@ export const AuthByEmailForm = memo(({
                 token: accessToken,
                 mercureToken,
                 rememberMe: data.rememberMe,
+                isVerified: true,
             }));
 
             onSuccess?.();

@@ -38,7 +38,7 @@ export const getEmailAlreadyConfirmedPageUrl: RoutePathFunction = (locale) => `/
 
 export const getVerifyEmailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.verify_email}`;
 
-export const getVerifyEmailHashPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.verify_email_hash}`;
+export const getVerifyEmailHashPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.verify_email_hash}/${id}`;
 
 export const getConfirmErrorPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.confirm_error}`;
 
