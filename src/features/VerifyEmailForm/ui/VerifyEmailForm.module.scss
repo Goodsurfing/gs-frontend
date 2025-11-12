@@ -1,0 +1,18 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+
+	width: 100%;
+	max-width: 400px;
+
+	.btn {
+		margin-top: 20px;
+	}
+}
+
+.successMessage {
+	color: var(--color-dark-blue);
+    font-size: 1.125rem;
+    line-height: 144%;
+	text-align: center;
+}

@@ -8,20 +8,22 @@ import EmptyHeader from "@/shared/ui/EmptyHeader/EmptyHeader";
 
 import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 
-import styles from "./SignLayout.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
     cancelPath: string;
     cancelText: string;
+    disableRedirectIfIsAuth?: boolean;
 }
 
 const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     cancelText,
     cancelPath,
+    disableRedirectIfIsAuth = false,
     children,
 }) => {
     const { locale } = useLocale();
@@ -29,7 +31,7 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     const isAuth = useAppSelector(getUserAuthData);
 
     useEffect(() => {
-        if (isAuth) {
+        if (isAuth && !disableRedirectIfIsAuth) {
             navigate(getMainPageUrl(locale));
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

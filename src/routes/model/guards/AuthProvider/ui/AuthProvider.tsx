@@ -12,6 +12,7 @@ interface AuthContextProps {
     myProfile: Profile | null;
     profileIsLoading: boolean;
     profileIsError: boolean;
+    isUserVerified: boolean;
     isAuth: boolean;
     refetchProfile: () => void;
 }
@@ -27,6 +28,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     const [isAuth, setAuth] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null);
+    const [isUserVerified, setUserVerified] = useState<boolean>(false);
     const [mercureToken, setMercureToken] = useState<string | null>(null);
     const {
         data: myProfileData,
@@ -40,6 +42,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     useEffect(() => {
         setAuth(!!authData);
+        setUserVerified(authData?.isVerified ?? false);
         setToken(authData?.token ?? null);
         setMercureToken(authData?.mercureToken ?? null);
     }, [authData]);
@@ -52,13 +55,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         () => ({
             token,
             mercureToken,
+            isUserVerified,
             myProfile,
             profileIsLoading,
             profileIsError,
             isAuth,
             refetchProfile,
         }),
-        [token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth, refetchProfile],
+        [token, mercureToken, myProfile, profileIsLoading,
+            profileIsError, isAuth,
+            isUserVerified, refetchProfile],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -128,6 +128,8 @@ import {
     getEmailExpiredPageUrl,
     getConfirmErrorPageUrl,
     getEmailAlreadyConfirmedPageUrl,
+    getVerifyEmailPageUrl,
+    getVerifyEmailHashPageUrl,
     getAdminSignInPageUrl,
     getAdminUsersPageUrl,
     getAdminPageUrl,
@@ -148,6 +150,8 @@ import { AcademyLessonPage } from "@/pages/AcademyLessonPage";
 import { EmailExpiredPage } from "@/pages/EmailExpiredPage";
 import { ConfirmErrorPage } from "@/pages/ConfirmErrorPage";
 import { EmailAlreadyConfirmedPage } from "@/pages/EmailAlreadyConfirmedPage";
+import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
+import { VerifyEmailHashPage } from "@/pages/VerifyEmailHashPage";
 import { AdminUsersPage } from "@/pages/AdminUsersPage";
 import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
 import { AdminUserPersonalPage } from "@/pages/AdminUserPersonalPage";
@@ -225,6 +229,16 @@ const publicRoutes: RouteType[] = [
         label: "email-already-confirmed",
         element: <EmailAlreadyConfirmedPage />,
         path: (locale: string) => getEmailAlreadyConfirmedPageUrl(locale),
+    },
+    {
+        label: "verify-email",
+        element: <VerifyEmailPage />,
+        path: (locale: string) => getVerifyEmailPageUrl(locale),
+    },
+    {
+        label: "verify-email-hash",
+        element: <VerifyEmailHashPage />,
+        path: (locale: string) => getVerifyEmailHashPageUrl(locale),
     },
     {
         label: "host-layout",

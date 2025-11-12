@@ -14,3 +14,5 @@ export interface IRegisterResponse {
     id: string;
     email: string;
 }
+
+export type IVerifyFormData = Omit<IAuthFormData, "password">;

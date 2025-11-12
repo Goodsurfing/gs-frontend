@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import InputField from "@/components/InputField/InputField";
 
 import { useAppDispatch } from "@/shared/hooks/redux";
@@ -20,11 +20,6 @@ import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.inte
 
 import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-
-interface ToastAlert {
-    text: string;
-    type: HintType
-}
 
 const SignUpForm: FC = () => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();

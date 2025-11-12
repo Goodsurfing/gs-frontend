@@ -40,7 +40,16 @@
         "было отправлено письмо со ссылкой для восстановления пароля.": "Se ha enviado un correo electrónico con un enlace para restablecer la contraseña.",
         "Пароли не совпадают": "Las contraseñas no coinciden",
         "Новый пароль": "Nueva contraseña",
-        "Повторите новый пароль": "Repita la nueva contraseña"
+        "Повторите новый пароль": "Repita la nueva contraseña",
+        "Почта уже была подтверждена": "El correo ya ha sido verificado",
+        "Похоже, эта почта уже подтверждена.": "Parece que este correo ya ha sido verificado.",
+        "Перейти ко входу": "Ir al inicio de sesión",
+        "Перейти в профиль": "Ir al perfil",
+        "Подтверждение почты": "Confirmación de correo electrónico",
+        "Вам на почту придёт письмо с подтверждением": "Recibirás un correo electrónico de confirmación",
+        "Сообщение с подтверждением отправлено на ваш email": "Se ha enviado un mensaje de confirmación a tu correo electrónico",
+        "Отправить ещё раз": "Reenviar",
+        "Подтвердить": "Confirmar"
     },
     "main": {
         "welcome": {

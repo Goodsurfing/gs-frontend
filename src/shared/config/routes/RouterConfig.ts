@@ -16,6 +16,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.CONFIRM_EMAIL]: "/confirm-email",
     [AppRoutes.CONFIRM_EMAIL_SUCCESS]: "/confirm-email-success",
     [AppRoutes.EMAIL_EXPIRED]: "/email-expired",
+    [AppRoutes.VERIFY_EMAIL]: "/verify-email",
+    [AppRoutes.VERIFY_EMAIL_HASH]: "/verify-email-hash",
     [AppRoutes.CONFIRM_ERROR]: "/confirm-error",
     [AppRoutes.EMAIL_ALREADY_CONFIRMED]: "/email-already-confirmed",
     [AppRoutes.RESET_PASSWORD]: "/reset-password",
