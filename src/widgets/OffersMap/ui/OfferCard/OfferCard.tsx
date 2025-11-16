@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useState } from "react";
 
-import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
+import { HostOffer, OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -11,7 +11,7 @@ import { Locale } from "@/entities/Locale";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferCardProps {
-    data: Offer;
+    data: HostOffer | OfferApi;
     status: "opened" | "closed";
     className?: string;
     classNameCard?: string;
@@ -22,8 +22,10 @@ interface OfferCardProps {
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     const {
         data: {
-            id, description, where,
-            acceptedApplicationsCount, feedbacksCount, averageRating,
+            id,
+            acceptedApplicationsCount, averageRating,
+            description,
+            categories, address, reviewsCount, image,
         },
         status,
         className,
@@ -31,7 +33,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         locale,
     } = props;
 
-    const imageCover = getMediaContent(description?.image, "MEDIUM");
+    const imageCover = getMediaContent(image, "MEDIUM");
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
 
@@ -48,14 +50,14 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             <OfferCardComponent
                 offerId={id}
-                title={description?.title}
-                description={description?.shortDescription}
-                category={getTranslation(description?.categoryIds[0])}
+                title={title}
+                description={shortDescription}
+                category={getTranslation(categories[0])}
                 image={imageCover}
-                location={where?.address || ""}
+                location={address}
                 rating={averageRating}
-                reviews={feedbacksCount}
-                went={acceptedApplicationsCount}
+                reviews={reviewsCount}
+                went={Number(acceptedApplicationsCount)}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={false}

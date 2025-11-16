@@ -15,9 +15,10 @@ import {
 } from "./offerFinishingTouches";
 import { OfferStatus } from "./offerStatus";
 import { OfferWhatToDo } from "./offerWhatToDo";
-import { OfferWhen } from "./offerWhen";
+import { OfferWhen, OfferWhenPeriods } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
+import { Pagination } from "@/types/api/pagination";
 
 export interface Offer {
     id: number;
@@ -41,6 +42,29 @@ export interface Offer {
     acceptedApplicationsCount: number;
 }
 
+export interface OfferApi {
+    id: number;
+    averageRating: number;
+    reviewsCount: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+    isFullYearAcceptable: boolean;
+    isApplicableAtTheEnd: boolean;
+    durationMinDays: number;
+    durationMaxDays: number;
+    applicationEndDate: string;
+    status: OfferStatus;
+    image: string;
+    title: string;
+    categories: CategoryType[];
+    description: string;
+    shortDescription: string;
+    periods: OfferWhenPeriods[];
+    acceptedApplicationsCount: string;
+    updated: string;
+}
+
 export interface OfferOrganization {
     id: string;
     name: string;
@@ -58,19 +82,79 @@ export interface OfferSchema {
 
 export type SortValue = "urgency" | "popularity" | "novelty";
 
-export interface OffersFilters {
-    start_date: string;
-    end_date: string;
-    min_duration_days: string;
-    max_duration_days: string;
+// export interface OffersFilters {
+//     start_date: string;
+//     end_date: string;
+//     min_duration_days: string;
+//     max_duration_days: string;
+//     languages: string[];
+//     skills: WhatToDoSkillType[];
+//     additionalConditions: ExtraConditions[];
+//     housing: Housing[];
+//     food: Nutrition[];
+//     paidTravel: Travel[];
+//     categories: CategoryType[];
+//     "order[popularity]": string;
+//     "order[updatedAt]": string;
+//     search: string;
+// }
+
+export enum OfferSort {
+    UpdatedAsc = "updated:asc",
+    UpdatedDesc = "updated:desc",
+    ReviewCountAsc = "reviewCount:asc",
+    ReviewCountDesc = "reviewCount:desc",
+    AverageRatingAsc = "averageRating:asc",
+    AverageRatingDesc = "averageRating:desc",
+    PopularityAsc = "popularity:asc",
+    PopularityDesc = "popularity:desc",
+}
+
+export interface GetHostOffersFilters {
+    sort: "updated:asc" | "updated:desc";
+    page: number;
+    limit: number;
+    organizationId: string;
+}
+
+export interface HostOffer {
+    id: number,
+    averageRating: number,
+    reviewsCount: number,
+    address: string,
+    latitude: number,
+    longitude: number,
+    description: string,
+    acceptedApplicationsCount: number;
+    status: OfferStatus;
+    image: string;
+}
+
+export interface GetHostOffersResponse {
+    data: HostOffer[];
+    pagination: Pagination;
+}
+
+export interface GetOffersFilters {
+    sort: OfferSort;
+    id: number;
+    startDate: string;
+    endDate: string;
+    minDurationDays: string;
+    maxDurationDays: string;
+    search: string;
     languages: string[];
     skills: WhatToDoSkillType[];
     additionalConditions: ExtraConditions[];
-    housing: Housing[];
-    food: Nutrition[];
-    paidTravel: Travel[];
+    housings: Housing[];
+    foods: Nutrition[];
+    paidTravels: Travel[];
     categories: CategoryType[];
-    "order[popularity]": string;
-    "order[updatedAt]": string;
-    search: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetOffersResponse {
+    data: OfferApi[];
+    pagination: Pagination;
 }

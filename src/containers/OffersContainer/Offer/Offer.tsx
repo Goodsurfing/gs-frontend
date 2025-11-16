@@ -4,7 +4,7 @@ import { ReactSVG } from "react-svg";
 
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-import { Offer as OfferType } from "@/entities/Offer";
+import { OfferApi } from "@/entities/Offer";
 
 import starIcon from "@/shared/assets/icons/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
@@ -16,7 +16,7 @@ import { textSlice } from "@/shared/lib/textSlice";
 import styles from "./Offer.module.scss";
 
 interface OfferProps {
-    offer: OfferType;
+    offer: OfferApi;
     locale: Locale;
 }
 
@@ -24,30 +24,31 @@ const Offer: FC<OfferProps> = (props) => {
     const { offer, locale } = props;
     const {
         id,
-        description,
-        where,
+        title,
+        address,
         acceptedApplicationsCount,
         averageRating,
-        feedbacksCount,
+        categories,
+        image,
+        reviewsCount,
     } = offer;
     const { getTranslation } = useCategories();
 
-    const image = description?.image;
-    const category = getTranslation(description?.categoryIds[0]) ?? "Без категории";
+    const category = getTranslation(categories[0]) ?? "Без категории";
 
     return (
         <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>
             <img
                 src={image ? getMediaContent(image) : defaultImage}
                 className={styles.image}
-                alt={description?.title}
+                alt={title}
             />
             <div className={styles.content}>
                 <h4 className={styles.title}>
-                    {textSlice(description?.title, 30, "title")}
+                    {textSlice(title, 30, "title")}
                 </h4>
                 <p className={styles.location}>
-                    {textSlice(where?.address, 30, "address")}
+                    {textSlice(address, 30, "address")}
                 </p>
                 <p className={styles.type}>{category}</p>
             </div>
@@ -58,13 +59,13 @@ const Offer: FC<OfferProps> = (props) => {
                         <span>{averageRating}</span>
                     </div>
                 ) : null}
-                {feedbacksCount ? (
+                {reviewsCount ? (
                     <div className={styles.reviews}>
 
                         <span>
                             Отзывов:
                             {" "}
-                            {feedbacksCount}
+                            {reviewsCount}
                         </span>
                     </div>
                 ) : null}

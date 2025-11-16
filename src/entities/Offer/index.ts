@@ -14,7 +14,8 @@ export {
 } from "./api/offerApi";
 
 export type {
-    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OffersFilters,
+    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi,
+    HostOffer,
 } from "./model/types/offer";
 
 export type { OfferWhere } from "./model/types/offerWhere";
