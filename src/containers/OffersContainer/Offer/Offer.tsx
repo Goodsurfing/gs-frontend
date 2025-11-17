@@ -29,7 +29,7 @@ const Offer: FC<OfferProps> = (props) => {
         acceptedApplicationsCount,
         averageRating,
         categories,
-        image,
+        imagePath,
         reviewsCount,
     } = offer;
     const { getTranslation } = useCategories();
@@ -39,7 +39,7 @@ const Offer: FC<OfferProps> = (props) => {
     return (
         <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>
             <img
-                src={image ? getMediaContent(image) : defaultImage}
+                src={imagePath ? getMediaContent(imagePath) : defaultImage}
                 className={styles.image}
                 alt={title}
             />

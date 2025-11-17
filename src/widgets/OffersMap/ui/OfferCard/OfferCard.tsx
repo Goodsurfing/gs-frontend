@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useState } from "react";
 
-import { HostOffer, OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
+import { OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -10,8 +10,11 @@ import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
+type OfferData = Pick<OfferApi, "id" | "title" | "shortDescription" | "imagePath"
+| "categories" | "averageRating" | "acceptedApplicationsCount" | "address" | "reviewsCount">;
+
 interface OfferCardProps {
-    data: HostOffer | OfferApi;
+    data: OfferData;
     status: "opened" | "closed";
     className?: string;
     classNameCard?: string;
@@ -24,8 +27,8 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         data: {
             id,
             acceptedApplicationsCount, averageRating,
-            description,
-            categories, address, reviewsCount, image,
+            imagePath, title, shortDescription,
+            categories, address, reviewsCount,
         },
         status,
         className,
@@ -33,7 +36,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         locale,
     } = props;
 
-    const imageCover = getMediaContent(image, "MEDIUM");
+    const imageCover = getMediaContent(imagePath, "MEDIUM");
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
 

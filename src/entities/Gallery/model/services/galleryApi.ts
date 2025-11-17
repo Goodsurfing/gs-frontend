@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { MediaObjectType } from "@/types/media";
+import { RootState } from "@/store/store";
 
 // interface MediaObjectResponse {
 //     "@id": string;
@@ -14,12 +15,17 @@ export const galleryApi = createApi({
     baseQuery: fetchBaseQuery({
         credentials: "same-origin",
         baseUrl: `${API_BASE_URL}`,
-        prepareHeaders: (headers) => {
-            const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
+        prepareHeaders: (headers, { getState }) => {
+            const state = getState() as RootState;
+            const token = state.user.authData?.token
+            || JSON.parse(localStorage.getItem(TOKEN_LOCALSTORAGE_KEY) || "null")
+            || JSON.parse(sessionStorage.getItem(TOKEN_LOCALSTORAGE_KEY) || "null");
+
             if (token) {
-                headers.set("Authorization", `Bearer ${JSON.parse(token)}`);
+                headers.set("Authorization", `Bearer ${token}`);
             }
-            headers.set("Accept", "application/ld+json");
+            headers.set("Content-Type", "application/json");
+            headers.set("accept", "application/ld+json");
             return headers;
         },
     }),

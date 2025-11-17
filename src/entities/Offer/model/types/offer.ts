@@ -44,6 +44,16 @@ export interface Offer {
 
 export interface OfferApi {
     id: number;
+    status: OfferStatus;
+    organization: {
+        id: string;
+        name: string;
+        type: string;
+        otherType: string;
+        shortDescription: string;
+        imagePath: string;
+    }
+    imagePath: string;
     averageRating: number;
     reviewsCount: number;
     address: string;
@@ -54,8 +64,6 @@ export interface OfferApi {
     durationMinDays: number;
     durationMaxDays: number;
     applicationEndDate: string;
-    status: OfferStatus;
-    image: string;
     title: string;
     categories: CategoryType[];
     description: string;
@@ -118,16 +126,19 @@ export interface GetHostOffersFilters {
 }
 
 export interface HostOffer {
-    id: number,
-    averageRating: number,
-    reviewsCount: number,
-    address: string,
-    latitude: number,
-    longitude: number,
-    description: string,
-    acceptedApplicationsCount: number;
+    id: number;
     status: OfferStatus;
-    image: string;
+    averageRating: number,
+    imagePath: string;
+    title: string;
+    categories: CategoryType[];
+    reviewsCount: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+    description: string;
+    shortDescription: string;
+    acceptedApplicationsCount: number;
 }
 
 export interface GetHostOffersResponse {
