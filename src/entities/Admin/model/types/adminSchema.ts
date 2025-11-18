@@ -1,3 +1,5 @@
+import { Pagination } from "@/types/api/pagination";
+
 export interface Admin {
     token: string,
 }
@@ -93,4 +95,19 @@ export interface GetAdminReviewVacancyListParams {
     vacancyName: string;
     page: number;
     limit: number;
+}
+
+export interface AdminReviewVacancy {
+    id: number;
+    authorFirstName: string;
+    authorLastName: string;
+    vacancyName: string;
+    score: number;
+    description: string;
+    created: string;
+}
+
+export interface GetAdminReviewVacancyListResponse {
+    data: AdminReviewVacancy[];
+    pagination: Pagination
 }

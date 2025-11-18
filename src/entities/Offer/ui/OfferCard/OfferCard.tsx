@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
 // import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
-import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 
@@ -62,7 +61,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
-                    <img src={image || defaultImage} alt="offer-img" loading="lazy" />
+                    {image ? <img src={image} alt="offer-img" loading="lazy" /> : <div className={styles.imagePlaceholder} />}
                     {isFavoriteIconShow && (
                         <ReactSVG
                             src={heartIcon}

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { OffersFilters } from "@/entities/Offer";
+import { GetOffersFilters, OfferSort } from "@/entities/Offer";
 
 import { OffersFilterFields } from "../model/types";
 import { formattingDate } from "@/shared/lib/formatDate";
 
 export const offersFilterApiAdapter = (
     data: OffersFilterFields,
-): Partial<OffersFilters> => {
+): Partial<GetOffersFilters> => {
     const {
         category,
         languages,
@@ -18,14 +18,21 @@ export const offersFilterApiAdapter = (
         // search,
     } = data;
     const { showClosedOffers, sortValue } = offersSort;
-    const popularity = sortValue === "popularity" ? "desc" : undefined;
-    const updatedAt = sortValue === "novelty" ? "desc" : undefined;
+    // const popularity = sortValue === "popularity" ? "desc" : undefined;
+    // const updatedAt = sortValue === "novelty" ? "desc" : undefined;
+    let sort: OfferSort | undefined;
+
+    if (sortValue === "popularity") {
+        sort = OfferSort.PopularityDesc;
+    } else if (sortValue === "novelty") {
+        sort = OfferSort.UpdatedDesc;
+    }
     const currentDate = new Date();
 
-    const min_duration_days = participationPeriod[0] !== 1
+    const minDurationDays = participationPeriod[0] !== 1
         ? participationPeriod[0].toString()
         : undefined;
-    const max_duration_days = participationPeriod[1] !== 190
+    const maxDurationDays = participationPeriod[1] !== 190
         ? participationPeriod[1].toString()
         : undefined;
 
@@ -39,13 +46,12 @@ export const offersFilterApiAdapter = (
         result_start_date = datePart;
     }
 
-    const queryParams: Partial<OffersFilters> = {
-        min_duration_days,
-        max_duration_days,
-        start_date: result_start_date ?? undefined,
-        end_date: end_date ?? undefined,
-        "order[popularity]": popularity,
-        "order[updatedAt]": updatedAt,
+    const queryParams: Partial<GetOffersFilters> = {
+        minDurationDays,
+        maxDurationDays,
+        startDate: result_start_date ?? undefined,
+        endDate: end_date ?? undefined,
+        sort,
     };
 
     if (category.length > 0) queryParams.categories = category;
@@ -55,13 +61,13 @@ export const offersFilterApiAdapter = (
 
     provided.forEach((value) => {
         if (value === "food") {
-            queryParams.food = ["full", "breakfast"];
+            queryParams.foods = ["full", "breakfast"];
         }
         if (value === "housing") {
-            queryParams.housing = ["house", "room"];
+            queryParams.housings = ["house", "room"];
         }
         if (value === "paidTravel") {
-            queryParams.paidTravel = ["full", "partial"];
+            queryParams.paidTravels = ["full", "partial"];
         }
     });
 

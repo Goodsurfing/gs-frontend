@@ -5,7 +5,9 @@ export {
 } from "./api/volunteerApi";
 
 export type { CreateVolunteerRequest } from "./api/volunteerApi";
-export type { Volunteer, VolunteerApi, VolunteerType } from "./model/types/volunteer";
+export type {
+    Volunteer, VolunteerApi, VolunteerType, VolunteerMini,
+} from "./model/types/volunteer";
 export type { AllLanguages, AllLevels, Language } from "./model/types/language";
 
 export { VolunteerSubscriberCard } from "./ui/VolunteerSubscriberCard/VolunteerSubscriberCard";

@@ -1,5 +1,6 @@
 import { Offer } from "@/entities/Offer";
-import { VolunteerApi } from "@/entities/Volunteer";
+import { VolunteerApi, VolunteerMini } from "@/entities/Volunteer";
+import { Pagination } from "@/types/api/pagination";
 
 export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description" | "status" | "averageRating" | "feedbacksCount" | "acceptedApplicationsCount">;
 
@@ -32,6 +33,15 @@ export interface FullFormApplication {
 export type SimpleFormApplication = Omit<FullFormApplication, "volunteer"> & {
     volunteer: string | VolunteerApi;
 };
+
+export type GetFormApplication = Omit<FullFormApplication, "volunteer"> & {
+    volunteer: VolunteerMini;
+};
+
+export interface GetFormApplicationResponse {
+    data: GetFormApplication[];
+    pagination: Pagination;
+}
 
 export interface Feedback {
     id: number;

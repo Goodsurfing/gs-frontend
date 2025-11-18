@@ -1,6 +1,6 @@
 import { Article } from "@/entities/Article";
 import { Offer } from "@/entities/Offer";
-import { Profile } from "@/entities/Profile";
+import { Gender, Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { SkillsData } from "@/shared/data/skills";
 import { Language } from "./language";
@@ -8,6 +8,7 @@ import { Language as LanguageApi } from "@/types/languages";
 import { WhatToDoSkillType } from "@/types/skills";
 import { MediaObjectType } from "@/types/media";
 import { Gallery } from "@/entities/Gallery";
+import { Locale } from "@/entities/Locale";
 
 export interface Volunteer extends Profile {
     skills?: SkillsData[];
@@ -37,3 +38,19 @@ export interface VolunteerApi {
 export type VolunteerType = Omit<VolunteerApi, "profile" | "certificates"> & {
     certificates: string[];
 };
+
+export interface VolunteerMini {
+    id: string;
+    email: string;
+    locale: Locale;
+    firstName?: string;
+    lastName?: string;
+    imagePath?: string;
+    gender: Gender;
+    country: string;
+    city: string;
+    periods: LanguageApi[];
+    certificates: string[];
+    averageRating: number;
+    reviewCount: number;
+}

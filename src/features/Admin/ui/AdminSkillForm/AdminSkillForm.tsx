@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import cn from "classnames";
 import {
     FormProvider, useForm, DefaultValues,
@@ -9,10 +9,11 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { AdminSkill } from "@/entities/Admin";
+import { AdminSkill, useGetSkillByIdQuery } from "@/entities/Admin";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface AdminSkillFormProps {
-    skillsData: AdminSkill[];
+    skillId: number;
     className?: string;
 }
 
@@ -22,7 +23,8 @@ const defaultValues: DefaultValues<AdminSkill> = {
 };
 
 export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
-    const { skillData, className } = props;
+    const { skillId, className } = props;
+    const { data: skillData, isLoading, isError } = useGetSkillByIdQuery(skillId);
     const [toast] = useState<ToastAlert>();
     const form = useForm<AdminSkill>({
         mode: "onChange",
@@ -32,9 +34,33 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
         handleSubmit, reset, control, formState: { errors },
     } = form;
 
+    useEffect(() => {
+        if (skillData) {
+            reset(skillData);
+        } else {
+            reset();
+        }
+    }, [reset, skillData]);
+
     const onSubmit = handleSubmit(() => {
         reset();
     });
+
+    if (isError) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <h2>Произошла ошибка загрузки умения</h2>
+            </div>
+        );
+    }
+
+    if (!skillData || isLoading) {
+        return (
+            <div className={cn(styles.wrapper, className)}>
+                <MiniLoader />
+            </div>
+        );
+    }
 
     return (
         <div className={cn(styles.wrapper, className)}>
@@ -63,14 +89,14 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
                         )}
                     </div>
                     <div className={styles.input}>
-                        <Controller
+                        {/* <Controller
                             control={control}
                             name="imagePath"
                             rules={{ required: "Это поле является обязательным" }}
                             render={() => {
                                 // TODO: Input for upload images
                             }}
-                        />
+                        /> */}
                         {errors.imagePath?.message && (
                             <ErrorText text={errors.imagePath.message} className={styles.error} />
                         )}

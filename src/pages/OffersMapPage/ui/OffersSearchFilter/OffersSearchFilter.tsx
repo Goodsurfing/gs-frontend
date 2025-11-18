@@ -14,7 +14,7 @@ import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 import { CategoryType, categoryValues } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
-import { useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
 import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
@@ -66,8 +66,8 @@ export const OffersSearchFilter = () => {
     useEffect(() => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
-        fetchOffers(preparedData);
-    }, []);
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+    }, [currentPage]);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
@@ -102,14 +102,16 @@ export const OffersSearchFilter = () => {
 
     const onApplySearch = useCallback(async (search: string) => {
         setSearchParams(new URLSearchParams());
-        await fetchOffers({ "order[updatedAt]": "desc", search });
+        await fetchOffers({
+            sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
+        });
         reset(defaultValues);
         onChangePage(1);
     }, []);
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
-        await fetchOffers(preparedData);
+        await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         onChangePage(1);
     }), []);
 
@@ -117,7 +119,7 @@ export const OffersSearchFilter = () => {
         setSearchParams(new URLSearchParams());
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
-        await fetchOffers(preparedData);
+        await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -135,7 +137,7 @@ export const OffersSearchFilter = () => {
 
                 debounceTimeoutRef.current = setTimeout(() => {
                     const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
-                    fetchOffers(preparedData);
+                    fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
                 }, 300);
             }
         });
@@ -170,7 +172,7 @@ export const OffersSearchFilter = () => {
                             ref={searchRef}
                         />
                         <OffersList
-                            data={offersData}
+                            data={offersData?.data}
                             isLoading={isLoading || isFetching}
                             className={cn(styles.offersList)}
                             onChangeMapOpen={handleMapOpen}
@@ -178,18 +180,19 @@ export const OffersSearchFilter = () => {
                             currentPage={currentPage}
                             offersPerPage={OFFERS_PER_PAGE}
                             onChangePage={onChangePage}
+                            total={offersData?.pagination.total ?? 0}
                         />
                     </div>
                     {isMapOpened && (
                         <OffersMap
-                            offersData={offersData}
+                            offersData={offersData?.data}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
                     )}
                 </div>
                 <OffersSearchFilterMobile
-                    data={offersData}
+                    data={offersData?.data}
                     isLoading={isLoading || isFetching}
                     className={styles.mobile}
                     onApplySearch={onApplySearch}
@@ -197,6 +200,7 @@ export const OffersSearchFilter = () => {
                     onResetFilters={onResetFilters}
                     currentPage={currentPage}
                     offersPerPage={OFFERS_PER_PAGE}
+                    total={offersData?.pagination.total ?? 0}
                     onChangePage={onChangePage}
                 />
             </div>

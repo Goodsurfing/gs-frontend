@@ -15,4 +15,9 @@ export type { AdminSkill } from "./model/types/adminSchema";
 export {
     adminApi, useCreateSkillMutation,
     useDeleteSkillMutation, useEditSkillMutation, useLazyGetSkillsQuery,
+    useGetSkillByIdQuery, useGetSkillsQuery, useLazyGetSkillByIdQuery,
+    useAddAdminRoleToUserMutation, useLazySearchUserByParamsQuery,
+    useEditReviewVacancyMutation, useDeleteReviewVacancyMutation,
+    useGetReviewVacanciesListQuery, useGetReviewVacancyByIdQuery,
+    useLazyGetReviewVacanciesListQuery, useLazyGetReviewVacancyByIdQuery,
 } from "./api/adminApi";

@@ -11,7 +11,7 @@ import { useCategories } from "@/shared/data/categories";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./SearchOffers.module.scss";
-import { useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import useDebounce from "@/shared/hooks/useDebounce";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -75,7 +75,10 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                 if (debouncedValue.trim().length > 0) {
                     setIsDebouncing(false);
                     // onChange(debouncedValue);
-                    await fetchOffersDropdown({ "order[updatedAt]": "desc", search: debouncedValue });
+                    await fetchOffersDropdown({
+                        sort: OfferSort.UpdatedDesc,
+                        search: debouncedValue,
+                    });
                 }
             };
             fetchOffers();
@@ -152,9 +155,9 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                             <MiniLoader />
                         ) : (
                             <>
-                                {(!!offersDropdown && offersDropdown.length > 0) ? (
+                                {(!!offersDropdown && offersDropdown.data.length > 0) ? (
                                     <>
-                                        {offersDropdown.slice(0, 3).map((offer) => {
+                                        {offersDropdown.data.slice(0, 3).map((offer) => {
                                             const offerStatus = offer.status === "active" ? "opened" : "closed";
                                             return (
                                                 <a
@@ -164,19 +167,19 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                                 >
                                                     <img
                                                         src={getMediaContent(
-                                                            offer.description?.image,
+                                                            offer.imagePath,
                                                         ) || defaultImage}
-                                                        alt={offer.description?.title}
+                                                        alt={offer.title}
                                                     />
                                                     <div className={styles.dropdownContent}>
                                                         <p className={styles.offerTitle}>
                                                             {
-                                                                offer.description?.title
+                                                                offer.title
                                                             }
                                                         </p>
                                                         <p className={styles.offerCategory}>
                                                             {getTranslation(
-                                                                offer.description?.categoryIds[0],
+                                                                offer.categories[0],
                                                             )}
                                                         </p>
                                                     </div>

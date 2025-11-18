@@ -4,6 +4,7 @@ import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import {
     GetHostOffersFilters, GetHostOffersResponse,
+    GetOffersFilters,
     GetOffersResponse, Offer,
     OfferSort,
 } from "../model/types/offer";
@@ -88,7 +89,7 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getOffers: build.query<GetOffersResponse, Partial<GetHostOffersFilters> | undefined>({
+        getOffers: build.query<GetOffersResponse, Partial<GetOffersFilters> | undefined>({
             query: (params) => ({
                 url: `${API_BASE_URL_V3}vacancy/list`,
                 method: "GET",

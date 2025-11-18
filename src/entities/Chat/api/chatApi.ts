@@ -9,6 +9,8 @@ import {
     SimpleFormApplication,
 } from "@/entities/Application";
 import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
+import { PaginationParams } from "@/types/api/pagination";
+import { GetFormApplicationResponse } from "@/entities/Application/model/types/application";
 
 interface MessagesRequest {
     chatId: string;
@@ -105,16 +107,17 @@ export const chatApi = createApi({
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<SimpleFormApplication[], void>({
-            query: () => ({
-                url: "personal/forms/with-organization",
+        getMyHostApplications: build.query<GetFormApplicationResponse[], PaginationParams>({
+            query: (params) => ({
+                url: "application/list-of-organization",
                 method: "GET",
+                params,
             }),
             providesTags: ["application"],
         }),
-        getMyVolunteerApplications: build.query<SimpleFormApplication[], void>({
+        getMyVolunteerApplications: build.query<SimpleFormApplication[], PaginationParams>({
             query: () => ({
-                url: "personal/forms/with-volunteer",
+                url: "application/list-of-volunteer",
                 method: "GET",
             }),
             providesTags: ["application"],

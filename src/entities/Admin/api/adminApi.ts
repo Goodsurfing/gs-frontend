@@ -1,9 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
+    AdminReviewVacancy,
     AdminSkill,
     CreateAdminSkillRequest, EditAdminSkillRequest,
-    EditReviewVacancy, GetAdminReviewVacancyListParams, GetAdminSkillsParams, GetAdminSkillsResponse,
+    EditReviewVacancy, GetAdminReviewVacancyListParams,
+    GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
     SearchUsersParams,
     SearchUsersResponse,
 } from "../model/types/adminSchema";
@@ -85,11 +87,20 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["reviewVacancy"],
         }),
-        getReviewVacancyList: build.query<AdminSkill, GetAdminReviewVacancyListParams>({
+        getReviewVacanciesList: build.query<GetAdminReviewVacancyListResponse,
+        GetAdminReviewVacancyListParams>({
             query: (params) => ({
                 url: "review-vacancy/list",
                 method: "GET",
                 params,
+            }),
+            providesTags: ["reviewVacancy"],
+        }),
+        getReviewVacancyById: build.query<AdminReviewVacancy,
+        string>({
+            query: (reviewVacancyId) => ({
+                url: `review-vacancy/${reviewVacancyId}`,
+                method: "GET",
             }),
             providesTags: ["reviewVacancy"],
         }),
@@ -99,5 +110,16 @@ export const adminApi = createApi({
 export const {
     useCreateSkillMutation,
     useEditSkillMutation, useDeleteSkillMutation,
+    useGetSkillsQuery,
     useLazyGetSkillsQuery,
+    useGetSkillByIdQuery,
+    useLazyGetSkillByIdQuery,
+    useAddAdminRoleToUserMutation,
+    useLazySearchUserByParamsQuery,
+    useEditReviewVacancyMutation,
+    useDeleteReviewVacancyMutation,
+    useGetReviewVacanciesListQuery,
+    useLazyGetReviewVacanciesListQuery,
+    useGetReviewVacancyByIdQuery,
+    useLazyGetReviewVacancyByIdQuery,
 } = adminApi;

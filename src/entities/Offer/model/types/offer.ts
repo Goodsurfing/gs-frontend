@@ -53,21 +53,21 @@ export interface OfferApi {
         shortDescription: string;
         imagePath: string;
     }
-    imagePath: string;
+    imagePath?: string;
     averageRating: number;
     reviewsCount: number;
-    address: string;
-    latitude: number;
-    longitude: number;
+    address?: string;
+    latitude?: number;
+    longitude?: number;
     isFullYearAcceptable: boolean;
     isApplicableAtTheEnd: boolean;
     durationMinDays: number;
     durationMaxDays: number;
     applicationEndDate: string;
-    title: string;
+    title?: string;
     categories: CategoryType[];
-    description: string;
-    shortDescription: string;
+    description?: string;
+    shortDescription?: string;
     periods: OfferWhenPeriods[];
     acceptedApplicationsCount: string;
     updated: string;
@@ -128,16 +128,16 @@ export interface GetHostOffersFilters {
 export interface HostOffer {
     id: number;
     status: OfferStatus;
-    averageRating: number,
-    imagePath: string;
-    title: string;
-    categories: CategoryType[];
-    reviewsCount: number;
-    address: string;
-    latitude: number;
-    longitude: number;
-    description: string;
-    shortDescription: string;
+    averageRating?: number,
+    imagePath?: string;
+    title?: string;
+    categories?: CategoryType[];
+    reviewsCount?: number;
+    address?: string;
+    latitude?: number;
+    longitude?: number;
+    description?: string;
+    shortDescription?: string;
     acceptedApplicationsCount: number;
 }
 

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useTranslation } from "react-i18next";
-import { Offer, OfferApi, useLazyGetOfferByIdQuery } from "@/entities/Offer";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
 import styles from "./VolunteerOffersCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -122,16 +122,10 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                         {(offersData.length <= 3 ? (
                             <div className={styles.container}>
                                 {offersData.map((offer) => {
-                                    const { id, description, where } = offer;
-                                    const tempOffer: OfferApi = {
-                                        id,
-                                        title: description?.title ?? "",
-                                        shortDescription: description?.shortDescription ?? "",
-                                        imagePath: description?.image ?? "",
-                                        address: where?.address ?? "",
-                                        latitude: where?.latitude ?? "",
-                                        longitude: where?.longitude ?? "",
-                                    };
+                                    const {
+                                        id, description, where, acceptedApplicationsCount,
+                                        feedbacksCount, averageRating,
+                                    } = offer;
                                     return (
                                         <OfferCard
                                             key={offer.id}
@@ -140,6 +134,14 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                             data={{
                                                 id,
                                                 title: description?.title,
+                                                shortDescription: description?.shortDescription,
+                                                imagePath: description?.image,
+                                                address: where?.address,
+                                                categories: description?.categoryIds,
+                                                acceptedApplicationsCount:
+                                                 acceptedApplicationsCount.toString(),
+                                                averageRating: feedbacksCount,
+                                                reviewsCount: averageRating,
                                             }}
                                         />
                                     );
@@ -177,6 +179,10 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                     >
                                         {virtualItems.map(({ index }) => {
                                             const offer = offersData[index];
+                                            const {
+                                                id, description, where, acceptedApplicationsCount,
+                                                feedbacksCount, averageRating,
+                                            } = offer;
                                             return (
                                                 <div
                                                     key={index}
@@ -186,7 +192,19 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                     <OfferCard
                                                         locale={locale}
                                                         status={offer.status === "active" ? "opened" : "closed"}
-                                                        data={offer}
+                                                        data={{
+                                                            id,
+                                                            title: description?.title,
+                                                            shortDescription:
+                                                            description?.shortDescription,
+                                                            imagePath: description?.image,
+                                                            address: where?.address,
+                                                            categories: description?.categoryIds,
+                                                            acceptedApplicationsCount:
+                                                 acceptedApplicationsCount.toString(),
+                                                            averageRating: feedbacksCount,
+                                                            reviewsCount: averageRating,
+                                                        }}
                                                     />
                                                 </div>
                                             );
