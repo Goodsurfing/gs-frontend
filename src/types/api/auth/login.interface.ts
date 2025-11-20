@@ -9,9 +9,11 @@ export interface LoginByEmailFields extends LoginByEmailProps {
     rememberMe: boolean;
 }
 
+export type UserRole = "ROLE_USER" | "ROLE_ADMIN";
 export interface LoginResponse {
     accessToken: string;
     mercureToken: string;
+    roles: UserRole[];
 }
 
 export interface LoginAdminFields {

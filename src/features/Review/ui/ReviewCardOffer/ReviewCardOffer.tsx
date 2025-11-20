@@ -49,15 +49,15 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
         <div className={styles.wrapper}>
             <div className={styles.header} onClick={navigateToOffer}>
                 <div className={styles.titleImg}>
-                    <span className={styles.title}>{vacancy.description?.title}</span>
+                    <span className={styles.title}>{vacancy.title}</span>
                     <img
                         className={styles.img}
-                        src={getMediaContent(vacancy.description?.image)}
+                        src={getMediaContent(vacancy.imagePath)}
                         alt="offer"
                     />
                 </div>
                 <span className={styles.date}>
-                    {textSlice(vacancy.description?.shortDescription, 30, "none")}
+                    {textSlice(vacancy.shortDescription, 30, "none")}
                 </span>
             </div>
             <p className={styles.textReview}>{text}</p>

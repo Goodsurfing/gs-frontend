@@ -15,9 +15,8 @@ import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
-import styles from "./RequestCard.module.scss";
 import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
-import { formatDate } from "@/shared/lib/formatDate";
+import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {
     className?: string;
@@ -105,11 +104,11 @@ export const RequestCard = memo((props: RequestCardProps) => {
                             {address}
                         </span>
                         <span className={styles.date}>
-                            {formatDate(locale, startDate)}
+                            {startDate ?? ""}
                             {" "}
                             -
                             {" "}
-                            {formatDate(locale, endDate)}
+                            {endDate ?? ""}
                         </span>
                     </div>
                 </CustomLink>
@@ -122,7 +121,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                         vacancy.id.toString(),
                     )}
                 >
-                    {vacancy.description?.title}
+                    {vacancy.title}
                 </Link>
             </div>
             <div className={styles.buttons}>

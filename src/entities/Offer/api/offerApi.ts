@@ -105,10 +105,13 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getHostAllOffersById: build.query<Offer[], string>({
-            query: (organizationId) => ({
+        getHostAllOffersById: build.query<GetHostOffersResponse, Partial<GetHostOffersFilters>>({
+            query: ({
+                organizationId, limit, page, status,
+            }) => ({
                 url: `${API_BASE_URL_V3}vacancy/list/${organizationId}`,
                 method: "GET",
+                params: { limit, page, status },
             }),
             providesTags: ["offer"],
         }),

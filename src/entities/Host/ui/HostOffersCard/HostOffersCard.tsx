@@ -115,8 +115,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
                                         address,
                                         imagePath,
                                         categories,
-                                        acceptedApplicationsCount:
-                                            acceptedApplicationsCount.toString(),
+                                        acceptedApplicationsCount,
                                         averageRating,
                                         reviewsCount,
                                     }}

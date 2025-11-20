@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 
 import {
-    Offer,
+    HostOffer,
     useDeleteOfferMutation,
     useLazyGetHostAllOffersByIdQuery,
     useLazyGetOfferByIdQuery,
@@ -24,7 +24,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 
 const HostOffersPage = () => {
     const { t, ready } = useTranslation("host");
@@ -33,14 +33,23 @@ const HostOffersPage = () => {
     const [updateOfferStatus] = useUpdateOfferStatusMutation();
     const [deleteOffer] = useDeleteOfferMutation();
 
-    const [triggerHost, { isLoading, data: hostData }] = useLazyGetHostAllOffersByIdQuery();
+    const [triggerActiveDisabledHostOffers,
+        {
+            isLoading: isLoadingActiveDisabledHostOffers,
+            data: activeDisabledHostOffersData,
+        }] = useLazyGetHostAllOffersByIdQuery();
+    const [triggerDraftHostOffers,
+        {
+            isLoading: isLoadingDraftHostOffers,
+            data: draftHostOffersData,
+        }] = useLazyGetHostAllOffersByIdQuery();
     const [triggerOffer, { isLoading: isOfferLoading }] = useLazyGetOfferByIdQuery();
 
-    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<Offer[]>(
+    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<HostOffer[]>(
         [],
     );
     const [offersWithClosedStatus, setOffersWithClosedStatus] = useState<
-    Offer[]
+    HostOffer[]
     >([]);
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
@@ -52,41 +61,46 @@ const HostOffersPage = () => {
 
     const isModalOpen = selectedOffer !== null && selectedBtnOffer !== null;
 
-    const paginatedOpenOffers = offersWithOpenStatus.slice(
-        (currentOpenPage - 1) * ITEMS_PER_PAGE,
-        currentOpenPage * ITEMS_PER_PAGE,
-    );
+    const totalOpenPages = Math.ceil((activeDisabledHostOffersData?.pagination.total ?? 0)
+        / ITEMS_PER_PAGE);
+    const totalDraftPages = Math.ceil((draftHostOffersData?.pagination.total ?? 0)
+    / ITEMS_PER_PAGE);
 
-    const paginatedDraftOffers = offersWithClosedStatus.slice(
-        (currentDraftPage - 1) * ITEMS_PER_PAGE,
-        currentDraftPage * ITEMS_PER_PAGE,
-    );
-
-    const totalOpenPages = Math.ceil(offersWithOpenStatus.length / ITEMS_PER_PAGE);
-    const totalDraftPages = Math.ceil(offersWithClosedStatus.length / ITEMS_PER_PAGE);
-
-    const fetchOffers = useCallback(async () => {
+    const fetchActiveDisabledHostOffers = useCallback(async (page: number) => {
         if (!myHostId) return;
 
         try {
-            const result = await triggerHost(myHostId).unwrap();
-            setOffersWithOpenStatus(filterOffersByStatus(result, "active"));
-            setOffersWithClosedStatus(filterOffersByStatus(result, "draft"));
-            setCurrentOpenPage(1);
-            setCurrentDraftPage(1);
+            const resultActiveOffers = await triggerActiveDisabledHostOffers({
+                limit: ITEMS_PER_PAGE,
+                organizationId: myHostId,
+                page,
+                status: "active",
+            }).unwrap();
+            setOffersWithOpenStatus(resultActiveOffers.data);
         } catch { /* empty */ }
-    }, [myHostId, triggerHost]);
+    }, [myHostId, triggerActiveDisabledHostOffers]);
+
+    const fetchDraftHostOffers = useCallback(async (page: number) => {
+        if (!myHostId) return;
+
+        try {
+            const resultDraftOffers = await triggerDraftHostOffers({
+                limit: ITEMS_PER_PAGE,
+                organizationId: myHostId,
+                page,
+                status: "draft",
+            }).unwrap();
+            setOffersWithClosedStatus(filterOffersByStatus(resultDraftOffers.data, "draft"));
+        } catch { /* empty */ }
+    }, [myHostId, triggerDraftHostOffers]);
 
     useEffect(() => {
-        fetchOffers();
-    }, [fetchOffers]);
+        fetchActiveDisabledHostOffers(currentOpenPage);
+    }, [fetchActiveDisabledHostOffers, currentOpenPage]);
 
     useEffect(() => {
-        if (hostData) {
-            setOffersWithOpenStatus(filterOffersByStatus(hostData, "active"));
-            setOffersWithClosedStatus(filterOffersByStatus(hostData, "draft"));
-        }
-    }, [hostData]);
+        fetchDraftHostOffers(currentDraftPage);
+    }, [fetchDraftHostOffers, currentDraftPage]);
 
     const handleCloseClick = (offerId: number) => {
         setSelectedOffer(offerId);
@@ -136,11 +150,12 @@ const HostOffersPage = () => {
             }
         } finally {
             handleModalClose();
-            fetchOffers();
+            fetchActiveDisabledHostOffers(currentOpenPage);
+            fetchDraftHostOffers(currentDraftPage);
         }
     };
 
-    if (isLoading || !ready) {
+    if ((isLoadingActiveDisabledHostOffers || isLoadingDraftHostOffers) || !ready) {
         return <MiniLoader />;
     }
 
@@ -154,7 +169,7 @@ const HostOffersPage = () => {
             )}
             <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
             <HostOffersList
-                offers={paginatedOpenOffers}
+                offers={offersWithOpenStatus}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
                 onDeleteClick={(offerId) => handleDeleteClick(offerId)}
             />
@@ -171,7 +186,7 @@ const HostOffersPage = () => {
                     <h2 className={styles.draftsTitle}>{t("hostOffers.Черновики")}</h2>
                     <div className={styles.cards}>
                         <HostOffersList
-                            offers={paginatedDraftOffers}
+                            offers={offersWithClosedStatus}
                             onCloseClick={handleCloseClick}
                             onDeleteClick={handleDeleteClick}
                         />

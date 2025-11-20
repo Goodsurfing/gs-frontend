@@ -1,30 +1,35 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import EmptyHeader from "@/shared/ui/EmptyHeader/EmptyHeader";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminUsersPageUrl, getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { getAdminAuthData } from "@/entities/Admin";
-import { useAppSelector } from "@/shared/hooks/redux";
 import styles from "./AdminSignInPage.module.scss";
 import { AdminAuth } from "@/features/Admin";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 const AdminSignInPage = () => {
     const { locale } = useLocale();
     const { t, ready } = useTranslation();
     const navigate = useNavigate();
-    const isAuth = useAppSelector(getAdminAuthData);
+    const { isAuth, isUserAdmin } = useAuth();
 
-    useLayoutEffect(() => {
-        if (isAuth) {
-            navigate(getMainPageUrl(locale));
+    useEffect(() => {
+        if (isAuth && isUserAdmin) {
+            navigate(getAdminUsersPageUrl(locale), { replace: true });
         }
-    }, [isAuth, locale, navigate]);
+    }, [isAuth, isUserAdmin, locale, navigate]);
 
     if (!ready) {
+        return (
+            <Preloader />
+        );
+    }
+
+    if (isAuth && isUserAdmin) {
         return (
             <Preloader />
         );

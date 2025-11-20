@@ -26,6 +26,8 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdWithoutTagsMutation } from "@/entities/Chat";
 
+const APPLICATIONS_PER_PAGE = 10;
+
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -44,44 +46,51 @@ export const NotesHostForm = () => {
     const [selectedApplication,
         setSelectedApplication] = useState<SimpleFormApplication | null>(null);
 
-    const applicationsPerPage = 10;
-    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
-    const [pageApplications, setPageApplications] = useState<SimpleFormApplication[]>([]);
+    const [adaptedApplications, setAdaptedApplications] = useState<SimpleFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
-    const [getApplications, { isLoading }] = useLazyGetMyHostApplicationsQuery();
+    const [getApplications,
+        { data: applicationData, isLoading }] = useLazyGetMyHostApplicationsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus,
         // eslint-disable-next-line max-len
         { isLoading: updateApplicationLoading }] = useUpdateApplicationFormStatusByIdWithoutTagsMutation();
     const { locale } = useLocale();
 
-    const fetchApplications = useCallback(async () => {
-        await getApplications().unwrap()
-            .then((result) => {
-                // Тут получаю сначала новые заявки, по хорошему это надо делать на беке
-                setApplications([...result].reverse());
-            })
-            .catch(() => {
-                // empty
-            });
+    const fetchApplications = useCallback(async (limit: number, pageItem: number) => {
+        await getApplications({ limit, page: pageItem });
     }, [getApplications]);
 
     useEffect(() => {
-        fetchApplications();
+        fetchApplications(APPLICATIONS_PER_PAGE, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [page]);
 
     useEffect(() => {
-        if (applications) {
-            const startIndex = (page - 1) * applicationsPerPage;
-            const endIndex = startIndex + applicationsPerPage;
-            setPageApplications(applications.slice(startIndex, endIndex));
-        } else {
-            setPageApplications([]);
+        if (applicationData) {
+            const adapter: SimpleFormApplication[] = applicationData.data.map((application) => {
+                const {
+                    id, volunteerId, chatId, vacancy, startDate, endDate, status,
+                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
+                } = application;
+                return {
+                    id,
+                    volunteer: volunteerId,
+                    vacancy,
+                    chatId,
+                    status,
+                    startDate,
+                    endDate,
+                    hasFeedbackFromOrganization,
+                    hasFeedbackFromVolunteer,
+                };
+            });
+            setAdaptedApplications(adapter);
         }
-    }, [applications, page]);
+    }, [applicationData]);
 
-    const totalPageCount = applications ? Math.ceil(applications.length / applicationsPerPage) : 0;
+    const totalPageCount = applicationData ? Math.ceil(
+        applicationData.pagination.total / APPLICATIONS_PER_PAGE,
+    ) : 0;
 
     const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);
@@ -142,7 +151,7 @@ export const NotesHostForm = () => {
         <div className={styles.wrapper}>
             <NotesWidget
                 className={styles.notes}
-                notes={pageApplications}
+                notes={adaptedApplications}
                 variant="host"
                 onReviewClick={onReviewClick}
                 updateApplicationStatus={handleUpdateStatus}

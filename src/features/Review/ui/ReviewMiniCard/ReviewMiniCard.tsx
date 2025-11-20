@@ -29,7 +29,7 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
     locale,
 }: ReviewMiniCardProps) => {
     const { vacancy, volunteer } = data;
-    const { description, where } = vacancy;
+    const { imagePath, title, address } = vacancy;
     const { t } = useTranslation("volunteer");
     let volunteerId: string;
     if (typeof volunteer === "string") {
@@ -92,12 +92,12 @@ export const ReviewMiniCard: FC<ReviewMiniCardProps> = ({
         return (
             <div className={styles.wrapper}>
                 <div className={styles.userInfoContainer} onClick={navigateToOffer}>
-                    <Avatar icon={getMediaContent(description?.image)} size="SMALL" />
+                    <Avatar icon={getMediaContent(imagePath)} size="SMALL" />
                     <div className={styles.nameAddress}>
                         <span className={styles.name}>
-                            {description?.title}
+                            {title}
                         </span>
-                        <span className={styles.address}>{where?.address}</span>
+                        <span className={styles.address}>{address}</span>
                     </div>
                 </div>
                 <Button

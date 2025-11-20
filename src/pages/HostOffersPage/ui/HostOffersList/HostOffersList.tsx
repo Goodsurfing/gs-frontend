@@ -4,13 +4,13 @@ import React, {
 
 import { useTranslation } from "react-i18next";
 import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
-import { Offer } from "@/entities/Offer";
+import { HostOffer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./HostOffersList.module.scss";
 import { useCategories } from "@/shared/data/categories";
 
 interface HostOffersListProps {
-    offers?: Offer[]
+    offers?: HostOffer[]
     onCloseClick: (value: number) => void;
     onDeleteClick: (value: number) => void;
     // onEveryOpenClick: (value: number) => void;
@@ -30,21 +30,22 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
 
         return offers.map((offer, index) => {
             const {
-                id, description, where, status,
-                averageRating, acceptedApplicationsCount, feedbacksCount,
+                id, status,
+                averageRating, acceptedApplicationsCount, reviewsCount,
+                address, title, shortDescription, categories, imagePath,
             } = offer;
-            const mediaObjectCover = getMediaContent(description?.image, "MEDIUM");
+            const mediaObjectCover = getMediaContent(imagePath, "MEDIUM");
 
             return (
                 <HostOffersPageCard
                     id={id}
-                    title={description?.title}
-                    description={description?.shortDescription}
+                    title={title}
+                    description={shortDescription}
                     image={mediaObjectCover}
-                    location={where?.address}
-                    category={getTranslation(description?.categoryIds[0])}
+                    location={address}
+                    category={getTranslation(categories?.[0])}
                     rating={averageRating?.toString()}
-                    reviews={feedbacksCount?.toString()}
+                    reviews={reviewsCount?.toString()}
                     went={acceptedApplicationsCount.toString()}
                     status={status}
                     key={index}

@@ -66,8 +66,7 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
                     imagePath: description?.image,
                     address: where?.address,
                     categories: description?.categoryIds,
-                    acceptedApplicationsCount:
-                                                 acceptedApplicationsCount.toString(),
+                    acceptedApplicationsCount,
                     averageRating: feedbacksCount,
                     reviewsCount: averageRating,
                 }}

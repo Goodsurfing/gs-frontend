@@ -6,11 +6,11 @@ import {
 } from "@/entities/Messenger";
 import {
     FormApplication, FormApplicationStatus, FullFormApplication,
-    SimpleFormApplication,
+    GetHostFormApplicationResponse, GetVolunteerFormApplicationResponse,
 } from "@/entities/Application";
 import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 import { PaginationParams } from "@/types/api/pagination";
-import { GetFormApplicationResponse } from "@/entities/Application/model/types/application";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface MessagesRequest {
     chatId: string;
@@ -107,17 +107,18 @@ export const chatApi = createApi({
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<GetFormApplicationResponse[], PaginationParams>({
+        getMyHostApplications: build.query<GetHostFormApplicationResponse, PaginationParams>({
             query: (params) => ({
-                url: "application/list-of-organization",
+                url: `${API_BASE_URL_V3}application/list-of-organization`,
                 method: "GET",
                 params,
             }),
             providesTags: ["application"],
         }),
-        getMyVolunteerApplications: build.query<SimpleFormApplication[], PaginationParams>({
+        getMyVolunteerApplications: build.query<GetVolunteerFormApplicationResponse,
+        PaginationParams>({
             query: () => ({
-                url: "application/list-of-volunteer",
+                url: `${API_BASE_URL_V3}application/list-of-volunteer`,
                 method: "GET",
             }),
             providesTags: ["application"],

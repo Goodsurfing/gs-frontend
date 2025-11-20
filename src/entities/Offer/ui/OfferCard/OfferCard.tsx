@@ -112,22 +112,18 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                         )}
                     </div> */}
                     <div className={styles.extraInfo}>
-                        {!!reviews && (
-                            <span className={styles.review}>
-                                {t("Отзывов")}
-                                :
-                                {" "}
-                                {reviews}
-                            </span>
-                        )}
-                        {!!went && (
-                            <span className={styles.went}>
-                                {t("Отправились")}
-                                :
-                                {" "}
-                                {went}
-                            </span>
-                        )}
+                        <span className={styles.review}>
+                            {t("Отзывов")}
+                            :
+                            {" "}
+                            {reviews}
+                        </span>
+                        <span className={styles.went}>
+                            {t("Отправились")}
+                            :
+                            {" "}
+                            {went}
+                        </span>
                     </div>
                 </div>
                 <p className={styles.description}>

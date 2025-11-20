@@ -31,12 +31,14 @@ interface RequestsWidgetProps {
     locale: Locale;
 }
 
+const APPLICATIONS_PER_PAGE = 10;
+
 export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const { className, locale } = props;
     const {
         data: applications,
         isLoading: isApplicationsLoading,
-    } = useGetMyHostApplicationsQuery();
+    } = useGetMyHostApplicationsQuery({ limit: APPLICATIONS_PER_PAGE, page: 1 });
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const { t } = useTranslation("host");
@@ -85,22 +87,36 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
 
     const renderRequests = () => {
         if (isApplicationsLoading) return <p>{t("host-dashboard.Загрузка...")}</p>;
-        if (!applications || applications.length === 0) {
+        if (!applications || applications.data.length === 0) {
             return <Text text={t("host-dashboard.На данный момент заявки отсутсвуют")} />;
         }
 
-        const limitedApplications = applications.slice(-5);
-
-        return limitedApplications.map((application) => (
-            <RequestCard
-                key={application.id}
-                application={application}
-                locale={locale}
-                onReviewClick={onReviewClick}
-                onAcceptClick={(app) => { handleUpdateApplicationStatus(app.id, "accepted"); }}
-                onCancelClick={(app) => { handleUpdateApplicationStatus(app.id, "canceled"); }}
-            />
-        ));
+        return applications.data.map((application) => {
+            const {
+                id, vacancy, volunteerId, chatId, startDate, endDate,
+                status, hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
+            } = application;
+            return (
+                <RequestCard
+                    key={application.id}
+                    application={{
+                        id,
+                        vacancy,
+                        volunteer: volunteerId,
+                        startDate,
+                        endDate,
+                        status,
+                        chatId,
+                        hasFeedbackFromOrganization,
+                        hasFeedbackFromVolunteer,
+                    }}
+                    locale={locale}
+                    onReviewClick={onReviewClick}
+                    onAcceptClick={(app) => { handleUpdateApplicationStatus(app.id, "accepted"); }}
+                    onCancelClick={(app) => { handleUpdateApplicationStatus(app.id, "canceled"); }}
+                />
+            );
+        });
     };
 
     const onSendReview = handleSubmit(async (data) => {
@@ -143,7 +159,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                         {": "}
                         <span className={styles.requestsCount}>
                             {applications
-                                ? applications.filter(
+                                ? applications.data.filter(
                                     (app) => app.status === "new",
                                 ).length
                                 : 0}
@@ -154,7 +170,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                     <div className={styles.requestsItems}>
                         {renderRequests()}
                     </div>
-                    {applications?.length ? (
+                    {applications?.data.length ? (
                         <Button
                             variant="FILL"
                             color="BLUE"

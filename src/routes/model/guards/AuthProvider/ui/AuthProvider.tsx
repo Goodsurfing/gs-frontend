@@ -13,6 +13,7 @@ interface AuthContextProps {
     profileIsLoading: boolean;
     profileIsError: boolean;
     isAuth: boolean;
+    isUserAdmin: boolean;
     refetchProfile: () => void;
 }
 
@@ -26,6 +27,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const authData = useAppSelector(getUserAuthData);
 
     const [isAuth, setAuth] = useState<boolean>(false);
+    const [isUserAdmin, setUserAdmin] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null);
     const [mercureToken, setMercureToken] = useState<string | null>(null);
     const {
@@ -42,6 +44,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         setAuth(!!authData);
         setToken(authData?.token ?? null);
         setMercureToken(authData?.mercureToken ?? null);
+
+        if (authData) {
+            const roles = Array.isArray(authData.roles) ? authData.roles : [];
+            const tempRole = roles.includes("ROLE_ADMIN");
+            setUserAdmin(tempRole);
+        } else {
+            setUserAdmin(false);
+        }
     }, [authData]);
 
     const myProfile = myProfileData ?? null;
@@ -56,9 +66,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             profileIsLoading,
             profileIsError,
             isAuth,
+            isUserAdmin,
             refetchProfile,
         }),
-        [token, mercureToken, myProfile, profileIsLoading, profileIsError, isAuth, refetchProfile],
+        [token, mercureToken, myProfile, profileIsLoading,
+            profileIsError, isAuth, refetchProfile, isUserAdmin],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

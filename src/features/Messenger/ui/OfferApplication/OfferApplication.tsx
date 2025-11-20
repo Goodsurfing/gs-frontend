@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Offer, OfferCard } from "@/entities/Offer";
+import { OfferCard } from "@/entities/Offer";
 
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
@@ -11,8 +11,10 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useCategories } from "@/shared/data/categories";
 import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
 
+type OfferApplcation = Omit<FormApplicationOffer, "applicationEndDate">;
+
 interface OfferApplicationProps {
-    offerData: Offer | FormApplicationOffer;
+    offerData: OfferApplcation;
     isHost: boolean;
     username: string;
     isClosed?: boolean;
@@ -33,8 +35,9 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         onApplicationSubmit,
     } = props;
     const {
-        description, where, id, acceptedApplicationsCount,
-        feedbacksCount, averageRating,
+        id, acceptedApplicationsCount,
+        reviewsCount, averageRating, categories, shortDescription,
+        title, address,
     } = offerData;
     const { locale } = useLocale();
     const { getTranslation } = useCategories();
@@ -77,13 +80,13 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 locale={locale}
                 isFavorite={false}
                 offerId={id}
-                category={getTranslation(description?.categoryIds[0])}
-                description={description?.shortDescription}
-                location={where?.address}
+                category={getTranslation(categories[0])}
+                description={shortDescription}
+                location={address}
                 rating={Number(averageRating?.toFixed(1))}
-                reviews={feedbacksCount}
-                title={description?.title}
-                went={acceptedApplicationsCount}
+                reviews={reviewsCount}
+                title={title}
+                went={Number(acceptedApplicationsCount)}
                 isImageShow={false}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
             />

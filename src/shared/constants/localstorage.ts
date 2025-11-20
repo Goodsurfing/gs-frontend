@@ -2,6 +2,7 @@ export const USER_LOCALSTORAGE_KEY = "user";
 export const TOKEN_LOCALSTORAGE_KEY = "token";
 export const TOKEN_ADMIN_LOCALSTORAGE_KEY = "tokenAdmin";
 export const MERCURE_TOKEN_LOCALSTORAGE_KEY = "mercureToken";
+export const ROLES_LOCALSTORAGE_KEY = "roles";
 export const LANGUAGE_LOCALSTORAGE_KEY = "i18nextLng";
 
 // session storage keys

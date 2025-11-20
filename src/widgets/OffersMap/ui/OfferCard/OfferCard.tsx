@@ -78,7 +78,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 location={address}
                 rating={averageRating}
                 reviews={reviewsCount}
-                went={Number(acceptedApplicationsCount)}
+                went={acceptedApplicationsCount}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}
                 isFavoriteIconShow={false}

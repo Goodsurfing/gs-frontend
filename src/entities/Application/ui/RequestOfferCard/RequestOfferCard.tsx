@@ -36,7 +36,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
     } = props;
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const imageCover = getMediaContent(application.vacancy.description?.image);
+    const imageCover = getMediaContent(application.vacancy.imagePath);
     const { status, vacancy } = application;
     const { getTranslation } = useCategories();
     const { getApplicationStatus } = useApplicationStatus();
@@ -64,20 +64,20 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                     <div className={styles.infoContainer}>
                         <span className={styles.title}>
                             {textSlice(
-                                application.vacancy.description?.title,
+                                application.vacancy.title,
                                 45,
                                 "title",
                             )}
                         </span>
                         <span className={styles.address}>
                             {textSlice(
-                                application.vacancy.where?.address,
+                                application.vacancy.address,
                                 23,
                                 "address",
                             )}
                         </span>
                         <span className={styles.tag}>
-                            {getTranslation(vacancy.description?.categoryIds[0])}
+                            {getTranslation(vacancy.categories[0])}
                         </span>
                     </div>
                 </div>

@@ -69,7 +69,7 @@ export interface OfferApi {
     description?: string;
     shortDescription?: string;
     periods: OfferWhenPeriods[];
-    acceptedApplicationsCount: string;
+    acceptedApplicationsCount: number;
     updated: string;
 }
 
@@ -119,7 +119,8 @@ export enum OfferSort {
 }
 
 export interface GetHostOffersFilters {
-    sort: "updated:asc" | "updated:desc";
+    sort: "updated:asc" | "updated:desc" | "status:asc" | "status:desc";
+    status: OfferStatus;
     page: number;
     limit: number;
     organizationId: string;
@@ -130,6 +131,7 @@ export interface HostOffer {
     status: OfferStatus;
     averageRating?: number,
     imagePath?: string;
+    thumbnails: string[];
     title?: string;
     categories?: CategoryType[];
     reviewsCount?: number;

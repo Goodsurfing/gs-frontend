@@ -10,28 +10,50 @@ import InputField from "@/components/InputField/InputField";
 import Button from "@/shared/ui/Button/Button";
 import styles from "./AdminAuth.module.scss";
 import Checkbox from "@/components/Checkbox/Checkbox";
+import { authApi } from "@/store/api/authApi";
+import { useAppDispatch } from "@/shared/hooks/redux";
+import { userActions } from "@/entities/User";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 export const AdminAuth = () => {
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const { refetchProfile } = useAuth();
     const [error, setError] = useState("");
 
-    // const dispatch = useAppDispatch();
+    const [login, { isLoading }] = authApi.useLoginUserMutation();
+
+    const dispatch = useAppDispatch();
 
     const { control, reset, handleSubmit } = useForm<LoginAdminFields>({ mode: "onChange" });
 
     const onSuccess = useCallback(() => {
+        refetchProfile();
         navigate(getAdminUsersPageUrl(locale));
-    }, [locale, navigate]);
+    }, [locale, navigate, refetchProfile]);
 
-    // const onError = useCallback((errorText: string) => {
-    //     setError(errorText);
-    // }, []);
+    const onError = useCallback((errorText: string) => {
+        setError(errorText);
+    }, []);
 
-    const onSubmit: SubmitHandler<LoginAdminFields> = useCallback(() => {
-        onSuccess();
+    const onSubmit: SubmitHandler<LoginAdminFields> = useCallback(async (data) => {
+        const { email, password, rememberMe } = data;
+        try {
+            const { accessToken, mercureToken, roles } = await login({ email, password }).unwrap();
+
+            dispatch(userActions.setAuthData({
+                username: data.email,
+                token: accessToken,
+                mercureToken,
+                rememberMe,
+                roles,
+            }));
+            onSuccess();
+        } catch {
+            onError("Произошла ошибка");
+        }
         reset();
-    }, [onSuccess, reset]);
+    }, [onSuccess, reset, login, dispatch, onError]);
 
     useEffect(() => {
         if (error) {
@@ -80,6 +102,7 @@ export const AdminAuth = () => {
                     variant="FILL"
                     color="BLUE"
                     size="MEDIUM"
+                    disabled={isLoading}
                 >
                     Войти
                 </Button>

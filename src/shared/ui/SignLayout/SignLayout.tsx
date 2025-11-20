@@ -8,11 +8,11 @@ import EmptyHeader from "@/shared/ui/EmptyHeader/EmptyHeader";
 
 import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 
-import styles from "./SignLayout.module.scss";
-import { useAppSelector } from "@/shared/hooks/redux";
-import { getUserAuthData } from "@/entities/User";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import Preloader from "../Preloader/Preloader";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
     cancelPath: string;
@@ -26,14 +26,19 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
 }) => {
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const isAuth = useAppSelector(getUserAuthData);
+    const { isAuth } = useAuth();
 
     useEffect(() => {
         if (isAuth) {
             navigate(getMainPageUrl(locale));
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isAuth, locale, navigate]);
+
+    if (isAuth) {
+        return (
+            <Preloader />
+        );
+    }
 
     return (
         <>

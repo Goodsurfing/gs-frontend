@@ -138,8 +138,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                 imagePath: description?.image,
                                                 address: where?.address,
                                                 categories: description?.categoryIds,
-                                                acceptedApplicationsCount:
-                                                 acceptedApplicationsCount.toString(),
+                                                acceptedApplicationsCount,
                                                 averageRating: feedbacksCount,
                                                 reviewsCount: averageRating,
                                             }}
@@ -200,8 +199,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                             imagePath: description?.image,
                                                             address: where?.address,
                                                             categories: description?.categoryIds,
-                                                            acceptedApplicationsCount:
-                                                 acceptedApplicationsCount.toString(),
+                                                            acceptedApplicationsCount,
                                                             averageRating: feedbacksCount,
                                                             reviewsCount: averageRating,
                                                         }}
