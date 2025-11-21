@@ -5,6 +5,8 @@ export interface User {
     token: string;
     mercureToken: string;
     roles: UserRole[];
+    isVerified: boolean,
+    rememberMe: boolean,
 }
 
 export interface UserSchema {

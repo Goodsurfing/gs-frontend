@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { ProfileInfoVerifyEmail } from "../ProfileInfoVerifyEmail/ProfileInfoVerifyEmail";
 
 interface ProfileInfoProps {
     className?: string;
@@ -14,7 +15,9 @@ interface ProfileInfoProps {
 export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
     const { t } = useTranslation("profile");
-    const { myProfile, profileIsLoading, profileIsError } = useAuth();
+    const {
+        myProfile, profileIsLoading, profileIsError, isUserVerified,
+    } = useAuth();
 
     if (profileIsError) {
         <div className={cn(className)}>
@@ -32,7 +35,12 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
 
     return (
         <div className={cn(className)}>
-            {myProfile && <ProfileInfoForm profile={myProfile} />}
+            {!isUserVerified && (
+                <ProfileInfoVerifyEmail />
+            )}
+            <div>
+                {myProfile && <ProfileInfoForm profile={myProfile} />}
+            </div>
         </div>
     );
 });

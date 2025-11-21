@@ -10,18 +10,20 @@ import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import Preloader from "../Preloader/Preloader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import Preloader from "../Preloader/Preloader";
 import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
     cancelPath: string;
     cancelText: string;
+    disableRedirectIfIsAuth?: boolean;
 }
 
 const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     cancelText,
     cancelPath,
+    disableRedirectIfIsAuth = false,
     children,
 }) => {
     const { locale } = useLocale();
@@ -29,10 +31,10 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
     const { isAuth } = useAuth();
 
     useEffect(() => {
-        if (isAuth) {
+        if (isAuth && !disableRedirectIfIsAuth) {
             navigate(getMainPageUrl(locale));
         }
-    }, [isAuth, locale, navigate]);
+    }, [isAuth, locale, navigate, disableRedirectIfIsAuth]);
 
     if (isAuth) {
         return (
