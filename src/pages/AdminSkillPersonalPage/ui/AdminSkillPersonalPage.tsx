@@ -9,7 +9,7 @@ const AdminSkillPersonalPage = () => {
     if (!id) {
         return (
             <div className={styles.wrapper}>
-                <h2>Произошла ошибка!Неверный id навыка</h2>
+                <h2>Произошла ошибка! Неверный id навыка</h2>
             </div>
         );
     }

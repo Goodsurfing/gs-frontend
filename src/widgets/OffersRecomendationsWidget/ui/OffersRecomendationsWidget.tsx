@@ -38,7 +38,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 try {
                     if (myProfileData && myProfileData.favoriteCategories.length > 0) {
                         const resultOffers = await getOffers(
-                            { categories: myProfileData.favoriteCategories },
+                            { categoryIds: myProfileData.favoriteCategories },
                         ).unwrap();
                         setFilteredOffers(resultOffers.data.slice(0, 10));
                     }

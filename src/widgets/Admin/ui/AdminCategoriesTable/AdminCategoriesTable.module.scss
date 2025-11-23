@@ -1,0 +1,52 @@
+.wrapper {
+    height: 40vh;
+}
+
+.btnIcon {
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnIcon svg {
+    width: 25px;
+    height: auto;
+    transition: all 0.3 ease;
+}
+
+.btnIcon:hover {
+    scale: 1.05;
+}
+
+.btnShow g {
+    fill: var(--accent-color);
+}
+
+.btnBlock g {
+    fill: var(--text-caption);
+}
+
+.btnDelete g {
+    fill: var(--error-color);
+}
+
+.categoryImg {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.color {
+    display: flex;
+    gap: 10px;
+    color: black;
+}
+
+.colorItem {
+    width: 20px;
+    height: 20px;
+    border-radius: 8px;
+}

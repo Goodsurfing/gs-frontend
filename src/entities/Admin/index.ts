@@ -20,4 +20,7 @@ export {
     useEditReviewVacancyMutation, useDeleteReviewVacancyMutation,
     useGetReviewVacanciesListQuery, useGetReviewVacancyByIdQuery,
     useLazyGetReviewVacanciesListQuery, useLazyGetReviewVacancyByIdQuery,
+    useCreateCategoryVacancyMutation, useDeleteCategoryVacancyMutation,
+    useEditCategoryVacancyMutation, useGetCategoryVacancyByIdQuery,
+    useLazyGetCategoriesVacancyQuery,
 } from "./api/adminApi";

@@ -157,12 +157,12 @@ export interface GetOffersFilters {
     maxDurationDays: string;
     search: string;
     languages: string[];
-    skills: WhatToDoSkillType[];
+    skillIds: WhatToDoSkillType[];
     additionalConditions: ExtraConditions[];
-    housings: Housing[];
-    foods: Nutrition[];
-    paidTravels: Travel[];
-    categories: CategoryType[];
+    houseIds: Housing[];
+    foodIds: Nutrition[];
+    transferIds: Travel[];
+    categoryIds: CategoryType[];
     page: number;
     limit: number;
 }

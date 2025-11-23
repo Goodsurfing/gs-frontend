@@ -200,4 +200,6 @@ export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${local
 
 export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}`;
 
+export const getAdminCategoriesVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_vacancies}/${id}`;
+
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;

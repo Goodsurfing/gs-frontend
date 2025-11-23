@@ -139,6 +139,8 @@ import {
     getAdminSkillsAchievementsPageUrl,
     getAdminSkillPersonalPageUrl,
     getAdminAchievementPersonalPageUrl,
+    getAdminCategoriesVacanciesPageUrl,
+    getAdminCategoriesVacanciesPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -163,6 +165,8 @@ import { AdminPersonalOrganizationPage } from "@/pages/AdminPersonalOrganization
 import { AdminSkillsAchievementsPage } from "@/pages/AdminSkillAchievementsPage";
 import { AdminSkillPersonalPage } from "@/pages/AdminSkillPersonalPage";
 import { AdminAchievementPersonalPage } from "@/pages/AdminAchievementPersonalPage";
+import { AdminCategoriesPage } from "@/pages/AdminCategoriesPage";
+import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -596,6 +600,16 @@ const publicRoutes: RouteType[] = [
                 label: "admin-achievement-personal",
                 element: <AdminAchievementPersonalPage />,
                 path: (locale: string) => getAdminAchievementPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-categories-vacancies",
+                element: <AdminCategoriesPage />,
+                path: (locale: string) => getAdminCategoriesVacanciesPageUrl(locale),
+            },
+            {
+                label: "admin-categories-vacancies-personal",
+                element: <AdminCategoriesPersonalPage />,
+                path: (locale: string) => getAdminCategoriesVacanciesPersonalPageUrl(locale),
             },
         ],
     },

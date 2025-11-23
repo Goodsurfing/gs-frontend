@@ -352,8 +352,11 @@ export const Chat: FC<ChatProps> = (props) => {
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
 
-                    const { chatId } = result;
-                    if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
+                    const { chat } = result;
+                    if (chat) {
+                        const chatId = chat.split("/").pop();
+                        if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
+                    }
                 })
                 .catch((error: ErrorType) => {
                     setToast({

@@ -71,7 +71,7 @@ export const chatApi = createApi({
         // applications
         createApplicationForm: build.mutation<FormApplication, FormData>({
             query: (data) => ({
-                url: "application_forms",
+                url: "applications",
                 method: "POST",
                 body: data,
             }),
@@ -80,7 +80,7 @@ export const chatApi = createApi({
         updateApplicationFormStatusById: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `application_forms/${applicationId}/status`,
+                url: `applications/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
@@ -92,7 +92,7 @@ export const chatApi = createApi({
         updateApplicationFormStatusByIdWithoutTags: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `application_forms/${applicationId}/status`,
+                url: `applications/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
@@ -102,7 +102,7 @@ export const chatApi = createApi({
         }),
         getApplicationFormById: build.query<FullFormApplication, string>({
             query: (applicationId) => ({
-                url: `application_forms/${applicationId}`,
+                url: `applications/${applicationId}`,
                 method: "GET",
             }),
             providesTags: ["application"],

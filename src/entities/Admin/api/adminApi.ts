@@ -9,11 +9,15 @@ import {
     SearchUsersParams,
     SearchUsersResponse,
 } from "../model/types/adminSchema";
+import {
+    Category, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
+} from "@/types/categories";
+import { PaginationParams } from "@/types/api/pagination";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["skill", "user", "reviewVacancy"],
+    tagTypes: ["skill", "user", "reviewVacancy", "category"],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
             query: (body) => ({
@@ -104,6 +108,46 @@ export const adminApi = createApi({
             }),
             providesTags: ["reviewVacancy"],
         }),
+        createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
+            query: (body) => ({
+                url: "category/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["category"],
+        }),
+        editCategoryVacancy: build.mutation<void, UpdateCategoryParams>({
+            query: ({ id, data }) => ({
+                url: `category/edit/${id}`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["category"],
+        }),
+        deleteCategoryVacancy: build.mutation<void, number>({
+            query: (id) => ({
+                url: `category/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["category"],
+        }),
+        getCategoriesVacancy: build.query<GetCategoryResponse,
+        PaginationParams>({
+            query: (params) => ({
+                url: "category/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["category"],
+        }),
+        getCategoryVacancyById: build.query<Category,
+        string>({
+            query: (id) => ({
+                url: `category/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["category"],
+        }),
     }),
 });
 
@@ -122,4 +166,9 @@ export const {
     useLazyGetReviewVacanciesListQuery,
     useGetReviewVacancyByIdQuery,
     useLazyGetReviewVacancyByIdQuery,
+    useCreateCategoryVacancyMutation,
+    useEditCategoryVacancyMutation,
+    useDeleteCategoryVacancyMutation,
+    useGetCategoryVacancyByIdQuery,
+    useLazyGetCategoriesVacancyQuery,
 } = adminApi;
