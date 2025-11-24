@@ -14,12 +14,13 @@ import { AuthByVk } from "@/features/AuthByVk";
 import { NextRouteType, useNextRoutes } from "@/routes/model/lib/useNextRoutes";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./AuthByEmail.module.scss";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { refetchProfile } = useAuth();
+    const { refetchProfile, profileDataIsFethcing } = useAuth();
     const { t, ready } = useTranslation();
 
     const [searchParams] = useSearchParams();
@@ -57,6 +58,12 @@ export const AuthByEmail = memo(() => {
 
     if (!ready) {
         return null;
+    }
+
+    if (profileDataIsFethcing) {
+        return (
+            <MiniLoader />
+        );
     }
 
     return (

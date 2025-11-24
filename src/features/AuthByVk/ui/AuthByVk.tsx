@@ -50,7 +50,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             VKID.Config.init({
                 app: Number(process.env.REACT_VKID_CLIENT_ID),
                 redirectUrl,
-                scope: "email phone",
+                scope: "email",
                 codeVerifier,
                 state,
             });
@@ -105,7 +105,6 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                                 mercureToken: data.mercureToken,
                                 rememberMe: true,
                                 username: data.user.email,
-                                isVerified: data.user.isVerified,
                                 roles: data.user.roles,
                             }));
                             localStorage.removeItem("vk_code_verifier");

@@ -11,7 +11,6 @@ import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import Preloader from "../Preloader/Preloader";
 import styles from "./SignLayout.module.scss";
 
 interface SignLayoutProps {
@@ -35,12 +34,6 @@ const SignLayout: FC<PropsWithChildren<SignLayoutProps>> = ({
             navigate(getMainPageUrl(locale));
         }
     }, [isAuth, locale, navigate, disableRedirectIfIsAuth]);
-
-    if (isAuth) {
-        return (
-            <Preloader />
-        );
-    }
 
     return (
         <>

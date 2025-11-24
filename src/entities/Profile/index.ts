@@ -15,6 +15,8 @@ export {
     useGetProfileInfoByIdQuery,
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
+    useGetIsProfileVerifiedQuery,
+    useToggleActiveProfileMutation,
 } from "./api/profileApi";
 
 export type {

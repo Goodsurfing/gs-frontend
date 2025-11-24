@@ -8,7 +8,7 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
-import { API_BASE_URL_V3, BASE_VK_URI } from "@/shared/constants/api";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { userActions } from "@/entities/User";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
@@ -39,7 +39,6 @@ const VerifyEmailHashPage = () => {
                 mercureToken: data.mercureToken,
                 rememberMe: true,
                 username: "",
-                isVerified: true,
                 roles: isUserAdmin ? ["ROLE_USER", "ROLE_ADMIN"] : ["ROLE_USER"],
             }));
 

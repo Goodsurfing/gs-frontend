@@ -4,7 +4,7 @@ import React, {
 } from "react";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
-import { Profile, useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile, useGetIsProfileVerifiedQuery, useGetProfileInfoQuery } from "@/entities/Profile";
 
 interface AuthContextProps {
     token: string | null;
@@ -12,7 +12,8 @@ interface AuthContextProps {
     myProfile: Profile | null;
     profileIsLoading: boolean;
     profileIsError: boolean;
-    isUserVerified: boolean;
+    profileDataIsFethcing: boolean;
+    myProfileIsVerified: boolean;
     isAuth: boolean;
     isUserAdmin: boolean;
     refetchProfile: () => void;
@@ -30,21 +31,26 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [isAuth, setAuth] = useState<boolean>(false);
     const [isUserAdmin, setUserAdmin] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null);
-    const [isUserVerified, setUserVerified] = useState<boolean>(false);
+
     const [mercureToken, setMercureToken] = useState<string | null>(null);
     const {
         data: myProfileData,
         isLoading: profileDataIsLoading, isError: profileDataIsError,
         refetch: refetchProfileData,
+        isFetching: profileDataIsFethcing,
     } = useGetProfileInfoQuery();
+    const {
+        data: profileVerified,
+        refetch: refetchProfileVerifiedData,
+    } = useGetIsProfileVerifiedQuery();
 
     const refetchProfile = useCallback(async () => {
         await refetchProfileData();
-    }, [refetchProfileData]);
+        await refetchProfileVerifiedData();
+    }, [refetchProfileData, refetchProfileVerifiedData]);
 
     useEffect(() => {
         setAuth(!!authData);
-        setUserVerified(authData?.isVerified ?? false);
         setToken(authData?.token ?? null);
         setMercureToken(authData?.mercureToken ?? null);
 
@@ -60,23 +66,26 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const myProfile = myProfileData ?? null;
     const profileIsLoading = profileDataIsLoading;
     const profileIsError = profileDataIsError;
+    const profileIsFetching = profileDataIsFethcing;
+    const myProfileIsVerified = profileVerified?.isVerified ?? false;
 
     const value = useMemo(
         () => ({
             token,
             mercureToken,
-            isUserVerified,
             myProfile,
             profileIsLoading,
+            profileIsFetching,
             profileIsError,
+            myProfileIsVerified,
             isAuth,
             isUserAdmin,
             refetchProfile,
+            profileDataIsFethcing,
         }),
         [token, mercureToken, myProfile, profileIsLoading,
-
-            profileIsError, isAuth,
-            isUserVerified, refetchProfile, isUserAdmin],
+            profileIsFetching, profileIsError, myProfileIsVerified,
+            isAuth, isUserAdmin, refetchProfile, profileDataIsFethcing],
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

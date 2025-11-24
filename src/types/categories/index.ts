@@ -29,7 +29,7 @@ export interface Category {
 export interface CreateCategoryParams {
     name: string;
     color: string;
-    image: string;
+    image: File;
 }
 
 export interface GetCategoryResponse {

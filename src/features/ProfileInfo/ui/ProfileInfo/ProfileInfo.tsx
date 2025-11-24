@@ -16,7 +16,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
     const { t } = useTranslation("profile");
     const {
-        myProfile, profileIsLoading, profileIsError, isUserVerified,
+        myProfile, profileIsLoading, profileIsError, myProfileIsVerified,
     } = useAuth();
 
     if (profileIsError) {
@@ -35,7 +35,7 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
 
     return (
         <div className={cn(className)}>
-            {!isUserVerified && (
+            {!myProfileIsVerified && (
                 <ProfileInfoVerifyEmail />
             )}
             <div>

@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { Profile, ProfileApi } from "../model/types/profile";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface UpdateProfileInfoRequest {
     userId: string;
@@ -12,6 +13,12 @@ interface ChangePasswordRequest {
     oldPassword: string;
 }
 
+interface ToggleActiveProfileRequest {
+    profileId: string;
+    body: {
+        isActive: boolean;
+    }
+}
 interface ProfileSearchByEmailRequest {
     itemsPerPage?: number;
     page?: number;
@@ -22,6 +29,10 @@ interface UnreadMessagesResponse {
     unreadMessagesCount: number;
 }
 
+interface ProfileVerified {
+    isVerified: boolean;
+}
+
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -30,6 +41,13 @@ export const profileApi = createApi({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
                 url: "personal/profile",
+                method: "GET",
+            }),
+            providesTags: ["profile"],
+        }),
+        getIsProfileVerified: build.query<ProfileVerified, void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}profile`,
                 method: "GET",
             }),
             providesTags: ["profile"],
@@ -55,6 +73,14 @@ export const profileApi = createApi({
         changePassword: build.mutation<Profile, ChangePasswordRequest>({
             query: (body) => ({
                 url: "personal/profile/change-password",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        toggleActiveProfile: build.mutation<void, ToggleActiveProfileRequest>({
+            query: ({ profileId, body }) => ({
+                url: `${API_BASE_URL_V3}profile/toggle-active/${profileId}`,
                 method: "POST",
                 body,
             }),
@@ -87,4 +113,6 @@ export const {
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
     useLazyGetUnreadMessagesQuery,
+    useGetIsProfileVerifiedQuery,
+    useToggleActiveProfileMutation,
 } = profileApi;

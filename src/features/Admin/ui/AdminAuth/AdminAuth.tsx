@@ -47,7 +47,6 @@ export const AdminAuth = () => {
                 mercureToken,
                 rememberMe,
                 roles,
-                isVerified: true,
             }));
             onSuccess();
         } catch {

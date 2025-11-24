@@ -109,11 +109,18 @@ export const adminApi = createApi({
             providesTags: ["reviewVacancy"],
         }),
         createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
-            query: (body) => ({
-                url: "category/create",
-                method: "POST",
-                body,
-            }),
+            query: ({ name, color, image }) => {
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("color", color);
+                formData.append("image", image);
+
+                return {
+                    url: "category/create",
+                    method: "POST",
+                    body: formData,
+                };
+            },
             invalidatesTags: ["category"],
         }),
         editCategoryVacancy: build.mutation<void, UpdateCategoryParams>({

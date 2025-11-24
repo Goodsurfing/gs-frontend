@@ -202,4 +202,6 @@ export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) =>
 
 export const getAdminCategoriesVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_vacancies}/${id}`;
 
+export const getAdminCategoriesVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}/create`;
+
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;
