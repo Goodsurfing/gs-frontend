@@ -66,7 +66,6 @@ export const useGetChatMessages = (
         });
 
         return () => {
-            console.log("eventsource закрыт");
             eventSource.close();
         };
     }, [chatId, mercureToken, profileId]);
