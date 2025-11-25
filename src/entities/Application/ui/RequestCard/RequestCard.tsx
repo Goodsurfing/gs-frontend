@@ -125,9 +125,9 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 </Link>
             </div>
             <div className={styles.buttons}>
-                {showButtons && status === "accepted" && (
+                {(showButtons && status === "accepted") && (
                     <>
-                        {application.chatId && (
+                        {!!application.chatId && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"

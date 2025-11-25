@@ -39,5 +39,7 @@ export interface GetCategoryResponse {
 
 export interface UpdateCategoryParams {
     id: number;
-    data: CreateCategoryParams;
+    data: Omit<CreateCategoryParams, "image"> & {
+        image: File | string;
+    };
 }

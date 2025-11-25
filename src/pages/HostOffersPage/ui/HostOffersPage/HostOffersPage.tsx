@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { AddOffer } from "@/features/Offer/AddOffer/AddOffer";
 
 import {
-    HostOffer,
     useDeleteOfferMutation,
     useLazyGetHostAllOffersByIdQuery,
     useLazyGetOfferByIdQuery,
@@ -13,14 +12,13 @@ import {
 
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 
-import { filterOffersByStatus } from "../../lib/filterOffersByStatus";
 import { HostOffersList } from "../HostOffersList/HostOffersList";
-import styles from "./HostOffersPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./HostOffersPage.module.scss";
 
 type SeletecBtnType = "delete" | "every_open" | "close";
 
@@ -45,12 +43,12 @@ const HostOffersPage = () => {
         }] = useLazyGetHostAllOffersByIdQuery();
     const [triggerOffer, { isLoading: isOfferLoading }] = useLazyGetOfferByIdQuery();
 
-    const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<HostOffer[]>(
-        [],
-    );
-    const [offersWithClosedStatus, setOffersWithClosedStatus] = useState<
-    HostOffer[]
-    >([]);
+    // const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<HostOffer[]>(
+    //     [],
+    // );
+    // const [offersWithClosedStatus, setOffersWithClosedStatus] = useState<
+    // HostOffer[]
+    // >([]);
 
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
@@ -70,13 +68,12 @@ const HostOffersPage = () => {
         if (!myHostId) return;
 
         try {
-            const resultActiveOffers = await triggerActiveDisabledHostOffers({
+            await triggerActiveDisabledHostOffers({
                 limit: ITEMS_PER_PAGE,
                 organizationId: myHostId,
                 page,
-                status: "active",
+                statuses: ["active", "disabled"],
             }).unwrap();
-            setOffersWithOpenStatus(resultActiveOffers.data);
         } catch { /* empty */ }
     }, [myHostId, triggerActiveDisabledHostOffers]);
 
@@ -84,13 +81,12 @@ const HostOffersPage = () => {
         if (!myHostId) return;
 
         try {
-            const resultDraftOffers = await triggerDraftHostOffers({
+            await triggerDraftHostOffers({
                 limit: ITEMS_PER_PAGE,
                 organizationId: myHostId,
                 page,
-                status: "draft",
+                statuses: ["draft"],
             }).unwrap();
-            setOffersWithClosedStatus(filterOffersByStatus(resultDraftOffers.data, "draft"));
         } catch { /* empty */ }
     }, [myHostId, triggerDraftHostOffers]);
 
@@ -169,7 +165,7 @@ const HostOffersPage = () => {
             )}
             <h2 className={styles.abilities}>{t("hostOffers.Мои вакансии")}</h2>
             <HostOffersList
-                offers={offersWithOpenStatus}
+                offers={activeDisabledHostOffersData?.data ?? []}
                 onCloseClick={(offerId) => handleCloseClick(offerId)}
                 onDeleteClick={(offerId) => handleDeleteClick(offerId)}
             />
@@ -181,12 +177,12 @@ const HostOffersPage = () => {
                     className={styles.pagination}
                 />
             )}
-            {!!offersWithClosedStatus.length && (
+            {draftHostOffersData?.pagination.total !== 0 && (
                 <div className={styles.drafts}>
                     <h2 className={styles.draftsTitle}>{t("hostOffers.Черновики")}</h2>
                     <div className={styles.cards}>
                         <HostOffersList
-                            offers={offersWithClosedStatus}
+                            offers={draftHostOffersData?.data ?? []}
                             onCloseClick={handleCloseClick}
                             onDeleteClick={handleDeleteClick}
                         />

@@ -120,7 +120,7 @@ export enum OfferSort {
 
 export interface GetHostOffersFilters {
     sort: "updated:asc" | "updated:desc" | "status:asc" | "status:desc";
-    status: OfferStatus;
+    statuses: OfferStatus[];
     page: number;
     limit: number;
     organizationId: string;

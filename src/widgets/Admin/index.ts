@@ -4,3 +4,4 @@ export { AdminOrganizationsTable } from "./ui/AdminOrganizationsTable/AdminOrgan
 export { AdminPersonalOrganizationInfoForm } from "./ui/AdminPersonalOrganizationInfoForm/AdminPersonalOrganizationInfoForm";
 export { AdminSkillsAchievements } from "./ui/AdminSkillsAchievements/AdminSkillsAchievements";
 export { AdminCategoriesTable } from "./ui/AdminCategoriesTable/AdminCategoriesTable";
+export { AdminCategoryInfo } from "./ui/AdminCategoryInfo/AdminCategoryInfo";

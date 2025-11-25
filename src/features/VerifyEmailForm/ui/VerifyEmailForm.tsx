@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import InputField from "@/components/InputField/InputField";
@@ -16,6 +16,8 @@ export const VerifyEmailForm = () => {
     const [isEmailSend, setEmailSend] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { token } = useAuth();
+    const [cooldown, setCooldown] = useState(0);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const {
         control, handleSubmit, getValues,
@@ -23,7 +25,15 @@ export const VerifyEmailForm = () => {
         mode: "onChange",
     });
 
+    useEffect(() => () => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+        }
+    }, []);
+
     const sendEmailVerification = async (email: string) => {
+        if (cooldown > 0) return;
+
         setIsLoading(true);
         try {
             const response = await fetch(`${API_BASE_URL_V3}send-email`, {
@@ -40,6 +50,23 @@ export const VerifyEmailForm = () => {
             }
 
             setEmailSend(true);
+
+            setCooldown(60);
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+            timerRef.current = setInterval(() => {
+                setCooldown((prev) => {
+                    if (prev <= 1) {
+                        if (timerRef.current) {
+                            clearInterval(timerRef.current);
+                            timerRef.current = null;
+                        }
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
         } catch {
             setEmailSend(false);
             setToast({
@@ -57,7 +84,7 @@ export const VerifyEmailForm = () => {
 
     const resendEmail = () => {
         const currentEmail = getValues("email");
-        if (currentEmail) {
+        if (currentEmail && cooldown === 0) {
             sendEmailVerification(currentEmail);
         }
     };
@@ -77,10 +104,12 @@ export const VerifyEmailForm = () => {
                     color="BLUE"
                     size="MEDIUM"
                     onClick={resendEmail}
-                    disabled={isLoading}
+                    disabled={isLoading || cooldown > 0}
                     className={styles.btn}
                 >
-                    {t("login.Отправить ещё раз")}
+                    {cooldown > 0
+                        ? t("login.Отправить ещё раз через {{seconds}}", { seconds: cooldown })
+                        : t("login.Отправить ещё раз")}
                 </Button>
             </div>
         );
@@ -114,6 +143,10 @@ export const VerifyEmailForm = () => {
             >
                 {t("login.Подтвердить")}
             </Button>
+            <div className={styles.confirm}>
+                {t("login.Вам на почту придёт письмо с подтверждением")}
+                .
+            </div>
         </form>
     );
 };

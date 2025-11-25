@@ -29,8 +29,9 @@ interface UnreadMessagesResponse {
     unreadMessagesCount: number;
 }
 
-interface ProfileVerified {
+interface ProfileV3 {
     isVerified: boolean;
+    isActive: boolean;
 }
 
 export const profileApi = createApi({
@@ -45,7 +46,7 @@ export const profileApi = createApi({
             }),
             providesTags: ["profile"],
         }),
-        getIsProfileVerified: build.query<ProfileVerified, void>({
+        getProfileV3: build.query<ProfileV3, void>({
             query: () => ({
                 url: `${API_BASE_URL_V3}profile`,
                 method: "GET",
@@ -113,6 +114,6 @@ export const {
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
     useLazyGetUnreadMessagesQuery,
-    useGetIsProfileVerifiedQuery,
+    useGetProfileV3Query,
     useToggleActiveProfileMutation,
 } = profileApi;

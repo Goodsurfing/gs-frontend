@@ -1,5 +1,5 @@
 import React, {
-    FC, useEffect, useState,
+    FC, useEffect,
 } from "react";
 import {
     Controller,
@@ -7,9 +7,7 @@ import {
 } from "react-hook-form";
 import cn from "classnames";
 import { Category } from "@/types/categories";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { useCreateCategoryVacancyMutation } from "@/entities/Admin";
+
 import Button from "@/shared/ui/Button/Button";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
@@ -19,7 +17,8 @@ import styles from "./AdminCategoryForm.module.scss";
 interface AdminCategoryFormProps {
     className?: string;
     category?: Category;
-    onSuccess?: () => void;
+    onSubmit?: (data: AdminCategoryFields) => void;
+    isLoading: boolean;
 }
 
 const defaultValues: DefaultValues<AdminCategoryFields> = {
@@ -29,15 +28,14 @@ const defaultValues: DefaultValues<AdminCategoryFields> = {
 
 };
 
-type AdminCategoryFields = Omit<Category, "id" | "imagePath"> & {
+export type AdminCategoryFields = Omit<Category, "id" | "imagePath"> & {
     imagePath?: File | string;
 };
 
 export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
-    const { className, category, onSuccess } = props;
-
-    const [toast, setToast] = useState<ToastAlert>();
-    const [createCategory, { isLoading }] = useCreateCategoryVacancyMutation();
+    const {
+        className, category, onSubmit, isLoading,
+    } = props;
 
     const form = useForm<AdminCategoryFields>({
         mode: "onChange",
@@ -51,21 +49,8 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
         formState: { errors },
     } = form;
 
-    const onSubmit: SubmitHandler<AdminCategoryFields> = async (data) => {
-        try {
-            const { name, color, imagePath: imageFile } = data;
-
-            if (imageFile instanceof File) {
-                await createCategory({
-                    name,
-                    color,
-                    image: imageFile,
-                }).unwrap();
-                onSuccess?.();
-            }
-        } catch (err) {
-            setToast({ text: "Не удалось сохранить категорию", type: HintType.Error });
-        }
+    const onSubmitForm: SubmitHandler<AdminCategoryFields> = (data) => {
+        onSubmit?.(data);
     };
 
     useEffect(() => {
@@ -82,10 +67,9 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
 
     return (
         <FormProvider {...form}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form
                 className={cn(styles.formWrapper, className)}
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmitForm)}
             >
                 <div className={styles.form}>
                     <InputControl

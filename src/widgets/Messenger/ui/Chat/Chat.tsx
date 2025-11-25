@@ -377,6 +377,7 @@ export const Chat: FC<ChatProps> = (props) => {
                     acceptedApplicationsCount, averageRating, feedbacksCount,
                 } = offerData;
                 const imagePath = typeof description?.image === "string" ? description.image : description?.image?.contentUrl;
+
                 return (
                     <Controller
                         name="applicationForm"

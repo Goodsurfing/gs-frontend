@@ -5,3 +5,4 @@ export { AdminOrganizationSettings } from "./ui/AdminOrganizationSettings/AdminO
 export { AdminOrganizationInfo } from "./ui/AdminOrganizationInfo/AdminOrganizationInfo";
 export { AdminSkillForm } from "./ui/AdminSkillForm/AdminSkillForm";
 export { AdminCategoryForm } from "./ui/AdminCategoryForm/AdminCategoryForm";
+export type { AdminCategoryFields } from "./ui/AdminCategoryForm/AdminCategoryForm";

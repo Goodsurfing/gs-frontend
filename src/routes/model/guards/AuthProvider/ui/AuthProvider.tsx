@@ -4,7 +4,7 @@ import React, {
 } from "react";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
-import { Profile, useGetIsProfileVerifiedQuery, useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile, useGetProfileV3Query, useGetProfileInfoQuery } from "@/entities/Profile";
 
 interface AuthContextProps {
     token: string | null;
@@ -42,7 +42,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const {
         data: profileVerified,
         refetch: refetchProfileVerifiedData,
-    } = useGetIsProfileVerifiedQuery();
+    } = useGetProfileV3Query();
 
     const refetchProfile = useCallback(async () => {
         await refetchProfileData();

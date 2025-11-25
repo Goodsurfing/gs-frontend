@@ -124,11 +124,20 @@ export const adminApi = createApi({
             invalidatesTags: ["category"],
         }),
         editCategoryVacancy: build.mutation<void, UpdateCategoryParams>({
-            query: ({ id, data }) => ({
-                url: `category/edit/${id}`,
-                method: "POST",
-                body: data,
-            }),
+            query: ({ id, data }) => {
+                const { name, color, image } = data;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("color", color);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `category/edit/${id}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
             invalidatesTags: ["category"],
         }),
         deleteCategoryVacancy: build.mutation<void, number>({

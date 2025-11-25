@@ -10,8 +10,11 @@ import styles from "./OfferApplication.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useCategories } from "@/shared/data/categories";
 import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
+import { CategoryType } from "@/types/categories";
 
-type OfferApplcation = Omit<FormApplicationOffer, "applicationEndDate">;
+type OfferApplcation = Omit<FormApplicationOffer, "applicationEndDate" | "categories"> & {
+    categories?: CategoryType[];
+};
 
 interface OfferApplicationProps {
     offerData: OfferApplcation;
@@ -80,7 +83,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 locale={locale}
                 isFavorite={false}
                 offerId={id}
-                category={getTranslation(categories[0])}
+                category={getTranslation(categories?.[0])}
                 description={shortDescription}
                 location={address}
                 rating={Number(averageRating?.toFixed(1))}

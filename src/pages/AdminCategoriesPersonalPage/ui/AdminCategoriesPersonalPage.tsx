@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { AdminCategoryInfo } from "@/widgets/Admin";
 
 const AdminCategoriesPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -14,7 +15,7 @@ const AdminCategoriesPersonalPage = () => {
 
     return (
         <div>
-            Personal category page
+            <AdminCategoryInfo categoryId={id} />
         </div>
     );
 };

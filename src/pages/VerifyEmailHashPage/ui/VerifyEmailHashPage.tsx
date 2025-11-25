@@ -18,7 +18,7 @@ const VerifyEmailHashPage = () => {
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch();
-    const { isUserAdmin } = useAuth();
+    const { isUserAdmin, token } = useAuth();
     const [isLoading, setLoading] = useState<boolean>(true);
     const [isError, setError] = useState<boolean>(false);
 
@@ -26,6 +26,10 @@ const VerifyEmailHashPage = () => {
         try {
             const response = await fetch(`${API_BASE_URL_V3}verify/email/${id}`, {
                 method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) {
@@ -48,7 +52,7 @@ const VerifyEmailHashPage = () => {
         } finally {
             setLoading(false);
         }
-    }, [id, dispatch, isUserAdmin]);
+    }, [id, dispatch, isUserAdmin, token]);
 
     useEffect(() => {
         if (id) {
@@ -61,7 +65,7 @@ const VerifyEmailHashPage = () => {
 
     if (isLoading) {
         return (
-            <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+            <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
                 <Preloader />
             </SignLayout>
         );
@@ -69,7 +73,7 @@ const VerifyEmailHashPage = () => {
 
     if (isError) {
         return (
-            <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+            <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
                 <div className={styles.content}>
                     <div className={styles.notification}>{t("login.Произошла ошибка")}</div>
                 </div>
@@ -78,7 +82,7 @@ const VerifyEmailHashPage = () => {
     }
 
     return (
-        <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+        <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
             <div className={styles.wrapper}>
                 <SignTitle>{t("login.Подтверждение почты")}</SignTitle>
                 <div className={styles.content}>

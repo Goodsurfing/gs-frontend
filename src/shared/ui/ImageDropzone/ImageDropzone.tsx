@@ -5,6 +5,7 @@ import { useDropzone, Accept } from "react-dropzone";
 import cn from "classnames";
 import styles from "./ImageDropzone.module.scss";
 import { ErrorText } from "../ErrorText/ErrorText";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 export interface ImageDropzoneProps {
     value?: File | string;
@@ -33,7 +34,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         if (!value) {
             setPreview(null);
         } else if (typeof value === "string") {
-            setPreview(value);
+            setPreview(getMediaContent(value) ?? null);
         } else {
             const url = URL.createObjectURL(value);
             setPreview(url);
