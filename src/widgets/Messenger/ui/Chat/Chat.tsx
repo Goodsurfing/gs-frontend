@@ -160,18 +160,18 @@ export const Chat: FC<ChatProps> = (props) => {
             };
             fetchVolunteer();
         }
-        if (isChatCreate && !!recipientOrganization) {
-            const fetchOrganization = async () => {
-                const resultHostData = await getProfileData(recipientOrganization)
-                    .unwrap()
-                    .then((hostDataResult) => hostDataResult)
-                    .catch(() => undefined);
-                if (resultHostData) {
-                    setCompanionData(resultHostData);
-                }
-            };
-            fetchOrganization();
-        }
+        // if (isChatCreate && !!recipientOrganization) {
+        //     const fetchOrganization = async () => {
+        //         const resultHostData = await getProfileData(recipientOrganization)
+        //             .unwrap()
+        //             .then((hostDataResult) => hostDataResult)
+        //             .catch(() => undefined);
+        //         if (resultHostData) {
+        //             setCompanionData(resultHostData);
+        //         }
+        //     };
+        //     fetchOrganization();
+        // }
     }, [isChatCreate, offerId, getOfferData]);
 
     useEffect(() => {

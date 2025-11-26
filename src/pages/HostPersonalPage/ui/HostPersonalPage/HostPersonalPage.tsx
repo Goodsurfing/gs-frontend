@@ -43,22 +43,26 @@ export const HostPersonalPage = () => {
     };
 
     const handleWriteClick = () => {
-        if (myChatsListData) {
+        if (myChatsListData && hostData && id) {
             const isChatExist = myChatsListData.length > 0;
             if (isChatExist) {
                 const chatId = myChatsListData[0].id;
                 navigate(getMessengerPageIdUrl(locale, chatId.toString()));
                 return;
             }
-            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
+            const params = new URLSearchParams({
+                // recipientOrganization: id,
+                recipientVolunteer: hostData.owner.id,
+            });
+            navigate(`${getMessengerPageIdUrl(locale, "create")}?${params.toString()}`);
         }
     };
 
     const fetchMyChatsList = useCallback(async () => {
-        if (id) {
-            await getMyChatsList({ params: { participantId: id } });
+        if (hostData) {
+            await getMyChatsList({ params: { participantId: hostData.owner.id } });
         }
-    }, [getMyChatsList, id]);
+    }, [getMyChatsList, hostData]);
 
     useEffect(() => {
         fetchMyChatsList();
