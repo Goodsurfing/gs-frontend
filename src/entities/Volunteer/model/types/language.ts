@@ -22,3 +22,8 @@ export interface Language {
     language: AllLanguages;
     level: AllLevels;
 }
+
+export interface LanguageApi {
+    language: string;
+    languageLevel: string;
+}

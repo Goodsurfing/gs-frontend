@@ -3,7 +3,7 @@ import {
     TOKEN_LOCALSTORAGE_KEY,
     USER_LOCALSTORAGE_KEY,
     MERCURE_TOKEN_LOCALSTORAGE_KEY,
-    USER_ISVERIFIED,
+    ROLES_LOCALSTORAGE_KEY,
 } from "@/shared/constants/localstorage";
 import { User, UserSchema } from "../types/userSchema";
 
@@ -18,32 +18,36 @@ export const userSlice = createSlice({
     reducers: {
         setAuthData: (state, action: PayloadAction<User>) => {
             const {
-                username, token, mercureToken, rememberMe, isVerified,
+                username, token, mercureToken, rememberMe, roles,
             } = action.payload;
 
             state.authData = {
-                username, token, mercureToken, isVerified, rememberMe,
+                username,
+                token,
+                mercureToken,
+                rememberMe,
+                roles,
             };
 
             const storage = rememberMe ? localStorage : sessionStorage;
 
             storage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({ username }));
-            localStorage.setItem(USER_ISVERIFIED, JSON.stringify(isVerified));
             storage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
             storage.setItem(MERCURE_TOKEN_LOCALSTORAGE_KEY, JSON.stringify(mercureToken));
+            storage.setItem(ROLES_LOCALSTORAGE_KEY, JSON.stringify(roles));
         },
         initAuthData: (state) => {
             const getFromStorage = (key: string) => localStorage.getItem(key)
             || sessionStorage.getItem(key);
 
             const userRaw = getFromStorage(USER_LOCALSTORAGE_KEY);
-            const isUserVerifiedRaw = getFromStorage(USER_ISVERIFIED);
+            const rolesRaw = getFromStorage(ROLES_LOCALSTORAGE_KEY);
             const tokenRaw = getFromStorage(TOKEN_LOCALSTORAGE_KEY);
             const mercureTokenRaw = getFromStorage(MERCURE_TOKEN_LOCALSTORAGE_KEY);
 
-            if (userRaw && tokenRaw && mercureTokenRaw && isUserVerifiedRaw) {
+            if (userRaw && tokenRaw && mercureTokenRaw && rolesRaw) {
                 const user = JSON.parse(userRaw);
-                const isUserVerified = JSON.parse(isUserVerifiedRaw);
+                const roles = JSON.parse(rolesRaw);
                 const token = JSON.parse(tokenRaw);
                 const mercureToken = JSON.parse(mercureTokenRaw);
 
@@ -51,7 +55,7 @@ export const userSlice = createSlice({
                     ...user,
                     token,
                     mercureToken,
-                    isVerified: isUserVerified,
+                    roles,
                 };
             }
 
@@ -62,7 +66,7 @@ export const userSlice = createSlice({
 
             [localStorage, sessionStorage].forEach((storage) => {
                 storage.removeItem(USER_LOCALSTORAGE_KEY);
-                storage.removeItem(USER_ISVERIFIED);
+                storage.removeItem(ROLES_LOCALSTORAGE_KEY);
                 storage.removeItem(TOKEN_LOCALSTORAGE_KEY);
                 storage.removeItem(MERCURE_TOKEN_LOCALSTORAGE_KEY);
             });

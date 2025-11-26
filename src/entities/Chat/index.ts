@@ -12,4 +12,6 @@ export {
     useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
     useUpdateApplicationFormStatusByIdWithoutTagsMutation,
+    useGetMyChatsListQuery,
+    useLazyGetMyChatsListQuery,
 } from "./api/chatApi";

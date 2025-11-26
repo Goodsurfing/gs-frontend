@@ -23,7 +23,7 @@ import {
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { useGetMyHostApplicationsQuery } from "@/entities/Chat";
+import { useLazyGetMyHostApplicationsQuery } from "@/entities/Chat";
 
 interface ReviewAboutVolunteersProps {
     locale: Locale;
@@ -56,16 +56,38 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const { data: hostApplicationsData } = useGetMyHostApplicationsQuery();
+    const [getHostApplications,
+        { data: hostApplicationsData }] = useLazyGetMyHostApplicationsQuery();
     const [getMyReviews] = useLazyGetToVolunteerReviewsQuery();
     const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
     useEffect(() => {
+        getHostApplications({ limit: ITEMS_PER_PAGE, page });
+    }, [getHostApplications, page]);
+
+    useEffect(() => {
         if (hostApplicationsData) {
-            const filteredApplications = hostApplicationsData.filter(
+            const filteredApplications = hostApplicationsData.data.filter(
                 (hostApplication) => (hostApplication.status === "accepted" && !hostApplication.hasFeedbackFromOrganization),
             ).slice(0, 10);
-            setApplications([...filteredApplications]);
+            const adapter = filteredApplications.map((application) => {
+                const {
+                    id: applicationId, volunteerId, chatId, vacancy, startDate, endDate, status,
+                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
+                } = application;
+                return {
+                    id: applicationId,
+                    volunteer: volunteerId,
+                    vacancy,
+                    chatId,
+                    status,
+                    startDate,
+                    endDate,
+                    hasFeedbackFromOrganization,
+                    hasFeedbackFromVolunteer,
+                };
+            });
+            setApplications([...adapter]);
         } else {
             setApplications([]);
         }

@@ -8,10 +8,10 @@ import cn from "classnames";
 import Offer from "@/containers/OffersContainer/Offer/Offer";
 
 import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
-import styles from "./OffersContainer.module.scss";
-import { Offer as OfferType, useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferApi, useLazyGetOffersQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./OffersContainer.module.scss";
 
 interface OffersContainerProps {
     className?: string;
@@ -21,7 +21,7 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
     const { className } = props;
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
-    const [offers, setOffers] = useState<OfferType[]>([]);
+    const [offers, setOffers] = useState<OfferApi[]>([]);
     const [getOffersData, isLoading] = useLazyGetOffersQuery();
     const { locale } = useLocale();
 
@@ -30,7 +30,7 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
             await getOffersData(undefined)
                 .unwrap()
                 .then((result) => {
-                    setOffers(result.slice(0, 10));
+                    setOffers(result.data.slice(0, 10));
                 })
                 .catch(() => {
                     setOffers([]);

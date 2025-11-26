@@ -1,11 +1,8 @@
 import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 import { Host } from "@/entities/Host";
-import { Locale } from "@/entities/Locale";
 
-import { getHostRegistrationUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
@@ -15,32 +12,27 @@ import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
 
 interface HostlHeaderCardProps {
     host: Host;
-    locale: Locale;
     isEdit: boolean;
     isAuth: boolean;
+    handleEditClick: () => void;
+    handleWriteClick: () => void;
+    isShowWriteButton: boolean;
 }
 
 export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
             host: {
-                name, type, address, avatar, id,
+                name, type, address, avatar,
             },
-            locale,
             isEdit,
             isAuth,
+            handleEditClick,
+            handleWriteClick,
+            isShowWriteButton,
         } = props;
         const { t } = useTranslation("host");
-        const navigate = useNavigate();
         const { getTranslate } = useGetTypeOrganization();
-
-        const handleEditClick = () => {
-            navigate(getHostRegistrationUrl(locale));
-        };
-
-        const handleWriteClick = () => {
-            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientOrganization=${id}`);
-        };
 
         const renderButtons = (
             <>
@@ -56,7 +48,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     </Button>
                 )}
 
-                {(!isEdit && isAuth) && (
+                {(isShowWriteButton && (!isEdit && isAuth)) && (
                     <Button
                         size="SMALL"
                         color="BLUE"

@@ -1,6 +1,7 @@
-import React, { FC, memo, useCallback } from "react";
+import React, {
+    FC, memo,
+} from "react";
 
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // import { medalsData } from "@/shared/data/medals";
@@ -9,8 +10,6 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import { getMessengerPageIdUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
-import { Locale } from "@/entities/Locale";
 import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
 import { useGetFullName } from "@/shared/lib/getFullName";
@@ -20,8 +19,10 @@ import styles from "./VolunteerHeaderCard.module.scss";
 interface VolunteerHeaderCardProps {
     profileData: Profile;
     showButtons: boolean;
-    locale: Locale;
     isAuth: boolean;
+    isShowWriteButton: boolean;
+    handleWriteClick: () => void;
+    handleEditClick: () => void;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
@@ -29,15 +30,17 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         const {
             profileData,
             showButtons,
-            locale,
             isAuth,
+            handleWriteClick,
+            handleEditClick,
+            isShowWriteButton,
         } = props;
 
         const { t } = useTranslation("profile");
         const { getFullName } = useGetFullName();
-        const navigate = useNavigate();
+
         const {
-            id, image, firstName, lastName, birthDate, country, city, volunteer, host,
+            image, firstName, lastName, birthDate, country, city, volunteer, host,
         } = profileData;
         const languages = useLanguagesWithComma(volunteer?.languages ?? []);
         const renderName = getFullName(firstName, lastName);
@@ -50,14 +53,6 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             }
             return <span>{t("personal.Языки не были указаны")}</span>;
         };
-
-        const handleEditClick = useCallback(() => {
-            navigate(getVolunteerDashboardPageUrl(locale));
-        }, [locale, navigate]);
-
-        const handleWriteClick = useCallback(() => {
-            navigate(`${getMessengerPageIdUrl(locale, "create")}?recipientVolunteer=${id}`);
-        }, [id, locale, navigate]);
 
         const renderButtons = (
             <div className={styles.buttons}>
@@ -73,7 +68,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     </Button>
                 )}
 
-                {(!showButtons && isAuth) && (
+                {(isShowWriteButton && (!showButtons && isAuth)) && (
                     <Button
                         size="SMALL"
                         color="BLUE"

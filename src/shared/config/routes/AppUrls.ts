@@ -190,8 +190,18 @@ export const getAdminOrganizationsPageUrl: RoutePathFunction = (locale) => `/${l
 
 export const getAdminPersonalOrganizationPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_organizations}/${id}`;
 
+export const getAdminSkillsAchievementsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skills_achievements}`;
+
+export const getAdminSkillPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_skill_personal}/${id}`;
+
+export const getAdminAchievementPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_achievement_personal}/${id}`;
+
 export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancies}`;
 
 export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}`;
+
+export const getAdminCategoriesVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_vacancies}/${id}`;
+
+export const getAdminCategoriesVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}/create`;
 
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;

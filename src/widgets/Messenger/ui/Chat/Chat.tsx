@@ -160,18 +160,18 @@ export const Chat: FC<ChatProps> = (props) => {
             };
             fetchVolunteer();
         }
-        if (isChatCreate && !!recipientOrganization) {
-            const fetchOrganization = async () => {
-                const resultHostData = await getProfileData(recipientOrganization)
-                    .unwrap()
-                    .then((hostDataResult) => hostDataResult)
-                    .catch(() => undefined);
-                if (resultHostData) {
-                    setCompanionData(resultHostData);
-                }
-            };
-            fetchOrganization();
-        }
+        // if (isChatCreate && !!recipientOrganization) {
+        //     const fetchOrganization = async () => {
+        //         const resultHostData = await getProfileData(recipientOrganization)
+        //             .unwrap()
+        //             .then((hostDataResult) => hostDataResult)
+        //             .catch(() => undefined);
+        //         if (resultHostData) {
+        //             setCompanionData(resultHostData);
+        //         }
+        //     };
+        //     fetchOrganization();
+        // }
     }, [isChatCreate, offerId, getOfferData]);
 
     useEffect(() => {
@@ -257,8 +257,8 @@ export const Chat: FC<ChatProps> = (props) => {
                                 <OfferApplication
                                     offerData={vacancy}
                                     terms={{
-                                        start: new Date(startDate),
-                                        end: new Date(endDate),
+                                        start: startDate ? new Date(startDate) : undefined,
+                                        end: endDate ? new Date(endDate) : undefined,
                                     }}
                                     isHost={tempIsHost}
                                     username={userName ?? ""}
@@ -352,8 +352,11 @@ export const Chat: FC<ChatProps> = (props) => {
                     setApplicationClosed(true);
                     reset({ applicationForm: data.applicationForm });
 
-                    const chatId = result.chat.split("/").pop();
-                    if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
+                    const { chat } = result;
+                    if (chat) {
+                        const chatId = chat.split("/").pop();
+                        if (chatId) navigate(getMessengerPageIdUrl(locale, chatId));
+                    }
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -369,13 +372,31 @@ export const Chat: FC<ChatProps> = (props) => {
             const username = getFullName(companionData?.firstName, companionData?.lastName);
 
             if (offerData) {
+                const {
+                    id: offerDataId, where, description, status,
+                    acceptedApplicationsCount, averageRating, feedbacksCount,
+                } = offerData;
+                const imagePath = typeof description?.image === "string" ? description.image : description?.image?.contentUrl;
+
                 return (
                     <Controller
                         name="applicationForm"
                         control={control}
                         render={({ field: { value, onChange } }) => (
                             <OfferApplication
-                                offerData={offerData}
+                                offerData={{
+                                    id: offerDataId,
+                                    address: where?.address,
+                                    title: description?.title,
+                                    shortDescription: description?.shortDescription,
+                                    status,
+                                    imagePath,
+                                    categories: description?.categoryIds ?? [],
+                                    acceptedApplicationsCount,
+                                    description: description?.description,
+                                    averageRating: averageRating ?? 0,
+                                    reviewsCount: feedbacksCount ?? 0,
+                                }}
                                 terms={{
                                     start: value.startDate,
                                     end: value.endDate,

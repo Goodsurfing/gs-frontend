@@ -18,9 +18,9 @@ export const offerConditionsApiAdapter = (
     const { currency, contribution, reward } = payment;
 
     return {
-        housing: housing.housing,
-        food: nutrition.nutrition,
-        paidTravel: travel.travel,
+        houses: housing.housing,
+        foods: nutrition.nutrition,
+        transfers: travel.travel,
         conveniences: facilities.facilities,
         additionalConditions: extraConditions,
         additionalFeatures: extraFeatures.extraFeatures,
@@ -40,18 +40,18 @@ export const offerConditionsAdapter = (
         volunteerContributions,
         volunteerRemuneration,
         additionalConditions,
-        food,
-        housing,
-        paidTravel,
+        foods,
+        houses,
+        transfers,
     } = offerConditions;
 
     return {
         extraConditions: additionalConditions || "",
         extraFeatures: { extraFeatures: additionalFeatures },
         facilities: { facilities: conveniences },
-        housing: { switchState: true, housing: housing || [] },
-        nutrition: { switchState: true, nutrition: food || [] },
-        travel: { switchState: true, travel: paidTravel || [] },
+        housing: { switchState: true, housing: houses || [] },
+        nutrition: { switchState: true, nutrition: foods || [] },
+        travel: { switchState: true, travel: transfers || [] },
         payment: {
             currency,
             contribution: volunteerContributions,

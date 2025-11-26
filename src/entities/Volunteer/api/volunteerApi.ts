@@ -2,6 +2,8 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
 import { WhatToDoSkillType } from "@/types/skills";
+import { Profile } from "@/entities/Profile";
+import { MediaObjectType } from "@/types/media";
 
 interface UpdateVolunteerParams {
     profileId: string;
@@ -13,6 +15,12 @@ export interface CreateVolunteerRequest {
     skills: WhatToDoSkillType[],
     additionalSkills: string[],
 }
+
+export type GetVolunteerResponse = Omit<VolunteerApi, "profile"> & {
+    profile: Omit<Profile, "imagePath"> & {
+        image: MediaObjectType;
+    }
+};
 
 export const volunteerApi = createApi({
     reducerPath: "volunteerApi",
@@ -34,7 +42,7 @@ export const volunteerApi = createApi({
             }),
             invalidatesTags: ["volunteer"],
         }),
-        getVolunteerById: build.query<VolunteerApi, string>({
+        getVolunteerById: build.query<GetVolunteerResponse, string>({
             query: (profileId) => ({
                 url: `volunteers/${profileId}`,
                 method: "GET",

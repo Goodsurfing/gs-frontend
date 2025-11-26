@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
@@ -31,6 +32,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
     const { id } = useParams();
     const { data: companionData } = useGetProfileInfoByIdQuery(dataChat.otherParticipants[0].id);
     const { getFullName } = useGetFullName();
+    const { t } = useTranslation("messenger");
 
     if (!companionData) {
         return null;
@@ -39,6 +41,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
     const {
         image, firstName, lastName,
     } = companionData;
+
+    const { lastMessage } = dataChat;
+    const hasAttachments = lastMessage?.attachments && lastMessage.attachments.length > 0;
+    const displayText = hasAttachments
+        ? t("Прикрепленный файл")
+        : lastMessage?.text ?? t("Заявка");
 
     return (
         <Link
@@ -69,7 +77,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
                     </span>
                 </div>
                 <div className={styles.dateNewLastMess}>
-                    <span className={styles.lastMessage}>{dataChat.lastMessage?.text ?? "Заявка"}</span>
+                    <span className={styles.lastMessage}>{displayText}</span>
                     {!!dataChat.countUnreadMessages && (
                         <div className={styles.newMessages}>
                             {dataChat.countUnreadMessages > 9 ? "9+" : dataChat.countUnreadMessages}

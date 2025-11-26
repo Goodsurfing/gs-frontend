@@ -1,20 +1,35 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
 import SignUpForm from "@/containers/SignUpContainer/SignUpForm/SignUpForm";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getPrivacyPolicyPageUrl } from "@/shared/config/routes/AppUrls";
+import { getPrivacyPolicyPageUrl, getProfileInfoPageUrl } from "@/shared/config/routes/AppUrls";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { AuthByVk } from "@/features/AuthByVk";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./SignUpContainer.module.scss";
 
 const SignUpContainer: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { refetchProfile, profileDataIsFethcing } = useAuth();
+
+    const onSuccess = useCallback(() => {
+        refetchProfile();
+        navigate(getProfileInfoPageUrl(locale));
+    }, [locale, navigate, refetchProfile]);
+
+    if (profileDataIsFethcing) {
+        return (
+            <MiniLoader />
+        );
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -28,7 +43,7 @@ const SignUpContainer: FC = () => {
                 </Link>
                 .
             </div>
-            <AuthByVk redirect="signup" />
+            <AuthByVk redirect="signup" onSuccess={onSuccess} />
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

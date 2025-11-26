@@ -42,14 +42,14 @@ export const AuthByEmailForm = memo(({
                 email: data.email,
                 password: data.password,
             };
-            const { accessToken, mercureToken } = await loginUser(formData).unwrap();
+            const { accessToken, mercureToken, roles } = await loginUser(formData).unwrap();
 
             dispatch(userActions.setAuthData({
                 username: data.email,
                 token: accessToken,
                 mercureToken,
                 rememberMe: data.rememberMe,
-                isVerified: true,
+                roles,
             }));
 
             onSuccess?.();

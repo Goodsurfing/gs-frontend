@@ -8,6 +8,7 @@ export interface IRegisterFormData {
     email: string;
     plainPassword: string;
     locale: string;
+    isActive: boolean;
 }
 
 export interface IRegisterResponse {

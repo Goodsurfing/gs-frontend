@@ -5,7 +5,7 @@ import {
     ChatsList,
 } from "@/entities/Messenger";
 
-import { BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 export const useGetChatListData = (
     token: string | null,
@@ -31,7 +31,7 @@ export const useGetChatListData = (
             const queryPart = queryString ? `?${queryString}` : "";
 
             const chatListResponse = await fetch(
-                `${BASE_URL}api/v1/personal/chats${queryPart}`,
+                `${API_BASE_URL}personal/chats${queryPart}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

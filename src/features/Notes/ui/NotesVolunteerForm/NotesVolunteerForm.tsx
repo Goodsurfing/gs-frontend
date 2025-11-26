@@ -23,6 +23,8 @@ import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
 import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 
+const APPLICATION_PER_PAGE = 10;
+
 export const NotesVolunteerForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -40,34 +42,41 @@ export const NotesVolunteerForm = () => {
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
         setSelectedApplication] = useState<SimpleFormApplication | null>(null);
-
-    const applicationsPerPage = 10;
-    const [pageApplications, setPageApplications] = useState<
-    SimpleFormApplication[]
-    >([]);
+    const [adaptedApplications, setAdaptedApplications] = useState<SimpleFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
     const [getApplicationsData,
         { data: applications, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
-        getApplicationsData();
-    }, [getApplicationsData]);
+        getApplicationsData({ limit: APPLICATION_PER_PAGE, page });
+    }, [getApplicationsData, page]);
 
     useEffect(() => {
         if (applications) {
-            // Тут получаю сначала новые заявки, по хорошему это надо делать на беке
-            const reversed = [...applications].reverse();
-            const startIndex = (page - 1) * applicationsPerPage;
-            const endIndex = startIndex + applicationsPerPage;
-            setPageApplications(reversed.slice(startIndex, endIndex));
-        } else {
-            setPageApplications([]);
+            const adapter: SimpleFormApplication[] = applications.data.map((application) => {
+                const {
+                    id, volunteer, chatId, vacancy, startDate, endDate, status,
+                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
+                } = application;
+                return {
+                    id,
+                    volunteer: volunteer.id,
+                    vacancy,
+                    chatId,
+                    status,
+                    startDate,
+                    endDate,
+                    hasFeedbackFromOrganization,
+                    hasFeedbackFromVolunteer,
+                };
+            });
+            setAdaptedApplications(adapter);
         }
-    }, [applications, page]);
+    }, [applications]);
 
-    const totalPageCount = applications
-        ? Math.ceil(applications.length / applicationsPerPage)
+    const totalPageCount = applications?.pagination
+        ? Math.ceil(applications.pagination.total / APPLICATION_PER_PAGE)
         : 0;
 
     // useEffect(() => {
@@ -145,7 +154,7 @@ export const NotesVolunteerForm = () => {
         <div className={styles.wrapper}>
             <NotesWidget
                 className={styles.notes}
-                notes={pageApplications}
+                notes={adaptedApplications}
                 variant="volunteer"
                 onReviewClick={onReviewClick}
                 isDragDisable

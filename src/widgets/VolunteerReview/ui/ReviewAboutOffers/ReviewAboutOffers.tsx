@@ -21,7 +21,7 @@ import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { useCreateToOrganizationsReviewMutation, useLazyGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
-import { useGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 import styles from "./ReviewAboutOffers.module.scss";
 
 interface ReviewAboutOffersProps {
@@ -55,16 +55,38 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const { data: volunteerApplicationsData, isLoading } = useGetMyVolunteerApplicationsQuery();
+    const [getVolunteerApplications,
+        { data: volunteerApplicationsData, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
     const [getMyReviews] = useLazyGetToOrganizationsReviewsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {
+        getVolunteerApplications({ limit: ITEMS_PER_PAGE, page });
+    }, [getVolunteerApplications, page]);
+
+    useEffect(() => {
         if (volunteerApplicationsData) {
-            const filteredApplications = volunteerApplicationsData.filter(
+            const filteredApplications = volunteerApplicationsData.data.filter(
                 (volunteerApplication) => (volunteerApplication.status === "accepted" && !volunteerApplication.hasFeedbackFromVolunteer),
             ).slice(0, 10);
-            setApplications([...filteredApplications]);
+            const adapter: SimpleFormApplication[] = filteredApplications.map((application) => {
+                const {
+                    id: applicationId, volunteer, chatId, vacancy, startDate, endDate, status,
+                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
+                } = application;
+                return {
+                    id: applicationId,
+                    volunteer: volunteer.id,
+                    vacancy,
+                    chatId,
+                    status,
+                    startDate,
+                    endDate,
+                    hasFeedbackFromOrganization,
+                    hasFeedbackFromVolunteer,
+                };
+            });
+            setApplications([...adapter]);
         } else {
             setApplications([]);
         }

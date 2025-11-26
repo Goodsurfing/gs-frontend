@@ -49,6 +49,7 @@
         "Вам на почту придёт письмо с подтверждением": "You will receive a confirmation email",
         "Сообщение с подтверждением отправлено на ваш email": "A confirmation message has been sent to your E-mail",
         "Отправить ещё раз": "Resend",
+        "Отправить ещё раз через {{seconds}}": "Resend in {{seconds}} seconds",
         "Подтвердить": "Confirm"
     },
     "main": {

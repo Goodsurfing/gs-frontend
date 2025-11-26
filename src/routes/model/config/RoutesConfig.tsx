@@ -136,6 +136,12 @@ import {
     getAdminPersonalUserPageUrl,
     getAdminOrganizationsPageUrl,
     getAdminPersonalOrganizationPageUrl,
+    getAdminSkillsAchievementsPageUrl,
+    getAdminSkillPersonalPageUrl,
+    getAdminAchievementPersonalPageUrl,
+    getAdminCategoriesVacanciesPageUrl,
+    getAdminCategoriesVacanciesPersonalPageUrl,
+    getAdminCategoriesVacanciesCreatePageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -157,6 +163,12 @@ import { AdminLayoutPage } from "@/pages/AdminLayoutPage";
 import { AdminUserPersonalPage } from "@/pages/AdminUserPersonalPage";
 import { AdminOrganizationsPage } from "@/pages/AdminOrganizationsPage";
 import { AdminPersonalOrganizationPage } from "@/pages/AdminPersonalOrganizationPage";
+import { AdminSkillsAchievementsPage } from "@/pages/AdminSkillAchievementsPage";
+import { AdminSkillPersonalPage } from "@/pages/AdminSkillPersonalPage";
+import { AdminAchievementPersonalPage } from "@/pages/AdminAchievementPersonalPage";
+import { AdminCategoriesPage } from "@/pages/AdminCategoriesPage";
+import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage";
+import { AdminCategoriesCreatePage } from "@/pages/AdminCategoriesCreatePage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -576,6 +588,37 @@ const publicRoutes: RouteType[] = [
                 element: <AdminPersonalOrganizationPage />,
                 path: (locale: string) => getAdminPersonalOrganizationPageUrl(locale),
             },
+            {
+                label: "admin-skills-achievements",
+                element: <AdminSkillsAchievementsPage />,
+                path: (locale: string) => getAdminSkillsAchievementsPageUrl(locale),
+            },
+            {
+                label: "admin-skill-personal",
+                element: <AdminSkillPersonalPage />,
+                path: (locale: string) => getAdminSkillPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-achievement-personal",
+                element: <AdminAchievementPersonalPage />,
+                path: (locale: string) => getAdminAchievementPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-categories-vacancies",
+                element: <AdminCategoriesPage />,
+                path: (locale: string) => getAdminCategoriesVacanciesPageUrl(locale),
+            },
+            {
+                label: "admin-categories-vacancies-create",
+                element: <AdminCategoriesCreatePage />,
+                path: (locale: string) => getAdminCategoriesVacanciesCreatePageUrl(locale),
+            },
+            {
+                label: "admin-categories-vacancies-personal",
+                element: <AdminCategoriesPersonalPage />,
+                path: (locale: string) => getAdminCategoriesVacanciesPersonalPageUrl(locale),
+            },
+
         ],
     },
 ];

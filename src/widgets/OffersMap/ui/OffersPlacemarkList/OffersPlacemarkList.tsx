@@ -4,12 +4,13 @@ import React, { FC, useMemo } from "react";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferPlacemark } from "../OfferPlacemark/OfferPlacemark";
-import styles from "./OffersPlacemarkList.module.scss";
-import { Offer } from "@/entities/Offer";
+import { OfferApi } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./OffersPlacemarkList.module.scss";
+import { textSlice } from "@/shared/lib/textSlice";
 
 interface OffersPlacemarkListProps {
-    data: Offer[];
+    data: OfferApi[];
     className?: string;
 }
 
@@ -19,19 +20,17 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
 
     const offersPlacemarkList = useMemo(
         () => data.map(({
-            id, where, description, status,
+            id, title, status, categories, latitude, longitude, imagePath,
         }) => {
-            if (status === "active" && where) {
-                const geometry = [where.latitude, where.longitude];
-
+            if (status === "active" && typeof latitude === "number" && typeof longitude === "number") {
                 return (
                     <OfferPlacemark
                         id={id.toString()}
-                        geometry={geometry}
-                        image={getMediaContent(description?.image, "SMALL")}
-                        title={description?.title ?? ""}
+                        geometry={[latitude, longitude]}
+                        image={getMediaContent(imagePath, "SMALL")}
+                        title={textSlice(title, 30, "title")}
                         locale={locale}
-                        category={description?.categoryIds[0]}
+                        category={categories[0]}
                         key={id}
                     />
                 );

@@ -8,22 +8,28 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
-import { BASE_VK_URI } from "@/shared/constants/api";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { userActions } from "@/entities/User";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 const VerifyEmailHashPage = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch();
+    const { isUserAdmin, token } = useAuth();
     const [isLoading, setLoading] = useState<boolean>(true);
     const [isError, setError] = useState<boolean>(false);
 
     const getVerifyEmail = useCallback(async () => {
         try {
-            const response = await fetch(`${BASE_VK_URI}verify/email/${id}`, {
+            const response = await fetch(`${API_BASE_URL_V3}verify/email/${id}`, {
                 method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) {
@@ -37,7 +43,7 @@ const VerifyEmailHashPage = () => {
                 mercureToken: data.mercureToken,
                 rememberMe: true,
                 username: "",
-                isVerified: true,
+                roles: isUserAdmin ? ["ROLE_USER", "ROLE_ADMIN"] : ["ROLE_USER"],
             }));
 
             setError(false);
@@ -46,7 +52,7 @@ const VerifyEmailHashPage = () => {
         } finally {
             setLoading(false);
         }
-    }, [id, dispatch]);
+    }, [id, dispatch, isUserAdmin, token]);
 
     useEffect(() => {
         if (id) {
@@ -59,7 +65,7 @@ const VerifyEmailHashPage = () => {
 
     if (isLoading) {
         return (
-            <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+            <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
                 <Preloader />
             </SignLayout>
         );
@@ -67,7 +73,7 @@ const VerifyEmailHashPage = () => {
 
     if (isError) {
         return (
-            <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+            <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
                 <div className={styles.content}>
                     <div className={styles.notification}>{t("login.Произошла ошибка")}</div>
                 </div>
@@ -76,7 +82,7 @@ const VerifyEmailHashPage = () => {
     }
 
     return (
-        <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
+        <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
             <div className={styles.wrapper}>
                 <SignTitle>{t("login.Подтверждение почты")}</SignTitle>
                 <div className={styles.content}>

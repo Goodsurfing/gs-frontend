@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useState } from "react";
 
-import { Offer, OfferCard as OfferCardComponent } from "@/entities/Offer";
+import { OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -9,9 +9,30 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { MediaObjectType } from "@/types/media";
+
+type OfferData = Pick<OfferApi, "id"> &
+Partial<
+Omit<
+Pick<
+OfferApi,
+| "title"
+| "shortDescription"
+| "imagePath"
+| "categories"
+| "averageRating"
+| "acceptedApplicationsCount"
+| "address"
+| "reviewsCount"
+>,
+"imagePath"
+> & {
+    imagePath?: string | MediaObjectType;
+}
+>;
 
 interface OfferCardProps {
-    data: Offer;
+    data: OfferData;
     status: "opened" | "closed";
     className?: string;
     classNameCard?: string;
@@ -22,8 +43,10 @@ interface OfferCardProps {
 export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
     const {
         data: {
-            id, description, where,
-            acceptedApplicationsCount, feedbacksCount, averageRating,
+            id,
+            acceptedApplicationsCount, averageRating,
+            imagePath, title, shortDescription,
+            categories, address, reviewsCount,
         },
         status,
         className,
@@ -31,7 +54,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         locale,
     } = props;
 
-    const imageCover = getMediaContent(description?.image, "MEDIUM");
+    const imageCover = getMediaContent(imagePath, "SMALL");
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
 
@@ -48,13 +71,13 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         >
             <OfferCardComponent
                 offerId={id}
-                title={description?.title}
-                description={description?.shortDescription}
-                category={getTranslation(description?.categoryIds[0])}
+                title={title}
+                description={shortDescription}
+                category={getTranslation(categories?.[0])}
                 image={imageCover}
-                location={where?.address || ""}
+                location={address}
                 rating={averageRating}
-                reviews={feedbacksCount}
+                reviews={reviewsCount}
                 went={acceptedApplicationsCount}
                 link={getOfferPersonalPageUrl(locale, id.toString())}
                 className={classNameCard}

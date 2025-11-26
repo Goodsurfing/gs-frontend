@@ -11,10 +11,6 @@ export const VerifyEmailWidget = () => {
         <div className={styles.wrapper}>
             <SignTitle>{t("login.Подтверждение почты")}</SignTitle>
             <VerifyEmailForm />
-            <div className={styles.confirm}>
-                {t("login.Вам на почту придёт письмо с подтверждением")}
-                .
-            </div>
         </div>
     );
 };

@@ -2,9 +2,15 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
-import { Offer, OffersFilters } from "../model/types/offer";
+import {
+    GetHostOffersFilters, GetHostOffersResponse,
+    GetOffersFilters,
+    GetOffersResponse, Offer,
+    OfferSort,
+} from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface UpdateOfferParams {
     id: number
@@ -32,12 +38,6 @@ interface CreateOfferGalleryItemRequest {
 interface OfferGalleryItemRequest {
     offerId: string;
     galleryId: string;
-}
-
-interface OfferParams {
-    organizationId: string;
-    page?: number;
-    itemsPerPage?: number;
 }
 
 export const offerApi = createApi({
@@ -89,26 +89,29 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getOffers: build.query<Offer[], Partial<OffersFilters> | undefined>({
+        getOffers: build.query<GetOffersResponse, Partial<GetOffersFilters> | undefined>({
             query: (params) => ({
-                url: "vacancies",
+                url: `${API_BASE_URL_V3}vacancy/list`,
                 method: "GET",
                 params,
             }),
             providesTags: ["offer"],
         }),
-        getHostOffersById: build.query<Offer[], OfferParams>({
-            query: ({ organizationId, itemsPerPage, page }) => ({
-                url: `organizations/${organizationId}/vacancies`,
+        getHostOffersById: build.query<GetHostOffersResponse, Partial<GetHostOffersFilters>>({
+            query: ({ organizationId, limit, page }) => ({
+                url: `${API_BASE_URL_V3}vacancy/list/${organizationId}`,
                 method: "GET",
-                params: { itemsPerPage, page, "order[updatedAt]": "desc" },
+                params: { limit, page, sort: OfferSort.UpdatedDesc },
             }),
             providesTags: ["offer"],
         }),
-        getHostAllOffersById: build.query<Offer[], string>({
-            query: (organizationId) => ({
-                url: `organizations/${organizationId}/vacancies`,
+        getHostAllOffersById: build.query<GetHostOffersResponse, Partial<GetHostOffersFilters>>({
+            query: ({
+                organizationId, limit, page, statuses,
+            }) => ({
+                url: `${API_BASE_URL_V3}vacancy/list/${organizationId}`,
                 method: "GET",
+                params: { limit, page, statuses },
             }),
             providesTags: ["offer"],
         }),
@@ -143,6 +146,17 @@ export const offerApi = createApi({
         }),
     }),
 });
+
+// export const offerApiv3 = createApi({
+//     reducerPath: "offerApiv3",
+//     baseQuery: baseQueryV3Json,
+//     tagTypes: ["offer"],
+//     endpoints: (build) => ({
+//         getOffersList: build.query<Partial<OffersFilters> | undefiend>({
+//             url:
+//         })
+//     })
+// })
 
 export const {
     useCreateOfferMutation,

@@ -40,6 +40,7 @@ const SignUpForm: FC = () => {
             email: data.email,
             plainPassword: data.password,
             locale,
+            isActive: true,
         };
         await registerUser(formData)
             .unwrap()

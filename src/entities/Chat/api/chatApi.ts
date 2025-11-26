@@ -1,11 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { ChatType, MessageType } from "@/entities/Messenger";
 import {
-    FormApplication, FormApplicationStatus, FullFormApplication, SimpleFormApplication,
+    ChatsList, ChatType, MessageType, GetChatsListRequest,
+} from "@/entities/Messenger";
+import {
+    FormApplication, FormApplicationStatus, FullFormApplication,
+    GetHostFormApplicationResponse, GetVolunteerFormApplicationResponse,
 } from "@/entities/Application";
 import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
+import { PaginationParams } from "@/types/api/pagination";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface MessagesRequest {
     chatId: string;
@@ -48,20 +53,6 @@ export const chatApi = createApi({
             }),
             providesTags: ["chat"],
         }),
-        getChatsWithOrganizations: build.query<any, string>({
-            query: () => ({
-                url: "chats/my/with-organizations",
-                method: "GET",
-            }),
-            providesTags: ["chat"],
-        }),
-        getChatsWithVolunteers: build.query<any, string>({
-            query: () => ({
-                url: "chats/my/with-volunteers",
-                method: "GET",
-            }),
-            providesTags: ["chat"],
-        }),
         getChat: build.query<ChatType, string>({
             query: (chatId) => ({
                 url: `chats/${chatId}`,
@@ -69,10 +60,18 @@ export const chatApi = createApi({
             }),
             providesTags: ["chat"],
         }),
+        getMyChatsList: build.query<ChatsList[], GetChatsListRequest>({
+            query: (request) => ({
+                url: "personal/chats",
+                method: "GET",
+                params: request.params,
+            }),
+            providesTags: ["chat"],
+        }),
         // applications
         createApplicationForm: build.mutation<FormApplication, FormData>({
             query: (data) => ({
-                url: "application_forms",
+                url: "applications",
                 method: "POST",
                 body: data,
             }),
@@ -81,7 +80,7 @@ export const chatApi = createApi({
         updateApplicationFormStatusById: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `application_forms/${applicationId}/status`,
+                url: `applications/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
@@ -93,7 +92,7 @@ export const chatApi = createApi({
         updateApplicationFormStatusByIdWithoutTags: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `application_forms/${applicationId}/status`,
+                url: `applications/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
@@ -103,21 +102,23 @@ export const chatApi = createApi({
         }),
         getApplicationFormById: build.query<FullFormApplication, string>({
             query: (applicationId) => ({
-                url: `application_forms/${applicationId}`,
+                url: `applications/${applicationId}`,
                 method: "GET",
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<SimpleFormApplication[], void>({
-            query: () => ({
-                url: "personal/forms/with-organization",
+        getMyHostApplications: build.query<GetHostFormApplicationResponse, PaginationParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}application/list-of-organization`,
                 method: "GET",
+                params,
             }),
             providesTags: ["application"],
         }),
-        getMyVolunteerApplications: build.query<SimpleFormApplication[], void>({
+        getMyVolunteerApplications: build.query<GetVolunteerFormApplicationResponse,
+        PaginationParams>({
             query: () => ({
-                url: "personal/forms/with-volunteer",
+                url: `${API_BASE_URL_V3}application/list-of-volunteer`,
                 method: "GET",
             }),
             providesTags: ["application"],
@@ -138,4 +139,6 @@ export const {
     useLazyGetMyVolunteerApplicationsQuery,
     useUpdateApplicationFormStatusByIdMutation,
     useUpdateApplicationFormStatusByIdWithoutTagsMutation,
+    useGetMyChatsListQuery,
+    useLazyGetMyChatsListQuery,
 } = chatApi;

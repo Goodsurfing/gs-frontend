@@ -48,16 +48,32 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
         );
     }
 
-    const renderOffers = (offers: Offer[]) => offers.map((offer) => (
-        <OfferCard
-            locale={locale}
-            classNameCard={styles.offerCard}
-            className={cn(styles.offer)}
-            status="opened"
-            data={offer}
-            key={offer.id}
-        />
-    ));
+    const renderOffers = (offers: Offer[]) => offers.map((offer) => {
+        const {
+            id, description, where, acceptedApplicationsCount,
+            feedbacksCount, averageRating,
+        } = offer;
+        return (
+            <OfferCard
+                locale={locale}
+                classNameCard={styles.offerCard}
+                className={cn(styles.offer)}
+                status="opened"
+                data={{
+                    id,
+                    title: description?.title,
+                    shortDescription: description?.shortDescription,
+                    imagePath: description?.image,
+                    address: where?.address,
+                    categories: description?.categoryIds,
+                    acceptedApplicationsCount,
+                    averageRating: feedbacksCount,
+                    reviewsCount: averageRating,
+                }}
+                key={offer.id}
+            />
+        );
+    });
 
     return (
         <div className={cn(styles.wrapper, className)}>

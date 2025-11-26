@@ -73,6 +73,9 @@ export enum AppRoutes {
     ADMIN_USERS = "admin_users",
     ADMIN_ORGANIZATIONS = "admin_organizations",
     ADMIN_VACANCIES = "admin_vacancies",
+    ADMIN_SKILLS_ACHIEVEMENTS = "admin_skills_achievements",
+    ADMIN_SKILL_PERSONAL = "admin_skill_personal",
+    ADMIN_ACHIEVEMENT_PERSONAL = "admin_achievement_personal",
     ADMIN_CATEGORIES_VACANCIES = "admin_categories_vacancies",
     ADMIN_REVIEWS = "admin_reviews",
 }

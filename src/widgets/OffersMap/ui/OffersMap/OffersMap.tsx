@@ -7,14 +7,14 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { YMap, YmapType } from "@/entities/Map";
 
 import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
-import styles from "./OffersMap.module.scss";
 import "./yandex-map-restyle-ballon.scss";
-import { Offer } from "@/entities/Offer";
+import { OfferApi } from "@/entities/Offer";
+import styles from "./OffersMap.module.scss";
 
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
-    offersData?: Offer[]
+    offersData?: OfferApi[]
 }
 
 export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {

@@ -38,6 +38,7 @@ export const adminOrganizationsAdapter = (data: Host[]): AdminOrganizationsField
             countMembers: 1,
             countVacancies: 4,
             countVolunteers: 6,
+            isBlock: false,
         };
     });
 

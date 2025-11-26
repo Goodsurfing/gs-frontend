@@ -121,14 +121,30 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                     >
                         {(offersData.length <= 3 ? (
                             <div className={styles.container}>
-                                {offersData.map((offer) => (
-                                    <OfferCard
-                                        key={offer.id}
-                                        locale={locale}
-                                        status={offer.status === "active" ? "opened" : "closed"}
-                                        data={offer}
-                                    />
-                                ))}
+                                {offersData.map((offer) => {
+                                    const {
+                                        id, description, where, acceptedApplicationsCount,
+                                        feedbacksCount, averageRating,
+                                    } = offer;
+                                    return (
+                                        <OfferCard
+                                            key={offer.id}
+                                            locale={locale}
+                                            status={offer.status === "active" ? "opened" : "closed"}
+                                            data={{
+                                                id,
+                                                title: description?.title,
+                                                shortDescription: description?.shortDescription,
+                                                imagePath: description?.image,
+                                                address: where?.address,
+                                                categories: description?.categoryIds,
+                                                acceptedApplicationsCount,
+                                                averageRating: feedbacksCount,
+                                                reviewsCount: averageRating,
+                                            }}
+                                        />
+                                    );
+                                })}
                             </div>
                         ) : (
                             <InfiniteScroll
@@ -162,6 +178,10 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                     >
                                         {virtualItems.map(({ index }) => {
                                             const offer = offersData[index];
+                                            const {
+                                                id, description, where, acceptedApplicationsCount,
+                                                feedbacksCount, averageRating,
+                                            } = offer;
                                             return (
                                                 <div
                                                     key={index}
@@ -171,7 +191,18 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                     <OfferCard
                                                         locale={locale}
                                                         status={offer.status === "active" ? "opened" : "closed"}
-                                                        data={offer}
+                                                        data={{
+                                                            id,
+                                                            title: description?.title,
+                                                            shortDescription:
+                                                            description?.shortDescription,
+                                                            imagePath: description?.image,
+                                                            address: where?.address,
+                                                            categories: description?.categoryIds,
+                                                            acceptedApplicationsCount,
+                                                            averageRating: feedbacksCount,
+                                                            reviewsCount: averageRating,
+                                                        }}
                                                     />
                                                 </div>
                                             );

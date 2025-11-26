@@ -7,7 +7,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import styles from "./CategoriesPage.module.scss";
 
 const CategoriesPage = () => {
-    const { t } = useTranslation("translation");
+    const { t } = useTranslation();
     return (
         <MainPageLayout>
             <div className={styles.wrapper}>

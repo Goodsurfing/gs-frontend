@@ -1,4 +1,3 @@
-import { useVirtualizer } from "@tanstack/react-virtual";
 import cn from "classnames";
 import React, {
     FC,
@@ -7,7 +6,6 @@ import React, {
     useEffect,
     useRef,
     useState,
-    useTransition,
 } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -15,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { OfferCard } from "@/widgets/OffersMap";
 
 import { Locale } from "@/entities/Locale";
-import { Offer, useLazyGetHostOffersByIdQuery } from "@/entities/Offer";
+import { HostOffer, useLazyGetHostOffersByIdQuery } from "@/entities/Offer";
 
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -29,155 +27,104 @@ interface HostOffersCardProps {
     locale: Locale;
 }
 
-const ITEMS_PER_PAGE = 10;
+const LIMIT = 10;
 
-export const HostOffersCard: FC<HostOffersCardProps> = memo(
-    (props: HostOffersCardProps) => {
-        const { className, hostId, locale } = props;
-        const { t } = useTranslation("host");
-        const [isPending, startTransition] = useTransition();
+export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCardProps) => {
+    const { className, hostId, locale } = props;
+    const { t } = useTranslation("host");
 
-        const [hostOffers, setHostOffers] = useState<Offer[]>([]);
-        const [loading, setLoading] = useState(false);
-        const [page, setPage] = useState(1);
-        const [hasMore, setHasMore] = useState(true);
-        const [getHostOffers] = useLazyGetHostOffersByIdQuery();
+    const [hostOffers, setHostOffers] = useState<HostOffer[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [getHostOffers] = useLazyGetHostOffersByIdQuery();
 
-        const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const pageRef = useRef(1);
 
-        const fetchHostOffers = useCallback(
-            async (isInitial: boolean) => {
-                setLoading(true);
-                try {
-                    const currentPage = isInitial ? 1 : page;
-                    const result = await getHostOffers({
-                        organizationId: hostId,
-                        itemsPerPage: ITEMS_PER_PAGE,
-                        page: currentPage,
-                    }).unwrap();
+    const fetchHostOffers = useCallback(
+        async (isInitial: boolean) => {
+            setLoading(true);
+            try {
+                const currentPage = isInitial ? 1 : pageRef.current;
+                const result = await getHostOffers({
+                    organizationId: hostId,
+                    limit: LIMIT,
+                    page: currentPage,
+                }).unwrap();
 
-                    if (result.length < ITEMS_PER_PAGE) {
-                        setHasMore(false);
-                    }
+                const newOffers = result.data;
+                const totalOffers = result.pagination.total;
+                const isLastPage = totalOffers === 0 || currentPage * LIMIT >= totalOffers;
 
-                    startTransition(() => {
-                        if (isInitial) {
-                            setHostOffers(result);
-                            setPage(2);
-                        } else {
-                            setHostOffers((prev) => [...prev, ...result]);
-                            setPage((prevPage) => prevPage + 1);
-                        }
-                    });
-                } catch {
-                    /* empty */
-                } finally {
-                    setLoading(false);
+                if (isInitial) {
+                    setHostOffers(newOffers);
+                    pageRef.current = 2;
+                } else {
+                    setHostOffers((prev) => [...prev, ...newOffers]);
+                    pageRef.current += 1;
                 }
-            },
-            [getHostOffers, hostId, page],
-        );
 
-        useEffect(() => {
-            fetchHostOffers(true);
-        }, [fetchHostOffers]);
+                setHasMore(!isLastPage);
+            } catch (error) {
+                setHasMore(false);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [getHostOffers, hostId], // `page` не в зависимостях — используем ref
+    );
 
-        const rowVirtualizer = useVirtualizer({
-            count: hostOffers.length,
-            getScrollElement: () => scrollContainerRef.current,
-            estimateSize: () => 190,
-            overscan: 5,
-        });
+    useEffect(() => {
+        fetchHostOffers(true);
+    }, [fetchHostOffers]);
 
-        const virtualItems = rowVirtualizer.getVirtualItems();
-
-        return (
-            <div id="2" className={cn(className, styles.wrapper)}>
-                <Text title={t("personalHost.Вакансии")} titleSize="h3" />
-                <div className={styles.container}>
-                    {loading && <MiniLoader />}
-                    {(!loading && hostOffers.length === 0) && (
-                        <div>
-                            {t("personalHost.У организации пока нет вакансий")}
-                        </div>
-                    )}
-                </div>
-                {(hostOffers.length <= 3) ? (
-                    <div className={styles.container}>
-                        {hostOffers.map((offer) => (
-                            <OfferCard
-                                locale={locale}
-                                status={
-                                    offer.status === "active"
-                                        ? "opened"
-                                        : "closed"
-                                }
-                                data={offer}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div
-                        className={styles.containerList}
-                        ref={scrollContainerRef}
-                        id="offers-scroll-container"
-                    >
-                        <InfiniteScroll
-                            dataLength={hostOffers.length}
-                            next={() => fetchHostOffers(false)}
-                            hasMore={hasMore}
-                            loader={
-                                isPending ? (
-                                    <MiniLoader className={styles.loader} />
-                                ) : null
-                            }
-                            scrollThreshold="70%"
-                            scrollableTarget="offers-scroll-container"
-                        >
-                            <div
-                                style={{
-                                    height: rowVirtualizer.getTotalSize(),
-                                    position: "relative",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                        width: "100%",
-                                        transform: `translateY(${
-                                            virtualItems[0]?.start ?? 0
-                                        }px)`,
-                                    }}
-                                >
-                                    {virtualItems.map(({ index }) => {
-                                        const offer = hostOffers[index];
-                                        return (
-                                            <div
-                                                key={index}
-                                                ref={rowVirtualizer.measureElement}
-                                                data-index={index}
-                                            >
-                                                <OfferCard
-                                                    locale={locale}
-                                                    status={
-                                                        offer.status === "active"
-                                                            ? "opened"
-                                                            : "closed"
-                                                    }
-                                                    data={offer}
-                                                />
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </InfiniteScroll>
-                    </div>
+    return (
+        <div id="2" className={cn(className, styles.wrapper)}>
+            <Text title={t("personalHost.Вакансии")} titleSize="h3" />
+            <div className={styles.container}>
+                {loading && <MiniLoader />}
+                {!loading && hostOffers.length === 0 && (
+                    <div>{t("personalHost.У организации пока нет вакансий")}</div>
                 )}
-
             </div>
-        );
-    },
-);
+
+            <div className={styles.containerList} id="offers-scroll-container">
+                <InfiniteScroll
+                    dataLength={hostOffers.length}
+                    next={() => fetchHostOffers(false)}
+                    hasMore={hasMore}
+                    loader={<MiniLoader className={styles.loader} />}
+                    scrollThreshold="70%"
+                    scrollableTarget="offers-scroll-container"
+                    height={560}
+                >
+                    <div>
+                        {hostOffers.map((offer) => {
+                            const {
+                                id, title, shortDescription, address, imagePath, categories,
+                                acceptedApplicationsCount, averageRating, reviewsCount,
+                            } = offer;
+                            return (
+                                <OfferCard
+                                    key={offer.id}
+                                    locale={locale}
+                                    status={offer.status === "active" ? "opened" : "closed"}
+                                    data={{
+                                        id,
+                                        title,
+                                        shortDescription,
+                                        address,
+                                        imagePath,
+                                        categories,
+                                        acceptedApplicationsCount,
+                                        averageRating,
+                                        reviewsCount,
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+                </InfiniteScroll>
+            </div>
+        </div>
+    );
+});

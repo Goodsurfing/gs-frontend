@@ -9,7 +9,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferCard } from "@/widgets/OffersMap";
 
-import { Offer, useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferApi, useLazyGetOffersQuery } from "@/entities/Offer";
 
 import {
     getProfilePreferencesPageUrl,
@@ -28,7 +28,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
         const { className } = props;
         const { locale } = useLocale();
         const { t } = useTranslation("volunteer");
-        const [filteredOffers, setFilteredOffers] = useState<Offer[]>([]);
+        const [filteredOffers, setFilteredOffers] = useState<OfferApi[]>([]);
 
         const { data: myProfileData, isLoading: isProfileLoading } = useGetProfileInfoQuery();
         const [getOffers, { isLoading: isOffersLoading }] = useLazyGetOffersQuery();
@@ -38,9 +38,9 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 try {
                     if (myProfileData && myProfileData.favoriteCategories.length > 0) {
                         const resultOffers = await getOffers(
-                            { categories: myProfileData.favoriteCategories },
+                            { categoryIds: myProfileData.favoriteCategories },
                         ).unwrap();
-                        setFilteredOffers(resultOffers.slice(0, 10));
+                        setFilteredOffers(resultOffers.data.slice(0, 10));
                     }
                 } catch {
                     setFilteredOffers([]);

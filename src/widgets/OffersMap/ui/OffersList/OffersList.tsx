@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { Offer } from "@/entities/Offer";
+import { OfferApi } from "@/entities/Offer";
 
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -20,10 +20,11 @@ interface OffersListProps {
     className?: string;
     mapOpenValue: boolean;
     onChangeMapOpen: () => void;
-    data?: Offer[];
+    data?: OfferApi[];
     isLoading: boolean;
     currentPage: number;
     offersPerPage: number;
+    total: number;
     onChangePage: (pageItem: number) => void;
 }
 
@@ -35,6 +36,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
         className,
         currentPage,
         offersPerPage,
+        total,
         onChangePage,
         isLoading,
     } = props;
@@ -42,12 +44,6 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
     const { locale } = useLocale();
     const { t } = useTranslation("offers-map");
     const [isPending, startTransition] = useTransition();
-
-    const currentOffers = useMemo(() => {
-        const startIndex = (currentPage - 1) * offersPerPage;
-        const endIndex = startIndex + offersPerPage;
-        return data?.slice(startIndex, endIndex) || [];
-    }, [currentPage, offersPerPage, data]);
 
     const changeMapOpen = useCallback(() => {
         onChangeMapOpen();
@@ -76,7 +72,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                     />
                 );
             }
-            return currentOffers?.map((offer) => (
+            return data.map((offer) => (
                 <OfferCard
                     locale={locale}
                     classNameCard={styles.offerCard}
@@ -98,17 +94,14 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
             />
         );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentOffers, data, isLoading, locale, mapOpenValue, t]);
+    }, [data, isLoading, locale, mapOpenValue, t]);
 
-    // TODO: Переписать и убрать этот react window, он мне не нравится :/
-    // нужно бека попросить сделать динамический фетч изображений
-
-    const totalPages = data ? Math.ceil(data.length / offersPerPage) : 0;
+    const totalPages = Math.ceil(total / offersPerPage);
 
     return (
         <div className={cn(styles.wrapper, className)}>
             <HeaderList
-                offersLength={data ? data.length : 0}
+                offersLength={total}
                 isShowMap={mapOpenValue}
                 onChangeShowMap={changeMapOpen}
             />

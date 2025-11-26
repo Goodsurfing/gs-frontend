@@ -17,7 +17,7 @@ import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { Offer } from "@/entities/Offer";
+import { OfferApi } from "@/entities/Offer";
 
 // import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -33,11 +33,12 @@ type SelectedTabType = "filter" | "map" | "offers";
 
 interface OffersSearchFilterMobileProps {
     className?: string;
-    data?: Offer[];
+    data?: OfferApi[];
     isLoading: boolean;
     onApplySearch: (search: string) => void;
     onSubmit: () => void;
     onResetFilters: () => void;
+    total: number;
     currentPage: number;
     offersPerPage: number;
     onChangePage: (pageItem: number) => void;
@@ -56,6 +57,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     onResetFilters,
     currentPage,
     offersPerPage,
+    total,
     onChangePage,
 }) => {
     const { control } = useFormContext();
@@ -109,12 +111,6 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
         [selectedTab],
     );
 
-    const currentOffers = useMemo(() => {
-        const startIndex = (currentPage - 1) * offersPerPage;
-        const endIndex = startIndex + offersPerPage;
-        return data?.slice(startIndex, endIndex) || [];
-    }, [currentPage, offersPerPage, data]);
-
     const renderOfferCards = useMemo(() => {
         if (isLoading || isPending) {
             return (
@@ -133,7 +129,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             );
         }
 
-        return currentOffers.map((offer) => (
+        return data.map((offer) => (
             <MemoizedOfferCard
                 locale={locale}
                 classNameCard={styles.offerCard}
@@ -146,11 +142,11 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             />
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentOffers, locale, t, isLoading, isPending, data]);
+    }, [locale, t, isLoading, isPending, data]);
 
     const totalPages = useMemo(
-        () => (data ? Math.ceil(data.length / offersPerPage) : 1),
-        [data, offersPerPage],
+        () => (data ? Math.ceil(total / offersPerPage) : 1),
+        [data, offersPerPage, total],
     );
 
     return (
@@ -222,7 +218,7 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                         />
                     </div>
                     <div className={styles.offersCount}>
-                        {data ? data.length : 0}
+                        {total}
                         {" "}
                         {t("вариантов")}
                     </div>

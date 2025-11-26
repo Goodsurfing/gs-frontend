@@ -1,9 +1,9 @@
-import { Offer, OfferStatus } from "@/entities/Offer";
+import { HostOffer, OfferStatus } from "@/entities/Offer";
 
 export const filterOffersByStatus = (
-    offers: Offer[] | undefined,
+    offers: HostOffer[] | undefined,
     status: OfferStatus,
-): Offer[] => {
+): HostOffer[] => {
     if (!offers) return [];
 
     if (status === "active" || status === "disabled") {
