@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.9"
 
 services:
   frontend:
@@ -12,12 +12,12 @@ services:
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.tls.certresolver=leresolver"
     networks:
-      - proxy
+      - traefik-network
     environment:
       REACT_APP_API_BASE_URL: https://api.gudserfing.ru/
       REACT_APP_API_YANDEX_KEY: 864d6a03-13dc-41c2-a09d-66018ba34045
 
 networks:
-  proxy:
-    name: traefik-network
+  traefik-network:
     external: true
+    name: infrastructure_traefik-network
