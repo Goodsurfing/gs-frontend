@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     AdminReviewVacancy,
-    AdminSkill,
     CreateAdminSkillRequest, EditAdminSkillRequest,
     EditReviewVacancy, GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
@@ -13,6 +12,7 @@ import {
     Category, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
+import { Skill } from "@/types/skills";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
@@ -20,19 +20,33 @@ export const adminApi = createApi({
     tagTypes: ["skill", "user", "reviewVacancy", "category"],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
-            query: (body) => ({
-                url: "skill/create",
-                method: "POST",
-                body,
-            }),
+            query: (body) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("image", image);
+                return {
+                    url: "skill/create",
+                    method: "POST",
+                    body: formData,
+                };
+            },
             invalidatesTags: ["skill"],
         }),
         editSkill: build.mutation<void, EditAdminSkillRequest>({
-            query: ({ skillId, body }) => ({
-                url: `skill/edit/${skillId}`,
-                method: "POST",
-                body,
-            }),
+            query: ({ skillId, body }) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `skill/edit/${skillId}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
             invalidatesTags: ["skill"],
         }),
         deleteSkill: build.mutation<void, number>({
@@ -42,7 +56,7 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["skill"],
         }),
-        getSkills: build.query<GetAdminSkillsResponse, undefined | GetAdminSkillsParams>({
+        getSkills: build.query<GetAdminSkillsResponse, undefined | Partial<GetAdminSkillsParams>>({
             query: (params) => ({
                 url: "skill/list",
                 method: "GET",
@@ -50,7 +64,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["skill"],
         }),
-        getSkillById: build.query<AdminSkill, number>({
+        getSkillById: build.query<Skill, number>({
             query: (skillId) => ({
                 url: `skill/${skillId}`,
                 method: "GET",
@@ -157,7 +171,7 @@ export const adminApi = createApi({
             providesTags: ["category"],
         }),
         getCategoryVacancyById: build.query<Category,
-        string>({
+        number>({
             query: (id) => ({
                 url: `category/${id}`,
                 method: "GET",

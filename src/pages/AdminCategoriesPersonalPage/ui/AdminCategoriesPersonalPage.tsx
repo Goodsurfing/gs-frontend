@@ -15,7 +15,7 @@ const AdminCategoriesPersonalPage = () => {
 
     return (
         <div>
-            <AdminCategoryInfo categoryId={id} />
+            <AdminCategoryInfo categoryId={Number(id)} />
         </div>
     );
 };

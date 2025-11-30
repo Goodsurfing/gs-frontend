@@ -1,4 +1,4 @@
-.wrapper {
+.table {
     height: 40vh;
 }
 
@@ -9,6 +9,10 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.btn {
+    padding: 10px 20px;
 }
 
 .btnIcon svg {

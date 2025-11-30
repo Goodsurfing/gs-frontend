@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { AdminSkillForm } from "@/features/Admin";
+import { AdminSkillInfo } from "@/widgets/Admin";
 import styles from "./AdminSkillPersonalPage.module.scss";
 
 const AdminSkillPersonalPage = () => {
@@ -16,7 +16,7 @@ const AdminSkillPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <AdminSkillForm skillId={Number(id)} />
+            <AdminSkillInfo skillId={Number(id)} />
         </div>
     );
 };

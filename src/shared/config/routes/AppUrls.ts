@@ -192,7 +192,11 @@ export const getAdminPersonalOrganizationPageUrl: RoutePathFunction = (locale, i
 
 export const getAdminSkillsAchievementsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skills_achievements}`;
 
+export const getAdminSkillCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skill_personal}/create`;
+
 export const getAdminSkillPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_skill_personal}/${id}`;
+
+export const getAdminAchievementCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_achievement_personal}/create`;
 
 export const getAdminAchievementPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_achievement_personal}/${id}`;
 

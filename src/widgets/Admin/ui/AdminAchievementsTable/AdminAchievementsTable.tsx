@@ -9,7 +9,8 @@ import medalIcon from "@/shared/assets/icons/medals/ambassador.svg";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getAdminAchievementPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminAchievementCreatePageUrl, getAdminAchievementPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface AchievementType {
     id: number;
@@ -97,6 +98,7 @@ export const AdminAchievementsTable = () => {
 
     return (
         <div className={styles.wrapper}>
+            <ButtonLink type="primary" className={styles.btn} path={getAdminAchievementCreatePageUrl(locale)}>Добавить достижение</ButtonLink>
             <DataGrid
                 rows={rows}
                 columns={columns}

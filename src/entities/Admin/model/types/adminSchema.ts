@@ -1,4 +1,5 @@
 import { Pagination } from "@/types/api/pagination";
+import { Skill } from "@/types/skills";
 
 export interface Admin {
     token: string,
@@ -32,21 +33,16 @@ export interface AdminOrganizationsFields {
     isBlock: boolean;
 }
 
-// Admin skills type
-export interface AdminSkill {
-    id: number;
-    name: string;
-    imagePath: string;
-}
-
 export interface CreateAdminSkillRequest {
     name: string;
-    image: string; // $binary
+    image: File;
 }
 
 export interface EditAdminSkillRequest {
     skillId: number;
-    body: CreateAdminSkillRequest
+    body: Omit<CreateAdminSkillRequest, "image"> & {
+        image: File | string;
+    };
 }
 
 interface AdminSkillPagination {
@@ -59,10 +55,12 @@ export interface GetAdminSkillsParams {
     sort: "id:asc" | "id:desc" | "name:asc" | "name:desc";
     id: number; // search by id skill
     name: string; // search by name of skill
+    page: number;
+    limit: number;
 }
 
 export interface GetAdminSkillsResponse {
-    data: AdminSkill[];
+    data: Skill[];
     pagination: AdminSkillPagination
 }
 

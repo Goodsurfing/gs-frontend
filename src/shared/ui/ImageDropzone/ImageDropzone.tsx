@@ -3,9 +3,10 @@ import {
 } from "react";
 import { useDropzone, Accept } from "react-dropzone";
 import cn from "classnames";
-import styles from "./ImageDropzone.module.scss";
 import { ErrorText } from "../ErrorText/ErrorText";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { MiniLoader } from "../MiniLoader/MiniLoader";
+import styles from "./ImageDropzone.module.scss";
 
 export interface ImageDropzoneProps {
     value?: File | string;
@@ -14,6 +15,7 @@ export interface ImageDropzoneProps {
     accept?: Accept;
     maxSize?: number;
     className?: string;
+    isLoading?: boolean;
 }
 
 export const ImageDropzone: FC<ImageDropzoneProps> = ({
@@ -23,9 +25,11 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
     accept = {
         "image/jpeg": [".jpeg", ".jpg"],
         "image/png": [".png"],
+        "image/svg+xml": [".svg"],
     },
     maxSize = 2 * 1024 * 1024, // 2 МБ
     className,
+    isLoading = false,
 }) => {
     const [preview, setPreview] = useState<string | null>(null);
     const [internalError, setInternalError] = useState<string | null>(null);
@@ -53,11 +57,18 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
             };
         }
 
-        const validMimeTypes = ["image/jpeg", "image/png"];
-        if (!validMimeTypes.includes(file.type)) {
+        const validMimeTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+        const validExtensions = [".jpg", ".jpeg", ".png", ".svg"];
+
+        const fileExtension = file.name.toLowerCase().split(".").pop();
+        const hasValidExtension = fileExtension ? validExtensions.includes(`.${fileExtension}`) : false;
+
+        const hasValidMimeType = validMimeTypes.includes(file.type);
+
+        if (!hasValidMimeType && !hasValidExtension) {
             return {
                 valid: false,
-                message: "Разрешены только JPG и PNG",
+                message: "Разрешены только JPG, PNG, SVG",
             };
         }
 
@@ -94,6 +105,24 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
 
     const hasError = externalError || !!internalError;
 
+    let dropzoneContent;
+
+    if (isLoading) {
+        dropzoneContent = <div className={styles.loading}><MiniLoader /></div>;
+    } else if (preview) {
+        dropzoneContent = (
+            <div className={styles.preview}>
+                <img src={preview} alt="Preview" className={styles.previewImage} />
+            </div>
+        );
+    } else {
+        dropzoneContent = (
+            <p className={styles.placeholder}>
+                Перетащите изображение сюда или кликните для выбора
+            </p>
+        );
+    }
+
     return (
         <div>
             <div
@@ -108,15 +137,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
                 )}
             >
                 <input {...getInputProps()} />
-                {preview ? (
-                    <div className={styles.preview}>
-                        <img src={preview} alt="Preview" className={styles.previewImage} />
-                    </div>
-                ) : (
-                    <p className={styles.placeholder}>
-                        Перетащите изображение сюда или кликните для выбора
-                    </p>
-                )}
+                {dropzoneContent}
             </div>
             {internalError && <ErrorText text={internalError} />}
         </div>
