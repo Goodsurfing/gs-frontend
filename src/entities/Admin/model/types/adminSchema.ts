@@ -1,3 +1,4 @@
+import { Achievement } from "@/types/achievements";
 import { Pagination } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
 
@@ -45,12 +46,6 @@ export interface EditAdminSkillRequest {
     };
 }
 
-interface AdminSkillPagination {
-    page: number;
-    limit: number;
-    total: number;
-}
-
 export interface GetAdminSkillsParams {
     sort: "id:asc" | "id:desc" | "name:asc" | "name:desc";
     id: number; // search by id skill
@@ -61,7 +56,32 @@ export interface GetAdminSkillsParams {
 
 export interface GetAdminSkillsResponse {
     data: Skill[];
-    pagination: AdminSkillPagination
+    pagination: Pagination
+}
+
+export interface CreateAdminAchievementsRequest {
+    name: string;
+    image: File;
+}
+
+export interface EditAdminAchievementsRequest {
+    achievementId: number;
+    body: Omit<CreateAdminAchievementsRequest, "image"> & {
+        image: File | string;
+    };
+}
+
+export interface GetAdminAchievementsParams {
+    sort: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+    id: number; // search by id achievement
+    name: string; // search by name of achievement
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminAchievementsResponse {
+    data: Achievement[];
+    pagination: Pagination
 }
 
 export interface SearchUsersParams {

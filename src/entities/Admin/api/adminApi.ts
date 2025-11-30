@@ -2,8 +2,9 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     AdminReviewVacancy,
-    CreateAdminSkillRequest, EditAdminSkillRequest,
-    EditReviewVacancy, GetAdminReviewVacancyListParams,
+    CreateAdminAchievementsRequest,
+    CreateAdminSkillRequest, EditAdminAchievementsRequest, EditAdminSkillRequest,
+    EditReviewVacancy, GetAdminAchievementsParams, GetAdminAchievementsResponse, GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
     SearchUsersParams,
     SearchUsersResponse,
@@ -13,11 +14,12 @@ import {
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
+import { Achievement } from "@/types/achievements";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["skill", "user", "reviewVacancy", "category"],
+    tagTypes: ["skill", "user", "reviewVacancy", "category", "achievement"],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
             query: (body) => {
@@ -70,6 +72,59 @@ export const adminApi = createApi({
                 method: "GET",
             }),
             providesTags: ["skill"],
+        }),
+        createAchievement: build.mutation<void, CreateAdminAchievementsRequest>({
+            query: (body) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("image", image);
+                return {
+                    url: "achievement/list",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["achievement"],
+        }),
+        editAchievement: build.mutation<void, EditAdminAchievementsRequest>({
+            query: ({ achievementId, body }) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `achievement/edit/${achievementId}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["achievement"],
+        }),
+        deleteAchievement: build.mutation<void, number>({
+            query: (achievementId) => ({
+                url: `achievement/${achievementId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["achievement"],
+        }),
+        getAchievements: build.query<GetAdminAchievementsResponse,
+        undefined | Partial<GetAdminAchievementsParams>>({
+            query: (params) => ({
+                url: "achievement/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["achievement"],
+        }),
+        getAchievementById: build.query<Achievement, number>({
+            query: (achievementId) => ({
+                url: `achievement/${achievementId}`,
+                method: "GET",
+            }),
+            providesTags: ["achievement"],
         }),
         addAdminRoleToUser: build.mutation<void, string >({ // Присвоение роли админ пользователю
             query: (userId) => ({

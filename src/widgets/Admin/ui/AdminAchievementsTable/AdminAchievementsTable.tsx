@@ -11,35 +11,22 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminAchievementCreatePageUrl, getAdminAchievementPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-interface AchievementType {
-    id: number;
-    name: string;
-    img: string;
-}
-
-const rows: AchievementType[] = [
-    {
-        id: 1,
-        name: "Достижение 1",
-        img: medalIcon,
-    },
-    {
-        id: 2,
-        name: "Достижение 2",
-        img: medalIcon,
-    },
-    {
-        id: 3,
-        name: "Достижение 3",
-        img: medalIcon,
-    },
-];
+const ACHIEVEMENTS_PER_PAGE = 30;
 
 export const AdminAchievementsTable = () => {
-    const [pageSize, setPageSize] = useState(50);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const [toast, setToast] = useState<ToastAlert>();
+    const [achievementToDelete, setAchievementToDelete] = useState<
+    { id: number; name: string } | null>(null);
+    const [getAchievements, {
+        data: achievemnetsData,
+        isLoading,
+    }] = useLazyGetAchive();
+    const [deleteSkill, { isLoading: isDeleting }] = useDeleteSkillMutation();
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", disableColumnMenu: false },
