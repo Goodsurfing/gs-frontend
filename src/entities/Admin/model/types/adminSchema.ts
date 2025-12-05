@@ -1,6 +1,7 @@
 import { Achievement } from "@/types/achievements";
-import { Pagination } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
+import { Pagination } from "@/types/api/pagination";
+import { Food, House, Transfer } from "@/shared/data/conditions";
 
 export interface Admin {
     token: string,
@@ -81,6 +82,72 @@ export interface GetAdminAchievementsParams {
 
 export interface GetAdminAchievementsResponse {
     data: Achievement[];
+    pagination: Pagination
+}
+
+export interface CreateAdminTransferRequest {
+    name: string;
+    image: File;
+}
+
+export interface EditAdminTransferRequest {
+    transferId: number;
+    body: Omit<CreateAdminTransferRequest, "image"> & {
+        image: File | string;
+    };
+}
+
+export interface GetAdminTransfersParams {
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminTransfersResponse {
+    data: Transfer[];
+    pagination: Pagination
+}
+
+export interface CreateAdminHouseRequest {
+    name: string;
+    image: File;
+}
+
+export interface EditAdminHouseRequest {
+    houseId: number;
+    body: Omit<CreateAdminHouseRequest, "image"> & {
+        image: File | string;
+    };
+}
+
+export interface GetAdminHouseParams {
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminHouseResponse {
+    data: House[];
+    pagination: Pagination
+}
+
+export interface CreateAdminFoodRequest {
+    name: string;
+    image: File;
+}
+
+export interface EditAdminFoodRequest {
+    foodId: number;
+    body: Omit<CreateAdminFoodRequest, "image"> & {
+        image: File | string;
+    };
+}
+
+export interface GetAdminFoodParams {
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminFoodResponse {
+    data: Food[];
     pagination: Pagination
 }
 

@@ -27,6 +27,10 @@ export const useAdminPagesSidebarData = () => {
                     text: "Категории вакансий",
                 },
                 {
+                    route: "/conditions-vacancies",
+                    text: "Условия для вакансий",
+                },
+                {
                     route: "/reviews",
                     text: "Отзывы",
                 },

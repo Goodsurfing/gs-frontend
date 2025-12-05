@@ -144,6 +144,7 @@ import {
     getAdminCategoriesVacanciesCreatePageUrl,
     getAdminSkillCreatePageUrl,
     getAdminAchievementCreatePageUrl,
+    getAdminConditionsVacanciesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -173,6 +174,7 @@ import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage
 import { AdminCategoriesCreatePage } from "@/pages/AdminCategoriesCreatePage";
 import { AdminSkillCreatePage } from "@/pages/AdminSkillCreatePage";
 import AdminAchievementsCreatePage from "@/pages/AdminAchievementsCreatePage/ui/AdminAchievementsCreatePage";
+import { AdminConditionsOfferPage } from "@/pages/AdminConditionsOfferPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -632,7 +634,11 @@ const publicRoutes: RouteType[] = [
                 element: <AdminCategoriesPersonalPage />,
                 path: (locale: string) => getAdminCategoriesVacanciesPersonalPageUrl(locale),
             },
-
+            {
+                label: "admin-conditions-vacancies",
+                element: <AdminConditionsOfferPage />,
+                path: (locale: string) => getAdminConditionsVacanciesPageUrl(locale),
+            },
         ],
     },
 ];

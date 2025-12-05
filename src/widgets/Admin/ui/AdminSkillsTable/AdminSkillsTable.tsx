@@ -157,7 +157,7 @@ export const AdminSkillsTable = () => {
             />
             <ConfirmActionModal
                 isModalOpen={!!skillToDelete}
-                description={`Вы уверены, что хотите удалить категорию "${skillToDelete?.name}"? Это действие нельзя отменить.`}
+                description={`Вы уверены, что хотите удалить навык "${skillToDelete?.name}"? Это действие нельзя отменить.`}
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
                 confirmTextButton="Удалить"

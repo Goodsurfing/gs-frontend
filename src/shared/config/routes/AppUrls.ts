@@ -208,4 +208,14 @@ export const getAdminCategoriesVacanciesPersonalPageUrl: RoutePathFunction = (lo
 
 export const getAdminCategoriesVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}/create`;
 
+export const getAdminConditionsVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_conditions_vacancies}`;
+
+export const getAdminHouseVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_house_vacancies_personal}/create`;
+
+export const getAdminHouseVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_house_vacancies_personal}/${id}`;
+
+export const getAdminFoodVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_food_vacancies_personal}/create`;
+
+export const getAdminFoodVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_food_vacancies_personal}/${id}`;
+
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;

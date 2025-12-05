@@ -77,5 +77,8 @@ export enum AppRoutes {
     ADMIN_SKILL_PERSONAL = "admin_skill_personal",
     ADMIN_ACHIEVEMENT_PERSONAL = "admin_achievement_personal",
     ADMIN_CATEGORIES_VACANCIES = "admin_categories_vacancies",
+    ADMIN_CONDITIONS_VACANCIES = "admin_conditions_vacancies",
+    ADMIN_HOUSE_VACANCIES_PERSONAL = "admin_house_vacancies_personal",
+    ADMIN_FOOD_VACANCIES_PERSONAL = "admin_food_vacancies_personal",
     ADMIN_REVIEWS = "admin_reviews",
 }

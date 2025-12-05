@@ -3,9 +3,17 @@ import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     AdminReviewVacancy,
     CreateAdminAchievementsRequest,
-    CreateAdminSkillRequest, EditAdminAchievementsRequest, EditAdminSkillRequest,
-    EditReviewVacancy, GetAdminAchievementsParams, GetAdminAchievementsResponse, GetAdminReviewVacancyListParams,
+    CreateAdminFoodRequest,
+    CreateAdminHouseRequest,
+    CreateAdminSkillRequest, CreateAdminTransferRequest,
+    EditAdminAchievementsRequest, EditAdminFoodRequest, EditAdminHouseRequest,
+    EditAdminSkillRequest, EditAdminTransferRequest,
+    EditReviewVacancy, GetAdminAchievementsParams,
+    GetAdminAchievementsResponse, GetAdminFoodParams, GetAdminFoodResponse,
+    GetAdminHouseParams, GetAdminHouseResponse, GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
+    GetAdminTransfersParams,
+    GetAdminTransfersResponse,
     SearchUsersParams,
     SearchUsersResponse,
 } from "../model/types/adminSchema";
@@ -15,11 +23,14 @@ import {
 import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
 import { Achievement } from "@/types/achievements";
+import { Food, House, Transfer } from "@/shared/data/conditions";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["skill", "user", "reviewVacancy", "category", "achievement"],
+    tagTypes: ["skill", "user", "reviewVacancy", "category", "achievement", "transfer",
+        "house", "food",
+    ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
             query: (body) => {
@@ -80,7 +91,7 @@ export const adminApi = createApi({
                 formData.append("name", name);
                 formData.append("image", image);
                 return {
-                    url: "achievement/list",
+                    url: "achievement/create",
                     method: "POST",
                     body: formData,
                 };
@@ -125,6 +136,165 @@ export const adminApi = createApi({
                 method: "GET",
             }),
             providesTags: ["achievement"],
+        }),
+        createTransfer: build.mutation<void, CreateAdminTransferRequest>({
+            query: (body) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("image", image);
+                return {
+                    url: "transfer/create",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["transfer"],
+        }),
+        editTransfer: build.mutation<void, EditAdminTransferRequest>({
+            query: ({ transferId, body }) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `transfer/edit/${transferId}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["transfer"],
+        }),
+        deleteTransfer: build.mutation<void, number>({
+            query: (transferId) => ({
+                url: `transfer/${transferId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["transfer"],
+        }),
+        getTransfers: build.query<GetAdminTransfersResponse,
+        undefined | Partial<GetAdminTransfersParams>>({
+            query: (params) => ({
+                url: "transfer/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["transfer"],
+        }),
+        getTransfertById: build.query<Transfer, number>({
+            query: (transferId) => ({
+                url: `transfer/${transferId}`,
+                method: "GET",
+            }),
+            providesTags: ["transfer"],
+        }),
+        createHouse: build.mutation<void, CreateAdminHouseRequest>({
+            query: (body) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("image", image);
+                return {
+                    url: "house/create",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["house"],
+        }),
+        editHouse: build.mutation<void, EditAdminHouseRequest>({
+            query: ({ houseId, body }) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `house/edit/${houseId}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["house"],
+        }),
+        deleteHouse: build.mutation<void, number>({
+            query: (houseId) => ({
+                url: `house/${houseId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["house"],
+        }),
+        getHouses: build.query<GetAdminHouseResponse,
+        undefined | Partial<GetAdminHouseParams>>({
+            query: (params) => ({
+                url: "house/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["house"],
+        }),
+        getHouseById: build.query<House, number>({
+            query: (houseId) => ({
+                url: `house/${houseId}`,
+                method: "GET",
+            }),
+            providesTags: ["house"],
+        }),
+        createFood: build.mutation<void, CreateAdminFoodRequest>({
+            query: (body) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                formData.append("image", image);
+                return {
+                    url: "food/create",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["food"],
+        }),
+        editFood: build.mutation<void, EditAdminFoodRequest>({
+            query: ({ foodId, body }) => {
+                const { name, image } = body;
+                const formData = new FormData();
+                formData.append("name", name);
+                if (image instanceof File) {
+                    formData.append("image", image);
+                }
+                return {
+                    url: `food/edit/${foodId}`,
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["food"],
+        }),
+        deleteFood: build.mutation<void, number>({
+            query: (foodId) => ({
+                url: `food/${foodId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["food"],
+        }),
+        getFoods: build.query<GetAdminFoodResponse,
+        undefined | Partial<GetAdminFoodParams>>({
+            query: (params) => ({
+                url: "food/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["food"],
+        }),
+        getFoodById: build.query<Food, number>({
+            query: (foodId) => ({
+                url: `food/${foodId}`,
+                method: "GET",
+            }),
+            providesTags: ["food"],
         }),
         addAdminRoleToUser: build.mutation<void, string >({ // Присвоение роли админ пользователю
             query: (userId) => ({
@@ -256,4 +426,28 @@ export const {
     useDeleteCategoryVacancyMutation,
     useGetCategoryVacancyByIdQuery,
     useLazyGetCategoriesVacancyQuery,
+    useCreateAchievementMutation,
+    useEditAchievementMutation,
+    useDeleteAchievementMutation,
+    useLazyGetAchievementsQuery,
+    useGetAchievementsQuery,
+    useGetAchievementByIdQuery,
+    useCreateHouseMutation,
+    useEditHouseMutation,
+    useDeleteHouseMutation,
+    useGetHousesQuery,
+    useLazyGetHousesQuery,
+    useGetHouseByIdQuery,
+    useCreateFoodMutation,
+    useEditFoodMutation,
+    useDeleteFoodMutation,
+    useGetFoodsQuery,
+    useLazyGetFoodsQuery,
+    useGetFoodByIdQuery,
+    useCreateTransferMutation,
+    useEditTransferMutation,
+    useDeleteTransferMutation,
+    useGetTransfersQuery,
+    useLazyGetTransfersQuery,
+    useGetTransfertByIdQuery,
 } = adminApi;

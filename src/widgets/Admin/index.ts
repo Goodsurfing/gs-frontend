@@ -6,3 +6,5 @@ export { AdminSkillsAchievements } from "./ui/AdminSkillsAchievements/AdminSkill
 export { AdminCategoriesTable } from "./ui/AdminCategoriesTable/AdminCategoriesTable";
 export { AdminCategoryInfo } from "./ui/AdminCategoryInfo/AdminCategoryInfo";
 export { AdminSkillInfo } from "./ui/AdminSkillInfo/AdminSkillInfo";
+export { AdminAchievementInfo } from "./ui/AdminAchievementInfo/AdminAchievementInfo";
+export { AdminConditionsOffer } from "./ui/AdminConditionsOffer/AdminConditionsOffer";

@@ -7,3 +7,5 @@ export { AdminCategoryForm } from "./ui/AdminCategoryForm/AdminCategoryForm";
 export type { AdminCategoryFields } from "./ui/AdminCategoryForm/AdminCategoryForm";
 export { AdminSkillForm } from "./ui/AdminSkillForm/AdminSkillForm";
 export type { AdminSkillFields } from "./ui/AdminSkillForm/AdminSkillForm";
+export { AdminAchievementForm } from "./ui/AdminAchievementForm/AdminAchievementForm";
+export type { AdminAchievementFields } from "./ui/AdminAchievementForm/AdminAchievementForm";
