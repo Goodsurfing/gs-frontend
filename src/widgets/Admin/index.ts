@@ -8,3 +8,6 @@ export { AdminCategoryInfo } from "./ui/AdminCategoryInfo/AdminCategoryInfo";
 export { AdminSkillInfo } from "./ui/AdminSkillInfo/AdminSkillInfo";
 export { AdminAchievementInfo } from "./ui/AdminAchievementInfo/AdminAchievementInfo";
 export { AdminConditionsOffer } from "./ui/AdminConditionsOffer/AdminConditionsOffer";
+export { AdminHouseInfo } from "./ui/AdminHouseInfo/AdminHouseInfo";
+export { AdminFoodInfo } from "./ui/AdminFoodInfo/AdminFoodInfo";
+export { AdminTransferInfo } from "./ui/AdminTransferInfo/AdminTransferInfo";

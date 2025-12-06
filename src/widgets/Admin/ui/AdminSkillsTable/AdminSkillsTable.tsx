@@ -7,7 +7,6 @@ import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./AdminSkillsTable.module.scss";
 import { getAdminSkillCreatePageUrl, getAdminSkillPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useDeleteSkillMutation, useLazyGetSkillsQuery } from "@/entities/Admin";
@@ -17,6 +16,7 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./AdminSkillsTable.module.scss";
 
 const SKILLS_PER_PAGE = 30;
 
@@ -140,7 +140,13 @@ export const AdminSkillsTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <ButtonLink type="primary" className={styles.btn} path={getAdminSkillCreatePageUrl(locale)}>Добавить навык</ButtonLink>
+            <ButtonLink
+                type="primary"
+                className={styles.btn}
+                path={getAdminSkillCreatePageUrl(locale)}
+            >
+                Добавить навык
+            </ButtonLink>
             <div className={styles.table}>
                 <DataGrid
                     rows={skillsData.data ?? []}

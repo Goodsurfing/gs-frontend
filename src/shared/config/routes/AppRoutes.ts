@@ -80,5 +80,6 @@ export enum AppRoutes {
     ADMIN_CONDITIONS_VACANCIES = "admin_conditions_vacancies",
     ADMIN_HOUSE_VACANCIES_PERSONAL = "admin_house_vacancies_personal",
     ADMIN_FOOD_VACANCIES_PERSONAL = "admin_food_vacancies_personal",
+    ADMIN_TRANSFER_VACANCIES_PERSONAL = "admin_transfer_vacancies_personal",
     ADMIN_REVIEWS = "admin_reviews",
 }

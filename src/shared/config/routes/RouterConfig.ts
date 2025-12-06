@@ -89,5 +89,6 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_CONDITIONS_VACANCIES]: "/admin/conditions-vacancies",
     [AppRoutes.ADMIN_HOUSE_VACANCIES_PERSONAL]: "/admin/house-vacancies-personal",
     [AppRoutes.ADMIN_FOOD_VACANCIES_PERSONAL]: "/admin/food-vacancies-personal",
+    [AppRoutes.ADMIN_TRANSFER_VACANCIES_PERSONAL]: "/admin/transfer-vacancies-personal",
     [AppRoutes.ADMIN_REVIEWS]: "/admin/reviews",
 };

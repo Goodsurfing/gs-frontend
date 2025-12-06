@@ -1,0 +1,66 @@
+import React, { FC, useState } from "react";
+import { useEditTransferMutation, useGetTransfertByIdQuery } from "@/entities/Admin";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { AdminSkillFields, AdminTransferForm } from "@/features/Admin";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+
+interface AdminTransferInfoProps {
+    transferId: number;
+}
+
+export const AdminTransferInfo: FC<AdminTransferInfoProps> = (props) => {
+    const { transferId } = props;
+    const { data: transferData, isLoading } = useGetTransfertByIdQuery(transferId);
+    const [updateSkill, { isLoading: isUpdateLoading }] = useEditTransferMutation();
+    const [toast, setToast] = useState<ToastAlert>();
+
+    const onSubmit = async (data: AdminSkillFields) => {
+        setToast(undefined);
+        const { name, imagePath } = data;
+        if (!imagePath) return;
+        try {
+            await updateSkill({
+                transferId,
+                body: {
+                    name,
+                    image: imagePath,
+                },
+            }).unwrap();
+            setToast({
+                text: "Оплачиваемый проезд успешно сохранен",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Произошла ошибка при обновлении оплачиваемого проезда",
+                type: HintType.Error,
+            });
+        }
+    };
+
+    if (isLoading) {
+        return (<MiniLoader />);
+    }
+
+    if (!transferData) {
+        return (
+            <div>
+                <h1>Страница оплачиваемого проезда</h1>
+                <h2>Данные по данному оплачиваемого проезда отсутсвуют</h2>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
+            <h1>Страница оплачиваемого проезда</h1>
+            <AdminTransferForm
+                transfer={transferData}
+                onSubmit={onSubmit}
+                isLoading={isUpdateLoading}
+            />
+        </div>
+    );
+};
