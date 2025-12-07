@@ -1,4 +1,8 @@
-export type { AdminSchema, AdminOrganizationsFields, AdminUsersFields } from "./model/types/adminSchema";
+export type {
+    AdminSchema, AdminOrganizationsFields, AdminUsersFields,
+    GetAdminSkillsParams,
+    GetAdminAchievementsParams,
+} from "./model/types/adminSchema";
 
 export { adminReducer, adminActions } from "./model/slice/adminSlice";
 

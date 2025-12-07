@@ -17,6 +17,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./AdminSkillsTable.module.scss";
+import { AdminFiltersTable, FilterFields, FilterSortField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 
 const SKILLS_PER_PAGE = 30;
 
@@ -27,6 +28,11 @@ export const AdminSkillsTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const [skillToDelete, setSkillToDelete] = useState<
     { id: number; name: string } | null>(null);
+    const [filters, setFilters] = useState<Partial<FilterFields>>({
+        sort: FilterSortField.IdAsc,
+        id: undefined,
+        search: "",
+    });
     const [getSkills, {
         data: skillsData,
         isLoading,
@@ -38,11 +44,18 @@ export const AdminSkillsTable = () => {
             await getSkills({
                 page: currentPage,
                 limit: SKILLS_PER_PAGE,
-            }).unwrap();
+                sort: filters.sort,
+                id: filters.id,
+                name: filters.search,
+            }).unwrap().catch(() => {
+                setToast({
+                    text: "Произошла ошибка при загрузке навыков",
+                    type: HintType.Error,
+                });
+            });
         };
-
         fetchData();
-    }, [currentPage, getSkills]);
+    }, [currentPage, filters, getSkills]);
 
     const handleOpenDeleteModal = (id: number, name: string) => {
         setSkillToDelete({ id, name });
@@ -73,9 +86,22 @@ export const AdminSkillsTable = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", disableColumnMenu: false },
         {
-            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
+            field: "id",
+            headerName: "ID",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "name",
+            headerName: "Название",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 240,
         },
         {
             field: "imagePath",
@@ -129,36 +155,72 @@ export const AdminSkillsTable = () => {
         },
     ];
 
-    if (!skillsData || isLoading) {
+    if (isLoading) {
         return (
             <MiniLoader />
         );
     }
 
-    const totalPages = Math.ceil(skillsData.pagination.total / SKILLS_PER_PAGE);
+    const renderTable = () => {
+        if (!skillsData) {
+            return <span className={styles.text}>Навыков не было найдено</span>;
+        }
+        return (
+            <DataGrid
+                rows={skillsData.data ?? []}
+                columns={columns}
+                sx={{ border: 0 }}
+                rowsPerPageOptions={[]}
+                disableSelectionOnClick
+            />
+        );
+    };
+
+    const totalPages = () => {
+        if (!skillsData) return 0;
+        return Math.ceil(skillsData.pagination.total / SKILLS_PER_PAGE);
+    };
+
+    const handleFilterChange = (newFilters: Partial<FilterFields>) => {
+        const {
+            id, search, sort,
+        } = newFilters;
+        setFilters({
+            id,
+            search,
+            sort,
+        });
+    };
+
+    const handleApplyFilters = () => {
+        setCurrentPage(1);
+    };
 
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <ButtonLink
-                type="primary"
-                className={styles.btn}
-                path={getAdminSkillCreatePageUrl(locale)}
-            >
-                Добавить навык
-            </ButtonLink>
-            <div className={styles.table}>
-                <DataGrid
-                    rows={skillsData.data ?? []}
-                    columns={columns}
-                    sx={{ border: 0 }}
-                    rowsPerPageOptions={[]}
-                    disableSelectionOnClick
+            <h2>Таблица навыков</h2>
+            <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminSkillCreatePageUrl(locale)}
+                >
+                    Добавить навык
+                </ButtonLink>
+                <AdminFiltersTable
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                    onApply={handleApplyFilters}
+                    disabled={isLoading}
                 />
+            </div>
+            <div className={styles.table}>
+                {renderTable()}
             </div>
             <OfferPagination
                 currentPage={currentPage}
-                totalPages={totalPages}
+                totalPages={totalPages()}
                 onPageChange={setCurrentPage}
             />
             <ConfirmActionModal

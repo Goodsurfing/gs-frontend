@@ -1,5 +1,15 @@
+.wrapper h2 {
+    margin-bottom: 20px;
+}
+
 .table {
-    height: 40vh;
+    height: 65vh;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .btnIcon {

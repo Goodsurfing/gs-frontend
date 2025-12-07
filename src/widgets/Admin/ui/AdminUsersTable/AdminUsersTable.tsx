@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Stack } from "@mui/material";
+import {
+    FormControl, InputLabel, MenuItem, Select, Stack,
+} from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
@@ -13,13 +15,51 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import styles from "./AdminUsersTable.module.scss";
+import {
+    AdminFiltersTable, CustomFilterField, FilterFields, FilterSortField,
+} from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 
 const rows: AdminUsersFields[] = adminUsersAdapter(mockedProfileData);
 
+const USERS_PER_PAGE = 30;
+
 export const AdminUsersTable = () => {
-    const [pageSize, setPageSize] = useState(50);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [toast, setToast] = useState<ToastAlert>();
+    const [filters, setFilters] = useState<FilterFields<{ status?: string }>>({
+        sort: FilterSortField.IdAsc,
+        search: "",
+        status: undefined,
+    });
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const [getSkills, {
+        data: skillsData,
+        isLoading,
+    }] = useLazyGetSkillsQuery();
+    const [deleteSkill, { isLoading: isDeleting }] = useDeleteSkillMutation();
+
+    const customFields: CustomFilterField<"status">[] = [
+        {
+            key: "status",
+            label: "Статус",
+            render: ({ value, onChange, disabled }) => (
+                <FormControl fullWidth size="small">
+                    <InputLabel>Статус</InputLabel>
+                    <Select
+                        value={value ?? ""}
+                        onChange={(e) => onChange(e.target.value || undefined)}
+                        label="Статус"
+                        disabled={disabled}
+                    >
+                        <MenuItem value="">Все</MenuItem>
+                        <MenuItem value="active">Активен</MenuItem>
+                        <MenuItem value="inactive">Неактивен</MenuItem>
+                    </Select>
+                </FormControl>
+            ),
+        },
+    ];
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", disableColumnMenu: false },
@@ -147,12 +187,15 @@ export const AdminUsersTable = () => {
 
     return (
         <div className={styles.wrapper}>
+            {/* <AdminFiltersTable
+                filters={filters}
+                onFilterChange={setFilters}
+                onApply={handleApplyFilters}
+                customFields={customFields}
+            /> */}
             <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSize={pageSize}
-                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                pagination
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick

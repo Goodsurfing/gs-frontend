@@ -79,9 +79,22 @@ export const AdminHousesTable = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", disableColumnMenu: false },
         {
-            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
+            field: "id",
+            headerName: "ID",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "name",
+            headerName: "Название",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 240,
         },
         {
             field: "imagePath",
@@ -164,6 +177,7 @@ export const AdminHousesTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
+            <h2>Таблица жилья</h2>
             <ButtonLink
                 type="primary"
                 className={styles.btn}
@@ -173,7 +187,6 @@ export const AdminHousesTable = () => {
             </ButtonLink>
             <div className={styles.table}>
                 {renderTable()}
-
             </div>
             <OfferPagination
                 currentPage={currentPage}

@@ -1,5 +1,15 @@
+.wrapper h2 {
+    margin-bottom: 20px;
+}
+
 .table {
     height: 40vh;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .btnIcon {
@@ -37,7 +47,6 @@
     fill: var(--error-color);
 }
 
-.achivImg svg {
+.achivImg {
     width: 20px;
-    fill: var(--text-primary-1);
 }

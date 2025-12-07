@@ -11,18 +11,59 @@ export interface AdminSchema {
     authData?: Admin,
 }
 
-export interface AdminUsersFields {
+export interface AdminUser {
     id: string;
     email?: string;
-    name?: string;
-    dateRegistration?: string;
-    dateLogin?: string;
-    isConfirmed: boolean;
-    isVolunteer: boolean;
-    isHost: boolean;
-    isBlock: boolean;
-    isMembership: boolean;
-    dateEndMembership: string;
+    firstName?: string;
+    lastName?: string;
+    created: string; // time account created
+    lastVisit: string;
+    isVerified: boolean;
+    isSkill: boolean; // is volunteer
+    isOrganization: boolean;
+    isActive: boolean; // is block
+    isPayment: boolean;
+    endPayment: string;
+}
+
+export enum AdminUserSort {
+    IdAsc = "id:asc",
+    IdDesc = "id:desc",
+    EmailAsc = "email:asc",
+    EmailDesc = "email:desc",
+    FioAsc = "fio:asc",
+    FioDesc = "fio:desc",
+    CreatedAsc = "created:asc",
+    CreatedDesc = "created:desc",
+    LastVisitAsc = "lastVisit:asc",
+    LastVisitDesc = "lastVisit:desc",
+    IsVerifiedAsc = "isVerified:asc",
+    IsVerifiedDesc = "isVerified:desc",
+    IsSkillAsc = "isSkill:asc",
+    IsSkillDesc = "isSkill:desc",
+    IsOrganizationAsc = "isOrganization:asc",
+    IsOrganizationDesc = "isOrganization:desc",
+    IsActiveAsc = "isActive:asc",
+    IsActiveDesc = "isActive:desc",
+    IsPaymentAsc = "isPayment:asc",
+    IsPaymentDesc = "isPayment:desc",
+    IsEndPaymentAsc = "isEndPayment:asc",
+    IsEndPaymentDesc = "isEndPayment:desc",
+}
+
+export interface GetAdminUserParams {
+    sort: AdminUserSort;
+    id: number; // search by id user
+    email: string; // search by email of user
+    firstName: string; // search by first name of user
+    lastName: string; // search by last name of user
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminUserResponse {
+    data: AdminUser[];
+    pagination: Pagination;
 }
 
 export interface AdminOrganizationsFields {

@@ -38,7 +38,13 @@ export const AdminCategoriesTable = () => {
             await getCategories({
                 page: currentPage,
                 limit: CATEGORIES_PER_PAGE,
-            }).unwrap();
+            }).unwrap()
+                .catch(() => {
+                    setToast({
+                        text: "Произошла ошибка при загрузке категорий",
+                        type: HintType.Error,
+                    });
+                });
         };
 
         fetchData();
@@ -73,14 +79,30 @@ export const AdminCategoriesTable = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", disableColumnMenu: false },
         {
-            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
+            field: "id",
+            headerName: "ID",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "name",
+            headerName: "Название",
+            width: 240,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
         },
         {
             field: "color",
             headerName: "Цвет",
-            disableColumnMenu: false,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
             width: 240,
             renderCell: (params) => (
                 <div className={cn(styles.color)}>
@@ -95,7 +117,7 @@ export const AdminCategoriesTable = () => {
         {
             field: "imagePath",
             headerName: "Картинка",
-            sortable: true,
+            sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
@@ -148,13 +170,31 @@ export const AdminCategoriesTable = () => {
         },
     ];
 
-    if (!categoriesData || isLoading) {
+    if (isLoading) {
         return (
             <MiniLoader />
         );
     }
 
-    const totalPages = Math.ceil(categoriesData.pagination.total / CATEGORIES_PER_PAGE);
+    const renderTable = () => {
+        if (!categoriesData) {
+            return <span className={styles.text}>Категорий не было найдено</span>;
+        }
+        return (
+            <DataGrid
+                rows={categoriesData.data ?? []}
+                columns={columns}
+                sx={{ border: 0 }}
+                rowsPerPageOptions={[]}
+                disableSelectionOnClick
+            />
+        );
+    };
+
+    const totalPages = () => {
+        if (!categoriesData) return 0;
+        return Math.ceil(categoriesData.pagination.total / CATEGORIES_PER_PAGE);
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -166,16 +206,10 @@ export const AdminCategoriesTable = () => {
             >
                 Добавить категорию
             </ButtonLink>
-            <DataGrid
-                rows={categoriesData?.data ?? []}
-                columns={columns}
-                sx={{ border: 0 }}
-                rowsPerPageOptions={[]}
-                disableSelectionOnClick
-            />
+            {renderTable()}
             <OfferPagination
                 currentPage={currentPage}
-                totalPages={totalPages}
+                totalPages={totalPages()}
                 onPageChange={setCurrentPage}
             />
             <ConfirmActionModal
