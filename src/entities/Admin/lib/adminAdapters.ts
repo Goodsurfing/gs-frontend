@@ -1,25 +1,27 @@
-import { Profile } from "@/entities/Profile";
 import { getFullName } from "@/shared/lib/getFullName";
-import { AdminOrganizationsFields, AdminUsersFields } from "../model/types/adminSchema";
+import { AdminOrganizationsFields, AdminUsers, AdminUsersFields } from "../model/types/adminSchema";
 import { Host } from "@/entities/Host";
 
-export const adminUsersAdapter = (data: Profile[]): AdminUsersFields[] => {
+export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
+    if (!data) return [];
     const result: AdminUsersFields[] = data.map((user) => {
         const {
-            id, email, firstName, lastName, membershipEndDate,
+            id, email, firstName, lastName, created,
+            lastVisit, endPayment, isActive, isPayment,
+            isSkill, isOrganization,
         } = user;
         return {
             id,
             name: getFullName(firstName, lastName),
             email,
-            dateEndMembership: membershipEndDate,
-            isBlock: false,
+            isBlock: isActive,
             isConfirmed: true,
-            isHost: true,
-            isMembership: true,
-            isVolunteer: false,
-            dateLogin: "26.01.2025",
-            dateRegistration: "1.01.2025",
+            isHost: isOrganization,
+            isMembership: isPayment,
+            isVolunteer: isSkill,
+            dateLogin: lastVisit,
+            dateRegistration: created,
+            dataEndMembership: endPayment,
         };
     });
 

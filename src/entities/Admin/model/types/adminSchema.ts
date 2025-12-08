@@ -2,6 +2,8 @@ import { Achievement } from "@/types/achievements";
 import { Skill } from "@/types/skills";
 import { Pagination } from "@/types/api/pagination";
 import { Food, House, Transfer } from "@/shared/data/conditions";
+import { Gender } from "@/entities/Profile";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 export interface Admin {
     token: string,
@@ -11,7 +13,21 @@ export interface AdminSchema {
     authData?: Admin,
 }
 
-export interface AdminUser {
+export interface AdminUsersFields {
+    id: string;
+    email?: string;
+    name?: string;
+    dateRegistration?: string;
+    dateLogin: string;
+    isConfirmed: boolean;
+    isVolunteer: boolean;
+    isHost: boolean;
+    isBlock: boolean;
+    isMembership: boolean;
+    dataEndMembership: string;
+}
+
+export interface AdminUsers {
     id: string;
     email?: string;
     firstName?: string;
@@ -26,9 +42,29 @@ export interface AdminUser {
     endPayment: string;
 }
 
-export enum AdminUserSort {
+export interface AdminUser {
+    firstName: string,
+    lastName: string,
+    birthDate: string,
+    gender: Gender,
+    country: string,
+    city: string,
+    locale: Locale,
+    phone: string,
+    aboutMe: string,
+    vk: string,
+    facebook: string,
+    instagram: string,
+    telegram: string,
+    skills: number[],
+    additionalSkills: string[]
+}
+
+export enum AdminSort {
     IdAsc = "id:asc",
     IdDesc = "id:desc",
+    NameAsc = "name:asc",
+    NameDesc = "name:desc",
     EmailAsc = "email:asc",
     EmailDesc = "email:desc",
     FioAsc = "fio:asc",
@@ -52,7 +88,7 @@ export enum AdminUserSort {
 }
 
 export interface GetAdminUserParams {
-    sort: AdminUserSort;
+    sort: AdminSort;
     id: number; // search by id user
     email: string; // search by email of user
     firstName: string; // search by first name of user
@@ -62,8 +98,13 @@ export interface GetAdminUserParams {
 }
 
 export interface GetAdminUserResponse {
-    data: AdminUser[];
+    data: AdminUsers[];
     pagination: Pagination;
+}
+
+export interface UpdateAdminUserRequest {
+    id: string;
+    body: AdminUser;
 }
 
 export interface AdminOrganizationsFields {
@@ -89,7 +130,7 @@ export interface EditAdminSkillRequest {
 }
 
 export interface GetAdminSkillsParams {
-    sort: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+    sort: AdminSort;
     id: number; // search by id skill
     name: string; // search by name of skill
     page: number;

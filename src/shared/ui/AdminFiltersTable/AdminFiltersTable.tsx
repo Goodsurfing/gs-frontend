@@ -1,33 +1,22 @@
 // src/components/FilterMenuButton.tsx
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import {
     Menu,
-    MenuItem,
-    TextField,
-    Select,
-    FormControl,
-    InputLabel,
     Button,
     Divider,
     Box,
     Typography,
 } from "@mui/material";
 import styles from "./AdminFiltersTable.module.scss";
-
-export enum FilterSortField {
-    IdAsc = "id:asc",
-    IdDesc = "id:desc",
-    NameAsc = "name:asc",
-    NameDesc = "name:desc",
-}
+import { AdminSort } from "@/entities/Admin";
 
 export interface BaseFilterFields {
-    sort?: FilterSortField;
+    sort?: AdminSort;
     id?: number;
     search?: string;
 }
 
-export type FilterFields<T = {}> = BaseFilterFields & T;
+export type FilterFields<T = {}> = T;
 
 export interface CustomFilterField<T extends string = string> {
     key: T;
@@ -36,7 +25,7 @@ export interface CustomFilterField<T extends string = string> {
         value: any;
         onChange: (value: any) => void;
         disabled?: boolean;
-    }) => ReactNode;
+    }) => React.ReactNode;
 }
 
 interface AdminFiltersTableProps<T extends Record<string, any> = {}> {
@@ -44,8 +33,7 @@ interface AdminFiltersTableProps<T extends Record<string, any> = {}> {
     onFilterChange: (filters: Partial<FilterFields<T>>) => void;
     onApply: () => void;
     disabled?: boolean;
-    textSearchLabel?: string;
-    customFields?: CustomFilterField<keyof T & string>[];
+    customFields: CustomFilterField<keyof T & string>[];
 }
 
 export const AdminFiltersTable = <T extends Record<string, any> = {}>({
@@ -53,11 +41,10 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
     onFilterChange,
     onApply,
     disabled = false,
-    textSearchLabel = "Поиск",
     customFields = [],
 }: AdminFiltersTableProps<T>) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [localFilters, setLocalFilters] = useState<Partial<FilterFields<T>>>(filters);
+    const [localFilters, setLocalFilters] = useState<Partial<T>>(filters);
     const open = Boolean(anchorEl);
 
     const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,7 +56,7 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
         setAnchorEl(null);
     };
 
-    const handleInputChange = (key: keyof FilterFields<T>, value: any) => {
+    const handleInputChange = (key: keyof T, value: any) => {
         setLocalFilters((prev) => ({
             ...prev,
             [key]: value === "" ? undefined : value,
@@ -83,15 +70,9 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
     };
 
     const handleReset = () => {
-        const resetValues: Partial<FilterFields<T>> = {
-            sort: FilterSortField.IdAsc,
-            id: undefined,
-            search: "",
-            // Сброс кастомных полей
-            ...Object.fromEntries(
-                customFields.map((field) => [field.key, undefined]),
-            ),
-        } as Partial<FilterFields<T>>;
+        const resetValues = Object.fromEntries(
+            customFields.map((field) => [field.key, undefined]),
+        ) as Partial<T>;
 
         setLocalFilters(resetValues);
         onFilterChange(resetValues);
@@ -132,36 +113,12 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
                 }}
             >
                 <Typography variant="subtitle2" fontWeight="600" sx={{ mb: 1.5 }}>
-                    Фильтрация и сортировка
+                    Фильтрация
                 </Typography>
 
-                {/* Базовое поле: ID */}
-                <TextField
-                    label="ID"
-                    type="number"
-                    value={localFilters.id ?? ""}
-                    onChange={(e) => handleInputChange("id", e.target.value ? Number(e.target.value) : undefined)}
-                    fullWidth
-                    size="small"
-                    inputProps={{ min: 1, step: 1 }}
-                    disabled={disabled}
-                    sx={{ mb: 1.5 }}
-                />
-
-                {/* Базовое поле: Поиск */}
-                <TextField
-                    label={textSearchLabel}
-                    value={localFilters.search ?? ""}
-                    onChange={(e) => handleInputChange("search", e.target.value)}
-                    fullWidth
-                    size="small"
-                    disabled={disabled}
-                    sx={{ mb: 1.5 }}
-                />
-
-                {/* Кастомные поля */}
+                {/* Только кастомные поля */}
                 {customFields.map((field) => (
-                    <div key={field.key} style={{ marginBottom: "12px" }}>
+                    <div key={field.key as string} style={{ marginBottom: "12px" }}>
                         {field.render({
                             value: localFilters[field.key],
                             onChange: (value) => handleInputChange(field.key, value),
@@ -169,23 +126,6 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
                         })}
                     </div>
                 ))}
-                {/* Сортировка */}
-                <FormControl fullWidth size="small" disabled={disabled} sx={{ mb: 1.5 }}>
-                    <InputLabel id="filter-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
-                        Сортировка
-                    </InputLabel>
-                    <Select
-                        labelId="filter-sort-label"
-                        value={localFilters.sort || FilterSortField.IdAsc}
-                        label="Сортировка"
-                        onChange={(e) => handleInputChange("sort", e.target.value)}
-                    >
-                        <MenuItem value={FilterSortField.IdAsc}>ID ↑</MenuItem>
-                        <MenuItem value={FilterSortField.IdDesc}>ID ↓</MenuItem>
-                        <MenuItem value={FilterSortField.NameAsc}>Название ↑</MenuItem>
-                        <MenuItem value={FilterSortField.NameDesc}>Название ↓</MenuItem>
-                    </Select>
-                </FormControl>
 
                 <Divider sx={{ my: 1.5 }} />
 

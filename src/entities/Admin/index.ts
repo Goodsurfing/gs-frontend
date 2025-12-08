@@ -1,8 +1,10 @@
 export type {
-    AdminSchema, AdminOrganizationsFields, AdminUsersFields,
+    AdminSchema, AdminOrganizationsFields,
     GetAdminSkillsParams,
     GetAdminAchievementsParams,
 } from "./model/types/adminSchema";
+
+export { AdminSort } from "./model/types/adminSchema";
 
 export { adminReducer, adminActions } from "./model/slice/adminSlice";
 
@@ -38,4 +40,8 @@ export {
     useLazyGetAchievementsQuery,
     useLazyGetFoodsQuery, useLazyGetHousesQuery,
     useLazyGetTransfersQuery,
+    useLazyGetUsersQuery,
+    useUpdateAdminUserMutation,
+    useDeleteUserMutation,
+    useToggleAdminUserActiveMutation,
 } from "./api/adminApi";

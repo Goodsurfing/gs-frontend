@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Stack } from "@mui/material";
+import {
+    FormControl, InputLabel, MenuItem, Select, Stack, TextField,
+} from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
@@ -9,7 +11,7 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminSkillCreatePageUrl, getAdminSkillPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { useDeleteSkillMutation, useLazyGetSkillsQuery } from "@/entities/Admin";
+import { AdminSort, useDeleteSkillMutation, useLazyGetSkillsQuery } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -17,7 +19,75 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./AdminSkillsTable.module.scss";
-import { AdminFiltersTable, FilterFields, FilterSortField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import {
+    AdminFiltersTable, CustomFilterField,
+} from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+
+interface SkillFilters {
+    id?: number;
+    name?: string;
+    sort?: AdminSort;
+}
+
+const skillCustomFields: CustomFilterField<keyof SkillFilters>[] = [
+    {
+        key: "id",
+        label: "ID",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="ID"
+                type="number"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
+                fullWidth
+                size="small"
+                inputProps={{ min: 1, step: 1 }}
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "name",
+        label: "Название навыка",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Название"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "sort",
+        label: "Сортировка",
+        render: ({ value, onChange, disabled }) => (
+            <FormControl fullWidth size="small" disabled={disabled}>
+                <InputLabel id="skill-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
+                    Сортировка
+                </InputLabel>
+                <Select
+                    labelId="skill-sort-label"
+                    value={value || AdminSort.IdAsc}
+                    label="Сортировка"
+                    onChange={(e) => onChange(e.target.value as AdminSort)}
+                    MenuProps={{
+                        PaperProps: {
+                            style: { maxHeight: 200 },
+                        },
+                    }}
+                >
+                    <MenuItem value={AdminSort.IdAsc}>ID ↑</MenuItem>
+                    <MenuItem value={AdminSort.IdDesc}>ID ↓</MenuItem>
+                    <MenuItem value={AdminSort.NameAsc}>Название ↑</MenuItem>
+                    <MenuItem value={AdminSort.NameDesc}>Название ↓</MenuItem>
+                </Select>
+            </FormControl>
+        ),
+    },
+];
 
 const SKILLS_PER_PAGE = 30;
 
@@ -28,10 +98,8 @@ export const AdminSkillsTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const [skillToDelete, setSkillToDelete] = useState<
     { id: number; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<FilterFields>>({
-        sort: FilterSortField.IdAsc,
-        id: undefined,
-        search: "",
+    const [filters, setFilters] = useState<Partial<SkillFilters>>({
+        sort: AdminSort.IdAsc,
     });
     const [getSkills, {
         data: skillsData,
@@ -41,18 +109,20 @@ export const AdminSkillsTable = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await getSkills({
-                page: currentPage,
-                limit: SKILLS_PER_PAGE,
-                sort: filters.sort,
-                id: filters.id,
-                name: filters.search,
-            }).unwrap().catch(() => {
+            try {
+                await getSkills({
+                    page: currentPage,
+                    limit: SKILLS_PER_PAGE,
+                    sort: filters.sort ?? AdminSort.IdAsc,
+                    id: filters.id,
+                    name: filters.name,
+                }).unwrap();
+            } catch {
                 setToast({
                     text: "Произошла ошибка при загрузке навыков",
                     type: HintType.Error,
                 });
-            });
+            }
         };
         fetchData();
     }, [currentPage, filters, getSkills]);
@@ -181,17 +251,6 @@ export const AdminSkillsTable = () => {
         return Math.ceil(skillsData.pagination.total / SKILLS_PER_PAGE);
     };
 
-    const handleFilterChange = (newFilters: Partial<FilterFields>) => {
-        const {
-            id, search, sort,
-        } = newFilters;
-        setFilters({
-            id,
-            search,
-            sort,
-        });
-    };
-
     const handleApplyFilters = () => {
         setCurrentPage(1);
     };
@@ -210,9 +269,10 @@ export const AdminSkillsTable = () => {
                 </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
-                    onFilterChange={handleFilterChange}
+                    onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
+                    customFields={skillCustomFields}
                 />
             </div>
             <div className={styles.table}>

@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     AdminReviewVacancy,
+    AdminUser,
     CreateAdminAchievementsRequest,
     CreateAdminFoodRequest,
     CreateAdminHouseRequest,
@@ -14,8 +15,11 @@ import {
     GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
     GetAdminTransfersParams,
     GetAdminTransfersResponse,
+    GetAdminUserParams,
+    GetAdminUserResponse,
     SearchUsersParams,
     SearchUsersResponse,
+    UpdateAdminUserRequest,
 } from "../model/types/adminSchema";
 import {
     Category, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
@@ -314,6 +318,46 @@ export const adminApi = createApi({
             }),
             providesTags: ["user"],
         }),
+        updateAdminUser: build.mutation<void, UpdateAdminUserRequest>({
+            query: (data) => {
+                const { id, body } = data;
+                return {
+                    url: `user/edit/${id}`,
+                    method: "POST",
+                    body,
+                };
+            },
+            invalidatesTags: ["user"],
+        }),
+        toggleAdminUserActive: build.mutation<void, string>({
+            query: (userId) => ({
+                url: `user/toggle-active/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["user"],
+        }),
+        deleteUser: build.mutation<void, number>({
+            query: (userId) => ({
+                url: `user/${userId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["user"],
+        }),
+        getUsers: build.query<GetAdminUserResponse, Partial<GetAdminUserParams>>({
+            query: (params) => ({
+                url: "user/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["user"],
+        }),
+        getUserById: build.query<AdminUser, string>({
+            query: (userId) => ({
+                url: `user/${userId}`,
+                method: "GET",
+            }),
+            providesTags: ["user"],
+        }),
         editReviewVacancy: build.mutation<void, EditReviewVacancy>({
             query: (data) => ({
                 url: `review-vacancy/edit/${data.reviewId}`,
@@ -450,4 +494,8 @@ export const {
     useGetTransfersQuery,
     useLazyGetTransfersQuery,
     useGetTransfertByIdQuery,
+    useLazyGetUsersQuery,
+    useUpdateAdminUserMutation,
+    useDeleteUserMutation,
+    useToggleAdminUserActiveMutation,
 } = adminApi;
