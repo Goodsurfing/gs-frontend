@@ -19,6 +19,7 @@ import {
     GetAdminUserResponse,
     SearchUsersParams,
     SearchUsersResponse,
+    UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
 } from "../model/types/adminSchema";
 import {
@@ -33,7 +34,7 @@ export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "category", "achievement", "transfer",
-        "house", "food",
+        "house", "food", "organization",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -318,11 +319,11 @@ export const adminApi = createApi({
             }),
             providesTags: ["user"],
         }),
-        updateAdminUser: build.mutation<void, UpdateAdminUserRequest>({
+        updateAdminUser: build.mutation<void, UpdateAdminOrganizationRequest>({
             query: (data) => {
                 const { id, body } = data;
                 return {
-                    url: `user/edit/${id}`,
+                    url: `organization/edit/${id}`,
                     method: "POST",
                     body,
                 };
@@ -336,7 +337,7 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["user"],
         }),
-        deleteUser: build.mutation<void, number>({
+        deleteUser: build.mutation<void, string>({
             query: (userId) => ({
                 url: `user/${userId}`,
                 method: "DELETE",
@@ -357,6 +358,31 @@ export const adminApi = createApi({
                 method: "GET",
             }),
             providesTags: ["user"],
+        }),
+        updateAdminOrganization: build.mutation<void, UpdateAdminOrganizationRequest>({
+            query: (data) => {
+                const { id, body } = data;
+                return {
+                    url: `organization/edit/${id}`,
+                    method: "POST",
+                    body,
+                };
+            },
+            invalidatesTags: ["organization"],
+        }),
+        toggleAdminOrganizationActive: build.mutation<void, string>({
+            query: (organizationId) => ({
+                url: `organization/toggle-active/${organizationId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["organization"],
+        }),
+        deleteOrganization: build.mutation<void, string>({
+            query: (organizationId) => ({
+                url: `organization/${organizationId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["organization"],
         }),
         editReviewVacancy: build.mutation<void, EditReviewVacancy>({
             query: (data) => ({
@@ -498,4 +524,5 @@ export const {
     useUpdateAdminUserMutation,
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
+    useGetUserByIdQuery,
 } = adminApi;

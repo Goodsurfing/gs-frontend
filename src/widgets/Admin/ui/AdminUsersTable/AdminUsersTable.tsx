@@ -20,6 +20,7 @@ import {
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import {
     AdminSort, adminUsersAdapter, useDeleteUserMutation, useLazyGetUsersQuery,
+    useToggleAdminUserActiveMutation,
 } from "@/entities/Admin";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -43,9 +44,8 @@ const customFields: CustomFilterField<keyof UserFilters>[] = [
         render: ({ value, onChange, disabled }) => (
             <TextField
                 label="ID"
-                type="number"
                 value={value ?? ""}
-                onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
+                onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
                 size="small"
                 inputProps={{ min: 1, step: 1 }}
@@ -166,12 +166,17 @@ export const AdminUsersTable = () => {
     const [filters, setFilters] = useState<Partial<UserFilters>>({
         sort: AdminSort.IdAsc,
     });
+    const [toggleAdminUserActive,
+        { isLoading: isTogglingActive }] = useToggleAdminUserActiveMutation();
     const [userToDelete, setUserToDelete] = useState<
     { id: number; name: string } | null>(null);
     const [getUsers, {
         data: usersData,
         isLoading,
+        isFetching,
     }] = useLazyGetUsersQuery();
+    const [userToToggle, setUserToToggle] = useState<{ id: number;
+        isActive: boolean; name: string } | null>(null);
     const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
     useEffect(() => {
@@ -225,6 +230,37 @@ export const AdminUsersTable = () => {
         }
     };
 
+    const handleOpenToggleModal = (id: number, isActive: boolean, name: string) => {
+        setUserToToggle({ id, isActive, name });
+    };
+
+    const handleCloseToggleModal = () => {
+        setUserToToggle(null);
+    };
+
+    const handleConfirmToggle = async () => {
+        if (!userToToggle) return;
+
+        try {
+            await toggleAdminUserActive(userToToggle.id.toString()).unwrap();
+            setToast({
+                text: `Пользователь успешно ${
+                    userToToggle.isActive ? "заблокирован" : "разблокирован"
+                }`,
+                type: HintType.Success,
+            });
+        } catch (error) {
+            setToast({
+                text: `Ошибка при ${
+                    userToToggle.isActive ? "блокировке" : "разблокировке"
+                } пользователя`,
+                type: HintType.Error,
+            });
+        } finally {
+            handleCloseToggleModal();
+        }
+    };
+
     const columns: GridColDef[] = [
         {
             field: "id",
@@ -271,7 +307,7 @@ export const AdminUsersTable = () => {
         },
         {
             field: "isConfirmed",
-            headerName: "Пользователь подтвержден",
+            headerName: "Подтвержден",
             type: "boolean",
             sortable: false,
             filterable: false,
@@ -297,8 +333,8 @@ export const AdminUsersTable = () => {
             hideable: false,
         },
         {
-            field: "isBlock",
-            headerName: "Пользователь заблокирован",
+            field: "isActive",
+            headerName: "Активный аккаунт",
             type: "boolean",
             sortable: false,
             filterable: false,
@@ -331,10 +367,16 @@ export const AdminUsersTable = () => {
             disableColumnMenu: true,
             hideable: false,
             renderCell: (params) => {
+                const isActive = params.row.isActive === true;
+
                 const handleView = () => navigate(
                     getAdminPersonalUserPageUrl(locale, params.row.id),
                 );
-                const handleBlock = () => alert(`Заблокировать пользователя ${params.row.id}?`);
+                const handleToggleActiveClick = () => handleOpenToggleModal(
+                    params.row.id,
+                    isActive,
+                    params.row.name,
+                );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
                 };
@@ -350,10 +392,12 @@ export const AdminUsersTable = () => {
                             <ReactSVG src={showIcon} />
                         </button>
                         <button
-                            onClick={handleBlock}
+                            onClick={handleToggleActiveClick}
                             type="button"
-                            title="Заблокировать пользователя"
-                            className={cn(styles.btnIcon, styles.btnBlock)}
+                            title={isActive ? "Заблокировать пользователя" : "Разблокировать пользователя"}
+                            className={cn(styles.btnIcon, isActive
+                                ? styles.btnBlock : styles.btnUnblock)}
+                            disabled={isTogglingActive}
                         >
                             <ReactSVG src={blockIcon} />
                         </button>
@@ -362,6 +406,7 @@ export const AdminUsersTable = () => {
                             type="button"
                             title="Удалить пользователя"
                             className={cn(styles.btnIcon, styles.btnDelete)}
+                            disabled={isDeleting}
                         >
                             <ReactSVG src={deleteIcon} />
                         </button>
@@ -371,7 +416,7 @@ export const AdminUsersTable = () => {
         },
     ];
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
             <MiniLoader />
         );
@@ -404,7 +449,6 @@ export const AdminUsersTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-
             <AdminFiltersTable
                 filters={filters}
                 onFilterChange={setFilters}
@@ -426,6 +470,17 @@ export const AdminUsersTable = () => {
                 cancelTextButton="Отмена"
                 isLoading={isDeleting}
                 buttonsDisabled={isDeleting}
+            />
+            <ConfirmActionModal
+                isModalOpen={!!userToToggle}
+                description={`Вы уверены, что хотите ${userToToggle?.isActive
+                    ? "заблокировать" : "разблокировать"} пользователя "${userToToggle?.name}"?`}
+                onConfirm={handleConfirmToggle}
+                onClose={handleCloseToggleModal}
+                confirmTextButton={userToToggle?.isActive ? "Заблокировать" : "Разблокировать"}
+                cancelTextButton="Отмена"
+                isLoading={isTogglingActive}
+                buttonsDisabled={isTogglingActive}
             />
         </div>
     );

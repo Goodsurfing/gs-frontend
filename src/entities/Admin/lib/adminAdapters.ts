@@ -1,6 +1,10 @@
 import { getFullName } from "@/shared/lib/getFullName";
-import { AdminOrganizationsFields, AdminUsers, AdminUsersFields } from "../model/types/adminSchema";
+import {
+    AdminOrganizationsFields, AdminUser, AdminUsers, AdminUsersFields,
+} from "../model/types/adminSchema";
 import { Host } from "@/entities/Host";
+import { Profile } from "@/entities/Profile";
+import { ProfileInfoFields } from "@/features/ProfileInfo";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     if (!data) return [];
@@ -14,7 +18,7 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
             id,
             name: getFullName(firstName, lastName),
             email,
-            isBlock: isActive,
+            isActive,
             isConfirmed: true,
             isHost: isOrganization,
             isMembership: isPayment,
@@ -26,6 +30,46 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     });
 
     return result;
+};
+
+export const adminUserAdapter = (data: AdminUser): ProfileInfoFields => {
+    const {
+        firstName, lastName, email, aboutMe, city, country, locale, phone,
+        vk, telegram, facebook, instagram, birthDate, gender,
+    } = data;
+
+    console.log("birthData", birthDate);
+    console.log("Data", new Date(data?.birthDate ?? ""));
+
+    return {
+        about: {
+            firstName,
+            lastName,
+        },
+        aboutMe,
+        locale: {
+            city,
+            country,
+            language: locale,
+        },
+        contacts: {
+            email,
+            phone,
+        },
+        social: {
+            vk,
+            telegram,
+            facebook,
+            instagram,
+        },
+        birthDate: {
+            day: 0,
+            mounth: 7,
+            year: 2001,
+        },
+        gender,
+        profileAvatar: undefined,
+    };
 };
 
 export const adminOrganizationsAdapter = (data: Host[]): AdminOrganizationsFields[] => {

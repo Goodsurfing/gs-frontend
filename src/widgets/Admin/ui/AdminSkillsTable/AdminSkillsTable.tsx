@@ -104,6 +104,7 @@ export const AdminSkillsTable = () => {
     const [getSkills, {
         data: skillsData,
         isLoading,
+        isFetching,
     }] = useLazyGetSkillsQuery();
     const [deleteSkill, { isLoading: isDeleting }] = useDeleteSkillMutation();
 
@@ -225,7 +226,7 @@ export const AdminSkillsTable = () => {
         },
     ];
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
             <MiniLoader />
         );

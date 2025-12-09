@@ -2,6 +2,7 @@ export type {
     AdminSchema, AdminOrganizationsFields,
     GetAdminSkillsParams,
     GetAdminAchievementsParams,
+    AdminUser,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -15,6 +16,8 @@ export { adminUsersAdapter, adminOrganizationsAdapter } from "./lib/adminAdapter
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
 export { OrganizationInfoTable } from "./ui/OrganizationInfoTable/OrganizationInfoTable";
+
+export { adminUserAdapter } from "./lib/adminAdapters";
 
 export {
     adminApi, useCreateSkillMutation,
@@ -44,4 +47,5 @@ export {
     useUpdateAdminUserMutation,
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
+    useGetUserByIdQuery,
 } from "./api/adminApi";

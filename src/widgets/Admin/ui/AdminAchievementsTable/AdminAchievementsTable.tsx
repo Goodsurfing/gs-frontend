@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Stack } from "@mui/material";
+import {
+    FormControl, InputLabel, MenuItem, Select, Stack, TextField,
+} from "@mui/material";
 import { ReactSVG } from "react-svg";
 import { useNavigate } from "react-router-dom";
 import cn from "classnames";
@@ -12,6 +14,7 @@ import { getAdminAchievementCreatePageUrl, getAdminAchievementPersonalPageUrl } 
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import {
+    AdminSort,
     useDeleteAchievementMutation, useLazyGetAchievementsQuery,
 } from "@/entities/Admin";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -19,7 +22,73 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { AdminFiltersTable, FilterFields, FilterSortField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+
+interface AchievementFilters {
+    id?: number;
+    name?: string;
+    sort?: AdminSort;
+}
+
+const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
+    {
+        key: "id",
+        label: "ID",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="ID"
+                type="number"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
+                fullWidth
+                size="small"
+                inputProps={{ min: 1, step: 1 }}
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "name",
+        label: "Название достижения",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Название"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "sort",
+        label: "Сортировка",
+        render: ({ value, onChange, disabled }) => (
+            <FormControl fullWidth size="small" disabled={disabled}>
+                <InputLabel id="skill-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
+                    Сортировка
+                </InputLabel>
+                <Select
+                    labelId="skill-sort-label"
+                    value={value || AdminSort.IdAsc}
+                    label="Сортировка"
+                    onChange={(e) => onChange(e.target.value as AdminSort)}
+                    MenuProps={{
+                        PaperProps: {
+                            style: { maxHeight: 200 },
+                        },
+                    }}
+                >
+                    <MenuItem value={AdminSort.IdAsc}>ID ↑</MenuItem>
+                    <MenuItem value={AdminSort.IdDesc}>ID ↓</MenuItem>
+                    <MenuItem value={AdminSort.NameAsc}>Название ↑</MenuItem>
+                    <MenuItem value={AdminSort.NameDesc}>Название ↓</MenuItem>
+                </Select>
+            </FormControl>
+        ),
+    },
+];
 
 const ACHIEVEMENTS_PER_PAGE = 30;
 
@@ -30,14 +99,13 @@ export const AdminAchievementsTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const [achievementToDelete, setAchievementToDelete] = useState<
     { id: number; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<FilterFields>>({
-        sort: FilterSortField.IdAsc,
-        id: undefined,
-        search: "",
+    const [filters, setFilters] = useState<Partial<AchievementFilters>>({
+        sort: AdminSort.IdAsc,
     });
     const [getAchievements, {
         data: achievemnetsData,
         isLoading,
+        isFetching,
     }] = useLazyGetAchievementsQuery();
     const [deleteAchievement, { isLoading: isDeleting }] = useDeleteAchievementMutation();
 
@@ -46,9 +114,9 @@ export const AdminAchievementsTable = () => {
             await getAchievements({
                 page: currentPage,
                 limit: ACHIEVEMENTS_PER_PAGE,
-                sort: filters.sort,
+                sort: filters.sort ?? AdminSort.IdAsc,
                 id: filters.id,
-                name: filters.search,
+                name: filters.name,
             }).unwrap()
                 .catch(() => {
                     setToast({
@@ -163,7 +231,7 @@ export const AdminAchievementsTable = () => {
         },
     ];
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
             <MiniLoader />
         );
@@ -189,17 +257,6 @@ export const AdminAchievementsTable = () => {
         return Math.ceil(achievemnetsData.pagination.total / ACHIEVEMENTS_PER_PAGE);
     };
 
-    const handleFilterChange = (newFilters: Partial<FilterFields>) => {
-        const {
-            id, search, sort,
-        } = newFilters;
-        setFilters({
-            id,
-            search,
-            sort,
-        });
-    };
-
     const handleApplyFilters = () => {
         setCurrentPage(1);
     };
@@ -218,10 +275,10 @@ export const AdminAchievementsTable = () => {
                 </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
-                    onFilterChange={handleFilterChange}
+                    onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
-                    textSearchLabel="Поиск"
+                    customFields={skillCustomFields}
                 />
             </div>
             <div className={styles.table}>

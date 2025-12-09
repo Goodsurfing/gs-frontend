@@ -1,26 +1,32 @@
 import React, { FC, useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import cn from "classnames";
-import styles from "./AdminUserInfoForm.module.scss";
-import { getProfileReadonly, Profile, profileActions } from "@/entities/Profile";
-import { ProfileInfoFields, ProfileInfoFormAvatar, ProfileInfoFormContent } from "@/features/ProfileInfo";
+import { getProfileReadonly, profileActions } from "@/entities/Profile";
+import { ProfileInfoFields, ProfileInfoFormContent } from "@/features/ProfileInfo";
 import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
+import ProfileInput from "@/components/ProfileInput/ProfileInput";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { AdminUser, adminUserAdapter } from "@/entities/Admin";
+import styles from "./AdminUserInfoForm.module.scss";
 
 interface AdminUserInfoFormProps {
     className?: string;
-    profile: Profile;
+    user: AdminUser;
+    userId: string;
 }
 
 export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
-    const { className, profile } = props;
+    const { className, user, userId } = props;
 
     const form = useForm<ProfileInfoFields>({
         mode: "onChange",
         // defaultValues: profileInfoFormAdapter(profile),
     });
+    const { locale } = useLocale();
     const [toast] = useState<ToastAlert>();
 
     const { handleSubmit, reset, control } = form;
@@ -34,7 +40,9 @@ export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
 
     useEffect(() => {
         // reset to profileInfoFormAdapter(profile)
-    }, [profile, reset]);
+        const adapter = adminUserAdapter(user);
+        reset(adapter);
+    }, [user, reset]);
 
     const isLocked = useAppSelector(getProfileReadonly);
 
@@ -75,7 +83,15 @@ export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
                         {isLocked ? "Редактировать" : "Отмена"}
                     </button>
                 </form>
-                <ProfileInfoFormAvatar userId={profile.id} />
+                <ProfileInput
+                    fileClassname={styles.fileInput}
+                    className={className}
+                    id="profile-file"
+                    src={undefined}
+                    setFile={() => {}}
+                    route={getVolunteerPersonalPageUrl(locale, userId)}
+
+                />
             </div>
         </FormProvider>
     );

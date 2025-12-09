@@ -22,7 +22,7 @@ export interface AdminUsersFields {
     isConfirmed: boolean;
     isVolunteer: boolean;
     isHost: boolean;
-    isBlock: boolean;
+    isActive: boolean;
     isMembership: boolean;
     dataEndMembership: string;
 }
@@ -43,21 +43,32 @@ export interface AdminUsers {
 }
 
 export interface AdminUser {
-    firstName: string,
-    lastName: string,
-    birthDate: string,
-    gender: Gender,
-    country: string,
-    city: string,
-    locale: Locale,
-    phone: string,
-    aboutMe: string,
-    vk: string,
-    facebook: string,
-    instagram: string,
-    telegram: string,
-    skills: number[],
-    additionalSkills: string[]
+    firstName: string;
+    lastName: string;
+    imagePath: string;
+    thumbnails: string;
+    email: string;
+    birthDate: string;
+    gender: Gender;
+    country: string;
+    city: string;
+    locale: Locale;
+    phone: string;
+    aboutMe: string;
+    vk: string;
+    facebook: string;
+    instagram: string;
+    telegram: string;
+    skills: number[];
+    additionalSkills: string[];
+    created: string; // time account created
+    lastVisit: string;
+    isVerified: boolean;
+    isSkill: boolean; // is volunteer
+    isOrganization: boolean;
+    isActive: boolean; // is block
+    isPayment: boolean;
+    endPayment: string;
 }
 
 export enum AdminSort {
@@ -105,6 +116,26 @@ export interface GetAdminUserResponse {
 export interface UpdateAdminUserRequest {
     id: string;
     body: AdminUser;
+}
+
+export interface AdminOrganizations {
+    name: string;
+    address: string;
+    type: string;
+    isActive: boolean;
+    otherType: string;
+    website: string;
+    description: string;
+    shortDescription: string;
+    vk: string;
+    facebook: string;
+    instagram: string;
+    telegram: string;
+}
+
+export interface UpdateAdminOrganizationRequest {
+    id: string;
+    body: AdminOrganizations;
 }
 
 export interface AdminOrganizationsFields {
@@ -155,7 +186,7 @@ export interface EditAdminAchievementsRequest {
 }
 
 export interface GetAdminAchievementsParams {
-    sort: "id:asc" | "id:desc" | "name:asc" | "name:desc";
+    sort: AdminSort;
     id: number; // search by id achievement
     name: string; // search by name of achievement
     page: number;
