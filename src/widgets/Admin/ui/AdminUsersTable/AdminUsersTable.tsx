@@ -166,10 +166,9 @@ export const AdminUsersTable = () => {
     const [filters, setFilters] = useState<Partial<UserFilters>>({
         sort: AdminSort.IdAsc,
     });
-    const [toggleAdminUserActive,
-        { isLoading: isTogglingActive }] = useToggleAdminUserActiveMutation();
+
     const [userToDelete, setUserToDelete] = useState<
-    { id: number; name: string } | null>(null);
+    { id: string; name: string } | null>(null);
     const [getUsers, {
         data: usersData,
         isLoading,
@@ -177,10 +176,13 @@ export const AdminUsersTable = () => {
     }] = useLazyGetUsersQuery();
     const [userToToggle, setUserToToggle] = useState<{ id: number;
         isActive: boolean; name: string } | null>(null);
+    const [toggleAdminUserActive,
+        { isLoading: isTogglingActive }] = useToggleAdminUserActiveMutation();
     const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
     useEffect(() => {
         const fetchData = async () => {
+            setToast(undefined);
             try {
                 await getUsers({
                     page: currentPage,
@@ -202,7 +204,7 @@ export const AdminUsersTable = () => {
         fetchData();
     }, [currentPage, filters, getUsers]);
 
-    const handleOpenDeleteModal = (id: number, name: string) => {
+    const handleOpenDeleteModal = (id: string, name: string) => {
         setUserToDelete({ id, name });
     };
 

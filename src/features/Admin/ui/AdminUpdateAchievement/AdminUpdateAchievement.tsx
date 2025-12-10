@@ -3,11 +3,7 @@ import cn from "classnames";
 import Button from "@/shared/ui/Button/Button";
 import { Modal } from "@/shared/ui/Modal/Modal";
 import styles from "./AdminUpdateAchievement.module.scss";
-
-interface Achievement {
-    id: string;
-    name: string;
-}
+import { Achievement } from "@/types/achievements";
 
 interface AdminUpdateAchievementProps {
     achievements: Achievement[];
@@ -22,13 +18,13 @@ export const AdminUpdateAchievement: FC<AdminUpdateAchievementProps> = ({
     isModalOpen,
     onClose,
 }) => {
-    const [selectedAchievements, setSelectedAchievements] = useState<Set<string>>(new Set());
+    const [selectedAchievements, setSelectedAchievements] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         document.body.style.overflow = isModalOpen ? "hidden" : "";
     }, [isModalOpen]);
 
-    const toggleAchievement = (id: string) => {
+    const toggleAchievement = (id: number) => {
         setSelectedAchievements((prev) => {
             const newSet = new Set(prev);
             if (newSet.has(id)) newSet.delete(id);

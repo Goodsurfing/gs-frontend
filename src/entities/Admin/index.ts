@@ -3,6 +3,8 @@ export type {
     GetAdminSkillsParams,
     GetAdminAchievementsParams,
     AdminUser,
+    GetAdminOrganizationParams,
+    UpdateAdminUser,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -48,4 +50,10 @@ export {
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
     useGetUserByIdQuery,
+    useUpdateAdminOrganizationMutation,
+    useToggleAdminOrganizationActiveMutation,
+    useDeleteOrganizationMutation,
+    useLazyGetOrganizationsQuery,
+    useGetOrganizationByIdQuery,
+    useGetPublicAchievementsQuery,
 } from "./api/adminApi";

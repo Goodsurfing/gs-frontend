@@ -1,9 +1,9 @@
 import { getFullName } from "@/shared/lib/getFullName";
 import {
+    AdminOrganizations,
     AdminOrganizationsFields, AdminUser, AdminUsers, AdminUsersFields,
+    UpdateAdminUser,
 } from "../model/types/adminSchema";
-import { Host } from "@/entities/Host";
-import { Profile } from "@/entities/Profile";
 import { ProfileInfoFields } from "@/features/ProfileInfo";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
@@ -38,8 +38,12 @@ export const adminUserAdapter = (data: AdminUser): ProfileInfoFields => {
         vk, telegram, facebook, instagram, birthDate, gender,
     } = data;
 
-    console.log("birthData", birthDate);
-    console.log("Data", new Date(data?.birthDate ?? ""));
+    const date = new Date(birthDate ?? "");
+    const birthDateTemp = {
+        day: date.getUTCDate(),
+        mounth: date.getUTCMonth() + 1,
+        year: date.getUTCFullYear(),
+    };
 
     return {
         about: {
@@ -62,29 +66,61 @@ export const adminUserAdapter = (data: AdminUser): ProfileInfoFields => {
             facebook,
             instagram,
         },
-        birthDate: {
-            day: 0,
-            mounth: 7,
-            year: 2001,
-        },
+        birthDate: birthDateTemp,
         gender,
         profileAvatar: undefined,
     };
 };
 
-export const adminOrganizationsAdapter = (data: Host[]): AdminOrganizationsFields[] => {
+export const adminUserApiAdapter = (data: ProfileInfoFields, imageId?: string): UpdateAdminUser => {
+    const {
+        about, contacts, locale, social, aboutMe, birthDate, gender,
+    } = data;
+
+    let birthDateResult: string | undefined;
+
+    if (birthDate && birthDate.year && birthDate.mounth && birthDate.day) {
+        const tempBirthDate = new Date(
+            birthDate.year,
+            birthDate.mounth - 1,
+            birthDate.day,
+        );
+        birthDateResult = tempBirthDate.toLocaleDateString();
+    }
+
+    return {
+        locale: locale.language!,
+        birthDate: birthDateResult,
+        phone: contacts.phone ?? "",
+        city: locale.city ?? "",
+        country: locale.country ?? "",
+        aboutMe: aboutMe ?? "",
+        gender,
+        vk: social.vk ?? "",
+        facebook: social.facebook ?? "",
+        telegram: social.telegram ?? "",
+        instagram: social.instagram ?? "",
+        firstName: about.firstName ?? "",
+        lastName: about.lastName ?? "",
+        imageId,
+    };
+};
+
+export const adminOrganizationsAdapter = (data: AdminOrganizations[]):
+AdminOrganizationsFields[] => {
     const result: AdminOrganizationsFields[] = data.map((user) => {
         const {
-            id, name, owner,
+            id, name, firstName, lastName, countApplications, countVacancies,
+            isActive,
         } = user;
         return {
             id,
             name,
-            owner: getFullName(owner.firstName, owner.lastName),
+            owner: getFullName(firstName, lastName),
             countMembers: 1,
-            countVacancies: 4,
-            countVolunteers: 6,
-            isBlock: false,
+            countApplications,
+            countVacancies,
+            isActive,
         };
     });
 

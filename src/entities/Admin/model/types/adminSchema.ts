@@ -43,22 +43,22 @@ export interface AdminUsers {
 }
 
 export interface AdminUser {
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     imagePath: string;
     thumbnails: string;
     email: string;
-    birthDate: string;
-    gender: Gender;
-    country: string;
-    city: string;
+    birthDate?: string;
+    gender?: Gender;
+    country?: string;
+    city?: string;
     locale: Locale;
-    phone: string;
-    aboutMe: string;
-    vk: string;
-    facebook: string;
-    instagram: string;
-    telegram: string;
+    phone?: string;
+    aboutMe?: string;
+    vk?: string;
+    facebook?: string;
+    instagram?: string;
+    telegram?: string;
     skills: number[];
     additionalSkills: string[];
     created: string; // time account created
@@ -71,6 +71,12 @@ export interface AdminUser {
     endPayment: string;
 }
 
+export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
+| "isSkill" | "isOrganization" | "isActive" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
+| "email" | "additionalSkills" | "skills"> & {
+    imageId?: string;
+};
+
 export enum AdminSort {
     IdAsc = "id:asc",
     IdDesc = "id:desc",
@@ -80,6 +86,12 @@ export enum AdminSort {
     EmailDesc = "email:desc",
     FioAsc = "fio:asc",
     FioDesc = "fio:desc",
+    EmployeeAsc = "employee:asc",
+    EmployeeDesc = "employee:desc",
+    CountVacanciesAsc = "countVacancies:asc",
+    CountVacanciesDesc = "countVacancies:desc",
+    CountApplicationsAsc = "countApplications:asc",
+    CountApplicationsDesc = "countApplications:desc",
     CreatedAsc = "created:asc",
     CreatedDesc = "created:desc",
     LastVisitAsc = "lastVisit:asc",
@@ -115,10 +127,10 @@ export interface GetAdminUserResponse {
 
 export interface UpdateAdminUserRequest {
     id: string;
-    body: AdminUser;
+    body: UpdateAdminUser;
 }
 
-export interface AdminOrganizations {
+export interface AdminOrganization {
     name: string;
     address: string;
     type: string;
@@ -133,9 +145,33 @@ export interface AdminOrganizations {
     telegram: string;
 }
 
+export interface AdminOrganizations {
+    id: string;
+    name: string;
+    lastName: string;
+    firstName: string;
+    countVacancies: number;
+    countApplications: number;
+    isActive: boolean;
+}
+
 export interface UpdateAdminOrganizationRequest {
     id: string;
     body: AdminOrganizations;
+}
+
+export interface GetAdminOrganizationParams {
+    sort: AdminSort;
+    name: string; // search by organization name
+    firstName: string;
+    lastName: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminOrganizationResponse {
+    data: AdminOrganizations[];
+    pagination: Pagination;
 }
 
 export interface AdminOrganizationsFields {
@@ -144,8 +180,8 @@ export interface AdminOrganizationsFields {
     owner: string;
     countMembers: number;
     countVacancies: number;
-    countVolunteers: number;
-    isBlock: boolean;
+    countApplications: number;
+    isActive: boolean;
 }
 
 export interface CreateAdminSkillRequest {

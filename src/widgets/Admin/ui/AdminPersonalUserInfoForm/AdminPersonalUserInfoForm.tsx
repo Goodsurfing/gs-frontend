@@ -27,7 +27,7 @@ export const AdminPersonalUserInfoForm: FC<AdminPersonalUserInfoFormProps> = (pr
 
     return (
         <div>
-            <AdminUserSettings />
+            <AdminUserSettings data={data} userId={userId} />
             <UserInfoTable data={data} userId={userId} />
             <AdminUserInfo data={data} userId={userId} />
         </div>

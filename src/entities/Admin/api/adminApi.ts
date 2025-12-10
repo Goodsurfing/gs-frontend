@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
+    AdminOrganization,
     AdminReviewVacancy,
     AdminUser,
     CreateAdminAchievementsRequest,
@@ -11,7 +12,8 @@ import {
     EditAdminSkillRequest, EditAdminTransferRequest,
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse, GetAdminFoodParams, GetAdminFoodResponse,
-    GetAdminHouseParams, GetAdminHouseResponse, GetAdminReviewVacancyListParams,
+    GetAdminHouseParams, GetAdminHouseResponse,
+    GetAdminOrganizationParams, GetAdminOrganizationResponse, GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
     GetAdminTransfersParams,
     GetAdminTransfersResponse,
@@ -29,6 +31,7 @@ import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
 import { Achievement } from "@/types/achievements";
 import { Food, House, Transfer } from "@/shared/data/conditions";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
@@ -125,6 +128,14 @@ export const adminApi = createApi({
                 method: "DELETE",
             }),
             invalidatesTags: ["achievement"],
+        }),
+        getPublicAchievements: build.query<Achievement[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}achievement/list`,
+                method: "GET",
+            }),
+            providesTags: ["achievement"],
         }),
         getAchievements: build.query<GetAdminAchievementsResponse,
         undefined | Partial<GetAdminAchievementsParams>>({
@@ -319,7 +330,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["user"],
         }),
-        updateAdminUser: build.mutation<void, UpdateAdminOrganizationRequest>({
+        updateAdminUser: build.mutation<void, UpdateAdminUserRequest>({
             query: (data) => {
                 const { id, body } = data;
                 return {
@@ -383,6 +394,22 @@ export const adminApi = createApi({
                 method: "DELETE",
             }),
             invalidatesTags: ["organization"],
+        }),
+        getOrganizations: build.query<GetAdminOrganizationResponse,
+        Partial<GetAdminOrganizationParams>>({
+            query: (params) => ({
+                url: "organization/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["organization"],
+        }),
+        getOrganizationById: build.query<AdminOrganization, string>({
+            query: (organizationId) => ({
+                url: `organization/${organizationId}`,
+                method: "GET",
+            }),
+            providesTags: ["organization"],
         }),
         editReviewVacancy: build.mutation<void, EditReviewVacancy>({
             query: (data) => ({
@@ -525,4 +552,10 @@ export const {
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
     useGetUserByIdQuery,
+    useUpdateAdminOrganizationMutation,
+    useToggleAdminOrganizationActiveMutation,
+    useDeleteOrganizationMutation,
+    useLazyGetOrganizationsQuery,
+    useGetOrganizationByIdQuery,
+    useGetPublicAchievementsQuery,
 } = adminApi;
