@@ -500,6 +500,14 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
+        getPublicCategoriesVacancy: build.query<Category[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}category/list`,
+                method: "GET",
+            }),
+            providesTags: ["category"],
+        }),
     }),
 });
 
@@ -558,4 +566,5 @@ export const {
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery,
+    useGetPublicCategoriesVacancyQuery,
 } = adminApi;

@@ -120,22 +120,22 @@ export const useCategories = () => {
         },
     ];
 
-    const getTranslation = (category: CategoryType | undefined): string | undefined => {
-        const translations: Record<CategoryType, string> = {
-            hostels: t("category-offer.Хостелы"),
-            reserves_and_parks: t("category-offer.Заповедники и парки"),
-            farm: t("category-offer.Ферма"),
-            animals: t("category-offer.Животные"),
-            teaching: t("category-offer.Преподавание"),
-            children: t("category-offer.Дети"),
-            charity: t("category-offer.Благотворительность"),
-            sports: t("category-offer.Спорт"),
-            art: t("category-offer.Искусство"),
-            archeology: t("category-offer.Археология"),
-            online: t("category-offer.Онлайн"),
-            paid_work: t("category-offer.Оплачиваемая работа"),
-            international: t("category-offer.Международные"),
-            other: t("category-offer.Другое"),
+    const getTranslation = (category: string | undefined): string | undefined => {
+        const translations: Record<string, string> = {
+            "Работа в хостеле": t("category-offer.Хостелы"),
+            "Заповедники и парки": t("category-offer.Заповедники и парки"),
+            "Работа на ферме": t("category-offer.Ферма"),
+            "Работа с животными": t("category-offer.Животные"),
+            Преподавание: t("category-offer.Преподавание"),
+            "Работа с детьми": t("category-offer.Дети"),
+            Благотворительность: t("category-offer.Благотворительность"),
+            Спорт: t("category-offer.Спорт"),
+            Искусство: t("category-offer.Искусство"),
+            Археология: t("category-offer.Археология"),
+            Онлайн: t("category-offer.Онлайн"),
+            "Оплачиваемая работа": t("category-offer.Оплачиваемая работа"),
+            Международные: t("category-offer.Международные"),
+            Другое: t("category-offer.Другое"),
         };
         if (category) {
             return translations[category];

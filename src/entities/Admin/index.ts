@@ -55,5 +55,5 @@ export {
     useDeleteOrganizationMutation,
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
-    useGetPublicAchievementsQuery,
+    useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
 } from "./api/adminApi";

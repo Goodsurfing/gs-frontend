@@ -63,7 +63,7 @@ export const hostApi = createApi({
             }),
             providesTags: ["host"],
         }),
-        createHost: build.mutation<CreateHostResponse, FormData>({
+        createHost: build.mutation<CreateHostResponse, CreateHost>({
             query: (body) => ({
                 url: "organizations",
                 method: "POST",

@@ -12,7 +12,7 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import { CategoryType, categoryValues } from "@/types/categories";
+import { CategoryType } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
 import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
@@ -46,8 +46,7 @@ export const OffersSearchFilter = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const initialCategories = searchParams.get("category")
-        ?.split(",")
-        .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
+        ?.split(",") || [];
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -90,9 +89,8 @@ export const OffersSearchFilter = () => {
     useEffect(() => {
         setIsSyncing(true);
         const categoriesFromURL = searchParams.get("category")
-            ?.split(",")
-            .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
-        setValue("category", categoriesFromURL as CategoryType[]);
+            ?.split(",") || [];
+        setValue("category", categoriesFromURL as string[]);
         setIsSyncing(false);
     }, [searchParams, setValue]);
 

@@ -5,6 +5,8 @@ import React, {
 
 import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferCategories.module.scss";
+import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferCategoriesProps {
     value?: string[];
@@ -14,13 +16,26 @@ interface OfferCategoriesProps {
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { value, onChange, maxLength = 5 } = props;
-    const { tags } = useCategories();
+    const { getTranslation } = useCategories();
+    const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         if (newValues.length <= maxLength) {
             onChange?.(newValues.filter(Boolean));
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className={styles.container}>
+                <MiniLoader />
+            </div>
+        );
+    }
+
+    if (!categoriesData) {
+        return null;
+    }
 
     return (
         <div className={styles.container}>
@@ -34,7 +49,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                     gap: "10px",
                 }}
             >
-                {tags.map((item, index) => (
+                {categoriesData.map((item, index) => (
                     <ToggleButton
                         sx={{
                             maxHeight: "35px",
@@ -59,7 +74,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                             },
 
                             "&:selected:hover": {
-                                backgrounColor: "none",
+                                backgrounColor: "transparent",
                             },
 
                             "&:selected": {
@@ -78,9 +93,9 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                             },
                         }}
                         key={index}
-                        value={item.value}
+                        value={String(item.id)}
                     >
-                        {item.text}
+                        {getTranslation(item.name)}
                     </ToggleButton>
                 ))}
             </ToggleButtonGroup>

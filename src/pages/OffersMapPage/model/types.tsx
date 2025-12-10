@@ -1,5 +1,4 @@
 import { SortValue } from "@/entities/Offer";
-import { CategoryType } from "@/types/categories";
 
 export interface OffersSortFields {
     sortValue: SortValue;
@@ -16,7 +15,7 @@ export type Provided = "housing" | "food" | "paidTravel";
 export interface OffersFilterFields {
     offersSort: OffersSortFields;
     periods: Periods;
-    category: CategoryType[];
+    category: string[];
     participationPeriod: number[];
     withChildren: boolean;
     languages: string[];

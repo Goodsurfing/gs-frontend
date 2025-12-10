@@ -55,6 +55,8 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
     const videoGallery: string[] = [];
     const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
 
+    formData.append("isActive", "true");
+    formData.append("address", "test");
     formData.append("name", mainInfo?.organization || "");
     formData.append("address", "test");
     formData.append("type", formType);
