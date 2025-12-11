@@ -192,7 +192,11 @@ export const getAdminPersonalOrganizationPageUrl: RoutePathFunction = (locale, i
 
 export const getAdminSkillsAchievementsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skills_achievements}`;
 
+export const getAdminSkillCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_skill_personal}/create`;
+
 export const getAdminSkillPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_skill_personal}/${id}`;
+
+export const getAdminAchievementCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_achievement_personal}/create`;
 
 export const getAdminAchievementPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_achievement_personal}/${id}`;
 
@@ -203,5 +207,19 @@ export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) =>
 export const getAdminCategoriesVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_vacancies}/${id}`;
 
 export const getAdminCategoriesVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}/create`;
+
+export const getAdminConditionsVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_conditions_vacancies}`;
+
+export const getAdminHouseVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_house_vacancies_personal}/create`;
+
+export const getAdminHouseVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_house_vacancies_personal}/${id}`;
+
+export const getAdminFoodVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_food_vacancies_personal}/create`;
+
+export const getAdminFoodVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_food_vacancies_personal}/${id}`;
+
+export const getAdminTransferVacanciesCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_transfer_vacancies_personal}/create`;
+
+export const getAdminTransferVacanciesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_transfer_vacancies_personal}/${id}`;
 
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;

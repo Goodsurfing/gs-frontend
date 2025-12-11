@@ -4,7 +4,7 @@ export const mockedProfileData: Profile[] = [
     {
         id: "1",
         email: "test@mail.ru",
-        favoriteCategories: ["animals", "art"],
+        favoriteCategories: [1, 2],
         galleryImages: [],
         locale: "ru",
         memberProfiles: [{ id: 1, organization: "ogranization 1" }],

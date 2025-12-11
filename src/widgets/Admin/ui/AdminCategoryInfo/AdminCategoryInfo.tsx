@@ -6,14 +6,14 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface AdminCategoryInfoProps {
-    categoryId: string;
+    categoryId: number;
 }
 
 export const AdminCategoryInfo: FC<AdminCategoryInfoProps> = (props) => {
     const { categoryId } = props;
     const { data: categoryData, isLoading } = useGetCategoryVacancyByIdQuery(categoryId);
-    const [toast, setToast] = useState<ToastAlert>();
     const [updateCategory, { isLoading: isUpdateLoading }] = useEditCategoryVacancyMutation();
+    const [toast, setToast] = useState<ToastAlert>();
 
     const onSubmit = async (data: AdminCategoryFields) => {
         setToast(undefined);
@@ -21,7 +21,7 @@ export const AdminCategoryInfo: FC<AdminCategoryInfoProps> = (props) => {
         if (!imagePath) return;
         try {
             await updateCategory({
-                id: Number(categoryId),
+                id: categoryId,
                 data: {
                     name,
                     color,

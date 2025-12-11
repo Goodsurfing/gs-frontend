@@ -6,16 +6,32 @@ import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
 import { useCategories } from "@/shared/data/categories";
+import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface ActivityProps {
-    value: string[];
-    onChange: (value: string[]) => void;
+    value: number[];
+    onChange: (value: number[]) => void;
 }
 
 export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
     const { value, onChange } = props;
-    const { tags } = useCategories();
+    const { getTranslation } = useCategories();
     const { t } = useTranslation("profile");
+    const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
+
+    if (isLoading) {
+        return (
+            <div className={styles.wrapper}>
+                <MiniLoader />
+            </div>
+        );
+    }
+
+    if (!categoriesData) {
+        return null;
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -24,15 +40,18 @@ export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
             </h2>
             <div className={styles.wrapper}>
                 <SelectableGroup
-                    data={tags}
-                    getKey={(item) => item.value}
+                    data={categoriesData}
+                    getKey={(item) => item.id}
                     onSelect={(valueItem) => onChange(valueItem)}
                     renderItem={(category, onClick, isSelect) => (
                         <CategoryCard
-                            category={{ image: category.image, text: category.text }}
+                            category={{
+                                image: getMediaContent(category.imagePath) ?? "",
+                                text: getTranslation(category.name) ?? "",
+                            }}
                             onClick={onClick}
                             isSelect={isSelect}
-                            key={category.value}
+                            key={category.id}
                         />
                     )}
                     selectedItems={value}

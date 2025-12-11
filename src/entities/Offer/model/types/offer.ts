@@ -162,7 +162,7 @@ export interface GetOffersFilters {
     houseIds: Housing[];
     foodIds: Nutrition[];
     transferIds: Travel[];
-    categoryIds: CategoryType[];
+    categoryIds: number[];
     page: number;
     limit: number;
 }

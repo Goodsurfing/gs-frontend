@@ -135,7 +135,7 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
                         variant="FILL"
                         disabled={isLoading}
                     >
-                        Сохранить
+                        {isLoading ? "Идёт сохранение" : "Сохранить"}
                     </Button>
                 </div>
             </form>

@@ -12,7 +12,6 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import { CategoryType, categoryValues } from "@/types/categories";
 import styles from "./OffersSearchFilter.module.scss";
 import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
@@ -45,15 +44,16 @@ export const OffersSearchFilter = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const initialCategories = searchParams.get("category")
-        ?.split(",")
-        .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
+    const initialCategories = (searchParams.get("category") ?? "")
+        .split(",")
+        .map(Number)
+        .filter((id) => !Number.isNaN(id));
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
         defaultValues: {
             ...defaultFilterValues,
-            category: initialCategories as CategoryType[],
+            category: initialCategories,
         },
     });
 
@@ -89,10 +89,17 @@ export const OffersSearchFilter = () => {
 
     useEffect(() => {
         setIsSyncing(true);
-        const categoriesFromURL = searchParams.get("category")
-            ?.split(",")
-            .filter((cat) => categoryValues.includes(cat as CategoryType)) || [];
-        setValue("category", categoriesFromURL as CategoryType[]);
+
+        const categoriesFromURL = searchParams.get("category") ?? "";
+        const parsedCategories = categoriesFromURL
+            .split(",")
+            .map((str) => {
+                const num = Number(str.trim());
+                return Number.isNaN(num) ? null : num;
+            })
+            .filter((id): id is number => id !== null);
+
+        setValue("category", parsedCategories);
         setIsSyncing(false);
     }, [searchParams, setValue]);
 

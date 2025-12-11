@@ -142,6 +142,15 @@ import {
     getAdminCategoriesVacanciesPageUrl,
     getAdminCategoriesVacanciesPersonalPageUrl,
     getAdminCategoriesVacanciesCreatePageUrl,
+    getAdminSkillCreatePageUrl,
+    getAdminAchievementCreatePageUrl,
+    getAdminConditionsVacanciesPageUrl,
+    getAdminHouseVacanciesCreatePageUrl,
+    getAdminHouseVacanciesPersonalPageUrl,
+    getAdminFoodVacanciesCreatePageUrl,
+    getAdminFoodVacanciesPersonalPageUrl,
+    getAdminTransferVacanciesCreatePageUrl,
+    getAdminTransferVacanciesPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -169,6 +178,15 @@ import { AdminAchievementPersonalPage } from "@/pages/AdminAchievementPersonalPa
 import { AdminCategoriesPage } from "@/pages/AdminCategoriesPage";
 import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage";
 import { AdminCategoriesCreatePage } from "@/pages/AdminCategoriesCreatePage";
+import { AdminSkillCreatePage } from "@/pages/AdminSkillCreatePage";
+import AdminAchievementsCreatePage from "@/pages/AdminAchievementsCreatePage/ui/AdminAchievementsCreatePage";
+import { AdminConditionsOfferPage } from "@/pages/AdminConditionsOfferPage";
+import { AdminHousePersonalPage } from "@/pages/AdminHousePersonalPage";
+import { AdminHouseCreatePage } from "@/pages/AdminHouseCreatePage";
+import { AdminFoodCreatePage } from "@/pages/AdminFoodCreatePage";
+import { AdminFoodPersonalPage } from "@/pages/AdminFoodPersonalPage";
+import { AdminTransferCreatePage } from "@/pages/AdminTransferCreatePage";
+import { AdminTransferPersonalPage } from "@/pages/AdminTransferPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -594,9 +612,19 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getAdminSkillsAchievementsPageUrl(locale),
             },
             {
+                label: "admin-skill-create",
+                element: <AdminSkillCreatePage />,
+                path: (locale: string) => getAdminSkillCreatePageUrl(locale),
+            },
+            {
                 label: "admin-skill-personal",
                 element: <AdminSkillPersonalPage />,
                 path: (locale: string) => getAdminSkillPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-achievement-create",
+                element: <AdminAchievementsCreatePage />,
+                path: (locale: string) => getAdminAchievementCreatePageUrl(locale),
             },
             {
                 label: "admin-achievement-personal",
@@ -618,7 +646,41 @@ const publicRoutes: RouteType[] = [
                 element: <AdminCategoriesPersonalPage />,
                 path: (locale: string) => getAdminCategoriesVacanciesPersonalPageUrl(locale),
             },
-
+            {
+                label: "admin-conditions-vacancies",
+                element: <AdminConditionsOfferPage />,
+                path: (locale: string) => getAdminConditionsVacanciesPageUrl(locale),
+            },
+            {
+                label: "admin-house-create",
+                element: <AdminHouseCreatePage />,
+                path: (locale: string) => getAdminHouseVacanciesCreatePageUrl(locale),
+            },
+            {
+                label: "admin-house-personal",
+                element: <AdminHousePersonalPage />,
+                path: (locale: string) => getAdminHouseVacanciesPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-food-create",
+                element: <AdminFoodCreatePage />,
+                path: (locale: string) => getAdminFoodVacanciesCreatePageUrl(locale),
+            },
+            {
+                label: "admin-food-personal",
+                element: <AdminFoodPersonalPage />,
+                path: (locale: string) => getAdminFoodVacanciesPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-transfer-create",
+                element: <AdminTransferCreatePage />,
+                path: (locale: string) => getAdminTransferVacanciesCreatePageUrl(locale),
+            },
+            {
+                label: "admin-transfer-personal",
+                element: <AdminTransferPersonalPage />,
+                path: (locale: string) => getAdminTransferVacanciesPersonalPageUrl(locale),
+            },
         ],
     },
 ];

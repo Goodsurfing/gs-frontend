@@ -27,6 +27,17 @@
     gap: 20px;
 }
 
+.fileInput {
+	margin-top: 2.8rem;
+}
+
+@media (max-width: 600px) {
+	.fileInput {
+		margin-top: 0;
+	}
+}
+
+
 @media (max-width: 992px) {
     .formWrapper {
         flex-wrap: wrap;

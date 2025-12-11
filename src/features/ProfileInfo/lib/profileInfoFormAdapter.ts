@@ -25,7 +25,7 @@ export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields
             email: profileData?.email,
             phone: profileData?.phone,
         },
-        gender: profileData?.gender,
+        gender: profileData?.gender ?? "male",
         locale: {
             language: profileData?.locale as unknown as Locale, // backend issue. todo
             city: profileData?.city,

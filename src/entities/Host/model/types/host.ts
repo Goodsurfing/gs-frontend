@@ -29,6 +29,12 @@ export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {
     galleryImages: string[];
 };
 
+export type CreateHost = Omit<Host, "id" | "avatar" | "team" | "vacancies" | "owner"
+| "averageRating" | "feedbacksCount"> & {
+    avatar: string | null;
+    isActive: boolean;
+};
+
 export interface Video {
     id: string;
     url: string;

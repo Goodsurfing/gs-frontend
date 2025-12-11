@@ -101,6 +101,7 @@ export const ProfileInfoFormBirthDate = memo(
                                 disabled={isLocked}
                                 value={field.value}
                                 MenuProps={{
+                                    disableScrollLock: true,
                                     PaperProps: {
                                         style: {
                                             maxHeight: 300,
@@ -129,6 +130,7 @@ export const ProfileInfoFormBirthDate = memo(
                                 disabled={isLocked}
                                 value={field.value}
                                 MenuProps={{
+                                    disableScrollLock: true,
                                     PaperProps: {
                                         style: {
                                             maxHeight: 300,

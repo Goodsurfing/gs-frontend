@@ -2,7 +2,6 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Host } from "@/entities/Host";
 import { VolunteerApi } from "@/entities/Volunteer";
 import { MediaObjectType } from "@/types/media";
-import { CategoryType } from "@/types/categories";
 
 export type Gender = "male" | "female" | "other";
 
@@ -34,7 +33,7 @@ export interface Profile {
     membershipEndDate: string;
     videoGallery?: string[]
     galleryImages: MediaObjectType[];
-    favoriteCategories: CategoryType[];
+    favoriteCategories: number[];
 }
 
 export type ProfileApi = Omit<Profile, "image" | "galleryImages"> & {

@@ -37,7 +37,7 @@ export interface ProfileSocial {
 export interface ProfileInfoFields {
     about: ProfileAbout;
     birthDate?: ProfileDateOfBirth;
-    gender?: ProfileGender;
+    gender: ProfileGender;
     locale: ProfileLocale;
     contacts: ProfileContacts;
     aboutMe?: ProfileAboutMe;

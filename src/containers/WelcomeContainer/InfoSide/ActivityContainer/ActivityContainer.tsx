@@ -4,18 +4,21 @@ import { useTranslation } from "react-i18next";
 import ActivityItem from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityItem/ActivityItem";
 import defaultImage from "@/shared/assets/images/categories/a8.png";
 
-import styles from "./ActivityContainer.module.scss";
 import { useCategories } from "@/shared/data/categories";
 import { getCategoriesPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./ActivityContainer.module.scss";
 
 const ActivityContainer: FC = () => {
-    const { tags } = useCategories();
+    const { getTranslation } = useCategories();
+    const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
     const { locale } = useLocale();
     const { t, ready } = useTranslation();
 
-    if (!ready) {
+    if (!ready || isLoading) {
         return (
             <div className={styles.wrapper}>
                 <MiniLoader />
@@ -23,13 +26,17 @@ const ActivityContainer: FC = () => {
         );
     }
 
+    if (!categoriesData) {
+        return null;
+    }
+
     return (
         <div className={styles.wrapper}>
-            {tags.slice(0, 7).map((item, index) => (
+            {categoriesData.slice(0, 7).map((item, index) => (
                 <ActivityItem
-                    title={item.text}
-                    image={item.image}
-                    path={`/${locale}${item.path}`}
+                    title={getTranslation(item.name) ?? ""}
+                    image={getMediaContent(item.imagePath) ?? ""}
+                    path={`/${locale}/offers-map?category=${item.id}`}
                     key={index}
                     locale={locale}
                 />

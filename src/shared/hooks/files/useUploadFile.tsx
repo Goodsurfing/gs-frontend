@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/shared/constants/api";
+import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 import { MediaObjectType } from "@/types/media";
 
 // export interface ObjectMediaResponse {
@@ -21,12 +22,19 @@ const sendRequestForGenerateUploadLink = async (
     data: File,
     signal?: AbortSignal,
 ) => {
+    const token = JSON.parse(localStorage.getItem(TOKEN_LOCALSTORAGE_KEY) || "null")
+                || JSON.parse(sessionStorage.getItem(TOKEN_LOCALSTORAGE_KEY) || "null");
+
+    if (!token) {
+        throw new Error("Токен авторизации не найден");
+    }
     const formData = new FormData();
     formData.append("file", data);
     const response = await fetch(`${API_BASE_URL}media_objects`, {
         method: "POST",
         headers: new Headers({
             Accept: "application/ld+json",
+            Authorization: `Bearer ${token}`,
         }),
         body: formData,
         signal,

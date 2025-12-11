@@ -1,15 +1,11 @@
 import React, { ReactNode, useCallback } from "react";
 
-interface SelectableGroupProps<T> {
+interface SelectableGroupProps<T, K extends string | number = string> {
     data: T[];
-    renderItem: (
-        item: T,
-        onClick: () => void,
-        isSelected: boolean
-    ) => ReactNode; // Pass isSelected to renderItem
-    selectedItems: string[]; // Selected items are always strings
-    onSelect: (item: string[]) => void; // Selected items are always strings
-    getKey: (item: T) => string | number; // Key extraction from object
+    getKey: (item: T) => K;
+    onSelect: (keys: K[]) => void;
+    renderItem: (item: T, onClick: () => void, isSelected: boolean) => ReactNode;
+    selectedItems: K[];
     multiSelect?: boolean;
     containerStyle?: string;
     selectLimit?: number;
@@ -36,29 +32,29 @@ interface SelectableGroupProps<T> {
  */
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-export const SelectableGroup = <T,>({
+export const SelectableGroup = <T, K extends string | number = string>({
     data,
     renderItem,
     selectedItems,
     onSelect,
     getKey,
-    multiSelect,
+    multiSelect = false,
     containerStyle,
     selectLimit = 10,
-}: SelectableGroupProps<T>) => {
-    const isSelected = (item: T) => selectedItems.includes(getKey(item).toString());
+}: SelectableGroupProps<T, K>) => {
+    const isSelected = (item: T) => {
+        const key = getKey(item);
+        return selectedItems.includes(key);
+    };
+
     const handleSelection = useCallback(
         (item: T) => {
-            const itemKey = getKey(item).toString();
+            const itemKey = getKey(item);
             const isItemSelected = selectedItems.includes(itemKey);
 
             if (multiSelect) {
                 if (isItemSelected) {
-                    onSelect(
-                        selectedItems.filter(
-                            (selectedItem) => selectedItem !== itemKey,
-                        ),
-                    );
+                    onSelect(selectedItems.filter((k) => k !== itemKey));
                 } else if (selectedItems.length < selectLimit) {
                     onSelect([...selectedItems, itemKey]);
                 }

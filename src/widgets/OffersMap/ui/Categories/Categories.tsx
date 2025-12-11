@@ -13,8 +13,8 @@ interface CategoriesProps {
     className?: string;
     isOpen: boolean
     onClick: MouseEventHandler<HTMLDivElement>
-    value: string[]
-    onChange: (value: string[]) => void
+    value: number[]
+    onChange: (value: number[]) => void
 }
 
 export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, ref) => {

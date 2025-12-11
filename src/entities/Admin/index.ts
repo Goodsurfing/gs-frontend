@@ -1,16 +1,26 @@
-export type { AdminSchema, AdminOrganizationsFields, AdminUsersFields } from "./model/types/adminSchema";
+export type {
+    AdminSchema, AdminOrganizationsFields,
+    GetAdminSkillsParams,
+    GetAdminAchievementsParams,
+    AdminUser,
+    GetAdminOrganizationParams,
+    UpdateAdminUser,
+    AdminUserFields,
+} from "./model/types/adminSchema";
+
+export { AdminSort } from "./model/types/adminSchema";
 
 export { adminReducer, adminActions } from "./model/slice/adminSlice";
 
 export { getAdminAuthData } from "./model/selectors/adminSelectors";
 
-export { adminUsersAdapter, adminOrganizationsAdapter } from "./lib/adminAdapters";
+export { adminUsersAdapter, adminOrganizationsAdapter, adminUpdateUserAdapter } from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
 export { OrganizationInfoTable } from "./ui/OrganizationInfoTable/OrganizationInfoTable";
 
-export type { AdminSkill } from "./model/types/adminSchema";
+export { adminUserAdapter } from "./lib/adminAdapters";
 
 export {
     adminApi, useCreateSkillMutation,
@@ -23,4 +33,29 @@ export {
     useCreateCategoryVacancyMutation, useDeleteCategoryVacancyMutation,
     useEditCategoryVacancyMutation, useGetCategoryVacancyByIdQuery,
     useLazyGetCategoriesVacancyQuery,
+    useCreateAchievementMutation, useCreateFoodMutation,
+    useCreateHouseMutation, useCreateTransferMutation,
+    useDeleteAchievementMutation, useDeleteFoodMutation,
+    useDeleteHouseMutation, useDeleteTransferMutation,
+    useEditAchievementMutation, useEditFoodMutation,
+    useEditHouseMutation, useEditTransferMutation,
+    useGetAchievementByIdQuery, useGetAchievementsQuery,
+    useGetFoodByIdQuery, useGetFoodsQuery,
+    useGetHouseByIdQuery, useGetHousesQuery,
+    useGetTransfersQuery, useGetTransfertByIdQuery,
+    useLazyGetAchievementsQuery,
+    useLazyGetFoodsQuery, useLazyGetHousesQuery,
+    useLazyGetTransfersQuery,
+    useLazyGetUsersQuery,
+    useUpdateAdminUserMutation,
+    useDeleteUserMutation,
+    useToggleAdminUserActiveMutation,
+    useGetUserByIdQuery,
+    useUpdateAdminOrganizationMutation,
+    useToggleAdminOrganizationActiveMutation,
+    useDeleteOrganizationMutation,
+    useLazyGetOrganizationsQuery,
+    useGetOrganizationByIdQuery,
+    useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
+    useGetPublicSkillsQuery,
 } from "./api/adminApi";

@@ -5,71 +5,136 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { AdminUpdateAchievement } from "../AdminUpdateAchievement/AdminUpdateAchievement";
+import {
+    adminUpdateUserAdapter,
+    AdminUser, useDeleteUserMutation,
+    useGetPublicAchievementsQuery, useToggleAdminUserActiveMutation,
+    useUpdateAdminUserMutation,
+} from "@/entities/Admin";
+import { getFullName } from "@/shared/lib/getFullName";
+import { Achievement } from "@/types/achievements";
+import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
+import { Skill } from "@/types/skills";
 
-const achievementsList = [
-    { id: "1", name: "Достижение 1" },
-    { id: "2", name: "Достижение 2" },
-    { id: "3", name: "Достижение 3" },
-    { id: "4", name: "Достижение 4" },
-    { id: "5", name: "Достижение 5" },
-    { id: "6", name: "Достижение 6" },
-    { id: "7", name: "Достижение 7" },
-    { id: "8", name: "Достижение 8" },
-    { id: "9", name: "Достижение 9" },
-];
+interface AdminUserSettingsProps {
+    userId: string;
+    data: AdminUser;
+}
 
-export const AdminUserSettings: FC = () => {
-    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [isAchievementModalOpen, setAchievementModalOpen] = useState(false);
+export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
+    const { userId, data } = props;
+    const { isActive, firstName, lastName } = data;
+    const userName = getFullName(firstName, lastName);
+    const { data: achievementsData } = useGetPublicAchievementsQuery();
+    const [updateUser] = useUpdateAdminUserMutation();
 
-    const [modalDescription, setModalDescription] = useState("");
-    const [onConfirmAction, setOnConfirmAction] = useState<() => void>(() => () => {});
-    const [toast, setToast] = useState<ToastAlert | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isToggleModalOpen, setIsToggleModalOpen] = useState(false);
+    const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
+    const [isAchievementModalOpen, setIsAchievementModalOpen] = useState(false);
+    const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
 
-    const openConfirmModal = (description: string, action: () => void) => {
-        setToast(null);
-        setModalDescription(description);
-        setOnConfirmAction(() => action);
-        setConfirmModalOpen(true);
+    const [toast, setToast] = useState<ToastAlert | undefined>();
+
+    const [toggleAdminUserActive,
+        { isLoading: isTogglingActive }] = useToggleAdminUserActiveMutation();
+    const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+
+    const openDeleteModal = () => setIsDeleteModalOpen(true);
+    const closeDeleteModal = () => setIsDeleteModalOpen(false);
+
+    const handleConfirmDelete = async () => {
+        setToast(undefined);
+        try {
+            await deleteUser(userId).unwrap();
+            setToast({
+                text: "Пользователь успешно удалён",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось удалить пользователя",
+                type: HintType.Error,
+            });
+        } finally {
+            closeDeleteModal();
+        }
     };
 
-    const handleBlockUser = () => {
-        openConfirmModal("Вы уверены, что хотите заблокировать пользователя?", () => {
-            setToast({ text: "Пользователь заблокирован", type: HintType.Success });
-        });
+    const openToggleModal = () => setIsToggleModalOpen(true);
+    const closeToggleModal = () => setIsToggleModalOpen(false);
+
+    const handleConfirmToggle = async () => {
+        setToast(undefined);
+        try {
+            await toggleAdminUserActive(userId).unwrap();
+            setToast({
+                text: `Пользователь успешно ${isActive ? "заблокирован" : "разблокирован"}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: `Ошибка при ${isActive ? "блокировке" : "разблокировке"} пользователя`,
+                type: HintType.Error,
+            });
+        } finally {
+            closeToggleModal();
+        }
     };
 
-    const handleDeleteUser = () => {
-        openConfirmModal("Удалить пользователя безвозвратно?", () => {
-            setToast({ text: "Пользователь удалён", type: HintType.Success });
-        });
-    };
+    const openMembershipModal = () => setIsMembershipModalOpen(true);
+    const closeMembershipModal = () => setIsMembershipModalOpen(false);
 
-    const handleMembership = () => {
-        openConfirmModal("Активировать членство пользователя?", () => {
-            setToast({ text: "Членство активировано", type: HintType.Success });
-        });
-    };
-
-    const handleUpdateAchievements = () => {
-        setToast(null);
-        setAchievementModalOpen(true);
-    };
-
-    const handleConfirm = () => {
-        onConfirmAction();
-        setConfirmModalOpen(false);
-    };
-
-    const handleCloseConfirmModal = () => setConfirmModalOpen(false);
-    const handleCloseAchievementModal = () => setAchievementModalOpen(false);
-
-    const handleAchievementsConfirm = (selected: { id: string; name: string }[]) => {
+    const handleConfirmMembership = () => {
         setToast({
-            text: `Присвоено достижений: ${selected.length}`,
-            type: HintType.Success,
+            text: "Активация членства: не реализовано",
+            type: HintType.Error,
         });
-        setAchievementModalOpen(false);
+        closeMembershipModal();
+    };
+
+    const openAchievementModal = () => setIsAchievementModalOpen(true);
+    const closeAchievementModal = () => setIsAchievementModalOpen(false);
+
+    const handleAchievementsConfirm = async (selected: Achievement[]) => {
+        const formattedData = adminUpdateUserAdapter({ ...data, achievements: selected });
+
+        try {
+            await updateUser({ id: userId, body: formattedData });
+            setToast({
+                text: `Присвоено достижений: ${selected.length}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось обновить достижения",
+                type: HintType.Error,
+            });
+        } finally {
+            closeAchievementModal();
+        }
+    };
+
+    const openSkillsModal = () => setIsSkillsModalOpen(true);
+    const closeSkillsModal = () => setIsSkillsModalOpen(false);
+
+    const handleSkillsConfirm = async (selected: Skill[]) => {
+        const formattedData = adminUpdateUserAdapter({ ...data, skills: selected });
+
+        try {
+            await updateUser({ id: userId, body: formattedData });
+            setToast({
+                text: `Обновлено навыков: ${selected.length}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось обновить навыки",
+                type: HintType.Error,
+            });
+        } finally {
+            closeSkillsModal();
+        }
     };
 
     return (
@@ -77,19 +142,21 @@ export const AdminUserSettings: FC = () => {
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Button
                 className={styles.button}
-                color="GRAY"
+                color={isActive ? "RED" : "GREEN"}
                 size="SMALL"
                 variant="FILL"
-                onClick={handleBlockUser}
+                onClick={openToggleModal}
+                disabled={isTogglingActive}
             >
-                Заблокировать пользователя
+                {data.isActive ? "Заблокировать" : "Разблокировать"}
             </Button>
             <Button
                 className={styles.button}
                 color="RED"
                 size="SMALL"
                 variant="FILL"
-                onClick={handleDeleteUser}
+                onClick={openDeleteModal}
+                disabled={isDeleting}
             >
                 Удалить пользователя
             </Button>
@@ -98,7 +165,7 @@ export const AdminUserSettings: FC = () => {
                 color="GREEN"
                 size="SMALL"
                 variant="FILL"
-                onClick={handleMembership}
+                onClick={openMembershipModal}
             >
                 Активировать членство
             </Button>
@@ -107,21 +174,61 @@ export const AdminUserSettings: FC = () => {
                 color="BLUE"
                 size="SMALL"
                 variant="FILL"
-                onClick={handleUpdateAchievements}
+                onClick={openAchievementModal}
             >
-                Присвоить достижение
+                Присвоить достижения
+            </Button>
+            <Button
+                className={styles.button}
+                color="BLUE"
+                size="SMALL"
+                variant="FILL"
+                onClick={openSkillsModal}
+            >
+                Редактировать навыки
             </Button>
             <ConfirmActionModal
-                description={modalDescription}
-                onConfirm={handleConfirm}
-                onClose={handleCloseConfirmModal}
-                isModalOpen={isConfirmModalOpen}
+                isModalOpen={isDeleteModalOpen}
+                description={`Вы уверены, что хотите безвозвратно удалить пользователя "${userName}"?`}
+                onConfirm={handleConfirmDelete}
+                onClose={closeDeleteModal}
+                confirmTextButton="Удалить"
+                cancelTextButton="Отмена"
+                isLoading={isDeleting}
+            />
+            <ConfirmActionModal
+                isModalOpen={isToggleModalOpen}
+                description={
+                    isActive
+                        ? `Заблокировать пользователя "${userName}"? Он не сможет входить в аккаунт.`
+                        : `Разблокировать пользователя "${userName}"? Он снова сможет входить в аккаунт.`
+                }
+                onConfirm={handleConfirmToggle}
+                onClose={closeToggleModal}
+                confirmTextButton={isActive ? "Заблокировать" : "Разблокировать"}
+                cancelTextButton="Отмена"
+                isLoading={isTogglingActive}
+            />
+            <ConfirmActionModal
+                isModalOpen={isMembershipModalOpen}
+                description={`Активировать платное членство для "${userName}"?`}
+                onConfirm={handleConfirmMembership}
+                onClose={closeMembershipModal}
+                confirmTextButton="Активировать"
+                cancelTextButton="Отмена"
             />
             <AdminUpdateAchievement
-                achievements={achievementsList}
+                achievements={achievementsData ?? []}
+                currentAchievementIds={data.achievements.map((item) => item.id)}
                 isModalOpen={isAchievementModalOpen}
-                onClose={handleCloseAchievementModal}
+                onClose={closeAchievementModal}
                 onConfirm={handleAchievementsConfirm}
+            />
+            <AdminUpdateSkills
+                currentSkillIds={data.skills.map((item) => item.id)}
+                isModalOpen={isSkillsModalOpen}
+                onClose={closeSkillsModal}
+                onConfirm={handleSkillsConfirm}
             />
         </div>
     );
