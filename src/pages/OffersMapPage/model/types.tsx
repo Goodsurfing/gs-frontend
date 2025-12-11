@@ -15,7 +15,7 @@ export type Provided = "housing" | "food" | "paidTravel";
 export interface OffersFilterFields {
     offersSort: OffersSortFields;
     periods: Periods;
-    category: string[];
+    category: number[];
     participationPeriod: number[];
     withChildren: boolean;
     languages: string[];

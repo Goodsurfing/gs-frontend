@@ -12,4 +12,5 @@ export {
 } from "./api/hostApi";
 export type {
     Host, HostApi, TeamUser, HostMember,
+    CreateHost,
 } from "./model/types/host";

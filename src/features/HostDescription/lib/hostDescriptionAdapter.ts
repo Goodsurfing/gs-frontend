@@ -1,4 +1,4 @@
-import { Host, HostApi } from "@/entities/Host";
+import { CreateHost, Host, HostApi } from "@/entities/Host";
 import {
     HostDescriptionFormFields,
     HostDescriptionMainInfoFields,
@@ -47,28 +47,42 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
     };
 };
 
-export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields): FormData => {
+export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields): CreateHost => {
     const {
-        mainInfo, socialMedia, type,
+        mainInfo, socialMedia, type, address,
     } = data;
-    const formData = new FormData();
+    // const formData = new FormData();
     const videoGallery: string[] = [];
     const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
 
-    formData.append("isActive", "true");
-    formData.append("address", "test");
-    formData.append("name", mainInfo?.organization || "");
-    formData.append("address", "test");
-    formData.append("type", formType);
-    formData.append("website", mainInfo?.website || "");
-    formData.append("description", mainInfo?.aboutInfo || "");
-    formData.append("shortDescription", mainInfo?.shortOrganization || "");
-    formData.append("vk", socialMedia?.vk || "");
-    formData.append("facebook", socialMedia?.facebook || "");
-    formData.append("instagram", socialMedia?.instagram || "");
-    formData.append("telegram", socialMedia?.telegram || "");
-    formData.append("videoGallery", JSON.stringify(videoGallery));
-    return formData;
+    // formData.append("isActive", "true");
+    // formData.append("name", mainInfo?.organization || "");
+    // formData.append("type", formType);
+    // formData.append("website", mainInfo?.website || "");
+    // formData.append("description", mainInfo?.aboutInfo || "");
+    // formData.append("shortDescription", mainInfo?.shortOrganization || "");
+    // formData.append("vk", socialMedia?.vk || "");
+    // formData.append("facebook", socialMedia?.facebook || "");
+    // formData.append("instagram", socialMedia?.instagram || "");
+    // formData.append("telegram", socialMedia?.telegram || "");
+    // formData.append("videoGallery", JSON.stringify(videoGallery));
+    return {
+        name: mainInfo?.organization ?? "",
+        address: address ?? "",
+        description: mainInfo?.aboutInfo ?? "",
+        shortDescription: mainInfo?.shortOrganization ?? "",
+        type: formType,
+        avatar: null,
+        vk: socialMedia?.vk ?? "",
+        facebook: socialMedia?.facebook ?? "",
+        instagram: socialMedia?.instagram ?? "",
+        telegram: socialMedia?.telegram ?? "",
+        videoGallery,
+        website: mainInfo?.website ?? "",
+        galleryImages: [],
+        otherType: "",
+        isActive: true,
+    };
 };
 
 export const hostDescriptionApiAdapterUpdate = (

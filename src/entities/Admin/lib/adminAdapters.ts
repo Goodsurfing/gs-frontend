@@ -1,10 +1,10 @@
 import { getFullName } from "@/shared/lib/getFullName";
 import {
     AdminOrganizations,
-    AdminOrganizationsFields, AdminUser, AdminUsers, AdminUsersFields,
+    AdminOrganizationsFields, AdminUser, AdminUserFields, AdminUsers, AdminUsersFields,
     UpdateAdminUser,
 } from "../model/types/adminSchema";
-import { ProfileInfoFields } from "@/features/ProfileInfo";
+import { parseDate } from "@/shared/lib/formatDate";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     if (!data) return [];
@@ -32,18 +32,13 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     return result;
 };
 
-export const adminUserAdapter = (data: AdminUser): ProfileInfoFields => {
+export const adminUserAdapter = (data: AdminUser): AdminUserFields => {
     const {
         firstName, lastName, email, aboutMe, city, country, locale, phone,
-        vk, telegram, facebook, instagram, birthDate, gender,
+        vk, telegram, facebook, instagram, birthDate, gender, image,
     } = data;
 
-    const date = new Date(birthDate ?? "");
-    const birthDateTemp = {
-        day: date.getUTCDate(),
-        mounth: date.getUTCMonth() + 1,
-        year: date.getUTCFullYear(),
-    };
+    const birthDateTemp = birthDate ? parseDate(birthDate) : undefined;
 
     return {
         about: {
@@ -68,29 +63,31 @@ export const adminUserAdapter = (data: AdminUser): ProfileInfoFields => {
         },
         birthDate: birthDateTemp,
         gender,
-        profileAvatar: undefined,
+        profileAvatar: image ? {
+            id: image.id,
+            imagePath: image.contentUrl,
+        } : undefined,
     };
 };
 
-export const adminUserApiAdapter = (data: ProfileInfoFields, imageId?: string): UpdateAdminUser => {
+export const adminUserApiAdapter = (data: AdminUserFields): UpdateAdminUser => {
     const {
-        about, contacts, locale, social, aboutMe, birthDate, gender,
+        about, contacts, locale, social, aboutMe, birthDate, gender, profileAvatar,
     } = data;
-
     let birthDateResult: string | undefined;
 
     if (birthDate && birthDate.year && birthDate.mounth && birthDate.day) {
-        const tempBirthDate = new Date(
-            birthDate.year,
-            birthDate.mounth - 1,
-            birthDate.day,
-        );
-        birthDateResult = tempBirthDate.toLocaleDateString();
+        const { year, mounth, day } = birthDate;
+
+        const formattedDay = String(day).padStart(2, "0");
+        const formattedMonth = String(mounth).padStart(2, "0");
+
+        birthDateResult = `${formattedDay}.${formattedMonth}.${year}`;
     }
 
     return {
         locale: locale.language!,
-        birthDate: birthDateResult,
+        birthDate: birthDateResult ?? null,
         phone: contacts.phone ?? "",
         city: locale.city ?? "",
         country: locale.country ?? "",
@@ -102,9 +99,33 @@ export const adminUserApiAdapter = (data: ProfileInfoFields, imageId?: string): 
         instagram: social.instagram ?? "",
         firstName: about.firstName ?? "",
         lastName: about.lastName ?? "",
-        imageId,
+        imageId: profileAvatar?.id ?? null,
+        skillIds: [],
+        additionalSkills: [],
+        achievementIds: [],
     };
 };
+
+export const adminUpdateUserAdapter = (data: AdminUser): UpdateAdminUser => ({
+    achievementIds: data.achievements.map((a) => a.id),
+    skillIds: data.skills?.map((s) => s.id) ?? [],
+    additionalSkills: data.additionalSkills,
+    imageId: data.image?.id ?? null,
+
+    firstName: data.firstName ?? "",
+    lastName: data.lastName ?? "",
+    birthDate: data.birthDate,
+    gender: data.gender ?? "male",
+    country: data.country ?? "",
+    city: data.city ?? "",
+    locale: data.locale,
+    phone: data.phone ?? "",
+    aboutMe: data.aboutMe ?? "",
+    vk: data.vk ?? "",
+    facebook: data.facebook ?? "",
+    instagram: data.instagram ?? "",
+    telegram: data.telegram ?? "",
+});
 
 export const adminOrganizationsAdapter = (data: AdminOrganizations[]):
 AdminOrganizationsFields[] => {

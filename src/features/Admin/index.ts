@@ -15,3 +15,4 @@ export { AdminFoodForm } from "./ui/AdminFoodForm/AdminFoodForm";
 export type { AdminFoodFields } from "./ui/AdminFoodForm/AdminFoodForm";
 export { AdminTransferForm } from "./ui/AdminTransferForm/AdminTransferForm";
 export type { AdminTransferFields } from "./ui/AdminTransferForm/AdminTransferForm";
+export { AdminUpdateSkills } from "./ui/AdminUpdateSkills/AdminUpdateSkills";

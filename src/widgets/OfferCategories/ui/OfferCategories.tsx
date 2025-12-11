@@ -9,8 +9,8 @@ import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface OfferCategoriesProps {
-    value?: string[];
-    onChange?: (value: string[]) => void;
+    value?: number[];
+    onChange?: (value: number[]) => void;
     maxLength?: number;
 }
 
@@ -19,7 +19,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const { getTranslation } = useCategories();
     const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
 
-    const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
+    const handleChange = (event: ChangeEvent<{}>, newValues: number[]) => {
         if (newValues.length <= maxLength) {
             onChange?.(newValues.filter(Boolean));
         }

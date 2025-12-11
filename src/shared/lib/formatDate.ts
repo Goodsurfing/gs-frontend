@@ -56,3 +56,33 @@ export const formattingDate = (date?: Date) => {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 };
+
+export const parseDate = (dateString: string | null | undefined) => {
+    if (!dateString) {
+        return undefined;
+    }
+
+    const parts = dateString.split(".").map(Number);
+    if (parts.length !== 3) {
+        return undefined;
+    }
+
+    const [day, month, year] = parts;
+
+    if (
+        !Number.isInteger(day)
+    || !Number.isInteger(month)
+    || !Number.isInteger(year)
+    || day < 1 || day > 31
+    || month < 1 || month > 12
+    || year < 1900 || year > new Date().getFullYear() + 1
+    ) {
+        return undefined;
+    }
+
+    return {
+        day,
+        mounth: month,
+        year,
+    };
+};

@@ -7,6 +7,7 @@ import { Achievement } from "@/types/achievements";
 
 interface AdminUpdateAchievementProps {
     achievements: Achievement[];
+    currentAchievementIds: number[];
     onConfirm: (selected: Achievement[]) => void;
     isModalOpen: boolean;
     onClose: () => void;
@@ -14,11 +15,18 @@ interface AdminUpdateAchievementProps {
 
 export const AdminUpdateAchievement: FC<AdminUpdateAchievementProps> = ({
     achievements,
+    currentAchievementIds,
     onConfirm,
     isModalOpen,
     onClose,
 }) => {
     const [selectedAchievements, setSelectedAchievements] = useState<Set<number>>(new Set());
+
+    useEffect(() => {
+        if (isModalOpen) {
+            setSelectedAchievements(new Set(currentAchievementIds));
+        }
+    }, [isModalOpen, currentAchievementIds]);
 
     useEffect(() => {
         document.body.style.overflow = isModalOpen ? "hidden" : "";

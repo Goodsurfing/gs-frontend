@@ -4,6 +4,12 @@ import { Pagination } from "@/types/api/pagination";
 import { Food, House, Transfer } from "@/shared/data/conditions";
 import { Gender } from "@/entities/Profile";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { Image } from "@/types/media";
+import {
+    ProfileAbout,
+    ProfileGender, ProfileLocale, ProfileContacts, ProfileAboutMe,
+    ProfileSocial, ProfileDateOfBirth,
+} from "@/features/ProfileInfo";
 
 export interface Admin {
     token: string,
@@ -27,6 +33,20 @@ export interface AdminUsersFields {
     dataEndMembership: string;
 }
 
+export interface AdminUserFields {
+    about: ProfileAbout;
+    birthDate?: ProfileDateOfBirth;
+    gender: ProfileGender;
+    locale: ProfileLocale;
+    contacts: ProfileContacts;
+    aboutMe?: ProfileAboutMe;
+    social: ProfileSocial;
+    profileAvatar?: {
+        id: string;
+        imagePath: string;
+    };
+}
+
 export interface AdminUsers {
     id: string;
     email?: string;
@@ -45,11 +65,10 @@ export interface AdminUsers {
 export interface AdminUser {
     firstName?: string;
     lastName?: string;
-    imagePath: string;
-    thumbnails: string;
+    image?: Image;
     email: string;
-    birthDate?: string;
-    gender?: Gender;
+    birthDate: string | null;
+    gender: Gender;
     country?: string;
     city?: string;
     locale: Locale;
@@ -59,12 +78,13 @@ export interface AdminUser {
     facebook?: string;
     instagram?: string;
     telegram?: string;
-    skills: number[];
+    achievements: Achievement[];
+    skills: Skill[];
     additionalSkills: string[];
     created: string; // time account created
     lastVisit: string;
     isVerified: boolean;
-    isSkill: boolean; // is volunteer
+    isVolunteer: boolean; // is volunteer
     isOrganization: boolean;
     isActive: boolean; // is block
     isPayment: boolean;
@@ -72,9 +92,11 @@ export interface AdminUser {
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
-| "isSkill" | "isOrganization" | "isActive" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
-| "email" | "additionalSkills" | "skills"> & {
-    imageId?: string;
+| "isVolunteer" | "isOrganization" | "isActive" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
+| "email" | "skills" | "image" | "achievements"> & {
+    imageId: string | null;
+    skillIds: number[];
+    achievementIds: number[];
 };
 
 export enum AdminSort {

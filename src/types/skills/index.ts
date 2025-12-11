@@ -8,3 +8,7 @@ export interface Skill {
     name: string;
     imagePath: string;
 }
+
+export interface SkillsField {
+    skills: Skill[];
+}

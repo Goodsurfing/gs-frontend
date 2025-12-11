@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { Host, HostMember } from "@/entities/Host";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { HostApi } from "../model/types/host";
+import { CreateHost, HostApi } from "../model/types/host";
 
 interface UpdateHostParams {
     id: string;

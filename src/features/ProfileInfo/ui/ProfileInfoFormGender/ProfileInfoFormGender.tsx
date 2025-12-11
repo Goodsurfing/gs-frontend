@@ -10,6 +10,8 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import { getProfileReadonly } from "@/entities/Profile";
 
 import styles from "./ProfileInfoFormGender.module.scss";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { ProfileInfoFields } from "../../model/types/profileInfo";
 
 interface ProfileInfoFormGenderProps {
     className?: string;
@@ -20,13 +22,14 @@ export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) =>
     const { t } = useTranslation("profile");
     const isLocked = useAppSelector(getProfileReadonly);
 
-    const { control } = useFormContext();
+    const { control, formState: { errors } } = useFormContext<ProfileInfoFields>();
 
     return (
         <div className={cn(className, styles.wrapper)}>
             <Controller
                 name="gender"
                 control={control}
+                rules={{ required: t("info.Это поле является обязательным") }}
                 render={({ field }) => (
                     <SelectComponent
                         value={field.value}
@@ -41,6 +44,9 @@ export const ProfileInfoFormGender = memo((props: ProfileInfoFormGenderProps) =>
                     </SelectComponent>
                 )}
             />
+            {errors.gender?.message && (
+                <ErrorText text={errors.gender.message} className={styles.error} />
+            )}
         </div>
     );
 });

@@ -77,6 +77,13 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["skill"],
         }),
+        getPublicSkills: build.query<Skill[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}skill/list`,
+                method: "GET",
+            }),
+            providesTags: ["skill"],
+        }),
         getSkills: build.query<GetAdminSkillsResponse, undefined | Partial<GetAdminSkillsParams>>({
             query: (params) => ({
                 url: "skill/list",
@@ -334,7 +341,7 @@ export const adminApi = createApi({
             query: (data) => {
                 const { id, body } = data;
                 return {
-                    url: `organization/edit/${id}`,
+                    url: `user/edit/${id}`,
                     method: "POST",
                     body,
                 };
@@ -567,4 +574,5 @@ export const {
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery,
     useGetPublicCategoriesVacancyQuery,
+    useGetPublicSkillsQuery,
 } = adminApi;

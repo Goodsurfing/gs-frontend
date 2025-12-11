@@ -5,6 +5,7 @@ export type {
     AdminUser,
     GetAdminOrganizationParams,
     UpdateAdminUser,
+    AdminUserFields,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -13,7 +14,7 @@ export { adminReducer, adminActions } from "./model/slice/adminSlice";
 
 export { getAdminAuthData } from "./model/selectors/adminSelectors";
 
-export { adminUsersAdapter, adminOrganizationsAdapter } from "./lib/adminAdapters";
+export { adminUsersAdapter, adminOrganizationsAdapter, adminUpdateUserAdapter } from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
@@ -56,4 +57,5 @@ export {
     useLazyGetOrganizationsQuery,
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
+    useGetPublicSkillsQuery,
 } from "./api/adminApi";

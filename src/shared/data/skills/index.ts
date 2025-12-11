@@ -90,5 +90,29 @@ export const useSkillsData = () => {
         icon: sportIcon,
         text: t("skills.sport"),
     }];
-    return { skillsData };
+
+    const getTranslation = (skill: string | undefined): string | undefined => {
+        const translations: Record<string, string> = {
+            Администрирование: t("skills.admin"),
+            "Приготовление еды": t("skills.cooking"),
+            Вождение: t("skills.driving"),
+            Домоводство: t("skills.housing"),
+            Декорирование: t("skills.decor"),
+            "Туристический гид": t("skills.tourism"),
+            Искусство: t("skills.art"),
+            "Сельское хозяйство": t("skills.farming"),
+            "Социальная работа": t("skills.social"),
+            "Работа с видео": t("skills.recording"),
+            Садоводство: t("skills.gardening"),
+            Музыка: t("skills.music"),
+            Фотография: t("skills.photo"),
+            "Ночная смена": t("skills.night_job"),
+            Спорт: t("skills.sport"),
+        };
+        if (skill) {
+            return translations[skill];
+        }
+    };
+
+    return { skillsData, getTranslation };
 };

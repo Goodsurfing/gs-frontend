@@ -6,11 +6,15 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { AdminUpdateAchievement } from "../AdminUpdateAchievement/AdminUpdateAchievement";
 import {
+    adminUpdateUserAdapter,
     AdminUser, useDeleteUserMutation,
     useGetPublicAchievementsQuery, useToggleAdminUserActiveMutation,
+    useUpdateAdminUserMutation,
 } from "@/entities/Admin";
 import { getFullName } from "@/shared/lib/getFullName";
 import { Achievement } from "@/types/achievements";
+import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
+import { Skill } from "@/types/skills";
 
 interface AdminUserSettingsProps {
     userId: string;
@@ -22,9 +26,11 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const { isActive, firstName, lastName } = data;
     const userName = getFullName(firstName, lastName);
     const { data: achievementsData } = useGetPublicAchievementsQuery();
+    const [updateUser] = useUpdateAdminUserMutation();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isToggleModalOpen, setIsToggleModalOpen] = useState(false);
+    const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
     const [isAchievementModalOpen, setIsAchievementModalOpen] = useState(false);
     const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
 
@@ -90,12 +96,45 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const openAchievementModal = () => setIsAchievementModalOpen(true);
     const closeAchievementModal = () => setIsAchievementModalOpen(false);
 
-    const handleAchievementsConfirm = (selected: Achievement[]) => {
-        setToast({
-            text: `Присвоено достижений: ${selected.length}`,
-            type: HintType.Success,
-        });
-        closeAchievementModal();
+    const handleAchievementsConfirm = async (selected: Achievement[]) => {
+        const formattedData = adminUpdateUserAdapter({ ...data, achievements: selected });
+
+        try {
+            await updateUser({ id: userId, body: formattedData });
+            setToast({
+                text: `Присвоено достижений: ${selected.length}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось обновить достижения",
+                type: HintType.Error,
+            });
+        } finally {
+            closeAchievementModal();
+        }
+    };
+
+    const openSkillsModal = () => setIsSkillsModalOpen(true);
+    const closeSkillsModal = () => setIsSkillsModalOpen(false);
+
+    const handleSkillsConfirm = async (selected: Skill[]) => {
+        const formattedData = adminUpdateUserAdapter({ ...data, skills: selected });
+
+        try {
+            await updateUser({ id: userId, body: formattedData });
+            setToast({
+                text: `Обновлено навыков: ${selected.length}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось обновить навыки",
+                type: HintType.Error,
+            });
+        } finally {
+            closeSkillsModal();
+        }
     };
 
     return (
@@ -137,7 +176,16 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 variant="FILL"
                 onClick={openAchievementModal}
             >
-                Присвоить достижение
+                Присвоить достижения
+            </Button>
+            <Button
+                className={styles.button}
+                color="BLUE"
+                size="SMALL"
+                variant="FILL"
+                onClick={openSkillsModal}
+            >
+                Редактировать навыки
             </Button>
             <ConfirmActionModal
                 isModalOpen={isDeleteModalOpen}
@@ -171,9 +219,16 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
             />
             <AdminUpdateAchievement
                 achievements={achievementsData ?? []}
+                currentAchievementIds={data.achievements.map((item) => item.id)}
                 isModalOpen={isAchievementModalOpen}
                 onClose={closeAchievementModal}
                 onConfirm={handleAchievementsConfirm}
+            />
+            <AdminUpdateSkills
+                currentSkillIds={data.skills.map((item) => item.id)}
+                isModalOpen={isSkillsModalOpen}
+                onClose={closeSkillsModal}
+                onConfirm={handleSkillsConfirm}
             />
         </div>
     );
