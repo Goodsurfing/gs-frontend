@@ -4,8 +4,8 @@ export const useGetFullName = () => {
     const { t } = useTranslation();
 
     const getFullName = (
-        firstName?: string,
-        lastName?: string,
+        firstName?: string | null,
+        lastName?: string | null,
     ) => {
         if (!firstName && !lastName) return t("Анонимный пользователь");
 
@@ -17,8 +17,8 @@ export const useGetFullName = () => {
 };
 
 export const getFullName = (
-    firstName?: string,
-    lastName?: string,
+    firstName?: string | null,
+    lastName?: string | null,
 ) => {
     if (!firstName && !lastName) return "Не указан";
 

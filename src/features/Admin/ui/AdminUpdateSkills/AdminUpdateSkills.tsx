@@ -6,19 +6,25 @@ import Button from "@/shared/ui/Button/Button";
 import { Modal } from "@/shared/ui/Modal/Modal";
 import styles from "./AdminUpdateSkills.module.scss";
 import { Skill } from "@/types/skills";
-import { Skills } from "@/features/SkillsForm";
+import { AdditionalSkills, Skills } from "@/features/SkillsForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
+import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
 
 interface AdminUpdateSkillsProps {
     currentSkillIds: number[];
-    onConfirm: (selected: Skill[]) => void;
+    currentAdditionalSkills: string[];
+    onConfirm: (selected: {
+        skills: Skill[];
+        additionalSkills: string[];
+    }) => void;
     isModalOpen: boolean;
     onClose: () => void;
 }
 
 export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
     currentSkillIds,
+    currentAdditionalSkills,
     onConfirm,
     isModalOpen,
     onClose,
@@ -26,11 +32,14 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
     const { data: skillsData = [], isLoading } = useGetPublicSkillsQuery();
     const [selectedSkillIds, setSelectedSkillIds] = useState<Set<number>>(new Set());
 
+    const [additionalSkills, setAdditionalSkills] = useState<AdditionalSkillsType[]>([]);
+
     useEffect(() => {
         if (isModalOpen) {
             setSelectedSkillIds(new Set(currentSkillIds));
+            setAdditionalSkills(currentAdditionalSkills.map((text) => ({ text })));
         }
-    }, [isModalOpen, currentSkillIds]);
+    }, [isModalOpen, currentSkillIds, currentAdditionalSkills]);
 
     useEffect(() => {
         document.body.style.overflow = isModalOpen ? "hidden" : "";
@@ -44,13 +53,21 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
         [skillsData, selectedSkillIds],
     );
 
-    const handleChange = (newSkills: Skill[]) => {
+    const handleMainSkillsChange = (newSkills: Skill[]) => {
         const newIds = new Set(newSkills.map((s) => s.id));
         setSelectedSkillIds(newIds);
     };
 
+    const handleAdditionalSkillsChange = (newAdditional: AdditionalSkillsType[]) => {
+        setAdditionalSkills(newAdditional);
+    };
+
     const handleConfirm = () => {
-        onConfirm(selectedSkills);
+        const additionalSkillsStrings = additionalSkills.map((item) => item.text);
+        onConfirm({
+            skills: selectedSkills,
+            additionalSkills: additionalSkillsStrings,
+        });
         onClose();
     };
 
@@ -76,12 +93,22 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
         >
             <div className={styles.modal}>
                 <h3>Выберите навыки</h3>
+
                 <Skills
                     skills={skillsData}
                     value={selectedSkills}
-                    onChange={handleChange}
+                    onChange={handleMainSkillsChange}
                     className={styles.list}
                 />
+
+                <div className={styles.list}>
+                    <h4>Дополнительные навыки</h4>
+                    <AdditionalSkills
+                        value={additionalSkills}
+                        onChange={handleAdditionalSkillsChange}
+                    />
+                </div>
+
                 <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
                     <Button onClick={handleConfirm} color="BLUE" size="SMALL" variant="FILL">
                         Подтвердить

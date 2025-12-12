@@ -118,13 +118,23 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const openSkillsModal = () => setIsSkillsModalOpen(true);
     const closeSkillsModal = () => setIsSkillsModalOpen(false);
 
-    const handleSkillsConfirm = async (selected: Skill[]) => {
-        const formattedData = adminUpdateUserAdapter({ ...data, skills: selected });
+    const handleSkillsConfirm = async ({
+        skills,
+        additionalSkills,
+    }: {
+        skills: Skill[];
+        additionalSkills: string[];
+    }) => {
+        const formattedData = adminUpdateUserAdapter({
+            ...data,
+            skills,
+            additionalSkills,
+        });
 
         try {
             await updateUser({ id: userId, body: formattedData });
             setToast({
-                text: `Обновлено навыков: ${selected.length}`,
+                text: `Навыки обновлены: ${skills.length} основных, ${additionalSkills.length} доп.`,
                 type: HintType.Success,
             });
         } catch {
@@ -226,6 +236,7 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
             />
             <AdminUpdateSkills
                 currentSkillIds={data.skills.map((item) => item.id)}
+                currentAdditionalSkills={data.additionalSkills || []}
                 isModalOpen={isSkillsModalOpen}
                 onClose={closeSkillsModal}
                 onConfirm={handleSkillsConfirm}

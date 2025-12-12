@@ -11,6 +11,33 @@
     gap: 60px;
 }
 
+.mainSection {
+    display: flex;
+	flex-direction: column;
+	width: calc(100% - 235px);
+}
+
+.avatarSection {
+    margin-left: 20px;
+	width: 187px;
+	height: 187px;
+	background-color: lightblue;
+	border-radius: 50%;
+}
+
+.fileInput {
+	margin-top: 2.8rem;
+}
+
+.deleteAvatar {
+    background: transparent;
+    border: none;
+    color: var(--error-color);
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+}
+
 @media (max-width: 992px) {
     .formWrapper {
         width: 100%;
@@ -18,4 +45,7 @@
     .form {
         flex-direction: column-reverse;
     }
+    .mainSection {
+		width: 100%;
+	}
 }
