@@ -29,7 +29,7 @@ const HostMainInfoPage: FC = () => {
             <h2 className={styles.title}>{t("hostDescription.Основная информация")}</h2>
             <HostDescriptionForm
                 className={styles.className}
-                host={myProfile?.host}
+                host={myProfile?.hostId}
                 myProfile={myProfile}
                 isLoading={isLoading}
                 isError={isError}

@@ -101,7 +101,7 @@ const InfoHeader = memo(() => {
                 <MobileHeader />
             </div>
             <header className={styles.header}>
-                <ChangeLanguage localeApi={myProfile?.locale} profileId={myProfile?.id} />
+                <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
                 <div
                     ref={communityRef}
                     className={styles.link}

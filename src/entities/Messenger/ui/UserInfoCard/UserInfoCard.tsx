@@ -12,7 +12,7 @@ import {
     getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useFormatLanguages } from "@/shared/data/languages";
-import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
+import { useSkillsData } from "@/shared/data/skills";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
@@ -20,19 +20,15 @@ import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextCompone
 import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import { Profile } from "@/entities/Profile";
+import { ProfileById } from "@/entities/Profile";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface UserInfoCardProps {
-    user: Profile;
+    user: ProfileById;
     infoOpenedChange: () => void;
     className?: string;
     locale: Locale;
 }
-
-type SkillsMap = {
-    [key in Skills]?: SkillsData;
-};
 
 export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const {
@@ -44,7 +40,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     } = user;
 
     const { t } = useTranslation("messenger");
-    const { skillsData } = useSkillsData();
+    const { getTranslation } = useSkillsData();
     const languages = user.volunteer?.languages ?? null;
     const textLanguages = useFormatLanguages(user.volunteer?.languages ?? []);
     const { getFullName } = useGetFullName();
@@ -60,29 +56,17 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
             return <span>{t("Волонтёр не указал умения")}</span>;
         }
 
-        const skillsMap: SkillsMap = skillsData.reduce(
-            (acc: SkillsMap, cur) => {
-                acc[cur.id] = cur;
-                return acc;
-            },
-            {},
-        );
-        return volunteer.skills.map((item) => {
-            const skill = skillsMap[item];
-            return (
-                skill && (
-                    <IconTextComponent
-                        text={skill.text}
-                        icon={skill.icon}
-                        alt={skill.text}
-                        key={skill.id}
-                    />
-                )
-            );
-        });
+        return volunteer.skills.map((item) => (
+            <IconTextComponent
+                text={getTranslation(item.name) ?? ""}
+                icon={getMediaContent(item.imagePath) ?? ""}
+                alt={item.name}
+                key={item.id}
+            />
+        ));
     };
 
-    const formatLocation = (countryParam?: string, cityParam?: string) => {
+    const formatLocation = (countryParam?: string | null, cityParam?: string | null) => {
         if (countryParam && cityParam) return `${countryParam}, ${cityParam}`;
         return countryParam ?? cityParam ?? "";
     };
@@ -111,7 +95,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                     onClick={() => navigateToVolunteer(user.id)}
                 >
                     <Avatar
-                        icon={getMediaContent(image)}
+                        icon={getMediaContent(image?.thumbnails?.small)}
                         size="LARGE"
                     />
                     <div className={styles.userInfo}>

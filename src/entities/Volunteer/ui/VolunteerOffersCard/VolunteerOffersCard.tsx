@@ -56,12 +56,12 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                     return;
                 }
 
-                const ids = currentOffers.map((url) => {
-                    const parts = url.split("/");
-                    return parts.pop();
-                });
+                // const ids = currentOffers.map((url) => {
+                //     const parts = url.split("/");
+                //     return parts.pop();
+                // });
 
-                const promises = ids.map((id) => {
+                const promises = currentOffers.map((id) => {
                     if (!id) return null;
                     return getOfferById(id).unwrap().catch(() => null);
                 });

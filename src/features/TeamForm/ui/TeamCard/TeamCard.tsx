@@ -42,7 +42,7 @@ export const TeamCard: FC<TeamCardProps> = memo(
             const { id, profile } = teamUser;
             return (
                 <div className={styles.wrapper} onClick={() => navigateTo(profile.id)}>
-                    <Avatar icon={getMediaContent(profile.image)} text={profile.firstName} size="MEDIUM" />
+                    <Avatar icon={getMediaContent(profile.image?.contentUrl)} text={profile.firstName} size="MEDIUM" />
                     <div className={styles.userInfo}>
                         {/* <span className={styles.role}>{teamUser.role}</span> */}
                         <span className={styles.name}>
@@ -72,7 +72,7 @@ export const TeamCard: FC<TeamCardProps> = memo(
             } = profileData;
             return (
                 <div className={styles.wrapper} onClick={() => navigateTo(id)}>
-                    <Avatar icon={getMediaContent(image)} text={firstName} size="MEDIUM" />
+                    <Avatar icon={getMediaContent(image?.contentUrl)} text={firstName} size="MEDIUM" />
                     <div className={styles.userInfo}>
                         {/* <span className={styles.role}>{teamUser.role}</span> */}
                         <span className={styles.name}>

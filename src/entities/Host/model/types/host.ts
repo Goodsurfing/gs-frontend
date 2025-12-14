@@ -1,4 +1,4 @@
-import { ImageType, Profile, ProfileApi } from "@/entities/Profile";
+import { ImageType, Profile } from "@/entities/Profile";
 import { MediaObjectType } from "@/types/media";
 
 export interface Host {
@@ -44,7 +44,7 @@ export type HostTeam = TeamUser[];
 
 export interface HostMember {
     id: number;
-    profile: ProfileApi;
+    profile: Profile;
 }
 
 export interface TeamUser {

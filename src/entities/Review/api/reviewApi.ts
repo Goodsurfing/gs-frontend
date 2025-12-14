@@ -1,7 +1,15 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { ApplicationReview, ApplicationReviewResponse } from "../model/types/review";
+import {
+    ApplicationReview, ApplicationReviewResponse,
+    CreateOfferReview,
+    CreateVolunteerReview,
+    GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
+    GetOfferReviewParams,
+    GetOfferReviewRequest,
+} from "../model/types/review";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface ReviewRequest {
     reviewId: string;
@@ -103,6 +111,43 @@ export const reviewApi = createApi({
             }),
             invalidatesTags: ["host"],
         }),
+        // new review endpoints
+        createVolunteerReview: build.mutation<void,
+        CreateVolunteerReview>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}review-volunteer/create`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["volunteer"],
+        }),
+        getAboutVolunteerReviews: build.query<GetAboutVolunteerReviewRequest,
+        GetAboutVolunteerReviewParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}review-volunteer/list`,
+                method: "GET",
+                params,
+            }),
+            providesTags: ["volunteer"],
+        }),
+        createOfferReview: build.mutation<void,
+        CreateOfferReview>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}review-vacancy/create`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["host"],
+        }),
+        getOfferReviews: build.query<GetOfferReviewRequest,
+        GetOfferReviewParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}review-vacancy/list`,
+                method: "GET",
+                params,
+            }),
+            providesTags: ["host"],
+        }),
     }),
 });
 
@@ -119,5 +164,8 @@ export const {
     useGetToOrganizationsReviewByIdQuery,
     useLazyGetToOrganizationsReviewByIdQuery,
     useUpdateToOrganizationsReviewByIdMutation,
-
+    useCreateVolunteerReviewMutation,
+    useLazyGetAboutVolunteerReviewsQuery,
+    useCreateOfferReviewMutation,
+    useLazyGetOfferReviewsQuery,
 } = reviewApi;

@@ -1,7 +1,8 @@
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { Host } from "@/entities/Host";
-import { VolunteerApi } from "@/entities/Volunteer";
-import { MediaObjectType } from "@/types/media";
+import { Achievement } from "@/types/achievements";
+import { Language } from "@/types/languages";
+import { Image } from "@/types/media";
+import { Skill } from "@/types/skills";
 
 export type Gender = "male" | "female" | "other";
 
@@ -13,33 +14,62 @@ export interface Profile {
     id: string;
     email: string;
     locale: Locale;
-    firstName?: string;
-    lastName?: string;
-    gender?: Gender;
-    birthDate?: string;
-    country?: string;
-    city?: string;
-    phone?: string;
-    image?: ImageType;
-    aboutMe?: string;
-    vk?: string;
-    facebook?: string;
-    instagram?: string;
-    telegram?: string;
-    organizations?: Host[] | [];
-    host?: string;
-    volunteer?: Omit<VolunteerApi, "profile">;
-    memberProfiles: MemberProfiles[];
-    membershipEndDate: string;
-    videoGallery?: string[]
-    galleryImages: MediaObjectType[];
+    firstName: string | null;
+    lastName: string | null;
+    gender: Gender | null;
+    birthDate: string | null;
+    country: string | null;
+    city: string | null;
+    phone: string | null;
+    image: Image | null;
+    aboutMe: string | null;
+    vk: string | null;
+    facebook: string | null;
+    instagram: string | null;
+    telegram: string | null;
+    hostId: string | null;
+    volunteer: {
+        externalInfo: string | null;
+        skills: Skill[];
+        achievements: Achievement[];
+        additionalSkills: string[];
+        languages: Language[];
+        certificates: Image[];
+        averageRating: number;
+        feedbacksCount: number;
+        participatedVacancies: string[];
+    } | null;
+    videoGallery: string[];
+    galleryImages: Image[];
     favoriteCategories: number[];
+    isActive: boolean;
+    isVerified: boolean;
 }
 
-export type ProfileApi = Omit<Profile, "image" | "galleryImages"> & {
-    image?: string;
-    galleryImages?: string[];
+export type ProfileById = Omit<Profile, "hostId"> & {
+    host: string | null;
 };
+
+export type UpdateProfile = Omit<Profile, "id" | "image" | "galleryImages" | "videoGallery"
+| "volunteer" | "hostId" | "favoriteCategories" | "email" | "isActive" | "isVerified"> & {
+    imageId: string | null;
+};
+
+export interface UpdateProfileVideoGallery {
+    videoGallery: string[];
+}
+
+export interface UpdateProfileImageGallery {
+    galleryImageIds: string[];
+}
+
+export interface UpdateProfileCertificates {
+    certificateIds: string[];
+}
+
+export interface UpdateProfilePreferences {
+    favoriteCategoryIds: number[];
+}
 
 export interface ImageType {
     id: string;

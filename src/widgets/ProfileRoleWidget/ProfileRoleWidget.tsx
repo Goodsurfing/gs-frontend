@@ -114,7 +114,7 @@ export const ProfileRoleWidget: FC = () => {
         if (!myProfile) return;
         return rolesProfile.map((role, index) => {
             const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== undefined)
-                || (role.id === "host" && myProfile.host !== undefined);
+                || (role.id === "host" && myProfile.hostId !== undefined);
 
             const buttonText = isDisabled ? role.disabledButtonText : role.buttonText;
             return (

@@ -2,6 +2,15 @@
 	margin-top: 2.8rem;
 }
 
+.deleteAvatar {
+    background: transparent;
+    border: none;
+    color: var(--error-color);
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+}
+
 @media (max-width: 600px) {
 	.fileInput {
 		margin-top: 0;

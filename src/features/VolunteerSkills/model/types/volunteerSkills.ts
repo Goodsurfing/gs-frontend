@@ -1,10 +1,10 @@
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo/model/types/offerWhatToDo";
 
-import { WhatToDoSkillType } from "@/types/skills";
+import { Skill } from "@/types/skills";
 import { Language } from "@/types/languages";
 
 export interface VolunteerSkillsField {
-    skills: WhatToDoSkillType[];
+    skills: Skill[];
     additionalSkills: AdditionalSkillsType[];
     languages?: Language[];
     extraInfo?: string;

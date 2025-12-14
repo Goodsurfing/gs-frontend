@@ -4,53 +4,48 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import {
-    useGetVolunteerByIdQuery,
-    useUpdateVolunteerByIdMutation,
-} from "@/entities/Volunteer";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { MediaObjectType } from "@/types/media";
+import { Image, MediaObjectType } from "@/types/media";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
+import { Profile, useUpdateProfileCertificatesMutation } from "@/entities/Profile";
 
 interface VolunteerCertificateGalleryProps {
     className?: string;
-    profileId: string;
+    profileData: Profile;
 }
 
 export const VolunteerCertificateGallery: FC<VolunteerCertificateGalleryProps> = ({
     className,
-    profileId,
+    profileData,
 }) => {
     const { t } = useTranslation("volunteer");
-    const [uploadedCertificates, setUploadedSertificates] = useState<MediaObjectType[]>(
+    const [uploadedCertificates, setUploadedSertificates] = useState<Image[]>(
         [],
     );
     const [toast, setToast] = useState<ToastAlert>();
-    const { data: volunteerData } = useGetVolunteerByIdQuery(profileId);
-    const [updateVolunteer] = useUpdateVolunteerByIdMutation();
+    const [updateProfileCertificates] = useUpdateProfileCertificatesMutation();
 
     useEffect(() => {
-        if (volunteerData) {
-            setUploadedSertificates(volunteerData.certificates);
+        if (profileData.volunteer?.certificates) {
+            setUploadedSertificates(profileData.volunteer.certificates);
         } else {
             setUploadedSertificates([]);
         }
-    }, [volunteerData]);
+    }, [profileData.volunteer?.certificates]);
 
     const handleOnUpload = useCallback(
         async (files: MediaObjectType[]) => {
             setToast(undefined);
-            const uploadedFiles = [...uploadedCertificates, ...files];
-            const preparedData = uploadedFiles.map((certificate) => certificate["@id"]);
+            const uploadedFiles = [...uploadedCertificates.map(
+                (uploadedCertificate) => uploadedCertificate.id,
+            ), ...files.map((file) => file.id)];
+
             try {
-                await updateVolunteer({
-                    profileId,
-                    body: { certificates: preparedData },
-                }).unwrap();
+                await updateProfileCertificates({ certificateIds: uploadedFiles }).unwrap();
                 setToast({
                     text: t("volunteer-gallery.Диплом или сертификат были успешно добавлены"),
                     type: HintType.Success,
@@ -62,18 +57,15 @@ export const VolunteerCertificateGallery: FC<VolunteerCertificateGalleryProps> =
                 });
             }
         },
-        [profileId, t, updateVolunteer, uploadedCertificates],
+        [t, updateProfileCertificates, uploadedCertificates],
     );
 
     const handleOnDelete = useCallback(async (fileId: string) => {
         setToast(undefined);
-        const tempUploadedSertificates = uploadedCertificates.filter((file) => file["@id"] !== fileId);
-        const preparedData = tempUploadedSertificates.map((certificate) => certificate["@id"]);
-        updateVolunteer({
-            profileId,
-            body: { certificates: preparedData },
-        });
-    }, [profileId, updateVolunteer, uploadedCertificates]);
+        const tempUploadedSertificates = uploadedCertificates.filter((file) => file.id !== fileId);
+        const preparedData = tempUploadedSertificates.map((certificate) => certificate.id);
+        await updateProfileCertificates({ certificateIds: preparedData });
+    }, [updateProfileCertificates, uploadedCertificates]);
 
     const handleOnError = useCallback((error?: string) => {
         setToast(undefined);

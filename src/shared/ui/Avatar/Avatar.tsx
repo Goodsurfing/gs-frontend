@@ -13,7 +13,7 @@ interface AvatarProps {
     icon?: string;
     alt?: string;
     color?: string;
-    text?: string;
+    text?: string | null;
     onClick?: () => void;
 }
 

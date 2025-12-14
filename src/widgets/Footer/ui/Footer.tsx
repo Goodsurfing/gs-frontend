@@ -47,7 +47,7 @@ export const Footer = memo(() => {
                             />
                             <ChangeLanguage
                                 localeApi={myProfile?.locale}
-                                profileId={myProfile?.id}
+                                profileData={myProfile}
                             />
                         </div>
                         <div className={styles.socials}>

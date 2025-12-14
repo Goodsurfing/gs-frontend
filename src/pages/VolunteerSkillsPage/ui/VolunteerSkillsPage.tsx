@@ -23,7 +23,7 @@ const VolunteerSkillsPage = () => {
         <div className={styles.wrapper}>
             <h2>{t("volunteer-skills.Навыки и умения")}</h2>
             {profileData?.id && (
-                <VolunteerSkillsForm profileId={profileData.id} />
+                <VolunteerSkillsForm profileData={profileData} />
             )}
         </div>
     );

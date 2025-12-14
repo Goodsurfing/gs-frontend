@@ -98,7 +98,7 @@ export const hostDescriptionApiAdapterUpdate = (
         type: formType,
         description: mainInfo?.aboutInfo,
         shortDescription: mainInfo?.shortOrganization,
-        avatar,
+        avatar: avatar?.id,
         vk: socialMedia?.vk,
         instagram: socialMedia?.instagram,
         facebook: socialMedia?.facebook,

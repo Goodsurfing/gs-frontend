@@ -1,7 +1,7 @@
 type TextSlice = "title" | "description" | "address" | "none";
 
 export const textSlice = (
-    text: string | undefined,
+    text: string | undefined | null,
     length: number,
     textType: TextSlice,
 ): string => {

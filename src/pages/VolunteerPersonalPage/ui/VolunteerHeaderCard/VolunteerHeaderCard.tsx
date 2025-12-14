@@ -13,11 +13,11 @@ import Button from "@/shared/ui/Button/Button";
 import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import { Profile } from "@/entities/Profile";
+import { ProfileById } from "@/entities/Profile";
 import styles from "./VolunteerHeaderCard.module.scss";
 
 interface VolunteerHeaderCardProps {
-    profileData: Profile;
+    profileData: ProfileById;
     showButtons: boolean;
     isAuth: boolean;
     isShowWriteButton: boolean;

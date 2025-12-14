@@ -1,6 +1,6 @@
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
-export const formatDate = (locale: Locale, date?: string) => {
+export const formatDate = (locale: Locale, date?: string | null) => {
     if (!date) return "";
 
     const localeList: Record<Locale, string> = {

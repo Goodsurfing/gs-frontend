@@ -5,3 +5,4 @@ export type {
     ProfileInfoFields, ProfileSocial, ProfileAbout, ProfileAboutMe,
     ProfileContacts, ProfileDateOfBirth, ProfileGender, ProfileLocale,
 } from "./model/types/profileInfo";
+export { updateProfileDataAdapter } from "./lib/profileFormApiAdapter";

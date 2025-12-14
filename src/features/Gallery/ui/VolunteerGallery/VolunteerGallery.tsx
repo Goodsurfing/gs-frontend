@@ -3,9 +3,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
-import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
-import { MediaObjectType } from "@/types/media";
+import { useUpdateProfileImageGalleryMutation } from "@/entities/Profile/api/profileApi";
+import { Image, MediaObjectType } from "@/types/media";
 import { Profile } from "@/entities/Profile";
 import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -20,9 +19,8 @@ export const VolunteerGallery: FC<VolunteerGalleryProps> = (props) => {
     const { profileData, className } = props;
 
     const { t } = useTranslation("volunteer");
-    const [updateProfile] = useUpdateProfileInfoMutation();
-    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileData.id);
-    const [imgs, setImgs] = useState<MediaObjectType[]>([]);
+    const [updateImageGallery] = useUpdateProfileImageGalleryMutation();
+    const [imgs, setImgs] = useState<Image[]>([]);
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
@@ -37,16 +35,11 @@ export const VolunteerGallery: FC<VolunteerGalleryProps> = (props) => {
         const currentGalleryImages = getMediaContentsApiArray(
             [...profileData.galleryImages, ...images],
         );
+
         try {
-            await updateProfile({
-                userId: profileData.id,
-                profileData: {
-                    galleryImages: [
-                        ...currentGalleryImages,
-                    ],
-                },
+            await updateImageGallery({
+                galleryImageIds: [...currentGalleryImages],
             }).unwrap();
-            refetchVolunteer();
             setToast({
                 text: t("volunteer-gallery.Галерея успешно обновлена"),
                 type: HintType.Success,
@@ -57,36 +50,30 @@ export const VolunteerGallery: FC<VolunteerGalleryProps> = (props) => {
                 type: HintType.Error,
             });
         }
-    }, [profileData.galleryImages, profileData.id,
-        refetchVolunteer, updateProfile, t]);
+    }, [profileData.galleryImages, updateImageGallery, t]);
 
     const handleOnDelete = useCallback(async (mediaObjectUrl: string) => {
         const currentGalleryImages = profileData.galleryImages;
 
         const updatedGalleryImages = currentGalleryImages.filter(
-            (image) => image["@id"] !== mediaObjectUrl,
+            (image) => image.id !== mediaObjectUrl,
         );
 
-        await updateProfile({
-            userId: profileData.id,
-            profileData: {
-                galleryImages: getMediaContentsApiArray(updatedGalleryImages),
-            },
-        })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("volunteer-gallery.Галерея успешно обновлена"),
-                    type: HintType.Success,
-                });
-            })
-            .catch(() => {
-                setToast({
-                    text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
-                    type: HintType.Error,
-                });
+        try {
+            await updateImageGallery({
+                galleryImageIds: getMediaContentsApiArray(updatedGalleryImages),
+            }).unwrap();
+            setToast({
+                text: t("volunteer-gallery.Галерея успешно обновлена"),
+                type: HintType.Success,
             });
-    }, [profileData.galleryImages, profileData.id, updateProfile, t]);
+        } catch {
+            setToast({
+                text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
+                type: HintType.Error,
+            });
+        }
+    }, [profileData.galleryImages, updateImageGallery, t]);
 
     return (
         <div className={className}>

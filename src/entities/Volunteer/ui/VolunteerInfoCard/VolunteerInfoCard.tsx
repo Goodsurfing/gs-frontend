@@ -13,7 +13,7 @@ import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard"
 import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
-import { Profile } from "@/entities/Profile";
+import { ProfileById } from "@/entities/Profile";
 import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
 import { useLazyGetHostByIdQuery } from "@/entities/Host";
 import styles from "./VolunteerInfoCard.module.scss";
@@ -21,7 +21,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface VolunteerInfoCardProps {
     className?: string;
-    profileData: Profile;
+    profileData: ProfileById;
 }
 
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
@@ -60,7 +60,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
         return (
             <div className={cn(className)}>
                 <VolunteerDesctiptionCard
-                    description={volunteer?.externalInfo}
+                    description={volunteer?.externalInfo ?? undefined}
                 />
                 <VolunteerSkillsCard
                     skills={volunteer?.skills}

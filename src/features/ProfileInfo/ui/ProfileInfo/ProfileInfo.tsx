@@ -16,14 +16,8 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
     const { className } = props;
     const { t } = useTranslation("profile");
     const {
-        myProfile, profileIsLoading, profileIsError, myProfileIsVerified,
+        myProfile, profileIsLoading, profileIsError,
     } = useAuth();
-
-    if (profileIsError) {
-        <div className={cn(className)}>
-            {t("info.Произошла ошибка")}
-        </div>;
-    }
 
     if (profileIsLoading) {
         return (
@@ -33,9 +27,17 @@ export const ProfileInfo = memo((props: ProfileInfoProps) => {
         );
     }
 
+    if (profileIsError || !myProfile) {
+        return (
+            <div className={cn(className)}>
+                {t("info.Произошла ошибка")}
+            </div>
+        );
+    }
+
     return (
         <div className={cn(className)}>
-            {!myProfileIsVerified && (
+            {!myProfile.isVerified && (
                 <ProfileInfoVerifyEmail />
             )}
             <div>

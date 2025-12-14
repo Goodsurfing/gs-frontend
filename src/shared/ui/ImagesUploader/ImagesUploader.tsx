@@ -6,17 +6,17 @@ import { useTranslation } from "react-i18next";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import styles from "./ImagesUploader.module.scss";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
-import { GalleryItem, MediaObjectType } from "@/types/media";
+import { GalleryItem, Image, MediaObjectType } from "@/types/media";
 import { getMediaContent, getMediaContentsArray } from "@/shared/lib/getMediaContent";
 import { ModalGallery } from "../ModalGallery/ModalGallery";
 import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 
-type GalleryImage = MediaObjectType | GalleryItem;
+type GalleryImage = MediaObjectType | GalleryItem | Image;
 
 type Label = "Добавить фото" | "Добавить сертификат";
 
 interface ImagesUploaderProps {
-    uploadedImgs: MediaObjectType[] | GalleryItem[];
+    uploadedImgs: MediaObjectType[] | GalleryItem[] | Image[];
     onUpload: (imgs: MediaObjectType[]) => Promise<void>;
     onDelete: (imgId: string) => void;
     onError: (error?: string) => void;
@@ -156,9 +156,39 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
         });
     };
 
-    const getMedia = (img: GalleryImage): MediaObjectType => ("mediaObject" in img ? img.mediaObject : img);
+    const getMedia = (img: GalleryImage): MediaObjectType => {
+        if ("mediaObject" in img) {
+        // GalleryItem
+            return img.mediaObject;
+        }
+        if ("@id" in img) {
+        // MediaObjectType
+            return img as MediaObjectType;
+        }
+        return {
+            "@id": img.id,
+            id: img.id,
+            contentUrl: img.contentUrl,
+            mimeType: "image/jpeg",
+            isImage: true,
+            originalHeight: 0,
+            originalWidth: 0,
+            thumbnails: img.thumbnails,
+        };
+    };
 
-    const getRemoveId = (img: GalleryImage): string => ("mediaObject" in img ? String(img.id) : img["@id"]);
+    const getRemoveId = (img: GalleryImage): string => {
+        if ("mediaObject" in img) {
+        // GalleryItem
+            return String(img.mediaObject.id);
+        }
+        if ("@id" in img) {
+        // MediaObjectType
+            return img.id;
+        }
+        // Image
+        return img.id;
+    };
 
     const handleModalClose = () => {
         setModalOpen(false);

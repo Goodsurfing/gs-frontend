@@ -1,38 +1,38 @@
-import type { Locale } from "@/entities/Locale";
 import type { Profile } from "@/entities/Profile";
-import { ProfileInfoFields, ProfileDateOfBirth } from "../model/types/profileInfo";
+import { ProfileInfoFields } from "../model/types/profileInfo";
+import { parseDate } from "@/shared/lib/formatDate";
 
-export function profileInfoFormAdapter(profileData?: Profile): ProfileInfoFields {
-    const date = new Date(profileData?.birthDate ?? "");
-    const birthDate: ProfileDateOfBirth = {
-        day: date.getUTCDate(),
-        mounth: date.getUTCMonth() + 1,
-        year: date.getUTCFullYear(),
-    };
+export function profileInfoFormAdapter(data: Profile): ProfileInfoFields {
+    const {
+        firstName, lastName, facebook, instagram, telegram,
+        vk, email, phone, gender, locale, city, country, image,
+        aboutMe, birthDate,
+    } = data;
+    const birthDateTemp = birthDate ? parseDate(birthDate) : undefined;
 
     return {
         about: {
-            firstName: profileData?.firstName,
-            lastName: profileData?.lastName,
+            firstName: firstName ?? undefined,
+            lastName: lastName ?? undefined,
         },
         social: {
-            facebook: profileData?.facebook,
-            instagram: profileData?.instagram,
-            telegram: profileData?.telegram,
-            vk: profileData?.vk,
+            facebook: facebook ?? undefined,
+            instagram: instagram ?? undefined,
+            telegram: telegram ?? undefined,
+            vk: vk ?? undefined,
         },
         contacts: {
-            email: profileData?.email,
-            phone: profileData?.phone,
+            email: email ?? undefined,
+            phone: phone ?? undefined,
         },
-        gender: profileData?.gender,
+        gender: gender ?? undefined,
         locale: {
-            language: profileData?.locale as unknown as Locale, // backend issue. todo
-            city: profileData?.city,
-            country: profileData?.country,
+            language: locale,
+            city: city ?? undefined,
+            country: country ?? undefined,
         },
-        profileAvatar: profileData?.image,
-        aboutMe: profileData?.aboutMe,
-        birthDate,
+        profileAvatar: image ?? undefined,
+        aboutMe: aboutMe ?? undefined,
+        birthDate: birthDateTemp,
     };
 }

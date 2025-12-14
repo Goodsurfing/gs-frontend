@@ -26,7 +26,7 @@ export const getFullName = (
     return (renderFullName);
 };
 
-export const getFullAddress = (city?: string, country?: string): string => {
+export const getFullAddress = (city?: string | null, country?: string | null): string => {
     if (country && city) return `${country}, ${city}`;
     return country || city || "";
 };
