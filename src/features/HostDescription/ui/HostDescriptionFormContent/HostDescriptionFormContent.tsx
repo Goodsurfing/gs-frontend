@@ -27,7 +27,7 @@ export const HostDescriptionFormContent = memo((props: HostDescriptionFormConten
                 <HostDescriptionOrganization />
                 <HostDescriptionSocial />
             </div>
-            <HostDescriptionAvatar host={host} />
+            <HostDescriptionAvatar hostId={host?.id} />
         </>
     );
 });

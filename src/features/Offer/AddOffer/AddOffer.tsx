@@ -20,7 +20,7 @@ export const AddOffer = () => {
 
     const addOfferHandle = async () => {
         setCreateOfferError(false);
-        if (!profile?.host) {
+        if (!profile?.hostId) {
             return;
         }
         const formData = new FormData();
@@ -34,10 +34,10 @@ export const AddOffer = () => {
     };
 
     useEffect(() => {
-        if (profile?.host) {
+        if (profile?.hostId) {
             setDisabledButton(false);
         }
-    }, [profile?.host]);
+    }, [profile?.hostId]);
 
     return (
         <div className={styles.btnWrapper}>
