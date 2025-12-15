@@ -25,7 +25,7 @@ export interface Host {
 }
 
 export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {
-    avatar?: string;
+    avatar: string | null;
     galleryImages: string[];
 };
 

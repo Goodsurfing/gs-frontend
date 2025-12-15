@@ -32,7 +32,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
             onChange({
                 id: null,
                 language,
-                level: "beginner",
+                languageLevel: "beginner",
             });
         };
 
@@ -40,7 +40,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
             onChange({
                 id: null,
                 language: value?.language || "",
-                level,
+                languageLevel: level,
             });
         };
 
@@ -77,7 +77,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
                         onChange={(e) => {
                             handleLevelChange(e.target.value as LevelLanguage);
                         }}
-                        value={value?.level || ""}
+                        value={value?.languageLevel || ""}
                     >
                         {allLevels.map((item, index) => (
                             <MenuItem key={index} value={item.value}>

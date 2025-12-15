@@ -35,8 +35,8 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
         user, infoOpenedChange, className, locale,
     } = props;
     const {
-        host, volunteer, image, birthDate, firstName, lastName,
-        country, city,
+        firstName, lastName, volunteer, image,
+        birthDate, country, city, hostId,
     } = user;
 
     const { t } = useTranslation("messenger");
@@ -59,7 +59,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
         return volunteer.skills.map((item) => (
             <IconTextComponent
                 text={getTranslation(item.name) ?? ""}
-                icon={getMediaContent(item.imagePath) ?? ""}
+                icon={getMediaContent(item.image.contentUrl) ?? ""}
                 alt={item.name}
                 key={item.id}
             />
@@ -74,7 +74,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
     const getRole = () => {
         const roles = [];
         if (user.volunteer) roles.push(t("Волонтёр"));
-        if (user.host) roles.push(t("Организатор"));
+        if (user.hostId) roles.push(t("Организатор"));
 
         return roles.length ? roles.join(", ") : "";
     };
@@ -115,11 +115,11 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                         </span>
                     </div>
                 </div>
-                {host && (
+                {hostId && (
                     <ButtonLink
                         className={styles.buttonHost}
                         type="outlined"
-                        path={getHostPersonalPageUrl(locale, host.split("/").pop())}
+                        path={getHostPersonalPageUrl(locale, hostId)}
                     >
                         {
                             t("Посмотреть организацию")

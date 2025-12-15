@@ -20,14 +20,14 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
 
     const offersPlacemarkList = useMemo(
         () => data.map(({
-            id, title, status, categories, latitude, longitude, imagePath,
+            id, title, status, categories, latitude, longitude, image,
         }) => {
             if (status === "active" && typeof latitude === "number" && typeof longitude === "number") {
                 return (
                     <OfferPlacemark
                         id={id.toString()}
                         geometry={[latitude, longitude]}
-                        image={getMediaContent(imagePath, "SMALL")}
+                        image={getMediaContent(image?.contentUrl, "SMALL")}
                         title={textSlice(title, 30, "title")}
                         locale={locale}
                         category={categories[0]}

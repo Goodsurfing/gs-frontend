@@ -1,7 +1,7 @@
 import { Placemark, useYMaps } from "@pbe/react-yandex-maps";
 import React, { FC, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { CategoryType } from "@/types/categories";
+import { CategoryWithoutImage } from "@/types/categories";
 
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
@@ -15,7 +15,7 @@ interface OfferPlacemarkProps {
     image?: string;
     title: string;
     locale: string;
-    category?: CategoryType;
+    category?: CategoryWithoutImage;
 }
 
 export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
@@ -26,10 +26,10 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
 
         const navigate = useNavigate();
         const ymaps = useYMaps();
-        const { getColorByCategory, getTranslation } = useCategories();
+        const { getTranslation } = useCategories();
 
         const handleClick = () => {
-            navigate(`/${locale}/offer-personal/${id}`);
+            navigate(getOfferPersonalPageUrl(locale, id));
         };
 
         const handleBalloonOpen = () => {
@@ -60,7 +60,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
                             <span class="${styles.ballonTitle}">${title}</span>
                             <span class="${
             styles.ballonCategory
-            }">${getTranslation(category)}</span>
+            }">${getTranslation(category?.name)}</span>
                         </div>
                     </div>
                 </div>`,
@@ -70,9 +70,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo(
                 options={{
                     iconLayout: "default#imageWithContent",
                     iconContentLayout: ymaps?.templateLayoutFactory.createClass(
-                        `<div style="background-color: ${category ? getColorByCategory(
-                            category,
-                        ) : "#FFF"};" class="${styles.customPlacemarkIcon}"></div>`,
+                        `<div style="background-color: ${category ? category.color : "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                     ),
                     hideIconOnBalloonOpen: false,
                     openEmptyBalloon: false,

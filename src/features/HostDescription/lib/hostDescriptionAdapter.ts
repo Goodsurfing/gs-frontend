@@ -6,6 +6,7 @@ import {
     HostDescriptionTypeFields,
     OrganizationType,
 } from "../model/types/hostDescription";
+import { BASE_URL } from "@/shared/constants/api";
 
 const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ"] as const;
 
@@ -44,12 +45,18 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
         mainInfo: hostInfoFields,
         type: hostTypeFields,
         socialMedia: hostSocialFields,
+        address: data.address,
+        avatar: data?.avatar ? {
+            id: `${BASE_URL}api/v1/media_objects/${data.avatar.id}`,
+            contentUrl: data.avatar.contentUrl,
+            thumbnails: data.avatar.thumbnails,
+        } : undefined,
     };
 };
 
 export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields): CreateHost => {
     const {
-        mainInfo, socialMedia, type, address, avatar,
+        mainInfo, socialMedia, type, avatar, address,
     } = data;
     // const formData = new FormData();
     const videoGallery: string[] = [];
@@ -68,7 +75,7 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
     // formData.append("videoGallery", JSON.stringify(videoGallery));
     return {
         name: mainInfo?.organization ?? "",
-        address: address ?? "test",
+        address: address ?? "",
         description: mainInfo?.aboutInfo ?? "",
         shortDescription: mainInfo?.shortOrganization ?? "",
         type: formType,
@@ -89,16 +96,16 @@ export const hostDescriptionApiAdapterUpdate = (
     data: HostDescriptionFormFields,
 ): Partial<HostApi> => {
     const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         address, avatar, mainInfo, socialMedia, type,
     } = data;
     const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
     return {
         name: mainInfo?.organization,
+        address,
         type: formType,
         description: mainInfo?.aboutInfo,
         shortDescription: mainInfo?.shortOrganization,
-        avatar: avatar?.id,
+        avatar: avatar?.id ?? null,
         vk: socialMedia?.vk,
         instagram: socialMedia?.instagram,
         facebook: socialMedia?.facebook,

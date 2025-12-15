@@ -32,6 +32,8 @@ export interface CreateCategoryParams {
     image: File;
 }
 
+export type CategoryWithoutImage = Omit<Category, "imagePath">;
+
 export interface GetCategoryResponse {
     data: Category[];
     pagination: Pagination

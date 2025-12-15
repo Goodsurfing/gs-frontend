@@ -1,4 +1,4 @@
-import { CategoryType } from "@/types/categories";
+import { CategoryType, CategoryWithoutImage } from "@/types/categories";
 import { WhatToDoSkillType } from "@/types/skills";
 
 import { Article } from "@/entities/Article";
@@ -19,6 +19,7 @@ import { OfferWhen, OfferWhenPeriods } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds } from "./offerWhoNeeds";
 import { Pagination } from "@/types/api/pagination";
+import { Image } from "@/types/media";
 
 export interface Offer {
     id: number;
@@ -51,9 +52,9 @@ export interface OfferApi {
         type: string;
         otherType: string;
         shortDescription: string;
-        imagePath: string;
+        image: Image;
     }
-    imagePath?: string;
+    image: Image | null;
     averageRating: number;
     reviewsCount: number;
     address?: string;
@@ -65,7 +66,7 @@ export interface OfferApi {
     durationMaxDays: number;
     applicationEndDate: string;
     title?: string;
-    categories: CategoryType[];
+    categories: CategoryWithoutImage[];
     description?: string;
     shortDescription?: string;
     periods: OfferWhenPeriods[];

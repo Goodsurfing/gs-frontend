@@ -3,7 +3,7 @@ import { Offer } from "@/entities/Offer";
 import { Gender, Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { SkillsData } from "@/shared/data/skills";
-import { Language, Language as LanguageApi } from "@/types/languages";
+import { Language } from "@/types/languages";
 import { WhatToDoSkillType } from "@/types/skills";
 import { MediaObjectType } from "@/types/media";
 import { Gallery } from "@/entities/Gallery";
@@ -27,7 +27,7 @@ export interface VolunteerApi {
     externalInfo: string;
     skills: WhatToDoSkillType[];
     additionalSkills: string[];
-    languages: LanguageApi[];
+    languages: Language[];
     certificates: MediaObjectType[];
     averageRating?: number;
     feedbacksCount: number;
@@ -55,7 +55,7 @@ export interface VolunteerMini {
     gender: Gender;
     country: string;
     city: string;
-    periods: LanguageApi[];
+    periods: Language[];
     certificates: string[];
     averageRating: number;
     reviewCount: number;

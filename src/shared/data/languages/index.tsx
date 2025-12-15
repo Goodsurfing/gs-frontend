@@ -238,11 +238,11 @@ export const useFormatLanguages = (languages: Language[]) => {
     }
 
     return languages
-        .map(({ language, level }, index) => {
+        .map(({ language, languageLevel }, index) => {
             const languageLabel = languagesList.find((l) => l.value === language)?.label
                 || language;
-            const levelLabel = levelOptions.find((l) => l.value === level)?.label
-                || level;
+            const levelLabel = levelOptions.find((l) => l.value === languageLevel)?.label
+                || languageLevel;
 
             return (
                 <React.Fragment key={index}>

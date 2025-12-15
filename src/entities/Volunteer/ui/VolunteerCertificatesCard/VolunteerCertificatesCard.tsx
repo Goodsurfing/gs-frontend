@@ -6,22 +6,21 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useTranslation } from "react-i18next";
-import styles from "./VolunteerCertificatesCard.module.scss";
-import { Image } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Text } from "@/shared/ui/Text/Text";
 import { UploadedCertificate } from "./ui/UploadedCertificate/UploadedCertificate";
+import styles from "./VolunteerCertificatesCard.module.scss";
 
 interface VolunteerCertificatesCardProps {
     classname?: string;
-    certificates?: Image[];
+    certificates?: string[];
 }
 
 export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = memo((
     props: VolunteerCertificatesCardProps,
 ) => {
     const { certificates, classname } = props;
-    const { t } = useTranslation();
+    const { t } = useTranslation("profile");
 
     const renderSlides = useMemo(
         () => {
@@ -31,9 +30,9 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
             return certificates.map((certificate, index) => (
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
                     <UploadedCertificate
-                        certificate={getMediaContent(certificate.contentUrl) ?? ""}
+                        certificate={getMediaContent(certificate) ?? ""}
                         isFile
-                        download={getMediaContent(certificate.contentUrl)}
+                        download={getMediaContent(certificate)}
                         disableCloseButton
                         classNameItem={styles.certificate}
                     />

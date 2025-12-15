@@ -18,8 +18,6 @@ Pick<
 OfferApi,
 | "title"
 | "shortDescription"
-| "imagePath"
-| "categories"
 | "averageRating"
 | "acceptedApplicationsCount"
 | "address"
@@ -28,6 +26,7 @@ OfferApi,
 "imagePath"
 > & {
     imagePath?: string | MediaObjectType;
+    categories: string[];
 }
 >;
 

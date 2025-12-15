@@ -43,7 +43,7 @@ export const profileApi = createApi({
         }),
         getProfileInfoById: build.query<ProfileById, string>({
             query: (userId) => ({
-                url: `users/${userId}`,
+                url: `${API_BASE_URL_V3}profile/${userId}`,
                 method: "GET",
             }),
             providesTags: ["profile"],

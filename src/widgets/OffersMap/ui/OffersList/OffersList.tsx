@@ -80,7 +80,17 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                         [styles.closed]: !mapOpenValue,
                     })}
                     status={offer.status === "active" ? "opened" : "closed"}
-                    data={offer}
+                    data={{
+                        id: offer.id,
+                        title: offer.title,
+                        shortDescription: offer.shortDescription,
+                        imagePath: offer.image?.thumbnails?.medium,
+                        categories: offer.categories.map((cat) => cat.name),
+                        address: offer.address,
+                        acceptedApplicationsCount: offer.acceptedApplicationsCount,
+                        averageRating: offer.averageRating,
+                        reviewsCount: offer.reviewsCount,
+                    }}
                     key={offer.id}
                     // isFavoriteIconShow={!!isAuth}
                 />

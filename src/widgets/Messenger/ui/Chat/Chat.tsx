@@ -252,10 +252,24 @@ export const Chat: FC<ChatProps> = (props) => {
                             const volunteerApplicationId = applicationResult.volunteer.profile.id;
                             const isImHost = volunteerApplicationId !== myProfileData.id;
                             const tempIsHost = (status === "new" && isImHost);
+                            const categoriesTemp = vacancy.categories.map((cat) => cat.name);
 
                             return (
                                 <OfferApplication
-                                    offerData={vacancy}
+                                    offerData={{
+                                        id: vacancy.id,
+                                        title: vacancy.title,
+                                        description: vacancy.description,
+                                        shortDescription: vacancy.shortDescription,
+                                        imagePath: vacancy.imagePath,
+                                        address: vacancy.address,
+                                        status: vacancy.status,
+                                        categories: categoriesTemp,
+                                        acceptedApplicationsCount: vacancy
+                                            .acceptedApplicationsCount,
+                                        averageRating: vacancy.averageRating,
+                                        reviewsCount: vacancy.reviewsCount,
+                                    }}
                                     terms={{
                                         start: startDate ? new Date(startDate) : undefined,
                                         end: endDate ? new Date(endDate) : undefined,
@@ -390,7 +404,7 @@ export const Chat: FC<ChatProps> = (props) => {
                                     title: description?.title,
                                     shortDescription: description?.shortDescription,
                                     status,
-                                    imagePath,
+                                    imagePath: imagePath ?? "",
                                     categories: description?.categoryIds ?? [],
                                     acceptedApplicationsCount,
                                     description: description?.description,

@@ -38,7 +38,7 @@ export const mockedOffersData: Offer[] = [
         },
         howNeeds: {
             gender: ["male"],
-            requiredLanguages: [{ id: null, language: "russian", level: "beginner" }, { id: null, language: "english", level: "not_matter" }],
+            requiredLanguages: [{ id: null, language: "russian", languageLevel: "beginner" }, { id: null, language: "english", languageLevel: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaceCount: 3,
             additionalInfo: "additional info",
@@ -116,7 +116,7 @@ export const mockedOffersData: Offer[] = [
         },
         howNeeds: {
             gender: ["male"],
-            requiredLanguages: [{ id: null, language: "russian", level: "beginner" }, { id: null, language: "english", level: "not_matter" }],
+            requiredLanguages: [{ id: null, language: "russian", languageLevel: "beginner" }, { id: null, language: "english", languageLevel: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaceCount: 3,
             additionalInfo: "additional info",
@@ -194,7 +194,8 @@ export const mockedOffersData: Offer[] = [
         },
         howNeeds: {
             gender: ["male"],
-            requiredLanguages: [{ id: null, language: "russian", level: "beginner" }, { id: null, language: "english", level: "not_matter" }],
+            requiredLanguages: [{ id: null, language: "russian", languageLevel: "beginner" },
+                { id: null, language: "english", languageLevel: "not_matter" }],
             receptionPlace: "foreigners",
             volunteerPlaceCount: 3,
             additionalInfo: "additional info",

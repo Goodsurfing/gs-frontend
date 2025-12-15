@@ -40,7 +40,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         const { getFullName } = useGetFullName();
 
         const {
-            image, firstName, lastName, birthDate, country, city, volunteer, host,
+            image, firstName, lastName, birthDate, country, city, volunteer, hostId,
         } = profileData;
         const languages = useLanguagesWithComma(volunteer?.languages ?? []);
         const renderName = getFullName(firstName, lastName);
@@ -85,7 +85,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
         const getRole = () => {
             const roles = [];
             if (volunteer) roles.push(t("personal.Волонтёр"));
-            if (host) roles.push(t("personal.Организатор"));
+            if (hostId) roles.push(t("personal.Организатор"));
 
             return roles.length ? roles.join(", ") : "";
         };
