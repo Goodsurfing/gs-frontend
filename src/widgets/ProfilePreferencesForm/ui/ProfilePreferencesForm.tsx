@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -11,20 +11,14 @@ import { profilePreferencesAdapter, profilePreferencesApiAdapter } from "../lib/
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
-import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
+import { useGetProfileInfoQuery, useUpdateProfilePreferencesMutation } from "@/entities/Profile";
 import styles from "./ProfilePreferencesForm.module.scss";
 
 const defaultValues: DefaultValues<ProfilePreferencesField> = {
     favoriteCategories: [],
 };
 
-interface ProfilePreferencesFormProps {
-    profileId: string;
-}
-
-export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) => {
-    const { profileId } = props;
+export const ProfilePreferencesForm = () => {
     const { handleSubmit, reset, control } = useForm<ProfilePreferencesField>({
         mode: "onChange",
         defaultValues,
@@ -33,7 +27,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
 
     const [toast, setToast] = useState<ToastAlert>();
     const { data: profileData } = useGetProfileInfoQuery();
-    const [updateProfile] = useUpdateProfileInfoMutation();
+    const [updateProfilePreferences, { isLoading }] = useUpdateProfilePreferencesMutation();
 
     useEffect(() => {
         if (profileData) {
@@ -46,7 +40,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
         setToast(undefined);
         const preparedData = profilePreferencesApiAdapter(data);
         try {
-            await updateProfile({ userId: profileId, profileData: preparedData }).unwrap();
+            await updateProfilePreferences(preparedData).unwrap();
             setToast({
                 text: t("preferences.Данные успешно изменены"),
                 type: HintType.Success,
@@ -80,6 +74,7 @@ export const ProfilePreferencesForm: FC<ProfilePreferencesFormProps> = (props) =
                 variant="FILL"
                 onClick={onSubmit}
                 className={styles.button}
+                disabled={isLoading}
             >
                 {t("preferences.Сохранить")}
             </Button>

@@ -13,11 +13,6 @@ import { ErrorType } from "@/types/api/error";
 
 import { SkillsForm } from "@/features/SkillsForm";
 
-import {
-    useGetMyVolunteerQuery,
-    useUpdateVolunteerByIdMutation,
-} from "@/entities/Volunteer";
-
 import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -30,11 +25,12 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { volunteerSkillsAdapter, volunteerSkillsApiAdapter } from "../../lib/volunteerSkillsAdapter";
 import { VolunteerSkillsField } from "../../model/types/volunteerSkills";
 import { VolunteerLanguage } from "../VolunteerLanguage/VolunteerLanguage";
-import styles from "./VolunteerSkillsForm.module.scss";
 import { VOLUNTEER_SKILLS_FORM } from "@/shared/constants/localstorage";
+import { Profile, useUpdateVolunteerMutation } from "@/entities/Profile";
+import styles from "./VolunteerSkillsForm.module.scss";
 
 interface VolunteerSkillsFormProps {
-    profileId: string;
+    profileData: Profile;
 }
 
 const defaultValues: DefaultValues<VolunteerSkillsField> = {
@@ -45,12 +41,11 @@ const defaultValues: DefaultValues<VolunteerSkillsField> = {
 
 export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
     (props: VolunteerSkillsFormProps) => {
-        const { profileId } = props;
+        const { profileData } = props;
         const { t } = useTranslation("volunteer");
         const [toast, setToast] = useState<ToastAlert>();
 
-        const { data: volunteerData } = useGetMyVolunteerQuery();
-        const [updateVolunteer] = useUpdateVolunteerByIdMutation();
+        const [updateVolunteer, { isLoading }] = useUpdateVolunteerMutation();
 
         const {
             handleSubmit, control, reset, formState: { isDirty },
@@ -73,12 +68,12 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
             const savedData = loadFormData();
             if (savedData) {
                 reset(savedData);
-            } else if (volunteerData) {
-                reset(volunteerSkillsApiAdapter(volunteerData));
+            } else if (profileData) {
+                reset(volunteerSkillsApiAdapter(profileData));
             } else {
                 reset();
             }
-        }, [loadFormData, reset, volunteerData]);
+        }, [loadFormData, reset, profileData]);
 
         useEffect(() => {
             initializeForm();
@@ -94,7 +89,7 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
         const onSubmit: SubmitHandler<VolunteerSkillsField> = async (data) => {
             setToast(undefined);
             const formattedData = volunteerSkillsAdapter(data);
-            await updateVolunteer({ profileId, body: formattedData })
+            await updateVolunteer(formattedData)
                 .unwrap()
                 .then(() => {
                     setToast({
@@ -147,7 +142,7 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
                         />
                     )}
                 />
-                <Button type="submit" color="BLUE" size="MEDIUM" variant="FILL">
+                <Button type="submit" color="BLUE" size="MEDIUM" variant="FILL" disabled={isLoading}>
                     {t("volunteer-skills.Сохранить")}
                 </Button>
             </form>

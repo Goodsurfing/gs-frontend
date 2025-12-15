@@ -19,11 +19,11 @@ export const HostsLayoutPage = () => {
     const { t } = useTranslation();
 
     const hostSidebarContent = useCallback(() => {
-        if (!isLoading && myProfile?.host) {
+        if (!isLoading && myProfile?.hostId) {
             return HostPagesSidebarData;
         }
         return FillSidebarData(HostPagesSidebarData, t);
-    }, [isLoading, myProfile?.host, HostPagesSidebarData, t]);
+    }, [isLoading, myProfile?.hostId, HostPagesSidebarData, t]);
 
     const sidebarContent = hostSidebarContent();
 

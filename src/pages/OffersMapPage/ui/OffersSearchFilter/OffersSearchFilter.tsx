@@ -46,8 +46,9 @@ export const OffersSearchFilter = () => {
 
     const initialCategories = (searchParams.get("category") ?? "")
         .split(",")
+        .map((str) => str.trim())
         .map(Number)
-        .filter((id) => !Number.isNaN(id));
+        .filter((id) => !Number.isNaN(id) && id > 0);
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -95,7 +96,7 @@ export const OffersSearchFilter = () => {
             .split(",")
             .map((str) => {
                 const num = Number(str.trim());
-                return Number.isNaN(num) ? null : num;
+                return Number.isNaN(num) || num <= 0 ? null : num;
             })
             .filter((id): id is number => id !== null);
 

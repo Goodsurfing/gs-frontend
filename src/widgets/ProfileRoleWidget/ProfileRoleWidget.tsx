@@ -113,8 +113,8 @@ export const ProfileRoleWidget: FC = () => {
     const renderRole = (rolesProfile: RoleInfo[]) => {
         if (!myProfile) return;
         return rolesProfile.map((role, index) => {
-            const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== undefined)
-                || (role.id === "host" && myProfile.host !== undefined);
+            const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== null)
+                || (role.id === "host" && myProfile.hostId !== null);
 
             const buttonText = isDisabled ? role.disabledButtonText : role.buttonText;
             return (

@@ -15,15 +15,23 @@ export {
     useGetProfileInfoByIdQuery,
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
-    useGetProfileV3Query,
     useToggleActiveProfileMutation,
+    useUpdateProfilePreferencesMutation,
+    useUpdateProfileVideoGalleryMutation,
+    useUpdateProfileImageGalleryMutation,
+    useUpdateProfileCertificatesMutation,
+    useUpdateVolunteerMutation,
 } from "./api/profileApi";
 
 export type {
     Profile,
-    ProfileApi,
+    UpdateProfile,
     Gender,
     ImageType,
+    ProfileById,
+    UpdateProfilePreferences,
+    UpdateProfileImageGallery,
+    UpdateProfileVideoGallery,
 } from "./model/types/profile";
 
 export { useUser } from "./lib/useUser";

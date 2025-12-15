@@ -1,8 +1,6 @@
 import { memo } from "react";
 import cn from "classnames";
 
-import { useUser } from "@/entities/Profile";
-
 import styles from "./HostFill.module.scss";
 import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
 import { StatsChartPoints, StatsPoints } from "@/entities/Stats";
@@ -10,6 +8,7 @@ import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 import { EditHost } from "../EditHost/EditHost";
 import { CreateHost } from "../CreateHost/CreateHost";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface HostFillProps {
     className?: string;
@@ -18,15 +17,15 @@ interface HostFillProps {
 export const HostFill = memo((props: HostFillProps) => {
     const { className } = props;
     const { data: getHost } = useGetMyHostQuery();
-    const { profile, isLoading, error } = useUser();
-    const host = profile?.host;
+    const { myProfile, profileIsLoading, profileIsError } = useAuth();
+    const host = myProfile?.hostId;
 
     const isDescirption = !!getHost?.name;
     const isGallery = !!(getHost?.galleryImages && getHost?.galleryImages.length !== 0);
     const isVideoGallery = !!(getHost?.videoGallery && getHost?.videoGallery.length !== 0);
     const isOffers = !!(getHost?.vacancies && getHost?.vacancies.length !== 0);
 
-    if (isLoading) {
+    if (profileIsLoading) {
         return (
             <div className={cn(styles.wrapper, className)}>
                 Загрузка...
@@ -34,7 +33,7 @@ export const HostFill = memo((props: HostFillProps) => {
         );
     }
 
-    if (error) {
+    if (profileIsError) {
         return (
             <div className={cn(styles.wrapper, className)}>
                 Ошибка
@@ -63,12 +62,12 @@ export const HostFill = memo((props: HostFillProps) => {
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.top}>
-                <HostFillTitle isLoading={isLoading} text={getHost?.name} />
+                <HostFillTitle isLoading={profileIsLoading} text={getHost?.name} />
             </div>
             <div className={styles.bottom}>
                 <div className={styles.leftSide}>
                     <StatsPoints
-                        isLoading={isLoading}
+                        isLoading={profileIsLoading}
                         pointsData={pointsData}
                     />
                     <div>
@@ -81,7 +80,7 @@ export const HostFill = memo((props: HostFillProps) => {
                 </div>
                 <div className={styles.rightSide}>
                     <FillDiagram
-                        isLoading={isLoading}
+                        isLoading={profileIsLoading}
                         pointsData={pointsData}
                     />
                 </div>

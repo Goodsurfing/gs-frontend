@@ -21,7 +21,7 @@ export interface GalleryItem {
 export interface Image {
     id: string;
     contentUrl: string;
-    thumbnails: {
+    thumbnails?: {
         large: string;
         medium: string;
         small: string;

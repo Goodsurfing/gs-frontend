@@ -1,24 +1,19 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ReviewFullCard } from "@/features/Review/";
+import { ReviewAboutVolunteerCard } from "@/features/Review";
 
-import { ApplicationReviewResponse, useLazyGetToVolunteerReviewsQuery } from "@/entities/Review";
+import { GetAboutVolunteerReview, useLazyGetAboutVolunteerReviewsQuery } from "@/entities/Review";
 
 import styles from "./ReviewAboutVolunteer.module.scss";
 
-interface ReviewAboutVolunteerProps {
-    volunteerId: string;
-}
-
 const ITEMS_PER_PAGE = 20;
 
-export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
-    const { volunteerId } = props;
+export const ReviewAboutVolunteer = () => {
     const { t } = useTranslation("volunteer");
-    const [getReviewsData] = useLazyGetToVolunteerReviewsQuery();
-    const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
+    const [getReviewsData] = useLazyGetAboutVolunteerReviewsQuery();
+    const [reviews, setReviews] = useState<GetAboutVolunteerReview[]>([]);
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
@@ -28,20 +23,19 @@ export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
             const currentPage = isInitial ? 1 : page;
 
             const result = await getReviewsData({
-                volunteer: volunteerId,
                 page: currentPage,
-                itemsPerPage: ITEMS_PER_PAGE,
+                limit: ITEMS_PER_PAGE,
             }).unwrap();
 
-            if (result.length < ITEMS_PER_PAGE) {
+            if (result.data.length < ITEMS_PER_PAGE) {
                 setHasMore(false);
             }
 
             if (isInitial) {
-                setReviews(result);
+                setReviews(result.data);
                 setPage(2);
             } else {
-                setReviews((prev) => [...prev, ...result]);
+                setReviews((prev) => [...prev, ...result.data]);
                 setPage((prevPage) => prevPage + 1);
             }
         } catch { /* empty */ }
@@ -52,8 +46,8 @@ export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => reviewOffers.map(
-        (review) => <ReviewFullCard type="host" review={review} key={review.id} />,
+    const renderCardOffers = (reviewOffers: GetAboutVolunteerReview[]) => reviewOffers.map(
+        (review) => <ReviewAboutVolunteerCard data={review} key={review.id} />,
     );
 
     return (
@@ -70,7 +64,6 @@ export const ReviewAboutVolunteer: FC<ReviewAboutVolunteerProps> = (props) => {
                 >
                     {renderCardOffers(reviews)}
                 </InfiniteScroll>
-                {renderCardOffers(reviews)}
             </div>
         </div>
     );

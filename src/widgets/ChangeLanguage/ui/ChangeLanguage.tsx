@@ -13,14 +13,16 @@ import { changeLanguageData, languageIconsData } from "../model/data/ChangeLangu
 import styles from "./ChangeLanguage.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
+import { Profile } from "@/entities/Profile";
+import { updateProfileDataAdapter } from "@/features/ProfileInfo";
 
 interface ChangeLanguageProps {
     className?: string;
     localeApi?: Locale;
-    profileId?: string;
+    profileData?: Profile | null;
 }
 
-export const ChangeLanguage = memo(({ className, localeApi, profileId }: ChangeLanguageProps) => {
+export const ChangeLanguage = memo(({ className, localeApi, profileData }: ChangeLanguageProps) => {
     const { locale, updateLocale } = useLocale();
 
     const [updateProfile] = useUpdateProfileInfoMutation();
@@ -38,10 +40,13 @@ export const ChangeLanguage = memo(({ className, localeApi, profileId }: ChangeL
     useOnClickOutside(menuRef, handleClickOutside);
 
     const changeLanguageHandleClick = async (lang: ILanguage) => {
-        updateLocale(lang.code);
-        if (profileId) {
-            await updateProfile({ userId: profileId, profileData: { locale: lang.code } });
+        if (profileData) {
+            const formatUpdateProfileData = updateProfileDataAdapter(
+                { ...profileData, locale: lang.code },
+            );
+            await updateProfile(formatUpdateProfileData);
         }
+        updateLocale(lang.code);
         setIsOpen(false);
     };
 

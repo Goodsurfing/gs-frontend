@@ -11,6 +11,7 @@ export interface ILanguage {
 export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_intermediate" | "upper_intermediate" | "advanced" | "proficiency";
 
 export interface Language {
+    id: number | null;
     language: string;
-    languageLevel: LevelLanguage
+    level: LevelLanguage
 }

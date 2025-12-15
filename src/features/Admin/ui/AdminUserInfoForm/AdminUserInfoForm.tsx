@@ -37,7 +37,6 @@ export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
     });
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [avatar, setAvatar] = useState<string>();
 
     const [updateUser] = useUpdateAdminUserMutation();
 
@@ -66,12 +65,8 @@ export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
     };
 
     useEffect(() => {
-        // reset to profileInfoFormAdapter(profile)
         const adapter = adminUserAdapter(user);
         reset(adapter);
-        if (user.image) {
-            setAvatar(user.image.contentUrl);
-        }
     }, [user, reset]);
 
     const isLocked = useAppSelector(getProfileReadonly);
@@ -150,8 +145,7 @@ export const AdminUserInfoForm: FC<AdminUserInfoFormProps> = (props) => {
                             fileClassname={styles.fileInput}
                             className={className}
                             id="profile-file"
-                            src={getMediaContent(field.value?.imagePath)
-                                ?? getMediaContent(avatar) ?? undefined}
+                            src={getMediaContent(field.value?.imagePath)}
                             setFile={(file?: File) => handleImageUpload(file, field.onChange)}
                             route={getVolunteerPersonalPageUrl(locale, userId)}
                         />

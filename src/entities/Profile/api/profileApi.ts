@@ -1,12 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import { Profile, ProfileApi } from "../model/types/profile";
+import {
+    Profile, ProfileById, UpdateProfile, UpdateProfileCertificates,
+    UpdateProfileImageGallery, UpdateProfilePreferences,
+    UpdateProfileVideoGallery,
+} from "../model/types/profile";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
-
-interface UpdateProfileInfoRequest {
-    userId: string;
-    profileData: Partial<ProfileApi>
-}
+import { UpdateVolunteer } from "@/entities/Volunteer";
 
 interface ChangePasswordRequest {
     plainPassword: string;
@@ -29,11 +29,6 @@ interface UnreadMessagesResponse {
     unreadMessagesCount: number;
 }
 
-interface ProfileV3 {
-    isVerified: boolean;
-    isActive: boolean;
-}
-
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -41,33 +36,63 @@ export const profileApi = createApi({
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: "personal/profile",
-                method: "GET",
-            }),
-            providesTags: ["profile"],
-        }),
-        getProfileV3: build.query<ProfileV3, void>({
-            query: () => ({
                 url: `${API_BASE_URL_V3}profile`,
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
-        getProfileInfoById: build.query<Profile, string>({
+        getProfileInfoById: build.query<ProfileById, string>({
             query: (userId) => ({
                 url: `users/${userId}`,
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
-        updateProfileInfo: build.mutation<Profile, UpdateProfileInfoRequest>({
-            query: ({ userId, profileData }) => ({
-                url: `users/${userId}`,
+        updateProfileInfo: build.mutation<void, UpdateProfile>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}profile`,
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/merge-patch+json",
-                },
-                body: JSON.stringify(profileData),
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        updateVolunteer: build.mutation<void, UpdateVolunteer>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}volunteer`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        updateProfileVideoGallery: build.mutation<void, UpdateProfileVideoGallery>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}profile/video-gallery`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        updateProfileImageGallery: build.mutation<void, UpdateProfileImageGallery>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}profile/image-gallery`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        updateProfileCertificates: build.mutation<void, UpdateProfileCertificates>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}volunteer/certificate`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        updateProfilePreferences: build.mutation<void, UpdateProfilePreferences>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}profile/favorite-category`,
+                method: "PATCH",
+                body,
             }),
             invalidatesTags: ["profile"],
         }),
@@ -114,6 +139,10 @@ export const {
     useGetProfileSearchByEmailQuery,
     useLazyGetProfileSearchByEmailQuery,
     useLazyGetUnreadMessagesQuery,
-    useGetProfileV3Query,
     useToggleActiveProfileMutation,
+    useUpdateProfilePreferencesMutation,
+    useUpdateProfileVideoGalleryMutation,
+    useUpdateProfileImageGalleryMutation,
+    useUpdateProfileCertificatesMutation,
+    useUpdateVolunteerMutation,
 } = profileApi;

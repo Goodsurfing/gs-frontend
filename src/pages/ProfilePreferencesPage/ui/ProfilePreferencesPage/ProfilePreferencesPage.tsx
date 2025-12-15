@@ -18,7 +18,7 @@ const ProfilePreferencesPage: FC = () => {
             <div className={styles.titleWrapper}>
                 <h2 className={styles.title}>{t("preferences.Куда бы вы хотели поехать")}</h2>
                 {data && (
-                    <ProfilePreferencesForm profileId={data.id} />
+                    <ProfilePreferencesForm />
                 )}
             </div>
         </main>

@@ -1,35 +1,49 @@
-import { VolunteerApi, VolunteerType } from "@/entities/Volunteer";
+import { UpdateVolunteer } from "@/entities/Volunteer";
 import { VolunteerSkillsField } from "../model/types/volunteerSkills";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
+import { Profile } from "@/entities/Profile";
 
-export const volunteerSkillsAdapter = (data: VolunteerSkillsField): Partial<Omit<VolunteerType, "profile">> => {
+export const volunteerSkillsAdapter = (data: VolunteerSkillsField): UpdateVolunteer => {
     const {
         languages, skills, additionalSkills, extraInfo,
     } = data;
 
     const additionalSkillsTemp = additionalSkills.map((skill) => skill.text);
+    const skillsTemp = skills.map((skill) => skill.id);
 
     return {
-        languages,
-        skills,
+        languages: languages ?? [],
+        skillIds: skillsTemp,
         additionalSkills: additionalSkillsTemp,
-        externalInfo: extraInfo,
+        externalInfo: extraInfo ?? "",
     };
 };
 
-export const volunteerSkillsApiAdapter = (data: VolunteerApi): VolunteerSkillsField => {
+export const volunteerSkillsApiAdapter = (data: Profile): VolunteerSkillsField => {
     const {
-        languages, skills, additionalSkills, externalInfo,
+        volunteer,
     } = data;
+    if (volunteer) {
+        const {
+            additionalSkills, languages, skills, externalInfo,
+        } = volunteer;
 
-    const additionalSkillsTemp: AdditionalSkillsType[] = additionalSkills.map(
-        (skill) => ({ text: skill }),
-    );
+        const additionalSkillsTemp: AdditionalSkillsType[] = additionalSkills.map(
+            (skill) => ({ text: skill }),
+        );
+
+        return {
+            languages,
+            skills,
+            additionalSkills: additionalSkillsTemp,
+            extraInfo: externalInfo ?? "",
+        };
+    }
 
     return {
-        languages,
-        skills,
-        additionalSkills: additionalSkillsTemp,
-        extraInfo: externalInfo,
+        additionalSkills: [],
+        skills: [],
+        extraInfo: "",
+        languages: [],
     };
 };

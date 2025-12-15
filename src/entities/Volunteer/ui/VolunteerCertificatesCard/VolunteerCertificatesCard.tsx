@@ -7,14 +7,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useTranslation } from "react-i18next";
 import styles from "./VolunteerCertificatesCard.module.scss";
-import { MediaObjectType } from "@/types/media";
+import { Image } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Text } from "@/shared/ui/Text/Text";
 import { UploadedCertificate } from "./ui/UploadedCertificate/UploadedCertificate";
 
 interface VolunteerCertificatesCardProps {
     classname?: string;
-    certificates?: MediaObjectType[];
+    certificates?: Image[];
 }
 
 export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = memo((
@@ -31,9 +31,9 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
             return certificates.map((certificate, index) => (
                 <SwiperSlide className={styles.slide} key={index} style={{ cursor: "pointer" }}>
                     <UploadedCertificate
-                        certificate={getMediaContent(certificate) ?? ""}
-                        isFile={!certificate.isImage}
-                        download={getMediaContent(certificate)}
+                        certificate={getMediaContent(certificate.contentUrl) ?? ""}
+                        isFile
+                        download={getMediaContent(certificate.contentUrl)}
                         disableCloseButton
                         classNameItem={styles.certificate}
                     />

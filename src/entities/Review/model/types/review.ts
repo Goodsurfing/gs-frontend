@@ -1,3 +1,5 @@
+import { Pagination } from "@/types/api/pagination";
+
 export interface Review {
     reviewText: string;
     rating: number;
@@ -20,3 +22,68 @@ export type ApplicationReviewResponse = ApplicationReview & {
     organizationAuthorId?: string;
     vacancyId?: number;
 };
+
+export interface GetAboutVolunteerReview {
+    id: string;
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        city: string;
+        country: string;
+        imagePath: string;
+    };
+    rating: number;
+    description: string;
+    created: string;
+}
+
+export interface CreateVolunteerReview {
+    volunteerId: string;
+    rating: number;
+    description: string;
+}
+
+export interface GetAboutVolunteerReviewRequest {
+    data: GetAboutVolunteerReview[];
+    pagination: Pagination;
+}
+
+export interface GetAboutVolunteerReviewParams {
+    page: number;
+    limit: number;
+}
+
+export interface CreateOfferReview {
+    vacancyId: number;
+    rating: number;
+    description: string;
+}
+
+export interface GetOfferReview {
+    id: string;
+    description: string;
+    created: string;
+    rating: number;
+    vacancy: {
+        id: number;
+        name: string;
+        imagePath: string;
+    },
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        imagePath: string;
+    }
+}
+
+export interface GetOfferReviewRequest {
+    data: GetOfferReview[];
+    pagination: Pagination;
+}
+
+export interface GetOfferReviewParams {
+    page: number;
+    limit: number;
+}

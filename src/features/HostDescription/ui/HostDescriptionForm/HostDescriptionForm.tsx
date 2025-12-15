@@ -41,7 +41,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface HostDescriptionFormProps {
     className?: string;
-    host?: string;
+    host?: string | null;
     myProfile?: Profile;
     isLoading?: boolean;
     isError?: boolean;
@@ -49,7 +49,7 @@ interface HostDescriptionFormProps {
 }
 
 const defaultValues: DefaultValues<HostDescriptionFormFields> = {
-    avatar: "",
+    avatar: undefined,
     address: "",
     mainInfo: {
         aboutInfo: "",

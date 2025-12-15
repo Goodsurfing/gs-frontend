@@ -1,4 +1,4 @@
-export const getAge = (dateString?: string) => {
+export const getAge = (dateString?: string | null) => {
     if (!dateString) return "";
     const birthDate = new Date(dateString);
     const today = new Date();

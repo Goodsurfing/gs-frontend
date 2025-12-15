@@ -36,7 +36,7 @@ export interface AdminUsersFields {
 export interface AdminUserFields {
     about: ProfileAbout;
     birthDate?: ProfileDateOfBirth;
-    gender: ProfileGender;
+    gender?: ProfileGender;
     locale: ProfileLocale;
     contacts: ProfileContacts;
     aboutMe?: ProfileAboutMe;
@@ -63,21 +63,21 @@ export interface AdminUsers {
 }
 
 export interface AdminUser {
-    firstName?: string;
-    lastName?: string;
-    image?: Image;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
     email: string;
     birthDate: string | null;
-    gender: Gender;
-    country?: string;
-    city?: string;
+    gender: Gender | null;
+    country: string | null;
+    city: string | null;
     locale: Locale;
-    phone?: string;
-    aboutMe?: string;
-    vk?: string;
-    facebook?: string;
-    instagram?: string;
-    telegram?: string;
+    phone: string | null;
+    aboutMe: string | null;
+    vk: string | null;
+    facebook: string | null;
+    instagram: string | null;
+    telegram: string | null;
     achievements: Achievement[];
     skills: Skill[];
     additionalSkills: string[];
@@ -86,7 +86,7 @@ export interface AdminUser {
     isVerified: boolean;
     isVolunteer: boolean; // is volunteer
     isOrganization: boolean;
-    isActive: boolean; // is block
+    isActive: boolean;
     isPayment: boolean;
     endPayment: string;
 }
@@ -153,11 +153,13 @@ export interface UpdateAdminUserRequest {
 }
 
 export interface AdminOrganization {
+    id: string;
     name: string;
+    isActive: boolean;
     address: string;
     type: string;
-    isActive: boolean;
     otherType: string;
+    image: Image | null;
     website: string;
     description: string;
     shortDescription: string;
@@ -165,6 +167,8 @@ export interface AdminOrganization {
     facebook: string;
     instagram: string;
     telegram: string;
+    countVacancies: number;
+    countApplications: number;
 }
 
 export interface AdminOrganizations {
@@ -177,9 +181,14 @@ export interface AdminOrganizations {
     isActive: boolean;
 }
 
+export type UpdateAdminOrganization = Omit<AdminOrganization, "id" | "isActive" | "image"
+| "countVacancies" | "countApplications"> & {
+    imageId: string | null;
+};
+
 export interface UpdateAdminOrganizationRequest {
     id: string;
-    body: AdminOrganizations;
+    body: UpdateAdminOrganization;
 }
 
 export interface GetAdminOrganizationParams {

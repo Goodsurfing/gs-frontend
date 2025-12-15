@@ -77,7 +77,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                 />
                 <span className={styles.ratingNum}>{stars}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
-                    <Avatar icon={getMediaContent(volunteer.profile.image)} alt="avatar" className={styles.avatar} />
+                    <Avatar icon={getMediaContent(volunteer.profile.image?.contentUrl)} alt="avatar" className={styles.avatar} />
                     <span className={styles.author}>
                         {textSlice(`${getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}`, 50, "title")}
                     </span>

@@ -41,7 +41,7 @@ const MainHeader: FC = () => {
                     >
                         <img src={logotypeIcon} alt="GoodSurfing" />
                     </LocaleLink>
-                    <ChangeLanguage localeApi={myProfile?.locale} profileId={myProfile?.id} />
+                    <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
                 </div>
                 <MainHeaderNav />
                 <div className={styles.right}>

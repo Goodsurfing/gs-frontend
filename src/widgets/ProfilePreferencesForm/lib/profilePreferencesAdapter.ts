@@ -1,12 +1,12 @@
 import { ProfilePreferencesField } from "../model/types/profilePreferences";
-import { Profile, ProfileApi } from "@/entities/Profile";
+import { Profile, UpdateProfilePreferences } from "@/entities/Profile";
 
 export const profilePreferencesApiAdapter = (
     data: ProfilePreferencesField,
-): Partial<ProfileApi> => {
+): UpdateProfilePreferences => {
     const { favoriteCategories } = data;
     return {
-        favoriteCategories,
+        favoriteCategoryIds: favoriteCategories,
     };
 };
 

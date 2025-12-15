@@ -4,7 +4,7 @@ import React, {
 } from "react";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
-import { Profile, useGetProfileV3Query, useGetProfileInfoQuery } from "@/entities/Profile";
+import { Profile, useGetProfileInfoQuery } from "@/entities/Profile";
 
 interface AuthContextProps {
     token: string | null;
@@ -13,7 +13,7 @@ interface AuthContextProps {
     profileIsLoading: boolean;
     profileIsError: boolean;
     profileDataIsFethcing: boolean;
-    myProfileIsVerified: boolean;
+    // myProfileIsVerified: boolean;
     isAuth: boolean;
     isUserAdmin: boolean;
     refetchProfile: () => void;
@@ -39,15 +39,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         refetch: refetchProfileData,
         isFetching: profileDataIsFethcing,
     } = useGetProfileInfoQuery();
-    const {
-        data: profileVerified,
-        refetch: refetchProfileVerifiedData,
-    } = useGetProfileV3Query();
+    // const {
+    //     data: profileVerified,
+    //     refetch: refetchProfileVerifiedData,
+    // } = useGetProfileV3Query();
 
     const refetchProfile = useCallback(async () => {
         await refetchProfileData();
-        await refetchProfileVerifiedData();
-    }, [refetchProfileData, refetchProfileVerifiedData]);
+        // await refetchProfileVerifiedData();
+    }, [refetchProfileData]);
 
     useEffect(() => {
         setAuth(!!authData);
@@ -67,7 +67,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const profileIsLoading = profileDataIsLoading;
     const profileIsError = profileDataIsError;
     const profileIsFetching = profileDataIsFethcing;
-    const myProfileIsVerified = profileVerified?.isVerified ?? false;
+    // const myProfileIsVerified = profileVerified?.isVerified ?? false;
 
     const value = useMemo(
         () => ({
@@ -77,14 +77,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             profileIsLoading,
             profileIsFetching,
             profileIsError,
-            myProfileIsVerified,
+            // myProfileIsVerified,
             isAuth,
             isUserAdmin,
             refetchProfile,
             profileDataIsFethcing,
         }),
         [token, mercureToken, myProfile, profileIsLoading,
-            profileIsFetching, profileIsError, myProfileIsVerified,
+            profileIsFetching, profileIsError,
             isAuth, isUserAdmin, refetchProfile, profileDataIsFethcing],
     );
 

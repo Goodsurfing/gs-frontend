@@ -6,6 +6,8 @@ export type {
     GetAdminOrganizationParams,
     UpdateAdminUser,
     AdminUserFields,
+    AdminOrganization,
+    UpdateAdminOrganization,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";

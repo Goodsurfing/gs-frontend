@@ -11,14 +11,13 @@ import {
 } from "@/features/ProfilePrivacy";
 
 import styles from "./ProfilePrivacy.module.scss";
-import { useGetProfileV3Query, useToggleActiveProfileMutation } from "@/entities/Profile";
+import { useToggleActiveProfileMutation } from "@/entities/Profile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 export const ProfilePrivacy: FC = memo(() => {
     const { t } = useTranslation("profile");
-    const { myProfile } = useAuth();
-    const { data: myProfileData, isLoading } = useGetProfileV3Query();
+    const { myProfile, profileIsLoading } = useAuth();
     const [toggleActive] = useToggleActiveProfileMutation();
     const [isActiveProfile, setActiveProfile] = useState<boolean>(false);
 
@@ -32,12 +31,12 @@ export const ProfilePrivacy: FC = memo(() => {
     }, [myProfile, toggleActive]);
 
     useEffect(() => {
-        if (myProfileData) {
-            setActiveProfile(myProfileData.isActive);
+        if (myProfile) {
+            setActiveProfile(myProfile.isActive);
         }
-    }, [myProfileData]);
+    }, [myProfile]);
 
-    if (isLoading) {
+    if (profileIsLoading) {
         return <MiniLoader />;
     }
 

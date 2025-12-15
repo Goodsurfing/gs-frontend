@@ -49,7 +49,7 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
 
 export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields): CreateHost => {
     const {
-        mainInfo, socialMedia, type, address,
+        mainInfo, socialMedia, type, address, avatar,
     } = data;
     // const formData = new FormData();
     const videoGallery: string[] = [];
@@ -68,11 +68,11 @@ export const hostDescriptionApiAdapterCreate = (data: HostDescriptionFormFields)
     // formData.append("videoGallery", JSON.stringify(videoGallery));
     return {
         name: mainInfo?.organization ?? "",
-        address: address ?? "",
+        address: address ?? "test",
         description: mainInfo?.aboutInfo ?? "",
         shortDescription: mainInfo?.shortOrganization ?? "",
         type: formType,
-        avatar: null,
+        avatar: avatar?.id ?? null,
         vk: socialMedia?.vk ?? "",
         facebook: socialMedia?.facebook ?? "",
         instagram: socialMedia?.instagram ?? "",
@@ -98,7 +98,7 @@ export const hostDescriptionApiAdapterUpdate = (
         type: formType,
         description: mainInfo?.aboutInfo,
         shortDescription: mainInfo?.shortOrganization,
-        avatar,
+        avatar: avatar?.id,
         vk: socialMedia?.vk,
         instagram: socialMedia?.instagram,
         facebook: socialMedia?.facebook,

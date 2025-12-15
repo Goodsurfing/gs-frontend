@@ -24,7 +24,7 @@ import {
 import { useGetChatMessages } from "@/entities/Chat/lib/useGetChatMessages";
 import { UserInfoCard } from "@/entities/Messenger";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
-import { Profile, useLazyGetProfileInfoByIdQuery } from "@/entities/Profile";
+import { Profile, ProfileById, useLazyGetProfileInfoByIdQuery } from "@/entities/Profile";
 
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
@@ -88,7 +88,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [processedMessages, setProcessedMessages] = useState<JSX.Element[]>(
         [],
     );
-    const [companionData, setCompanionData] = useState<Profile>();
+    const [companionData, setCompanionData] = useState<ProfileById>();
 
     const navigate = useNavigate();
     const { getFullName } = useGetFullName();
@@ -218,14 +218,14 @@ export const Chat: FC<ChatProps> = (props) => {
 
                     if (isUserCompanion) {
                         userName = getFullName(companionData?.firstName, companionData?.lastName);
-                        userAvatar = getMediaContent(companionData?.image);
+                        userAvatar = getMediaContent(companionData?.image?.contentUrl);
                     } else {
                         userName = getFullName(
                             myProfileData.firstName,
                             myProfileData.lastName,
                         );
                         userAvatar = getMediaContent(
-                            myProfileData.image,
+                            myProfileData.image?.contentUrl,
                         );
                     }
 

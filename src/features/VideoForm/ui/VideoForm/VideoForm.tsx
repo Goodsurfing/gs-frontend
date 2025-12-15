@@ -3,12 +3,10 @@ import React, {
 } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ErrorType } from "@/types/api/error";
 
 import { VideoList } from "@/widgets/VideoList/ui/VideoList";
 
-import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
+import { useUpdateProfileVideoGalleryMutation } from "@/entities/Profile/api/profileApi";
 
 import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -22,20 +20,18 @@ import { VideoInput } from "../VideoInput/VideoInput";
 import styles from "./VideoForm.module.scss";
 
 interface VideoFormProps {
-    profileId: string;
     videoGallery?: string[];
 }
 
 export const VideoForm: FC<VideoFormProps> = (props) => {
-    const { profileId, videoGallery } = props;
+    const { videoGallery } = props;
 
     const { t } = useTranslation("volunteer");
     const { control, handleSubmit, reset } = useForm<VideoFormImplementation>();
     const [videos, setVideos] = useState<string[]>([]);
     const [toast, setToast] = useState<ToastAlert>();
 
-    const [updateProfile, { isLoading }] = useUpdateProfileInfoMutation();
-    const { refetch: refetchVolunteer } = useGetVolunteerByIdQuery(profileId);
+    const [updateProfileVideo, { isLoading }] = useUpdateProfileVideoGalleryMutation();
 
     const isCanAddVideo = videos.length < 10;
 
@@ -47,33 +43,27 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
 
     const addVideo = useCallback(
         async (newVideo: VideoFormImplementation) => {
+            setToast(undefined);
             if (isCanAddVideo) {
-                await updateProfile({
-                    userId: profileId,
-                    profileData: {
+                try {
+                    await updateProfileVideo({
                         videoGallery: [...videos, newVideo.video],
-                    },
-                })
-                    .then(() => {
-                        setToast({
-                            text: t("volunteer-gallery.Данные успешно изменены"),
-                            type: HintType.Success,
-                        });
-                        refetchVolunteer();
-                    })
-                    .catch((error: ErrorType) => {
-                        setToast({
-                            text: getErrorText(error),
-                            type: HintType.Error,
-                        });
-                    })
-                    .finally(() => {
-                        reset();
                     });
+                    setToast({
+                        text: t("volunteer-gallery.Данные успешно изменены"),
+                        type: HintType.Success,
+                    });
+                } catch (error) {
+                    setToast({
+                        text: getErrorText(error),
+                        type: HintType.Error,
+                    });
+                } finally {
+                    reset();
+                }
             }
         },
-        [isCanAddVideo, updateProfile,
-            profileId, videos, refetchVolunteer, reset, t],
+        [isCanAddVideo, updateProfileVideo, videos, t, reset],
     );
 
     const deleteVideo = useCallback(
@@ -83,27 +73,23 @@ export const VideoForm: FC<VideoFormProps> = (props) => {
                 (video, index) => index !== videoIndex,
             );
 
-            await updateProfile({
-                userId: profileId,
-                profileData: {
+            try {
+                await updateProfileVideo({
                     videoGallery: updatedVideos,
-                },
-            })
-                .then(() => {
-                    setVideos(updatedVideos);
-                    setToast({
-                        text: t("volunteer-gallery.Данные успешно изменены"),
-                        type: HintType.Success,
-                    });
-                })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
                 });
+                setVideos(updatedVideos);
+                setToast({
+                    text: t("volunteer-gallery.Данные успешно изменены"),
+                    type: HintType.Success,
+                });
+            } catch (error) {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            }
         },
-        [videos, updateProfile, profileId, t],
+        [videos, updateProfileVideo, t],
     );
 
     return (

@@ -1,3 +1,5 @@
+import { Image } from "@/types/media";
+
 export type OrganizationType = "ООО" | "ООПТ" | "ОАО" | "ИП" | "Другое";
 
 export type HostDescriptionTypeFields = {
@@ -21,7 +23,7 @@ export type HostDescriptionSocialFields = {
 
 export interface HostDescriptionFormFields {
     address?: string;
-    avatar?: string;
+    avatar?: Image;
     mainInfo?: HostDescriptionMainInfoFields;
     type: HostDescriptionTypeFields;
     socialMedia?: HostDescriptionSocialFields;

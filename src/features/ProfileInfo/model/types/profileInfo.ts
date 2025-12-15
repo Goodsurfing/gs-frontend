@@ -1,5 +1,6 @@
 import { Locale } from "@/entities/Locale";
-import { Gender, ImageType } from "@/entities/Profile";
+import { Gender } from "@/entities/Profile";
+import { Image } from "@/types/media";
 
 export interface ProfileDateOfBirth {
     day: number;
@@ -37,10 +38,10 @@ export interface ProfileSocial {
 export interface ProfileInfoFields {
     about: ProfileAbout;
     birthDate?: ProfileDateOfBirth;
-    gender: ProfileGender;
+    gender?: ProfileGender;
     locale: ProfileLocale;
     contacts: ProfileContacts;
     aboutMe?: ProfileAboutMe;
     social: ProfileSocial;
-    profileAvatar?: ImageType;
+    profileAvatar?: Image;
 }

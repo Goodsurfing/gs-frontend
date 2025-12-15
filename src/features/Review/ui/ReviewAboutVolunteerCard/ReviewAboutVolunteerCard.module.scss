@@ -1,0 +1,68 @@
+.wrapper {
+    border: 1px solid var(--accent-elements);
+    border-radius: 3px;
+    max-width: 500px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px;
+    justify-content: space-between;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 10px;
+}
+
+.avatarInfoUser {
+    display: flex;
+    column-gap: 5px;
+}
+
+.userInfoContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+}
+
+.nameAddress {
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar {
+    width: 22px;
+    height: 22px;
+}
+
+.name {
+    color: var(--text-primary-1);
+    font-size: 14px;
+}
+
+.address {
+    color: var(--text-caption);
+    font-size: 12px;
+}
+
+.textReview {
+    margin-top: 12px;
+}
+
+.ratingNum {
+    font-size: 14px;
+}
+
+.ratingWrapper {
+    display: flex;
+    gap: 5px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
+}

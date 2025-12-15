@@ -3,8 +3,7 @@ import { Offer } from "@/entities/Offer";
 import { Gender, Profile } from "@/entities/Profile";
 import { Review } from "@/entities/Review";
 import { SkillsData } from "@/shared/data/skills";
-import { Language } from "./language";
-import { Language as LanguageApi } from "@/types/languages";
+import { Language, Language as LanguageApi } from "@/types/languages";
 import { WhatToDoSkillType } from "@/types/skills";
 import { MediaObjectType } from "@/types/media";
 import { Gallery } from "@/entities/Gallery";
@@ -38,6 +37,13 @@ export interface VolunteerApi {
 export type VolunteerType = Omit<VolunteerApi, "profile" | "certificates"> & {
     certificates: string[];
 };
+
+export interface UpdateVolunteer {
+    skillIds: number[];
+    languages: Language[];
+    additionalSkills: string[];
+    externalInfo: string;
+}
 
 export interface VolunteerMini {
     id: string;

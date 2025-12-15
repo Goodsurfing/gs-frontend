@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import styles from "./VolunteerPageContent.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
 import { VolunteerInfoCard } from "@/entities/Volunteer/ui/VolunteerInfoCard/VolunteerInfoCard";
-import { Profile } from "@/entities/Profile";
+import { ProfileById } from "@/entities/Profile";
 
 interface VolunteerPageContentProps {
-    profileData?: Profile;
+    profileData?: ProfileById;
 }
 
 export const VolunteerPageContent: FC<VolunteerPageContentProps> = memo(

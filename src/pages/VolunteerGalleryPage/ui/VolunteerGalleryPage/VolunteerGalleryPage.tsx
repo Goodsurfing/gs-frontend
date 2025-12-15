@@ -30,12 +30,11 @@ const VolunteerGalleryPage = () => {
                     <VolunteerGallery className={styles.container} profileData={profileData} />
                     <TitleVideoGallery className={styles.container} />
                     <VideoForm
-                        profileId={profileData.id}
                         videoGallery={profileData.videoGallery}
                     />
                     <TitleCertificate className={styles.container} />
                     <VolunteerCertificateGallery
-                        profileId={profileData.id}
+                        profileData={profileData}
                         className={styles.container}
                     />
                 </>
