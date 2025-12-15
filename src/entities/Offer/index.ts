@@ -11,6 +11,8 @@ export {
     useLazyGetOfferByIdQuery,
     useLazyGetOffersQuery,
     useGetOffersQuery,
+    useUpdateOfferWhatToDoMutation,
+    useUpdateOfferConditionsMutation,
 } from "./api/offerApi";
 
 export type {

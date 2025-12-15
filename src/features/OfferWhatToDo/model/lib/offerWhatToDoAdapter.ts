@@ -1,15 +1,14 @@
 import { OfferWhatToDo } from "@/entities/Offer";
 
 import { OfferWhatToDoFormFields } from "../types/offerWhatToDo";
+import { UpdateOfferWhatToDo } from "@/entities/Offer/model/types/offerWhatToDo";
 
 export const offerWhatToDoApiAdapter = (
     data: OfferWhatToDoFormFields,
-): OfferWhatToDo => {
+): UpdateOfferWhatToDo => {
     const {
         additionalSkills, skills, workingHours, extraInfo,
     } = data;
-
-    const skillsTemp = skills.map((skill) => ({ text: skill }));
 
     const { hours, dayOff, timeType } = workingHours;
 
@@ -18,7 +17,7 @@ export const offerWhatToDoApiAdapter = (
     );
 
     return {
-        skills: skillsTemp,
+        skillIds: skills,
         additionalSkills: additionalSkillsTemp,
         hours,
         dayOff,
@@ -34,10 +33,10 @@ export const offerWhatToDoAdapter = (
         dayOff, hours, skills, timeType, additionalSkills, externalInfo,
     } = offerWhatToDo;
 
-    const skillsTemp = skills.map((skill) => skill.text);
     const additionalSkillsTemp = additionalSkills?.map((additionalSkill) => ({
         text: additionalSkill,
     }));
+    const skillsTemp = skills.map((skill) => skill.id);
 
     return {
         skills: skillsTemp,
@@ -47,6 +46,6 @@ export const offerWhatToDoAdapter = (
             dayOff,
             timeType,
         },
-        extraInfo: externalInfo || "",
+        extraInfo: externalInfo ?? "",
     };
 };

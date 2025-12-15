@@ -39,3 +39,20 @@ export interface OfferConditionsApi {
     currency: Currency;
     additionalConditions: string;
 }
+
+export interface UpdateOfferConditions {
+    additionalConditions: string,
+    currency: Currency;
+    additionalFeatures: ExtraFeatures[];
+    conveniences: Facilities[];
+    foodIds: number[];
+    houseIds: number[];
+    transferIds: number[],
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+}
+
+export interface UpdateOfferConditionsParams {
+    offerId: number;
+    body: UpdateOfferConditions;
+}

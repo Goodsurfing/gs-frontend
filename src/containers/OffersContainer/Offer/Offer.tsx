@@ -34,7 +34,7 @@ const Offer: FC<OfferProps> = (props) => {
     } = offer;
     const { getTranslation } = useCategories();
 
-    const category = getTranslation(categories[0].name) ?? "Без категории";
+    const category = getTranslation(categories[0]?.name) ?? "Без категории";
 
     return (
         <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>

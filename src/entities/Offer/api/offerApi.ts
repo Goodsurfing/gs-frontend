@@ -11,6 +11,8 @@ import {
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
+import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
 
 interface UpdateOfferParams {
     id: number
@@ -61,6 +63,22 @@ export const offerApi = createApi({
                     "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify(data.body),
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferWhatToDo: build.mutation<void, UpdateOfferWhatToDoParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/what-to-do/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferConditions: build.mutation<void, UpdateOfferConditionsParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/condition/${offerId}`,
+                method: "PATCH",
+                body,
             }),
             invalidatesTags: ["offer"],
         }),
@@ -174,4 +192,6 @@ export const {
     useGetOfferGalleryItemsQuery,
     useGetOfferGalleryItemByIdQuery,
     useDeleteOfferGalleryItemMutation,
+    useUpdateOfferWhatToDoMutation,
+    useUpdateOfferConditionsMutation,
 } = offerApi;
