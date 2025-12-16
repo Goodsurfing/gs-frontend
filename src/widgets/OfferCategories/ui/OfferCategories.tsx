@@ -21,7 +21,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
 
     const handleChange = (event: ChangeEvent<{}>, newValues: number[]) => {
         if (newValues.length <= maxLength) {
-            onChange?.(newValues.filter(Boolean));
+            onChange?.(newValues.filter((id) => id > 0));
         }
     };
 
@@ -93,7 +93,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                             },
                         }}
                         key={index}
-                        value={String(item.id)}
+                        value={item.id}
                     >
                         {getTranslation(item.name)}
                     </ToggleButton>
