@@ -41,13 +41,13 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const isRenderGridPeriods = periods.length > 3;
 
     const renderItemPeriods = periods.map((period) => {
-        const { start, ending } = period;
+        const { start, end } = period;
 
         return (
             <p>
                 {`${formatDate(locale, start ?? "")} — ${formatDate(
                     locale,
-                    ending ?? "",
+                    end ?? "",
                 )}`}
             </p>
         );

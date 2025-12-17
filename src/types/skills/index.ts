@@ -11,11 +11,9 @@ export interface Skill {
     imagePath: string;
 }
 
-export interface GetSkill {
-    id: number;
-    name: string;
+export type GetSkill = Omit<Skill, "imagePath"> & {
     image: Image;
-}
+};
 
 export interface SkillsField {
     skills: Skill[];

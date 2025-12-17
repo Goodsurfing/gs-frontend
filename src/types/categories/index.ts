@@ -1,4 +1,5 @@
 import { Pagination } from "../api/pagination";
+import { Image } from "../media";
 
 export type CategoryType = "hostels" | "reserves_and_parks" | "farm" | "animals" | "teaching" | "children" | "charity" | "sports" | "art" | "archeology" | "online" | "paid_work" | "international" | "other";
 
@@ -26,6 +27,9 @@ export interface Category {
     imagePath: string;
 }
 
+export type CategoryImageObject = Omit<Category, "imagePath"> & {
+    image: Image;
+};
 export interface CreateCategoryParams {
     name: string;
     color: string;

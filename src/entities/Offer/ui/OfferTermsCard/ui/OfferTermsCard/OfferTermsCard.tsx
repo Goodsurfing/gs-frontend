@@ -5,22 +5,24 @@ import { useTranslation } from "react-i18next";
 import { useConditionItems } from "@/features/OfferConditions/model/data/conditionItems";
 import {
     ExtraAvailiablesItems,
-    FoodItems, GoodsItems, LiveItems, PayedRideItems,
+    GoodsItems,
 } from "@/features/OfferConditions/model/types/conditionsData";
 
 import {
     ExtraFeatures,
-    Facilities, Housing, Nutrition, Travel,
+    Facilities,
 } from "@/entities/Offer/model/types/offerConditions";
 import styles from "./OfferTermsCard.module.scss";
 import { TermsCard } from "../FacilityCard/TermsCard";
 import { Text } from "@/shared/ui/Text/Text";
+import { FoodImageObject, HouseImageObject, TransferImageObject } from "@/shared/data/conditions";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OfferTermsCardProps {
     facilities: Facilities[];
-    housing: Housing[];
-    paidTravel: Travel[];
-    nutrition: Nutrition[];
+    housing: HouseImageObject[];
+    paidTravel: TransferImageObject[];
+    nutrition: FoodImageObject[];
     extraFeatures: ExtraFeatures[];
     className?: string;
 }
@@ -32,55 +34,39 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             facilities, className, housing, paidTravel, nutrition, extraFeatures,
         } = props;
         const {
-            goodsItems, extraAvailiablesItems,
-            foodItems, liveItems, payedRideItems,
+            getTranslation, goodsItems, extraAvailiablesItems,
         } = useConditionItems();
         const { t } = useTranslation("offer");
 
         const renderHousing = (
-            housingData: LiveItems[],
-            housingItems: Housing[],
-        ) => {
-            const resultItems = housingData.filter((item) => housingItems.includes(item.id));
-
-            return resultItems.map((item) => (
-                <TermsCard
-                    icon={item.icon}
-                    text={item.text}
-                    key={item.id}
-                />
-            ));
-        };
+            housingItems: HouseImageObject[],
+        ) => housingItems.map((item) => (
+            <TermsCard
+                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                text={getTranslation(item.name) ?? ""}
+                key={item.id}
+            />
+        ));
 
         const renderPaidTravel = (
-            paidTravelData: PayedRideItems[],
-            paidTravelItems: Travel[],
-        ) => {
-            const resultItems = paidTravelData.filter((item) => paidTravelItems.includes(item.id));
-
-            return resultItems.map((item) => (
-                <TermsCard
-                    icon={item.icon}
-                    text={item.text}
-                    key={item.id}
-                />
-            ));
-        };
+            paidTravelItems: TransferImageObject[],
+        ) => paidTravelItems.map((item) => (
+            <TermsCard
+                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                text={getTranslation(item.name) ?? ""}
+                key={item.id}
+            />
+        ));
 
         const renderFood = (
-            nutritionData: FoodItems[],
-            nutritionItems: Nutrition[],
-        ) => {
-            const resultItems = nutritionData.filter((item) => nutritionItems.includes(item.id));
-
-            return resultItems.map((item) => (
-                <TermsCard
-                    icon={item.icon}
-                    text={item.text}
-                    key={item.id}
-                />
-            ));
-        };
+            nutritionItems: FoodImageObject[],
+        ) => nutritionItems.map((item) => (
+            <TermsCard
+                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                text={getTranslation(item.name) ?? ""}
+                key={item.id}
+            />
+        ));
 
         const renderFacilities = (
             facilitiesData: GoodsItems[],
@@ -117,9 +103,9 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
                 <Text title={t("personalOffer.Условия")} titleSize="h3" />
                 <div className={styles.container}>
                     {renderFacilities(goodsItems, facilities)}
-                    {renderPaidTravel(payedRideItems, paidTravel)}
-                    {renderHousing(liveItems, housing)}
-                    {renderFood(foodItems, nutrition)}
+                    {renderPaidTravel(paidTravel)}
+                    {renderHousing(housing)}
+                    {renderFood(nutrition)}
                     {renderExtraAvailiables(extraAvailiablesItems, extraFeatures)}
                 </div>
             </div>

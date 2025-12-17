@@ -2,7 +2,6 @@ import { CategoryType, CategoryWithoutImage } from "@/types/categories";
 import { WhatToDoSkillType } from "@/types/skills";
 
 import { Article } from "@/entities/Article";
-import { ImageType } from "@/entities/Profile";
 
 import {
     Housing, Nutrition, OfferConditions, Travel,
@@ -23,23 +22,24 @@ import { Image } from "@/types/media";
 
 export interface Offer {
     id: number;
+    status: OfferStatus;
     organization: OfferOrganization;
+    videoGallery: string[];
+    galleryImages: Image[];
+    averageRating: number;
+    reviewsCount: number;
     where?: OfferWhere;
     when?: OfferWhen;
-    howNeeds?: OfferWhoNeeds;
+    howNeed?: OfferWhoNeeds;
     description?: OfferDescription;
     whatToDo?: OfferWhatToDo;
     conditions?: OfferConditions;
-    finishingTouches?: OfferFinishingTouches;
+    finishingTouche?: OfferFinishingTouches;
     contributors: OfferContributor[];
     // reviews?: Review[];
     articles?: Article[];
-    status: OfferStatus;
-    galleryItems: string[];
     canEdit: boolean;
     canParticipate: boolean;
-    averageRating?: number;
-    feedbacksCount?: number;
     acceptedApplicationsCount: number;
 }
 
@@ -78,7 +78,9 @@ export interface OfferOrganization {
     id: string;
     name: string;
     type: string;
-    avatar: ImageType;
+    otherType: string;
+    shortDescription: string,
+    image: Image | null;
 }
 export interface AddressAutoComplete {
     list: string[];

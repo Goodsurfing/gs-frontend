@@ -1,4 +1,4 @@
-import { Skill, WhatToDoSkillType } from "@/types/skills";
+import { GetSkill, WhatToDoSkillType } from "@/types/skills";
 
 export type OfferWhatToDoSkill = {
     text: WhatToDoSkillType;
@@ -15,7 +15,7 @@ export type WorkSettings = {
 };
 
 export interface OfferWhatToDo {
-    skills: Skill[];
+    skills: GetSkill[];
     additionalSkills?: string[];
     hours: number;
     timeType: TimeType;

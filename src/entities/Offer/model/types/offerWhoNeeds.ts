@@ -10,11 +10,11 @@ export interface Age {
 }
 
 export interface OfferWhoNeeds {
-    gender: Gender[];
+    genders: Gender[];
     ageMax: number;
     ageMin: number;
     needAllLanguages: boolean,
-    requiredLanguages: Language[];
+    languages: Language[];
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
     additionalInfo: string;

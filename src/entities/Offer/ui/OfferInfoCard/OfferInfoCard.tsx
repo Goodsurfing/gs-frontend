@@ -39,15 +39,15 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     return (
         <div className={cn(className)}>
             {offer.when && <OfferWhenCard offerWhen={offer.when} />}
-            {offer.howNeeds && (
+            {offer.howNeed && (
                 <OfferWhoNeedsCard
-                    whoNeeds={offer.howNeeds}
+                    whoNeeds={offer.howNeed}
                     className={styles.container}
                 />
             )}
-            {offer.finishingTouches && (
+            {offer.finishingTouche && (
                 <OfferConditionsCard
-                    finishingTouches={offer.finishingTouches}
+                    finishingTouches={offer.finishingTouche}
                     className={styles.wrapper}
                 />
             )}
@@ -63,9 +63,9 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            {offer.howNeeds && (
+            {offer.howNeed && (
                 <OfferLanguagesCard
-                    languages={offer.howNeeds.requiredLanguages}
+                    languages={offer.howNeed.languages}
                     className={styles.container}
                 />
             )}
@@ -79,12 +79,10 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 organization={offer.organization}
                 className={styles.container}
             />
-            {offer.galleryItems && offer.galleryItems.length ? (
-                <OfferGalleryCard
-                    offerId={offer.id}
-                    className={styles.container}
-                />
-            ) : null}
+            <OfferGalleryCard
+                galleryImages={offer.galleryImages}
+                className={styles.container}
+            />
             {offer.whatToDo && (
                 <OfferWhatToDoCard
                     whatToDo={offer.whatToDo}

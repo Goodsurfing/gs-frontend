@@ -4,7 +4,7 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Skills, SkillsData, useSkillsData } from "@/shared/data/skills";
+import { useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -13,15 +13,12 @@ import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 import styles from "./OfferWhatToDoCard.module.scss";
 import { useTranslateTimeType } from "@/shared/hooks/useTimeType";
 import { successIcon } from "@/shared/data/icons/skills";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OfferWhatToDoCardProps {
     whatToDo: OfferWhatToDo;
     className?: string;
 }
-
-type SkillsMap = {
-    [key in Skills]?: SkillsData;
-};
 
 export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
     (props: OfferWhatToDoCardProps) => {
@@ -31,32 +28,18 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
             },
             className,
         } = props;
-        const { skillsData } = useSkillsData();
+        const { getTranslation } = useSkillsData();
         const translateTimeType = useTranslateTimeType();
         const { t } = useTranslation("offer");
 
-        const renderSkillsCard = useMemo(() => {
-            const skillsMap: SkillsMap = skillsData.reduce(
-                (acc: SkillsMap, cur) => {
-                    acc[cur.id] = cur;
-                    return acc;
-                },
-                {},
-            );
-            return skills.map((item) => {
-                const skill = skillsMap[item.text];
-                return (
-                    skill && (
-                        <IconTextComponent
-                            text={skill.text}
-                            icon={skill.icon}
-                            alt={skill.text}
-                            key={skill.id}
-                        />
-                    )
-                );
-            });
-        }, [skills, skillsData]);
+        const renderSkillsCard = useMemo(() => skills.map((item) => (
+            <IconTextComponent
+                text={getTranslation(item.name) ?? ""}
+                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                alt={item.name}
+                key={item.id}
+            />
+        )), [getTranslation, skills]);
 
         const renderAdditionalSkillsCard = useMemo(() => {
             if (!additionalSkills) return null;

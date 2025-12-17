@@ -2,30 +2,31 @@ import React, { FC, memo } from "react";
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import { useGetOfferGalleryItemsQuery } from "../../api/offerApi";
 import styles from "./OfferGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Text } from "@/shared/ui/Text/Text";
+import { Image } from "@/types/media";
 
 interface OfferGalleryCardProps {
-    offerId: number;
+    galleryImages: Image[];
     className?: string;
 }
 
 export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
     (props: OfferGalleryCardProps) => {
-        const { offerId, className } = props;
-        const { data: gallery } = useGetOfferGalleryItemsQuery(offerId.toString());
+        const { galleryImages, className } = props;
+        // const { data: gallery } = useGetOfferGalleryItemsQuery(offerId.toString());
         const { t } = useTranslation("offer");
+        const formatGallery = galleryImages.map((image) => image.contentUrl);
 
-        if (!gallery) {
+        if (galleryImages.length === 0) {
             return null;
         }
 
         return (
             <div className={cn(className, styles.wrapper)} id="gallery">
                 <Text title={t("personalOffer.Фотографии")} titleSize="h3" />
-                <ImageGallerySlider images={gallery} className={styles.container} />
+                <ImageGallerySlider images={formatGallery} className={styles.container} />
             </div>
         );
     },

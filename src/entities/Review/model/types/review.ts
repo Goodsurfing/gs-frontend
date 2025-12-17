@@ -1,4 +1,6 @@
 import { Pagination } from "@/types/api/pagination";
+import { Category } from "@/types/categories";
+import { Image } from "@/types/media";
 
 export interface Review {
     reviewText: string;
@@ -86,4 +88,61 @@ export interface GetOfferReviewRequest {
 export interface GetOfferReviewParams {
     page: number;
     limit: number;
+}
+
+export interface MyReviewVolunteer {
+    id: number;
+    vacancy: {
+        id: number;
+        title: string;
+        image: Image;
+        created: string;
+    };
+    author: {
+        id: string;
+        image: Image;
+        firstName: string;
+        lastName: string;
+    };
+    rating: number;
+    description: string;
+}
+
+export interface NotDoneReviewVolunteer {
+    id: number;
+    vacancy: {
+        id: number;
+        title: string;
+        image: Image;
+        created: string;
+        city: string;
+        country: string;
+        categories: Category[];
+    };
+}
+
+export interface MyReviewHost {
+    id: number;
+    volunteer: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        image: Image;
+        city: string;
+        country: string;
+    }
+    rating: number;
+    description: string;
+}
+
+export interface NotDoneReviewHost {
+    id: number;
+    volunteer: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        image: Image;
+        city: string;
+        country: string;
+    }
 }
