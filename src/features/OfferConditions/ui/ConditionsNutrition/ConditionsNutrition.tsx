@@ -1,26 +1,32 @@
 import { memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Nutrition } from "@/entities/Offer";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 import { useConditionItems } from "../../model/data/conditionItems";
 import { NutritionFields } from "../../model/types/offerConditions";
-import styles from "./ConditionsNutrition.module.scss";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Food } from "@/shared/data/conditions";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./ConditionsNutrition.module.scss";
 
 interface ConditionsNutritionProps {
+    foodData: Food[];
+    isLoading: boolean;
     value: NutritionFields;
     onChange: (value: NutritionFields) => void;
 }
 
 export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
-    const { onChange, value } = props;
+    const {
+        foodData, isLoading, onChange, value,
+    } = props;
     const { t } = useTranslation("offer");
-    const { foodItems } = useConditionItems();
+    const { getTranslation } = useConditionItems();
 
-    const onToggleCondition = (conditionId: Nutrition) => {
+    const onToggleCondition = (conditionId: number) => {
         if (value.switchState) {
             const newNutrition = value.nutrition.includes(conditionId)
                 ? value.nutrition.filter((id) => id !== conditionId)
@@ -72,15 +78,21 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
                 </div>
             </div>
             <div className={styles.conditions}>
-                {foodItems.map((item) => (
-                    <ConditionsItem
-                        checked={value.nutrition.includes(item.id)}
-                        onToggle={() => onToggleCondition(item.id)}
-                        key={item.id}
-                        text={item.text}
-                        icon={item.icon}
-                    />
-                ))}
+                {isLoading ? (
+                    <MiniLoader />
+                ) : (
+                    <>
+                        {foodData.map((item) => (
+                            <ConditionsItem
+                                checked={value.nutrition.includes(item.id)}
+                                onToggle={() => onToggleCondition(item.id)}
+                                key={item.id}
+                                text={getTranslation(item.name) ?? ""}
+                                icon={getMediaContent(item.imagePath) ?? ""}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
         </div>
     );

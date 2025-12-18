@@ -16,6 +16,11 @@ export interface Language {
     languageLevel: LevelLanguage;
 }
 
+export interface OldLanguage {
+    language: string;
+    languageLevel: LevelLanguage;
+}
+
 // export interface GetLanguage {
 //     id: number | null;
 //     language: string;

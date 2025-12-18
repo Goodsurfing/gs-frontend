@@ -12,7 +12,7 @@ import { useCategories } from "@/shared/data/categories";
 import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
 
 type OfferApplcation = Omit<FormApplicationOffer, "applicationEndDate" | "categories"> & {
-    categories?: string[];
+    categoryName: string;
 };
 
 interface OfferApplicationProps {
@@ -38,7 +38,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     } = props;
     const {
         id, acceptedApplicationsCount,
-        reviewsCount, averageRating, categories, shortDescription,
+        reviewsCount, averageRating, categoryName, shortDescription,
         title, address,
     } = offerData;
     const { locale } = useLocale();
@@ -82,7 +82,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 locale={locale}
                 isFavorite={false}
                 offerId={id}
-                category={getTranslation(categories?.[0])}
+                category={getTranslation(categoryName)}
                 description={shortDescription}
                 location={address}
                 rating={Number(averageRating?.toFixed(1))}

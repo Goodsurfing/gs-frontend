@@ -3,26 +3,28 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    useCreateOfferGalleryItemMutation,
-    useDeleteOfferGalleryItemMutation, useGetOfferGalleryItemsQuery,
+    useGetOfferGalleryItemsQuery,
+    useUpdateOfferImageGalleryMutation,
 } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { GalleryItem, MediaObjectType } from "@/types/media";
+import { GalleryItem, Image, MediaObjectType } from "@/types/media";
 import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
 
 interface OfferGalleryProps {
     className?: string;
     offerId: string;
+    offerImageGallery?: Image[];
 }
 
 export const OfferGallery: FC<OfferGalleryProps> = (props) => {
-    const { offerId, className } = props;
+    const { offerId, className, offerImageGallery = [] } = props;
 
     const { t } = useTranslation("volunteer");
-    const [createGalleryItem] = useCreateOfferGalleryItemMutation();
-    const [deleteGalleryItem] = useDeleteOfferGalleryItemMutation();
+    const [updateOfferImageGallery] = useUpdateOfferImageGalleryMutation();
+    // const [createGalleryItem] = useCreateOfferGalleryItemMutation();
+    // const [deleteGalleryItem] = useDeleteOfferGalleryItemMutation();
     const { data: galleryData } = useGetOfferGalleryItemsQuery(offerId);
 
     const [imgs, setImgs] = useState<GalleryItem[]>([]);
@@ -38,20 +40,15 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
 
     const handleOnUpload = useCallback(
         async (images: MediaObjectType[]) => {
-            const currentGalleryImages = getMediaContentsApiArray([...images]);
+            const currentGalleryImages = getMediaContentsApiArray(
+                [...offerImageGallery, ...images],
+            );
 
             try {
-                await Promise.all(
-                    currentGalleryImages.map(async (imgUrl) => {
-                        const formData = new FormData();
-                        formData.append("mediaObject", imgUrl);
-
-                        await createGalleryItem({
-                            offerId,
-                            formData,
-                        }).unwrap();
-                    }),
-                );
+                await updateOfferImageGallery({
+                    offerId: Number(offerId),
+                    body: { galleryImageIds: currentGalleryImages },
+                }).unwrap();
 
                 setToast({
                     text: t("volunteer-gallery.Галерея успешно обновлена"),
@@ -64,25 +61,34 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
                 });
             }
         },
-        [createGalleryItem, offerId, t],
+        [offerId, offerImageGallery, t, updateOfferImageGallery],
     );
 
     const handleOnDelete = useCallback(async (galleryId: string) => {
-        await deleteGalleryItem({ offerId, galleryId })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("volunteer-gallery.Галерея успешно обновлена"),
-                    type: HintType.Success,
-                });
-            })
-            .catch(() => {
-                setToast({
-                    text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
-                    type: HintType.Error,
-                });
+        const currentGalleryImages = offerImageGallery;
+
+        const updatedGalleryImages = currentGalleryImages.filter(
+            (image) => image.id !== galleryId,
+        );
+
+        const galleryImagesTemp = getMediaContentsApiArray(updatedGalleryImages);
+
+        try {
+            await updateOfferImageGallery({
+                offerId: Number(offerId),
+                body: { galleryImageIds: galleryImagesTemp },
+            }).unwrap();
+            setToast({
+                text: t("volunteer-gallery.Галерея успешно обновлена"),
+                type: HintType.Success,
             });
-    }, [deleteGalleryItem, offerId, t]);
+        } catch {
+            setToast({
+                text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
+                type: HintType.Error,
+            });
+        }
+    }, [offerId, offerImageGallery, t, updateOfferImageGallery]);
 
     return (
         <div className={className}>

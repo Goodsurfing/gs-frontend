@@ -20,6 +20,7 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import styles from "./HostOffersCard.module.scss";
 import "./HostOffersCard.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface HostOffersCardProps {
     className?: string;
@@ -100,7 +101,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
                     <div>
                         {hostOffers.map((offer) => {
                             const {
-                                id, title, shortDescription, address, imagePath, categories,
+                                id, title, shortDescription, address, image, categories,
                                 acceptedApplicationsCount, averageRating, reviewsCount,
                             } = offer;
                             return (
@@ -113,7 +114,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
                                         title,
                                         shortDescription,
                                         address,
-                                        imagePath,
+                                        imagePath: getMediaContent(image?.contentUrl),
                                         categories,
                                         acceptedApplicationsCount,
                                         averageRating,

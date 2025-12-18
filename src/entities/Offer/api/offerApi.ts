@@ -7,16 +7,25 @@ import {
     GetOffersFilters,
     GetOffersResponse, Offer,
     OfferSort,
+    UpdateOldOffer,
 } from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
 import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
+import { UpdateOfferDescriptionParams } from "../model/types/offerDescription";
 
 interface UpdateOfferParams {
-    id: number
-    body: Partial<Offer>;
+    id: number;
+    body: Partial<UpdateOldOffer>;
+}
+
+interface UpdateOfferImageGallery {
+    offerId: number;
+    body: {
+        galleryImageIds: string[];
+    }
 }
 
 interface CreateOfferResponse {
@@ -63,6 +72,22 @@ export const offerApi = createApi({
                     "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify(data.body),
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferImageGallery: build.mutation<void, UpdateOfferImageGallery>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/image-gallery/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferDescription: build.mutation<void, UpdateOfferDescriptionParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/description/${offerId}`,
+                method: "PATCH",
+                body,
             }),
             invalidatesTags: ["offer"],
         }),
@@ -194,4 +219,6 @@ export const {
     useDeleteOfferGalleryItemMutation,
     useUpdateOfferWhatToDoMutation,
     useUpdateOfferConditionsMutation,
+    useUpdateOfferDescriptionMutation,
+    useUpdateOfferImageGalleryMutation,
 } = offerApi;

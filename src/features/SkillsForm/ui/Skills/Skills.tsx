@@ -10,12 +10,12 @@ import styles from "./Skills.module.scss";
 interface Props {
     skills: Skill[];
     className?: string;
-    value: Skill[];
+    value?: Skill[];
     onChange: (value: Skill[]) => void;
 }
 
 export const Skills = memo(({
-    className, onChange, value, skills,
+    className, onChange, value = [], skills,
 }: Props) => {
     const { getTranslation } = useSkillsData();
 

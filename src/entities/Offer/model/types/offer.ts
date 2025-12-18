@@ -1,4 +1,4 @@
-import { CategoryType, CategoryWithoutImage } from "@/types/categories";
+import { CategoryWithoutImage } from "@/types/categories";
 import { WhatToDoSkillType } from "@/types/skills";
 
 import { Article } from "@/entities/Article";
@@ -14,11 +14,18 @@ import {
 } from "./offerFinishingTouches";
 import { OfferStatus } from "./offerStatus";
 import { OfferWhatToDo } from "./offerWhatToDo";
-import { OfferWhen, OfferWhenPeriods } from "./offerWhen";
+import { OfferWhen, OfferWhenPeriods, OldOfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
-import { OfferWhoNeeds } from "./offerWhoNeeds";
+import { OfferWhoNeeds, OldOfferWhoNeeds } from "./offerWhoNeeds";
 import { Pagination } from "@/types/api/pagination";
 import { Image } from "@/types/media";
+
+export interface UpdateOldOffer {
+    where: OfferWhere;
+    when: OldOfferWhen;
+    howNeeds: OldOfferWhoNeeds;
+    finishingTouches: OfferFinishingTouches;
+}
 
 export interface Offer {
     id: number;
@@ -133,10 +140,9 @@ export interface HostOffer {
     id: number;
     status: OfferStatus;
     averageRating?: number,
-    imagePath?: string;
-    thumbnails: string[];
+    image: Image | null;
     title?: string;
-    categories?: CategoryType[];
+    categories?: string[];
     reviewsCount?: number;
     address?: string;
     latitude?: number;

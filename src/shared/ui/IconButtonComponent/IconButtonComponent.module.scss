@@ -22,6 +22,10 @@
   }
 }
 
+.icon > div {
+  display: flex;
+}
+
 .text {
   font: var(--font-label);
   color: var(--text-secondary-2);

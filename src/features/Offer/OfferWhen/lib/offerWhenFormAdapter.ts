@@ -1,4 +1,4 @@
-import { OfferWhen, OfferWhenPeriods } from "@/entities/Offer";
+import { OfferWhen, OldOfferWhen, OldOfferWhenPeriods } from "@/entities/Offer";
 
 import {
     DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
@@ -7,7 +7,7 @@ import { formattingDate } from "@/shared/lib/formatDate";
 
 export const offerWhenFormApiAdapter = (
     offerWhenForm: OfferWhenFields,
-): OfferWhen => {
+): OldOfferWhen => {
     const {
         endSettings, participationPeriod, periods, timeSettings,
     } = offerWhenForm;
@@ -15,19 +15,19 @@ export const offerWhenFormApiAdapter = (
     const { isFullYearAcceptable, isApplicableAtTheEnd } = timeSettings;
     const { applicationEndDate } = endSettings;
 
-    const offerWhenPeriods: OfferWhenPeriods[] = periods.map((period) => ({
+    const offerWhenPeriods: OldOfferWhenPeriods[] = periods.map((period) => ({
         start: formattingDate(period.start),
         ending: formattingDate(period.end),
     }));
 
-    let offerTempWhenPeriods: OfferWhenPeriods[] = offerWhenPeriods;
+    let offerTempWhenPeriods: OldOfferWhenPeriods[] = offerWhenPeriods;
     if ((offerWhenPeriods.length === 0) || isFullYearAcceptable) {
         offerTempWhenPeriods = [];
     }
 
     const formattedEndDate = formattingDate(applicationEndDate);
 
-    const offerWhen: OfferWhen = {
+    const offerWhen: OldOfferWhen = {
         periods: offerTempWhenPeriods,
         durationMinDays: participationPeriod[0],
         durationMaxDays: participationPeriod[1],
@@ -52,7 +52,7 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
 
     const offerWhenPeriods: DatePeriods[] = periods.map((period) => ({
         start: parseDate(period.start ?? undefined) || new Date(),
-        end: parseDate(period.ending ?? undefined) || new Date(),
+        end: parseDate(period.end ?? undefined) || new Date(),
     }));
 
     const timeSettings: TimeSettingsControls = {

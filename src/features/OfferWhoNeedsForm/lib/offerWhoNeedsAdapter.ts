@@ -1,10 +1,10 @@
-import { OfferWhoNeeds } from "@/entities/Offer";
+import { OfferWhoNeeds, OldOfferWhoNeeds } from "@/entities/Offer";
 
 import { OfferWhoNeedsFields } from "../model/types/offerWhoNeeds";
 
 export const offerWhoNeedsAdapter = (
     whoNeedsForm: OfferWhoNeedsFields,
-): OfferWhoNeeds => {
+): OldOfferWhoNeeds => {
     const {
         age,
         gender,
@@ -34,17 +34,17 @@ export const offerWhoNeedsApiAdapter = (
         needAllLanguages,
         ageMax,
         ageMin,
-        gender,
+        genders,
         receptionPlace,
-        requiredLanguages,
+        languages,
         volunteerPlaceCount,
         additionalInfo,
     } = whoNeeds;
 
     return {
         age: { maxAge: ageMax, minAge: ageMin },
-        gender,
-        languages: requiredLanguages,
+        gender: genders,
+        languages,
         needAllLanguages,
         receptionPlace,
         volunteerPlaces: volunteerPlaceCount,

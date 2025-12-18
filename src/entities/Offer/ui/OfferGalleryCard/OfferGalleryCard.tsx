@@ -8,14 +8,13 @@ import { Text } from "@/shared/ui/Text/Text";
 import { Image } from "@/types/media";
 
 interface OfferGalleryCardProps {
-    galleryImages: Image[];
+    galleryImages?: Image[];
     className?: string;
 }
 
 export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
     (props: OfferGalleryCardProps) => {
-        const { galleryImages, className } = props;
-        // const { data: gallery } = useGetOfferGalleryItemsQuery(offerId.toString());
+        const { galleryImages = [], className } = props;
         const { t } = useTranslation("offer");
         const formatGallery = galleryImages.map((image) => image.contentUrl);
 

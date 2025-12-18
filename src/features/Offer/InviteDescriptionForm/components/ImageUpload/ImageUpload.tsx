@@ -1,28 +1,27 @@
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ImageInput from "@/components/ImageInput/ImageInput";
-import { ImageType } from "@/components/ImageInput/types";
 
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
-import styles from "./ImageUpload.module.scss";
-import { DescriptionImage } from "../../model/types/inviteDescription";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import { BASE_URL } from "@/shared/constants/api";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import styles from "./ImageUpload.module.scss";
+import { Image } from "@/types/media";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface ImageUploadProps {
-    value: DescriptionImage;
-    onChange: (value: DescriptionImage) => void;
-    isLoading: boolean;
-    onChangeLoading: (value: boolean) => void;
+    value: Image | null;
+    onChange: (value: Image | null) => void;
+    // onChangeLoading: (value: boolean) => void;
     childrenLabel: string;
 }
 
 const ImageUpload: FC<ImageUploadProps> = (props) => {
     const {
-        onChange, childrenLabel, value, onChangeLoading, isLoading,
+        onChange, childrenLabel, value,
     } = props;
     const { t } = useTranslation("offer");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
 
     const onSuccess = () => {
@@ -33,29 +32,36 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
         setError(true);
     };
 
-    const handleImageUpload = async (image: ImageType) => {
-        onChangeLoading(true);
-        const { file, src } = image;
-        onChange({ ...value, image: { src, file } });
+    const handleImageUpload = async (file: File) => {
+        setIsLoading(true);
+
         if (file) {
             await uploadFile(file.name, file)
                 .then((result) => {
-                    onChange({
-                        uuid: `${BASE_URL}${result?.["@id"].slice(1)}` || null,
-                        image: { file: null, src: `${BASE_URL}${result?.contentUrl.slice(1)}` },
-                    });
+                    if (result) {
+                        onChange({
+                            id: result.id,
+                            contentUrl: result.contentUrl,
+                            thumbnails: result.thumbnails,
+                        });
+                    }
                 })
                 .catch(() => {
-                    onChange({ uuid: null, image: { file: null, src: null } });
+                    onChange(null);
                 })
-                .finally(() => onChangeLoading(false));
+                .finally(() => setIsLoading(false));
         }
+    };
+
+    const handleDelete = () => {
+        onChange(null);
     };
 
     return (
         <ImageInput
-            img={value.image}
+            img={getMediaContent(value?.contentUrl)}
             setImg={handleImageUpload}
+            onDelete={handleDelete}
             wrapperClassName={styles.input}
             isLoading={isLoading}
             labelClassName={styles.label}

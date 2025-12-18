@@ -8,15 +8,13 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "@/types/api/error";
 
 import {
     useGetOfferByIdQuery,
-    useUpdateOfferMutation,
+    useUpdateOfferDescriptionMutation,
 } from "@/entities/Offer/api/offerApi";
 
 import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
-import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -28,7 +26,6 @@ import {
 import {
     inviteDescriptionAdapter,
     inviteDescriptionApiAdapter,
-    inviteDescriptionStorageAdapter,
 } from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
 import Categories from "../Categories/Categories";
@@ -48,10 +45,7 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
     category: [],
     fullDescription: "",
     shortDescription: "",
-    coverImage: {
-        uuid: null,
-        image: { file: null, src: null },
-    },
+    coverImage: null,
 };
 
 export const InviteDescriptionForm = () => {
@@ -68,24 +62,18 @@ export const InviteDescriptionForm = () => {
     const { id } = useParams();
     const { locale } = useLocale();
 
-    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const [updateOfferDescription, { isLoading }] = useUpdateOfferDescriptionMutation();
     const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
-
-    const [isCoverImageLoading, setCoverImageLoading] = useState<boolean>(false);
 
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
 
-    const handleCoverImageLoading = (value: boolean) => {
-        setCoverImageLoading(value);
-    };
-
     const saveFormData = useCallback(
         (data: OfferDescriptionField) => {
             sessionStorage.setItem(
                 `${OFFER_DESCRIPTION_FORM}${id}`,
-                JSON.stringify(inviteDescriptionApiAdapter(data, true)),
+                JSON.stringify(inviteDescriptionApiAdapter(data)),
             );
         },
         [id],
@@ -96,7 +84,7 @@ export const InviteDescriptionForm = () => {
             `${OFFER_DESCRIPTION_FORM}${id}`,
         );
         return savedData
-            ? inviteDescriptionStorageAdapter(JSON.parse(savedData))
+            ? inviteDescriptionAdapter(JSON.parse(savedData))
             : null;
     }, [id]);
 
@@ -105,7 +93,7 @@ export const InviteDescriptionForm = () => {
         if (savedData) {
             reset(savedData);
         } else if (getOfferData?.description) {
-            reset(inviteDescriptionAdapter(getOfferData?.description));
+            reset(inviteDescriptionAdapter(getOfferData.description));
         } else {
             reset();
         }
@@ -125,21 +113,19 @@ export const InviteDescriptionForm = () => {
     const onSubmit = handleSubmit(async (data) => {
         setToast(undefined);
         const preparedData = inviteDescriptionApiAdapter(data);
-        updateOffer({ id: Number(id), body: { description: preparedData } })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("Данные успешно изменены"),
-                    type: HintType.Success,
-                });
-                sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
+        try {
+            await updateOfferDescription({ offerId: Number(id), body: preparedData });
+            setToast({
+                text: t("Данные успешно изменены"),
+                type: HintType.Success,
             });
+            sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
+        } catch {
+            setToast({
+                text: t("Произошла ошибка"),
+                type: HintType.Error,
+            });
+        }
     });
 
     if (isLoadingGetDescription) {
@@ -160,7 +146,7 @@ export const InviteDescriptionForm = () => {
                         name="coverImage"
                         rules={{
                             validate: (value) => {
-                                if (!value?.image.src) {
+                                if (!value) {
                                     return t("description.Загрузите обложку");
                                 }
                                 return true;
@@ -171,8 +157,6 @@ export const InviteDescriptionForm = () => {
                                 <ImageUpload
                                     value={field.value}
                                     onChange={field.onChange}
-                                    isLoading={isCoverImageLoading}
-                                    onChangeLoading={handleCoverImageLoading}
                                     childrenLabel={t(
                                         "description.Добавить фото обложки",
                                     )}
@@ -185,14 +169,12 @@ export const InviteDescriptionForm = () => {
                             </div>
                         )}
                     />
-                    <OfferGallery offerId={id ?? ""} />
+                    <OfferGallery offerId={id ?? ""} offerImageGallery={getOfferData?.galleryImages} />
                 </div>
                 <div className={styles.buttons}>
                     <Button
                         className={styles.btn}
-                        disabled={
-                            isLoading || isCoverImageLoading
-                        }
+                        disabled={isLoading}
                         variant="FILL"
                         color="BLUE"
                         size="MEDIUM"

@@ -8,3 +8,16 @@ export interface OfferDescription {
     shortDescription: string;
     description: string;
 }
+
+export interface UpdateOfferDescription {
+    title: string,
+    shortDescription: string,
+    description: string,
+    imageId: string | null,
+    categoryIds: number[];
+}
+
+export interface UpdateOfferDescriptionParams {
+    offerId: number;
+    body: UpdateOfferDescription;
+}

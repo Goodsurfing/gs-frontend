@@ -264,7 +264,7 @@ export const Chat: FC<ChatProps> = (props) => {
                                         imagePath: vacancy.imagePath,
                                         address: vacancy.address,
                                         status: vacancy.status,
-                                        categories: categoriesTemp,
+                                        categoryName: categoriesTemp[0],
                                         acceptedApplicationsCount: vacancy
                                             .acceptedApplicationsCount,
                                         averageRating: vacancy.averageRating,
@@ -388,9 +388,10 @@ export const Chat: FC<ChatProps> = (props) => {
             if (offerData) {
                 const {
                     id: offerDataId, where, description, status,
-                    acceptedApplicationsCount, averageRating, feedbacksCount,
+                    acceptedApplicationsCount, averageRating, reviewsCount,
                 } = offerData;
                 const imagePath = typeof description?.image === "string" ? description.image : description?.image?.contentUrl;
+                const categoryTemp = description?.categories ? description.categories[0].name : "";
 
                 return (
                     <Controller
@@ -405,11 +406,11 @@ export const Chat: FC<ChatProps> = (props) => {
                                     shortDescription: description?.shortDescription,
                                     status,
                                     imagePath: imagePath ?? "",
-                                    categories: description?.categoryIds ?? [],
+                                    categoryName: categoryTemp,
                                     acceptedApplicationsCount,
                                     description: description?.description,
                                     averageRating: averageRating ?? 0,
-                                    reviewsCount: feedbacksCount ?? 0,
+                                    reviewsCount: reviewsCount ?? 0,
                                 }}
                                 terms={{
                                     start: value.startDate,

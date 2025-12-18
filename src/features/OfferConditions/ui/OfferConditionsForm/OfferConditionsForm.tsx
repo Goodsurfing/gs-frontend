@@ -25,14 +25,11 @@ import { ConditionsPayment } from "../ConditionsPayment/ConditionsPayment";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./OfferConditionsForm.module.scss";
 import { offerConditionsAdapter, offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
+import { useGetOfferByIdQuery, useUpdateOfferConditionsMutation } from "@/entities/Offer/api/offerApi";
 import {
     NOT_SELECTED,
 } from "@/shared/constants/messages";
@@ -42,6 +39,8 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersFinishingTouchesPageUrl } from "@/shared/config/routes/AppUrls";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useGetPublicFoodsQuery, useGetPublicHousesQuery, useGetPublicTransfersQuery } from "@/entities/Admin";
+import styles from "./OfferConditionsForm.module.scss";
 
 interface OfferConditionsFormProps {
     onSuccess?: () => void;
@@ -62,8 +61,11 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { id } = useParams();
     const { locale } = useLocale();
 
-    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+    const [updateOfferConditions, { isLoading }] = useUpdateOfferConditionsMutation();
     const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
+    const { data: foodsData = [], isLoading: isFoodLoading } = useGetPublicFoodsQuery();
+    const { data: housesData = [], isLoading: isHouseLoading } = useGetPublicHousesQuery();
+    const { data: transfersData = [], isLoading: isTransferLoading } = useGetPublicTransfersQuery();
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
@@ -99,25 +101,23 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         }
     }, [isDirty, saveFormData, watch]);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(async (data) => {
         const preparedData = offerConditionsApiAdapter(data);
         setToast(undefined);
-        updateOffer({ id: Number(id), body: { conditions: preparedData } })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: t("Данные успешно изменены"),
-                    type: HintType.Success,
-                });
-                sessionStorage.removeItem(`${OFFER_CONDITIONS_FORM}${id}`);
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
+        try {
+            await updateOfferConditions({ offerId: Number(id), body: preparedData });
+            setToast({
+                text: t("Данные успешно изменены"),
+                type: HintType.Success,
             });
-        onSuccess?.();
+            sessionStorage.removeItem(`${OFFER_CONDITIONS_FORM}${id}`);
+            onSuccess?.();
+        } catch {
+            setToast({
+                text: t("Произошла ошибка"),
+                type: HintType.Error,
+            });
+        }
     });
 
     // useEffect(() => {
@@ -151,6 +151,8 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 render={({ field }) => (
                     <div>
                         <ConditionsHousing
+                            houseData={housesData}
+                            isLoading={isHouseLoading}
                             value={field.value}
                             onChange={field.onChange}
                         />
@@ -174,6 +176,8 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 render={({ field }) => (
                     <div>
                         <ConditionsNutrition
+                            foodData={foodsData}
+                            isLoading={isFoodLoading}
                             value={field.value}
                             onChange={field.onChange}
                         />
@@ -197,6 +201,8 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                 render={({ field }) => (
                     <div>
                         <ConditionsTravel
+                            transferData={transfersData}
+                            isLoading={isTransferLoading}
                             value={field.value}
                             onChange={field.onChange}
                         />

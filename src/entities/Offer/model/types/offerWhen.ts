@@ -12,3 +12,17 @@ export interface OfferWhen {
     applicationEndDate: string | null;
     // isWithoutApplicationEndDate: boolean;
 }
+
+export interface OldOfferWhenPeriods {
+    start: string | null;
+    ending: string | null;
+}
+
+export interface OldOfferWhen {
+    periods: OldOfferWhenPeriods[];
+    isFullYearAcceptable: boolean;
+    isApplicableAtTheEnd: boolean;
+    durationMinDays: number;
+    durationMaxDays: number;
+    applicationEndDate: string | null;
+}

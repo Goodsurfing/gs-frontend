@@ -1,4 +1,4 @@
-import { Language } from "@/types/languages";
+import { Language, OldLanguage } from "@/types/languages";
 
 export type Gender = "female" | "male" | "other";
 
@@ -18,4 +18,15 @@ export interface OfferWhoNeeds {
     volunteerPlaceCount: number;
     receptionPlace: ReceptionPlace;
     additionalInfo: string;
+}
+
+export interface OldOfferWhoNeeds {
+    gender: Gender[];
+    ageMax: number;
+    ageMin: number;
+    volunteerPlaceCount: number;
+    receptionPlace: ReceptionPlace;
+    additionalInfo: string;
+    needAllLanguages: boolean,
+    requiredLanguages: OldLanguage[];
 }

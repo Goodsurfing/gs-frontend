@@ -13,11 +13,13 @@ export {
     useGetOffersQuery,
     useUpdateOfferWhatToDoMutation,
     useUpdateOfferConditionsMutation,
+    useUpdateOfferDescriptionMutation,
+    useUpdateOfferImageGalleryMutation,
 } from "./api/offerApi";
 
 export type {
     Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi,
-    HostOffer, GetOffersFilters,
+    HostOffer, GetOffersFilters, UpdateOldOffer,
 } from "./model/types/offer";
 
 export { OfferSort } from "./model/types/offer";
@@ -26,16 +28,20 @@ export type { OfferWhere } from "./model/types/offerWhere";
 
 export type {
     OfferWhen, OfferWhenPeriods,
+    OldOfferWhenPeriods, OldOfferWhen,
 } from "./model/types/offerWhen";
 
 export type {
     Gender,
     ReceptionPlace,
     OfferWhoNeeds,
+    OldOfferWhoNeeds,
 } from "./model/types/offerWhoNeeds";
 
 export type {
     OfferDescription,
+    UpdateOfferDescription,
+    UpdateOfferDescriptionParams,
 } from "./model/types/offerDescription";
 
 export type {
@@ -56,6 +62,7 @@ export type {
     Payment,
     OfferConditions,
     OfferConditionsApi,
+    UpdateOfferConditions,
 } from "./model/types/offerConditions";
 
 export type {

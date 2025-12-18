@@ -1,16 +1,15 @@
-import { ImageType } from "@/components/ImageInput/types";
-import { CategoryType } from "@/types/categories";
+import { Image } from "@/types/media";
 
-export interface DescriptionImage {
-    uuid: string | null
-    image: ImageType;
-}
+// export interface DescriptionImage {
+//     uuid: string | null
+//     image: ImageType;
+// }
 
 export interface OfferDescriptionField {
     title: string;
-    category: CategoryType[];
+    category: number[];
     shortDescription: string;
     fullDescription: string;
-    coverImage: DescriptionImage;
+    coverImage: Image | null;
     // images: DescriptionImage[];
 }
