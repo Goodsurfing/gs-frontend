@@ -84,7 +84,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                         id: offer.id,
                         title: offer.title,
                         shortDescription: offer.shortDescription,
-                        imagePath: offer.image?.thumbnails?.medium,
+                        imagePath: offer.image?.thumbnails?.small,
                         categories: offer.categories.map((cat) => cat.name),
                         address: offer.address,
                         acceptedApplicationsCount: offer.acceptedApplicationsCount,

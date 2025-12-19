@@ -35,7 +35,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading || !offerData) {
+    if (isLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -43,7 +43,7 @@ export const OfferPersonalPage = () => {
         );
     }
 
-    if (!id || isError) {
+    if (!id || isError || !offerData) {
         return (
             <div className={styles.wrapper}>
                 <MainHeader />

@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
 import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
 
-import { ApplicationReviewResponse, VolunteerModalReview } from "@/entities/Review";
+import { ApplicationReviewResponse, VolunteerModalReview, useLazyGetMyVolunteerReviewsQuery } from "@/entities/Review";
 
 import {
     HintType,
@@ -20,7 +20,6 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ErrorType } from "@/types/api/error";
 import { API_BASE_URL } from "@/shared/constants/api";
-import { useCreateToOrganizationsReviewMutation, useLazyGetToOrganizationsReviewsQuery } from "@/entities/Review/api/reviewApi";
 import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
 import styles from "./ReviewAboutOffers.module.scss";
 
@@ -57,7 +56,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
 
     const [getVolunteerApplications,
         { data: volunteerApplicationsData, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
-    const [getMyReviews] = useLazyGetToOrganizationsReviewsQuery();
+    const [getMyReviews] = useLazyGetMyVolunteerReviewsQuery();
     const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
     useEffect(() => {

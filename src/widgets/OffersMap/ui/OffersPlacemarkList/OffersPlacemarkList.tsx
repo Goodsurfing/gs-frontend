@@ -4,13 +4,11 @@ import React, { FC, useMemo } from "react";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferPlacemark } from "../OfferPlacemark/OfferPlacemark";
-import { OfferApi } from "@/entities/Offer";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { OfferMap } from "@/entities/Offer";
 import styles from "./OffersPlacemarkList.module.scss";
-import { textSlice } from "@/shared/lib/textSlice";
 
 interface OffersPlacemarkListProps {
-    data: OfferApi[];
+    data: OfferMap[];
     className?: string;
 }
 
@@ -20,17 +18,16 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
 
     const offersPlacemarkList = useMemo(
         () => data.map(({
-            id, title, status, categories, latitude, longitude, image,
+            id, name, color, latitude, longitude,
         }) => {
-            if (status === "active" && typeof latitude === "number" && typeof longitude === "number") {
+            if (typeof latitude === "number" && typeof longitude === "number") {
                 return (
                     <OfferPlacemark
                         id={id.toString()}
+                        name={name}
                         geometry={[latitude, longitude]}
-                        image={getMediaContent(image?.contentUrl, "SMALL")}
-                        title={textSlice(title, 30, "title")}
                         locale={locale}
-                        category={categories[0]}
+                        categoryColor={color}
                         key={id}
                     />
                 );

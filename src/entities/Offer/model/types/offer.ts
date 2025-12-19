@@ -180,3 +180,11 @@ export interface GetOffersResponse {
     data: OfferApi[];
     pagination: Pagination;
 }
+
+export interface OfferMap {
+    id: number;
+    latitude: number;
+    longitude: number;
+    name: string;
+    color: string;
+}

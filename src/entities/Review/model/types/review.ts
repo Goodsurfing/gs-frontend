@@ -1,5 +1,5 @@
+import { FormApplicationStatus } from "@/entities/Application";
 import { Pagination } from "@/types/api/pagination";
-import { Category } from "@/types/categories";
 import { Image } from "@/types/media";
 
 export interface Review {
@@ -91,34 +91,32 @@ export interface GetOfferReviewParams {
 }
 
 export interface MyReviewVolunteer {
-    id: number;
+    id: string;
     vacancy: {
         id: number;
-        title: string;
+        name: string;
         image: Image;
-        created: string;
-    };
-    author: {
-        id: string;
-        image: Image;
-        firstName: string;
-        lastName: string;
     };
     rating: number;
     description: string;
+    created: string;
+}
+
+export interface MyReviewVolunteerRequest {
+    data: MyReviewVolunteer[];
+    pagination: Pagination;
 }
 
 export interface NotDoneReviewVolunteer {
     id: number;
-    vacancy: {
+    name: string;
+    image: Image;
+    address: string;
+    applicationStatus: FormApplicationStatus;
+    categories: {
         id: number;
-        title: string;
-        image: Image;
-        created: string;
-        city: string;
-        country: string;
-        categories: Category[];
-    };
+        name: string;
+    }[]
 }
 
 export interface MyReviewHost {

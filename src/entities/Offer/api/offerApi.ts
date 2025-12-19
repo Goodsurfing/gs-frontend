@@ -6,6 +6,7 @@ import {
     GetHostOffersFilters, GetHostOffersResponse,
     GetOffersFilters,
     GetOffersResponse, Offer,
+    OfferMap,
     OfferSort,
     UpdateOldOffer,
 } from "../model/types/offer";
@@ -120,14 +121,14 @@ export const offerApi = createApi({
         }),
         deleteOffer: build.mutation<CreateOfferResponse, string>({
             query: (offerId) => ({
-                url: `/vacancies/${offerId}`,
+                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["offer"],
         }),
         getOfferById: build.query<Offer, string>({
             query: (offerId) => ({
-                url: `vacancies/${offerId}`,
+                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -137,6 +138,13 @@ export const offerApi = createApi({
                 url: `${API_BASE_URL_V3}vacancy/list`,
                 method: "GET",
                 params,
+            }),
+            providesTags: ["offer"],
+        }),
+        getAllOffersMap: build.query<OfferMap[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}vacancy/for-map/list`,
+                method: "GET",
             }),
             providesTags: ["offer"],
         }),
@@ -221,4 +229,5 @@ export const {
     useUpdateOfferConditionsMutation,
     useUpdateOfferDescriptionMutation,
     useUpdateOfferImageGalleryMutation,
+    useGetAllOffersMapQuery,
 } = offerApi;

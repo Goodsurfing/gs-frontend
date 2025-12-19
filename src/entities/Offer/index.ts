@@ -15,10 +15,11 @@ export {
     useUpdateOfferConditionsMutation,
     useUpdateOfferDescriptionMutation,
     useUpdateOfferImageGalleryMutation,
+    useGetAllOffersMapQuery,
 } from "./api/offerApi";
 
 export type {
-    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi,
+    Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi, OfferMap,
     HostOffer, GetOffersFilters, UpdateOldOffer,
 } from "./model/types/offer";
 

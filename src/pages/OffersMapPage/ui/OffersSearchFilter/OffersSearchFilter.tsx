@@ -193,7 +193,6 @@ export const OffersSearchFilter = () => {
                     </div>
                     {isMapOpened && (
                         <OffersMap
-                            offersData={offersData?.data}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
