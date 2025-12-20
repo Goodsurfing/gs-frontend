@@ -1,7 +1,6 @@
 import { memo, useCallback, useState } from "react";
 
 import { Offer } from "@/entities/Offer";
-import { useGetOfferGalleryItemsQuery } from "@/entities/Offer/api/offerApi";
 import { PersonalCard } from "@/entities/PersonalCard";
 
 import {
@@ -21,7 +20,6 @@ interface OfferPersonalCardProps {
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
     const { id, offerData, isVolunteer } = props;
-    const { data: gallery } = useGetOfferGalleryItemsQuery(id.toString());
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
     const onImagesClick = useCallback(() => {
@@ -32,10 +30,10 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
         setModalOpen(false);
     };
 
-    const showImageBlock = gallery?.length ? (
+    const showImageBlock = offerData.galleryImages.length > 0 ? (
         <OfferPersonalCardImageBlock
             onImagesClick={onImagesClick}
-            images={getMediaContentsArray(gallery)}
+            images={getMediaContentsArray(offerData.galleryImages)}
         />
     ) : null;
 
@@ -46,6 +44,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 image={getMediaContent(offerData.description?.image?.contentUrl)}
                 title={offerData.description?.title}
                 location={offerData.where?.address}
+                reviewsCount={offerData.reviewsCount}
                 rating={offerData.averageRating}
                 categories={(
                     <OfferPersonalCardCategory
@@ -58,11 +57,11 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 status={offerData.status}
                 isVolunteer={isVolunteer}
             />
-            {gallery && (
+            {(offerData.galleryImages.length > 0) && (
                 <ModalGallery
                     isOpen={isModalOpen}
                     onClose={handleModalClose}
-                    images={getMediaContentsArray(gallery)}
+                    images={getMediaContentsArray(offerData.galleryImages)}
                 />
             )}
         </>

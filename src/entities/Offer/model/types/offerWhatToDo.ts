@@ -16,8 +16,8 @@ export type WorkSettings = {
 
 export interface OfferWhatToDo {
     skills: GetSkill[];
-    additionalSkills?: string[];
-    hours: number;
+    additionalSkills: string[];
+    hour: number;
     timeType: TimeType;
     dayOff: number;
     externalInfo?: string;

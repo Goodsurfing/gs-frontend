@@ -110,7 +110,7 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
                 ),
                 hideIconOnBalloonOpen: false,
                 openEmptyBalloon: false,
-                iconImageSize: [30, 30],
+                iconImageSize: [35, 35],
                 iconImageOffset: [-15, -15],
                 balloonPanelMaxMapArea: 0,
                 balloonMinWidth: 200,

@@ -40,7 +40,7 @@ export interface Offer {
     howNeed?: OfferWhoNeeds;
     description?: OfferDescription;
     whatToDo?: OfferWhatToDo;
-    conditions?: OfferConditions;
+    condition?: OfferConditions;
     finishingTouche?: OfferFinishingTouches;
     contributors: OfferContributor[];
     // reviews?: Review[];
@@ -186,5 +186,12 @@ export interface OfferMap {
     latitude: number;
     longitude: number;
     name: string;
-    color: string;
+    image: {
+        id: string;
+        contentUrl: string;
+    }
+    categories: {
+        name: string;
+        color: string;
+    }[];
 }

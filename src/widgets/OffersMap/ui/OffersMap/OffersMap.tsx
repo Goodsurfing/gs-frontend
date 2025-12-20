@@ -1,31 +1,33 @@
 import {
-    Clusterer, Map, ObjectManager, YMaps,
+    Map, ObjectManager, YMaps,
 } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, {
-    FC, memo, useCallback, useEffect, useMemo, useRef, useState,
+    FC, memo, useMemo, useRef, useState,
 } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { YMap, YmapType } from "@/entities/Map";
+import { YmapType } from "@/entities/Map";
+import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
-import { OffersPlacemarkList } from "../OffersPlacemarkList/OffersPlacemarkList";
 import "./yandex-map-restyle-ballon.scss";
-import { OfferMap, useGetAllOffersMapQuery, useLazyGetOfferByIdQuery } from "@/entities/Offer";
+import { useGetAllOffersMapQuery } from "@/entities/Offer";
 import styles from "./OffersMap.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
 }
 
-export const OffersMap: FC<OffersMapProps> = memo((props) => {
+export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const { className, classNameMap } = props;
     const { data: offersData = [], isLoading: offersLoading } = useGetAllOffersMapQuery();
     const { locale } = useLocale();
+    const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
 
@@ -35,16 +37,17 @@ export const OffersMap: FC<OffersMapProps> = memo((props) => {
         return offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
             .map((offer) => {
-                // const imgSrc = offer.description?.image?.contentUrl || "";
+                const imgSrc = offer?.image?.contentUrl;
                 const title = offer.name || "Без названия";
-                const categoryName = "Категория";
+                const categoryName = offer.categories[0]?.name ?? "Без категории";
+                const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <img class="${styles.balloonImage}" src="" />
+            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
-              <div class="${styles.balloonCategory}">${categoryName}</div>
+              <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
               <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
             </div>
           </div>
@@ -55,16 +58,22 @@ export const OffersMap: FC<OffersMapProps> = memo((props) => {
                     id: offer.id.toString(),
                     geometry: { type: "Point", coordinates: [offer.latitude, offer.longitude] },
                     properties: {
-                        name: offer.name,
+                        name: offer.name ?? "Вакансия без названия",
                         balloonContent,
-                        clusterCaption: offer.name,
-                        hintContent: offer.name,
+                        clusterCaption: offer.name ?? "Вакансия без названия",
+                        hintContent: offer.name ?? "Вакансия без названия",
                     },
                     options: {
+                        iconLayout: "default#imageWithContent",
+                        iconContentLayout: ymapState?.templateLayoutFactory.createClass(
+                            `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
+                        ),
+                        iconImageSize: [30, 30],
+                        iconImageOffset: [-15, -15],
                     },
                 };
             });
-    }, [offersData, offersLoading, locale]);
+    }, [offersLoading, offersData, locale, ymapState?.templateLayoutFactory]);
 
     if (offersLoading) {
         return (
@@ -80,7 +89,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props) => {
         <div className={cn(className, styles.wrapper)}>
             <YMaps query={{ load: "package.full" }}>
                 <Map
-                    defaultState={{ center: [50, 50], zoom: 2 }}
+                    defaultState={{
+                        center: [50, 50], zoom: 2, controls: [],
+                    }}
                     width="100%"
                     height="100%"
                     instanceRef={mapRef}
@@ -94,25 +105,53 @@ export const OffersMap: FC<OffersMapProps> = memo((props) => {
                         copyrightProvidersVisible: false,
                         copyrightLogoVisible: false,
                         copyrightUaVisible: false,
+                        yandexMapDisablePoiInteractivity: false,
+                        suppressObsoleteBrowserNotifier: false,
+                    }}
+                    onLoad={(ymap) => {
+                        setYmapState(ymap);
                     }}
                     className={cn(styles.map, classNameMap)}
                 >
-                    {features.length > 0 && (
+                    {(ymapState && (features.length > 0)) && (
                         <ObjectManager
                             instanceRef={objectManagerRef}
                             features={features}
                             options={{
                                 clusterize: true,
                                 gridSize: 64,
-                                suppressMapOpenBlock: true,
                             }}
                             objects={{
-                                preset: "islands#blueDotIcon",
                                 openBalloonOnClick: true,
                             }}
                             clusters={{
-                                preset: "islands#blueClusterIcons",
+                                iconLayout: "default#imageWithContent",
+                                clusterIconLayout: ymapState.templateLayoutFactory.createClass(
+                                    `<div class="${styles.customClusterIcon}">
+                                {{ properties.geoObjects.length }}
+                            </div>`,
+                                ),
+                                clusterIconShape: {
+                                    type: "Circle",
+                                    coordinates: [20, 20],
+                                    radius: 20,
+                                },
+                                clusterIconSize: [40, 40],
+                                clusterIconOffset: [-20, -20],
+                                clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
+                            <div class="${styles.clusterBalloon}">
+                                <h3>Список вакансий:</h3>
+                                <ul>
+                                    {% for geoObject in properties.geoObjects %}
+                                        <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        `),
+                                clusterBalloonPanelMaxMapArea: Infinity,
+                                clusterBalloonContentLayoutHeight: 200,
                             }}
+
                         />
                     )}
                 </Map>

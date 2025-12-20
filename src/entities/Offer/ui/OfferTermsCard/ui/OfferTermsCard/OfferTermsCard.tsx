@@ -73,7 +73,6 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             facilitiesItems: Facilities[],
         ) => {
             const resultItems = facilitiesData.filter((item) => facilitiesItems.includes(item.id));
-
             return resultItems.map((item) => (
                 <TermsCard
                     icon={item.icon}
@@ -87,7 +86,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             extraData: ExtraAvailiablesItems[],
             extraItems: ExtraFeatures[],
         ) => {
-            const resultItems = extraData.filter((item) => extraItems.includes(item.id));
+            const resultItems = extraData.filter((item) => extraItems?.includes(item.id));
 
             return resultItems.map((item) => (
                 <TermsCard

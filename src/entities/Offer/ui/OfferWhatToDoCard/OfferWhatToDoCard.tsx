@@ -24,7 +24,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
     (props: OfferWhatToDoCardProps) => {
         const {
             whatToDo: {
-                skills, hours, dayOff, timeType, additionalSkills, externalInfo,
+                skills, hour, dayOff, timeType, additionalSkills, externalInfo,
             },
             className,
         } = props;
@@ -56,19 +56,31 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
         return (
             <div className={cn(className, styles.wrapper)} id="whatToDo">
                 <div className={styles.card}>
-                    <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
-                    <div className={styles.cards}>{renderSkillsCard}</div>
-                    <Text title={t("personalOffer.Дополнительные требования")} titleSize="h3" />
-                    <div className={styles.cards}>{renderAdditionalSkillsCard}</div>
-                    <Text title={t("personalOffer.Дополнительная информация")} titleSize="h3" />
-                    <p>{externalInfo}</p>
+                    {skills.length > 0 && (
+                        <>
+                            <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
+                            <div className={styles.cards}>{renderSkillsCard}</div>
+                        </>
+                    )}
+                    {additionalSkills.length > 0 && (
+                        <>
+                            <Text title={t("personalOffer.Дополнительные требования")} titleSize="h3" />
+                            <div className={styles.cards}>{renderAdditionalSkillsCard}</div>
+                        </>
+                    )}
+                    {externalInfo !== "" && (
+                        <>
+                            <Text title={t("personalOffer.Дополнительная информация")} titleSize="h3" />
+                            <p>{externalInfo}</p>
+                        </>
+                    )}
                 </div>
                 <div className={styles.card}>
                     <InfoCard>
                         <InfoCardItem
                             className={styles.left}
                             title={t("personalOffer.Количество рабочих часов")}
-                            text={`${hours} ${translateTimeType(timeType)}`}
+                            text={`${hour} ${translateTimeType(timeType)}`}
                         />
                         <InfoCardItem
                             className={styles.right}
