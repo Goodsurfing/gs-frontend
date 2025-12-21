@@ -3,7 +3,7 @@ import { OfferWhen, OldOfferWhen, OldOfferWhenPeriods } from "@/entities/Offer";
 import {
     DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "../model/types/offerWhen";
-import { formattingDate } from "@/shared/lib/formatDate";
+import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
 
 export const offerWhenFormApiAdapter = (
     offerWhenForm: OfferWhenFields,
@@ -48,11 +48,9 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
         periods,
     } = offerWhen;
 
-    const parseDate = (dateStr?: string) => (dateStr ? new Date(dateStr) : undefined);
-
     const offerWhenPeriods: DatePeriods[] = periods.map((period) => ({
-        start: parseDate(period.start ?? undefined) || new Date(),
-        end: parseDate(period.end ?? undefined) || new Date(),
+        start: parseDateApi(period.start ?? undefined) || new Date(),
+        end: parseDateApi(period.end ?? undefined) || new Date(),
     }));
 
     const timeSettings: TimeSettingsControls = {
@@ -61,7 +59,7 @@ export const offerWhenFormAdapter = (offerWhen: OfferWhen): OfferWhenFields => {
     };
 
     const endSettings: EndSettings = {
-        applicationEndDate: parseDate(applicationEndDate ?? undefined),
+        applicationEndDate: parseDateApi(applicationEndDate ?? undefined),
         isWithoutApplicationDate: !applicationEndDate,
     };
 

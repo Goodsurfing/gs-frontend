@@ -30,7 +30,7 @@ export const offerWhatToDoAdapter = (
     offerWhatToDo: OfferWhatToDo,
 ): OfferWhatToDoFormFields => {
     const {
-        dayOff, hours, skills, timeType, additionalSkills, externalInfo,
+        dayOff, hour, skills, timeType, additionalSkills, externalInfo,
     } = offerWhatToDo;
 
     const additionalSkillsTemp = additionalSkills?.map((additionalSkill) => ({
@@ -42,7 +42,7 @@ export const offerWhatToDoAdapter = (
         skills: skillsTemp,
         additionalSkills: additionalSkillsTemp || [],
         workingHours: {
-            hours,
+            hours: hour,
             dayOff,
             timeType,
         },

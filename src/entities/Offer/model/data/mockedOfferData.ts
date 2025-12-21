@@ -17,7 +17,7 @@ export const mockedOffersData: Offer[] = [
             latitude: 55,
             longitude: 57,
         },
-        conditions: {
+        condition: {
             additionalFeatures: ["additional", "excursions"],
             conveniences: ["bath", "wi-fi"],
             volunteerContributions: 1600,
@@ -31,7 +31,7 @@ export const mockedOffersData: Offer[] = [
         whatToDo: {
             skills: [],
             dayOff: 3,
-            hours: 40,
+            hour: 40,
             timeType: "day",
             additionalSkills: ["additional skills"],
             externalInfo: "extra info",
@@ -95,7 +95,7 @@ export const mockedOffersData: Offer[] = [
             latitude: 55,
             longitude: 57,
         },
-        conditions: {
+        condition: {
             additionalFeatures: ["additional", "excursions"],
             conveniences: ["bath", "wi-fi"],
             volunteerContributions: 1600,
@@ -109,7 +109,7 @@ export const mockedOffersData: Offer[] = [
         whatToDo: {
             skills: [],
             dayOff: 3,
-            hours: 40,
+            hour: 40,
             timeType: "day",
             additionalSkills: ["additional skills"],
             externalInfo: "extra info",
@@ -173,7 +173,7 @@ export const mockedOffersData: Offer[] = [
             latitude: 55,
             longitude: 57,
         },
-        conditions: {
+        condition: {
             additionalFeatures: ["additional", "excursions"],
             conveniences: ["bath", "wi-fi"],
             volunteerContributions: 1600,
@@ -187,7 +187,7 @@ export const mockedOffersData: Offer[] = [
         whatToDo: {
             skills: [],
             dayOff: 3,
-            hours: 40,
+            hour: 40,
             timeType: "day",
             additionalSkills: ["additional skills"],
             externalInfo: "extra info",

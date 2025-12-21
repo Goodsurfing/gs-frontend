@@ -83,12 +83,12 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.conditions) {
-            reset(offerConditionsAdapter(getOfferData?.conditions));
+        } else if (getOfferData?.condition) {
+            reset(offerConditionsAdapter(getOfferData?.condition));
         } else {
             reset();
         }
-    }, [getOfferData?.conditions, loadFormData, reset]);
+    }, [getOfferData?.condition, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();
