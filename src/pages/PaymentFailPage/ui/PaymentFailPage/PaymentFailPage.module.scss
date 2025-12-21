@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 2rem;
+}
+
+.content {
+    max-width: 600px;
+    text-align: center;
+}
+
+.errorIcon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #d32f2f;
+}
+
+.message {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.description {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.buttonWrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}

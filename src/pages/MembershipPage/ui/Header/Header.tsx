@@ -1,11 +1,44 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
+
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
+    const { locale } = useLocale();
+    const navigate = useNavigate();
+    const { isAuth, myProfile } = useAuth();
+    
+    const { data: membershipStatus, isLoading } = useGetMembershipStatusQuery(undefined, {
+        skip: !isAuth,
+    });
+
+    const hasMembership = membershipStatus?.hasMembership ?? false;
+    const isButtonDisabled = hasMembership || !isAuth || isLoading;
+
+    const handleButtonClick = () => {
+        if (!isButtonDisabled && isAuth) {
+            navigate(getPaymentPageUrl(locale));
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <section className={styles.wrapeprImage}>
+                <Preloader />
+            </section>
+        );
+    }
+
     return (
         <section className={styles.wrapeprImage}>
             <h1 className={styles.title}>
@@ -23,7 +56,15 @@ export const Header = () => {
                 <li>{t("header.Поддержка интересного и важного проекта")}</li>
             </ul>
             <div className={styles.buttonPrice}>
-                <Button color="GREEN" size="SMALL" variant="FILL">{t("header.Получить членство")}</Button>
+                <Button 
+                    color="GREEN" 
+                    size="SMALL" 
+                    variant="FILL"
+                    onClick={handleButtonClick}
+                    disabled={isButtonDisabled}
+                >
+                    {hasMembership ? "Членство получено" : t("header.Получить членство")}
+                </Button>
                 <span className={styles.price}>1 500 руб</span>
             </div>
         </section>

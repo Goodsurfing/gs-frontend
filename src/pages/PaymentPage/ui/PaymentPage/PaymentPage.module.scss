@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 2rem;
+}
+
+.content {
+    max-width: 600px;
+    text-align: center;
+}
+
+.text {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.buttonWrapper {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.error {
+    text-align: center;
+    padding: 2rem;
+    
+    h2 {
+        color: #d32f2f;
+        margin-bottom: 1rem;
+    }
+    
+    p {
+        color: #666;
+        margin-bottom: 2rem;
+    }
+}
