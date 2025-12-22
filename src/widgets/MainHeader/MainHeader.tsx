@@ -31,7 +31,7 @@ const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
-    
+
     const { data: membershipStatus } = useGetMembershipStatusQuery(undefined, {
         skip: !isAuth,
     });
@@ -76,7 +76,7 @@ const MainHeader: FC = () => {
                                 className={styles.membershipWrapper}
                                 to={getMembershipPageUrl(locale)}
                             >
-                                <Button 
+                                <Button
                                     className={styles.membership}
                                     disabled={hasMembership}
                                 >

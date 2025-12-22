@@ -16,8 +16,8 @@ export const Header = () => {
     const { t } = useTranslation("membership");
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { isAuth, myProfile } = useAuth();
-    
+    const { isAuth } = useAuth();
+
     const { data: membershipStatus, isLoading } = useGetMembershipStatusQuery(undefined, {
         skip: !isAuth,
     });
@@ -56,9 +56,9 @@ export const Header = () => {
                 <li>{t("header.Поддержка интересного и важного проекта")}</li>
             </ul>
             <div className={styles.buttonPrice}>
-                <Button 
-                    color="GREEN" 
-                    size="SMALL" 
+                <Button
+                    color="GREEN"
+                    size="SMALL"
                     variant="FILL"
                     onClick={handleButtonClick}
                     disabled={isButtonDisabled}
