@@ -70,13 +70,13 @@ export interface GetOfferReview {
     vacancy: {
         id: number;
         name: string;
-        imagePath: string;
+        image: Image;
     },
     author: {
         id: string;
         firstName: string;
         lastName: string;
-        imagePath: string;
+        image: Image;
     }
 }
 
@@ -131,6 +131,11 @@ export interface MyReviewHost {
     }
     rating: number;
     description: string;
+}
+
+export interface MyReviewHostResponse {
+    data: MyReviewHost[];
+    pagination: Pagination;
 }
 
 export interface NotDoneReviewHost {

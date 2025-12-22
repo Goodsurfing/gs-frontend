@@ -1,4 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -7,23 +9,23 @@ import { ReviewFields } from "@/features/Notes";
 import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
 
 import { SimpleFormApplication } from "@/entities/Application";
-import { ApplicationReviewResponse, HostModalReview } from "@/entities/Review";
+import {
+    ApplicationReviewResponse, HostModalReview, MyReviewHost,
+    useGetMyNotDoneHostReviewQuery,
+    useLazyGetMyHostReviewsQuery,
+} from "@/entities/Review";
 
 import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
-import styles from "./ReviewAboutVolunteers.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import {
-    useCreateToVolunteerReviewMutation,
-    useLazyGetToVolunteerReviewsQuery,
-} from "@/entities/Review/api/reviewApi";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { useLazyGetMyHostApplicationsQuery } from "@/entities/Chat";
+import styles from "./ReviewAboutVolunteers.module.scss";
 
 interface ReviewAboutVolunteersProps {
     locale: Locale;
@@ -34,6 +36,7 @@ const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
     const { locale, id } = props;
+    const { t } = useTranslation("host");
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
             stars: undefined,
@@ -41,93 +44,56 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         },
     };
     const [toast, setToast] = useState<ToastAlert>();
-    const { t } = useTranslation("host");
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
     });
     const { handleSubmit, control, reset } = form;
-    const [selectedApplication, setSelectedApplication] = useState<SimpleFormApplication | null>(
+    const [myReviews, setMyReviews] = useState<MyReviewHost[]>([]);
+    const [selectedVolunteer, setSelectedVolunteer] = useState<MyReviewHost | null>(
         null,
     );
-    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
-    const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const [getHostApplications,
-        { data: hostApplicationsData }] = useLazyGetMyHostApplicationsQuery();
-    const [getMyReviews] = useLazyGetToVolunteerReviewsQuery();
-    const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
+    const [getMyReviews, { isLoading: isMyReviewsLoading }] = useLazyGetMyHostReviewsQuery();
+    const {
+        data: notDoneReviewsData = [],
+        isLoading: isNotDoneReviewsLoading,
+    } = useGetMyNotDoneHostReviewQuery();
+    // const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
 
-    useEffect(() => {
-        getHostApplications({ limit: ITEMS_PER_PAGE, page });
-    }, [getHostApplications, page]);
-
-    useEffect(() => {
-        if (hostApplicationsData) {
-            const filteredApplications = hostApplicationsData.data.filter(
-                (hostApplication) => (hostApplication.status === "accepted" && !hostApplication.hasFeedbackFromOrganization),
-            ).slice(0, 10);
-            const adapter = filteredApplications.map((application) => {
-                const {
-                    id: applicationId, volunteerId, chatId, vacancy, startDate, endDate, status,
-                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
-                } = application;
-                return {
-                    id: applicationId,
-                    volunteer: volunteerId,
-                    vacancy,
-                    chatId,
-                    status,
-                    startDate,
-                    endDate,
-                    hasFeedbackFromOrganization,
-                    hasFeedbackFromVolunteer,
-                };
-            });
-            setApplications([...adapter]);
-        } else {
-            setApplications([]);
-        }
-    }, [hostApplicationsData]);
-
-    const fetchMyReviews = async (isInitial: boolean) => {
+    const fetchMyReviews = useCallback(async (isInitial: boolean) => {
         try {
             const currentPage = isInitial ? 1 : page;
 
             const result = await getMyReviews({
-                author: id,
                 page: currentPage,
-                itemsPerPage: ITEMS_PER_PAGE,
+                limit: ITEMS_PER_PAGE,
             }).unwrap();
 
-            if (result.length < ITEMS_PER_PAGE) {
+            if (result.data.length < ITEMS_PER_PAGE) {
                 setHasMore(false);
             }
 
             if (isInitial) {
-                setMyReviews(result);
+                setMyReviews(result.data);
                 setPage(2);
             } else {
-                setMyReviews((prev) => [...prev, ...result]);
+                setMyReviews((prev) => [...prev, ...result.data]);
                 setPage((prevPage) => prevPage + 1);
             }
         } catch { /* empty */ }
-    };
+    }, [getMyReviews, page]);
 
     useEffect(() => {
         fetchMyReviews(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchMyReviews]);
 
-    const renderFullCards = (reviews?: ApplicationReviewResponse[]) => {
-        if (!reviews) return null;
-        return reviews.map(
-            (review) => <ReviewFullCard type="volunteer" key={review.id} review={review} />,
-        );
-    };
+    const renderFullCards = (reviews: MyReviewHost[]) => reviews.map(
+        (review) => <ReviewFullCard type="volunteer" key={review.id} review={review} />,
+    );
 
     const onReviewClick = (application: SimpleFormApplication) => {
         setSelectedApplication(application);

@@ -8,7 +8,9 @@ import {
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
     GetOfferReviewParams,
     GetOfferReviewRequest,
+    MyReviewHostResponse,
     MyReviewVolunteerRequest,
+    NotDoneReviewHost,
     NotDoneReviewVolunteer,
 } from "../model/types/review";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
@@ -168,6 +170,23 @@ export const reviewApi = createApi({
             }),
             providesTags: ["host"],
         }),
+        getMyHostReviews: build.query<MyReviewHostResponse,
+        PaginationParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}organization/volunteer/review/list`,
+                method: "GET",
+                params,
+            }),
+            providesTags: ["host"],
+        }),
+        getMyNotDoneHostReview: build.query<NotDoneReviewHost[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}organization/volunteer/without-review/list`,
+                method: "GET",
+            }),
+            providesTags: ["host"],
+        }),
     }),
 });
 
@@ -191,4 +210,6 @@ export const {
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
     useGetMyNotDoneVolunteerReviewQuery,
+    useLazyGetMyHostReviewsQuery,
+    useGetMyNotDoneHostReviewQuery,
 } = reviewApi;

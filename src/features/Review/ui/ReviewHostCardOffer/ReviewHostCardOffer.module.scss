@@ -1,0 +1,100 @@
+.wrapper {
+    border: 1px solid var(--accent-elements);
+    border-radius: 3px;
+    max-width: 500px;
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    padding: 20px;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 18px;
+    color: var(--text-secondary-2);
+    font-weight: 500;
+}
+.date {
+    color: var(--text-caption);
+    font-size: 12px;
+}
+
+.titleImg {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 5px;
+}
+
+.avatarInfoUser {
+    display: flex;
+    column-gap: 5px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 22px;
+    height: 22px;
+    object-fit: cover;
+}
+
+.author {
+    font-size: 14px;
+}
+
+.img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+.textReview {
+    color: var(--text-secondary-2);
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.ratingUserContainer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.avatarInfoUser {
+    display: flex;
+    align-items: center;
+}
+
+.ratingNum {
+    color: var(--text-secondary-2);
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 3px;
+}
+
+@media (max-width: 992px) {
+    .wrapper {
+        max-width: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .titleImg {
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        row-gap: 10px;
+    }
+}
