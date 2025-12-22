@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -13,13 +12,11 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./PaymentPage.module.scss";
 
 const PaymentPage: React.FC = () => {
-    const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
     const { isAuth, myProfile } = useAuth();
-    
-    const [createPayment, { isLoading, error }] = useCreatePaymentMutation();
+
+    const [createPayment, { isLoading }] = useCreatePaymentMutation();
     const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -108,7 +105,9 @@ const PaymentPage: React.FC = () => {
                         Банк автоматически произведет конвертацию в валюту, используемой вами карты.
                     </p>
                     <p className={styles.text}>
-                        Сейчас вы будете перенаправлены на страницу оплаты. Если это не произошло, нажмите на ссылку ниже.
+                        Сейчас вы будете перенаправлены на страницу оплаты.
+                        {" "}
+                        Если это не произошло, нажмите на ссылку ниже.
                     </p>
                     <div className={styles.buttonWrapper}>
                         <Button

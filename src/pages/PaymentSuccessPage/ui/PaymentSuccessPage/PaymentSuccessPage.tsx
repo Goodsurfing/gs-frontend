@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -14,16 +13,15 @@ import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./PaymentSuccessPage.module.scss";
 
 const PaymentSuccessPage: React.FC = () => {
-    const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const { myProfile, isAuth } = useAuth();
-    
+
     const paymentId = searchParams.get("payment_id");
-    
+
     // Обновляем статус членства после успешной оплаты
-    const { data: membershipStatus, isLoading, refetch } = useGetMembershipStatusQuery(undefined, {
+    const { isLoading, refetch } = useGetMembershipStatusQuery(undefined, {
         skip: !isAuth,
     });
 
@@ -61,18 +59,25 @@ const PaymentSuccessPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <h1 className={styles.title}>
-                        Спасибо, <span className={styles.username}>{userName}</span>,
+                        Спасибо,
+                        {" "}
+                        <span className={styles.username}>{userName}</span>
+                        ,
                     </h1>
                     <p className={styles.subtitle}>
                         вы успешно оплатили членство в сообществе Гудсёрфинга
                     </p>
-                    
+
                     <div className={styles.info}>
                         <p>
-                            Теперь вы можете пользоваться всеми возможностями портала goodsurfing.org.
+                            Теперь вы можете пользоваться всеми возможностями портала
+                            {" "}
+                            goodsurfing.org.
                         </p>
                         <p>
-                            Уже сейчас на вашем аккаунте появилась специальная метка верифицированного пользователя.
+                            Уже сейчас на вашем аккаунте появилась специальная метка
+                            {" "}
+                            верифицированного пользователя.
                         </p>
                     </div>
 
