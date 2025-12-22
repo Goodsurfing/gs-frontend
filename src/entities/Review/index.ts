@@ -1,6 +1,7 @@
 export type {
     Review, ApplicationReview, ApplicationReviewResponse,
-    GetAboutVolunteerReview,
+    GetAboutVolunteerReview, MyReviewVolunteer, NotDoneReviewVolunteer,
+    MyReviewHost, NotDoneReviewHost,
 } from "./model/types/review";
 export {
     reviewApi,
@@ -17,3 +18,4 @@ export {
 } from "./api/reviewApi";
 export { VolunteerModalReview } from "./ui/VolunteerModalReview/VolunteerModalReview";
 export { HostModalReview } from "./ui/HostModalReview/HostModalReview";
+export { MiniOfferReview } from "./ui/MiniOfferReview/MiniOfferReview";

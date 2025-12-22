@@ -3,67 +3,59 @@ import { Rating } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import { ApplicationReviewResponse } from "@/entities/Review";
+import { MyReviewVolunteer } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./ReviewCardOffer.module.scss";
-import { useGetApplicationFormByIdQuery } from "@/entities/Chat";
 
 interface ReviewCardOfferProps {
-    reviewOffer: ApplicationReviewResponse;
+    reviewOffer: MyReviewVolunteer;
     locale: Locale;
 }
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const { reviewOffer, locale } = props;
     const {
-        applicationForm, stars, text, vacancyId,
+        id, vacancy, description, rating, created,
     } = reviewOffer;
-    const partsApplicationUrl = applicationForm.split("/");
-    const applicationId = partsApplicationUrl.pop();
-    const { data: applicationData } = useGetApplicationFormByIdQuery(applicationId ?? "");
 
+    const { myProfile } = useAuth();
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
-    if (!applicationData) {
-        return null;
-    }
-
-    const { vacancy, volunteer } = applicationData;
-
     const navigateToVolunteer = () => {
-        navigate(getVolunteerPersonalPageUrl(locale, volunteer.profile.id));
+        if (myProfile) {
+            navigate(getVolunteerPersonalPageUrl(locale, myProfile.id));
+        }
     };
 
     const navigateToOffer = () => {
-        if (vacancyId) {
-            navigate(getOfferPersonalPageUrl(locale, vacancyId.toString()));
-        }
+        navigate(getOfferPersonalPageUrl(locale, id.toString()));
     };
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.header} onClick={navigateToOffer}>
                 <div className={styles.titleImg}>
-                    <span className={styles.title}>{vacancy.title}</span>
+                    <span className={styles.title}>{vacancy.name}</span>
                     <img
                         className={styles.img}
-                        src={getMediaContent(vacancy.imagePath)}
+                        src={getMediaContent(vacancy.image.thumbnails?.small)}
                         alt="offer"
                     />
                 </div>
                 <span className={styles.date}>
-                    {textSlice(vacancy.shortDescription, 30, "none")}
+                    {textSlice(created, 30, "none")}
                 </span>
             </div>
-            <p className={styles.textReview}>{text}</p>
+            <p className={styles.textReview}>{description}</p>
             <div className={styles.ratingUserContainer}>
                 <Rating
-                    value={stars}
+                    value={rating}
                     readOnly
                     sx={{
                         "& .MuiRating-iconFilled": {
@@ -75,11 +67,11 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                         },
                     }}
                 />
-                <span className={styles.ratingNum}>{stars}</span>
+                <span className={styles.ratingNum}>{rating}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
-                    <Avatar icon={getMediaContent(volunteer.profile.image?.contentUrl)} alt="avatar" className={styles.avatar} />
+                    <Avatar icon={getMediaContent(myProfile?.image?.thumbnails?.small)} alt="avatar" className={styles.avatar} />
                     <span className={styles.author}>
-                        {textSlice(`${getFullName(volunteer.profile.firstName, volunteer.profile.lastName)}`, 50, "title")}
+                        {textSlice(`${getFullName(myProfile?.firstName, myProfile?.lastName)}`, 50, "title")}
                     </span>
                 </div>
             </div>

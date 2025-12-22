@@ -1,24 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { ReviewCardOffer } from "@/features/Review/";
+// import InfiniteScroll from "react-infinite-scroll-component";
+// import { ReviewCardOffer } from "@/features/Review/";
 import styles from "./ReviewAboutOffers.module.scss";
 import {
     ApplicationReviewResponse,
     useLazyGetToOrganizationsReviewsQuery,
 } from "@/entities/Review";
-import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+// import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface ReviewAboutOffersProps {
     hostId: string;
-    locale: Locale;
+    // locale: Locale;
 }
 
 const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
-    const { hostId, locale } = props;
+    const { hostId } = props;
     const { t } = useTranslation("host");
     const [getReviewsData] = useLazyGetToOrganizationsReviewsQuery();
     const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
@@ -55,25 +56,28 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => reviewOffers
-        .map((reviewOffer) => (
-            <ReviewCardOffer reviewOffer={reviewOffer} key={reviewOffer.id} locale={locale} />
-        ));
+    // const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => {
+
+    // return reviewOffers
+    // .map((reviewOffer) => (
+    //     <ReviewCardOffer reviewOffer={reviewOffer} key={reviewOffer.id} locale={locale} />
+    // ))
+    // };
 
     return (
         <div className={styles.wrapper} id="applications-scroll-wrapper2">
             <h3 className={styles.h3}>{t("hostReviews.Отзывы о проектах")}</h3>
             <div className={styles.cardContainer}>
-                <InfiniteScroll
+                {/* <InfiniteScroll
                     dataLength={reviews.length}
                     next={() => fetchReviews(false)}
                     hasMore={hasMore}
                     scrollThreshold="70%"
                     loader={null}
                     scrollableTarget="applications-scroll-wrapper2"
-                >
-                    {renderCardOffers(reviews)}
-                </InfiniteScroll>
+                > */}
+                {/* {renderCardOffers(reviews)} */}
+                {/* </InfiniteScroll> */}
             </div>
         </div>
     );

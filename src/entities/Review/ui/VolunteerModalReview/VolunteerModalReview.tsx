@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 
 import { ReviewTypeFields } from "@/features/Notes";
-
-import { RequestOfferCard, SimpleFormApplication } from "@/entities/Application";
-
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { NotDoneReviewVolunteer } from "../../model/types/review";
+import { MiniOfferReview } from "../MiniOfferReview/MiniOfferReview";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerModalReviewProps {
-    application: SimpleFormApplication | null;
+    application: NotDoneReviewVolunteer | null;
     value: ReviewTypeFields;
     onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
@@ -48,10 +48,15 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
             errorText={errorText}
         >
             {application && (
-                <RequestOfferCard
-                    application={application}
-                    showButtons={false}
-                    showStatus={false}
+                <MiniOfferReview
+                    data={{
+                        offerId: application.id,
+                        name: application.name,
+                        image: getMediaContent(application.image.contentUrl) ?? "",
+                        address: application.address,
+                        applicationStatus: application.applicationStatus,
+                        categoryName: application.categories[0]?.name,
+                    }}
                     locale={locale}
                 />
             )}

@@ -92,4 +92,6 @@ export const OfferPersonalPage = () => {
             </div>
         );
     }
+
+    return null;
 };

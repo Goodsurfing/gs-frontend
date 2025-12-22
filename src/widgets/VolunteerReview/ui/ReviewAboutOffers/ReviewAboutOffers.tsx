@@ -1,12 +1,17 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
-import { ReviewCardOffer, ReviewMiniCard } from "@/features/Review/";
+import { ReviewCardOffer, ReviewVolunteerMiniCard } from "@/features/Review/";
 
-import { ApplicationReviewResponse, VolunteerModalReview, useLazyGetMyVolunteerReviewsQuery } from "@/entities/Review";
+import {
+    MyReviewVolunteer,
+    VolunteerModalReview, useGetMyNotDoneVolunteerReviewQuery, useLazyGetMyVolunteerReviewsQuery,
+} from "@/entities/Review";
 
 import {
     HintType,
@@ -14,24 +19,19 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 
-import { SimpleFormApplication } from "@/entities/Application";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import { ErrorType } from "@/types/api/error";
-import { API_BASE_URL } from "@/shared/constants/api";
-import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import { NotDoneReviewVolunteer } from "@/entities/Review/model/types/review";
 import styles from "./ReviewAboutOffers.module.scss";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
-    id: string;
 }
 
 const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
-    const { locale, id } = props;
+    const { locale } = props;
     const { t } = useTranslation("volunteer");
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -44,124 +44,92 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         mode: "onChange",
         defaultValues,
     });
-    const { handleSubmit, control, reset } = form;
-    const [applications, setApplications] = useState<SimpleFormApplication[]>([]);
-    const [myReviews, setMyReviews] = useState<ApplicationReviewResponse[]>([]);
-    const [selectedApplication, setSelectedApplication] = useState<SimpleFormApplication | null>(
+    const { control, reset } = form;
+    const [myReviews, setMyReviews] = useState<MyReviewVolunteer[]>([]);
+    const [selectedOffer, setSelectedOffer] = useState<NotDoneReviewVolunteer | null>(
         null,
     );
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const [getVolunteerApplications,
-        { data: volunteerApplicationsData, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
-    const [getMyReviews] = useLazyGetMyVolunteerReviewsQuery();
-    const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
+    const [getMyReviews, { isLoading: isMyReviewsLoading }] = useLazyGetMyVolunteerReviewsQuery();
+    const {
+        data: notDoneReviewsData = [],
+        isLoading: isNotDoneReviewsLoading,
+    } = useGetMyNotDoneVolunteerReviewQuery();
+    // const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
 
-    useEffect(() => {
-        getVolunteerApplications({ limit: ITEMS_PER_PAGE, page });
-    }, [getVolunteerApplications, page]);
-
-    useEffect(() => {
-        if (volunteerApplicationsData) {
-            const filteredApplications = volunteerApplicationsData.data.filter(
-                (volunteerApplication) => (volunteerApplication.status === "accepted" && !volunteerApplication.hasFeedbackFromVolunteer),
-            ).slice(0, 10);
-            const adapter: SimpleFormApplication[] = filteredApplications.map((application) => {
-                const {
-                    id: applicationId, volunteer, chatId, vacancy, startDate, endDate, status,
-                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
-                } = application;
-                return {
-                    id: applicationId,
-                    volunteer: volunteer.id,
-                    vacancy,
-                    chatId,
-                    status,
-                    startDate,
-                    endDate,
-                    hasFeedbackFromOrganization,
-                    hasFeedbackFromVolunteer,
-                };
-            });
-            setApplications([...adapter]);
-        } else {
-            setApplications([]);
-        }
-    }, [volunteerApplicationsData]);
-
-    const fetchMyReviews = async (isInitial: boolean) => {
+    const fetchMyReviews = useCallback(async (isInitial: boolean) => {
         try {
             const currentPage = isInitial ? 1 : page;
 
             const result = await getMyReviews({
-                author: id,
                 page: currentPage,
-                itemsPerPage: ITEMS_PER_PAGE,
+                limit: ITEMS_PER_PAGE,
             }).unwrap();
 
-            if (result.length < ITEMS_PER_PAGE) {
+            if (result.data.length < ITEMS_PER_PAGE) {
                 setHasMore(false);
             }
 
             if (isInitial) {
-                setMyReviews(result);
+                setMyReviews(result.data);
                 setPage(2);
             } else {
-                setMyReviews((prev) => [...prev, ...result]);
+                setMyReviews((prev) => [...prev, ...result.data]);
                 setPage((prevPage) => prevPage + 1);
             }
         } catch { /* empty */ }
-    };
+    }, [getMyReviews, page]);
 
     useEffect(() => {
         fetchMyReviews(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchMyReviews]);
 
-    const renderFullCards = (reviews?: ApplicationReviewResponse[]) => reviews?.map(
+    const renderFullCards = (reviews: MyReviewVolunteer[]) => reviews.map(
         (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
     );
 
-    const onReviewClick = (application: SimpleFormApplication) => {
-        setSelectedApplication(application);
+    const onReviewClick = (offer: NotDoneReviewVolunteer) => {
+        setSelectedOffer(offer);
     };
 
     const resetSelectedReview = () => {
-        setSelectedApplication(null);
+        setSelectedOffer(null);
         setToast(undefined);
         reset();
     };
 
-    const onSendReview = handleSubmit(async (data) => {
-        const {
-            review: { stars, text },
-        } = data;
-        if (selectedApplication && stars) {
-            setToast(undefined);
-            const applicationForm = `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`;
-            await createToOrganizationReview({ applicationForm, stars, text })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: "Ваш отзыв был отправлен",
-                        type: HintType.Success,
-                    });
-                })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
-                })
-                .finally(() => {
-                    reset();
-                });
-        }
-    });
+    // const onSendReview = handleSubmit(async (data) => {
+    //     const {
+    //         review: { stars, text },
+    //     } = data;
+    //     if (selectedApplication && stars) {
+    //         setToast(undefined);
+    // const applicationForm = `${API_BASE_URL}application_forms/${selectedApplication
+    //     .id.toString()}`;
+    //         await createToOrganizationReview({ applicationForm, stars, text })
+    //             .unwrap()
+    //             .then(() => {
+    //                 setToast({
+    //                     text: "Ваш отзыв был отправлен",
+    //                     type: HintType.Success,
+    //                 });
+    //             })
+    //             .catch((error: ErrorType) => {
+    //                 setToast({
+    //                     text: getErrorText(error),
+    //                     type: HintType.Error,
+    //                 });
+    //             })
+    //             .finally(() => {
+    //                 reset();
+    //             });
+    //     }
+    // });
 
-    if (isLoading) {
+    if (isMyReviewsLoading || isNotDoneReviewsLoading) {
         return (
             <div className={styles.wrapper}>
                 <MiniLoader />
@@ -169,12 +137,11 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         );
     }
 
-    const disableRenderVerticalSlider = applications.length < 4;
-    const renderApplications = applications.map((item) => (
-        <ReviewMiniCard
+    const disableRenderVerticalSlider = notDoneReviewsData.length < 4;
+    const renderApplications = notDoneReviewsData.map((item) => (
+        <ReviewVolunteerMiniCard
             data={item}
             onReviewClick={onReviewClick}
-            variant="offer"
             key={item.id}
             locale={locale}
         />
@@ -193,12 +160,11 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                     classNameSlide={styles.swiperSlide}
                     classNameWrapper={styles.swiperWrapper}
                     className={styles.slider}
-                    data={applications.slice(0, 15)}
-                    renderItem={(item: SimpleFormApplication) => (
-                        <ReviewMiniCard
+                    data={notDoneReviewsData.slice(0, 30)}
+                    renderItem={(item: NotDoneReviewVolunteer) => (
+                        <ReviewVolunteerMiniCard
                             data={item}
                             onReviewClick={onReviewClick}
-                            variant="offer"
                             key={item.id}
                             locale={locale}
                         />
@@ -228,10 +194,11 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                     <VolunteerModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={selectedApplication}
-                        isOpen={!!selectedApplication}
+                        application={selectedOffer}
+                        isOpen={!!selectedOffer}
                         onClose={resetSelectedReview}
-                        sendReview={() => onSendReview()}
+                        // sendReview={() => onSendReview()}
+                        sendReview={() => {}}
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

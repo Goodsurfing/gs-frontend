@@ -173,7 +173,17 @@ export const NotesVolunteerForm = () => {
                     <VolunteerModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={selectedApplication}
+                        application={selectedApplication ? {
+                            id: selectedApplication.id,
+                            name: selectedApplication.vacancy.title ?? "",
+                            address: selectedApplication.vacancy.address ?? "",
+                            image: {
+                                id: "",
+                                contentUrl: "",
+                            },
+                            applicationStatus: selectedApplication.status,
+                            categories: [],
+                        } : null}
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         locale={locale}
