@@ -10,8 +10,8 @@ import styles from "./Skills.module.scss";
 interface Props {
     skills: Skill[];
     className?: string;
-    value?: Skill[];
-    onChange: (value: Skill[]) => void;
+    value?: number[];
+    onChange: (value: number[]) => void;
 }
 
 export const Skills = memo(({
@@ -20,11 +20,11 @@ export const Skills = memo(({
     const { getTranslation } = useSkillsData();
 
     const handleIconStateChange = useCallback((skill: Skill) => {
-        const isActive = value.find((item) => item.id === skill.id);
+        const isActive = value.find((item) => item === skill.id);
         if (isActive) {
-            onChange(value.filter((item) => item.id !== skill.id));
-        } else if ((value?.length || 0) <= 10) {
-            onChange([...value, skill]);
+            onChange(value.filter((item) => item !== skill.id));
+        } else if ((value.length || 0) <= 10) {
+            onChange([...value, skill.id]);
         }
     }, [onChange, value]);
 
@@ -42,7 +42,7 @@ export const Skills = memo(({
                     size="large"
                     text={getTranslation(skill.name)}
                     icon={getMediaContent(skill.imagePath) ?? ""}
-                    checked={!!value.find((item) => item.id === skill.id)}
+                    checked={!!value.find((item) => item === skill.id)}
                     onClick={() => handleIconStateChange(skill)}
                 />
             ))}
