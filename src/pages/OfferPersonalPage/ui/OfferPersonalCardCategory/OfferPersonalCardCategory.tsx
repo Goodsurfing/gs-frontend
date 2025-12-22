@@ -3,29 +3,29 @@ import { memo, useMemo } from "react";
 
 import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferPersonalCardCategory.module.scss";
-import { CategoryType } from "@/types/categories";
+import { CategoryImageObject } from "@/types/categories";
 
 interface OfferPersonalCardCategoryProps {
     className?: string;
-    categories?: CategoryType[];
+    categories?: CategoryImageObject[];
 }
 
 export const OfferPersonalCardCategory = memo(
     (props: OfferPersonalCardCategoryProps) => {
-        const { className, categories } = props;
-        const { getTranslation, getColorByCategory } = useCategories();
+        const { className, categories = [] } = props;
+        const { getTranslation } = useCategories();
 
         const renderCategories = useMemo(
-            () => categories?.map((category) => (
+            () => categories.map((category) => (
                 <span
                     className={cn(styles.category, styles.text)}
-                    style={{ backgroundColor: getColorByCategory(category) }}
-                    key={category}
+                    style={{ backgroundColor: category.color }}
+                    key={category.id}
                 >
-                    {getTranslation(category)}
+                    {getTranslation(category.name)}
                 </span>
             )),
-            [categories, getColorByCategory, getTranslation],
+            [categories, getTranslation],
         );
 
         return (

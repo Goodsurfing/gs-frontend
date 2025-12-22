@@ -1,8 +1,7 @@
-import { CategoryType } from "@/types/categories";
+import { CategoryWithoutImage } from "@/types/categories";
 import { WhatToDoSkillType } from "@/types/skills";
 
 import { Article } from "@/entities/Article";
-import { ImageType } from "@/entities/Profile";
 
 import {
     Housing, Nutrition, OfferConditions, Travel,
@@ -15,30 +14,39 @@ import {
 } from "./offerFinishingTouches";
 import { OfferStatus } from "./offerStatus";
 import { OfferWhatToDo } from "./offerWhatToDo";
-import { OfferWhen, OfferWhenPeriods } from "./offerWhen";
+import { OfferWhen, OfferWhenPeriods, OldOfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
-import { OfferWhoNeeds } from "./offerWhoNeeds";
+import { OfferWhoNeeds, OldOfferWhoNeeds } from "./offerWhoNeeds";
 import { Pagination } from "@/types/api/pagination";
+import { Image } from "@/types/media";
+
+export interface UpdateOldOffer {
+    where: OfferWhere;
+    when: OldOfferWhen;
+    howNeeds: OldOfferWhoNeeds;
+    finishingTouches: OfferFinishingTouches;
+}
 
 export interface Offer {
     id: number;
+    status: OfferStatus;
     organization: OfferOrganization;
+    videoGallery: string[];
+    galleryImages: Image[];
+    averageRating: number;
+    reviewsCount: number;
     where?: OfferWhere;
     when?: OfferWhen;
-    howNeeds?: OfferWhoNeeds;
+    howNeed?: OfferWhoNeeds;
     description?: OfferDescription;
     whatToDo?: OfferWhatToDo;
-    conditions?: OfferConditions;
-    finishingTouches?: OfferFinishingTouches;
+    condition?: OfferConditions;
+    finishingTouche?: OfferFinishingTouches;
     contributors: OfferContributor[];
     // reviews?: Review[];
     articles?: Article[];
-    status: OfferStatus;
-    galleryItems: string[];
     canEdit: boolean;
     canParticipate: boolean;
-    averageRating?: number;
-    feedbacksCount?: number;
     acceptedApplicationsCount: number;
 }
 
@@ -51,9 +59,9 @@ export interface OfferApi {
         type: string;
         otherType: string;
         shortDescription: string;
-        imagePath: string;
+        image: Image;
     }
-    imagePath?: string;
+    image: Image | null;
     averageRating: number;
     reviewsCount: number;
     address?: string;
@@ -65,7 +73,7 @@ export interface OfferApi {
     durationMaxDays: number;
     applicationEndDate: string;
     title?: string;
-    categories: CategoryType[];
+    categories: CategoryWithoutImage[];
     description?: string;
     shortDescription?: string;
     periods: OfferWhenPeriods[];
@@ -77,7 +85,9 @@ export interface OfferOrganization {
     id: string;
     name: string;
     type: string;
-    avatar: ImageType;
+    otherType: string;
+    shortDescription: string,
+    image: Image | null;
 }
 export interface AddressAutoComplete {
     list: string[];
@@ -130,10 +140,9 @@ export interface HostOffer {
     id: number;
     status: OfferStatus;
     averageRating?: number,
-    imagePath?: string;
-    thumbnails: string[];
+    image: Image | null;
     title?: string;
-    categories?: CategoryType[];
+    categories?: string[];
     reviewsCount?: number;
     address?: string;
     latitude?: number;
@@ -170,4 +179,19 @@ export interface GetOffersFilters {
 export interface GetOffersResponse {
     data: OfferApi[];
     pagination: Pagination;
+}
+
+export interface OfferMap {
+    id: number;
+    latitude: number;
+    longitude: number;
+    name: string;
+    image: {
+        id: string;
+        contentUrl: string;
+    }
+    categories: {
+        name: string;
+        color: string;
+    }[];
 }

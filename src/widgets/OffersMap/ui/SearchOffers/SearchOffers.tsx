@@ -167,7 +167,7 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                                 >
                                                     <img
                                                         src={getMediaContent(
-                                                            offer.imagePath,
+                                                            offer.image?.contentUrl,
                                                         ) || defaultImage}
                                                         alt={offer.title}
                                                     />
@@ -179,7 +179,7 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                                         </p>
                                                         <p className={styles.offerCategory}>
                                                             {getTranslation(
-                                                                offer.categories[0],
+                                                                offer.categories[0].name,
                                                             )}
                                                         </p>
                                                     </div>

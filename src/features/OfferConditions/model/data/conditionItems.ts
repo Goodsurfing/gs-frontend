@@ -73,7 +73,44 @@ export const useConditionItems = () => {
         { text: t("conditions.Другое"), icon: otherIcon, id: "additional" },
     ];
 
+    const getTranslation = (condition: string | undefined): string | undefined => {
+        const translations: Record<string, string> = {
+            "Отдельный дом": t("conditions.Отдельный дом"),
+            Комната: t("conditions.Комната"),
+            "Койко-место": t("conditions.Койко-место"),
+            Палатка: t("conditions.Палатка"),
+            "Место под палатку": t("conditions.Место под палатку"),
+            "Полный пансион": t("conditions.Полный пансион"),
+            "Завтрак включен": t("conditions.Завтрак включен"),
+            Продкуты: t("conditions.Продкуты"),
+            Вегетарианское: t("conditions.Вегетарианское"),
+            "Полная оплата проезда": t("conditions.Полная оплата проезда"),
+            "Компенсация стоимости проезда": t("conditions.Компенсация стоимости проезда"),
+            "Частичная компенсация затрат": t("conditions.Частичная компенсация затрат"),
+            "Заброска из пункта сбора": t("conditions.Заброска из пункта сбора"),
+            "Трансфер из/в аэропорта/вокзала": t("conditions.Трансфер из/в аэропорта/вокзала"),
+            "Горячая вода": t("conditions.Горячая вода"),
+            "Интернет и wi-fi": t("conditions.Интернет и wi-fi"),
+            Электричество: t("conditions.Электричество"),
+            Кондиционер: t("conditions.Кондиционер"),
+            "Баня/сауна": t("conditions.Баня/сауна"),
+            "Мастер-классы/ обучающие курсы": t("conditions.Мастер-классы/ обучающие курсы"),
+            Экскурсии: t("conditions.Экскурсии"),
+            "Катание на лошадях": t("conditions.Катание на лошадях"),
+            "Языковые уроки": t("conditions.Языковые уроки"),
+            Другое: t("conditions.Другое"),
+        };
+        if (condition) {
+            return translations[condition];
+        }
+    };
+
     return {
-        liveItems, foodItems, payedRideItems, goodsItems, extraAvailiablesItems,
+        liveItems,
+        foodItems,
+        payedRideItems,
+        goodsItems,
+        extraAvailiablesItems,
+        getTranslation,
     };
 };

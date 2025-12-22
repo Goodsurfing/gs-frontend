@@ -28,7 +28,8 @@ interface PersonalCardProps {
     title?: string;
     image?: string;
     categories?: ReactNode; // todo: backend & entity
-    rating?: number;
+    reviewsCount: number;
+    rating: number;
     location?: string;
     imageBlock?: ReactNode;
     canEdit: boolean;
@@ -42,6 +43,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         offerId,
         className,
         categories,
+        reviewsCount,
         rating,
         imageBlock,
         title,
@@ -124,21 +126,24 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                             >
                                 {location}
                             </span>
-                            {rating && (
-                                <div className={styles.rating}>
-                                    <IconComponent
-                                        className={styles.star}
-                                        icon={star}
-                                    />
-                                    <span
-                                        className={cn(styles.ratingText, {
-                                            [styles.black]: !isImage,
-                                        })}
-                                    >
-                                        {rating}
-                                    </span>
-                                </div>
-                            )}
+                            <p className={styles.reviewsCount}>
+                                Кол-во отзывов:
+                                {" "}
+                                {reviewsCount}
+                            </p>
+                            <div className={styles.rating}>
+                                <IconComponent
+                                    className={styles.star}
+                                    icon={star}
+                                />
+                                <span
+                                    className={cn(styles.ratingText, {
+                                        [styles.black]: !isImage,
+                                    })}
+                                >
+                                    {rating}
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.botPart}>{imageBlock}</div>

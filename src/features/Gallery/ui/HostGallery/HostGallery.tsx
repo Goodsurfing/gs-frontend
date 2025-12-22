@@ -4,7 +4,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import { MediaObjectType } from "@/types/media";
-import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
+import { getHostMediaContentsApiArray, getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { Host, useUpdateHostMutation } from "@/entities/Host";
@@ -32,7 +32,7 @@ export const HostGallery: FC<HostGalleryProps> = (props) => {
 
     const handleOnUpload = useCallback(async (images: MediaObjectType[]) => {
         setToast(undefined);
-        const currentGalleryImages = getMediaContentsApiArray(
+        const currentGalleryImages = getHostMediaContentsApiArray(
             [...hostData.galleryImages, ...images],
         );
         try {

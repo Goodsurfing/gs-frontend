@@ -13,5 +13,16 @@ export type LevelLanguage = "not_matter" | "beginner" | "elementary" | "lower_in
 export interface Language {
     id: number | null;
     language: string;
-    level: LevelLanguage
+    languageLevel: LevelLanguage;
 }
+
+export interface OldLanguage {
+    language: string;
+    languageLevel: LevelLanguage;
+}
+
+// export interface GetLanguage {
+//     id: number | null;
+//     language: string;
+//     languageLevel: LevelLanguage;
+// }

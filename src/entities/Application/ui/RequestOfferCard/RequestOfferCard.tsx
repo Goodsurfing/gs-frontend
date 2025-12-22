@@ -77,7 +77,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                             )}
                         </span>
                         <span className={styles.tag}>
-                            {getTranslation(vacancy.categories[0])}
+                            {getTranslation(vacancy.categories[0].name)}
                         </span>
                     </div>
                 </div>

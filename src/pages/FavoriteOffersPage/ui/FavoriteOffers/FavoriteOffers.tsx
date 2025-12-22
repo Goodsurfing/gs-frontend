@@ -11,8 +11,8 @@ import emptyIcon from "@/shared/assets/icons/empty-favorite-heart.svg";
 import styles from "./FavoriteOffers.module.scss";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { Offer } from "@/entities/Offer";
-import { OfferCard } from "@/widgets/OffersMap";
+// import { Offer } from "@/entities/Offer";
+// import { OfferCard } from "@/widgets/OffersMap";
 
 interface FavoriteOffersProps {
     className?: string;
@@ -48,36 +48,36 @@ export const FavoriteOffers: FC<FavoriteOffersProps> = (props) => {
         );
     }
 
-    const renderOffers = (offers: Offer[]) => offers.map((offer) => {
-        const {
-            id, description, where, acceptedApplicationsCount,
-            feedbacksCount, averageRating,
-        } = offer;
-        return (
-            <OfferCard
-                locale={locale}
-                classNameCard={styles.offerCard}
-                className={cn(styles.offer)}
-                status="opened"
-                data={{
-                    id,
-                    title: description?.title,
-                    shortDescription: description?.shortDescription,
-                    imagePath: description?.image,
-                    address: where?.address,
-                    categories: description?.categoryIds,
-                    acceptedApplicationsCount,
-                    averageRating: feedbacksCount,
-                    reviewsCount: averageRating,
-                }}
-                key={offer.id}
-            />
-        );
-    });
+    // const renderOffers = (offers: Offer[]) => offers.map((offer) => {
+    //     const {
+    //         id, description, where, acceptedApplicationsCount,
+    //         feedbacksCount, averageRating,
+    //     } = offer;
+    //     return (
+    //         <OfferCard
+    //             locale={locale}
+    //             classNameCard={styles.offerCard}
+    //             className={cn(styles.offer)}
+    //             status="opened"
+    //             data={{
+    //                 id,
+    //                 title: description?.title,
+    //                 shortDescription: description?.shortDescription,
+    //                 imagePath: description?.image,
+    //                 address: where?.address,
+    //                 categories: description?.categoryIds,
+    //                 acceptedApplicationsCount,
+    //                 averageRating: feedbacksCount,
+    //                 reviewsCount: averageRating,
+    //             }}
+    //             key={offer.id}
+    //         />
+    //     );
+    // });
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {renderOffers(mockedOffersData)}
+            {/* {renderOffers(mockedOffersData)} */}
         </div>
     );
 };

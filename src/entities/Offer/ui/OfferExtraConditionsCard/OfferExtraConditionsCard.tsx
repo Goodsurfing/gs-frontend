@@ -15,8 +15,12 @@ export const OfferExtraConditionsCard: FC<OfferExtraConditionsCardProps> = memo(
         const { t } = useTranslation("offer");
         return (
             <div className={cn(className, styles.wrapper)}>
-                <Text title={t("personalOffer.Дополнительные условия")} titleSize="h3" />
-                <p className={styles.extraConditions}>{extraConditions}</p>
+                {extraConditions !== "" && (
+                    <>
+                        <Text title={t("personalOffer.Дополнительные условия")} titleSize="h3" />
+                        <p className={styles.extraConditions}>{extraConditions}</p>
+                    </>
+                )}
             </div>
         );
     },

@@ -4,8 +4,10 @@ import { Pagination } from "@/types/api/pagination";
 
 // export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description"
 // | "status" | "averageRating" | "feedbacksCount" | "acceptedApplicationsCount">;
-export type FormApplicationOffer = Pick<OfferApi, "id" | "title" | "description" | "address" | "status" | "categories" |
-"imagePath" | "acceptedApplicationsCount" | "averageRating" | "applicationEndDate" | "reviewsCount" | "shortDescription">;
+export type FormApplicationOffer = Pick<OfferApi, "id" | "title" | "description" | "address" | "status" | "categories"
+| "acceptedApplicationsCount" | "averageRating" | "applicationEndDate" | "reviewsCount" | "shortDescription"> & {
+    imagePath: string;
+};
 
 export interface FormApplication {
     id: number;

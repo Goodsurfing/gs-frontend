@@ -1,0 +1,69 @@
+.wrapper {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid var(--accent-elements);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    background-color: #fff;
+}
+
+.mainInfo {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.status {
+    align-self: flex-end;
+    max-width: min-content;
+    max-height: min-content;
+    padding: 3px 6px;
+    box-sizing: content-box;
+    border-radius: 2px;
+    font-size: 10px;
+    color: #fff;
+}
+
+.avatar {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary-2);
+}
+
+.address {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-caption);
+}
+
+.tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary-1);
+}
+
+.new {
+    background-color: var(--color-blue);
+}
+
+.canceled {
+    background-color: var(--color-pink);
+}
+
+.accepted {
+    background-color: var(--color-green);
+}

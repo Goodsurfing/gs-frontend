@@ -15,7 +15,7 @@ interface LanguagesGroupProps {
     onChange: (value: Language[]) => void;
 }
 
-const defaultInput: Language = { id: null, language: "not_matter", level: "not_matter" };
+const defaultInput: Language = { id: null, language: "not_matter", languageLevel: "not_matter" };
 
 const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
@@ -26,7 +26,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const onAddBtnClick = useCallback(() => {
         if (
             inputValue.language === "not_matter"
-            && inputValue.level === "not_matter"
+            && inputValue.languageLevel === "not_matter"
         ) {
             return;
         }

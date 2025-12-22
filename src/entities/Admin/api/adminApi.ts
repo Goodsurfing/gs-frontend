@@ -197,6 +197,14 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["transfer"],
         }),
+        getPublicTransfers: build.query<Transfer[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}transfer/list`,
+                method: "GET",
+            }),
+            providesTags: ["transfer"],
+        }),
         getTransfers: build.query<GetAdminTransfersResponse,
         undefined | Partial<GetAdminTransfersParams>>({
             query: (params) => ({
@@ -250,6 +258,14 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["house"],
         }),
+        getPublicHouses: build.query<House[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}house/list`,
+                method: "GET",
+            }),
+            providesTags: ["house"],
+        }),
         getHouses: build.query<GetAdminHouseResponse,
         undefined | Partial<GetAdminHouseParams>>({
             query: (params) => ({
@@ -302,6 +318,14 @@ export const adminApi = createApi({
                 method: "DELETE",
             }),
             invalidatesTags: ["food"],
+        }),
+        getPublicFoods: build.query<Food[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}food/list`,
+                method: "GET",
+            }),
+            providesTags: ["food"],
         }),
         getFoods: build.query<GetAdminFoodResponse,
         undefined | Partial<GetAdminFoodParams>>({
@@ -550,18 +574,21 @@ export const {
     useGetHousesQuery,
     useLazyGetHousesQuery,
     useGetHouseByIdQuery,
+    useGetPublicHousesQuery,
     useCreateFoodMutation,
     useEditFoodMutation,
     useDeleteFoodMutation,
     useGetFoodsQuery,
     useLazyGetFoodsQuery,
     useGetFoodByIdQuery,
+    useGetPublicFoodsQuery,
     useCreateTransferMutation,
     useEditTransferMutation,
     useDeleteTransferMutation,
     useGetTransfersQuery,
     useLazyGetTransfersQuery,
     useGetTransfertByIdQuery,
+    useGetPublicTransfersQuery,
     useLazyGetUsersQuery,
     useUpdateAdminUserMutation,
     useDeleteUserMutation,

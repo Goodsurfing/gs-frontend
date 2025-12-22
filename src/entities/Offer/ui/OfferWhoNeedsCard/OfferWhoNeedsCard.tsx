@@ -19,7 +19,7 @@ interface OfferWhoNeedsCardProps {
 export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
     const { className, whoNeeds } = props;
     const { t } = useTranslation("offer");
-    const formattedGenders = useFormatGenders(whoNeeds.gender);
+    const formattedGenders = useFormatGenders(whoNeeds.genders);
 
     return (
         <div className={cn(className, styles.wrapper)}>

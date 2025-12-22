@@ -252,10 +252,24 @@ export const Chat: FC<ChatProps> = (props) => {
                             const volunteerApplicationId = applicationResult.volunteer.profile.id;
                             const isImHost = volunteerApplicationId !== myProfileData.id;
                             const tempIsHost = (status === "new" && isImHost);
+                            const categoriesTemp = vacancy.categories.map((cat) => cat.name);
 
                             return (
                                 <OfferApplication
-                                    offerData={vacancy}
+                                    offerData={{
+                                        id: vacancy.id,
+                                        title: vacancy.title,
+                                        description: vacancy.description,
+                                        shortDescription: vacancy.shortDescription,
+                                        imagePath: vacancy.imagePath,
+                                        address: vacancy.address,
+                                        status: vacancy.status,
+                                        categoryName: categoriesTemp[0],
+                                        acceptedApplicationsCount: vacancy
+                                            .acceptedApplicationsCount,
+                                        averageRating: vacancy.averageRating,
+                                        reviewsCount: vacancy.reviewsCount,
+                                    }}
                                     terms={{
                                         start: startDate ? new Date(startDate) : undefined,
                                         end: endDate ? new Date(endDate) : undefined,
@@ -374,9 +388,10 @@ export const Chat: FC<ChatProps> = (props) => {
             if (offerData) {
                 const {
                     id: offerDataId, where, description, status,
-                    acceptedApplicationsCount, averageRating, feedbacksCount,
+                    acceptedApplicationsCount, averageRating, reviewsCount,
                 } = offerData;
                 const imagePath = typeof description?.image === "string" ? description.image : description?.image?.contentUrl;
+                const categoryTemp = description?.categories ? description.categories[0].name : "";
 
                 return (
                     <Controller
@@ -390,12 +405,12 @@ export const Chat: FC<ChatProps> = (props) => {
                                     title: description?.title,
                                     shortDescription: description?.shortDescription,
                                     status,
-                                    imagePath,
-                                    categories: description?.categoryIds ?? [],
+                                    imagePath: imagePath ?? "",
+                                    categoryName: categoryTemp,
                                     acceptedApplicationsCount,
                                     description: description?.description,
                                     averageRating: averageRating ?? 0,
-                                    reviewsCount: feedbacksCount ?? 0,
+                                    reviewsCount: reviewsCount ?? 0,
                                 }}
                                 terms={{
                                     start: value.startDate,

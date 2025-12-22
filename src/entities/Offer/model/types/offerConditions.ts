@@ -1,3 +1,5 @@
+import { FoodImageObject, HouseImageObject, TransferImageObject } from "@/shared/data/conditions";
+
 export type Housing = Readonly<"house" | "room" | "bed" | "tent" | "tent_place">;
 
 export type Nutrition = Readonly<"full" | "breakfast" | "products" | "vegetarian">;
@@ -17,9 +19,9 @@ export interface Payment {
 }
 
 export interface OfferConditions {
-    houses: Housing[];
-    foods: Nutrition[];
-    transfers: Travel[];
+    houses: HouseImageObject[];
+    foods: FoodImageObject[];
+    transfers: TransferImageObject[];
     conveniences: Facilities[];
     additionalFeatures: ExtraFeatures[];
     volunteerContributions: number;
@@ -38,4 +40,21 @@ export interface OfferConditionsApi {
     volunteerRemuneration: number;
     currency: Currency;
     additionalConditions: string;
+}
+
+export interface UpdateOfferConditions {
+    additionalConditions: string,
+    currency: Currency;
+    additionalFeatures: ExtraFeatures[];
+    conveniences: Facilities[];
+    foodIds: number[];
+    houseIds: number[];
+    transferIds: number[],
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+}
+
+export interface UpdateOfferConditionsParams {
+    offerId: number;
+    body: UpdateOfferConditions;
 }

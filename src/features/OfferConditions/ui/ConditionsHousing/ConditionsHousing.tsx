@@ -1,24 +1,30 @@
 import { memo, useCallback } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Housing } from "@/entities/Offer";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
 import { useConditionItems } from "../../model/data/conditionItems";
 import { HousingFields } from "../../model/types/offerConditions";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import { House } from "@/shared/data/conditions";
 import styles from "./ConditionsHousing.module.scss";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 export interface ConditionsHousingProps {
+    houseData: House[];
+    isLoading: boolean;
     value: HousingFields;
     onChange: (value: HousingFields) => void;
 }
 
 export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
-    const { onChange, value } = props;
+    const {
+        houseData, isLoading, onChange, value,
+    } = props;
     const { t } = useTranslation("offer");
-    const { liveItems } = useConditionItems();
+    const { getTranslation } = useConditionItems();
 
     const onSwitchChange = useCallback(() => {
         const newSwitchState = !value.switchState;
@@ -29,7 +35,7 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
         });
     }, [value, onChange]);
 
-    const onToggleCondition = (conditionId: Housing) => {
+    const onToggleCondition = (conditionId: number) => {
         if (value.switchState) {
             const newHousing = value.housing.includes(conditionId)
                 ? value.housing.filter((id) => id !== conditionId)
@@ -58,15 +64,21 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
                 </div>
             </div>
             <div className={styles.conditions}>
-                {liveItems.map((item) => (
-                    <ConditionsItem
-                        checked={value.housing.includes(item.id)}
-                        onToggle={() => onToggleCondition(item.id)}
-                        key={item.id}
-                        text={item.text}
-                        icon={item.icon}
-                    />
-                ))}
+                {isLoading ? (
+                    <MiniLoader />
+                ) : (
+                    <>
+                        {houseData.map((item) => (
+                            <ConditionsItem
+                                checked={value.housing.includes(item.id)}
+                                onToggle={() => onToggleCondition(item.id)}
+                                key={item.id}
+                                text={getTranslation(item.name) ?? ""}
+                                icon={getMediaContent(item.imagePath) ?? ""}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
         </div>
     );

@@ -2,9 +2,6 @@ import cn from "classnames";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useLocale } from "@/app/providers/LocaleProvider";
-
-import { formatDate } from "@/shared/lib/formatDate";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
 
 import { OfferWhen } from "../../model/types/offerWhen";
@@ -25,30 +22,24 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
             applicationEndDate,
         },
     } = props;
-    const { locale } = useLocale();
     const { t } = useTranslation("offer");
     const emptyMessage = t("personalOffer.Точная дата не указана");
     const offerPeriodEnd = () => {
         if (!applicationEndDate) {
             return t("personalOffer.Не имеет даты окончания");
         }
-        return applicationEndDate
-            ? formatDate(locale, applicationEndDate)
-            : emptyMessage;
+        return applicationEndDate || emptyMessage;
     };
 
     const isHavePeriods = periods.length > 0;
     const isRenderGridPeriods = periods.length > 3;
 
     const renderItemPeriods = periods.map((period) => {
-        const { start, ending } = period;
+        const { start, end } = period;
 
         return (
             <p>
-                {`${formatDate(locale, start ?? "")} — ${formatDate(
-                    locale,
-                    ending ?? "",
-                )}`}
+                {`${start ?? ""} — ${end ?? ""}`}
             </p>
         );
     });

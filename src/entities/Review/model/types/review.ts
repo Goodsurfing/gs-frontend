@@ -1,4 +1,6 @@
+import { FormApplicationStatus } from "@/entities/Application";
 import { Pagination } from "@/types/api/pagination";
+import { Image } from "@/types/media";
 
 export interface Review {
     reviewText: string;
@@ -86,4 +88,59 @@ export interface GetOfferReviewRequest {
 export interface GetOfferReviewParams {
     page: number;
     limit: number;
+}
+
+export interface MyReviewVolunteer {
+    id: string;
+    vacancy: {
+        id: number;
+        name: string;
+        image: Image;
+    };
+    rating: number;
+    description: string;
+    created: string;
+}
+
+export interface MyReviewVolunteerRequest {
+    data: MyReviewVolunteer[];
+    pagination: Pagination;
+}
+
+export interface NotDoneReviewVolunteer {
+    id: number;
+    name: string;
+    image: Image;
+    address: string;
+    applicationStatus: FormApplicationStatus;
+    categories: {
+        id: number;
+        name: string;
+    }[]
+}
+
+export interface MyReviewHost {
+    id: number;
+    volunteer: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        image: Image;
+        city: string;
+        country: string;
+    }
+    rating: number;
+    description: string;
+}
+
+export interface NotDoneReviewHost {
+    id: number;
+    volunteer: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        image: Image;
+        city: string;
+        country: string;
+    }
 }

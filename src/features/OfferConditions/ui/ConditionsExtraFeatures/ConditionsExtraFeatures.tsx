@@ -17,18 +17,17 @@ export const ConditionsExtraFeatures = (props: ConditionsExtraFeaturesProps) => 
     const { t } = useTranslation("offer");
 
     const onConditionToggle = (conditionId: ExtraFeatures) => {
-        const activeIndex = value.extraFeatures.findIndex((item) => item === conditionId);
-        if (activeIndex !== -1) {
-            onChange({
-                ...value,
-                extraFeatures: [...value.extraFeatures.filter((val) => val !== conditionId)],
-            });
-        } else {
-            onChange({
-                ...value,
-                extraFeatures: [...value.extraFeatures, conditionId],
-            });
-        }
+        const current = value.extraFeatures ?? [];
+        const isActive = current.includes(conditionId);
+
+        const newExtraFeatures = isActive
+            ? current.filter((val) => val !== conditionId)
+            : [...current, conditionId];
+
+        onChange({
+            ...value,
+            extraFeatures: newExtraFeatures,
+        });
     };
 
     return (
@@ -37,7 +36,7 @@ export const ConditionsExtraFeatures = (props: ConditionsExtraFeaturesProps) => 
             <div className={styles.conditions}>
                 {extraAvailiablesItems.map((item) => (
                     <ConditionsItem
-                        checked={!!value.extraFeatures.find((val) => val === item.id)}
+                        checked={!!value.extraFeatures?.find((val) => val === item.id)}
                         icon={item.icon}
                         onToggle={() => onConditionToggle(item.id)}
                         text={item.text}

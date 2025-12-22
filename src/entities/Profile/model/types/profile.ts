@@ -2,7 +2,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Achievement } from "@/types/achievements";
 import { Language } from "@/types/languages";
 import { Image } from "@/types/media";
-import { Skill } from "@/types/skills";
+import { GetSkill, Skill } from "@/types/skills";
 
 export type Gender = "male" | "female" | "other";
 
@@ -37,7 +37,6 @@ export interface Profile {
         certificates: Image[];
         averageRating: number;
         feedbacksCount: number;
-        participatedVacancies: string[];
     } | null;
     videoGallery: string[];
     galleryImages: Image[];
@@ -46,8 +45,18 @@ export interface Profile {
     isVerified: boolean;
 }
 
-export type ProfileById = Omit<Profile, "hostId"> & {
-    host: string | null;
+export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "favoriteCategories"> & {
+    volunteer: {
+        externalInfo: string | null;
+        skills: GetSkill[];
+        achievements: Achievement[];
+        additionalSkills: string[];
+        languages: Language[];
+        certificates: string[];
+        participatedVacancyIds: string[];
+        averageRating: number;
+        reviewCount: number;
+    } | null;
 };
 
 export type UpdateProfile = Omit<Profile, "id" | "image" | "galleryImages" | "videoGallery"

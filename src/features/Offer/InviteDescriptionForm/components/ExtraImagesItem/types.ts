@@ -1,8 +1,9 @@
-import { ImageType } from "@/components/ImageInput/types";
+import { Image } from "@/types/media";
 
 export interface ExtraImagesItemProps {
-    img: ImageType;
-    setImg: (img: ImageType) => void;
+    img: Image;
+    setImg: (img: File) => void;
+    onDelete: () => void;
     id: string;
     label: string;
     closeBtn?: React.ReactNode;

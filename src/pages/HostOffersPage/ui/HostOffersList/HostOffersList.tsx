@@ -32,9 +32,9 @@ export const HostOffersList: FC<HostOffersListProps> = memo((props: HostOffersLi
             const {
                 id, status,
                 averageRating, acceptedApplicationsCount, reviewsCount,
-                address, title, shortDescription, categories, imagePath,
+                address, title, shortDescription, categories, image,
             } = offer;
-            const mediaObjectCover = getMediaContent(imagePath, "MEDIUM");
+            const mediaObjectCover = getMediaContent(image?.contentUrl);
 
             return (
                 <HostOffersPageCard

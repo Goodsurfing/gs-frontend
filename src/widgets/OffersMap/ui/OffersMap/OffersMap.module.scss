@@ -29,3 +29,47 @@
     text-decoration: none;
     color: var(--text-primary-1);
 }
+
+.balloonLink {
+    color: var(--accent-color);
+}
+
+.balloonImage {
+    width: 100px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.balloonTitle {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.balloonCategory {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.balloonLink {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.balloonLink:hover {
+    text-decoration: underline;
+}
+
+.customPlacemarkIcon {
+    width: 30px;
+    height: 30px;
+    border: 5px solid var(--text-secondary-1);
+    border-radius: 50%;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background: #fff;
+}
+
+.loadingPlaceholder {
+    margin-top: 30px;
+}

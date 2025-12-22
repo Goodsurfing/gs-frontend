@@ -47,7 +47,7 @@ export {
     useGetTransfersQuery, useGetTransfertByIdQuery,
     useLazyGetAchievementsQuery,
     useLazyGetFoodsQuery, useLazyGetHousesQuery,
-    useLazyGetTransfersQuery,
+    useLazyGetTransfersQuery, useGetPublicFoodsQuery,
     useLazyGetUsersQuery,
     useUpdateAdminUserMutation,
     useDeleteUserMutation,
@@ -60,4 +60,6 @@ export {
     useGetOrganizationByIdQuery,
     useGetPublicAchievementsQuery, useGetPublicCategoriesVacancyQuery,
     useGetPublicSkillsQuery,
+    useGetPublicHousesQuery,
+    useGetPublicTransfersQuery,
 } from "./api/adminApi";

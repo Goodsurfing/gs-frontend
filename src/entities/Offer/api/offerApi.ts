@@ -6,15 +6,27 @@ import {
     GetHostOffersFilters, GetHostOffersResponse,
     GetOffersFilters,
     GetOffersResponse, Offer,
+    OfferMap,
     OfferSort,
+    UpdateOldOffer,
 } from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
+import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
+import { UpdateOfferDescriptionParams } from "../model/types/offerDescription";
 
 interface UpdateOfferParams {
-    id: number
-    body: Partial<Offer>;
+    id: number;
+    body: Partial<UpdateOldOffer>;
+}
+
+interface UpdateOfferImageGallery {
+    offerId: number;
+    body: {
+        galleryImageIds: string[];
+    }
 }
 
 interface CreateOfferResponse {
@@ -64,6 +76,38 @@ export const offerApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        updateOfferImageGallery: build.mutation<void, UpdateOfferImageGallery>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/image-gallery/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferDescription: build.mutation<void, UpdateOfferDescriptionParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/description/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferWhatToDo: build.mutation<void, UpdateOfferWhatToDoParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/what-to-do/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateOfferConditions: build.mutation<void, UpdateOfferConditionsParams>({
+            query: ({ offerId, body }) => ({
+                url: `${API_BASE_URL_V3}vacancy/condition/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
         updateOfferStatus: build.mutation<UpdateOfferStatusResponse, UpdateOfferStatusRequest>({
             query: (data) => ({
                 url: `/vacancies/${data.id}/status`,
@@ -77,14 +121,14 @@ export const offerApi = createApi({
         }),
         deleteOffer: build.mutation<CreateOfferResponse, string>({
             query: (offerId) => ({
-                url: `/vacancies/${offerId}`,
+                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["offer"],
         }),
         getOfferById: build.query<Offer, string>({
             query: (offerId) => ({
-                url: `vacancies/${offerId}`,
+                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -94,6 +138,13 @@ export const offerApi = createApi({
                 url: `${API_BASE_URL_V3}vacancy/list`,
                 method: "GET",
                 params,
+            }),
+            providesTags: ["offer"],
+        }),
+        getAllOffersMap: build.query<OfferMap[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}vacancy/for-map/list`,
+                method: "GET",
             }),
             providesTags: ["offer"],
         }),
@@ -174,4 +225,9 @@ export const {
     useGetOfferGalleryItemsQuery,
     useGetOfferGalleryItemByIdQuery,
     useDeleteOfferGalleryItemMutation,
+    useUpdateOfferWhatToDoMutation,
+    useUpdateOfferConditionsMutation,
+    useUpdateOfferDescriptionMutation,
+    useUpdateOfferImageGalleryMutation,
+    useGetAllOffersMapQuery,
 } = offerApi;

@@ -28,8 +28,8 @@ interface HostInfoCardProps {
 
 export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     const { className, offer } = props;
-    const isShowPaymentCard = (offer.conditions?.volunteerContributions ?? null) !== null
-    || (offer.conditions?.volunteerRemuneration ?? null) !== null;
+    const isShowPaymentCard = (offer.condition?.volunteerContributions ?? null) !== null
+    || (offer.condition?.volunteerRemuneration ?? null) !== null;
     const { ready } = useTranslation("offer");
 
     if (!ready) {
@@ -39,21 +39,21 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
     return (
         <div className={cn(className)}>
             {offer.when && <OfferWhenCard offerWhen={offer.when} />}
-            {offer.howNeeds && (
+            {offer.howNeed && (
                 <OfferWhoNeedsCard
-                    whoNeeds={offer.howNeeds}
+                    whoNeeds={offer.howNeed}
                     className={styles.container}
                 />
             )}
-            {offer.finishingTouches && (
+            {offer.finishingTouche && (
                 <OfferConditionsCard
-                    finishingTouches={offer.finishingTouches}
+                    finishingTouches={offer.finishingTouche}
                     className={styles.wrapper}
                 />
             )}
-            {(offer.conditions && isShowPaymentCard) && (
+            {(offer.condition && isShowPaymentCard) && (
                 <OfferPaymentCard
-                    conditions={offer.conditions}
+                    conditions={offer.condition}
                     className={styles.container}
                 />
             )}
@@ -63,9 +63,9 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            {offer.howNeeds && (
+            {offer.howNeed && (
                 <OfferLanguagesCard
-                    languages={offer.howNeeds.requiredLanguages}
+                    languages={offer.howNeed.languages}
                     className={styles.container}
                 />
             )}
@@ -79,30 +79,28 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                 organization={offer.organization}
                 className={styles.container}
             />
-            {offer.galleryItems && offer.galleryItems.length ? (
-                <OfferGalleryCard
-                    offerId={offer.id}
-                    className={styles.container}
-                />
-            ) : null}
+            <OfferGalleryCard
+                galleryImages={offer.galleryImages}
+                className={styles.container}
+            />
             {offer.whatToDo && (
                 <OfferWhatToDoCard
                     whatToDo={offer.whatToDo}
                     className={styles.wrapper}
                 />
             )}
-            {offer.conditions && (
+            {offer.condition && (
                 <>
                     <OfferTermsCard
-                        facilities={offer.conditions.conveniences}
-                        housing={offer.conditions.houses}
-                        paidTravel={offer.conditions.transfers}
-                        nutrition={offer.conditions.foods}
-                        extraFeatures={offer.conditions.additionalFeatures}
+                        facilities={offer.condition.conveniences}
+                        housing={offer.condition.houses}
+                        paidTravel={offer.condition.transfers}
+                        nutrition={offer.condition.foods}
+                        extraFeatures={offer.condition.additionalFeatures}
                         className={styles.container}
                     />
                     <OfferExtraConditionsCard
-                        extraConditions={offer.conditions.additionalConditions}
+                        extraConditions={offer.condition.additionalConditions}
                         className={styles.container}
                     />
                 </>

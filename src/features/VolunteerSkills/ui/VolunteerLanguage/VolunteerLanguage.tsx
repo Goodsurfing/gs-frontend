@@ -31,7 +31,7 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
         >(undefined);
         const isDisabledButton = !mainLanguageSkills
             || !mainLanguageSkills?.language
-            || !mainLanguageSkills?.level;
+            || !mainLanguageSkills?.languageLevel;
 
         const handleMainLanguageChange = (item: Language) => {
             setMainLanguageSkills(item);

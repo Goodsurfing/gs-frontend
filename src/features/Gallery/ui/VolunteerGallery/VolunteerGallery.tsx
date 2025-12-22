@@ -83,6 +83,7 @@ export const VolunteerGallery: FC<VolunteerGalleryProps> = (props) => {
                 onUpload={handleOnUpload}
                 onDelete={handleOnDelete}
                 onError={() => {}}
+                isOnlyImgFormat
             />
         </div>
     );

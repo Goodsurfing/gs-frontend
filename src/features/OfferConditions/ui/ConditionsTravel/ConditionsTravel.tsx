@@ -3,19 +3,25 @@ import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { TravelFields } from "../../model/types/offerConditions";
 
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
-import { Travel } from "@/entities/Offer";
 import { useConditionItems } from "../../model/data/conditionItems";
+import { Transfer } from "@/shared/data/conditions";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./ConditionsTravel.module.scss";
 
 interface ConditionsTravelProps {
+    transferData: Transfer[];
+    isLoading: boolean;
     value: TravelFields;
     onChange: (value: TravelFields) => void;
 }
 
 export const ConditionsTravel = (props: ConditionsTravelProps) => {
-    const { onChange, value } = props;
+    const {
+        transferData, isLoading, onChange, value,
+    } = props;
     const { t } = useTranslation("offer");
-    const { payedRideItems } = useConditionItems();
+    const { getTranslation } = useConditionItems();
 
     const onSwitchChange = () => {
         const newSwitchState = !value.switchState;
@@ -26,7 +32,7 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
         });
     };
 
-    const onToggleCondition = (conditionId: Travel) => {
+    const onToggleCondition = (conditionId: number) => {
         if (value.switchState) {
             const newHousing = value.travel.includes(conditionId)
                 ? value.travel.filter((id) => id !== conditionId)
@@ -53,15 +59,22 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
                 </div>
             </div>
             <div className={styles.conditions}>
-                {payedRideItems.map((item) => (
-                    <ConditionsItem
-                        checked={value.travel.includes(item.id)}
-                        icon={item.icon}
-                        onToggle={() => onToggleCondition(item.id)}
-                        text={item.text}
-                        key={item.id}
-                    />
-                ))}
+                {isLoading ? (
+                    <MiniLoader />
+                ) : (
+                    <>
+                        {transferData.map((item) => (
+                            <ConditionsItem
+                                checked={value.travel.includes(item.id)}
+                                icon={getMediaContent(item.imagePath) ?? ""}
+                                onToggle={() => onToggleCondition(item.id)}
+                                text={getTranslation(item.name) ?? ""}
+                                key={item.id}
+                            />
+                        ))}
+                    </>
+                )}
+
             </div>
         </div>
     );

@@ -93,12 +93,12 @@ export const OfferFinishingTouchesForm = memo(
             const savedData = loadFormData();
             if (savedData) {
                 reset(savedData);
-            } else if (getOfferData?.finishingTouches) {
-                reset(offerFinishingTouchesAdapter(getOfferData?.finishingTouches));
+            } else if (getOfferData?.finishingTouche) {
+                reset(offerFinishingTouchesAdapter(getOfferData?.finishingTouche));
             } else {
                 reset();
             }
-        }, [getOfferData?.finishingTouches, loadFormData, reset]);
+        }, [getOfferData?.finishingTouche, loadFormData, reset]);
 
         useEffect(() => {
             initializeForm();
@@ -111,14 +111,14 @@ export const OfferFinishingTouchesForm = memo(
             }
         }, [isDirty, saveFormData, watch]);
 
-        const updateFinishingTouchesHandle = (
+        const updateFinishingTouchesHandle = async (
             data: OfferFinishingTouchesFormFields,
             offerStatus: OfferStatus,
         ) => {
             if (id) {
                 const preparedData = offerFinishingTouchesApiAdapter(data);
                 setToast(undefined);
-                updateOffer({
+                await updateOffer({
                     id: Number(id),
                     body: {
                         finishingTouches: preparedData,
@@ -128,7 +128,7 @@ export const OfferFinishingTouchesForm = memo(
                     .then(async () => {
                         await updateOfferStatus({ id, status: offerStatus }).unwrap();
                         setToast({
-                            text: "Данные успешно изменены",
+                            text: t("Данные успешно изменены"),
                             type: HintType.Success,
                         });
                         sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);

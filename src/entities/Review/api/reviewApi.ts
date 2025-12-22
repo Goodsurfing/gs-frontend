@@ -8,8 +8,11 @@ import {
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
     GetOfferReviewParams,
     GetOfferReviewRequest,
+    MyReviewVolunteerRequest,
+    NotDoneReviewVolunteer,
 } from "../model/types/review";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { PaginationParams } from "@/types/api/pagination";
 
 interface ReviewRequest {
     reviewId: string;
@@ -130,6 +133,23 @@ export const reviewApi = createApi({
             }),
             providesTags: ["volunteer"],
         }),
+        getMyVolunteerReviews: build.query<MyReviewVolunteerRequest,
+        PaginationParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}volunteer/vacancy/review/list`,
+                method: "GET",
+                params,
+            }),
+            providesTags: ["volunteer"],
+        }),
+        getMyNotDoneVolunteerReview: build.query<NotDoneReviewVolunteer[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}volunteer/vacancy/without-review/list`,
+                method: "GET",
+            }),
+            providesTags: ["volunteer"],
+        }),
         createOfferReview: build.mutation<void,
         CreateOfferReview>({
             query: (body) => ({
@@ -168,4 +188,7 @@ export const {
     useLazyGetAboutVolunteerReviewsQuery,
     useCreateOfferReviewMutation,
     useLazyGetOfferReviewsQuery,
+    useGetMyVolunteerReviewsQuery,
+    useLazyGetMyVolunteerReviewsQuery,
+    useGetMyNotDoneVolunteerReviewQuery,
 } = reviewApi;

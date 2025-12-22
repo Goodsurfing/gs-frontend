@@ -44,7 +44,6 @@ interface OffersSearchFilterMobileProps {
     onChangePage: (pageItem: number) => void;
 }
 
-// Мемоизируем дочерние компоненты, чтобы избежать ненужных перерендеров
 const MemoizedOfferCard = React.memo(OfferCard);
 const MemoizedSearchOffers = React.memo(SearchOffers);
 
@@ -137,7 +136,17 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     [styles.closed]: offer.status !== "active",
                 })}
                 status={offer.status === "active" ? "opened" : "closed"}
-                data={offer}
+                data={{
+                    id: offer.id,
+                    title: offer.title,
+                    shortDescription: offer.shortDescription,
+                    imagePath: offer.image?.contentUrl,
+                    categories: offer.categories.map((cat) => cat.name),
+                    address: offer.address,
+                    acceptedApplicationsCount: offer.acceptedApplicationsCount,
+                    averageRating: offer.averageRating,
+                    reviewsCount: offer.reviewsCount,
+                }}
                 key={offer.id}
             />
         ));
@@ -235,7 +244,6 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                 <OffersMap
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
-                    offersData={data}
                 />
             )}
             {tabStates.isFilterTabOpened && (

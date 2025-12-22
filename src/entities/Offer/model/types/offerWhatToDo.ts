@@ -1,4 +1,4 @@
-import { WhatToDoSkillType } from "@/types/skills";
+import { GetSkill, WhatToDoSkillType } from "@/types/skills";
 
 export type OfferWhatToDoSkill = {
     text: WhatToDoSkillType;
@@ -15,9 +15,9 @@ export type WorkSettings = {
 };
 
 export interface OfferWhatToDo {
-    skills: OfferWhatToDoSkill[];
-    additionalSkills?: string[];
-    hours: number;
+    skills: GetSkill[];
+    additionalSkills: string[];
+    hour: number;
     timeType: TimeType;
     dayOff: number;
     externalInfo?: string;
@@ -30,4 +30,18 @@ export interface OfferWhatToDoApi {
     timeType: TimeType;
     dayOff: number;
     externalInfo?: string;
+}
+
+export interface UpdateOfferWhatToDo {
+    skillIds: number[],
+    additionalSkills: string[],
+    hours: number,
+    timeType: TimeType,
+    dayOff: number,
+    externalInfo: string,
+}
+
+export interface UpdateOfferWhatToDoParams {
+    offerId: number;
+    body: UpdateOfferWhatToDo;
 }

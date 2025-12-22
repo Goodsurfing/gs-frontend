@@ -86,3 +86,32 @@ export const parseDate = (dateString: string | null | undefined) => {
         year,
     };
 };
+
+export const parseDateApi = (dateStr: string | null | undefined): Date | undefined => {
+    if (!dateStr) return undefined;
+
+    const parts = dateStr.split(".");
+    if (parts.length !== 3) return undefined;
+
+    const [day, month, year] = parts.map(Number);
+
+    if (
+        Number.isNaN(day) || Number.isNaN(month) || Number.isNaN(year)
+        || day < 1 || day > 31
+        || month < 1 || month > 12
+    ) {
+        return undefined;
+    }
+
+    const date = new Date(year, month - 1, day);
+
+    if (
+        date.getDate() !== day
+        || date.getMonth() !== month - 1
+        || date.getFullYear() !== year
+    ) {
+        return undefined;
+    }
+
+    return date;
+};

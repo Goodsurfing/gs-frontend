@@ -103,12 +103,12 @@ export const WhoNeedsForm = memo(() => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.howNeeds) {
-            reset(offerWhoNeedsApiAdapter(getOfferData?.howNeeds));
+        } else if (getOfferData?.howNeed) {
+            reset(offerWhoNeedsApiAdapter(getOfferData?.howNeed));
         } else {
             reset();
         }
-    }, [getOfferData?.howNeeds, loadFormData, reset]);
+    }, [getOfferData?.howNeed, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();

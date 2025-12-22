@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Skill } from "@/types/skills";
+import { GetSkill } from "@/types/skills";
 
 import additionalSkillIcon from "@/shared/assets/icons/skills/success.svg";
 import { useSkillsData } from "@/shared/data/skills";
@@ -12,7 +12,7 @@ import styles from "./VolunteerSkillsCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerSkillsCardProps {
-    skills?: Skill[];
+    skills?: GetSkill[];
     additionalSkills?: string[];
     className?: string;
 }
@@ -31,7 +31,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             return skills.map((item) => (
                 <IconTextComponent
                     text={getTranslation(item.name) ?? ""}
-                    icon={getMediaContent(item.imagePath) ?? ""}
+                    icon={getMediaContent(item.image.contentUrl) ?? ""}
                     alt={item.name}
                     key={item.id}
                 />

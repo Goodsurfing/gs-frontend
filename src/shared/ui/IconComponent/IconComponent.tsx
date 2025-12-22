@@ -1,5 +1,5 @@
-import { HandySvg } from "@handy-ones/handy-svg";
 import { memo } from "react";
+import { ReactSVG } from "react-svg";
 
 interface IconProps extends Omit<any, "icon"> {
     icon: string;
@@ -11,9 +11,8 @@ interface IconProps extends Omit<any, "icon"> {
 const IconComponent = memo(({
     icon, alt, className, id, ...restHandyProps
 }: IconProps) => (
-    <HandySvg
+    <ReactSVG
         src={icon}
-        alt={alt}
         id={id}
         className={className}
         {...restHandyProps}

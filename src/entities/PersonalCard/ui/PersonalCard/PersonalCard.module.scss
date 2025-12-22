@@ -54,7 +54,7 @@
 
     
 
-    .star {
+    .star svg{
         fill: #FED81C;
         width: 13px;
         height: 13px;
@@ -99,6 +99,10 @@
     align-self: flex-end;
     height: fit-content;
     flex-wrap: wrap;
+}
+
+.reviewsCount {
+    color: white;
 }
 
 @media (max-width: 992px) {

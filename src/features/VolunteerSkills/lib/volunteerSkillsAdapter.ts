@@ -10,6 +10,11 @@ export const volunteerSkillsAdapter = (data: VolunteerSkillsField): UpdateVolunt
 
     const additionalSkillsTemp = additionalSkills.map((skill) => skill.text);
     const skillsTemp = skills.map((skill) => skill.id);
+    // const languagesTemp: GetLanguage[] = languages ? languages.map((lang) => ({
+    //     id: lang.id,
+    //     language: lang.language,
+    //     languageLevel: lang.level,
+    // })) : [];
 
     return {
         languages: languages ?? [],
@@ -31,6 +36,11 @@ export const volunteerSkillsApiAdapter = (data: Profile): VolunteerSkillsField =
         const additionalSkillsTemp: AdditionalSkillsType[] = additionalSkills.map(
             (skill) => ({ text: skill }),
         );
+        // const languagesTemp: Language[] = languages.map((lang) => ({
+        //     id: lang.id,
+        //     language: lang.language,
+        //     level: lang.languageLevel,
+        // }));
 
         return {
             languages,

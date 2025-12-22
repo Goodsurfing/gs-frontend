@@ -18,7 +18,7 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
-import { useGetOfferByIdQuery, useUpdateOfferMutation } from "@/entities/Offer/api/offerApi";
+import { useGetOfferByIdQuery, useUpdateOfferWhatToDoMutation } from "@/entities/Offer/api/offerApi";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ErrorType } from "@/types/api/error";
@@ -52,7 +52,7 @@ export const OfferWhatToDoForm = memo(
         const { id } = useParams();
         const { locale } = useLocale();
 
-        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
+        const [updateOfferWhatToDo, { isLoading }] = useUpdateOfferWhatToDoMutation();
         const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
         const [toast, setToast] = useState<ToastAlert>();
         const watch = useWatch({ control });
@@ -93,7 +93,7 @@ export const OfferWhatToDoForm = memo(
         const onSubmit = handleSubmit(async (data) => {
             const preparedData = offerWhatToDoApiAdapter(data);
             setToast(undefined);
-            updateOffer({ id: Number(id), body: { whatToDo: preparedData } })
+            await updateOfferWhatToDo({ offerId: Number(id), body: preparedData })
                 .unwrap()
                 .then(() => {
                     setToast({

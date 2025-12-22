@@ -35,7 +35,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading || !offerData) {
+    if (isLoading) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -59,35 +59,39 @@ export const OfferPersonalPage = () => {
         );
     }
 
-    if (offerData.status === "draft") {
+    if (offerData) {
+        if (offerData.status === "draft") {
+            return (
+                <div className={styles.wrapper}>
+                    <MainHeader />
+                    <div className={styles.content}>
+                        <Text
+                            className={styles.error}
+                            textSize="primary"
+                            text="Вакансия не опубликована"
+                        />
+                    </div>
+                    <Footer />
+                </div>
+            );
+        }
+
         return (
             <div className={styles.wrapper}>
                 <MainHeader />
                 <div className={styles.content}>
-                    <Text
-                        className={styles.error}
-                        textSize="primary"
-                        text="Вакансия не опубликована"
+                    <OfferPersonalCard
+                        id={id}
+                        offerData={offerData}
+                        isVolunteer={!!myProfile?.volunteer}
                     />
+                    <OfferSubmenu offerData={offerData} isVolunteer={!!myProfile?.volunteer} />
+                    <OfferPageContent offerData={offerData} />
                 </div>
                 <Footer />
             </div>
         );
     }
 
-    return (
-        <div className={styles.wrapper}>
-            <MainHeader />
-            <div className={styles.content}>
-                <OfferPersonalCard
-                    id={id}
-                    offerData={offerData}
-                    isVolunteer={!!myProfile?.volunteer}
-                />
-                <OfferSubmenu offerData={offerData} isVolunteer={!!myProfile?.volunteer} />
-                <OfferPageContent offerData={offerData} />
-            </div>
-            <Footer />
-        </div>
-    );
+    return null;
 };

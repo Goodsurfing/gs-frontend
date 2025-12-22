@@ -30,7 +30,7 @@ const VolunteerReviewPage: FC = () => {
         <div className={styles.wrapper}>
             <Title rating={volunteerData.averageRating} />
             <div className={styles.container}>
-                <ReviewAboutOffers id={volunteerData.profile.id} locale={locale} />
+                <ReviewAboutOffers locale={locale} />
                 <ReviewAboutVolunteer />
             </div>
         </div>

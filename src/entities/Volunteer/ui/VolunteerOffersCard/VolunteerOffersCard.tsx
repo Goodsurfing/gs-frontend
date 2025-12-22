@@ -15,6 +15,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferCard } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerOffersCardProps {
     className?: string;
@@ -124,8 +125,10 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                 {offersData.map((offer) => {
                                     const {
                                         id, description, where, acceptedApplicationsCount,
-                                        feedbacksCount, averageRating,
+                                        reviewsCount, averageRating,
                                     } = offer;
+                                    const categoriesTemp = description
+                                        ? description.categories.map((cat) => cat.name) : [];
                                     return (
                                         <OfferCard
                                             key={offer.id}
@@ -135,12 +138,14 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                 id,
                                                 title: description?.title,
                                                 shortDescription: description?.shortDescription,
-                                                imagePath: description?.image,
+                                                imagePath: getMediaContent(
+                                                    description?.image?.contentUrl,
+                                                ),
                                                 address: where?.address,
-                                                categories: description?.categoryIds,
+                                                categories: categoriesTemp,
                                                 acceptedApplicationsCount,
-                                                averageRating: feedbacksCount,
-                                                reviewsCount: averageRating,
+                                                averageRating,
+                                                reviewsCount,
                                             }}
                                         />
                                     );
@@ -180,8 +185,12 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                             const offer = offersData[index];
                                             const {
                                                 id, description, where, acceptedApplicationsCount,
-                                                feedbacksCount, averageRating,
+                                                reviewsCount, averageRating,
                                             } = offer;
+                                            const categoriesTemp = description
+                                                ? description.categories.map(
+                                                    (cat) => cat.name,
+                                                ) : [];
                                             return (
                                                 <div
                                                     key={index}
@@ -196,12 +205,14 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                             title: description?.title,
                                                             shortDescription:
                                                             description?.shortDescription,
-                                                            imagePath: description?.image,
+                                                            imagePath: getMediaContent(
+                                                                description?.image?.contentUrl,
+                                                            ),
                                                             address: where?.address,
-                                                            categories: description?.categoryIds,
+                                                            categories: categoriesTemp,
                                                             acceptedApplicationsCount,
-                                                            averageRating: feedbacksCount,
-                                                            reviewsCount: averageRating,
+                                                            averageRating,
+                                                            reviewsCount,
                                                         }}
                                                     />
                                                 </div>

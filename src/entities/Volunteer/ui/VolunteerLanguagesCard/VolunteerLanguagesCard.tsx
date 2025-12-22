@@ -4,10 +4,10 @@ import React, {
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import styles from "./VolunteerLanguagesCard.module.scss";
 import { Language } from "@/types/languages";
 import { Text } from "@/shared/ui/Text/Text";
 import { useFormatLanguages } from "@/shared/data/languages";
+import styles from "./VolunteerLanguagesCard.module.scss";
 
 interface VolunteerLanguagesCardProps {
     className?: string;

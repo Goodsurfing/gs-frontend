@@ -57,6 +57,17 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     />
                 )}
             </div>
+            <div
+                className={styles.name}
+            >
+                <InputControl
+                    label={t("hostDescription.Адрес")}
+                    control={control}
+                    name="address"
+                    minLength={3}
+                    maxLength={60}
+                />
+            </div>
             <div className={styles.oneSentence}>
                 <TextAreaControl
                     label={t("hostDescription.Опишите организацию в одно предложение")}

@@ -13,6 +13,7 @@ import { ImageInputComponentProps } from "./types";
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
     setImg,
+    onDelete,
     id,
     description,
     extraWrapperClassName,
@@ -46,9 +47,8 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                 return;
             }
 
-            const url = URL.createObjectURL(file);
             onSuccess?.();
-            setImg({ ...img, file, src: url });
+            setImg(file);
         } catch (e) {
             onError?.();
         }
@@ -66,16 +66,16 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     };
 
     const handleDelete = () => {
-        setImg({ ...img, file: null, src: null });
+        onDelete();
     };
 
     return (
         <div className={cn(styles.main)}>
-            {img.src && (
+            {img && (
                 <div className={cn(styles.imageWrapper)}>
                     <div className={cn({ [styles.imageLoading]: isLoading })}>
                         <img
-                            src={img.src}
+                            src={img}
                             alt="uploaded"
                             className={cn(styles.imageCover)}
                         />
@@ -114,11 +114,11 @@ const ImageInput: FC<ImageInputComponentProps> = ({
                     )}
                 </div>
             )}
-            {!img.src && (
+            {!img && (
                 <InputFile
                     onChange={handleFileChange}
                     onDropFiles={(files) => handleUpload(files[0])}
-                    imageURL={img.src}
+                    imageURL={img}
                     uploadedImageClassName={styles.uploadedImg}
                     wrapperClassName={cn(styles.wrapper, wrapperClassName)}
                     labelClassName={cn(styles.label, labelClassName)}

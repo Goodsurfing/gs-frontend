@@ -1,20 +1,20 @@
 import {
-    ExtraFeatures, Facilities, Housing, Nutrition, Payment, Travel,
+    ExtraFeatures, Facilities, Payment,
 } from "@/entities/Offer";
 
 export type HousingFields = {
     switchState: boolean;
-    housing: Housing[];
+    housing: number[];
 };
 
 export type NutritionFields = {
     switchState: boolean;
-    nutrition: Nutrition[];
+    nutrition: number[];
 };
 
 export type TravelFields = {
     switchState: boolean;
-    travel: Travel[];
+    travel: number[];
 };
 
 export type FacilitiesFields = {

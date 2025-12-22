@@ -59,7 +59,17 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                     <OfferCard
                         locale={locale}
                         status={offer.status === "active" ? "opened" : "closed"}
-                        data={offer}
+                        data={{
+                            id: offer.id,
+                            title: offer.title,
+                            shortDescription: offer.shortDescription,
+                            imagePath: offer.image?.contentUrl,
+                            categories: offer.categories.map((cat) => cat.name),
+                            address: offer.address,
+                            acceptedApplicationsCount: offer.acceptedApplicationsCount,
+                            averageRating: offer.averageRating,
+                            reviewsCount: offer.reviewsCount,
+                        }}
                         key={offer.id}
                         // isFavoriteIconShow={!!isAuth}
                     />

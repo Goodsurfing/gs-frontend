@@ -40,7 +40,7 @@ const Languages: FC<LanguagesProps> = (props) => {
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
                         if ((newValue as IOptionLanguage).value === "not_matter") {
-                            onChange({ ...value, level: "not_matter", language: "not_matter" });
+                            onChange({ ...value, languageLevel: "not_matter", language: "not_matter" });
                             return;
                         }
                         onChange({
@@ -58,13 +58,13 @@ const Languages: FC<LanguagesProps> = (props) => {
                 name="langLevels"
                 label={t("whoNeeds.Уровень владения")}
                 options={allLevels}
-                value={getObjectFromValue(value.level, allLevels)}
+                value={getObjectFromValue(value.languageLevel, allLevels)}
                 onChange={(newValue: unknown) => {
                     if (typeof newValue === "object" && newValue !== null && "value" in newValue) {
                         if (value.language === "not_matter") return;
                         onChange({
                             ...value,
-                            level: (newValue as IOptionLevelLanguage).value,
+                            languageLevel: (newValue as IOptionLevelLanguage).value,
                         });
                     }
                 }}

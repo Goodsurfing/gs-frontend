@@ -39,15 +39,12 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
 
         useEffect(() => {
             const fetchHost = () => {
-                if (profileData.host) {
-                    const hostId = profileData.host.split("/").pop();
-                    if (hostId) {
-                        getHost(hostId);
-                    }
+                if (profileData.hostId) {
+                    getHost(profileData.hostId);
                 }
             };
             fetchHost();
-        }, [getHost, profileData.host]);
+        }, [getHost, profileData.hostId]);
 
         if (isLoading) {
             return (
@@ -75,7 +72,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 )}
                 {volunteer && (
                     <VolunteerOffersCard
-                        offers={volunteer.participatedVacancies}
+                        offers={volunteer.participatedVacancyIds}
                         className={styles.container}
                     />
                 )}

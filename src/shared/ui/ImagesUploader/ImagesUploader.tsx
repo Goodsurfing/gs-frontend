@@ -219,7 +219,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
 
                     return (
                         <div className={styles.imgWrapper} key={media.id}>
-                            {media.isImage ? (
+                            {isOnlyImgFormat ? (
                                 <img
                                     src={getMediaContent(media.contentUrl)}
                                     alt={media.contentUrl}
