@@ -21,3 +21,4 @@ export {
 export { VolunteerModalReview } from "./ui/VolunteerModalReview/VolunteerModalReview";
 export { HostModalReview } from "./ui/HostModalReview/HostModalReview";
 export { MiniOfferReview } from "./ui/MiniOfferReview/MiniOfferReview";
+export { MiniVolunteerReview } from "./ui/MiniVolunteerReview/MiniVolunteerReview";

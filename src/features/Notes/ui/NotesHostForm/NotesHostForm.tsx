@@ -8,6 +8,7 @@ import { NotesWidget } from "@/widgets/NotesWidget";
 
 import {
     FormApplicationStatus,
+    GetFormVolunteerApplication,
     SimpleFormApplication,
 } from "@/entities/Application";
 import { HostModalReview } from "@/entities/Review";
@@ -44,7 +45,7 @@ export const NotesHostForm = () => {
     });
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
-        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
+        setSelectedApplication] = useState<GetFormVolunteerApplication | null>(null);
 
     const [adaptedApplications, setAdaptedApplications] = useState<SimpleFormApplication[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -69,12 +70,12 @@ export const NotesHostForm = () => {
         if (applicationData) {
             const adapter: SimpleFormApplication[] = applicationData.data.map((application) => {
                 const {
-                    id, volunteerId, chatId, vacancy, startDate, endDate, status,
+                    id, volunteer, chatId, vacancy, startDate, endDate, status,
                     hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
                 } = application;
                 return {
                     id,
-                    volunteer: volunteerId,
+                    volunteer: volunteer.id,
                     vacancy,
                     chatId,
                     status,
@@ -92,8 +93,9 @@ export const NotesHostForm = () => {
         applicationData.pagination.total / APPLICATIONS_PER_PAGE,
     ) : 0;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onReviewClick = (application: SimpleFormApplication) => {
-        setSelectedApplication(application);
+        // setSelectedApplication(application);
     };
 
     const resetSelectedReview = () => {
@@ -171,7 +173,7 @@ export const NotesHostForm = () => {
                     <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={selectedApplication}
+                        review={null}
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}

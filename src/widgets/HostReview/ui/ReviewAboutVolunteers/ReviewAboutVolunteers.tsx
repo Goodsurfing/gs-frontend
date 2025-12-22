@@ -6,11 +6,12 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ReviewFields } from "@/features/Notes";
-import { ReviewFullCard, ReviewMiniCard } from "@/features/Review";
+import { ReviewFullCard, ReviewHostMiniCard } from "@/features/Review";
 
-import { SimpleFormApplication } from "@/entities/Application";
 import {
-    ApplicationReviewResponse, HostModalReview, MyReviewHost,
+    HostModalReview, MyReviewHost,
+    NotDoneReviewHost,
+    useCreateVolunteerReviewMutation,
     useGetMyNotDoneHostReviewQuery,
     useLazyGetMyHostReviewsQuery,
 } from "@/entities/Review";
@@ -21,21 +22,18 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { API_BASE_URL } from "@/shared/constants/api";
-import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
-import { useLazyGetMyHostApplicationsQuery } from "@/entities/Chat";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./ReviewAboutVolunteers.module.scss";
 
 interface ReviewAboutVolunteersProps {
     locale: Locale;
-    id: string;
 }
 
 const ITEMS_PER_PAGE = 20;
 
 export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => {
-    const { locale, id } = props;
+    const { locale } = props;
     const { t } = useTranslation("host");
     const defaultValues: DefaultValues<ReviewFields> = {
         review: {
@@ -50,7 +48,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     });
     const { handleSubmit, control, reset } = form;
     const [myReviews, setMyReviews] = useState<MyReviewHost[]>([]);
-    const [selectedVolunteer, setSelectedVolunteer] = useState<MyReviewHost | null>(
+    const [selectedVolunteer, setSelectedVolunteer] = useState<NotDoneReviewHost | null>(
         null,
     );
 
@@ -62,7 +60,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         data: notDoneReviewsData = [],
         isLoading: isNotDoneReviewsLoading,
     } = useGetMyNotDoneHostReviewQuery();
-    // const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
+    const [createVolunteerReview] = useCreateVolunteerReviewMutation();
 
     const fetchMyReviews = useCallback(async (isInitial: boolean) => {
         try {
@@ -92,15 +90,15 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     }, [fetchMyReviews]);
 
     const renderFullCards = (reviews: MyReviewHost[]) => reviews.map(
-        (review) => <ReviewFullCard type="volunteer" key={review.id} review={review} />,
+        (review) => <ReviewFullCard key={review.id} review={review} />,
     );
 
-    const onReviewClick = (application: SimpleFormApplication) => {
-        setSelectedApplication(application);
+    const onReviewClick = (volunteer: NotDoneReviewHost) => {
+        setSelectedVolunteer(volunteer);
     };
 
     const resetSelectedReview = () => {
-        setSelectedApplication(null);
+        setSelectedVolunteer(null);
         setToast(undefined);
         reset();
     };
@@ -109,36 +107,42 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         const {
             review: { stars, text },
         } = data;
-        if (selectedApplication && stars) {
+        if (selectedVolunteer && stars) {
             setToast(undefined);
-            await createToVolunteerReview({
-                applicationForm: `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
-                stars,
-                text,
-            })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: t("hostReviews.Ваш отзыв был отправлен"),
-                        type: HintType.Success,
-                    });
-                })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
-                })
-                .finally(() => { reset(); });
+            try {
+                await createVolunteerReview({
+                    volunteerId: selectedVolunteer.id,
+                    description: text,
+                    rating: stars,
+                }).unwrap();
+                setToast({
+                    text: t("hostReviews.Ваш отзыв был отправлен"),
+                    type: HintType.Success,
+                });
+            } catch (error: unknown) {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            } finally {
+                reset();
+            }
         }
     });
 
-    const disableRenderVerticalSlider = applications.length < 4;
-    const renderApplications = applications.map((item) => (
-        <ReviewMiniCard
+    if (isMyReviewsLoading || isNotDoneReviewsLoading) {
+        return (
+            <div className={styles.wrapper}>
+                <MiniLoader />
+            </div>
+        );
+    }
+
+    const disableRenderVerticalSlider = notDoneReviewsData.length < 4;
+    const renderApplications = notDoneReviewsData.map((item) => (
+        <ReviewHostMiniCard
             data={item}
             onReviewClick={onReviewClick}
-            variant="volunteer"
             key={item.id}
             locale={locale}
         />
@@ -155,12 +159,11 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     classNameSlide={styles.swiperSlide}
                     classNameWrapper={styles.swiperWrapper}
                     className={styles.slider}
-                    data={applications.slice(0, 15)}
-                    renderItem={(item: SimpleFormApplication) => (
-                        <ReviewMiniCard
+                    data={notDoneReviewsData.slice(0, 30)}
+                    renderItem={(item: NotDoneReviewHost) => (
+                        <ReviewHostMiniCard
                             data={item}
                             onReviewClick={onReviewClick}
-                            variant="volunteer"
                             key={item.id}
                             locale={locale}
                         />
@@ -190,8 +193,8 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={selectedApplication}
-                        isOpen={!!selectedApplication}
+                        review={selectedVolunteer}
+                        isOpen={!!selectedVolunteer}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}
                         titleText=""

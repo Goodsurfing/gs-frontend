@@ -1,12 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
 
 import { MyReviewHost } from "@/entities/Review";
-import { useGetHostByIdQuery } from "@/entities/Host";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./ReviewFullCard.module.scss";
 
@@ -17,15 +14,13 @@ interface ReviewFullCardProps {
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
     const { review } = props;
     const {
-
+        description, rating,
+        volunteer,
     } = review;
     const { getFullName } = useGetFullName();
-
-    if (!hostData) {
-        return null;
-    }
-
-    const { name, address, avatar } = hostData;
+    const userName = getFullName(volunteer.firstName, volunteer.lastName);
+    const image = getMediaContent(volunteer.image.thumbnails?.small);
+    const fullAddress = getFullAddress(volunteer.city, volunteer.country);
 
     return (
         <div className={styles.wrapper}>
@@ -33,22 +28,22 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
                 <div className={styles.avatarInfoUser}>
                     <Avatar
                         className={styles.avatar}
-                        icon={getMediaContent(avatar)}
+                        icon={getMediaContent(image)}
                         alt="AVATAR"
                     />
                     <div className={styles.userInfoContainer}>
                         <span className={styles.name}>
-                            {name}
+                            {userName}
                         </span>
                         <span className={styles.address}>
-                            {address}
+                            {fullAddress}
                         </span>
                     </div>
                 </div>
 
                 <div className={styles.ratingWrapper}>
                     <Rating
-                        value={stars}
+                        value={rating}
                         readOnly
                         sx={{
                             "& .MuiRating-iconFilled": {
@@ -60,10 +55,10 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
                             },
                         }}
                     />
-                    <span className={styles.ratingNum}>{stars}</span>
+                    <span className={styles.ratingNum}>{rating}</span>
                 </div>
             </div>
-            <p className={styles.textReview}>{text}</p>
+            <p className={styles.textReview}>{description}</p>
         </div>
     );
 };

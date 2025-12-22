@@ -120,7 +120,7 @@ export interface NotDoneReviewVolunteer {
 }
 
 export interface MyReviewHost {
-    id: number;
+    id: string;
     volunteer: {
         id: string;
         firstName: string;
@@ -139,13 +139,11 @@ export interface MyReviewHostResponse {
 }
 
 export interface NotDoneReviewHost {
-    id: number;
-    volunteer: {
-        id: string;
-        firstName: string;
-        lastName: string;
-        image: Image;
-        city: string;
-        country: string;
-    }
+    id: string;
+    firstName: string;
+    lastName: string;
+    image: Image;
+    city: string;
+    country: string;
+    statusApplication: FormApplicationStatus;
 }

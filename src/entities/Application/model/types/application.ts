@@ -43,8 +43,14 @@ export type GetFormApplication = Omit<FullFormApplication, "volunteer"> & {
     volunteer: VolunteerMini;
 };
 
-export type GetFormVolunteerIdApplication = Omit<FullFormApplication, "volunteer"> & {
-    volunteerId: string;
+export type GetFormVolunteerApplication = Omit<FullFormApplication, "volunteer"> & {
+    volunteer: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        country: string;
+        city: string;
+    };
 };
 
 export interface GetVolunteerFormApplicationResponse {
@@ -53,7 +59,7 @@ export interface GetVolunteerFormApplicationResponse {
 }
 
 export interface GetHostFormApplicationResponse {
-    data: GetFormVolunteerIdApplication[];
+    data: GetFormVolunteerApplication[];
     pagination: Pagination;
 }
 
