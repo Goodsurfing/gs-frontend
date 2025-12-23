@@ -1,15 +1,15 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { RequestOfferCard, SimpleFormApplication } from "@/entities/Application";
+import { Application, RequestOfferCard } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 
 interface NotesCardProps {
     className?: string;
-    application: SimpleFormApplication;
+    application: Application;
     index: number;
     isDragDisable: boolean;
-    onReviewClick: (application: SimpleFormApplication) => void;
+    onReviewClick: (application: Application) => void;
     locale: Locale;
 }
 

@@ -37,7 +37,7 @@ export const ReviewVolunteerMiniCard: FC<ReviewVolunteerMiniCardProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.userInfoContainer} onClick={navigateToOffer}>
-                <Avatar icon={getMediaContent(image.thumbnails?.small)} size="SMALL" />
+                <Avatar icon={getMediaContent(image?.thumbnails?.small)} size="SMALL" />
                 <div className={styles.nameAddress}>
                     <span className={styles.name}>
                         {name}

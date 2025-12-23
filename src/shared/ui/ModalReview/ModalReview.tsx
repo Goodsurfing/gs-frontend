@@ -53,7 +53,7 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
     if (successText) {
         return (
             <Modal onClose={onClose} isShowCloseIcon>
-                <div className={styles.wrapper}>
+                <div className={cn(styles.wrapper, { [styles.active]: isOpen })}>
                     <h2>{successText}</h2>
                 </div>
             </Modal>

@@ -56,7 +56,7 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
                         volunteerId: review.id,
                         firstName: review.firstName,
                         lastName: review.lastName,
-                        image: getMediaContent(review.image.thumbnails?.small),
+                        image: getMediaContent(review.image?.thumbnails?.small),
                         city: review.city,
                         country: review.country,
                         applicationStatus: review.statusApplication,

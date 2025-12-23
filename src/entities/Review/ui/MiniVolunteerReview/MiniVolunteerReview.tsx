@@ -10,19 +10,19 @@ import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
-import styles from "./RequestCard.module.scss";
+import styles from "./MiniVolunteerReview.module.scss";
 import { FormApplicationStatus } from "@/entities/Application";
 
 interface MiniVolunteerReviewProps {
     className?: string;
     data: {
         volunteerId: string;
-        firstName: string;
-        lastName: string;
+        firstName: string | null;
+        lastName: string | null;
         applicationStatus: FormApplicationStatus;
         image?: string;
-        country: string;
-        city: string;
+        country: string | null;
+        city: string | null;
     };
     locale: Locale;
 }

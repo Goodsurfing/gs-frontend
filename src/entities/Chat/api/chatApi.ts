@@ -86,18 +86,20 @@ export const chatApi = createApi({
                     "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify({ status }),
+                // body: { status },
             }),
             invalidatesTags: ["application"],
         }),
         updateApplicationFormStatusByIdWithoutTags: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `applications/${applicationId}/status`,
+                url: `application_forms/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify({ status }),
+                // body: { status },
             }),
         }),
         getApplicationFormById: build.query<FullFormApplication, string>({
@@ -117,9 +119,10 @@ export const chatApi = createApi({
         }),
         getMyVolunteerApplications: build.query<GetVolunteerFormApplicationResponse,
         PaginationParams>({
-            query: () => ({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}application/list-of-volunteer`,
                 method: "GET",
+                params,
             }),
             providesTags: ["application"],
         }),

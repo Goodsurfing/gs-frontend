@@ -44,7 +44,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                     <span className={styles.title}>{vacancy.name}</span>
                     <img
                         className={styles.img}
-                        src={getMediaContent(vacancy.image.thumbnails?.small)}
+                        src={getMediaContent(vacancy.image?.thumbnails?.small)}
                         alt="offer"
                     />
                 </div>

@@ -6,6 +6,8 @@ import {
     CreateOfferReview,
     CreateVolunteerReview,
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
+    GetOfferReviewByVacancyIdParams,
+    GetOfferReviewByVacancyResponse,
     GetOfferReviewParams,
     GetOfferReviewRequest,
     MyReviewHostResponse,
@@ -170,6 +172,15 @@ export const reviewApi = createApi({
             }),
             providesTags: ["host"],
         }),
+        getOfferReviewByVacancyId: build.query<GetOfferReviewByVacancyResponse,
+        GetOfferReviewByVacancyIdParams>({
+            query: ({ vacancyId, limit, page }) => ({
+                url: `${API_BASE_URL_V3}review-vacancy/list/${vacancyId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["host"],
+        }),
         getMyHostReviews: build.query<MyReviewHostResponse,
         PaginationParams>({
             query: (params) => ({
@@ -212,4 +223,5 @@ export const {
     useGetMyNotDoneVolunteerReviewQuery,
     useLazyGetMyHostReviewsQuery,
     useGetMyNotDoneHostReviewQuery,
+    useLazyGetOfferReviewByVacancyIdQuery,
 } = reviewApi;

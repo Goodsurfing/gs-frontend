@@ -52,7 +52,7 @@ export const VolunteerModalReview: FC<VolunteerModalReviewProps> = (props) => {
                     data={{
                         offerId: application.id,
                         name: application.name,
-                        image: getMediaContent(application.image.contentUrl) ?? "",
+                        image: getMediaContent(application.image?.contentUrl),
                         address: application.address,
                         applicationStatus: application.applicationStatus,
                         categoryName: application.categories[0]?.name,

@@ -16,9 +16,9 @@ interface MiniOfferReviewProps {
     locale: Locale;
     data: {
         offerId: number;
-        address: string;
-        name: string;
-        image: string;
+        address: string | null;
+        name: string | null;
+        image?: string;
         applicationStatus: FormApplicationStatus;
         categoryName: string;
     }
