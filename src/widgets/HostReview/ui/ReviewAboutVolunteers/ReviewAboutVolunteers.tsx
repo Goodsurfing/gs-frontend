@@ -90,7 +90,13 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
     }, [fetchMyReviews]);
 
     const renderFullCards = (reviews: MyReviewHost[]) => reviews.map(
-        (review) => <ReviewFullCard key={review.id} review={review} />,
+        (review) => (
+            <ReviewFullCard
+                key={review.id}
+                review={review}
+                className={styles.reviewFullCard}
+            />
+        ),
     );
 
     const onReviewClick = (volunteer: NotDoneReviewHost) => {
@@ -138,13 +144,16 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
         );
     }
 
-    const disableRenderVerticalSlider = notDoneReviewsData.length < 4;
+    const hasReviews = notDoneReviewsData.length > 0;
+    const shouldUseSlider = hasReviews && notDoneReviewsData.length >= 4;
+
     const renderApplications = notDoneReviewsData.map((item) => (
         <ReviewHostMiniCard
             data={item}
             onReviewClick={onReviewClick}
             key={item.id}
             locale={locale}
+            className={styles.reviewMiniCard}
         />
     ));
 
@@ -154,25 +163,27 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
             <p className={styles.description}>
                 {t("hostReviews.Волонтёры, которых вы недавно принимали")}
             </p>
-            {!disableRenderVerticalSlider ? (
-                <VerticalSlider
-                    classNameSlide={styles.swiperSlide}
-                    classNameWrapper={styles.swiperWrapper}
-                    className={styles.slider}
-                    data={notDoneReviewsData.slice(0, 30)}
-                    renderItem={(item: NotDoneReviewHost) => (
-                        <ReviewHostMiniCard
-                            data={item}
-                            onReviewClick={onReviewClick}
-                            key={item.id}
-                            locale={locale}
-                        />
-                    )}
-                />
-            ) : (
-                <div className={styles.applicationContainer}>
-                    {renderApplications}
-                </div>
+            {hasReviews && (
+                shouldUseSlider ? (
+                    <VerticalSlider
+                        classNameSlide={styles.swiperSlide}
+                        classNameWrapper={styles.swiperWrapper}
+                        className={styles.slider}
+                        data={notDoneReviewsData.slice(0, 30)}
+                        renderItem={(item: NotDoneReviewHost) => (
+                            <ReviewHostMiniCard
+                                data={item}
+                                onReviewClick={onReviewClick}
+                                key={item.id}
+                                locale={locale}
+                            />
+                        )}
+                    />
+                ) : (
+                    <div className={styles.applicationContainer}>
+                        {renderApplications}
+                    </div>
+                )
             )}
             <div className={styles.fullCardContainer}>
                 <InfiniteScroll

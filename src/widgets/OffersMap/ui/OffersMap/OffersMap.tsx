@@ -12,7 +12,7 @@ import { YmapType } from "@/entities/Map";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
 import "./yandex-map-restyle-ballon.scss";
-import { useGetAllOffersMapQuery } from "@/entities/Offer";
+import { OfferMap } from "@/entities/Offer";
 import styles from "./OffersMap.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -21,18 +21,22 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
+    offersData: OfferMap[];
+    isOffersLoading: boolean;
 }
 
 export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
-    const { className, classNameMap } = props;
-    const { data: offersData = [], isLoading: offersLoading } = useGetAllOffersMapQuery();
+    const {
+        className, classNameMap, isOffersLoading,
+        offersData,
+    } = props;
     const { locale } = useLocale();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
 
     const features = useMemo(() => {
-        if (offersLoading || !offersData.length) return [];
+        if (isOffersLoading || !offersData.length) return [];
 
         return offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
@@ -73,9 +77,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     },
                 };
             });
-    }, [offersLoading, offersData, locale, ymapState?.templateLayoutFactory]);
+    }, [isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory]);
 
-    if (offersLoading) {
+    if (isOffersLoading) {
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.loadingPlaceholder}>
@@ -128,8 +132,8 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                                 iconLayout: "default#imageWithContent",
                                 clusterIconLayout: ymapState.templateLayoutFactory.createClass(
                                     `<div class="${styles.customClusterIcon}">
-                                {{ properties.geoObjects.length }}
-                            </div>`,
+                                        {{ properties.geoObjects.length }}
+                                    </div>`,
                                 ),
                                 clusterIconShape: {
                                     type: "Circle",

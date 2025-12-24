@@ -80,7 +80,7 @@ export const chatApi = createApi({
         updateApplicationFormStatusById: build.mutation<FormApplication,
         UpdateFormApplicationStatus>({
             query: ({ applicationId, status }) => ({
-                url: `applications/${applicationId}/status`,
+                url: `application_forms/${applicationId}/status`,
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",

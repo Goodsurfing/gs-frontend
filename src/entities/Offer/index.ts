@@ -16,6 +16,7 @@ export {
     useUpdateOfferDescriptionMutation,
     useUpdateOfferImageGalleryMutation,
     useGetAllOffersMapQuery,
+    useLazyGetAllOffersMapQuery,
 } from "./api/offerApi";
 
 export type {

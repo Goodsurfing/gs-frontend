@@ -37,6 +37,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const {
         data: applications,
         isLoading: isApplicationsLoading,
+        refetch,
     } = useGetMyHostApplicationsQuery({ limit: APPLICATIONS_PER_PAGE, page: 1 });
     const [createVolunteerReview] = useCreateVolunteerReviewMutation();
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
@@ -121,6 +122,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                     description: text,
                 })
                     .unwrap();
+                await refetch();
                 setToast({
                     text: t("host-dashboard.Ваш отзыв был отправлен"),
                     type: HintType.Success,

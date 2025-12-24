@@ -18,9 +18,8 @@ import { HostOffer, useLazyGetHostOffersByIdQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 
-import styles from "./HostOffersCard.module.scss";
 import "./HostOffersCard.scss";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./HostOffersCard.module.scss";
 
 interface HostOffersCardProps {
     className?: string;
@@ -114,7 +113,7 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
                                         title,
                                         shortDescription,
                                         address,
-                                        imagePath: getMediaContent(image?.contentUrl),
+                                        imagePath: image?.thumbnails?.medium,
                                         categories,
                                         acceptedApplicationsCount,
                                         averageRating,

@@ -13,7 +13,7 @@ import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 import styles from "./OffersSearchFilter.module.scss";
-import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
 import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
@@ -38,6 +38,8 @@ export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
+    const [fetchAllOffersMap,
+        { data: allOffersMap = [], isLoading: isAllOffersMap }] = useLazyGetAllOffersMapQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
@@ -68,6 +70,7 @@ export const OffersSearchFilter = () => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        fetchAllOffersMap({ ...preparedData });
     }, [currentPage]);
 
     useEffect(() => {
@@ -113,6 +116,7 @@ export const OffersSearchFilter = () => {
         await fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
         });
+        await fetchAllOffersMap({ search });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -120,6 +124,7 @@ export const OffersSearchFilter = () => {
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
         await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        await fetchAllOffersMap({ ...preparedData });
         onChangePage(1);
     }), []);
 
@@ -128,6 +133,7 @@ export const OffersSearchFilter = () => {
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
         await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        await fetchAllOffersMap({ ...preparedData });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -193,6 +199,8 @@ export const OffersSearchFilter = () => {
                     </div>
                     {isMapOpened && (
                         <OffersMap
+                            offersData={allOffersMap}
+                            isOffersLoading={isAllOffersMap}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
@@ -200,6 +208,8 @@ export const OffersSearchFilter = () => {
                 </div>
                 <OffersSearchFilterMobile
                     data={offersData?.data}
+                    allOffersMapData={allOffersMap}
+                    isLoadingAllOffersMap={isAllOffersMap}
                     isLoading={isLoading || isFetching}
                     className={styles.mobile}
                     onApplySearch={onApplySearch}

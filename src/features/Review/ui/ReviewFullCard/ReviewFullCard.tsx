@@ -1,6 +1,7 @@
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
 
+import cn from "classnames";
 import { MyReviewHost } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
@@ -9,10 +10,11 @@ import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
     review: MyReviewHost;
+    className?: string;
 }
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
-    const { review } = props;
+    const { review, className } = props;
     const {
         description, rating,
         volunteer,
@@ -23,7 +25,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
     const fullAddress = getFullAddress(volunteer.city, volunteer.country);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.header}>
                 <div className={styles.avatarInfoUser}>
                     <Avatar

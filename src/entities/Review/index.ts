@@ -2,6 +2,7 @@ export type {
     Review, ApplicationReview, ApplicationReviewResponse,
     GetAboutVolunteerReview, MyReviewVolunteer, NotDoneReviewVolunteer,
     MyReviewHost, NotDoneReviewHost, GetOfferReview, GetOfferReviewByVacancy,
+    GetVolunteerReviewByVolunteerId, GetOfferReviewByHost,
 } from "./model/types/review";
 export {
     reviewApi,

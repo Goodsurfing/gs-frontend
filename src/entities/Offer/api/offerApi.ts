@@ -3,6 +3,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import {
+    GetAllOffersMapFilters,
     GetHostOffersFilters, GetHostOffersResponse,
     GetOffersFilters,
     GetOffersResponse, Offer,
@@ -141,10 +142,11 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getAllOffersMap: build.query<OfferMap[], void>({
-            query: () => ({
+        getAllOffersMap: build.query<OfferMap[], Partial<GetAllOffersMapFilters> | undefined>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}vacancy/for-map/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["offer"],
         }),
@@ -230,4 +232,5 @@ export const {
     useUpdateOfferDescriptionMutation,
     useUpdateOfferImageGalleryMutation,
     useGetAllOffersMapQuery,
+    useLazyGetAllOffersMapQuery,
 } = offerApi;

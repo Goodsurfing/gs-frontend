@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useNavigate } from "react-router-dom";
 
+import cn from "classnames";
 import { textSlice } from "@/shared/lib/textSlice";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
@@ -18,6 +19,7 @@ interface ReviewHostMiniCardProps {
     data: NotDoneReviewHost;
     onReviewClick: (volunteer: NotDoneReviewHost) => void;
     locale: Locale;
+    className?: string;
 }
 
 export const ReviewHostMiniCard: FC<ReviewHostMiniCardProps> = (props: ReviewHostMiniCardProps) => {
@@ -25,6 +27,7 @@ export const ReviewHostMiniCard: FC<ReviewHostMiniCardProps> = (props: ReviewHos
         data,
         onReviewClick,
         locale,
+        className,
     } = props;
     const {
         id, firstName, lastName, image, country,
@@ -41,7 +44,7 @@ export const ReviewHostMiniCard: FC<ReviewHostMiniCardProps> = (props: ReviewHos
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.userInfoContainer} onClick={navigateToVolunteer}>
                 <Avatar icon={getMediaContent(image?.thumbnails?.small)} size="SMALL" />
                 <div className={styles.nameAddress}>

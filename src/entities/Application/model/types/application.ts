@@ -1,7 +1,9 @@
-import { OfferApi } from "@/entities/Offer";
-import { VolunteerApi, VolunteerMini } from "@/entities/Volunteer";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { OfferApi, OfferStatus } from "@/entities/Offer";
+import { VolunteerMini } from "@/entities/Volunteer";
 import { Pagination } from "@/types/api/pagination";
 import { Category } from "@/types/categories";
+import { Language } from "@/types/languages";
 import { Image } from "@/types/media";
 
 // export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description"
@@ -27,12 +29,40 @@ export interface FormApplication {
 
 export interface FullFormApplication {
     id: number;
-    volunteer: VolunteerApi;
-    vacancy: FormApplicationOffer;
+    volunteer: {
+        additionalSkills: string[];
+        averageRating: number;
+        reviewsCount: number;
+        certificates: Image[];
+        languages: Language[];
+        profile: {
+            id: string;
+            email: string;
+            firstName: string | null;
+            lastName: string | null;
+            locale: Locale;
+        }
+    };
+    vacancy: {
+        id: number;
+        status: OfferStatus;
+        acceptedApplicationsCount: number;
+        averageRating: number;
+        reviewsCount: number;
+        description?: {
+            title: string;
+            shortDescription: string;
+            image: Image;
+            categories: Category[];
+            description: string;
+        }
+        where?: {
+            address: string;
+        }
+    };
     startDate?: string;
     endDate?: string;
     status: FormApplicationStatus;
-    chatId?: number;
     hasFeedbackFromVolunteer: boolean;
     hasFeedbackFromOrganization: boolean;
 }

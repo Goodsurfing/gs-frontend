@@ -113,6 +113,45 @@ export interface GetOfferReviewByVacancyResponse {
     pagination: Pagination;
 }
 
+export interface GetOfferReviewByHostIdParams {
+    hostId: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetOfferReviewByHost {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
+    description: string;
+    rating: number;
+}
+
+export interface GetOfferReviewByHostResponse {
+    data: GetOfferReviewByHost[];
+    pagination: Pagination;
+}
+
+export interface GetVolunteerReviewByVolunteerId {
+    id: string;
+    image: Image;
+    name: string;
+    description: string;
+    rating: number;
+}
+
+export interface GetVolunteerReviewByVolunteerIdResponse {
+    data: GetVolunteerReviewByVolunteerId[];
+    pagination: Pagination;
+}
+
+export interface GetVolunteerReviewByVolunteerIdParams {
+    volunteerId: string;
+    page: number;
+    limit: number;
+}
+
 export interface MyReviewVolunteer {
     id: string;
     vacancy: {
