@@ -9,6 +9,7 @@ import { EditHost } from "../EditHost/EditHost";
 import { CreateHost } from "../CreateHost/CreateHost";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetOfferReviewsQuery } from "@/entities/Review";
 
 interface HostFillProps {
     className?: string;
@@ -18,12 +19,14 @@ export const HostFill = memo((props: HostFillProps) => {
     const { className } = props;
     const { data: getHost } = useGetMyHostQuery();
     const { myProfile, profileIsLoading, profileIsError } = useAuth();
+    const { data: reviewsData } = useGetOfferReviewsQuery({ limit: 1, page: 1 });
     const host = myProfile?.hostId;
 
     const isDescirption = !!getHost?.name;
     const isGallery = !!(getHost?.galleryImages && getHost?.galleryImages.length !== 0);
     const isVideoGallery = !!(getHost?.videoGallery && getHost?.videoGallery.length !== 0);
     const isOffers = !!(getHost?.vacancies && getHost?.vacancies.length !== 0);
+    const isReviews = !!(reviewsData && reviewsData.data.length !== 0);
 
     if (profileIsLoading) {
         return (
@@ -56,7 +59,7 @@ export const HostFill = memo((props: HostFillProps) => {
         completed: isOffers,
     }, {
         text: "Отзывы",
-        completed: false,
+        completed: isReviews,
     }];
 
     return (

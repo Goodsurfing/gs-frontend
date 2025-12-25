@@ -9,7 +9,6 @@ import { getOfferPersonalPageUrl, getVolunteerPersonalPageUrl } from "@/shared/c
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { textSlice } from "@/shared/lib/textSlice";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./ReviewCardOffer.module.scss";
 
 interface ReviewCardOfferProps {
@@ -20,21 +19,18 @@ interface ReviewCardOfferProps {
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
     const { reviewOffer, locale } = props;
     const {
-        id, vacancy, description, rating, created,
+        vacancy, description, rating, created, author,
     } = reviewOffer;
 
-    const { myProfile } = useAuth();
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
     const navigateToVolunteer = () => {
-        if (myProfile) {
-            navigate(getVolunteerPersonalPageUrl(locale, myProfile.id));
-        }
+        navigate(getVolunteerPersonalPageUrl(locale, author.id));
     };
 
     const navigateToOffer = () => {
-        navigate(getOfferPersonalPageUrl(locale, id.toString()));
+        navigate(getOfferPersonalPageUrl(locale, vacancy.id.toString()));
     };
 
     return (
@@ -69,9 +65,9 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                 />
                 <span className={styles.ratingNum}>{rating}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
-                    <Avatar icon={getMediaContent(myProfile?.image?.thumbnails?.small)} alt="avatar" className={styles.avatar} />
+                    <Avatar icon={getMediaContent(author?.image?.thumbnails?.small)} alt="avatar" className={styles.avatar} />
                     <span className={styles.author}>
-                        {textSlice(`${getFullName(myProfile?.firstName, myProfile?.lastName)}`, 50, "title")}
+                        {textSlice(`${getFullName(author?.firstName, author?.lastName)}`, 50, "title")}
                     </span>
                 </div>
             </div>

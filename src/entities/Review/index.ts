@@ -19,6 +19,7 @@ export {
     useLazyGetMyHostReviewsQuery,
     useGetMyNotDoneHostReviewQuery,
     useLazyGetOfferReviewByVacancyIdQuery,
+    useGetOfferReviewsQuery,
 } from "./api/reviewApi";
 export { VolunteerModalReview } from "./ui/VolunteerModalReview/VolunteerModalReview";
 export { HostModalReview } from "./ui/HostModalReview/HostModalReview";

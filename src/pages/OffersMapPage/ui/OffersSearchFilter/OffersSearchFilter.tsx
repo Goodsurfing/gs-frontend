@@ -39,7 +39,10 @@ export const OffersSearchFilter = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
     const [fetchAllOffersMap,
-        { data: allOffersMap = [], isLoading: isAllOffersMap }] = useLazyGetAllOffersMapQuery();
+        {
+            data: allOffersMap = [], isLoading: isAllOffersMapLoading,
+            isFetching: isAllOffersMapFetching,
+        }] = useLazyGetAllOffersMapQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
@@ -113,18 +116,18 @@ export const OffersSearchFilter = () => {
 
     const onApplySearch = useCallback(async (search: string) => {
         setSearchParams(new URLSearchParams());
-        await fetchOffers({
+        fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
         });
-        await fetchAllOffersMap({ search });
+        fetchAllOffersMap({ search });
         reset(defaultValues);
         onChangePage(1);
     }, []);
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
-        await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        await fetchAllOffersMap({ ...preparedData });
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        fetchAllOffersMap({ ...preparedData });
         onChangePage(1);
     }), []);
 
@@ -132,8 +135,8 @@ export const OffersSearchFilter = () => {
         setSearchParams(new URLSearchParams());
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
-        await fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        await fetchAllOffersMap({ ...preparedData });
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        fetchAllOffersMap({ ...preparedData });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -200,7 +203,7 @@ export const OffersSearchFilter = () => {
                     {isMapOpened && (
                         <OffersMap
                             offersData={allOffersMap}
-                            isOffersLoading={isAllOffersMap}
+                            isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
@@ -209,7 +212,7 @@ export const OffersSearchFilter = () => {
                 <OffersSearchFilterMobile
                     data={offersData?.data}
                     allOffersMapData={allOffersMap}
-                    isLoadingAllOffersMap={isAllOffersMap}
+                    isLoadingAllOffersMap={isAllOffersMapLoading || isAllOffersMapFetching}
                     isLoading={isLoading || isFetching}
                     className={styles.mobile}
                     onApplySearch={onApplySearch}

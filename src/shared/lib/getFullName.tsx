@@ -13,7 +13,12 @@ export const useGetFullName = () => {
         return (renderFullName);
     };
 
-    return { getFullName };
+    const getOrganizationName = (organizationName?: string | null) => {
+        if (!organizationName) return t("Анонимная организация");
+        return organizationName;
+    };
+
+    return { getFullName, getOrganizationName };
 };
 
 export const getFullName = (

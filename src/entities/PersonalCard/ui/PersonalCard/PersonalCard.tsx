@@ -18,9 +18,10 @@ import Button, { ButtonSize, ButtonColor, ButtonVariant } from "@/shared/ui/Butt
 import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 import { OfferStatus } from "@/shared/ui/OfferStatus/OfferStatus";
 
-import styles from "./PersonalCard.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
+import { textSlice } from "@/shared/lib/textSlice";
+import styles from "./PersonalCard.module.scss";
 
 interface PersonalCardProps {
     offerId: string;
@@ -114,7 +115,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                                 [styles.black]: !isImage,
                             })}
                         >
-                            {title}
+                            {textSlice(title, 34, "title")}
                         </h1>
                         <OfferStatus status={status} />
                         <div className={styles.info}>
@@ -126,7 +127,10 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                             >
                                 {location}
                             </span>
-                            <p className={styles.reviewsCount}>
+                            <p className={cn(styles.reviewsCount, {
+                                [styles.black]: !isImage,
+                            })}
+                            >
                                 Кол-во отзывов:
                                 {" "}
                                 {reviewsCount}

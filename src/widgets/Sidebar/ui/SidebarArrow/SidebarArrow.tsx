@@ -1,5 +1,6 @@
 import { memo } from "react";
 import cn from "classnames";
+import { ReactSVG } from "react-svg";
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
 
 import arrow from "@/shared/assets/icons/arrow.svg";
@@ -12,13 +13,13 @@ export const SidebarArrow = memo(() => {
         <button
             onClick={() => setOpen?.(!isOpen)}
             className={styles.wrapper}
+            type="button"
         >
-            <img
+            <ReactSVG
                 className={cn(styles.arrow, {
                     [styles.opened]: isOpen,
                 })}
                 src={arrow}
-                alt="arrow"
             />
         </button>
     );

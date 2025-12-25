@@ -72,6 +72,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
                 reviewText={review.description}
                 stars={review.rating}
                 url={getHostPersonalPageUrl(locale, review.id)}
+                key={review.id}
             />
         ));
 

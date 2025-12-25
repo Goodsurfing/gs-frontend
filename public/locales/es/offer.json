@@ -216,7 +216,10 @@
         "Участники": "Participantes",
         "Статьи": "Artículos",
         "Точная дата не указана": "Fecha exacta no especificada",
-        "Не имеет даты окончания": "Sin fecha de finalización"
+        "Не имеет даты окончания": "Sin fecha de finalización",
+        "Написать отзыв": "Escribir reseña",
+        "Ваш отзыв": "Tu reseña...",
+         "Вы написали отзыв": "Has escrito una reseña"
     },
     "Данные успешно изменены": "Datos cambiados exitosamente",
     "Произошла ошибка": "Se produjo un error",

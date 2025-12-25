@@ -248,4 +248,5 @@ export const {
     useLazyGetOfferReviewByVacancyIdQuery,
     useLazyGetHostReviewByHostIdQuery,
     useLazyGetVolunteerReviewByVolunteerIdQuery,
+    useGetOfferReviewsQuery,
 } = reviewApi;

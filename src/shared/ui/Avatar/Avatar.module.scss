@@ -48,6 +48,11 @@
     flex-shrink: 0;
 }
 
+.avatarNoImg.active {
+    background-color: #fff;
+    color: var(--text-primary-1)
+}
+
 svg {
     fill: var(--bg-field);
 }

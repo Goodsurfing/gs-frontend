@@ -216,7 +216,10 @@
         "Участники": "Participants",
         "Статьи": "Articles",
         "Точная дата не указана": "Exact date not specified",
-        "Не имеет даты окончания": "No end date"
+        "Не имеет даты окончания": "No end date",
+        "Написать отзыв": "Write a review",
+        "Ваш отзыв": "Your review...",
+        "Вы написали отзыв": "You have written a review"
     },
     "Данные успешно изменены": "Data has been successfully updated",
     "Произошла ошибка": "An error occurred",

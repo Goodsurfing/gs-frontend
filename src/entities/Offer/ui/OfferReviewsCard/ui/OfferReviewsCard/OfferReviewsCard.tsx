@@ -1,4 +1,5 @@
 import React, {
+    ChangeEventHandler,
     FC, memo, useCallback, useEffect, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import { Text } from "@/shared/ui/Text/Text";
 
 import styles from "./OfferReviewsCard.module.scss";
+import { CommentInput } from "@/features/Article";
 
 interface OfferReviewsCardProps {
     offerId: number;
@@ -31,6 +33,7 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const { t } = useTranslation("offer");
         const [page, setPage] = useState<number>(1);
         const [error, setError] = useState<string | null>(null);
+        const [commentInput, setCommentInput] = useState<string>("");
         const [reviews, setReviews] = useState<GetOfferReviewByVacancy[]>([]);
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
@@ -86,6 +89,13 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
             setPage((prev) => prev + 1);
         };
 
+        const handleCommentInput: ChangeEventHandler<HTMLTextAreaElement> = useCallback(
+            (event) => {
+                setCommentInput(event.currentTarget.value);
+            },
+            [setCommentInput],
+        );
+
         if (!reviewsData || reviewsData.pagination.total === 0) {
             return null;
         }
@@ -93,6 +103,13 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
+                <CommentInput
+                    btnText={t("personalOffer.Написать отзыв")}
+                    placeholder={t("personalOffer.Ваш отзыв")}
+                    className={styles.commentInput}
+                    value={commentInput}
+                    onChange={handleCommentInput}
+                />
                 <div className={styles.container}>
                     {renderContent()}
                 </div>

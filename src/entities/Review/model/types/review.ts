@@ -154,6 +154,12 @@ export interface GetVolunteerReviewByVolunteerIdParams {
 
 export interface MyReviewVolunteer {
     id: string;
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image | null;
+    }
     vacancy: {
         id: number;
         name: string | null;
