@@ -87,13 +87,9 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
             setPage((prev) => prev + 1);
         };
 
-        if (!offerParticipantsData) {
-            return null;
-        }
-
         return (
             <div className={cn(className, styles.wrapper)} id="participants">
-                <Text title={`${t("personalOffer.Участники")} (${offerParticipantsData.pagination.total})`} titleSize="h3" />
+                <Text title={`${t("personalOffer.Участники")} ${offerParticipantsData ? `(${offerParticipantsData.pagination.total})` : ""}`} titleSize="h3" />
                 <p className={styles.description}>
                     {t("В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.")}
                 </p>
@@ -101,9 +97,10 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
                     {renderContent()}
                     {(isLoading || isFetching) && <MiniLoader />}
                 </div>
-                {(offerParticipants.length > 0)
-                && (offerParticipants.length < offerParticipantsData.pagination.total) && (
-                    <ShowNext onClick={handleShowNext} />
+                {offerParticipantsData && offerParticipants.length > 0
+                     && offerParticipants.length < offerParticipantsData.pagination.total && (
+                // eslint-disable-next-line @typescript-eslint/indent
+                     <ShowNext onClick={handleShowNext} />
                 )}
             </div>
         );

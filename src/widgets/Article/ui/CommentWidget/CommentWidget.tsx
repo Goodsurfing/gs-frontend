@@ -31,6 +31,7 @@ export const CommentWidget: FC<CommentWidgetProps> = (
                 className={styles.commentInput}
                 value={commentInput}
                 onChange={handleCommentInput}
+                onSend={() => {}}
             />
             <CommentList comments={[""]} className={styles.commentsList} />
         </div>
