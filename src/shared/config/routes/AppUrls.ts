@@ -136,6 +136,12 @@ export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id
 
 export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;
 
+export const getPaymentPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment}`;
+
+export const getPaymentSuccessPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment_success}`;
+
+export const getPaymentFailPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment_fail}`;
+
 export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.about_project}`;
 
 export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.npo}`;
