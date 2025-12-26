@@ -1,6 +1,10 @@
-import { OfferApi } from "@/entities/Offer";
-import { VolunteerApi, VolunteerMini } from "@/entities/Volunteer";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { OfferApi, OfferStatus } from "@/entities/Offer";
+import { VolunteerMini } from "@/entities/Volunteer";
 import { Pagination } from "@/types/api/pagination";
+import { Category } from "@/types/categories";
+import { Language } from "@/types/languages";
+import { Image } from "@/types/media";
 
 // export type FormApplicationOffer = Pick<Offer, "id" | "where" | "when" | "description"
 // | "status" | "averageRating" | "feedbacksCount" | "acceptedApplicationsCount">;
@@ -25,35 +29,84 @@ export interface FormApplication {
 
 export interface FullFormApplication {
     id: number;
-    volunteer: VolunteerApi;
-    vacancy: FormApplicationOffer;
+    volunteer: {
+        additionalSkills: string[];
+        averageRating: number;
+        reviewsCount: number;
+        certificates: Image[];
+        languages: Language[];
+        profile: {
+            id: string;
+            email: string;
+            firstName: string | null;
+            lastName: string | null;
+            locale: Locale;
+        }
+    };
+    vacancy: {
+        id: number;
+        status: OfferStatus;
+        acceptedApplicationsCount: number;
+        averageRating: number;
+        reviewsCount: number;
+        description?: {
+            title: string;
+            shortDescription: string;
+            image: Image;
+            categories: Category[];
+            description: string;
+        }
+        where?: {
+            address: string;
+        }
+    };
     startDate?: string;
     endDate?: string;
     status: FormApplicationStatus;
-    chatId?: number;
     hasFeedbackFromVolunteer: boolean;
     hasFeedbackFromOrganization: boolean;
 }
 
 export type SimpleFormApplication = Omit<FullFormApplication, "volunteer"> & {
-    volunteer: string | VolunteerApi;
+    // volunteer: string | VolunteerApi;
 };
+
+export interface Application {
+    id: number;
+    vacancy: {
+        id: number;
+        title: string | null;
+        address: string | null;
+        image: Image | null;
+        status: string;
+        categories: Category[];
+    }
+    volunteer: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image | null;
+        city: string | null;
+        country: string | null;
+    }
+    startDate: string;
+    endDate: string;
+    status: FormApplicationStatus;
+    chatId: number | null;
+    isHasReview: boolean;
+}
 
 export type GetFormApplication = Omit<FullFormApplication, "volunteer"> & {
     volunteer: VolunteerMini;
 };
 
-export type GetFormVolunteerIdApplication = Omit<FullFormApplication, "volunteer"> & {
-    volunteerId: string;
-};
-
 export interface GetVolunteerFormApplicationResponse {
-    data: GetFormApplication[];
+    data: Application[];
     pagination: Pagination;
 }
 
 export interface GetHostFormApplicationResponse {
-    data: GetFormVolunteerIdApplication[];
+    data: Application[];
     pagination: Pagination;
 }
 

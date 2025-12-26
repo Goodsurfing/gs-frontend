@@ -2,13 +2,14 @@ import React, { FC } from "react";
 
 import { ReviewTypeFields } from "@/features/Notes";
 
-import { RequestCard, SimpleFormApplication } from "@/entities/Application";
-
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { NotDoneReviewHost } from "../../model/types/review";
+import { MiniVolunteerReview } from "../MiniVolunteerReview/MiniVolunteerReview";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface HostModalReviewProps {
-    application: SimpleFormApplication | null;
+    review: NotDoneReviewHost | null;
     value: ReviewTypeFields;
     onChange: (value: ReviewTypeFields) => void;
     isOpen: boolean;
@@ -22,7 +23,7 @@ interface HostModalReviewProps {
 
 export const HostModalReview: FC<HostModalReviewProps> = (props) => {
     const {
-        application,
+        review,
         value,
         onChange,
         isOpen,
@@ -49,12 +50,18 @@ export const HostModalReview: FC<HostModalReviewProps> = (props) => {
             successText={successText}
             errorText={errorText}
         >
-            {application && (
-                <RequestCard
+            {review && (
+                <MiniVolunteerReview
+                    data={{
+                        volunteerId: review.id,
+                        firstName: review.firstName,
+                        lastName: review.lastName,
+                        image: getMediaContent(review.image?.thumbnails?.small),
+                        city: review.city,
+                        country: review.country,
+                        applicationStatus: review.statusApplication,
+                    }}
                     locale={locale}
-                    application={application}
-                    showButtons={false}
-                    showStatus={false}
                 />
             )}
         </ModalReview>

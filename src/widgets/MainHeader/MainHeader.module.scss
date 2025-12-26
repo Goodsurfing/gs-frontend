@@ -57,12 +57,15 @@
     font-weight: 400;
     font-size: 16px;
     border-radius: 10px;
+    border: 1px solid var(--button-1);
     box-sizing: border-box;
     font-family: Lato;
     text-transform: none;
+    transition: all 0.3s ease;
 
     &:hover {
-        background-color: #2fd8ae;
+        background-color: #fff;
+        color: var(--button-1);
     }
 }
 

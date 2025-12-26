@@ -7,24 +7,23 @@ import { useNavigate } from "react-router-dom";
 import { ReviewFields } from "@/features/Notes";
 
 import {
+    Application,
     FormApplicationStatus,
     RequestCard,
-    SimpleFormApplication,
 } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 import { HostModalReview } from "@/entities/Review";
-import { useCreateToVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
+import { useCreateVolunteerReviewMutation } from "@/entities/Review/api/reviewApi";
 
 import { getHostNotesPageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { Text } from "@/shared/ui/Text/Text";
 
-import styles from "./RequestsWidget.module.scss";
-import { API_BASE_URL } from "@/shared/constants/api";
-import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
+import styles from "./RequestsWidget.module.scss";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface RequestsWidgetProps {
     className?: string;
@@ -38,8 +37,9 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     const {
         data: applications,
         isLoading: isApplicationsLoading,
+        refetch,
     } = useGetMyHostApplicationsQuery({ limit: APPLICATIONS_PER_PAGE, page: 1 });
-    const [createToVolunteerReview] = useCreateToVolunteerReviewMutation();
+    const [createVolunteerReview] = useCreateVolunteerReviewMutation();
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const { t } = useTranslation("host");
     const navigate = useNavigate();
@@ -52,8 +52,9 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
     };
 
     const [toast, setToast] = useState<ToastAlert>();
+    const [toastTop, setToastTop] = useState<ToastAlert>();
     const [selectedApplication,
-        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
+        setSelectedApplication] = useState<Application | null>(null);
     const form = useForm<ReviewFields>({
         mode: "onChange",
         defaultValues,
@@ -64,7 +65,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         navigate(getHostNotesPageUrl(locale));
     };
 
-    const onReviewClick = (application: SimpleFormApplication) => {
+    const onReviewClick = (application: Application) => {
         setSelectedApplication(application);
     };
 
@@ -78,11 +79,16 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         applicationId: number,
         status: FormApplicationStatus,
     ) => {
-        await updateApplicationStatus({ applicationId: applicationId.toString(), status })
-            .unwrap()
-            .catch(() => {
-                // empty
+        setToastTop(undefined);
+        try {
+            await updateApplicationStatus({ applicationId: applicationId.toString(), status })
+                .unwrap();
+        } catch {
+            setToastTop({
+                text: "Не удалось изменить статус заявки",
+                type: HintType.Error,
             });
+        }
     };
 
     const renderRequests = () => {
@@ -91,32 +97,16 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
             return <Text text={t("host-dashboard.На данный момент заявки отсутсвуют")} />;
         }
 
-        return applications.data.map((application) => {
-            const {
-                id, vacancy, volunteerId, chatId, startDate, endDate,
-                status, hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
-            } = application;
-            return (
-                <RequestCard
-                    key={application.id}
-                    application={{
-                        id,
-                        vacancy,
-                        volunteer: volunteerId,
-                        startDate,
-                        endDate,
-                        status,
-                        chatId,
-                        hasFeedbackFromOrganization,
-                        hasFeedbackFromVolunteer,
-                    }}
-                    locale={locale}
-                    onReviewClick={onReviewClick}
-                    onAcceptClick={(app) => { handleUpdateApplicationStatus(app.id, "accepted"); }}
-                    onCancelClick={(app) => { handleUpdateApplicationStatus(app.id, "canceled"); }}
-                />
-            );
-        });
+        return applications.data.map((application) => (
+            <RequestCard
+                key={application.id}
+                application={application}
+                locale={locale}
+                onReviewClick={onReviewClick}
+                onAcceptClick={(appId) => { handleUpdateApplicationStatus(appId, "accepted"); }}
+                onCancelClick={(appId) => { handleUpdateApplicationStatus(appId, "canceled"); }}
+            />
+        ));
     };
 
     const onSendReview = handleSubmit(async (data) => {
@@ -125,31 +115,34 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         } = data;
         if (selectedApplication && stars) {
             setToast(undefined);
-            await createToVolunteerReview({
-                applicationForm: `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`,
-                stars,
-                text,
-            })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: t("host-dashboard.Ваш отзыв был отправлен"),
-                        type: HintType.Success,
-                    });
+            try {
+                await createVolunteerReview({
+                    vacancyId: selectedApplication.vacancy.id,
+                    volunteerId: selectedApplication.volunteer.id,
+                    rating: stars,
+                    description: text,
                 })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
-                })
-                .finally(() => { reset(); });
+                    .unwrap();
+                await refetch();
+                setToast({
+                    text: t("host-dashboard.Ваш отзыв был отправлен"),
+                    type: HintType.Success,
+                });
+            } catch (error: unknown) {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            } finally {
+                reset();
+            }
         }
     });
 
     return (
         <>
             <div className={cn(styles.wrapper, className)}>
+                {toastTop && <HintPopup text={toastTop.text} type={toastTop.type} />}
                 <div className={styles.titleWrapper}>
                     <h3 className={styles.title}>
                         {t("host-dashboard.Заявки")}
@@ -189,7 +182,16 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                     <HostModalReview
                         value={field.value}
                         onChange={field.onChange}
-                        application={selectedApplication}
+                        review={selectedApplication ? {
+                            vacancyId: selectedApplication.vacancy.id,
+                            id: selectedApplication.volunteer.id,
+                            firstName: selectedApplication.volunteer.firstName,
+                            lastName: selectedApplication.volunteer.lastName,
+                            image: selectedApplication.volunteer.image,
+                            city: selectedApplication.volunteer.city,
+                            country: selectedApplication.volunteer.country,
+                            statusApplication: selectedApplication.status,
+                        } : null}
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
                         sendReview={() => onSendReview()}

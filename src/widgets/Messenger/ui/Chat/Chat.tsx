@@ -252,19 +252,18 @@ export const Chat: FC<ChatProps> = (props) => {
                             const volunteerApplicationId = applicationResult.volunteer.profile.id;
                             const isImHost = volunteerApplicationId !== myProfileData.id;
                             const tempIsHost = (status === "new" && isImHost);
-                            const categoriesTemp = vacancy.categories.map((cat) => cat.name);
 
                             return (
                                 <OfferApplication
                                     offerData={{
                                         id: vacancy.id,
-                                        title: vacancy.title,
-                                        description: vacancy.description,
-                                        shortDescription: vacancy.shortDescription,
-                                        imagePath: vacancy.imagePath,
-                                        address: vacancy.address,
+                                        title: vacancy.description?.title,
+                                        description: vacancy.description?.description,
+                                        shortDescription: vacancy.description?.shortDescription,
+                                        imagePath: "",
+                                        address: vacancy.where?.address,
                                         status: vacancy.status,
-                                        categoryName: categoriesTemp[0],
+                                        categoryName: "",
                                         acceptedApplicationsCount: vacancy
                                             .acceptedApplicationsCount,
                                         averageRating: vacancy.averageRating,

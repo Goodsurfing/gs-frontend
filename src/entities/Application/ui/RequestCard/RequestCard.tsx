@@ -9,23 +9,22 @@ import {
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import { SimpleFormApplication } from "../../model/types/application";
+import { Application } from "../../model/types/application";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
-import { useGetFullName } from "@/shared/lib/getFullName";
+import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {
     className?: string;
-    application: SimpleFormApplication;
+    application: Application;
     showStatus?: boolean;
     showButtons?: boolean;
-    onReviewClick?: (application: SimpleFormApplication) => void;
-    onAcceptClick?: (application: SimpleFormApplication) => void;
-    onCancelClick?: (application: SimpleFormApplication) => void;
+    onReviewClick?: (application: Application) => void;
+    onAcceptClick?: (applicationId: number) => void;
+    onCancelClick?: (applicationId: number) => void;
     locale: Locale;
 }
 
@@ -41,31 +40,22 @@ export const RequestCard = memo((props: RequestCardProps) => {
         locale,
     } = props;
     const {
-        volunteer, vacancy, status, startDate, endDate,
+        volunteer, vacancy, status, startDate, endDate, chatId,
+        id, isHasReview,
     } = application;
-    let volunteerId: string;
-    if (typeof volunteer === "string") {
-        volunteerId = volunteer.split("/").pop() || "";
-    } else {
-        volunteerId = volunteer.profile.id;
-    }
-    const { data: volunteerData } = useGetVolunteerByIdQuery(volunteerId ?? "");
+
     const { t } = useTranslation();
     const { getApplicationStatus } = useApplicationStatus();
     const navigate = useNavigate();
 
     const { getFullName } = useGetFullName();
-
-    if (!volunteerData) {
-        return null;
-    }
-
-    const address = (!volunteerData.profile.city || !volunteerData.profile.country)
-        ? t("notes.Адрес не указан") : `${volunteerData.profile.country}, ${volunteerData.profile.city}`;
+    const userName = getFullName(volunteer.firstName, volunteer.lastName);
+    const address = (getFullAddress(volunteer.city, volunteer.country) !== "")
+        ? getFullAddress(volunteer.city, volunteer.country) : t("notes.Адрес не указан");
 
     const onMessageClick = () => {
-        if (application.chatId) {
-            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        if (chatId) {
+            navigate(getMessengerPageIdUrl(locale, chatId.toString()));
         }
     };
 
@@ -78,27 +68,24 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     </div>
                 )}
                 <CustomLink
-                    to={getVolunteerPersonalPageUrl(locale, volunteerData.profile.id)}
+                    to={getVolunteerPersonalPageUrl(locale, volunteer.id)}
                     variant="DEFAULT"
                 >
                     <Avatar
-                        icon={getMediaContent(volunteerData.profile.image)}
+                        icon={getMediaContent(volunteer.image?.thumbnails?.small)}
                         className={styles.image}
                         size="MEDIUM"
                     />
                 </CustomLink>
                 <CustomLink
-                    to={getVolunteerPersonalPageUrl(locale, volunteerData.profile.id)}
+                    to={getVolunteerPersonalPageUrl(locale, volunteer.id)}
                     variant="DEFAULT"
                 >
                     <div className={styles.text}>
                         <span
                             className={styles.name}
                         >
-                            {getFullName(
-                                volunteerData.profile.firstName,
-                                volunteerData.profile.lastName,
-                            )}
+                            {userName}
                         </span>
                         <span className={styles.location}>
                             {address}
@@ -138,7 +125,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                                 {t("notes.Сообщение")}
                             </Button>
                         )}
-                        {!application.hasFeedbackFromOrganization && (
+                        {!isHasReview && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"
@@ -154,24 +141,24 @@ export const RequestCard = memo((props: RequestCardProps) => {
             </div>
             {showButtons && (
                 <div className={styles.buttons}>
-                    {(application.status === "new" || application.status === "canceled") && (
+                    {(status === "new" || status === "canceled") && (
                         <Button
                             className={styles.button}
                             color="GREEN"
                             variant="FILL"
                             size="SMALL"
-                            onClick={() => onAcceptClick?.(application)}
+                            onClick={() => onAcceptClick?.(id)}
                         >
                             {t("notes.Принять")}
                         </Button>
                     )}
-                    {(application.status === "new" || application.status === "accepted") && (
+                    {(status === "new" || status === "accepted") && (
                         <Button
                             className={styles.button}
                             color="RED"
                             variant="FILL"
                             size="SMALL"
-                            onClick={() => onCancelClick?.(application)}
+                            onClick={() => onCancelClick?.(id)}
                         >
                             {t("notes.Отклонить")}
                         </Button>

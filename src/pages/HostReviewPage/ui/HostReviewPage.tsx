@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { ReviewAboutVolunteers } from "@/widgets/HostReview/";
+import { ReviewAboutOffers, ReviewAboutVolunteers } from "@/widgets/HostReview/";
 import { Title } from "./Title/Title";
 
 import { useGetMyHostQuery } from "@/entities/Host";
@@ -25,8 +25,8 @@ const HostReviewPage: FC = () => {
         <div className={styles.wrapper}>
             <Title rating={hostData.averageRating} />
             <div className={styles.container}>
-                <ReviewAboutVolunteers id={hostData.id} locale={locale} />
-                {/* <ReviewAboutOffers hostId={hostData.id} locale={locale} /> */}
+                <ReviewAboutVolunteers locale={locale} />
+                <ReviewAboutOffers locale={locale} />
             </div>
         </div>
     );

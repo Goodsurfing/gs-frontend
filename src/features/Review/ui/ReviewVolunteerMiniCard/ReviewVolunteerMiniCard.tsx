@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./ReviewVolunteerMiniCard.module.scss";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { NotDoneReviewVolunteer } from "@/entities/Review";
+import { useGetFullName } from "@/shared/lib/getFullName";
+import styles from "./ReviewVolunteerMiniCard.module.scss";
 
 interface ReviewVolunteerMiniCardProps {
     data: NotDoneReviewVolunteer;
@@ -29,6 +30,7 @@ export const ReviewVolunteerMiniCard: FC<ReviewVolunteerMiniCardProps> = ({
 
     const { t } = useTranslation("volunteer");
     const navigate = useNavigate();
+    const { getOrganizationName } = useGetFullName();
 
     const navigateToOffer = useCallback(() => {
         navigate(getOfferPersonalPageUrl(locale, id.toString()));
@@ -37,10 +39,10 @@ export const ReviewVolunteerMiniCard: FC<ReviewVolunteerMiniCardProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.userInfoContainer} onClick={navigateToOffer}>
-                <Avatar icon={getMediaContent(image.thumbnails?.small)} size="SMALL" />
+                <Avatar icon={getMediaContent(image?.thumbnails?.small)} size="SMALL" />
                 <div className={styles.nameAddress}>
                     <span className={styles.name}>
-                        {name}
+                        {getOrganizationName(name)}
                     </span>
                     <span className={styles.address}>{address}</span>
                 </div>

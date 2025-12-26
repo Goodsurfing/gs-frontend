@@ -105,18 +105,14 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     />
                 </>
             )}
-            {offer.contributors && (
-                <OfferContributorsCard
-                    contributors={offer.contributors}
-                    className={styles.wrapper}
-                />
-            )}
-            {offer.organization && (
-                <OfferReviewsCard
-                    hostId={offer.organization.id}
-                    offerId={offer.id}
-                />
-            )}
+            <OfferContributorsCard
+                offerId={offer.id}
+                className={styles.wrapper}
+            />
+            <OfferReviewsCard
+                canReview={offer.canReview}
+                offerId={offer.id}
+            />
             {offer.articles && (
                 <OfferArticlesCard
                     articles={offer.articles}

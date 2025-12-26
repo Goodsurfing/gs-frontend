@@ -11,15 +11,15 @@ import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./RequestOfferCard.module.scss";
-import { SimpleFormApplication } from "../../model/types/application";
+import { Application } from "../../model/types/application";
 import { Locale } from "@/entities/Locale";
 import CustomLink from "@/shared/ui/Link/Link";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
 
 interface RequestOfferCardProps {
-    application: SimpleFormApplication;
+    application: Application;
     className?: string;
-    onReviewClick?: (application: SimpleFormApplication) => void;
+    onReviewClick?: (application: Application) => void;
     showStatus?: boolean;
     showButtons?: boolean;
     locale: Locale;
@@ -34,16 +34,18 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
         showStatus,
         locale,
     } = props;
+    const {
+        status, vacancy, isHasReview, chatId,
+    } = application;
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const imageCover = getMediaContent(application.vacancy.imagePath);
-    const { status, vacancy } = application;
+    const imageCover = getMediaContent(vacancy.image?.thumbnails?.small);
     const { getTranslation } = useCategories();
     const { getApplicationStatus } = useApplicationStatus();
 
     const onMessageClick = () => {
-        if (application.chatId) {
-            navigate(getMessengerPageIdUrl(locale, application.chatId.toString()));
+        if (chatId) {
+            navigate(getMessengerPageIdUrl(locale, chatId.toString()));
         }
     };
 
@@ -64,20 +66,20 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                     <div className={styles.infoContainer}>
                         <span className={styles.title}>
                             {textSlice(
-                                application.vacancy.title,
+                                vacancy.title,
                                 45,
                                 "title",
                             )}
                         </span>
                         <span className={styles.address}>
                             {textSlice(
-                                application.vacancy.address,
+                                vacancy.address,
                                 23,
                                 "address",
                             )}
                         </span>
                         <span className={styles.tag}>
-                            {getTranslation(vacancy.categories[0].name)}
+                            {getTranslation(vacancy.categories[0]?.name)}
                         </span>
                     </div>
                 </div>
@@ -85,7 +87,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
             <div className={styles.buttons}>
                 {showButtons && (
                     <>
-                        {application.chatId && (
+                        {chatId && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"
@@ -96,7 +98,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                                 {t("notes.Сообщение")}
                             </Button>
                         )}
-                        {(application.status === "accepted" && !application.hasFeedbackFromVolunteer) && (
+                        {(status === "accepted" && !isHasReview) && (
                             <Button
                                 className={styles.button}
                                 color="BLUE"

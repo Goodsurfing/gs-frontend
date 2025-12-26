@@ -1,83 +1,84 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 
 import { useTranslation } from "react-i18next";
-// import InfiniteScroll from "react-infinite-scroll-component";
-// import { ReviewCardOffer } from "@/features/Review/";
-import styles from "./ReviewAboutOffers.module.scss";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { ReviewCardOffer } from "@/features/Review";
 import {
-    ApplicationReviewResponse,
-    useLazyGetToOrganizationsReviewsQuery,
+    GetOfferReview,
+    useLazyGetOfferReviewsQuery,
 } from "@/entities/Review";
-// import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-
-interface ReviewAboutOffersProps {
-    hostId: string;
-    // locale: Locale;
-}
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./ReviewAboutOffers.module.scss";
 
 const ITEMS_PER_PAGE = 20;
 
+interface ReviewAboutOffersProps {
+    locale: Locale;
+}
+
 export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
-    const { hostId } = props;
+    const { locale } = props;
     const { t } = useTranslation("host");
-    const [getReviewsData] = useLazyGetToOrganizationsReviewsQuery();
-    const [reviews, setReviews] = useState<ApplicationReviewResponse[]>([]);
+    const [getReviewsData] = useLazyGetOfferReviewsQuery();
+    const [reviews, setReviews] = useState<GetOfferReview[]>([]);
 
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const fetchReviews = async (isInitial: boolean) => {
+    const fetchReviews = useCallback(async (isInitial: boolean) => {
         try {
             const currentPage = isInitial ? 1 : page;
 
             const result = await getReviewsData({
-                organization: hostId,
                 page: currentPage,
-                itemsPerPage: ITEMS_PER_PAGE,
+                limit: ITEMS_PER_PAGE,
             }).unwrap();
 
-            if (result.length < ITEMS_PER_PAGE) {
+            if (result.data.length < ITEMS_PER_PAGE) {
                 setHasMore(false);
             }
 
             if (isInitial) {
-                setReviews(result);
+                setReviews(result.data);
                 setPage(2);
             } else {
-                setReviews((prev) => [...prev, ...result]);
+                setReviews((prev) => [...prev, ...result.data]);
                 setPage((prevPage) => prevPage + 1);
             }
         } catch { /* empty */ }
-    };
+    }, [getReviewsData, page]);
 
     useEffect(() => {
         fetchReviews(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // const renderCardOffers = (reviewOffers: ApplicationReviewResponse[]) => {
-
-    // return reviewOffers
-    // .map((reviewOffer) => (
-    //     <ReviewCardOffer reviewOffer={reviewOffer} key={reviewOffer.id} locale={locale} />
-    // ))
-    // };
+    const renderCardOffers = (reviewOffers: GetOfferReview[]) => reviewOffers
+        .map((reviewOffer) => (
+            <ReviewCardOffer
+                reviewOffer={reviewOffer}
+                key={reviewOffer.id}
+                locale={locale}
+                className={styles.reviewCardOffer}
+            />
+        ));
 
     return (
         <div className={styles.wrapper} id="applications-scroll-wrapper2">
             <h3 className={styles.h3}>{t("hostReviews.Отзывы о проектах")}</h3>
             <div className={styles.cardContainer}>
-                {/* <InfiniteScroll
+                <InfiniteScroll
                     dataLength={reviews.length}
                     next={() => fetchReviews(false)}
                     hasMore={hasMore}
                     scrollThreshold="70%"
                     loader={null}
                     scrollableTarget="applications-scroll-wrapper2"
-                > */}
-                {/* {renderCardOffers(reviews)} */}
-                {/* </InfiniteScroll> */}
+                >
+                    {renderCardOffers(reviews)}
+                </InfiniteScroll>
             </div>
         </div>
     );

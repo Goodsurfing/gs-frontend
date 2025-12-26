@@ -58,7 +58,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
                 className,
             )}
         >
-            <Avatar icon={getMediaContent(image?.contentUrl)} text={firstName ?? undefined} size="MEDIUM" />
+            <Avatar
+                icon={getMediaContent(image?.contentUrl)}
+                isAvatarNoImgActive={id === dataChat.id.toString()}
+                text={firstName ?? undefined}
+                size="MEDIUM"
+            />
             <div className={styles.content}>
                 <div className={styles.nameDate}>
                     <span className={styles.name}>

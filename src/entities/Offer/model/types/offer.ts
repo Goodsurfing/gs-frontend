@@ -1,10 +1,9 @@
 import { CategoryWithoutImage } from "@/types/categories";
-import { WhatToDoSkillType } from "@/types/skills";
 
 import { Article } from "@/entities/Article";
 
 import {
-    Housing, Nutrition, OfferConditions, Travel,
+    OfferConditions,
 } from "./offerConditions";
 import { OfferContributor } from "./offerContributor";
 import { OfferDescription } from "./offerDescription";
@@ -47,6 +46,7 @@ export interface Offer {
     articles?: Article[];
     canEdit: boolean;
     canParticipate: boolean;
+    canReview: boolean;
     acceptedApplicationsCount: number;
 }
 
@@ -166,15 +166,17 @@ export interface GetOffersFilters {
     maxDurationDays: string;
     search: string;
     languages: string[];
-    skillIds: WhatToDoSkillType[];
+    skillIds: number[];
     additionalConditions: ExtraConditions[];
-    houseIds: Housing[];
-    foodIds: Nutrition[];
-    transferIds: Travel[];
+    houseIds: number[];
+    foodIds: number[];
+    transferIds: number[];
     categoryIds: number[];
     page: number;
     limit: number;
 }
+
+export type GetAllOffersMapFilters = Omit<GetOffersFilters, "sort" | "page" | "limit">;
 
 export interface GetOffersResponse {
     data: OfferApi[];
@@ -194,4 +196,16 @@ export interface OfferMap {
         name: string;
         color: string;
     }[];
+}
+
+export interface OfferParticipant {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
+}
+
+export interface GetOfferParticipantListByOfferId {
+    data: OfferParticipant[];
+    pagination: Pagination;
 }

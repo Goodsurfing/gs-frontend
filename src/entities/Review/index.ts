@@ -1,7 +1,8 @@
 export type {
     Review, ApplicationReview, ApplicationReviewResponse,
     GetAboutVolunteerReview, MyReviewVolunteer, NotDoneReviewVolunteer,
-    MyReviewHost, NotDoneReviewHost,
+    MyReviewHost, NotDoneReviewHost, GetOfferReview, GetOfferReviewByVacancy,
+    GetVolunteerReviewByVolunteerId, GetOfferReviewByHost,
 } from "./model/types/review";
 export {
     reviewApi,
@@ -15,7 +16,12 @@ export {
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
     useGetMyNotDoneVolunteerReviewQuery,
+    useLazyGetMyHostReviewsQuery,
+    useGetMyNotDoneHostReviewQuery,
+    useLazyGetOfferReviewByVacancyIdQuery,
+    useGetOfferReviewsQuery,
 } from "./api/reviewApi";
 export { VolunteerModalReview } from "./ui/VolunteerModalReview/VolunteerModalReview";
 export { HostModalReview } from "./ui/HostModalReview/HostModalReview";
 export { MiniOfferReview } from "./ui/MiniOfferReview/MiniOfferReview";
+export { MiniVolunteerReview } from "./ui/MiniVolunteerReview/MiniVolunteerReview";

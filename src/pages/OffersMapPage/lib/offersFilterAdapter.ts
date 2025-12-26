@@ -61,13 +61,14 @@ export const offersFilterApiAdapter = (
 
     provided.forEach((value) => {
         if (value === "food") {
-            queryParams.foodIds = ["full", "breakfast"];
+            queryParams.foodIds = [1, 3]; // Параметры с "Полный пансион" и "Завтра включен"
         }
         if (value === "housing") {
-            queryParams.houseIds = ["house", "room"];
+            queryParams.houseIds = [5, 1]; // Параметры с "Отдельный дом" и "Комната"
         }
         if (value === "paidTravel") {
-            queryParams.transferIds = ["full", "partial"];
+            queryParams.transferIds = [2, 1]; // Параметры с "Полная оплата проезда"
+            // и "Частичная компенсация затрат"
         }
     });
 

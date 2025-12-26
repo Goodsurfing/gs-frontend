@@ -4,8 +4,8 @@ import React, {
 } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
+    Application,
     FormApplicationStatus,
-    SimpleFormApplication,
 } from "@/entities/Application";
 
 import useDebounce from "@/shared/hooks/useDebounce";
@@ -16,11 +16,11 @@ import styles from "./NotesWidget.module.scss";
 import { Locale } from "@/entities/Locale";
 
 interface NotesWidgetProps {
-    notes: SimpleFormApplication[];
+    notes: Application[];
     className?: string;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (application: SimpleFormApplication) => void;
+    onReviewClick: (application: Application) => void;
     updateApplicationStatus?: (
         applicationId: number,
         status: FormApplicationStatus,
@@ -40,14 +40,14 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
             locale,
         } = props;
 
-        const [notes, setNotes] = useState<SimpleFormApplication[]>([]);
+        const [notes, setNotes] = useState<Application[]>([]);
 
         useEffect(() => {
             setNotes([...initialNotes]);
         }, [initialNotes]);
 
         const [columns, setColumns] = useState<
-        Record<FormApplicationStatus, SimpleFormApplication[]>
+        Record<FormApplicationStatus, Application[]>
         >({
             new: [],
             accepted: [],
@@ -57,7 +57,7 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
         useEffect(() => {
             const newColumns: Record<
             FormApplicationStatus,
-            SimpleFormApplication[]
+            Application[]
             > = {
                 new: [],
                 accepted: [],
@@ -156,8 +156,8 @@ export const NotesWidget: FC<NotesWidgetProps> = memo(
                     {Object.entries(columns).map(([status, columnNotes]) => (
                         <NotesContainer
                             onReviewClick={onReviewClick}
-                            onAcceptClick={(app) => { changeApplicationStatus(app.id, "accepted"); }}
-                            onCancelClick={(app) => { changeApplicationStatus(app.id, "canceled"); }}
+                            onAcceptClick={(appId) => { changeApplicationStatus(appId, "accepted"); }}
+                            onCancelClick={(appId) => { changeApplicationStatus(appId, "canceled"); }}
                             key={status}
                             status={status as FormApplicationStatus}
                             notes={columnNotes}

@@ -1,98 +1,102 @@
 import cn from "classnames";
 import React, {
-    FC, memo, useEffect,
-    useMemo,
+    FC, memo, useCallback, useEffect,
     useState,
 } from "react";
 
 import { useTranslation } from "react-i18next";
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import styles from "./HostReviewCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useLazyGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Text } from "@/shared/ui/Text/Text";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
-import { useGetToOrganizationsReviewsQuery } from "@/entities/Review";
+import { GetOfferReviewByHost } from "@/entities/Review";
+import { useLazyGetHostReviewByHostIdQuery } from "@/entities/Review/api/reviewApi";
+import styles from "./HostReviewCard.module.scss";
 
 interface HostReviewCardProps {
     hostId: string;
     className?: string;
 }
 
+const VISIBLE_COUNT = 5;
+
 export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCardProps) => {
     const { hostId, className } = props;
     const { t } = useTranslation("host");
     const { locale } = useLocale();
     const { getFullName } = useGetFullName();
-    const { data: reviewsData = [] } = useGetToOrganizationsReviewsQuery({ organization: hostId });
-    const [getVolunteer] = useLazyGetVolunteerByIdQuery();
-    const [visibleCount, setVisibleCount] = useState(5);
-    const [volunteerData, setVolunteerData] = useState<Record<string, any>>({});
+    const [page, setPage] = useState<number>(1);
+    const [error, setError] = useState<string | null>(null);
+    const [reviews, setReviews] = useState<GetOfferReviewByHost[]>([]);
+
+    const [getReviewsData, { data: reviewsData }] = useLazyGetHostReviewByHostIdQuery();
+
+    const fetchReviews = useCallback(async (pageItem: number) => {
+        try {
+            const result = await getReviewsData({
+                hostId,
+                limit: VISIBLE_COUNT,
+                page: pageItem,
+            }).unwrap();
+            if (result) {
+                setReviews((prev) => {
+                    if (pageItem === 1) {
+                        return [...result.data];
+                    }
+                    return [...prev, ...result.data];
+                });
+                setError(null);
+            }
+        } catch {
+            setError("Произошла ошибка загрузки отзывов");
+        }
+    }, [getReviewsData, hostId]);
 
     useEffect(() => {
-        const fetchVolunteers = async () => {
-            const newVolunteers = { ...volunteerData };
-            let hasNewData = false;
+        fetchReviews(page);
+    }, [fetchReviews, page]);
 
-            await Promise.all(
-                reviewsData.slice(0, visibleCount).map(async (review) => {
-                    const { volunteerAuthorId } = review;
-                    if (volunteerAuthorId && !newVolunteers[volunteerAuthorId]) {
-                        try {
-                            const volunteer = await getVolunteer(volunteerAuthorId).unwrap();
-                            newVolunteers[volunteerAuthorId] = volunteer;
-                            hasNewData = true;
-                        } catch (error) { /* empty */ }
-                    }
-                }),
-            );
+    const renderReviews = reviews.map((review) => (
+        <ReviewWidget
+            name={getFullName(review.firstName, review.lastName)}
+            avatar={getMediaContent(review.image?.thumbnails?.small)}
+            reviewText={review.description}
+            stars={review.rating}
+            url={getVolunteerPersonalPageUrl(locale, review.id)}
+        />
+    ));
 
-            if (hasNewData) {
-                setVolunteerData(newVolunteers);
-            }
-        };
-
-        fetchVolunteers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reviewsData, visibleCount, getVolunteer]);
-
-    const handleShowNext = () => {
-        setVisibleCount((prev) => prev + 5);
+    const renderContent = () => {
+        if (error) {
+            return <div className={styles.error}>{error}</div>;
+        }
+        if (reviews.length === 0) {
+            return t("personal.На данный момент отзывов нет");
+        }
+        return renderReviews;
     };
 
-    const renderCards = useMemo(() => reviewsData.slice(0, visibleCount).map((review) => {
-        const {
-            id, stars, text, volunteerAuthorId,
-        } = review;
+    const handleShowNext = () => {
+        setPage((prev) => prev + 1);
+    };
 
-        if (!volunteerAuthorId || !volunteerData[volunteerAuthorId]) {
-            return null;
-        }
-
-        const { profile } = volunteerData[volunteerAuthorId];
-        return (
-            <ReviewWidget
-                key={id}
-                stars={stars}
-                reviewText={text}
-                avatar={getMediaContent(profile.image)}
-                name={getFullName(profile.firstName, profile.lastName)}
-                url={getVolunteerPersonalPageUrl(locale, profile.id)}
-            />
-        );
-    }), [reviewsData, visibleCount, volunteerData, getFullName, locale]);
-
-    if (reviewsData.length === 0) return null;
+    if (!reviewsData || reviewsData.pagination.total === 0) {
+        return null;
+    }
 
     return (
         <div id="6" className={cn(className, styles.wrapper)}>
             <Text title={t("personalHost.Отзывы")} titleSize="h3" />
-            <div className={styles.container}>{renderCards}</div>
-            {visibleCount < reviewsData.length && <ShowNext onClick={handleShowNext} />}
+            <div className={styles.container}>
+                {renderContent()}
+            </div>
+            {(reviews.length > 0) && (reviews.length < reviewsData.pagination.total) && (
+                <ShowNext onClick={handleShowNext} />
+            )}
         </div>
     );
 });

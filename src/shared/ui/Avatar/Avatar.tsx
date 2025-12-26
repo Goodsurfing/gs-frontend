@@ -15,6 +15,7 @@ interface AvatarProps {
     color?: string;
     text?: string | null;
     onClick?: () => void;
+    isAvatarNoImgActive?: boolean;
 }
 
 export const Avatar = memo((props: AvatarProps) => {
@@ -26,6 +27,7 @@ export const Avatar = memo((props: AvatarProps) => {
         color = "#DFE6EB",
         text,
         onClick,
+        isAvatarNoImgActive = false,
     } = props;
 
     return (
@@ -33,7 +35,12 @@ export const Avatar = memo((props: AvatarProps) => {
             {icon && <img src={icon} alt={alt} className={styles[size]} />}
             {!icon
                 && (text ? (
-                    <div className={cn(styles.avatarNoImg, styles[size])}>
+                    <div className={cn(
+                        styles.avatarNoImg,
+                        { [styles.active]: isAvatarNoImgActive },
+                        styles[size],
+                    )}
+                    >
                         {sliceFirstLetter(text)}
                     </div>
                 ) : (

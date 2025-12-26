@@ -1,9 +1,9 @@
 .wrapper {
-  width: 100%;
-  list-style-type: none;
+	width: 100%;
+	list-style-type: none;
 
-  background-color: inherit;
-	color: var(--white-theme-color);	
+	background-color: inherit;
+	color: var(--white-theme-color);
 
 	.matchRoute {
 		color: var(--color-black-tertiary);
@@ -22,19 +22,19 @@
 	display: none;
 
 	margin-right: auto;
-	
+
 	text-align: left;
 }
 
 .link {
 	display: flex;
-  	align-items: center;
+	align-items: center;
 
 	height: 3.75rem;
 
 	cursor: pointer;
 	text-decoration: none;
-		
+
 	font-weight: 700;
 }
 
@@ -51,7 +51,7 @@
 	top: 0;
 	width: 1px;
 	margin: 0 1.25rem;
-	
+
 	background-color: var(--color-gray);
 }
 
@@ -64,21 +64,26 @@
 .dropdownItem {
 	margin: 0.55rem 0;
 	margin-left: 2.25rem;
-	
-  text-decoration: none;
-  color: var(--white-theme-color);
-	
-  cursor: pointer;
-	
+
+	text-decoration: none;
+	color: var(--white-theme-color);
+
+	cursor: pointer;
+
 	font-family: 'Lato', sans-serif;
 	font-size: 18px;
 	font-weight: 700;
+	transition: all 0.3s ease;
+
+	&:hover {
+		color: var(--color-black-tertiary);
+	}
 }
 
 
 .opened {
-  display: block;
-  margin-left: 1.5rem;
+	display: block;
+	margin-left: 1.5rem;
 }
 
 .linkOpen img {

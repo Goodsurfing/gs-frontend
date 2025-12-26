@@ -1,132 +1,66 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Rating } from "@mui/material";
 import React, { FC } from "react";
 
-import styles from "./ReviewFullCard.module.scss";
-import { ApplicationReviewResponse } from "@/entities/Review";
-import { useGetHostByIdQuery } from "@/entities/Host";
+import cn from "classnames";
+import { MyReviewHost } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import { useGetVolunteerByIdQuery } from "@/entities/Volunteer";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
+import styles from "./ReviewFullCard.module.scss";
 
 interface ReviewFullCardProps {
-    review: ApplicationReviewResponse;
-    type: "volunteer" | "host";
+    review: MyReviewHost;
+    className?: string;
 }
 
 export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardProps) => {
-    const { review, type } = props;
+    const { review, className } = props;
     const {
-        stars, text, organizationAuthorId, volunteerId,
+        description, rating,
+        volunteer,
     } = review;
     const { getFullName } = useGetFullName();
-    const skipVolunteerQuery = !volunteerId;
-    const { data: volunteerData } = useGetVolunteerByIdQuery(volunteerId!, {
-        skip: skipVolunteerQuery,
-    });
+    const userName = getFullName(volunteer.firstName, volunteer.lastName);
+    const image = getMediaContent(volunteer.image?.thumbnails?.small);
+    const fullAddress = getFullAddress(volunteer.city, volunteer.country);
 
-    const skipHostQuery = !organizationAuthorId;
-    const { data: hostData } = useGetHostByIdQuery(organizationAuthorId!, {
-        skip: skipHostQuery,
-    });
-
-    if (!hostData || !volunteerData) {
-        return null;
-    }
-
-    if (hostData && type === "host") {
-        const { name, address, avatar } = hostData;
-
-        return (
-            <div className={styles.wrapper}>
-                <div className={styles.header}>
-                    <div className={styles.avatarInfoUser}>
-                        <Avatar
-                            className={styles.avatar}
-                            icon={getMediaContent(avatar)}
-                            alt="AVATAR"
-                        />
-                        <div className={styles.userInfoContainer}>
-                            <span className={styles.name}>
-                                {name}
-                            </span>
-                            <span className={styles.address}>
-                                {address}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className={styles.ratingWrapper}>
-                        <Rating
-                            value={stars}
-                            readOnly
-                            sx={{
-                                "& .MuiRating-iconFilled": {
-                                    color: "#FED81C",
-                                },
-
-                                "& .MuiRating-icon": {
-                                    fontSize: "15px",
-                                },
-                            }}
-                        />
-                        <span className={styles.ratingNum}>{stars}</span>
+    return (
+        <div className={cn(styles.wrapper, className)}>
+            <div className={styles.header}>
+                <div className={styles.avatarInfoUser}>
+                    <Avatar
+                        className={styles.avatar}
+                        icon={getMediaContent(image)}
+                        alt="AVATAR"
+                    />
+                    <div className={styles.userInfoContainer}>
+                        <span className={styles.name}>
+                            {userName}
+                        </span>
+                        <span className={styles.address}>
+                            {fullAddress}
+                        </span>
                     </div>
                 </div>
-                <p className={styles.textReview}>{text}</p>
-            </div>
-        );
-    }
 
-    if (volunteerData && type === "volunteer") {
-        const { profile } = volunteerData;
-        const {
-            firstName, lastName, city, country, image,
-        } = profile;
-        const username = getFullName(firstName, lastName);
-        const fullAddress = getFullAddress(city, country);
+                <div className={styles.ratingWrapper}>
+                    <Rating
+                        value={rating}
+                        readOnly
+                        sx={{
+                            "& .MuiRating-iconFilled": {
+                                color: "#FED81C",
+                            },
 
-        return (
-            <div className={styles.wrapper}>
-                <div className={styles.header}>
-                    <div className={styles.avatarInfoUser}>
-                        <Avatar
-                            className={styles.avatar}
-                            icon={getMediaContent(image)}
-                            alt="AVATAR"
-                        />
-                        <div className={styles.userInfoContainer}>
-                            <span className={styles.name}>
-                                {username}
-                            </span>
-                            <span className={styles.address}>
-                                {fullAddress}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className={styles.ratingWrapper}>
-                        <Rating
-                            value={stars}
-                            readOnly
-                            sx={{
-                                "& .MuiRating-iconFilled": {
-                                    color: "#FED81C",
-                                },
-
-                                "& .MuiRating-icon": {
-                                    fontSize: "15px",
-                                },
-                            }}
-                        />
-                        <span className={styles.ratingNum}>{stars}</span>
-                    </div>
+                            "& .MuiRating-icon": {
+                                fontSize: "15px",
+                            },
+                        }}
+                    />
+                    <span className={styles.ratingNum}>{rating}</span>
                 </div>
-                <p className={styles.textReview}>{text}</p>
             </div>
-        );
-    }
-
-    return null;
+            <p className={styles.textReview}>{description}</p>
+        </div>
+    );
 };

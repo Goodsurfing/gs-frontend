@@ -3,7 +3,9 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
 import {
+    GetAllOffersMapFilters,
     GetHostOffersFilters, GetHostOffersResponse,
+    GetOfferParticipantListByOfferId,
     GetOffersFilters,
     GetOffersResponse, Offer,
     OfferMap,
@@ -16,6 +18,7 @@ import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
 import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
 import { UpdateOfferDescriptionParams } from "../model/types/offerDescription";
+import { PaginationIdParams } from "@/types/api/pagination";
 
 interface UpdateOfferParams {
     id: number;
@@ -133,6 +136,15 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
+        getOfferParticipantListByOfferId: build.query<GetOfferParticipantListByOfferId,
+        PaginationIdParams>({
+            query: ({ id, limit, page }) => ({
+                url: `${API_BASE_URL_V3}profile/vacancy-participant/list/${id}`,
+                method: "GET",
+                params: { vacancyId: id, limit, page },
+            }),
+            providesTags: ["offer"],
+        }),
         getOffers: build.query<GetOffersResponse, Partial<GetOffersFilters> | undefined>({
             query: (params) => ({
                 url: `${API_BASE_URL_V3}vacancy/list`,
@@ -141,10 +153,11 @@ export const offerApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        getAllOffersMap: build.query<OfferMap[], void>({
-            query: () => ({
+        getAllOffersMap: build.query<OfferMap[], Partial<GetAllOffersMapFilters> | undefined>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}vacancy/for-map/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["offer"],
         }),
@@ -230,4 +243,6 @@ export const {
     useUpdateOfferDescriptionMutation,
     useUpdateOfferImageGalleryMutation,
     useGetAllOffersMapQuery,
+    useLazyGetAllOffersMapQuery,
+    useLazyGetOfferParticipantListByOfferIdQuery,
 } = offerApi;

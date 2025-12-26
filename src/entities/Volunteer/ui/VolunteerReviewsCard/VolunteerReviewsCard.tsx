@@ -1,6 +1,6 @@
 import cn from "classnames";
 import React, {
-    FC, memo, useEffect, useState,
+    FC, memo, useCallback, useEffect, useState,
 } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -8,9 +8,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 
-import { useLazyGetHostByIdQuery } from "@/entities/Host";
 import {
-    ApplicationReviewResponse,
+
+    GetVolunteerReviewByVolunteerId,
 } from "@/entities/Review";
 
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -18,96 +18,89 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import { Text } from "@/shared/ui/Text/Text";
 
+import { useLazyGetVolunteerReviewByVolunteerIdQuery } from "@/entities/Review/api/reviewApi";
 import styles from "./VolunteerReviewsCard.module.scss";
-import { useGetToVolunteerReviewsQuery } from "@/entities/Review/api/reviewApi";
 
 interface VolunteerReviewsCardProps {
     volunteerId: string;
     className?: string;
 }
 
+const VISIBLE_COUNT = 5;
+
 export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
     (props: VolunteerReviewsCardProps) => {
         const { className, volunteerId } = props;
-        const [filteredReviews, setFilteredReviews] = useState<
-        ApplicationReviewResponse[]
-        >([]);
-        const [visibleCount, setVisibleCount] = useState(5);
-        const [renderCards, setRenderCards] = useState<JSX.Element[]>([]);
-        const { locale } = useLocale();
         const { t } = useTranslation("profile");
+        const { locale } = useLocale();
+        const [page, setPage] = useState<number>(1);
+        const [error, setError] = useState<string | null>(null);
+        const [reviews, setReviews] = useState<GetVolunteerReviewByVolunteerId[]>([]);
 
-        const { data: reviewsData } = useGetToVolunteerReviewsQuery({ volunteer: volunteerId });
-        const [getHost] = useLazyGetHostByIdQuery();
+        const [getReviewsData,
+            { data: reviewsData }] = useLazyGetVolunteerReviewByVolunteerIdQuery();
 
-        useEffect(() => {
-            if (reviewsData) {
-                setFilteredReviews([...reviewsData]);
-            } else {
-                setFilteredReviews([]);
+        const fetchReviews = useCallback(async (pageItem: number) => {
+            try {
+                const result = await getReviewsData({
+                    volunteerId,
+                    limit: VISIBLE_COUNT,
+                    page: pageItem,
+                }).unwrap();
+                if (result) {
+                    setReviews((prev) => {
+                        if (pageItem === 1) {
+                            return [...result.data];
+                        }
+                        return [...prev, ...result.data];
+                    });
+                    setError(null);
+                }
+            } catch {
+                setError("Произошла ошибка загрузки отзывов");
             }
-        }, [reviewsData]);
+        }, [getReviewsData, volunteerId]);
 
         useEffect(() => {
-            const fetchCards = async () => {
-                const cards = await Promise.all(
-                    filteredReviews
-                        .slice(0, visibleCount)
-                        .map(async (review) => {
-                            const {
-                                stars, text, id, organizationAuthorId,
-                            } = review;
-                            try {
-                                const hostData = await getHost(
-                                    organizationAuthorId ?? "",
-                                ).unwrap();
-                                if (hostData) {
-                                    const {
-                                        avatar,
-                                        name,
-                                        id: hostId,
-                                    } = hostData;
+            fetchReviews(page);
+        }, [fetchReviews, page]);
 
-                                    return (
-                                        <ReviewWidget
-                                            stars={stars}
-                                            reviewText={text}
-                                            avatar={getMediaContent(avatar)}
-                                            name={name}
-                                            url={getHostPersonalPageUrl(
-                                                locale,
-                                                hostId,
-                                            )}
-                                            key={id}
-                                        />
-                                    );
-                                }
-                            } catch {
-                                return undefined;
-                            }
-                        }),
-                );
-                setRenderCards(
-                    cards.filter((card) => card !== undefined) as JSX.Element[],
-                );
-            };
+        const renderReviews = reviews.map((review) => (
+            <ReviewWidget
+                name={review.name}
+                avatar={getMediaContent(review.image?.thumbnails?.small)}
+                reviewText={review.description}
+                stars={review.rating}
+                url={getHostPersonalPageUrl(locale, review.id)}
+                key={review.id}
+            />
+        ));
 
-            fetchCards();
-        }, [filteredReviews, visibleCount, locale, getHost]);
-
-        const handleShowNext = () => {
-            setVisibleCount((prev) => prev + 5);
+        const renderContent = () => {
+            if (error) {
+                return <div className={styles.error}>{error}</div>;
+            }
+            if (reviews.length === 0) {
+                return t("personal.На данный момент отзывов нет");
+            }
+            return renderReviews;
         };
 
-        if (!reviewsData || reviewsData.length === 0) {
+        const handleShowNext = () => {
+            setPage((prev) => prev + 1);
+        };
+
+        if (!reviewsData || reviewsData.pagination.total === 0) {
             return null;
         }
 
         return (
             <div id="3" className={cn(className, styles.wrapper)}>
                 <Text title={t("personal.Отзывы")} titleSize="h3" />
-                <div className={styles.container}>{renderCards.length > 0 ? renderCards : t("personal.На данный момент отзывов нет")}</div>
-                {visibleCount < filteredReviews.length && (
+                <div className={styles.container}>
+                    {renderContent()}
+                </div>
+                {(reviews.length > 0) && (reviews.length < reviewsData?.pagination.total) && (
                     <ShowNext onClick={handleShowNext} />
                 )}
             </div>

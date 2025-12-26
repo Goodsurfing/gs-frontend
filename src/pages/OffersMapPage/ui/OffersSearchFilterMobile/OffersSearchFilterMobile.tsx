@@ -17,7 +17,7 @@ import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { OfferApi } from "@/entities/Offer";
+import { OfferApi, OfferMap } from "@/entities/Offer";
 
 // import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -33,6 +33,8 @@ type SelectedTabType = "filter" | "map" | "offers";
 
 interface OffersSearchFilterMobileProps {
     className?: string;
+    allOffersMapData: OfferMap[];
+    isLoadingAllOffersMap: boolean;
     data?: OfferApi[];
     isLoading: boolean;
     onApplySearch: (search: string) => void;
@@ -50,6 +52,8 @@ const MemoizedSearchOffers = React.memo(SearchOffers);
 export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
     className,
     data,
+    allOffersMapData,
+    isLoadingAllOffersMap,
     isLoading,
     onApplySearch,
     onSubmit,
@@ -242,6 +246,8 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             )}
             {tabStates.isMapTabOpened && (
                 <OffersMap
+                    offersData={allOffersMapData}
+                    isOffersLoading={isLoadingAllOffersMap}
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
                 />

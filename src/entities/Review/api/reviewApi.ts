@@ -6,9 +6,17 @@ import {
     CreateOfferReview,
     CreateVolunteerReview,
     GetAboutVolunteerReviewParams, GetAboutVolunteerReviewRequest,
+    GetOfferReviewByHostIdParams,
+    GetOfferReviewByHostResponse,
+    GetOfferReviewByVacancyIdParams,
+    GetOfferReviewByVacancyResponse,
     GetOfferReviewParams,
     GetOfferReviewRequest,
+    GetVolunteerReviewByVolunteerIdParams,
+    GetVolunteerReviewByVolunteerIdResponse,
+    MyReviewHostResponse,
     MyReviewVolunteerRequest,
+    NotDoneReviewHost,
     NotDoneReviewVolunteer,
 } from "../model/types/review";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
@@ -122,7 +130,7 @@ export const reviewApi = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["volunteer"],
+            invalidatesTags: ["volunteer", "host"],
         }),
         getAboutVolunteerReviews: build.query<GetAboutVolunteerReviewRequest,
         GetAboutVolunteerReviewParams>({
@@ -131,7 +139,7 @@ export const reviewApi = createApi({
                 method: "GET",
                 params,
             }),
-            providesTags: ["volunteer"],
+            providesTags: ["volunteer", "host"],
         }),
         getMyVolunteerReviews: build.query<MyReviewVolunteerRequest,
         PaginationParams>({
@@ -140,7 +148,7 @@ export const reviewApi = createApi({
                 method: "GET",
                 params,
             }),
-            providesTags: ["volunteer"],
+            providesTags: ["volunteer", "host"],
         }),
         getMyNotDoneVolunteerReview: build.query<NotDoneReviewVolunteer[],
         void>({
@@ -148,7 +156,7 @@ export const reviewApi = createApi({
                 url: `${API_BASE_URL_V3}volunteer/vacancy/without-review/list`,
                 method: "GET",
             }),
-            providesTags: ["volunteer"],
+            providesTags: ["volunteer", "host"],
         }),
         createOfferReview: build.mutation<void,
         CreateOfferReview>({
@@ -157,7 +165,7 @@ export const reviewApi = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["host"],
+            invalidatesTags: ["host", "volunteer"],
         }),
         getOfferReviews: build.query<GetOfferReviewRequest,
         GetOfferReviewParams>({
@@ -166,7 +174,51 @@ export const reviewApi = createApi({
                 method: "GET",
                 params,
             }),
-            providesTags: ["host"],
+            providesTags: ["host", "volunteer"],
+        }),
+        getOfferReviewByVacancyId: build.query<GetOfferReviewByVacancyResponse,
+        GetOfferReviewByVacancyIdParams>({
+            query: ({ vacancyId, limit, page }) => ({
+                url: `${API_BASE_URL_V3}review-vacancy/list/${vacancyId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
+        getHostReviewByHostId: build.query<GetOfferReviewByHostResponse,
+        GetOfferReviewByHostIdParams>({
+            query: ({ hostId, limit, page }) => ({
+                url: `${API_BASE_URL_V3}review-vacancy/list-by-organization/${hostId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
+        getVolunteerReviewByVolunteerId: build.query<GetVolunteerReviewByVolunteerIdResponse,
+        GetVolunteerReviewByVolunteerIdParams>({
+            query: ({ volunteerId, limit, page }) => ({
+                url: `${API_BASE_URL_V3}review-volunteer/list/${volunteerId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
+        getMyHostReviews: build.query<MyReviewHostResponse,
+        PaginationParams>({
+            query: (params) => ({
+                url: `${API_BASE_URL_V3}organization/volunteer/review/list`,
+                method: "GET",
+                params,
+            }),
+            providesTags: ["host", "volunteer"],
+        }),
+        getMyNotDoneHostReview: build.query<NotDoneReviewHost[],
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}organization/volunteer/without-review/list`,
+                method: "GET",
+            }),
+            providesTags: ["host", "volunteer"],
         }),
     }),
 });
@@ -191,4 +243,10 @@ export const {
     useGetMyVolunteerReviewsQuery,
     useLazyGetMyVolunteerReviewsQuery,
     useGetMyNotDoneVolunteerReviewQuery,
+    useLazyGetMyHostReviewsQuery,
+    useGetMyNotDoneHostReviewQuery,
+    useLazyGetOfferReviewByVacancyIdQuery,
+    useLazyGetHostReviewByHostIdQuery,
+    useLazyGetVolunteerReviewByVolunteerIdQuery,
+    useGetOfferReviewsQuery,
 } = reviewApi;

@@ -42,6 +42,7 @@ export interface GetAboutVolunteerReview {
 
 export interface CreateVolunteerReview {
     volunteerId: string;
+    vacancyId: number;
     rating: number;
     description: string;
 }
@@ -70,13 +71,13 @@ export interface GetOfferReview {
     vacancy: {
         id: number;
         name: string;
-        imagePath: string;
+        image: Image;
     },
     author: {
         id: string;
         firstName: string;
         lastName: string;
-        imagePath: string;
+        image: Image;
     }
 }
 
@@ -90,12 +91,80 @@ export interface GetOfferReviewParams {
     limit: number;
 }
 
+export interface GetOfferReviewByVacancyIdParams {
+    vacancyId: number;
+    page: number;
+    limit: number;
+}
+
+export interface GetOfferReviewByVacancy {
+    id: string;
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image | null;
+    }
+    description: string;
+    rating: number;
+}
+
+export interface GetOfferReviewByVacancyResponse {
+    data: GetOfferReviewByVacancy[];
+    pagination: Pagination;
+}
+
+export interface GetOfferReviewByHostIdParams {
+    hostId: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetOfferReviewByHost {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
+    description: string;
+    rating: number;
+}
+
+export interface GetOfferReviewByHostResponse {
+    data: GetOfferReviewByHost[];
+    pagination: Pagination;
+}
+
+export interface GetVolunteerReviewByVolunteerId {
+    id: string;
+    image: Image;
+    name: string;
+    description: string;
+    rating: number;
+}
+
+export interface GetVolunteerReviewByVolunteerIdResponse {
+    data: GetVolunteerReviewByVolunteerId[];
+    pagination: Pagination;
+}
+
+export interface GetVolunteerReviewByVolunteerIdParams {
+    volunteerId: string;
+    page: number;
+    limit: number;
+}
+
 export interface MyReviewVolunteer {
     id: string;
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image | null;
+    }
     vacancy: {
         id: number;
-        name: string;
-        image: Image;
+        name: string | null;
+        image: Image | null;
     };
     rating: number;
     description: string;
@@ -109,23 +178,23 @@ export interface MyReviewVolunteerRequest {
 
 export interface NotDoneReviewVolunteer {
     id: number;
-    name: string;
-    image: Image;
-    address: string;
+    name: string | null;
+    image: Image | null;
+    address: string | null;
     applicationStatus: FormApplicationStatus;
     categories: {
         id: number;
         name: string;
-    }[]
+    }[];
 }
 
 export interface MyReviewHost {
-    id: number;
+    id: string;
     volunteer: {
         id: string;
-        firstName: string;
-        lastName: string;
-        image: Image;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image | null;
         city: string;
         country: string;
     }
@@ -133,14 +202,18 @@ export interface MyReviewHost {
     description: string;
 }
 
+export interface MyReviewHostResponse {
+    data: MyReviewHost[];
+    pagination: Pagination;
+}
+
 export interface NotDoneReviewHost {
-    id: number;
-    volunteer: {
-        id: string;
-        firstName: string;
-        lastName: string;
-        image: Image;
-        city: string;
-        country: string;
-    }
+    id: string;
+    vacancyId: number;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
+    city: string | null;
+    country: string | null;
+    statusApplication: FormApplicationStatus;
 }

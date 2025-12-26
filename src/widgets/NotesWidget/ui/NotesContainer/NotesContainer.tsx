@@ -5,21 +5,21 @@ import { useTranslation } from "react-i18next";
 
 import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
 import { NotesCard } from "../NotesCard/NotesCard";
-import { FormApplicationStatus, SimpleFormApplication } from "@/entities/Application";
+import { Application, FormApplicationStatus } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
 import styles from "./NotesContainer.module.scss";
 
 export type VariantType = "host" | "volunteer";
 interface NotesContainerProps {
-    notes: SimpleFormApplication[];
+    notes: Application[];
     className?: string;
     color: string;
     status: FormApplicationStatus;
     isDragDisable: boolean;
     variant: VariantType;
-    onReviewClick: (application: SimpleFormApplication) => void;
-    onAcceptClick?: (application: SimpleFormApplication) => void;
-    onCancelClick?: (application: SimpleFormApplication) => void;
+    onReviewClick: (application: Application) => void;
+    onAcceptClick?: (applicationId: number) => void;
+    onCancelClick?: (applicationId: number) => void;
     locale: Locale;
 }
 

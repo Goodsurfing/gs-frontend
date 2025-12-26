@@ -10,7 +10,8 @@ import { ReviewCardOffer, ReviewVolunteerMiniCard } from "@/features/Review/";
 
 import {
     MyReviewVolunteer,
-    VolunteerModalReview, useGetMyNotDoneVolunteerReviewQuery, useLazyGetMyVolunteerReviewsQuery,
+    VolunteerModalReview, useCreateOfferReviewMutation,
+    useGetMyNotDoneVolunteerReviewQuery, useLazyGetMyVolunteerReviewsQuery,
 } from "@/entities/Review";
 
 import {
@@ -23,6 +24,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { NotDoneReviewVolunteer } from "@/entities/Review/model/types/review";
 import styles from "./ReviewAboutOffers.module.scss";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 interface ReviewAboutOffersProps {
     locale: Locale;
@@ -44,7 +46,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         mode: "onChange",
         defaultValues,
     });
-    const { control, reset } = form;
+    const { handleSubmit, control, reset } = form;
     const [myReviews, setMyReviews] = useState<MyReviewVolunteer[]>([]);
     const [selectedOffer, setSelectedOffer] = useState<NotDoneReviewVolunteer | null>(
         null,
@@ -58,7 +60,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         data: notDoneReviewsData = [],
         isLoading: isNotDoneReviewsLoading,
     } = useGetMyNotDoneVolunteerReviewQuery();
-    // const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
+    const [createOfferReview] = useCreateOfferReviewMutation();
 
     const fetchMyReviews = useCallback(async (isInitial: boolean) => {
         try {
@@ -88,7 +90,14 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     }, [fetchMyReviews]);
 
     const renderFullCards = (reviews: MyReviewVolunteer[]) => reviews.map(
-        (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
+        (review) => (
+            <ReviewCardOffer
+                locale={locale}
+                key={review.id}
+                reviewOffer={review}
+                className={styles.reviewCardOffer}
+            />
+        ),
     );
 
     const onReviewClick = (offer: NotDoneReviewVolunteer) => {
@@ -101,33 +110,31 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         reset();
     };
 
-    // const onSendReview = handleSubmit(async (data) => {
-    //     const {
-    //         review: { stars, text },
-    //     } = data;
-    //     if (selectedApplication && stars) {
-    //         setToast(undefined);
-    // const applicationForm = `${API_BASE_URL}application_forms/${selectedApplication
-    //     .id.toString()}`;
-    //         await createToOrganizationReview({ applicationForm, stars, text })
-    //             .unwrap()
-    //             .then(() => {
-    //                 setToast({
-    //                     text: "Ваш отзыв был отправлен",
-    //                     type: HintType.Success,
-    //                 });
-    //             })
-    //             .catch((error: ErrorType) => {
-    //                 setToast({
-    //                     text: getErrorText(error),
-    //                     type: HintType.Error,
-    //                 });
-    //             })
-    //             .finally(() => {
-    //                 reset();
-    //             });
-    //     }
-    // });
+    const onSendReview = handleSubmit(async (data) => {
+        const {
+            review: { stars, text },
+        } = data;
+        if (selectedOffer && stars) {
+            setToast(undefined);
+            try {
+                await createOfferReview(
+                    { vacancyId: selectedOffer.id, description: text, rating: stars },
+                ).unwrap();
+                setToast({
+                    text: "Ваш отзыв был отправлен",
+                    type: HintType.Success,
+                });
+                fetchMyReviews(false);
+            } catch (error: unknown) {
+                setToast({
+                    text: getErrorText(error),
+                    type: HintType.Error,
+                });
+            } finally {
+                reset();
+            }
+        }
+    });
 
     if (isMyReviewsLoading || isNotDoneReviewsLoading) {
         return (
@@ -137,7 +144,9 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
         );
     }
 
-    const disableRenderVerticalSlider = notDoneReviewsData.length < 4;
+    const hasReviews = notDoneReviewsData.length > 0;
+    const shouldUseSlider = hasReviews && notDoneReviewsData.length >= 4;
+
     const renderApplications = notDoneReviewsData.map((item) => (
         <ReviewVolunteerMiniCard
             data={item}
@@ -155,25 +164,27 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
             <p className={styles.description}>
                 {t("volunteer-review.Проекты, которые вы недавно посещали")}
             </p>
-            {!disableRenderVerticalSlider ? (
-                <VerticalSlider
-                    classNameSlide={styles.swiperSlide}
-                    classNameWrapper={styles.swiperWrapper}
-                    className={styles.slider}
-                    data={notDoneReviewsData.slice(0, 30)}
-                    renderItem={(item: NotDoneReviewVolunteer) => (
-                        <ReviewVolunteerMiniCard
-                            data={item}
-                            onReviewClick={onReviewClick}
-                            key={item.id}
-                            locale={locale}
-                        />
-                    )}
-                />
-            ) : (
-                <div className={styles.applicationContainer}>
-                    {renderApplications}
-                </div>
+            {hasReviews && (
+                shouldUseSlider ? (
+                    <VerticalSlider
+                        classNameSlide={styles.swiperSlide}
+                        classNameWrapper={styles.swiperWrapper}
+                        className={styles.slider}
+                        data={notDoneReviewsData.slice(0, 30)}
+                        renderItem={(item: NotDoneReviewVolunteer) => (
+                            <ReviewVolunteerMiniCard
+                                data={item}
+                                onReviewClick={onReviewClick}
+                                key={item.id}
+                                locale={locale}
+                            />
+                        )}
+                    />
+                ) : (
+                    <div className={styles.applicationContainer}>
+                        {renderApplications}
+                    </div>
+                )
             )}
             <div className={styles.fullCardContainer}>
                 <InfiniteScroll
@@ -197,8 +208,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                         application={selectedOffer}
                         isOpen={!!selectedOffer}
                         onClose={resetSelectedReview}
-                        // sendReview={() => onSendReview()}
-                        sendReview={() => {}}
+                        sendReview={() => onSendReview()}
                         successText={
                             toast?.type === HintType.Success
                                 ? toast?.text

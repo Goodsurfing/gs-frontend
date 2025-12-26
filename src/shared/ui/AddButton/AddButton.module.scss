@@ -8,23 +8,24 @@
     font-size: 14px;
     color: white;
 
-    .plus {
+    .plus svg {
         width: 14px;
         height: 14px;
         margin-right: 10px;
         fill: white;
+        display: flex;
     }
 
     &:hover {
         color: black;
-        .plus {
+        .plus svg{
             fill: black;
         }
     }
     &:disabled {
         background-color: var(--bg-field);
         color: var(--text-caption);
-        .plus {
+        .plus svg{
             fill: var(--text-caption);
         }
         cursor: not-allowed;

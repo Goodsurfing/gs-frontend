@@ -23,7 +23,11 @@
     display: flex;
     flex-direction: column;
     row-gap: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
+}
+
+.reviewCardOffer {
+    margin-top: 10px;
 }
 
 @media (max-width: 992px) {

@@ -216,7 +216,13 @@
         "Участники": "Participants",
         "Статьи": "Articles",
         "Точная дата не указана": "Exact date not specified",
-        "Не имеет даты окончания": "No end date"
+        "Не имеет даты окончания": "No end date",
+        "Написать отзыв": "Write a review",
+        "Ваш отзыв": "Your review...",
+        "Вы написали отзыв": "You have written a review",
+        "Произошла ошибка загрузки участников": "An error occurred while loading the participants",
+        "На данный момент у данной вакансии нет участников": "Currently, there are no applicants for this vacancy",
+        "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "In our community, you can talk to volunteers who have already worked with this host and get direct answers to your questions."
     },
     "Данные успешно изменены": "Data has been successfully updated",
     "Произошла ошибка": "An error occurred",

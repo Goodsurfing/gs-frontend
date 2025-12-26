@@ -1,5 +1,5 @@
 import { Pagination } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ErrorType } from "@/types/api/error";
 
@@ -7,11 +7,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { NotesWidget } from "@/widgets/NotesWidget";
 
-import { SimpleFormApplication } from "@/entities/Application";
-import { VolunteerModalReview } from "@/entities/Review";
-import { useCreateToOrganizationsReviewMutation } from "@/entities/Review/api/reviewApi";
+import { Application } from "@/entities/Application";
+import { VolunteerModalReview, useCreateOfferReviewMutation } from "@/entities/Review";
 
-import { API_BASE_URL } from "@/shared/constants/api";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import {
     HintType,
@@ -20,8 +18,8 @@ import {
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { ReviewFields } from "../../model/types/notes";
-import styles from "./NotesVolunteerForm.module.scss";
 import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import styles from "./NotesVolunteerForm.module.scss";
 
 const APPLICATION_PER_PAGE = 10;
 
@@ -41,37 +39,25 @@ export const NotesVolunteerForm = () => {
     });
     const { handleSubmit, control, reset } = form;
     const [selectedApplication,
-        setSelectedApplication] = useState<SimpleFormApplication | null>(null);
-    const [adaptedApplications, setAdaptedApplications] = useState<SimpleFormApplication[]>([]);
+        setSelectedApplication] = useState<Application | null>(null);
+
+    const [adaptedApplications, setAdaptedApplications] = useState<Application[]>([]);
     const [page, setPage] = useState<number>(1);
     const [getApplicationsData,
         { data: applications, isLoading }] = useLazyGetMyVolunteerApplicationsQuery();
-    const [createToOrganizationReview] = useCreateToOrganizationsReviewMutation();
+    const [createOfferReview] = useCreateOfferReviewMutation();
+
+    const fetchApplications = useCallback(async (limit: number, pageItem: number) => {
+        await getApplicationsData({ limit, page: pageItem });
+    }, [getApplicationsData]);
 
     useEffect(() => {
-        getApplicationsData({ limit: APPLICATION_PER_PAGE, page });
-    }, [getApplicationsData, page]);
+        fetchApplications(APPLICATION_PER_PAGE, page);
+    }, [fetchApplications, getApplicationsData, page]);
 
     useEffect(() => {
         if (applications) {
-            const adapter: SimpleFormApplication[] = applications.data.map((application) => {
-                const {
-                    id, volunteer, chatId, vacancy, startDate, endDate, status,
-                    hasFeedbackFromOrganization, hasFeedbackFromVolunteer,
-                } = application;
-                return {
-                    id,
-                    volunteer: volunteer.id,
-                    vacancy,
-                    chatId,
-                    status,
-                    startDate,
-                    endDate,
-                    hasFeedbackFromOrganization,
-                    hasFeedbackFromVolunteer,
-                };
-            });
-            setAdaptedApplications(adapter);
+            setAdaptedApplications(applications.data);
         }
     }, [applications]);
 
@@ -79,33 +65,7 @@ export const NotesVolunteerForm = () => {
         ? Math.ceil(applications.pagination.total / APPLICATION_PER_PAGE)
         : 0;
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         if (selectedApplicationId) {
-    //             await getReviewData(selectedApplicationId.toString())
-    //                 .unwrap()
-    //                 .then((resultData) => {
-    //                     const {
-    //                         stars, text, applicationForm, id,
-    //                     } = resultData;
-    //                     reset({
-    //                         review: {
-    //                             stars,
-    //                             text,
-    //                             applicationForm,
-    //                             id,
-    //                         },
-    //                     });
-    //                 })
-    //                 .catch(() => {
-    //                     reset();
-    //                 });
-    //         }
-    //     };
-    //     fetchData();
-    // }, [getReviewData, reset, selectedApplicationId]);
-
-    const onReviewClick = (application: SimpleFormApplication) => {
+    const onReviewClick = (application: Application) => {
         setSelectedApplication(application);
     };
 
@@ -121,14 +81,19 @@ export const NotesVolunteerForm = () => {
         } = data;
         if (selectedApplication && stars) {
             setToast(undefined);
-            const applicationForm = `${API_BASE_URL}application_forms/${selectedApplication.id.toString()}`;
-            await createToOrganizationReview({ applicationForm, stars, text })
+
+            await createOfferReview({
+                vacancyId: selectedApplication.vacancy.id,
+                rating: stars,
+                description: text,
+            })
                 .unwrap()
                 .then(() => {
                     setToast({
                         text: "Ваш отзыв был отправлен",
                         type: HintType.Success,
                     });
+                    fetchApplications(APPLICATION_PER_PAGE, page);
                 })
                 .catch((error: ErrorType) => {
                     setToast({
@@ -175,14 +140,11 @@ export const NotesVolunteerForm = () => {
                         onChange={field.onChange}
                         application={selectedApplication ? {
                             id: selectedApplication.id,
-                            name: selectedApplication.vacancy.title ?? "",
-                            address: selectedApplication.vacancy.address ?? "",
-                            image: {
-                                id: "",
-                                contentUrl: "",
-                            },
+                            name: selectedApplication.vacancy.title,
+                            address: selectedApplication.vacancy.address,
+                            image: selectedApplication.vacancy.image,
                             applicationStatus: selectedApplication.status,
-                            categories: [],
+                            categories: selectedApplication.vacancy.categories,
                         } : null}
                         isOpen={!!selectedApplication}
                         onClose={resetSelectedReview}
