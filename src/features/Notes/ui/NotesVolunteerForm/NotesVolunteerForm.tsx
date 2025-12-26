@@ -18,8 +18,8 @@ import {
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { ReviewFields } from "../../model/types/notes";
-import styles from "./NotesVolunteerForm.module.scss";
 import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import styles from "./NotesVolunteerForm.module.scss";
 
 const APPLICATION_PER_PAGE = 10;
 
@@ -93,6 +93,7 @@ export const NotesVolunteerForm = () => {
                         text: "Ваш отзыв был отправлен",
                         type: HintType.Success,
                     });
+                    fetchApplications(APPLICATION_PER_PAGE, page);
                 })
                 .catch((error: ErrorType) => {
                     setToast({

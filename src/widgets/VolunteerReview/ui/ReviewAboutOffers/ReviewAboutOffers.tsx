@@ -90,7 +90,14 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
     }, [fetchMyReviews]);
 
     const renderFullCards = (reviews: MyReviewVolunteer[]) => reviews.map(
-        (review) => <ReviewCardOffer locale={locale} key={review.id} reviewOffer={review} />,
+        (review) => (
+            <ReviewCardOffer
+                locale={locale}
+                key={review.id}
+                reviewOffer={review}
+                className={styles.reviewCardOffer}
+            />
+        ),
     );
 
     const onReviewClick = (offer: NotDoneReviewVolunteer) => {
@@ -117,6 +124,7 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
                     text: "Ваш отзыв был отправлен",
                     type: HintType.Success,
                 });
+                fetchMyReviews(false);
             } catch (error: unknown) {
                 setToast({
                     text: getErrorText(error),

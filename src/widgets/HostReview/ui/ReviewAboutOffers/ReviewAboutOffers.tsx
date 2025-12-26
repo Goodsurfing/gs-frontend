@@ -57,7 +57,12 @@ export const ReviewAboutOffers: FC<ReviewAboutOffersProps> = (props) => {
 
     const renderCardOffers = (reviewOffers: GetOfferReview[]) => reviewOffers
         .map((reviewOffer) => (
-            <ReviewCardOffer reviewOffer={reviewOffer} key={reviewOffer.id} locale={locale} />
+            <ReviewCardOffer
+                reviewOffer={reviewOffer}
+                key={reviewOffer.id}
+                locale={locale}
+                className={styles.reviewCardOffer}
+            />
         ));
 
     return (

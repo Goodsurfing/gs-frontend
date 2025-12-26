@@ -46,6 +46,7 @@ export interface Offer {
     articles?: Article[];
     canEdit: boolean;
     canParticipate: boolean;
+    canReview: boolean;
     acceptedApplicationsCount: number;
 }
 
@@ -195,4 +196,16 @@ export interface OfferMap {
         name: string;
         color: string;
     }[];
+}
+
+export interface OfferParticipant {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    image: Image | null;
+}
+
+export interface GetOfferParticipantListByOfferId {
+    data: OfferParticipant[];
+    pagination: Pagination;
 }

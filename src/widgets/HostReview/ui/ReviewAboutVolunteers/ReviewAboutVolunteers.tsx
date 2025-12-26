@@ -117,6 +117,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
             setToast(undefined);
             try {
                 await createVolunteerReview({
+                    vacancyId: selectedVolunteer.vacancyId,
                     volunteerId: selectedVolunteer.id,
                     description: text,
                     rating: stars,
@@ -125,6 +126,7 @@ export const ReviewAboutVolunteers: FC<ReviewAboutVolunteersProps> = (props) => 
                     text: t("hostReviews.Ваш отзыв был отправлен"),
                     type: HintType.Success,
                 });
+                fetchMyReviews(false);
             } catch (error: unknown) {
                 setToast({
                     text: getErrorText(error),

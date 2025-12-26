@@ -90,6 +90,7 @@ export const NotesHostForm = () => {
             setToast(undefined);
             try {
                 await createVolunteerReview({
+                    vacancyId: selectedApplication.vacancy.id,
                     volunteerId: selectedApplication.volunteer.id,
                     rating: stars,
                     description: text,
@@ -158,6 +159,7 @@ export const NotesHostForm = () => {
                         value={field.value}
                         onChange={field.onChange}
                         review={selectedApplication ? {
+                            vacancyId: selectedApplication.vacancy.id,
                             id: selectedApplication.volunteer.id,
                             firstName: selectedApplication.volunteer.firstName,
                             lastName: selectedApplication.volunteer.lastName,

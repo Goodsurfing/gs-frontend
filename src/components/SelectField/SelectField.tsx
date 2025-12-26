@@ -14,6 +14,7 @@ interface SelectFieldProps extends Props<unknown, boolean, Group> {
     description?: string;
     classNameDropdown?: string;
     classNameControl?: string;
+    classNameOption?: string;
 }
 
 const SelectField: FC<SelectFieldProps> = ({
@@ -26,6 +27,7 @@ const SelectField: FC<SelectFieldProps> = ({
     placeholder = "",
     classNameDropdown,
     classNameControl,
+    classNameOption,
     ...rest
 }) => (
     <div className={cn(styles.wrapper, className)}>
@@ -45,7 +47,7 @@ const SelectField: FC<SelectFieldProps> = ({
                 [styles.disabled]: isDisabled,
             }, classNameDropdown)}
             classNames={{
-                option: () => styles.option,
+                option: () => cn(styles.option, classNameOption),
                 input: () => styles.input,
                 indicatorsContainer: () => styles.menuIndicator,
                 menuList: () => styles.menuWrapper,

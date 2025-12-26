@@ -42,6 +42,7 @@ export interface GetAboutVolunteerReview {
 
 export interface CreateVolunteerReview {
     volunteerId: string;
+    vacancyId: number;
     rating: number;
     description: string;
 }
@@ -208,6 +209,7 @@ export interface MyReviewHostResponse {
 
 export interface NotDoneReviewHost {
     id: string;
+    vacancyId: number;
     firstName: string | null;
     lastName: string | null;
     image: Image | null;

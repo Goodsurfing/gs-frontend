@@ -17,11 +17,12 @@ export {
     useUpdateOfferImageGalleryMutation,
     useGetAllOffersMapQuery,
     useLazyGetAllOffersMapQuery,
+    useLazyGetOfferParticipantListByOfferIdQuery,
 } from "./api/offerApi";
 
 export type {
     Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi, OfferMap,
-    HostOffer, GetOffersFilters, UpdateOldOffer,
+    HostOffer, GetOffersFilters, UpdateOldOffer, OfferParticipant,
 } from "./model/types/offer";
 
 export { OfferSort } from "./model/types/offer";

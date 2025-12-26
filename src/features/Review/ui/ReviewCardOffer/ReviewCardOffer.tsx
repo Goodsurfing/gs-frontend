@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Rating } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import cn from "classnames";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { MyReviewVolunteer } from "@/entities/Review";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -14,10 +15,11 @@ import styles from "./ReviewCardOffer.module.scss";
 interface ReviewCardOfferProps {
     reviewOffer: MyReviewVolunteer;
     locale: Locale;
+    className?: string;
 }
 
 export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOfferProps) => {
-    const { reviewOffer, locale } = props;
+    const { reviewOffer, locale, className } = props;
     const {
         vacancy, description, rating, created, author,
     } = reviewOffer;
@@ -34,15 +36,19 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
     };
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             <div className={styles.header} onClick={navigateToOffer}>
                 <div className={styles.titleImg}>
-                    <span className={styles.title}>{vacancy.name}</span>
-                    <img
-                        className={styles.img}
-                        src={getMediaContent(vacancy.image?.thumbnails?.small)}
-                        alt="offer"
-                    />
+                    <span className={styles.title}>{textSlice(vacancy.name, 34, "title")}</span>
+                    {vacancy.image?.thumbnails?.small ? (
+                        <img
+                            className={styles.img}
+                            src={getMediaContent(vacancy.image?.thumbnails?.small)}
+                            alt="offer"
+                        />
+                    ) : (
+                        <div className={styles.noImg} />
+                    )}
                 </div>
                 <span className={styles.date}>
                     {textSlice(created, 30, "none")}

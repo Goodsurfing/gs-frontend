@@ -155,6 +155,7 @@ export const OffersSearchFilter = () => {
                 debounceTimeoutRef.current = setTimeout(() => {
                     const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
                     fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+                    fetchAllOffersMap({ ...preparedData });
                 }, 300);
             }
         });

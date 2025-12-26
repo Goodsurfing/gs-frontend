@@ -22,7 +22,7 @@ interface HostReviewCardProps {
     className?: string;
 }
 
-const VISIBLE_COUNT = 1;
+const VISIBLE_COUNT = 5;
 
 export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCardProps) => {
     const { hostId, className } = props;
@@ -94,7 +94,7 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCa
             <div className={styles.container}>
                 {renderContent()}
             </div>
-            {(reviews.length > 0) && (reviews.length < reviewsData?.pagination.total) && (
+            {(reviews.length > 0) && (reviews.length < reviewsData.pagination.total) && (
                 <ShowNext onClick={handleShowNext} />
             )}
         </div>

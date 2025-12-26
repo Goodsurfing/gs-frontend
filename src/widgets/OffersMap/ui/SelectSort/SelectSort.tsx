@@ -13,11 +13,13 @@ interface SelectSortProps {
     classNameDropdown?: string;
     className?: string;
     classNameControl?: string;
+    classNameOption?: string;
 }
 
 export const SelectSort: FC<SelectSortProps> = (props) => {
     const {
         value, onChange, className, classNameControl, classNameDropdown,
+        classNameOption,
     } = props;
     const sortOffers = useSortOffers();
 
@@ -36,6 +38,7 @@ export const SelectSort: FC<SelectSortProps> = (props) => {
                 className={cn(styles.sort, className)}
                 classNameDropdown={cn(styles.dropdown, classNameDropdown)}
                 classNameControl={cn(styles.control, classNameControl)}
+                classNameOption={cn(classNameOption, styles.option)}
                 options={sortOffers}
                 value={findValueSort(value)}
                 onChange={handleSortChange}

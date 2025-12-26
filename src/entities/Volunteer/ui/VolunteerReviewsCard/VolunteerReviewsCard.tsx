@@ -26,7 +26,7 @@ interface VolunteerReviewsCardProps {
     className?: string;
 }
 
-const VISIBLE_COUNT = 1;
+const VISIBLE_COUNT = 5;
 
 export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
     (props: VolunteerReviewsCardProps) => {
