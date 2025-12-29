@@ -25,13 +25,20 @@ import {
     UpdateAdminUserRequest,
 } from "../model/types/adminSchema";
 import {
-    Category, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
+    Category, CategoryCountVacancy, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
 import { Achievement } from "@/types/achievements";
 import { Food, House, Transfer } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+
+interface GoodsurfingToday {
+    volunteerCount: number;
+    vacancyCountryCount: number;
+    vacancyCount: number;
+    reviewCount: number;
+}
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
@@ -531,7 +538,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
-        getPublicCategoriesVacancy: build.query<Category[],
+        getPublicCategoriesVacancy: build.query<CategoryCountVacancy[],
         void>({
             query: () => ({
                 url: `${API_BASE_URL_V3}category/list`,
@@ -539,6 +546,14 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
+        getGoodsurfingToday: build.query<GoodsurfingToday,
+        void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}goodsurfing/today`,
+                method: "GET",
+            }),
+        }),
+
     }),
 });
 
@@ -602,4 +617,5 @@ export const {
     useGetPublicAchievementsQuery,
     useGetPublicCategoriesVacancyQuery,
     useGetPublicSkillsQuery,
+    useGetGoodsurfingTodayQuery,
 } = adminApi;

@@ -315,7 +315,7 @@ export const Chat: FC<ChatProps> = (props) => {
 
         processMessages();
     }, [messages, getApplicationData, myProfileData, locale,
-        readMessage, onApplicationSubmit]);
+        readMessage, onApplicationSubmit, companionData]);
 
     if (!id || !myProfileData) {
         return (

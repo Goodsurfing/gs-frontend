@@ -14,7 +14,6 @@ interface ChangePasswordRequest {
 }
 
 interface ToggleActiveProfileRequest {
-    profileId: string;
     body: {
         isActive: boolean;
     }
@@ -105,10 +104,17 @@ export const profileApi = createApi({
             invalidatesTags: ["profile"],
         }),
         toggleActiveProfile: build.mutation<void, ToggleActiveProfileRequest>({
-            query: ({ profileId, body }) => ({
-                url: `${API_BASE_URL_V3}profile/toggle-active/${profileId}`,
+            query: ({ body }) => ({
+                url: `${API_BASE_URL_V3}profile/toggle-active`,
                 method: "POST",
                 body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
+        deleteProfile: build.mutation<void, string>({
+            query: (profileId) => ({
+                url: `${API_BASE_URL_V3}profile/${profileId}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["profile"],
         }),
@@ -145,4 +151,5 @@ export const {
     useUpdateProfileImageGalleryMutation,
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
+    useDeleteProfileMutation,
 } = profileApi;

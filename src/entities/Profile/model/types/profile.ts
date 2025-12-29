@@ -2,7 +2,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Achievement } from "@/types/achievements";
 import { Language } from "@/types/languages";
 import { Image } from "@/types/media";
-import { GetSkill, Skill } from "@/types/skills";
+import { GetSkill } from "@/types/skills";
 
 export type Gender = "male" | "female" | "other";
 
@@ -30,7 +30,7 @@ export interface Profile {
     hostId: string | null;
     volunteer: {
         externalInfo: string | null;
-        skills: Skill[];
+        skills: GetSkill[];
         achievements: Achievement[];
         additionalSkills: string[];
         languages: Language[];

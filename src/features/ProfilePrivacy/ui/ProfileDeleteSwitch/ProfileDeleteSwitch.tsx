@@ -5,11 +5,12 @@ import Button from "@/shared/ui/Button/Button";
 
 interface ProfileDeleteSwitchProps {
     className?: string;
+    onClick?: () => void;
 }
 
 export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(
     (props: ProfileDeleteSwitchProps) => {
-        const { className } = props;
+        const { className, onClick } = props;
         const { t } = useTranslation("profile");
 
         return (
@@ -18,6 +19,7 @@ export const ProfileDeleteSwitch: FC<ProfileDeleteSwitchProps> = memo(
                 color="BLUE"
                 variant="FILL"
                 size="SMALL"
+                onClick={onClick}
             >
                 {t("privacy.Удалить аккаунт")}
             </Button>

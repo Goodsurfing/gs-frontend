@@ -40,7 +40,7 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
                 className={styles.category}
                 title={getTranslation(category.name) ?? ""}
                 image={getMediaContent(category.imagePath)}
-                vacancyNumber={9}
+                vacancyNumber={category.vacancyCount}
                 key={index}
                 link={`/offers-map?category=${category.id}`}
                 locale={locale}

@@ -1,5 +1,5 @@
 import { Achievement } from "@/types/achievements";
-import { Skill } from "@/types/skills";
+import { GetSkill, Skill } from "@/types/skills";
 import { Pagination } from "@/types/api/pagination";
 import { Food, House, Transfer } from "@/shared/data/conditions";
 import { Gender } from "@/entities/Profile";
@@ -79,7 +79,7 @@ export interface AdminUser {
     instagram: string | null;
     telegram: string | null;
     achievements: Achievement[];
-    skills: Skill[];
+    skills: GetSkill[];
     additionalSkills: string[];
     created: string; // time account created
     lastVisit: string;

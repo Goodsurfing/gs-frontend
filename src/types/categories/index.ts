@@ -27,6 +27,10 @@ export interface Category {
     imagePath: string;
 }
 
+export type CategoryCountVacancy = Category & {
+    vacancyCount: number;
+};
+
 export type CategoryImageObject = Omit<Category, "imagePath"> & {
     image: Image;
 };

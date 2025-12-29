@@ -28,24 +28,5 @@ export const useAboutProjects = () => {
         },
     ];
 
-    const goodsurfingNowData: Item[] = [
-        {
-            title: "48 000",
-            description: t("гудсёрферов"),
-        },
-        {
-            title: "78",
-            description: t("стран"),
-        },
-        {
-            title: "567",
-            description: t("вакансий"),
-        },
-        {
-            title: "7 100",
-            description: t("отзывов"),
-        },
-    ];
-
-    return { principlesData, goodsurfingNowData };
+    return { principlesData };
 };

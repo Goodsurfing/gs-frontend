@@ -106,9 +106,9 @@ export const adminUserApiAdapter = (data: AdminUserFields): UpdateAdminUser => {
     };
 };
 
-export const adminUpdateUserAdapter = (data: AdminUser): UpdateAdminUser => ({
+export const adminUpdateUserAdapter = (data: Omit<AdminUser, "skills"> & { skillsIds: number[] }): UpdateAdminUser => ({
     achievementIds: data.achievements.map((a) => a.id),
-    skillIds: data.skills?.map((s) => s.id) ?? [],
+    skillIds: data.skillsIds,
     additionalSkills: data.additionalSkills,
     imageId: data.image?.id ?? null,
 
