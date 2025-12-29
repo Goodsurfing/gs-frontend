@@ -21,6 +21,7 @@ export {
     useUpdateProfileImageGalleryMutation,
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
+    useDeleteProfileMutation,
 } from "./api/profileApi";
 
 export type {
