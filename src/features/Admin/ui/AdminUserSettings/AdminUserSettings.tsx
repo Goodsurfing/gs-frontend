@@ -14,7 +14,6 @@ import {
 import { getFullName } from "@/shared/lib/getFullName";
 import { Achievement } from "@/types/achievements";
 import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
-import { Skill } from "@/types/skills";
 
 interface AdminUserSettingsProps {
     userId: string;
@@ -97,7 +96,12 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const closeAchievementModal = () => setIsAchievementModalOpen(false);
 
     const handleAchievementsConfirm = async (selected: Achievement[]) => {
-        const formattedData = adminUpdateUserAdapter({ ...data, achievements: selected });
+        const skillsIds = data.skills.map((s) => s.id);
+        const formattedData = adminUpdateUserAdapter({
+            ...data,
+            skillsIds,
+            achievements: selected,
+        });
 
         try {
             await updateUser({ id: userId, body: formattedData });
@@ -122,12 +126,12 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
         skills,
         additionalSkills,
     }: {
-        skills: Skill[];
+        skills: number[];
         additionalSkills: string[];
     }) => {
         const formattedData = adminUpdateUserAdapter({
             ...data,
-            skills,
+            skillsIds: skills,
             additionalSkills,
         });
 

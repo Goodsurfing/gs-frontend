@@ -1,21 +1,20 @@
 import React, {
-    FC, useEffect, useMemo, useState,
+    FC, useEffect, useState,
 } from "react";
 import cn from "classnames";
 import Button from "@/shared/ui/Button/Button";
 import { Modal } from "@/shared/ui/Modal/Modal";
-import styles from "./AdminUpdateSkills.module.scss";
-import { Skill } from "@/types/skills";
 import { AdditionalSkills, Skills } from "@/features/SkillsForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
+import styles from "./AdminUpdateSkills.module.scss";
 
 interface AdminUpdateSkillsProps {
     currentSkillIds: number[];
     currentAdditionalSkills: string[];
     onConfirm: (selected: {
-        skills: Skill[];
+        skills: number[];
         additionalSkills: string[];
     }) => void;
     isModalOpen: boolean;
@@ -30,13 +29,13 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
     onClose,
 }) => {
     const { data: skillsData = [], isLoading } = useGetPublicSkillsQuery();
-    const [selectedSkillIds, setSelectedSkillIds] = useState<Set<number>>(new Set());
+    const [selectedSkillIds, setSelectedSkillIds] = useState<number[]>([]);
 
     const [additionalSkills, setAdditionalSkills] = useState<AdditionalSkillsType[]>([]);
 
     useEffect(() => {
         if (isModalOpen) {
-            setSelectedSkillIds(new Set(currentSkillIds));
+            setSelectedSkillIds(currentSkillIds);
             setAdditionalSkills(currentAdditionalSkills.map((text) => ({ text })));
         }
     }, [isModalOpen, currentSkillIds, currentAdditionalSkills]);
@@ -48,14 +47,13 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
         };
     }, [isModalOpen]);
 
-    const selectedSkills = useMemo(
-        () => skillsData.filter((skill) => selectedSkillIds.has(skill.id)),
-        [skillsData, selectedSkillIds],
-    );
+    // const selectedSkills = useMemo(
+    //     () => skillsData.filter((skill) => selectedSkillIds.has(skill.id)),
+    //     [skillsData, selectedSkillIds],
+    // );
 
-    const handleMainSkillsChange = (newSkills: Skill[]) => {
-        const newIds = new Set(newSkills.map((s) => s.id));
-        setSelectedSkillIds(newIds);
+    const handleMainSkillsChange = (newSkills: number[]) => {
+        setSelectedSkillIds(newSkills);
     };
 
     const handleAdditionalSkillsChange = (newAdditional: AdditionalSkillsType[]) => {
@@ -65,7 +63,7 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
     const handleConfirm = () => {
         const additionalSkillsStrings = additionalSkills.map((item) => item.text);
         onConfirm({
-            skills: selectedSkills,
+            skills: selectedSkillIds,
             additionalSkills: additionalSkillsStrings,
         });
         onClose();
@@ -96,7 +94,7 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
 
                 <Skills
                     skills={skillsData}
-                    value={selectedSkills}
+                    value={selectedSkillIds}
                     onChange={handleMainSkillsChange}
                     className={styles.list}
                 />
