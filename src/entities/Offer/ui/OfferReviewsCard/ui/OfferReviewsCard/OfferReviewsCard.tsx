@@ -39,7 +39,6 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         const [page, setPage] = useState<number>(1);
         const [error, setError] = useState<string | null>(null);
         const [reviews, setReviews] = useState<GetOfferReviewByVacancy[]>([]);
-        const [shouldRefetch, setShouldRefetch] = useState(false);
         const { locale } = useLocale();
         const { getFullName } = useGetFullName();
 
@@ -48,20 +47,12 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
 
         const fetchReviews = useCallback(async (pageItem: number) => {
             try {
-                const result = await getReviewsData({
+                await getReviewsData({
                     vacancyId: offerId,
                     limit: VISIBLE_COUNT,
                     page: pageItem,
                 }).unwrap();
-                if (result) {
-                    setReviews((prev) => {
-                        if (pageItem === 1) {
-                            return [...result.data];
-                        }
-                        return [...prev, ...result.data];
-                    });
-                    setError(null);
-                }
+                setError(null);
             } catch {
                 setError("Произошла ошибка загрузки отзывов");
             }
@@ -72,12 +63,15 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         }, [fetchReviews, page]);
 
         useEffect(() => {
-            if (shouldRefetch) {
-                fetchReviews(1);
-                setPage(1);
-                setShouldRefetch(false);
+            if (reviewsData?.data) {
+                setReviews((prev) => {
+                    if (page === 1) {
+                        return [...reviewsData.data];
+                    }
+                    return [...prev, ...reviewsData.data];
+                });
             }
-        }, [shouldRefetch, fetchReviews]);
+        }, [reviewsData, page]);
 
         const handleSendReview = useCallback(async () => {
             if (!canReview || !commentInput.trim() || rating === null) return;
@@ -93,11 +87,12 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                 setCommentInput("");
                 setRating(null);
 
-                setShouldRefetch(true);
+                setPage(1);
+                await fetchReviews(1);
             } catch (err) {
                 setError("Не удалось отправить отзыв. Попробуйте позже.");
             }
-        }, [canReview, commentInput, rating, createOfferReview, offerId]);
+        }, [canReview, commentInput, rating, createOfferReview, offerId, fetchReviews]);
 
         const renderReviews = reviews.map((review) => (
             <ReviewWidget
@@ -131,10 +126,6 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
             [setCommentInput],
         );
 
-        if (!reviewsData) {
-            return null;
-        }
-
         return (
             <div className={styles.wrapper} id="review">
                 <Text title={t("personalOffer.Отзывы")} titleSize="h3" />
@@ -162,7 +153,8 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
                 <div className={styles.container}>
                     {renderContent()}
                 </div>
-                {(reviews.length > 0) && (reviews.length < reviewsData?.pagination.total) && (
+                {(reviews.length > 0) && (reviewsData?.pagination?.total !== undefined)
+                && (reviews.length < reviewsData.pagination.total) && (
                     <ShowNext onClick={handleShowNext} />
                 )}
             </div>
