@@ -148,6 +148,10 @@
     }
 }
 
+.openInfo.rotated {
+    transform: rotate(90deg);
+}
+
 .back {
     display: none;
 }
