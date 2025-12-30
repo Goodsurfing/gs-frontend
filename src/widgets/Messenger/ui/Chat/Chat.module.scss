@@ -53,26 +53,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    // padding: 20px 16px;
-    // max-width: 768px;
     position: relative;
     height: 100%;
-
-    // overflow-y: auto;
-    // overflow-x: hidden;
-
-    // &::-webkit-scrollbar {
-    //     width: 10px;
-    // }
-
-    // &::-webkit-scrollbar-track {
-    //     background: var(--color-white);
-    // }
-
-    // &::-webkit-scrollbar-thumb {
-    //     border-radius: var(--radius);
-    //     background-color: var(--bg-accent);
-    // }
 }
 
 .infiniteScroll {
