@@ -18,11 +18,16 @@ import { updateProfileDataAdapter } from "@/features/ProfileInfo";
 
 interface ChangeLanguageProps {
     className?: string;
+    classNameArrow?: string;
+    classNameArrowOpen?: string;
     localeApi?: Locale;
     profileData?: Profile | null;
 }
 
-export const ChangeLanguage = memo(({ className, localeApi, profileData }: ChangeLanguageProps) => {
+export const ChangeLanguage = memo(({
+    className, localeApi, profileData,
+    classNameArrow, classNameArrowOpen,
+}: ChangeLanguageProps) => {
     const { locale, updateLocale } = useLocale();
 
     const [updateProfile] = useUpdateProfileInfoMutation();
@@ -61,7 +66,11 @@ export const ChangeLanguage = memo(({ className, localeApi, profileData }: Chang
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <img src={languageIconsData[language]} alt={`${language} language`} />
-                <Arrow isOpen={isOpen} />
+                <Arrow
+                    isOpen={isOpen}
+                    className={classNameArrow}
+                    classNameOpen={classNameArrowOpen}
+                />
             </div>
             <div
                 className={cn(styles.list, {

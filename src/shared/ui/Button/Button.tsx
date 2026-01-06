@@ -44,13 +44,13 @@ const Button = memo((props: ButtonWithoutIcon | ButtonWithIcon) => {
             type="button"
             className={cn(
                 styles.btn,
-                className,
                 {
                     [styles[variant]]: variant,
                     [styles[color]]: color,
                     [styles[size]]: size,
                     [styles.withIcon]: icon,
                 },
+                className,
             )}
             {...restBtnProps}
         >
