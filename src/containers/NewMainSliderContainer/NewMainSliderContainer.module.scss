@@ -11,8 +11,8 @@
     // padding: 320px 40px;
     top: 320px;
     padding-left: 40px;
-    padding-right: 250px;
-    width: 100%;
+    // padding-right: 250px;
+    width: 510px;
     transition: all 0.3s ease-in;
     display: flex;
     flex-direction: column;
@@ -118,18 +118,19 @@
 
 .cornerLeft,
 .cornerRight {
-    position: relative;
+    position: absolute;
     width: 30px;
-    flex-shrink: 0;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 2;
 }
 
 .cornerLeft {
-    margin-left: auto;
+    right: 0;
 }
 
 .cornerRight {
-    margin-right: auto;
+    left: 0;
 }
 
 .arrowLeft {
@@ -171,12 +172,15 @@
 .right {
     position: relative;
     display: flex;
-    flex-direction: row-reverse;
     background-color: #EEA52D;
     width: 100%;
     transition: width 0.4s ease-in;
     overflow: hidden;
     cursor: pointer;
+}
+
+.right .content {
+    width: 660px;
 }
 
 .sliderFull {
@@ -195,9 +199,8 @@
     width: 30px;
 }
 
-.contentHalf {
-    // max-width: 510px;
-    // min-width: 300px;
+.contentFull {
+    width: 100% !important;
 }
 
 .contentCollapsed {
@@ -496,13 +499,40 @@
 
 .sliderbackpackImg {
     position: absolute;
-    bottom: -20px;
+    bottom: -50px;
     right: 20px;
     z-index: 1;
+    transition: all 0.3s ease-in;
+    width: 580px;
 }
 
-.sliderbackpackImg.active {
-    
+.sliderbackpackImgScale {
+    transform: translateX(-60px) scale(1.2);
+}
+
+.sliderbackpackImgActive {
+    transform: translateX(-150px) translateY(0px) scale(1.2);
+}
+
+.sliderHouseImg {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    transition: all 0.3s ease-in;
+    width: 580px;
+}
+
+.sliderHouseImgScale {
+    transform: scale(1.2);
+}
+
+.sliderHouseImgActive {
+    transform: translateX(-90px) translateY(-60px) scale(1.4);
+}
+
+.sliderHouseImgMoved {
+    transform: translateX(-30px) scale(1);
 }
 
 @media(max-width:1600px) {
@@ -518,5 +548,35 @@
 
     .navMobile {
         display: flex;
+    }
+}
+
+@media(max-width:1200px) {
+    .contentFull {
+        padding-right: 40px;
+    }
+}
+
+@media(max-width:1000px) {
+    .content h2 {
+        font-size: 48px;
+    }
+}
+
+@media(max-width:576px) {
+    .wrapper {
+        height: 800px;
+    }
+    .content {
+        top: 180px;
+    }
+    .sliderbackpackImg {
+        width: 420px;
+    }
+    .sliderHouseImg {
+        width: 400px;
+    }
+    .sliderHouseImgActive {
+        transform: translateX(0px) translateY(-30px) scale(1.2);
     }
 }

@@ -1,5 +1,5 @@
 import React, {
-    useCallback, useReducer, useRef, useState,
+    useCallback, useReducer, useRef, useState, useEffect,
 } from "react";
 import cn from "classnames";
 import { ReactSVG } from "react-svg";
@@ -47,12 +47,13 @@ interface DropdownState {
 }
 
 export const NewMainSliderContainer = () => {
-    const [sliderState, setSliderState] = useState<SliderState>("MIDDLE");
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { myProfile, isAuth } = useAuth();
     const appDispatch = useAppDispatch();
+    const [isMobileSlider, setMobileSlider] = useState<boolean>(() => (typeof window !== "undefined" ? window.innerWidth <= 1140 : false));
+    const [sliderState, setSliderState] = useState<SliderState>(() => (isMobileSlider ? "LEFT-FULL" : "MIDDLE"));
 
     const authData = useAppSelector(getUserAuthData);
     const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
@@ -92,6 +93,19 @@ export const NewMainSliderContainer = () => {
         () => setDropdownMenuOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
     );
 
+    useEffect(() => {
+        if (typeof window === "undefined") return undefined;
+        const handleResize = () => {
+            const w = window.innerWidth;
+            console.log("window width:", w);
+            setMobileSlider(w <= 1140);
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const handleOpenDropdownMenu = (type: ButtonNav) => {
         setDropdownMenuOpened((prev) => {
             switch (type) {
@@ -113,6 +127,10 @@ export const NewMainSliderContainer = () => {
 
     const handleLeftClick = () => {
         if (sliderState === "LEFT-FULL" || sliderState === "RIGHT-FULL") {
+            if (isMobileSlider) {
+                setSliderState("LEFT-FULL");
+                return;
+            }
             setSliderState("MIDDLE");
             return;
         }
@@ -121,6 +139,10 @@ export const NewMainSliderContainer = () => {
 
     const handleRightClick = () => {
         if (sliderState === "RIGHT-FULL" || sliderState === "LEFT-FULL") {
+            if (isMobileSlider) {
+                setSliderState("RIGHT-FULL");
+                return;
+            }
             setSliderState("MIDDLE");
             return;
         }
@@ -142,7 +164,7 @@ export const NewMainSliderContainer = () => {
                     onMouseEnter={() => { if (!((sliderState === "RIGHT-FULL") || (sliderState === "LEFT-FULL"))) setSliderState("LEFT-HALF"); }}
                     onMouseLeave={() => { if (sliderState === "LEFT-HALF") setSliderState("MIDDLE"); }}
                 >
-                    <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "RIGHT-FULL" }, { [styles.contentHalf]: sliderState === "LEFT-HALF" })}>
+                    <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "RIGHT-FULL" }, { [styles.contentFull]: sliderState === "LEFT-FULL" })}>
                         <h2>Путешествуй, помогай, меняй мир</h2>
                         <p>
                             Goodsurfing — способ путешествовать недорого,
@@ -166,7 +188,7 @@ export const NewMainSliderContainer = () => {
                             )}
                         />
                     </div>
-                    <img className={styles.sliderbackpackImg} src={sliderBackpackImg} alt="backpack" />
+                    <img className={cn(styles.sliderbackpackImg, { [styles.sliderbackpackImgScale]: sliderState === "LEFT-HALF" }, { [styles.sliderbackpackImgActive]: sliderState === "LEFT-FULL" })} src={sliderBackpackImg} alt="backpack" />
                 </div>
                 <div
                     className={cn(
@@ -180,7 +202,7 @@ export const NewMainSliderContainer = () => {
                     onMouseEnter={() => { if (!((sliderState === "RIGHT-FULL") || (sliderState === "LEFT-FULL"))) setSliderState("RIGHT-HALF"); }}
                     onMouseLeave={() => { if (sliderState === "RIGHT-HALF") setSliderState("MIDDLE"); }}
                 >
-                    <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "LEFT-FULL" }, { [styles.contentHalf]: sliderState === "RIGHT-HALF" })}>
+                    <div className={cn(styles.content, { [styles.contentCollapsed]: sliderState === "LEFT-FULL" }, { [styles.contentFull]: sliderState === "RIGHT-FULL" })}>
                         <h2>Примите тех, кто хочет помогать и делайте мир лучше вместе</h2>
                         <p>
                             Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте.
@@ -195,6 +217,7 @@ export const NewMainSliderContainer = () => {
                     <div className={cn(styles.cornerRight)}>
                         <ReactSVG src={arrowIcon} className={cn(styles.arrow, styles.arrowRight, { [styles.arrowRightRotated]: sliderState === "LEFT-FULL" }, { [styles.arrowHidden]: sliderState === "RIGHT-FULL" })} />
                     </div>
+                    <img className={cn(styles.sliderHouseImg, { [styles.sliderHouseImgScale]: sliderState === "RIGHT-HALF" }, { [styles.sliderHouseImgMoved]: sliderState === "LEFT-FULL" }, { [styles.sliderHouseImgActive]: sliderState === "RIGHT-FULL" })} src={sliderHouseImg} alt="house" />
                 </div>
                 <img className={styles.logo} src={sliderLogo} alt="goodsurfing logo" />
                 <div className={styles.nav}>
