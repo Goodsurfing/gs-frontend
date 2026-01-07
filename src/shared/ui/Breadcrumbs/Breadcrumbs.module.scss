@@ -1,0 +1,38 @@
+.breadcrumbs {
+    display: block;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-gray-700, #666);
+    font-size: 14px;
+}
+
+.label {
+    color: inherit;
+}
+
+.sep {
+    color: var(--color-gray-400, #bbb);
+}
+
+.current {
+    font-weight: 600;
+    color: var(--color-text, inherit);
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}

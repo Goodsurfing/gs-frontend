@@ -6,6 +6,8 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { useCreateAchievementMutation } from "@/entities/Admin";
 import { getAdminSkillsAchievementsPageUrl } from "@/shared/config/routes/AppUrls";
 import { AdminAchievementForm, AdminAchievementFields } from "@/features/Admin";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import styles from "./AdminAchievementsCreatePage.module.scss";
 
 const AdminAchievementsCreatePage = () => {
     const { locale } = useLocale();
@@ -37,9 +39,13 @@ const AdminAchievementsCreatePage = () => {
     };
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление достижения</h1>
+            <Breadcrumbs items={[{ label: "Навыки и достижения", to: getAdminSkillsAchievementsPageUrl(locale) },
+                { label: "Редактирование навыка" },
+            ]}
+            />
             <AdminAchievementForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
     );

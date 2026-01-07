@@ -4,6 +4,10 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { AdminSkillFields, AdminSkillForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import { getAdminSkillsAchievementsPageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./AdminSkillInfo.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminSkillInfoProps {
     skillId: number;
@@ -14,6 +18,7 @@ export const AdminSkillInfo: FC<AdminSkillInfoProps> = (props) => {
     const { data: skillData, isLoading } = useGetSkillByIdQuery(skillId);
     const [updateSkill, { isLoading: isUpdateLoading }] = useEditSkillMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { locale } = useLocale();
 
     const onSubmit = async (data: AdminSkillFields) => {
         setToast(undefined);
@@ -45,17 +50,25 @@ export const AdminSkillInfo: FC<AdminSkillInfoProps> = (props) => {
 
     if (!skillData) {
         return (
-            <div>
+            <div className={styles.wrapper}>
                 <h1>Страница навыка</h1>
+                <Breadcrumbs items={[{ label: "Навыки и достижения пользователей", to: getAdminSkillsAchievementsPageUrl(locale) },
+                    { label: "Редактирование навыка" },
+                ]}
+                />
                 <h2>Данные по данному навыку отсутсвуют</h2>
             </div>
         );
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Страница навыка</h1>
+            <Breadcrumbs items={[{ label: "Навыки и достижения пользователей", to: getAdminSkillsAchievementsPageUrl(locale) },
+                { label: "Редактирование навыка" },
+            ]}
+            />
             <AdminSkillForm
                 skill={skillData}
                 onSubmit={onSubmit}

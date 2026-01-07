@@ -4,6 +4,10 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { AdminAchievementFields, AdminAchievementForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import { getAdminSkillsAchievementsPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminAchievementInfo.module.scss";
 
 interface AdminAchievementInfoProps {
     achievementId: number;
@@ -14,6 +18,7 @@ export const AdminAchievementInfo: FC<AdminAchievementInfoProps> = (props) => {
     const { data: achievementData, isLoading } = useGetAchievementByIdQuery(achievementId);
     const [updateAchievement, { isLoading: isUpdateLoading }] = useEditAchievementMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { locale } = useLocale();
 
     const onSubmit = async (data: AdminAchievementFields) => {
         setToast(undefined);
@@ -53,9 +58,13 @@ export const AdminAchievementInfo: FC<AdminAchievementInfoProps> = (props) => {
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Страница навыка</h1>
+            <Breadcrumbs items={[{ label: "Навыки и достижения", to: getAdminSkillsAchievementsPageUrl(locale) },
+                { label: "Редактирование достижения" },
+            ]}
+            />
             <AdminAchievementForm
                 achievement={achievementData}
                 onSubmit={onSubmit}
