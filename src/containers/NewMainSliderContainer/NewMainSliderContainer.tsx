@@ -97,7 +97,6 @@ export const NewMainSliderContainer = () => {
         if (typeof window === "undefined") return undefined;
         const handleResize = () => {
             const w = window.innerWidth;
-            console.log("window width:", w);
             setMobileSlider(w <= 1140);
         };
 

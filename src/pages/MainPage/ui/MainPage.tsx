@@ -15,7 +15,8 @@ import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContain
 import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
 
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import { NewMainSliderContainer } from "@/containers/NewMainSliderContainer/NewMainSliderContainer";
+// import { NewMainSliderContainer }
+// from "@/containers/NewMainSliderContainer/NewMainSliderContainer";
 import styles from "./MainPage.module.scss";
 
 const MainPage: FC = () => {
@@ -30,7 +31,7 @@ const MainPage: FC = () => {
     return (
         <>
             <WelcomeContainer />
-            <NewMainSliderContainer />
+            {/* <NewMainSliderContainer /> */}
             <Section title={t("Как это работает?")}>
                 <HowItWorkContainer />
             </Section>
