@@ -6,6 +6,8 @@ import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUr
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminHouseForm, AdminHouseFields } from "@/features/Admin";
+import styles from "./AdminHouseCreatePage.module.scss";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 
 const AdminHouseCreatePage = () => {
     const { locale } = useLocale();
@@ -37,9 +39,12 @@ const AdminHouseCreatePage = () => {
     };
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление жилья</h1>
+            <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
+                { label: "Создание жилья" }]}
+            />
             <AdminHouseForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
     );

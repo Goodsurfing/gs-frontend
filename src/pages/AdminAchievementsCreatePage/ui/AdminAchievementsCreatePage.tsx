@@ -43,7 +43,7 @@ const AdminAchievementsCreatePage = () => {
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление достижения</h1>
             <Breadcrumbs items={[{ label: "Навыки и достижения", to: getAdminSkillsAchievementsPageUrl(locale) },
-                { label: "Редактирование навыка" },
+                { label: "Создание достижения" },
             ]}
             />
             <AdminAchievementForm onSubmit={onSubmit} isLoading={isLoading} />

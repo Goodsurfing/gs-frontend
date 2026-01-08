@@ -6,6 +6,7 @@ import { AdminFoodForm, AdminFoodFields } from "@/features/Admin";
 import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 
 const AdminFoodCreatePage = () => {
     const { locale } = useLocale();
@@ -40,6 +41,9 @@ const AdminFoodCreatePage = () => {
         <div>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление питания</h1>
+            <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
+                { label: "Создание питания" }]}
+            />
             <AdminFoodForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
     );
