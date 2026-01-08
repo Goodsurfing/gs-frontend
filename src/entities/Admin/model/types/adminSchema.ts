@@ -108,6 +108,10 @@ export enum AdminSort {
     EmailDesc = "email:desc",
     FioAsc = "fio:asc",
     FioDesc = "fio:desc",
+    FioAuthorAsc = "fio.author:asc",
+    FioAuthorDesc = "fio.author:desc",
+    RatingAsc = "rating:asc",
+    RatingDesc = "rating:desc",
     EmployeeAsc = "employee:asc",
     EmployeeDesc = "employee:desc",
     CountVacanciesAsc = "countVacancies:asc",
@@ -352,27 +356,67 @@ export interface EditReviewVacancy {
     }
 }
 
+export type AdminReviewVacancySort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "vacancy.name:asc" |
+"vacancy.name:desc" | "rating:asc" | "rating:desc" | "created:asc" | "created:desc";
+
 export interface GetAdminReviewVacancyListParams {
-    sort?: "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "vacancy.name:asc" |
-    "vacancy.name:desc" | "score:asc" | "score:desc" | "created:asc" | "created:desc";
-    authorLastName: string;
-    authorFirstName: string;
-    vacancyName: string;
+    sort?: AdminReviewVacancySort;
+    authorLastName?: string;
+    authorFirstName?: string;
+    vacancyName?: string;
     page: number;
     limit: number;
 }
 
 export interface AdminReviewVacancy {
     id: number;
-    authorFirstName: string;
-    authorLastName: string;
-    vacancyName: string;
-    score: number;
+    authorFirstName: string | null;
+    authorLastName: string | null;
+    vacancyName: string | null;
+    rating: number;
     description: string;
     created: string;
+
 }
 
 export interface GetAdminReviewVacancyListResponse {
     data: AdminReviewVacancy[];
+    pagination: Pagination
+}
+
+export interface EditAdminReviewVolunteerRequest {
+    body: {
+        rating: number;
+        description: string;
+    }
+    reviewId: number;
+}
+
+export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "rating:asc" | "rating:desc" |
+"created:asc" | "created:desc";
+
+export interface GetAdminReviewVolunteerListParams {
+    sort?: AdminReviewVolunteerSort;
+    authorLastName?: string;
+    authorFirstName?: string;
+    volunteerLastName?: string;
+    volunteerFirstName?: string;
+    page: number;
+    limit: number;
+}
+
+export interface AdminReviewVolunteer {
+    id: number;
+    authorFirstName: string | null;
+    authorLastName: string | null;
+    volunteerFirstName: string | null;
+    volunteerLastName: string | null;
+    rating: number;
+    description: string;
+    created: string;
+}
+
+export interface GetAdminReviewVolunteerListResponse {
+    data: AdminReviewVolunteer[];
     pagination: Pagination
 }

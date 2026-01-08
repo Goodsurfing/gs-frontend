@@ -3,18 +3,24 @@ import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     AdminOrganization,
     AdminReviewVacancy,
+    AdminReviewVolunteer,
     AdminUser,
     CreateAdminAchievementsRequest,
     CreateAdminFoodRequest,
     CreateAdminHouseRequest,
     CreateAdminSkillRequest, CreateAdminTransferRequest,
     EditAdminAchievementsRequest, EditAdminFoodRequest, EditAdminHouseRequest,
+    EditAdminReviewVolunteerRequest,
     EditAdminSkillRequest, EditAdminTransferRequest,
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse, GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
-    GetAdminOrganizationParams, GetAdminOrganizationResponse, GetAdminReviewVacancyListParams,
-    GetAdminReviewVacancyListResponse, GetAdminSkillsParams, GetAdminSkillsResponse,
+    GetAdminOrganizationParams, GetAdminOrganizationResponse,
+    GetAdminReviewVacancyListParams,
+    GetAdminReviewVacancyListResponse,
+    GetAdminReviewVolunteerListParams,
+    GetAdminReviewVolunteerListResponse,
+    GetAdminSkillsParams, GetAdminSkillsResponse,
     GetAdminTransfersParams,
     GetAdminTransfersResponse,
     GetAdminUserParams,
@@ -43,7 +49,7 @@ interface GoodsurfingToday {
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["skill", "user", "reviewVacancy", "category", "achievement", "transfer",
+    tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
         "house", "food", "organization",
     ],
     endpoints: (build) => ({
@@ -449,7 +455,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["organization"],
         }),
-        editReviewVacancy: build.mutation<void, EditReviewVacancy>({
+        editAdminReviewVacancy: build.mutation<void, EditReviewVacancy>({
             query: (data) => ({
                 url: `review-vacancy/edit/${data.reviewId}`,
                 method: "POST",
@@ -457,15 +463,14 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["reviewVacancy"],
         }),
-        deleteReviewVacancy: build.mutation<void, EditReviewVacancy>({
-            query: (data) => ({
-                url: `review-vacancy/${data.reviewId}`,
+        deleteAdminReviewVacancy: build.mutation<void, number>({
+            query: (reviewId) => ({
+                url: `review-vacancy/${reviewId}`,
                 method: "DELETE",
-                body: data.body,
             }),
             invalidatesTags: ["reviewVacancy"],
         }),
-        getReviewVacanciesList: build.query<GetAdminReviewVacancyListResponse,
+        getAdminReviewVacanciesList: build.query<GetAdminReviewVacancyListResponse,
         GetAdminReviewVacancyListParams>({
             query: (params) => ({
                 url: "review-vacancy/list",
@@ -474,13 +479,45 @@ export const adminApi = createApi({
             }),
             providesTags: ["reviewVacancy"],
         }),
-        getReviewVacancyById: build.query<AdminReviewVacancy,
+        getAdminReviewVacancyById: build.query<AdminReviewVacancy,
         string>({
             query: (reviewVacancyId) => ({
                 url: `review-vacancy/${reviewVacancyId}`,
                 method: "GET",
             }),
             providesTags: ["reviewVacancy"],
+        }),
+        editAdminReviewVolunteer: build.mutation<void, EditAdminReviewVolunteerRequest>({
+            query: (data) => ({
+                url: `review-volunteer/edit/${data.reviewId}`,
+                method: "POST",
+                body: data.body,
+            }),
+            invalidatesTags: ["reviewVolunteer"],
+        }),
+        deleteAdminReviewVolunteer: build.mutation<void, number>({
+            query: (reviewId) => ({
+                url: `review-volunteer/${reviewId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["reviewVolunteer"],
+        }),
+        getAdminReviewVolunteerList: build.query<GetAdminReviewVolunteerListResponse,
+        GetAdminReviewVolunteerListParams>({
+            query: (params) => ({
+                url: "review-vacancy/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["reviewVolunteer"],
+        }),
+        getAdminReviewVolunteerById: build.query<AdminReviewVolunteer,
+        string>({
+            query: (reviewVolunteerId) => ({
+                url: `review-volunteer/${reviewVolunteerId}`,
+                method: "GET",
+            }),
+            providesTags: ["reviewVolunteer"],
         }),
         createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
             query: ({ name, color, image }) => {
@@ -566,12 +603,12 @@ export const {
     useLazyGetSkillByIdQuery,
     useAddAdminRoleToUserMutation,
     useLazySearchUserByParamsQuery,
-    useEditReviewVacancyMutation,
-    useDeleteReviewVacancyMutation,
-    useGetReviewVacanciesListQuery,
-    useLazyGetReviewVacanciesListQuery,
-    useGetReviewVacancyByIdQuery,
-    useLazyGetReviewVacancyByIdQuery,
+    useEditAdminReviewVacancyMutation,
+    useDeleteAdminReviewVacancyMutation,
+    useGetAdminReviewVacanciesListQuery,
+    useLazyGetAdminReviewVacanciesListQuery,
+    useGetAdminReviewVacancyByIdQuery,
+    useLazyGetAdminReviewVacancyByIdQuery,
     useCreateCategoryVacancyMutation,
     useEditCategoryVacancyMutation,
     useDeleteCategoryVacancyMutation,
@@ -618,4 +655,8 @@ export const {
     useGetPublicCategoriesVacancyQuery,
     useGetPublicSkillsQuery,
     useGetGoodsurfingTodayQuery,
+    useEditAdminReviewVolunteerMutation,
+    useDeleteAdminReviewVolunteerMutation,
+    useLazyGetAdminReviewVolunteerListQuery,
+    useLazyGetAdminReviewVolunteerByIdQuery,
 } = adminApi;
