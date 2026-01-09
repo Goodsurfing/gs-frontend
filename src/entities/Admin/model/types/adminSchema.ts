@@ -110,6 +110,8 @@ export enum AdminSort {
     FioDesc = "fio:desc",
     FioAuthorAsc = "fio.author:asc",
     FioAuthorDesc = "fio.author:desc",
+    FioVolunteerAsc = "fio.volunteer:asc",
+    FioVolunteerDesc = "fio.volunteer:desc",
     RatingAsc = "rating:asc",
     RatingDesc = "rating:desc",
     EmployeeAsc = "employee:asc",

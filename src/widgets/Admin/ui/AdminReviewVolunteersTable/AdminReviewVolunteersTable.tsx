@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
     FormControl, InputLabel, MenuItem, Select, Stack, TextField,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
+import { useNavigate } from "react-router-dom";
 import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getAdminReviewVacancyPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminReviewVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import {
-    AdminReviewVacancySort, AdminSort, useDeleteAdminReviewVacancyMutation,
-    useLazyGetAdminReviewVacanciesListQuery,
+    AdminReviewVolunteerSort,
+    AdminSort,
+    useDeleteAdminReviewVolunteerMutation,
+    useLazyGetAdminReviewVolunteerListQuery,
 } from "@/entities/Admin";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import {
-    AdminFiltersTable, CustomFilterField,
-} from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import styles from "./AdminReviewVolunteersTable.module.scss";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import styles from "./AdminReviewVacanciesTable.module.scss";
-import { textSlice } from "@/shared/lib/textSlice";
 
-interface ReviewVacancyFilters {
-    sort?: AdminReviewVacancySort;
+interface AchievementFilters {
+    sort?: AdminReviewVolunteerSort;
     authorLastName?: string;
     authorFirstName?: string;
-    vacancyName?: string;
+    volunteerFirstName?: string;
+    volunteerLastName?: string;
 }
 
-const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[] = [
+const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
     {
         key: "authorFirstName",
         label: "Имя автора",
@@ -63,11 +63,25 @@ const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[]
         ),
     },
     {
-        key: "vacancyName",
-        label: "Название вакансии",
+        key: "volunteerFirstName",
+        label: "Имя волонтёра",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="Название вакансии"
+                label="Имя волонтёра"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "volunteerLastName",
+        label: "Фамилия волонтёра",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Фамилия волонтёра"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -99,6 +113,8 @@ const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[]
                     <MenuItem value={AdminSort.IdDesc}>ID ↓</MenuItem>
                     <MenuItem value={AdminSort.FioAuthorAsc}>Автор ФИО ↑</MenuItem>
                     <MenuItem value={AdminSort.FioAuthorDesc}>Автор ФИО ↓</MenuItem>
+                    <MenuItem value={AdminSort.FioVolunteerAsc}>Волонтёр ФИО ↑</MenuItem>
+                    <MenuItem value={AdminSort.FioVolunteerDesc}>Волонтёр ФИО ↓</MenuItem>
                     <MenuItem value={AdminSort.RatingAsc}>Рейтинг ↑</MenuItem>
                     <MenuItem value={AdminSort.RatingDesc}>Рейтинг ↓</MenuItem>
                     <MenuItem value={AdminSort.CreatedAsc}>Дата ↑</MenuItem>
@@ -111,14 +127,14 @@ const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[]
 
 const REVIEWS_PER_PAGE = 30;
 
-export const AdminReviewVacanciesTable = () => {
+export const AdminReviewVolunteersTable = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [reviewToDelete, setReviewlToDelete] = useState<
+    const [reviewToDelete, setReviewToDelete] = useState<
     { id: number } | null>(null);
-    const [filters, setFilters] = useState<Partial<ReviewVacancyFilters>>({
+    const [filters, setFilters] = useState<Partial<AchievementFilters>>({
         sort: AdminSort.IdAsc,
     });
     const { getFullName } = useGetFullName();
@@ -126,37 +142,38 @@ export const AdminReviewVacanciesTable = () => {
         data: reviewsData,
         isLoading,
         isFetching,
-    }] = useLazyGetAdminReviewVacanciesListQuery();
-    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewVacancyMutation();
+    }] = useLazyGetAdminReviewVolunteerListQuery();
+    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewVolunteerMutation();
 
     useEffect(() => {
         const fetchData = async () => {
             setToast(undefined);
-            try {
-                await getReviews({
-                    page: currentPage,
-                    limit: REVIEWS_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.IdAsc,
-                    authorFirstName: filters.authorFirstName,
-                    authorLastName: filters.authorLastName,
-                    vacancyName: filters.vacancyName,
-                }).unwrap();
-            } catch {
-                setToast({
-                    text: "Произошла ошибка при загрузке отзывов",
-                    type: HintType.Error,
+            await getReviews({
+                page: currentPage,
+                limit: REVIEWS_PER_PAGE,
+                sort: filters.sort ?? AdminSort.IdAsc,
+                authorFirstName: filters.authorFirstName,
+                authorLastName: filters.authorLastName,
+                volunteerFirstName: filters.volunteerFirstName,
+                volunteerLastName: filters.volunteerLastName,
+            }).unwrap()
+                .catch(() => {
+                    setToast({
+                        text: "Произошла ошибка при загрузке отзывов",
+                        type: HintType.Error,
+                    });
                 });
-            }
         };
+
         fetchData();
     }, [currentPage, filters, getReviews]);
 
     const handleOpenDeleteModal = (id: number) => {
-        setReviewlToDelete({ id });
+        setReviewToDelete({ id });
     };
 
     const handleCloseDeleteModal = () => {
-        setReviewlToDelete(null);
+        setReviewToDelete(null);
     };
 
     const handleConfirmDelete = async () => {
@@ -189,7 +206,7 @@ export const AdminReviewVacanciesTable = () => {
             hideable: false,
         },
         {
-            field: "name",
+            field: "authorName",
             headerName: "Имя автора",
             sortable: false,
             filterable: false,
@@ -198,13 +215,13 @@ export const AdminReviewVacanciesTable = () => {
             width: 240,
         },
         {
-            field: "vacancyName",
-            headerName: "Название вакансии",
+            field: "volunteerName",
+            headerName: "Имя волонтёра",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 180,
+            width: 240,
         },
         {
             field: "rating",
@@ -213,7 +230,7 @@ export const AdminReviewVacanciesTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 180,
+            width: 240,
         },
         {
             field: "description",
@@ -222,7 +239,7 @@ export const AdminReviewVacanciesTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 180,
+            width: 240,
         },
         {
             field: "created",
@@ -231,7 +248,7 @@ export const AdminReviewVacanciesTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 180,
+            width: 240,
         },
         {
             field: "actions",
@@ -243,7 +260,7 @@ export const AdminReviewVacanciesTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminReviewVacancyPersonalPageUrl(locale, params.row.id),
+                    getAdminReviewVolunteerPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
@@ -286,13 +303,13 @@ export const AdminReviewVacanciesTable = () => {
         const adaptedData: any[] = reviewsData.data.map((review) => {
             const {
                 id, authorFirstName, authorLastName,
-                vacancyName,
+                volunteerFirstName, volunteerLastName,
                 rating, description, created,
             } = review;
             return {
                 id,
-                name: getFullName(authorFirstName, authorLastName),
-                vacancyName: textSlice(vacancyName, 50, "title"),
+                authorName: getFullName(authorFirstName, authorLastName),
+                volunteerName: getFullName(volunteerFirstName, volunteerLastName),
                 rating,
                 description,
                 created,
@@ -321,14 +338,14 @@ export const AdminReviewVacanciesTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <h2>Таблица отзывов на вакансии</h2>
+            <h2>Таблица отзывов на волонтёров</h2>
             <div className={styles.actionButtons}>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
-                    customFields={reviewVacancyCustomFields}
+                    customFields={skillCustomFields}
                 />
             </div>
             <div className={styles.table}>

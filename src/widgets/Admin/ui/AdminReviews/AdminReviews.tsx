@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Button from "@/shared/ui/Button/Button";
-import { AdminAchievementsTable } from "../AdminAchievementsTable/AdminAchievementsTable";
-import styles from "./AdminReviews.module.scss";
 import { AdminReviewVacanciesTable } from "../AdminReviewVacanciesTable/AdminReviewVacanciesTable";
+import { AdminReviewVolunteersTable } from "../AdminReviewVolunteersTable/AdminReviewVolunteersTable";
+import styles from "./AdminReviews.module.scss";
 
 export const AdminReviews = () => {
     const [isVacanciesTableOpen, setVacanciesTableOpen] = useState(false);
@@ -26,7 +26,7 @@ export const AdminReviews = () => {
                 <Button onClick={handleVolunteersTableOpen} color="GREEN" size="SMALL" variant="FILL">{volunteersTextButton}</Button>
             </div>
             {isVacanciesTableOpen && <AdminReviewVacanciesTable />}
-            {/* {isVolunteersTableOpen && <AdminAchievementsTable />} */}
+            {isVolunteersTableOpen && <AdminReviewVolunteersTable />}
         </div>
     );
 };

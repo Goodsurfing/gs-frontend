@@ -1,10 +1,10 @@
 import React from "react";
-import { AdminSkillsAchievements } from "@/widgets/Admin";
+import { AdminReviews } from "@/widgets/Admin";
 
 const AdminReviewPage = () => (
     <div>
         <h1>Страница отзывов</h1>
-        <AdminSkillsAchievements />
+        <AdminReviews />
     </div>
 );
 

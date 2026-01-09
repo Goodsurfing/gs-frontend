@@ -505,7 +505,7 @@ export const adminApi = createApi({
         getAdminReviewVolunteerList: build.query<GetAdminReviewVolunteerListResponse,
         GetAdminReviewVolunteerListParams>({
             query: (params) => ({
-                url: "review-vacancy/list",
+                url: "review-volunteer/list",
                 method: "GET",
                 params,
             }),
