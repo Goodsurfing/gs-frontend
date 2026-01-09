@@ -372,6 +372,7 @@ export interface GetAdminReviewVacancyListParams {
 
 export interface AdminReviewVacancy {
     id: number;
+    authorId: string;
     authorFirstName: string | null;
     authorLastName: string | null;
     vacancyName: string | null;
@@ -399,6 +400,7 @@ export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" |
 
 export interface GetAdminReviewVolunteerListParams {
     sort?: AdminReviewVolunteerSort;
+    authorId: string;
     authorLastName?: string;
     authorFirstName?: string;
     volunteerLastName?: string;

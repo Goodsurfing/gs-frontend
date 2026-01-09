@@ -152,6 +152,7 @@ import {
     getAdminTransferVacanciesCreatePageUrl,
     getAdminTransferVacanciesPersonalPageUrl,
     getAdminReviewsPageUrl,
+    getAdminReviewVacancyPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -189,6 +190,7 @@ import { AdminFoodPersonalPage } from "@/pages/AdminFoodPersonalPage";
 import { AdminTransferCreatePage } from "@/pages/AdminTransferCreatePage";
 import { AdminTransferPersonalPage } from "@/pages/AdminTransferPersonalPage";
 import { AdminReviewPage } from "@/pages/AdminReviewPage";
+import { AdminReviewVacanciesPersonalPage } from "@/pages/AdminReviewVacanciesPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -687,6 +689,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-reviews",
                 element: <AdminReviewPage />,
                 path: (locale: string) => getAdminReviewsPageUrl(locale),
+            },
+            {
+                label: "admin-review-vacancy-personal",
+                element: <AdminReviewVacanciesPersonalPage />,
+                path: (locale: string) => getAdminReviewVacancyPersonalPageUrl(locale),
             },
         ],
     },

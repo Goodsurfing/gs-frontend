@@ -240,10 +240,6 @@ export const getAdminTransferVacanciesPersonalPageUrl: RoutePathFunction = (loca
 
 export const getAdminReviewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews}`;
 
-export const getAdminReviewVacancyPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_review_vacancy_personal}`;
+export const getAdminReviewVacancyPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_review_vacancy_personal}/${id}`;
 
-export const getAdminReviewVacancyCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_review_vacancy_personal}/create`;
-
-export const getAdminReviewVolunteerPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_review_volunteer_personal}`;
-
-export const getAdminReviewVolunteerCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_review_volunteer_personal}/create`;
+export const getAdminReviewVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_review_volunteer_personal}/${id}`;

@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
+import messengerIcon from "@/shared/assets/icons/message_icon.svg";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -23,8 +24,8 @@ import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import styles from "./AdminReviewVacanciesTable.module.scss";
 import { textSlice } from "@/shared/lib/textSlice";
+import styles from "./AdminReviewVacanciesTable.module.scss";
 
 interface ReviewVacancyFilters {
     sort?: AdminReviewVacancySort;
@@ -242,22 +243,34 @@ export const AdminReviewVacanciesTable = () => {
             disableColumnMenu: true,
             hideable: false,
             renderCell: (params) => {
-                const handleView = () => navigate(
+                const handleViewClick = () => navigate(
                     getAdminReviewVacancyPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
                 };
+                const handleMessageClick = () => {
+                    if (!params.row.authorId) return;
+                    navigate(`${locale}/messenger/create?recipientVolunteer=${params.row.authorId}`);
+                };
 
                 return (
                     <Stack direction="row" spacing={1}>
                         <button
-                            onClick={handleView}
+                            onClick={handleViewClick}
                             type="button"
                             title="Редактировать отзыв"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
+                        </button>
+                        <button
+                            onClick={handleMessageClick}
+                            type="button"
+                            title="Написать пользователю"
+                            className={cn(styles.btnIcon, styles.btnShow)}
+                        >
+                            <ReactSVG src={messengerIcon} />
                         </button>
                         <button
                             onClick={handleDeleteClick}
@@ -287,10 +300,11 @@ export const AdminReviewVacanciesTable = () => {
             const {
                 id, authorFirstName, authorLastName,
                 vacancyName,
-                rating, description, created,
+                rating, description, created, authorId,
             } = review;
             return {
                 id,
+                authorId,
                 name: getFullName(authorFirstName, authorLastName),
                 vacancyName: textSlice(vacancyName, 50, "title"),
                 rating,
