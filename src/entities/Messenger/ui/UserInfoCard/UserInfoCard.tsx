@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useCallback } from "react";
+import React, {
+    FC, useCallback, useState, useEffect,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 
@@ -9,6 +11,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import exitIcon from "@/shared/assets/icons/delete.svg";
 import {
     getHostPersonalPageUrl,
+    getOfferPersonalPageUrl,
     getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { useFormatLanguages } from "@/shared/data/languages";
@@ -22,6 +25,9 @@ import { formatDate } from "@/shared/lib/formatDate";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { ProfileById } from "@/entities/Profile";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
+import { textSlice } from "@/shared/lib/textSlice";
+import CustomLink from "@/shared/ui/Link/Link";
 
 interface UserInfoCardProps {
     user: ProfileById;
@@ -41,14 +47,35 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
 
     const { t } = useTranslation("messenger");
     const { getTranslation } = useSkillsData();
-    const languages = user.volunteer?.languages ?? null;
+    const languages = volunteer?.languages ?? null;
     const textLanguages = useFormatLanguages(user.volunteer?.languages ?? []);
     const { getFullName } = useGetFullName();
     const navigate = useNavigate();
 
+    const [getOffer] = useLazyGetOfferByIdQuery();
+
+    const [offers, setOffers] = useState<Offer[]>([]);
+    const [offersLoading, setOffersLoading] = useState(false);
+
     const navigateToVolunteer = useCallback((id: string) => {
         navigate(getVolunteerPersonalPageUrl(locale, id));
     }, [locale, navigate]);
+
+    useEffect(() => {
+        if (volunteer?.participatedVacancyIds && volunteer.participatedVacancyIds.length > 0) {
+            setOffersLoading(true);
+            const idsToFetch = volunteer.participatedVacancyIds.slice(0, 3);
+            const promises = idsToFetch.map((id) => getOffer(id).unwrap());
+            Promise.all(promises).then((fetchedOffers) => {
+                setOffers(fetchedOffers);
+                setOffersLoading(false);
+            }).catch(() => {
+                setOffersLoading(false);
+            });
+        } else {
+            setOffers([]);
+        }
+    }, [volunteer?.participatedVacancyIds, getOffer]);
 
     const renderSkillsCard = () => {
         if (!volunteer) return null;
@@ -63,6 +90,21 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                 alt={item.name}
                 key={item.id}
             />
+        ));
+    };
+
+    const renderOffersList = () => {
+        if (!volunteer || !volunteer.participatedVacancyIds
+            || volunteer.participatedVacancyIds.length === 0) {
+            return <span>{t("Волонтёр не участвовал в проектах")}</span>;
+        }
+        if (offersLoading) {
+            return <span>{t("Загрузка...")}</span>;
+        }
+        return offers.map((offer) => (
+            <CustomLink to={getOfferPersonalPageUrl(locale, offer.id.toString())} variant="DEFAULT" key={offer.id} className={styles.caseItem}>
+                <li>{textSlice(offer.description?.title, 30, "title")}</li>
+            </CustomLink>
         ));
     };
 
@@ -140,12 +182,12 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                             : t("Языки не были указаны")}
                     </div>
                 </div>
-                {/* <div className={styles.cases}>
-                        <span className={styles.textCaption}>
-                            Участвовал в проектах
-                        </span>
-                        <div className={styles.casesList}>{renderCasesList}</div>
-                    </div> */}
+                <div className={styles.cases}>
+                    <span className={styles.textCaption}>
+                        {t("Участвовал в проектах:")}
+                    </span>
+                    <div className={styles.casesList}>{renderOffersList()}</div>
+                </div>
                 {/* Not in backend */}
                 {/* <div className={styles.dates}>
                         <div className={styles.date}>

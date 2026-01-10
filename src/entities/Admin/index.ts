@@ -8,6 +8,8 @@ export type {
     AdminUserFields,
     AdminOrganization,
     UpdateAdminOrganization,
+    AdminReviewVacancySort,
+    AdminReviewVolunteerSort,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -29,9 +31,9 @@ export {
     useDeleteSkillMutation, useEditSkillMutation, useLazyGetSkillsQuery,
     useGetSkillByIdQuery, useGetSkillsQuery, useLazyGetSkillByIdQuery,
     useAddAdminRoleToUserMutation, useLazySearchUserByParamsQuery,
-    useEditReviewVacancyMutation, useDeleteReviewVacancyMutation,
-    useGetReviewVacanciesListQuery, useGetReviewVacancyByIdQuery,
-    useLazyGetReviewVacanciesListQuery, useLazyGetReviewVacancyByIdQuery,
+    useEditAdminReviewVacancyMutation, useDeleteAdminReviewVacancyMutation,
+    useGetAdminReviewVacanciesListQuery, useGetAdminReviewVacancyByIdQuery,
+    useLazyGetAdminReviewVacanciesListQuery, useLazyGetAdminReviewVacancyByIdQuery,
     useCreateCategoryVacancyMutation, useDeleteCategoryVacancyMutation,
     useEditCategoryVacancyMutation, useGetCategoryVacancyByIdQuery,
     useLazyGetCategoriesVacancyQuery,
@@ -62,4 +64,9 @@ export {
     useGetPublicSkillsQuery,
     useGetPublicHousesQuery,
     useGetPublicTransfersQuery,
+    useEditAdminReviewVolunteerMutation,
+    useDeleteAdminReviewVolunteerMutation,
+    useLazyGetAdminReviewVolunteerListQuery,
+    useLazyGetAdminReviewVolunteerByIdQuery,
+    useGetAdminReviewVolunteerByIdQuery,
 } from "./api/adminApi";

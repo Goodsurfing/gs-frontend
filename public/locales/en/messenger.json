@@ -25,5 +25,8 @@
     "Волонтёр": "Volunteer",
     "Посмотреть организацию": "View organization",
     "Заявка": "Application",
-    "Прикрепленный файл": "Attached File"
+    "Прикрепленный файл": "Attached File",
+    "Волонтёр не участвовал в проектах": "The volunteer did not participate in projects",
+    "Загрузка...": "Loading...",
+    "Участвовал в проектах:": "Participated in projects:"
 }

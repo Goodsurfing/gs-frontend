@@ -6,6 +6,8 @@ import { getAdminCategoriesVacanciesPageUrl } from "@/shared/config/routes/AppUr
 import { useCreateCategoryVacancyMutation } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import styles from "./AdminCategoriesCreatePage.module.scss";
 
 const AdminCategoriesCreatePage = () => {
     const { locale } = useLocale();
@@ -38,9 +40,13 @@ const AdminCategoriesCreatePage = () => {
     };
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление категории</h1>
+            <Breadcrumbs items={[{ label: "Категории вакансий", to: getAdminCategoriesVacanciesPageUrl(locale) },
+                { label: "Создание категории" },
+            ]}
+            />
             <AdminCategoryForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
     );

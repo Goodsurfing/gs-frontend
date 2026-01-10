@@ -4,6 +4,10 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { AdminSkillFields, AdminTransferForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./AdminTransferInfoю.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminTransferInfoProps {
     transferId: number;
@@ -14,6 +18,7 @@ export const AdminTransferInfo: FC<AdminTransferInfoProps> = (props) => {
     const { data: transferData, isLoading } = useGetTransfertByIdQuery(transferId);
     const [updateSkill, { isLoading: isUpdateLoading }] = useEditTransferMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { locale } = useLocale();
 
     const onSubmit = async (data: AdminSkillFields) => {
         setToast(undefined);
@@ -45,17 +50,23 @@ export const AdminTransferInfo: FC<AdminTransferInfoProps> = (props) => {
 
     if (!transferData) {
         return (
-            <div>
+            <div className={styles.wrapper}>
                 <h1>Страница оплачиваемого проезда</h1>
+                <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
+                    { label: "Редактирование оплачиваемого проезда" }]}
+                />
                 <h2>Данные по данному оплачиваемого проезда отсутсвуют</h2>
             </div>
         );
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Страница оплачиваемого проезда</h1>
+            <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
+                { label: "Редактирование оплачиваемого проезда" }]}
+            />
             <AdminTransferForm
                 transfer={transferData}
                 onSubmit={onSubmit}

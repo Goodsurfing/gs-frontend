@@ -457,7 +457,7 @@ export const Chat: FC<ChatProps> = (props) => {
                         {/* <UserSettings /> */}
                         <ReactSVG
                             src={arrowIcon}
-                            className={styles.openInfo}
+                            className={cn(styles.openInfo, { [styles.rotated]: isInfoOpened })}
                             onClick={() => setInfoOpened((prev) => !prev)}
                         />
                     </div>

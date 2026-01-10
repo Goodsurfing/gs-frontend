@@ -4,6 +4,10 @@ import { AdminCategoryFields, AdminCategoryForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import styles from "./AdminCategoryInfo.module.scss";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import { getAdminCategoriesVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminCategoryInfoProps {
     categoryId: number;
@@ -14,6 +18,7 @@ export const AdminCategoryInfo: FC<AdminCategoryInfoProps> = (props) => {
     const { data: categoryData, isLoading } = useGetCategoryVacancyByIdQuery(categoryId);
     const [updateCategory, { isLoading: isUpdateLoading }] = useEditCategoryVacancyMutation();
     const [toast, setToast] = useState<ToastAlert>();
+    const { locale } = useLocale();
 
     const onSubmit = async (data: AdminCategoryFields) => {
         setToast(undefined);
@@ -54,9 +59,13 @@ export const AdminCategoryInfo: FC<AdminCategoryInfoProps> = (props) => {
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Страница категории</h1>
+            <Breadcrumbs items={[{ label: "Категории вакансий", to: getAdminCategoriesVacanciesPageUrl(locale) },
+                { label: "Редактирование категории" },
+            ]}
+            />
             <AdminCategoryForm
                 category={categoryData}
                 onSubmit={onSubmit}

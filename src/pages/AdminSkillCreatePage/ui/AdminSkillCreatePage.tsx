@@ -6,6 +6,8 @@ import { AdminSkillFields, AdminSkillForm } from "@/features/Admin";
 import { getAdminSkillsAchievementsPageUrl } from "@/shared/config/routes/AppUrls";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import styles from "./AdminSkillCreatePage.module.scss";
 
 const AdminSkillCreatePage = () => {
     const { locale } = useLocale();
@@ -37,9 +39,13 @@ const AdminSkillCreatePage = () => {
     };
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1>Добавление навыка</h1>
+            <Breadcrumbs items={[{ label: "Навыки и достижения", to: getAdminSkillsAchievementsPageUrl(locale) },
+                { label: "Создание навыка" },
+            ]}
+            />
             <AdminSkillForm onSubmit={onSubmit} isLoading={isLoading} />
         </div>
     );

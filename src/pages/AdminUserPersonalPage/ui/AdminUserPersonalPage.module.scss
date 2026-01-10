@@ -5,23 +5,9 @@
 
 .titleWrapper {
 	display: flex;
-	align-items: flex-end;
-	justify-content: space-between;
-
+	flex-direction: column;
 	width: 100%;
-
-	.link {
-		cursor: pointer;
-
-		background-color: inherit;
-		border: none;
-		font-size: 1rem;
-
-		color: var(--color-blue);
-
-		font-weight: 600;
-		text-decoration-line: underline;
-	}
+	gap: 10px;
 }
 
 .title {

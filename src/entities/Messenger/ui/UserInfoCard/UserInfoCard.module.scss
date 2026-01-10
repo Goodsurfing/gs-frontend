@@ -111,6 +111,18 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    list-style-position: inside;
+    padding-top: 5px;
+}
+
+.casesList li {
+    transition: all 0.2s ease;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+}
+
+.casesList li:hover {
+    text-decoration-color: var(--text-primary-1);
 }
 
 .casesList * {

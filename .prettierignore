@@ -1,4 +1,14 @@
 node_modules
+dist
+build
+coverage
+.cache
+*.min.js
+*.bundle.js
+package-lock.json
+yarn.lock
+.eslintcache
+node_modules
 build
 dist
 .docker

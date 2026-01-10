@@ -14,8 +14,10 @@ import ReviewsContainer from "@/containers/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
 import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
 
-import styles from "./MainPage.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+// import { NewMainSliderContainer }
+// from "@/containers/NewMainSliderContainer/NewMainSliderContainer";
+import styles from "./MainPage.module.scss";
 
 const MainPage: FC = () => {
     const { t, ready } = useTranslation("main");
@@ -29,6 +31,7 @@ const MainPage: FC = () => {
     return (
         <>
             <WelcomeContainer />
+            {/* <NewMainSliderContainer /> */}
             <Section title={t("Как это работает?")}>
                 <HowItWorkContainer />
             </Section>
