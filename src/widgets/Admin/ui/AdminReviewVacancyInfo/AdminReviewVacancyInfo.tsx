@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { useEditAdminReviewVacancyMutation, useGetAdminReviewVacancyByIdQuery } from "@/entities/Admin";
+import {
+    ReviewVacancy, ReviewVacancyInfoTable, useEditAdminReviewVacancyMutation,
+    useGetAdminReviewVacancyByIdQuery,
+} from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -19,17 +22,28 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
     const [updateReview, { isLoading: isUpdateLoading }] = useEditAdminReviewVacancyMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewFields, setReviewFields] = useState<AdminReviewFields | undefined>(undefined);
+    const [reviewInfoTable, setReviewInfoTable] = useState<ReviewVacancy | undefined>(undefined);
     const { locale } = useLocale();
 
     useEffect(() => {
         if (reviewData) {
-            const { rating, description } = reviewData;
+            const {
+                rating, description, id, authorFirstName, authorLastName, vacancyName, created,
+            } = reviewData;
             setReviewFields({
                 rating,
                 description,
             });
+            setReviewInfoTable({
+                id,
+                authorFirstName,
+                authorLastName,
+                vacancyName,
+                created,
+            });
         } else {
             setReviewFields(undefined);
+            setReviewInfoTable(undefined);
         }
     }, [reviewData]);
 
@@ -82,6 +96,7 @@ export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) =
                 { label: "Редактирование отзыва на вакансию" },
             ]}
             />
+            {reviewInfoTable && <ReviewVacancyInfoTable data={reviewInfoTable} />}
             <AdminReviewForm
                 review={reviewFields}
                 onSubmit={onSubmit}

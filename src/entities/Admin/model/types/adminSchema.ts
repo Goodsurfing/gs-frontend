@@ -371,7 +371,7 @@ export interface GetAdminReviewVacancyListParams {
 }
 
 export interface AdminReviewVacancy {
-    id: number;
+    id: string;
     authorId: string;
     authorFirstName: string | null;
     authorLastName: string | null;
@@ -409,7 +409,7 @@ export interface GetAdminReviewVolunteerListParams {
 }
 
 export interface AdminReviewVolunteer {
-    id: number;
+    id: string;
     authorFirstName: string | null;
     authorLastName: string | null;
     volunteerFirstName: string | null;

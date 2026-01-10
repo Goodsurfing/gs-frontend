@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { useEditAdminReviewVolunteerMutation, useGetAdminReviewVolunteerByIdQuery } from "@/entities/Admin";
+import {
+    ReviewVolunteer, ReviewVolunteerInfoTable, useEditAdminReviewVolunteerMutation,
+    useGetAdminReviewVolunteerByIdQuery,
+} from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -19,17 +22,31 @@ export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (prop
     const [updateReview, { isLoading: isUpdateLoading }] = useEditAdminReviewVolunteerMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewFields, setReviewFields] = useState<AdminReviewFields | undefined>(undefined);
+    const [reviewInfoTable, setReviewInfoTable] = useState<ReviewVolunteer | undefined>(undefined);
     const { locale } = useLocale();
 
     useEffect(() => {
         if (reviewData) {
-            const { rating, description } = reviewData;
+            const {
+                rating, description, id, authorFirstName,
+                authorLastName, volunteerFirstName, volunteerLastName,
+                created,
+            } = reviewData;
             setReviewFields({
                 rating,
                 description,
             });
+            setReviewInfoTable({
+                id,
+                authorFirstName,
+                authorLastName,
+                volunteerFirstName,
+                volunteerLastName,
+                created,
+            });
         } else {
             setReviewFields(undefined);
+            setReviewInfoTable(undefined);
         }
     }, [reviewData]);
 
@@ -82,6 +99,7 @@ export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (prop
                 { label: "Редактирование отзыва на вакансию" },
             ]}
             />
+            {reviewInfoTable && <ReviewVolunteerInfoTable data={reviewInfoTable} />}
             <AdminReviewForm
                 review={reviewFields}
                 onSubmit={onSubmit}
