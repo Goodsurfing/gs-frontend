@@ -24,6 +24,14 @@ export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
 export { OrganizationInfoTable } from "./ui/OrganizationInfoTable/OrganizationInfoTable";
 
+export { ReviewVacancyInfoTable } from "./ui/ReviewVacancyInfoTable/ReviewVacancyInfoTable";
+
+export type { ReviewVacancy } from "./ui/ReviewVacancyInfoTable/ReviewVacancyInfoTable";
+
+export { ReviewVolunteerInfoTable } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
+
+export type { ReviewVolunteer } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
+
 export { adminUserAdapter } from "./lib/adminAdapters";
 
 export {
