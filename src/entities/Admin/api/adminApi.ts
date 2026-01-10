@@ -463,7 +463,7 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["reviewVacancy"],
         }),
-        deleteAdminReviewVacancy: build.mutation<void, number>({
+        deleteAdminReviewVacancy: build.mutation<void, string>({
             query: (reviewId) => ({
                 url: `review-vacancy/${reviewId}`,
                 method: "DELETE",
@@ -495,7 +495,7 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["reviewVolunteer"],
         }),
-        deleteAdminReviewVolunteer: build.mutation<void, number>({
+        deleteAdminReviewVolunteer: build.mutation<void, string>({
             query: (reviewId) => ({
                 url: `review-volunteer/${reviewId}`,
                 method: "DELETE",
@@ -659,4 +659,5 @@ export const {
     useDeleteAdminReviewVolunteerMutation,
     useLazyGetAdminReviewVolunteerListQuery,
     useLazyGetAdminReviewVolunteerByIdQuery,
+    useGetAdminReviewVolunteerByIdQuery,
 } = adminApi;

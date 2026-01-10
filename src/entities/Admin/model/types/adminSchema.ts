@@ -351,9 +351,9 @@ export interface SearchUsersResponse {
 }
 
 export interface EditReviewVacancy {
-    reviewId: number;
+    reviewId: string;
     body: {
-        score: number;
+        rating: number;
         description: string;
     }
 }
@@ -392,7 +392,7 @@ export interface EditAdminReviewVolunteerRequest {
         rating: number;
         description: string;
     }
-    reviewId: number;
+    reviewId: string;
 }
 
 export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "rating:asc" | "rating:desc" |
@@ -400,7 +400,6 @@ export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" |
 
 export interface GetAdminReviewVolunteerListParams {
     sort?: AdminReviewVolunteerSort;
-    authorId: string;
     authorLastName?: string;
     authorFirstName?: string;
     volunteerLastName?: string;

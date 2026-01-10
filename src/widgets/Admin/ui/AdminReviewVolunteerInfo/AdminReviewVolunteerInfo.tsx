@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { useEditAdminReviewVacancyMutation, useGetAdminReviewVacancyByIdQuery } from "@/entities/Admin";
+import { useEditAdminReviewVolunteerMutation, useGetAdminReviewVolunteerByIdQuery } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -7,16 +7,16 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminReviewsPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./AdminReviewVacancyInfo.module.scss";
+import styles from "./AdminReviewVolunteerInfo.module.scss";
 
-interface AdminReviewVacancyInfoProps {
+interface AdminReviewVolunteerInfoProps {
     reviewId: string;
 }
 
-export const AdminReviewVacancyInfo: FC<AdminReviewVacancyInfoProps> = (props) => {
+export const AdminReviewVolunteerInfo: FC<AdminReviewVolunteerInfoProps> = (props) => {
     const { reviewId } = props;
-    const { data: reviewData, isLoading } = useGetAdminReviewVacancyByIdQuery(reviewId);
-    const [updateReview, { isLoading: isUpdateLoading }] = useEditAdminReviewVacancyMutation();
+    const { data: reviewData, isLoading } = useGetAdminReviewVolunteerByIdQuery(reviewId);
+    const [updateReview, { isLoading: isUpdateLoading }] = useEditAdminReviewVolunteerMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewFields, setReviewFields] = useState<AdminReviewFields | undefined>(undefined);
     const { locale } = useLocale();

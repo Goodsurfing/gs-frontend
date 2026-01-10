@@ -16,3 +16,5 @@ export type { AdminFoodFields } from "./ui/AdminFoodForm/AdminFoodForm";
 export { AdminTransferForm } from "./ui/AdminTransferForm/AdminTransferForm";
 export type { AdminTransferFields } from "./ui/AdminTransferForm/AdminTransferForm";
 export { AdminUpdateSkills } from "./ui/AdminUpdateSkills/AdminUpdateSkills";
+export type { AdminReviewFields } from "./ui/AdminReviewForm/AdminReviewForm";
+export { AdminReviewForm } from "./ui/AdminReviewForm/AdminReviewForm";

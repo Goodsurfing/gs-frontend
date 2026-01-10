@@ -6,6 +6,7 @@ import {
 import { ReactSVG } from "react-svg";
 import { useNavigate } from "react-router-dom";
 import cn from "classnames";
+import messengerIcon from "@/shared/assets/icons/message_icon.svg";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -133,7 +134,7 @@ export const AdminReviewVolunteersTable = () => {
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewToDelete, setReviewToDelete] = useState<
-    { id: number } | null>(null);
+    { id: string } | null>(null);
     const [filters, setFilters] = useState<Partial<AchievementFilters>>({
         sort: AdminSort.IdAsc,
     });
@@ -168,7 +169,7 @@ export const AdminReviewVolunteersTable = () => {
         fetchData();
     }, [currentPage, filters, getReviews]);
 
-    const handleOpenDeleteModal = (id: number) => {
+    const handleOpenDeleteModal = (id: string) => {
         setReviewToDelete({ id });
     };
 
@@ -265,6 +266,10 @@ export const AdminReviewVolunteersTable = () => {
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
                 };
+                const handleMessageClick = () => {
+                    if (!params.row.authorId) return;
+                    navigate(`${locale}/messenger/create?recipientVolunteer=${params.row.authorId}`);
+                };
 
                 return (
                     <Stack direction="row" spacing={1}>
@@ -275,6 +280,14 @@ export const AdminReviewVolunteersTable = () => {
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
+                        </button>
+                        <button
+                            onClick={handleMessageClick}
+                            type="button"
+                            title="Написать пользователю"
+                            className={cn(styles.btnIcon, styles.btnShow)}
+                        >
+                            <ReactSVG src={messengerIcon} />
                         </button>
                         <button
                             onClick={handleDeleteClick}

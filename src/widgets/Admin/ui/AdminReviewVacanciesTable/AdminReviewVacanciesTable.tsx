@@ -118,7 +118,7 @@ export const AdminReviewVacanciesTable = () => {
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewToDelete, setReviewlToDelete] = useState<
-    { id: number } | null>(null);
+    { id: string } | null>(null);
     const [filters, setFilters] = useState<Partial<ReviewVacancyFilters>>({
         sort: AdminSort.IdAsc,
     });
@@ -152,7 +152,7 @@ export const AdminReviewVacanciesTable = () => {
         fetchData();
     }, [currentPage, filters, getReviews]);
 
-    const handleOpenDeleteModal = (id: number) => {
+    const handleOpenDeleteModal = (id: string) => {
         setReviewlToDelete({ id });
     };
 

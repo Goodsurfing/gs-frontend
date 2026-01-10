@@ -68,4 +68,5 @@ export {
     useDeleteAdminReviewVolunteerMutation,
     useLazyGetAdminReviewVolunteerListQuery,
     useLazyGetAdminReviewVolunteerByIdQuery,
+    useGetAdminReviewVolunteerByIdQuery,
 } from "./api/adminApi";

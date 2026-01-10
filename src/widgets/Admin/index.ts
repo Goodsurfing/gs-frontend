@@ -13,3 +13,5 @@ export { AdminFoodInfo } from "./ui/AdminFoodInfo/AdminFoodInfo";
 export { AdminTransferInfo } from "./ui/AdminTransferInfo/AdminTransferInfo";
 export { AdminReviewVacanciesTable } from "./ui/AdminReviewVacanciesTable/AdminReviewVacanciesTable";
 export { AdminReviews } from "./ui/AdminReviews/AdminReviews";
+export { AdminReviewVacancyInfo } from "./ui/AdminReviewVacancyInfo/AdminReviewVacancyInfo";
+export { AdminReviewVolunteerInfo } from "./ui/AdminReviewVolunteerInfo/AdminReviewVolunteerInfo";

@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { AdminReviewVacancyInfo } from "@/widgets/Admin";
+import { AdminReviewVolunteerInfo } from "@/widgets/Admin";
 
-const AdminReviewVacanciesPersonalPage = () => {
+const AdminReviewVolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
 
     if (!id) {
@@ -15,9 +15,9 @@ const AdminReviewVacanciesPersonalPage = () => {
 
     return (
         <div>
-            <AdminReviewVacancyInfo reviewId={id} />
+            <AdminReviewVolunteerInfo reviewId={id} />
         </div>
     );
 };
 
-export default AdminReviewVacanciesPersonalPage;
+export default AdminReviewVolunteerPersonalPage;
