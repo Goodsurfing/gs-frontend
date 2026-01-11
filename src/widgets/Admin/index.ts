@@ -15,3 +15,4 @@ export { AdminReviewVacanciesTable } from "./ui/AdminReviewVacanciesTable/AdminR
 export { AdminReviews } from "./ui/AdminReviews/AdminReviews";
 export { AdminReviewVacancyInfo } from "./ui/AdminReviewVacancyInfo/AdminReviewVacancyInfo";
 export { AdminReviewVolunteerInfo } from "./ui/AdminReviewVolunteerInfo/AdminReviewVolunteerInfo";
+export { AdminOffersTable } from "./ui/AdminOffersTable/AdminOffersTable";

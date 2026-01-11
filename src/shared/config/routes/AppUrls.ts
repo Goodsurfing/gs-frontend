@@ -212,6 +212,22 @@ export const getAdminAchievementPersonalPageUrl: RoutePathFunction = (locale, id
 
 export const getAdminVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancies}`;
 
+export const getAdminVacancyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_vacancy}`;
+
+export const getAdminVacancyWherePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_where}/${id}`;
+
+export const getAdminVacancyWhenPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_when}/${id}`;
+
+export const getAdminVacancyWhoNeedsPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_who_needs}/${id}`;
+
+export const getAdminVacancyDescriptionPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_description}/${id}`;
+
+export const getAdminVacancyWhatToDoPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_what_to_do}/${id}`;
+
+export const getAdminVacancyConditionsPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_conditions}/${id}`;
+
+export const getAdminVacancyFinishingTouchesPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_vacancy_finishing_touches}/${id}`;
+
 // Admin categories
 
 export const getAdminCategoriesVacanciesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_vacancies}`;

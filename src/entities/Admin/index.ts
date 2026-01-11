@@ -77,4 +77,6 @@ export {
     useLazyGetAdminReviewVolunteerListQuery,
     useLazyGetAdminReviewVolunteerByIdQuery,
     useGetAdminReviewVolunteerByIdQuery,
+    useLazyGetAdminOffersQuery,
+    useDeleteAdminOfferMutation,
 } from "./api/adminApi";

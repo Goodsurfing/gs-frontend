@@ -136,6 +136,18 @@ export enum AdminSort {
     IsPaymentDesc = "isPayment:desc",
     IsEndPaymentAsc = "isEndPayment:asc",
     IsEndPaymentDesc = "isEndPayment:desc",
+    CategoryNameAsc = "category.name:asc",
+    CategoryNameDesc = "category.name:desc",
+    UserIdAsc = "user.id:asc",
+    UserIdDesc = "user.id:desc",
+    OrganizationNameAsc = "organization.name:asc",
+    OrganizationNameDesc = "organization.name:desc",
+    TotalApplicationAsc = "totalApplication:asc",
+    TotalApplicationDesc = "totalApplication:desc",
+    AcceptApplicationAsc = "acceptApplication:asc",
+    AcceptApplicationDesc = "acceptApplication:desc",
+    CanselApplicationAsc = "canselApplication:asc",
+    CanselApplicationDesc = "canselApplication:desc",
 }
 
 export interface GetAdminUserParams {
@@ -422,4 +434,34 @@ export interface AdminReviewVolunteer {
 export interface GetAdminReviewVolunteerListResponse {
     data: AdminReviewVolunteer[];
     pagination: Pagination
+}
+
+export interface GetAdminOffersParams {
+    sort?: AdminSort;
+    userId?: string;
+    organizationName?: string;
+    vacancyName?: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminOffers {
+    id: number;
+    categoryName: string;
+    user: {
+        id: string;
+        firstName: string
+        lastName: string;
+    },
+    organizationName: string;
+    name: string;
+    isActive: boolean;
+    countTotalApplication: number;
+    countAcceptApplication: number;
+    countCanselApplication: number;
+}
+
+export interface GetAdminOffersRequest {
+    data: GetAdminOffers[];
+    pagination: Pagination;
 }
