@@ -18,3 +18,4 @@ export { AdminReviewVolunteerInfo } from "./ui/AdminReviewVolunteerInfo/AdminRev
 export { AdminOffersTable } from "./ui/AdminOffersTable/AdminOffersTable";
 export { AdminOfferWhereForm } from "./ui/AdminOfferWhereForm/AdminOfferWhereForm";
 export { AdminOfferWhenForm } from "./ui/AdminOfferWhenForm/AdminOfferWhenForm";
+export { AdminOfferWhatToDoForm } from "./ui/AdminOfferWhatToDoForm/AdminOfferWhatToDoForm";
