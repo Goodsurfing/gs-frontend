@@ -7,19 +7,22 @@ import styles from "./AdminLayout.module.scss";
 
 interface AdminLayoutProps {
     wrapperClassName?: string;
+    classNameSidebarLinks?: string;
     sidebarContent: SidebarContentProps[];
     children: ReactNode;
 }
 
 export const AdminLayout: FC<AdminLayoutProps> = (props) => {
-    const { wrapperClassName, children, sidebarContent } = props;
+    const {
+        wrapperClassName, classNameSidebarLinks, children, sidebarContent,
+    } = props;
     const { isOpen } = useSidebarContext();
     return (
         <div id="admin-layout" className={styles.layout}>
             <AdminHeader />
             <Sidebar
                 classNameSidebar={styles.sidebar}
-                classNameSidebarLinks={styles.sidebarLinks}
+                classNameSidebarLinks={cn(styles.sidebarLinks, classNameSidebarLinks)}
                 content={sidebarContent}
                 classNameDropdownContainer={styles.dropdownContainer}
                 classNameDropdownItem={styles.dropdownItem}

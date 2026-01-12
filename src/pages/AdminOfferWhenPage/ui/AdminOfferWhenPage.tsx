@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { OfferWhenForm } from "@/features/Offer";
 
-import styles from "./OfferWhenPage.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./AdminOfferWhenPage.module.scss";
+import { AdminOfferWhenForm } from "@/widgets/Admin";
 
-const OfferWhenPage = () => {
+const AdminOfferWhenPage = () => {
     const { t, ready } = useTranslation("offer");
 
     if (!ready) {
@@ -20,9 +20,9 @@ const OfferWhenPage = () => {
             <h1 className={styles.title}>
                 {t("when.Укажите на какой срок или сроки вам нужен волонтер")}
             </h1>
-            <OfferWhenForm />
+            <AdminOfferWhenForm />
         </div>
     );
 };
 
-export default OfferWhenPage;
+export default AdminOfferWhenPage;

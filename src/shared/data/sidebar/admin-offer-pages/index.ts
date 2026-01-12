@@ -12,7 +12,7 @@ import { SidebarContentProps } from "@/widgets/Sidebar";
 export const useSideMenuData = () => {
     const SideMenuData: SidebarContentProps[] = [
         {
-            text: "Назад",
+            text: "Панель администратора",
             icon: backIcon,
             route: "/admin/vacancies",
         },

@@ -6,6 +6,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { getAdminSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import styles from "./AdminOfferLayoutPage.module.scss";
 
 const AdminOfferLayoutPage = () => {
     const { SideMenuData } = useSideMenuData();
@@ -26,7 +27,12 @@ const AdminOfferLayoutPage = () => {
     }
 
     return (
-        <AdminLayout sidebarContent={SideMenuData}><Outlet /></AdminLayout>
+        <AdminLayout
+            classNameSidebarLinks={styles.sidebarLinks}
+            sidebarContent={SideMenuData}
+        >
+            <Outlet />
+        </AdminLayout>
     );
 };
 
