@@ -24,31 +24,31 @@ export const useSideMenuData = () => {
         {
             text: "Когда",
             icon: calendarIcon,
-            route: "/offers/when",
+            route: "/admin/vacancy/when",
         },
         {
             text: "Кто нужен",
             icon: rightUserIcon,
-            route: "/offers/who-needs",
+            route: "/admin/vacancy/who-needs",
         },
         {
             text: "Описание",
             icon: checklistIcon,
-            route: "/offers/description",
+            route: "/admin/vacancy/description",
         },
         {
             text: "Что делать",
             icon: viewListIcon,
-            route: "/offers/what-to-do",
+            route: "/admin/vacancy/what-to-do",
         },
         {
             text: "Условия",
             icon: listCheckboxIcon,
-            route: "/offers/conditions",
+            route: "/admin/vacancy/conditions",
         },
         {
             text: "Последние штрихи",
-            route: "/offers/finishing-touches",
+            route: "/admin/vacancy/finishing-touches",
             icon: writeIcon,
         },
     ];

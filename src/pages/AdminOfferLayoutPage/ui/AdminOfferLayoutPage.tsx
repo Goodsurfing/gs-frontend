@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAdminPagesSidebarData } from "@/shared/data/sidebar/admin-pages";
+import { useSideMenuData } from "@/shared/data/sidebar/admin-offer-pages";
 import { AdminLayout } from "@/widgets/AdminLayout";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { getAdminSignInPageUrl } from "@/shared/config/routes/AppUrls";
@@ -8,7 +8,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 const AdminOfferLayoutPage = () => {
-    const { AdminPagesSidebarData } = useAdminPagesSidebarData();
+    const { SideMenuData } = useSideMenuData();
     const { locale } = useLocale();
     const navigate = useNavigate();
     const { isUserAdmin } = useAuth();
@@ -26,7 +26,7 @@ const AdminOfferLayoutPage = () => {
     }
 
     return (
-        <AdminLayout sidebarContent={AdminPagesSidebarData}><Outlet /></AdminLayout>
+        <AdminLayout sidebarContent={SideMenuData}><Outlet /></AdminLayout>
     );
 };
 

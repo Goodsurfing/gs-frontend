@@ -21,7 +21,7 @@ import styles from "./AdminOffersTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminVacancyPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
 
 interface OfferFilters {
     userId?: string;
@@ -278,7 +278,7 @@ export const AdminOffersTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminVacancyPersonalPageUrl(locale, params.row.id),
+                    getAdminVacancyWherePageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);

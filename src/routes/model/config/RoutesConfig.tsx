@@ -155,6 +155,7 @@ import {
     getAdminReviewVacancyPersonalPageUrl,
     getAdminReviewVolunteerPersonalPageUrl,
     getAdminVacanciesPageUrl,
+    getAdminVacancyPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -195,6 +196,7 @@ import { AdminReviewPage } from "@/pages/AdminReviewPage";
 import { AdminReviewVacanciesPersonalPage } from "@/pages/AdminReviewVacanciesPersonalPage";
 import { AdminReviewVolunteerPersonalPage } from "@/pages/AdminReviewVolunteerPersonalPage";
 import { AdminOffersPage } from "@/pages/AdminOffersPage";
+import { AdminOfferLayoutPage } from "@/pages/AdminOfferLayoutPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -712,11 +714,10 @@ const publicRoutes: RouteType[] = [
             {
                 label: "admin-offer-layout",
                 element: <AdminOfferLayoutPage />,
-                path: (locale: string) => getAdminVacanciesPageUrl(locale),
+                path: (locale: string) => getAdminVacancyPageUrl(locale),
             },
         ],
     },
 ];
 
-// todo: make private routes
 export const allRoutes = [...publicRoutes];
