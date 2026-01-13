@@ -5,7 +5,6 @@ import {
     Controller, DefaultValues, useForm, useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
 
 import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
@@ -24,9 +23,7 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
-import { getOffersWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./OfferWhenForm.module.scss";
 
@@ -34,16 +31,17 @@ interface OfferWhenFormProps {
     initialData?: OfferWhenFields | null;
     isLoadingGetWhenData?: boolean;
     isLoadingUpdateWhenData?: boolean;
+    offerId: string;
+    linkNext: string;
     onComplete?: (data: OfferWhenFields) => void;
 }
 
 export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
     const {
         initialData, isLoadingGetWhenData, isLoadingUpdateWhenData, onComplete,
+        linkNext, offerId,
     } = props;
 
-    const { id } = useParams();
-    const { locale } = useLocale();
     const { t } = useTranslation("offer");
 
     const initialSliderValue: number[] = [7, 186];
@@ -84,17 +82,17 @@ export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
     const saveFormData = useCallback(
         (data: OfferWhenFields) => {
             sessionStorage.setItem(
-                `${OFFER_WHEN_FORM}${id}`,
+                `${OFFER_WHEN_FORM}${offerId}`,
                 JSON.stringify(offerWhenFormApiAdapter(data)),
             );
         },
-        [id],
+        [offerId],
     );
 
     const loadFormData = useCallback((): OfferWhenFields | null => {
-        const savedData = sessionStorage.getItem(`${OFFER_WHEN_FORM}${id}`);
+        const savedData = sessionStorage.getItem(`${OFFER_WHEN_FORM}${offerId}`);
         return savedData ? offerWhenFormAdapter(JSON.parse(savedData)) : null;
-    }, [id]);
+    }, [offerId]);
 
     const initializeForm = useCallback(() => {
         const savedData = loadFormData();
@@ -189,7 +187,7 @@ export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
                     {t("when.Сохранить")}
                 </Button>
                 <ButtonLink
-                    path={getOffersWhoNeedsPageUrl(locale, id ?? "")}
+                    path={linkNext}
                     size="MEDIUM"
                     type="outlined"
                 >

@@ -8,6 +8,8 @@ import {
 import {
     OfferWhenFields, OfferWhenForm,
 } from "@/features/Offer";
+import { getAdminVacancyWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminOfferWhenProps {
     offerId?: string;
@@ -18,18 +20,23 @@ export const AdminOfferWhen = memo((props: AdminOfferWhenProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { onComplete, offerId } = props;
     const [initialDataForm] = useState<OfferWhenFields | null>(null);
-
     const [toast] = useState<ToastAlert>();
+
+    const { locale } = useLocale();
 
     return (
         <>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <OfferWhenForm
-                initialData={initialDataForm}
-                onComplete={() => {}}
-                isLoadingGetWhenData
-                isLoadingUpdateWhenData
-            />
+            {offerId && (
+                <OfferWhenForm
+                    offerId={offerId}
+                    linkNext={getAdminVacancyWhoNeedsPageUrl(locale, offerId)}
+                    initialData={initialDataForm}
+                    onComplete={() => {}}
+                    isLoadingGetWhenData
+                    isLoadingUpdateWhenData
+                />
+            )}
         </>
     );
 });

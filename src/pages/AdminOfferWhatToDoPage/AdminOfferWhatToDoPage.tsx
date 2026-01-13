@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import { Text } from "@/shared/ui/Text/Text";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { AdminOfferWhatToDoForm } from "@/widgets/Admin";
+import { AdminOfferWhatToDo } from "@/widgets/Admin";
 import styles from "./AdminOfferWhatToDoPage.module.scss";
 
 export const AdminOfferWhatToDoPage = () => {
     const { t, ready } = useTranslation("offer");
+    const { id } = useParams<{ id: string }>();
 
     if (!ready) {
         return (
@@ -24,7 +26,7 @@ export const AdminOfferWhatToDoPage = () => {
                 title={t("whatToDo.Расскажите, чем нужно будет заниматься")}
                 text={t("whatToDo.Подробно опишите, чем нужно будет заниматься — чем больше информации, тем лучше.")}
             />
-            <AdminOfferWhatToDoForm />
+            {id && <AdminOfferWhatToDo offerId={id} />}
         </div>
     );
 };

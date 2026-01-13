@@ -1,5 +1,5 @@
 import {
-    memo, useCallback, useEffect, useState,
+    memo, useCallback, useEffect,
 } from "react";
 import {
     Controller,
@@ -9,29 +9,24 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { useParams } from "react-router-dom";
 import { SkillsForm } from "@/features/SkillsForm";
-
 import Button from "@/shared/ui/Button/Button";
 import Textarea from "@/shared/ui/Textarea/Textarea";
-
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
 import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
-import { useGetOfferByIdQuery, useUpdateOfferWhatToDoMutation } from "@/entities/Offer/api/offerApi";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { ErrorType } from "@/types/api/error";
-import { getErrorText } from "@/shared/lib/getErrorText";
-import styles from "./OfferWhatToDoForm.module.scss";
 import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
-import { getOffersConditionsPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./OfferWhatToDoForm.module.scss";
 
 interface OfferWhatToDoFormProps {
-    onSuccess?: () => void;
+    offerId: string;
+    initialData?: OfferWhatToDoFormFields | null;
+    isLoadingGetData: boolean;
+    isLoadingUpdateData: boolean;
+    onComplete: (data: OfferWhatToDoFormFields) => void;
+    linkNext: string;
 }
 
 const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
@@ -42,42 +37,41 @@ const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
 };
 
 export const OfferWhatToDoForm = memo(
-    ({ onSuccess }: OfferWhatToDoFormProps) => {
+    (props: OfferWhatToDoFormProps) => {
+        const {
+            offerId, onComplete, isLoadingGetData,
+            isLoadingUpdateData, initialData,
+            linkNext,
+        } = props;
+
         const {
             handleSubmit, control, reset, formState: { isDirty },
         } = useForm<OfferWhatToDoFormFields>({
             mode: "onChange",
             defaultValues,
         });
-        const { id } = useParams();
-        const { locale } = useLocale();
-
-        const [updateOfferWhatToDo, { isLoading }] = useUpdateOfferWhatToDoMutation();
-        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
-        const [toast, setToast] = useState<ToastAlert>();
         const watch = useWatch({ control });
-
         const { t } = useTranslation("offer");
 
         const saveFormData = useCallback((data: OfferWhatToDoFormFields) => {
-            sessionStorage.setItem(`${OFFER_WHAT_TO_DO_FORM}${id}`, JSON.stringify(offerWhatToDoApiAdapter(data)));
-        }, [id]);
+            sessionStorage.setItem(`${OFFER_WHAT_TO_DO_FORM}${offerId}`, JSON.stringify(offerWhatToDoApiAdapter(data)));
+        }, [offerId]);
 
         const loadFormData = useCallback((): OfferWhatToDoFormFields | null => {
-            const savedData = sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
+            const savedData = sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${offerId}`);
             return savedData ? offerWhatToDoAdapter(JSON.parse(savedData)) : null;
-        }, [id]);
+        }, [offerId]);
 
         const initializeForm = useCallback(() => {
             const savedData = loadFormData();
             if (savedData) {
                 reset(savedData);
-            } else if (getOfferData?.whatToDo) {
-                reset(offerWhatToDoAdapter(getOfferData?.whatToDo));
+            } else if (initialData) {
+                reset(initialData);
             } else {
                 reset();
             }
-        }, [getOfferData?.whatToDo, loadFormData, reset]);
+        }, [initialData, loadFormData, reset]);
 
         useEffect(() => {
             initializeForm();
@@ -90,28 +84,11 @@ export const OfferWhatToDoForm = memo(
             }
         }, [isDirty, saveFormData, watch]);
 
-        const onSubmit = handleSubmit(async (data) => {
-            const preparedData = offerWhatToDoApiAdapter(data);
-            setToast(undefined);
-            await updateOfferWhatToDo({ offerId: Number(id), body: preparedData })
-                .unwrap()
-                .then(() => {
-                    setToast({
-                        text: t("Данные успешно изменены"),
-                        type: HintType.Success,
-                    });
-                    sessionStorage.removeItem(`${OFFER_WHAT_TO_DO_FORM}${id}`);
-                })
-                .catch((error: ErrorType) => {
-                    setToast({
-                        text: getErrorText(error),
-                        type: HintType.Error,
-                    });
-                });
-            onSuccess?.();
+        const onSubmit = handleSubmit((data) => {
+            onComplete(data);
         });
 
-        if (isOfferDataLoading) {
+        if (isLoadingGetData) {
             return (
                 <div className={styles.wrapper}>
                     <MiniLoader />
@@ -121,9 +98,6 @@ export const OfferWhatToDoForm = memo(
 
         return (
             <form onSubmit={onSubmit} className={styles.wrapper}>
-                {toast && (
-                    <HintPopup text={toast.text} type={toast.type} />
-                )}
                 <p className={styles.skillsText}>
                     {t("whatToDo.Навыки, которыми должен обладать волонтёр")}
                 </p>
@@ -154,7 +128,7 @@ export const OfferWhatToDoForm = memo(
                 <div className={styles.buttons}>
                     <Button
                         onClick={onSubmit}
-                        disabled={isLoading}
+                        disabled={isLoadingUpdateData}
                         variant="FILL"
                         color="BLUE"
                         size="MEDIUM"
@@ -163,7 +137,7 @@ export const OfferWhatToDoForm = memo(
                         {t("whatToDo.Сохранить")}
                     </Button>
                     <ButtonLink
-                        path={getOffersConditionsPageUrl(locale, id ?? "")}
+                        path={linkNext}
                         size="MEDIUM"
                         type="outlined"
                     >

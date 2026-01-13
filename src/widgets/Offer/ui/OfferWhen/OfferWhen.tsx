@@ -7,6 +7,8 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
+import { getOffersWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OfferWhenProps {
     offerId: string;
@@ -15,6 +17,8 @@ interface OfferWhenProps {
 export const OfferWhen: FC<OfferWhenProps> = ({ offerId }) => {
     const [initialDataForm, setInitialDataForm] = useState<OfferWhenFields | null>(null);
     const [toast, setToast] = useState<ToastAlert>();
+
+    const { locale } = useLocale();
 
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(offerId);
@@ -43,6 +47,8 @@ export const OfferWhen: FC<OfferWhenProps> = ({ offerId }) => {
         <>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <OfferWhenForm
+                offerId={offerId}
+                linkNext={getOffersWhoNeedsPageUrl(locale, offerId)}
                 initialData={initialDataForm}
                 onComplete={onSubmit}
                 isLoadingGetWhenData={isLoadingGetWhenData}
