@@ -17,5 +17,5 @@ export { AdminReviewVacancyInfo } from "./ui/AdminReviewVacancyInfo/AdminReviewV
 export { AdminReviewVolunteerInfo } from "./ui/AdminReviewVolunteerInfo/AdminReviewVolunteerInfo";
 export { AdminOffersTable } from "./ui/AdminOffersTable/AdminOffersTable";
 export { AdminOfferWhereForm } from "./ui/AdminOfferWhereForm/AdminOfferWhereForm";
-export { AdminOfferWhenForm } from "./ui/AdminOfferWhenForm/AdminOfferWhenForm";
+export { AdminOfferWhen } from "./ui/AdminOfferWhen/AdminOfferWhen";
 export { AdminOfferWhatToDoForm } from "./ui/AdminOfferWhatToDoForm/AdminOfferWhatToDoForm";

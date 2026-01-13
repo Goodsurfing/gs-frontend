@@ -1,26 +1,14 @@
 import {
-    memo, useCallback, useEffect, useState,
+    memo, useCallback, useEffect,
 } from "react";
 import {
     Controller, DefaultValues, useForm, useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "@/types/api/error";
-
-import {
-    useGetOfferByIdQuery,
-    useUpdateOfferMutation,
-} from "@/entities/Offer/api/offerApi";
 
 import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
-import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import {
-    HintType,
-    ToastAlert,
-} from "@/shared/ui/HintPopup/HintPopup.interface";
 
 import {
     offerWhenFormAdapter,
@@ -36,23 +24,26 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
-import styles from "./OfferWhenForm.module.scss";
 import { getOffersWhoNeedsPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./OfferWhenForm.module.scss";
 
 interface OfferWhenFormProps {
-    onComplete?: () => void;
+    initialData?: OfferWhenFields | null;
+    isLoadingGetWhenData?: boolean;
+    isLoadingUpdateWhenData?: boolean;
+    onComplete?: (data: OfferWhenFields) => void;
 }
 
-export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
+export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
+    const {
+        initialData, isLoadingGetWhenData, isLoadingUpdateWhenData, onComplete,
+    } = props;
+
     const { id } = useParams();
     const { locale } = useLocale();
-
-    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(id || "");
-    const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
 
     const initialSliderValue: number[] = [7, 186];
@@ -109,12 +100,12 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.when) {
-            reset(offerWhenFormAdapter(getOfferData?.when));
+        } else if (initialData) {
+            reset(initialData);
         } else {
             reset();
         }
-    }, [getOfferData?.when, loadFormData, reset]);
+    }, [initialData, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();
@@ -128,24 +119,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
     }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
-        const preparedData = offerWhenFormApiAdapter(data);
-        setToast(undefined);
-        await updateOffer({ id: Number(id), body: { when: preparedData } })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: "Данные успешно изменены",
-                    type: HintType.Success,
-                });
-                sessionStorage.removeItem(`${OFFER_WHEN_FORM}${id}`);
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
-            });
-        onComplete?.();
+        onComplete?.(data);
     });
 
     if (isLoadingGetWhenData) {
@@ -154,7 +128,6 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
 
     return (
         <form className={styles.form}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             {!watchTimeSettings?.isFullYearAcceptable && (
                 <Controller
                     name="periods"
@@ -206,7 +179,7 @@ export const OfferWhenForm = memo(({ onComplete }: OfferWhenFormProps) => {
             />
             <div className={styles.buttons}>
                 <Button
-                    disabled={isLoading}
+                    disabled={isLoadingUpdateWhenData}
                     onClick={onSubmit}
                     className={styles.btn}
                     variant="FILL"

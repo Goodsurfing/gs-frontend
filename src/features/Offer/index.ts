@@ -6,6 +6,9 @@ export { OfferWhenPeriods } from "./OfferWhen/ui/OfferWhenPeriods/OfferWhenPerio
 export { OfferWhenRequests } from "./OfferWhen/ui/OfferWhenRequests/OfferWhenRequests";
 export { OfferWhenTimeSettings } from "./OfferWhen/ui/OfferWhenTimeSettings/OfferWhenTimeSettings";
 
+export { offerWhenFormAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
+export { offerWhenFormApiAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
+
 export type {
     CreateOfferWhen, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "./OfferWhen/model/types/offerWhen";

@@ -20,7 +20,7 @@ import { getAdminVacancyConditionsPageUrl } from "@/shared/config/routes/AppUrls
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferWhatToDoFormFields, WorkingHoursField } from "@/features/OfferWhatToDo";
-import styles from "./OfferWhatToDoForm.module.scss";
+import styles from "./AdminOfferWhatToDoForm.module.scss";
 
 interface OfferWhatToDoFormProps {
     onSuccess?: () => void;
