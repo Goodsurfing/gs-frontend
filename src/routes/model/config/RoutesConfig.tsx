@@ -158,6 +158,8 @@ import {
     getAdminVacancyPageUrl,
     getAdminVacancyWherePageUrl,
     getAdminVacancyWhenPageUrl,
+    getAdminVacancyWhatToDoPageUrl,
+    getAdminVacancyConditionsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -201,6 +203,8 @@ import { AdminOffersPage } from "@/pages/AdminOffersPage";
 import { AdminOfferLayoutPage } from "@/pages/AdminOfferLayoutPage";
 import { AdminOfferWherePage } from "@/pages/AdminOfferWherePage";
 import { AdminOfferWhenPage } from "@/pages/AdminOfferWhenPage";
+import { AdminOfferWhatToDoPage } from "@/pages/AdminOfferWhatToDoPage";
+import { AdminOfferConditionsPage } from "@/pages/AdminOfferConditionsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -731,6 +735,16 @@ const publicRoutes: RouteType[] = [
                 label: "admin-offer-when",
                 element: <AdminOfferWhenPage />,
                 path: (locale: string) => getAdminVacancyWhenPageUrl(locale),
+            },
+            {
+                label: "admin-offer-what-to-do",
+                element: <AdminOfferWhatToDoPage />,
+                path: (locale: string) => getAdminVacancyWhatToDoPageUrl(locale),
+            },
+            {
+                label: "admin-offer-conditions",
+                element: <AdminOfferConditionsPage />,
+                path: (locale: string) => getAdminVacancyConditionsPageUrl(locale),
             },
         ],
     },

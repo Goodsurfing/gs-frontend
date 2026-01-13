@@ -19,3 +19,4 @@ export { AdminOffersTable } from "./ui/AdminOffersTable/AdminOffersTable";
 export { AdminOfferWhereForm } from "./ui/AdminOfferWhereForm/AdminOfferWhereForm";
 export { AdminOfferWhen } from "./ui/AdminOfferWhen/AdminOfferWhen";
 export { AdminOfferWhatToDo } from "./ui/AdminOfferWhatToDo/AdminOfferWhatToDo";
+export { AdminOfferConditions } from "./ui/AdminOfferConditions/AdminOfferConditions";
