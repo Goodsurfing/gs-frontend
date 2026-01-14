@@ -1,14 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+    Controller, SubmitHandler, useForm, useWatch,
+} from "react-hook-form";
 import InputField from "@/components/InputField/InputField";
-import { IVerifyFormData } from "@/types/api/auth/register.interface";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
 import styles from "./VerifyEmailForm.module.scss";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import Input from "@/shared/ui/Input/Input";
+
+interface FormDataImplemintaion {
+    email: string;
+    newPassword: string;
+    repeatNewPassword: string;
+}
 
 export const VerifyEmailForm = () => {
     const { t } = useTranslation();
@@ -21,8 +29,14 @@ export const VerifyEmailForm = () => {
 
     const {
         control, handleSubmit, getValues,
-    } = useForm<IVerifyFormData>({
+    } = useForm<FormDataImplemintaion>({
         mode: "onChange",
+    });
+
+    const newPassword = useWatch({
+        control,
+        name: "newPassword",
+        defaultValue: "",
     });
 
     useEffect(() => () => {
@@ -78,7 +92,7 @@ export const VerifyEmailForm = () => {
         }
     };
 
-    const onSubmit: SubmitHandler<IVerifyFormData> = async (data) => {
+    const onSubmit: SubmitHandler<FormDataImplemintaion> = async (data) => {
         await sendEmailVerification(data.email);
     };
 
@@ -131,6 +145,43 @@ export const VerifyEmailForm = () => {
                         type="email"
                         text="E-mail"
                     />
+                )}
+            />
+            <Controller
+                name="newPassword"
+                control={control}
+                rules={{ required: t("password.Новый пароль обязателен") }}
+                defaultValue=""
+                render={({ field, fieldState }) => (
+                    <div className={styles.inputWrapper}>
+                        <label>{t("password.Новый пароль")}</label>
+                        <Input type="password" {...field} />
+                        {fieldState.error && (
+                            <p className={styles.inputError}>
+                                {fieldState.error.message}
+                            </p>
+                        )}
+                    </div>
+                )}
+            />
+            <Controller
+                name="repeatNewPassword"
+                control={control}
+                rules={{
+                    validate: (value) => value === newPassword || t("password.Пароли должны совпадать"),
+                    required: t("password.Повторите новый пароль"),
+                }}
+                defaultValue=""
+                render={({ field, fieldState }) => (
+                    <div className={styles.inputWrapper}>
+                        <label>{t("password.Повторите новый пароль")}</label>
+                        <Input type="password" {...field} />
+                        {fieldState.error && (
+                            <p className={styles.inputError}>
+                                {fieldState.error.message}
+                            </p>
+                        )}
+                    </div>
                 )}
             />
             <Button

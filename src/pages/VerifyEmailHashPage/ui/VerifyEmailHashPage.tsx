@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback, useEffect, useState, useRef,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -21,8 +23,10 @@ const VerifyEmailHashPage = () => {
     const { isUserAdmin, token } = useAuth();
     const [isLoading, setLoading] = useState<boolean>(true);
     const [isError, setError] = useState<boolean>(false);
+    const hasFetchedRef = useRef<boolean>(false);
 
     const getVerifyEmail = useCallback(async () => {
+        if (hasFetchedRef.current) return;
         try {
             const response = await fetch(`${API_BASE_URL_V3}verify/email/${id}`, {
                 method: "GET",
@@ -47,6 +51,7 @@ const VerifyEmailHashPage = () => {
             }));
 
             setError(false);
+            hasFetchedRef.current = true;
         } catch {
             setError(true);
         } finally {
@@ -56,10 +61,8 @@ const VerifyEmailHashPage = () => {
 
     useEffect(() => {
         if (id) {
+            hasFetchedRef.current = false;
             getVerifyEmail();
-        } else {
-            setLoading(false);
-            setError(true);
         }
     }, [id, getVerifyEmail]);
 

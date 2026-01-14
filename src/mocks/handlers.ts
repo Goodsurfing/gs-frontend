@@ -1,0 +1,9 @@
+import { rest } from "msw";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
+
+export const handlers = [
+    rest.get(`${API_BASE_URL_V3}verify/email/:id`, (req, res, ctx) => res(
+        ctx.status(200),
+        ctx.json({ accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3Njg0MDgxMjMsImV4cCI6MTc2ODQ5NDUyMywicm9sZXMiOlsiUk9MRV9VU0VSIiwiUk9MRV9BRE1JTiJdLCJ1c2VybmFtZSI6ImtpbGRhbjMyNUBnbWFpbC5jb20iLCJtZXJjdXJlIjp7InN1YnNjcmliZSI6WyJodHRwczovL2FwaS5ndWRzZXJmaW5nLnJ1Ly53ZWxsLWtub3duL21lcmN1cmUvdXNlcnMvMDE5YWVlNGUtZjkyYy03ZGY3LTliMjgtYmQyNzAwYjg4NTAwL21lc3NhZ2VzL3s_b2JqZWN0fSJdfX0.XgvDxoA5nCoMWX0pbabvRf2g_YgYyftDF61O_TuL6yGuSyfxBoQq2SgWzBeIxgK7NTX6zusWnB36M8nLilQAAtGVHEiitT6rf6zUVeuOxLqrtOXuAKeQ9SIYrGgQgk3jQiAdDGgTaabl91YqnW5venxsUWqojQjU6_GnnmRRl4rixHgFWe4LPzKGKeXjeRPVoveHCc2Ki_RqYbD1MwrkA07fF7vZMrfW2dzBMs18ep3c9s30k-PrDIXT_HkM-L6a4BmM8a5rd_crurmm9-R2MyHYr3HZ8eCv-tm1N6R1txf3YqIB1yfNl_g76JLJbTVC9qaaCiuD6d3rD6DTfIFHIQ", mercureToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Njg0OTQ1MjMuOTQ4OTE5LCJtZXJjdXJlIjp7InB1Ymxpc2giOltdLCJzdWJzY3JpYmUiOlsiaHR0cHM6Ly9hcGkuZ3Vkc2VyZmluZy5ydS9hcGkvdjEvdXNlcnMvMDE5YWVlNGUtZjkyYy03ZGY3LTliMjgtYmQyNzAwYjg4NTAwL21lc3NhZ2VzL3s_Y2hhdH0iXX19.7mA5I1PQY2KbXIlqofCzPvVz0zewovR-0SLr4PFoTnM" }),
+    )),
+];

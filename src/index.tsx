@@ -31,3 +31,20 @@ const Root = (
 );
 
 root.render(Root);
+
+// async function init() {
+//     if (process.env.NODE_ENV === "development") {
+//         try {
+//             const { worker } = await import("./mocks/browser");
+//             await worker.start();
+//         } catch (e) {
+//             // ignore worker start errors in non-dev environments
+//             // eslint-disable-next-line no-console
+//             console.warn("MSW failed to start", e);
+//         }
+//     }
+
+//     root.render(Root);
+// }
+
+// init();
