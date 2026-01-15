@@ -2,11 +2,15 @@
     max-width: 880px;
 }
 
-.submitBtns {
+.buttonsWrapper {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-top: 66px;
+    flex-direction: column;
+    padding-top: 60px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .skills {

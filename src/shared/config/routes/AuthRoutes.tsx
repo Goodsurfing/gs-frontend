@@ -9,6 +9,8 @@ import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 
 import { AppRoutes } from "./AppRoutes";
+import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
+import { PrivateRouteHostGuard } from "@/routes/model/guards/PrivateRouteHostGuard";
 
 export const AuthRoutes = {
     [AppRoutes.PROFILE]: (
@@ -18,6 +20,13 @@ export const AuthRoutes = {
     ),
     [AppRoutes.PROFILE_RESET_PASSWORD]: (
         <ProfileResetPasswordPage />
+    ),
+    [AppRoutes.HOST]: (
+        <PrivateRouteGuard>
+            <PrivateRouteHostGuard>
+                <HostsLayoutPage />
+            </PrivateRouteHostGuard>
+        </PrivateRouteGuard>
     ),
     [AppRoutes.VOLUNTEER]: (
         <PrivateRouteGuard>

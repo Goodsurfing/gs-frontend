@@ -80,6 +80,8 @@ export const OfferFinishingTouchesForm = memo(
         const { t } = useTranslation("offer");
         const watch = useWatch({ control });
 
+        const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`) !== null, [id]);
+
         const saveFormData = useCallback((data: OfferFinishingTouchesFormFields) => {
             sessionStorage.setItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`, JSON.stringify(offerFinishingTouchesApiAdapter(data)));
         }, [id]);
@@ -284,24 +286,29 @@ export const OfferFinishingTouchesForm = memo(
                         )}
                     />
                 </div>
-                <div className={styles.submitBtns}>
-                    <Button
-                        disabled={isLoading}
-                        color="BLUE"
-                        size="MEDIUM"
-                        variant="FILL"
-                        onClick={onSubmit}
-                    >
-                        {t("finishingTouches.Опубликовать")}
-                    </Button>
-                    <Button
-                        onClick={onDraftHandle}
-                        color="BLUE"
-                        size="MEDIUM"
-                        variant="OUTLINE"
-                    >
-                        {t("finishingTouches.Сохранить в черновики")}
-                    </Button>
+                <div className={styles.buttonsWrapper}>
+                    {hasSavedDataInSession() && (
+                        <ErrorText text={t("У вас есть несохраненные изменения")} />
+                    )}
+                    <div className={styles.buttons}>
+                        <Button
+                            disabled={isLoading}
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="FILL"
+                            onClick={onSubmit}
+                        >
+                            {t("finishingTouches.Опубликовать")}
+                        </Button>
+                        <Button
+                            onClick={onDraftHandle}
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="OUTLINE"
+                        >
+                            {t("finishingTouches.Сохранить в черновики")}
+                        </Button>
+                    </div>
                 </div>
             </form>
         );

@@ -7,7 +7,8 @@
     },
     "where": {
         "Где вы находитесь или будете принимать волонтеров": "¿Dónde te encuentras o estarás aceptando voluntarios?",
-        "Сохранить": "Guardar",
+        "Укажите пожалуйста адрес": "Por favor, indique la dirección",
+        "Адрес успешно изменён": "Dirección cambiada con éxito",
         "Точек на карте не найдено": "No se encontraron puntos en el mapa",
         "Введите адрес": "Ingrese una dirección"
     },
@@ -33,8 +34,7 @@
         "месяца": "meses",
         "месяцев": "meses",
         "Дата окончания приема заявок": "Fecha límite de solicitud",
-        "Нет даты окончания": "Sin fecha de finalización",
-        "Сохранить": "Guardar"
+        "Нет даты окончания": "Sin fecha de finalización"
     },
     "whoNeeds": {
         "Кого бы вы хотели видеть у себя в волонтерах": "¿A quién te gustaría ver como voluntario contigo?",
@@ -75,8 +75,7 @@
         "Только иностранцев": "Solo extranjeros",
         "Только из моей страны": "Solo de mi país",
         "Дополнительная информация": "Información adicional",
-        "Не более 1000 знаков": "No más de 1000 caracteres",
-        "Сохранить": "Guardar"
+        "Не более 1000 знаков": "No más de 1000 caracteres"
     },
     "description": {
         "Название мероприятия": "Nombre del evento",
@@ -90,6 +89,9 @@
         "Изменить": "Cambiar",
         "Удалить": "Borrar",
         "Добавить фото обложки": "Agregar foto de portada",
+        "Размер файла превышает 2 МБ": "El tamaño del archivo excede los 2 MB",
+        "Произошла ошибка с загрузкой изображения": "Se produjo un error al cargar la imagen",
+        "Неверный размер изображения. Минимум 1280x720": "Tamaño de imagen incorrecto. Mínimo 1280x720",
         "Ширина фотографии для обложки не меньше 1280 пикселей": "El ancho de la foto de portada debe ser de al menos 1280 píxeles",
         "Изображение не должно превышать 2 МБ": "La imagen no debe exceder los 2 MB",
         "Неверный формат файла": "Formato de archivo incorrecto",
@@ -127,7 +129,7 @@
         "Питание": "Comida",
         "Полный пансион": "Pensión completa",
         "Завтрак включен": "Desayuno incluido",
-        "Продкуты": "Comestibles",
+        "Продукты": "Comestibles",
         "Вегетарианское": "Vegetariano",
         "Оплачиваемый проезд": "Transporte pagado",
         "Полная оплата проезда": "Pago completo del transporte",
@@ -224,7 +226,9 @@
         "На данный момент у данной вакансии нет участников": "Actualmente no hay participantes para esta vacante",
         "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "En nuestra comunidad, podrás hablar con voluntarios que ya han colaborado con este anfitrión y obtener respuestas directas a tus preguntas."
     },
+    "У вас есть несохраненные изменения": "Tienes cambios no guardados",
     "Данные успешно изменены": "Datos cambiados exitosamente",
     "Произошла ошибка": "Se produjo un error",
+    "Сохранить": "Guardar",
     "Дальше": "Siguiente"
 }

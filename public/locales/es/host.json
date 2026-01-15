@@ -67,6 +67,8 @@
         "Введите ФИО участника": "Ingrese el correo electrónico del participante"
     },
     "hostDescription": {
+        "Создание организации": "Creación de la organización",
+        "Создать организацию": "Crear organización",
         "Организация создана": "Organización creada",
         "Ошибка при создании организации": "Error al crear la organización",
         "Данные успешно изменены": "Datos actualizados con éxito",

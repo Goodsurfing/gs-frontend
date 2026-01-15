@@ -22,14 +22,14 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
     } = props;
     const { t } = useTranslation("offer");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const onSuccess = () => {
-        setError(false);
+        setError(null);
     };
 
-    const onError = () => {
-        setError(true);
+    const onError = (errorValue: string) => {
+        setError(errorValue);
     };
 
     const handleImageUpload = async (file: File) => {
@@ -66,11 +66,11 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
             isLoading={isLoading}
             labelClassName={styles.label}
             labelChildren={<ImageUploadBackground text={childrenLabel} />}
-            onError={onError}
+            onUploadError={onError}
             onSuccess={onSuccess}
             description={(
                 <span className={styles.description}>
-                    {error && (<ErrorText text="Неверный формат файла или ширина фото меньше 1280 пикселей" />)}
+                    {error && (<ErrorText text={error} />)}
                     {t(
                         "description.Ширина фотографии для обложки не меньше 1280 пикселей",
                     )}

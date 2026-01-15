@@ -25,8 +25,6 @@ import { ConditionsPayment } from "../ConditionsPayment/ConditionsPayment";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
 
-import { offerConditionsAdapter, offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
-
 import {
     NOT_SELECTED,
 } from "@/shared/constants/messages";
@@ -69,13 +67,15 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
 
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_CONDITIONS_FORM}${id}`) !== null, [id]);
+
     const saveFormData = useCallback((data: OfferConditionsFormFields) => {
-        sessionStorage.setItem(`${OFFER_CONDITIONS_FORM}${id}`, JSON.stringify(offerConditionsApiAdapter(data)));
+        sessionStorage.setItem(`${OFFER_CONDITIONS_FORM}${id}`, JSON.stringify(data));
     }, [id]);
 
     const loadFormData = useCallback((): OfferConditionsFormFields | null => {
         const savedData = sessionStorage.getItem(`${OFFER_CONDITIONS_FORM}${id}`);
-        return savedData ? offerConditionsAdapter(JSON.parse(savedData)) : null;
+        return savedData ? JSON.parse(savedData) : null;
     }, [id]);
 
     const initializeForm = useCallback(() => {
@@ -226,25 +226,31 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     <Textarea className={styles.textarea} value={field.value} onChange={field.onChange} label={t("conditions.Дополнительные условия")} description={t("conditions.Не более 1000 знаков")} />
                 )}
             />
-            <div className={styles.buttons}>
-                <Button
-                    disabled={isLoadingUpdateData}
-                    onClick={onSubmit}
-                    variant="FILL"
-                    type="submit"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    Сохранить
-                </Button>
-                <ButtonLink
-                    path={linkNext}
-                    size="MEDIUM"
-                    type="outlined"
-                >
-                    {t("Дальше")}
-                </ButtonLink>
+            <div className={styles.buttonsWrapper}>
+                {hasSavedDataInSession() && (
+                    <ErrorText text={t("У вас есть несохраненные изменения")} />
+                )}
+                <div className={styles.buttons}>
+                    <Button
+                        disabled={isLoadingUpdateData}
+                        onClick={onSubmit}
+                        variant="FILL"
+                        type="submit"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        {t("Сохранить")}
+                    </Button>
+                    <ButtonLink
+                        path={linkNext}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
+                </div>
             </div>
+
         </form>
     );
 });

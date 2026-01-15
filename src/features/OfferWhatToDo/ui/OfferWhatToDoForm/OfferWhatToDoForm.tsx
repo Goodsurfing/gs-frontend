@@ -19,6 +19,7 @@ import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./OfferWhatToDoForm.module.scss";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferWhatToDoFormProps {
     offerId: string;
@@ -52,6 +53,8 @@ export const OfferWhatToDoForm = memo(
         });
         const watch = useWatch({ control });
         const { t } = useTranslation("offer");
+
+        const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${offerId}`) !== null, [offerId]);
 
         const saveFormData = useCallback((data: OfferWhatToDoFormFields) => {
             sessionStorage.setItem(`${OFFER_WHAT_TO_DO_FORM}${offerId}`, JSON.stringify(offerWhatToDoApiAdapter(data)));
@@ -125,24 +128,29 @@ export const OfferWhatToDoForm = memo(
                         />
                     )}
                 />
-                <div className={styles.buttons}>
-                    <Button
-                        onClick={onSubmit}
-                        disabled={isLoadingUpdateData}
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                        type="submit"
-                    >
-                        {t("whatToDo.Сохранить")}
-                    </Button>
-                    <ButtonLink
-                        path={linkNext}
-                        size="MEDIUM"
-                        type="outlined"
-                    >
-                        {t("Дальше")}
-                    </ButtonLink>
+                <div className={styles.buttonsWrapper}>
+                    {hasSavedDataInSession() && (
+                        <ErrorText text={t("У вас есть несохраненные изменения")} />
+                    )}
+                    <div className={styles.buttons}>
+                        <Button
+                            onClick={onSubmit}
+                            disabled={isLoadingUpdateData}
+                            variant="FILL"
+                            color="BLUE"
+                            size="MEDIUM"
+                            type="submit"
+                        >
+                            {t("whatToDo.Сохранить")}
+                        </Button>
+                        <ButtonLink
+                            path={linkNext}
+                            size="MEDIUM"
+                            type="outlined"
+                        >
+                            {t("Дальше")}
+                        </ButtonLink>
+                    </div>
                 </div>
             </form>
         );

@@ -31,7 +31,7 @@ export const useHostPagesSidebarData = () => {
             dropdownItems: [
                 {
                     text: t("main.sidebar.Описание"),
-                    route: "/registration",
+                    route: "/info",
                 },
                 {
                     text: t("main.sidebar.Фотогалерея"),

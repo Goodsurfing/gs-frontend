@@ -10,8 +10,8 @@ import {
     isSidebarLinkBack,
 } from "../../lib/isSidebarLinkBack";
 import { SidebarContentProps } from "../../model/types/sidebar";
+import { getHostInfoUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./MobileSidebar.module.scss";
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
 
 interface MobileSidebarProps {
     className?: string;
@@ -54,7 +54,7 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
                 }
                 return `/${locale}${route}/${id}`;
             }
-            if (route === "/host") return getHostRegistrationUrl(locale);
+            if (route === "/host") return getHostInfoUrl(locale);
             return `/${locale}${route}`;
         },
         [id, locale],

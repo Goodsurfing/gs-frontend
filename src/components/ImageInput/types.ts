@@ -14,5 +14,6 @@ export interface ImageInputComponentProps extends InputFileProps {
     isLoading?: boolean;
     checkImageSize?: boolean;
     onError?: () => void;
+    onUploadError?: (error: string) => void;
     onSuccess?: () => void;
 }

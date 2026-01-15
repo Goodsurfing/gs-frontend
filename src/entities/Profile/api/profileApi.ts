@@ -28,6 +28,14 @@ interface UnreadMessagesResponse {
     unreadMessagesCount: number;
 }
 
+interface ProfileOccupancyResponse {
+    isSkill: false,
+    isPhoto: false,
+    isVideo: false,
+    isBlogPost: false,
+    isMembership: false
+}
+
 export const profileApi = createApi({
     reducerPath: "profileApi",
     baseQuery: baseQueryAcceptJson,
@@ -132,6 +140,12 @@ export const profileApi = createApi({
                 method: "GET",
             }),
         }),
+        getProfileOccupancy: build.query<ProfileOccupancyResponse, void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}profile/occupancy`,
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -152,4 +166,5 @@ export const {
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
+    useGetProfileOccupancyQuery,
 } = profileApi;

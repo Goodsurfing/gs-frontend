@@ -23,7 +23,8 @@ export enum AppRoutes {
     PROFILE_PRIVACY = "profile_privacy",
     HOST = "host",
     HOST_DASHBOARD = "dashboard",
-    HOST_REGISTRATION = "offers_registration",
+    HOST_REGISTER = "host_register",
+    HOST_INFO = "host_info",
     HOST_GALLERY = "host_gallery",
     OFFER_PERSONAL = "offer_personal", // offer id
     HOST_PERSONAL = "host_personal", // host id

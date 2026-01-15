@@ -13,6 +13,7 @@ import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 
 import { EditVolunteer } from "../EditVolunteer/EditVolunteer";
 import styles from "./VolunteerFill.module.scss";
+import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 
 interface VolunteerFillProps {
     className?: string;
@@ -24,18 +25,13 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
     const { t } = useTranslation("volunteer");
 
     const { data: myVolunteer } = useGetMyVolunteerQuery();
+    const { data: profileOccupancy } = useGetProfileOccupancyQuery();
 
-    const isSkills = !!(
-        myVolunteer?.skills && myVolunteer?.skills.length !== 0
-    );
-    const isGallery = !!(
-        myVolunteer?.profile.galleryImages
-        && myVolunteer?.profile.galleryImages.length !== 0
-    );
-    const isVideoGallery = !!(
-        myVolunteer?.profile.videoGallery
-        && myVolunteer?.profile.videoGallery.length !== 0
-    );
+    const isSkills = profileOccupancy ? profileOccupancy.isSkill : false;
+    const isGallery = profileOccupancy ? profileOccupancy.isPhoto : false;
+    const isVideoGallery = profileOccupancy ? profileOccupancy.isVideo : false;
+    const isBlog = profileOccupancy ? profileOccupancy.isBlogPost : false;
+    const isMembership = profileOccupancy ? profileOccupancy.isMembership : false;
 
     const pointsData: StatsChartPoints[] = [
         {
@@ -52,11 +48,11 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
         },
         {
             text: "Публикации в блоге",
-            completed: false,
+            completed: isBlog,
         },
         {
             text: "Членство",
-            completed: false,
+            completed: isMembership,
         },
     ];
 

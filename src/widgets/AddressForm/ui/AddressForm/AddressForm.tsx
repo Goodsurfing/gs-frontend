@@ -30,6 +30,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhenPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface AddressFormProps {
     className?: string;
@@ -58,6 +59,8 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
     const [updateOffer, { isLoading }] = useUpdateOfferMutation();
     const [trigger, { isLoading: isLoadingGetData, data: offerData }] = useLazyGetOfferByIdQuery();
     const [toast, setToast] = useState<ToastAlert>();
+
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_WHERE_FORM}${id}`) !== null, [id]);
 
     const fetchGeoObject = useCallback(async () => {
         trigger(id || "").unwrap();
@@ -110,7 +113,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             .then(() => {
                 fetchGeoObject();
                 setToast({
-                    text: "Адрес успешно изменён",
+                    text: t("where.Адрес успешно изменён"),
                     type: HintType.Success,
                 });
                 sessionStorage.removeItem(`${OFFER_WHERE_FORM}${id}`);
@@ -138,7 +141,7 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
                 control={control}
                 name="address"
                 rules={{
-                    validate: (value) => value?.geoObject !== null || "Укажите пожалуйста адрес",
+                    validate: (value) => value?.geoObject !== null || t("where.Укажите пожалуйста адрес"),
                 }}
                 render={({ field }) => (
                     <MapWithAddress
@@ -150,19 +153,24 @@ export const AddressForm = memo(({ className }: AddressFormProps) => {
             {errors.address && (
                 <p className={styles.error}>{errors.address.message}</p>
             )}
-            <div className={styles.buttons}>
-                <Button
-                    variant="FILL"
-                    disabled={isLoading}
-                    color="BLUE"
-                    size="MEDIUM"
-                    className={styles.btn}
-                    onClick={onSubmit}
-                    type="submit"
-                >
-                    {t("where.Сохранить")}
-                </Button>
-                <ButtonLink path={getOffersWhenPageUrl(locale, id ?? "")} size="MEDIUM" type="outlined">{t("Дальше")}</ButtonLink>
+            <div className={styles.buttonsWrapper}>
+                {hasSavedDataInSession() && (
+                    <ErrorText text={t("У вас есть несохраненные изменения")} />
+                )}
+                <div className={styles.buttons}>
+                    <Button
+                        variant="FILL"
+                        disabled={isLoading}
+                        color="BLUE"
+                        size="MEDIUM"
+                        className={styles.btn}
+                        onClick={onSubmit}
+                        type="submit"
+                    >
+                        {t("Сохранить")}
+                    </Button>
+                    <ButtonLink path={getOffersWhenPageUrl(locale, id ?? "")} size="MEDIUM" type="outlined">{t("Дальше")}</ButtonLink>
+                </div>
             </div>
         </form>
     );

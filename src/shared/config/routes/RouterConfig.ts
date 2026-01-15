@@ -32,7 +32,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.OFFER_PERSONAL]: "/offer-personal", // :id
     [AppRoutes.HOST_PERSONAL]: "/host-personal", // :id
     [AppRoutes.HOST_DASHBOARD]: "/host/host-dashboard",
-    [AppRoutes.HOST_REGISTRATION]: "/host/registration",
+    [AppRoutes.HOST_REGISTER]: "/host/register",
+    [AppRoutes.HOST_INFO]: "/host/info",
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_REVIEW]: "/host/review",
     [AppRoutes.HOST_NOTES]: "/host/notes",

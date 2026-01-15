@@ -44,6 +44,8 @@
         "Ваш отзыв был отправлен": "Your review has been submitted"
     },
     "hostDescription": {
+        "Создание организации": "Creating an organization",
+        "Создать организацию": "Create organization",
         "Организация создана": "Organization created",
         "Ошибка при создании организации": "Error creating organization",
         "Данные успешно изменены": "Data successfully updated",

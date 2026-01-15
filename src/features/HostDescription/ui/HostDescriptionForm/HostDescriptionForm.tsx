@@ -45,6 +45,7 @@ interface HostDescriptionFormProps {
     myProfile?: Profile;
     isLoading?: boolean;
     isError?: boolean;
+    onCreateSuccess?: () => void;
     profileRefetch: () => void;
 }
 
@@ -72,6 +73,7 @@ const defaultValues: DefaultValues<HostDescriptionFormFields> = {
 export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
     const {
         className, host, myProfile, isLoading = true, isError, profileRefetch,
+        onCreateSuccess,
     } = props;
 
     const { t } = useTranslation("host");
@@ -112,6 +114,7 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                     type: HintType.Success,
                 });
                 profileRefetch();
+                onCreateSuccess?.();
             } else if (getHost) {
                 preparedData = hostDescriptionApiAdapterUpdate(data);
                 await updateHost({ id: getHost.id, body: { ...preparedData } }).unwrap();

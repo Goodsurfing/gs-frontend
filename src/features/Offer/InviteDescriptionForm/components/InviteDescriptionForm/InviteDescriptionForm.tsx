@@ -33,12 +33,12 @@ import EventName from "../EventName/EventName";
 import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
-import styles from "./InviteDescriptionForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferGallery } from "@/features/Gallery";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./InviteDescriptionForm.module.scss";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -68,6 +68,8 @@ export const InviteDescriptionForm = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
+
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_DESCRIPTION_FORM}${id}`) !== null, [id]);
 
     const saveFormData = useCallback(
         (data: OfferDescriptionField) => {
@@ -171,25 +173,31 @@ export const InviteDescriptionForm = () => {
                     />
                     <OfferGallery offerId={id ?? ""} offerImageGallery={getOfferData?.galleryImages} />
                 </div>
-                <div className={styles.buttons}>
-                    <Button
-                        className={styles.btn}
-                        disabled={isLoading}
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                        onClick={onSubmit}
-                    >
-                        {t("description.Сохранить")}
-                    </Button>
-                    <ButtonLink
-                        path={getOffersWhatToDoPageUrl(locale, id ?? "")}
-                        size="MEDIUM"
-                        type="outlined"
-                    >
-                        {t("Дальше")}
-                    </ButtonLink>
+                <div className={styles.buttonsWrapper}>
+                    {hasSavedDataInSession() && (
+                        <ErrorText text={t("У вас есть несохраненные изменения")} />
+                    )}
+                    <div className={styles.buttons}>
+                        <Button
+                            className={styles.btn}
+                            disabled={isLoading}
+                            variant="FILL"
+                            color="BLUE"
+                            size="MEDIUM"
+                            onClick={onSubmit}
+                        >
+                            {t("description.Сохранить")}
+                        </Button>
+                        <ButtonLink
+                            path={getOffersWhatToDoPageUrl(locale, id ?? "")}
+                            size="MEDIUM"
+                            type="outlined"
+                        >
+                            {t("Дальше")}
+                        </ButtonLink>
+                    </div>
                 </div>
+
             </form>
         </FormProvider>
     );

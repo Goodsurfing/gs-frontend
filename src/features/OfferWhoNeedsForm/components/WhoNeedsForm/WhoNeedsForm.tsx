@@ -80,6 +80,8 @@ export const WhoNeedsForm = memo(() => {
     const [toast, setToast] = useState<ToastAlert>();
     const watch = useWatch({ control });
 
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_WHO_NEEDS_FORM}${id}`) !== null, [id]);
+
     const saveFormData = useCallback(
         (data: OfferWhoNeedsFields) => {
             sessionStorage.setItem(
@@ -250,24 +252,29 @@ export const WhoNeedsForm = memo(() => {
                         />
                     )}
                 />
-                <div className={styles.buttons}>
-                    <Button
-                        disabled={isLoading}
-                        onClick={onSubmit}
-                        className={styles.btn}
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                    >
-                        {t("whoNeeds.Сохранить")}
-                    </Button>
-                    <ButtonLink
-                        path={getOffersDescriptionPageUrl(locale, id ?? "")}
-                        size="MEDIUM"
-                        type="outlined"
-                    >
-                        {t("Дальше")}
-                    </ButtonLink>
+                <div className={styles.buttonsWrapper}>
+                    {hasSavedDataInSession() && (
+                        <ErrorText text={t("У вас есть несохраненные изменения")} />
+                    )}
+                    <div className={styles.buttons}>
+                        <Button
+                            disabled={isLoading}
+                            onClick={onSubmit}
+                            className={styles.btn}
+                            variant="FILL"
+                            color="BLUE"
+                            size="MEDIUM"
+                        >
+                            {t("Сохранить")}
+                        </Button>
+                        <ButtonLink
+                            path={getOffersDescriptionPageUrl(locale, id ?? "")}
+                            size="MEDIUM"
+                            type="outlined"
+                        >
+                            {t("Дальше")}
+                        </ButtonLink>
+                    </div>
                 </div>
             </form>
         </FormProvider>

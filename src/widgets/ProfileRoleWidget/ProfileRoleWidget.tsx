@@ -10,7 +10,7 @@ import { RoleCard } from "@/features/ProfileRole";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
 
-import { getHostRegistrationUrl, getOfferPersonalPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegisterPageUrl, getOfferPersonalPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -102,7 +102,7 @@ export const ProfileRoleWidget: FC = () => {
                     });
                 });
         } else {
-            navigate(getHostRegistrationUrl(locale));
+            navigate(getHostRegisterPageUrl(locale));
         }
     };
 

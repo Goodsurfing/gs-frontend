@@ -26,6 +26,7 @@ import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSet
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./OfferWhenForm.module.scss";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferWhenFormProps {
     initialData?: OfferWhenFields | null;
@@ -78,6 +79,8 @@ export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
         periods: watchPeriods,
         endSettings: watchEndSettings,
     } = watch;
+
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_WHEN_FORM}${offerId}`) !== null, [offerId]);
 
     const saveFormData = useCallback(
         (data: OfferWhenFields) => {
@@ -175,24 +178,29 @@ export const OfferWhenForm = memo((props: OfferWhenFormProps) => {
                     />
                 )}
             />
-            <div className={styles.buttons}>
-                <Button
-                    disabled={isLoadingUpdateWhenData}
-                    onClick={onSubmit}
-                    className={styles.btn}
-                    variant="FILL"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    {t("when.Сохранить")}
-                </Button>
-                <ButtonLink
-                    path={linkNext}
-                    size="MEDIUM"
-                    type="outlined"
-                >
-                    {t("Дальше")}
-                </ButtonLink>
+            <div className={styles.buttonsWrapper}>
+                {hasSavedDataInSession() && (
+                    <ErrorText text={t("У вас есть несохраненные изменения")} />
+                )}
+                <div className={styles.buttons}>
+                    <Button
+                        disabled={isLoadingUpdateWhenData}
+                        onClick={onSubmit}
+                        className={styles.btn}
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        {t("Сохранить")}
+                    </Button>
+                    <ButtonLink
+                        path={linkNext}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
+                </div>
             </div>
         </form>
     );

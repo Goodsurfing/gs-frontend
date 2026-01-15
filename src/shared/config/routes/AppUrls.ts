@@ -74,7 +74,9 @@ export const getMyOffersPageUrl: RoutePathFunction = (locale) => `/${locale}${Ro
 
 // Host / organization pages
 
-export const getHostRegistrationUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.offers_registration}`;
+export const getHostRegisterPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_register}`;
+
+export const getHostInfoUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_info}`;
 
 export const getHostGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_gallery}`;
 
