@@ -29,10 +29,11 @@
         "Отправились": "Sent:",
         "Закрыть": "Close",
         "Открыть": "Open",
-        "Вы уверены что хотите изменить вакансию?": "Are you sure you want to edit the job posting?",
+        "Вы уверены что хотите изменить вакансию?": "Are you sure you want to edit the offer posting?",
         "Ок": "Ok",
         "Отмена": "Cancel",
-        "Удалить": "Delete"
+        "Удалить": "Delete",
+        "Ошибка изменения вакансии": "Error in modifying the offer posting"
     },
     "hostNotes": {
         "Мои заявки": "My applications",

@@ -294,6 +294,8 @@ export const Chat: FC<ChatProps> = (props) => {
                     return (
                         <Fragment key={messageId}>
                             <Message
+                                locale={locale}
+                                userId={authorId}
                                 avatar={userAvatar ?? ""}
                                 date={formatMessageDate(locale, createdAt)}
                                 isUser={isUserCompanion}

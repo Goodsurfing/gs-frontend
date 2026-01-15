@@ -43,13 +43,14 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-width: 720px;
+    max-width: 1080px;
     gap: 20px;
 
     .title {
-        max-width: 580px;
+        // max-width: 1080px;
         font: var(--font-h1);
         color: var(--text-secondary-1);
+        overflow-wrap: break-word;
     }
 
     

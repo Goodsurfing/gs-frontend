@@ -32,7 +32,8 @@
         "Вы уверены что хотите изменить вакансию?": "¿Está seguro de que quiere modificar la oferta de trabajo?",
         "Ок": "Ok",
         "Отмена": "Cancelar",
-        "Удалить": "Borrar"
+        "Удалить": "Borrar",
+        "Ошибка изменения вакансии": "Error al cambiar la vacante"
     },
     "hostNotes": {
         "Мои заявки": "Mis aplicaciones",

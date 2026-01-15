@@ -10,7 +10,7 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./VerifyEmailForm.module.scss";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import Input from "@/shared/ui/Input/Input";
+// import Input from "@/shared/ui/Input/Input";
 
 interface FormDataImplemintaion {
     email: string;
@@ -33,6 +33,7 @@ export const VerifyEmailForm = () => {
         mode: "onChange",
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newPassword = useWatch({
         control,
         name: "newPassword",
@@ -147,7 +148,7 @@ export const VerifyEmailForm = () => {
                     />
                 )}
             />
-            <Controller
+            {/* <Controller
                 name="newPassword"
                 control={control}
                 rules={{ required: t("password.Новый пароль обязателен") }}
@@ -168,7 +169,8 @@ export const VerifyEmailForm = () => {
                 name="repeatNewPassword"
                 control={control}
                 rules={{
-                    validate: (value) => value === newPassword || t("password.Пароли должны совпадать"),
+                    validate:
+                    (value) => value === newPassword || t("password.Пароли должны совпадать"),
                     required: t("password.Повторите новый пароль"),
                 }}
                 defaultValue=""
@@ -183,7 +185,7 @@ export const VerifyEmailForm = () => {
                         )}
                     </div>
                 )}
-            />
+            /> */}
             <Button
                 type="submit"
                 variant="FILL"

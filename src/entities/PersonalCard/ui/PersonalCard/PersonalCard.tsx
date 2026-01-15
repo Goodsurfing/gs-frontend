@@ -115,7 +115,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                                 [styles.black]: !isImage,
                             })}
                         >
-                            {textSlice(title, 34, "title")}
+                            {textSlice(title, 220, "title")}
                         </h1>
                         <OfferStatus status={status} />
                         <div className={styles.info}>
