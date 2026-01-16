@@ -7,126 +7,64 @@ export const useAllLangs = (): IOptionLanguage[] => {
     const { t } = useTranslation("offer");
     return [
         {
-            label: t("whoNeeds.Не важен"),
-            value: "not_matter",
-        },
-        {
             label: t("whoNeeds.Английский"),
-            value: "english",
+            value: "English",
         },
         {
             label: t("whoNeeds.Русский"),
-            value: "russian",
+            value: "Русский",
         },
         {
             label: t("whoNeeds.Испанский"),
-            value: "german",
+            value: "Español",
+        },
+        {
+            label: t("whoNeeds.Китайский"),
+            value: "中文",
         },
         {
             label: t("whoNeeds.Немецкий"),
-            value: "german",
+            value: "Deutsch",
         },
         {
             label: t("whoNeeds.Итальянский"),
-            value: "italian",
+            value: "Italiano",
         },
         {
             label: t("whoNeeds.Французский"),
-            value: "french",
+            value: "Français",
         },
         {
             label: t("whoNeeds.Португальский"),
-            value: "portuguese",
+            value: "Português",
         },
         {
             label: t("whoNeeds.Турецкий"),
-            value: "turkish",
+            value: "Türkçe",
         },
         {
             label: t("whoNeeds.Арабский"),
-            value: "arabic",
+            value: "العربية",
         },
         {
             label: t("whoNeeds.Шведский"),
-            value: "swedish",
+            value: "Svenska",
         },
         {
             label: t("whoNeeds.Датский"),
-            value: "danish",
+            value: "Dansk",
         },
         {
             label: t("whoNeeds.Норвежский"),
-            value: "norwegian",
+            value: "Norsk",
         },
         {
             label: t("whoNeeds.Украинский"),
-            value: "ukrainian",
+            value: "Українська",
         },
         {
             label: t("whoNeeds.Иврит"),
-            value: "hebrew",
-        },
-    ];
-};
-
-export const useAllLangsFilter = (): IOptionLanguage[] => {
-    const { t } = useTranslation("offer");
-    return [
-        {
-            label: t("whoNeeds.Английский"),
-            value: "english",
-        },
-        {
-            label: t("whoNeeds.Русский"),
-            value: "russian",
-        },
-        {
-            label: t("whoNeeds.Испанский"),
-            value: "spanish",
-        },
-        {
-            label: t("whoNeeds.Немецкий"),
-            value: "german",
-        },
-        {
-            label: t("whoNeeds.Итальянский"),
-            value: "italian",
-        },
-        {
-            label: t("whoNeeds.Французский"),
-            value: "french",
-        },
-        {
-            label: t("whoNeeds.Португальский"),
-            value: "portuguese",
-        },
-        {
-            label: t("whoNeeds.Турецкий"),
-            value: "turkish",
-        },
-        {
-            label: t("whoNeeds.Арабский"),
-            value: "arabic",
-        },
-        {
-            label: t("whoNeeds.Шведский"),
-            value: "swedish",
-        },
-        {
-            label: t("whoNeeds.Датский"),
-            value: "danish",
-        },
-        {
-            label: t("whoNeeds.Норвежский"),
-            value: "norwegian",
-        },
-        {
-            label: t("whoNeeds.Украинский"),
-            value: "ukrainian",
-        },
-        {
-            label: t("whoNeeds.Иврит"),
-            value: "hebrew",
+            value: "עברית",
         },
     ];
 };
@@ -202,20 +140,21 @@ export const useFormatLanguages = (languages: Language[]) => {
 
     const languagesList: IOptionLanguage[] = [
         { label: t("whoNeeds.Не важен"), value: "not_matter" },
-        { label: t("whoNeeds.Английский"), value: "english" },
-        { label: t("whoNeeds.Русский"), value: "russian" },
-        { label: t("whoNeeds.Испанский"), value: "spanish" },
-        { label: t("whoNeeds.Немецкий"), value: "german" },
-        { label: t("whoNeeds.Итальянский"), value: "italian" },
-        { label: t("whoNeeds.Французский"), value: "french" },
-        { label: t("whoNeeds.Португальский"), value: "portuguese" },
-        { label: t("whoNeeds.Турецкий"), value: "turkish" },
-        { label: t("whoNeeds.Арабский"), value: "arabic" },
-        { label: t("whoNeeds.Шведский"), value: "swedish" },
-        { label: t("whoNeeds.Датский"), value: "danish" },
-        { label: t("whoNeeds.Норвежский"), value: "norwegian" },
-        { label: t("whoNeeds.Украинский"), value: "ukrainian" },
-        { label: t("whoNeeds.Иврит"), value: "hebrew" },
+        { label: t("whoNeeds.Английский"), value: "English" },
+        { label: t("whoNeeds.Русский"), value: "Русский" },
+        { label: t("whoNeeds.Испанский"), value: "Español" },
+        { label: t("whoNeeds.Китайский"), value: "中文" },
+        { label: t("whoNeeds.Немецкий"), value: "Deutsch" },
+        { label: t("whoNeeds.Итальянский"), value: "Italiano" },
+        { label: t("whoNeeds.Французский"), value: "Français" },
+        { label: t("whoNeeds.Португальский"), value: "Português" },
+        { label: t("whoNeeds.Турецкий"), value: "Türkçe" },
+        { label: t("whoNeeds.Арабский"), value: "العربية" },
+        { label: t("whoNeeds.Шведский"), value: "Svenska" },
+        { label: t("whoNeeds.Датский"), value: "Dansk" },
+        { label: t("whoNeeds.Норвежский"), value: "Norsk" },
+        { label: t("whoNeeds.Украинский"), value: "Українська" },
+        { label: t("whoNeeds.Иврит"), value: "עברית" },
     ];
 
     const levelOptions: IOptionLevelLanguage[] = [
@@ -260,20 +199,21 @@ export const useLanguagesWithComma = (languages: Language[]) => {
 
     const languagesList: IOptionLanguage[] = [
         { label: t("whoNeeds.Не важен"), value: "not_matter" },
-        { label: t("whoNeeds.Английский"), value: "english" },
-        { label: t("whoNeeds.Русский"), value: "russian" },
-        { label: t("whoNeeds.Испанский"), value: "spanish" },
-        { label: t("whoNeeds.Немецкий"), value: "german" },
-        { label: t("whoNeeds.Итальянский"), value: "italian" },
-        { label: t("whoNeeds.Французский"), value: "french" },
-        { label: t("whoNeeds.Португальский"), value: "portuguese" },
-        { label: t("whoNeeds.Турецкий"), value: "turkish" },
-        { label: t("whoNeeds.Арабский"), value: "arabic" },
-        { label: t("whoNeeds.Шведский"), value: "swedish" },
-        { label: t("whoNeeds.Датский"), value: "danish" },
-        { label: t("whoNeeds.Норвежский"), value: "norwegian" },
-        { label: t("whoNeeds.Украинский"), value: "ukrainian" },
-        { label: t("whoNeeds.Иврит"), value: "hebrew" },
+        { label: t("whoNeeds.Английский"), value: "English" },
+        { label: t("whoNeeds.Русский"), value: "Русский" },
+        { label: t("whoNeeds.Испанский"), value: "Español" },
+        { label: t("whoNeeds.Китайский"), value: "中文" },
+        { label: t("whoNeeds.Немецкий"), value: "Deutsch" },
+        { label: t("whoNeeds.Итальянский"), value: "Italiano" },
+        { label: t("whoNeeds.Французский"), value: "Français" },
+        { label: t("whoNeeds.Португальский"), value: "Português" },
+        { label: t("whoNeeds.Турецкий"), value: "Türkçe" },
+        { label: t("whoNeeds.Арабский"), value: "العربية" },
+        { label: t("whoNeeds.Шведский"), value: "Svenska" },
+        { label: t("whoNeeds.Датский"), value: "Dansk" },
+        { label: t("whoNeeds.Норвежский"), value: "Norsk" },
+        { label: t("whoNeeds.Украинский"), value: "Українська" },
+        { label: t("whoNeeds.Иврит"), value: "עברית" },
     ];
 
     const languagesWithoutLevel = languages.map(({ language }) => {
