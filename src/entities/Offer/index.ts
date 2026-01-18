@@ -18,6 +18,7 @@ export {
     useGetAllOffersMapQuery,
     useLazyGetAllOffersMapQuery,
     useLazyGetOfferParticipantListByOfferIdQuery,
+    useGetOfferGalleryItemsQuery,
 } from "./api/offerApi";
 
 export type {

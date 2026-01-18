@@ -8,6 +8,7 @@ export { OfferWhenTimeSettings } from "./OfferWhen/ui/OfferWhenTimeSettings/Offe
 
 export { offerWhenFormAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
 export { offerWhenFormApiAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
+export { inviteDescriptionAdapter, inviteDescriptionApiAdapter } from "./InviteDescriptionForm/lib/inviteDescriptionAdapter";
 
 export type {
     CreateOfferWhen, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,

@@ -139,21 +139,20 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
 
     const handleRemove = (name?: string, imgId?: string) => {
         setFiles((prev) => {
-            const fileToRemove = prev.find(
-                (f) => f.file.name === name || f.id === imgId,
-            );
-
+            const fileToRemove = prev.find((f) => f.file.name === name || f.id === imgId);
             if (fileToRemove?.controller) {
                 fileToRemove.controller.abort();
             }
 
             if (imgId) {
-                onDelete(imgId);
                 return prev.filter((f) => f.id !== imgId);
             }
-
             return prev.filter((f) => f.file.name !== name);
         });
+
+        if (imgId) {
+            onDelete(imgId);
+        }
     };
 
     const getMedia = (img: GalleryImage): MediaObjectType => {

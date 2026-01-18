@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+    FC, useCallback, useEffect,
+} from "react";
 import {
     Controller,
     DefaultValues,
@@ -9,19 +11,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import {
-    useGetOfferByIdQuery,
-    useUpdateOfferDescriptionMutation,
-} from "@/entities/Offer/api/offerApi";
-
 import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import {
-    HintType,
-    ToastAlert,
-} from "@/shared/ui/HintPopup/HintPopup.interface";
 
 import {
     inviteDescriptionAdapter,
@@ -34,11 +26,10 @@ import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { getOffersWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferGallery } from "@/features/Gallery";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./InviteDescriptionForm.module.scss";
+import { Image } from "@/types/media";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",
@@ -48,7 +39,22 @@ const defaultValues: DefaultValues<OfferDescriptionField> = {
     coverImage: null,
 };
 
-export const InviteDescriptionForm = () => {
+interface InviteDescriptionFormProps {
+    initialData?: Partial<OfferDescriptionField> | null;
+    imageGallery?: Image[];
+    onComplete?: (data: OfferDescriptionField) => void;
+    onUploadImageGallery: (data: string[]) => void;
+    isLoadingGetData: boolean;
+    isLoadingUpdateData: boolean;
+    linkNext: string;
+}
+
+export const InviteDescriptionForm: FC<InviteDescriptionFormProps> = (props) => {
+    const {
+        initialData, onComplete, isLoadingGetData, isLoadingUpdateData,
+        linkNext, imageGallery, onUploadImageGallery,
+    } = props;
+
     const form = useForm<OfferDescriptionField>({
         mode: "onChange",
         defaultValues,
@@ -60,12 +66,7 @@ export const InviteDescriptionForm = () => {
         reset,
     } = form;
     const { id } = useParams();
-    const { locale } = useLocale();
 
-    const [updateOfferDescription, { isLoading }] = useUpdateOfferDescriptionMutation();
-    const { data: getOfferData, isLoading: isLoadingGetDescription } = useGetOfferByIdQuery(id || "");
-
-    const [toast, setToast] = useState<ToastAlert>();
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
 
@@ -94,12 +95,12 @@ export const InviteDescriptionForm = () => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.description) {
-            reset(inviteDescriptionAdapter(getOfferData.description));
+        } else if (initialData) {
+            reset(initialData);
         } else {
             reset();
         }
-    }, [getOfferData?.description, loadFormData, reset]);
+    }, [initialData, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();
@@ -113,30 +114,15 @@ export const InviteDescriptionForm = () => {
     }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
-        setToast(undefined);
-        const preparedData = inviteDescriptionApiAdapter(data);
-        try {
-            await updateOfferDescription({ offerId: Number(id), body: preparedData });
-            setToast({
-                text: t("Данные успешно изменены"),
-                type: HintType.Success,
-            });
-            sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${id}`);
-        } catch {
-            setToast({
-                text: t("Произошла ошибка"),
-                type: HintType.Error,
-            });
-        }
+        onComplete?.(data);
     });
 
-    if (isLoadingGetDescription) {
+    if (isLoadingGetData) {
         return <MiniLoader />;
     }
 
     return (
         <FormProvider {...form}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form onSubmit={onSubmit}>
                 <div className={styles.formWrapper}>
                     <EventName />
@@ -171,7 +157,10 @@ export const InviteDescriptionForm = () => {
                             </div>
                         )}
                     />
-                    <OfferGallery offerId={id ?? ""} offerImageGallery={getOfferData?.galleryImages} />
+                    <OfferGallery
+                        imageGallery={imageGallery}
+                        onUploadImageGallery={onUploadImageGallery}
+                    />
                 </div>
                 <div className={styles.buttonsWrapper}>
                     {hasSavedDataInSession() && (
@@ -180,7 +169,7 @@ export const InviteDescriptionForm = () => {
                     <div className={styles.buttons}>
                         <Button
                             className={styles.btn}
-                            disabled={isLoading}
+                            disabled={isLoadingUpdateData}
                             variant="FILL"
                             color="BLUE"
                             size="MEDIUM"
@@ -189,7 +178,7 @@ export const InviteDescriptionForm = () => {
                             {t("description.Сохранить")}
                         </Button>
                         <ButtonLink
-                            path={getOffersWhatToDoPageUrl(locale, id ?? "")}
+                            path={linkNext}
                             size="MEDIUM"
                             type="outlined"
                         >
