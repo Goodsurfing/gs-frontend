@@ -176,7 +176,9 @@
         "Добавить ссылку на анкету": "Agregar un enlace al formulario",
         "Добавить вопрос": "Agregar una pregunta",
         "Опубликовать": "Publicar",
-        "Сохранить в черновики": "Guardar como borrador"
+        "Сохранить изменения": "Guardar cambios",
+        "Сохранить в черновики": "Guardar como borrador",
+        "Черновик сохранён": "El borrador ha sido guardado"
     },
     "personalOffer": {
         "active": "Activo",

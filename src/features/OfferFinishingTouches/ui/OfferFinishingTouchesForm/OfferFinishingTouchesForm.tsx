@@ -1,30 +1,18 @@
 import { FormControlLabel, Typography } from "@mui/material";
 import cn from "classnames";
 import {
-    memo, useCallback, useEffect, useState,
+    memo, useCallback, useEffect,
 } from "react";
 import {
     Controller, DefaultValues, useForm, useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { ErrorType } from "@/types/api/error";
+import { useParams } from "react-router-dom";
 
 import { OfferStatus } from "@/entities/Offer";
-import {
-    useGetOfferByIdQuery,
-    useUpdateOfferMutation,
-    useUpdateOfferStatusMutation,
-} from "@/entities/Offer/api/offerApi";
 
-import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import {
-    HintType,
-    ToastAlert,
-} from "@/shared/ui/HintPopup/HintPopup.interface";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
@@ -36,15 +24,17 @@ import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishin
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
-import styles from "./OfferFinishingTouches.module.scss";
 import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
-import { getMyOffersPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./OfferFinishingTouchesForm.module.scss";
 
 interface OfferFinishingTouchesFormProps {
+    initialData?: OfferFinishingTouchesFormFields | null;
+    offerStatusData: OfferStatus;
+    onComplete?: (data: OfferFinishingTouchesFormFields, offerStatus: OfferStatus) => void;
+    isLoadingGetData: boolean;
+    isLoadingUpdateData: boolean;
     className?: string;
-    onSuccess?: (formData: OfferFinishingTouchesFormFields) => void;
 }
 
 const defaultValues: DefaultValues<OfferFinishingTouchesFormFields> = {
@@ -68,15 +58,11 @@ export const OfferFinishingTouchesForm = memo(
             defaultValues,
         });
 
-        const { className, onSuccess } = props;
+        const {
+            className, initialData, isLoadingGetData,
+            isLoadingUpdateData, onComplete, offerStatusData,
+        } = props;
         const { id } = useParams();
-        const navigate = useNavigate();
-        const { locale } = useLocale();
-
-        const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-        const [updateOfferStatus] = useUpdateOfferStatusMutation();
-        const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
-        const [toast, setToast] = useState<ToastAlert>();
         const { t } = useTranslation("offer");
         const watch = useWatch({ control });
 
@@ -95,12 +81,12 @@ export const OfferFinishingTouchesForm = memo(
             const savedData = loadFormData();
             if (savedData) {
                 reset(savedData);
-            } else if (getOfferData?.finishingTouche) {
-                reset(offerFinishingTouchesAdapter(getOfferData?.finishingTouche));
+            } else if (initialData) {
+                reset(initialData);
             } else {
                 reset();
             }
-        }, [getOfferData?.finishingTouche, loadFormData, reset]);
+        }, [initialData, loadFormData, reset]);
 
         useEffect(() => {
             initializeForm();
@@ -117,44 +103,18 @@ export const OfferFinishingTouchesForm = memo(
             data: OfferFinishingTouchesFormFields,
             offerStatus: OfferStatus,
         ) => {
-            if (id) {
-                const preparedData = offerFinishingTouchesApiAdapter(data);
-                setToast(undefined);
-                await updateOffer({
-                    id: Number(id),
-                    body: {
-                        finishingTouches: preparedData,
-                    },
-                })
-                    .unwrap()
-                    .then(async () => {
-                        await updateOfferStatus({ id, status: offerStatus }).unwrap();
-                        setToast({
-                            text: t("Данные успешно изменены"),
-                            type: HintType.Success,
-                        });
-                        sessionStorage.removeItem(`${OFFER_FINISHING_TOUCHES_FORM}${id}`);
-                        navigate(getMyOffersPageUrl(locale));
-                    })
-                    .catch((error: ErrorType) => {
-                        setToast({
-                            text: getErrorText(error),
-                            type: HintType.Error,
-                        });
-                    });
-            }
+            onComplete?.(data, offerStatus);
         };
 
         const onSubmit = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "active");
-            onSuccess?.(data);
         });
 
         const onDraftHandle = handleSubmit((data) => {
             updateFinishingTouchesHandle(data, "draft");
         });
 
-        if (isOfferDataLoading) {
+        if (isLoadingGetData) {
             return (
                 <div className={cn(styles.wrapper, className)}>
                     <MiniLoader />
@@ -164,7 +124,6 @@ export const OfferFinishingTouchesForm = memo(
 
         return (
             <form onSubmit={onSubmit} className={cn(styles.wrapper, className)}>
-                {toast && <HintPopup text={toast.text} type={toast.type} />}
                 <div className={styles.formFields}>
                     <div className={styles.skillsWrapper}>
                         <p className={styles.formTitle}>
@@ -292,16 +251,17 @@ export const OfferFinishingTouchesForm = memo(
                     )}
                     <div className={styles.buttons}>
                         <Button
-                            disabled={isLoading}
+                            onClick={onSubmit}
+                            disabled={isLoadingUpdateData}
                             color="BLUE"
                             size="MEDIUM"
                             variant="FILL"
-                            onClick={onSubmit}
                         >
-                            {t("finishingTouches.Опубликовать")}
+                            {offerStatusData === "draft" ? t("finishingTouches.Опубликовать") : t("finishingTouches.Сохранить изменения")}
                         </Button>
                         <Button
                             onClick={onDraftHandle}
+                            disabled={isLoadingUpdateData || (offerStatusData !== "draft")}
                             color="BLUE"
                             size="MEDIUM"
                             variant="OUTLINE"

@@ -176,7 +176,9 @@
         "Добавить ссылку на анкету": "Add a link to the form",
         "Добавить вопрос": "Add a question",
         "Опубликовать": "Publish",
-        "Сохранить в черновики": "Save as draft"
+        "Сохранить изменения": "Save changes",
+        "Сохранить в черновики": "Save as draft",
+        "Черновик сохранён": "The draft has been saved"
     },
     "personalOffer": {
         "active": "Active",
