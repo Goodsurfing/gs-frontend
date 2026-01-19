@@ -33,7 +33,7 @@
         "Ок": "Ok",
         "Отмена": "Cancel",
         "Удалить": "Delete",
-        "Ошибка изменения вакансии": "Error in modifying the offer posting"
+        "Вакансию удалить нельзя": "This offer posting cannot be deleted"
     },
     "hostNotes": {
         "Мои заявки": "My applications",

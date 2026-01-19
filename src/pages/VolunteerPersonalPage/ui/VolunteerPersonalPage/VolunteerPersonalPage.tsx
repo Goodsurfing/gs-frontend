@@ -9,7 +9,7 @@ import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
-import { useGetProfileInfoQuery, useGetProfileInfoByIdQuery } from "@/entities/Profile";
+import { useGetProfileInfoByIdQuery } from "@/entities/Profile";
 
 import {
     getMessengerPageIdUrl,
@@ -23,8 +23,8 @@ import { useSubmenuVolunteerItems } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import styles from "./VolunteerPersonalPage.module.scss";
 import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
+import styles from "./VolunteerPersonalPage.module.scss";
 
 export const VolunteerPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,12 +33,13 @@ export const VolunteerPersonalPage = () => {
     const { locale } = useLocale();
     const { t, ready } = useTranslation("profile");
     const { submenuItems } = useSubmenuVolunteerItems();
-    const { isAuth } = useAuth();
+    const { isAuth, myProfile } = useAuth();
 
     const { data: profileData, isLoading } = useGetProfileInfoByIdQuery(
         id || "",
     );
-    const { data: myProfileData } = useGetProfileInfoQuery();
+
+    const isOwnProfile = !!myProfile && myProfile.id === id;
 
     const handleEditClick = () => {
         navigate(getVolunteerDashboardPageUrl(locale));
@@ -106,7 +107,23 @@ export const VolunteerPersonalPage = () => {
         );
     }
 
-    const showEditButton = !!myProfileData && myProfileData.id === id;
+    if (!isOwnProfile && profileData.isActive === false) {
+        return (
+            <div className={styles.wrapper}>
+                <MainHeader />
+                <div className={styles.content}>
+                    <Text
+                        className={styles.error}
+                        textSize="primary"
+                        text={t("personal.Профиль недоступен")}
+                    />
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    const showEditButton = !!myProfile && myProfile.id === id;
 
     const renderButtons = (
         <>

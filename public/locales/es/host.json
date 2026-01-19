@@ -33,7 +33,7 @@
         "Ок": "Ok",
         "Отмена": "Cancelar",
         "Удалить": "Borrar",
-        "Ошибка изменения вакансии": "Error al cambiar la vacante"
+        "Вакансию удалить нельзя": "Esta oferta de empleo no se puede eliminar"
     },
     "hostNotes": {
         "Мои заявки": "Mis aplicaciones",

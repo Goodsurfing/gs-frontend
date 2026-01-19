@@ -43,13 +43,6 @@ const HostOffersPage = () => {
         }] = useLazyGetHostAllOffersByIdQuery();
     const [triggerOffer, { isLoading: isOfferLoading }] = useLazyGetOfferByIdQuery();
 
-    // const [offersWithOpenStatus, setOffersWithOpenStatus] = useState<HostOffer[]>(
-    //     [],
-    // );
-    // const [offersWithClosedStatus, setOffersWithClosedStatus] = useState<
-    // HostOffer[]
-    // >([]);
-
     const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
     const [selectedBtnOffer, setSelectedBtnOffer] = useState<SeletecBtnType | null>(null);
     const [deleteOfferError, setDeleteOfferError] = useState<boolean>(false);
@@ -159,7 +152,7 @@ const HostOffersPage = () => {
         <div className={styles.wrapper}>
             {(deleteOfferError) && (
                 <HintPopup
-                    text={t("hostOffers.Ошибка изменения вакансии")}
+                    text={t("hostOffers.Вакансию удалить нельзя")}
                     type={HintType.Error}
                 />
             )}
