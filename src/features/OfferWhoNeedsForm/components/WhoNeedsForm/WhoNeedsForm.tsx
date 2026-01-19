@@ -1,6 +1,7 @@
 import cn from "classnames";
 import {
-    memo, useCallback, useEffect, useState,
+    FC,
+    memo, useCallback, useEffect,
 } from "react";
 import {
     Controller,
@@ -11,24 +12,13 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { ErrorType } from "@/types/api/error";
 
-import {
-    useGetOfferByIdQuery,
-    useUpdateOfferMutation,
-} from "@/entities/Offer/api/offerApi";
 import { Age } from "@/entities/Offer/model/types/offerWhoNeeds";
 
 import { OFFER_WHO_NEEDS_FORM } from "@/shared/constants/localstorage";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
-import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import {
-    HintType,
-    ToastAlert,
-} from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
@@ -42,11 +32,9 @@ import { AgeComponent } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
-import styles from "./WhoNeedsForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { getOffersDescriptionPageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./WhoNeedsForm.module.scss";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };
 
@@ -60,16 +48,26 @@ const defaultValues: DefaultValues<OfferWhoNeedsFields> = {
     additionalInfo: "",
 };
 
-export const WhoNeedsForm = memo(() => {
+interface WhoNeedsFormProps {
+    initialData?: OfferWhoNeedsFields | null;
+    onComplete?: (data: OfferWhoNeedsFields) => void;
+    isLoadingGetData: boolean;
+    isLoadingUpdateData: boolean;
+    linkNext: string;
+}
+
+export const WhoNeedsForm: FC<WhoNeedsFormProps> = memo((props: WhoNeedsFormProps) => {
+    const {
+        initialData, onComplete, isLoadingGetData, isLoadingUpdateData,
+        linkNext,
+    } = props;
+
     const form = useForm<OfferWhoNeedsFields>({
         mode: "onChange",
         defaultValues,
     });
     const { id } = useParams();
-    const { locale } = useLocale();
 
-    const [updateOffer, { isLoading }] = useUpdateOfferMutation();
-    const { data: getOfferData, isLoading: isLoadingGetWhoNeedsData } = useGetOfferByIdQuery(id || "");
     const { t } = useTranslation("offer");
     const {
         handleSubmit,
@@ -77,7 +75,6 @@ export const WhoNeedsForm = memo(() => {
         reset,
         formState: { errors, isDirty },
     } = form;
-    const [toast, setToast] = useState<ToastAlert>();
     const watch = useWatch({ control });
 
     const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_WHO_NEEDS_FORM}${id}`) !== null, [id]);
@@ -105,12 +102,12 @@ export const WhoNeedsForm = memo(() => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.howNeed) {
-            reset(offerWhoNeedsApiAdapter(getOfferData?.howNeed));
+        } else if (initialData) {
+            reset(initialData);
         } else {
             reset();
         }
-    }, [getOfferData?.howNeed, loadFormData, reset]);
+    }, [initialData, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();
@@ -124,32 +121,15 @@ export const WhoNeedsForm = memo(() => {
     }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
-        const preparedData = offerWhoNeedsAdapter(data);
-        setToast(undefined);
-        updateOffer({ id: Number(id), body: { howNeeds: preparedData } })
-            .unwrap()
-            .then(() => {
-                setToast({
-                    text: "Данные успешно изменены",
-                    type: HintType.Success,
-                });
-                sessionStorage.removeItem(`${OFFER_WHO_NEEDS_FORM}${id}`);
-            })
-            .catch((error: ErrorType) => {
-                setToast({
-                    text: getErrorText(error),
-                    type: HintType.Error,
-                });
-            });
+        onComplete?.(data);
     });
 
-    if (isLoadingGetWhoNeedsData) {
+    if (isLoadingGetData) {
         return <MiniLoader />;
     }
 
     return (
         <FormProvider {...form}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <form className={styles.wrapper}>
                 <Controller
                     control={control}
@@ -258,7 +238,7 @@ export const WhoNeedsForm = memo(() => {
                     )}
                     <div className={styles.buttons}>
                         <Button
-                            disabled={isLoading}
+                            disabled={isLoadingUpdateData}
                             onClick={onSubmit}
                             className={styles.btn}
                             variant="FILL"
@@ -268,7 +248,7 @@ export const WhoNeedsForm = memo(() => {
                             {t("Сохранить")}
                         </Button>
                         <ButtonLink
-                            path={getOffersDescriptionPageUrl(locale, id ?? "")}
+                            path={linkNext}
                             size="MEDIUM"
                             type="outlined"
                         >
