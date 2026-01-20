@@ -7,6 +7,10 @@ export const useAllLangs = (): IOptionLanguage[] => {
     const { t } = useTranslation("offer");
     return [
         {
+            label: t("whoNeeds.Не важен"),
+            value: "not_matter",
+        },
+        {
             label: t("whoNeeds.Английский"),
             value: "English",
         },

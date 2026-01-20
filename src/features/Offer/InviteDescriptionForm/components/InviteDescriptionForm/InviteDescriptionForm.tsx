@@ -16,7 +16,7 @@ import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 import {
-    inviteDescriptionAdapter,
+    fromSessionStorageAdapter,
     inviteDescriptionApiAdapter,
 } from "../../lib/inviteDescriptionAdapter";
 import { OfferDescriptionField } from "../../model/types/inviteDescription";
@@ -87,9 +87,9 @@ export const InviteDescriptionForm: FC<InviteDescriptionFormProps> = (props) => 
             `${OFFER_DESCRIPTION_FORM}${id}`,
         );
         return savedData
-            ? inviteDescriptionAdapter(JSON.parse(savedData))
+            ? fromSessionStorageAdapter(JSON.parse(savedData), initialData?.coverImage)
             : null;
-    }, [id]);
+    }, [id, initialData?.coverImage]);
 
     const initializeForm = useCallback(() => {
         const savedData = loadFormData();

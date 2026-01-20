@@ -25,7 +25,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
             className, value, onChange, isTitle = true,
         } = props;
         const { t } = useTranslation("volunteer");
-        const allLangs = useAllLangs();
+        const allLangs = useAllLangs().slice(1);
         const allLevels = useLangsLevelsFilter();
 
         const handleLanguageChange = (language: string) => {

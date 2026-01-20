@@ -1,6 +1,7 @@
 import { OfferDescription, UpdateOfferDescription } from "@/entities/Offer";
 
 import { OfferDescriptionField } from "../model/types/inviteDescription";
+import { Image } from "@/types/media";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,
@@ -33,3 +34,14 @@ export const inviteDescriptionAdapter = (
         category: categoriesTemp,
     };
 };
+
+export const fromSessionStorageAdapter = (
+    data: UpdateOfferDescription,
+    image?: Image | null,
+): Partial<OfferDescriptionField> => ({
+    title: data.title ?? "",
+    fullDescription: data.description ?? "",
+    shortDescription: data.shortDescription ?? "",
+    coverImage: image,
+    category: Array.isArray(data.categoryIds) ? data.categoryIds : [],
+});

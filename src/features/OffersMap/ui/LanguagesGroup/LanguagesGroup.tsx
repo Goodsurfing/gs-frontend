@@ -10,7 +10,7 @@ interface LanguagesGroupProps {
 
 export const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
-    const allLangsFilter = useAllLangs();
+    const allLangsFilter = useAllLangs().slice(1);
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange(newValues.filter(Boolean));

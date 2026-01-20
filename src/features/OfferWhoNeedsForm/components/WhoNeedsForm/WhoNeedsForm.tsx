@@ -25,7 +25,6 @@ import Textarea from "@/shared/ui/Textarea/Textarea";
 import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 import {
     offerWhoNeedsAdapter,
-    offerWhoNeedsApiAdapter,
 } from "../../lib/offerWhoNeedsAdapter";
 import { OfferWhoNeedsFields } from "../../model/types/offerWhoNeeds";
 import { AgeComponent } from "../Age/Age";
@@ -90,12 +89,31 @@ export const WhoNeedsForm: FC<WhoNeedsFormProps> = memo((props: WhoNeedsFormProp
     );
 
     const loadFormData = useCallback((): OfferWhoNeedsFields | null => {
-        const savedData = sessionStorage.getItem(
-            `${OFFER_WHO_NEEDS_FORM}${id}`,
-        );
-        return savedData
-            ? offerWhoNeedsApiAdapter(JSON.parse(savedData))
-            : null;
+        const savedDataStr = sessionStorage.getItem(`${OFFER_WHO_NEEDS_FORM}${id}`);
+        if (!savedDataStr) return null;
+
+        try {
+            const savedData = JSON.parse(savedDataStr);
+
+            const formData: OfferWhoNeedsFields = {
+                gender: Array.isArray(savedData.gender) ? savedData.gender : [],
+                age: {
+                    minAge: savedData.ageMin ?? 18,
+                    maxAge: savedData.ageMax ?? 19,
+                },
+                languages: Array.isArray(savedData.requiredLanguages)
+                    ? savedData.requiredLanguages
+                    : [],
+                needAllLanguages: savedData.needAllLanguages ?? false,
+                volunteerPlaces: savedData.volunteerPlaceCount ?? 0,
+                receptionPlace: savedData.receptionPlace ?? "any",
+                additionalInfo: savedData.additionalInfo ?? "",
+            };
+
+            return formData;
+        } catch {
+            return null;
+        }
     }, [id]);
 
     const initializeForm = useCallback(() => {

@@ -41,7 +41,7 @@ const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
 
     const onCloseBtnClick = useCallback(
         (index: number) => {
-            if (index === 0) return;
+            // if (index === 0) return;
             const newValue = [...value];
             newValue.splice(index, 1);
             onChange(newValue);

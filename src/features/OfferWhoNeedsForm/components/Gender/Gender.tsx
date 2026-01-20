@@ -20,9 +20,7 @@ export const GenderComponent: FC<GenderProps> = (props: GenderProps) => {
     const handleGenderChange = (selectedGender: Gender) => {
         if (value.includes(selectedGender)) {
             onChange(value.filter((g) => g !== selectedGender));
-            onChange(value.filter((g) => g !== selectedGender));
         } else {
-            onChange([...value, selectedGender]);
             onChange([...value, selectedGender]);
         }
     };
