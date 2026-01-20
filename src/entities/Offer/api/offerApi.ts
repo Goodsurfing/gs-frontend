@@ -113,10 +113,11 @@ export const offerApi = createApi({
         }),
         updateOfferStatus: build.mutation<UpdateOfferStatusResponse, UpdateOfferStatusRequest>({
             query: (data) => ({
-                url: `/vacancies/${data.id}/status`,
+                // url: `/vacancies/${data.id}/status`,
+                url: `${API_BASE_URL_V3}vacancy/toggle-status/${data.id}`,
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/merge-patch+json",
+                    // "Content-Type": "application/merge-patch+json",
                 },
                 body: JSON.stringify({ status: data.status }),
             }),
