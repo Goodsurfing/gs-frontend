@@ -22,6 +22,7 @@ export {
     useUpdateProfileCertificatesMutation,
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
+    useGetProfileOccupancyQuery,
 } from "./api/profileApi";
 
 export type {

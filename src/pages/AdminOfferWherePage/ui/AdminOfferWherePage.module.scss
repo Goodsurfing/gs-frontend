@@ -1,0 +1,29 @@
+.ymaps {
+    max-width: 880px;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 1280px;
+}
+
+.form {
+    width: 100%;
+     margin-top: 40px;
+}
+
+.btn {
+    margin-top: 60px;
+}
+
+.title {
+    color: var(--text-primary, #212121);
+    font-size: 26px;
+    line-height: 120%;
+}
+
+@media (max-width: 992px) {
+    .title {
+        text-align: center;
+    }
+}

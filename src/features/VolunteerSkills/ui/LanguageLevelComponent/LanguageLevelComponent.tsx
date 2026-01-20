@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Language, LevelLanguage } from "@/types/languages";
 
 import {
-    useAllLangsFilter,
+    useAllLangs,
     useLangsLevelsFilter,
 } from "@/shared/data/languages";
 import { SelectComponent } from "@/shared/ui/Select/Select";
@@ -25,7 +25,7 @@ export const LanguageLevelComponent: FC<LanguageLevelComponentProps> = memo(
             className, value, onChange, isTitle = true,
         } = props;
         const { t } = useTranslation("volunteer");
-        const allLangs = useAllLangsFilter();
+        const allLangs = useAllLangs();
         const allLevels = useLangsLevelsFilter();
 
         const handleLanguageChange = (language: string) => {

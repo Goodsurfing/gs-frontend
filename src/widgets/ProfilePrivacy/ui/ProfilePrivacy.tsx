@@ -20,6 +20,7 @@ import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { userActions } from "@/entities/User";
+import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import styles from "./ProfilePrivacy.module.scss";
 
 export const ProfilePrivacy: FC = memo(() => {
@@ -29,11 +30,12 @@ export const ProfilePrivacy: FC = memo(() => {
     const [toggleActive, {
         isLoading: isToggleActiveLoading,
     }] = useToggleActiveProfileMutation();
-    const [deleteProfile, { isLoading: isProfileLoading }] = useDeleteProfileMutation();
+    const [deleteProfile, { isLoading: isProfileDeleting }] = useDeleteProfileMutation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [isActiveProfile, setActiveProfile] = useState<boolean>(false);
     const [toast, setToast] = useState<ToastAlert>();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
@@ -41,18 +43,28 @@ export const ProfilePrivacy: FC = memo(() => {
     }, [dispatch, locale, navigate]);
 
     const handleDeleteProfile = useCallback(async () => {
-        if (!myProfile || isProfileLoading) return;
+        if (!myProfile || isProfileDeleting) return;
         try {
             await deleteProfile(myProfile.id).unwrap();
             handleLogout();
-            navigate(getMainPageUrl(locale));
         } catch (e) {
             setToast({
                 type: HintType.Error,
-                text: t("profile.Ошибка при удалении профиля"),
+                text: t("privacy.Ошибка при удалении профиля"),
             });
+        } finally {
+            setIsDeleteModalOpen(false);
         }
-    }, [deleteProfile, handleLogout, isProfileLoading, locale, myProfile, navigate, t]);
+    }, [deleteProfile, handleLogout, isProfileDeleting, myProfile, t]);
+
+    const openDeleteModal = useCallback(() => {
+        setIsDeleteModalOpen(true);
+    }, []);
+
+    const closeDeleteModal = useCallback(() => {
+        setIsDeleteModalOpen(false);
+    }, []);
+
     const debounceDelay = 500;
     const toggleTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -69,7 +81,7 @@ export const ProfilePrivacy: FC = memo(() => {
                 } catch (e) {
                     setToast({
                         type: HintType.Error,
-                        text: t("profile.Ошибка при изменении статуса активности профиля"),
+                        text: t("privacy.Ошибка при изменении статуса активности профиля"),
                     });
                 }
             }
@@ -120,7 +132,7 @@ export const ProfilePrivacy: FC = memo(() => {
                 </p>
             </div>
             <div className={styles.container}>
-                <ProfileDeleteSwitch onClick={handleDeleteProfile} />
+                <ProfileDeleteSwitch onClick={openDeleteModal} />
                 <div className={styles.iconContainer}>
                     <div className={styles.errorLineIcon} />
                     <p className={styles.description}>
@@ -128,6 +140,17 @@ export const ProfilePrivacy: FC = memo(() => {
                     </p>
                 </div>
             </div>
+
+            <ConfirmActionModal
+                isModalOpen={isDeleteModalOpen}
+                description={t("privacy.Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.")}
+                onConfirm={handleDeleteProfile}
+                onClose={closeDeleteModal}
+                confirmTextButton={t("privacy.Удалить")}
+                cancelTextButton={t("privacy.Отмена")}
+                isLoading={isProfileDeleting}
+                buttonsDisabled={isProfileDeleting}
+            />
         </div>
     );
 });

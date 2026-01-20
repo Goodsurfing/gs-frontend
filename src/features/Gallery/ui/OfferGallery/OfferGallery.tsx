@@ -1,71 +1,45 @@
 import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
-import { useTranslation } from "react-i18next";
-import {
-    useGetOfferGalleryItemsQuery,
-    useUpdateOfferImageGalleryMutation,
-} from "@/entities/Offer/api/offerApi";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { GalleryItem, Image, MediaObjectType } from "@/types/media";
+import { Image, MediaObjectType } from "@/types/media";
 import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
 
 interface OfferGalleryProps {
     className?: string;
-    offerId: string;
-    offerImageGallery?: Image[];
+    imageGallery?: Image[];
+    onUploadImageGallery: (data: string[]) => void;
 }
 
 export const OfferGallery: FC<OfferGalleryProps> = (props) => {
-    const { offerId, className, offerImageGallery = [] } = props;
+    const {
+        className, imageGallery = [],
+        onUploadImageGallery,
+    } = props;
 
-    const { t } = useTranslation("volunteer");
-    const [updateOfferImageGallery] = useUpdateOfferImageGalleryMutation();
-    // const [createGalleryItem] = useCreateOfferGalleryItemMutation();
-    // const [deleteGalleryItem] = useDeleteOfferGalleryItemMutation();
-    const { data: galleryData } = useGetOfferGalleryItemsQuery(offerId);
-
-    const [imgs, setImgs] = useState<GalleryItem[]>([]);
-    const [toast, setToast] = useState<ToastAlert>();
+    const [imgs, setImgs] = useState<Image[]>([]);
 
     useEffect(() => {
-        if (galleryData) {
-            setImgs(galleryData);
+        if (imageGallery) {
+            setImgs(imageGallery);
         } else {
             setImgs([]);
         }
-    }, [galleryData]);
+    }, [imageGallery]);
 
     const handleOnUpload = useCallback(
         async (images: MediaObjectType[]) => {
             const currentGalleryImages = getMediaContentsApiArray(
-                [...offerImageGallery, ...images],
+                [...imageGallery, ...images],
             );
 
-            try {
-                await updateOfferImageGallery({
-                    offerId: Number(offerId),
-                    body: { galleryImageIds: currentGalleryImages },
-                }).unwrap();
-
-                setToast({
-                    text: t("volunteer-gallery.Галерея успешно обновлена"),
-                    type: HintType.Success,
-                });
-            } catch {
-                setToast({
-                    text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
-                    type: HintType.Error,
-                });
-            }
+            onUploadImageGallery(currentGalleryImages);
         },
-        [offerId, offerImageGallery, t, updateOfferImageGallery],
+        [imageGallery, onUploadImageGallery],
     );
 
     const handleOnDelete = useCallback(async (galleryId: string) => {
-        const currentGalleryImages = offerImageGallery;
+        const currentGalleryImages = imageGallery;
 
         const updatedGalleryImages = currentGalleryImages.filter(
             (image) => image.id !== galleryId,
@@ -73,26 +47,11 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
 
         const galleryImagesTemp = getMediaContentsApiArray(updatedGalleryImages);
 
-        try {
-            await updateOfferImageGallery({
-                offerId: Number(offerId),
-                body: { galleryImageIds: galleryImagesTemp },
-            }).unwrap();
-            setToast({
-                text: t("volunteer-gallery.Галерея успешно обновлена"),
-                type: HintType.Success,
-            });
-        } catch {
-            setToast({
-                text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
-                type: HintType.Error,
-            });
-        }
-    }, [offerId, offerImageGallery, t, updateOfferImageGallery]);
+        onUploadImageGallery(galleryImagesTemp);
+    }, [imageGallery, onUploadImageGallery]);
 
     return (
         <div className={className}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <ImagesUploader
                 uploadedImgs={imgs}
                 onUpload={handleOnUpload}

@@ -1,6 +1,6 @@
 import cn from "classnames";
 import {
-    memo, useCallback, useEffect, useState,
+    memo, useCallback, useEffect,
 } from "react";
 import {
     Controller,
@@ -25,25 +25,22 @@ import { ConditionsPayment } from "../ConditionsPayment/ConditionsPayment";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
 
-import { offerConditionsAdapter, offerConditionsApiAdapter } from "../../lib/offerConditionsAdapter";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { useGetOfferByIdQuery, useUpdateOfferConditionsMutation } from "@/entities/Offer/api/offerApi";
 import {
     NOT_SELECTED,
 } from "@/shared/constants/messages";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { getOffersFinishingTouchesPageUrl } from "@/shared/config/routes/AppUrls";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicFoodsQuery, useGetPublicHousesQuery, useGetPublicTransfersQuery } from "@/entities/Admin";
 import styles from "./OfferConditionsForm.module.scss";
 
 interface OfferConditionsFormProps {
-    onSuccess?: () => void;
+    initialData?: OfferConditionsFormFields | null;
+    onComplete?: (data: OfferConditionsFormFields) => void;
+    isLoadingGetData: boolean;
+    isLoadingUpdateData: boolean;
+    linkNext: string;
     className?: string;
 }
 
@@ -51,44 +48,46 @@ const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormField
 
 export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const {
+        initialData, onComplete, isLoadingGetData,
+        isLoadingUpdateData, linkNext, className,
+    } = props;
+    const {
         control, handleSubmit,
         reset, formState: { isDirty, errors },
     } = useForm<OfferConditionsFormFields>({
         mode: "onChange",
         defaultValues,
     });
-    const { onSuccess, className } = props;
     const { id } = useParams();
-    const { locale } = useLocale();
 
-    const [updateOfferConditions, { isLoading }] = useUpdateOfferConditionsMutation();
-    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(id || "");
     const { data: foodsData = [], isLoading: isFoodLoading } = useGetPublicFoodsQuery();
     const { data: housesData = [], isLoading: isHouseLoading } = useGetPublicHousesQuery();
     const { data: transfersData = [], isLoading: isTransferLoading } = useGetPublicTransfersQuery();
-    const [toast, setToast] = useState<ToastAlert>();
+
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
 
+    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_CONDITIONS_FORM}${id}`) !== null, [id]);
+
     const saveFormData = useCallback((data: OfferConditionsFormFields) => {
-        sessionStorage.setItem(`${OFFER_CONDITIONS_FORM}${id}`, JSON.stringify(offerConditionsApiAdapter(data)));
+        sessionStorage.setItem(`${OFFER_CONDITIONS_FORM}${id}`, JSON.stringify(data));
     }, [id]);
 
     const loadFormData = useCallback((): OfferConditionsFormFields | null => {
         const savedData = sessionStorage.getItem(`${OFFER_CONDITIONS_FORM}${id}`);
-        return savedData ? offerConditionsAdapter(JSON.parse(savedData)) : null;
+        return savedData ? JSON.parse(savedData) : null;
     }, [id]);
 
     const initializeForm = useCallback(() => {
         const savedData = loadFormData();
         if (savedData) {
             reset(savedData);
-        } else if (getOfferData?.condition) {
-            reset(offerConditionsAdapter(getOfferData?.condition));
+        } else if (initialData) {
+            reset(initialData);
         } else {
             reset();
         }
-    }, [getOfferData?.condition, loadFormData, reset]);
+    }, [initialData, loadFormData, reset]);
 
     useEffect(() => {
         initializeForm();
@@ -102,31 +101,10 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     }, [isDirty, saveFormData, watch]);
 
     const onSubmit = handleSubmit(async (data) => {
-        const preparedData = offerConditionsApiAdapter(data);
-        setToast(undefined);
-        try {
-            await updateOfferConditions({ offerId: Number(id), body: preparedData });
-            setToast({
-                text: t("Данные успешно изменены"),
-                type: HintType.Success,
-            });
-            sessionStorage.removeItem(`${OFFER_CONDITIONS_FORM}${id}`);
-            onSuccess?.();
-        } catch {
-            setToast({
-                text: t("Произошла ошибка"),
-                type: HintType.Error,
-            });
-        }
+        onComplete?.(data);
     });
 
-    // useEffect(() => {
-    //     if (getOfferData?.conditions) {
-    //         reset(offerConditionsAdapter(getOfferData?.conditions));
-    //     }
-    // }, [getOfferData?.conditions, reset]);
-
-    if (isOfferDataLoading) {
+    if (isLoadingGetData) {
         return (
             <div className={cn(styles.wrapper, className)}>
                 <MiniLoader />
@@ -136,7 +114,6 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
 
     return (
         <form className={cn(styles.wrapper, className)}>
-            {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Controller
                 name="housing"
                 control={control}
@@ -249,25 +226,31 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
                     <Textarea className={styles.textarea} value={field.value} onChange={field.onChange} label={t("conditions.Дополнительные условия")} description={t("conditions.Не более 1000 знаков")} />
                 )}
             />
-            <div className={styles.buttons}>
-                <Button
-                    disabled={isLoading}
-                    onClick={onSubmit}
-                    variant="FILL"
-                    type="submit"
-                    color="BLUE"
-                    size="MEDIUM"
-                >
-                    Сохранить
-                </Button>
-                <ButtonLink
-                    path={getOffersFinishingTouchesPageUrl(locale, id ?? "")}
-                    size="MEDIUM"
-                    type="outlined"
-                >
-                    {t("Дальше")}
-                </ButtonLink>
+            <div className={styles.buttonsWrapper}>
+                {hasSavedDataInSession() && (
+                    <ErrorText text={t("У вас есть несохраненные изменения")} />
+                )}
+                <div className={styles.buttons}>
+                    <Button
+                        disabled={isLoadingUpdateData}
+                        onClick={onSubmit}
+                        variant="FILL"
+                        type="submit"
+                        color="BLUE"
+                        size="MEDIUM"
+                    >
+                        {t("Сохранить")}
+                    </Button>
+                    <ButtonLink
+                        path={linkNext}
+                        size="MEDIUM"
+                        type="outlined"
+                    >
+                        {t("Дальше")}
+                    </ButtonLink>
+                </div>
             </div>
+
         </form>
     );
 });

@@ -5,7 +5,7 @@ import ProfileInput from "@/components/ProfileInput/ProfileInput";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getHostPersonalPageUrl, getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getHostInfoUrl, getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./HostDescriptionAvatar.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
@@ -71,7 +71,7 @@ export const HostDescriptionAvatar = memo(
                                 src={getMediaContent(field.value?.contentUrl)}
                                 setFile={(file?: File) => handleImageUpload(file, field.onChange)}
                                 route={hostId ? getHostPersonalPageUrl(locale, hostId)
-                                    : getHostRegistrationUrl(locale)}
+                                    : getHostInfoUrl(locale)}
                             />
                             {field.value && (
                                 <button

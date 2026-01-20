@@ -6,7 +6,7 @@ export function FillSidebarData(sidebarContent: SidebarContentProps[], t: TFunct
         if (item.dropdownItems && item.route === "/host") {
             const newDropdownItem = {
                 text: t("main.sidebar.Создать организацию"),
-                route: "/registration",
+                route: "/register",
             };
             return {
                 ...item,

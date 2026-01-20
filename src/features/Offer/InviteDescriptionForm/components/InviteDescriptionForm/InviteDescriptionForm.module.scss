@@ -1,5 +1,10 @@
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+}
+
 .buttons {
-  margin-top: 60px;
   display: flex;
   gap: 10px;
 }

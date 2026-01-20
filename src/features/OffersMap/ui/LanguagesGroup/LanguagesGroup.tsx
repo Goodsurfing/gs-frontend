@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import styles from "./LanguagesGroup.module.scss";
-import { useAllLangsFilter } from "@/shared/data/languages";
+import { useAllLangs } from "@/shared/data/languages";
 
 interface LanguagesGroupProps {
     value: string[];
@@ -10,7 +10,7 @@ interface LanguagesGroupProps {
 
 export const LanguagesGroup: FC<LanguagesGroupProps> = (props) => {
     const { value, onChange } = props;
-    const allLangsFilter = useAllLangsFilter();
+    const allLangsFilter = useAllLangs();
 
     const handleChange = (event: ChangeEvent<{}>, newValues: string[]) => {
         onChange(newValues.filter(Boolean));

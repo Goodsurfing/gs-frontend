@@ -1,6 +1,6 @@
-@import "./reset.scss";
-@import "./themes/default.scss";
-@import "./variables/variables.scss";
+@use "./reset.scss";
+@use "./themes/default.scss";
+@use "./variables/variables.scss";
 
 *,
 *::before,

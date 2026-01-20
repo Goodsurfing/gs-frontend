@@ -10,6 +10,8 @@ import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 МБ
+
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
     setImg,
@@ -22,7 +24,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
     isLoading,
     labelClassName,
     checkImageSize = true,
-    onError,
+    onUploadError,
     onSuccess,
     ...restInputProps
 }) => {
@@ -30,27 +32,32 @@ const ImageInput: FC<ImageInputComponentProps> = ({
 
     const handleUpload = async (file: File) => {
         try {
-            if (checkImageSize) {
-                const size = await checkWidthAndHeight(file);
-                if (size.width < 1280 || size.height < 720) {
-                    onError?.();
-                    return;
-                }
-            }
-
             const validExtensions = [".png", ".jpeg", ".jpg", ".webp"];
             const fileExtension = file.name
                 .toLowerCase()
                 .slice(file.name.lastIndexOf("."));
             if (!validExtensions.includes(fileExtension)) {
-                onError?.();
+                onUploadError?.(t("description.Неверный формат файла"));
                 return;
+            }
+
+            if (file.size > MAX_FILE_SIZE) {
+                onUploadError?.(t("description.Размер файла превышает 2 МБ"));
+                return;
+            }
+
+            if (checkImageSize) {
+                const size = await checkWidthAndHeight(file);
+                if (size.width < 1280 || size.height < 720) {
+                    onUploadError?.(t("description.Неверный размер изображения. Минимум 1280x720"));
+                    return;
+                }
             }
 
             onSuccess?.();
             setImg(file);
         } catch (e) {
-            onError?.();
+            onUploadError?.(t("description.Произошла ошибка с загрузкой изображения"));
         }
     };
 

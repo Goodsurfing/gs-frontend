@@ -45,7 +45,7 @@ export const useConditionItems = () => {
     const foodItems: FoodItems[] = [
         { text: t("conditions.Полный пансион"), icon: fullIcon, id: "full" },
         { text: t("conditions.Завтрак включен"), icon: breakfastIcon, id: "breakfast" },
-        { text: t("conditions.Продкуты"), icon: productsIcon, id: "products" },
+        { text: t("conditions.Продукты"), icon: productsIcon, id: "products" },
         { text: t("conditions.Вегетарианское"), icon: vegetarianIcon, id: "vegetarian" },
     ];
 
@@ -82,7 +82,7 @@ export const useConditionItems = () => {
             "Место под палатку": t("conditions.Место под палатку"),
             "Полный пансион": t("conditions.Полный пансион"),
             "Завтрак включен": t("conditions.Завтрак включен"),
-            Продкуты: t("conditions.Продкуты"),
+            Продукты: t("conditions.Продукты"),
             Вегетарианское: t("conditions.Вегетарианское"),
             "Полная оплата проезда": t("conditions.Полная оплата проезда"),
             "Компенсация стоимости проезда": t("conditions.Компенсация стоимости проезда"),

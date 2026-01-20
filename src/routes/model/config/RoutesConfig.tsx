@@ -12,7 +12,6 @@ import { HostPersonalPage } from "@/pages/HostPersonalPage";
 import { HostReviewPage } from "@/pages/HostReviewPage";
 import { HostTeamPage } from "@/pages/HostTeamPage";
 import { HostVideoPage } from "@/pages/HostVideoPage";
-import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 import { JournalsPage } from "@/pages/JournalsPage";
 import { MainPage } from "@/pages/MainPage";
@@ -71,7 +70,8 @@ import {
     getHostNotesPageUrl,
     getHostPageUrl,
     getHostPersonalPageUrl,
-    getHostRegistrationUrl,
+    getHostRegisterPageUrl,
+    getHostInfoUrl,
     getHostReviewPageUrl,
     getHostTeamPageUrl,
     getHostVideoPageUrl,
@@ -154,10 +154,15 @@ import {
     getAdminReviewsPageUrl,
     getAdminReviewVacancyPersonalPageUrl,
     getAdminReviewVolunteerPersonalPageUrl,
+    getAdminVacanciesPageUrl,
+    getAdminVacancyPageUrl,
+    getAdminVacancyWherePageUrl,
+    getAdminVacancyWhenPageUrl,
+    getAdminVacancyWhatToDoPageUrl,
+    getAdminVacancyConditionsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
-import { PrivateRouteGuard } from "../guards/PrivateRouteGuard";
 import { RouteType } from "../types/langRouter";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { BlogPage } from "@/pages/BlogPage";
@@ -182,7 +187,7 @@ import { AdminCategoriesPage } from "@/pages/AdminCategoriesPage";
 import { AdminCategoriesPersonalPage } from "@/pages/AdminCategoriesPersonalPage";
 import { AdminCategoriesCreatePage } from "@/pages/AdminCategoriesCreatePage";
 import { AdminSkillCreatePage } from "@/pages/AdminSkillCreatePage";
-import AdminAchievementsCreatePage from "@/pages/AdminAchievementsCreatePage/ui/AdminAchievementsCreatePage";
+import { AdminAchievementsCreatePage } from "@/pages/AdminAchievementsCreatePage";
 import { AdminConditionsOfferPage } from "@/pages/AdminConditionsOfferPage";
 import { AdminHousePersonalPage } from "@/pages/AdminHousePersonalPage";
 import { AdminHouseCreatePage } from "@/pages/AdminHouseCreatePage";
@@ -193,6 +198,13 @@ import { AdminTransferPersonalPage } from "@/pages/AdminTransferPersonalPage";
 import { AdminReviewPage } from "@/pages/AdminReviewPage";
 import { AdminReviewVacanciesPersonalPage } from "@/pages/AdminReviewVacanciesPersonalPage";
 import { AdminReviewVolunteerPersonalPage } from "@/pages/AdminReviewVolunteerPersonalPage";
+import { AdminOffersPage } from "@/pages/AdminOffersPage";
+import { AdminOfferLayoutPage } from "@/pages/AdminOfferLayoutPage";
+import { AdminOfferWherePage } from "@/pages/AdminOfferWherePage";
+import { AdminOfferWhenPage } from "@/pages/AdminOfferWhenPage";
+import { AdminOfferWhatToDoPage } from "@/pages/AdminOfferWhatToDoPage";
+import { AdminOfferConditionsPage } from "@/pages/AdminOfferConditionsPage";
+import { HostRegisterPage } from "@/pages/HostRegisterPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -277,11 +289,14 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getVerifyEmailHashPageUrl(locale),
     },
     {
+        label: "host-register",
+        element: <HostRegisterPage />,
+        path: (locale: string) => getHostRegisterPageUrl(locale),
+    },
+    {
         label: "host-layout",
         element: (
-            <PrivateRouteGuard>
-                <HostsLayoutPage />
-            </PrivateRouteGuard>
+            AuthRoutes.host
         ),
         path: (locale: string) => getHostPageUrl(locale),
         children: [
@@ -298,7 +313,7 @@ const publicRoutes: RouteType[] = [
             {
                 label: "host-main-info",
                 element: <HostMainInfoPage />,
-                path: (locale) => getHostRegistrationUrl(locale),
+                path: (locale) => getHostInfoUrl(locale),
             },
             {
                 label: "host-gallery",
@@ -702,9 +717,40 @@ const publicRoutes: RouteType[] = [
                 element: <AdminReviewVolunteerPersonalPage />,
                 path: (locale: string) => getAdminReviewVolunteerPersonalPageUrl(locale),
             },
+            {
+                label: "admin-offers",
+                element: <AdminOffersPage />,
+                path: (locale: string) => getAdminVacanciesPageUrl(locale),
+            },
+        ],
+    },
+    {
+        label: "admin-offer-layout",
+        element: <AdminOfferLayoutPage />,
+        path: (locale: string) => getAdminVacancyPageUrl(locale),
+        children: [
+            {
+                label: "admin-offer-where",
+                element: <AdminOfferWherePage />,
+                path: (locale: string) => getAdminVacancyWherePageUrl(locale),
+            },
+            {
+                label: "admin-offer-when",
+                element: <AdminOfferWhenPage />,
+                path: (locale: string) => getAdminVacancyWhenPageUrl(locale),
+            },
+            {
+                label: "admin-offer-what-to-do",
+                element: <AdminOfferWhatToDoPage />,
+                path: (locale: string) => getAdminVacancyWhatToDoPageUrl(locale),
+            },
+            {
+                label: "admin-offer-conditions",
+                element: <AdminOfferConditionsPage />,
+                path: (locale: string) => getAdminVacancyConditionsPageUrl(locale),
+            },
         ],
     },
 ];
 
-// todo: make private routes
 export const allRoutes = [...publicRoutes];

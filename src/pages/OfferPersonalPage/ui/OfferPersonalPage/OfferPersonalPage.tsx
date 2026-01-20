@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { OfferSubmenu } from "@/widgets/OfferSubmenu";
@@ -12,13 +13,14 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
-import styles from "./OfferPersonalPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./OfferPersonalPage.module.scss";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
     const [offerData, setOfferData] = useState<Offer>();
     const { myProfile } = useAuth();
+    const { ready } = useTranslation();
 
     const [getOfferData, { isLoading, isError }] = useLazyGetOfferByIdQuery();
 
@@ -35,7 +37,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading) {
+    if (isLoading || !ready) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />

@@ -4,8 +4,12 @@
     gap: 30px;
 }
 
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 .buttons {
-  margin-top: 60px;
   display: flex;
   gap: 10px;
 }

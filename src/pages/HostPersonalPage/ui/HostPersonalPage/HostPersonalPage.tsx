@@ -9,9 +9,8 @@ import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { Submenu } from "@/widgets/Submenu";
 
 import { useGetHostByIdQuery } from "@/entities/Host";
-import { useGetProfileInfoQuery } from "@/entities/Profile";
 
-import { getHostRegistrationUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
+import { getHostInfoUrl, getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -19,9 +18,9 @@ import { Text } from "@/shared/ui/Text/Text";
 import { useSubmenuItems } from "../../model/data/submenuData";
 import { HostPageContent } from "../HostPageContent/HostPageContent";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
-import styles from "./HostPersonalPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
+import styles from "./HostPersonalPage.module.scss";
 
 export const HostPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -33,13 +32,16 @@ export const HostPersonalPage = () => {
         isError,
         isLoading,
     } = useGetHostByIdQuery(id ?? "");
-    const { data: myProfile } = useGetProfileInfoQuery();
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { isAuth } = useAuth();
+    const { isAuth, myProfile } = useAuth();
+
+    const isOwner = !!myProfile && myProfile.id === hostData?.owner.id;
+
+    const isHostUnavailable = hostData && !hostData.active && !isOwner;
 
     const handleEditClick = () => {
-        navigate(getHostRegistrationUrl(locale));
+        navigate(getHostInfoUrl(locale));
     };
 
     const handleWriteClick = () => {
@@ -77,7 +79,19 @@ export const HostPersonalPage = () => {
             <div className={styles.wrapper}>
                 <MainHeader />
                 <div className={styles.content}>
-                    <Text textSize="primary" text="Произошла ошибка" />
+                    <Text textSize="primary" text={t("personalHost.Произошла ошибка")} />
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (isHostUnavailable) {
+        return (
+            <div className={styles.wrapper}>
+                <MainHeader />
+                <div className={styles.content}>
+                    <Text textSize="primary" text={t("personalHost.Организация недоступна")} />
                 </div>
                 <Footer />
             </div>

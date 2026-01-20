@@ -86,7 +86,12 @@
         "Не присылать мне рассылку от Гусдёрфинга с новостями и обновлениями": "Don’t send me Goodsurfing newsletters with news and updates",
         "Отказавшись от рассылки вы можете пропустить важные новости проекта, а также уникальные возможности": "By unsubscribing, you may miss important news and unique opportunities",
         "Удалить аккаунт": "Delete account",
-        "Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией": "By clicking this button, you delete your account and all information you’ve entered. It cannot be restored. Only re-registration is possible."
+        "Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией": "By clicking this button, you delete your account and all information you’ve entered. It cannot be restored. Only re-registration is possible.",
+        "Ошибка при удалении профиля": "Error deleting profile",
+        "Ошибка при изменении статуса активности профиля": "Error changing profile activity status",
+        "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": " Are you sure you want to delete your account? This action cannot be undone.",
+        "Удалить": "Delete",
+        "Отмена": "Cancel"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",
@@ -121,6 +126,7 @@
         "Здесь будут размещены фотографии волонтера.": "Volunteer photos will be displayed here.",
         "На данный момент отзывов нет.": "There are no reviews at the moment.",
         "Здесь будут размещены видео волонтера.": "Volunteer videos will be displayed here.",
-        "Добавленные видео": "Uploaded Videos"
+        "Добавленные видео": "Uploaded Videos",
+        "Профиль недоступен": "Profile unavailable"
     }
 }

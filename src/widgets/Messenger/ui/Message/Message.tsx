@@ -14,8 +14,13 @@ import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 import styles from "./Message.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useLazyGetMediaObjectByIdQuery } from "@/entities/Gallery";
+import CustomLink from "@/shared/ui/Link/Link";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface MessageProps {
+    locale: Locale;
+    userId?: string;
     isUser?: boolean;
     text?: string;
     attachments: string[] | MediaObjectType[];
@@ -36,6 +41,8 @@ function renderTextWithEmoji(text: string) {
 
 export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     const {
+        locale,
+        userId,
         avatar,
         date,
         isUser,
@@ -90,10 +97,16 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
         }
     }, [data]);
 
+    const renderAvatar = userId ? (
+        <CustomLink to={getVolunteerPersonalPageUrl(locale, userId)} variant="DEFAULT">
+            <Avatar icon={avatar} className={styles.avatar} size="SMALL" />
+        </CustomLink>
+    ) : <Avatar icon={avatar} className={styles.avatar} size="SMALL" />;
+
     if (file) {
         return (
             <div className={messageClass}>
-                <Avatar icon={avatar} className={styles.avatar} size="SMALL" />
+                {renderAvatar}
                 <div className={cn(
                     styles.messageContent,
                     { [styles.userMessage]: isUser },
@@ -125,7 +138,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
     if (image) {
         return (
             <div className={messageClass}>
-                <Avatar icon={avatar} className={styles.avatar} size="SMALL" />
+                {renderAvatar}
                 <div className={cn(
                     styles.messageContent,
                     styles.image,
@@ -151,7 +164,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
 
     return (
         <div className={messageClass}>
-            <Avatar icon={avatar} className={styles.avatar} size="SMALL" />
+            {renderAvatar}
             <div
                 className={cn(styles.messageContent, {
                     [styles.userMessage]: isUser,

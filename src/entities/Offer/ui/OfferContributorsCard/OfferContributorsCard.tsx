@@ -70,6 +70,7 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
                 url={getVolunteerPersonalPageUrl(locale, offerParticipant.id)}
                 avatar={getMediaContent(offerParticipant.image?.thumbnails?.small)}
                 name={getFullName(offerParticipant.firstName, offerParticipant.lastName)}
+                key={offerParticipant.id}
             />
         ));
 

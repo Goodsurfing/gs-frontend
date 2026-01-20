@@ -9,7 +9,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferCard } from "@/widgets/OffersMap";
 
-import { OfferApi, useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferApi, OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 
 import {
     getProfilePreferencesPageUrl,
@@ -38,7 +38,10 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 try {
                     if (myProfileData && myProfileData.favoriteCategories.length > 0) {
                         const resultOffers = await getOffers(
-                            { categoryIds: myProfileData.favoriteCategories },
+                            {
+                                categoryIds: myProfileData.favoriteCategories,
+                                sort: OfferSort.AverageRatingDesc,
+                            },
                         ).unwrap();
                         setFilteredOffers(resultOffers.data.slice(0, 10));
                     }

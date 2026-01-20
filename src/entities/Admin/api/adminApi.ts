@@ -15,6 +15,8 @@ import {
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse, GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
+    GetAdminOffersParams,
+    GetAdminOffersRequest,
     GetAdminOrganizationParams, GetAdminOrganizationResponse,
     GetAdminReviewVacancyListParams,
     GetAdminReviewVacancyListResponse,
@@ -50,7 +52,7 @@ export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
-        "house", "food", "organization",
+        "house", "food", "organization", "offer",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -519,6 +521,21 @@ export const adminApi = createApi({
             }),
             providesTags: ["reviewVolunteer"],
         }),
+        getAdminOffers: build.query<GetAdminOffersRequest,
+        GetAdminOffersParams>({
+            query: () => ({
+                url: "vacancy/list",
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        deleteAdminOffer: build.mutation<void, string>({
+            query: (offerId) => ({
+                url: `vacancy/${offerId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["offer"],
+        }),
         createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
             query: ({ name, color, image }) => {
                 const formData = new FormData();
@@ -660,4 +677,6 @@ export const {
     useLazyGetAdminReviewVolunteerListQuery,
     useLazyGetAdminReviewVolunteerByIdQuery,
     useGetAdminReviewVolunteerByIdQuery,
+    useLazyGetAdminOffersQuery,
+    useDeleteAdminOfferMutation,
 } = adminApi;

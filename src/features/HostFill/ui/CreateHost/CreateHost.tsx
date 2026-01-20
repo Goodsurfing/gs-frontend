@@ -2,7 +2,7 @@ import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
-import { getHostRegistrationUrl } from "@/shared/config/routes/AppUrls";
+import { getHostRegisterPageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -16,7 +16,7 @@ export const CreateHost = memo((props: CreateHostProps) => {
     const { locale } = useLocale();
     const { t } = useTranslation("host");
     const onCreateClick = () => {
-        navigate(getHostRegistrationUrl(locale));
+        navigate(getHostRegisterPageUrl(locale));
     };
     return (
         <Button

@@ -32,7 +32,8 @@
         "Вы уверены что хотите изменить вакансию?": "¿Está seguro de que quiere modificar la oferta de trabajo?",
         "Ок": "Ok",
         "Отмена": "Cancelar",
-        "Удалить": "Borrar"
+        "Удалить": "Borrar",
+        "Вакансию удалить нельзя": "Esta oferta de empleo no se puede eliminar"
     },
     "hostNotes": {
         "Мои заявки": "Mis aplicaciones",
@@ -67,6 +68,8 @@
         "Введите ФИО участника": "Ingrese el correo electrónico del participante"
     },
     "hostDescription": {
+        "Создание организации": "Creación de la organización",
+        "Создать организацию": "Crear organización",
         "Организация создана": "Organización creada",
         "Ошибка при создании организации": "Error al crear la organización",
         "Данные успешно изменены": "Datos actualizados con éxito",
@@ -112,6 +115,8 @@
         "У организации пока нет вакансий": "La organización no tiene vacantes por el momento",
         "Организатор не указал данную информацию": "El organizador no proporcionó esta información",
         "Галерея не заполнена": "La galería está vacía",
-        "Видеогалерея не заполнена": "La galería de videos está vacía"
+        "Видеогалерея не заполнена": "La galería de videos está vacía",
+        "Произошла ошибка": "Se produjo un error",
+        "Организация недоступна": "Organización no disponible"
     }
 }

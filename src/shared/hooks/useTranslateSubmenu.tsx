@@ -9,6 +9,10 @@ export const useTranslateSubmenu = () => {
             id: "description",
         },
         {
+            text: t("personalOffer.Организация", "Организация"),
+            id: "organization",
+        },
+        {
             text: t("personalOffer.Фото", "Фото"),
             id: "gallery",
         },
@@ -21,17 +25,14 @@ export const useTranslateSubmenu = () => {
             id: "terms",
         },
         {
-            text: t("personalOffer.Отзывы", "Отзывы"),
-            id: "review",
-        },
-        {
-            text: t("personalOffer.Организация", "Организация"),
-            id: "organization",
-        },
-        {
             text: t("personalOffer.Участники", "Участники"),
             id: "participants",
         },
+        {
+            text: t("personalOffer.Отзывы", "Отзывы"),
+            id: "review",
+        },
+
         // {
         //     text: t("personalOffer.Статьи", "Статьи"),
         //     id: "articles",
