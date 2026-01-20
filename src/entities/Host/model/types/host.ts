@@ -22,6 +22,7 @@ export interface Host {
     galleryImages: MediaObjectType[];
     averageRating?: number;
     feedbacksCount: number;
+    active: boolean;
 }
 
 export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {
@@ -30,7 +31,7 @@ export type HostApi = Omit<Host, "avatar" | "galleryImages"> & {
 };
 
 export type CreateHost = Omit<Host, "id" | "avatar" | "team" | "vacancies" | "owner"
-| "averageRating" | "feedbacksCount"> & {
+| "averageRating" | "feedbacksCount" | "active"> & {
     avatar: string | null;
     isActive: boolean;
 };

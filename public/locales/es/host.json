@@ -115,6 +115,8 @@
         "У организации пока нет вакансий": "La organización no tiene vacantes por el momento",
         "Организатор не указал данную информацию": "El organizador no proporcionó esta información",
         "Галерея не заполнена": "La galería está vacía",
-        "Видеогалерея не заполнена": "La galería de videos está vacía"
+        "Видеогалерея не заполнена": "La galería de videos está vacía",
+        "Произошла ошибка": "Se produjo un error",
+        "Организация недоступна": "Organización no disponible"
     }
 }
