@@ -453,13 +453,11 @@ const publicRoutes: RouteType[] = [
         label: "payment-success",
         element: <PaymentSuccessPage />,
         path: (locale: string) => getPaymentSuccessPageUrl(locale),
-        authOnly: true,
     },
     {
         label: "payment-fail",
         element: <PaymentFailPage />,
         path: (locale: string) => getPaymentFailPageUrl(locale),
-        authOnly: true,
     },
     {
         label: "reset-password",
