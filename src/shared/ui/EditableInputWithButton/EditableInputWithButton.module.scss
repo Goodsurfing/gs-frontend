@@ -31,7 +31,10 @@
     width: 14px;
     height: 14px;
     position: absolute;
-    fill: var(--text-caption);
     top: 30%;
     right: -2rem;
+
+    svg {
+        fill: var(--text-caption);
+    }
 }

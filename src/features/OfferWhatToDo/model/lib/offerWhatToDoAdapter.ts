@@ -49,3 +49,29 @@ export const offerWhatToDoAdapter = (
         extraInfo: externalInfo ?? "",
     };
 };
+
+export const sessionStorageToFormAdapter = (
+    data: Partial<UpdateOfferWhatToDo>,
+): OfferWhatToDoFormFields => {
+    const {
+        skillIds = [],
+        additionalSkills = [],
+        hours = 6,
+        dayOff = 2,
+        timeType = "week",
+        externalInfo = "",
+    } = data;
+
+    return {
+        skills: Array.isArray(skillIds) ? skillIds : [],
+        additionalSkills: Array.isArray(additionalSkills)
+            ? additionalSkills.map((text) => ({ text }))
+            : [],
+        workingHours: {
+            hours: typeof hours === "number" ? hours : 6,
+            dayOff: typeof dayOff === "number" ? dayOff : 2,
+            timeType: ["week", "day", "month"].includes(timeType) ? timeType : "week",
+        },
+        extraInfo: typeof externalInfo === "string" ? externalInfo : "",
+    };
+};

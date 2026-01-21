@@ -14,7 +14,7 @@ import Button from "@/shared/ui/Button/Button";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
-import { offerWhatToDoAdapter, offerWhatToDoApiAdapter } from "../../model/lib/offerWhatToDoAdapter";
+import { offerWhatToDoApiAdapter, sessionStorageToFormAdapter } from "../../model/lib/offerWhatToDoAdapter";
 import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -62,7 +62,7 @@ export const OfferWhatToDoForm = memo(
 
         const loadFormData = useCallback((): OfferWhatToDoFormFields | null => {
             const savedData = sessionStorage.getItem(`${OFFER_WHAT_TO_DO_FORM}${offerId}`);
-            return savedData ? offerWhatToDoAdapter(JSON.parse(savedData)) : null;
+            return savedData ? sessionStorageToFormAdapter(JSON.parse(savedData)) : null;
         }, [offerId]);
 
         const initializeForm = useCallback(() => {
