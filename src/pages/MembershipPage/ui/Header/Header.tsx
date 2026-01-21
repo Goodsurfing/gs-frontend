@@ -2,10 +2,29 @@ import React from "react";
 
 import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
+import { useCreatePaymentMutation } from "@/store/api/paymentApi";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
+    const [createPayment, { isLoading }] = useCreatePaymentMutation();
+
+    const handleGetMembership = async () => {
+        try {
+            const response = await createPayment({
+                amount: "1500.00",
+                description: "Оплата членства Гудсёрфинга",
+                currency: "RUB",
+            }).unwrap();
+
+            if (response.payment_url) {
+                window.location.href = response.payment_url;
+            }
+        } catch (error) {
+            // Ошибка при создании платежа обрабатывается автоматически через RTK Query
+        }
+    };
+
     return (
         <section className={styles.wrapeprImage}>
             <h1 className={styles.title}>
@@ -23,7 +42,15 @@ export const Header = () => {
                 <li>{t("header.Поддержка интересного и важного проекта")}</li>
             </ul>
             <div className={styles.buttonPrice}>
-                <Button color="GREEN" size="SMALL" variant="FILL">{t("header.Получить членство")}</Button>
+                <Button
+                    color="GREEN"
+                    size="SMALL"
+                    variant="FILL"
+                    onClick={handleGetMembership}
+                    disabled={isLoading}
+                >
+                    {isLoading ? t("header.Обработка...") || "Обработка..." : t("header.Получить членство")}
+                </Button>
                 <span className={styles.price}>1 500 руб</span>
             </div>
         </section>

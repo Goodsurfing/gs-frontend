@@ -25,11 +25,18 @@ import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
 import styles from "./MainHeader.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
+
+    const { data: membershipStatus } = useGetMembershipStatusQuery(undefined, {
+        skip: !isAuth,
+    });
+
+    const hasMembership = membershipStatus?.hasMembership ?? false;
 
     return (
         <>
@@ -69,8 +76,11 @@ const MainHeader: FC = () => {
                                 className={styles.membershipWrapper}
                                 to={getMembershipPageUrl(locale)}
                             >
-                                <Button className={styles.membership}>
-                                    Членство
+                                <Button
+                                    className={styles.membership}
+                                    disabled={hasMembership}
+                                >
+                                    {hasMembership ? "Членство получено" : "Членство"}
                                 </Button>
                             </LocaleLink>
                         </>

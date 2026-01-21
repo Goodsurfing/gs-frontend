@@ -53,6 +53,9 @@ export enum AppRoutes {
     VOLUNTEER_PERSONAL = "volunteer_personal", // volunteer id
     VOLUNTEER_ARTICLES = "volunteer_articles",
     MEMBERSHIP = "membership",
+    PAYMENT = "payment",
+    PAYMENT_SUCCESS = "payment_success",
+    PAYMENT_FAIL = "payment_fail",
     ABOUT_PROJECT = "about_project",
     NPO = "npo",
     OUR_TEAM = "our_team",

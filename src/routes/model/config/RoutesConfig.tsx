@@ -16,6 +16,9 @@ import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 import { JournalsPage } from "@/pages/JournalsPage";
 import { MainPage } from "@/pages/MainPage";
 import { MembershipPage } from "@/pages/MembershipPage";
+import { PaymentPage } from "@/pages/PaymentPage";
+import { PaymentSuccessPage } from "@/pages/PaymentSuccessPage";
+import { PaymentFailPage } from "@/pages/PaymentFailPage";
 import { NPOPage } from "@/pages/NPOPage";
 import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
@@ -79,6 +82,9 @@ import {
     getJournalsPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
+    getPaymentPageUrl,
+    getPaymentSuccessPageUrl,
+    getPaymentFailPageUrl,
     getMessengerPageCreateUrl,
     getMessengerPageIdUrl,
     getMessengerPageUrl,
@@ -457,6 +463,22 @@ const publicRoutes: RouteType[] = [
         label: "membership",
         element: <MembershipPage />,
         path: (locale: string) => getMembershipPageUrl(locale),
+    },
+    {
+        label: "payment",
+        element: <PaymentPage />,
+        path: (locale: string) => getPaymentPageUrl(locale),
+        authOnly: true,
+    },
+    {
+        label: "payment-success",
+        element: <PaymentSuccessPage />,
+        path: (locale: string) => getPaymentSuccessPageUrl(locale),
+    },
+    {
+        label: "payment-fail",
+        element: <PaymentFailPage />,
+        path: (locale: string) => getPaymentFailPageUrl(locale),
     },
     {
         label: "reset-password",

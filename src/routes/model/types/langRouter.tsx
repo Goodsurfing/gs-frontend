@@ -4,6 +4,7 @@ interface RouteBaseProps {
     element: ReactNode;
     path: (locale: string) => string;
     label?: string;
+    authOnly?: boolean;
 }
 
 export interface RouteWithChildrenProps extends Omit<RouteBaseProps, "index"> {

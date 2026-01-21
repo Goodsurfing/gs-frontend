@@ -20,6 +20,7 @@ import { reviewApi } from "@/entities/Review";
 import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
 import { adminReducer, adminApi } from "@/entities/Admin";
+import { paymentApi } from "./api/paymentApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     [reviewApi.reducerPath]: reviewApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -56,6 +58,7 @@ export const setupStore = () => configureStore({
         reviewApi.middleware,
         chatApi.middleware,
         adminApi.middleware,
+        paymentApi.middleware,
         authMiddleware,
     ]),
 });
