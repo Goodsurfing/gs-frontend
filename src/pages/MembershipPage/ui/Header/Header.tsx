@@ -21,7 +21,7 @@ export const Header = () => {
                 window.location.href = response.payment_url;
             }
         } catch (error) {
-            console.error("Ошибка при создании платежа:", error);
+            // Ошибка при создании платежа обрабатывается автоматически через RTK Query
         }
     };
 
