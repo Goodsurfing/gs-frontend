@@ -1,43 +1,29 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import Button from "@/shared/ui/Button/Button";
-import Preloader from "@/shared/ui/Preloader/Preloader";
-
-import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
-
+import { useCreatePaymentMutation } from "@/store/api/paymentApi";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
-    const { locale } = useLocale();
-    const navigate = useNavigate();
-    const { isAuth } = useAuth();
+    const [createPayment, { isLoading }] = useCreatePaymentMutation();
 
-    const { data: membershipStatus, isLoading } = useGetMembershipStatusQuery(undefined, {
-        skip: !isAuth,
-    });
+    const handleGetMembership = async () => {
+        try {
+            const response = await createPayment({
+                amount: "1500.00",
+                description: "Оплата членства Гудсёрфинга",
+                currency: "RUB",
+            }).unwrap();
 
-    const hasMembership = membershipStatus?.hasMembership ?? false;
-    const isButtonDisabled = hasMembership || !isAuth || isLoading;
-
-    const handleButtonClick = () => {
-        if (!isButtonDisabled && isAuth) {
-            navigate(getPaymentPageUrl(locale));
+            if (response.payment_url) {
+                window.location.href = response.payment_url;
+            }
+        } catch (error) {
+            console.error("Ошибка при создании платежа:", error);
         }
     };
-
-    if (isLoading) {
-        return (
-            <section className={styles.wrapeprImage}>
-                <Preloader />
-            </section>
-        );
-    }
 
     return (
         <section className={styles.wrapeprImage}>
@@ -60,10 +46,10 @@ export const Header = () => {
                     color="GREEN"
                     size="SMALL"
                     variant="FILL"
-                    onClick={handleButtonClick}
-                    disabled={isButtonDisabled}
+                    onClick={handleGetMembership}
+                    disabled={isLoading}
                 >
-                    {hasMembership ? "Членство получено" : t("header.Получить членство")}
+                    {isLoading ? t("header.Обработка...") || "Обработка..." : t("header.Получить членство")}
                 </Button>
                 <span className={styles.price}>1 500 руб</span>
             </div>
