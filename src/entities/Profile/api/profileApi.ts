@@ -13,6 +13,10 @@ interface ChangePasswordRequest {
     oldPassword: string;
 }
 
+interface ChangePasswordWithoutOldPasswordRequest {
+    password: string;
+}
+
 interface ToggleActiveProfileRequest {
     body: {
         isActive: boolean;
@@ -34,6 +38,10 @@ interface ProfileOccupancyResponse {
     isVideo: false,
     isBlogPost: false,
     isMembership: false
+}
+
+interface ProfilePasswordIsChangeResponse {
+    isChangePassword: boolean;
 }
 
 export const profileApi = createApi({
@@ -111,6 +119,15 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
+        changePasswordWithoutOldPassword: build.mutation<void,
+        ChangePasswordWithoutOldPasswordRequest>({
+            query: (body) => ({
+                url: `${API_BASE_URL_V3}profile/password/change`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["profile"],
+        }),
         toggleActiveProfile: build.mutation<void, ToggleActiveProfileRequest>({
             query: ({ body }) => ({
                 url: `${API_BASE_URL_V3}profile/toggle-active`,
@@ -145,6 +162,14 @@ export const profileApi = createApi({
                 url: `${API_BASE_URL_V3}profile/occupancy`,
                 method: "GET",
             }),
+            providesTags: ["profile"],
+        }),
+        getProfilePasswordIsChange: build.query<ProfilePasswordIsChangeResponse, void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}profile/password/is-change`,
+                method: "GET",
+            }),
+            providesTags: ["profile"],
         }),
     }),
 });
@@ -167,4 +192,6 @@ export const {
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
     useGetProfileOccupancyQuery,
+    useGetProfilePasswordIsChangeQuery,
+    useChangePasswordWithoutOldPasswordMutation,
 } = profileApi;

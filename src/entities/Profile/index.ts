@@ -23,6 +23,9 @@ export {
     useUpdateVolunteerMutation,
     useDeleteProfileMutation,
     useGetProfileOccupancyQuery,
+    useGetProfilePasswordIsChangeQuery,
+    useChangePasswordWithoutOldPasswordMutation,
+    useChangePasswordMutation,
 } from "./api/profileApi";
 
 export type {

@@ -4,7 +4,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import styles from "./VerifyEmailHashPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
@@ -14,15 +13,16 @@ import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { userActions } from "@/entities/User";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./VerifyEmailHashPage.module.scss";
 
 const VerifyEmailHashPage = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch();
-    const { isUserAdmin, token } = useAuth();
+    const { isUserAdmin, token, refetchProfile } = useAuth();
     const [isLoading, setLoading] = useState<boolean>(true);
-    const [isError, setError] = useState<boolean>(false);
+    // const [isError, setError] = useState<boolean>(false);
     const hasFetchedRef = useRef<boolean>(false);
 
     const getVerifyEmail = useCallback(async () => {
@@ -50,14 +50,15 @@ const VerifyEmailHashPage = () => {
                 roles: isUserAdmin ? ["ROLE_USER", "ROLE_ADMIN"] : ["ROLE_USER"],
             }));
 
-            setError(false);
+            // setError(false);
+            await refetchProfile();
             hasFetchedRef.current = true;
         } catch {
-            setError(true);
+            // setError(true);
         } finally {
             setLoading(false);
         }
-    }, [id, dispatch, isUserAdmin, token]);
+    }, [id, token, dispatch, isUserAdmin, refetchProfile]);
 
     useEffect(() => {
         if (id) {
@@ -74,15 +75,16 @@ const VerifyEmailHashPage = () => {
         );
     }
 
-    if (isError) {
-        return (
-            <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
-                <div className={styles.content}>
-                    <div className={styles.notification}>{t("login.Произошла ошибка")}</div>
-                </div>
-            </SignLayout>
-        );
-    }
+    // if (isError) {
+    //     return (
+    //         <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")}
+    // cancelPath={getSignUpPageUrl(locale)}>
+    //             <div className={styles.content}>
+    //                 <div className={styles.notification}>{t("login.Произошла ошибка")}</div>
+    //             </div>
+    //         </SignLayout>
+    //     );
+    // }
 
     return (
         <SignLayout disableRedirectIfIsAuth cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
