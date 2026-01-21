@@ -22,6 +22,7 @@ import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { textSlice } from "@/shared/lib/textSlice";
 import styles from "./PersonalCard.module.scss";
+import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 
 interface PersonalCardProps {
     offerId: string;
@@ -35,6 +36,7 @@ interface PersonalCardProps {
     imageBlock?: ReactNode;
     canEdit: boolean;
     canParticipate: boolean;
+    textParticipate: string | null;
     status: OfferStatusType;
     isVolunteer: boolean;
 }
@@ -54,9 +56,11 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         canParticipate,
         status,
         isVolunteer,
+        textParticipate,
     } = props;
     const { t } = useTranslation("offer");
     const isAuth = useAppSelector(getUserAuthData);
+    const { textParticipateLib } = useTranslateSubmenu();
     const isNeedToBecomeVolunteer = !!isAuth && !isVolunteer;
 
     const isImage = image !== undefined;
@@ -88,6 +92,19 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         }
     }, [canEdit, locale, navigate, offerId]);
 
+    const getButtonText = (): string => {
+        if (isNeedToBecomeVolunteer) {
+            return t("personalOffer.Чтобы участвовать, станьте гудсёрфером");
+        }
+
+        if (textParticipate
+            && textParticipateLib[textParticipate as keyof typeof textParticipateLib]) {
+            return textParticipateLib[textParticipate as keyof typeof textParticipateLib];
+        }
+
+        return t("personalOffer.Участвовать");
+    };
+
     const buttonProps = {
         size: "SMALL" as ButtonSize,
         variant: "FILL" as ButtonVariant,
@@ -97,9 +114,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
         disabled: isAuth && !isNeedToBecomeVolunteer && !canParticipate,
     };
 
-    const buttonText = isNeedToBecomeVolunteer
-        ? t("personalOffer.Чтобы участвовать, станьте гудсёрфером")
-        : t("personalOffer.Участвовать");
+    const buttonText = getButtonText();
 
     return (
         <div className={cn(className, styles.wrapper)}>

@@ -56,6 +56,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 canParticipate={offerData.canParticipate}
                 status={offerData.status}
                 isVolunteer={isVolunteer}
+                textParticipate={offerData.textParticipate}
             />
             {(offerData.galleryImages.length > 0) && (
                 <ModalGallery

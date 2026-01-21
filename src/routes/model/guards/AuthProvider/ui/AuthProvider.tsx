@@ -61,7 +61,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         } else {
             setUserAdmin(false);
         }
-    }, [authData]);
+    }, [authData, authData?.token, authData?.mercureToken]);
 
     const myProfile = myProfileData ?? null;
     const profileIsLoading = profileDataIsLoading;

@@ -21,6 +21,7 @@ export const OfferPersonalPage = () => {
     const [offerData, setOfferData] = useState<Offer>();
     const { myProfile } = useAuth();
     const { ready } = useTranslation();
+    const { ready: readyOffer } = useTranslation("offer");
 
     const [getOfferData, { isLoading, isError }] = useLazyGetOfferByIdQuery();
 
@@ -37,7 +38,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading || !ready) {
+    if (isLoading || !ready || !readyOffer) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />

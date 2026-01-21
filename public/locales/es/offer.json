@@ -227,7 +227,10 @@
         "Вы написали отзыв": "Has escrito una reseña",
         "Произошла ошибка загрузки участников": "Hubo un error al cargar participantes",
         "На данный момент у данной вакансии нет участников": "Actualmente no hay participantes para esta vacante",
-        "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "En nuestra comunidad, podrás hablar con voluntarios que ya han colaborado con este anfitrión y obtener respuestas directas a tus preguntas."
+        "В нашем сообществе вы можете поговорить с волонтерами, которые уже сотрудничали с этим хостом, и получить прямые ответы на свои вопросы.": "En nuestra comunidad, podrás hablar con voluntarios que ya han colaborado con este anfitrión y obtener respuestas directas a tus preguntas.",
+        "Вы отправили заявку": "Has enviado una solicitud",
+        "Вы участвуете": "Estás participando",
+        "Ваша заявка отклонена": "Tu solicitud ha sido rechazada"
     },
     "У вас есть несохраненные изменения": "Tienes cambios no guardados",
     "Данные успешно изменены": "Datos cambiados exitosamente",

@@ -39,5 +39,11 @@ export const useTranslateSubmenu = () => {
         // },
     ];
 
-    return { SubmenuItemsOffer };
+    const textParticipateLib = {
+        "Вы отправили заявку": t("personalOffer.Вы отправили заявку"),
+        "Вы участвуете": t("personalOffer.Вы участвуете"),
+        "Ваша заявка отклонена": t("personalOffer.Ваша заявка отклонена"),
+    };
+
+    return { SubmenuItemsOffer, textParticipateLib };
 };

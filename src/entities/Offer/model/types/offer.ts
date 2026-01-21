@@ -48,6 +48,7 @@ export interface Offer {
     canParticipate: boolean;
     canReview: boolean;
     acceptedApplicationsCount: number;
+    textParticipate: string | null;
 }
 
 export interface OfferApi {

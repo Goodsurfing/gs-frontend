@@ -79,6 +79,7 @@ export const mockedOffersData: Offer[] = [
         reviewsCount: 5,
         galleryImages: [],
         videoGallery: [],
+        textParticipate: null,
     },
     {
         id: 2,
@@ -158,6 +159,7 @@ export const mockedOffersData: Offer[] = [
         reviewsCount: 5,
         galleryImages: [],
         videoGallery: [],
+        textParticipate: null,
     },
     {
         id: 3,
@@ -238,5 +240,6 @@ export const mockedOffersData: Offer[] = [
         reviewsCount: 5,
         galleryImages: [],
         videoGallery: [],
+        textParticipate: null,
     },
 ];

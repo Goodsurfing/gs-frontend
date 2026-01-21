@@ -27,7 +27,7 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
     const { offerData, isVolunteer } = props;
     const { id, canEdit, canParticipate } = offerData;
     const { t } = useTranslation("offer");
-    const { SubmenuItemsOffer } = useTranslateSubmenu();
+    const { SubmenuItemsOffer, textParticipateLib } = useTranslateSubmenu();
     const navigate = useNavigate();
     const { locale } = useLocale();
     const isAuth = useAppSelector(getUserAuthData);
@@ -49,6 +49,19 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
         }
     }, [canEdit, id, locale, navigate]);
 
+    const getButtonText = (): string => {
+        if (isNeedToBecomeVolunteer) {
+            return t("personalOffer.Чтобы участвовать, станьте гудсёрфером");
+        }
+
+        if (offerData.textParticipate
+            && textParticipateLib[offerData.textParticipate as keyof typeof textParticipateLib]) {
+            return textParticipateLib[offerData.textParticipate as keyof typeof textParticipateLib];
+        }
+
+        return t("personalOffer.Участвовать");
+    };
+
     const buttonProps = {
         size: "SMALL" as ButtonSize,
         variant: "FILL" as ButtonVariant,
@@ -58,9 +71,7 @@ export const OfferSubmenu: FC<OfferSubmenuProps> = (props) => {
         disabled: isAuth && !isNeedToBecomeVolunteer && !canParticipate,
     };
 
-    const buttonText = isNeedToBecomeVolunteer
-        ? t("personalOffer.Чтобы участвовать, станьте гудсёрфером")
-        : t("personalOffer.Участвовать");
+    const buttonText = getButtonText();
 
     return (
         <Submenu
