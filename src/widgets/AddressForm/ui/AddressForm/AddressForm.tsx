@@ -25,12 +25,12 @@ import {
 
 import { addressFormApiAdapter } from "../../lib/addressFormAdapter";
 import { AddressFormFormFields } from "../../model/types/addressForm";
-import styles from "./AddressForm.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getOffersWhenPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import styles from "./AddressForm.module.scss";
 
 interface AddressFormProps {
     className?: string;

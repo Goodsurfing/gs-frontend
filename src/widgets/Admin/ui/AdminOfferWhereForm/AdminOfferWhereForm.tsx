@@ -10,8 +10,8 @@ import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getAdminVacancyWhenPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./AdminOfferWhereForm.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./AdminOfferWhereForm.module.scss";
 
 interface AdminOfferWhereFields {
     address: AddressFormInput;
@@ -19,10 +19,11 @@ interface AdminOfferWhereFields {
 
 interface AdminOfferWhereFormProps {
     className?: string;
+    offerId: string;
 }
 
 export const AdminOfferWhereForm: FC<AdminOfferWhereFormProps> = (props) => {
-    const { className } = props;
+    const { className, offerId } = props;
 
     const {
         handleSubmit,
@@ -87,7 +88,7 @@ export const AdminOfferWhereForm: FC<AdminOfferWhereFormProps> = (props) => {
                     onClick={onSubmit}
                     type="submit"
                 >
-                    {t("where.Сохранить")}
+                    {t("Сохранить")}
                 </Button>
                 <ButtonLink path={getAdminVacancyWhenPageUrl(locale, id ?? "")} size="MEDIUM" type="outlined">{t("Дальше")}</ButtonLink>
             </div>

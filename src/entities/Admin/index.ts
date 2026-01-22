@@ -10,6 +10,9 @@ export type {
     UpdateAdminOrganization,
     AdminReviewVacancySort,
     AdminReviewVolunteerSort,
+    AdminVacancyWhere,
+    AdminVacancyWhen,
+    AdminVacancyWhoNeeds,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";

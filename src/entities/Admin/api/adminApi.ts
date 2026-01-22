@@ -5,6 +5,9 @@ import {
     AdminReviewVacancy,
     AdminReviewVolunteer,
     AdminUser,
+    AdminVacancyWhen,
+    AdminVacancyWhere,
+    AdminVacancyWhoNeeds,
     CreateAdminAchievementsRequest,
     CreateAdminFoodRequest,
     CreateAdminHouseRequest,
@@ -31,6 +34,9 @@ import {
     SearchUsersResponse,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
+    UpdateAdminVacancyWhenRequest,
+    UpdateAdminVacancyWhereRequest,
+    UpdateAdminVacancyWhoNeedsRequest,
 } from "../model/types/adminSchema";
 import {
     Category, CategoryCountVacancy, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
@@ -523,9 +529,10 @@ export const adminApi = createApi({
         }),
         getAdminOffers: build.query<GetAdminOffersRequest,
         GetAdminOffersParams>({
-            query: () => ({
+            query: (params) => ({
                 url: "vacancy/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["offer"],
         }),
@@ -607,7 +614,48 @@ export const adminApi = createApi({
                 method: "GET",
             }),
         }),
-
+        getAdminVacancyWhere: build.query<AdminVacancyWhere, string>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/address/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacncyWhere: build.mutation<void, UpdateAdminVacancyWhereRequest>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/address/${offerId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhen: build.query<AdminVacancyWhen, string>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/when/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacncyWhen: build.mutation<void, UpdateAdminVacancyWhenRequest>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/when/${offerId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhoNeeds: build.query<AdminVacancyWhoNeeds, string>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/how-need/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacncyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/how-need/${offerId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["offer"],
+        }),
     }),
 });
 

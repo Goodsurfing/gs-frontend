@@ -10,6 +10,8 @@ import {
     ProfileGender, ProfileLocale, ProfileContacts, ProfileAboutMe,
     ProfileSocial, ProfileDateOfBirth,
 } from "@/features/ProfileInfo";
+import { ReceptionPlace } from "@/entities/Offer";
+import { Language } from "@/types/languages";
 
 export interface Admin {
     token: string,
@@ -464,4 +466,51 @@ export interface GetAdminOffers {
 export interface GetAdminOffersRequest {
     data: GetAdminOffers[];
     pagination: Pagination;
+}
+
+export interface AdminVacancyWhere {
+    id: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+}
+
+export interface UpdateAdminVacancyWhereRequest {
+    offerId: string;
+    body: Omit<AdminVacancyWhere, "id">;
+}
+
+export interface AdminVacancyWhen {
+    id: number,
+    applicationEndDate: string,
+    durationMaxDays: number,
+    durationMinDays: number,
+    isApplicableAtTheEnd: boolean,
+    isFullYearAcceptable: boolean,
+    periods: {
+        id: number;
+        start: string;
+        end: string;
+    }[]
+}
+
+export interface UpdateAdminVacancyWhenRequest {
+    offerId: string;
+    body: Omit<AdminVacancyWhen, "id">;
+}
+
+export interface AdminVacancyWhoNeeds {
+    id: number;
+    additionalInfo: string;
+    ageMax: number;
+    ageMin: number;
+    gender: Gender[];
+    needAllLanguages: boolean;
+    receptionPlace: ReceptionPlace;
+    languages: Language[];
+}
+
+export interface UpdateAdminVacancyWhoNeedsRequest {
+    offerId: string;
+    body: Omit<AdminVacancyWhoNeeds, "id">;
 }
