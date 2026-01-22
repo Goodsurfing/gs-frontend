@@ -5,6 +5,7 @@ export { OfferWhenSlider } from "./OfferWhen/ui/OfferWhenSlider/OfferWhenSlider"
 export { OfferWhenPeriods } from "./OfferWhen/ui/OfferWhenPeriods/OfferWhenPeriods";
 export { OfferWhenRequests } from "./OfferWhen/ui/OfferWhenRequests/OfferWhenRequests";
 export { OfferWhenTimeSettings } from "./OfferWhen/ui/OfferWhenTimeSettings/OfferWhenTimeSettings";
+export { OfferWhereForm } from "./OfferWhereForm/ui/OfferWhereForm";
 
 export { offerWhenFormAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
 export { offerWhenFormApiAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
@@ -14,3 +15,4 @@ export type {
     CreateOfferWhen, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "./OfferWhen/model/types/offerWhen";
 export type { OfferDescriptionField } from "./InviteDescriptionForm/model/types/inviteDescription";
+export type { AddressFormFormFields, AddressFormInput } from "./OfferWhereForm/model/types/addressForm";

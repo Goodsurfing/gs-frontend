@@ -13,6 +13,9 @@ export type {
     AdminVacancyWhere,
     AdminVacancyWhen,
     AdminVacancyWhoNeeds,
+    UpdateAdminVacancyWhere,
+    UpdateAdminVacancyWhen,
+    UpdateAdminVacancyWhoNeeds,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -36,6 +39,8 @@ export { ReviewVolunteerInfoTable } from "./ui/ReviewVolunteerInfoTable/ReviewVo
 export type { ReviewVolunteer } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
 
 export { adminUserAdapter } from "./lib/adminAdapters";
+
+export { offerWhereApiAdapter } from "./lib/adminOfferAdapter";
 
 export {
     adminApi, useCreateSkillMutation,
@@ -82,4 +87,10 @@ export {
     useGetAdminReviewVolunteerByIdQuery,
     useLazyGetAdminOffersQuery,
     useDeleteAdminOfferMutation,
+    useGetAdminVacancyWhereQuery,
+    useUpdateAdminVacancyWhereMutation,
+    useGetAdminVacancyWhenQuery,
+    useUpdateAdminVacancyWhenMutation,
+    useGetAdminVacancyWhoNeedsQuery,
+    useUpdateAdminVacancyWhoNeedsMutation,
 } from "./api/adminApi";

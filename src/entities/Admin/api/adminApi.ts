@@ -616,15 +616,16 @@ export const adminApi = createApi({
         }),
         getAdminVacancyWhere: build.query<AdminVacancyWhere, string>({
             query: (offerId) => ({
-                url: `${API_BASE_URL_V3}vacancy/address/${offerId}`,
+                url: `vacancy/address/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
-        updateAdminVacncyWhere: build.mutation<void, UpdateAdminVacancyWhereRequest>({
-            query: (offerId) => ({
-                url: `${API_BASE_URL_V3}vacancy/address/${offerId}`,
+        updateAdminVacancyWhere: build.mutation<void, UpdateAdminVacancyWhereRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/address/${offerId}`,
                 method: "PATCH",
+                body,
             }),
             invalidatesTags: ["offer"],
         }),
@@ -635,7 +636,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        updateAdminVacncyWhen: build.mutation<void, UpdateAdminVacancyWhenRequest>({
+        updateAdminVacancyWhen: build.mutation<void, UpdateAdminVacancyWhenRequest>({
             query: (offerId) => ({
                 url: `${API_BASE_URL_V3}vacancy/when/${offerId}`,
                 method: "PATCH",
@@ -649,7 +650,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["offer"],
         }),
-        updateAdminVacncyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
+        updateAdminVacancyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
             query: (offerId) => ({
                 url: `${API_BASE_URL_V3}vacancy/how-need/${offerId}`,
                 method: "PATCH",
@@ -727,4 +728,10 @@ export const {
     useGetAdminReviewVolunteerByIdQuery,
     useLazyGetAdminOffersQuery,
     useDeleteAdminOfferMutation,
+    useGetAdminVacancyWhereQuery,
+    useUpdateAdminVacancyWhereMutation,
+    useGetAdminVacancyWhenQuery,
+    useUpdateAdminVacancyWhenMutation,
+    useGetAdminVacancyWhoNeedsQuery,
+    useUpdateAdminVacancyWhoNeedsMutation,
 } = adminApi;

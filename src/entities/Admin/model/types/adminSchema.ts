@@ -475,9 +475,11 @@ export interface AdminVacancyWhere {
     longitude: number;
 }
 
+export type UpdateAdminVacancyWhere = Omit<AdminVacancyWhere, "id">;
+
 export interface UpdateAdminVacancyWhereRequest {
     offerId: string;
-    body: Omit<AdminVacancyWhere, "id">;
+    body: UpdateAdminVacancyWhere;
 }
 
 export interface AdminVacancyWhen {
@@ -494,9 +496,11 @@ export interface AdminVacancyWhen {
     }[]
 }
 
+export type UpdateAdminVacancyWhen = Omit<AdminVacancyWhen, "id">;
+
 export interface UpdateAdminVacancyWhenRequest {
     offerId: string;
-    body: Omit<AdminVacancyWhen, "id">;
+    body: UpdateAdminVacancyWhen;
 }
 
 export interface AdminVacancyWhoNeeds {
@@ -510,7 +514,9 @@ export interface AdminVacancyWhoNeeds {
     languages: Language[];
 }
 
+export type UpdateAdminVacancyWhoNeeds = Omit<AdminVacancyWhoNeeds, "id">;
+
 export interface UpdateAdminVacancyWhoNeedsRequest {
     offerId: string;
-    body: Omit<AdminVacancyWhoNeeds, "id">;
+    body: UpdateAdminVacancyWhoNeeds;
 }
