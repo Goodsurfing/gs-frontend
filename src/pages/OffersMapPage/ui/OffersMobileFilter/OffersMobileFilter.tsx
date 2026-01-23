@@ -54,7 +54,6 @@ export const OffersMobileFilter: FC<OffersMobileFilterProps> = (props) => {
                         isMobile
                         value={field.value}
                         onChange={field.onChange}
-                        isOpen
                     />
                 )}
             />

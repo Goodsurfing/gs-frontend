@@ -7,50 +7,48 @@ import { ProvidedFilter } from "../ProvidedFilter/ProvidedFilter";
 import styles from "./ExtraFilters.module.scss";
 
 interface ExtraFiltersProps {
-    isOpen: boolean;
     control: Control<FieldValues>;
 }
 
 export const ExtraFilters: FC<ExtraFiltersProps> = (
     props: ExtraFiltersProps,
 ) => {
-    const { isOpen, control } = props;
+    const { control } = props;
     return (
-        isOpen ? (
-            <div className={styles.wrapper}>
-                <div className={styles.left}>
-                    <Controller
-                        name="withChildren"
-                        control={control}
-                        render={({ field }) => (
-                            <WithChildren
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="languages"
-                        control={control}
-                        render={({ field }) => (
-                            <LanguagesFilter
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                </div>
+
+        <div className={styles.wrapper}>
+            <div className={styles.left}>
                 <Controller
-                    name="provided"
+                    name="withChildren"
                     control={control}
                     render={({ field }) => (
-                        <ProvidedFilter
+                        <WithChildren
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )}
+                />
+                <Controller
+                    name="languages"
+                    control={control}
+                    render={({ field }) => (
+                        <LanguagesFilter
                             value={field.value}
                             onChange={field.onChange}
                         />
                     )}
                 />
             </div>
-        ) : null
+            <Controller
+                name="provided"
+                control={control}
+                render={({ field }) => (
+                    <ProvidedFilter
+                        value={field.value}
+                        onChange={field.onChange}
+                    />
+                )}
+            />
+        </div>
     );
 };

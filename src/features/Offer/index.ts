@@ -10,6 +10,7 @@ export { OfferWhereForm } from "./OfferWhereForm/ui/OfferWhereForm";
 export { offerWhenFormAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
 export { offerWhenFormApiAdapter } from "./OfferWhen/lib/offerWhenFormAdapter";
 export { inviteDescriptionAdapter, inviteDescriptionApiAdapter } from "./InviteDescriptionForm/lib/inviteDescriptionAdapter";
+export { offerWhereFormApiAdapter } from "./OfferWhereForm/lib/offerWhereFormAdapter";
 
 export type {
     CreateOfferWhen, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,

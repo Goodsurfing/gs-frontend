@@ -150,6 +150,18 @@ export enum AdminSort {
     AcceptApplicationDesc = "acceptApplication:desc",
     CanselApplicationAsc = "canselApplication:asc",
     CanselApplicationDesc = "canselApplication:desc",
+    VacancyIdAsc = "vacancy.id:asc",
+    VacancyIdDesc = "vacancy.id:desc",
+    VacancyNameAsc = "vacancy.name:asc",
+    VacancyNameDesc = "vacancy.name:desc",
+    VacancyStatusAsc = "vacancy.status:asc",
+    VacancyStatusDesc = "vacancy.status:desc",
+    CountApplicationAsc = "countApplication:asc",
+    CountApplicationDesc = "countApplication:desc",
+    CountAcceptedApplicationAsc = "countAcceptedApplication:asc",
+    CountAcceptedApplicationDesc = "countAcceptedApplication:desc",
+    CountCanceledApplicationAsc = "countCanceledApplication:asc",
+    CountCanceledApplicationDesc = "countCanceledApplication:desc",
 }
 
 export interface GetAdminUserParams {

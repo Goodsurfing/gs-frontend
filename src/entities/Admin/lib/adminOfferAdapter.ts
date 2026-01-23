@@ -1,4 +1,4 @@
-import { AddressFormFormFields } from "@/widgets/AddressForm";
+import { AddressFormFormFields } from "@/features/Offer";
 import { UpdateAdminVacancyWhere } from "../model/types/adminSchema";
 
 export const offerWhereApiAdapter = (addressForm: AddressFormFormFields):
