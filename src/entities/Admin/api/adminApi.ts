@@ -30,10 +30,12 @@ import {
     GetAdminTransfersResponse,
     GetAdminUserParams,
     GetAdminUserResponse,
+    GetAdminVacancyDescription,
     SearchUsersParams,
     SearchUsersResponse,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
+    UpdateAdminVacancyDescriptionRequest,
     UpdateAdminVacancyWhenRequest,
     UpdateAdminVacancyWhereRequest,
     UpdateAdminVacancyWhoNeedsRequest,
@@ -653,6 +655,34 @@ export const adminApi = createApi({
         updateAdminVacancyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
             query: (offerId) => ({
                 url: `${API_BASE_URL_V3}vacancy/how-need/${offerId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyDescription: build.query<GetAdminVacancyDescription, string>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/description/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyDescription: build.mutation<void, UpdateAdminVacancyDescriptionRequest>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/description/${offerId}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhatToDo: build.query<GetAdminVacancyDescription, string>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/what-to-do/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyWhatToDo: build.mutation<void, UpdateAdminVacancyDescriptionRequest>({
+            query: (offerId) => ({
+                url: `${API_BASE_URL_V3}vacancy/what-to-do/${offerId}`,
                 method: "PATCH",
             }),
             invalidatesTags: ["offer"],

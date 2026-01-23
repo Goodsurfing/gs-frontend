@@ -10,7 +10,9 @@ import {
     ProfileGender, ProfileLocale, ProfileContacts, ProfileAboutMe,
     ProfileSocial, ProfileDateOfBirth,
 } from "@/features/ProfileInfo";
-import { ReceptionPlace } from "@/entities/Offer";
+import {
+    Currency, ExtraFeatures, Facilities, ReceptionPlace, TimeType,
+} from "@/entities/Offer";
 import { Language } from "@/types/languages";
 
 export interface Admin {
@@ -531,4 +533,56 @@ export type UpdateAdminVacancyWhoNeeds = Omit<AdminVacancyWhoNeeds, "id">;
 export interface UpdateAdminVacancyWhoNeedsRequest {
     offerId: string;
     body: UpdateAdminVacancyWhoNeeds;
+}
+
+export interface GetAdminVacancyDescription {
+    id: number;
+    title: string | null;
+    shortDescription: string | null;
+    description: string | null;
+    image: Image;
+    categoryIds: number[];
+}
+
+export interface UpdateAdminVacancyDescription {
+    title: string | null;
+    shortDescription: string | null;
+    description: string | null;
+    imageId: string;
+    categoryIds: number[];
+}
+
+export interface UpdateAdminVacancyDescriptionRequest {
+    offerId: string;
+    body: UpdateAdminVacancyDescription;
+}
+
+export interface GetAdminVacancyWhatToDo {
+    id: number;
+    externalInfo: string;
+    timeType: TimeType;
+    dayOff: number;
+    hour: number;
+    skillIds: number;
+    additionalSkills: string[];
+}
+
+export type UpdateAdminVacancyWhatToDo = Omit<GetAdminVacancyWhatToDo, "id">;
+
+export interface UpdateAdminVacancyWhatToDoRequest {
+    offerId: string;
+    body: UpdateAdminVacancyWhatToDo;
+}
+
+export interface GetAdminVacancyCondition {
+    id: number;
+    additionalConditions: string;
+    currency: Currency;
+    volunteerContributions: number;
+    volunteerRemuneration: number;
+    additionalFeatures: ExtraFeatures[];
+    conveniences: Facilities[];
+    foodIds: number[];
+    houseIds: number[];
+    transferIds: number[];
 }
