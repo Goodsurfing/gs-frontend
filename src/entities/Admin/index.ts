@@ -101,4 +101,13 @@ export {
     useUpdateAdminVacancyWhenMutation,
     useGetAdminVacancyWhoNeedsQuery,
     useUpdateAdminVacancyWhoNeedsMutation,
+    useGetAdminVacancyConditionsQuery,
+    useUpdateAdminVacancyConditionsMutation,
+    useGetAdminVacancyDescriptionQuery,
+    useUpdateAdminVacancyDescriptionMutation,
+    useGetAdminVacancyWhatToDoQuery,
+    useGetAdminVacancyFinishingTouchesQuery,
+    useUpdateAdminVacancyWhatToDoMutation,
+    useUpdateAdminVacancyFinishingTouchesMutation,
+    useGetGoodsurfingTodayQuery,
 } from "./api/adminApi";

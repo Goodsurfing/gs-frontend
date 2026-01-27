@@ -805,4 +805,12 @@ export const {
     useUpdateAdminVacancyWhenMutation,
     useGetAdminVacancyWhoNeedsQuery,
     useUpdateAdminVacancyWhoNeedsMutation,
+    useGetAdminVacancyConditionsQuery,
+    useGetAdminVacancyDescriptionQuery,
+    useGetAdminVacancyWhatToDoQuery,
+    useGetAdminVacancyFinishingTouchesQuery,
+    useUpdateAdminVacancyConditionsMutation,
+    useUpdateAdminVacancyDescriptionMutation,
+    useUpdateAdminVacancyWhatToDoMutation,
+    useUpdateAdminVacancyFinishingTouchesMutation,
 } = adminApi;
