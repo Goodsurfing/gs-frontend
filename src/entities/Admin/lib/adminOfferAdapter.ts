@@ -1,8 +1,11 @@
 import {
     AddressFormFormFields, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "@/features/Offer";
-import { UpdateAdminVacancyWhen, UpdateAdminVacancyWhere } from "../model/types/adminSchema";
+import { UpdateAdminVacancyWhen, UpdateAdminVacancyWhere, UpdateAdminVacancyWhoNeeds } from "../model/types/adminSchema";
 import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
+import { OfferWhoNeedsFields } from "@/features/OfferWhoNeedsForm";
+
+// OfferWhere
 
 export const offerWhereApiAdapter = (addressForm: AddressFormFormFields):
 UpdateAdminVacancyWhere => {
@@ -11,6 +14,8 @@ UpdateAdminVacancyWhere => {
     const [longitude, latitude] = pos.split(" ").map(Number);
     return { address: address.address, longitude, latitude };
 };
+
+// OfferWhen
 
 export const offerWhenFormAdapter = (data: UpdateAdminVacancyWhen): OfferWhenFields => {
     const {
@@ -75,4 +80,56 @@ export const offerWhenFormApiAdapter = (data: OfferWhenFields): UpdateAdminVacan
     };
 
     return offerWhen;
+};
+
+// OfferWhoNeeds
+
+export const offerWhoNeedsApiAdapter = (
+    whoNeedsForm: OfferWhoNeedsFields,
+): UpdateAdminVacancyWhoNeeds => {
+    const {
+        age,
+        gender,
+        languages,
+        receptionPlace,
+        volunteerPlaces,
+        additionalInfo,
+        needAllLanguages,
+    } = whoNeedsForm;
+
+    return {
+        ageMax: age.maxAge,
+        ageMin: age.minAge,
+        needAllLanguages,
+        additionalInfo: additionalInfo || "",
+        receptionPlace,
+        languages,
+        gender,
+        // volunteerPlaceCount: volunteerPlaces,
+    };
+};
+
+export const offerWhoNeedsAdapter = (
+    whoNeeds: UpdateAdminVacancyWhoNeeds,
+): OfferWhoNeedsFields => {
+    const {
+        needAllLanguages,
+        ageMax,
+        ageMin,
+        gender,
+        receptionPlace,
+        languages,
+        volunteerPlaceCount,
+        additionalInfo,
+    } = whoNeeds;
+
+    return {
+        age: { maxAge: ageMax, minAge: ageMin },
+        gender,
+        languages,
+        needAllLanguages,
+        receptionPlace,
+        volunteerPlaces: 0, // volunteerPlaceCount,
+        additionalInfo,
+    };
 };

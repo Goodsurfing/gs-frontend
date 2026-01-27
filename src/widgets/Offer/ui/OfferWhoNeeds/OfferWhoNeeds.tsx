@@ -29,7 +29,6 @@ export const OfferWhoNeeds: FC<OfferWhoNeedsProps> = (props) => {
     } = useGetOfferByIdQuery(offerId);
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.howNeed) {
             const adaptedData = offerWhoNeedsApiAdapter(getOfferData.howNeed);
             setInitialDataForm(adaptedData);

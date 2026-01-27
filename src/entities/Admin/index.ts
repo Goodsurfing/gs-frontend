@@ -46,6 +46,8 @@ export { adminUserAdapter } from "./lib/adminAdapters";
 export {
     offerWhereApiAdapter, offerWhenFormAdapter,
     offerWhenFormApiAdapter,
+    offerWhoNeedsAdapter,
+    offerWhoNeedsApiAdapter,
 } from "./lib/adminOfferAdapter";
 
 export {
