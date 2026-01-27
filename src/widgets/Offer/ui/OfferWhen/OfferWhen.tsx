@@ -24,7 +24,6 @@ export const OfferWhen: FC<OfferWhenProps> = ({ offerId }) => {
     const { data: getOfferData, isLoading: isLoadingGetWhenData } = useGetOfferByIdQuery(offerId);
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.when) {
             const adaptedData = offerWhenFormAdapter(getOfferData.when);
             setInitialDataForm(adaptedData);

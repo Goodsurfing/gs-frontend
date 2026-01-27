@@ -1,0 +1,22 @@
+.wrapper {
+    min-height: 100vh;
+    max-width: 1280px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.subtitle {
+    margin-top: 40px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-black);
+}
+
+@media (max-width: 992px) {
+    .title, .subtitle {
+        text-align: center;
+    }
+}

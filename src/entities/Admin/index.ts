@@ -16,6 +16,9 @@ export type {
     UpdateAdminVacancyWhere,
     UpdateAdminVacancyWhen,
     UpdateAdminVacancyWhoNeeds,
+    UpdateAdminVacancyConditions,
+    UpdateAdminVacancyDescription,
+    UpdateAdminVacancyFinishingTouches,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -40,7 +43,10 @@ export type { ReviewVolunteer } from "./ui/ReviewVolunteerInfoTable/ReviewVolunt
 
 export { adminUserAdapter } from "./lib/adminAdapters";
 
-export { offerWhereApiAdapter } from "./lib/adminOfferAdapter";
+export {
+    offerWhereApiAdapter, offerWhenFormAdapter,
+    offerWhenFormApiAdapter,
+} from "./lib/adminOfferAdapter";
 
 export {
     adminApi, useCreateSkillMutation,

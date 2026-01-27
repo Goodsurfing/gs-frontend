@@ -20,3 +20,6 @@ export { AdminOfferWhere } from "./ui/AdminOfferWhere/AdminOfferWhere";
 export { AdminOfferWhen } from "./ui/AdminOfferWhen/AdminOfferWhen";
 export { AdminOfferWhatToDo } from "./ui/AdminOfferWhatToDo/AdminOfferWhatToDo";
 export { AdminOfferConditions } from "./ui/AdminOfferConditions/AdminOfferConditions";
+export { AdminOfferWhoNeeds } from "./ui/AdminOfferWhoNeeds/AdminOfferWhoNeeds";
+export { AdminOfferDescription } from "./ui/AdminOfferDescription/AdminOfferDescription";
+export { AdminFinishingTouches } from "./ui/AdminFinishingTouches/AdminFinishingTouches";

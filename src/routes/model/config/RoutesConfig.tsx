@@ -160,6 +160,9 @@ import {
     getAdminVacancyWhenPageUrl,
     getAdminVacancyWhatToDoPageUrl,
     getAdminVacancyConditionsPageUrl,
+    getAdminVacancyWhoNeedsPageUrl,
+    getAdminVacancyDescriptionPageUrl,
+    getAdminVacancyFinishingTouchesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -205,6 +208,9 @@ import { AdminOfferWhenPage } from "@/pages/AdminOfferWhenPage";
 import { AdminOfferWhatToDoPage } from "@/pages/AdminOfferWhatToDoPage";
 import { AdminOfferConditionsPage } from "@/pages/AdminOfferConditionsPage";
 import { HostRegisterPage } from "@/pages/HostRegisterPage";
+import { AdminOfferWhoNeedsPage } from "@/pages/AdminOfferWhoNeedsPage";
+import { AdminOfferDescriptionPage } from "@/pages/AdminOfferDescriptionPage";
+import { AdminOfferFinishingTouchesPage } from "@/pages/AdminOfferFinishingTouchesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -740,6 +746,16 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getAdminVacancyWhenPageUrl(locale),
             },
             {
+                label: "admin-offer-who-needs",
+                element: <AdminOfferWhoNeedsPage />,
+                path: (locale: string) => getAdminVacancyWhoNeedsPageUrl(locale),
+            },
+            {
+                label: "admin-offer-descrition",
+                element: <AdminOfferDescriptionPage />,
+                path: (locale: string) => getAdminVacancyDescriptionPageUrl(locale),
+            },
+            {
                 label: "admin-offer-what-to-do",
                 element: <AdminOfferWhatToDoPage />,
                 path: (locale: string) => getAdminVacancyWhatToDoPageUrl(locale),
@@ -748,6 +764,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-offer-conditions",
                 element: <AdminOfferConditionsPage />,
                 path: (locale: string) => getAdminVacancyConditionsPageUrl(locale),
+            },
+            {
+                label: "admin-offer-finishing-touches",
+                element: <AdminOfferFinishingTouchesPage />,
+                path: (locale: string) => getAdminVacancyFinishingTouchesPageUrl(locale),
             },
         ],
     },
