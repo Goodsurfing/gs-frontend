@@ -526,6 +526,7 @@ export interface AdminVacancyWhoNeeds {
     needAllLanguages: boolean;
     receptionPlace: ReceptionPlace;
     languages: Language[];
+    volunteerPlaceCount: number;
 }
 
 export type UpdateAdminVacancyWhoNeeds = Omit<AdminVacancyWhoNeeds, "id">;
@@ -548,7 +549,7 @@ export interface UpdateAdminVacancyDescription {
     title: string | null;
     shortDescription: string | null;
     description: string | null;
-    imageId: string;
+    imageId: string | null;
     categoryIds: number[];
 }
 
@@ -563,7 +564,7 @@ export interface AdminVacancyWhatToDo {
     timeType: TimeType;
     dayOff: number;
     hour: number;
-    skillIds: number;
+    skillIds: number[];
     additionalSkills: string[];
 }
 

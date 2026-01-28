@@ -28,7 +28,6 @@ export const OfferConditions: FC<OfferConditionsProps> = (props) => {
     const { data: getOfferData, isLoading: isLoadingGetData } = useGetOfferByIdQuery(offerId);
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.condition) {
             const adaptedData = offerConditionsAdapter(getOfferData.condition);
             setInitialDataForm(adaptedData);

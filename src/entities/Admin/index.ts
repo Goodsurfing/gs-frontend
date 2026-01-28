@@ -48,6 +48,14 @@ export {
     offerWhenFormApiAdapter,
     offerWhoNeedsAdapter,
     offerWhoNeedsApiAdapter,
+    offerDescriptionAdapter,
+    offerDescriptionApiAdapter,
+    offerWhatToDoAdapter,
+    offerWhatToDoApiAdapter,
+    offerConditionsAdapter,
+    offerConditionsApiAdapter,
+    offerFinishingTouchesAdapter,
+    offerFinishingTouchesApiAdapter,
 } from "./lib/adminOfferAdapter";
 
 export {

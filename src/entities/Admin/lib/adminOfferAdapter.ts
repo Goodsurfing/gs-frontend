@@ -1,9 +1,21 @@
 import {
-    AddressFormFormFields, DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
+    AddressFormFormFields, DatePeriods, EndSettings,
+    OfferDescriptionField, OfferWhenFields, TimeSettingsControls,
 } from "@/features/Offer";
-import { UpdateAdminVacancyWhen, UpdateAdminVacancyWhere, UpdateAdminVacancyWhoNeeds } from "../model/types/adminSchema";
+import {
+    AdminVacancyConditions,
+    AdminVacancyDescription, AdminVacancyFinishingTouches,
+    AdminVacancyWhatToDo, AdminVacancyWhen, AdminVacancyWhoNeeds,
+    UpdateAdminVacancyConditions,
+    UpdateAdminVacancyDescription, UpdateAdminVacancyFinishingTouches,
+    UpdateAdminVacancyWhatToDo, UpdateAdminVacancyWhen,
+    UpdateAdminVacancyWhere, UpdateAdminVacancyWhoNeeds,
+} from "../model/types/adminSchema";
 import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
-import { OfferWhoNeedsFields } from "@/features/OfferWhoNeedsForm";
+import { MAX_AGE_FOR_VOLUNTEER, MINIMAL_AGE_FOR_VOLUNTEER, OfferWhoNeedsFields } from "@/features/OfferWhoNeedsForm";
+import { OfferWhatToDoFormFields } from "@/features/OfferWhatToDo";
+import { OfferConditionsFormFields } from "@/features/OfferConditions";
+import { OfferFinishingTouchesFormFields } from "@/features/OfferFinishingTouches";
 
 // OfferWhere
 
@@ -17,7 +29,7 @@ UpdateAdminVacancyWhere => {
 
 // OfferWhen
 
-export const offerWhenFormAdapter = (data: UpdateAdminVacancyWhen): OfferWhenFields => {
+export const offerWhenFormAdapter = (data: AdminVacancyWhen): OfferWhenFields => {
     const {
         periods, applicationEndDate, durationMaxDays,
         durationMinDays, isApplicableAtTheEnd, isFullYearAcceptable,
@@ -98,19 +110,19 @@ export const offerWhoNeedsApiAdapter = (
     } = whoNeedsForm;
 
     return {
-        ageMax: age.maxAge,
-        ageMin: age.minAge,
+        ageMax: age.maxAge ?? MINIMAL_AGE_FOR_VOLUNTEER,
+        ageMin: age.minAge ?? MAX_AGE_FOR_VOLUNTEER,
         needAllLanguages,
         additionalInfo: additionalInfo || "",
         receptionPlace,
         languages,
         gender,
-        // volunteerPlaceCount: volunteerPlaces,
+        volunteerPlaceCount: volunteerPlaces,
     };
 };
 
 export const offerWhoNeedsAdapter = (
-    whoNeeds: UpdateAdminVacancyWhoNeeds,
+    whoNeeds: AdminVacancyWhoNeeds,
 ): OfferWhoNeedsFields => {
     const {
         needAllLanguages,
@@ -129,7 +141,192 @@ export const offerWhoNeedsAdapter = (
         languages,
         needAllLanguages,
         receptionPlace,
-        volunteerPlaces: 0, // volunteerPlaceCount,
+        volunteerPlaces: volunteerPlaceCount,
         additionalInfo,
+    };
+};
+
+// OfferDescription
+
+export const offerDescriptionApiAdapter = (
+    data: OfferDescriptionField,
+): UpdateAdminVacancyDescription => {
+    const result: UpdateAdminVacancyDescription = {
+        title: data.title,
+        description: data.fullDescription,
+        shortDescription: data.shortDescription,
+        categoryIds: data.category,
+        imageId: data.coverImage ? data.coverImage.id : null,
+    };
+
+    return result;
+};
+
+export const offerDescriptionAdapter = (
+    data: AdminVacancyDescription,
+): Partial<OfferDescriptionField> => {
+    const {
+        title, description, shortDescription, image, categoryIds,
+    } = data;
+
+    return {
+        title: title ?? undefined,
+        fullDescription: description ?? undefined,
+        shortDescription: shortDescription ?? undefined,
+        coverImage: image,
+        category: categoryIds,
+    };
+};
+
+// OfferWhatTodo
+
+export const offerWhatToDoApiAdapter = (
+    data: OfferWhatToDoFormFields,
+): UpdateAdminVacancyWhatToDo => {
+    const {
+        additionalSkills, skills, workingHours, extraInfo,
+    } = data;
+
+    const { hours, dayOff, timeType } = workingHours;
+
+    const additionalSkillsTemp = additionalSkills?.map(
+        (additionalSkill) => additionalSkill.text,
+    );
+
+    return {
+        skillIds: skills,
+        additionalSkills: additionalSkillsTemp,
+        hour: hours,
+        dayOff,
+        timeType,
+        externalInfo: extraInfo,
+    };
+};
+
+export const offerWhatToDoAdapter = (
+    data: AdminVacancyWhatToDo,
+): OfferWhatToDoFormFields => {
+    const {
+        dayOff, hour, skillIds, timeType, additionalSkills, externalInfo,
+    } = data;
+
+    const additionalSkillsTemp = additionalSkills?.map((additionalSkill) => ({
+        text: additionalSkill,
+    }));
+
+    return {
+        skills: skillIds,
+        additionalSkills: additionalSkillsTemp || [],
+        workingHours: {
+            hours: hour,
+            dayOff,
+            timeType,
+        },
+        extraInfo: externalInfo ?? "",
+    };
+};
+
+// OfferConditions
+
+export const offerConditionsApiAdapter = (
+    data: OfferConditionsFormFields,
+): UpdateAdminVacancyConditions => {
+    const {
+        housing,
+        nutrition,
+        travel,
+        facilities,
+        extraFeatures,
+        payment,
+        extraConditions,
+    } = data;
+
+    const { currency, contribution, reward } = payment;
+
+    return {
+        houseIds: housing.housing,
+        foodIds: nutrition.nutrition,
+        transferIds: travel.travel,
+        conveniences: facilities.facilities,
+        additionalConditions: extraConditions,
+        additionalFeatures: extraFeatures.extraFeatures,
+        volunteerContributions: contribution,
+        volunteerRemuneration: reward,
+        currency,
+    };
+};
+
+export const offerConditionsAdapter = (
+    offerConditions: AdminVacancyConditions,
+): OfferConditionsFormFields => {
+    const {
+        additionalFeatures,
+        conveniences,
+        currency,
+        volunteerContributions,
+        volunteerRemuneration,
+        additionalConditions,
+        foodIds,
+        houseIds,
+        transferIds,
+    } = offerConditions;
+
+    return {
+        extraConditions: additionalConditions || "",
+        extraFeatures: { extraFeatures: additionalFeatures },
+        facilities: { facilities: conveniences },
+        housing: { switchState: true, housing: houseIds || [] },
+        nutrition: { switchState: true, nutrition: foodIds || [] },
+        travel: { switchState: true, travel: transferIds || [] },
+        payment: {
+            currency,
+            contribution: volunteerContributions,
+            reward: volunteerRemuneration,
+        },
+    };
+};
+
+// OfferFinishingTouches
+
+export const offerFinishingTouchesApiAdapter = (
+    data: OfferFinishingTouchesFormFields,
+): UpdateAdminVacancyFinishingTouches => {
+    const {
+        extraConditions,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        rules,
+        welcomeMessage,
+    } = data;
+    return {
+        additionalConditions: extraConditions,
+        roles: rules,
+        helloText: welcomeMessage,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+    };
+};
+
+export const offerFinishingTouchesAdapter = (
+    offerFinishingTouches: AdminVacancyFinishingTouches,
+): OfferFinishingTouchesFormFields => {
+    const {
+        helloText,
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        roles,
+        additionalConditions,
+    } = offerFinishingTouches;
+
+    return {
+        welcomeMessage: helloText,
+        extraConditions: additionalConditions || [],
+        onlyVerified,
+        questionnaireUrl,
+        questions,
+        rules: roles,
     };
 };

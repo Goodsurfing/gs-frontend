@@ -1,9 +1,15 @@
 import React, { FC, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useGetAdminVacancyDescriptionQuery, useUpdateAdminVacancyDescriptionMutation } from "@/entities/Admin";
-import { OfferDescriptionField } from "@/features/Offer";
-import { ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import {
+    offerDescriptionAdapter, offerDescriptionApiAdapter,
+    useGetAdminVacancyDescriptionQuery, useUpdateAdminVacancyDescriptionMutation,
+} from "@/entities/Admin";
+import { InviteDescriptionForm, OfferDescriptionField } from "@/features/Offer";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
+import { getErrorText } from "@/shared/lib/getErrorText";
+import { getAdminVacancyWhatToDoPageUrl } from "@/shared/config/routes/AppUrls";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 interface AdminOfferDescriptionProps {
     offerId: string;
@@ -18,7 +24,6 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
     const [toast, setToast] = useState<ToastAlert>();
 
     const { locale } = useLocale();
-    const { t } = useTranslation("volunteer");
 
     const [updateOfferDescription,
         { isLoading: isLoadingUpdate }] = useUpdateAdminVacancyDescriptionMutation();
@@ -29,16 +34,16 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
 
     useEffect(() => {
         if (offerDescriptionData) {
-            const adaptedData = inviteDescriptionAdapter(offerDescriptionData);
+            const adaptedData = offerDescriptionAdapter(offerDescriptionData);
             setInitialDataForm(adaptedData);
         }
     }, [offerDescriptionData]);
 
     const onSubmit = async (data: OfferDescriptionField) => {
         setToast(undefined);
-        const preparedData = inviteDescriptionApiAdapter(data);
+        const preparedData = offerDescriptionApiAdapter(data);
         try {
-            await updateOfferDescription({ offerId: Number(offerId), body: preparedData }).unwrap();
+            await updateOfferDescription({ offerId, body: preparedData }).unwrap();
             setToast({ text: "Данные успешно сохранены", type: HintType.Success });
             sessionStorage.removeItem(`${OFFER_DESCRIPTION_FORM}${offerId}`);
         } catch (error: unknown) {
@@ -48,25 +53,21 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
 
     const onUploadImageGallery = async (imageGallery: string[]) => {
         setToast(undefined);
-        try {
-            await updateOfferImageGallery({
-                offerId: Number(offerId),
-                body: { galleryImageIds: imageGallery },
-            }).unwrap();
-
-            setToast({
-                text: t("volunteer-gallery.Галерея успешно обновлена"),
-                type: HintType.Success,
-            });
-        } catch {
-            setToast({
-                text: t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
-                type: HintType.Error,
-            });
-        }
+        console.log(imageGallery);
     };
 
     return (
-        <div>AdminOfferDescription</div>
+        <div className={className}>
+            {toast && <HintPopup text={toast.text} type={toast.type} />}
+            <InviteDescriptionForm
+                initialData={initialDataForm}
+                imageGallery={[]}
+                onComplete={onSubmit}
+                onUploadImageGallery={onUploadImageGallery}
+                isLoadingGetData={isLoadingGet}
+                isLoadingUpdateData={isLoadingUpdate}
+                linkNext={getAdminVacancyWhatToDoPageUrl(locale, offerId)}
+            />
+        </div>
     );
 };

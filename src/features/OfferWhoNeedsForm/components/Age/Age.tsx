@@ -4,19 +4,23 @@ import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Input from "@/shared/ui/Input/Input";
 
-import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
-
 import { Age } from "@/entities/Offer/model/types/offerWhoNeeds";
 import styles from "./Age.module.scss";
 
+export const MINIMAL_AGE_FOR_VOLUNTEER = 12;
+export const MAX_AGE_FOR_VOLUNTEER = 18;
+
 interface AgeProps {
     value: Age;
-    onChange: (value: Age) => void
+    onChange: (value: Age) => void;
 }
 
 export const AgeComponent: FC<AgeProps> = (props) => {
     const { value, onChange } = props;
     const { t } = useTranslation("offer");
+
+    const minAge = value.minAge ?? MINIMAL_AGE_FOR_VOLUNTEER;
+    const maxAge = value.maxAge ?? MAX_AGE_FOR_VOLUNTEER;
 
     const onFromMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (+e.target.value < 0 || +e.target.value > 100 || !/^[0-9]+$/.test(e.target.value)) {
@@ -28,7 +32,7 @@ export const AgeComponent: FC<AgeProps> = (props) => {
             });
         }
 
-        if (+e.target.value >= value.maxAge) {
+        if (+e.target.value >= maxAge) {
             onChange({ ...value, maxAge: +e.target.value, minAge: +e.target.value });
         } else {
             onChange({ ...value, minAge: +e.target.value });
@@ -36,7 +40,7 @@ export const AgeComponent: FC<AgeProps> = (props) => {
     };
 
     const onFromMinAgeBlur = () => {
-        if ((value.minAge < MINIMAL_AGE_FOR_VOLUNTEER) || (value.minAge > 100)) {
+        if ((minAge < MINIMAL_AGE_FOR_VOLUNTEER) || (minAge > 100)) {
             onChange({
                 ...value,
                 minAge: MINIMAL_AGE_FOR_VOLUNTEER,
@@ -53,7 +57,7 @@ export const AgeComponent: FC<AgeProps> = (props) => {
     };
 
     const onFromMaxAgeBlur = () => {
-        if ((value.maxAge < value.minAge) || (value.maxAge > 100)) {
+        if ((maxAge < minAge) || (maxAge > 100)) {
             onChange({
                 ...value,
                 minAge: MINIMAL_AGE_FOR_VOLUNTEER,
@@ -74,8 +78,8 @@ export const AgeComponent: FC<AgeProps> = (props) => {
                 {t("whoNeeds.Возраст")}
             </Typography>
             <div className={styles.inputWrapper}>
-                <Input className={styles.from} value={value.minAge.toString()} onChange={onFromMinAgeChange} onBlur={onFromMinAgeBlur} type="number" placeholder="от" />
-                <Input className={styles.to} value={value.maxAge.toString()} onChange={onFromMaxAgeChange} onBlur={onFromMaxAgeBlur} type="number" placeholder="до" />
+                <Input className={styles.from} value={minAge.toString()} onChange={onFromMinAgeChange} onBlur={onFromMinAgeBlur} type="number" placeholder="от" />
+                <Input className={styles.to} value={maxAge.toString()} onChange={onFromMaxAgeChange} onBlur={onFromMaxAgeBlur} type="number" placeholder="до" />
             </div>
         </div>
     );

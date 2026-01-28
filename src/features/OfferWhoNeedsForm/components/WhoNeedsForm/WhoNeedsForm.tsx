@@ -22,12 +22,11 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Input from "@/shared/ui/Input/Input";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { MINIMAL_AGE_FOR_VOLUNTEER } from "../../constants";
 import {
     offerWhoNeedsAdapter,
 } from "../../lib/offerWhoNeedsAdapter";
 import { OfferWhoNeedsFields } from "../../model/types/offerWhoNeeds";
-import { AgeComponent } from "../Age/Age";
+import { AgeComponent, MINIMAL_AGE_FOR_VOLUNTEER } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";

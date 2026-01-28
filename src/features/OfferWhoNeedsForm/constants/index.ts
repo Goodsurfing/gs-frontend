@@ -1,1 +1,0 @@
-export const MINIMAL_AGE_FOR_VOLUNTEER = 12;

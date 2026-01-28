@@ -1,6 +1,7 @@
 import { OfferWhoNeeds, OldOfferWhoNeeds } from "@/entities/Offer";
 
 import { OfferWhoNeedsFields } from "../model/types/offerWhoNeeds";
+import { MAX_AGE_FOR_VOLUNTEER, MINIMAL_AGE_FOR_VOLUNTEER } from "../components/Age/Age";
 
 export const offerWhoNeedsAdapter = (
     whoNeedsForm: OfferWhoNeedsFields,
@@ -16,8 +17,8 @@ export const offerWhoNeedsAdapter = (
     } = whoNeedsForm;
 
     return {
-        ageMax: age.maxAge,
-        ageMin: age.minAge,
+        ageMax: age.maxAge ?? MAX_AGE_FOR_VOLUNTEER,
+        ageMin: age.minAge ?? MINIMAL_AGE_FOR_VOLUNTEER,
         needAllLanguages,
         additionalInfo: additionalInfo || "",
         receptionPlace,
