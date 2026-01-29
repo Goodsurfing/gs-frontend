@@ -20,11 +20,15 @@ const AdminTransferCreatePage = () => {
 
     const onSubmit = async (data: AdminTransferFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         try {
             if (imagePath instanceof File) {
                 await createTransfer({
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 }).unwrap();
                 onSuccess();

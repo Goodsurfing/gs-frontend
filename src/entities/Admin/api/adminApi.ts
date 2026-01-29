@@ -30,6 +30,7 @@ import {
     GetAdminReviewVolunteerListParams,
     GetAdminReviewVolunteerListResponse,
     GetAdminSkillsParams, GetAdminSkillsResponse,
+    GetAdminTransferRequest,
     GetAdminTransfersParams,
     GetAdminTransfersResponse,
     GetAdminUserParams,
@@ -56,7 +57,7 @@ import { PaginationParams } from "@/types/api/pagination";
 import { GetSkillRequest, Skill } from "@/types/skills";
 import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
 import {
-    Food, GetFood, GetFoodRequest, GetHouse, House, Transfer,
+    Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
 } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
@@ -214,9 +215,13 @@ export const adminApi = createApi({
         }),
         createTransfer: build.mutation<void, CreateAdminTransferRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "transfer/create",
@@ -228,9 +233,13 @@ export const adminApi = createApi({
         }),
         editTransfer: build.mutation<void, EditAdminTransferRequest>({
             query: ({ transferId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -250,10 +259,11 @@ export const adminApi = createApi({
             invalidatesTags: ["transfer"],
         }),
         getPublicTransfers: build.query<Transfer[],
-        void>({
-            query: () => ({
+        GetAdminTransferRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}transfer/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["transfer"],
         }),
@@ -266,7 +276,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["transfer"],
         }),
-        getTransfertById: build.query<Transfer, number>({
+        getTransfertById: build.query<GetTransfer, number>({
             query: (transferId) => ({
                 url: `transfer/${transferId}`,
                 method: "GET",

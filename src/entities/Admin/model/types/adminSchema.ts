@@ -309,7 +309,13 @@ export interface GetAdminAchievementsResponse {
 
 export interface CreateAdminTransferRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetAdminTransferRequest {
+    lang: Locale;
 }
 
 export interface EditAdminTransferRequest {

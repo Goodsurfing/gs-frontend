@@ -7,6 +7,11 @@ export interface Transfer {
     imagePath: string;
 }
 
+export type GetTransfer = Transfer & {
+    nameEn: string;
+    nameEs: string;
+};
+
 export type TransferImageObject = Omit<Transfer, "imagePath"> & {
     image: Image;
 };

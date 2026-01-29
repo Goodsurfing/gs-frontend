@@ -71,7 +71,10 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
         data: housesData = [],
         isLoading: isHouseLoading,
     } = useGetPublicHousesQuery({ lang: locale });
-    const { data: transfersData = [], isLoading: isTransferLoading } = useGetPublicTransfersQuery();
+    const {
+        data: transfersData = [],
+        isLoading: isTransferLoading,
+    } = useGetPublicTransfersQuery({ lang: locale });
 
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });

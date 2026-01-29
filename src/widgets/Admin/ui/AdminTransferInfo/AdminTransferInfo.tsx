@@ -22,13 +22,17 @@ export const AdminTransferInfo: FC<AdminTransferInfoProps> = (props) => {
 
     const onSubmit = async (data: AdminTransferFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateTransfer({
                 transferId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();
