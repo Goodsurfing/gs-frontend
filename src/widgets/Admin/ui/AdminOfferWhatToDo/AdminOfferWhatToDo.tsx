@@ -60,6 +60,7 @@ export const AdminOfferWhatToDo = memo(
                     <HintPopup text={toast.text} type={toast.type} />
                 )}
                 <OfferWhatToDoForm
+                    locale={locale}
                     offerId={offerId}
                     initialData={initialDataForm}
                     onComplete={onSubmit}

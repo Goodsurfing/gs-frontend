@@ -22,13 +22,17 @@ export const AdminSkillInfo: FC<AdminSkillInfoProps> = (props) => {
 
     const onSubmit = async (data: AdminSkillFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateSkill({
                 skillId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();

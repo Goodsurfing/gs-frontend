@@ -64,6 +64,7 @@ export const AdminOfferConditions = memo((props: AdminOfferConditionsProps) => {
                 isLoadingUpdateData={isLoadingUpdate}
                 linkNext={getAdminVacancyFinishingTouchesPageUrl(locale, offerId)}
                 className={className}
+                locale={locale}
             />
         </>
     );

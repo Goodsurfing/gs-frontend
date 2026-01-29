@@ -34,6 +34,7 @@ import {
     GetAdminTransfersResponse,
     GetAdminUserParams,
     GetAdminUserResponse,
+    GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
     UpdateAdminOrganizationRequest,
@@ -51,9 +52,11 @@ import {
     GetCategoryRequest, GetCategoryResponse, UpdateCategoryParams,
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
-import { Skill } from "@/types/skills";
+import { GetSkillRequest, Skill } from "@/types/skills";
 import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
-import { Food, House, Transfer } from "@/shared/data/conditions";
+import {
+    Food, GetFood, GetFoodRequest, House, Transfer,
+} from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 interface GoodsurfingToday {
@@ -72,9 +75,13 @@ export const adminApi = createApi({
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "skill/create",
@@ -86,9 +93,13 @@ export const adminApi = createApi({
         }),
         editSkill: build.mutation<void, EditAdminSkillRequest>({
             query: ({ skillId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -107,10 +118,11 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["skill"],
         }),
-        getPublicSkills: build.query<Skill[], void>({
-            query: () => ({
+        getPublicSkills: build.query<Skill[], GetPublicSkillRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}skill/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["skill"],
         }),
@@ -122,7 +134,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["skill"],
         }),
-        getSkillById: build.query<Skill, number>({
+        getSkillById: build.query<GetSkillRequest, number>({
             query: (skillId) => ({
                 url: `skill/${skillId}`,
                 method: "GET",
@@ -323,9 +335,13 @@ export const adminApi = createApi({
         }),
         createFood: build.mutation<void, CreateAdminFoodRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "food/create",
@@ -337,9 +353,13 @@ export const adminApi = createApi({
         }),
         editFood: build.mutation<void, EditAdminFoodRequest>({
             query: ({ foodId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -359,10 +379,11 @@ export const adminApi = createApi({
             invalidatesTags: ["food"],
         }),
         getPublicFoods: build.query<Food[],
-        void>({
-            query: () => ({
+        GetFoodRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}food/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["food"],
         }),
@@ -375,7 +396,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["food"],
         }),
-        getFoodById: build.query<Food, number>({
+        getFoodById: build.query<GetFood, number>({
             query: (foodId) => ({
                 url: `food/${foodId}`,
                 method: "GET",

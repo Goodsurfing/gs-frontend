@@ -251,7 +251,13 @@ export interface AdminOrganizationsFields {
 
 export interface CreateAdminSkillRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetPublicSkillRequest {
+    lang: Locale;
 }
 
 export interface EditAdminSkillRequest {
@@ -347,6 +353,8 @@ export interface GetAdminHouseResponse {
 
 export interface CreateAdminFoodRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
 }
 

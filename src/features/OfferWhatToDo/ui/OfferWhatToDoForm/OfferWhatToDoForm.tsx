@@ -18,8 +18,9 @@ import { offerWhatToDoApiAdapter, sessionStorageToFormAdapter } from "../../mode
 import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import styles from "./OfferWhatToDoForm.module.scss";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./OfferWhatToDoForm.module.scss";
 
 interface OfferWhatToDoFormProps {
     offerId: string;
@@ -28,6 +29,7 @@ interface OfferWhatToDoFormProps {
     isLoadingUpdateData: boolean;
     onComplete: (data: OfferWhatToDoFormFields) => void;
     linkNext: string;
+    locale: Locale;
 }
 
 const defaultValues: DefaultValues<OfferWhatToDoFormFields> = {
@@ -42,7 +44,7 @@ export const OfferWhatToDoForm = memo(
         const {
             offerId, onComplete, isLoadingGetData,
             isLoadingUpdateData, initialData,
-            linkNext,
+            linkNext, locale,
         } = props;
 
         const {
@@ -104,7 +106,7 @@ export const OfferWhatToDoForm = memo(
                 <p className={styles.skillsText}>
                     {t("whatToDo.Навыки, которыми должен обладать волонтёр")}
                 </p>
-                <SkillsForm control={control} />
+                <SkillsForm control={control} locale={locale} />
                 <Controller
                     name="workingHours"
                     control={control}

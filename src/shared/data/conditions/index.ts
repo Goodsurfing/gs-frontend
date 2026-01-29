@@ -1,3 +1,4 @@
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Image } from "@/types/media";
 
 export interface Transfer {
@@ -24,6 +25,15 @@ export interface Food {
     id: number;
     name: string;
     imagePath: string;
+}
+
+export type GetFood = Food & {
+    nameEn: string;
+    nameEs: string;
+};
+
+export interface GetFoodRequest {
+    lang: Locale;
 }
 
 export type FoodImageObject = Omit<Food, "imagePath"> & {

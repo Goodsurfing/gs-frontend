@@ -9,6 +9,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
 import styles from "./AdminUpdateSkills.module.scss";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface AdminUpdateSkillsProps {
     currentSkillIds: number[];
@@ -19,6 +20,7 @@ interface AdminUpdateSkillsProps {
     }) => void;
     isModalOpen: boolean;
     onClose: () => void;
+    locale: Locale;
 }
 
 export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
@@ -27,8 +29,9 @@ export const AdminUpdateSkills: FC<AdminUpdateSkillsProps> = ({
     onConfirm,
     isModalOpen,
     onClose,
+    locale,
 }) => {
-    const { data: skillsData = [], isLoading } = useGetPublicSkillsQuery();
+    const { data: skillsData = [], isLoading } = useGetPublicSkillsQuery({ lang: locale });
     const [selectedSkillIds, setSelectedSkillIds] = useState<number[]>([]);
 
     const [additionalSkills, setAdditionalSkills] = useState<AdditionalSkillsType[]>([]);

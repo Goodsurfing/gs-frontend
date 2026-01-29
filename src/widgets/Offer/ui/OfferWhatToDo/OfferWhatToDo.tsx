@@ -50,6 +50,7 @@ export const OfferWhatToDo: FC<OfferWhatToDoProps> = (props) => {
                 <HintPopup text={toast.text} type={toast.type} />
             )}
             <OfferWhatToDoForm
+                locale={locale}
                 offerId={offerId}
                 initialData={initialDataForm}
                 onComplete={onSubmit}

@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-import { useConditionItems } from "../../model/data/conditionItems";
 import { NutritionFields } from "../../model/types/offerConditions";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -24,7 +23,6 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
         foodData, isLoading, onChange, value,
     } = props;
     const { t } = useTranslation("offer");
-    const { getTranslation } = useConditionItems();
 
     const onToggleCondition = (conditionId: number) => {
         if (value.switchState) {
@@ -87,7 +85,7 @@ export const ConditionsNutrition = memo((props: ConditionsNutritionProps) => {
                                 checked={value.nutrition.includes(item.id)}
                                 onToggle={() => onToggleCondition(item.id)}
                                 key={item.id}
-                                text={getTranslation(item.name) ?? ""}
+                                text={item.name}
                                 icon={getMediaContent(item.imagePath) ?? ""}
                             />
                         ))}

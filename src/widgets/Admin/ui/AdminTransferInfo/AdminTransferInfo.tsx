@@ -1,13 +1,13 @@
 import React, { FC, useState } from "react";
 import { useEditTransferMutation, useGetTransfertByIdQuery } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { AdminSkillFields, AdminTransferForm } from "@/features/Admin";
+import { AdminTransferFields, AdminTransferForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./AdminTransferInfoю.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminTransferInfoю.module.scss";
 
 interface AdminTransferInfoProps {
     transferId: number;
@@ -16,16 +16,16 @@ interface AdminTransferInfoProps {
 export const AdminTransferInfo: FC<AdminTransferInfoProps> = (props) => {
     const { transferId } = props;
     const { data: transferData, isLoading } = useGetTransfertByIdQuery(transferId);
-    const [updateSkill, { isLoading: isUpdateLoading }] = useEditTransferMutation();
+    const [updateTransfer, { isLoading: isUpdateLoading }] = useEditTransferMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const { locale } = useLocale();
 
-    const onSubmit = async (data: AdminSkillFields) => {
+    const onSubmit = async (data: AdminTransferFields) => {
         setToast(undefined);
         const { name, imagePath } = data;
         if (!imagePath) return;
         try {
-            await updateSkill({
+            await updateTransfer({
                 transferId,
                 body: {
                     name,

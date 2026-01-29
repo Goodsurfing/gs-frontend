@@ -56,6 +56,7 @@ export const OfferConditions: FC<OfferConditionsProps> = (props) => {
                 isLoadingUpdateData={isLoading}
                 linkNext={getOffersFinishingTouchesPageUrl(locale, offerId)}
                 className={className}
+                locale={locale}
             />
         </>
     );

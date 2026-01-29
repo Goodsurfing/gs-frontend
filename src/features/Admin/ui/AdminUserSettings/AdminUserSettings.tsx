@@ -246,6 +246,7 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 isModalOpen={isSkillsModalOpen}
                 onClose={closeSkillsModal}
                 onConfirm={handleSkillsConfirm}
+                locale={locale}
             />
         </div>
     );

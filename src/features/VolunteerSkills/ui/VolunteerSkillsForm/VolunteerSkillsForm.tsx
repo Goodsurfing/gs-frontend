@@ -27,10 +27,12 @@ import { VolunteerSkillsField } from "../../model/types/volunteerSkills";
 import { VolunteerLanguage } from "../VolunteerLanguage/VolunteerLanguage";
 import { VOLUNTEER_SKILLS_FORM } from "@/shared/constants/localstorage";
 import { Profile, useUpdateVolunteerMutation } from "@/entities/Profile";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./VolunteerSkillsForm.module.scss";
 
 interface VolunteerSkillsFormProps {
     profileData: Profile;
+    locale: Locale;
 }
 
 const defaultValues: DefaultValues<VolunteerSkillsField> = {
@@ -41,7 +43,7 @@ const defaultValues: DefaultValues<VolunteerSkillsField> = {
 
 export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
     (props: VolunteerSkillsFormProps) => {
-        const { profileData } = props;
+        const { profileData, locale } = props;
         const { t } = useTranslation("volunteer");
         const [toast, setToast] = useState<ToastAlert>();
 
@@ -124,7 +126,7 @@ export const VolunteerSkillsForm: FC<VolunteerSkillsFormProps> = memo(
                 <span className={styles.titleSkills}>
                     {t("volunteer-skills.Навыки которыми вы обладаете")}
                 </span>
-                <SkillsForm control={control} />
+                <SkillsForm control={control} locale={locale} />
                 <Controller
                     name="extraInfo"
                     control={control}
