@@ -98,9 +98,9 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
                         name="nameEn"
                         minLength={3}
                         maxLength={60}
-                        isError={!!errors.name?.message}
+                        isError={!!errors.nameEn?.message}
                     />
-                    {errors?.name?.message && (
+                    {errors?.nameEn?.message && (
                         <ErrorText
                             text={errors.nameEn?.message}
                             className={styles.error}
@@ -113,9 +113,9 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
                         name="nameEs"
                         minLength={3}
                         maxLength={60}
-                        isError={!!errors.name?.message}
+                        isError={!!errors.nameEs?.message}
                     />
-                    {errors?.name?.message && (
+                    {errors?.nameEs?.message && (
                         <ErrorText
                             text={errors.nameEs?.message}
                             className={styles.error}

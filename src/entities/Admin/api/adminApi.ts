@@ -52,7 +52,7 @@ import {
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
-import { Achievement } from "@/types/achievements";
+import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
 import { Food, House, Transfer } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
@@ -131,9 +131,13 @@ export const adminApi = createApi({
         }),
         createAchievement: build.mutation<void, CreateAdminAchievementsRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "achievement/create",
@@ -145,9 +149,13 @@ export const adminApi = createApi({
         }),
         editAchievement: build.mutation<void, EditAdminAchievementsRequest>({
             query: ({ achievementId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -167,10 +175,11 @@ export const adminApi = createApi({
             invalidatesTags: ["achievement"],
         }),
         getPublicAchievements: build.query<Achievement[],
-        void>({
-            query: () => ({
+        GetAchievementRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}achievement/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["achievement"],
         }),
@@ -183,7 +192,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["achievement"],
         }),
-        getAchievementById: build.query<Achievement, number>({
+        getAchievementById: build.query<GetAchievement, number>({
             query: (achievementId) => ({
                 url: `achievement/${achievementId}`,
                 method: "GET",

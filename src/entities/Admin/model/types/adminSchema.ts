@@ -276,6 +276,8 @@ export interface GetAdminSkillsResponse {
 
 export interface CreateAdminAchievementsRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
 }
 
