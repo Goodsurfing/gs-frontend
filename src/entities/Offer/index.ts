@@ -21,6 +21,8 @@ export {
     useGetOfferGalleryItemsQuery,
 } from "./api/offerApi";
 
+export type { UpdateOfferImageGallery } from "./api/offerApi";
+
 export type {
     Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi, OfferMap,
     HostOffer, GetOffersFilters, UpdateOldOffer, OfferParticipant,

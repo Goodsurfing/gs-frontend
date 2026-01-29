@@ -118,4 +118,5 @@ export {
     useUpdateAdminVacancyWhatToDoMutation,
     useUpdateAdminVacancyFinishingTouchesMutation,
     useGetGoodsurfingTodayQuery,
+    useUpdateAdminVacancyImageGalleryMutation,
 } from "./api/adminApi";

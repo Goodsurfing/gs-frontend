@@ -564,6 +564,7 @@ export interface AdminVacancyDescription {
     shortDescription: string | null;
     description: string | null;
     image: Image;
+    galleryImages: Image[];
     categoryIds: number[];
 }
 

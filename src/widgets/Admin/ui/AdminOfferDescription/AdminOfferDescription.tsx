@@ -3,6 +3,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     offerDescriptionAdapter, offerDescriptionApiAdapter,
     useGetAdminVacancyDescriptionQuery, useUpdateAdminVacancyDescriptionMutation,
+    useUpdateAdminVacancyImageGalleryMutation,
 } from "@/entities/Admin";
 import { InviteDescriptionForm, OfferDescriptionField } from "@/features/Offer";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -32,6 +33,8 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
         isLoading: isLoadingGet,
     } = useGetAdminVacancyDescriptionQuery(offerId);
 
+    const [updateOfferImageGallery] = useUpdateAdminVacancyImageGalleryMutation();
+
     useEffect(() => {
         if (offerDescriptionData) {
             const adaptedData = offerDescriptionAdapter(offerDescriptionData);
@@ -53,7 +56,22 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
 
     const onUploadImageGallery = async (imageGallery: string[]) => {
         setToast(undefined);
-        console.log(imageGallery);
+        try {
+            await updateOfferImageGallery({
+                offerId: Number(offerId),
+                body: { galleryImageIds: imageGallery },
+            }).unwrap();
+
+            setToast({
+                text: "Галерея успешно обновлена",
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Произошла ошибка с обновлением галереи",
+                type: HintType.Error,
+            });
+        }
     };
 
     return (
@@ -61,7 +79,7 @@ export const AdminOfferDescription: FC<AdminOfferDescriptionProps> = (props) => 
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <InviteDescriptionForm
                 initialData={initialDataForm}
-                imageGallery={[]}
+                imageGallery={offerDescriptionData?.galleryImages}
                 onComplete={onSubmit}
                 onUploadImageGallery={onUploadImageGallery}
                 isLoadingGetData={isLoadingGet}

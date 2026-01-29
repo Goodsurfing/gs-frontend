@@ -25,7 +25,7 @@ interface UpdateOfferParams {
     body: Partial<UpdateOldOffer>;
 }
 
-interface UpdateOfferImageGallery {
+export interface UpdateOfferImageGallery {
     offerId: number;
     body: {
         galleryImageIds: string[];

@@ -39,7 +39,6 @@ export const OfferDescription: FC<OfferDescriptionProps> = (props) => {
     const [updateOfferImageGallery] = useUpdateOfferImageGalleryMutation();
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.description) {
             const adaptedData = inviteDescriptionAdapter(getOfferData?.description);
             setInitialDataForm(adaptedData);
