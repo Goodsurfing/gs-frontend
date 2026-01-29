@@ -12,6 +12,7 @@
         "Мы не постим ничего без вашего ведома": "We don't post anything without your knowledge",
         "Ошибка авторизации": "Authorization error",
         "Invalid password": "Invalid login or password",
+        "User not found": "User not found",
         "Данный пользователь уже существует": "This user already exists",
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "To log in, you need to confirm your email address. Please check your inbox.",
         "Некорректно введены данные": "Incorrect data entered",

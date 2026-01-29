@@ -38,6 +38,7 @@ export const AuthByEmail = memo(() => {
     }, [getNextRoute, locale, navigate, next, nextId, refetchProfile]);
 
     const errorMessages: Record<string, string> = {
+        "User not found": t("login.User not found"),
         "Ошибка авторизации": t("login.Ошибка авторизации"),
         "Invalid password": t("login.Invalid password"),
         "Данный пользователь уже существует": t("login.Данный пользователь уже существует"),
