@@ -17,6 +17,11 @@ export interface House {
     imagePath: string;
 }
 
+export type GetHouse = House & {
+    nameEn: string;
+    nameEs: string;
+};
+
 export type HouseImageObject = Omit<House, "imagePath"> & {
     image: Image;
 };

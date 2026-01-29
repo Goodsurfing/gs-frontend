@@ -331,7 +331,13 @@ export interface GetAdminTransfersResponse {
 
 export interface CreateAdminHouseRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetHouseRequest {
+    lang: Locale;
 }
 
 export interface EditAdminHouseRequest {

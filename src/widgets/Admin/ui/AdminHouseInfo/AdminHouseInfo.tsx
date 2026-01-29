@@ -22,13 +22,17 @@ export const AdminHouseInfo: FC<AdminHouseInfoProps> = (props) => {
 
     const onSubmit = async (data: AdminHouseFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateHouse({
                 houseId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();

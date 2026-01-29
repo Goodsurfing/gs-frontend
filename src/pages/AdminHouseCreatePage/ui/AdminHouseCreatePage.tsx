@@ -21,11 +21,15 @@ const AdminHouseCreatePage = () => {
 
     const onSubmit = async (data: AdminHouseFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         try {
             if (imagePath instanceof File) {
                 await createHouse({
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 }).unwrap();
                 onSuccess();

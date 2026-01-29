@@ -34,6 +34,7 @@ import {
     GetAdminTransfersResponse,
     GetAdminUserParams,
     GetAdminUserResponse,
+    GetHouseRequest,
     GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
@@ -55,7 +56,7 @@ import { PaginationParams } from "@/types/api/pagination";
 import { GetSkillRequest, Skill } from "@/types/skills";
 import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
 import {
-    Food, GetFood, GetFoodRequest, House, Transfer,
+    Food, GetFood, GetFoodRequest, GetHouse, House, Transfer,
 } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
@@ -274,9 +275,13 @@ export const adminApi = createApi({
         }),
         createHouse: build.mutation<void, CreateAdminHouseRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "house/create",
@@ -288,9 +293,13 @@ export const adminApi = createApi({
         }),
         editHouse: build.mutation<void, EditAdminHouseRequest>({
             query: ({ houseId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -310,10 +319,11 @@ export const adminApi = createApi({
             invalidatesTags: ["house"],
         }),
         getPublicHouses: build.query<House[],
-        void>({
-            query: () => ({
+        GetHouseRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}house/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["house"],
         }),
@@ -326,7 +336,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["house"],
         }),
-        getHouseById: build.query<House, number>({
+        getHouseById: build.query<GetHouse, number>({
             query: (houseId) => ({
                 url: `house/${houseId}`,
                 method: "GET",
