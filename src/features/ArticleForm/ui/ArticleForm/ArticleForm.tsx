@@ -13,8 +13,9 @@ import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
-import styles from "./ArticleForm.module.scss";
 import { useTranslateError } from "../../hooks/useErrorTranslate";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ArticleForm.module.scss";
 
 interface ArticleFormProps {
     className?: string;
@@ -25,6 +26,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
         const { className } = props;
         const { t } = useTranslation("volunteer");
         const { translate } = useTranslateError();
+        const { locale } = useLocale();
         const {
             register,
             formState: { errors },
@@ -69,7 +71,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     <span className={styles.title}>
                         {t("volunteer-create-article.Категория статьи")}
                     </span>
-                    <OfferCategories />
+                    <OfferCategories locale={locale} />
                 </div>
                 <Controller
                     name="description"

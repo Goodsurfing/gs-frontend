@@ -47,7 +47,8 @@ import {
     UpdateAdminVacancyWhoNeedsRequest,
 } from "../model/types/adminSchema";
 import {
-    Category, CategoryCountVacancy, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
+    CategoryCountVacancy, CreateCategoryParams, GetCategory,
+    GetCategoryRequest, GetCategoryResponse, UpdateCategoryParams,
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
 import { Skill } from "@/types/skills";
@@ -552,9 +553,13 @@ export const adminApi = createApi({
             invalidatesTags: ["offer"],
         }),
         createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
-            query: ({ name, color, image }) => {
+            query: ({
+                name, nameEn, nameEs, color, image,
+            }) => {
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("color", color);
                 formData.append("image", image);
 
@@ -568,9 +573,13 @@ export const adminApi = createApi({
         }),
         editCategoryVacancy: build.mutation<void, UpdateCategoryParams>({
             query: ({ id, data }) => {
-                const { name, color, image } = data;
+                const {
+                    name, nameEn, nameEs, color, image,
+                } = data;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("color", color);
                 if (image instanceof File) {
                     formData.append("image", image);
@@ -599,7 +608,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
-        getCategoryVacancyById: build.query<Category,
+        getCategoryVacancyById: build.query<GetCategory,
         number>({
             query: (id) => ({
                 url: `category/${id}`,
@@ -608,10 +617,11 @@ export const adminApi = createApi({
             providesTags: ["category"],
         }),
         getPublicCategoriesVacancy: build.query<CategoryCountVacancy[],
-        void>({
-            query: () => ({
+        GetCategoryRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}category/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["category"],
         }),

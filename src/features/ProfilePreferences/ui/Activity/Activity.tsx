@@ -4,22 +4,25 @@ import { useTranslation } from "react-i18next";
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
 import { CategoryCard } from "../CategoryCard/CategoryCard";
-import styles from "./Activity.module.scss";
-import { useCategories } from "@/shared/data/categories";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./Activity.module.scss";
 
 interface ActivityProps {
     value: number[];
     onChange: (value: number[]) => void;
+    locale: Locale;
 }
 
 export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
-    const { value, onChange } = props;
-    const { getTranslation } = useCategories();
+    const { value, onChange, locale } = props;
     const { t } = useTranslation("profile");
-    const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
+    const {
+        data: categoriesData,
+        isLoading,
+    } = useGetPublicCategoriesVacancyQuery({ lang: locale });
 
     if (isLoading) {
         return (
@@ -47,7 +50,7 @@ export const Activity: FC<ActivityProps> = memo((props: ActivityProps) => {
                         <CategoryCard
                             category={{
                                 image: getMediaContent(category.imagePath) ?? "",
-                                text: getTranslation(category.name) ?? "",
+                                text: category.name,
                             }}
                             onClick={onClick}
                             isSelect={isSelect}

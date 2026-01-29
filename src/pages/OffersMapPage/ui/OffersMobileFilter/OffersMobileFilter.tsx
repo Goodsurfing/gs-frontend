@@ -9,6 +9,7 @@ import { PeriodsFilter, ParticipationPeriod } from "@/widgets/OffersMap";
 import { OfferCategories } from "@/widgets/OfferCategories";
 import { LanguagesGroup, WithChildren } from "@/features/OffersMap";
 import { ProvidedFilter } from "@/widgets/OffersMap/ui/ProvidedFilter/ProvidedFilter";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface OffersMobileFilterProps {
     onSubmitFilters: () => void;
@@ -19,6 +20,7 @@ export const OffersMobileFilter: FC<OffersMobileFilterProps> = (props) => {
     const { onSubmitFilters, onResetFilters } = props;
     const { control } = useFormContext<OffersFilterFields>();
     const { t } = useTranslation("offers-map");
+    const { locale } = useLocale();
 
     return (
         <div className={styles.wrapper}>
@@ -65,7 +67,11 @@ export const OffersMobileFilter: FC<OffersMobileFilterProps> = (props) => {
                         <Typography className={styles.helpText}>
                             {t("Направление деятельности")}
                         </Typography>
-                        <OfferCategories value={field.value} onChange={field.onChange} />
+                        <OfferCategories
+                            value={field.value}
+                            onChange={field.onChange}
+                            locale={locale}
+                        />
                     </div>
                 )}
             />

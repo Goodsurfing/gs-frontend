@@ -32,7 +32,7 @@ const InfoSide: FC = memo(() => {
                     <h3 className={styles.activityTitle}>
                         {t("main.welcome.activity-title")}
                     </h3>
-                    <ActivityContainer />
+                    <ActivityContainer locale={locale} />
                 </div>
             </div>
         </div>
