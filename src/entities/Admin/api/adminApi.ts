@@ -60,7 +60,7 @@ import {
     Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
 } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
-import { UpdateOfferImageGallery } from "@/entities/Offer";
+import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
 
 interface GoodsurfingToday {
     volunteerCount: number;
@@ -797,6 +797,15 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        updateAdminVacancyStatus: build.mutation<UpdateOfferStatusResponse,
+        UpdateOfferStatusRequest>({
+            query: (data) => ({
+                url: `vacancy/toggle-status/${data.id}`,
+                method: "PATCH",
+                body: { status: data.status },
+            }),
+            invalidatesTags: ["offer"],
+        }),
     }),
 });
 
@@ -883,4 +892,5 @@ export const {
     useUpdateAdminVacancyWhatToDoMutation,
     useUpdateAdminVacancyFinishingTouchesMutation,
     useUpdateAdminVacancyImageGalleryMutation,
+    useUpdateAdminVacancyStatusMutation,
 } = adminApi;

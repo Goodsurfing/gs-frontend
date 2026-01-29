@@ -5,6 +5,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     offerFinishingTouchesAdapter, offerFinishingTouchesApiAdapter,
     useGetAdminVacancyFinishingTouchesQuery, useUpdateAdminVacancyFinishingTouchesMutation,
+    useUpdateAdminVacancyStatusMutation,
 } from "@/entities/Admin";
 import { OfferStatus } from "@/entities/Offer";
 import { OfferFinishingTouchesFormFields } from "@/features/OfferFinishingTouches";
@@ -36,6 +37,7 @@ export const AdminFinishingTouches: FC<AdminFinishingTouchesProps> = (props) => 
 
     const [updateOfferFinishingTouches,
         { isLoading: isLoadingUpdate }] = useUpdateAdminVacancyFinishingTouchesMutation();
+    const [updateOfferStatus] = useUpdateAdminVacancyStatusMutation();
     const {
         data: offerFinishingTouchesData,
         isLoading: isLoadingGet,
