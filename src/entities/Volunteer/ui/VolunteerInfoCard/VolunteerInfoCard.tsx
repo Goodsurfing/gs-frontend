@@ -3,6 +3,7 @@ import React, {
     FC, memo, useEffect,
 } from "react";
 
+import { useTranslation } from "react-i18next";
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
@@ -27,6 +28,7 @@ interface VolunteerInfoCardProps {
 export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
     (props: VolunteerInfoCardProps) => {
         const { profileData, className } = props;
+        const { t } = useTranslation("profile");
         const [getHost, { data: hostData, isLoading }] = useLazyGetHostByIdQuery();
         const {
             id, volunteer, galleryImages, videoGallery,
@@ -36,6 +38,8 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
         const showVideoGallery = videoGallery
             && videoGallery.length !== 0;
         const showCertificates = volunteer && volunteer.certificates.length !== 0;
+        const showExternalInfo = volunteer && volunteer.externalInfo
+        && volunteer.externalInfo.length !== 0;
 
         useEffect(() => {
             const fetchHost = () => {
@@ -57,8 +61,16 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
         return (
             <div className={cn(className)}>
                 <VolunteerDesctiptionCard
-                    description={volunteer?.externalInfo ?? undefined}
+                    title={t("personal.О себе")}
+                    description={profileData?.aboutMe ?? undefined}
                 />
+                {showExternalInfo && (
+                    <VolunteerDesctiptionCard
+                        title={t("personal.Дополнительная информация")}
+                        description={volunteer?.externalInfo ?? undefined}
+                        className={styles.container}
+                    />
+                )}
                 <VolunteerSkillsCard
                     skills={volunteer?.skills}
                     additionalSkills={volunteer?.additionalSkills}
