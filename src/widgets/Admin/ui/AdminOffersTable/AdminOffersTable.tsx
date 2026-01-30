@@ -153,7 +153,7 @@ export const AdminOffersTable = () => {
                 await getOffers({
                     page: currentPage,
                     limit: OFFERS_PER_PAGE,
-                    sort: filters.sort,
+                    sort: filters.sort ?? AdminSort.VacancyIdDesc,
                     organizationName: filters.organizationName,
                     userId: filters.userId,
                     vacancyName: filters.vacancyName,
