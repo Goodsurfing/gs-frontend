@@ -34,6 +34,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicFoodsQuery, useGetPublicHousesQuery, useGetPublicTransfersQuery } from "@/entities/Admin";
 import styles from "./OfferConditionsForm.module.scss";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface OfferConditionsFormProps {
     initialData?: OfferConditionsFormFields | null;
@@ -42,6 +43,7 @@ interface OfferConditionsFormProps {
     isLoadingUpdateData: boolean;
     linkNext: string;
     className?: string;
+    locale: Locale;
 }
 
 const defaultValues: DefaultValues<OfferConditionsFormFields> = defaultFormFields;
@@ -50,6 +52,7 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     const {
         initialData, onComplete, isLoadingGetData,
         isLoadingUpdateData, linkNext, className,
+        locale,
     } = props;
     const {
         control, handleSubmit,
@@ -60,9 +63,18 @@ export const OfferConditionsForm = memo((props: OfferConditionsFormProps) => {
     });
     const { id } = useParams();
 
-    const { data: foodsData = [], isLoading: isFoodLoading } = useGetPublicFoodsQuery();
-    const { data: housesData = [], isLoading: isHouseLoading } = useGetPublicHousesQuery();
-    const { data: transfersData = [], isLoading: isTransferLoading } = useGetPublicTransfersQuery();
+    const {
+        data: foodsData = [],
+        isLoading: isFoodLoading,
+    } = useGetPublicFoodsQuery({ lang: locale });
+    const {
+        data: housesData = [],
+        isLoading: isHouseLoading,
+    } = useGetPublicHousesQuery({ lang: locale });
+    const {
+        data: transfersData = [],
+        isLoading: isTransferLoading,
+    } = useGetPublicTransfersQuery({ lang: locale });
 
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });

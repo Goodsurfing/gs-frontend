@@ -3,21 +3,26 @@ import React, {
     ChangeEvent, FC,
 } from "react";
 
-import { useCategories } from "@/shared/data/categories";
 import styles from "./OfferCategories.module.scss";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface OfferCategoriesProps {
     value?: number[];
     onChange?: (value: number[]) => void;
     maxLength?: number;
+    locale: Locale;
 }
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
-    const { value, onChange, maxLength = 5 } = props;
-    const { getTranslation } = useCategories();
-    const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
+    const {
+        value, onChange, maxLength = 5, locale,
+    } = props;
+    const {
+        data: categoriesData,
+        isLoading,
+    } = useGetPublicCategoriesVacancyQuery({ lang: locale });
 
     const handleChange = (event: ChangeEvent<{}>, newValues: number[]) => {
         if (newValues.length <= maxLength) {
@@ -95,7 +100,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                         key={index}
                         value={item.id}
                     >
-                        {getTranslation(item.name)}
+                        {item.name}
                     </ToggleButton>
                 ))}
             </ToggleButtonGroup>

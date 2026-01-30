@@ -22,13 +22,17 @@ export const AdminAchievementInfo: FC<AdminAchievementInfoProps> = (props) => {
 
     const onSubmit = async (data: AdminAchievementFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateAchievement({
                 achievementId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();

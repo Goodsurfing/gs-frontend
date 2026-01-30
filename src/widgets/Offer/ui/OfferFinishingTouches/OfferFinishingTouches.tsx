@@ -43,7 +43,6 @@ export const OfferFinishingTouches: FC<OfferFinishingTouchesProps> = (props) => 
     const { data: getOfferData, isLoading: isLoadingGetData } = useGetOfferByIdQuery(offerId);
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.finishingTouche) {
             const adaptedData = offerFinishingTouchesAdapter(getOfferData.finishingTouche);
             setInitialDataForm(adaptedData);

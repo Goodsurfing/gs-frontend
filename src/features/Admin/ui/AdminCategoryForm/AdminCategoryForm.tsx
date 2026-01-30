@@ -6,7 +6,7 @@ import {
     DefaultValues, FormProvider, SubmitHandler, useForm,
 } from "react-hook-form";
 import cn from "classnames";
-import { Category } from "@/types/categories";
+import { Category, GetCategory } from "@/types/categories";
 
 import Button from "@/shared/ui/Button/Button";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
@@ -16,7 +16,7 @@ import styles from "./AdminCategoryForm.module.scss";
 
 interface AdminCategoryFormProps {
     className?: string;
-    category?: Category;
+    category?: GetCategory;
     onSubmit?: (data: AdminCategoryFields) => void;
     isLoading: boolean;
 }
@@ -30,6 +30,8 @@ const defaultValues: DefaultValues<AdminCategoryFields> = {
 
 export type AdminCategoryFields = Omit<Category, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
@@ -57,6 +59,8 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
         if (category) {
             reset({
                 name: category.name || "",
+                nameEn: category.nameEn || "",
+                nameEs: category.nameEs || "",
                 color: category.color || undefined,
                 imagePath: category.imagePath || undefined,
             });
@@ -73,7 +77,7 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название категории"
+                        label="Название категории (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -84,6 +88,36 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название категории (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn?.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название категории (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEs?.message}
+                    />
+                    {errors?.nameEs?.message && (
+                        <ErrorText
+                            text={errors.nameEs?.message}
                             className={styles.error}
                         />
                     )}

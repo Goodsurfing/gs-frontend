@@ -3,7 +3,7 @@ import {
     Controller, DefaultValues, FormProvider, SubmitHandler, useForm,
 } from "react-hook-form";
 import cn from "classnames";
-import { Achievement } from "@/types/achievements";
+import { Achievement, GetAchievement } from "@/types/achievements";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
@@ -12,7 +12,7 @@ import styles from "./AdminAchievementForm.module.scss";
 
 interface AdminAchievementFormProps {
     className?: string;
-    achievement?: Achievement;
+    achievement?: GetAchievement;
     onSubmit?: (data: AdminAchievementFields) => void;
     isLoading: boolean;
 }
@@ -24,6 +24,8 @@ const defaultValues: DefaultValues<Achievement> = {
 
 export type AdminAchievementFields = Omit<Achievement, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminAchievementForm: FC<AdminAchievementFormProps> = (props) => {
@@ -31,7 +33,7 @@ export const AdminAchievementForm: FC<AdminAchievementFormProps> = (props) => {
         className, achievement, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<Achievement>({
+    const form = useForm<AdminAchievementFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -47,6 +49,8 @@ export const AdminAchievementForm: FC<AdminAchievementFormProps> = (props) => {
         if (achievement) {
             reset({
                 name: achievement.name || "",
+                nameEn: achievement.nameEn || "",
+                nameEs: achievement.nameEs || "",
                 imagePath: achievement.imagePath || undefined,
             });
         } else {
@@ -62,7 +66,7 @@ export const AdminAchievementForm: FC<AdminAchievementFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название навыка"
+                        label="Название навыка (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -73,6 +77,36 @@ export const AdminAchievementForm: FC<AdminAchievementFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название навыка (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название навыка (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
                             className={styles.error}
                         />
                     )}

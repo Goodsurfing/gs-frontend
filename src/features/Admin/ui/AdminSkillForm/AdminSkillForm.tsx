@@ -6,7 +6,7 @@ import {
     SubmitHandler,
 } from "react-hook-form";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { Skill } from "@/types/skills";
+import { GetSkillRequest, Skill } from "@/types/skills";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
@@ -14,7 +14,7 @@ import styles from "./AdminSkillForm.module.scss";
 
 interface AdminSkillFormProps {
     className?: string;
-    skill?: Skill;
+    skill?: GetSkillRequest;
     onSubmit?: (data: AdminSkillFields) => void;
     isLoading: boolean;
 }
@@ -26,6 +26,8 @@ const defaultValues: DefaultValues<Skill> = {
 
 export type AdminSkillFields = Omit<Skill, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
@@ -33,7 +35,7 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
         className, skill, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<Skill>({
+    const form = useForm<AdminSkillFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -49,6 +51,8 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
         if (skill) {
             reset({
                 name: skill.name || "",
+                nameEn: skill.nameEn || "",
+                nameEs: skill.nameEs || "",
                 imagePath: skill.imagePath || undefined,
             });
         } else {
@@ -64,7 +68,7 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название навыка"
+                        label="Название навыка (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -75,6 +79,36 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название навыка (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название навыка (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEs?.message}
+                    />
+                    {errors?.nameEs?.message && (
+                        <ErrorText
+                            text={errors.nameEs.message}
                             className={styles.error}
                         />
                     )}

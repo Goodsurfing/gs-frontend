@@ -9,12 +9,12 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
+import { Food, GetFood } from "@/shared/data/conditions";
 import styles from "./AdminFoodForm.module.scss";
-import { Food } from "@/shared/data/conditions";
 
 interface AdminFoodFormProps {
     className?: string;
-    food?: Food;
+    food?: GetFood;
     onSubmit?: (data: AdminFoodFields) => void;
     isLoading: boolean;
 }
@@ -26,6 +26,8 @@ const defaultValues: DefaultValues<Food> = {
 
 export type AdminFoodFields = Omit<Food, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminFoodForm: FC<AdminFoodFormProps> = (props) => {
@@ -33,7 +35,7 @@ export const AdminFoodForm: FC<AdminFoodFormProps> = (props) => {
         className, food, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<Food>({
+    const form = useForm<AdminFoodFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -49,6 +51,8 @@ export const AdminFoodForm: FC<AdminFoodFormProps> = (props) => {
         if (food) {
             reset({
                 name: food.name || "",
+                nameEn: food.nameEn || "",
+                nameEs: food.nameEs || "",
                 imagePath: food.imagePath || undefined,
             });
         } else {
@@ -64,7 +68,7 @@ export const AdminFoodForm: FC<AdminFoodFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название питания"
+                        label="Название питания (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -75,6 +79,36 @@ export const AdminFoodForm: FC<AdminFoodFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название питания (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название питания (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.name?.message}
+                    />
+                    {errors?.nameEs?.message && (
+                        <ErrorText
+                            text={errors.nameEs.message}
                             className={styles.error}
                         />
                     )}

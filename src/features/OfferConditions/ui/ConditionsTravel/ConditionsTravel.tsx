@@ -3,7 +3,6 @@ import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { TravelFields } from "../../model/types/offerConditions";
 
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
-import { useConditionItems } from "../../model/data/conditionItems";
 import { Transfer } from "@/shared/data/conditions";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -21,7 +20,6 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
         transferData, isLoading, onChange, value,
     } = props;
     const { t } = useTranslation("offer");
-    const { getTranslation } = useConditionItems();
 
     const onSwitchChange = () => {
         const newSwitchState = !value.switchState;
@@ -68,7 +66,7 @@ export const ConditionsTravel = (props: ConditionsTravelProps) => {
                                 checked={value.travel.includes(item.id)}
                                 icon={getMediaContent(item.imagePath) ?? ""}
                                 onToggle={() => onToggleCondition(item.id)}
-                                text={getTranslation(item.name) ?? ""}
+                                text={item.name}
                                 key={item.id}
                             />
                         ))}

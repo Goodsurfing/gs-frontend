@@ -6,15 +6,17 @@ import { Skills } from "../Skills/Skills";
 import styles from "./SkillsForm.module.scss";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface SkillsFormProps {
     control: Control<any>;
+    locale: Locale;
 }
 
 export const SkillsForm: FC<SkillsFormProps> = memo(
     (props: SkillsFormProps) => {
-        const { control } = props;
-        const { data: skillsData, isLoading } = useGetPublicSkillsQuery();
+        const { control, locale } = props;
+        const { data: skillsData, isLoading } = useGetPublicSkillsQuery({ lang: locale });
 
         if (isLoading) {
             return (

@@ -9,12 +9,12 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
-import { Transfer } from "@/shared/data/conditions";
+import { GetTransfer, Transfer } from "@/shared/data/conditions";
 import styles from "./AdminTransferForm.module.scss";
 
 interface AdminTransferFormProps {
     className?: string;
-    transfer?: Transfer;
+    transfer?: GetTransfer;
     onSubmit?: (data: AdminTransferFields) => void;
     isLoading: boolean;
 }
@@ -26,6 +26,8 @@ const defaultValues: DefaultValues<Transfer> = {
 
 export type AdminTransferFields = Omit<Transfer, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminTransferForm: FC<AdminTransferFormProps> = (props) => {
@@ -33,7 +35,7 @@ export const AdminTransferForm: FC<AdminTransferFormProps> = (props) => {
         className, transfer, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<Transfer>({
+    const form = useForm<AdminTransferFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -49,6 +51,8 @@ export const AdminTransferForm: FC<AdminTransferFormProps> = (props) => {
         if (transfer) {
             reset({
                 name: transfer.name || "",
+                nameEn: transfer.nameEn || "",
+                nameEs: transfer.nameEs || "",
                 imagePath: transfer.imagePath || undefined,
             });
         } else {
@@ -64,7 +68,7 @@ export const AdminTransferForm: FC<AdminTransferFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название оплачиваемого отпуска"
+                        label="Название оплачиваемого отпуска (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -75,6 +79,36 @@ export const AdminTransferForm: FC<AdminTransferFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название оплачиваемого отпуска (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название оплачиваемого отпуска (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEs?.message}
+                    />
+                    {errors?.nameEs?.message && (
+                        <ErrorText
+                            text={errors.nameEs.message}
                             className={styles.error}
                         />
                     )}

@@ -10,11 +10,11 @@ import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
 import styles from "./AdminHouseForm.module.scss";
-import { House } from "@/shared/data/conditions";
+import { GetHouse, House } from "@/shared/data/conditions";
 
 interface AdminHouseFormProps {
     className?: string;
-    house?: House;
+    house?: GetHouse;
     onSubmit?: (data: AdminHouseFields) => void;
     isLoading: boolean;
 }
@@ -26,6 +26,8 @@ const defaultValues: DefaultValues<House> = {
 
 export type AdminHouseFields = Omit<House, "id" | "imagePath"> & {
     imagePath?: File | string;
+    nameEn: string;
+    nameEs: string;
 };
 
 export const AdminHouseForm: FC<AdminHouseFormProps> = (props) => {
@@ -33,7 +35,7 @@ export const AdminHouseForm: FC<AdminHouseFormProps> = (props) => {
         className, house, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<House>({
+    const form = useForm<AdminHouseFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -49,6 +51,8 @@ export const AdminHouseForm: FC<AdminHouseFormProps> = (props) => {
         if (house) {
             reset({
                 name: house.name || "",
+                nameEn: house.nameEn || "",
+                nameEs: house.nameEs || "",
                 imagePath: house.imagePath || undefined,
             });
         } else {
@@ -64,7 +68,7 @@ export const AdminHouseForm: FC<AdminHouseFormProps> = (props) => {
             >
                 <div className={styles.form}>
                     <InputControl
-                        label="Название жилья"
+                        label="Название жилья (ru)"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="name"
@@ -75,6 +79,36 @@ export const AdminHouseForm: FC<AdminHouseFormProps> = (props) => {
                     {errors?.name?.message && (
                         <ErrorText
                             text={errors.name.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название жилья (en)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEn"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEn?.message}
+                    />
+                    {errors?.nameEn?.message && (
+                        <ErrorText
+                            text={errors.nameEn.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Название жилья (es)"
+                        rules={{ required: "Это поле является обязательным" }}
+                        control={control}
+                        name="nameEs"
+                        minLength={3}
+                        maxLength={60}
+                        isError={!!errors.nameEs?.message}
+                    />
+                    {errors?.nameEs?.message && (
+                        <ErrorText
+                            text={errors.nameEs.message}
                             className={styles.error}
                         />
                     )}

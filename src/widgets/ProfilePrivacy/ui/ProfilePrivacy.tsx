@@ -45,7 +45,7 @@ export const ProfilePrivacy: FC = memo(() => {
     const handleDeleteProfile = useCallback(async () => {
         if (!myProfile || isProfileDeleting) return;
         try {
-            await deleteProfile(myProfile.id).unwrap();
+            await deleteProfile().unwrap();
             handleLogout();
         } catch (e) {
             setToast({

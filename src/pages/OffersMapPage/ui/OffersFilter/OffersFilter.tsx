@@ -129,7 +129,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     </Button>
                 </div>
             </div>
-            <div className={styles.bottom}>
+            <div className={cn(styles.bottom, { [styles.open]: dropdownOpened.isPeriodsOpened })}>
                 <Controller
                     name="participationPeriod"
                     control={control}
@@ -137,13 +137,17 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                         <ParticipationPeriod
                             value={field.value}
                             onChange={field.onChange}
-                            isOpen={dropdownOpened.isPeriodsOpened}
                         />
                     )}
                 />
+            </div>
+            <div className={cn(
+                styles.bottom,
+                { [styles.open]: dropdownOpened.isExtraFiltersOpened },
+            )}
+            >
                 <ExtraFilters
                     control={control}
-                    isOpen={dropdownOpened.isExtraFiltersOpened}
                 />
             </div>
         </div>

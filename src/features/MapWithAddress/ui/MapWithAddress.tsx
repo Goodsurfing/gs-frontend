@@ -10,8 +10,6 @@ import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { AddressFormFormFields } from "@/widgets/AddressForm/model/types/addressForm";
-
 import { GeoObject, YMap, YmapType } from "@/entities/Map";
 
 import locationIcon from "@/shared/assets/icons/location.svg";
@@ -24,6 +22,7 @@ import {
     getGeoObjectCollection,
 } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 import styles from "./MapWithAddress.module.scss";
+import { AddressFormFormFields } from "@/features/Offer";
 
 interface MapWithAddressProps {
     className?: string;

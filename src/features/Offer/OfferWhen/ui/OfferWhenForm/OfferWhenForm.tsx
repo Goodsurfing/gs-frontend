@@ -30,8 +30,8 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferWhenFormProps {
     initialData?: OfferWhenFields | null;
-    isLoadingGetWhenData?: boolean;
-    isLoadingUpdateWhenData?: boolean;
+    isLoadingGetWhenData: boolean;
+    isLoadingUpdateWhenData: boolean;
     offerId: string;
     linkNext: string;
     onComplete?: (data: OfferWhenFields) => void;

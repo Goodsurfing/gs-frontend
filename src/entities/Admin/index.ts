@@ -10,6 +10,15 @@ export type {
     UpdateAdminOrganization,
     AdminReviewVacancySort,
     AdminReviewVolunteerSort,
+    AdminVacancyWhere,
+    AdminVacancyWhen,
+    AdminVacancyWhoNeeds,
+    UpdateAdminVacancyWhere,
+    UpdateAdminVacancyWhen,
+    UpdateAdminVacancyWhoNeeds,
+    UpdateAdminVacancyConditions,
+    UpdateAdminVacancyDescription,
+    UpdateAdminVacancyFinishingTouches,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -33,6 +42,21 @@ export { ReviewVolunteerInfoTable } from "./ui/ReviewVolunteerInfoTable/ReviewVo
 export type { ReviewVolunteer } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
 
 export { adminUserAdapter } from "./lib/adminAdapters";
+
+export {
+    offerWhereApiAdapter, offerWhenFormAdapter,
+    offerWhenFormApiAdapter,
+    offerWhoNeedsAdapter,
+    offerWhoNeedsApiAdapter,
+    offerDescriptionAdapter,
+    offerDescriptionApiAdapter,
+    offerWhatToDoAdapter,
+    offerWhatToDoApiAdapter,
+    offerConditionsAdapter,
+    offerConditionsApiAdapter,
+    offerFinishingTouchesAdapter,
+    offerFinishingTouchesApiAdapter,
+} from "./lib/adminOfferAdapter";
 
 export {
     adminApi, useCreateSkillMutation,
@@ -79,4 +103,21 @@ export {
     useGetAdminReviewVolunteerByIdQuery,
     useLazyGetAdminOffersQuery,
     useDeleteAdminOfferMutation,
+    useGetAdminVacancyWhereQuery,
+    useUpdateAdminVacancyWhereMutation,
+    useGetAdminVacancyWhenQuery,
+    useUpdateAdminVacancyWhenMutation,
+    useGetAdminVacancyWhoNeedsQuery,
+    useUpdateAdminVacancyWhoNeedsMutation,
+    useGetAdminVacancyConditionsQuery,
+    useUpdateAdminVacancyConditionsMutation,
+    useGetAdminVacancyDescriptionQuery,
+    useUpdateAdminVacancyDescriptionMutation,
+    useGetAdminVacancyWhatToDoQuery,
+    useGetAdminVacancyFinishingTouchesQuery,
+    useUpdateAdminVacancyWhatToDoMutation,
+    useUpdateAdminVacancyFinishingTouchesMutation,
+    useGetGoodsurfingTodayQuery,
+    useUpdateAdminVacancyImageGalleryMutation,
+    useUpdateAdminVacancyStatusMutation,
 } from "./api/adminApi";

@@ -4,15 +4,17 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { OfferCategories } from "@/widgets/OfferCategories";
 
-import styles from "./Categories.module.scss";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
 import { useErrorTranslate } from "../../hooks/useErrorTranslate";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./Categories.module.scss";
 
 const Categories = () => {
     const { control, formState: { errors } } = useFormContext();
     const { t } = useTranslation("offer");
     const { translate } = useErrorTranslate();
+    const { locale } = useLocale();
 
     return (
         <div className={styles.wrapper}>
@@ -29,6 +31,7 @@ const Categories = () => {
                         <OfferCategories
                             value={field.value}
                             onChange={field.onChange}
+                            locale={locale}
                         />
                         {errors.category && (
                             <ErrorText text={errors.category.message?.toString()} />

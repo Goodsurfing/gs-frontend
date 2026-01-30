@@ -92,8 +92,8 @@ const offerCustomFields: CustomFilterField<keyof OfferFilters>[] = [
                         },
                     }}
                 >
-                    <MenuItem value={AdminSort.IdAsc}>ID ↑</MenuItem>
-                    <MenuItem value={AdminSort.IdDesc}>ID ↓</MenuItem>
+                    <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem>
                     <MenuItem value={AdminSort.CategoryNameAsc}>Категории ↑</MenuItem>
                     <MenuItem value={AdminSort.CategoryNameDesc}>Категории ↓</MenuItem>
                     <MenuItem value={AdminSort.UserIdAsc}>ID пользователя ↑</MenuItem>
@@ -104,16 +104,24 @@ const offerCustomFields: CustomFilterField<keyof OfferFilters>[] = [
                     <MenuItem value={AdminSort.OrganizationNameDesc}>
                         Название организации ↓
                     </MenuItem>
-                    <MenuItem value={AdminSort.NameAsc}>Название вакансии ↑</MenuItem>
-                    <MenuItem value={AdminSort.NameDesc}>Название вакансии ↓</MenuItem>
-                    <MenuItem value={AdminSort.IsActiveAsc}>Активность вакансии ↑</MenuItem>
-                    <MenuItem value={AdminSort.IsActiveDesc}>Активность вакансии ↓</MenuItem>
-                    <MenuItem value={AdminSort.TotalApplicationAsc}>Всего заявок ↑</MenuItem>
-                    <MenuItem value={AdminSort.TotalApplicationDesc}>Всего заявок ↓</MenuItem>
-                    <MenuItem value={AdminSort.AcceptApplicationAsc}>Принятых заявок ↑</MenuItem>
-                    <MenuItem value={AdminSort.AcceptApplicationDesc}>Принятых заявок ↓</MenuItem>
-                    <MenuItem value={AdminSort.CanselApplicationAsc}>Отменённых заявок ↑</MenuItem>
-                    <MenuItem value={AdminSort.CanselApplicationDesc}>Отменённых заявок ↓</MenuItem>
+                    <MenuItem value={AdminSort.VacancyNameAsc}>Название вакансии ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyNameDesc}>Название вакансии ↓</MenuItem>
+                    <MenuItem value={AdminSort.VacancyStatusAsc}>Активность вакансии ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyStatusDesc}>Активность вакансии ↓</MenuItem>
+                    <MenuItem value={AdminSort.CountApplicationAsc}>Всего заявок ↑</MenuItem>
+                    <MenuItem value={AdminSort.CountApplicationDesc}>Всего заявок ↓</MenuItem>
+                    <MenuItem value={AdminSort.CountAcceptedApplicationAsc}>
+                        Принятых заявок ↑
+                    </MenuItem>
+                    <MenuItem value={AdminSort.CountAcceptedApplicationDesc}>
+                        Принятых заявок ↓
+                    </MenuItem>
+                    <MenuItem value={AdminSort.CountCanceledApplicationAsc}>
+                        Отменённых заявок ↑
+                    </MenuItem>
+                    <MenuItem value={AdminSort.CountCanceledApplicationDesc}>
+                        Отменённых заявок ↓
+                    </MenuItem>
                 </Select>
             </FormControl>
         ),
@@ -129,7 +137,9 @@ export const AdminOffersTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const [offerToDelete, setOfferToDelete] = useState<
     { id: string; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<OfferFilters>>({});
+    const [filters, setFilters] = useState<Partial<OfferFilters>>(
+        { sort: AdminSort.VacancyIdDesc },
+    );
     const [getOffers, {
         data: offersData,
         isLoading,

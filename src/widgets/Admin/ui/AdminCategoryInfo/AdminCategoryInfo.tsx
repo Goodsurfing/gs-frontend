@@ -22,13 +22,17 @@ export const AdminCategoryInfo: FC<AdminCategoryInfoProps> = (props) => {
 
     const onSubmit = async (data: AdminCategoryFields) => {
         setToast(undefined);
-        const { name, color, imagePath } = data;
+        const {
+            name, nameEn, nameEs, color, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateCategory({
                 id: categoryId,
                 data: {
                     name,
+                    nameEn,
+                    nameEs,
                     color,
                     image: imagePath,
                 },

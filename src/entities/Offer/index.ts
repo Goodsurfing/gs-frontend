@@ -22,6 +22,11 @@ export {
 } from "./api/offerApi";
 
 export type {
+    UpdateOfferImageGallery, UpdateOfferStatusRequest,
+    UpdateOfferStatusResponse,
+} from "./api/offerApi";
+
+export type {
     Offer, OfferSchema, SortValue, AddressAutoComplete, OfferOrganization, OfferApi, OfferMap,
     HostOffer, GetOffersFilters, UpdateOldOffer, OfferParticipant,
 } from "./model/types/offer";

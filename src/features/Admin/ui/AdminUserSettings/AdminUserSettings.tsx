@@ -14,17 +14,19 @@ import {
 import { getFullName } from "@/shared/lib/getFullName";
 import { Achievement } from "@/types/achievements";
 import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface AdminUserSettingsProps {
     userId: string;
     data: AdminUser;
+    locale: Locale;
 }
 
 export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
-    const { userId, data } = props;
+    const { userId, data, locale } = props;
     const { isActive, firstName, lastName } = data;
     const userName = getFullName(firstName, lastName);
-    const { data: achievementsData } = useGetPublicAchievementsQuery();
+    const { data: achievementsData } = useGetPublicAchievementsQuery({ lang: locale });
     const [updateUser] = useUpdateAdminUserMutation();
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -244,6 +246,7 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 isModalOpen={isSkillsModalOpen}
                 onClose={closeSkillsModal}
                 onConfirm={handleSkillsConfirm}
+                locale={locale}
             />
         </div>
     );

@@ -6,22 +6,25 @@ import { useCategories } from "@/shared/data/categories";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { Category } from "../Category/Category";
-import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./CategoriesWidget.module.scss";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface CategoriesWidgetProps {
     className?: string;
+    locale: Locale;
 }
 
 export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
     (props: CategoriesWidgetProps) => {
-        const { className } = props;
+        const { className, locale } = props;
         const { getTranslation } = useCategories();
-        const { data: categoriesData, isLoading } = useGetPublicCategoriesVacancyQuery();
+        const {
+            data: categoriesData,
+            isLoading,
+        } = useGetPublicCategoriesVacancyQuery({ lang: locale });
         const { ready } = useTranslation();
-        const { locale } = useLocale();
 
         if (!ready || isLoading) {
             return (

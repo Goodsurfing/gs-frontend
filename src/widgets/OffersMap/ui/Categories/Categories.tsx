@@ -8,6 +8,7 @@ import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
 import { OfferCategories } from "@/widgets/OfferCategories";
 import { BluePoint } from "../BluePoint/BluePoint";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface CategoriesProps {
     className?: string;
@@ -22,6 +23,7 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
         className, isOpen, onClick, value, onChange,
     } = props;
     const { t } = useTranslation("offers-map");
+    const { locale } = useLocale();
 
     return (
         <div className={cn(styles.wrapper, className)} ref={ref}>
@@ -40,7 +42,7 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
                 isOpen={isOpen}
             >
                 <div className={styles.popupContainer} ref={ref}>
-                    <OfferCategories value={value} onChange={onChange} />
+                    <OfferCategories value={value} onChange={onChange} locale={locale} />
                 </div>
             </Popup>
         </div>

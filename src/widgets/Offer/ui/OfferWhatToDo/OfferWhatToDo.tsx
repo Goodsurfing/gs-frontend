@@ -22,11 +22,10 @@ export const OfferWhatToDo: FC<OfferWhatToDoProps> = (props) => {
 
     const { locale } = useLocale();
 
-    const [updateOfferWhatToDo, { isLoading }] = useUpdateOfferWhatToDoMutation();
-    const { data: getOfferData, isLoading: isOfferDataLoading } = useGetOfferByIdQuery(offerId);
+    const [updateOfferWhatToDo, { isLoading: isLoadingUpdate }] = useUpdateOfferWhatToDoMutation();
+    const { data: getOfferData, isLoading: isLoadingGet } = useGetOfferByIdQuery(offerId);
 
     useEffect(() => {
-        setToast(undefined);
         if (getOfferData?.whatToDo) {
             const adaptedData = offerWhatToDoAdapter(getOfferData.whatToDo);
             setInitialDataForm(adaptedData);
@@ -51,11 +50,12 @@ export const OfferWhatToDo: FC<OfferWhatToDoProps> = (props) => {
                 <HintPopup text={toast.text} type={toast.type} />
             )}
             <OfferWhatToDoForm
+                locale={locale}
                 offerId={offerId}
                 initialData={initialDataForm}
                 onComplete={onSubmit}
-                isLoadingGetData={isOfferDataLoading}
-                isLoadingUpdateData={isLoading}
+                isLoadingGetData={isLoadingGet}
+                isLoadingUpdateData={isLoadingUpdate}
                 linkNext={getOffersConditionsPageUrl(locale, offerId)}
             />
         </>
