@@ -74,6 +74,7 @@
   "journals": "journals",
   "login": {
     "Invalid password": "Invalid password",
+    "User not found": "User not found",
     "Вам на почту придёт письмо с подтверждением": "Вам на почту придёт письмо с подтверждением",
     "Войти": "Войти",
     "Войти в свой аккаунт": "Войти в свой аккаунт",

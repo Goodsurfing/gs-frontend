@@ -11,7 +11,7 @@ import {
     ProfileSocial, ProfileDateOfBirth,
 } from "@/features/ProfileInfo";
 import {
-    Currency, ExtraConditions, ExtraFeatures, Facilities, ReceptionPlace, TimeType,
+    Currency, ExtraConditions, ExtraFeatures, Facilities, OfferStatus, ReceptionPlace, TimeType,
 } from "@/entities/Offer";
 import { Language } from "@/types/languages";
 
@@ -521,10 +521,10 @@ export interface UpdateAdminVacancyWhereRequest {
 export interface AdminVacancyWhen {
     id: number;
     applicationEndDate: string | null;
-    durationMaxDays: number;
-    durationMinDays: number;
-    isApplicableAtTheEnd: boolean;
-    isFullYearAcceptable: boolean;
+    durationMaxDays: number | null;
+    durationMinDays: number | null;
+    isApplicableAtTheEnd: boolean | null;
+    isFullYearAcceptable: boolean | null;
     periods: {
         id: number | null;
         start: string | null;
@@ -541,14 +541,14 @@ export interface UpdateAdminVacancyWhenRequest {
 
 export interface AdminVacancyWhoNeeds {
     id: number;
-    additionalInfo: string;
-    ageMax: number;
-    ageMin: number;
+    additionalInfo: string | null;
+    ageMax: number | null;
+    ageMin: number | null;
     gender: Gender[];
-    needAllLanguages: boolean;
-    receptionPlace: ReceptionPlace;
+    needAllLanguages: boolean | null;
+    receptionPlace: ReceptionPlace | null;
     languages: Language[];
-    volunteerPlaceCount: number;
+    volunteerPlaceCount: number | null;
 }
 
 export type UpdateAdminVacancyWhoNeeds = Omit<AdminVacancyWhoNeeds, "id">;
@@ -583,15 +583,17 @@ export interface UpdateAdminVacancyDescriptionRequest {
 
 export interface AdminVacancyWhatToDo {
     id: number;
-    externalInfo: string;
-    timeType: TimeType;
-    dayOff: number;
-    hour: number;
+    externalInfo: string | null;
+    timeType: TimeType | null;
+    dayOff: number | null;
+    hour: number | null;
     skillIds: number[];
     additionalSkills: string[];
 }
 
-export type UpdateAdminVacancyWhatToDo = Omit<AdminVacancyWhatToDo, "id">;
+export type UpdateAdminVacancyWhatToDo = Omit<AdminVacancyWhatToDo, "id" | "hour"> & {
+    hours: number;
+};
 
 export interface UpdateAdminVacancyWhatToDoRequest {
     offerId: string;
@@ -600,10 +602,10 @@ export interface UpdateAdminVacancyWhatToDoRequest {
 
 export interface AdminVacancyConditions {
     id: number;
-    additionalConditions: string;
-    currency: Currency;
-    volunteerContributions: number;
-    volunteerRemuneration: number;
+    additionalConditions: string | null;
+    currency: Currency | null;
+    volunteerContributions: number | null;
+    volunteerRemuneration: number | null;
     additionalFeatures: ExtraFeatures[];
     conveniences: Facilities[];
     foodIds: number[];
@@ -620,15 +622,16 @@ export interface UpdateAdminVacancyConditionsRequest {
 
 export interface AdminVacancyFinishingTouches {
     id: number;
-    helloText: string;
-    roles: string;
-    questionnaireUrl: string;
+    helloText: string | null;
+    roles: string | null;
+    questionnaireUrl: string | null;
     onlyVerified: boolean;
     additionalConditions: ExtraConditions[];
     questions: string[];
+    status: OfferStatus;
 }
 
-export type UpdateAdminVacancyFinishingTouches = Omit<AdminVacancyFinishingTouches, "id">;
+export type UpdateAdminVacancyFinishingTouches = Omit<AdminVacancyFinishingTouches, "id" | "status">;
 
 export interface UpdateAdminVacancyFinishingTouchesRequest {
     offerId: string;

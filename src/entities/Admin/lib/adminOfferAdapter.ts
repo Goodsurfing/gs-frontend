@@ -41,8 +41,8 @@ export const offerWhenFormAdapter = (data: AdminVacancyWhen): OfferWhenFields =>
     }));
 
     const timeSettings: TimeSettingsControls = {
-        isFullYearAcceptable,
-        isApplicableAtTheEnd,
+        isFullYearAcceptable: isFullYearAcceptable ?? false,
+        isApplicableAtTheEnd: isApplicableAtTheEnd ?? false,
     };
 
     const endSettings: EndSettings = {
@@ -52,7 +52,9 @@ export const offerWhenFormAdapter = (data: AdminVacancyWhen): OfferWhenFields =>
 
     const offerWhenFields: OfferWhenFields = {
         periods: offerWhenPeriods,
-        participationPeriod: [durationMinDays, durationMaxDays],
+        participationPeriod: durationMinDays == null || durationMaxDays == null
+            ? [7, 186]
+            : [durationMinDays, durationMaxDays],
         timeSettings,
         endSettings,
     };
@@ -139,10 +141,10 @@ export const offerWhoNeedsAdapter = (
         age: { maxAge: ageMax, minAge: ageMin },
         gender,
         languages,
-        needAllLanguages,
-        receptionPlace,
-        volunteerPlaces: volunteerPlaceCount,
-        additionalInfo,
+        needAllLanguages: needAllLanguages ?? false,
+        receptionPlace: receptionPlace ?? "any",
+        volunteerPlaces: volunteerPlaceCount ?? 0,
+        additionalInfo: additionalInfo ?? "",
     };
 };
 
@@ -196,7 +198,7 @@ export const offerWhatToDoApiAdapter = (
     return {
         skillIds: skills,
         additionalSkills: additionalSkillsTemp,
-        hour: hours,
+        hours,
         dayOff,
         timeType,
         externalInfo: extraInfo,
@@ -218,9 +220,9 @@ export const offerWhatToDoAdapter = (
         skills: skillIds,
         additionalSkills: additionalSkillsTemp || [],
         workingHours: {
-            hours: hour,
-            dayOff,
-            timeType,
+            hours: hour ?? 6,
+            dayOff: dayOff ?? 2,
+            timeType: timeType ?? "week",
         },
         extraInfo: externalInfo ?? "",
     };
@@ -279,9 +281,9 @@ export const offerConditionsAdapter = (
         nutrition: { switchState: true, nutrition: foodIds || [] },
         travel: { switchState: true, travel: transferIds || [] },
         payment: {
-            currency,
-            contribution: volunteerContributions,
-            reward: volunteerRemuneration,
+            currency: currency ?? "RUB",
+            contribution: volunteerContributions ?? 0,
+            reward: volunteerRemuneration ?? 0,
         },
     };
 };
@@ -322,11 +324,11 @@ export const offerFinishingTouchesAdapter = (
     } = offerFinishingTouches;
 
     return {
-        welcomeMessage: helloText,
+        welcomeMessage: helloText ?? "",
         extraConditions: additionalConditions || [],
         onlyVerified,
-        questionnaireUrl,
+        questionnaireUrl: questionnaireUrl ?? "",
         questions,
-        rules: roles,
+        rules: roles ?? "",
     };
 };
