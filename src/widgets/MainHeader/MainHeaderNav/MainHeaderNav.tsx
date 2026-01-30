@@ -259,6 +259,20 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
+                        to="https://community.goodsurfing.org/"
+                    >
+                        {t("main.welcome.header.about-project.news")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getAboutProjectPageUrl(locale)}
+                    >
+                        {t(
+                            "main.welcome.header.about-project.about-goodsurfing",
+                        )}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
                         to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.about-npo")}
@@ -286,20 +300,6 @@ export const MainHeaderNav = () => {
                         to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to="https://community.goodsurfing.org/"
-                    >
-                        {t("main.welcome.header.about-project.news")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getAboutProjectPageUrl(locale)}
-                    >
-                        {t(
-                            "main.welcome.header.about-project.about-goodsurfing",
-                        )}
                     </Link>
                     <Link
                         className={styles.dropdownLink}

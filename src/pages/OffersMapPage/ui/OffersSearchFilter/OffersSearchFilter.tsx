@@ -73,8 +73,13 @@ export const OffersSearchFilter = () => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
-        fetchAllOffersMap({ ...preparedData });
     }, [currentPage]);
+
+    useEffect(() => {
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
+        fetchAllOffersMap({ ...preparedData });
+    }, []);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {

@@ -62,7 +62,7 @@
                     "video": "Видео",
                     "experts": "Эксперты",
                     "ambassadors": "Амбассадоры",
-                    "courses": "Курсы",
+                    "courses": "Академия",
                     "clubs": "Клубы",
                     "journal": "Журналы"
                 },
@@ -97,7 +97,7 @@
                 },
                 "for-organizers": {
                     "title": "Для организаторов",
-                    "become-a-host": "Стать хостом",
+                    "become-a-host": "Стать организатором",
                     "courses-for-organizers": "Курсы для организаторов"
                 },
                 "write-us": "Напишите нам",

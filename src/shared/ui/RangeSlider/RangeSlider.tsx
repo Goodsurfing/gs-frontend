@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import { Slider } from "@mui/material";
+import { Slider, styled } from "@mui/material";
 import { SliderProps } from "@mui/material/Slider";
 
 import { useFormatMonthDay } from "@/shared/utils/date/formatMonthDay";
@@ -18,6 +18,22 @@ type RangeSliderProps = {
     marks?: Mark[];
     onValueChange?: (value: number[]) => void;
 } & SliderProps;
+
+const CustomSlider = styled(Slider)({
+    "& .MuiSlider-thumb": {
+        color: "#3DABF7 !important",
+        "&:hover, &:focus, &.Mui-active": {
+            boxShadow: "0 0 0 8px rgba(61, 171, 247, 0.16)",
+        },
+    },
+    "& .MuiSlider-track": {
+        color: "#3DABF7 !important",
+        backgroundColor: "#3DABF7 !important",
+    },
+    "& .MuiSlider-rail": {
+        color: "#000000",
+    },
+});
 
 export const RangeSlider: FC<RangeSliderProps> = ({
     minDistanсe = 0,
@@ -46,7 +62,7 @@ export const RangeSlider: FC<RangeSliderProps> = ({
     );
 
     return (
-        <Slider
+        <CustomSlider
             getAriaLabel={() => "Minimum distance shift"}
             value={value}
             track={track}

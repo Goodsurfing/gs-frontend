@@ -14,12 +14,11 @@
 	background-position: center center;
 
 	background-size: cover;
+	transition: 0.3s ease;
 
 	// word-break: break-word;
 
 	&:hover {
-		transition: 0.3s ease;
-
 		opacity: 0.8;
 	}
 
@@ -27,5 +26,6 @@
 		color: var(--color-white);
 		hyphens: auto;
   		overflow-wrap: break-word;
+		width: 100%;
 	}
 }
