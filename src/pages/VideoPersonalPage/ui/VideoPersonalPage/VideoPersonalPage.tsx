@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { CommentWidget } from "@/widgets/Article";
@@ -19,12 +20,14 @@ import styles from "./VideoPersonalPage.module.scss";
 
 const VideoPersonalPage = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation();
+
     return (
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
                     breadcrumbs={[
-                        { name: "Видео", link: getVideoPageUrl(locale) },
+                        { name: t("Видео"), link: getVideoPageUrl(locale) },
                         { name: "Япония, которая взрывает мозг. Большой выпуск" },
                     ]}
                     className={styles.navigation}

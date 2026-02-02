@@ -231,5 +231,8 @@
     "Добавить сертификат": "Add certificate",
     "Отпусти файлы здесь": "Drop files here",
     "Файл больше 2MB": "File is larger than 2MB",
-    "Нельзя загрузить больше 10 файлов": "You cannot upload more than 10 files"
+    "Нельзя загрузить больше 10 файлов": "You cannot upload more than 10 files",
+    "Поделиться": "Share",
+    "комментариев": "comments",
+    "Написать комментарий": "Write a comment"
 }

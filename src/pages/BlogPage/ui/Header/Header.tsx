@@ -1,5 +1,6 @@
 import { FC, memo } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import styles from "./Header.module.scss";
 
 interface HeaderProps {
@@ -8,11 +9,12 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = memo((props: HeaderProps) => {
     const { className } = props;
+    const { t } = useTranslation("blog");
 
     return (
         <section className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>
-                Блог
+                {t("Блог")}
             </h1>
         </section>
     );

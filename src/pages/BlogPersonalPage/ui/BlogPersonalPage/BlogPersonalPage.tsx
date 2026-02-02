@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { CommentWidget } from "@/widgets/Article";
@@ -19,12 +20,14 @@ import styles from "./BlogPersonalPage.module.scss";
 
 const BlogPersonalPage = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation("blog");
+
     return (
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
                     breadcrumbs={[
-                        { name: "Блог", link: getBlogPageUrl(locale) },
+                        { name: t("Блог"), link: getBlogPageUrl(locale) },
                         { name: "Тестовая статья" },
                     ]}
                     className={styles.navigation}
