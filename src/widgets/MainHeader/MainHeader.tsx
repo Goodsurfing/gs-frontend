@@ -23,8 +23,8 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
-import styles from "./MainHeader.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();

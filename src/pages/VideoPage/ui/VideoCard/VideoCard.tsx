@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
-import ReactPlayer from "react-player";
 import { Video } from "@/entities/Article";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import like from "@/shared/assets/icons/thumbsUp.svg";
@@ -17,7 +16,7 @@ interface VideoCardProps {
 export const VideoCard: FC<VideoCardProps> = (props) => {
     const {
         video: {
-            url, likes, comments, date, title, tag,
+            likes, comments, date, title, tag,
         }, className,
     } = props;
     const { locale } = useLocale();
@@ -25,13 +24,11 @@ export const VideoCard: FC<VideoCardProps> = (props) => {
     return (
         <Link className={styles.link} to={`/${locale}/video/1`}>
             <div className={cn(className, styles.wrapper)}>
-                <ReactPlayer
-                    style={{ pointerEvents: "none" }}
-                    width={width <= 576 ? "100%" : "337px"}
-                    height="219px"
-                    url={url}
-                    light
-                    playing={false}
+                <img
+                    src="https://i.ytimg.com/vi/Gb0TQ7VeApY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCQZAQZ_x1AoU3fhm6fpD3uRiN6CA"
+                    className={styles.preview}
+                    style={{ width: width <= 576 ? "100%" : "337px", height: 190 }}
+                    alt="preview"
                 />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>

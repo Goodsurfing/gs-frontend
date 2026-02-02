@@ -95,8 +95,8 @@ export const mockedJournalsData: Journal[] = [
 export const mockedVideoData: Video[] = [
     {
         id: "1",
-        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
-        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        title: "Япония, которая взрывает мозг. Большой выпуск",
+        url: "https://www.youtube.com/watch?v=Gb0TQ7VeApY",
         comments: 5,
         likes: 0,
         tag: "хостелы",
@@ -104,8 +104,8 @@ export const mockedVideoData: Video[] = [
     },
     {
         id: "2",
-        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
-        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        title: "Япония, которая взрывает мозг. Большой выпуск",
+        url: "https://www.youtube.com/watch?v=Gb0TQ7VeApY",
         comments: 5,
         likes: 0,
         tag: "хостелы",
@@ -113,8 +113,8 @@ export const mockedVideoData: Video[] = [
     },
     {
         id: "3",
-        title: "Топки земли\". Фильм о природном парке \"Вулканы Камчатки",
-        url: "https://www.youtube.com/watch?v=ANzbvzojNjU",
+        title: "Япония, которая взрывает мозг. Большой выпуск",
+        url: "https://www.youtube.com/watch?v=Gb0TQ7VeApY",
         comments: 5,
         likes: 0,
         tag: "хостелы",

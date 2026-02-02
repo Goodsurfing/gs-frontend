@@ -23,21 +23,22 @@ const VideoPersonalPage = () => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
-                    mainLink={getVideoPageUrl(locale)}
-                    nameMain="Видео"
-                    nameArticle="Тестовая статья"
+                    breadcrumbs={[
+                        { name: "Видео", link: getVideoPageUrl(locale) },
+                        { name: "Япония, которая взрывает мозг. Большой выпуск" },
+                    ]}
                     className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
                     <ArticleHeader
                         className={styles.articleHeader}
-                        title="Тестовая статья"
+                        title="Япония, которая взрывает мозг. Большой выпуск"
                         authorAvatar={defaultImage}
                         authorName="Алексей Петров"
                         category="Категория"
                         date="17 мая 2017"
                     />
-                    <VideoContent className={styles.content} url="https://www.youtube.com/watch?v=ANzbvzojNjU" />
+                    <VideoContent className={styles.content} url="https://www.youtube.com/watch?v=Gb0TQ7VeApY" />
                     <ArticleShare className={styles.shareBlock} />
                 </div>
                 <div className={styles.commentWrapper}>

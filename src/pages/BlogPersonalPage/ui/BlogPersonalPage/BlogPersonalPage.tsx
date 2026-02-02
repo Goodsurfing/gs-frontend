@@ -23,9 +23,10 @@ const BlogPersonalPage = () => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
-                    mainLink={getBlogPageUrl(locale)}
-                    nameMain="Блог"
-                    nameArticle="Тестовая статья"
+                    breadcrumbs={[
+                        { name: "Блог", link: getBlogPageUrl(locale) },
+                        { name: "Тестовая статья" },
+                    ]}
                     className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
