@@ -20,9 +20,10 @@ const NewsPersonalPage = () => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
-                    mainLink={getNewsPageUrl(locale)}
-                    nameMain="Новости"
-                    nameArticle="Тестовая статья"
+                    breadcrumbs={[
+                        { name: "Новости", link: getNewsPageUrl(locale) },
+                        { name: "Тестовая статья" },
+                    ]}
                     className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>
