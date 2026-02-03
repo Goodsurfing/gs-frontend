@@ -5,6 +5,7 @@ import React, {
 
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import cn from "classnames";
 import {
     ProfileDeleteSwitch,
     ProfileHideSwitch,
@@ -23,7 +24,12 @@ import { userActions } from "@/entities/User";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import styles from "./ProfilePrivacy.module.scss";
 
-export const ProfilePrivacy: FC = memo(() => {
+interface ProfilePrivacyProps {
+    className?: string;
+}
+
+export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePrivacyProps) => {
+    const { className } = props;
     const { t } = useTranslation("profile");
     const { locale } = useLocale();
     const { myProfile, profileIsLoading } = useAuth();
@@ -113,7 +119,7 @@ export const ProfilePrivacy: FC = memo(() => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.container}>
                 <ProfileHideSwitch

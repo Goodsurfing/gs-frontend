@@ -4,8 +4,9 @@
 
 .title {
     color: var(--text-primary);
-    font-size: 26px;
-    margin-bottom: 40px;
+    font-size: 1.625rem;
+    font-weight: 400;
+    margin-bottom: 30px;
 }
 
 .description {
@@ -13,9 +14,13 @@
     font-size: 16px;
 }
 
+.widget {
+    margin-top: 30px;
+}
 
 @media (max-width: 992px) {
-    .title, .description {
+    .title,
+    .description {
         text-align: center;
     }
 }

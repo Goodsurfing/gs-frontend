@@ -91,7 +91,8 @@
         "Ошибка при изменении статуса активности профиля": "Error al cambiar el estado de actividad del perfil",
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": "¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
         "Удалить": "Borrar",
-        "Отмена": "Cancelar"
+        "Отмена": "Cancelar",
+        "Выберете настройки приватности": "Elija la configuración de privacidad"
     },
     "personal": {
         "Произошла ошибка": "Ocurrió un error",
@@ -130,6 +131,6 @@
         "Здесь будут размещены видео волонтера.": "Aquí se mostrarán los videos del voluntario.",
         "Добавленные видео": "Videos Subidos",
         "Профиль недоступен": "Perfil no disponible",
-         "Ещё": "Más"
+        "Ещё": "Más"
     }
 }

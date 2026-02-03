@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import cn from "classnames";
 import { ErrorType } from "@/types/api/error";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -23,7 +24,12 @@ import styles from "./ProfileRoleWidget.module.scss";
 import { useRoleData } from "./model/data/roleData";
 import { RoleInfo } from "./model/types/profileRoleWidget";
 
-export const ProfileRoleWidget: FC = () => {
+interface ProfileRoleWidgetProps {
+    className?: string;
+}
+
+export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
+    const { className } = props;
     const [searchParams] = useSearchParams();
     const next = searchParams.get("next");
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -131,7 +137,7 @@ export const ProfileRoleWidget: FC = () => {
         });
     };
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {renderRole(roleData)}
             <ConfirmActionModal

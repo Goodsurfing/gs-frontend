@@ -91,7 +91,8 @@
         "Ошибка при изменении статуса активности профиля": "Error changing profile activity status",
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": " Are you sure you want to delete your account? This action cannot be undone.",
         "Удалить": "Delete",
-        "Отмена": "Cancel"
+        "Отмена": "Cancel",
+        "Выберете настройки приватности": "Choose privacy settings"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",

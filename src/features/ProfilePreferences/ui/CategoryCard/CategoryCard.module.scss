@@ -18,7 +18,8 @@
     line-height: 23.4px;
     text-align: center;
     transition: transform 0.3s ease;
-    word-break: break-word;
+    hyphens: auto;
+    overflow-wrap: break-word;
 }
 
 .title.selected {
