@@ -21,7 +21,7 @@ export const VolunteerVideoGalleryCard: FC<VolunteerVideoGalleryCardProps> = mem
 
         return (
             <div id="5" className={cn(className, styles.wrapper)}>
-                <Text title={t("personal.Добавленные видео")} titleSize="h3" />
+                <Text title={t("personal.Видео")} titleSize="h3" />
                 {videoGallery ? (
                     <VideoGallery
                         videos={videoGallery}

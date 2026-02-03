@@ -115,113 +115,118 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                             {t("personal.У волонтера пока нет вакансий в которых он участвовал")}
                         </div>
                     )}
-                    <div
-                        className={styles.containerList}
-                        ref={scrollContainerRef}
-                        id="offers-scroll-container"
-                    >
-                        {(offersData.length <= 3 ? (
-                            <div className={styles.container}>
-                                {offersData.map((offer) => {
-                                    const {
-                                        id, description, where, acceptedApplicationsCount,
-                                        reviewsCount, averageRating,
-                                    } = offer;
-                                    const categoriesTemp = description
-                                        ? description.categories.map((cat) => cat.name) : [];
-                                    return (
-                                        <OfferCard
-                                            key={offer.id}
-                                            locale={locale}
-                                            status={offer.status === "active" ? "opened" : "closed"}
-                                            data={{
-                                                id,
-                                                title: description?.title,
-                                                shortDescription: description?.shortDescription,
-                                                imagePath: description?.image?.thumbnails?.medium,
-                                                address: where?.address,
-                                                categories: categoriesTemp,
-                                                acceptedApplicationsCount,
-                                                averageRating,
-                                                reviewsCount,
-                                            }}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <InfiniteScroll
-                                dataLength={offersData.length}
-                                next={loadMore}
-                                hasMore={hasMore}
-                                loader={
-                                    isPending ? (
-                                        <MiniLoader className={styles.loader} />
-                                    ) : null
-                                }
-                                scrollThreshold="70%"
-                                scrollableTarget="offers-scroll-container"
-                            >
-                                <div
-                                    style={{
-                                        height: rowVirtualizer.getTotalSize(),
-                                        position: "relative",
-                                    }}
+                    {(!loading && offersData.length === 0) && (
+                        <div
+                            className={styles.containerList}
+                            ref={scrollContainerRef}
+                            id="offers-scroll-container"
+                        >
+                            {(offersData.length <= 3 ? (
+                                <div className={styles.container}>
+                                    {offersData.map((offer) => {
+                                        const {
+                                            id, description, where, acceptedApplicationsCount,
+                                            reviewsCount, averageRating,
+                                        } = offer;
+                                        const categoriesTemp = description
+                                            ? description.categories.map((cat) => cat.name) : [];
+                                        return (
+                                            <OfferCard
+                                                key={offer.id}
+                                                locale={locale}
+                                                status={offer.status === "active" ? "opened" : "closed"}
+                                                data={{
+                                                    id,
+                                                    title: description?.title,
+                                                    shortDescription: description?.shortDescription,
+                                                    // eslint-disable-next-line max-len
+                                                    imagePath: description?.image?.thumbnails?.medium,
+                                                    address: where?.address,
+                                                    categories: categoriesTemp,
+                                                    acceptedApplicationsCount,
+                                                    averageRating,
+                                                    reviewsCount,
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <InfiniteScroll
+                                    dataLength={offersData.length}
+                                    next={loadMore}
+                                    hasMore={hasMore}
+                                    loader={
+                                        isPending ? (
+                                            <MiniLoader className={styles.loader} />
+                                        ) : null
+                                    }
+                                    scrollThreshold="70%"
+                                    scrollableTarget="offers-scroll-container"
                                 >
                                     <div
                                         style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            width: "100%",
-                                            transform: `translateY(${
-                                                virtualItems[0]?.start ?? 0
-                                            }px)`,
+                                            height: rowVirtualizer.getTotalSize(),
+                                            position: "relative",
                                         }}
                                     >
-                                        {virtualItems.map(({ index }) => {
-                                            const offer = offersData[index];
-                                            const {
-                                                id, description, where, acceptedApplicationsCount,
-                                                reviewsCount, averageRating,
-                                            } = offer;
-                                            const categoriesTemp = description
-                                                ? description.categories.map(
-                                                    (cat) => cat.name,
-                                                ) : [];
-                                            return (
-                                                <div
-                                                    key={index}
-                                                    ref={rowVirtualizer.measureElement}
-                                                    data-index={index}
-                                                >
-                                                    <OfferCard
-                                                        locale={locale}
-                                                        status={offer.status === "active" ? "opened" : "closed"}
-                                                        data={{
-                                                            id,
-                                                            title: description?.title,
-                                                            shortDescription:
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                left: 0,
+                                                width: "100%",
+                                                transform: `translateY(${
+                                                    virtualItems[0]?.start ?? 0
+                                                }px)`,
+                                            }}
+                                        >
+                                            {virtualItems.map(({ index }) => {
+                                                const offer = offersData[index];
+                                                const {
+                                                    id, description, where,
+                                                    acceptedApplicationsCount,
+                                                    reviewsCount, averageRating,
+                                                } = offer;
+                                                const categoriesTemp = description
+                                                    ? description.categories.map(
+                                                        (cat) => cat.name,
+                                                    ) : [];
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        ref={rowVirtualizer.measureElement}
+                                                        data-index={index}
+                                                    >
+                                                        <OfferCard
+                                                            locale={locale}
+                                                            status={offer.status === "active" ? "opened" : "closed"}
+                                                            data={{
+                                                                id,
+                                                                title: description?.title,
+                                                                shortDescription:
                                                             description?.shortDescription,
-                                                            imagePath: getMediaContent(
-                                                                description?.image?.contentUrl,
-                                                            ),
-                                                            address: where?.address,
-                                                            categories: categoriesTemp,
-                                                            acceptedApplicationsCount,
-                                                            averageRating,
-                                                            reviewsCount,
-                                                        }}
-                                                    />
-                                                </div>
-                                            );
-                                        })}
+                                                                imagePath: getMediaContent(
+                                                                    description?.image?.contentUrl,
+                                                                ),
+                                                                address: where?.address,
+                                                                categories: categoriesTemp,
+                                                                acceptedApplicationsCount,
+                                                                averageRating,
+                                                                reviewsCount,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            </InfiniteScroll>
-                        ))}
+                                </InfiniteScroll>
+                            ))}
 
-                    </div>
+                        </div>
+                    )}
+
                 </div>
             </div>
         );

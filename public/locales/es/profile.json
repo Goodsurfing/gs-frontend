@@ -115,6 +115,7 @@
         "Пользователь не указал дополнительные умения": "El usuario no ha especificado habilidades adicionales",
         "Языки не были указаны": "Los idiomas no han sido especificados",
         "У волонтера пока нет вакансий в которых он участвовал": "El voluntario aún no ha participado en ninguna vacante",
+        "Пока ещё никто не оставлял отзывов о гудсёрфере": "Aún no hay reseñas sobre el goodsurfer",
         "Волонтёр": "Voluntario",
         "Организатор": "Organizador",
         "Город": "Ciudad",
@@ -128,6 +129,7 @@
         "На данный момент отзывов нет.": "No hay reseñas en este momento.",
         "Здесь будут размещены видео волонтера.": "Aquí se mostrarán los videos del voluntario.",
         "Добавленные видео": "Videos Subidos",
-        "Профиль недоступен": "Perfil no disponible"
+        "Профиль недоступен": "Perfil no disponible",
+         "Ещё": "Más"
     }
 }

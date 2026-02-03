@@ -115,6 +115,7 @@
         "Пользователь не указал дополнительные умения": "The user has not listed any additional skills",
         "Языки не были указаны": "Languages have not been specified",
         "У волонтера пока нет вакансий в которых он участвовал": "The volunteer has not participated in any vacancies yet",
+        "Пока ещё никто не оставлял отзывов о гудсёрфере": "No one has left reviews about the goodsurfer yet",
         "Волонтёр": "Volunteer",
         "Организатор": "Organizer",
         "Город": "City",
@@ -128,6 +129,7 @@
         "На данный момент отзывов нет.": "There are no reviews at the moment.",
         "Здесь будут размещены видео волонтера.": "Volunteer videos will be displayed here.",
         "Добавленные видео": "Uploaded Videos",
-        "Профиль недоступен": "Profile unavailable"
+        "Профиль недоступен": "Profile unavailable",
+         "Ещё": "More"
     }
 }

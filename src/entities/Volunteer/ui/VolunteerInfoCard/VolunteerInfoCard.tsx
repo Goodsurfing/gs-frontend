@@ -71,6 +71,9 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                         className={styles.container}
                     />
                 )}
+                {hostData && (
+                    <VolunteerHostCard host={hostData} className={styles.container} />
+                )}
                 <VolunteerSkillsCard
                     skills={volunteer?.skills}
                     additionalSkills={volunteer?.additionalSkills}
@@ -116,9 +119,7 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                     articles={volunteer.articles}
                     className={styles.container}
                 /> */}
-                {hostData && (
-                    <VolunteerHostCard host={hostData} className={styles.container} />
-                )}
+
             </div>
         );
     },
