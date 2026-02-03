@@ -10,6 +10,10 @@ import {
     ProfileGender, ProfileLocale, ProfileContacts, ProfileAboutMe,
     ProfileSocial, ProfileDateOfBirth,
 } from "@/features/ProfileInfo";
+import {
+    Currency, ExtraConditions, ExtraFeatures, Facilities, OfferStatus, ReceptionPlace, TimeType,
+} from "@/entities/Offer";
+import { Language } from "@/types/languages";
 
 export interface Admin {
     token: string,
@@ -148,6 +152,18 @@ export enum AdminSort {
     AcceptApplicationDesc = "acceptApplication:desc",
     CanselApplicationAsc = "canselApplication:asc",
     CanselApplicationDesc = "canselApplication:desc",
+    VacancyIdAsc = "vacancy.id:asc",
+    VacancyIdDesc = "vacancy.id:desc",
+    VacancyNameAsc = "vacancy.name:asc",
+    VacancyNameDesc = "vacancy.name:desc",
+    VacancyStatusAsc = "vacancy.status:asc",
+    VacancyStatusDesc = "vacancy.status:desc",
+    CountApplicationAsc = "countApplication:asc",
+    CountApplicationDesc = "countApplication:desc",
+    CountAcceptedApplicationAsc = "countAcceptedApplication:asc",
+    CountAcceptedApplicationDesc = "countAcceptedApplication:desc",
+    CountCanceledApplicationAsc = "countCanceledApplication:asc",
+    CountCanceledApplicationDesc = "countCanceledApplication:desc",
 }
 
 export interface GetAdminUserParams {
@@ -235,7 +251,13 @@ export interface AdminOrganizationsFields {
 
 export interface CreateAdminSkillRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetPublicSkillRequest {
+    lang: Locale;
 }
 
 export interface EditAdminSkillRequest {
@@ -260,6 +282,8 @@ export interface GetAdminSkillsResponse {
 
 export interface CreateAdminAchievementsRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
 }
 
@@ -285,7 +309,13 @@ export interface GetAdminAchievementsResponse {
 
 export interface CreateAdminTransferRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetAdminTransferRequest {
+    lang: Locale;
 }
 
 export interface EditAdminTransferRequest {
@@ -307,7 +337,13 @@ export interface GetAdminTransfersResponse {
 
 export interface CreateAdminHouseRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
+}
+
+export interface GetHouseRequest {
+    lang: Locale;
 }
 
 export interface EditAdminHouseRequest {
@@ -329,6 +365,8 @@ export interface GetAdminHouseResponse {
 
 export interface CreateAdminFoodRequest {
     name: string;
+    nameEn: string;
+    nameEs: string;
     image: File;
 }
 
@@ -464,4 +502,138 @@ export interface GetAdminOffers {
 export interface GetAdminOffersRequest {
     data: GetAdminOffers[];
     pagination: Pagination;
+}
+
+export interface AdminVacancyWhere {
+    id: number;
+    address: string;
+    latitude: number;
+    longitude: number;
+}
+
+export type UpdateAdminVacancyWhere = Omit<AdminVacancyWhere, "id">;
+
+export interface UpdateAdminVacancyWhereRequest {
+    offerId: string;
+    body: UpdateAdminVacancyWhere;
+}
+
+export interface AdminVacancyWhen {
+    id: number;
+    applicationEndDate: string | null;
+    durationMaxDays: number | null;
+    durationMinDays: number | null;
+    isApplicableAtTheEnd: boolean | null;
+    isFullYearAcceptable: boolean | null;
+    periods: {
+        id: number | null;
+        start: string | null;
+        end: string | null;
+    }[]
+}
+
+export type UpdateAdminVacancyWhen = Omit<AdminVacancyWhen, "id">;
+
+export interface UpdateAdminVacancyWhenRequest {
+    offerId: string;
+    body: UpdateAdminVacancyWhen;
+}
+
+export interface AdminVacancyWhoNeeds {
+    id: number;
+    additionalInfo: string | null;
+    ageMax: number | null;
+    ageMin: number | null;
+    gender: Gender[];
+    needAllLanguages: boolean | null;
+    receptionPlace: ReceptionPlace | null;
+    languages: Language[];
+    volunteerPlaceCount: number | null;
+}
+
+export type UpdateAdminVacancyWhoNeeds = Omit<AdminVacancyWhoNeeds, "id">;
+
+export interface UpdateAdminVacancyWhoNeedsRequest {
+    offerId: string;
+    body: UpdateAdminVacancyWhoNeeds;
+}
+
+export interface AdminVacancyDescription {
+    id: number;
+    title: string | null;
+    shortDescription: string | null;
+    description: string | null;
+    image: Image;
+    galleryImages: Image[];
+    categoryIds: number[];
+}
+
+export interface UpdateAdminVacancyDescription {
+    title: string | null;
+    shortDescription: string | null;
+    description: string | null;
+    imageId: string | null;
+    categoryIds: number[];
+}
+
+export interface UpdateAdminVacancyDescriptionRequest {
+    offerId: string;
+    body: UpdateAdminVacancyDescription;
+}
+
+export interface AdminVacancyWhatToDo {
+    id: number;
+    externalInfo: string | null;
+    timeType: TimeType | null;
+    dayOff: number | null;
+    hour: number | null;
+    skillIds: number[];
+    additionalSkills: string[];
+}
+
+export type UpdateAdminVacancyWhatToDo = Omit<AdminVacancyWhatToDo, "id" | "hour"> & {
+    hours: number;
+};
+
+export interface UpdateAdminVacancyWhatToDoRequest {
+    offerId: string;
+    body: UpdateAdminVacancyWhatToDo;
+}
+
+export interface AdminVacancyConditions {
+    id: number;
+    additionalConditions: string | null;
+    currency: Currency | null;
+    volunteerContributions: number | null;
+    volunteerRemuneration: number | null;
+    additionalFeatures: ExtraFeatures[];
+    conveniences: Facilities[];
+    foodIds: number[];
+    houseIds: number[];
+    transferIds: number[];
+}
+
+export type UpdateAdminVacancyConditions = Omit<AdminVacancyConditions, "id">;
+
+export interface UpdateAdminVacancyConditionsRequest {
+    offerId: string;
+    body: UpdateAdminVacancyConditions;
+}
+
+export interface AdminVacancyFinishingTouches {
+    id: number;
+    helloText: string | null;
+    roles: string | null;
+    questionnaireUrl: string | null;
+    onlyVerified: boolean;
+    additionalConditions: ExtraConditions[];
+    questions: string[];
+    status: OfferStatus;
+}
+
+export type UpdateAdminVacancyFinishingTouches = Omit<AdminVacancyFinishingTouches, "id" | "status">;
+
+export interface UpdateAdminVacancyFinishingTouchesRequest {
+    offerId: string;
+    body: UpdateAdminVacancyFinishingTouches;
 }

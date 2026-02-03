@@ -12,6 +12,7 @@
         "Мы не постим ничего без вашего ведома": "We don't post anything without your knowledge",
         "Ошибка авторизации": "Authorization error",
         "Invalid password": "Invalid login or password",
+        "User not found": "User not found",
         "Данный пользователь уже существует": "This user already exists",
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": "To log in, you need to confirm your email address. Please check your inbox.",
         "Некорректно введены данные": "Incorrect data entered",
@@ -230,5 +231,8 @@
     "Добавить сертификат": "Add certificate",
     "Отпусти файлы здесь": "Drop files here",
     "Файл больше 2MB": "File is larger than 2MB",
-    "Нельзя загрузить больше 10 файлов": "You cannot upload more than 10 files"
+    "Нельзя загрузить больше 10 файлов": "You cannot upload more than 10 files",
+    "Поделиться": "Share",
+    "комментариев": "comments",
+    "Написать комментарий": "Write a comment"
 }

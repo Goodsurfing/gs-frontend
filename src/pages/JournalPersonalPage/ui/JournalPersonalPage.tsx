@@ -14,9 +14,10 @@ const JournalPersonalPage = () => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Navigation
-                    mainLink={getJournalsPageUrl(locale)}
-                    nameMain="Журнал"
-                    nameArticle="Тестовая статья"
+                    breadcrumbs={[
+                        { name: "Журнал", link: getJournalsPageUrl(locale) },
+                        { name: "Гудсерфер №18. Путешествия с пользой и польза для путешествий" },
+                    ]}
                     className={styles.navigation}
                 />
                 <div className={styles.articleWrapper}>

@@ -13,6 +13,7 @@ import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetProfileInfoQuery, useUpdateProfilePreferencesMutation } from "@/entities/Profile";
 import styles from "./ProfilePreferencesForm.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const defaultValues: DefaultValues<ProfilePreferencesField> = {
     favoriteCategories: [],
@@ -24,6 +25,7 @@ export const ProfilePreferencesForm = () => {
         defaultValues,
     });
     const { t } = useTranslation("profile");
+    const { locale } = useLocale();
 
     const [toast, setToast] = useState<ToastAlert>();
     const { data: profileData } = useGetProfileInfoQuery();
@@ -64,7 +66,7 @@ export const ProfilePreferencesForm = () => {
                 name="favoriteCategories"
                 control={control}
                 render={({ field }) => (
-                    <Activity value={field.value} onChange={field.onChange} />
+                    <Activity value={field.value} onChange={field.onChange} locale={locale} />
                 )}
             />
             <Button

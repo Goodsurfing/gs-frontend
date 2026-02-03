@@ -4,13 +4,12 @@ import { useTranslation } from "react-i18next";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-import { useConditionItems } from "../../model/data/conditionItems";
 import { HousingFields } from "../../model/types/offerConditions";
 import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { House } from "@/shared/data/conditions";
-import styles from "./ConditionsHousing.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./ConditionsHousing.module.scss";
 
 export interface ConditionsHousingProps {
     houseData: House[];
@@ -24,7 +23,6 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
         houseData, isLoading, onChange, value,
     } = props;
     const { t } = useTranslation("offer");
-    const { getTranslation } = useConditionItems();
 
     const onSwitchChange = useCallback(() => {
         const newSwitchState = !value.switchState;
@@ -73,7 +71,7 @@ export const ConditionsHousing = memo((props: ConditionsHousingProps) => {
                                 checked={value.housing.includes(item.id)}
                                 onToggle={() => onToggleCondition(item.id)}
                                 key={item.id}
-                                text={getTranslation(item.name) ?? ""}
+                                text={item.name}
                                 icon={getMediaContent(item.imagePath) ?? ""}
                             />
                         ))}

@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { AdminUserInfo, AdminUserSettings } from "@/features/Admin";
 import { useGetUserByIdQuery, UserInfoTable } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminPersonalUserInfoFormProps {
     userId: string;
@@ -10,6 +11,7 @@ interface AdminPersonalUserInfoFormProps {
 export const AdminPersonalUserInfoForm: FC<AdminPersonalUserInfoFormProps> = (props) => {
     const { userId } = props;
     const { data, isLoading } = useGetUserByIdQuery(userId);
+    const { locale } = useLocale();
 
     if (isLoading) {
         return (
@@ -27,7 +29,7 @@ export const AdminPersonalUserInfoForm: FC<AdminPersonalUserInfoFormProps> = (pr
 
     return (
         <div>
-            <AdminUserSettings data={data} userId={userId} />
+            <AdminUserSettings data={data} userId={userId} locale={locale} />
             <UserInfoTable data={data} userId={userId} />
             <AdminUserInfo data={data} userId={userId} />
         </div>

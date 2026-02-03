@@ -5,6 +5,13 @@ import {
     AdminReviewVacancy,
     AdminReviewVolunteer,
     AdminUser,
+    AdminVacancyConditions,
+    AdminVacancyDescription,
+    AdminVacancyFinishingTouches,
+    AdminVacancyWhatToDo,
+    AdminVacancyWhen,
+    AdminVacancyWhere,
+    AdminVacancyWhoNeeds,
     CreateAdminAchievementsRequest,
     CreateAdminFoodRequest,
     CreateAdminHouseRequest,
@@ -23,23 +30,37 @@ import {
     GetAdminReviewVolunteerListParams,
     GetAdminReviewVolunteerListResponse,
     GetAdminSkillsParams, GetAdminSkillsResponse,
+    GetAdminTransferRequest,
     GetAdminTransfersParams,
     GetAdminTransfersResponse,
     GetAdminUserParams,
     GetAdminUserResponse,
+    GetHouseRequest,
+    GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
+    UpdateAdminVacancyConditionsRequest,
+    UpdateAdminVacancyDescriptionRequest,
+    UpdateAdminVacancyFinishingTouchesRequest,
+    UpdateAdminVacancyWhatToDoRequest,
+    UpdateAdminVacancyWhenRequest,
+    UpdateAdminVacancyWhereRequest,
+    UpdateAdminVacancyWhoNeedsRequest,
 } from "../model/types/adminSchema";
 import {
-    Category, CategoryCountVacancy, CreateCategoryParams, GetCategoryResponse, UpdateCategoryParams,
+    CategoryCountVacancy, CreateCategoryParams, GetCategory,
+    GetCategoryRequest, GetCategoryResponse, UpdateCategoryParams,
 } from "@/types/categories";
 import { PaginationParams } from "@/types/api/pagination";
-import { Skill } from "@/types/skills";
-import { Achievement } from "@/types/achievements";
-import { Food, House, Transfer } from "@/shared/data/conditions";
+import { GetSkillRequest, Skill } from "@/types/skills";
+import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
+import {
+    Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
+} from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
 
 interface GoodsurfingToday {
     volunteerCount: number;
@@ -57,9 +78,13 @@ export const adminApi = createApi({
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "skill/create",
@@ -71,9 +96,13 @@ export const adminApi = createApi({
         }),
         editSkill: build.mutation<void, EditAdminSkillRequest>({
             query: ({ skillId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -92,10 +121,11 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["skill"],
         }),
-        getPublicSkills: build.query<Skill[], void>({
-            query: () => ({
+        getPublicSkills: build.query<Skill[], GetPublicSkillRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}skill/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["skill"],
         }),
@@ -107,7 +137,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["skill"],
         }),
-        getSkillById: build.query<Skill, number>({
+        getSkillById: build.query<GetSkillRequest, number>({
             query: (skillId) => ({
                 url: `skill/${skillId}`,
                 method: "GET",
@@ -116,9 +146,13 @@ export const adminApi = createApi({
         }),
         createAchievement: build.mutation<void, CreateAdminAchievementsRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "achievement/create",
@@ -130,9 +164,13 @@ export const adminApi = createApi({
         }),
         editAchievement: build.mutation<void, EditAdminAchievementsRequest>({
             query: ({ achievementId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -152,10 +190,11 @@ export const adminApi = createApi({
             invalidatesTags: ["achievement"],
         }),
         getPublicAchievements: build.query<Achievement[],
-        void>({
-            query: () => ({
+        GetAchievementRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}achievement/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["achievement"],
         }),
@@ -168,7 +207,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["achievement"],
         }),
-        getAchievementById: build.query<Achievement, number>({
+        getAchievementById: build.query<GetAchievement, number>({
             query: (achievementId) => ({
                 url: `achievement/${achievementId}`,
                 method: "GET",
@@ -177,9 +216,13 @@ export const adminApi = createApi({
         }),
         createTransfer: build.mutation<void, CreateAdminTransferRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "transfer/create",
@@ -191,9 +234,13 @@ export const adminApi = createApi({
         }),
         editTransfer: build.mutation<void, EditAdminTransferRequest>({
             query: ({ transferId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -213,10 +260,11 @@ export const adminApi = createApi({
             invalidatesTags: ["transfer"],
         }),
         getPublicTransfers: build.query<Transfer[],
-        void>({
-            query: () => ({
+        GetAdminTransferRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}transfer/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["transfer"],
         }),
@@ -229,7 +277,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["transfer"],
         }),
-        getTransfertById: build.query<Transfer, number>({
+        getTransfertById: build.query<GetTransfer, number>({
             query: (transferId) => ({
                 url: `transfer/${transferId}`,
                 method: "GET",
@@ -238,9 +286,13 @@ export const adminApi = createApi({
         }),
         createHouse: build.mutation<void, CreateAdminHouseRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "house/create",
@@ -252,9 +304,13 @@ export const adminApi = createApi({
         }),
         editHouse: build.mutation<void, EditAdminHouseRequest>({
             query: ({ houseId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -274,10 +330,11 @@ export const adminApi = createApi({
             invalidatesTags: ["house"],
         }),
         getPublicHouses: build.query<House[],
-        void>({
-            query: () => ({
+        GetHouseRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}house/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["house"],
         }),
@@ -290,7 +347,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["house"],
         }),
-        getHouseById: build.query<House, number>({
+        getHouseById: build.query<GetHouse, number>({
             query: (houseId) => ({
                 url: `house/${houseId}`,
                 method: "GET",
@@ -299,9 +356,13 @@ export const adminApi = createApi({
         }),
         createFood: build.mutation<void, CreateAdminFoodRequest>({
             query: (body) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("image", image);
                 return {
                     url: "food/create",
@@ -313,9 +374,13 @@ export const adminApi = createApi({
         }),
         editFood: build.mutation<void, EditAdminFoodRequest>({
             query: ({ foodId, body }) => {
-                const { name, image } = body;
+                const {
+                    name, nameEn, nameEs, image,
+                } = body;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 if (image instanceof File) {
                     formData.append("image", image);
                 }
@@ -335,10 +400,11 @@ export const adminApi = createApi({
             invalidatesTags: ["food"],
         }),
         getPublicFoods: build.query<Food[],
-        void>({
-            query: () => ({
+        GetFoodRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}food/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["food"],
         }),
@@ -351,7 +417,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["food"],
         }),
-        getFoodById: build.query<Food, number>({
+        getFoodById: build.query<GetFood, number>({
             query: (foodId) => ({
                 url: `food/${foodId}`,
                 method: "GET",
@@ -523,9 +589,10 @@ export const adminApi = createApi({
         }),
         getAdminOffers: build.query<GetAdminOffersRequest,
         GetAdminOffersParams>({
-            query: () => ({
+            query: (params) => ({
                 url: "vacancy/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["offer"],
         }),
@@ -537,9 +604,13 @@ export const adminApi = createApi({
             invalidatesTags: ["offer"],
         }),
         createCategoryVacancy: build.mutation<void, CreateCategoryParams>({
-            query: ({ name, color, image }) => {
+            query: ({
+                name, nameEn, nameEs, color, image,
+            }) => {
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("color", color);
                 formData.append("image", image);
 
@@ -553,9 +624,13 @@ export const adminApi = createApi({
         }),
         editCategoryVacancy: build.mutation<void, UpdateCategoryParams>({
             query: ({ id, data }) => {
-                const { name, color, image } = data;
+                const {
+                    name, nameEn, nameEs, color, image,
+                } = data;
                 const formData = new FormData();
                 formData.append("name", name);
+                formData.append("nameEn", nameEn);
+                formData.append("nameEs", nameEs);
                 formData.append("color", color);
                 if (image instanceof File) {
                     formData.append("image", image);
@@ -584,7 +659,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
-        getCategoryVacancyById: build.query<Category,
+        getCategoryVacancyById: build.query<GetCategory,
         number>({
             query: (id) => ({
                 url: `category/${id}`,
@@ -593,10 +668,11 @@ export const adminApi = createApi({
             providesTags: ["category"],
         }),
         getPublicCategoriesVacancy: build.query<CategoryCountVacancy[],
-        void>({
-            query: () => ({
+        GetCategoryRequest>({
+            query: (params) => ({
                 url: `${API_BASE_URL_V3}category/list`,
                 method: "GET",
+                params,
             }),
             providesTags: ["category"],
         }),
@@ -607,7 +683,129 @@ export const adminApi = createApi({
                 method: "GET",
             }),
         }),
-
+        getAdminVacancyWhere: build.query<AdminVacancyWhere, string>({
+            query: (offerId) => ({
+                url: `vacancy/address/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyWhere: build.mutation<void, UpdateAdminVacancyWhereRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/address/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhen: build.query<AdminVacancyWhen, string>({
+            query: (offerId) => ({
+                url: `vacancy/when/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyWhen: build.mutation<void, UpdateAdminVacancyWhenRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/when/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhoNeeds: build.query<AdminVacancyWhoNeeds, string>({
+            query: (offerId) => ({
+                url: `vacancy/how-need/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/how-need/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyDescription: build.query<AdminVacancyDescription, string>({
+            query: (offerId) => ({
+                url: `vacancy/description/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyDescription: build.mutation<void, UpdateAdminVacancyDescriptionRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/description/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateAdminVacancyImageGallery: build.mutation<void, UpdateOfferImageGallery>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/image-gallery/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyWhatToDo: build.query<AdminVacancyWhatToDo, string>({
+            query: (offerId) => ({
+                url: `vacancy/what-to-do/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyWhatToDo: build.mutation<void, UpdateAdminVacancyWhatToDoRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/what-to-do/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyConditions: build.query<AdminVacancyConditions, string>({
+            query: (offerId) => ({
+                url: `vacancy/condition/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyConditions: build.mutation<void, UpdateAdminVacancyConditionsRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/condition/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        getAdminVacancyFinishingTouches: build.query<AdminVacancyFinishingTouches, string>({
+            query: (offerId) => ({
+                url: `vacancy/finish-touche/${offerId}`,
+                method: "GET",
+            }),
+            providesTags: ["offer"],
+        }),
+        updateAdminVacancyFinishingTouches: build.mutation<void,
+        UpdateAdminVacancyFinishingTouchesRequest>({
+            query: ({ offerId, body }) => ({
+                url: `vacancy/finish-touche/${offerId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["offer"],
+        }),
+        updateAdminVacancyStatus: build.mutation<UpdateOfferStatusResponse,
+        UpdateOfferStatusRequest>({
+            query: (data) => ({
+                url: `vacancy/toggle-status/${data.id}`,
+                method: "PATCH",
+                body: { status: data.status },
+            }),
+            invalidatesTags: ["offer"],
+        }),
     }),
 });
 
@@ -679,4 +877,20 @@ export const {
     useGetAdminReviewVolunteerByIdQuery,
     useLazyGetAdminOffersQuery,
     useDeleteAdminOfferMutation,
+    useGetAdminVacancyWhereQuery,
+    useUpdateAdminVacancyWhereMutation,
+    useGetAdminVacancyWhenQuery,
+    useUpdateAdminVacancyWhenMutation,
+    useGetAdminVacancyWhoNeedsQuery,
+    useUpdateAdminVacancyWhoNeedsMutation,
+    useGetAdminVacancyConditionsQuery,
+    useGetAdminVacancyDescriptionQuery,
+    useGetAdminVacancyWhatToDoQuery,
+    useGetAdminVacancyFinishingTouchesQuery,
+    useUpdateAdminVacancyConditionsMutation,
+    useUpdateAdminVacancyDescriptionMutation,
+    useUpdateAdminVacancyWhatToDoMutation,
+    useUpdateAdminVacancyFinishingTouchesMutation,
+    useUpdateAdminVacancyImageGalleryMutation,
+    useUpdateAdminVacancyStatusMutation,
 } = adminApi;

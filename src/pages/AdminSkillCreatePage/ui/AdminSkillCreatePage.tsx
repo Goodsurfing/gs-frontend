@@ -21,11 +21,15 @@ const AdminSkillCreatePage = () => {
 
     const onSubmit = async (data: AdminSkillFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         try {
             if (imagePath instanceof File) {
                 await createCategory({
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 }).unwrap();
                 onSuccess();

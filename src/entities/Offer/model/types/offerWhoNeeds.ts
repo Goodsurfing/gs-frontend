@@ -5,8 +5,8 @@ export type Gender = "female" | "male" | "other";
 export type ReceptionPlace = "any" | "foreigners" | "compatriot";
 
 export interface Age {
-    minAge: number;
-    maxAge: number;
+    minAge: number | null;
+    maxAge: number | null;
 }
 
 export interface OfferWhoNeeds {

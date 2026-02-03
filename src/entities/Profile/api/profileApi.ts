@@ -136,9 +136,9 @@ export const profileApi = createApi({
             }),
             invalidatesTags: ["profile"],
         }),
-        deleteProfile: build.mutation<void, string>({
-            query: (profileId) => ({
-                url: `${API_BASE_URL_V3}profile/${profileId}`,
+        deleteProfile: build.mutation<void, void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}profile/delete`,
                 method: "DELETE",
             }),
             invalidatesTags: ["profile"],

@@ -21,11 +21,15 @@ const AdminCategoriesCreatePage = () => {
 
     const onSubmit = async (data: AdminCategoryFields) => {
         setToast(undefined);
-        const { name, color, imagePath } = data;
+        const {
+            name, nameEn, nameEs, color, imagePath,
+        } = data;
         try {
             if (imagePath instanceof File) {
                 await createCategory({
                     name,
+                    nameEn,
+                    nameEs,
                     color,
                     image: imagePath,
                 }).unwrap();

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { AdminSkillFields, AdminSkillForm } from "@/features/Admin";
+import { AdminHouseFields, AdminHouseForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useEditHouseMutation, useGetHouseByIdQuery } from "@/entities/Admin";
@@ -20,15 +20,19 @@ export const AdminHouseInfo: FC<AdminHouseInfoProps> = (props) => {
     const [toast, setToast] = useState<ToastAlert>();
     const { locale } = useLocale();
 
-    const onSubmit = async (data: AdminSkillFields) => {
+    const onSubmit = async (data: AdminHouseFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateHouse({
                 houseId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();
@@ -67,8 +71,8 @@ export const AdminHouseInfo: FC<AdminHouseInfoProps> = (props) => {
             <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
                 { label: "Редактирование жилья" }]}
             />
-            <AdminSkillForm
-                skill={houseData}
+            <AdminHouseForm
+                house={houseData}
                 onSubmit={onSubmit}
                 isLoading={isUpdateLoading}
             />

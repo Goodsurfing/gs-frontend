@@ -1,3 +1,4 @@
+import { Locale } from "@/entities/Locale";
 import { Pagination } from "../api/pagination";
 import { Image } from "../media";
 
@@ -27,6 +28,15 @@ export interface Category {
     imagePath: string;
 }
 
+export type GetCategory = Category & {
+    nameEn: string;
+    nameEs: string;
+};
+
+export interface GetCategoryRequest {
+    lang: Locale;
+}
+
 export type CategoryCountVacancy = Category & {
     vacancyCount: number;
 };
@@ -36,6 +46,8 @@ export type CategoryImageObject = Omit<Category, "imagePath"> & {
 };
 export interface CreateCategoryParams {
     name: string;
+    nameEn: string;
+    nameEs: string;
     color: string;
     image: File;
 }

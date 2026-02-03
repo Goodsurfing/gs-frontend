@@ -11,6 +11,11 @@ export interface Skill {
     imagePath: string;
 }
 
+export type GetSkillRequest = Skill & {
+    nameEn: string;
+    nameEs: string;
+};
+
 export type GetSkill = Omit<Skill, "imagePath"> & {
     image: Image;
 };

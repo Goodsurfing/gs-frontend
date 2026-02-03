@@ -20,11 +20,15 @@ const AdminFoodCreatePage = () => {
 
     const onSubmit = async (data: AdminFoodFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         try {
             if (imagePath instanceof File) {
                 await createFood({
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 }).unwrap();
                 onSuccess();

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { AdminSkillFields, AdminSkillForm } from "@/features/Admin";
+import { AdminFoodFields, AdminFoodForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useEditFoodMutation, useGetFoodByIdQuery } from "@/entities/Admin";
@@ -20,15 +20,19 @@ export const AdminFoodInfo: FC<AdminFoodInfoProps> = (props) => {
     const [toast, setToast] = useState<ToastAlert>();
     const { locale } = useLocale();
 
-    const onSubmit = async (data: AdminSkillFields) => {
+    const onSubmit = async (data: AdminFoodFields) => {
         setToast(undefined);
-        const { name, imagePath } = data;
+        const {
+            name, nameEn, nameEs, imagePath,
+        } = data;
         if (!imagePath) return;
         try {
             await updateFood({
                 foodId,
                 body: {
                     name,
+                    nameEn,
+                    nameEs,
                     image: imagePath,
                 },
             }).unwrap();
@@ -67,8 +71,8 @@ export const AdminFoodInfo: FC<AdminFoodInfoProps> = (props) => {
             <Breadcrumbs items={[{ label: "Условия для вакансий", to: getAdminConditionsVacanciesPageUrl(locale) },
                 { label: "Редактирование питания" }]}
             />
-            <AdminSkillForm
-                skill={foodData}
+            <AdminFoodForm
+                food={foodData}
                 onSubmit={onSubmit}
                 isLoading={isUpdateLoading}
             />

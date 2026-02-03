@@ -25,7 +25,7 @@ interface UpdateOfferParams {
     body: Partial<UpdateOldOffer>;
 }
 
-interface UpdateOfferImageGallery {
+export interface UpdateOfferImageGallery {
     offerId: number;
     body: {
         galleryImageIds: string[];
@@ -36,12 +36,12 @@ interface CreateOfferResponse {
     id: number;
 }
 
-interface UpdateOfferStatusRequest {
+export interface UpdateOfferStatusRequest {
     id: string;
     status: OfferStatus;
 }
 
-interface UpdateOfferStatusResponse {
+export interface UpdateOfferStatusResponse {
     status: OfferStatus;
 }
 
@@ -119,7 +119,7 @@ export const offerApi = createApi({
                 headers: {
                     // "Content-Type": "application/merge-patch+json",
                 },
-                body: JSON.stringify({ status: data.status }),
+                body: { status: data.status },
             }),
             invalidatesTags: ["offer"],
         }),

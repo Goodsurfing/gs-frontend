@@ -1,7 +1,6 @@
 import { memo, useCallback } from "react";
 
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
-import { useSkillsData } from "@/shared/data/skills";
 
 import { Skill } from "@/types/skills";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -17,8 +16,6 @@ interface Props {
 export const Skills = memo(({
     className, onChange, value = [], skills,
 }: Props) => {
-    const { getTranslation } = useSkillsData();
-
     const handleIconStateChange = useCallback((skill: Skill) => {
         const isActive = value.find((item) => item === skill.id);
         if (isActive) {
@@ -40,7 +37,7 @@ export const Skills = memo(({
                     activeClassName={styles.active}
                     key={skill.id}
                     size="large"
-                    text={getTranslation(skill.name)}
+                    text={skill.name}
                     icon={getMediaContent(skill.imagePath) ?? ""}
                     checked={!!value.find((item) => item === skill.id)}
                     onClick={() => handleIconStateChange(skill)}
