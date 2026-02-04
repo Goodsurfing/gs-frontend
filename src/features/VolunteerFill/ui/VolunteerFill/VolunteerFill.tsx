@@ -39,7 +39,7 @@ export const VolunteerFill = memo((props: VolunteerFillProps) => {
             completed: isSkills,
         },
         {
-            text: "Фотографии",
+            text: "Фото",
             completed: isGallery,
         },
         {

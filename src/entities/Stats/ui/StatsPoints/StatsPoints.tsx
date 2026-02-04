@@ -19,11 +19,11 @@ export const StatsPoints = memo((props: StatsPointsProps) => {
 
     const transalteLib: Record<string, string> = {
         Описание: t("stats-points.Описание"),
-        Предложения: t("stats-points.Предложения"),
+        Вакансии: t("stats-points.Предложения"),
         "О себе": t("stats-points.О себе"),
         Отзывы: t("stats-points.Отзывы"),
         Навыки: t("stats-points.Навыки"),
-        Фотографии: t("stats-points.Фотографии"),
+        Фото: t("stats-points.Фотографии"),
         Видео: t("stats-points.Видео"),
         "Публикации в блоге": t("stats-points.Публикации в блоге"),
         Членство: t("stats-points.Членство"),

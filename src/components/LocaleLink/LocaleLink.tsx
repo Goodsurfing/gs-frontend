@@ -8,6 +8,7 @@ interface LocaleLinkProps {
     className?: string;
     replace?: boolean;
     onClick?: MouseEventHandler<HTMLAnchorElement>
+    target?: string;
 }
 
 const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
@@ -16,12 +17,14 @@ const LocaleLink: FC<PropsWithChildren<LocaleLinkProps>> = ({
     className,
     children,
     onClick,
+    target,
 }) => (
     <Link
         onClick={onClick}
         replace={replace}
         className={cn(styles.link, className)}
         to={to}
+        target={target}
     >
         {children}
     </Link>

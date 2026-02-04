@@ -20,7 +20,8 @@ export const GoodsurfingTeam: FC<GoodsurfingTeamProps> = memo((props: Goodsurfin
                 image={item.image}
                 name={item.name}
                 description={item.description}
-                address={item.description}
+                vk={item.vk}
+                telegram={item.telegram}
                 key={index}
             />
         )),

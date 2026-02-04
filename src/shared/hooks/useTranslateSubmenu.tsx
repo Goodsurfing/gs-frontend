@@ -9,20 +9,20 @@ export const useTranslateSubmenu = () => {
             id: "description",
         },
         {
-            text: t("personalOffer.Организация", "Организация"),
-            id: "organization",
-        },
-        {
-            text: t("personalOffer.Фото", "Фото"),
-            id: "gallery",
-        },
-        {
             text: t("personalOffer.Что делать", "Что делать"),
             id: "whatToDo",
         },
         {
             text: t("personalOffer.Условия", "Условия"),
             id: "terms",
+        },
+        {
+            text: t("personalOffer.Фото", "Фото"),
+            id: "gallery",
+        },
+        {
+            text: t("personalOffer.Организация", "Организация"),
+            id: "organization",
         },
         {
             text: t("personalOffer.Участники", "Участники"),

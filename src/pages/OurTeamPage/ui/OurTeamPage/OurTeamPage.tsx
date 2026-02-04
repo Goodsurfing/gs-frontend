@@ -10,12 +10,9 @@ import { GoodsurfingTeam } from "../GoodsurfingTeam/GoodsurfingTeam";
 import { Header } from "../Header/Header";
 import styles from "./OurTeamPage.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { getProfilePageUrl } from "@/shared/config/routes/AppUrls";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 const OurTeamPage = () => {
     const { t } = useTranslation("our-team");
-    const { locale } = useLocale();
 
     return (
         <MainPageLayout>
@@ -26,12 +23,10 @@ const OurTeamPage = () => {
                     <GoodsurfingTeam />
                     <ButtonLink
                         className={styles.button}
-                        path={getProfilePageUrl(locale)}
+                        path="https://forms.yandex.ru/u/696e118d84227c5fcdfb5933/"
                         type="primary"
                         size="MEDIUM"
-                        // size="MEDIUM"
-                        // color="BLUE"
-                        // variant="FILL"
+                        target="_blank"
                     >
                         {t("Хочу в команду")}
                     </ButtonLink>

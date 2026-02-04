@@ -14,7 +14,7 @@ export const Title: FC<TitleProps> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <h1 className={styles.title}>{t("hostReviews.Отзывы")}</h1>
+            <h2 className={styles.title}>{t("hostReviews.Отзывы")}</h2>
             {rating && (
                 <div className={styles.ratingWrapper}>
                     <span className={styles.ratingText}>{t("hostReviews.Ваш рейтинг")}</span>

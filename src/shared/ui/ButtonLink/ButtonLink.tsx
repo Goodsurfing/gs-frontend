@@ -11,6 +11,7 @@ export interface ButtonLinkProps {
     path: string;
     className?: string;
     onClick?: MouseEventHandler<HTMLAnchorElement>
+    target?: string;
 }
 
 const ButtonLink = memo(({
@@ -20,6 +21,7 @@ const ButtonLink = memo(({
     className,
     children,
     onClick,
+    target,
 }: PropsWithChildren<ButtonLinkProps>) => (
     <LocaleLink
         onClick={onClick}
@@ -35,6 +37,7 @@ const ButtonLink = memo(({
                 // [styles[size]]: size,
             },
         )}
+        target={target}
     >
         {children}
     </LocaleLink>

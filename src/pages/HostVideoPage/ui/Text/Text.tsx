@@ -7,9 +7,9 @@ export const Text = memo(() => {
     const { t } = useTranslation("host");
     return (
         <div>
-            <h4 className={styles.title}>
+            <h2 className={styles.title}>
                 {t("hostVideo.Видеогалерея организации")}
-            </h4>
+            </h2>
             <p className={styles.description}>
                 {t("hostVideo.Добавьте ссылки на видеоролики с Youtube или Vimeo")}
             </p>

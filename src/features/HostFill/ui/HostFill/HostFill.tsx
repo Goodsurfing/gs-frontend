@@ -45,22 +45,27 @@ export const HostFill = memo((props: HostFillProps) => {
     }
 
     // todo no backend here
-    const pointsData: StatsChartPoints[] = [{
-        text: "Описание",
-        completed: isDescirption,
-    }, {
-        text: "Фотографии",
-        completed: isGallery,
-    }, {
-        text: "Видео",
-        completed: isVideoGallery,
-    }, {
-        text: "Предложения",
-        completed: isOffers,
-    }, {
-        text: "Отзывы",
-        completed: isReviews,
-    }];
+    const pointsData: StatsChartPoints[] = [
+        {
+            text: "Описание",
+            completed: isDescirption,
+        },
+        {
+            text: "Вакансии",
+            completed: isOffers,
+        },
+        {
+            text: "Фото",
+            completed: isGallery,
+        },
+        {
+            text: "Видео",
+            completed: isVideoGallery,
+        },
+        {
+            text: "Отзывы",
+            completed: isReviews,
+        }];
 
     return (
         <div className={cn(styles.wrapper, className)}>

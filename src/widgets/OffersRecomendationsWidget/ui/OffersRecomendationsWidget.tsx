@@ -86,7 +86,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                 <div className={styles.top}>
                     <h3>
                         {t(
-                            "volunteer-dashboard.Возможности, которые вам понравятся",
+                            "volunteer-dashboard.Вакансии, которые вам понравятся",
                         )}
                     </h3>
                     <Link

@@ -26,20 +26,26 @@ export const TeamItem: FC<TeamItemProps> = memo((props: TeamItemProps) => {
                 <span className={styles.name}>{name}</span>
                 <span className={styles.description}>{description}</span>
                 {address && <span className={styles.address}>{address}</span>}
-                {(vk && telegram) && (
-                    <div className={styles.icons}>
-                        <IconComponent
-                            icon={vkIcon}
-                            alt="vkontakte"
-                            className={styles.vk}
-                        />
-                        <IconComponent
-                            icon={telegramIcon}
-                            alt="telegram"
-                            className={styles.telegram}
-                        />
-                    </div>
-                )}
+                <div className={styles.icons}>
+                    {vk && (
+                        <a href={vk} target="_blank" rel="noreferrer">
+                            <IconComponent
+                                icon={vkIcon}
+                                alt="vkontakte"
+                                className={styles.vk}
+                            />
+                        </a>
+                    )}
+                    {telegram && (
+                        <a href={telegram} target="_blank" rel="noreferrer">
+                            <IconComponent
+                                icon={telegramIcon}
+                                alt="telegram"
+                                className={styles.telegram}
+                            />
+                        </a>
+                    )}
+                </div>
             </div>
         </div>
     );

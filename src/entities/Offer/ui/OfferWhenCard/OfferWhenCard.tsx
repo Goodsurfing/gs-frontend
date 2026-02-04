@@ -47,7 +47,7 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     const renderPeriods = isHavePeriods ? renderItemPeriods : emptyMessage;
 
     return (
-        <div className={cn(className)}>
+        <div className={cn(className)} id="description">
             <InfoCard>
                 <InfoCardItem
                     className={styles.left}
