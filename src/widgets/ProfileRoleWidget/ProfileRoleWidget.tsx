@@ -74,6 +74,10 @@ export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
         }
     };
 
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
     const handleConfirmClick = async () => {
         if (selectedRole === "volunteer") {
             // Crutch on backend
@@ -101,19 +105,18 @@ export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
                     }, 3000);
                 })
                 .catch((error: ErrorType) => {
-                    setModalOpen(false);
+                    handleModalClose();
                     setToast({
                         text: getErrorText(error),
                         type: HintType.Error,
                     });
                 });
         } else {
-            navigate(getHostRegisterPageUrl(locale));
+            handleModalClose();
+            setTimeout(() => {
+                navigate(getHostRegisterPageUrl(locale));
+            }, 0);
         }
-    };
-
-    const handleModalClose = () => {
-        setModalOpen(false);
     };
 
     const renderRole = (rolesProfile: RoleInfo[]) => {
