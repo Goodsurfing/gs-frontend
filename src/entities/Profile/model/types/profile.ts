@@ -1,5 +1,5 @@
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import { Achievement } from "@/types/achievements";
+import { Achievement, AchievementWithImage } from "@/types/achievements";
 import { Language } from "@/types/languages";
 import { Image } from "@/types/media";
 import { GetSkill } from "@/types/skills";
@@ -49,7 +49,7 @@ export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "
     volunteer: {
         externalInfo: string | null;
         skills: GetSkill[];
-        achievements: Achievement[];
+        achievements: AchievementWithImage[];
         additionalSkills: string[];
         languages: Language[];
         certificates: string[];

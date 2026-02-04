@@ -20,7 +20,7 @@ const BecomeHostContainer: FC = () => {
                 {t("Получайте помощь")}
             </p>
             <ButtonLink path={getBecomeHostPageUrl(locale)} type="primary">
-                {t("Стать хостом")}
+                {t("Стать организатором")}
             </ButtonLink>
         </div>
     );

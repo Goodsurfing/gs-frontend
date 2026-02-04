@@ -1,0 +1,62 @@
+.modalWrapper {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.wrapper {
+    background-color: #fff;
+    border-radius: 10px;
+    gap: 30px;
+    padding: 25px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+
+    &.active {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    gap: 10px;
+}
+
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 70px;
+    text-align: center;
+    width: 100%;
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.medal span {
+    margin-top: 5px;
+}
+
+.medalIcon {
+    width: 32px;
+}
+
+.medalContainer {
+    display: flex;
+    gap: 8px;
+}

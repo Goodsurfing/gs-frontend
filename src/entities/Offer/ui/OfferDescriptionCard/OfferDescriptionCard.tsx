@@ -17,7 +17,7 @@ export const OfferDescriptionCard: FC<OfferDescriptionCardProps> = memo(
         const { t } = useTranslation("offer");
 
         return (
-            <div className={cn(className, styles.wrapper)} id="description">
+            <div className={cn(className, styles.wrapper)}>
                 <div className={styles.container}>
                     <Text title={t("personalOffer.Описание")} titleSize="h3" />
                     <p className={styles.description}>

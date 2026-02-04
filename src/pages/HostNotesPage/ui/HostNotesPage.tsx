@@ -19,7 +19,7 @@ const HostNotesPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h1>{t("hostNotes.Мои заявки")}</h1>
+            <h2>{t("hostNotes.Мои заявки")}</h2>
             <NotesHostForm />
         </div>
     );

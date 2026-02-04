@@ -26,7 +26,8 @@
     flex-direction: column;
 }
 
-.address, .languages {
+.address,
+.languages {
     color: var(--text-caption);
     font-size: 14px;
     font-weight: 500;
@@ -63,6 +64,20 @@
     color: var(--text-caption);
 }
 
+.medal span {
+    margin-top: 5px;
+}
+
+.more {
+    background-color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .medalIcon {
     width: 32px;
 }
@@ -86,10 +101,37 @@
     margin-top: auto;
 }
 
+.socials {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 250px;
+    gap: 8px;
+}
+
+.social {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    text-decoration: none;
+}
+
+.social path {
+    fill: var(--text-primary-2);
+}
+
+.social p {
+    color: var(--text-primary-2);
+    font-size: 14px;
+    font-weight: 700;
+    display: contents;
+}
+
 @media (max-width: 992px) {
     .wrapper {
         padding: 20px;
     }
+
     .mainInfo {
         flex-direction: column;
     }
@@ -98,5 +140,9 @@
 @media (max-width: 576px) {
     .wrapper {
         justify-content: center;
+    }
+
+    .socials {
+        grid-template-columns: 1fr;
     }
 }

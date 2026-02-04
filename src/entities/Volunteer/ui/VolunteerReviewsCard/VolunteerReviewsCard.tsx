@@ -81,7 +81,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
                 return <div className={styles.error}>{error}</div>;
             }
             if (reviews.length === 0) {
-                return t("personal.На данный момент отзывов нет");
+                return t("personal.Пока ещё никто не оставлял отзывов о гудсёрфере");
             }
             return renderReviews;
         };
@@ -90,7 +90,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
             setPage((prev) => prev + 1);
         };
 
-        if (!reviewsData || reviewsData.pagination.total === 0) {
+        if (!reviewsData) {
             return null;
         }
 

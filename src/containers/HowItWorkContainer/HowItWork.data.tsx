@@ -15,7 +15,7 @@ export const useHowItWorkData = () => {
             image: image1,
         },
         {
-            title: t("Выбор программы"),
+            title: t("Выбор вакансии"),
             text: t("Выберите, куда вы хотите поехать и чем заняться"),
             image: image2,
         },
@@ -26,7 +26,7 @@ export const useHowItWorkData = () => {
         },
         {
             title: t("Подтверждение"),
-            text: t("Получаете подтверждение и обсуждаете подробности"),
+            text: t("Получите подтверждение и обсудите подробности"),
             image: image4,
         },
         {

@@ -138,6 +138,12 @@ const InfoHeader = memo(() => {
                     <p>{t("main.welcome.header.about-project.title")}</p>
                     <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
                     <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
+                        <Link to="https://community.goodsurfing.org/">
+                            {t("main.welcome.header.about-project.news")}
+                        </Link>
+                        <Link to={getAboutProjectPageUrl(locale)}>
+                            {t("main.welcome.header.about-project.about-goodsurfing")}
+                        </Link>
                         <Link to={getNPOPageUrl(locale)}>
                             {t("main.welcome.header.about-project.about-npo")}
                         </Link>

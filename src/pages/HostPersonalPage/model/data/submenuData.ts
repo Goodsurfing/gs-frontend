@@ -19,10 +19,10 @@ export const useSubmenuItems = () => {
             text: t("personalHost.Видео"),
             id: "4",
         },
-        {
-            text: t("personalHost.Команда"),
-            id: "5",
-        },
+        // {
+        //     text: t("personalHost.Команда"),
+        //     id: "5",
+        // },
         {
             text: t("personalHost.Отзывы"),
             id: "6",

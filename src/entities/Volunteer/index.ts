@@ -11,3 +11,4 @@ export type {
 export type { AllLanguages, AllLevels, Language } from "./model/types/language";
 
 export { VolunteerSubscriberCard } from "./ui/VolunteerSubscriberCard/VolunteerSubscriberCard";
+export { AchievementModal } from "./ui/AchievementModal/AchievementModal";

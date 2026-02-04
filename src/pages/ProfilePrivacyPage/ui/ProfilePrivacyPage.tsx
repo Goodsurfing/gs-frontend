@@ -19,13 +19,10 @@ const ProfilePrivacyPage: FC = () => {
         <main className={styles.wrapper}>
             <div className={styles.titleWrapper}>
                 <h2 className={styles.title}>
-                    {t("privacy.Заполните аккаунт гудсёрфера или организатора")}
+                    {t("privacy.Выберете настройки приватности")}
                 </h2>
-                <p className={styles.description}>
-                    {t("privacy.Гудсёрфинг — это социальная сеть людей, которые уже путешествуют")}
-                </p>
             </div>
-            <ProfilePrivacy />
+            <ProfilePrivacy className={styles.privacy} />
         </main>
     );
 };

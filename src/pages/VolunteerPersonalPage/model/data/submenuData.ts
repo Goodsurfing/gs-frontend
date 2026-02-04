@@ -8,12 +8,12 @@ export const useSubmenuVolunteerItems = () => {
             id: "1",
         },
         {
-            text: t("personal.Заявки"),
-            id: "2",
+            text: t("personal.Умения"),
+            id: "1",
         },
         {
-            text: t("personal.Отзывы"),
-            id: "3",
+            text: t("personal.Вакансии"),
+            id: "2",
         },
         {
             text: t("personal.Фото"),
@@ -26,6 +26,10 @@ export const useSubmenuVolunteerItems = () => {
         {
             text: t("personal.Сертификаты"),
             id: "6",
+        },
+        {
+            text: t("personal.Отзывы"),
+            id: "3",
         },
     // {
     //     text: "Статьи",

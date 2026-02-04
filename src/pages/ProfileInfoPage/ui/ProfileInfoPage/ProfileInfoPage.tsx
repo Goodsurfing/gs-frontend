@@ -23,7 +23,7 @@ const ProfileInfoPage: FC = () => {
             <div className={styles.titleWrapper}>
                 <h2 className={styles.title}>{t("info.Основная информация")}</h2>
             </div>
-            <ProfileInfoForm />
+            <ProfileInfoForm className={styles.info} />
         </main>
     );
 };

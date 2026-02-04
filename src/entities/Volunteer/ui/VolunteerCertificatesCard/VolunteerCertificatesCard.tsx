@@ -44,7 +44,7 @@ export const VolunteerCertificatesCard: FC<VolunteerCertificatesCardProps> = mem
 
     return (
         <div id="6" className={cn(classname, styles.wrapper)}>
-            <Text title={t("personal.Сертификаты и грамоты")} titleSize="h3" />
+            <Text title={t("personal.Сертификаты")} titleSize="h3" />
             <div className={styles.container}>
                 <Swiper
                     className={styles.swiper}

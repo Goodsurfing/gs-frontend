@@ -7,6 +7,7 @@ const OfferDescriptionPage = () => {
 
     return (
         <div className={styles.wrapper}>
+            <h1>Описание вакансии</h1>
             {id && <OfferDescription offerId={id} />}
         </div>
     );

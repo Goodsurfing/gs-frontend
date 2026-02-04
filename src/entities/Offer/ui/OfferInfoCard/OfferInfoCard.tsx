@@ -45,48 +45,16 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     className={styles.container}
                 />
             )}
-            {offer.finishingTouche && (
-                <OfferConditionsCard
-                    finishingTouches={offer.finishingTouche}
+            {offer.whatToDo && (
+                <OfferWhatToDoCard
+                    whatToDo={offer.whatToDo}
                     className={styles.wrapper}
-                />
-            )}
-            {(offer.condition && isShowPaymentCard) && (
-                <OfferPaymentCard
-                    conditions={offer.condition}
-                    className={styles.container}
                 />
             )}
             {offer.description && (
                 <OfferDescriptionCard
                     description={offer.description}
                     className={styles.container}
-                />
-            )}
-            {offer.howNeed && (
-                <OfferLanguagesCard
-                    languages={offer.howNeed.languages}
-                    className={styles.container}
-                />
-            )}
-            {offer.where && (
-                <OfferAddressCard
-                    address={offer.where}
-                    className={styles.container}
-                />
-            )}
-            <OfferOrganizationCard
-                organization={offer.organization}
-                className={styles.container}
-            />
-            <OfferGalleryCard
-                galleryImages={offer.galleryImages}
-                className={styles.container}
-            />
-            {offer.whatToDo && (
-                <OfferWhatToDoCard
-                    whatToDo={offer.whatToDo}
-                    className={styles.wrapper}
                 />
             )}
             {offer.condition && (
@@ -105,6 +73,39 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
                     />
                 </>
             )}
+            {offer.finishingTouche && (
+                <OfferConditionsCard
+                    finishingTouches={offer.finishingTouche}
+                    className={styles.wrapper}
+                />
+            )}
+            {(offer.condition && isShowPaymentCard) && (
+                <OfferPaymentCard
+                    conditions={offer.condition}
+                    className={styles.container}
+                />
+            )}
+
+            {offer.howNeed && (
+                <OfferLanguagesCard
+                    languages={offer.howNeed.languages}
+                    className={styles.container}
+                />
+            )}
+            {offer.where && (
+                <OfferAddressCard
+                    address={offer.where}
+                    className={styles.container}
+                />
+            )}
+            <OfferGalleryCard
+                galleryImages={offer.galleryImages}
+                className={styles.container}
+            />
+            <OfferOrganizationCard
+                organization={offer.organization}
+                className={styles.container}
+            />
             <OfferContributorsCard
                 offerId={offer.id}
                 className={styles.wrapper}

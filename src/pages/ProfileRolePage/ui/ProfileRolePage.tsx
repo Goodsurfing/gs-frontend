@@ -19,7 +19,7 @@ const ProfileRolePage: FC = () => {
             <p className={styles.description}>
                 {t("role.Для каждой роли есть отдельный рабочий стол, в котором отражается вся необходимая информация. Выберите роль, перейдите на рабочий стол и заполните профиль гудсёрфера или профиль организации.")}
             </p>
-            <ProfileRoleWidget />
+            <ProfileRoleWidget className={styles.widget} />
         </main>
     );
 };

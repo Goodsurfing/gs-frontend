@@ -8,7 +8,7 @@ export const Title = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h1 className={styles.title}>{t("hostGallery.Фотогалерея организации")}</h1>
+            <h2 className={styles.title}>{t("hostGallery.Фотогалерея организации")}</h2>
             <p className={styles.text}>
                 {t("hostGallery.Добавьте сюда не менее 6 фотографий")}
             </p>

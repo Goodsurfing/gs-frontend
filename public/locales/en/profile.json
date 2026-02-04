@@ -91,7 +91,8 @@
         "Ошибка при изменении статуса активности профиля": "Error changing profile activity status",
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": " Are you sure you want to delete your account? This action cannot be undone.",
         "Удалить": "Delete",
-        "Отмена": "Cancel"
+        "Отмена": "Cancel",
+        "Выберете настройки приватности": "Choose privacy settings"
     },
     "personal": {
         "Произошла ошибка": "An error occurred",
@@ -99,6 +100,7 @@
         "Редактировать": "Edit",
         "Написать": "Write",
         "О себе": "About me",
+        "Дополнительная информация": "Additional information",
         "Заявки": "Applications",
         "Отзывы": "Reviews",
         "Фото": "Photos",
@@ -114,6 +116,7 @@
         "Пользователь не указал дополнительные умения": "The user has not listed any additional skills",
         "Языки не были указаны": "Languages have not been specified",
         "У волонтера пока нет вакансий в которых он участвовал": "The volunteer has not participated in any vacancies yet",
+        "Пока ещё никто не оставлял отзывов о гудсёрфере": "No one has left reviews about the goodsurfer yet",
         "Волонтёр": "Volunteer",
         "Организатор": "Organizer",
         "Город": "City",
@@ -127,6 +130,7 @@
         "На данный момент отзывов нет.": "There are no reviews at the moment.",
         "Здесь будут размещены видео волонтера.": "Volunteer videos will be displayed here.",
         "Добавленные видео": "Uploaded Videos",
-        "Профиль недоступен": "Profile unavailable"
+        "Профиль недоступен": "Profile unavailable",
+         "Ещё": "More"
     }
 }

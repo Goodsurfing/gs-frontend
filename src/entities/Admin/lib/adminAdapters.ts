@@ -1,10 +1,17 @@
 import { getFullName } from "@/shared/lib/getFullName";
 import {
+    AdminOrganization,
     AdminOrganizations,
     AdminOrganizationsFields, AdminUser, AdminUserFields, AdminUsers, AdminUsersFields,
+    UpdateAdminOrganization,
     UpdateAdminUser,
 } from "../model/types/adminSchema";
 import { parseDate } from "@/shared/lib/formatDate";
+import { HostDescriptionFormFields } from "@/features/HostDescription";
+import {
+    HostDescriptionMainInfoFields, HostDescriptionSocialFields,
+    HostDescriptionTypeFields, OrganizationType,
+} from "@/features/HostDescription/model/types/hostDescription";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     if (!data) return [];
@@ -12,7 +19,7 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
         const {
             id, email, firstName, lastName, created,
             lastVisit, endPayment, isActive, isPayment,
-            isSkill, isOrganization,
+            isVolunteer, isOrganization,
         } = user;
         return {
             id,
@@ -22,7 +29,7 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
             isConfirmed: true,
             isHost: isOrganization,
             isMembership: isPayment,
-            isVolunteer: isSkill,
+            isVolunteer,
             dateLogin: lastVisit,
             dateRegistration: created,
             dataEndMembership: endPayment,
@@ -129,11 +136,11 @@ export const adminUpdateUserAdapter = (data: Omit<AdminUser, "skills"> & { skill
 
 export const adminOrganizationsAdapter = (data: AdminOrganizations[]):
 AdminOrganizationsFields[] => {
-    const result: AdminOrganizationsFields[] = data.map((user) => {
+    const result: AdminOrganizationsFields[] = data.map((host) => {
         const {
             id, name, firstName, lastName, countApplications, countVacancies,
             isActive,
-        } = user;
+        } = host;
         return {
             id,
             name,
@@ -146,4 +153,69 @@ AdminOrganizationsFields[] => {
     });
 
     return result;
+};
+
+const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ"] as const;
+const isOrganizationType = (x: any): x is OrganizationType => organizationType.includes(x);
+
+export const adminOrganizationAdapter = (data: AdminOrganization): HostDescriptionFormFields => {
+    const hostTypeFields: HostDescriptionTypeFields = {
+        organizationType: "ИП",
+        otherOrganizationType: "",
+    };
+    if (isOrganizationType(data.type)) {
+        hostTypeFields.organizationType = data.type;
+    } else {
+        hostTypeFields.organizationType = "Другое";
+        hostTypeFields.otherOrganizationType = data.type;
+    }
+
+    const hostInfoFields: HostDescriptionMainInfoFields = {
+        aboutInfo: data.description,
+        shortOrganization: data.shortDescription,
+        organization: data.name,
+        website: data.website,
+    };
+
+    const hostSocialFields: HostDescriptionSocialFields = {
+        facebook: data.facebook,
+        instagram: data.instagram,
+        telegram: data.telegram,
+        vk: data.vk,
+    };
+
+    return {
+        mainInfo: hostInfoFields,
+        type: hostTypeFields,
+        socialMedia: hostSocialFields,
+        address: data.address,
+        avatar: data?.image ? {
+            id: data.image.id,
+            contentUrl: data.image.contentUrl,
+            thumbnails: data.image.thumbnails,
+        } : undefined,
+    };
+};
+
+export const adminOrganizationApiAdapter = (
+    data: HostDescriptionFormFields,
+): UpdateAdminOrganization => {
+    const {
+        address, avatar, mainInfo, socialMedia, type,
+    } = data;
+    const formType = type.organizationType === "Другое" ? type.otherOrganizationType : type.organizationType;
+    return {
+        name: mainInfo?.organization ?? "",
+        address: address ?? "",
+        type: formType,
+        description: mainInfo?.aboutInfo ?? "",
+        shortDescription: mainInfo?.shortOrganization ?? "",
+        imageId: avatar?.id ?? null,
+        vk: socialMedia?.vk ?? "",
+        instagram: socialMedia?.instagram ?? "",
+        facebook: socialMedia?.facebook ?? "",
+        telegram: socialMedia?.telegram ?? "",
+        website: mainInfo?.website ?? "",
+        otherType: type.otherOrganizationType,
+    };
 };

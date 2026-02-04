@@ -35,7 +35,7 @@ const MainPage: FC = () => {
             <Section title={t("Как это работает?")}>
                 <HowItWorkContainer />
             </Section>
-            <Section title={t("Интересные предложения")} className={styles.offersContainer}>
+            <Section title={t("Интересные вакансии")} className={styles.offersContainer}>
                 <OffersContainer />
             </Section>
             <Section title={t("Наши преимущества")}>
