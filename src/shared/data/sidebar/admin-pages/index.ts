@@ -36,6 +36,20 @@ export const useAdminPagesSidebarData = () => {
                 },
             ],
         },
+        {
+            route: "/admin",
+            text: "Академия",
+            dropdownItems: [
+                {
+                    route: "/courses",
+                    text: "Все курсы",
+                },
+                {
+                    route: "/review-courses",
+                    text: "Отзывы о курсах",
+                },
+            ],
+        },
     ];
     return { AdminPagesSidebarData };
 };

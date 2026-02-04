@@ -123,3 +123,8 @@ export {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
 } from "./api/adminApi";
+
+export {
+    adminCourseApi,
+    useLazyGetCoursesQuery,
+} from "./api/adminCourseApi";

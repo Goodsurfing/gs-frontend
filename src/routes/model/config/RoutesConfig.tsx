@@ -163,6 +163,7 @@ import {
     getAdminVacancyWhoNeedsPageUrl,
     getAdminVacancyDescriptionPageUrl,
     getAdminVacancyFinishingTouchesPageUrl,
+    getAdminCoursesPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -211,6 +212,7 @@ import { HostRegisterPage } from "@/pages/HostRegisterPage";
 import { AdminOfferWhoNeedsPage } from "@/pages/AdminOfferWhoNeedsPage";
 import { AdminOfferDescriptionPage } from "@/pages/AdminOfferDescriptionPage";
 import { AdminOfferFinishingTouchesPage } from "@/pages/AdminOfferFinishingTouchesPage";
+import { AdminCoursesPage } from "@/pages/AdminCoursesPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -727,6 +729,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-offers",
                 element: <AdminOffersPage />,
                 path: (locale: string) => getAdminVacanciesPageUrl(locale),
+            },
+            {
+                label: "admin-courses",
+                element: <AdminCoursesPage />,
+                path: (locale: string) => getAdminCoursesPageUrl(locale),
             },
         ],
     },
