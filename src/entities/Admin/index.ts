@@ -27,7 +27,11 @@ export { adminReducer, adminActions } from "./model/slice/adminSlice";
 
 export { getAdminAuthData } from "./model/selectors/adminSelectors";
 
-export { adminUsersAdapter, adminOrganizationsAdapter, adminUpdateUserAdapter } from "./lib/adminAdapters";
+export {
+    adminUsersAdapter, adminUserAdapter, adminUpdateUserAdapter,
+    adminOrganizationAdapter, adminOrganizationApiAdapter,
+    adminOrganizationsAdapter, adminUserApiAdapter,
+} from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
 
@@ -40,8 +44,6 @@ export type { ReviewVacancy } from "./ui/ReviewVacancyInfoTable/ReviewVacancyInf
 export { ReviewVolunteerInfoTable } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
 
 export type { ReviewVolunteer } from "./ui/ReviewVolunteerInfoTable/ReviewVolunteerInfoTable";
-
-export { adminUserAdapter } from "./lib/adminAdapters";
 
 export {
     offerWhereApiAdapter, offerWhenFormAdapter,

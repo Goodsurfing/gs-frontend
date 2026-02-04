@@ -59,7 +59,7 @@ export interface AdminUsers {
     created: string; // time account created
     lastVisit: string;
     isVerified: boolean;
-    isSkill: boolean; // is volunteer
+    isVolunteer: boolean;
     isOrganization: boolean;
     isActive: boolean; // is block
     isPayment: boolean;
@@ -88,7 +88,7 @@ export interface AdminUser {
     created: string; // time account created
     lastVisit: string;
     isVerified: boolean;
-    isVolunteer: boolean; // is volunteer
+    isVolunteer: boolean;
     isOrganization: boolean;
     isActive: boolean;
     isPayment: boolean;
@@ -132,6 +132,8 @@ export enum AdminSort {
     IsVerifiedDesc = "isVerified:desc",
     IsSkillAsc = "isSkill:asc",
     IsSkillDesc = "isSkill:desc",
+    IsVolunteerAsc = "isVolunteer:asc",
+    IsVolunteerDesc = "isVolunteer:desc",
     IsOrganizationAsc = "isOrganization:asc",
     IsOrganizationDesc = "isOrganization:desc",
     IsActiveAsc = "isActive:asc",

@@ -138,8 +138,8 @@ const customFields: CustomFilterField<keyof UserFilters>[] = [
                     <MenuItem value={AdminSort.IsVerifiedAsc}>Верифицирован ↑</MenuItem>
                     <MenuItem value={AdminSort.IsVerifiedDesc}>Верифицирован ↓</MenuItem>
 
-                    <MenuItem value={AdminSort.IsSkillAsc}>Навык ↑</MenuItem>
-                    <MenuItem value={AdminSort.IsSkillDesc}>Навык ↓</MenuItem>
+                    <MenuItem value={AdminSort.IsVolunteerAsc}>Гудсёрфер ↑</MenuItem>
+                    <MenuItem value={AdminSort.IsVolunteerDesc}>Гудсёрфер ↓</MenuItem>
 
                     <MenuItem value={AdminSort.IsOrganizationAsc}>Организация ↑</MenuItem>
                     <MenuItem value={AdminSort.IsOrganizationDesc}>Организация ↓</MenuItem>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
     Controller,
     DefaultValues, FormProvider, SubmitHandler, useForm,
@@ -11,13 +11,17 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./AdminOrganizationInfoForm.module.scss";
 import Button from "@/shared/ui/Button/Button";
-import { AdminOrganization } from "@/entities/Admin";
+import {
+    AdminOrganization, adminOrganizationAdapter, adminOrganizationApiAdapter,
+    useGetOrganizationByIdQuery, useUpdateAdminOrganizationMutation,
+} from "@/entities/Admin";
 import ProfileInput from "@/components/ProfileInput/ProfileInput";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface AdminOrganizationInfoFormProps {
     className?: string;
@@ -46,10 +50,13 @@ const defaultValues: DefaultValues<HostDescriptionFormFields> = {
 };
 
 export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (props) => {
-    const { organization, className } = props;
+    const { organization, className, organizationId } = props;
 
     const [toast, setToast] = useState<ToastAlert>();
     const { locale } = useLocale();
+
+    const { data: hostData, isLoading: isLoadingGet } = useGetOrganizationByIdQuery(organizationId);
+    const [updateHost, { isLoading: isLoadingUpdate }] = useUpdateAdminOrganizationMutation();
 
     const form = useForm<HostDescriptionFormFields>({
         mode: "onChange",
@@ -59,10 +66,27 @@ export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (pr
     const {
         handleSubmit,
         control,
+        reset,
     } = form;
 
-    const onSubmit: SubmitHandler<HostDescriptionFormFields> = async () => {
-        // update host data
+    const onSubmit: SubmitHandler<
+    HostDescriptionFormFields> = async (data: HostDescriptionFormFields) => {
+        setToast(undefined);
+        try {
+            if (hostData) {
+                const preparedData = adminOrganizationApiAdapter(data);
+                await updateHost({ id: hostData.id, body: { ...preparedData } }).unwrap();
+                setToast({
+                    text: "Данные успешно изменены",
+                    type: HintType.Success,
+                });
+            }
+        } catch {
+            setToast({
+                text: "Произошла ошибка",
+                type: HintType.Error,
+            });
+        }
     };
 
     const handleImageUpload = async (
@@ -94,6 +118,22 @@ export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (pr
             onAvatarChange(null);
         }
     };
+
+    useEffect(() => {
+        if (hostData) {
+            reset(adminOrganizationAdapter(hostData));
+        } else {
+            reset();
+        }
+    }, [hostData, reset]);
+
+    if (isLoadingGet) {
+        return (
+            <div className={cn(styles.form, className)}>
+                <MiniLoader />
+            </div>
+        );
+    }
 
     return (
         <FormProvider {...form}>
@@ -132,7 +172,13 @@ export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (pr
                     />
                 </div>
                 <div>
-                    <Button type="submit" color="BLUE" size="MEDIUM" variant="FILL">
+                    <Button
+                        disabled={isLoadingUpdate}
+                        type="submit"
+                        color="BLUE"
+                        size="MEDIUM"
+                        variant="FILL"
+                    >
                         Сохранить
                     </Button>
                 </div>
