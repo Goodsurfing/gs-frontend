@@ -10,8 +10,8 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
-    AdminSort, useDeleteAdminOfferMutation, useLazyGetAdminOffersQuery,
-    useLazyGetCoursesQuery,
+    AdminSort, useDeleteAdminCourseMutation,
+    useLazyGetAdminCoursesQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
@@ -22,7 +22,8 @@ import styles from "./AdminOffersTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminCoursePersonalPageUrl, getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface CoursesFilters {
     authorFirstName?: string;
@@ -123,7 +124,7 @@ export const AdminCoursesTable = () => {
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [courseToDelete, setCourseToDelete] = useState<
-    { id: string; } | null>(null);
+    { id: number; } | null>(null);
     const [filters, setFilters] = useState<Partial<CoursesFilters>>(
         { sort: AdminSort.VacancyIdDesc },
     );
@@ -131,8 +132,8 @@ export const AdminCoursesTable = () => {
         data: coursesData,
         isLoading,
         isFetching,
-    }] = useLazyGetCoursesQuery();
-    const [deleteOffer, { isLoading: isDeleting }] = useDeleteAdminOfferMutation();
+    }] = useLazyGetAdminCoursesQuery();
+    const [deleteCourse, { isLoading: isDeleting }] = useDeleteAdminCourseMutation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -155,7 +156,7 @@ export const AdminCoursesTable = () => {
         fetchData();
     }, [currentPage, filters, getCourses]);
 
-    const handleOpenDeleteModal = (id: string) => {
+    const handleOpenDeleteModal = (id: number) => {
         setCourseToDelete({ id });
     };
 
@@ -168,7 +169,7 @@ export const AdminCoursesTable = () => {
         if (!courseToDelete) return;
 
         try {
-            await deleteOffer(courseToDelete.id).unwrap();
+            await deleteCourse(courseToDelete.id).unwrap();
             setToast({
                 text: "Курс был успешно удалён",
                 type: HintType.Success,
@@ -193,8 +194,8 @@ export const AdminCoursesTable = () => {
             hideable: false,
         },
         {
-            field: "name",
-            headerName: "Название",
+            field: "author",
+            headerName: "Автор",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -202,8 +203,8 @@ export const AdminCoursesTable = () => {
             width: 240,
         },
         {
-            field: "categoryName",
-            headerName: "Категория",
+            field: "name",
+            headerName: "Название курса",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -211,26 +212,8 @@ export const AdminCoursesTable = () => {
             width: 180,
         },
         {
-            field: "userId",
-            headerName: "ID пользователя",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "organizationName",
-            headerName: "Организация",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "isActive",
-            headerName: "Опубликована",
+            field: "isPublic",
+            headerName: "Курс опубликован",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -239,7 +222,25 @@ export const AdminCoursesTable = () => {
             type: "boolean",
         },
         {
-            field: "countTotalApplication",
+            field: "totalStart",
+            headerName: "Кол-во участников начали",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 180,
+        },
+        {
+            field: "totalEnd",
+            headerName: "Кол-во участников закончили",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 180,
+        },
+        {
+            field: "totalReviews",
             headerName: "Заявок всего",
             sortable: false,
             filterable: false,
@@ -248,8 +249,8 @@ export const AdminCoursesTable = () => {
             width: 180,
         },
         {
-            field: "countAcceptApplication",
-            headerName: "Заявок принято",
+            field: "totalReviews",
+            headerName: "Кол-во отзывов",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -257,8 +258,8 @@ export const AdminCoursesTable = () => {
             width: 180,
         },
         {
-            field: "countCanselApplication",
-            headerName: "Заявок отменено",
+            field: "averageReviews",
+            headerName: "Рейтинг",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -275,10 +276,10 @@ export const AdminCoursesTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminVacancyWherePageUrl(locale, params.row.id),
+                    getAdminCoursePersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
-                    handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
+                    handleOpenDeleteModal(params.row.id);
                 };
 
                 return (
@@ -286,7 +287,7 @@ export const AdminCoursesTable = () => {
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Редактировать вакансию"
+                            title="Редактировать курс"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
@@ -294,7 +295,7 @@ export const AdminCoursesTable = () => {
                         <button
                             onClick={handleDeleteClick}
                             type="button"
-                            title="Удалить вакансию"
+                            title="Удалить курс"
                             className={cn(styles.btnIcon, styles.btnDelete)}
                         >
                             <ReactSVG src={deleteIcon} />
@@ -312,26 +313,24 @@ export const AdminCoursesTable = () => {
     }
 
     const renderTable = () => {
-        if (!offersData) {
-            return <span className={styles.text}>Вакансии не были найдены</span>;
+        if (!coursesData) {
+            return <span className={styles.text}>Курсы не были найдены</span>;
         }
-        const adaptedData: any[] = offersData.data.map((offer) => {
+        const adaptedData: any[] = coursesData.data.map((course) => {
             const {
-                id, name, categoryName,
-                organizationName, isActive, countTotalApplication,
-                countAcceptApplication, countCanselApplication,
-                user,
-            } = offer;
+                id, authorFirstName, authorLastName,
+                authorId, averageReviews, isPublic,
+                totalEnd, totalReviews, totalStart,
+                name,
+            } = course;
             return {
                 id,
+                author: getFullName(authorFirstName, authorLastName),
                 name,
-                categoryName,
-                userId: user.id,
-                organizationName,
-                isActive,
+                isPublic,
+                totalStart,
+                totalEnd,
                 countTotalApplication,
-                countAcceptApplication,
-                countCanselApplication,
             };
         });
         return (

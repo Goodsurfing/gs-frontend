@@ -126,5 +126,9 @@ export {
 
 export {
     adminCourseApi,
-    useLazyGetCoursesQuery,
+    useLazyGetAdminCoursesQuery,
+    useGetAdminCourseByIdQuery,
+    useCreateAdminCourseMutation,
+    useUpdateAdminCourseMutation,
+    useDeleteAdminCourseMutation,
 } from "./api/adminCourseApi";

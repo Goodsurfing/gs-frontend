@@ -1,6 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { GetAdminCoursesParams, GetAdminCoursesResponse } from "../model/types/adminCourseSchema";
+import {
+    CreateAdminCourseRequest, GetAdminCourse, GetAdminCoursesParams,
+    GetAdminCoursesResponse, UpdateAdminCourseRequest,
+} from "../model/types/adminCourseSchema";
 
 export const adminCourseApi = createApi({
     reducerPath: "adminCourseApi",
@@ -8,7 +11,7 @@ export const adminCourseApi = createApi({
     tagTypes: ["course",
     ],
     endpoints: (build) => ({
-        getCourses: build.query<GetAdminCoursesResponse, Partial<GetAdminCoursesParams>>({
+        getAdminCourses: build.query<GetAdminCoursesResponse, Partial<GetAdminCoursesParams>>({
             query: (params) => ({
                 url: "courses/list", // not exist
                 method: "GET",
@@ -16,7 +19,41 @@ export const adminCourseApi = createApi({
             }),
             providesTags: ["course"],
         }),
+        getAdminCourseById: build.query<GetAdminCourse, string>({
+            query: (courseId) => ({
+                url: `course/${courseId}`, // not exist
+                method: "GET",
+            }),
+            providesTags: ["course"],
+        }),
+        createAdminCourse: build.mutation<void, CreateAdminCourseRequest>({
+            query: () => ({
+                url: "course/create", // not exist
+                method: "POST",
+            }),
+            invalidatesTags: ["course"],
+        }),
+        updateAdminCourse: build.mutation<void, UpdateAdminCourseRequest>({
+            query: (courseId) => ({
+                url: `course/edit/${courseId}`, // not exist
+                method: "PATCH",
+            }),
+            invalidatesTags: ["course"],
+        }),
+        deleteAdminCourse: build.mutation<void, number>({
+            query: (courseId) => ({
+                url: `course/delete/${courseId}`, // not exist
+                method: "DELETE",
+            }),
+            invalidatesTags: ["course"],
+        }),
     }),
 });
 
-export const { useLazyGetCoursesQuery } = adminCourseApi;
+export const {
+    useLazyGetAdminCoursesQuery,
+    useGetAdminCourseByIdQuery,
+    useCreateAdminCourseMutation,
+    useUpdateAdminCourseMutation,
+    useDeleteAdminCourseMutation,
+} = adminCourseApi;
