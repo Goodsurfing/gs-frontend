@@ -2,14 +2,16 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     CreateAdminCourseRequest, GetAdminCourse, GetAdminCoursesParams,
-    GetAdminCoursesResponse, UpdateAdminCourseRequest,
+    GetAdminCoursesResponse, GetAdminReviewCourse, GetAdminReviewsCoursesParams,
+    GetAdminReviewsCoursesResponse, UpdateAdminCourseRequest,
+    UpdateAdminReviewCourseRequest,
 } from "../model/types/adminCourseSchema";
 import { objectToFormData } from "@/shared/lib/objectToFormData";
 
 export const adminCourseApi = createApi({
     reducerPath: "adminCourseApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["course",
+    tagTypes: ["course", "review",
     ],
     endpoints: (build) => ({
         getAdminCourses: build.query<GetAdminCoursesResponse, Partial<GetAdminCoursesParams>>({
@@ -52,6 +54,36 @@ export const adminCourseApi = createApi({
             }),
             invalidatesTags: ["course"],
         }),
+        getAdminReviewsCourses: build.query<GetAdminReviewsCoursesResponse,
+        Partial<GetAdminReviewsCoursesParams>>({
+            query: (params) => ({
+                url: "review-course/list", // not exist
+                method: "GET",
+                params,
+            }),
+            providesTags: ["review"],
+        }),
+        getAdminReviewCourseById: build.query<GetAdminReviewCourse, number>({
+            query: (reviewId) => ({
+                url: `review-course/${reviewId}`, // not exist
+                method: "GET",
+            }),
+            providesTags: ["review"],
+        }),
+        updateAdminReviewCourse: build.mutation<void, UpdateAdminReviewCourseRequest>({
+            query: (courseId) => ({
+                url: `review-course/edit/${courseId}`, // not exist
+                method: "PATCH",
+            }),
+            invalidatesTags: ["review"],
+        }),
+        deleteAdminReviewCourse: build.mutation<void, number>({
+            query: (courseId) => ({
+                url: `review-course/delete/${courseId}`, // not exist
+                method: "DELETE",
+            }),
+            invalidatesTags: ["review"],
+        }),
     }),
 });
 
@@ -61,4 +93,8 @@ export const {
     useCreateAdminCourseMutation,
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
+    useLazyGetAdminReviewsCoursesQuery,
+    useGetAdminReviewCourseByIdQuery,
+    useUpdateAdminReviewCourseMutation,
+    useDeleteAdminReviewCourseMutation,
 } = adminCourseApi;

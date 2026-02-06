@@ -114,3 +114,50 @@ export interface UpdateAdminCourseRequest {
     id: number;
     body: CreateAdminCourseRequest;
 }
+
+export interface GetAdminReviewsCourses {
+    id: number;
+    authorId: string;
+    authorFirstName: string;
+    authorLastName: string;
+    name: string;
+    rating: number;
+    description: string;
+    date: string;
+}
+
+export interface GetAdminReviewsCoursesResponse {
+    data: GetAdminReviewsCourses[]
+    pagination: Pagination;
+}
+
+export interface GetAdminReviewsCoursesParams {
+    sort: AdminSort;
+    name: string;
+    authorFirstName: string;
+    authorLastName: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminReviewCourse {
+    id: number;
+    authorId: string;
+    authorFirstName: string;
+    authorLastName: string;
+    name: string;
+    rating: number;
+    description: string;
+    date: string;
+}
+
+export interface UpdateAdminReviewCourse {
+    name: string;
+    description: string;
+    rating: number;
+}
+
+export interface UpdateAdminReviewCourseRequest {
+    id: number;
+    body: UpdateAdminReviewCourse;
+}

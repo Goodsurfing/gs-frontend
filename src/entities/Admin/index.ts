@@ -131,6 +131,10 @@ export {
     useCreateAdminCourseMutation,
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
+    useLazyGetAdminReviewsCoursesQuery,
+    useGetAdminReviewCourseByIdQuery,
+    useUpdateAdminReviewCourseMutation,
+    useDeleteAdminReviewCourseMutation,
 } from "./api/adminCourseApi";
 
 export type {
