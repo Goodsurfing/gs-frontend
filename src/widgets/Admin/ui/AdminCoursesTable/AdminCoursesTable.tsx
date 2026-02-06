@@ -18,12 +18,13 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminOffersTable.module.scss";
+import styles from "./AdminCoursesTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminCoursePersonalPageUrl, getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminCourseCreatePageUrl, getAdminCoursePersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface CoursesFilters {
     authorFirstName?: string;
@@ -241,15 +242,6 @@ export const AdminCoursesTable = () => {
         },
         {
             field: "totalReviews",
-            headerName: "Заявок всего",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "totalReviews",
             headerName: "Кол-во отзывов",
             sortable: false,
             filterable: false,
@@ -318,8 +310,7 @@ export const AdminCoursesTable = () => {
         }
         const adaptedData: any[] = coursesData.data.map((course) => {
             const {
-                id, authorFirstName, authorLastName,
-                authorId, averageReviews, isPublic,
+                id, authorFirstName, authorLastName, averageReviews, isPublic,
                 totalEnd, totalReviews, totalStart,
                 name,
             } = course;
@@ -330,7 +321,8 @@ export const AdminCoursesTable = () => {
                 isPublic,
                 totalStart,
                 totalEnd,
-                countTotalApplication,
+                totalReviews,
+                averageReviews,
             };
         });
         return (
@@ -345,8 +337,8 @@ export const AdminCoursesTable = () => {
     };
 
     const totalPages = () => {
-        if (!offersData) return 0;
-        return Math.ceil(offersData.pagination.total / OFFERS_PER_PAGE);
+        if (!coursesData) return 0;
+        return Math.ceil(coursesData.pagination.total / COURSES_PER_PAGE);
     };
 
     const handleApplyFilters = () => {
@@ -357,12 +349,19 @@ export const AdminCoursesTable = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminCourseCreatePageUrl(locale)}
+                >
+                    Добавить курс
+                </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
-                    customFields={offerCustomFields}
+                    customFields={courseCustomFields}
                 />
             </div>
             <div className={styles.table}>
@@ -374,8 +373,8 @@ export const AdminCoursesTable = () => {
                 onPageChange={setCurrentPage}
             />
             <ConfirmActionModal
-                isModalOpen={!!offerToDelete}
-                description={`Вы уверены, что хотите удалить вакансию "${offerToDelete?.name}"? Это действие нельзя отменить.`}
+                isModalOpen={!!courseToDelete}
+                description={`Вы уверены, что хотите удалить курс "${courseToDelete?.id}"? Это действие нельзя отменить.`}
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
                 confirmTextButton="Удалить"

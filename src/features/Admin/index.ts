@@ -18,3 +18,6 @@ export type { AdminTransferFields } from "./ui/AdminTransferForm/AdminTransferFo
 export { AdminUpdateSkills } from "./ui/AdminUpdateSkills/AdminUpdateSkills";
 export type { AdminReviewFields } from "./ui/AdminReviewForm/AdminReviewForm";
 export { AdminReviewForm } from "./ui/AdminReviewForm/AdminReviewForm";
+export { AdminCourseForm } from "./ui/AdminCourseForm/AdminCourseForm";
+export { AdminExpertFormModal } from "./ui/AdminExpertFormModal/AdminExpertFormModal";
+export { AdminLessonFormModal } from "./ui/AdminLessonFormModal/AdminLessonFormModal";

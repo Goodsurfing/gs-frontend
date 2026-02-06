@@ -4,6 +4,7 @@ import {
     CreateAdminCourseRequest, GetAdminCourse, GetAdminCoursesParams,
     GetAdminCoursesResponse, UpdateAdminCourseRequest,
 } from "../model/types/adminCourseSchema";
+import { objectToFormData } from "@/shared/lib/objectToFormData";
 
 export const adminCourseApi = createApi({
     reducerPath: "adminCourseApi",
@@ -27,10 +28,14 @@ export const adminCourseApi = createApi({
             providesTags: ["course"],
         }),
         createAdminCourse: build.mutation<void, CreateAdminCourseRequest>({
-            query: () => ({
-                url: "course/create", // not exist
-                method: "POST",
-            }),
+            query: (data) => {
+                const formData = objectToFormData(data);
+                return {
+                    url: "course/create", // not exist
+                    method: "POST",
+                    body: formData,
+                };
+            },
             invalidatesTags: ["course"],
         }),
         updateAdminCourse: build.mutation<void, UpdateAdminCourseRequest>({

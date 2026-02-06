@@ -132,3 +132,10 @@ export {
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
 } from "./api/adminCourseApi";
+
+export type {
+    AdminCourseFields, AdminExpertFields, AdminLessonsFields,
+    GetAdminCourse,
+} from "./model/types/adminCourseSchema";
+
+export { adminCourseAdapter, adminCreateCourseApiAdapter } from "./lib/adminCourseAdapter";

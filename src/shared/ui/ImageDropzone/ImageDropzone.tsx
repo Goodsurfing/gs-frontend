@@ -9,8 +9,8 @@ import { MiniLoader } from "../MiniLoader/MiniLoader";
 import styles from "./ImageDropzone.module.scss";
 
 export interface ImageDropzoneProps {
-    value?: File | string;
-    onChange: (file: File | undefined) => void;
+    value?: File | string | null;
+    onChange: (file: File | undefined | null) => void;
     error?: boolean;
     accept?: Accept;
     maxSize?: number;
