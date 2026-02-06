@@ -25,3 +25,4 @@ export { AdminOfferDescription } from "./ui/AdminOfferDescription/AdminOfferDesc
 export { AdminFinishingTouches } from "./ui/AdminFinishingTouches/AdminFinishingTouches";
 
 export { AdminCoursesTable } from "./ui/AdminCoursesTable/AdminCoursesTable";
+export { AdminCourseInfo } from "./ui/AdminCourseInfo/AdminCourseInfo";

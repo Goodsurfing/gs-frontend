@@ -20,7 +20,7 @@ export const adminCourseApi = createApi({
             }),
             providesTags: ["course"],
         }),
-        getAdminCourseById: build.query<GetAdminCourse, string>({
+        getAdminCourseById: build.query<GetAdminCourse, number>({
             query: (courseId) => ({
                 url: `course/${courseId}`, // not exist
                 method: "GET",

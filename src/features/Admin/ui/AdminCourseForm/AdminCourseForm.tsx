@@ -49,7 +49,12 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     });
     const {
         handleSubmit, reset, control, formState: { errors },
+        watch,
     } = form;
+
+    const isPublicValue = watch("isPublic");
+
+    const textPublic = isPublicValue ? "Распубликовать" : "Опубликовать";
 
     const [isExpertModalOpen, setIsExpertModalOpen] = useState(false);
     const [editingExpertIndex, setEditingExpertIndex] = useState<number | null>(null);
@@ -100,7 +105,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     image: lesson.image || null,
                     videoUrl: lesson.videoUrl || "",
                 })) || [],
-                isPublic: course.isPublic || false,
+                isPublic: course.isPublic,
             });
         } else {
             reset(defaultValues);
@@ -459,15 +464,26 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         )}
                     </div>
                 </div>
-                <Button
-                    type="submit"
-                    color="BLUE"
-                    size="MEDIUM"
-                    variant="FILL"
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Идёт сохранение" : "Сохранить"}
-                </Button>
+                <div className={styles.formActions}>
+                    <Button
+                        type="submit"
+                        color="BLUE"
+                        size="MEDIUM"
+                        variant="FILL"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Идёт сохранение" : "Сохранить"}
+                    </Button>
+                    <Button
+                        type="button"
+                        color={isPublicValue ? "RED" : "GREEN"}
+                        size="MEDIUM"
+                        variant="FILL"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Идёт публикация" : textPublic}
+                    </Button>
+                </div>
             </form>
             <AdminExpertFormModal
                 isOpen={isExpertModalOpen}

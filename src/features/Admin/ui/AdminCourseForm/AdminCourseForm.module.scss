@@ -325,6 +325,11 @@
     font-style: italic;
 }
 
+.formActions {
+    display: flex;
+    gap: 15px;
+}
+
 @media (max-width: 768px) {
     .expertsGrid {
         grid-template-columns: 1fr;

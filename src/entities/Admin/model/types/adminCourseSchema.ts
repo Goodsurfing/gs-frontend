@@ -110,7 +110,7 @@ export interface CreateAdminCourseRequest {
     isPublic: boolean;
 }
 
-export interface UpdateAdminCourseRequest extends CreateAdminCourseRequest {
+export interface UpdateAdminCourseRequest {
     id: number;
     body: CreateAdminCourseRequest;
 }

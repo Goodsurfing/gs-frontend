@@ -135,7 +135,7 @@ export {
 
 export type {
     AdminCourseFields, AdminExpertFields, AdminLessonsFields,
-    GetAdminCourse,
+    GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
 } from "./model/types/adminCourseSchema";
 
 export { adminCourseAdapter, adminCreateCourseApiAdapter } from "./lib/adminCourseAdapter";
