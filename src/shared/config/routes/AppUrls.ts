@@ -269,3 +269,9 @@ export const getAdminCoursesPageUrl: RoutePathFunction = (locale) => `/${locale}
 export const getAdminCoursePersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_courses}/${id}`;
 
 export const getAdminCourseCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_courses}/create`;
+
+//  Admin Review Courses
+
+export const getAdminReviewsCoursesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews_courses}`;
+
+export const getAdminReviewCoursePersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_courses}/${id}`;

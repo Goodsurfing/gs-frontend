@@ -45,7 +45,7 @@ export const useAdminPagesSidebarData = () => {
                     text: "Все курсы",
                 },
                 {
-                    route: "/review-courses",
+                    route: "/reviews-courses",
                     text: "Отзывы о курсах",
                 },
             ],

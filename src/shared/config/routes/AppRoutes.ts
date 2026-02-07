@@ -94,4 +94,5 @@ export enum AppRoutes {
     ADMIN_REVIEW_VACANCY = "admin_review_vacancy_personal",
     ADMIN_REVIEW_VOLUNTEER = "admin_review_volunteer_personal",
     ADMIN_COURSES = "admin_courses",
+    ADMIN_REVIEWS_COURSES = "admin_reviews_courses",
 }
