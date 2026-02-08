@@ -123,3 +123,26 @@ export {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
 } from "./api/adminApi";
+
+export {
+    adminCourseApi,
+    useLazyGetAdminCoursesQuery,
+    useGetAdminCourseByIdQuery,
+    useCreateAdminCourseMutation,
+    useUpdateAdminCourseMutation,
+    useDeleteAdminCourseMutation,
+    useLazyGetAdminReviewsCoursesQuery,
+    useGetAdminReviewCourseByIdQuery,
+    useUpdateAdminReviewCourseMutation,
+    useDeleteAdminReviewCourseMutation,
+} from "./api/adminCourseApi";
+
+export type {
+    AdminCourseFields, AdminExpertFields, AdminLessonsFields,
+    GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
+    GetAdminReviewCourse,
+} from "./model/types/adminCourseSchema";
+
+export { adminCourseAdapter, adminCreateCourseApiAdapter } from "./lib/adminCourseAdapter";
+
+export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";

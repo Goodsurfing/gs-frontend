@@ -23,3 +23,8 @@ export { AdminOfferConditions } from "./ui/AdminOfferConditions/AdminOfferCondit
 export { AdminOfferWhoNeeds } from "./ui/AdminOfferWhoNeeds/AdminOfferWhoNeeds";
 export { AdminOfferDescription } from "./ui/AdminOfferDescription/AdminOfferDescription";
 export { AdminFinishingTouches } from "./ui/AdminFinishingTouches/AdminFinishingTouches";
+
+export { AdminCoursesTable } from "./ui/AdminCoursesTable/AdminCoursesTable";
+export { AdminCourseInfo } from "./ui/AdminCourseInfo/AdminCourseInfo";
+export { AdminReviewsCoursesTable } from "./ui/AdminReviewsCoursesTable/AdminReviewsCoursesTable";
+export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCourseInfo";

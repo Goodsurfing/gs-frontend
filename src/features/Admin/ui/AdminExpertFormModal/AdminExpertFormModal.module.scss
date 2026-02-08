@@ -1,0 +1,87 @@
+.modalContent {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    max-height: 650px;
+}
+
+.modalTitle {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 1.75rem 0;
+    color: #1a1a1a;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.fieldHint {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.error {
+    margin-top: 0.25rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.cancelButton {
+    min-width: 120px;
+}
+
+.submitButton {
+    min-width: 160px;
+}
+
+@media (max-width: 640px) {
+    .modalContent {
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    .modalTitle {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .submitButton {
+        width: 100%;
+        min-width: auto;
+    }
+}

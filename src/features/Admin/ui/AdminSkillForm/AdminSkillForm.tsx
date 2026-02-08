@@ -126,7 +126,8 @@ export const AdminSkillForm: FC<AdminSkillFormProps> = (props) => {
                                     onChange={onChange}
                                     error={!!errors.imagePath}
                                     accept={{
-                                        "image/svg+xml": [".svg"],
+                                        "image/jpeg": [".jpeg", ".jpg"],
+                                        "image/png": [".png"],
                                     }}
                                 />
                             )}
