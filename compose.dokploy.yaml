@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        REACT_APP_API_BASE_URL: ${API_BASE_URL}
+        REACT_APP_API_YANDEX_KEY: ${REACT_APP_API_YANDEX_KEY}
+        REACT_APP_MAIN_URL: ${MAIN_URL}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gs-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
+      - "traefik.http.routers.gs-frontend.entrypoints=websecure"
+      - "traefik.http.routers.gs-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.gs-frontend.loadbalancer.server.port=80"
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
