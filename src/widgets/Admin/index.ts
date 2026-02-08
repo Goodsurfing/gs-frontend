@@ -27,3 +27,4 @@ export { AdminFinishingTouches } from "./ui/AdminFinishingTouches/AdminFinishing
 export { AdminCoursesTable } from "./ui/AdminCoursesTable/AdminCoursesTable";
 export { AdminCourseInfo } from "./ui/AdminCourseInfo/AdminCourseInfo";
 export { AdminReviewsCoursesTable } from "./ui/AdminReviewsCoursesTable/AdminReviewsCoursesTable";
+export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCourseInfo";

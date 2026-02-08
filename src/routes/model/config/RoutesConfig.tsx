@@ -167,6 +167,7 @@ import {
     getAdminCourseCreatePageUrl,
     getAdminCoursePersonalPageUrl,
     getAdminReviewsCoursesPageUrl,
+    getAdminReviewCoursePersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -219,6 +220,7 @@ import { AdminCoursesPage } from "@/pages/AdminCoursesPage";
 import { AdminCourseCreatePage } from "@/pages/AdminCourseCreatePage";
 import { AdminCoursePersonalPage } from "@/pages/AdminCoursePersonalPage";
 import { AdminReviewsCoursesPage } from "@/pages/AdminReviewsCoursesPage";
+import { AdminReviewCoursePersonalPage } from "@/pages/AdminReviewCoursePersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -755,6 +757,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-reviews-courses",
                 element: <AdminReviewsCoursesPage />,
                 path: (locale: string) => getAdminReviewsCoursesPageUrl(locale),
+            },
+            {
+                label: "admin-review-course-personal",
+                element: <AdminReviewCoursePersonalPage />,
+                path: (locale: string) => getAdminReviewCoursePersonalPageUrl(locale),
             },
         ],
     },

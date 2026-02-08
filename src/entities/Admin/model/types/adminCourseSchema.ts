@@ -151,7 +151,6 @@ export interface GetAdminReviewCourse {
 }
 
 export interface UpdateAdminReviewCourse {
-    name: string;
     description: string;
     rating: number;
 }

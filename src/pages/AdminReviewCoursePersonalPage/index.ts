@@ -1,1 +1,1 @@
-export { AdminSkillPersonalPageAsync as AdminSkillPersonalPage } from "./ui/AdminSkillPersonalPage.async";
+export { AdminReviewCoursePersonalPageAsync as AdminReviewCoursePersonalPage } from "./ui/AdminReviewCoursePersonalPage.async";
