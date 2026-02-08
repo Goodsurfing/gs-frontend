@@ -134,8 +134,7 @@ export interface GetAdminReviewsCoursesResponse {
 export interface GetAdminReviewsCoursesParams {
     sort: AdminSort;
     name: string;
-    authorFirstName: string;
-    authorLastName: string;
+    author: string;
     page: number;
     limit: number;
 }

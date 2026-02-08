@@ -10,7 +10,7 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
-    AdminSort, useDeleteAdminOfferMutation, useDeleteAdminReviewCourseMutation, useLazyGetAdminOffersQuery,
+    AdminSort, useDeleteAdminReviewCourseMutation,
     useLazyGetAdminReviewsCoursesQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -23,6 +23,7 @@ import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getFullName } from "@/shared/lib/getFullName";
 
 interface ReviewCourseFilters {
     name?: string;
@@ -46,25 +47,11 @@ const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] =
         ),
     },
     {
-        key: "authorFirstName",
+        key: "author",
         label: "Поиск по имени автора",
         render: ({ value, onChange, disabled }) => (
             <TextField
                 label="Поиск по имени автора"
-                value={value ?? ""}
-                onChange={(e) => onChange(e.target.value || undefined)}
-                fullWidth
-                size="small"
-                disabled={disabled}
-            />
-        ),
-    },
-    {
-        key: "authorLastName",
-        label: "Поиск по фамилии автора",
-        render: ({ value, onChange, disabled }) => (
-            <TextField
-                label="Поиск по фамилии автора"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -140,8 +127,7 @@ export const AdminReviewsCoursesTable = () => {
                     page: currentPage,
                     limit: REVIEWS_COURSES_PER_PAGE,
                     sort: filters.sort ?? AdminSort.VacancyIdDesc,
-                    authorFirstName: filters.authorFirstName,
-                    authorLastName: filters.authorLastName,
+                    author: filters.author,
                     name: filters.name,
                 }).unwrap();
             } catch {
@@ -154,7 +140,7 @@ export const AdminReviewsCoursesTable = () => {
         fetchData();
     }, [currentPage, filters, getReviews]);
 
-    const handleOpenDeleteModal = (id: string) => {
+    const handleOpenDeleteModal = (id: number) => {
         setReviewToDelete({ id });
     };
 
@@ -192,6 +178,15 @@ export const AdminReviewsCoursesTable = () => {
             hideable: false,
         },
         {
+            field: "author",
+            headerName: "ФИО",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 180,
+        },
+        {
             field: "name",
             headerName: "Название курса",
             sortable: false,
@@ -201,8 +196,8 @@ export const AdminReviewsCoursesTable = () => {
             width: 240,
         },
         {
-            field: "ФИО",
-            headerName: "Категория",
+            field: "rating",
+            headerName: "Рейтинг",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -210,8 +205,8 @@ export const AdminReviewsCoursesTable = () => {
             width: 180,
         },
         {
-            field: "userId",
-            headerName: "ID пользователя",
+            field: "description",
+            headerName: "Отзыв",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -219,45 +214,8 @@ export const AdminReviewsCoursesTable = () => {
             width: 180,
         },
         {
-            field: "organizationName",
-            headerName: "Организация",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "isActive",
+            field: "date",
             headerName: "Опубликована",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-            type: "boolean",
-        },
-        {
-            field: "countTotalApplication",
-            headerName: "Заявок всего",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "countAcceptApplication",
-            headerName: "Заявок принято",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
-            field: "countCanselApplication",
-            headerName: "Заявок отменено",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -277,7 +235,7 @@ export const AdminReviewsCoursesTable = () => {
                     getAdminVacancyWherePageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
-                    handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
+                    handleOpenDeleteModal(params.row.id);
                 };
 
                 return (
@@ -285,7 +243,7 @@ export const AdminReviewsCoursesTable = () => {
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Редактировать вакансию"
+                            title="Редактировать отзыв"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
@@ -293,7 +251,7 @@ export const AdminReviewsCoursesTable = () => {
                         <button
                             onClick={handleDeleteClick}
                             type="button"
-                            title="Удалить вакансию"
+                            title="Удалить отзыв"
                             className={cn(styles.btnIcon, styles.btnDelete)}
                         >
                             <ReactSVG src={deleteIcon} />
@@ -311,26 +269,21 @@ export const AdminReviewsCoursesTable = () => {
     }
 
     const renderTable = () => {
-        if (!offersData) {
-            return <span className={styles.text}>Вакансии не были найдены</span>;
+        if (!reviewsData) {
+            return <span className={styles.text}>Отзывы не были найдены</span>;
         }
-        const adaptedData: any[] = offersData.data.map((offer) => {
+        const adaptedData: any[] = reviewsData.data.map((review) => {
             const {
-                id, name, categoryName,
-                organizationName, isActive, countTotalApplication,
-                countAcceptApplication, countCanselApplication,
-                user,
-            } = offer;
+                id, name, authorFirstName, authorLastName,
+                rating, description, date,
+            } = review;
             return {
                 id,
+                author: getFullName(authorFirstName, authorLastName),
                 name,
-                categoryName,
-                userId: user.id,
-                organizationName,
-                isActive,
-                countTotalApplication,
-                countAcceptApplication,
-                countCanselApplication,
+                rating,
+                description,
+                date,
             };
         });
         return (
@@ -345,8 +298,8 @@ export const AdminReviewsCoursesTable = () => {
     };
 
     const totalPages = () => {
-        if (!offersData) return 0;
-        return Math.ceil(offersData.pagination.total / OFFERS_PER_PAGE);
+        if (!reviewsData) return 0;
+        return Math.ceil(reviewsData.pagination.total / REVIEWS_COURSES_PER_PAGE);
     };
 
     const handleApplyFilters = () => {
@@ -362,7 +315,7 @@ export const AdminReviewsCoursesTable = () => {
                     onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
-                    customFields={offerCustomFields}
+                    customFields={reviewCourseCustomFields}
                 />
             </div>
             <div className={styles.table}>
@@ -374,8 +327,8 @@ export const AdminReviewsCoursesTable = () => {
                 onPageChange={setCurrentPage}
             />
             <ConfirmActionModal
-                isModalOpen={!!offerToDelete}
-                description={`Вы уверены, что хотите удалить вакансию "${offerToDelete?.name}"? Это действие нельзя отменить.`}
+                isModalOpen={!!reviewToDelete}
+                description={`Вы уверены, что хотите удалить вакансию "${reviewToDelete?.id}"? Это действие нельзя отменить.`}
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
                 confirmTextButton="Удалить"
