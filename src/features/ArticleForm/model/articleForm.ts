@@ -7,7 +7,7 @@ export const formSchema = z.object({
         .max(100, { message: "Заголовок слишком большой" }),
     description: z
         .string()
-        .min(200, {
+        .min(1, {
             message:
                 "Описание статьи должно достигать как минимум 200 символов",
         })

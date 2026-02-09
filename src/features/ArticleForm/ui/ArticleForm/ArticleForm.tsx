@@ -19,11 +19,13 @@ import styles from "./ArticleForm.module.scss";
 
 interface ArticleFormProps {
     className?: string;
+    onComplete: (data: z.infer<typeof formSchema>) => void;
+    onErrorUploadImage: (error: string) => void;
 }
 
 export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
-        const { className } = props;
+        const { className, onComplete, onErrorUploadImage } = props;
         const { t } = useTranslation("volunteer");
         const { translate } = useTranslateError();
         const { locale } = useLocale();
@@ -31,6 +33,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             register,
             formState: { errors },
             control,
+            handleSubmit,
         } = useForm<z.infer<typeof formSchema>>({
             resolver: zodResolver(formSchema),
             mode: "onChange",
@@ -41,8 +44,12 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             },
         });
 
+        const onSubmit = handleSubmit(async (data) => {
+            onComplete(data);
+        });
+
         return (
-            <form className={cn(className, styles.wrapper)}>
+            <form className={cn(className, styles.wrapper)} onSubmit={onSubmit}>
                 <div>
                     <UploadArticleCover id="upload cover" />
                     <span className={styles.smallDescription}>
@@ -79,6 +86,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     render={({ field }) => (
                         <TextEditor
                             onChange={field.onChange}
+                            onErrorUploadImage={onErrorUploadImage}
                             value={field.value}
                         />
                     )}
@@ -100,7 +108,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     />
                 </div>
                 <div className={styles.containerButtons}>
-                    <Button color="BLUE" variant="FILL" size="SMALL">
+                    <Button type="submit" onClick={onSubmit} color="BLUE" variant="FILL" size="SMALL">
                         {t("volunteer-create-article.Опубликовать")}
                     </Button>
                     <Button color="BLUE" variant="OUTLINE" size="SMALL">

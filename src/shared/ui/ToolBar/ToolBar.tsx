@@ -8,6 +8,7 @@ import React, {
     FC,
     MouseEvent,
     memo,
+    useEffect,
     useRef,
     useState,
 } from "react";
@@ -27,33 +28,88 @@ import alignJustifyIcon from "@/shared/assets/icons/textEditor/alignJustify.svg"
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import InputFile from "../InputFile/InputFile";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./ToolBar.module.scss";
+import { MiniLoader } from "../MiniLoader/MiniLoader";
 
 interface ToolBarProps {
     editor: Editor | null;
+    onErrorUploadImage: (error: string) => void;
 }
 
 export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
-    const { editor } = props;
+    const { editor, onErrorUploadImage } = props;
     const [alignText, setAlignText] = useState<string | null>(null);
+    const [activeListType, setActiveListType] = useState<"bullet" | "ordered" | null>(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [isLoadingImage, setLoadingImage] = useState(false);
     const [undo, setUndo] = useState(false);
     const [redo, setRedo] = useState(false);
     const emojiRef = useRef(null);
 
     useOnClickOutside(emojiRef, () => setShowEmojiPicker((prev) => !prev));
 
+    useEffect(() => {
+        if (editor) {
+            const updateListType = () => {
+                if (editor.isActive("bulletList")) {
+                    setActiveListType("bullet");
+                } else if (editor.isActive("orderedList")) {
+                    setActiveListType("ordered");
+                } else {
+                    setActiveListType(null);
+                }
+            };
+
+            updateListType();
+            editor.on("selectionUpdate", updateListType);
+            editor.on("update", updateListType);
+
+            return () => {
+                editor.off("selectionUpdate", updateListType);
+                editor.off("update", updateListType);
+            };
+        }
+    }, [editor]);
+
     if (!editor) {
         return null;
     }
 
-    const addImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const toggleList = (type: "bullet" | "ordered") => {
+        if (activeListType === type) {
+            editor.chain().focus().liftListItem("listItem").run();
+        } else if (type === "bullet") {
+            editor.chain().focus().toggleBulletList().run();
+        } else {
+            editor.chain().focus().toggleOrderedList().run();
+        }
+    };
+
+    const addImage = async (e: ChangeEvent<HTMLInputElement>) => {
+        setLoadingImage(true);
         const fileList = e.target.files;
         if (fileList && fileList.length > 0) {
             const file = fileList[0];
-            const url = URL.createObjectURL(file);
-            editor?.chain().focus().setImage({ src: url }).run();
-            e.target.value = "";
+            try {
+                const result = await uploadFile(file.name, file);
+                if (result && result.contentUrl) {
+                    const imageUrl = getMediaContent(result.contentUrl);
+                    if (imageUrl) {
+                        editor?.chain().focus().setImage({ src: imageUrl }).run();
+                        e.target.value = "";
+                    } else {
+                        onErrorUploadImage("Не удалось получить URL изображения");
+                    }
+                } else {
+                    onErrorUploadImage("Ответ сервера не содержит изображения");
+                }
+            } catch (error) {
+                onErrorUploadImage("Произошла ошибка при загрузке изображения");
+            } finally {
+                setLoadingImage(false);
+            }
         }
     };
 
@@ -180,17 +236,19 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
             >
                 <ToggleButton
                     value="ordered"
-                    onClick={() => editor.chain().toggleOrderedList().run()}
+                    onClick={() => toggleList("ordered")}
                     aria-label="ordered"
                     className={styles.toggleButton}
+                    selected={activeListType === "ordered"}
                 >
                     <HandySvg src={orderedListIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="bullet"
-                    onClick={() => editor.chain().toggleBulletList().run()}
+                    onClick={() => toggleList("bullet")}
                     aria-label="bullet"
                     className={styles.toggleButton}
+                    selected={activeListType === "bullet"}
                 >
                     <HandySvg src={bulletListIcon} />
                 </ToggleButton>
@@ -203,15 +261,18 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                 >
                     <HandySvg src={linkIcon} />
                 </ToggleButton>
-                <ToggleButton value="image" className={styles.toggleButton}>
-                    <InputFile
-                        id="upload image"
-                        onChange={addImage}
-                        wrapperClassName={styles.imageButton}
-                        labelClassName={styles.imageButton}
-                        labelChildren={<HandySvg src={imageIcon} />}
-                    />
-                </ToggleButton>
+                {isLoadingImage ? <MiniLoader className={styles.miniloader} /> : (
+                    <ToggleButton value="image" className={styles.toggleButton}>
+                        <InputFile
+                            id="upload image"
+                            onChange={addImage}
+                            wrapperClassName={styles.imageButton}
+                            labelClassName={styles.imageButton}
+                            labelChildren={<HandySvg src={imageIcon} />}
+                        />
+                    </ToggleButton>
+                )}
+
                 <div className={styles.emojiButton}>
                     <ToggleButton
                         value="smile"

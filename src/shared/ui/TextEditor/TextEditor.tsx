@@ -20,11 +20,13 @@ import styles from "./TextEditor.module.scss";
 interface TiptapEditorProps {
     onChange: (content: string) => void;
     value: string;
+    onErrorUploadImage: (error: string) => void;
 }
 
 export const TextEditor: React.FC<TiptapEditorProps> = ({
     onChange,
     value,
+    onErrorUploadImage,
 }) => {
     const editor = useEditor({
         extensions: [
@@ -58,7 +60,7 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
-                <ToolBar editor={editor} />
+                <ToolBar editor={editor} onErrorUploadImage={onErrorUploadImage} />
                 <EditorContent editor={editor} />
             </div>
             <div onClick={clearContent}>
