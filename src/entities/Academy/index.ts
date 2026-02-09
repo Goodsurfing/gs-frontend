@@ -4,3 +4,12 @@ export { LessonCard } from "./ui/Lesson/LessonCard/LessonCard";
 export { TextCard } from "./ui/Course/TextCard/TextCard";
 export { ExpertsCard } from "./ui/Course/ExpertsCard/ExpertsCard";
 export { CourseProgressBar } from "./ui/Course/CourseProgressBar/CourseProgressBar";
+
+export {
+    courseApi,
+    useGetCourseByIdQuery,
+    useLazyGetCoursesQuery,
+    useWatchLessonMutation,
+    useLazyGetReviewsLessonQuery,
+    useCreateReviewLessonMutation,
+} from "./api/courseApi";

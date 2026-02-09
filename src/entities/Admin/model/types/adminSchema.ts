@@ -166,6 +166,14 @@ export enum AdminSort {
     CountAcceptedApplicationDesc = "countAcceptedApplication:desc",
     CountCanceledApplicationAsc = "countCanceledApplication:asc",
     CountCanceledApplicationDesc = "countCanceledApplication:desc",
+    TakeCourseCountAsc = "takeCourseCount:asc",
+    TakeCourseCountDesc = "takeCourseCount:desc",
+    CompleteCourseCountAsc = "completeCourseCount:asc",
+    CompleteCourseCountDesc = "completeCourseCount:desc",
+    ReviewsCountAsc = "reviewsCount:asc",
+    ReviewsCountDesc = "reviewsCount:desc",
+    AverageRatingAsc = "averageRating:asc",
+    AverageRatingDesc = "averageRating:desc",
 }
 
 export interface GetAdminUserParams {

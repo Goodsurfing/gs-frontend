@@ -29,16 +29,18 @@ export interface AdminLessonsFields {
 }
 
 export interface GetAdminCourses {
-    id: number;
+    id: string;
     name: string;
-    authorId: string;
-    authorFirstName: string | null;
-    authorLastName: string | null;
-    isPublic: boolean;
-    totalStart: number;
-    totalEnd: number;
-    totalReviews: number;
-    averageReviews: number;
+    isActive: boolean;
+    takeCourseCount: number;
+    completeCourseCount: number;
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+    }
+    reviewsCount: number;
+    averageRating: number;
 }
 
 export interface GetAdminCoursesResponse {
@@ -50,7 +52,7 @@ export interface GetAdminCoursesParams {
     sort: AdminSort;
     authorFirstName: string;
     authorLastName: string;
-    courseName: string;
+    name: string;
     page: number;
     limit: number;
 }
@@ -58,21 +60,25 @@ export interface GetAdminCoursesParams {
 export interface GetAdminCourse {
     id: number;
     name: string;
-    duration: number;
-    image: Image | null;
-    aboutCourse: string;
+    description: string;
     aboutAuthor: string;
-    forWhom: string;
-    experts: GetAdminExpert[];
-    lessons: GetAdminLesson[];
-    authorId: string;
-    authorFirstName: string | null;
-    authorLastName: string | null;
-    isPublic: boolean;
-    totalStart: number;
-    totalEnd: number;
-    totalReviews: number;
-    averageReviews: number;
+    courseFor: string;
+    // duration: number;
+    // image: Image | null;
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        image: Image | null;
+    }
+
+    experts: GetAdminCourseExpert[];
+    // lessons: GetAdminLesson[];
+    isActive: boolean;
+    // totalStart: number;
+    // totalEnd: number;
+    // totalReviews: number;
+    // averageReviews: number;
 }
 
 export interface CreateAdminLesson {
@@ -93,21 +99,28 @@ export interface CreateAdminExpert {
     description: string;
 }
 
-export type GetAdminExpert = Omit<CreateAdminExpert, "imageId"> & {
-    id: number;
+export interface GetAdminCourseExpert {
+    id: string;
+    firstName: string;
+    lastName: string;
+    project: string;
+    country: string;
+    city: string;
     image: Image;
-};
+}
 
 export interface CreateAdminCourseRequest {
     name: string;
-    duration: number;
-    image: File | null;
-    aboutCourse: string;
+    description: string;
     aboutAuthor: string;
-    forWhom: string;
-    experts: CreateAdminExpert[];
-    lessons: CreateAdminLesson[];
-    isPublic: boolean;
+    courseFor: string;
+    isActive: boolean;
+    imageId: string;
+    authorId: string;
+    expertsIds: string[];
+
+    // duration: number;
+    // lessons: CreateAdminLesson[];
 }
 
 export interface UpdateAdminCourseRequest {
@@ -139,6 +152,32 @@ export interface GetAdminReviewsCoursesParams {
     limit: number;
 }
 
+export interface GetAdminReviewsLesson {
+    id: string;
+    rating: number;
+    description: string;
+    author: {
+        id: string;
+        email: string;
+        lastName: string;
+        firstName: string;
+    }
+    created: string;
+}
+
+export type GetAdminReviewLesson = GetAdminReviewsLesson;
+
+export interface GetAdminReviewsLessonResponse {
+    data: GetAdminReviewsLesson[];
+    pagination: Pagination;
+}
+
+export interface GetReviewsLessonRequest {
+    lessonId: string;
+    page: number;
+    limit: number;
+}
+
 export interface GetAdminReviewCourse {
     id: number;
     authorId: string;
@@ -151,11 +190,76 @@ export interface GetAdminReviewCourse {
 }
 
 export interface UpdateAdminReviewCourse {
-    description: string;
     rating: number;
+    description: string;
 }
 
 export interface UpdateAdminReviewCourseRequest {
     id: number;
     body: UpdateAdminReviewCourse;
 }
+
+// Lesson
+
+export interface GetAdminCourseLessons {
+    id: string;
+    name: string;
+    description: string;
+    duration: string;
+    averageRating: number;
+}
+export interface GetAdminCourseLessonsRequest {
+    courseId: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminCourseLessonsResponse {
+    data: GetAdminCourseLessons[];
+    pagination: Pagination;
+}
+
+export interface GetAdminCourseLesson {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+    sort: number;
+    duration: number;
+    image: Image;
+}
+
+export interface CreateAdminCourseLesson {
+    name: string;
+    url: string;
+    description: string;
+    courseId: string;
+    imageId: string;
+    duration: number;
+    sort: number;
+}
+
+// Experts
+
+export interface GetAdminExperts {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    project: string;
+}
+
+export interface GetAdminExpertsResponse {
+    data: GetAdminExperts[];
+    pagination: Pagination;
+}
+
+export interface GetAdminExpertsRequest {
+    sort: AdminSort;
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
+export type GetAdminExpert = GetAdminExperts;
