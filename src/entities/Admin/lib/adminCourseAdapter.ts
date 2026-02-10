@@ -1,70 +1,46 @@
 import {
-    AdminCourseFields, CreateAdminCourseRequest,
-    CreateAdminExpert, CreateAdminLesson, GetAdminCourse,
+    AdminCourseFields, CreateAdminCourseRequest, GetAdminCourse,
 } from "../model/types/adminCourseSchema";
 
 export const adminCourseAdapter = (data: GetAdminCourse): AdminCourseFields => {
     const {
-        name, image, aboutAuthor, aboutCourse,
-        duration, experts, forWhom, isPublic,
-        lessons,
+        name, description, aboutAuthor, courseFor, isActive,
+        author, experts,
     } = data;
 
-    let imageTemp = null;
-
-    if (image instanceof File) {
-        imageTemp = image;
-    }
+    const authorTemp = {
+        id: author.id,
+        firstName: author.firstName,
+        lastName: author.lastName,
+    };
 
     return {
         name,
-        image: imageTemp,
-        aboutCourse,
+        image: null, // TODO: add image
+        aboutCourse: description,
         aboutAuthor,
-        forWhom,
-        duration,
-        experts,
-        lessons,
-        isPublic,
+        forWhom: courseFor,
+        isPublic: isActive,
+        author: authorTemp,
+        experts: experts.map((expert) => expert.id),
     };
 };
 
 export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdminCourseRequest => {
     const {
         name, image, aboutAuthor, aboutCourse,
-        duration, experts, forWhom, isPublic,
-        lessons,
+        experts, forWhom, isPublic,
+        author,
     } = data;
-
-    let imageTemp = null;
-
-    if (image instanceof File) {
-        imageTemp = image;
-    }
-
-    const expertsTemp: CreateAdminExpert[] = experts.map((expert) => ({
-        name: expert.name,
-        description: expert.description,
-        image: expert.image instanceof File ? expert.image : null,
-    }));
-
-    const lessonsTemp: CreateAdminLesson[] = lessons.map((lesson) => ({
-        name: lesson.name,
-        description: lesson.description,
-        image: lesson.image instanceof File ? lesson.image : null,
-        duration: lesson.duration,
-        videoUrl: lesson.videoUrl,
-    }));
 
     return {
         name,
-        image: imageTemp,
-        aboutCourse,
+        imageId: image?.id ?? null,
+        description: aboutCourse,
         aboutAuthor,
-        forWhom,
-        duration,
-        experts: expertsTemp,
-        lessons: lessonsTemp,
-        isPublic,
+        courseFor: forWhom,
+        authorId: author?.id ?? "",
+        expertsIds: experts,
+        isActive: isPublic,
     };
 };

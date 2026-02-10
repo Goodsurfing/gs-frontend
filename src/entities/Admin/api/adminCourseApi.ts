@@ -2,11 +2,14 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     CreateAdminCourseLesson,
-    CreateAdminCourseRequest, GetAdminCourse, GetAdminCourseLesson, GetAdminCourseLessonsRequest,
+    CreateAdminCourseRequest, CreateAdminExpert, CreateAdminExpertUserRequest, GetAdminCourse,
+    GetAdminCourseLesson, GetAdminCourseLessonsRequest,
     GetAdminCourseLessonsResponse, GetAdminCoursesParams,
     GetAdminCoursesResponse, GetAdminExpert, GetAdminExpertsRequest, GetAdminExpertsResponse,
     GetAdminReviewLesson, GetAdminReviewsCoursesParams,
     GetAdminReviewsCoursesResponse, GetReviewsLessonRequest, UpdateAdminCourseRequest,
+    UpdateAdminExpertRequest,
+    UpdateAdminExpertUserRequest,
     UpdateAdminReviewCourseRequest,
 } from "../model/types/adminCourseSchema";
 
@@ -154,7 +157,23 @@ export const adminCourseApi = createApi({
             }),
             providesTags: ["expert"],
         }),
-        createAdminExpert: build.mutation<void, void>({
+        createAdminExpertUser: build.mutation<void, CreateAdminExpertUserRequest>({
+            query: (body) => ({
+                url: "expert/create-with-user",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        updateAdminExpertUser: build.mutation<void, UpdateAdminExpertUserRequest>({
+            query: ({ expertId, body }) => ({
+                url: `expert/edit-with-user/${expertId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        createAdminExpert: build.mutation<void, CreateAdminExpert>({
             query: (body) => ({
                 url: "expert/create",
                 method: "POST",
@@ -162,16 +181,17 @@ export const adminCourseApi = createApi({
             }),
             invalidatesTags: ["expert"],
         }),
-        updateAdminExpert: build.mutation<void, void>({
-            query: () => ({
-                url: "expert/edit/{id}",
+        updateAdminExpert: build.mutation<void, UpdateAdminExpertRequest>({
+            query: ({ expertId, body }) => ({
+                url: `expert/edit/${expertId}`,
                 method: "PATCH",
+                body,
             }),
             invalidatesTags: ["expert"],
         }),
-        deleteAdminExpert: build.mutation<void, void>({
-            query: () => ({
-                url: "expert/{id}",
+        deleteAdminExpert: build.mutation<void, string>({
+            query: (expertId) => ({
+                url: `expert/delete/${expertId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["expert"],
@@ -199,4 +219,6 @@ export const {
     useCreateAdminExpertMutation,
     useUpdateAdminExpertMutation,
     useDeleteAdminExpertMutation,
+    useCreateAdminExpertUserMutation,
+    useUpdateAdminExpertUserMutation,
 } = adminCourseApi;

@@ -35,6 +35,8 @@ import {
     GetAdminTransfersResponse,
     GetAdminUserParams,
     GetAdminUserResponse,
+    GetAdminUsersParams,
+    GetAdminUsersResponse,
     GetHouseRequest,
     GetPublicSkillRequest,
     SearchUsersParams,
@@ -806,6 +808,14 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["offer"],
         }),
+        getAdminSearchUsers: build.query<GetAdminUsersResponse[], Partial<GetAdminUsersParams>>({
+            query: (params) => ({
+                url: "user/search",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["user"],
+        }),
     }),
 });
 
@@ -893,4 +903,5 @@ export const {
     useUpdateAdminVacancyFinishingTouchesMutation,
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
+    useLazyGetAdminSearchUsersQuery,
 } = adminApi;

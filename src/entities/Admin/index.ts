@@ -19,6 +19,7 @@ export type {
     UpdateAdminVacancyConditions,
     UpdateAdminVacancyDescription,
     UpdateAdminVacancyFinishingTouches,
+    GetAdminUsersResponse,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -122,6 +123,7 @@ export {
     useGetGoodsurfingTodayQuery,
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
+    useLazyGetAdminSearchUsersQuery,
 } from "./api/adminApi";
 
 export {
@@ -132,13 +134,25 @@ export {
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
     useLazyGetAdminReviewsCoursesQuery,
-    useGetAdminReviewCourseByIdQuery,
-    useUpdateAdminReviewCourseMutation,
-    useDeleteAdminReviewCourseMutation,
+    useGetAdminReviewLessonByIdQuery,
+    useUpdateAdminReviewLessonMutation,
+    useDeleteAdminReviewLessonMutation,
+    useLazyGetAdminCourseLessonsQuery,
+    useGetAdminCourseLessonQuery,
+    useCreateAdminCourseLessonMutation,
+    useUpdateAdminCourseLessonMutation,
+    useDeleteAdminCourseLessonMutation,
+    useLazyGetCourseExpertsQuery,
+    useGetCourseExpertByIdQuery,
+    useCreateAdminExpertMutation,
+    useUpdateAdminExpertMutation,
+    useDeleteAdminExpertMutation,
+    useCreateAdminExpertUserMutation,
+    useUpdateAdminExpertUserMutation,
 } from "./api/adminCourseApi";
 
 export type {
-    AdminCourseFields, AdminExpertFields, AdminLessonsFields,
+    AdminCourseFields, AdminCourseAuthorFileds, AdminExpertFields, AdminLessonsFields,
     GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
     GetAdminReviewCourse,
 } from "./model/types/adminCourseSchema";

@@ -34,6 +34,7 @@ interface AdminFiltersTableProps<T extends Record<string, any> = {}> {
     onApply: () => void;
     disabled?: boolean;
     customFields: CustomFilterField<keyof T & string>[];
+    textButton?: string;
 }
 
 export const AdminFiltersTable = <T extends Record<string, any> = {}>({
@@ -42,6 +43,7 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
     onApply,
     disabled = false,
     customFields = [],
+    textButton = "Фильтры",
 }: AdminFiltersTableProps<T>) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [localFilters, setLocalFilters] = useState<Partial<T>>(filters);
@@ -96,7 +98,7 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
                     },
                 }}
             >
-                Фильтры
+                {textButton}
             </Button>
 
             <Menu

@@ -15,13 +15,16 @@ import {
 } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { AdminExpertFormModal } from "../AdminExpertFormModal/AdminExpertFormModal";
-import styles from "./AdminCourseForm.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
+import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
+import styles from "./AdminCourseForm.module.scss";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 interface AdminCourseFormProps {
     className?: string;
     course?: GetAdminCourse;
+    expertsList: AdminExpertFields[];
     onSubmit?: (data: AdminCourseFields) => void;
     isLoading: boolean;
 }
@@ -32,15 +35,14 @@ const defaultValues: DefaultValues<AdminCourseFields> = {
     aboutAuthor: "",
     aboutCourse: "",
     forWhom: "",
-    duration: 0,
     isPublic: false,
     experts: [],
-    lessons: [],
+    author: null,
 };
 
 export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     const {
-        className, course, onSubmit, isLoading,
+        className, course, onSubmit, isLoading, expertsList,
     } = props;
 
     const form = useForm<AdminCourseFields>({
@@ -73,16 +75,6 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
     const [editingLessonIndex, setEditingLessonIndex] = useState<number | null>(null);
     const [editingLessonData, setEditingLessonData] = useState<AdminLessonsFields | null>(null);
-
-    const {
-        fields: lessonFields,
-        append: appendLesson,
-        remove: removeLesson,
-        update: updateLesson,
-    } = useFieldArray({
-        control,
-        name: "lessons",
-    });
 
     useEffect(() => {
         if (course) {
@@ -162,30 +154,30 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     };
 
     const handleEditLesson = (index: number) => {
-        const lesson = lessonFields[index];
-        setEditingLessonIndex(index);
-        setEditingLessonData({
-            name: lesson.name,
-            description: lesson.description,
-            duration: lesson.duration,
-            image: lesson.image,
-            videoUrl: lesson.videoUrl,
-        });
+        // const lesson = lessonFields[index];
+        // setEditingLessonIndex(index);
+        // setEditingLessonData({
+        //     name: lesson.name,
+        //     description: lesson.description,
+        //     duration: lesson.duration,
+        //     image: lesson.image,
+        //     videoUrl: lesson.videoUrl,
+        // });
         setIsLessonModalOpen(true);
     };
 
     const handleLessonSubmit = (data: AdminLessonsFields) => {
         if (editingLessonIndex !== null) {
-            updateLesson(editingLessonIndex, data);
+            // updateLesson(editingLessonIndex, data);
         } else {
-            appendLesson(data);
+            // appendLesson(data);
         }
         setIsLessonModalOpen(false);
     };
 
     const handleDeleteLesson = (index: number) => {
         if (window.confirm("Вы уверены, что хотите удалить этот урок?")) {
-            removeLesson(index);
+            // removeLesson(index);
         }
     };
 
@@ -217,6 +209,13 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             className={styles.error}
                         />
                     )}
+                    <Controller
+                        name="author"
+                        control={control}
+                        render={({ field }) => (
+                            <AdminUsersSearchForm value={field.value} onChange={field.onChange} />
+                        )}
+                    />
                     <TextAreaControl
                         control={control}
                         name="aboutCourse"
@@ -266,8 +265,24 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <ImageDropzone
-                                    value={value}
-                                    onChange={onChange}
+                                    value={value?.contentUrl}
+                                    onChange={async (file) => {
+                                        if (file) {
+                                            await uploadFile(file.name, file)
+                                                .then((result) => {
+                                                    if (result) {
+                                                        onChange({
+                                                            id: result.id,
+                                                            contentUrl: result.contentUrl,
+                                                            thumbnails: result.thumbnails,
+                                                        });
+                                                    }
+                                                })
+                                                .catch(() => {
+                                                    onChange(null);
+                                                });
+                                        }
+                                    }}
                                     error={!!errors.image}
                                     accept={{
                                         "image/jpeg": [".jpeg", ".jpg"],
@@ -306,7 +321,9 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                             <div className={styles.expertImageWrapper}>
                                                 {expert.image ? (
                                                     <img
-                                                        src={typeof expert.image === "string" ? expert.image : URL.createObjectURL(expert.image)}
+                                                        src={
+                                                            getMediaContent(expert.image.contentUrl)
+                                                        }
                                                         alt={expert.name}
                                                         className={styles.expertImage}
                                                     />
@@ -369,7 +386,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             </Button>
                         </div>
 
-                        {lessonFields.length > 0 ? (
+                        {/* {lessonFields.length > 0 ? (
                             <div className={styles.lessonsList}>
                                 {lessonFields.map((lesson, index) => {
                                     const description = lesson.description || "Описание отсутствует";
@@ -461,7 +478,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                     Еще нет добавленных уроков
                                 </p>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </div>
                 <div className={styles.formActions}>

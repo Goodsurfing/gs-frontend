@@ -2,29 +2,34 @@ import { Pagination } from "@/types/api/pagination";
 import { AdminSort } from "./adminSchema";
 import { Image } from "@/types/media";
 
+export interface AdminCourseAuthorFileds {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+}
+
 export interface AdminCourseFields {
     name: string;
-    duration: number;
-    image: File | string | null;
+    image: Image | null;
     aboutCourse: string;
     aboutAuthor: string;
     forWhom: string;
     experts: AdminExpertFields[];
-    lessons: AdminLessonsFields[];
     isPublic: boolean;
+    author: AdminCourseAuthorFileds | null;
 }
 
 export interface AdminExpertFields {
     name: string;
     description: string;
-    image: File | string | null;
+    image: Image | null;
 }
 
 export interface AdminLessonsFields {
     name: string;
     description: string;
     duration: number;
-    image: File | string | null;
+    image: Image | null;
     videoUrl: string;
 }
 
@@ -63,18 +68,16 @@ export interface GetAdminCourse {
     description: string;
     aboutAuthor: string;
     courseFor: string;
-    // duration: number;
-    // image: Image | null;
+    isActive: boolean;
     author: {
         id: string;
         firstName: string;
         lastName: string;
         image: Image | null;
     }
-
     experts: GetAdminCourseExpert[];
+    // duration: number;
     // lessons: GetAdminLesson[];
-    isActive: boolean;
     // totalStart: number;
     // totalEnd: number;
     // totalReviews: number;
@@ -93,12 +96,6 @@ export type GetAdminLesson = CreateAdminLesson & {
     id: number;
 };
 
-export interface CreateAdminExpert {
-    image: File | null;
-    name: string;
-    description: string;
-}
-
 export interface GetAdminCourseExpert {
     id: string;
     firstName: string;
@@ -115,7 +112,7 @@ export interface CreateAdminCourseRequest {
     aboutAuthor: string;
     courseFor: string;
     isActive: boolean;
-    imageId: string;
+    imageId: string | null;
     authorId: string;
     expertsIds: string[];
 
@@ -243,10 +240,11 @@ export interface CreateAdminCourseLesson {
 
 export interface GetAdminExperts {
     id: string;
-    email: string;
     firstName: string;
     lastName: string;
     project: string;
+    country: string;
+    city: string;
 }
 
 export interface GetAdminExpertsResponse {
@@ -262,4 +260,42 @@ export interface GetAdminExpertsRequest {
     lastName: string;
 }
 
-export type GetAdminExpert = GetAdminExperts;
+export interface GetAdminExpert {
+    id: string;
+    firstName: string;
+    lastName: string;
+    project: string;
+    country: string;
+    city: string;
+    isRegisterUser: boolean;
+    image: Image;
+}
+
+export interface CreateAdminExpertUserRequest {
+    userId: string;
+    project: string;
+}
+
+export interface UpdateAdminExpertUser {
+    userId: string;
+    project: string;
+}
+
+export interface UpdateAdminExpertUserRequest {
+    expertId: string;
+    body: UpdateAdminExpertUser;
+}
+
+export interface CreateAdminExpert {
+    firstName: string;
+    lastName: string;
+    project: string;
+    imageId: string | null;
+    country: string;
+    city: string;
+}
+
+export interface UpdateAdminExpertRequest {
+    expertId: string;
+    body: CreateAdminExpert;
+}

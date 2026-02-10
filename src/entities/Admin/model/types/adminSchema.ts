@@ -647,3 +647,18 @@ export interface UpdateAdminVacancyFinishingTouchesRequest {
     offerId: string;
     body: UpdateAdminVacancyFinishingTouches;
 }
+
+// Search Users
+
+export interface GetAdminUsersParams {
+    id: string;
+    email: string;
+    limit: number;
+}
+
+export interface GetAdminUsersResponse {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+}
