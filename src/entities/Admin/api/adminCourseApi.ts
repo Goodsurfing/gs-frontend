@@ -142,7 +142,7 @@ export const adminCourseApi = createApi({
             invalidatesTags: ["lesson"],
         }),
         // Experts
-        getCourseExperts: build.query<GetAdminExpertsResponse, GetAdminExpertsRequest>({
+        getCourseExperts: build.query<GetAdminExpertsResponse, Partial<GetAdminExpertsRequest>>({
             query: (params) => ({
                 url: "expert/list",
                 method: "GET",
@@ -215,6 +215,7 @@ export const {
     useUpdateAdminCourseLessonMutation,
     useDeleteAdminCourseLessonMutation,
     useLazyGetCourseExpertsQuery,
+    useGetCourseExpertsQuery,
     useGetCourseExpertByIdQuery,
     useCreateAdminExpertMutation,
     useUpdateAdminExpertMutation,

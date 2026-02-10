@@ -1,5 +1,6 @@
 import {
-    AdminCourseFields, CreateAdminCourseRequest, GetAdminCourse,
+    AdminCourseFields, AdminExpertFields, CreateAdminCourseRequest, GetAdminCourse,
+    GetAdminExperts,
 } from "../model/types/adminCourseSchema";
 
 export const adminCourseAdapter = (data: GetAdminCourse): AdminCourseFields => {
@@ -22,7 +23,7 @@ export const adminCourseAdapter = (data: GetAdminCourse): AdminCourseFields => {
         forWhom: courseFor,
         isPublic: isActive,
         author: authorTemp,
-        experts: experts.map((expert) => expert.id),
+        experts,
     };
 };
 
@@ -40,7 +41,26 @@ export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdmi
         aboutAuthor,
         courseFor: forWhom,
         authorId: author?.id ?? "",
-        expertsIds: experts,
+        expertsIds: experts.map((expert) => expert.id),
         isActive: isPublic,
+    };
+};
+
+// Experts
+
+export const adminCourseExpertsAdapter = (data: GetAdminExperts): AdminExpertFields => {
+    const {
+        id, firstName, lastName,
+        city, country, project, image,
+    } = data;
+
+    return {
+        id,
+        firstName,
+        lastName,
+        city,
+        country,
+        project,
+        image,
     };
 };

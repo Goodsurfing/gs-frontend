@@ -145,6 +145,7 @@ export {
     useLazyGetCourseExpertsQuery,
     useGetCourseExpertByIdQuery,
     useCreateAdminExpertMutation,
+    useGetCourseExpertsQuery,
     useUpdateAdminExpertMutation,
     useDeleteAdminExpertMutation,
     useCreateAdminExpertUserMutation,

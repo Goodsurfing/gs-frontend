@@ -14,17 +14,17 @@ import {
     AdminCourseFields, AdminExpertFields, AdminLessonsFields, GetAdminCourse,
 } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
-import { AdminExpertFormModal } from "../AdminExpertFormModal/AdminExpertFormModal";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
 import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 import styles from "./AdminCourseForm.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
+import { getFullName } from "@/shared/lib/getFullName";
+import { AdminExpertSelectorModal } from "../AdminExpertSelectorModal/AdminExpertSelectorModal";
 
 interface AdminCourseFormProps {
     className?: string;
     course?: GetAdminCourse;
-    expertsList: AdminExpertFields[];
     onSubmit?: (data: AdminCourseFields) => void;
     isLoading: boolean;
 }
@@ -42,7 +42,7 @@ const defaultValues: DefaultValues<AdminCourseFields> = {
 
 export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     const {
-        className, course, onSubmit, isLoading, expertsList,
+        className, course, onSubmit, isLoading,
     } = props;
 
     const form = useForm<AdminCourseFields>({
@@ -58,15 +58,13 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
 
     const textPublic = isPublicValue ? "Распубликовать" : "Опубликовать";
 
-    const [isExpertModalOpen, setIsExpertModalOpen] = useState(false);
-    const [editingExpertIndex, setEditingExpertIndex] = useState<number | null>(null);
-    const [editingExpertData, setEditingExpertData] = useState<AdminExpertFields | null>(null);
+    // Состояние для модального окна выбора экспертов
+    const [isExpertSelectorOpen, setIsExpertSelectorOpen] = useState(false);
 
     const {
         fields: expertFields,
-        append: appendExpert,
         remove: removeExpert,
-        update: updateExpert,
+        replace: replaceExperts,
     } = useFieldArray({
         control,
         name: "experts",
@@ -80,24 +78,17 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         if (course) {
             reset({
                 name: course.name || "",
-                aboutCourse: course.aboutCourse || "",
+                aboutCourse: course.description || "",
                 aboutAuthor: course.aboutAuthor || "",
-                forWhom: course.forWhom || "",
-                image: course.image?.contentUrl || null,
-                duration: course.duration || 0,
-                experts: course.experts?.map((expert) => ({
-                    name: expert.name || "",
-                    description: expert.description || "",
-                    image: expert.image?.contentUrl || null,
-                })) || [],
-                lessons: course.lessons?.map((lesson) => ({
-                    name: lesson.name || "",
-                    description: lesson.description || "",
-                    duration: lesson.duration || 0,
-                    image: lesson.image || null,
-                    videoUrl: lesson.videoUrl || "",
-                })) || [],
-                isPublic: course.isPublic,
+                forWhom: course.courseFor || "",
+                image: course.image,
+                author: {
+                    id: course.author.id,
+                    firstName: course.author.firstName,
+                    lastName: course.author.lastName,
+                },
+                isPublic: course.isActive,
+                experts: course.experts || [],
             });
         } else {
             reset(defaultValues);
@@ -108,42 +99,25 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         onSubmit?.(data);
     };
 
-    const handleAddExpert = () => {
-        setEditingExpertIndex(null);
-        setEditingExpertData(null);
-        setIsExpertModalOpen(true);
+    // Обработчик выбора экспертов из модального окна
+    const handleExpertsChange = (selectedExperts: AdminExpertFields[]) => {
+        // Заменяем весь массив экспертов на выбранные
+        replaceExperts(selectedExperts);
     };
 
-    const handleEditExpert = (index: number) => {
-        const expert = expertFields[index];
-        setEditingExpertIndex(index);
-        setEditingExpertData({
-            name: expert.name,
-            description: expert.description,
-            image: expert.image,
-        });
-        setIsExpertModalOpen(true);
+    // Открытие модального окна выбора экспертов
+    const handleOpenExpertSelector = () => {
+        setIsExpertSelectorOpen(true);
     };
 
-    const handleExpertSubmit = (data: AdminExpertFields) => {
-        if (editingExpertIndex !== null) {
-            updateExpert(editingExpertIndex, data);
-        } else {
-            appendExpert(data);
-        }
-        setIsExpertModalOpen(false);
+    const handleCloseExpertSelector = () => {
+        setIsExpertSelectorOpen(false);
     };
 
     const handleDeleteExpert = (index: number) => {
-        if (window.confirm("Вы уверены, что хотите удалить этого эксперта?")) {
+        if (window.confirm("Вы уверены, что хотите удалить этого эксперта из курса?")) {
             removeExpert(index);
         }
-    };
-
-    const handleCloseExpertModal = () => {
-        setIsExpertModalOpen(false);
-        setEditingExpertIndex(null);
-        setEditingExpertData(null);
     };
 
     // Уроки
@@ -303,16 +277,16 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                 color="GREEN"
                                 size="SMALL"
                                 variant="OUTLINE"
-                                onClick={handleAddExpert}
+                                onClick={handleOpenExpertSelector}
                             >
-                                + Добавить эксперта
+                                + Выбрать экспертов
                             </Button>
                         </div>
 
                         {expertFields.length > 0 ? (
                             <div className={styles.expertsGrid}>
                                 {expertFields.map((expert, index) => {
-                                    const description = expert.description || "Описание отсутствует";
+                                    const description = expert.project || "Описание отсутствует";
                                     const formattedDescription = description.length > 100
                                         ? `${description.slice(0, 100)}...`
                                         : description;
@@ -322,9 +296,9 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                 {expert.image ? (
                                                     <img
                                                         src={
-                                                            getMediaContent(expert.image.contentUrl)
+                                                            getMediaContent(expert.image)
                                                         }
-                                                        alt={expert.name}
+                                                        alt={`${expert.firstName} ${expert.lastName}`}
                                                         className={styles.expertImage}
                                                     />
                                                 ) : (
@@ -334,21 +308,22 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                 )}
                                             </div>
                                             <div className={styles.expertInfo}>
-                                                <h4 className={styles.expertName}>{expert.name}</h4>
+                                                <h4 className={styles.expertName}>
+                                                    {getFullName(
+                                                        expert.firstName,
+                                                        expert.lastName,
+                                                    )}
+                                                </h4>
                                                 <p className={styles.expertDescription}>
                                                     {formattedDescription}
                                                 </p>
+                                                <div className={styles.expertLocation}>
+                                                    {expert.city}
+                                                    ,
+                                                    {expert.country}
+                                                </div>
                                             </div>
                                             <div className={styles.expertActions}>
-                                                <Button
-                                                    type="button"
-                                                    color="BLUE"
-                                                    size="SMALL"
-                                                    variant="TEXT"
-                                                    onClick={() => handleEditExpert(index)}
-                                                >
-                                                    Редактировать
-                                                </Button>
                                                 <Button
                                                     type="button"
                                                     color="RED"
@@ -356,7 +331,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                     variant="TEXT"
                                                     onClick={() => handleDeleteExpert(index)}
                                                 >
-                                                    Удалить
+                                                    Удалить из курса
                                                 </Button>
                                             </div>
                                         </div>
@@ -368,6 +343,16 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                 <p className={styles.noExpertsText}>
                                     Еще нет добавленных экспертов
                                 </p>
+                                <Button
+                                    type="button"
+                                    color="GREEN"
+                                    size="SMALL"
+                                    variant="FILL"
+                                    onClick={handleOpenExpertSelector}
+                                    className={styles.noExpertsButton}
+                                >
+                                    Выбрать экспертов
+                                </Button>
                             </div>
                         )}
                     </div>
@@ -502,13 +487,16 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     </Button>
                 </div>
             </form>
-            <AdminExpertFormModal
-                isOpen={isExpertModalOpen}
-                onClose={handleCloseExpertModal}
-                onSubmit={handleExpertSubmit}
-                initialData={editingExpertData}
-                isLoading={false}
+
+            {/* Модальное окно выбора экспертов */}
+            <AdminExpertSelectorModal
+                isOpen={isExpertSelectorOpen}
+                onClose={handleCloseExpertSelector}
+                selectedExperts={expertFields}
+                onExpertsChange={handleExpertsChange}
             />
+
+            {/* Модальное окно добавления/редактирования урока */}
             <AdminLessonFormModal
                 isOpen={isLessonModalOpen}
                 onClose={handleCloseLessonModal}

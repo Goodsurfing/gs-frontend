@@ -20,8 +20,12 @@ export interface AdminCourseFields {
 }
 
 export interface AdminExpertFields {
-    name: string;
-    description: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    project: string;
+    country: string;
+    city: string;
     image: Image | null;
 }
 
@@ -63,8 +67,9 @@ export interface GetAdminCoursesParams {
 }
 
 export interface GetAdminCourse {
-    id: number;
+    id: string;
     name: string;
+    image: Image | null;
     description: string;
     aboutAuthor: string;
     courseFor: string;
@@ -245,6 +250,7 @@ export interface GetAdminExperts {
     project: string;
     country: string;
     city: string;
+    image: Image | null;
 }
 
 export interface GetAdminExpertsResponse {
