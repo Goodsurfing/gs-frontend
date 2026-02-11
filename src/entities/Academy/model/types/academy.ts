@@ -46,7 +46,7 @@ export interface Courses {
     videoCount: number;
     image: Image;
     author: {
-        firstName: string;
+        firsName: string;
         lastName: string;
     }
 }

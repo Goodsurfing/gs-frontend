@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { LessonsList } from "@/widgets/Academy";
 
 import {
-    Course, CourseProgressBar, ExpertsCard, TextCard,
+    CourseProgressBar, ExpertsCard, GetCourse, TextCard,
 } from "@/entities/Academy";
 
 import styles from "./CourseContent.module.scss";
@@ -12,7 +12,7 @@ import Section from "@/shared/ui/Section/Section";
 
 interface CourseContentProps {
     className?: string;
-    course: Course;
+    course: GetCourse;
 }
 
 export const CourseContent: FC<CourseContentProps> = (props) => {

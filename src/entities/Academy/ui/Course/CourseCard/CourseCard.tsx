@@ -50,8 +50,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
             <div className={styles.content}>
                 <div className={styles.info}>
                     <h3 className={styles.title}>
-                        Волонтерский лагерь «онлайн»: как вести видео блог и
-                        управлять соцсетями
+                        {title}
                     </h3>
                     <div className={styles.indicators}>
                         <div className={styles.gray}>
@@ -60,8 +59,12 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                             видео
                         </div>
                         <div className={styles.gray}>•</div>
-                        <div className={styles.gray}>{duration}</div>
-                        <div className={styles.gray}>•</div>
+                        {duration !== "" && (
+                            <>
+                                <div className={styles.gray}>{duration}</div>
+                                <div className={styles.gray}>•</div>
+                            </>
+                        )}
                         <div className={styles.rating}>
                             <img src={star} alt="star-icon" />
                             <span>{rating}</span>
@@ -69,6 +72,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                     </div>
                     <span className={styles.gray}>
                         Автор:
+                        {" "}
                         {author}
                     </span>
                     <p className={styles.description}>{description}</p>

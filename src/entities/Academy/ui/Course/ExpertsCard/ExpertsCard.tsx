@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from "react";
 
-import { Exptert } from "@/entities/Academy/model/types/academy";
+import { GetExpert } from "@/entities/Academy";
 
 import Section from "@/shared/ui/Section/Section";
 import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
@@ -8,7 +8,7 @@ import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 import styles from "./ExpertsCard.module.scss";
 
 interface ExpertsCardProps {
-    experts: Exptert[];
+    experts: GetExpert[];
 }
 
 export const ExpertsCard: FC<ExpertsCardProps> = (props) => {
