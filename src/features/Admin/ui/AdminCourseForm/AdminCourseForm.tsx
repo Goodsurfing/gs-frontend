@@ -11,16 +11,25 @@ import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
 import {
-    AdminCourseFields, AdminExpertFields, AdminLessonsFields, GetAdminCourse,
+    adminCourseAdapter,
+    AdminCourseFields, adminCourseLessonsAdapter, AdminExpertFields,
+    AdminLessonFields, GetAdminCourse,
 } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
 import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
-import styles from "./AdminCourseForm.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getFullName } from "@/shared/lib/getFullName";
 import { AdminExpertSelectorModal } from "../AdminExpertSelectorModal/AdminExpertSelectorModal";
+import {
+    useLazyGetAdminCourseLessonsQuery,
+    useCreateAdminCourseLessonMutation,
+    useUpdateAdminCourseLessonMutation,
+    useDeleteAdminCourseLessonMutation,
+    useLazyGetAdminCourseLessonQuery,
+} from "@/entities/Admin/api/adminCourseApi";
+import styles from "./AdminCourseForm.module.scss";
 
 interface AdminCourseFormProps {
     className?: string;
@@ -37,6 +46,7 @@ const defaultValues: DefaultValues<AdminCourseFields> = {
     forWhom: "",
     isPublic: false,
     experts: [],
+    lessons: [],
     author: null,
 };
 
@@ -58,7 +68,6 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
 
     const textPublic = isPublicValue ? "Распубликовать" : "Опубликовать";
 
-    // Состояние для модального окна выбора экспертов
     const [isExpertSelectorOpen, setIsExpertSelectorOpen] = useState(false);
 
     const {
@@ -70,42 +79,57 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         name: "experts",
     });
 
+    const {
+        fields: lessonFields,
+    } = useFieldArray({
+        control,
+        name: "lessons",
+    });
+
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
-    const [editingLessonIndex, setEditingLessonIndex] = useState<number | null>(null);
-    const [editingLessonData, setEditingLessonData] = useState<AdminLessonsFields | null>(null);
+    const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
+    const [editingLessonData, setEditingLessonData] = useState<AdminLessonFields | null>(null);
+
+    const [getCourseLessons] = useLazyGetAdminCourseLessonsQuery();
+    const [getCourseLesson] = useLazyGetAdminCourseLessonQuery();
+    const [createLesson, { isLoading: isCreatingLesson }] = useCreateAdminCourseLessonMutation();
+    const [updateLessonMutation,
+        { isLoading: isUpdatingLesson }] = useUpdateAdminCourseLessonMutation();
+    const [deleteLesson] = useDeleteAdminCourseLessonMutation();
 
     useEffect(() => {
         if (course) {
-            reset({
-                name: course.name || "",
-                aboutCourse: course.description || "",
-                aboutAuthor: course.aboutAuthor || "",
-                forWhom: course.courseFor || "",
-                image: course.image,
-                author: {
-                    id: course.author.id,
-                    firstName: course.author.firstName,
-                    lastName: course.author.lastName,
-                },
-                isPublic: course.isActive,
-                experts: course.experts || [],
+            reset(adminCourseAdapter(course, []));
+
+            getCourseLessons({
+                courseId: course.id,
+                page: 1,
+                limit: 100,
+            }).then((result) => {
+                if (result.data?.data) {
+                    const lessonsData = result.data.data.map(
+                        (lesson) => (adminCourseLessonsAdapter(lesson)),
+                    );
+                    reset((prev) => ({
+                        ...prev,
+                        lessons: lessonsData,
+                    }));
+                }
             });
         } else {
             reset(defaultValues);
         }
-    }, [course, reset]);
+    }, [course, reset, getCourseLessons]);
 
     const onSubmitForm: SubmitHandler<AdminCourseFields> = (data) => {
         onSubmit?.(data);
     };
 
-    // Обработчик выбора экспертов из модального окна
     const handleExpertsChange = (selectedExperts: AdminExpertFields[]) => {
         // Заменяем весь массив экспертов на выбранные
         replaceExperts(selectedExperts);
     };
 
-    // Открытие модального окна выбора экспертов
     const handleOpenExpertSelector = () => {
         setIsExpertSelectorOpen(true);
     };
@@ -115,6 +139,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     };
 
     const handleDeleteExpert = (index: number) => {
+        // eslint-disable-next-line no-alert
         if (window.confirm("Вы уверены, что хотите удалить этого эксперта из курса?")) {
             removeExpert(index);
         }
@@ -122,43 +147,207 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
 
     // Уроки
     const handleAddLesson = () => {
-        setEditingLessonIndex(null);
+        setEditingLessonId(null);
         setEditingLessonData(null);
         setIsLessonModalOpen(true);
     };
 
-    const handleEditLesson = (index: number) => {
-        // const lesson = lessonFields[index];
-        // setEditingLessonIndex(index);
-        // setEditingLessonData({
-        //     name: lesson.name,
-        //     description: lesson.description,
-        //     duration: lesson.duration,
-        //     image: lesson.image,
-        //     videoUrl: lesson.videoUrl,
-        // });
+    const handleEditLesson = async (lessonId: string) => {
+        setEditingLessonId(lessonId);
+        try {
+            const result = await getCourseLesson(lessonId).unwrap();
+            if (result) {
+                const l = result;
+                setEditingLessonData({
+                    id: l.id,
+                    name: l.name,
+                    description: l.description,
+                    duration: l.duration || 0,
+                    image: l.image || null,
+                    videoUrl: l.url || "",
+                    sort: l.sort ?? 0,
+                });
+            } else {
+                setEditingLessonData(null);
+            }
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error("Error loading lesson:", error);
+            setEditingLessonData(null);
+        }
+
         setIsLessonModalOpen(true);
     };
 
-    const handleLessonSubmit = (data: AdminLessonsFields) => {
-        if (editingLessonIndex !== null) {
-            // updateLesson(editingLessonIndex, data);
-        } else {
-            // appendLesson(data);
+    const handleLessonSubmit = async (data: AdminLessonFields) => {
+        if (!course) return;
+
+        try {
+            if (editingLessonId !== null) {
+                await updateLessonMutation({
+                    id: editingLessonId,
+                    body: {
+                        name: data.name,
+                        description: data.description,
+                        duration: data.duration,
+                        url: data.videoUrl,
+                        courseId: course.id,
+                        imageId: data.image?.id || null,
+                        sort: data.sort,
+                    },
+                }).unwrap();
+            } else {
+                await createLesson({
+                    name: data.name,
+                    description: data.description,
+                    duration: data.duration,
+                    url: data.videoUrl,
+                    courseId: course.id,
+                    imageId: data.image?.id || "",
+                    sort: data.sort ?? lessonFields.length,
+                }).unwrap();
+            }
+
+            setIsLessonModalOpen(false);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error("Error saving lesson:", error);
         }
-        setIsLessonModalOpen(false);
     };
 
-    const handleDeleteLesson = (index: number) => {
+    const handleDeleteLesson = async (lessonId: string) => {
+        // eslint-disable-next-line no-alert
         if (window.confirm("Вы уверены, что хотите удалить этот урок?")) {
-            // removeLesson(index);
+            try {
+                if (lessonId) {
+                    await deleteLesson(lessonId).unwrap();
+                }
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error("Error deleting lesson:", error);
+            }
         }
     };
 
     const handleCloseLessonModal = () => {
         setIsLessonModalOpen(false);
-        setEditingLessonIndex(null);
+        setEditingLessonId(null);
         setEditingLessonData(null);
+    };
+
+    const renderLessonsSection = () => {
+        if (!course) return null;
+
+        return (
+            <div className={styles.lessonsSection}>
+                <div className={styles.sectionHeader}>
+                    <h3 className={styles.sectionTitle}>Уроки курса</h3>
+                    <Button
+                        type="button"
+                        color="GREEN"
+                        size="SMALL"
+                        variant="OUTLINE"
+                        onClick={handleAddLesson}
+                    >
+                        + Добавить урок
+                    </Button>
+                </div>
+
+                {lessonFields.length > 0 ? (
+                    <div className={styles.lessonsList}>
+                        {lessonFields.map((lesson) => {
+                            const description = lesson.description || "Описание отсутствует";
+                            const formattedDescription = description.length > 150
+                                ? `${description.slice(0, 150)}...`
+                                : description;
+                            const durationText = lesson.duration
+                                ? `${lesson.duration} мин`
+                                : "Продолжительность не указана";
+
+                            return (
+                                <div key={lesson.id} className={styles.lessonCard}>
+                                    <div className={styles.lessonContent}>
+                                        {/* <div className={styles.lessonImageWrapper}>
+                                            {lesson.image ? (
+                                                <img
+                                                    src={getMediaContent(
+                                                        lesson.image.contentUrl,
+                                                    )}
+                                                    alt={lesson.name}
+                                                    className={styles.lessonImage}
+                                                />
+                                            ) : (
+                                                <div
+                                                    className={
+                                                        styles.lessonImagePlaceholder
+                                                    }
+                                                >
+                                                    <span className={
+                                                        styles.placeholderIcon
+                                                    }
+                                                    >
+                                                        ▶
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div> */}
+                                        <div className={styles.lessonInfo}>
+                                            <div className={styles.lessonHeader}>
+                                                <h4 className={styles.lessonName}>
+                                                    {lesson.name}
+                                                </h4>
+                                                <span className={styles.lessonDuration}>
+                                                    {durationText}
+                                                </span>
+                                            </div>
+                                            <p className={styles.lessonDescription}>
+                                                {formattedDescription}
+                                            </p>
+                                            {/* {lesson.videoUrl && (
+                                                <a
+                                                    href={lesson.videoUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={styles.lessonVideoLink}
+                                                >
+                                                    {lesson.videoUrl}
+                                                </a>
+                                            )} */}
+                                        </div>
+                                    </div>
+                                    <div className={styles.lessonActions}>
+                                        <Button
+                                            type="button"
+                                            color="BLUE"
+                                            size="SMALL"
+                                            variant="TEXT"
+                                            onClick={() => handleEditLesson(lesson.id)}
+                                        >
+                                            Редактировать
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            color="RED"
+                                            size="SMALL"
+                                            variant="TEXT"
+                                            onClick={() => handleDeleteLesson(lesson.id)}
+                                        >
+                                            Удалить
+                                        </Button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div className={styles.noLessons}>
+                        <p className={styles.noLessonsText}>
+                            Еще нет добавленных уроков
+                        </p>
+                    </div>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -230,7 +419,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         />
                     )}
                     <div className={styles.field}>
-                        <label className={styles.label}>Обложка курса</label>
+                        <div className={styles.label}>Обложка курса</div>
                         <Controller
                             name="image"
                             rules={{
@@ -296,7 +485,9 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                 {expert.image ? (
                                                     <img
                                                         src={
-                                                            getMediaContent(expert.image)
+                                                            getMediaContent(
+                                                                (expert.image as any)?.contentUrl,
+                                                            )
                                                         }
                                                         alt={`${expert.firstName} ${expert.lastName}`}
                                                         className={styles.expertImage}
@@ -357,114 +548,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         )}
                     </div>
 
-                    <div className={styles.lessonsSection}>
-                        <div className={styles.sectionHeader}>
-                            <h3 className={styles.sectionTitle}>Уроки курса</h3>
-                            <Button
-                                type="button"
-                                color="GREEN"
-                                size="SMALL"
-                                variant="OUTLINE"
-                                onClick={handleAddLesson}
-                            >
-                                + Добавить урок
-                            </Button>
-                        </div>
-
-                        {/* {lessonFields.length > 0 ? (
-                            <div className={styles.lessonsList}>
-                                {lessonFields.map((lesson, index) => {
-                                    const description = lesson.description || "Описание отсутствует";
-                                    const formattedDescription = description.length > 150
-                                        ? `${description.slice(0, 150)}...`
-                                        : description;
-                                    const durationText = lesson.duration
-                                        ? `${lesson.duration} мин`
-                                        : "Продолжительность не указана";
-
-                                    return (
-                                        <div key={lesson.id} className={styles.lessonCard}>
-                                            <div className={styles.lessonContent}>
-                                                <div className={styles.lessonImageWrapper}>
-                                                    {lesson.image ? (
-                                                        <img
-                                                            src={typeof lesson.image === "string" ? getMediaContent(lesson.image) : URL.createObjectURL(lesson.image)}
-                                                            alt={lesson.name}
-                                                            className={styles.lessonImage}
-                                                        />
-                                                    ) : (
-                                                        <div
-                                                            className={
-                                                                styles.lessonImagePlaceholder
-                                                            }
-                                                        >
-                                                            <span className={
-                                                                styles.placeholderIcon
-                                                            }
-                                                            >
-                                                                ▶
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className={styles.lessonInfo}>
-                                                    <div className={styles.lessonHeader}>
-                                                        <h4 className={styles.lessonName}>
-                                                            {index + 1}
-                                                            .
-                                                            {lesson.name}
-                                                        </h4>
-                                                        <span className={styles.lessonDuration}>
-                                                            {durationText}
-                                                        </span>
-                                                    </div>
-                                                    <p className={styles.lessonDescription}>
-                                                        {formattedDescription}
-                                                    </p>
-                                                    {lesson.videoUrl && (
-                                                        <a
-                                                            href={lesson.videoUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className={styles.lessonVideoLink}
-                                                        >
-                                                            {lesson.videoUrl}
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div className={styles.lessonActions}>
-                                                <Button
-                                                    type="button"
-                                                    color="BLUE"
-                                                    size="SMALL"
-                                                    variant="TEXT"
-                                                    onClick={() => handleEditLesson(index)}
-                                                >
-                                                    Редактировать
-                                                </Button>
-                                                <Button
-                                                    type="button"
-                                                    color="RED"
-                                                    size="SMALL"
-                                                    variant="TEXT"
-                                                    onClick={() => handleDeleteLesson(index)}
-                                                >
-                                                    Удалить
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <div className={styles.noLessons}>
-                                <p className={styles.noLessonsText}>
-                                    Еще нет добавленных уроков
-                                </p>
-                            </div>
-                        )} */}
-                    </div>
+                    {renderLessonsSection()}
                 </div>
                 <div className={styles.formActions}>
                     <Button
@@ -502,7 +586,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                 onClose={handleCloseLessonModal}
                 onSubmit={handleLessonSubmit}
                 initialData={editingLessonData}
-                isLoading={false}
+                isLoading={isCreatingLesson || isUpdatingLesson}
             />
         </FormProvider>
     );

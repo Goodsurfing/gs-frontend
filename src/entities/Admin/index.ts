@@ -155,9 +155,12 @@ export {
 export type {
     AdminCourseFields, AdminCourseAuthorFileds, AdminExpertFields, AdminLessonsFields,
     GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
-    GetAdminReviewCourse,
+    GetAdminReviewCourse, GetAdminCourseLessons, AdminLessonFields,
 } from "./model/types/adminCourseSchema";
 
-export { adminCourseAdapter, adminCreateCourseApiAdapter } from "./lib/adminCourseAdapter";
+export {
+    adminCourseAdapter, adminCreateCourseApiAdapter,
+    adminCourseLessonsAdapter,
+} from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";

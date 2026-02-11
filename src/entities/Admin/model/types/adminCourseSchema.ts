@@ -15,6 +15,7 @@ export interface AdminCourseFields {
     aboutAuthor: string;
     forWhom: string;
     experts: AdminExpertFields[];
+    lessons: AdminLessonsFields[];
     isPublic: boolean;
     author: AdminCourseAuthorFileds | null;
 }
@@ -30,11 +31,20 @@ export interface AdminExpertFields {
 }
 
 export interface AdminLessonsFields {
+    id: string;
+    name: string;
+    description: string;
+    duration: string;
+}
+
+export interface AdminLessonFields {
+    id: string;
     name: string;
     description: string;
     duration: number;
     image: Image | null;
     videoUrl: string;
+    sort: number;
 }
 
 export interface GetAdminCourses {
@@ -119,14 +129,14 @@ export interface CreateAdminCourseRequest {
     isActive: boolean;
     imageId: string | null;
     authorId: string;
-    expertsIds: string[];
+    expertIds: string[];
 
     // duration: number;
     // lessons: CreateAdminLesson[];
 }
 
 export interface UpdateAdminCourseRequest {
-    id: number;
+    id: string;
     body: CreateAdminCourseRequest;
 }
 
@@ -236,9 +246,14 @@ export interface CreateAdminCourseLesson {
     url: string;
     description: string;
     courseId: string;
-    imageId: string;
+    imageId: string | null;
     duration: number;
     sort: number;
+}
+
+export interface UpdateAdminCourseLesson {
+    id: string;
+    body: CreateAdminCourseLesson;
 }
 
 // Experts

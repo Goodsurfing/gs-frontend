@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
-    AdminExpertFields, useCreateAdminExpertMutation, useGetCourseExpertsQuery,
-    useUpdateAdminExpertMutation,
+    AdminExpertFields, useCreateAdminExpertMutation, useDeleteAdminExpertMutation,
+    useGetCourseExpertsQuery, useUpdateAdminExpertMutation,
 } from "@/entities/Admin";
 import { Modal } from "@/shared/ui/Modal/Modal";
 import styles from "./AdminExpertSelectorModal.module.scss";
@@ -22,10 +22,19 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
 }) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingExpert, setEditingExpert] = useState<AdminExpertFields | null>(null);
+    const [localSelectedExperts, setLocalSelectedExperts] = useState<AdminExpertFields[]>([]);
     const { data: expertsData, isLoading, refetch } = useGetCourseExpertsQuery({});
     const [createCourseExpert] = useCreateAdminExpertMutation();
     const [updateCourseExpert] = useUpdateAdminExpertMutation();
+    const [deleteCourseExpert, { isLoading: isLoadingDelete }] = useDeleteAdminExpertMutation();
     const experts = expertsData?.data ?? [];
+
+    // Синхронизируем локальное состояние с пропсом при открытии модального окна
+    useEffect(() => {
+        if (isOpen) {
+            setLocalSelectedExperts(selectedExperts);
+        }
+    }, [isOpen, selectedExperts]);
 
     const handleAddExpert = () => {
         setEditingExpert(null);
@@ -37,9 +46,18 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
         setIsFormOpen(true);
     };
 
+    const handleDeleteExpert = async (expertId: string) => {
+        await deleteCourseExpert(expertId);
+    };
+
     const handleCloseForm = () => {
         setIsFormOpen(false);
         setEditingExpert(null);
+    };
+
+    const handleClose = () => {
+        onExpertsChange(localSelectedExperts);
+        onClose();
     };
 
     const handleFormSubmit = async (expert: AdminExpertFields) => {
@@ -59,7 +77,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
 
         try {
             if (editingExpert) {
-                updateCourseExpert({
+                await updateCourseExpert({
                     expertId: id,
                     body: preparedData,
                 });
@@ -68,20 +86,20 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
             }
             await refetch();
             handleCloseForm();
-        } catch (error) {
-            console.error("Error submitting expert:", error);
+        } catch {
+            // empty
         }
     };
 
     const handleSelectExpert = (expert: AdminExpertFields) => {
-        if (selectedExperts.some((e) => e.id === expert.id)) {
-            onExpertsChange(selectedExperts.filter((e) => e.id !== expert.id));
+        if (localSelectedExperts.some((e) => e.id === expert.id)) {
+            setLocalSelectedExperts(localSelectedExperts.filter((e) => e.id !== expert.id));
         } else {
-            onExpertsChange([...selectedExperts, expert]);
+            setLocalSelectedExperts([...localSelectedExperts, expert]);
         }
     };
 
-    const isSelected = (expertId: string) => selectedExperts.some((e) => e.id === expertId);
+    const isSelected = (expertId: string) => localSelectedExperts.some((e) => e.id === expertId);
 
     let expertsContent;
     if (isLoading) {
@@ -129,6 +147,14 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
                     >
                         Редактировать
                     </button>
+                    <button
+                        disabled={isLoadingDelete}
+                        type="button"
+                        className={styles.editButton}
+                        onClick={() => handleDeleteExpert(expert.id)}
+                    >
+                        {isLoadingDelete ? "Удаление" : "Удалить"}
+                    </button>
                 </div>
             </div>
         ));
@@ -138,7 +164,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
 
     return (
         <Modal
-            onClose={onClose}
+            onClose={handleClose}
             isShowCloseIcon
             className={styles.modalWrapper}
         >
@@ -164,11 +190,11 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
                             <h3 className={styles.selectedTitle}>
                                 Выбрано экспертов:
                                 {" "}
-                                {selectedExperts.length}
+                                {localSelectedExperts.length}
                             </h3>
-                            {selectedExperts.length > 0 && (
+                            {localSelectedExperts.length > 0 && (
                                 <div className={styles.selectedList}>
-                                    {selectedExperts.map((expert) => (
+                                    {localSelectedExperts.map((expert) => (
                                         <div key={expert.id} className={styles.selectedItem}>
                                             <span>
                                                 {expert.firstName}
@@ -192,7 +218,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
                             <button
                                 type="button"
                                 className={styles.closeButton}
-                                onClick={onClose}
+                                onClick={handleClose}
                             >
                                 Готово
                             </button>

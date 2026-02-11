@@ -11,6 +11,7 @@ import {
     UpdateAdminExpertRequest,
     UpdateAdminExpertUserRequest,
     UpdateAdminReviewCourseRequest,
+    UpdateAdminCourseLesson,
 } from "../model/types/adminCourseSchema";
 
 export const adminCourseApi = createApi({
@@ -121,14 +122,14 @@ export const adminCourseApi = createApi({
         createAdminCourseLesson: build.mutation<void, CreateAdminCourseLesson>({
             query: (body) => ({
                 url: "video-course/create",
-                method: "CREATE",
+                method: "POST",
                 body,
             }),
             invalidatesTags: ["lesson"],
         }),
-        updateAdminCourseLesson: build.mutation<void, CreateAdminCourseLesson>({
-            query: (body) => ({
-                url: "video-course/edit/{id}",
+        updateAdminCourseLesson: build.mutation<void, UpdateAdminCourseLesson>({
+            query: ({ id, body }) => ({
+                url: `video-course/edit/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -191,7 +192,7 @@ export const adminCourseApi = createApi({
         }),
         deleteAdminExpert: build.mutation<void, string>({
             query: (expertId) => ({
-                url: `expert/delete/${expertId}`,
+                url: `expert/${expertId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["expert"],
@@ -214,6 +215,7 @@ export const {
     useCreateAdminCourseLessonMutation,
     useUpdateAdminCourseLessonMutation,
     useDeleteAdminCourseLessonMutation,
+    useLazyGetAdminCourseLessonQuery,
     useLazyGetCourseExpertsQuery,
     useGetCourseExpertsQuery,
     useGetCourseExpertByIdQuery,
