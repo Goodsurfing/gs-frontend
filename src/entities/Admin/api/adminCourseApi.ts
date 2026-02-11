@@ -137,7 +137,7 @@ export const adminCourseApi = createApi({
         }),
         deleteAdminCourseLesson: build.mutation<void, string>({
             query: (courseId) => ({
-                url: `video-course/edit/${courseId}`,
+                url: `video-course/${courseId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["lesson"],

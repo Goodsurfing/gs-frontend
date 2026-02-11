@@ -1,4 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useCallback, useEffect, useState,
+} from "react";
 import cn from "classnames";
 import {
     FormProvider, useForm, DefaultValues,
@@ -12,7 +14,7 @@ import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
 import {
     adminCourseAdapter,
-    AdminCourseFields, adminCourseLessonsAdapter, AdminExpertFields,
+    AdminCourseFields, AdminExpertFields,
     AdminLessonFields, GetAdminCourse,
 } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
@@ -20,7 +22,7 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
 import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import { getFullName } from "@/shared/lib/getFullName";
+import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
 import { AdminExpertSelectorModal } from "../AdminExpertSelectorModal/AdminExpertSelectorModal";
 import {
     useLazyGetAdminCourseLessonsQuery,
@@ -30,6 +32,7 @@ import {
     useLazyGetAdminCourseLessonQuery,
 } from "@/entities/Admin/api/adminCourseApi";
 import styles from "./AdminCourseForm.module.scss";
+import { OfferPagination } from "@/widgets/OffersMap";
 
 interface AdminCourseFormProps {
     className?: string;
@@ -79,54 +82,53 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         name: "experts",
     });
 
-    const {
-        fields: lessonFields,
-    } = useFieldArray({
-        control,
-        name: "lessons",
-    });
-
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
     const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
     const [editingLessonData, setEditingLessonData] = useState<AdminLessonFields | null>(null);
+    const [currentLessonPage, setCurrentLessonPage] = useState(1);
+    const lessonsLimit = 5;
 
-    const [getCourseLessons] = useLazyGetAdminCourseLessonsQuery();
+    const [getCourseLessons, { data: lessonsResponse }] = useLazyGetAdminCourseLessonsQuery();
+    const lessonsData = lessonsResponse?.data || [];
+    const totalLessonPages = Math.ceil((lessonsResponse?.pagination?.total ?? 0) / lessonsLimit);
     const [getCourseLesson] = useLazyGetAdminCourseLessonQuery();
     const [createLesson, { isLoading: isCreatingLesson }] = useCreateAdminCourseLessonMutation();
     const [updateLessonMutation,
         { isLoading: isUpdatingLesson }] = useUpdateAdminCourseLessonMutation();
     const [deleteLesson] = useDeleteAdminCourseLessonMutation();
 
+    const fetchCourseLessons = useCallback(async () => {
+        if (!course) return;
+
+        try {
+            await getCourseLessons({
+                courseId: course.id,
+                page: currentLessonPage,
+                limit: lessonsLimit,
+            }).unwrap();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error("Error fetching lessons:", error);
+        }
+    }, [course, getCourseLessons, currentLessonPage, lessonsLimit]);
+
     useEffect(() => {
         if (course) {
             reset(adminCourseAdapter(course, []));
-
-            getCourseLessons({
-                courseId: course.id,
-                page: 1,
-                limit: 100,
-            }).then((result) => {
-                if (result.data?.data) {
-                    const lessonsData = result.data.data.map(
-                        (lesson) => (adminCourseLessonsAdapter(lesson)),
-                    );
-                    reset((prev) => ({
-                        ...prev,
-                        lessons: lessonsData,
-                    }));
-                }
-            });
         } else {
             reset(defaultValues);
         }
-    }, [course, reset, getCourseLessons]);
+    }, [course, reset]);
+
+    useEffect(() => {
+        fetchCourseLessons();
+    }, [fetchCourseLessons]);
 
     const onSubmitForm: SubmitHandler<AdminCourseFields> = (data) => {
         onSubmit?.(data);
     };
 
     const handleExpertsChange = (selectedExperts: AdminExpertFields[]) => {
-        // Заменяем весь массив экспертов на выбранные
         replaceExperts(selectedExperts);
     };
 
@@ -174,6 +176,8 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
             // eslint-disable-next-line no-console
             console.error("Error loading lesson:", error);
             setEditingLessonData(null);
+        } finally {
+            await fetchCourseLessons();
         }
 
         setIsLessonModalOpen(true);
@@ -189,22 +193,22 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     body: {
                         name: data.name,
                         description: data.description,
-                        duration: data.duration,
+                        duration: Number(data.duration),
                         url: data.videoUrl,
                         courseId: course.id,
                         imageId: data.image?.id || null,
-                        sort: data.sort,
+                        sort: Number(data.sort),
                     },
                 }).unwrap();
             } else {
                 await createLesson({
                     name: data.name,
                     description: data.description,
-                    duration: data.duration,
+                    duration: Number(data.duration),
                     url: data.videoUrl,
                     courseId: course.id,
                     imageId: data.image?.id || "",
-                    sort: data.sort ?? lessonFields.length,
+                    sort: Number(data.sort),
                 }).unwrap();
             }
 
@@ -212,6 +216,9 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error("Error saving lesson:", error);
+        } finally {
+            setCurrentLessonPage(1);
+            await fetchCourseLessons();
         }
     };
 
@@ -221,6 +228,8 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
             try {
                 if (lessonId) {
                     await deleteLesson(lessonId).unwrap();
+                    setCurrentLessonPage(1);
+                    await fetchCourseLessons();
                 }
             } catch (error) {
                 // eslint-disable-next-line no-console
@@ -233,6 +242,18 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         setIsLessonModalOpen(false);
         setEditingLessonId(null);
         setEditingLessonData(null);
+        setCurrentLessonPage(1);
+    };
+
+    const handlePageChangeLessons = (page: number) => {
+        setCurrentLessonPage(page);
+    };
+
+    const handleTogglePublish = () => {
+        reset((prev) => ({
+            ...prev,
+            isPublic: !prev.isPublic,
+        }));
     };
 
     const renderLessonsSection = () => {
@@ -253,15 +274,15 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     </Button>
                 </div>
 
-                {lessonFields.length > 0 ? (
+                {Array.isArray(lessonsData) && lessonsData.length > 0 ? (
                     <div className={styles.lessonsList}>
-                        {lessonFields.map((lesson) => {
+                        {lessonsData.map((lesson) => {
                             const description = lesson.description || "Описание отсутствует";
                             const formattedDescription = description.length > 150
                                 ? `${description.slice(0, 150)}...`
                                 : description;
                             const durationText = lesson.duration
-                                ? `${lesson.duration} мин`
+                                ? `${lesson.duration}`
                                 : "Продолжительность не указана";
 
                             return (
@@ -509,9 +530,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                     {formattedDescription}
                                                 </p>
                                                 <div className={styles.expertLocation}>
-                                                    {expert.city}
-                                                    ,
-                                                    {expert.country}
+                                                    {getFullAddress(expert.city, expert.country)}
                                                 </div>
                                             </div>
                                             <div className={styles.expertActions}>
@@ -549,6 +568,13 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     </div>
 
                     {renderLessonsSection()}
+                    {!isLoading && totalLessonPages > 1 && (
+                        <OfferPagination
+                            currentPage={currentLessonPage}
+                            onPageChange={handlePageChangeLessons}
+                            totalPages={totalLessonPages}
+                        />
+                    )}
                 </div>
                 <div className={styles.formActions}>
                     <Button
@@ -561,6 +587,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         {isLoading ? "Идёт сохранение" : "Сохранить"}
                     </Button>
                     <Button
+                        onClick={handleTogglePublish}
                         type="button"
                         color={isPublicValue ? "RED" : "GREEN"}
                         size="MEDIUM"

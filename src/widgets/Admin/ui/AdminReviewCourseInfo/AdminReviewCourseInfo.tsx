@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import {
     GetAdminReviewCourse,
     ReviewCourseInfoTable,
-    useGetAdminReviewCourseByIdQuery, useUpdateAdminReviewCourseMutation,
 } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";

@@ -33,6 +33,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
             name: "",
             description: "",
             duration: 0,
+            sort: 0,
             image: null,
             videoUrl: "",
         },
@@ -50,7 +51,12 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
             reset(initialData);
         } else if (isOpen) {
             reset({
-                name: "", description: "", duration: 0, image: null, videoUrl: "",
+                name: "",
+                description: "",
+                duration: 0,
+                sort: 0,
+                image: null,
+                videoUrl: "",
             });
         }
     }, [isOpen, initialData, reset]);

@@ -6,6 +6,7 @@ import {
 import { Modal } from "@/shared/ui/Modal/Modal";
 import styles from "./AdminExpertSelectorModal.module.scss";
 import { AdminExpertFormModal } from "../AdminExpertFormModal/AdminExpertFormModal";
+import { OfferPagination } from "@/widgets/OffersMap";
 
 interface AdminExpertSelectorModalProps {
     isOpen: boolean;
@@ -13,6 +14,8 @@ interface AdminExpertSelectorModalProps {
     selectedExperts: AdminExpertFields[];
     onExpertsChange: (experts: AdminExpertFields[]) => void;
 }
+
+const limit = 5;
 
 export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
     isOpen,
@@ -23,13 +26,17 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingExpert, setEditingExpert] = useState<AdminExpertFields | null>(null);
     const [localSelectedExperts, setLocalSelectedExperts] = useState<AdminExpertFields[]>([]);
-    const { data: expertsData, isLoading, refetch } = useGetCourseExpertsQuery({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const { data: expertsData, isLoading, refetch } = useGetCourseExpertsQuery({
+        page: currentPage,
+        limit,
+    });
     const [createCourseExpert] = useCreateAdminExpertMutation();
     const [updateCourseExpert] = useUpdateAdminExpertMutation();
     const [deleteCourseExpert, { isLoading: isLoadingDelete }] = useDeleteAdminExpertMutation();
     const experts = expertsData?.data ?? [];
+    const totalPages = Math.ceil((expertsData?.pagination?.total ?? 0) / limit);
 
-    // Синхронизируем локальное состояние с пропсом при открытии модального окна
     useEffect(() => {
         if (isOpen) {
             setLocalSelectedExperts(selectedExperts);
@@ -39,6 +46,10 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
     const handleAddExpert = () => {
         setEditingExpert(null);
         setIsFormOpen(true);
+    };
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
     };
 
     const handleEditExpert = (expert: AdminExpertFields) => {
@@ -185,6 +196,14 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
                         <div className={styles.expertsGrid}>
                             {expertsContent}
                         </div>
+
+                        {!isLoading && totalPages > 1 && (
+                            <OfferPagination
+                                currentPage={currentPage}
+                                onPageChange={handlePageChange}
+                                totalPages={totalPages}
+                            />
+                        )}
 
                         <div className={styles.selectedExperts}>
                             <h3 className={styles.selectedTitle}>

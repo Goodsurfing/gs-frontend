@@ -2,7 +2,6 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
-import { Course } from "@/entities/Academy/model/types/academy";
 import { Locale } from "@/entities/Locale";
 
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -13,7 +12,16 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./CourseCard.module.scss";
 
 interface CourseCardProps {
-    course: Course;
+    course: {
+        id: string;
+        title: string;
+        description: string;
+        author: string;
+        duration: string;
+        numberLessons: number;
+        rating: number;
+        cover?: string;
+    };
     className?: string;
     locale: Locale;
 }

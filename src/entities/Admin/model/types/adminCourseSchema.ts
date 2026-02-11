@@ -279,6 +279,8 @@ export interface GetAdminExpertsRequest {
     email: string;
     firstName: string;
     lastName: string;
+    page: number;
+    limit: number;
 }
 
 export interface GetAdminExpert {
