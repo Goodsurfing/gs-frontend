@@ -4,15 +4,16 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import mockCourseImg from "@/shared/assets/images/mock-course.png";
-import styles from "./LessonPersonal.module.scss";
+import styles from "./LessonVideo.module.scss";
+import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
 
-interface LessonPersonalProps {
+interface LessonVideoProps {
     className?: string;
+    videoUrl: string;
 }
 
-export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
-    const { className } = props;
+export const LessonVideo: FC<LessonVideoProps> = (props) => {
+    const { className, videoUrl } = props;
     const { isAuth } = useAuth();
     const { locale } = useLocale();
 
@@ -29,7 +30,13 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <img src={mockCourseImg} alt="Урок" />
+            <VideoPlayer
+                width="750px"
+                height="424px"
+                url={videoUrl}
+                controls
+                playing={false}
+            />
         </div>
     );
 };

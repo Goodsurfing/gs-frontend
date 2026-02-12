@@ -15,6 +15,13 @@
     object-fit: cover;
 }
 
+.emptyImage {
+    flex-shrink: 0;
+    width: 180px;
+    height: 180px;
+    background-color: var(--bg-field);
+}
+
 .info {
     display: flex;
     flex-direction: column;

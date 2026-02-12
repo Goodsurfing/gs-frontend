@@ -9,6 +9,7 @@ import {
     GetLessonsRequest,
     GetLessonsResponse,
     GetLesson,
+    CreateReviewLessonRequest,
 } from "../model/types/academy";
 
 export const courseApi = createApi({
@@ -49,10 +50,10 @@ export const courseApi = createApi({
             }),
             providesTags: ["review"],
         }),
-        createReviewLesson: build.mutation<void, void>({
+        createReviewLesson: build.mutation<void, CreateReviewLessonRequest>({
             query: () => ({
                 url: "review/video-course/create",
-                method: "PATCH",
+                method: "POST",
             }),
             invalidatesTags: ["review"],
         }),

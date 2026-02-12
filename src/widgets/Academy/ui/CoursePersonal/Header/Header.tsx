@@ -35,12 +35,16 @@ export const Header: FC<HeaderProps> = (props) => {
                             {" "}
                             уроков
                         </span>
-                        <div className={styles.circle} />
-                        <span>
-                            {duration}
-                            {" "}
-                            на прохождение
-                        </span>
+                        {duration !== "" && (
+                            <>
+                                <div className={styles.circle} />
+                                <span>
+                                    {duration}
+                                    {" "}
+                                    на прохождение
+                                </span>
+                            </>
+                        )}
                         <div className={styles.circle} />
                         <div className={styles.rating}>
                             <img src={star} alt="star-icon" />

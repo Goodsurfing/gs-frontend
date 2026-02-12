@@ -13,25 +13,39 @@ import Section from "@/shared/ui/Section/Section";
 interface CourseContentProps {
     className?: string;
     course: GetCourse;
+    courseId: string;
 }
 
 export const CourseContent: FC<CourseContentProps> = (props) => {
-    const { course, className } = props;
+    const { course, className, courseId } = props;
     const {
-        description, aboutAuthor, forWho, experts,
+        description, aboutAuthor, courseFor, experts,
     } = course;
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <TextCard title="О курсе" text={description} />
-            <TextCard title="Об авторе" text={aboutAuthor} />
-            <TextCard title="Для кого подходит курс" text={forWho} />
-            <ExpertsCard experts={experts} />
-            <Section>
-                <CourseProgressBar />
-            </Section>
+            {description !== "" && (
+                <TextCard title="О курсе" text={description} />
+            )}
+            {aboutAuthor !== "" && (
+                <TextCard title="Об авторе" text={aboutAuthor} />
+            )}
+            {courseFor !== "" && (
+                <TextCard title="Для кого подходит курс" text={courseFor} />
+            )}
+            {experts.length !== 0 && (
+                <ExpertsCard experts={experts} />
+            )}
+            {course.videoCount !== 0 && (
+                <Section>
+                    <CourseProgressBar
+                        totalLessons={course.videoCount}
+                        finishedLessons={course.courseProgressNumber.length}
+                    />
+                </Section>
+            )}
             <Section title="Видео" classNameWrapper={styles.courseList}>
-                <LessonsList className={styles.list} />
+                <LessonsList className={styles.list} courseId={courseId} />
             </Section>
         </div>
     );

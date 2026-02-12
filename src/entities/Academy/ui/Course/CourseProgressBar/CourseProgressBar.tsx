@@ -6,12 +6,12 @@ import styles from "./CourseProgressBar.module.scss";
 
 interface CourseProgressBarProps {
     className?: string;
+    totalLessons: number;
+    finishedLessons: number;
 }
 
 export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
-    const { className } = props;
-    const totalLessons = 7;
-    const finishedLessons = 0;
+    const { className, finishedLessons, totalLessons } = props;
 
     const step = 100 / totalLessons;
 

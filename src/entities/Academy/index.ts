@@ -1,5 +1,6 @@
 export type {
     Course, Exptert, Lesson, GetCourse, GetExpert,
+    GetReviewsLesson,
 } from "./model/types/academy";
 export { CourseCard } from "./ui/Course/CourseCard/CourseCard";
 export { LessonCard } from "./ui/Lesson/LessonCard/LessonCard";

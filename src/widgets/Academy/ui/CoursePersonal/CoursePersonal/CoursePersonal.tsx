@@ -34,7 +34,7 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Header course={data} />
-                <CourseContent course={courseData} />
+                <CourseContent course={data} courseId={courseId} />
             </div>
         </MainPageLayout>
     );

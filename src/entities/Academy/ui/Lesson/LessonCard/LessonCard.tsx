@@ -1,8 +1,6 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-
-import { Lesson } from "@/entities/Academy/model/types/academy";
 import { Locale } from "@/entities/Locale";
 
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -12,7 +10,14 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./LessonCard.module.scss";
 
 interface LessonCardProps {
-    lesson: Lesson;
+    lesson: {
+        title: string;
+        description: string;
+        duration: string;
+        thumbnail?: string;
+        id: string;
+        rating: number,
+    };
     locale: Locale;
     className?: string;
 }
@@ -28,7 +33,14 @@ export const LessonCard: FC<LessonCardProps> = (props) => {
             to={getAcademyLessonPageUrl(locale, id.toString())}
             className={cn(styles.wrapper, className)}
         >
-            <img className={styles.cover} src={thumbnail} alt={title} />
+            {thumbnail
+                ? (
+                    <img
+                        className={styles.cover}
+                        src={thumbnail}
+                        alt={title}
+                    />
+                ) : <div className={styles.emptyCover} />}
             <div className={styles.content}>
                 <div className={styles.info}>
                     <h3 className={styles.title}>
