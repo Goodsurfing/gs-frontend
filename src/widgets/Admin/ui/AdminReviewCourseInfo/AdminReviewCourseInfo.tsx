@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
 import {
-    GetAdminReviewCourse,
+    GetAdminReviewsLesson,
     ReviewCourseInfoTable,
+    useGetAdminReviewLessonByIdQuery,
+    useUpdateAdminReviewLessonMutation,
 } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";
@@ -13,17 +15,17 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./AdminReviewCourseInfo.module.scss";
 
 interface AdminReviewCourseInfoProps {
-    reviewId: number;
+    reviewId: string;
 }
 
 export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => {
     const { reviewId } = props;
-    const { data: reviewData, isLoading } = useGetAdminReviewCourseByIdQuery(reviewId);
-    const [updateReview, { isLoading: isUpdateLoading }] = useUpdateAdminReviewCourseMutation();
+    const { data: reviewData, isLoading } = useGetAdminReviewLessonByIdQuery(reviewId);
+    const [updateReview, { isLoading: isUpdateLoading }] = useUpdateAdminReviewLessonMutation();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewFields, setReviewFields] = useState<AdminReviewFields | undefined>(undefined);
     const [reviewInfoTable,
-        setReviewInfoTable] = useState<GetAdminReviewCourse | undefined>(undefined);
+        setReviewInfoTable] = useState<GetAdminReviewsLesson | undefined>(undefined);
     const { locale } = useLocale();
 
     useEffect(() => {

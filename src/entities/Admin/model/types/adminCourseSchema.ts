@@ -207,7 +207,7 @@ export interface UpdateAdminReviewCourse {
 }
 
 export interface UpdateAdminReviewCourseRequest {
-    id: number;
+    id: string;
     body: UpdateAdminReviewCourse;
 }
 

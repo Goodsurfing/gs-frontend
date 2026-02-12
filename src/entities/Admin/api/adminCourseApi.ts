@@ -64,7 +64,7 @@ export const adminCourseApi = createApi({
         getAdminReviewsCourses: build.query<GetAdminReviewsCoursesResponse,
         Partial<GetAdminReviewsCoursesParams>>({
             query: (params) => ({
-                url: "review-course/list", // not exist
+                url: "review/video-course/list",
                 method: "GET",
                 params,
             }),

@@ -156,6 +156,7 @@ export type {
     AdminCourseFields, AdminCourseAuthorFileds, AdminExpertFields, AdminLessonsFields,
     GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
     GetAdminReviewCourse, GetAdminCourseLessons, AdminLessonFields,
+    GetAdminReviewsLesson,
 } from "./model/types/adminCourseSchema";
 
 export {

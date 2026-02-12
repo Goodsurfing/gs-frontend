@@ -10,7 +10,7 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
-    AdminSort, useDeleteAdminReviewCourseMutation,
+    AdminSort, useDeleteAdminReviewLessonMutation,
     useLazyGetAdminReviewsCoursesQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -118,7 +118,7 @@ export const AdminReviewsCoursesTable = () => {
         isLoading,
         isFetching,
     }] = useLazyGetAdminReviewsCoursesQuery();
-    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewCourseMutation();
+    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewLessonMutation();
 
     useEffect(() => {
         const fetchData = async () => {
