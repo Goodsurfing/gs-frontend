@@ -43,7 +43,7 @@ export const CourseContent: FC<CourseContentProps> = (props) => {
                     />
                 </Section>
             )}
-            <Section title="Видео" classNameWrapper={styles.courseList}>
+            <Section title="Видео" classNameWrapper={styles.courseList} id="lessons">
                 <LessonsList className={styles.list} courseId={courseId} />
             </Section>
         </div>

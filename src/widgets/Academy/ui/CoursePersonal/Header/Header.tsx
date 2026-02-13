@@ -4,10 +4,10 @@ import { GetCourse } from "@/entities/Academy";
 
 import star from "@/shared/assets/icons/offers/star.svg";
 
-import styles from "./Header.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { getFullName } from "@/shared/lib/getFullName";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./Header.module.scss";
 
 interface HeaderProps {
     course: GetCourse;
@@ -23,6 +23,19 @@ export const Header: FC<HeaderProps> = (props) => {
         author,
         image,
     } = course;
+
+    const handleScrollToCourses = () => {
+        const coursesSection = document.getElementById("lessons");
+        if (coursesSection) {
+            const elementPosition = coursesSection.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - 60;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+            });
+        }
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -56,7 +69,15 @@ export const Header: FC<HeaderProps> = (props) => {
                         {" "}
                         {getFullName(author.firsName, author.lastName)}
                     </span>
-                    <Button className={styles.button} color="GREEN" size="MEDIUM" variant="FILL">Начать обучение</Button>
+                    <Button
+                        className={styles.button}
+                        color="GREEN"
+                        size="MEDIUM"
+                        variant="FILL"
+                        onClick={handleScrollToCourses}
+                    >
+                        Начать обучение
+                    </Button>
                 </div>
                 <img className={styles.cover} src={getMediaContent(image.contentUrl)} alt={name} />
             </div>

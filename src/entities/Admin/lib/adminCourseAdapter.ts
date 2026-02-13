@@ -29,6 +29,16 @@ export const adminCourseAdapter = (
         duration: lesson.duration,
     })) ?? [];
 
+    const expertsTemp: AdminExpertFields[] = experts.map((expert) => ({
+        id: expert.id,
+        firstName: expert.firsName,
+        lastName: expert.lastName,
+        image: expert.image,
+        city: expert.city,
+        country: expert.country,
+        project: expert.project,
+    }));
+
     return {
         name,
         image,
@@ -37,7 +47,7 @@ export const adminCourseAdapter = (
         forWhom: courseFor,
         isPublic: isActive,
         author: authorTemp,
-        experts,
+        experts: expertsTemp,
         lessons: lessonsTemp,
     };
 };

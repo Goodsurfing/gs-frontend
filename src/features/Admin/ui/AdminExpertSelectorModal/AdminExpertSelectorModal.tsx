@@ -41,7 +41,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
         if (isOpen) {
             setLocalSelectedExperts(selectedExperts);
         }
-    }, [isOpen, selectedExperts]);
+    }, [isOpen, localSelectedExperts, selectedExperts]);
 
     const handleAddExpert = () => {
         setEditingExpert(null);

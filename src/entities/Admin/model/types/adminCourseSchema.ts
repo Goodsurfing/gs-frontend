@@ -113,7 +113,7 @@ export type GetAdminLesson = CreateAdminLesson & {
 
 export interface GetAdminCourseExpert {
     id: string;
-    firstName: string;
+    firsName: string;
     lastName: string;
     project: string;
     country: string;
@@ -142,13 +142,16 @@ export interface UpdateAdminCourseRequest {
 
 export interface GetAdminReviewsCourses {
     id: number;
-    authorId: string;
-    authorFirstName: string;
-    authorLastName: string;
-    name: string;
+    author: {
+        id: string;
+        lastName: string;
+        firstName: string;
+        image: Image;
+    }
+    // name: string;
     rating: number;
     description: string;
-    date: string;
+    created: string;
 }
 
 export interface GetAdminReviewsCoursesResponse {
@@ -157,9 +160,10 @@ export interface GetAdminReviewsCoursesResponse {
 }
 
 export interface GetAdminReviewsCoursesParams {
-    sort: AdminSort;
-    name: string;
-    author: string;
+    // sort: AdminSort;
+    // name: string;
+    // author: string;
+    videoCourseId: string;
     page: number;
     limit: number;
 }
