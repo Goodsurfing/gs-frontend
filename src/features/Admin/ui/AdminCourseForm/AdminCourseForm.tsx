@@ -80,6 +80,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     } = useFieldArray({
         control,
         name: "experts",
+        keyName: "fieldId",
     });
 
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
