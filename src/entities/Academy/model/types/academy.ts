@@ -153,4 +153,9 @@ export interface GetLesson {
     duration: string;
     averageRating: number;
     image: Image;
+    isCanReview: boolean;
+    course: {
+        id: string;
+        name: string;
+    }
 }

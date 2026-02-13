@@ -25,6 +25,16 @@
     margin-bottom: 10px;
 }
 
+.notAuth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.signInBtn {
+    width: fit-content;
+}
+
 @media(max-width: 576px) {
     .wrapper {
         margin-top: 40px;

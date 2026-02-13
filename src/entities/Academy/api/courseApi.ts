@@ -51,9 +51,10 @@ export const courseApi = createApi({
             providesTags: ["review"],
         }),
         createReviewLesson: build.mutation<void, CreateReviewLessonRequest>({
-            query: () => ({
+            query: (body) => ({
                 url: "review/video-course/create",
                 method: "POST",
+                body,
             }),
             invalidatesTags: ["review"],
         }),

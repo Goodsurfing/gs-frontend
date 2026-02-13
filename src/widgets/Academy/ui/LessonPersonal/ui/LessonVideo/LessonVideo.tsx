@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import cn from "classnames";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
+import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./LessonVideo.module.scss";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
 
 interface LessonVideoProps {
     className?: string;
-    videoUrl: string;
+    videoUrl?: string;
 }
 
 export const LessonVideo: FC<LessonVideoProps> = (props) => {
@@ -21,8 +21,8 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
         return (
             <div className={cn(styles.wrapper, styles.notAuth, className)}>
                 <p>Видео доступно только для зарегистрированных пользователей</p>
-                <ButtonLink path={getSignUpPageUrl(locale)} type="primary" className={styles.button}>
-                    Зарегистрироваться
+                <ButtonLink path={getSignInPageUrl(locale)} type="primary" className={styles.button}>
+                    Авторизоваться
                 </ButtonLink>
             </div>
         );
@@ -30,13 +30,17 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            <VideoPlayer
-                width="750px"
-                height="424px"
-                url={videoUrl}
-                controls
-                playing={false}
-            />
+            {videoUrl ? (
+                <VideoPlayer
+                    width="750px"
+                    height="424px"
+                    url={videoUrl}
+                    controls
+                    playing={false}
+                />
+            ) : (
+                <p>Видео не было найдено</p>
+            )}
         </div>
     );
 };

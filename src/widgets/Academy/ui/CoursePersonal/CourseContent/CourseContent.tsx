@@ -1,14 +1,13 @@
 import cn from "classnames";
 import React, { FC } from "react";
 
-import { LessonsList } from "@/widgets/Academy";
-
 import {
     CourseProgressBar, ExpertsCard, GetCourse, TextCard,
 } from "@/entities/Academy";
 
 import styles from "./CourseContent.module.scss";
 import Section from "@/shared/ui/Section/Section";
+import { LessonsList } from "../../LessonsList/LessonsList";
 
 interface CourseContentProps {
     className?: string;

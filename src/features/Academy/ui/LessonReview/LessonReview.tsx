@@ -8,19 +8,22 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { GetReviewsLesson, useCreateReviewLessonMutation, useLazyGetReviewsLessonQuery } from "@/entities/Academy";
 import { ReviewWidget } from "@/widgets/ReviewWidget";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getSignInPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
 import styles from "./LessonReview.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface LessonReviewProps {
     lessonId: string;
     locale: Locale;
+    canReview?: boolean;
 }
 
 const REVIEWS_LIMIT = 5;
 
 export const LessonReview: FC<LessonReviewProps> = (props) => {
-    const { lessonId, locale } = props;
+    const { lessonId, locale, canReview = false } = props;
 
     const [isSendReview, setSendReview] = useState(false);
     const [rating, setRating] = useState<number | null>(null);
@@ -32,6 +35,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
 
     const [getReviewsData, { data: reviewsData }] = useLazyGetReviewsLessonQuery();
     const [createLessonReview] = useCreateReviewLessonMutation();
+    const { isAuth } = useAuth();
 
     const fetchReviews = useCallback(async (pageItem: number) => {
         try {
@@ -62,7 +66,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
     }, [reviewsData, page]);
 
     const handleSendReview = useCallback(async () => {
-        if (!commentInput.trim() || rating === null) return;
+        if (!canReview || !commentInput.trim() || rating === null) return;
 
         try {
             await createLessonReview({
@@ -80,7 +84,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
         } catch (err) {
             setError("Не удалось отправить отзыв. Попробуйте позже.");
         }
-    }, [commentInput, rating, createLessonReview, lessonId, fetchReviews]);
+    }, [canReview, commentInput, rating, createLessonReview, lessonId, fetchReviews]);
 
     const renderReviews = reviews.map((review, index) => (
         <ReviewWidget
@@ -121,27 +125,36 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
                 {" "}
                 комментариев
             </span>
-            <Rating
-                disabled={isSendReview}
-                size="large"
-                value={rating}
-                onChange={(_, valueItem) => setRating(valueItem)}
-                sx={{
-                    "& .MuiRating-iconFilled": {
-                        color: "#FED81C",
-                    },
-                }}
-            />
-            <CommentInput
-                onSend={handleSendReview}
-                btnText="Написать отзыв"
-                disabled={isSendReview}
-                disabledBtn={!commentInput.trim() || rating === null}
-                placeholder="Ваш отзыв"
-                className={styles.commentInput}
-                value={commentInput}
-                onChange={handleCommentInput}
-            />
+            {!isAuth ? (
+                <div className={styles.notAuth}>
+                    <p>Чтобы оставить отзыв на курс нужно авторизоваться</p>
+                    <ButtonLink className={styles.signInBtn} type="primary" path={getSignInPageUrl(locale)}>Авторизоваться</ButtonLink>
+                </div>
+            ) : (
+                <>
+                    <Rating
+                        disabled={!canReview || isSendReview}
+                        size="large"
+                        value={rating}
+                        onChange={(_, valueItem) => setRating(valueItem)}
+                        sx={{
+                            "& .MuiRating-iconFilled": {
+                                color: "#FED81C",
+                            },
+                        }}
+                    />
+                    <CommentInput
+                        onSend={handleSendReview}
+                        btnText="Написать отзыв"
+                        disabled={!canReview || isSendReview}
+                        disabledBtn={!commentInput.trim() || rating === null}
+                        placeholder="Ваш отзыв"
+                        className={styles.commentInput}
+                        value={commentInput}
+                        onChange={handleCommentInput}
+                    />
+                </>
+            )}
             <div className={styles.container}>
                 {renderContent()}
             </div>
