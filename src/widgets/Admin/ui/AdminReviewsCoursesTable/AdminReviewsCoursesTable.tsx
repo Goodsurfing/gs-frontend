@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
-    FormControl, InputLabel, MenuItem, Select, Stack, TextField,
+    Stack, TextField,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
@@ -10,7 +10,7 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
-    AdminSort, useDeleteAdminReviewCourseMutation,
+    useDeleteAdminReviewLessonMutation,
     useLazyGetAdminReviewsCoursesQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -18,26 +18,27 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminReviewsCoursesTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminReviewCoursePersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
+import styles from "./AdminReviewsCoursesTable.module.scss";
 
 interface ReviewCourseFilters {
-    name?: string;
-    author?: string;
-    sort?: AdminSort;
+    // name?: string;
+    // author?: string;
+    lessonId?: string;
+    // sort?: AdminSort;
 }
 
 const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] = [
     {
-        key: "name",
-        label: "Поиск по названию курса",
+        key: "lessonId",
+        label: "Поиск по id урока",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="Поиск по названию курса"
+                label="Поиск по id урока"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -46,59 +47,60 @@ const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] =
             />
         ),
     },
-    {
-        key: "author",
-        label: "Поиск по имени автора",
-        render: ({ value, onChange, disabled }) => (
-            <TextField
-                label="Поиск по имени автора"
-                value={value ?? ""}
-                onChange={(e) => onChange(e.target.value || undefined)}
-                fullWidth
-                size="small"
-                disabled={disabled}
-            />
-        ),
-    },
-    {
-        key: "sort",
-        label: "Сортировка",
-        render: ({ value, onChange, disabled }) => (
-            <FormControl fullWidth size="small" disabled={disabled}>
-                <InputLabel id="review-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
-                    Сортировка
-                </InputLabel>
-                <Select
-                    labelId="review-sort-label"
-                    value={value || AdminSort.IdAsc}
-                    label="Сортировка"
-                    onChange={(e) => onChange(e.target.value as AdminSort)}
-                    MenuProps={{
-                        PaperProps: {
-                            style: { maxHeight: 200 },
-                        },
-                    }}
-                >
-                    <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem>
-                    <MenuItem value={AdminSort.CategoryNameAsc}>ФИО ↑</MenuItem>
-                    <MenuItem value={AdminSort.CategoryNameDesc}>ФИО ↓</MenuItem>
-                    <MenuItem value={AdminSort.UserIdAsc}>Название курса ↑</MenuItem>
-                    <MenuItem value={AdminSort.UserIdDesc}>Название курса ↓</MenuItem>
-                    <MenuItem value={AdminSort.OrganizationNameAsc}>
-                        Рейтинг ↑
-                    </MenuItem>
-                    <MenuItem value={AdminSort.OrganizationNameDesc}>
-                        Рейтинг ↓
-                    </MenuItem>
-                    <MenuItem value={AdminSort.VacancyNameAsc}>Содержание отзыва ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyNameDesc}>Содержание отзыва ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyStatusAsc}>Дата ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyStatusDesc}>Дата ↓</MenuItem>
-                </Select>
-            </FormControl>
-        ),
-    },
+    // {
+    //     key: "author",
+    //     label: "Поиск по имени автора",
+    //     render: ({ value, onChange, disabled }) => (
+    //         <TextField
+    //             label="Поиск по имени автора"
+    //             value={value ?? ""}
+    //             onChange={(e) => onChange(e.target.value || undefined)}
+    //             fullWidth
+    //             size="small"
+    //             disabled={disabled}
+    //         />
+    //     ),
+    // },
+    // {
+    //     key: "sort",
+    //     label: "Сортировка",
+    //     render: ({ value, onChange, disabled }) => (
+    //         <FormControl fullWidth size="small" disabled={disabled}>
+    //             <InputLabel id="review-sort-label" sx={{ background:
+    // "background.paper", px: 0.5 }}>
+    //                 Сортировка
+    //             </InputLabel>
+    //             <Select
+    //                 labelId="review-sort-label"
+    //                 value={value || AdminSort.IdAsc}
+    //                 label="Сортировка"
+    //                 onChange={(e) => onChange(e.target.value as AdminSort)}
+    //                 MenuProps={{
+    //                     PaperProps: {
+    //                         style: { maxHeight: 200 },
+    //                     },
+    //                 }}
+    //             >
+    //                 <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
+    //                 <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem>
+    //                 <MenuItem value={AdminSort.CategoryNameAsc}>ФИО ↑</MenuItem>
+    //                 <MenuItem value={AdminSort.CategoryNameDesc}>ФИО ↓</MenuItem>
+    //                 <MenuItem value={AdminSort.UserIdAsc}>Название курса ↑</MenuItem>
+    //                 <MenuItem value={AdminSort.UserIdDesc}>Название курса ↓</MenuItem>
+    //                 <MenuItem value={AdminSort.OrganizationNameAsc}>
+    //                     Рейтинг ↑
+    //                 </MenuItem>
+    //                 <MenuItem value={AdminSort.OrganizationNameDesc}>
+    //                     Рейтинг ↓
+    //                 </MenuItem>
+    //                 <MenuItem value={AdminSort.VacancyNameAsc}>Содержание отзыва ↑</MenuItem>
+    //                 <MenuItem value={AdminSort.VacancyNameDesc}>Содержание отзыва ↓</MenuItem>
+    //                 <MenuItem value={AdminSort.VacancyStatusAsc}>Дата ↑</MenuItem>
+    //                 <MenuItem value={AdminSort.VacancyStatusDesc}>Дата ↓</MenuItem>
+    //             </Select>
+    //         </FormControl>
+    //     ),
+    // },
 ];
 
 const REVIEWS_COURSES_PER_PAGE = 30;
@@ -111,14 +113,15 @@ export const AdminReviewsCoursesTable = () => {
     const [reviewToDelete, setReviewToDelete] = useState<
     { id: number; } | null>(null);
     const [filters, setFilters] = useState<Partial<ReviewCourseFilters>>(
-        { sort: AdminSort.VacancyIdDesc },
+        {},
+        // { sort: AdminSort.VacancyIdDesc },
     );
     const [getReviews, {
         data: reviewsData,
         isLoading,
         isFetching,
     }] = useLazyGetAdminReviewsCoursesQuery();
-    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewCourseMutation();
+    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewLessonMutation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -126,9 +129,7 @@ export const AdminReviewsCoursesTable = () => {
                 await getReviews({
                     page: currentPage,
                     limit: REVIEWS_COURSES_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.VacancyIdDesc,
-                    author: filters.author,
-                    name: filters.name,
+                    videoCourseId: filters?.lessonId,
                 }).unwrap();
             } catch {
                 setToast({
@@ -232,7 +233,7 @@ export const AdminReviewsCoursesTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminVacancyWherePageUrl(locale, params.row.id),
+                    getAdminReviewCoursePersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
@@ -274,16 +275,16 @@ export const AdminReviewsCoursesTable = () => {
         }
         const adaptedData: any[] = reviewsData.data.map((review) => {
             const {
-                id, name, authorFirstName, authorLastName,
-                rating, description, date,
+                id, author, created,
+                rating, description,
             } = review;
             return {
                 id,
-                author: getFullName(authorFirstName, authorLastName),
-                name,
+                author: getFullName(author.firstName, author.lastName),
+                name: "",
                 rating,
                 description,
-                date,
+                date: created,
             };
         });
         return (

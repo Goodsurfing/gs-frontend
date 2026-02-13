@@ -2,7 +2,6 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
-import { Course } from "@/entities/Academy/model/types/academy";
 import { Locale } from "@/entities/Locale";
 
 import star from "@/shared/assets/icons/offers/star.svg";
@@ -13,7 +12,16 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./CourseCard.module.scss";
 
 interface CourseCardProps {
-    course: Course;
+    course: {
+        id: string;
+        title: string;
+        description: string;
+        author: string;
+        duration: string;
+        numberLessons: number;
+        rating: number;
+        cover?: string;
+    };
     className?: string;
     locale: Locale;
 }
@@ -42,8 +50,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
             <div className={styles.content}>
                 <div className={styles.info}>
                     <h3 className={styles.title}>
-                        Волонтерский лагерь «онлайн»: как вести видео блог и
-                        управлять соцсетями
+                        {title}
                     </h3>
                     <div className={styles.indicators}>
                         <div className={styles.gray}>
@@ -52,8 +59,12 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                             видео
                         </div>
                         <div className={styles.gray}>•</div>
-                        <div className={styles.gray}>{duration}</div>
-                        <div className={styles.gray}>•</div>
+                        {duration !== "" && (
+                            <>
+                                <div className={styles.gray}>{duration}</div>
+                                <div className={styles.gray}>•</div>
+                            </>
+                        )}
                         <div className={styles.rating}>
                             <img src={star} alt="star-icon" />
                             <span>{rating}</span>
@@ -61,6 +72,7 @@ export const CourseCard: FC<CourseCardProps> = (props) => {
                     </div>
                     <span className={styles.gray}>
                         Автор:
+                        {" "}
                         {author}
                     </span>
                     <p className={styles.description}>{description}</p>

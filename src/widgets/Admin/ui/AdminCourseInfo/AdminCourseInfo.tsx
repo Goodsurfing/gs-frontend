@@ -13,7 +13,7 @@ import styles from "./AdminCourseInfo.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AdminCourseInfoProps {
-    courseId: number;
+    courseId: string;
 }
 
 export const AdminCourseInfo: FC<AdminCourseInfoProps> = (props) => {

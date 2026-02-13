@@ -15,7 +15,7 @@ const AdminCoursePersonalPage = () => {
 
     return (
         <div>
-            <AdminCourseInfo courseId={Number(id)} />
+            <AdminCourseInfo courseId={id} />
         </div>
     );
 };

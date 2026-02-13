@@ -1,88 +1,201 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
-    CreateAdminCourseRequest, GetAdminCourse, GetAdminCoursesParams,
-    GetAdminCoursesResponse, GetAdminReviewCourse, GetAdminReviewsCoursesParams,
-    GetAdminReviewsCoursesResponse, UpdateAdminCourseRequest,
+    CreateAdminCourseLesson,
+    CreateAdminCourseRequest, CreateAdminExpert, CreateAdminExpertUserRequest, GetAdminCourse,
+    GetAdminCourseLesson, GetAdminCourseLessonsRequest,
+    GetAdminCourseLessonsResponse, GetAdminCoursesParams,
+    GetAdminCoursesResponse, GetAdminExpert, GetAdminExpertsRequest, GetAdminExpertsResponse,
+    GetAdminReviewLesson, GetAdminReviewsCoursesParams,
+    GetAdminReviewsCoursesResponse, GetReviewsLessonRequest, UpdateAdminCourseRequest,
+    UpdateAdminExpertRequest,
+    UpdateAdminExpertUserRequest,
     UpdateAdminReviewCourseRequest,
+    UpdateAdminCourseLesson,
 } from "../model/types/adminCourseSchema";
-import { objectToFormData } from "@/shared/lib/objectToFormData";
 
 export const adminCourseApi = createApi({
     reducerPath: "adminCourseApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["course", "review",
+    tagTypes: ["course", "review", "lesson",
+        "expert",
     ],
     endpoints: (build) => ({
+        // Courses
         getAdminCourses: build.query<GetAdminCoursesResponse, Partial<GetAdminCoursesParams>>({
             query: (params) => ({
-                url: "courses/list", // not exist
+                url: "course/list",
                 method: "GET",
                 params,
             }),
             providesTags: ["course"],
         }),
-        getAdminCourseById: build.query<GetAdminCourse, number>({
+        getAdminCourseById: build.query<GetAdminCourse, string>({
             query: (courseId) => ({
-                url: `course/${courseId}`, // not exist
+                url: `course/element/${courseId}`,
                 method: "GET",
             }),
             providesTags: ["course"],
         }),
         createAdminCourse: build.mutation<void, CreateAdminCourseRequest>({
-            query: (data) => {
-                const formData = objectToFormData(data);
-                return {
-                    url: "course/create", // not exist
-                    method: "POST",
-                    body: formData,
-                };
-            },
+            query: (body) => ({
+                url: "course/create",
+                method: "POST",
+                body,
+            }),
             invalidatesTags: ["course"],
         }),
         updateAdminCourse: build.mutation<void, UpdateAdminCourseRequest>({
-            query: (courseId) => ({
-                url: `course/edit/${courseId}`, // not exist
+            query: ({ id, body }) => ({
+                url: `course/edit/${id}`,
                 method: "PATCH",
+                body,
             }),
             invalidatesTags: ["course"],
         }),
         deleteAdminCourse: build.mutation<void, number>({
             query: (courseId) => ({
-                url: `course/delete/${courseId}`, // not exist
+                url: `course/delete/${courseId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["course"],
         }),
+        // Review
         getAdminReviewsCourses: build.query<GetAdminReviewsCoursesResponse,
         Partial<GetAdminReviewsCoursesParams>>({
             query: (params) => ({
-                url: "review-course/list", // not exist
+                url: "review/video-course/list",
                 method: "GET",
                 params,
             }),
             providesTags: ["review"],
         }),
-        getAdminReviewCourseById: build.query<GetAdminReviewCourse, number>({
+        getAdminReviewsLessonById: build.query<GetAdminReviewsCoursesResponse,
+        GetReviewsLessonRequest>({
+            query: ({ lessonId, page, limit }) => ({
+                url: `review/video-course/list/${lessonId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["review"],
+        }),
+        getAdminReviewLessonById: build.query<GetAdminReviewLesson, string>({
             query: (reviewId) => ({
-                url: `review-course/${reviewId}`, // not exist
+                url: `review/video-course/element/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
-        updateAdminReviewCourse: build.mutation<void, UpdateAdminReviewCourseRequest>({
-            query: (courseId) => ({
-                url: `review-course/edit/${courseId}`, // not exist
+        updateAdminReviewLesson: build.mutation<void, UpdateAdminReviewCourseRequest>({
+            query: ({ id, body }) => ({
+                url: `review/video-course/edit/${id}`,
                 method: "PATCH",
+                body,
             }),
             invalidatesTags: ["review"],
         }),
-        deleteAdminReviewCourse: build.mutation<void, number>({
-            query: (courseId) => ({
-                url: `review-course/delete/${courseId}`, // not exist
+        deleteAdminReviewLesson: build.mutation<void, number>({
+            query: (reviewId) => ({
+                url: `review/video-course/${reviewId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["review"],
+        }),
+        // Lesson
+        getAdminCourseLessons: build.query<GetAdminCourseLessonsResponse,
+        GetAdminCourseLessonsRequest>({
+            query: ({ courseId, page, limit }) => ({
+                url: `video-course/list/${courseId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["lesson"],
+        }),
+        getAdminCourseLesson: build.query<GetAdminCourseLesson,
+        string>({
+            query: (lessonId) => ({
+                url: `video-course/element/${lessonId}`,
+                method: "GET",
+            }),
+            providesTags: ["lesson"],
+        }),
+        createAdminCourseLesson: build.mutation<void, CreateAdminCourseLesson>({
+            query: (body) => ({
+                url: "video-course/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["lesson"],
+        }),
+        updateAdminCourseLesson: build.mutation<void, UpdateAdminCourseLesson>({
+            query: ({ id, body }) => ({
+                url: `video-course/edit/${id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["lesson"],
+        }),
+        deleteAdminCourseLesson: build.mutation<void, string>({
+            query: (courseId) => ({
+                url: `video-course/${courseId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["lesson"],
+        }),
+        // Experts
+        getCourseExperts: build.query<GetAdminExpertsResponse, Partial<GetAdminExpertsRequest>>({
+            query: (params) => ({
+                url: "expert/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["expert"],
+        }),
+        getCourseExpertById: build.query<GetAdminExpert, string>({
+            query: (expertId) => ({
+                url: `expert/element/${expertId}`,
+                method: "GET",
+            }),
+            providesTags: ["expert"],
+        }),
+        createAdminExpertUser: build.mutation<void, CreateAdminExpertUserRequest>({
+            query: (body) => ({
+                url: "expert/create-with-user",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        updateAdminExpertUser: build.mutation<void, UpdateAdminExpertUserRequest>({
+            query: ({ expertId, body }) => ({
+                url: `expert/edit-with-user/${expertId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        createAdminExpert: build.mutation<void, CreateAdminExpert>({
+            query: (body) => ({
+                url: "expert/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        updateAdminExpert: build.mutation<void, UpdateAdminExpertRequest>({
+            query: ({ expertId, body }) => ({
+                url: `expert/edit/${expertId}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["expert"],
+        }),
+        deleteAdminExpert: build.mutation<void, string>({
+            query: (expertId) => ({
+                url: `expert/${expertId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["expert"],
         }),
     }),
 });
@@ -94,7 +207,21 @@ export const {
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
     useLazyGetAdminReviewsCoursesQuery,
-    useGetAdminReviewCourseByIdQuery,
-    useUpdateAdminReviewCourseMutation,
-    useDeleteAdminReviewCourseMutation,
+    useGetAdminReviewLessonByIdQuery,
+    useUpdateAdminReviewLessonMutation,
+    useDeleteAdminReviewLessonMutation,
+    useLazyGetAdminCourseLessonsQuery,
+    useGetAdminCourseLessonQuery,
+    useCreateAdminCourseLessonMutation,
+    useUpdateAdminCourseLessonMutation,
+    useDeleteAdminCourseLessonMutation,
+    useLazyGetAdminCourseLessonQuery,
+    useLazyGetCourseExpertsQuery,
+    useGetCourseExpertsQuery,
+    useGetCourseExpertByIdQuery,
+    useCreateAdminExpertMutation,
+    useUpdateAdminExpertMutation,
+    useDeleteAdminExpertMutation,
+    useCreateAdminExpertUserMutation,
+    useUpdateAdminExpertUserMutation,
 } = adminCourseApi;

@@ -3,26 +3,25 @@ import {
     Paper, Table, TableBody, TableCell, TableContainer, TableRow,
 } from "@mui/material";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { GetAdminReviewsLesson } from "../../model/types/adminCourseSchema";
 import styles from "./ReviewCourseInfoTable.module.scss";
-import { GetAdminReviewCourse } from "../../model/types/adminCourseSchema";
 
 interface ReviewCourseInfoTableProps {
-    data: GetAdminReviewCourse;
+    data: GetAdminReviewsLesson;
 }
 
 export const ReviewCourseInfoTable: FC<ReviewCourseInfoTableProps> = (props) => {
     const { data } = props;
     const { getFullName } = useGetFullName();
     const {
-        id, authorFirstName, authorLastName,
-        name, date,
+        id, author, created,
     } = data;
 
     const rows = [
         { label: "ID", value: id },
-        { label: "Имя автора", value: getFullName(authorFirstName, authorLastName) },
-        { label: "Название курса", value: name },
-        { label: "Дата создания", value: date },
+        { label: "Имя автора", value: getFullName(author.firstName, author.lastName) },
+        // { label: "Название курса", value: name },
+        { label: "Дата создания", value: created },
     ];
 
     return (
