@@ -41,7 +41,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
         if (isOpen) {
             setLocalSelectedExperts(selectedExperts);
         }
-    }, [isOpen, localSelectedExperts, selectedExperts]);
+    }, [isOpen, selectedExperts]);
 
     const handleAddExpert = () => {
         setEditingExpert(null);
@@ -103,11 +103,12 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
     };
 
     const handleSelectExpert = (expert: AdminExpertFields) => {
-        if (localSelectedExperts.some((e) => e.id === expert.id)) {
-            setLocalSelectedExperts(localSelectedExperts.filter((e) => e.id !== expert.id));
-        } else {
-            setLocalSelectedExperts([...localSelectedExperts, expert]);
-        }
+        setLocalSelectedExperts((prev) => {
+            const exists = prev.some((e) => e.id === expert.id);
+            return exists
+                ? prev.filter((e) => e.id !== expert.id)
+                : [...prev, expert];
+        });
     };
 
     const isSelected = (expertId: string) => localSelectedExperts.some((e) => e.id === expertId);
