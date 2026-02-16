@@ -10,17 +10,20 @@ interface ReviewCourseInfoTableProps {
     data: GetAdminReviewsLesson;
 }
 
+const YesText = <div className={styles.yes}>Да</div>;
+const NoText = <div className={styles.no}>Нет</div>;
+
 export const ReviewCourseInfoTable: FC<ReviewCourseInfoTableProps> = (props) => {
     const { data } = props;
     const { getFullName } = useGetFullName();
     const {
-        id, author, created,
+        id, author, created, isActive,
     } = data;
 
     const rows = [
         { label: "ID", value: id },
         { label: "Имя автора", value: getFullName(author.firstName, author.lastName) },
-        // { label: "Название курса", value: name },
+        { label: "Отзыв опубликован", value: isActive ? YesText : NoText },
         { label: "Дата создания", value: created },
     ];
 

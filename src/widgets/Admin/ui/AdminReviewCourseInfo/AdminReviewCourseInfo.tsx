@@ -6,7 +6,9 @@ import {
     useUpdateAdminReviewLessonMutation,
 } from "@/entities/Admin";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { AdminReviewFields, AdminReviewForm } from "@/features/Admin";
+import {
+    AdminLessonReviewFields, AdminLessonReviewForm,
+} from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
@@ -23,7 +25,8 @@ export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => 
     const { data: reviewData, isLoading } = useGetAdminReviewLessonByIdQuery(reviewId);
     const [updateReview, { isLoading: isUpdateLoading }] = useUpdateAdminReviewLessonMutation();
     const [toast, setToast] = useState<ToastAlert>();
-    const [reviewFields, setReviewFields] = useState<AdminReviewFields | undefined>(undefined);
+    const [reviewFields,
+        setReviewFields] = useState<AdminLessonReviewFields | undefined>(undefined);
     const [reviewInfoTable,
         setReviewInfoTable] = useState<GetAdminReviewsLesson | undefined>(undefined);
     const { locale } = useLocale();
@@ -31,11 +34,12 @@ export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => 
     useEffect(() => {
         if (reviewData) {
             const {
-                rating, description,
+                rating, description, isActive,
             } = reviewData;
             setReviewFields({
                 rating,
                 description,
+                isActive,
             });
             setReviewInfoTable(reviewData);
         } else {
@@ -44,10 +48,10 @@ export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => 
         }
     }, [reviewData]);
 
-    const onSubmit = async (data: AdminReviewFields) => {
+    const onSubmit = async (data: AdminLessonReviewFields) => {
         setToast(undefined);
         const {
-            description, rating,
+            description, rating, isActive,
         } = data;
 
         try {
@@ -56,6 +60,7 @@ export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => 
                 body: {
                     description,
                     rating: rating ?? 0,
+                    isActive,
                 },
             }).unwrap();
             setToast({
@@ -96,7 +101,7 @@ export const AdminReviewCourseInfo: FC<AdminReviewCourseInfoProps> = (props) => 
             ]}
             />
             {reviewInfoTable && <ReviewCourseInfoTable data={reviewInfoTable} />}
-            <AdminReviewForm
+            <AdminLessonReviewForm
                 review={reviewFields}
                 onSubmit={onSubmit}
                 isLoading={isUpdateLoading}
