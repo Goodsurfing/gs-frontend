@@ -81,11 +81,11 @@ const courseCustomFields: CustomFilterField<keyof CoursesFilters>[] = [
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
             <FormControl fullWidth size="small" disabled={disabled}>
-                <InputLabel id="skill-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
+                <InputLabel id="course-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
                     Сортировка
                 </InputLabel>
                 <Select
-                    labelId="skill-sort-label"
+                    labelId="course-sort-label"
                     value={value || AdminSort.IdAsc}
                     label="Сортировка"
                     onChange={(e) => onChange(e.target.value as AdminSort)}

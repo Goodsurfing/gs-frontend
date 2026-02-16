@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
     Stack, TextField,
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
@@ -10,6 +14,7 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
+    AdminSort,
     useDeleteAdminReviewLessonMutation,
     useLazyGetAdminReviewsCoursesQuery,
 } from "@/entities/Admin";
@@ -26,10 +31,11 @@ import { getFullName } from "@/shared/lib/getFullName";
 import styles from "./AdminReviewsCoursesTable.module.scss";
 
 interface ReviewCourseFilters {
-    // name?: string;
-    // author?: string;
+    courseName?: string;
+    firstName?: string;
+    lastName?: string;
     lessonId?: string;
-    // sort?: AdminSort;
+    sort?: AdminSort;
 }
 
 const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] = [
@@ -47,60 +53,93 @@ const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] =
             />
         ),
     },
-    // {
-    //     key: "author",
-    //     label: "Поиск по имени автора",
-    //     render: ({ value, onChange, disabled }) => (
-    //         <TextField
-    //             label="Поиск по имени автора"
-    //             value={value ?? ""}
-    //             onChange={(e) => onChange(e.target.value || undefined)}
-    //             fullWidth
-    //             size="small"
-    //             disabled={disabled}
-    //         />
-    //     ),
-    // },
-    // {
-    //     key: "sort",
-    //     label: "Сортировка",
-    //     render: ({ value, onChange, disabled }) => (
-    //         <FormControl fullWidth size="small" disabled={disabled}>
-    //             <InputLabel id="review-sort-label" sx={{ background:
-    // "background.paper", px: 0.5 }}>
-    //                 Сортировка
-    //             </InputLabel>
-    //             <Select
-    //                 labelId="review-sort-label"
-    //                 value={value || AdminSort.IdAsc}
-    //                 label="Сортировка"
-    //                 onChange={(e) => onChange(e.target.value as AdminSort)}
-    //                 MenuProps={{
-    //                     PaperProps: {
-    //                         style: { maxHeight: 200 },
-    //                     },
-    //                 }}
-    //             >
-    //                 <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
-    //                 <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem>
-    //                 <MenuItem value={AdminSort.CategoryNameAsc}>ФИО ↑</MenuItem>
-    //                 <MenuItem value={AdminSort.CategoryNameDesc}>ФИО ↓</MenuItem>
-    //                 <MenuItem value={AdminSort.UserIdAsc}>Название курса ↑</MenuItem>
-    //                 <MenuItem value={AdminSort.UserIdDesc}>Название курса ↓</MenuItem>
-    //                 <MenuItem value={AdminSort.OrganizationNameAsc}>
-    //                     Рейтинг ↑
-    //                 </MenuItem>
-    //                 <MenuItem value={AdminSort.OrganizationNameDesc}>
-    //                     Рейтинг ↓
-    //                 </MenuItem>
-    //                 <MenuItem value={AdminSort.VacancyNameAsc}>Содержание отзыва ↑</MenuItem>
-    //                 <MenuItem value={AdminSort.VacancyNameDesc}>Содержание отзыва ↓</MenuItem>
-    //                 <MenuItem value={AdminSort.VacancyStatusAsc}>Дата ↑</MenuItem>
-    //                 <MenuItem value={AdminSort.VacancyStatusDesc}>Дата ↓</MenuItem>
-    //             </Select>
-    //         </FormControl>
-    //     ),
-    // },
+    {
+        key: "firstName",
+        label: "Поиск по имени автора",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Поиск по имени автора"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "lastName",
+        label: "Поиск по фамилии автора",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Поиск по фамилии автора"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "courseName",
+        label: "Поиск по названию курса",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Поиск по названию курса"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "sort",
+        label: "Сортировка",
+        render: ({ value, onChange, disabled }) => (
+            <FormControl fullWidth size="small" disabled={disabled}>
+                <InputLabel
+                    id="review-sort-label"
+                    sx={{
+                        background: "background.paper",
+                        px: 0.5,
+                    }}
+                >
+                    Сортировка
+                </InputLabel>
+                <Select
+                    labelId="review-sort-label"
+                    value={value || AdminSort.IdAsc}
+                    label="Сортировка"
+                    onChange={(e) => onChange(e.target.value as AdminSort)}
+                    MenuProps={{
+                        PaperProps: {
+                            style: { maxHeight: 200 },
+                        },
+                    }}
+                >
+                    {/* <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem> */}
+                    <MenuItem value={AdminSort.FioAsc}>ФИО ↑</MenuItem>
+                    <MenuItem value={AdminSort.FioDesc}>ФИО ↓</MenuItem>
+                    {/* <MenuItem value={AdminSort.UserIdAsc}>Название курса ↑</MenuItem>
+                    <MenuItem value={AdminSort.UserIdDesc}>Название курса ↓</MenuItem>
+                    <MenuItem value={AdminSort.OrganizationNameAsc}>
+                        Рейтинг ↑
+                    </MenuItem>
+                    <MenuItem value={AdminSort.OrganizationNameDesc}>
+                        Рейтинг ↓
+                    </MenuItem>
+                    <MenuItem value={AdminSort.VacancyNameAsc}>Содержание отзыва ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyNameDesc}>Содержание отзыва ↓</MenuItem>
+                    <MenuItem value={AdminSort.VacancyStatusAsc}>Дата ↑</MenuItem>
+                    <MenuItem value={AdminSort.VacancyStatusDesc}>Дата ↓</MenuItem> */}
+                </Select>
+            </FormControl>
+        ),
+    },
 ];
 
 const REVIEWS_COURSES_PER_PAGE = 30;
@@ -113,8 +152,7 @@ export const AdminReviewsCoursesTable = () => {
     const [reviewToDelete, setReviewToDelete] = useState<
     { id: number; } | null>(null);
     const [filters, setFilters] = useState<Partial<ReviewCourseFilters>>(
-        {},
-        // { sort: AdminSort.VacancyIdDesc },
+        { sort: AdminSort.FioAsc },
     );
     const [getReviews, {
         data: reviewsData,
@@ -130,6 +168,10 @@ export const AdminReviewsCoursesTable = () => {
                     page: currentPage,
                     limit: REVIEWS_COURSES_PER_PAGE,
                     videoCourseId: filters?.lessonId,
+                    sort: filters.sort,
+                    firstName: filters.firstName,
+                    lastName: filters.lastName,
+                    videCourseName: filters.courseName,
                 }).unwrap();
             } catch {
                 setToast({
@@ -189,7 +231,7 @@ export const AdminReviewsCoursesTable = () => {
         },
         {
             field: "name",
-            headerName: "Название курса",
+            headerName: "Название урока",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -276,12 +318,12 @@ export const AdminReviewsCoursesTable = () => {
         const adaptedData: any[] = reviewsData.data.map((review) => {
             const {
                 id, author, created,
-                rating, description,
+                rating, description, videoCourse,
             } = review;
             return {
                 id,
                 author: getFullName(author.firstName, author.lastName),
-                name: "",
+                name: videoCourse.name,
                 rating,
                 description,
                 date: created,
