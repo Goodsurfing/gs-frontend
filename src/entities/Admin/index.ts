@@ -165,3 +165,14 @@ export {
 } from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";
+
+// News
+
+export {
+    adminNewsApi,
+    useLazyGetAdminNewsListQuery,
+    useGetAdminNewsByIdQuery,
+    useCreateAdminNewsMutation,
+    useUpdateAdminNewsMutation,
+    useDeleteAdminNewsMutation,
+} from "./api/adminNewsApi";
