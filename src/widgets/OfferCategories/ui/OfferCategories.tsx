@@ -1,7 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React, {
-    ChangeEvent, FC,
-} from "react";
+import React, { FC, MouseEvent } from "react";
 
 import styles from "./OfferCategories.module.scss";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
@@ -9,26 +7,45 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface OfferCategoriesProps {
-    value?: number[];
-    onChange?: (value: number[]) => void;
+    value?: number | number[];
+    onChange?: (value: number | number[]) => void;
     maxLength?: number;
     locale: Locale;
+    exclusive?: boolean;
 }
 
 export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     const {
-        value, onChange, maxLength = 5, locale,
+        value,
+        onChange,
+        maxLength = 5,
+        locale,
+        exclusive = false,
     } = props;
+
     const {
         data: categoriesData,
         isLoading,
     } = useGetPublicCategoriesVacancyQuery({ lang: locale });
 
-    const handleChange = (event: ChangeEvent<{}>, newValues: number[]) => {
-        if (newValues.length <= maxLength) {
-            onChange?.(newValues.filter((id) => id > 0));
+    const handleChange = (
+        event: MouseEvent<HTMLElement>,
+        newValues: number | number[],
+    ) => {
+        if (exclusive) {
+            const newValue = newValues as number | null;
+            if (newValue !== null) {
+                onChange?.(newValue);
+            }
+        } else {
+            const valuesArray = newValues as number[];
+            if (valuesArray.length <= maxLength) {
+                onChange?.(valuesArray.filter((id) => id > 0));
+            }
         }
     };
+
+    const groupValue = exclusive && Array.isArray(value) ? value[0] : value;
 
     if (isLoading) {
         return (
@@ -45,8 +62,9 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
     return (
         <div className={styles.container}>
             <ToggleButtonGroup
-                value={value}
+                value={groupValue}
                 onChange={handleChange}
+                exclusive={exclusive}
                 sx={{
                     display: "flex",
                     flexWrap: "wrap",
@@ -79,7 +97,7 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
                             },
 
                             "&:selected:hover": {
-                                backgrounColor: "transparent",
+                                backgroundColor: "transparent",
                             },
 
                             "&:selected": {

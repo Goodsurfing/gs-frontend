@@ -50,6 +50,20 @@ export const useAdminPagesSidebarData = () => {
                 },
             ],
         },
+        {
+            route: "/admin",
+            text: "Сообщество",
+            dropdownItems: [
+                {
+                    route: "/news",
+                    text: "Все новости",
+                },
+                {
+                    route: "/reviews-community",
+                    text: "Комментарии",
+                },
+            ],
+        },
     ];
     return { AdminPagesSidebarData };
 };
