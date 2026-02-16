@@ -141,17 +141,21 @@ export interface UpdateAdminCourseRequest {
 }
 
 export interface GetAdminReviewsCourses {
-    id: number;
+    id: string;
     author: {
         id: string;
         lastName: string;
         firstName: string;
-        image: Image;
+        email: string;
     }
     // name: string;
+    isActive: boolean;
     rating: number;
     description: string;
     created: string;
+    videoCourse: {
+        name: string;
+    }
 }
 
 export interface GetAdminReviewsCoursesResponse {
@@ -160,9 +164,10 @@ export interface GetAdminReviewsCoursesResponse {
 }
 
 export interface GetAdminReviewsCoursesParams {
-    // sort: AdminSort;
-    // name: string;
-    // author: string;
+    sort: AdminSort;
+    firstName: string;
+    lastName: string;
+    videCourseName: string;
     videoCourseId: string;
     page: number;
     limit: number;
