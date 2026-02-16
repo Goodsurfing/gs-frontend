@@ -183,6 +183,7 @@ export interface GetAdminReviewsLesson {
         lastName: string;
         firstName: string;
     }
+    isActive: boolean;
     created: string;
 }
 
@@ -213,6 +214,7 @@ export interface GetAdminReviewCourse {
 export interface UpdateAdminReviewCourse {
     rating: number;
     description: string;
+    isActive: boolean;
 }
 
 export interface UpdateAdminReviewCourseRequest {
