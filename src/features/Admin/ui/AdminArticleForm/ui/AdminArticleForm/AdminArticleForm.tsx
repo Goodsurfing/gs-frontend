@@ -18,6 +18,7 @@ interface AdminArticleFormProps {
     className?: string;
     initialData?: AdminArticleFormFields;
     onComplete: (data: AdminArticleFormFields) => void;
+    onErrorUploadImage: (error: string) => void;
     isLoading: boolean;
 }
 
@@ -38,7 +39,7 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
     (props: AdminArticleFormProps) => {
         const {
             className, initialData, onComplete,
-            isLoading,
+            isLoading, onErrorUploadImage,
         } = props;
         const { t } = useTranslation("volunteer");
         const { locale } = useLocale();
@@ -166,6 +167,7 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
                         <TextEditor
                             onChange={field.onChange}
                             value={field.value}
+                            onErrorUploadImage={onErrorUploadImage}
                         />
                     )}
                 />

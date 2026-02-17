@@ -8,7 +8,7 @@ import Image from "@tiptap/extension-image";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
-import React from "react";
+import React, { useEffect } from "react";
 import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
@@ -50,8 +50,16 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
                 class: cn(styles.input),
             },
         },
-        onUpdate: () => onChange(editor?.getHTML() || ""),
+        onUpdate: () => {
+            onChange(editor?.getHTML() || "");
+        },
     });
+
+    useEffect(() => {
+        if (editor && value !== editor.getHTML()) {
+            editor.commands.setContent(value || "");
+        }
+    }, [value, editor]);
 
     const clearContent = () => {
         editor?.commands.setContent("");

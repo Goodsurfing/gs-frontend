@@ -71,6 +71,7 @@ export const AdminNewsInfo: FC<AdminNewsInfoProps> = (props) => {
                 initialData={newsAdapter(newsData)}
                 onComplete={onSubmit}
                 isLoading={isUpdateLoading}
+                onErrorUploadImage={() => {}}
             />
         </div>
     );
