@@ -1,5 +1,5 @@
 import React, {
-    ChangeEvent, FC, useCallback, useState,
+    ChangeEvent, FC, useCallback,
 } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -8,42 +8,54 @@ import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 
 import styles from "./UploadArticleCover.module.scss";
+import { Image } from "@/types/media";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 interface UploadArticleCoverProps {
     id: string;
-    onUpload?: (img: File) => void;
+    img?: Image | null;
+    onUpload?: (img: Image | null) => void;
 }
 
 export const UploadArticleCover: FC<UploadArticleCoverProps> = (
     props: UploadArticleCoverProps,
 ) => {
-    const { id, onUpload } = props;
-    const [img, setImg] = useState<string | null>(null);
+    const { id, onUpload, img } = props;
     const { t } = useTranslation("volunteer");
 
     const handleUpload = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
+        async (e: ChangeEvent<HTMLInputElement>) => {
             const fileList = e.target.files;
             if (fileList && fileList.length > 0) {
                 const file = fileList[0];
-                // console.log(file);
-                const url = URL.createObjectURL(file);
-                setImg(url);
-                onUpload?.(file);
+                await uploadFile(file.name, file)
+                    .then((result) => {
+                        if (result) {
+                            onUpload?.({
+                                id: result.id,
+                                contentUrl: result.contentUrl,
+                                thumbnails: result.thumbnails,
+                            });
+                        }
+                    })
+                    .catch(() => {
+                        onUpload?.(null);
+                    });
             }
         },
         [onUpload],
     );
 
     const handleDelete = () => {
-        setImg(null);
+        onUpload?.(null);
     };
 
     return (
         <div className={styles.wrapper}>
             {img && (
                 <div className={styles.imageWrapper}>
-                    <img src={img} alt="uploaded" className={styles.imageCover} />
+                    <img src={getMediaContent(img.contentUrl)} alt="uploaded" className={styles.imageCover} />
                     <div className={styles.containerButtons}>
                         <InputFile
                             id="upload image"

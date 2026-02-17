@@ -17,19 +17,20 @@ import styles from "./ArticleForm.module.scss";
 interface ArticleFormProps {
     className?: string;
     initialData?: ArticleFormFields;
+    onComplete: (data: ArticleFormFields) => void;
 }
 
 export interface ArticleFormFields {
     image: Image;
     name: string;
-    categoryId: string;
+    categoryId?: number;
     description: string;
     projectUrl: string;
 }
 
 export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
-        const { className, initialData } = props;
+        const { className, initialData, onComplete } = props;
         const { t } = useTranslation("volunteer");
         const { translate } = useTranslateError();
         const { locale } = useLocale();
@@ -38,6 +39,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             formState: { errors },
             control,
             reset,
+            handleSubmit,
         } = useForm<ArticleFormFields>({
             mode: "onChange",
         });
@@ -50,10 +52,34 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             }
         }, [initialData, reset]);
 
+        const onSubmit = (data: ArticleFormFields) => {
+            onComplete(data);
+        };
+
         return (
-            <form className={cn(className, styles.wrapper)}>
+            <form className={cn(className, styles.wrapper)} onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <UploadArticleCover id="upload cover" onUpload={} />
+                    <Controller
+                        name="image"
+                        control={control}
+                        rules={{
+                            required: "Загрузите обложку",
+                        }}
+                        render={({ field, fieldState }) => (
+                            <div className={styles.imgWrapper}>
+                                <UploadArticleCover
+                                    id="upload cover"
+                                    img={field.value}
+                                    onUpload={(img) => field.onChange(img)}
+                                />
+                                {fieldState.error && (
+                                    <span className={styles.error}>
+                                        {translate(fieldState.error.message)}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
                     <span className={styles.smallDescription}>
                         {t(
                             "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 2МБ",
@@ -86,6 +112,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                 helperText={fieldState.error?.message
                                     && translate(fieldState.error?.message)}
                                 variant="outlined"
+                                value={field.value}
                                 onChange={(event) => field.onChange(event.target.value)}
                                 placeholder={t(
                                     "volunteer-create-article.Заголовок вашей статьи",
@@ -112,8 +139,9 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                     onChange={(value) => field.onChange(String(value))}
                                 />
                                 {fieldState.error && (
-                                    <span className={styles.errorText}>
-                                        {translate(fieldState.error.message)}
+                                    <span className={styles.error}>
+                                        {translate(fieldState.error.message)
+                                        ?? fieldState.error.message}
                                     </span>
                                 )}
                             </div>
@@ -138,11 +166,13 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     <Controller
                         name="projectUrl"
                         control={control}
-                        render={({ fieldState }) => (
+                        render={({ field, fieldState }) => (
                             <InputField
                                 name="projectUrl"
                                 register={register}
                                 error={Boolean(fieldState.error)}
+                                value={field.value}
+                                onChange={(e) => field.onChange(e.target.value)}
                                 helperText={fieldState.error?.message
                             && translate(fieldState.error?.message)}
                                 variant="outlined"

@@ -8,7 +8,7 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface OfferCategoriesProps {
     value?: number | number[];
-    onChange?: (value: number | number[]) => void;
+    onChange?: (value?: number | number[]) => void;
     maxLength?: number;
     locale: Locale;
     exclusive?: boolean;
@@ -33,10 +33,8 @@ export const OfferCategories: FC<OfferCategoriesProps> = (props) => {
         newValues: number | number[],
     ) => {
         if (exclusive) {
-            const newValue = newValues as number | null;
-            if (newValue !== null) {
-                onChange?.(newValue);
-            }
+            const newValue = newValues as number | undefined;
+            onChange?.(newValue);
         } else {
             const valuesArray = newValues as number[];
             if (valuesArray.length <= maxLength) {
