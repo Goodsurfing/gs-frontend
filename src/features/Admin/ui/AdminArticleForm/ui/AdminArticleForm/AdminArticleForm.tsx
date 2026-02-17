@@ -9,31 +9,38 @@ import Button from "@/shared/ui/Button/Button";
 import { InputField } from "@/shared/ui/InputField/InputField";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
-import { useTranslateError } from "../../hooks/useErrorTranslate";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
-import styles from "./ArticleForm.module.scss";
+import styles from "./AdminArticleForm.module.scss";
+import { AdminUsersSearchForm } from "../../../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 
-interface ArticleFormProps {
+interface AdminArticleFormProps {
     className?: string;
-    initialData?: ArticleFormFields;
-    onComplete: (data: ArticleFormFields) => void;
+    initialData?: AdminArticleFormFields;
+    onComplete: (data: AdminArticleFormFields) => void;
+    isLoading: boolean;
 }
 
-export interface ArticleFormFields {
+export interface AdminArticleFormFields {
     image: Image;
     name: string;
-    categoryId?: number;
+    categoryId: number;
     description: string;
-    // projectUrl: string;
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+    }
     isActive: boolean;
 }
 
-export const ArticleForm: FC<ArticleFormProps> = memo(
-    (props: ArticleFormProps) => {
-        const { className, initialData, onComplete } = props;
+export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
+    (props: AdminArticleFormProps) => {
+        const {
+            className, initialData, onComplete,
+            isLoading,
+        } = props;
         const { t } = useTranslation("volunteer");
-        const { translate } = useTranslateError();
         const { locale } = useLocale();
         const {
             register,
@@ -41,7 +48,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             control,
             reset,
             handleSubmit,
-        } = useForm<ArticleFormFields>({
+        } = useForm<AdminArticleFormFields>({
             mode: "onChange",
         });
 
@@ -53,7 +60,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             }
         }, [initialData, reset]);
 
-        const onSubmit = (isActive: boolean) => (data: ArticleFormFields) => {
+        const onSubmit = (isActive: boolean) => (data: AdminArticleFormFields) => {
             onComplete({
                 ...data,
                 isActive,
@@ -78,7 +85,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                 />
                                 {fieldState.error && (
                                     <span className={styles.error}>
-                                        {translate(fieldState.error.message)}
+                                        {fieldState.error.message}
                                     </span>
                                 )}
                             </div>
@@ -113,8 +120,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                 name="name"
                                 register={register}
                                 error={Boolean(fieldState.error)}
-                                helperText={fieldState.error?.message
-                                    && translate(fieldState.error?.message)}
+                                helperText={fieldState.error?.message}
                                 variant="outlined"
                                 value={field.value}
                                 onChange={(event) => field.onChange(event.target.value)}
@@ -146,8 +152,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                 />
                                 {fieldState.error && (
                                     <span className={styles.error}>
-                                        {translate(fieldState.error.message)
-                                        ?? fieldState.error.message}
+                                        {fieldState.error.message}
                                     </span>
                                 )}
                             </div>
@@ -165,30 +170,17 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     )}
                 />
                 {errors.description && (
-                    <p className={styles.error}>{translate(errors.description.message)}</p>
+                    <p className={styles.error}>{errors.description.message}</p>
                 )}
-                {/* <div className={styles.field}>
-                    <span className={styles.title}>{
-                    t("volunteer-create-article.Ссылка на проект гудсёрфинга")}</span>
+                <div className={styles.field}>
                     <Controller
-                        name="projectUrl"
+                        name="author"
                         control={control}
-                        render={({ field, fieldState }) => (
-                            <InputField
-                                name="projectUrl"
-                                register={register}
-                                error={Boolean(fieldState.error)}
-                                value={field.value}
-                                onChange={(e) => field.onChange(e.target.value)}
-                                helperText={fieldState.error?.message
-                            && translate(fieldState.error?.message)}
-                                variant="outlined"
-                                placeholder={t("volunteer-create-article.Ваша ссылка на вакансию")}
-                                className={styles.input}
-                            />
+                        render={({ field }) => (
+                            <AdminUsersSearchForm value={field.value} onChange={field.onChange} />
                         )}
                     />
-                </div> */}
+                </div>
                 <div className={styles.containerButtons}>
                     <Button
                         type="button"
@@ -196,6 +188,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         color="BLUE"
                         variant="FILL"
                         size="SMALL"
+                        disabled={isLoading}
                     >
                         {t("volunteer-create-article.Опубликовать")}
                     </Button>
@@ -205,6 +198,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         color="BLUE"
                         variant="OUTLINE"
                         size="SMALL"
+                        disabled={isLoading}
                     >
                         {t("volunteer-create-article.Сохранить в черновики")}
                     </Button>

@@ -21,9 +21,10 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminNewsCreatePageUrl, getAdminNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./AdminNewsTable.module.scss";
 import { getFullName } from "@/shared/lib/getFullName";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface NewsFilters {
     name?: string;
@@ -344,6 +345,13 @@ export const AdminNewsTable = () => {
                     disabled={isLoading}
                     customFields={newsCustomFields}
                 />
+                <ButtonLink
+                    path={getAdminNewsCreatePageUrl(locale)}
+                    type="primary"
+                    className={styles.btn}
+                >
+                    Добавить новость
+                </ButtonLink>
             </div>
             <div className={styles.table}>
                 {renderTable()}

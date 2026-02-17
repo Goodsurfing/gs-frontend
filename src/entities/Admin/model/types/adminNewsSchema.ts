@@ -31,16 +31,16 @@ export interface GetAdminNewsListParams {
     limit: number;
 }
 
-export type GetAdminNews = GetAdminNewsList & {
+export type GetAdminNews = Omit<GetAdminNewsList, "categoryName"> & {
     description: string;
     image: Image;
     category: CategoryNews
 };
 
 export type CreateAdminNews = Omit<GetAdminNews, "id" | "categoryName"
-| "created" | "reviewCount" | "author"> & {
+| "created" | "reviewCount" | "author" | "category"> & {
     imageId: string;
-    categoryId: string;
+    categoryId: number;
     authorId: string;
 };
 

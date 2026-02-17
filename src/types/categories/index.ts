@@ -67,7 +67,7 @@ export interface UpdateCategoryParams {
 }
 
 export interface CategoryNews {
-    id: string;
+    id: number;
     name: string;
     color: string;
 }

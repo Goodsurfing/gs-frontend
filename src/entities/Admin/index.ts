@@ -176,3 +176,5 @@ export {
     useUpdateAdminNewsMutation,
     useDeleteAdminNewsMutation,
 } from "./api/adminNewsApi";
+
+export { newsAdapter, newsApiAdapter } from "./lib/adminNewsAdapter";
