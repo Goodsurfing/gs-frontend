@@ -1,23 +1,19 @@
 import React from "react";
 
-import { MainPageLayout } from "@/widgets/MainPageLayout";
-
-import { mockedAcademyCourses } from "@/entities/Academy/model/mockedAcademy.data";
-
-import { CourseContent } from "../CourseContent/CourseContent";
-import { Header } from "../Header/Header";
-import styles from "./AcademyCoursesPage.module.scss";
+import { useParams } from "react-router-dom";
+import { CoursePersonal } from "@/widgets/Academy";
 
 const AcademyCoursePage = () => {
-    const courseData = mockedAcademyCourses[0];
+    const { id } = useParams<{ id: string; }>();
+
+    if (!id) {
+        return (
+            <p>Был неправильно введён id курса</p>
+        );
+    }
 
     return (
-        <MainPageLayout>
-            <div className={styles.wrapper}>
-                <Header course={courseData} />
-                <CourseContent course={courseData} />
-            </div>
-        </MainPageLayout>
+        <CoursePersonal courseId={id} />
     );
 };
 

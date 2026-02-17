@@ -1,70 +1,139 @@
 import {
-    AdminCourseFields, CreateAdminCourseRequest,
-    CreateAdminExpert, CreateAdminLesson, GetAdminCourse,
+    AdminCourseFields, AdminExpertFields, AdminLessonFields, AdminLessonsFields,
+    CreateAdminCourseLesson,
+    CreateAdminCourseRequest, GetAdminCourse,
+    GetAdminCourseLesson,
+    GetAdminCourseLessons,
+    GetAdminExperts,
 } from "../model/types/adminCourseSchema";
 
-export const adminCourseAdapter = (data: GetAdminCourse): AdminCourseFields => {
+export const adminCourseAdapter = (
+    data: GetAdminCourse,
+    lessons?: GetAdminCourseLessons[],
+): AdminCourseFields => {
     const {
-        name, image, aboutAuthor, aboutCourse,
-        duration, experts, forWhom, isPublic,
-        lessons,
+        name, description, aboutAuthor, courseFor, isActive,
+        author, experts, image,
     } = data;
 
-    let imageTemp = null;
+    const authorTemp = {
+        id: author.id,
+        firstName: author.firstName,
+        lastName: author.lastName,
+    };
 
-    if (image instanceof File) {
-        imageTemp = image;
-    }
+    const lessonsTemp: AdminLessonsFields[] = lessons?.map((lesson) => ({
+        id: lesson.id,
+        name: lesson.name,
+        description: lesson.description,
+        duration: lesson.duration,
+    })) ?? [];
+
+    const expertsTemp: AdminExpertFields[] = experts.map((expert) => ({
+        id: expert.id,
+        firstName: expert.firsName,
+        lastName: expert.lastName,
+        image: expert.image,
+        city: expert.city,
+        country: expert.country,
+        project: expert.project,
+    }));
 
     return {
         name,
-        image: imageTemp,
-        aboutCourse,
+        image,
+        aboutCourse: description,
         aboutAuthor,
-        forWhom,
-        duration,
-        experts,
-        lessons,
-        isPublic,
+        forWhom: courseFor,
+        isPublic: isActive,
+        author: authorTemp,
+        experts: expertsTemp,
+        lessons: lessonsTemp,
     };
 };
 
 export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdminCourseRequest => {
     const {
         name, image, aboutAuthor, aboutCourse,
-        duration, experts, forWhom, isPublic,
-        lessons,
+        experts, forWhom, isPublic,
+        author,
     } = data;
-
-    let imageTemp = null;
-
-    if (image instanceof File) {
-        imageTemp = image;
-    }
-
-    const expertsTemp: CreateAdminExpert[] = experts.map((expert) => ({
-        name: expert.name,
-        description: expert.description,
-        image: expert.image instanceof File ? expert.image : null,
-    }));
-
-    const lessonsTemp: CreateAdminLesson[] = lessons.map((lesson) => ({
-        name: lesson.name,
-        description: lesson.description,
-        image: lesson.image instanceof File ? lesson.image : null,
-        duration: lesson.duration,
-        videoUrl: lesson.videoUrl,
-    }));
 
     return {
         name,
-        image: imageTemp,
-        aboutCourse,
+        imageId: image?.id ?? null,
+        description: aboutCourse,
         aboutAuthor,
-        forWhom,
+        courseFor: forWhom,
+        authorId: author?.id ?? "",
+        expertIds: experts.map((expert) => expert.id),
+        isActive: isPublic,
+    };
+};
+
+// Experts
+
+export const adminCourseExpertsAdapter = (data: GetAdminExperts): AdminExpertFields => {
+    const {
+        id, firstName, lastName,
+        city, country, project, image,
+    } = data;
+
+    return {
+        id,
+        firstName,
+        lastName,
+        city,
+        country,
+        project,
+        image,
+    };
+};
+
+// Lessons
+
+export const adminCourseLessonsAdapter = (data: GetAdminCourseLessons): AdminLessonsFields => {
+    const {
+        id, name, description, duration,
+    } = data;
+
+    return {
+        id,
+        name,
+        description,
         duration,
-        experts: expertsTemp,
-        lessons: lessonsTemp,
-        isPublic,
+    };
+};
+
+export const adminCourseLessonAdapter = (data: GetAdminCourseLesson): AdminLessonFields => {
+    const {
+        id, description, duration, image, name, sort, url,
+    } = data;
+
+    return {
+        id,
+        name,
+        description,
+        duration,
+        image,
+        videoUrl: url,
+        sort,
+    };
+};
+
+export const adminCourseLessonApiAdapter = (data: AdminLessonFields, courseId: string):
+CreateAdminCourseLesson => {
+    const {
+        name, description, duration, image, videoUrl, sort,
+    } = data;
+
+    return {
+        name,
+        description,
+        duration,
+        imageId: image?.id ?? null,
+        url: videoUrl,
+        sort,
+        courseId,
     };
 };

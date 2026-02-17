@@ -19,6 +19,7 @@ export type {
     UpdateAdminVacancyConditions,
     UpdateAdminVacancyDescription,
     UpdateAdminVacancyFinishingTouches,
+    GetAdminUsersResponse,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -122,6 +123,7 @@ export {
     useGetGoodsurfingTodayQuery,
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
+    useLazyGetAdminSearchUsersQuery,
 } from "./api/adminApi";
 
 export {
@@ -132,17 +134,47 @@ export {
     useUpdateAdminCourseMutation,
     useDeleteAdminCourseMutation,
     useLazyGetAdminReviewsCoursesQuery,
-    useGetAdminReviewCourseByIdQuery,
-    useUpdateAdminReviewCourseMutation,
-    useDeleteAdminReviewCourseMutation,
+    useGetAdminReviewLessonByIdQuery,
+    useUpdateAdminReviewLessonMutation,
+    useDeleteAdminReviewLessonMutation,
+    useLazyGetAdminCourseLessonsQuery,
+    useGetAdminCourseLessonQuery,
+    useCreateAdminCourseLessonMutation,
+    useUpdateAdminCourseLessonMutation,
+    useDeleteAdminCourseLessonMutation,
+    useLazyGetCourseExpertsQuery,
+    useGetCourseExpertByIdQuery,
+    useCreateAdminExpertMutation,
+    useGetCourseExpertsQuery,
+    useUpdateAdminExpertMutation,
+    useDeleteAdminExpertMutation,
+    useCreateAdminExpertUserMutation,
+    useUpdateAdminExpertUserMutation,
 } from "./api/adminCourseApi";
 
 export type {
-    AdminCourseFields, AdminExpertFields, AdminLessonsFields,
+    AdminCourseFields, AdminCourseAuthorFileds, AdminExpertFields, AdminLessonsFields,
     GetAdminCourse, CreateAdminLesson, CreateAdminExpert,
-    GetAdminReviewCourse,
+    GetAdminReviewCourse, GetAdminCourseLessons, AdminLessonFields,
+    GetAdminReviewsLesson,
 } from "./model/types/adminCourseSchema";
 
-export { adminCourseAdapter, adminCreateCourseApiAdapter } from "./lib/adminCourseAdapter";
+export {
+    adminCourseAdapter, adminCreateCourseApiAdapter,
+    adminCourseLessonsAdapter,
+} from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";
+
+// News
+
+export {
+    adminNewsApi,
+    useLazyGetAdminNewsListQuery,
+    useGetAdminNewsByIdQuery,
+    useCreateAdminNewsMutation,
+    useUpdateAdminNewsMutation,
+    useDeleteAdminNewsMutation,
+} from "./api/adminNewsApi";
+
+export { newsAdapter, newsApiAdapter } from "./lib/adminNewsAdapter";

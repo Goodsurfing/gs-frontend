@@ -28,3 +28,5 @@ export { AdminCoursesTable } from "./ui/AdminCoursesTable/AdminCoursesTable";
 export { AdminCourseInfo } from "./ui/AdminCourseInfo/AdminCourseInfo";
 export { AdminReviewsCoursesTable } from "./ui/AdminReviewsCoursesTable/AdminReviewsCoursesTable";
 export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCourseInfo";
+export { AdminNewsTable } from "./ui/AdminNewsTable/AdminNewsTable";
+export { AdminNewsInfo } from "./ui/AdminNewsInfo/AdminNewsInfo";

@@ -8,14 +8,15 @@ import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Button from "@/shared/ui/Button/Button";
-import { AdminLessonsFields } from "@/entities/Admin";
+import { AdminLessonFields } from "@/entities/Admin";
 import styles from "./AdminLessonFormModal.module.scss";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 interface AdminLessonFormModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: AdminLessonsFields) => void;
-    initialData?: AdminLessonsFields | null;
+    onSubmit: (data: AdminLessonFields) => Promise<void>;
+    initialData?: AdminLessonFields | null;
     isLoading?: boolean;
 }
 
@@ -26,12 +27,13 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
     initialData = null,
     isLoading = false,
 }) => {
-    const form = useForm<AdminLessonsFields>({
+    const form = useForm<AdminLessonFields>({
         mode: "onChange",
         defaultValues: {
             name: "",
             description: "",
             duration: 0,
+            sort: 0,
             image: null,
             videoUrl: "",
         },
@@ -41,7 +43,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
         handleSubmit,
         reset,
         control,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = form;
 
     useEffect(() => {
@@ -49,13 +51,18 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
             reset(initialData);
         } else if (isOpen) {
             reset({
-                name: "", description: "", duration: 0, image: null, videoUrl: "",
+                name: "",
+                description: "",
+                duration: 0,
+                sort: 0,
+                image: null,
+                videoUrl: "",
             });
         }
     }, [isOpen, initialData, reset]);
 
-    const onSubmitForm: SubmitHandler<AdminLessonsFields> = (data) => {
-        onSubmit(data);
+    const onSubmitForm: SubmitHandler<AdminLessonFields> = async (data) => {
+        await onSubmit(data);
     };
 
     if (!isOpen) return null;
@@ -144,16 +151,47 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                 />
                             )}
 
+                            <InputControl
+                                label="Сортировка"
+                                type="number"
+                                control={control}
+                                name="sort"
+                                placeholder="Введите сортировку"
+                                isError={!!errors.sort}
+                            />
+                            {errors.sort && (
+                                <ErrorText
+                                    text={errors.sort.message}
+                                    className={styles.error}
+                                />
+                            )}
+
                             <div className={styles.field}>
-                                <label className={styles.label}>Обложка урока</label>
+                                <div className={styles.label}>Обложка урока</div>
                                 <Controller
                                     name="image"
-                                    rules={{ required: "Изображение обязательно" }}
+                                    rules={{ required: !initialData ? "Изображение обязательно" : false }}
                                     control={control}
                                     render={({ field: { onChange, value } }) => (
                                         <ImageDropzone
-                                            value={value}
-                                            onChange={onChange}
+                                            value={value?.contentUrl}
+                                            onChange={async (file) => {
+                                                if (file) {
+                                                    await uploadFile(file.name, file)
+                                                        .then((result) => {
+                                                            if (result) {
+                                                                onChange({
+                                                                    id: result.id,
+                                                                    contentUrl: result.contentUrl,
+                                                                    thumbnails: result.thumbnails,
+                                                                });
+                                                            }
+                                                        })
+                                                        .catch(() => {
+                                                            onChange(null);
+                                                        });
+                                                }
+                                            }}
                                             error={!!errors.image}
                                             accept={{
                                                 "image/jpeg": [".jpeg", ".jpg"],
@@ -178,7 +216,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                 size="MEDIUM"
                                 variant="OUTLINE"
                                 onClick={onClose}
-                                disabled={isLoading}
+                                disabled={isLoading || isSubmitting}
                                 className={styles.cancelButton}
                             >
                                 Отмена
@@ -188,10 +226,10 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                 color="GREEN"
                                 size="MEDIUM"
                                 variant="FILL"
-                                disabled={isLoading}
+                                disabled={isLoading || isSubmitting}
                                 className={styles.submitButton}
                             >
-                                {isLoading ? "Сохранение..." : "Сохранить"}
+                                {isLoading || isSubmitting ? "Сохранение..." : "Сохранить"}
                             </Button>
                         </div>
                     </form>

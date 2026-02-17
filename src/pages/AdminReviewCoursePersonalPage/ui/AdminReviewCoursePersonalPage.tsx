@@ -15,7 +15,7 @@ const AdminReviewCoursePersonalPage = () => {
 
     return (
         <div>
-            <AdminReviewCourseInfo reviewId={Number(id)} />
+            <AdminReviewCourseInfo reviewId={id} />
         </div>
     );
 };

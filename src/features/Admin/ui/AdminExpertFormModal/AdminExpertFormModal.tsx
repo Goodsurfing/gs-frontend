@@ -9,6 +9,7 @@ import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { AdminExpertFields } from "@/entities/Admin";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 import styles from "./AdminExpertFormModal.module.scss";
 
 interface AdminExpertFormModalProps {
@@ -29,8 +30,6 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
     const form = useForm<AdminExpertFields>({
         mode: "onChange",
         defaultValues: {
-            name: "",
-            description: "",
             image: null,
         },
     });
@@ -46,7 +45,7 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
         if (isOpen && initialData) {
             reset(initialData);
         } else if (isOpen) {
-            reset({ name: "", description: "", image: null });
+            reset();
         }
     }, [isOpen, initialData, reset]);
 
@@ -74,17 +73,67 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
                                     maxLength: { value: 100, message: "Максимум 100 символов" },
                                 }}
                                 control={control}
-                                name="name"
+                                name="firstName"
                                 placeholder="Введите имя эксперта"
-                                isError={!!errors.name}
+                                isError={!!errors.firstName}
                             />
-                            {errors.name && (
-                                <ErrorText text={errors.name.message} className={styles.error} />
+                            {errors.firstName && (
+                                <ErrorText
+                                    text={errors.firstName.message}
+                                    className={styles.error}
+                                />
+                            )}
+
+                            <InputControl
+                                label="Фамилия эксперта"
+                                rules={{
+                                    required: "Имя обязательно",
+                                    minLength: { value: 2, message: "Минимум 2 символа" },
+                                    maxLength: { value: 100, message: "Максимум 100 символов" },
+                                }}
+                                control={control}
+                                name="lastName"
+                                placeholder="Введите фамилию эксперта"
+                                isError={!!errors.lastName}
+                            />
+                            {errors.lastName && (
+                                <ErrorText
+                                    text={errors.lastName.message}
+                                    className={styles.error}
+                                />
+                            )}
+
+                            <InputControl
+                                label="Город"
+                                control={control}
+                                name="city"
+                                placeholder="Введите город эксперта"
+                                isError={!!errors.city}
+                            />
+                            {errors.city && (
+                                <ErrorText
+                                    text={errors.city.message}
+                                    className={styles.error}
+                                />
+                            )}
+
+                            <InputControl
+                                label="Страна эксперта"
+                                control={control}
+                                name="country"
+                                placeholder="Введите страну эксперта"
+                                isError={!!errors.country}
+                            />
+                            {errors.country && (
+                                <ErrorText
+                                    text={errors.country.message}
+                                    className={styles.error}
+                                />
                             )}
 
                             <TextAreaControl
                                 control={control}
-                                name="description"
+                                name="project"
                                 label="Описание эксперта"
                                 placeholder="Расскажите о достижениях и опыте эксперта"
                                 maxLength={500}
@@ -93,9 +142,9 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
                                     maxLength: { value: 50, message: "Превышено ограничение в 50 символов" },
                                 }}
                             />
-                            {errors.description && (
+                            {errors.project && (
                                 <ErrorText
-                                    text={errors.description.message}
+                                    text={errors.project.message}
                                     className={styles.error}
                                 />
                             )}
@@ -108,8 +157,24 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
                                     control={control}
                                     render={({ field: { onChange, value } }) => (
                                         <ImageDropzone
-                                            value={value}
-                                            onChange={onChange}
+                                            value={value?.contentUrl}
+                                            onChange={async (file) => {
+                                                if (file) {
+                                                    await uploadFile(file.name, file)
+                                                        .then((result) => {
+                                                            if (result) {
+                                                                onChange({
+                                                                    id: result.id,
+                                                                    contentUrl: result.contentUrl,
+                                                                    thumbnails: result.thumbnails,
+                                                                });
+                                                            }
+                                                        })
+                                                        .catch(() => {
+                                                            onChange(null);
+                                                        });
+                                                }
+                                            }}
                                             error={!!errors.image}
                                             accept={{
                                                 "image/jpeg": [".jpeg", ".jpg"],

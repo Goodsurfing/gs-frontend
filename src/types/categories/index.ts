@@ -65,3 +65,9 @@ export interface UpdateCategoryParams {
         image: File | string;
     };
 }
+
+export interface CategoryNews {
+    id: number;
+    name: string;
+    color: string;
+}

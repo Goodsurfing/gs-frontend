@@ -166,6 +166,16 @@ export enum AdminSort {
     CountAcceptedApplicationDesc = "countAcceptedApplication:desc",
     CountCanceledApplicationAsc = "countCanceledApplication:asc",
     CountCanceledApplicationDesc = "countCanceledApplication:desc",
+    TakeCourseCountAsc = "takeCourseCount:asc",
+    TakeCourseCountDesc = "takeCourseCount:desc",
+    CompleteCourseCountAsc = "completeCourseCount:asc",
+    CompleteCourseCountDesc = "completeCourseCount:desc",
+    ReviewsCountAsc = "reviewsCount:asc",
+    ReviewsCountDesc = "reviewsCount:desc",
+    AverageRatingAsc = "averageRating:asc",
+    AverageRatingDesc = "averageRating:desc",
+    LikeNewsAsc = "likeNews:asc",
+    LikeNewsDesc = "likeNews:desc",
 }
 
 export interface GetAdminUserParams {
@@ -638,4 +648,19 @@ export type UpdateAdminVacancyFinishingTouches = Omit<AdminVacancyFinishingTouch
 export interface UpdateAdminVacancyFinishingTouchesRequest {
     offerId: string;
     body: UpdateAdminVacancyFinishingTouches;
+}
+
+// Search Users
+
+export interface GetAdminUsersParams {
+    id: string;
+    email: string;
+    limit: number;
+}
+
+export interface GetAdminUsersResponse {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
 }

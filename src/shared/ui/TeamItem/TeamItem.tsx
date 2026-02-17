@@ -7,7 +7,7 @@ import IconComponent from "@/shared/ui/IconComponent/IconComponent";
 import styles from "./TeamItem.module.scss";
 
 interface TeamItemProps {
-    image: string;
+    image?: string;
     name: string;
     description: string;
     address?: string;
@@ -21,7 +21,8 @@ export const TeamItem: FC<TeamItemProps> = memo((props: TeamItemProps) => {
     } = props;
     return (
         <div className={styles.wrapper}>
-            <img src={image} alt="" className={styles.image} />
+            {image ? <img src={image} alt="" className={styles.image} />
+                : <div className={styles.emptyImage} />}
             <div className={styles.info}>
                 <span className={styles.name}>{name}</span>
                 <span className={styles.description}>{description}</span>

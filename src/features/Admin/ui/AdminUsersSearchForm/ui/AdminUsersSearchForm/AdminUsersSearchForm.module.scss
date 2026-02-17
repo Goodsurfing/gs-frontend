@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.selectedUser, .container {
+    margin-top: 10px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.delete {
+    color: var(--error-color);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.userCard {
+    padding: 10px;
+    border: 1px solid #000;
+    background-color: #fff;
+}

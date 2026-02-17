@@ -1,31 +1,40 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "classnames";
-import React, { FC, memo } from "react";
+import React, { FC, memo, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import * as z from "zod";
 
 import { OfferCategories } from "@/widgets/OfferCategories";
 
 import Button from "@/shared/ui/Button/Button";
 import { InputField } from "@/shared/ui/InputField/InputField";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
-
-import { formSchema } from "../../model/articleForm";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import { useTranslateError } from "../../hooks/useErrorTranslate";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Image } from "@/types/media";
 import styles from "./ArticleForm.module.scss";
 
 interface ArticleFormProps {
     className?: string;
-    onComplete: (data: z.infer<typeof formSchema>) => void;
+    initialData?: ArticleFormFields;
+    onComplete: (data: ArticleFormFields) => void;
     onErrorUploadImage: (error: string) => void;
+}
+
+export interface ArticleFormFields {
+    image: Image;
+    name: string;
+    categoryId?: number;
+    description: string;
+    // projectUrl: string;
+    isActive: boolean;
 }
 
 export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
-        const { className, onComplete, onErrorUploadImage } = props;
+        const {
+            className, initialData, onComplete, onErrorUploadImage,
+        } = props;
         const { t } = useTranslation("volunteer");
         const { translate } = useTranslateError();
         const { locale } = useLocale();
@@ -33,25 +42,51 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
             register,
             formState: { errors },
             control,
+            reset,
             handleSubmit,
-        } = useForm<z.infer<typeof formSchema>>({
-            resolver: zodResolver(formSchema),
+        } = useForm<ArticleFormFields>({
             mode: "onChange",
-            defaultValues: {
-                title: "",
-                description: "",
-                offerLink: "",
-            },
         });
 
-        const onSubmit = handleSubmit(async (data) => {
-            onComplete(data);
-        });
+        useEffect(() => {
+            if (initialData) {
+                reset(initialData);
+            } else {
+                reset();
+            }
+        }, [initialData, reset]);
+
+        const onSubmit = (isActive: boolean) => (data: ArticleFormFields) => {
+            onComplete({
+                ...data,
+                isActive,
+            });
+        };
 
         return (
-            <form className={cn(className, styles.wrapper)} onSubmit={onSubmit}>
+            <form className={cn(className, styles.wrapper)}>
                 <div>
-                    <UploadArticleCover id="upload cover" />
+                    <Controller
+                        name="image"
+                        control={control}
+                        rules={{
+                            required: "Загрузите обложку",
+                        }}
+                        render={({ field, fieldState }) => (
+                            <div className={styles.imgWrapper}>
+                                <UploadArticleCover
+                                    id="upload cover"
+                                    img={field.value}
+                                    onUpload={(img) => field.onChange(img)}
+                                />
+                                {fieldState.error && (
+                                    <span className={styles.error}>
+                                        {translate(fieldState.error.message)}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
                     <span className={styles.smallDescription}>
                         {t(
                             "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 2МБ",
@@ -62,23 +97,65 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                     <span className={styles.title}>
                         {t("volunteer-create-article.Название статьи")}
                     </span>
-                    <InputField
-                        name="title"
-                        register={register}
-                        error={Boolean(errors.title)}
-                        helperText={errors.title?.message && translate(errors.title.message)}
-                        variant="outlined"
-                        placeholder={t(
-                            "volunteer-create-article.Заголовок вашей статьи",
+                    <Controller
+                        name="name"
+                        rules={{
+                            required: "Поле обязательно для заполнения",
+                            minLength: {
+                                value: 5,
+                                message: "Заголовок слишком короткий",
+                            },
+                            maxLength: {
+                                value: 150,
+                                message: "Заголовок слишком большой",
+                            },
+                        }}
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <InputField
+                                name="name"
+                                register={register}
+                                error={Boolean(fieldState.error)}
+                                helperText={fieldState.error?.message
+                                    && translate(fieldState.error?.message)}
+                                variant="outlined"
+                                value={field.value}
+                                onChange={(event) => field.onChange(event.target.value)}
+                                placeholder={t(
+                                    "volunteer-create-article.Заголовок вашей статьи",
+                                )}
+                                className={styles.input}
+                            />
                         )}
-                        className={styles.input}
                     />
                 </div>
                 <div className={styles.field}>
                     <span className={styles.title}>
                         {t("volunteer-create-article.Категория статьи")}
                     </span>
-                    <OfferCategories locale={locale} />
+                    <Controller
+                        name="categoryId"
+                        control={control}
+                        rules={{ required: "Выберите категорию" }}
+                        render={({ field, fieldState }) => (
+                            <div className={styles.categoryWrapper}>
+                                <OfferCategories
+                                    locale={locale}
+                                    exclusive
+                                    value={field.value ? Number(field.value) : undefined}
+                                    onChange={(value) => field.onChange(
+                                        value ? Number(value) : undefined,
+                                    )}
+                                />
+                                {fieldState.error && (
+                                    <span className={styles.error}>
+                                        {translate(fieldState.error.message)
+                                        ?? fieldState.error.message}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
                 </div>
                 <Controller
                     name="description"
@@ -94,24 +171,45 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                 {errors.description && (
                     <p className={styles.error}>{translate(errors.description.message)}</p>
                 )}
-                <div className={styles.field}>
-                    <span className={styles.title}>{t("volunteer-create-article.Ссылка на проект гудсёрфинга")}</span>
-                    <InputField
-                        name="offerLink"
-                        register={register}
-                        error={Boolean(errors.offerLink)}
-                        helperText={errors.offerLink?.message
-                            && translate(errors.offerLink?.message)}
-                        variant="outlined"
-                        placeholder={t("volunteer-create-article.Ваша ссылка на вакансию")}
-                        className={styles.input}
+                {/* <div className={styles.field}>
+                    <span className={styles.title}>{
+                    t("volunteer-create-article.Ссылка на проект гудсёрфинга")}</span>
+                    <Controller
+                        name="projectUrl"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <InputField
+                                name="projectUrl"
+                                register={register}
+                                error={Boolean(fieldState.error)}
+                                value={field.value}
+                                onChange={(e) => field.onChange(e.target.value)}
+                                helperText={fieldState.error?.message
+                            && translate(fieldState.error?.message)}
+                                variant="outlined"
+                                placeholder={t("volunteer-create-article.Ваша ссылка на вакансию")}
+                                className={styles.input}
+                            />
+                        )}
                     />
-                </div>
+                </div> */}
                 <div className={styles.containerButtons}>
-                    <Button type="submit" onClick={onSubmit} color="BLUE" variant="FILL" size="SMALL">
+                    <Button
+                        type="button"
+                        onClick={handleSubmit(onSubmit(true))}
+                        color="BLUE"
+                        variant="FILL"
+                        size="SMALL"
+                    >
                         {t("volunteer-create-article.Опубликовать")}
                     </Button>
-                    <Button color="BLUE" variant="OUTLINE" size="SMALL">
+                    <Button
+                        type="button"
+                        onClick={handleSubmit(onSubmit(false))}
+                        color="BLUE"
+                        variant="OUTLINE"
+                        size="SMALL"
+                    >
                         {t("volunteer-create-article.Сохранить в черновики")}
                     </Button>
                 </div>

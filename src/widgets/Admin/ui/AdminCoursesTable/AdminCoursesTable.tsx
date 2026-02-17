@@ -81,11 +81,11 @@ const courseCustomFields: CustomFilterField<keyof CoursesFilters>[] = [
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
             <FormControl fullWidth size="small" disabled={disabled}>
-                <InputLabel id="skill-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
+                <InputLabel id="course-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
                     Сортировка
                 </InputLabel>
                 <Select
-                    labelId="skill-sort-label"
+                    labelId="course-sort-label"
                     value={value || AdminSort.IdAsc}
                     label="Сортировка"
                     onChange={(e) => onChange(e.target.value as AdminSort)}
@@ -95,22 +95,30 @@ const courseCustomFields: CustomFilterField<keyof CoursesFilters>[] = [
                         },
                     }}
                 >
-                    <MenuItem value={AdminSort.VacancyIdAsc}>ID ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>ID ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdAsc}>Имя автора ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>Имя автора ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdAsc}>Название курса ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>Название курса ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdAsc}>Курс опубликован ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>Курс опубликован ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdAsc}>Кол-во участников начали ↑</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>Кол-во участников начали ↓</MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdAsc}>
+                    <MenuItem value={AdminSort.IdAsc}>ID ↑</MenuItem>
+                    <MenuItem value={AdminSort.IdDesc}>ID ↓</MenuItem>
+                    <MenuItem value={AdminSort.FioAuthorAsc}>Имя автора ↑</MenuItem>
+                    <MenuItem value={AdminSort.FioAuthorDesc}>Имя автора ↓</MenuItem>
+                    <MenuItem value={AdminSort.NameAsc}>Название курса ↑</MenuItem>
+                    <MenuItem value={AdminSort.NameDesc}>Название курса ↓</MenuItem>
+                    <MenuItem value={AdminSort.IsActiveAsc}>Курс опубликован ↑</MenuItem>
+                    <MenuItem value={AdminSort.IsActiveDesc}>Курс опубликован ↓</MenuItem>
+                    <MenuItem value={AdminSort.TakeCourseCountAsc}>
+                        Кол-во участников начали ↑
+                    </MenuItem>
+                    <MenuItem value={AdminSort.TakeCourseCountDesc}>
+                        Кол-во участников начали ↓
+                    </MenuItem>
+                    <MenuItem value={AdminSort.CompleteCourseCountAsc}>
                         Кол-во участников закончили ↑
                     </MenuItem>
-                    <MenuItem value={AdminSort.VacancyIdDesc}>
+                    <MenuItem value={AdminSort.CompleteCourseCountDesc}>
                         Кол-во участников закончили ↓
                     </MenuItem>
+                    <MenuItem value={AdminSort.ReviewsCountAsc}>Кол-во отзывов ↑</MenuItem>
+                    <MenuItem value={AdminSort.ReviewsCountDesc}>Кол-во отзывов ↓</MenuItem>
+                    <MenuItem value={AdminSort.AverageRatingAsc}>Рейтинг ↑</MenuItem>
+                    <MenuItem value={AdminSort.AverageRatingDesc}>Рейтинг ↓</MenuItem>
                 </Select>
             </FormControl>
         ),
@@ -127,7 +135,7 @@ export const AdminCoursesTable = () => {
     const [courseToDelete, setCourseToDelete] = useState<
     { id: number; } | null>(null);
     const [filters, setFilters] = useState<Partial<CoursesFilters>>(
-        { sort: AdminSort.VacancyIdDesc },
+        { sort: AdminSort.IdAsc },
     );
     const [getCourses, {
         data: coursesData,
@@ -142,10 +150,10 @@ export const AdminCoursesTable = () => {
                 await getCourses({
                     page: currentPage,
                     limit: COURSES_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.VacancyIdDesc,
-                    courseName: filters.courseName,
+                    sort: filters.sort ?? AdminSort.IdAsc,
                     authorFirstName: filters.authorFirstName,
                     authorLastName: filters.authorLastName,
+                    name: filters.courseName,
                 }).unwrap();
             } catch {
                 setToast({
@@ -310,19 +318,18 @@ export const AdminCoursesTable = () => {
         }
         const adaptedData: any[] = coursesData.data.map((course) => {
             const {
-                id, authorFirstName, authorLastName, averageReviews, isPublic,
-                totalEnd, totalReviews, totalStart,
-                name,
+                id, author, averageRating, completeCourseCount,
+                isActive, reviewsCount, takeCourseCount, name,
             } = course;
             return {
                 id,
-                author: getFullName(authorFirstName, authorLastName),
+                author: getFullName(author.firstName, author.lastName),
                 name,
-                isPublic,
-                totalStart,
-                totalEnd,
-                totalReviews,
-                averageReviews,
+                isPublic: isActive,
+                totalStart: takeCourseCount,
+                totalEnd: completeCourseCount,
+                totalReviews: reviewsCount,
+                averageReviews: averageRating,
             };
         });
         return (
