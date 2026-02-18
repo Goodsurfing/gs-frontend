@@ -42,3 +42,32 @@ export interface GetNewsParams {
     id: string;
     lang: Locale;
 }
+
+// Review News
+
+export interface GetReviewsNewsParams {
+    newsId: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetReviewsNews {
+    description: string,
+    created: "",
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        image: Image;
+    }
+}
+
+export interface GetReviewsNewsResponse {
+    data: GetReviewsNews[];
+    pagination: Pagination;
+}
+
+export interface CreateReviewNewsRequest {
+    description: string;
+    newsId: string;
+}

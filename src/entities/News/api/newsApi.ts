@@ -1,7 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryV3 } from "@/shared/api/baseQuery/baseQuery";
 import {
+    CreateReviewNewsRequest,
     GetNewsList, GetNewsListParams, GetNewsListResponse, GetNewsParams,
+    GetReviewsNewsParams,
+    GetReviewsNewsResponse,
 } from "../model/types/newsSchema";
 
 export const newsApi = createApi({
@@ -32,6 +35,23 @@ export const newsApi = createApi({
             }),
             invalidatesTags: ["news"],
         }),
+        // Review news
+        getReviewsNews: build.query<GetReviewsNewsResponse, GetReviewsNewsParams>({
+            query: ({ newsId, limit, page }) => ({
+                url: `review-news/list/${newsId}`,
+                method: "GET",
+                params: { page, limit },
+            }),
+            providesTags: ["news"],
+        }),
+        createReviewNews: build.mutation<void, CreateReviewNewsRequest>({
+            query: (body) => ({
+                url: "review-news/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["news"],
+        }),
     }),
 });
 
@@ -39,4 +59,6 @@ export const {
     useLazyGetNewsListQuery,
     useGetNewsByIdQuery,
     usePutLikeNewsMutation,
+    useLazyGetReviewsNewsQuery,
+    useCreateReviewNewsMutation,
 } = newsApi;

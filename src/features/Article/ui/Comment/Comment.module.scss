@@ -25,6 +25,13 @@
     border-radius: 50%;
 }
 
+.noImg {
+    width: 22px;
+    height: 22px;
+    background-color: var(--bg-field);
+    border-radius: 50%;
+}
+
 .authorName {
     font-size: 0.875rem;
     color: var(--text-primary-1);

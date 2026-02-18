@@ -3,6 +3,10 @@ export {
     useLazyGetNewsListQuery,
     useGetNewsByIdQuery,
     usePutLikeNewsMutation,
+    useLazyGetReviewsNewsQuery,
+    useCreateReviewNewsMutation,
 } from "./api/newsApi";
 
-export type { GetNewsList } from "./model/types/newsSchema";
+export type { GetNewsList, GetReviewsNews } from "./model/types/newsSchema";
+
+export { newsReviewsAdapter } from "./lib/newsAdapter";
