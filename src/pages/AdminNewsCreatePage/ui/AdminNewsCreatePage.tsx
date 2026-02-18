@@ -43,7 +43,11 @@ const AdminNewsCreatePage = () => {
                 { label: "Создание новости" },
             ]}
             />
-            <AdminArticleForm onComplete={onSubmit} isLoading={isLoading} />
+            <AdminArticleForm
+                onErrorUploadImage={() => {}}
+                onComplete={onSubmit}
+                isLoading={isLoading}
+            />
         </div>
     );
 };

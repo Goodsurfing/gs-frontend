@@ -14,7 +14,7 @@ import {
 } from "@/features/Article";
 
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import { getBlogPageUrl } from "@/shared/config/routes/AppUrls";
+import { getBlogPageUrl, getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./BlogPersonalPage.module.scss";
 
@@ -40,15 +40,25 @@ const BlogPersonalPage = () => {
                         authorName="Алексей Петров"
                         category="Категория"
                         date="17 мая 2017"
+                        likes={0}
+                        reviews={0}
                     />
                     <ArticleContent
                         className={styles.content}
                         content="<span>Привет</span>"
                     />
-                    <ArticleShare className={styles.shareBlock} />
+                    <ArticleShare
+                        className={styles.shareBlock}
+                        url={getBlogPersonalPageUrl(locale)}
+                    />
                 </div>
                 <div className={styles.commentWrapper}>
-                    <CommentWidget />
+                    <CommentWidget
+                        comments={[]}
+                        commentsCount={0}
+                        onNextComments={() => {}}
+                        onSend={() => {}}
+                    />
                 </div>
             </div>
         </MainPageLayout>

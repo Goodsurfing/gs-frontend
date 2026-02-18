@@ -28,3 +28,18 @@ export interface Video {
     tag: string;
     comments: number;
 }
+
+export interface ArticleCardType {
+    id: string;
+    image?: string;
+    name: string;
+    category: {
+        id: number;
+        name: string;
+        color: string;
+    };
+    created: string;
+    likeCount: number;
+    reviewCount: number;
+
+}

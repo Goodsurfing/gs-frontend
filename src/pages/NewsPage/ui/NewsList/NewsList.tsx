@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
-import styles from "./NewsList.module.scss";
 import { ArticleCard } from "@/entities/Article/";
 import { getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { GetNewsList } from "@/entities/News";
+import { GetNewsList, newsArticleCardAdapter } from "@/entities/News";
+import styles from "./NewsList.module.scss";
 
 interface NewsListProps {
     data?: GetNewsList[]
@@ -17,7 +17,7 @@ export const NewsList: FC<NewsListProps> = (props) => {
 
     const renderNews = useMemo(() => data?.map((article) => (
         <ArticleCard
-            article={article}
+            article={newsArticleCardAdapter(article)}
             key={article.id}
             className={styles.article}
             path={getNewsPersonalPageUrl(locale, article.id.toString())}

@@ -9,7 +9,7 @@ import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { Article } from "@/entities/Article";
+import { ArticleCardType } from "@/entities/Article";
 import { ArticleCard } from "@/entities/Article/";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
@@ -19,7 +19,7 @@ import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import styles from "./ArticleEditCard.module.scss";
 
 interface ArticleEditCardProps {
-    article: Article;
+    article: ArticleCardType;
     className?: string;
 }
 

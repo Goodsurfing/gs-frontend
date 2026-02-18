@@ -3,7 +3,7 @@ import React, { FC, useMemo } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { Article } from "@/entities/Article";
+import { ArticleCardType } from "@/entities/Article";
 import { ArticleCard } from "@/entities/Article/";
 
 import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -11,7 +11,7 @@ import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./ArticlesList.module.scss";
 
 interface ArticlesListProps {
-    data?: Article[];
+    data?: ArticleCardType[];
     className?: string;
 }
 

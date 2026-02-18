@@ -11,7 +11,7 @@ export const JournalFilter: FC<JournalFilterProps> = (props) => {
     const { className } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Filter />
+            <Filter value="new" onChange={() => {}} />
         </div>
     );
 };

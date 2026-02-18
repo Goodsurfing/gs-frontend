@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 import comment from "@/shared/assets/icons/comment.svg";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 
-import { GetNewsList } from "@/entities/News";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { ArticleCardType } from "../../model/types/article";
 import styles from "./ArticleCard.module.scss";
 
 interface ArticleCardProps {
-    article: GetNewsList;
+    article: ArticleCardType;
     className?: string;
     path: string;
 }
@@ -31,7 +30,7 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
                 <div className={cn(className, styles.wrapper)}>
                     <img
                         className={styles.image}
-                        src={getMediaContent(image.contentUrl)}
+                        src={image}
                         alt={name}
                     />
                     <span className={styles.title}>{name}</span>

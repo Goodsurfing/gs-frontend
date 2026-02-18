@@ -9,4 +9,4 @@ export {
 
 export type { GetNewsList, GetReviewsNews } from "./model/types/newsSchema";
 
-export { newsReviewsAdapter } from "./lib/newsAdapter";
+export { newsReviewsAdapter, newsArticleCardAdapter } from "./lib/newsAdapter";

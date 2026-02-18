@@ -4,7 +4,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import {
     ArticleContent, ArticleHeader, ArticleShare, Navigation,
 } from "@/features/Article";
-import { getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
+import { getJournalPersonalPageUrl, getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
 import { CommentWidget } from "@/widgets/Article";
 import styles from "./JournalPersonalPage.module.scss";
 
@@ -28,12 +28,22 @@ const JournalPersonalPage = () => {
                         authorName=""
                         category="Журнал"
                         date="17 мая 2017"
+                        likes={0}
+                        reviews={0}
                     />
                     <ArticleContent className={styles.content} content={"<iframe src=\"\""} />
-                    <ArticleShare className={styles.shareBlock} />
+                    <ArticleShare
+                        className={styles.shareBlock}
+                        url={getJournalPersonalPageUrl(locale)}
+                    />
                 </div>
                 <div className={styles.commentWrapper}>
-                    <CommentWidget />
+                    <CommentWidget
+                        comments={[]}
+                        commentsCount={0}
+                        onNextComments={() => {}}
+                        onSend={() => {}}
+                    />
                 </div>
             </div>
         </MainPageLayout>
