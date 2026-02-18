@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-export type TagsOption = "Свежее" | "Популярное";
+export type TagsOption = "new" | "popular";
 
 interface Tag {
     value: TagsOption;
@@ -12,11 +12,11 @@ export const useFilterTags = () => {
 
     const tags: Tag[] = [
         {
-            value: "Свежее",
+            value: "new",
             text: t("Свежее"),
         },
         {
-            value: "Популярное",
+            value: "popular",
             text: t("Популярное"),
         },
     ];

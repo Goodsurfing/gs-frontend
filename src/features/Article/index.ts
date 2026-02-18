@@ -7,3 +7,4 @@ export { Comment } from "./ui/Comment/Comment";
 export { CommentCount } from "./ui/CommentCount/CommentCount";
 export { CommentInput } from "./ui/CommentInput/CommentInput";
 export { CommentList } from "./ui/CommentList/CommentList";
+export type { TagsOption } from "./model/data/tags";

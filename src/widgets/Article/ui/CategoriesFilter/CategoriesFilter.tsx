@@ -1,73 +1,32 @@
-import React, { FC, MouseEvent } from "react";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import React, { FC } from "react";
 import cn from "classnames";
+import { OfferCategories } from "@/widgets/OfferCategories";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./CategoriesFilter.module.scss";
-import { useCategories } from "@/shared/data/categories";
 
 interface CategoriesFilterProps {
     className?: string;
-    value: string;
-    onChange: (event: MouseEvent<HTMLElement>, value: any) => void;
+    locale: Locale;
+    value?: number;
+    onChange: (value?: number) => void;
 }
 
 export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
-    const { className, value, onChange } = props;
-    const { tags } = useCategories();
+    const {
+        className, value, onChange, locale,
+    } = props;
 
     return (
         <div className={cn(className, styles.wrapper)}>
             <span className={styles.title}>Категория</span>
-            <ToggleButtonGroup
-                className={styles.group}
-                value={value}
-                onChange={onChange}
+            <OfferCategories
+                locale={locale}
                 exclusive
-                sx={{
-                    display: "flex", flexWrap: "wrap", gap: "10px", mt: "14px",
-                }}
-            >
-                {tags.map((item, index) => (
-                    <ToggleButton
-                        sx={{
-                            maxHeight: "35px",
-                            padding: "5px 10px",
-                            border: `${item.color} !important`,
-                            borderRadius: "26px !important",
-                            borderWidth: "2px !important",
-                            borderStyle: "solid !important",
-                            boxSizing: "content-box",
-                            textTransform: "none",
-                            color: "#212121",
-                            fontSize: "14px",
-                            fontFamily: "Lato",
-
-                            "&.Mui-selected:hover": {
-                                cursor: "pointer",
-                                border: item.color,
-                                borderRadius: "26px !important",
-                                borderWidth: "2px !important",
-                                borderStyle: "solid !important",
-                                outline: "none",
-                                backgroundColor: item.color,
-                            },
-
-                            "&.Mui-selected": {
-                                cursor: "pointer",
-                                border: item.color,
-                                borderRadius: "26px",
-                                borderWidth: "2px",
-                                borderStyle: "solid",
-                                outline: "none",
-                                backgroundColor: item.color,
-                            },
-                        }}
-                        key={index}
-                        value={item.value}
-                    >
-                        {item.text}
-                    </ToggleButton>
-                ))}
-            </ToggleButtonGroup>
+                value={value ? Number(value) : undefined}
+                onChange={(newValue) => onChange(
+                    newValue ? Number(newValue) : undefined,
+                )}
+            />
         </div>
     );
 };

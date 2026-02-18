@@ -10,9 +10,10 @@ export const newsApi = createApi({
     tagTypes: ["news"],
     endpoints: (build) => ({
         getNewsList: build.query<GetNewsListResponse, Partial<GetNewsListParams>>({
-            query: () => ({
+            query: (params) => ({
                 url: "news/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["news"],
         }),
