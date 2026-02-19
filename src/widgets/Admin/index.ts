@@ -32,3 +32,5 @@ export { AdminNewsTable } from "./ui/AdminNewsTable/AdminNewsTable";
 export { AdminNewsInfo } from "./ui/AdminNewsInfo/AdminNewsInfo";
 export { AdminReviewsCommunity } from "./ui/AdminReviewsCommunity/AdminReviewsCommunity";
 export { AdminReviewNewsInfo } from "./ui/AdminReviewNewsInfo/AdminReviewNewsInfo";
+
+export { AdminCategoriesBlogTable } from "./ui/AdminCategoriesBlogTable/AdminCategoriesBlogTable";

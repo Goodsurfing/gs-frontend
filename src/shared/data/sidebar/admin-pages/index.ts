@@ -62,6 +62,10 @@ export const useAdminPagesSidebarData = () => {
                     route: "/reviews-community",
                     text: "Комментарии",
                 },
+                {
+                    route: "/categories-blog",
+                    text: "Категории для блога",
+                },
             ],
         },
     ];
