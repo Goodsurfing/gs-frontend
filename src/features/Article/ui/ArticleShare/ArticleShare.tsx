@@ -1,18 +1,16 @@
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
 
 interface ArticleShareProps {
     className?: string;
+    url: string;
 }
 
 export const ArticleShare: FC<ArticleShareProps> = memo((props: ArticleShareProps) => {
-    const { locale } = useLocale();
-    const { className } = props;
+    const { className, url } = props;
     const { t } = useTranslation();
 
     return (
@@ -20,7 +18,7 @@ export const ArticleShare: FC<ArticleShareProps> = memo((props: ArticleShareProp
             className={className}
             label={t("Поделиться")}
             textTitle="Статья"
-            url={getBlogPersonalPageUrl(locale)}
+            url={url}
         />
     );
 });

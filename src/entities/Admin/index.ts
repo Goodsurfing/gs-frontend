@@ -165,3 +165,24 @@ export {
 } from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";
+
+// News
+
+export {
+    adminNewsApi,
+    useLazyGetAdminNewsListQuery,
+    useGetAdminNewsByIdQuery,
+    useCreateAdminNewsMutation,
+    useUpdateAdminNewsMutation,
+    useDeleteAdminNewsMutation,
+    useLazyGetAdminReviewsNewsQuery,
+    useGetAdminReviewNewsByIdQuery,
+    useUpdateAdminReviewNewsMutation,
+    useDeleteAdminReviewNewsMutation,
+} from "./api/adminNewsApi";
+
+export { newsAdapter, newsApiAdapter } from "./lib/adminNewsAdapter";
+
+export type { GetAdminReviewsNews, GetAdminReviewNews } from "./model/types/adminNewsSchema";
+
+export { ReviewNewsInfoTable } from "./ui/ReviewNewsInfoTable/ReviewNewsInfoTable";

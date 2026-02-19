@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import { ArticleForm } from "@/features/ArticleForm";
+import { VolunteerCreateArticle } from "@/widgets/Article";
 import styles from "./VolunteerCreateArticlePage.module.scss";
 
 const VolunteerCreateArticlePage = () => {
@@ -9,7 +9,7 @@ const VolunteerCreateArticlePage = () => {
     return (
         <div className={styles.wrapper}>
             <h2>{t("volunteer-create-article.Написать в блог")}</h2>
-            <ArticleForm className={styles.articleForm} />
+            <VolunteerCreateArticle className={styles.articleForm} />
         </div>
     );
 };

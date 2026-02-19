@@ -6,7 +6,7 @@ import styles from "./CommentCount.module.scss";
 
 interface CommentCountProps {
     className?: string;
-    count: string;
+    count: number;
 }
 
 export const CommentCount: FC<CommentCountProps> = (props: CommentCountProps) => {

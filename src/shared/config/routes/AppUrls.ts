@@ -275,3 +275,17 @@ export const getAdminCourseCreatePageUrl: RoutePathFunction = (locale) => `/${lo
 export const getAdminReviewsCoursesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews_courses}`;
 
 export const getAdminReviewCoursePersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_courses}/${id}`;
+
+// Admin News
+
+export const getAdminNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_news}`;
+
+export const getAdminNewsCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_news}/create`;
+
+export const getAdminNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_news}/${id}`;
+
+// Admin Review Community
+
+export const getAdminReviewsCommunityPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews_community}`;
+
+export const getAdminReviewsNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_news}/${id}`;

@@ -11,12 +11,17 @@ interface ArticleHeaderProps {
     authorAvatar?: string;
     authorName?: string;
     date: string;
-    category: string;
+    category?: string;
+    categoryColor?: string;
+    likes: number;
+    reviews: number;
+    onLike?: () => void;
 }
 
 export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps) => {
     const {
         className, authorAvatar, authorName, category, date, title,
+        categoryColor, onLike, likes, reviews,
     } = props;
     return (
         <div className={cn(className, styles.wrapper)}>
@@ -30,16 +35,23 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
                         </div>
                     )}
                     <span className={styles.date}>{date}</span>
-                    <div className={styles.category}>{category}</div>
+                    {(category && categoryColor) && (
+                        <div
+                            className={styles.category}
+                            style={{ backgroundColor: categoryColor }}
+                        >
+                            {category}
+                        </div>
+                    )}
                 </div>
                 <div className={styles.containerIcon}>
-                    <div className={styles.wrapperIcon}>
+                    <div className={cn(styles.wrapperIcon, styles.like)} onClick={onLike}>
                         <HandySvg src={likesIcon} className={styles.icon} />
-                        <span className={styles.number}>7</span>
+                        <span className={styles.number}>{likes}</span>
                     </div>
                     <div className={styles.wrapperIcon}>
                         <HandySvg src={commentsIcon} className={styles.icon} />
-                        <span className={styles.number}>0</span>
+                        <span className={styles.number}>{reviews}</span>
                     </div>
                 </div>
             </div>

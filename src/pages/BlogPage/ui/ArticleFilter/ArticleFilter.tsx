@@ -23,7 +23,7 @@ export const ArticleFilter: FC<FilterProps> = (props) => {
 
     return (
         <div className={cn(className)}>
-            <Filter />
+            <Filter value="new" onChange={() => {}} />
             <Button color="GREEN" variant="FILL" size="SMALL" onClick={onAddArticleClick}>{t("Добавить статью")}</Button>
         </div>
     );

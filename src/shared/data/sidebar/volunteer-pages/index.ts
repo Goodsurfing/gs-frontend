@@ -6,8 +6,8 @@ import reviewsIcon from "@/shared/assets/icons/navbar/volunteer/reviews.svg";
 import feedbackIcon from "@/shared/assets/icons/navbar/mail.svg";
 // import friendsIcon from "@/shared/assets/icons/navbar/volunteer/friends.svg";
 import galleryIcon from "@/shared/assets/icons/navbar/volunteer/photo-gallery.svg";
-// import blogIcon from "@/shared/assets/icons/navbar/volunteer/blog.svg";
-// import articlesIcon from "@/shared/assets/icons/navbar/volunteer/articles.svg";
+import blogIcon from "@/shared/assets/icons/navbar/volunteer/blog.svg";
+import articlesIcon from "@/shared/assets/icons/navbar/volunteer/articles.svg";
 
 export const useVolunteerSidebarData = () => {
     const { t } = useTranslation();
@@ -42,16 +42,16 @@ export const useVolunteerSidebarData = () => {
             icon: galleryIcon,
             route: "/volunteer/gallery",
         },
-        // {
-        //     text: t("main.sidebar.Написать в блог"),
-        //     icon: blogIcon,
-        //     route: "/volunteer/create-article",
-        // },
-        // {
-        //     text: t("main.sidebar.Мои статьи"),
-        //     icon: articlesIcon,
-        //     route: "/volunteer/articles",
-        // },
+        {
+            text: t("main.sidebar.Написать в блог"),
+            icon: blogIcon,
+            route: "/volunteer/create-article",
+        },
+        {
+            text: t("main.sidebar.Мои статьи"),
+            icon: articlesIcon,
+            route: "/volunteer/articles",
+        },
     ];
     return { SideMenuData };
 };

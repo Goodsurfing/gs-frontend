@@ -24,3 +24,5 @@ export { AdminLessonFormModal } from "./ui/AdminLessonFormModal/AdminLessonFormM
 export { AdminUsersSearchForm } from "./ui/AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 export { AdminLessonReviewForm } from "./ui/AdminLessonReviewForm/AdminLessonReviewForm";
 export type { AdminLessonReviewFields } from "./ui/AdminLessonReviewForm/AdminLessonReviewForm";
+export { AdminArticleForm } from "./ui/AdminArticleForm/ui/AdminArticleForm/AdminArticleForm";
+export type { AdminArticleFormFields } from "./ui/AdminArticleForm/ui/AdminArticleForm/AdminArticleForm";

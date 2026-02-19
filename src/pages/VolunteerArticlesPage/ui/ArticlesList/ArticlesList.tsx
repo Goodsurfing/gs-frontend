@@ -1,11 +1,11 @@
 import React, { FC, memo, useMemo } from "react";
 import cn from "classnames";
-import { Article } from "@/entities/Article";
+import { ArticleCardType } from "@/entities/Article";
 import { ArticleEditCard } from "../ArticleEditCard/ArticleEditCard";
 import styles from "./ArticlesList.module.scss";
 
 interface ArticlesListProps {
-    articles: Article[];
+    articles: ArticleCardType[];
     className?: string
 }
 

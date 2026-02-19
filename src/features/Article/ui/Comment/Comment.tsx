@@ -5,7 +5,7 @@ import styles from "./Comment.module.scss";
 interface CommentProps {
     className?: string;
     comment: string;
-    authorAvatar: string;
+    authorAvatar?: string;
     authorName: string;
     date: string;
 }
@@ -19,7 +19,11 @@ export const Comment: FC<CommentProps> = (props: CommentProps) => {
             <span className={styles.comment}>{comment}</span>
             <div className={styles.wrapperInfo}>
                 <div className={styles.wrapperAuthor}>
-                    <img src={authorAvatar} alt="" className={styles.authorAvatar} />
+                    {authorAvatar ? (
+                        <img src={authorAvatar} alt="" className={styles.authorAvatar} />
+                    ) : (
+                        <div className={styles.noImg} />
+                    )}
                     <span className={styles.authorName}>{authorName}</span>
                 </div>
                 <span className={styles.date}>

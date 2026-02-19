@@ -13,7 +13,7 @@ import {
 } from "@/features/Article";
 
 import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import { getVideoPageUrl } from "@/shared/config/routes/AppUrls";
+import { getVideoPageUrl, getVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { VideoContent } from "../VideoContent/VideoContent";
 import styles from "./VideoPersonalPage.module.scss";
@@ -40,12 +40,22 @@ const VideoPersonalPage = () => {
                         authorName="Алексей Петров"
                         category="Категория"
                         date="17 мая 2017"
+                        likes={0}
+                        reviews={0}
                     />
                     <VideoContent className={styles.content} url="https://www.youtube.com/watch?v=Gb0TQ7VeApY" />
-                    <ArticleShare className={styles.shareBlock} />
+                    <ArticleShare
+                        className={styles.shareBlock}
+                        url={getVideoPersonalPageUrl(locale)}
+                    />
                 </div>
                 <div className={styles.commentWrapper}>
-                    <CommentWidget />
+                    <CommentWidget
+                        comments={[]}
+                        commentsCount={0}
+                        onNextComments={() => {}}
+                        onSend={() => {}}
+                    />
                 </div>
             </div>
         </MainPageLayout>

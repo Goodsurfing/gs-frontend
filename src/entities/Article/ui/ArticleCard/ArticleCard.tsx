@@ -2,15 +2,14 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Link } from "react-router-dom";
 
-import { Article } from "@/entities/Article";
-
 import comment from "@/shared/assets/icons/comment.svg";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 
+import { ArticleCardType } from "../../model/types/article";
 import styles from "./ArticleCard.module.scss";
 
 interface ArticleCardProps {
-    article: Article;
+    article: ArticleCardType;
     className?: string;
     path: string;
 }
@@ -19,7 +18,8 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
     (props: ArticleCardProps) => {
         const {
             article: {
-                image, title, description, date, likes, comments, tag,
+                image, name, category, created,
+                likeCount, reviewCount,
             },
             className,
             path,
@@ -28,19 +28,23 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
         return (
             <Link className={styles.link} to={path}>
                 <div className={cn(className, styles.wrapper)}>
-                    <img className={styles.image} src={image} alt={title} />
-                    <span className={styles.title}>{title}</span>
+                    <img
+                        className={styles.image}
+                        src={image}
+                        alt={name}
+                    />
+                    <span className={styles.title}>{name}</span>
                     <div className={styles.container}>
-                        <span className={styles.date}>{date}</span>
+                        <span className={styles.date}>{created}</span>
                         <div
                             className={styles.tag}
-                            style={{ backgroundColor: "#E0EBC6" }}
+                            style={{ backgroundColor: category.color }}
                         >
-                            {tag}
+                            {category.name}
                         </div>
                     </div>
                     <p className={styles.description}>
-                        {description.substring(0, 300)}
+                        {/* {description.substring(0, 300)} */}
                     </p>
                     <div className={styles.infoContainer}>
                         <img
@@ -48,13 +52,13 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
                             src={like}
                             alt="likes"
                         />
-                        <span className={styles.textStats}>{likes}</span>
+                        <span className={styles.textStats}>{likeCount}</span>
                         <img
                             className={styles.commentIcon}
                             src={comment}
                             alt="comments"
                         />
-                        <span className={styles.textStats}>{comments}</span>
+                        <span className={styles.textStats}>{reviewCount}</span>
                     </div>
                 </div>
             </Link>

@@ -10,7 +10,7 @@ export const VideoFilter: FC<FilterProps> = (props) => {
     const { className } = props;
     return (
         <div className={cn(className)}>
-            <Filter />
+            <Filter value="new" onChange={() => {}} />
         </div>
     );
 };

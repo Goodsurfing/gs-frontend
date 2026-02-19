@@ -8,7 +8,7 @@ import Image from "@tiptap/extension-image";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
-import React from "react";
+import React, { useEffect } from "react";
 import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
@@ -20,11 +20,13 @@ import styles from "./TextEditor.module.scss";
 interface TiptapEditorProps {
     onChange: (content: string) => void;
     value: string;
+    onErrorUploadImage: (error: string) => void;
 }
 
 export const TextEditor: React.FC<TiptapEditorProps> = ({
     onChange,
     value,
+    onErrorUploadImage,
 }) => {
     const editor = useEditor({
         extensions: [
@@ -48,8 +50,16 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
                 class: cn(styles.input),
             },
         },
-        onUpdate: () => onChange(editor?.getHTML() || ""),
+        onUpdate: () => {
+            onChange(editor?.getHTML() || "");
+        },
     });
+
+    useEffect(() => {
+        if (editor && value !== editor.getHTML()) {
+            editor.commands.setContent(value || "");
+        }
+    }, [value, editor]);
 
     const clearContent = () => {
         editor?.commands.setContent("");
@@ -58,7 +68,7 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
-                <ToolBar editor={editor} />
+                <ToolBar editor={editor} onErrorUploadImage={onErrorUploadImage} />
                 <EditorContent editor={editor} />
             </div>
             <div onClick={clearContent}>

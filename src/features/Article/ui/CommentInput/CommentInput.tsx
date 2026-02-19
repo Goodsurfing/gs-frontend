@@ -7,7 +7,7 @@ import Button from "@/shared/ui/Button/Button";
 interface CommentInputProps {
     value: string;
     onChange: ChangeEventHandler<HTMLTextAreaElement>;
-    onSend: () => void;
+    onSend: (value: string) => void;
     className?: string;
     btnText?: string;
     placeholder?: string;
@@ -31,7 +31,7 @@ export const CommentInput: FC<CommentInputProps> = (props: CommentInputProps) =>
                 disabled={disabled}
             />
             <Button
-                onClick={() => onSend()}
+                onClick={() => onSend(value)}
                 className={styles.button}
                 variant="OUTLINE"
                 size="MEDIUM"

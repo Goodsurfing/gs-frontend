@@ -43,7 +43,6 @@
 .category {
     font-size: 0.875rem;
     padding: 3px 10px;
-    background-color: #C3A3E9;
     border-radius: 40px;
 }
 
@@ -56,6 +55,10 @@
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.like {
+    cursor: pointer;
 }
 
 .icon {

@@ -168,6 +168,11 @@ import {
     getAdminCoursePersonalPageUrl,
     getAdminReviewsCoursesPageUrl,
     getAdminReviewCoursePersonalPageUrl,
+    getAdminNewsPageUrl,
+    getAdminNewsPersonalPageUrl,
+    getAdminNewsCreatePageUrl,
+    getAdminReviewsCommunityPageUrl,
+    getAdminReviewsNewsPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -221,6 +226,11 @@ import { AdminCourseCreatePage } from "@/pages/AdminCourseCreatePage";
 import { AdminCoursePersonalPage } from "@/pages/AdminCoursePersonalPage";
 import { AdminReviewsCoursesPage } from "@/pages/AdminReviewsCoursesPage";
 import { AdminReviewCoursePersonalPage } from "@/pages/AdminReviewCoursePersonalPage";
+import { AdminNewsPage } from "@/pages/AdminNewsPage";
+import { AdminNewsPersonalPage } from "@/pages/AdminNewsPersonalPage";
+import { AdminNewsCreatePage } from "@/pages/AdminNewsCreatePage";
+import { AdminReviewsCommunityPage } from "@/pages/AdminReviewsCommunityPage";
+import { AdminReviewNewsPersonalPage } from "@/pages/AdminReviewNewsPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -762,6 +772,31 @@ const publicRoutes: RouteType[] = [
                 label: "admin-review-course-personal",
                 element: <AdminReviewCoursePersonalPage />,
                 path: (locale: string) => getAdminReviewCoursePersonalPageUrl(locale),
+            },
+            {
+                label: "admin-news",
+                element: <AdminNewsPage />,
+                path: (locale: string) => getAdminNewsPageUrl(locale),
+            },
+            {
+                label: "admin-news-personal",
+                element: <AdminNewsPersonalPage />,
+                path: (locale: string) => getAdminNewsPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-news-create",
+                element: <AdminNewsCreatePage />,
+                path: (locale: string) => getAdminNewsCreatePageUrl(locale),
+            },
+            {
+                label: "admin-reviews-community",
+                element: <AdminReviewsCommunityPage />,
+                path: (locale: string) => getAdminReviewsCommunityPageUrl(locale),
+            },
+            {
+                label: "admin-review-news-personal",
+                element: <AdminReviewNewsPersonalPage />,
+                path: (locale: string) => getAdminReviewsNewsPersonalPageUrl(locale),
             },
         ],
     },

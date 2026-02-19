@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { TagsOption, useFilterTags } from "../../model/data/tags";
 
-export const Filter = () => {
-    const [filterValue, setFilterValue] = useState<TagsOption>("Свежее");
+interface FilterProps {
+    value: TagsOption;
+    onChange: (value: TagsOption) => void;
+}
+
+export const Filter: FC<FilterProps> = (props) => {
+    const { value, onChange } = props;
     const tags = useFilterTags();
 
     const handleFilterChange = (event: React.MouseEvent<HTMLElement>, newValue: TagsOption) => {
-        if (newValue) setFilterValue(newValue);
+        if (newValue) onChange(newValue);
     };
 
     useEffect(() => {});
@@ -17,7 +22,7 @@ export const Filter = () => {
             <ToggleButtonGroup
                 onChange={handleFilterChange}
                 exclusive
-                value={filterValue}
+                value={value}
                 sx={{
                     display: "flex", flexWrap: "wrap", maxWidth: "624px", gap: "10px",
                 }}

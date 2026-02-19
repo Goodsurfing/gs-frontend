@@ -15,7 +15,7 @@ interface CategoriesProps {
     isOpen: boolean
     onClick: MouseEventHandler<HTMLDivElement>
     value: number[]
-    onChange: (value: number[]) => void
+    onChange: (value?: number | number[]) => void
 }
 
 export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, ref) => {
