@@ -48,3 +48,44 @@ export interface UpdateAdminNewsParams {
     id: string;
     body: CreateAdminNews;
 }
+
+// Review News
+
+export interface GetAdminReviewsNews {
+    id: string;
+    description: string;
+    created: string;
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+    }
+    news: {
+        name: string;
+    }
+    isActive: boolean;
+}
+
+export interface GetAdminReviewsNewsResponse {
+    data: GetAdminReviewsNews[];
+    pagination: Pagination;
+}
+
+export interface GetAdminReviewsNewsParams {
+    sort: AdminSort;
+    newsId: string;
+    firstName: string;
+    lastName: string;
+    newsName: string;
+    page: number;
+    limit: number;
+}
+
+export type GetAdminReviewNews = Omit<GetAdminReviewsNews, "news">;
+
+export type UpdateAdminReviewNews = Pick<GetAdminReviewNews, "description" | "isActive">;
+
+export interface UpdateAdminReviewNewsParams {
+    id: string;
+    body: UpdateAdminReviewNews;
+}

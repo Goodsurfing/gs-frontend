@@ -30,3 +30,4 @@ export { AdminReviewsCoursesTable } from "./ui/AdminReviewsCoursesTable/AdminRev
 export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCourseInfo";
 export { AdminNewsTable } from "./ui/AdminNewsTable/AdminNewsTable";
 export { AdminNewsInfo } from "./ui/AdminNewsInfo/AdminNewsInfo";
+export { AdminReviewsCommunity } from "./ui/AdminReviewsCommunity/AdminReviewsCommunity";

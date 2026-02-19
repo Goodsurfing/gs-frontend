@@ -175,6 +175,10 @@ export {
     useCreateAdminNewsMutation,
     useUpdateAdminNewsMutation,
     useDeleteAdminNewsMutation,
+    useLazyGetAdminReviewsNewsQuery,
+    useGetAdminReviewNewsByIdQuery,
+    useUpdateAdminReviewNewsMutation,
+    useDeleteAdminReviewNewsMutation,
 } from "./api/adminNewsApi";
 
 export { newsAdapter, newsApiAdapter } from "./lib/adminNewsAdapter";

@@ -283,3 +283,9 @@ export const getAdminNewsPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 export const getAdminNewsCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_news}/create`;
 
 export const getAdminNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_news}/${id}`;
+
+// Admin Review Community
+
+export const getAdminReviewsCommunityPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews_community}`;
+
+export const getAdminReviewsNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_news}/${id}`;

@@ -2,13 +2,16 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
     CreateAdminNews, GetAdminNews, GetAdminNewsListParams, GetAdminNewsListResponse,
+    GetAdminReviewNews,
+    GetAdminReviewsNewsParams,
+    GetAdminReviewsNewsResponse,
     UpdateAdminNewsParams,
 } from "../model/types/adminNewsSchema";
 
 export const adminNewsApi = createApi({
     reducerPath: "adminNewsApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["news"],
+    tagTypes: ["news", "review"],
     endpoints: (build) => ({
         getAdminNewsList: build.query<GetAdminNewsListResponse, Partial<GetAdminNewsListParams>>({
             query: () => ({
@@ -47,6 +50,37 @@ export const adminNewsApi = createApi({
             }),
             invalidatesTags: ["news"],
         }),
+        // Review News
+        getAdminReviewsNews: build.query<GetAdminReviewsNewsResponse,
+        Partial<GetAdminReviewsNewsParams>>({
+            query: () => ({
+                url: "review-news/list",
+                method: "GET",
+            }),
+            providesTags: ["review"],
+        }),
+        getAdminReviewNewsById: build.query<GetAdminReviewNews, string>({
+            query: (reviewId) => ({
+                url: `review-news/element/${reviewId}`,
+                method: "GET",
+            }),
+            providesTags: ["news"],
+        }),
+        updateAdminReviewNews: build.mutation<void, UpdateAdminNewsParams>({
+            query: ({ id, body }) => ({
+                url: `review-news/edit/${id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["review"],
+        }),
+        deleteAdminReviewNews: build.mutation<void, string>({
+            query: (id) => ({
+                url: `review-news/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["review"],
+        }),
     }),
 });
 
@@ -56,4 +90,8 @@ export const {
     useCreateAdminNewsMutation,
     useUpdateAdminNewsMutation,
     useDeleteAdminNewsMutation,
+    useLazyGetAdminReviewsNewsQuery,
+    useGetAdminReviewNewsByIdQuery,
+    useUpdateAdminReviewNewsMutation,
+    useDeleteAdminReviewNewsMutation,
 } = adminNewsApi;

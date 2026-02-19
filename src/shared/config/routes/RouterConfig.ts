@@ -105,4 +105,6 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_COURSES]: "/admin/courses",
     [AppRoutes.ADMIN_REVIEWS_COURSES]: "/admin/reviews-courses",
     [AppRoutes.ADMIN_NEWS]: "/admin/news",
+    [AppRoutes.ADMIN_REVIEWS_COMMUNITY]: "/admin/reviews-community",
+    [AppRoutes.ADMIN_REVIEWS_NEWS]: "/admin/reviews-news",
 };
