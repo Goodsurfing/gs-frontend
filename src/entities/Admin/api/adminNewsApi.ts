@@ -6,6 +6,7 @@ import {
     GetAdminReviewsNewsParams,
     GetAdminReviewsNewsResponse,
     UpdateAdminNewsParams,
+    UpdateAdminReviewNewsParams,
 } from "../model/types/adminNewsSchema";
 
 export const adminNewsApi = createApi({
@@ -64,9 +65,9 @@ export const adminNewsApi = createApi({
                 url: `review-news/element/${reviewId}`,
                 method: "GET",
             }),
-            providesTags: ["news"],
+            providesTags: ["review"],
         }),
-        updateAdminReviewNews: build.mutation<void, UpdateAdminNewsParams>({
+        updateAdminReviewNews: build.mutation<void, UpdateAdminReviewNewsParams>({
             query: ({ id, body }) => ({
                 url: `review-news/edit/${id}`,
                 method: "PATCH",

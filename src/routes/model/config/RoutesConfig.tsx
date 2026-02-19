@@ -172,6 +172,7 @@ import {
     getAdminNewsPersonalPageUrl,
     getAdminNewsCreatePageUrl,
     getAdminReviewsCommunityPageUrl,
+    getAdminReviewsNewsPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -229,6 +230,7 @@ import { AdminNewsPage } from "@/pages/AdminNewsPage";
 import { AdminNewsPersonalPage } from "@/pages/AdminNewsPersonalPage";
 import { AdminNewsCreatePage } from "@/pages/AdminNewsCreatePage";
 import { AdminReviewsCommunityPage } from "@/pages/AdminReviewsCommunityPage";
+import { AdminReviewNewsPersonalPage } from "@/pages/AdminReviewNewsPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -790,6 +792,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-reviews-community",
                 element: <AdminReviewsCommunityPage />,
                 path: (locale: string) => getAdminReviewsCommunityPageUrl(locale),
+            },
+            {
+                label: "admin-review-news-personal",
+                element: <AdminReviewNewsPersonalPage />,
+                path: (locale: string) => getAdminReviewsNewsPersonalPageUrl(locale),
             },
         ],
     },

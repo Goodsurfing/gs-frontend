@@ -22,6 +22,7 @@ interface AdminLessonReviewFormProps {
     review?: AdminLessonReviewFields;
     onSubmit?: (data: AdminLessonReviewFields) => void;
     isLoading: boolean;
+    isRatingHidden?: boolean;
 }
 
 const defaultValues: DefaultValues<AdminLessonReviewFields> = {
@@ -32,7 +33,7 @@ const defaultValues: DefaultValues<AdminLessonReviewFields> = {
 
 export const AdminLessonReviewForm: FC<AdminLessonReviewFormProps> = (props) => {
     const {
-        className, review, onSubmit, isLoading,
+        className, review, onSubmit, isLoading, isRatingHidden = false,
     } = props;
 
     const form = useForm<AdminLessonReviewFields>({
@@ -72,41 +73,43 @@ export const AdminLessonReviewForm: FC<AdminLessonReviewFormProps> = (props) => 
                 onSubmit={handleSubmit(onSubmitForm)}
             >
                 <div className={styles.form}>
-                    <div className={styles.field}>
-                        <Controller
-                            rules={
-                                { required: "Это поле является обязательным" }
-                            }
-                            control={control}
-                            name="rating"
-                            render={({ field }) => (
-                                <>
-                                    <label className={styles.label} htmlFor="rating">
-                                        Рейтинг
-                                    </label>
-                                    <Rating
-                                        id="rating"
-                                        size="large"
-                                        value={field.value}
-                                        onChange={(_, valueItem) => field.onChange(
-                                            valueItem ?? null,
-                                        )}
-                                        sx={{
-                                            "& .MuiRating-iconFilled": {
-                                                color: "#FED81C",
-                                            },
-                                        }}
-                                    />
-                                </>
-                            )}
-                        />
-                        {errors?.rating?.message && (
-                            <ErrorText
-                                text={errors.rating.message}
-                                className={styles.error}
+                    {!isRatingHidden && (
+                        <div className={styles.field}>
+                            <Controller
+                                rules={
+                                    { required: "Это поле является обязательным" }
+                                }
+                                control={control}
+                                name="rating"
+                                render={({ field }) => (
+                                    <>
+                                        <label className={styles.label} htmlFor="rating">
+                                            Рейтинг
+                                        </label>
+                                        <Rating
+                                            id="rating"
+                                            size="large"
+                                            value={field.value}
+                                            onChange={(_, valueItem) => field.onChange(
+                                                valueItem ?? null,
+                                            )}
+                                            sx={{
+                                                "& .MuiRating-iconFilled": {
+                                                    color: "#FED81C",
+                                                },
+                                            }}
+                                        />
+                                    </>
+                                )}
                             />
-                        )}
-                    </div>
+                            {errors?.rating?.message && (
+                                <ErrorText
+                                    text={errors.rating.message}
+                                    className={styles.error}
+                                />
+                            )}
+                        </div>
+                    )}
                     <div className={styles.field}>
                         <Controller
                             rules={

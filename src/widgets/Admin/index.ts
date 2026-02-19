@@ -31,3 +31,4 @@ export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCou
 export { AdminNewsTable } from "./ui/AdminNewsTable/AdminNewsTable";
 export { AdminNewsInfo } from "./ui/AdminNewsInfo/AdminNewsInfo";
 export { AdminReviewsCommunity } from "./ui/AdminReviewsCommunity/AdminReviewsCommunity";
+export { AdminReviewNewsInfo } from "./ui/AdminReviewNewsInfo/AdminReviewNewsInfo";

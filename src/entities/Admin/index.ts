@@ -182,3 +182,7 @@ export {
 } from "./api/adminNewsApi";
 
 export { newsAdapter, newsApiAdapter } from "./lib/adminNewsAdapter";
+
+export type { GetAdminReviewsNews, GetAdminReviewNews } from "./model/types/adminNewsSchema";
+
+export { ReviewNewsInfoTable } from "./ui/ReviewNewsInfoTable/ReviewNewsInfoTable";
