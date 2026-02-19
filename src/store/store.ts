@@ -21,6 +21,7 @@ import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
 import {
     adminReducer, adminApi, adminCourseApi, adminNewsApi,
+    adminBlogApi,
 } from "@/entities/Admin";
 import { courseApi } from "@/entities/Academy";
 import { newsApi } from "@/entities/News";
@@ -49,6 +50,7 @@ const rootReducer = combineReducers({
     [adminApi.reducerPath]: adminApi.reducer,
     [adminCourseApi.reducerPath]: adminCourseApi.reducer,
     [adminNewsApi.reducerPath]: adminNewsApi.reducer,
+    [adminBlogApi.reducerPath]: adminBlogApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -71,6 +73,7 @@ export const setupStore = () => configureStore({
         adminCourseApi.middleware,
         newsApi.middleware,
         adminNewsApi.middleware,
+        adminBlogApi.middleware,
         authMiddleware,
     ]),
 });

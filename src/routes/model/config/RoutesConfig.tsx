@@ -174,6 +174,8 @@ import {
     getAdminReviewsCommunityPageUrl,
     getAdminReviewsNewsPersonalPageUrl,
     getAdminCategoriesBlogPageUrl,
+    getAdminCategoriesBlogCreatePageUrl,
+    getAdminCategoriesBlogPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -233,6 +235,8 @@ import { AdminNewsCreatePage } from "@/pages/AdminNewsCreatePage";
 import { AdminReviewsCommunityPage } from "@/pages/AdminReviewsCommunityPage";
 import { AdminReviewNewsPersonalPage } from "@/pages/AdminReviewNewsPersonalPage";
 import { AdminCategoriesBlogPage } from "@/pages/AdminCategoriesBlogPage";
+import { AdminCategoriesBlogCreatePage } from "@/pages/AdminCategoriesBlogCreatePage";
+import { AdminCategoriesBlogPersonalPage } from "@/pages/AdminCategoriesBlogPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -804,6 +808,16 @@ const publicRoutes: RouteType[] = [
                 label: "admin-categories-blog",
                 element: <AdminCategoriesBlogPage />,
                 path: (locale: string) => getAdminCategoriesBlogPageUrl(locale),
+            },
+            {
+                label: "admin-categories-blog-create",
+                element: <AdminCategoriesBlogCreatePage />,
+                path: (locale: string) => getAdminCategoriesBlogCreatePageUrl(locale),
+            },
+            {
+                label: "admin-categories-blog-personal",
+                element: <AdminCategoriesBlogPersonalPage />,
+                path: (locale: string) => getAdminCategoriesBlogPersonalPageUrl(locale),
             },
         ],
     },

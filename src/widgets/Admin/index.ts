@@ -34,3 +34,4 @@ export { AdminReviewsCommunity } from "./ui/AdminReviewsCommunity/AdminReviewsCo
 export { AdminReviewNewsInfo } from "./ui/AdminReviewNewsInfo/AdminReviewNewsInfo";
 
 export { AdminCategoriesBlogTable } from "./ui/AdminCategoriesBlogTable/AdminCategoriesBlogTable";
+export { AdminCategoryBlogInfo } from "./ui/AdminCategoryBlogInfo/AdminCategoryBlogInfo";

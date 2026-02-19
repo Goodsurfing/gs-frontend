@@ -12,7 +12,7 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useDeleteAdminBlogCategoryMutation, useLazyGetAdminBlogCategoriesQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import styles from "./AdminCategoriesTable.module.scss";
+import styles from "./AdminCategoriesBlogTable.module.scss";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";

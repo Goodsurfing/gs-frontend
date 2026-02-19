@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { AdminCategoryInfo } from "@/widgets/Admin";
+import { AdminCategoryBlogInfo } from "@/widgets/Admin";
 
-const AdminCategoriesPersonalPage = () => {
+const AdminCategoriesBlogPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
 
     if (!id) {
@@ -15,9 +15,9 @@ const AdminCategoriesPersonalPage = () => {
 
     return (
         <div>
-            <AdminCategoryInfo categoryId={Number(id)} />
+            <AdminCategoryBlogInfo categoryId={Number(id)} />
         </div>
     );
 };
 
-export default AdminCategoriesPersonalPage;
+export default AdminCategoriesBlogPersonalPage;
