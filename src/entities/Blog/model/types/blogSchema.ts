@@ -63,7 +63,7 @@ export interface GetBlogParams {
 
 export type CreateBlog = Pick<GetBlog, "name" | "description" | "isActive"> & {
     imageId: string;
-    categoryId: number;
+    categoryId: number | null;
 };
 
 export interface UpdateBlogParams {

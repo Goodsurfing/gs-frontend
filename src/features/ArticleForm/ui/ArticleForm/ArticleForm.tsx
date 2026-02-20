@@ -13,10 +13,15 @@ import { useTranslateError } from "../../hooks/useErrorTranslate";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
 import styles from "./ArticleForm.module.scss";
+import { BlogCategories } from "../BlogCategories/BlogCategories";
+
+type Categories = "Offer" | "Blog";
 
 interface ArticleFormProps {
     className?: string;
+    category: Categories;
     initialData?: ArticleFormFields;
+    isLoading: boolean;
     onComplete: (data: ArticleFormFields) => void;
     onErrorUploadImage: (error: string) => void;
 }
@@ -34,6 +39,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
     (props: ArticleFormProps) => {
         const {
             className, initialData, onComplete, onErrorUploadImage,
+            isLoading, category,
         } = props;
         const { t } = useTranslation("volunteer");
         const { translate } = useTranslateError();
@@ -139,14 +145,27 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         rules={{ required: "Выберите категорию" }}
                         render={({ field, fieldState }) => (
                             <div className={styles.categoryWrapper}>
-                                <OfferCategories
-                                    locale={locale}
-                                    exclusive
-                                    value={field.value ? Number(field.value) : undefined}
-                                    onChange={(value) => field.onChange(
-                                        value ? Number(value) : undefined,
+                                {category === "Offer" ? (
+                                    <OfferCategories
+                                        locale={locale}
+                                        exclusive
+                                        value={field.value ? Number(field.value) : undefined}
+                                        onChange={(value) => field.onChange(
+                                            value ? Number(value) : undefined,
+                                        )}
+                                    />
+                                )
+                                    : (
+                                        <BlogCategories
+                                            locale={locale}
+                                            exclusive
+                                            value={field.value ? Number(field.value) : undefined}
+                                            onChange={(value) => field.onChange(
+                                                value ? Number(value) : undefined,
+                                            )}
+                                        />
                                     )}
-                                />
+
                                 {fieldState.error && (
                                     <span className={styles.error}>
                                         {translate(fieldState.error.message)
@@ -200,6 +219,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         color="BLUE"
                         variant="FILL"
                         size="SMALL"
+                        disabled={isLoading}
                     >
                         {t("volunteer-create-article.Опубликовать")}
                     </Button>
@@ -209,6 +229,7 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                         color="BLUE"
                         variant="OUTLINE"
                         size="SMALL"
+                        disabled={isLoading}
                     >
                         {t("volunteer-create-article.Сохранить в черновики")}
                     </Button>

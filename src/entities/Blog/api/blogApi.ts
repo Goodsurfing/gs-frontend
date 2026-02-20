@@ -100,7 +100,7 @@ export const {
     useUpdateBlogMutation,
     usePutLikeBlogMutation,
     useDeleteBlogMutation,
-    useLazyGetBlogCategoriesQuery,
+    useGetBlogCategoriesQuery,
     useLazyGetReviewsBlogQuery,
     useCreateReviewBlogMutation,
 } = blogApi;

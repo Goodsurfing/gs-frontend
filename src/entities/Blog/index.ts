@@ -6,7 +6,7 @@ export {
     useUpdateBlogMutation,
     usePutLikeBlogMutation,
     useDeleteBlogMutation,
-    useLazyGetBlogCategoriesQuery,
+    useGetBlogCategoriesQuery,
     useLazyGetReviewsBlogQuery,
     useCreateReviewBlogMutation,
 } from "./api/blogApi";
