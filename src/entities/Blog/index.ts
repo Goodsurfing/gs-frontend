@@ -14,3 +14,5 @@ export {
 export type {
     GetBlog, GetBlogList, CreateBlog, BlogCategory,
 } from "./model/types/blogSchema";
+
+export { blogArticleCardAdapter } from "./lib/blogAdapter";

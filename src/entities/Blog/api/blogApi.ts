@@ -20,9 +20,10 @@ export const blogApi = createApi({
     tagTypes: ["blog", "category"],
     endpoints: (build) => ({
         getBlogList: build.query<GetBlogListResponse, Partial<GetBlogListParams>>({
-            query: () => ({
+            query: (params) => ({
                 url: "blog/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["blog"],
         }),

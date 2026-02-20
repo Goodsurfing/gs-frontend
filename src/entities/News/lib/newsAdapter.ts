@@ -25,6 +25,6 @@ export const newsArticleCardAdapter = (data: GetNewsList): ArticleCardType => {
         likeCount,
         name,
         reviewCount,
-        image: getMediaContent(image.contentUrl),
+        image: getMediaContent(image?.thumbnails?.large),
     };
 };

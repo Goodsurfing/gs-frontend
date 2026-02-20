@@ -38,7 +38,7 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
                         <span className={styles.date}>{created}</span>
                         <div
                             className={styles.tag}
-                            style={{ backgroundColor: category.color }}
+                            style={{ backgroundColor: category.color === "" ? "#3DABF7" : category.color }}
                         >
                             {category.name}
                         </div>
