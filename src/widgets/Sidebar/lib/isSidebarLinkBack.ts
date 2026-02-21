@@ -5,6 +5,13 @@ export const isSidebarLinkBack = (route: string) => {
     const pathBackLinkData: string[] = [
         "/host/my-offers",
         "/admin/vacancies",
+        "/volunteer/articles",
+        "/volunteer/create-article",
+        "/volunteer/gallery",
+        "/volunteer/notes",
+        "/volunteer/review",
+        "/volunteer/skills",
+        "/volunteer/volunteer-dashboard",
     ];
     return pathBackLinkData.includes(route);
 };

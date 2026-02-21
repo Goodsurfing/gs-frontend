@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import { OfferCategories } from "@/widgets/OfferCategories";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { BlogCategories } from "@/features/ArticleForm";
 import styles from "./CategoriesFilter.module.scss";
 
 interface CategoriesFilterProps {
@@ -19,7 +19,7 @@ export const CategoriesFilter: FC<CategoriesFilterProps> = (props) => {
     return (
         <div className={cn(className, styles.wrapper)}>
             <span className={styles.title}>Категория</span>
-            <OfferCategories
+            <BlogCategories
                 locale={locale}
                 exclusive
                 value={value ? Number(value) : undefined}
