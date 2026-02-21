@@ -4,14 +4,16 @@ import React, { FC, useMemo } from "react";
 import { Comment } from "../Comment/Comment";
 import styles from "./CommentList.module.scss";
 import { Comments } from "../../model/types/articleSchema";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface CommentListProps {
     className?: string;
     comments: Comments[];
+    locale: Locale;
 }
 
 export const CommentList: FC<CommentListProps> = (props: CommentListProps) => {
-    const { className, comments } = props;
+    const { className, comments, locale } = props;
 
     const renderComments = useMemo(
         () => comments.map((comment) => (
@@ -20,9 +22,11 @@ export const CommentList: FC<CommentListProps> = (props: CommentListProps) => {
                 authorName={comment.authorName}
                 date={comment.date}
                 comment={comment.comment}
+                authorId={comment.authorId}
+                locale={locale}
             />
         )),
-        [comments],
+        [comments, locale],
     );
 
     return (

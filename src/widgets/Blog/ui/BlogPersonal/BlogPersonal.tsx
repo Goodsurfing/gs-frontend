@@ -7,41 +7,44 @@ import {
 import { getNewsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import {
-    GetReviewsNews,
-    newsReviewsAdapter,
-    useCreateReviewNewsMutation, useGetNewsByIdQuery,
-    useLazyGetReviewsNewsQuery, usePutLikeNewsMutation,
-} from "@/entities/News";
 import { CommentWidget } from "@/widgets/Article";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MAIN_URL } from "@/shared/constants/api";
-import styles from "./NewsPersonal.module.scss";
+import {
+    blogReviewsAdapter,
+    GetReviewBlog,
+    useCreateReviewBlogMutation, useGetBlogByIdQuery,
+    useLazyGetReviewsBlogQuery, usePutLikeBlogMutation,
+} from "@/entities/Blog";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { useGetFullName } from "@/shared/lib/getFullName";
+import styles from "./BlogPersonal.module.scss";
 
-interface NewsPersonalProps {
-    newsId: string;
+interface BlogPersonalProps {
+    blogId: number;
 }
 
 const VISIBLE_COUNT = 10;
 
-export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
-    const { newsId } = props;
+export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
+    const { blogId } = props;
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
-    const [reviews, setReviews] = useState<GetReviewsNews[]>([]);
+    const [reviews, setReviews] = useState<GetReviewBlog[]>([]);
+    const { getFullName } = useGetFullName();
 
-    const { data, isLoading } = useGetNewsByIdQuery({ id: newsId, lang: locale });
+    const { data, isLoading } = useGetBlogByIdQuery({ id: blogId, lang: locale });
     const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
-    const [putLike] = usePutLikeNewsMutation();
-    const [createNews] = useCreateReviewNewsMutation();
-    const [getReviews, { data: reviewsData }] = useLazyGetReviewsNewsQuery();
+    const [putLike] = usePutLikeBlogMutation();
+    const [createBlog] = useCreateReviewBlogMutation();
+    const [getReviews, { data: reviewsData }] = useLazyGetReviewsBlogQuery();
 
     const fetchReviews = useCallback(async (pageItem: number) => {
         try {
             await getReviews({
-                newsId,
+                blogId,
                 limit: VISIBLE_COUNT,
                 page: pageItem,
             }).unwrap();
@@ -51,7 +54,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 type: HintType.Error,
             });
         }
-    }, [getReviews, newsId]);
+    }, [getReviews, blogId]);
 
     useEffect(() => {
         fetchReviews(page);
@@ -71,7 +74,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const onLike = async () => {
         setToast(undefined);
         try {
-            await putLike(newsId).unwrap();
+            await putLike(blogId).unwrap();
         } catch {
             setToast({
                 text: "Произошла ошибка",
@@ -82,7 +85,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
 
     const onComment = async (description: string) => {
         try {
-            await createNews({ newsId, description }).unwrap();
+            await createBlog({ blogId, description }).unwrap();
             await fetchReviews(1);
         } catch {
             setToast({
@@ -120,8 +123,11 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 <ArticleHeader
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
-                    category={data?.category.name}
-                    categoryColor={data?.category.color}
+                    authorId={data?.author.id}
+                    authorAvatar={getMediaContent(data?.author.image?.thumbnails?.small)}
+                    authorName={getFullName(data?.author.firstName, data?.author.lastName)}
+                    category={data?.blogCategoryResult.name}
+                    categoryColor={data?.blogCategoryResult.color}
                     date={data?.created ?? ""}
                     likes={data?.likeCount ?? 0}
                     reviews={data?.reviewCount ?? 0}
@@ -131,14 +137,14 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 <ArticleContent className={styles.content} content={articleContent} />
                 <ArticleShare
                     className={styles.shareBlock}
-                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, data?.id)}`}
+                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, String(data?.id))}`}
                 />
             </div>
             <div className={styles.commentWrapper}>
                 <CommentWidget
                     commentsCount={data?.reviewCount ?? 0}
                     onSend={onComment}
-                    comments={newsReviewsAdapter(reviews)}
+                    comments={blogReviewsAdapter(reviews)}
                     onNextComments={handleShowNext}
                     total={reviewsData?.pagination.total}
                     locale={locale}

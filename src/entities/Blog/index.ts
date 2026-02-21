@@ -12,7 +12,7 @@ export {
 } from "./api/blogApi";
 
 export type {
-    GetBlog, GetBlogList, CreateBlog, BlogCategory,
+    GetBlog, GetBlogList, CreateBlog, BlogCategory, GetReviewBlog,
 } from "./model/types/blogSchema";
 
-export { blogArticleCardAdapter } from "./lib/blogAdapter";
+export { blogArticleCardAdapter, blogReviewsAdapter } from "./lib/blogAdapter";

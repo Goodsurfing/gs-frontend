@@ -30,6 +30,7 @@ const JournalPersonalPage = () => {
                         date="17 мая 2017"
                         likes={0}
                         reviews={0}
+                        locale={locale}
                     />
                     <ArticleContent className={styles.content} content={"<iframe src=\"\""} />
                     <ArticleShare
@@ -43,6 +44,7 @@ const JournalPersonalPage = () => {
                         commentsCount={0}
                         onNextComments={() => {}}
                         onSend={() => {}}
+                        locale={locale}
                     />
                 </div>
             </div>
