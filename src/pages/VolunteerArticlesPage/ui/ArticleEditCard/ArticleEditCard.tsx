@@ -24,11 +24,12 @@ import styles from "./ArticleEditCard.module.scss";
 interface ArticleEditCardProps {
     article: ArticleCardType;
     className?: string;
+    onDelete: (id: string) => void;
 }
 
 export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
     (props: ArticleEditCardProps) => {
-        const { article, className } = props;
+        const { article, className, onDelete } = props;
         const { locale } = useLocale();
         const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
         const popupRef = useRef(null);
@@ -65,6 +66,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
                             <button
                                 type="button"
                                 className={styles.popupButton}
+                                onClick={() => onDelete(article.id)}
                             >
                                 {t("volunteer-articles.Удалить")}
                             </button>

@@ -299,3 +299,9 @@ export const getAdminCategoriesBlogPageUrl: RoutePathFunction = (locale) => `/${
 export const getAdminCategoriesBlogCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_blog}/create`;
 
 export const getAdminCategoriesBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_blog}/${id}`;
+
+// Admin Blog
+
+export const getAdminBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_blog}`;
+
+export const getAdminBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_blog}/${id}`;

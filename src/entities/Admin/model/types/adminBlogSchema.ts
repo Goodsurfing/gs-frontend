@@ -10,6 +10,11 @@ export interface GetAdminBlogList {
     isActive: boolean;
     reviewCount: number;
     categoryName: string;
+    author: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+    }
 }
 
 export interface GetAdminBlogListResponse {
@@ -31,11 +36,6 @@ export type GetAdminBlog = Omit<GetAdminBlogList, "categoryName"> & {
     isGudserfing: boolean;
     image: Image;
     category: BlogCategory;
-    author: {
-        id: string;
-        firstName: string | null;
-        lastName: string | null;
-    }
 };
 
 export type UpdateAdminBlog = Pick<GetAdminBlog, "name" | "description" | "isActive"> & {
