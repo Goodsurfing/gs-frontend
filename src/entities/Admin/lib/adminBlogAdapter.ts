@@ -1,7 +1,7 @@
-import { CreateAdminNews, GetAdminNews } from "../model/types/adminNewsSchema";
 import { AdminArticleFormFields } from "@/features/Admin";
+import { GetAdminBlog, UpdateAdminBlog } from "../model/types/adminBlogSchema";
 
-export const newsAdapter = (data: GetAdminNews): AdminArticleFormFields => {
+export const blogAdapter = (data: GetAdminBlog): AdminArticleFormFields => {
     const {
         name, image, description, isActive,
         category, author,
@@ -17,7 +17,7 @@ export const newsAdapter = (data: GetAdminNews): AdminArticleFormFields => {
     };
 };
 
-export const newsApiAdapter = (data: AdminArticleFormFields): CreateAdminNews => {
+export const blogApiAdapter = (data: AdminArticleFormFields): UpdateAdminBlog => {
     const {
         name, image, description, isActive,
         categoryId, author,
@@ -28,7 +28,7 @@ export const newsApiAdapter = (data: AdminArticleFormFields): CreateAdminNews =>
         description,
         isActive,
         imageId: image.id,
-        categoryId,
-        authorId: author.id,
+        blogCategoryId: categoryId,
+        authorId: author?.id ?? "",
     };
 };

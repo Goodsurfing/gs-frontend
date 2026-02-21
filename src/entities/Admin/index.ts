@@ -211,3 +211,5 @@ export type {
     GetAdminBlogCategory, CreateBlogCategory,
     GetAdminReviewsBlog, GetAdminReviewBlog, UpdateAdminReviewBlog,
 } from "./model/types/adminBlogSchema";
+
+export { blogAdapter, blogApiAdapter } from "./lib/adminBlogAdapter";

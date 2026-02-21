@@ -309,7 +309,7 @@ export const AdminBlogTable = () => {
                 categoryName,
                 isActive,
                 reviewCount,
-                authorName: getFullName(author.firstName, author.lastName),
+                authorName: getFullName(author?.firstName, author?.lastName),
                 created,
             };
         });

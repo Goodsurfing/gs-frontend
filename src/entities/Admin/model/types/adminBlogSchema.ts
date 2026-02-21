@@ -14,7 +14,7 @@ export interface GetAdminBlogList {
         id: string;
         firstName: string | null;
         lastName: string | null;
-    }
+    } | null;
 }
 
 export interface GetAdminBlogListResponse {

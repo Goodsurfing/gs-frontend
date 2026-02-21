@@ -13,9 +13,13 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
 import styles from "./AdminArticleForm.module.scss";
 import { AdminUsersSearchForm } from "../../../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
+import { BlogCategories } from "@/features/ArticleForm";
+
+type Categories = "Offer" | "Blog";
 
 interface AdminArticleFormProps {
     className?: string;
+    category: Categories;
     initialData?: AdminArticleFormFields;
     onComplete: (data: AdminArticleFormFields) => void;
     onErrorUploadImage: (error: string) => void;
@@ -31,7 +35,7 @@ export interface AdminArticleFormFields {
         id: string;
         firstName: string | null;
         lastName: string | null;
-    }
+    } | null;
     isActive: boolean;
 }
 
@@ -40,6 +44,7 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
         const {
             className, initialData, onComplete,
             isLoading, onErrorUploadImage,
+            category,
         } = props;
         const { t } = useTranslation("volunteer");
         const { locale } = useLocale();
@@ -143,14 +148,26 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
                         rules={{ required: "Выберите категорию" }}
                         render={({ field, fieldState }) => (
                             <div className={styles.categoryWrapper}>
-                                <OfferCategories
-                                    locale={locale}
-                                    exclusive
-                                    value={field.value ? Number(field.value) : undefined}
-                                    onChange={(value) => field.onChange(
-                                        value ? Number(value) : undefined,
+                                {category === "Offer" ? (
+                                    <OfferCategories
+                                        locale={locale}
+                                        exclusive
+                                        value={field.value ? Number(field.value) : undefined}
+                                        onChange={(value) => field.onChange(
+                                            value ? Number(value) : undefined,
+                                        )}
+                                    />
+                                )
+                                    : (
+                                        <BlogCategories
+                                            locale={locale}
+                                            exclusive
+                                            value={field.value ? Number(field.value) : undefined}
+                                            onChange={(value) => field.onChange(
+                                                value ? Number(value) : undefined,
+                                            )}
+                                        />
                                     )}
-                                />
                                 {fieldState.error && (
                                     <span className={styles.error}>
                                         {fieldState.error.message}

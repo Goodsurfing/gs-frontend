@@ -165,7 +165,6 @@ export const ArticleForm: FC<ArticleFormProps> = memo(
                                             )}
                                         />
                                     )}
-
                                 {fieldState.error && (
                                     <span className={styles.error}>
                                         {translate(fieldState.error.message)
