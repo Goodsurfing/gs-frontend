@@ -1,17 +1,23 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { CreateAdminJournal, GetAdminJournal, GetAdminJournalsParams, GetAdminJournalsResponse, UpdateAdminJournalParams } from "../model/types/adminJournalSchema";
-
+import {
+    CreateAdminJournal, GetAdminJournal, GetAdminJournalsParams,
+    GetAdminJournalsResponse, GetAdminReviewJournal, GetAdminReviewsJournalParams,
+    GetAdminReviewsJournalResponse, UpdateAdminJournalParams,
+    UpdateAdminReviewJournalParams,
+} from "../model/types/adminJournalSchema";
 
 export const adminJournalApi = createApi({
     reducerPath: "adminJournalApi",
     baseQuery: baseAdminQueryAcceptJson,
-    tagTypes: ["journal"],
+    tagTypes: ["journal", "review"],
     endpoints: (build) => ({
-        getAdminJournalList: build.query<GetAdminJournalsResponse, Partial<GetAdminJournalsParams>>({
-            query: () => ({
+        getAdminJournalList: build.query<GetAdminJournalsResponse,
+        Partial<GetAdminJournalsParams>>({
+            query: (params) => ({
                 url: "journal/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["journal"],
         }),
@@ -46,32 +52,33 @@ export const adminJournalApi = createApi({
             invalidatesTags: ["journal"],
         }),
         // Review News
-        getAdminReviewsNews: build.query<GetAdminReviewsNewsResponse,
-        Partial<GetAdminReviewsNewsParams>>({
-            query: () => ({
-                url: "review-news/list",
+        getAdminReviewsJournal: build.query<GetAdminReviewsJournalResponse,
+        Partial<GetAdminReviewsJournalParams>>({
+            query: (params) => ({
+                url: "review-journal/list",
                 method: "GET",
+                params,
             }),
             providesTags: ["review"],
         }),
-        getAdminReviewNewsById: build.query<GetAdminReviewNews, string>({
+        getAdminReviewJournalById: build.query<GetAdminReviewJournal, string>({
             query: (reviewId) => ({
-                url: `review-news/element/${reviewId}`,
+                url: `review-journal/element/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
-        updateAdminReviewNews: build.mutation<void, UpdateAdminReviewNewsParams>({
+        updateAdminReviewJournal: build.mutation<void, UpdateAdminReviewJournalParams>({
             query: ({ id, body }) => ({
-                url: `review-news/edit/${id}`,
+                url: `review-journal/edit/${id}`,
                 method: "PATCH",
                 body,
             }),
             invalidatesTags: ["review"],
         }),
-        deleteAdminReviewNews: build.mutation<void, string>({
+        deleteAdminReviewJournal: build.mutation<void, string>({
             query: (id) => ({
-                url: `review-news/${id}`,
+                url: `review-journal/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["review"],
@@ -80,13 +87,13 @@ export const adminJournalApi = createApi({
 });
 
 export const {
-    useLazyGetAdminNewsListQuery,
-    useGetAdminNewsByIdQuery,
-    useCreateAdminNewsMutation,
-    useUpdateAdminNewsMutation,
-    useDeleteAdminNewsMutation,
-    useLazyGetAdminReviewsNewsQuery,
-    useGetAdminReviewNewsByIdQuery,
-    useUpdateAdminReviewNewsMutation,
-    useDeleteAdminReviewNewsMutation,
-} = adminNewsApi;
+    useLazyGetAdminJournalListQuery,
+    useGetAdminJournalByIdQuery,
+    useCreateAdminJournalMutation,
+    useUpdateAdminJournalMutation,
+    useDeleteAdminJournalMutation,
+    useLazyGetAdminReviewsJournalQuery,
+    useGetAdminReviewJournalByIdQuery,
+    useUpdateAdminReviewJournalMutation,
+    useDeleteAdminReviewJournalMutation,
+} = adminJournalApi;

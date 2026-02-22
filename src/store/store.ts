@@ -22,12 +22,12 @@ import { chatApi } from "@/entities/Chat";
 import {
     adminReducer, adminApi, adminCourseApi, adminNewsApi,
     adminBlogApi,
+    adminJournalApi,
 } from "@/entities/Admin";
 import { courseApi } from "@/entities/Academy";
 import { newsApi } from "@/entities/News";
 import { blogApi } from "@/entities/Blog";
 import { journalApi } from "@/entities/Journal";
-import { adminJournalApi } from "@/entities/Admin/api/adminJournalApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,

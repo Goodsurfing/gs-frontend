@@ -36,3 +36,39 @@ export interface UpdateAdminJournalParams {
     id: string;
     body: CreateAdminJournal;
 }
+
+// Review
+export interface GetAdminReviewsJournalParams {
+    sort: AdminSort;
+    journalId: string;
+    journalName: string;
+    page: number;
+    limit: number;
+}
+
+export interface GetAdminReviewsJournal {
+    id: string;
+    description: string;
+    isActive: boolean;
+    created: string;
+    journal: {
+        name: string;
+    }
+}
+
+export interface GetAdminReviewsJournalResponse {
+    data: GetAdminReviewsJournal[];
+    pagination: Pagination;
+}
+
+export type GetAdminReviewJournal = Omit<GetAdminReviewsJournal, "journal">;
+
+export interface UpdateAdminReviewJournal {
+    description: string;
+    isActive: boolean;
+}
+
+export interface UpdateAdminReviewJournalParams {
+    id: string;
+    body: UpdateAdminReviewJournal;
+}
