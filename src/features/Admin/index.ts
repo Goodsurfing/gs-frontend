@@ -26,3 +26,5 @@ export { AdminLessonReviewForm } from "./ui/AdminLessonReviewForm/AdminLessonRev
 export type { AdminLessonReviewFields } from "./ui/AdminLessonReviewForm/AdminLessonReviewForm";
 export { AdminArticleForm } from "./ui/AdminArticleForm/ui/AdminArticleForm/AdminArticleForm";
 export type { AdminArticleFormFields } from "./ui/AdminArticleForm/ui/AdminArticleForm/AdminArticleForm";
+export { AdminJournalForm } from "./ui/AdminJournalForm/AdminJournalForm";
+export type { AdminJournalFormFields } from "./ui/AdminJournalForm/AdminJournalForm";

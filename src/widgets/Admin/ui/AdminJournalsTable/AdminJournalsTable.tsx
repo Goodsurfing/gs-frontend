@@ -22,7 +22,8 @@ import styles from "./AdminJournalsTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface JournalFilters {
     name?: string;
@@ -276,6 +277,13 @@ export const AdminJournalsTable = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminJournalCreatePageUrl(locale)}
+                >
+                    Добавить журнал
+                </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
