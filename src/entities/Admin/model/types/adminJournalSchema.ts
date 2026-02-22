@@ -18,7 +18,7 @@ export interface GetAdminJournals {
 }
 
 export interface GetAdminJournalsResponse {
-    items: GetAdminJournals[];
+    data: GetAdminJournals[];
     pagination: Pagination
 }
 

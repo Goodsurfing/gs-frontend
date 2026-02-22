@@ -42,3 +42,5 @@ export { AdminCategoryBlogInfo } from "./ui/AdminCategoryBlogInfo/AdminCategoryB
 
 export { AdminBlogTable } from "./ui/AdminBlogTable/AdminBlogTable";
 export { AdminBlogInfo } from "./ui/AdminBlogInfo/AdminBlogInfo";
+
+export { AdminJournalsTable } from "./ui/AdminJournalsTable/AdminJournalsTable";

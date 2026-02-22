@@ -305,3 +305,9 @@ export const getAdminCategoriesBlogPersonalPageUrl: RoutePathFunction = (locale,
 export const getAdminBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_blog}`;
 
 export const getAdminBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_blog}/${id}`;
+
+// Admin Journals
+
+export const getAdminJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_journal}`;
+
+export const getAdminJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_journal}/${id}`;
