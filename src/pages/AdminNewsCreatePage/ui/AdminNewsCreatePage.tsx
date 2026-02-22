@@ -44,6 +44,7 @@ const AdminNewsCreatePage = () => {
             ]}
             />
             <AdminArticleForm
+                category="Offer"
                 onErrorUploadImage={() => {}}
                 onComplete={onSubmit}
                 isLoading={isLoading}

@@ -29,6 +29,6 @@ export const newsApiAdapter = (data: AdminArticleFormFields): CreateAdminNews =>
         isActive,
         imageId: image.id,
         categoryId,
-        authorId: author.id,
+        authorId: author?.id ?? "",
     };
 };
