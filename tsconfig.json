@@ -33,7 +33,7 @@
     },
     "ts-node": {
       "compilerOptions": {
-        "module": "CommonJS",
+        "module": "CommonJS"
       }
     },
     "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./src/**/*"],
