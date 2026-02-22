@@ -25,11 +25,10 @@ export const newsApiAdapter = (data: AdminArticleFormFields): CreateAdminNews =>
 
     return {
         name,
-        image,
         description,
-        categoryId,
         isActive,
         imageId: image.id,
-        authorId: author.id,
+        categoryId,
+        authorId: author?.id ?? "",
     };
 };

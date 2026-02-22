@@ -132,6 +132,8 @@ export const getVolunteerCreateArticlePageUrl: RoutePathFunction = (locale) => `
 
 export const getVolunteerArticlesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_articles}`;
 
+export const getVolunteerArticlesPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.volunteer_articles}/${id}`;
+
 export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.volunteer_personal}/${id}`;
 
 // Other pages
@@ -289,3 +291,17 @@ export const getAdminNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id
 export const getAdminReviewsCommunityPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_reviews_community}`;
 
 export const getAdminReviewsNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_news}/${id}`;
+
+// Admin Categories Blog
+
+export const getAdminCategoriesBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_blog}`;
+
+export const getAdminCategoriesBlogCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_categories_blog}/create`;
+
+export const getAdminCategoriesBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_categories_blog}/${id}`;
+
+// Admin Blog
+
+export const getAdminBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_blog}`;
+
+export const getAdminBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_blog}/${id}`;

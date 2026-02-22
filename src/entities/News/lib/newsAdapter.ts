@@ -7,6 +7,7 @@ import { ArticleCardType } from "@/entities/Article";
 export const newsReviewsAdapter = (data: GetReviewsNews[]): Comments[] => data.map((value) => {
     const { author, created, description } = value;
     return {
+        authorId: author.id,
         authorAvatar: getMediaContent(author.image.contentUrl),
         authorName: getFullName(author.firstName, author.lastName),
         comment: description,
@@ -25,6 +26,6 @@ export const newsArticleCardAdapter = (data: GetNewsList): ArticleCardType => {
         likeCount,
         name,
         reviewCount,
-        image: getMediaContent(image.contentUrl),
+        image: getMediaContent(image?.thumbnails?.large),
     };
 };

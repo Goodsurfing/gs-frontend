@@ -68,6 +68,7 @@ export const AdminNewsInfo: FC<AdminNewsInfoProps> = (props) => {
             ]}
             />
             <AdminArticleForm
+                category="Offer"
                 initialData={newsAdapter(newsData)}
                 onComplete={onSubmit}
                 isLoading={isUpdateLoading}

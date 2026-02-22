@@ -64,6 +64,7 @@
     },
     "volunteer-create-article": {
         "Написать в блог": "Escribir en el blog",
+        "Редактировать статью": "Editar artículo",
         "Добавить фото обложки": "Agregar foto de portada",
         "Оптимальные размеры 2175 х 966. Вес не более 2МБ": "Tamaño óptimo 2175 x 966. Peso no superior a 2 MB",
         "Название статьи": "Título del artículo",
@@ -79,7 +80,9 @@
         "Описание статьи может достигать не больше 30000 символов": "La descripción del artículo no puede tener más de 30000 caracteres",
         "Введите корректную ссылку на заявку": "Ingrese un enlace de solicitud válido",
         "Изменить": "Cambiar",
-        "Удалить": "Eliminar"
+        "Удалить": "Eliminar",
+        "Статья удалена": "Artículo eliminado",
+        "Ошибка удаления статьи": "Error al eliminar el artículo"
     },
     "volunteer-articles": {
         "Мои статьи": "Mis artículos",

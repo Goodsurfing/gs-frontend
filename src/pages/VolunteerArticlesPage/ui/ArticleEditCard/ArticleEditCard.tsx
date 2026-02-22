@@ -13,7 +13,10 @@ import { ArticleCardType } from "@/entities/Article";
 import { ArticleCard } from "@/entities/Article/";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
-import { getBlogPersonalPageUrl, getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getBlogPersonalPageUrl,
+    getVolunteerArticlesPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import styles from "./ArticleEditCard.module.scss";
@@ -21,11 +24,12 @@ import styles from "./ArticleEditCard.module.scss";
 interface ArticleEditCardProps {
     article: ArticleCardType;
     className?: string;
+    onDelete: (id: string) => void;
 }
 
 export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
     (props: ArticleEditCardProps) => {
-        const { article, className } = props;
+        const { article, className, onDelete } = props;
         const { locale } = useLocale();
         const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
         const popupRef = useRef(null);
@@ -55,13 +59,14 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
                         <div className={styles.content}>
                             <Link
                                 className={styles.popupButton}
-                                to={getMainPageUrl(locale)}
+                                to={getVolunteerArticlesPersonalPageUrl(locale, article.id)}
                             >
                                 {t("volunteer-articles.Редактировать")}
                             </Link>
                             <button
                                 type="button"
                                 className={styles.popupButton}
+                                onClick={() => onDelete(article.id)}
                             >
                                 {t("volunteer-articles.Удалить")}
                             </button>

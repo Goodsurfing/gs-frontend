@@ -38,7 +38,7 @@ export type GetAdminNews = Omit<GetAdminNewsList, "categoryName"> & {
 };
 
 export type CreateAdminNews = Omit<GetAdminNews, "id" | "categoryName"
-| "created" | "reviewCount" | "author" | "category"> & {
+| "created" | "reviewCount" | "author" | "category" | "image"> & {
     imageId: string;
     categoryId: number;
     authorId: string;

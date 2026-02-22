@@ -176,6 +176,8 @@ export enum AdminSort {
     AverageRatingDesc = "averageRating:desc",
     LikeNewsAsc = "likeNews:asc",
     LikeNewsDesc = "likeNews:desc",
+    LikeBlogAsc = "likeBlog:asc",
+    LikeBlogDesc = "likeBlog:desc",
 }
 
 export interface GetAdminUserParams {

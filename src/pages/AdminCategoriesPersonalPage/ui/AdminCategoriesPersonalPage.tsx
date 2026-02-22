@@ -8,7 +8,7 @@ const AdminCategoriesPersonalPage = () => {
     if (!id) {
         return (
             <div>
-                <h2>Произошла ошибка! Неверный id навыка</h2>
+                <h2>Произошла ошибка! Неверный id категории</h2>
             </div>
         );
     }

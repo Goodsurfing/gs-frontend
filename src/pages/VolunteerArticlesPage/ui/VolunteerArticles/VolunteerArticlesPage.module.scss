@@ -1,3 +1,13 @@
+.wrapper {
+    min-height: 50vh;
+}
+
 .container {
     margin-top: 40px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

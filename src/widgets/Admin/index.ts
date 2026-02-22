@@ -5,16 +5,19 @@ export { AdminPersonalOrganizationInfoForm } from "./ui/AdminPersonalOrganizatio
 export { AdminSkillsAchievements } from "./ui/AdminSkillsAchievements/AdminSkillsAchievements";
 export { AdminCategoriesTable } from "./ui/AdminCategoriesTable/AdminCategoriesTable";
 export { AdminCategoryInfo } from "./ui/AdminCategoryInfo/AdminCategoryInfo";
+
 export { AdminSkillInfo } from "./ui/AdminSkillInfo/AdminSkillInfo";
 export { AdminAchievementInfo } from "./ui/AdminAchievementInfo/AdminAchievementInfo";
 export { AdminConditionsOffer } from "./ui/AdminConditionsOffer/AdminConditionsOffer";
 export { AdminHouseInfo } from "./ui/AdminHouseInfo/AdminHouseInfo";
 export { AdminFoodInfo } from "./ui/AdminFoodInfo/AdminFoodInfo";
 export { AdminTransferInfo } from "./ui/AdminTransferInfo/AdminTransferInfo";
+
 export { AdminReviewVacanciesTable } from "./ui/AdminReviewVacanciesTable/AdminReviewVacanciesTable";
 export { AdminReviews } from "./ui/AdminReviews/AdminReviews";
 export { AdminReviewVacancyInfo } from "./ui/AdminReviewVacancyInfo/AdminReviewVacancyInfo";
 export { AdminReviewVolunteerInfo } from "./ui/AdminReviewVolunteerInfo/AdminReviewVolunteerInfo";
+
 export { AdminOffersTable } from "./ui/AdminOffersTable/AdminOffersTable";
 export { AdminOfferWhere } from "./ui/AdminOfferWhere/AdminOfferWhere";
 export { AdminOfferWhen } from "./ui/AdminOfferWhen/AdminOfferWhen";
@@ -28,7 +31,14 @@ export { AdminCoursesTable } from "./ui/AdminCoursesTable/AdminCoursesTable";
 export { AdminCourseInfo } from "./ui/AdminCourseInfo/AdminCourseInfo";
 export { AdminReviewsCoursesTable } from "./ui/AdminReviewsCoursesTable/AdminReviewsCoursesTable";
 export { AdminReviewCourseInfo } from "./ui/AdminReviewCourseInfo/AdminReviewCourseInfo";
+
 export { AdminNewsTable } from "./ui/AdminNewsTable/AdminNewsTable";
 export { AdminNewsInfo } from "./ui/AdminNewsInfo/AdminNewsInfo";
 export { AdminReviewsCommunity } from "./ui/AdminReviewsCommunity/AdminReviewsCommunity";
 export { AdminReviewNewsInfo } from "./ui/AdminReviewNewsInfo/AdminReviewNewsInfo";
+
+export { AdminCategoriesBlogTable } from "./ui/AdminCategoriesBlogTable/AdminCategoriesBlogTable";
+export { AdminCategoryBlogInfo } from "./ui/AdminCategoryBlogInfo/AdminCategoryBlogInfo";
+
+export { AdminBlogTable } from "./ui/AdminBlogTable/AdminBlogTable";
+export { AdminBlogInfo } from "./ui/AdminBlogInfo/AdminBlogInfo";

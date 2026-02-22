@@ -6,7 +6,7 @@ import {
     DefaultValues, FormProvider, SubmitHandler, useForm,
 } from "react-hook-form";
 import cn from "classnames";
-import { Category, GetCategory } from "@/types/categories";
+import { Category } from "@/types/categories";
 
 import Button from "@/shared/ui/Button/Button";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
@@ -16,9 +16,10 @@ import styles from "./AdminCategoryForm.module.scss";
 
 interface AdminCategoryFormProps {
     className?: string;
-    category?: GetCategory;
+    category?: AdminCategoryFields;
     onSubmit?: (data: AdminCategoryFields) => void;
     isLoading: boolean;
+    isImageHidden?: boolean;
 }
 
 const defaultValues: DefaultValues<AdminCategoryFields> = {
@@ -36,7 +37,7 @@ export type AdminCategoryFields = Omit<Category, "id" | "imagePath"> & {
 
 export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
     const {
-        className, category, onSubmit, isLoading,
+        className, category, onSubmit, isLoading, isImageHidden = false,
     } = props;
 
     const form = useForm<AdminCategoryFields>({
@@ -140,26 +141,31 @@ export const AdminCategoryForm: FC<AdminCategoryFormProps> = (props) => {
                             <ErrorText text={errors.color.message} className={styles.error} />
                         )}
                     </div>
-                    <div className={styles.field}>
-                        <label className={styles.label}>Изображение</label>
-                        <Controller
-                            name="imagePath"
-                            rules={{
-                                required: "Изображение обязательно",
-                            }}
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <ImageDropzone
-                                    value={value}
-                                    onChange={onChange}
-                                    error={!!errors.imagePath}
+                    {!isImageHidden && (
+                        <div className={styles.field}>
+                            <label className={styles.label}>Изображение</label>
+                            <Controller
+                                name="imagePath"
+                                rules={{
+                                    required: "Изображение обязательно",
+                                }}
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                    <ImageDropzone
+                                        value={value}
+                                        onChange={onChange}
+                                        error={!!errors.imagePath}
+                                    />
+                                )}
+                            />
+                            {errors.imagePath?.message && (
+                                <ErrorText
+                                    text={errors.imagePath.message}
+                                    className={styles.error}
                                 />
                             )}
-                        />
-                        {errors.imagePath?.message && (
-                            <ErrorText text={errors.imagePath.message} className={styles.error} />
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
                 <div>
                     <Button

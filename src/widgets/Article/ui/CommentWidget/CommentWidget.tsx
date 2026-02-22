@@ -9,6 +9,7 @@ import {
 } from "@/features/Article";
 
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import styles from "./CommentWidget.module.scss";
 
 interface CommentWidgetProps {
@@ -18,6 +19,7 @@ interface CommentWidgetProps {
     onNextComments: () => void;
     comments: Comments[];
     total?: number;
+    locale: Locale;
 }
 
 export const CommentWidget: FC<CommentWidgetProps> = (
@@ -25,6 +27,7 @@ export const CommentWidget: FC<CommentWidgetProps> = (
 ) => {
     const {
         className, onSend, commentsCount, comments, onNextComments, total,
+        locale,
     } = props;
     const { t } = useTranslation();
     const [commentInput, setCommentInput] = useState<string>("");
@@ -49,7 +52,7 @@ export const CommentWidget: FC<CommentWidgetProps> = (
                 }}
                 btnText={t("Написать комментарий")}
             />
-            <CommentList comments={comments} className={styles.commentsList} />
+            <CommentList comments={comments} className={styles.commentsList} locale={locale} />
             {(comments.length > 0) && (total !== undefined)
             && (comments.length < total) && (
                 <ShowNext onClick={onNextComments} />

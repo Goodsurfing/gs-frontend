@@ -42,6 +42,7 @@ const VideoPersonalPage = () => {
                         date="17 мая 2017"
                         likes={0}
                         reviews={0}
+                        locale={locale}
                     />
                     <VideoContent className={styles.content} url="https://www.youtube.com/watch?v=Gb0TQ7VeApY" />
                     <ArticleShare
@@ -55,6 +56,7 @@ const VideoPersonalPage = () => {
                         commentsCount={0}
                         onNextComments={() => {}}
                         onSend={() => {}}
+                        locale={locale}
                     />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import cn from "classnames";
 import { CategoriesFilter } from "@/widgets/Article";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
@@ -6,21 +6,20 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 interface CategoryProps {
     className?: string;
     locale: Locale;
+    value?: number;
+    onChange: (value?: number) => void;
 }
 
 export const Category: FC<CategoryProps> = (props) => {
-    const { className, locale } = props;
-    const [categoryValue, setCategoryValue] = useState<number | undefined>();
-
-    const handleCategoryChange = (newValue?: number) => {
-        if (newValue) setCategoryValue(newValue);
-    };
+    const {
+        className, locale, value, onChange,
+    } = props;
 
     return (
         <div className={cn(className)}>
             <CategoriesFilter
-                value={categoryValue}
-                onChange={handleCategoryChange}
+                value={value}
+                onChange={onChange}
                 locale={locale}
             />
         </div>

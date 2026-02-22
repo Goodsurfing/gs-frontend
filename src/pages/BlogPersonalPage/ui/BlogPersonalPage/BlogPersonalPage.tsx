@@ -1,66 +1,16 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
-import { useTranslation } from "react-i18next";
-import { useLocale } from "@/app/providers/LocaleProvider";
-
-import { CommentWidget } from "@/widgets/Article";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import {
-    ArticleContent,
-    ArticleHeader,
-    ArticleShare,
-    Navigation,
-} from "@/features/Article";
-
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import { getBlogPageUrl, getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-
-import styles from "./BlogPersonalPage.module.scss";
+import { BlogPersonal } from "@/widgets/Blog";
 
 const BlogPersonalPage = () => {
-    const { locale } = useLocale();
-    const { t } = useTranslation("blog");
+    const { id } = useParams<{ id: string }>();
 
     return (
         <MainPageLayout>
-            <div className={styles.wrapper}>
-                <Navigation
-                    breadcrumbs={[
-                        { name: t("Блог"), link: getBlogPageUrl(locale) },
-                        { name: "Тестовая статья" },
-                    ]}
-                    className={styles.navigation}
-                />
-                <div className={styles.articleWrapper}>
-                    <ArticleHeader
-                        className={styles.articleHeader}
-                        title="Тестовая статья"
-                        authorAvatar={defaultImage}
-                        authorName="Алексей Петров"
-                        category="Категория"
-                        date="17 мая 2017"
-                        likes={0}
-                        reviews={0}
-                    />
-                    <ArticleContent
-                        className={styles.content}
-                        content="<span>Привет</span>"
-                    />
-                    <ArticleShare
-                        className={styles.shareBlock}
-                        url={getBlogPersonalPageUrl(locale)}
-                    />
-                </div>
-                <div className={styles.commentWrapper}>
-                    <CommentWidget
-                        comments={[]}
-                        commentsCount={0}
-                        onNextComments={() => {}}
-                        onSend={() => {}}
-                    />
-                </div>
-            </div>
+            <BlogPersonal blogId={Number(id)} />
         </MainPageLayout>
     );
 };

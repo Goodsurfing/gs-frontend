@@ -13,7 +13,6 @@ import {
     useCreateReviewNewsMutation, useGetNewsByIdQuery,
     useLazyGetReviewsNewsQuery, usePutLikeNewsMutation,
 } from "@/entities/News";
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
 import { CommentWidget } from "@/widgets/Article";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -121,14 +120,13 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 <ArticleHeader
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
-                    authorAvatar={defaultImage}
-                    authorName="Алексей Петров"
                     category={data?.category.name}
                     categoryColor={data?.category.color}
                     date={data?.created ?? ""}
                     likes={data?.likeCount ?? 0}
                     reviews={data?.reviewCount ?? 0}
                     onLike={onLike}
+                    locale={locale}
                 />
                 <ArticleContent className={styles.content} content={articleContent} />
                 <ArticleShare
@@ -143,6 +141,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                     comments={newsReviewsAdapter(reviews)}
                     onNextComments={handleShowNext}
                     total={reviewsData?.pagination.total}
+                    locale={locale}
                 />
             </div>
         </div>

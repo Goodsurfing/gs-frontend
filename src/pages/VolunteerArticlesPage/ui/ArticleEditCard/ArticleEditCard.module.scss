@@ -20,7 +20,7 @@
     background-color: #fff;
     padding: 14px;
     width: 190px;
-    
+
     a {
         text-decoration: none;
     }
@@ -35,6 +35,11 @@
     padding: 0;
     text-align: left;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.popupButton:hover {
+    color: var(--accent-color);
 }
 
 .button {
@@ -49,6 +54,7 @@
     border: none;
     background: #fff;
     cursor: pointer;
+    box-shadow: 6px 8px 16px 0px rgba(34, 60, 80, 0.2);
 
     svg {
         width: 19px;
