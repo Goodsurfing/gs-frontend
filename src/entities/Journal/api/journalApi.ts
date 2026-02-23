@@ -1,6 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryV3 } from "@/shared/api/baseQuery/baseQuery";
-import { CreateReviewJournal, GetJournal, GetJournalsParams, GetJournalsResponse, GetReviewsJournalParams, GetReviewsJournalResponse } from "../model/journalSchema";
+import {
+    CreateReviewJournal, GetJournal, GetJournalsParams,
+    GetJournalsResponse, GetReviewsJournalParams, GetReviewsJournalResponse,
+} from "../model/journalSchema";
 
 export const journalApi = createApi({
     reducerPath: "journalApi",
@@ -31,7 +34,7 @@ export const journalApi = createApi({
         }),
         // Review
         getReviewsByJournalId: build.query<GetReviewsJournalResponse, GetReviewsJournalParams>({
-            query: ({journalId, page, limit}) => ({
+            query: ({ journalId, page, limit }) => ({
                 url: `review-journal/list/${journalId}`,
                 method: "GET",
                 params: { page, limit },
@@ -53,4 +56,6 @@ export const {
     useLazyGetJournalListQuery,
     useGetJournalByIdQuery,
     usePutLikeJournalMutation,
+    useLazyGetReviewsByJournalIdQuery,
+    useCreateReviewJournalMutation,
 } = journalApi;

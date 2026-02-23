@@ -2,8 +2,10 @@ import { CreateAdminJournal, GetAdminJournal } from "@/entities/Admin";
 import { AdminJournalFormFields } from "@/features/Admin";
 
 import { JournalCardType } from "@/entities/Article";
-import { GetJournals } from "../model/journalSchema";
+import { GetJournals, GetReviewsJournal } from "../model/journalSchema";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Comments } from "@/features/Article";
+import { getFullName } from "@/shared/lib/getFullName";
 
 export const journalApiAdapter = (data: AdminJournalFormFields): CreateAdminJournal => {
     const {
@@ -40,6 +42,19 @@ export const journalCardAdapter = (data: GetJournals[]): JournalCardType[] => da
         description: "",
         comments: reviewCount,
         likes: likeCount,
+        date: created,
+    };
+});
+
+export const journalReviewsAdapter = (
+    data: GetReviewsJournal[],
+): Comments[] => data.map((value) => {
+    const { author, created, description } = value;
+    return {
+        authorId: author.id,
+        authorAvatar: getMediaContent(author.image?.contentUrl),
+        authorName: getFullName(author.firstName, author.lastName),
+        comment: description,
         date: created,
     };
 });

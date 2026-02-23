@@ -1,53 +1,16 @@
 import React from "react";
-import { useLocale } from "@/app/providers/LocaleProvider";
+import { useParams } from "react-router-dom";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
-import {
-    ArticleContent, ArticleHeader, ArticleShare, Navigation,
-} from "@/features/Article";
-import { getJournalPersonalPageUrl, getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
-import { CommentWidget } from "@/widgets/Article";
-import styles from "./JournalPersonalPage.module.scss";
+
+import { JournalPersonal } from "@/widgets/Journal";
 
 const JournalPersonalPage = () => {
-    const { locale } = useLocale();
+    const { id } = useParams<{ id: string; }>();
     return (
         <MainPageLayout>
-            <div className={styles.wrapper}>
-                <Navigation
-                    breadcrumbs={[
-                        { name: "Журнал", link: getJournalsPageUrl(locale) },
-                        { name: "Гудсерфер №18. Путешествия с пользой и польза для путешествий" },
-                    ]}
-                    className={styles.navigation}
-                />
-                <div className={styles.articleWrapper}>
-                    <ArticleHeader
-                        className={styles.articleHeader}
-                        title="Гудсерфер №18. Путешествия с пользой и польза для путешествий"
-                        authorAvatar=""
-                        authorName=""
-                        category="Журнал"
-                        date="17 мая 2017"
-                        likes={0}
-                        reviews={0}
-                        locale={locale}
-                    />
-                    <ArticleContent className={styles.content} content={"<iframe src=\"\""} />
-                    <ArticleShare
-                        className={styles.shareBlock}
-                        url={getJournalPersonalPageUrl(locale)}
-                    />
-                </div>
-                <div className={styles.commentWrapper}>
-                    <CommentWidget
-                        comments={[]}
-                        commentsCount={0}
-                        onNextComments={() => {}}
-                        onSend={() => {}}
-                        locale={locale}
-                    />
-                </div>
-            </div>
+            {id && (
+                <JournalPersonal journalId={id} />
+            )}
         </MainPageLayout>
     );
 };
