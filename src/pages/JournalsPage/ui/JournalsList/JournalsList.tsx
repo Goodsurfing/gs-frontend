@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from "react";
 import cn from "classnames";
-import { Journal, JournalCard } from "@/entities/Article";
+import { JournalCard, JournalCardType } from "@/entities/Article";
 import styles from "./JournalsList.module.scss";
 
 interface JournalsListProps {
-    data?: Journal[]
+    data?: JournalCardType[]
     className?: string;
 }
 

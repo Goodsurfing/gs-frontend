@@ -9,7 +9,7 @@ export interface GetJournalsParams {
 }
 
 export interface GetJournals {
-    id: number;
+    id: string;
     name: string;
     description: string;
     created: string;

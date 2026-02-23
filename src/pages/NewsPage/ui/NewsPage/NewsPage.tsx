@@ -11,12 +11,12 @@ import { Category } from "../Category/Category";
 import { Header } from "../Header/Header";
 import { NewsList } from "../NewsList/NewsList";
 import { TagsOption } from "@/features/Article";
-import styles from "./NewsPage.module.scss";
 import { useLazyGetNewsListQuery } from "@/entities/News";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
+import styles from "./NewsPage.module.scss";
 
 const limit = 10;
 
