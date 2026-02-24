@@ -32,7 +32,6 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
             control,
             reset,
             handleSubmit,
-            watch,
         } = useForm<AdminJournalFormFields>({
             mode: "onChange",
         });
@@ -51,8 +50,6 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
                 isActive: isActiveValue,
             });
         };
-
-        const currentIsActive = watch("isActive") ?? initialData?.isActive ?? false;
 
         return (
             <form className={cn(className, styles.wrapper)}>
@@ -120,19 +117,11 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
                         name="description"
                         rules={{
                             required: "Поле обязательно для заполнения",
-                            minLength: {
-                                value: 5,
-                                message: "Заголовок слишком короткий",
-                            },
-                            maxLength: {
-                                value: 150,
-                                message: "Заголовок слишком большой",
-                            },
                         }}
                         control={control}
                         render={({ field, fieldState }) => (
                             <InputField
-                                name="name"
+                                name="description"
                                 register={register}
                                 error={Boolean(fieldState.error)}
                                 helperText={fieldState.error?.message}
@@ -148,13 +137,23 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
                 <div className={styles.containerButtons}>
                     <Button
                         type="button"
-                        onClick={handleSubmit(onSubmit(!currentIsActive))}
+                        onClick={handleSubmit(onSubmit(true))}
                         color="BLUE"
                         variant="FILL"
                         size="SMALL"
                         disabled={isLoading}
                     >
-                        {currentIsActive ? "Сохранить и распубликовать" : "Сохранить и опубликовать"}
+                        Сохранить и опубликовать
+                    </Button>
+                    <Button
+                        type="button"
+                        onClick={handleSubmit(onSubmit(false))}
+                        color="BLUE"
+                        variant="OUTLINE"
+                        size="SMALL"
+                        disabled={isLoading}
+                    >
+                        Сохранить в черновики
                     </Button>
                 </div>
             </form>

@@ -9,34 +9,48 @@ import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { getAdminReviewJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import {
-    AdminSort, useDeleteAdminJournalMutation,
-    useLazyGetAdminJournalListQuery,
+    AdminSort, useDeleteAdminReviewJournalMutation,
+    useLazyGetAdminReviewsJournalQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminJournalsTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./AdminReviewsJournalTable.module.scss";
 
-interface JournalFilters {
-    name?: string;
+interface ReviewFilters {
+    journalId?: string;
+    journalName?: string;
     sort?: AdminSort;
 }
 
-const journalCustomFields: CustomFilterField<keyof JournalFilters>[] = [
+const reviewCustomFields: CustomFilterField<keyof ReviewFilters>[] = [
     {
-        key: "name",
-        label: "Поиск по имени журнала",
+        key: "journalId",
+        label: "ID журнала",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="Поиск по имени журнала"
+                label="ID журнала"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "journalName",
+        label: "Название журнала",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Название журнала"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -50,12 +64,12 @@ const journalCustomFields: CustomFilterField<keyof JournalFilters>[] = [
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
             <FormControl fullWidth size="small" disabled={disabled}>
-                <InputLabel id="journal-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
+                <InputLabel id="review-sort-label" sx={{ background: "background.paper", px: 0.5 }}>
                     Сортировка
                 </InputLabel>
                 <Select
-                    labelId="journal-sort-label"
-                    value={value || AdminSort.NameAsc}
+                    labelId="review-sort-label"
+                    value={value || AdminSort.IdAsc}
                     label="Сортировка"
                     onChange={(e) => onChange(e.target.value as AdminSort)}
                     MenuProps={{
@@ -64,12 +78,8 @@ const journalCustomFields: CustomFilterField<keyof JournalFilters>[] = [
                         },
                     }}
                 >
-                    <MenuItem value={AdminSort.NameAsc}>Название журнала ↑</MenuItem>
-                    <MenuItem value={AdminSort.NameDesc}>Название журнала ↓</MenuItem>
-                    <MenuItem value={AdminSort.IsActiveAsc}>Опубликован ↑</MenuItem>
-                    <MenuItem value={AdminSort.IsActiveDesc}>Опубликован ↓</MenuItem>
-                    <MenuItem value={AdminSort.ReviewsCountAsc}>Кол-во отзывов ↑</MenuItem>
-                    <MenuItem value={AdminSort.ReviewsCountDesc}>Кол-во отзывов ↓</MenuItem>
+                    <MenuItem value={AdminSort.JournalNameAsc}>Название журнала ↑</MenuItem>
+                    <MenuItem value={AdminSort.JournalNameDesc}>Название журнала ↓</MenuItem>
                     <MenuItem value={AdminSort.CreatedAsc}>Дата ↑</MenuItem>
                     <MenuItem value={AdminSort.CreatedDesc}>Дата ↓</MenuItem>
                 </Select>
@@ -78,60 +88,61 @@ const journalCustomFields: CustomFilterField<keyof JournalFilters>[] = [
     },
 ];
 
-const JOURNAL_PER_PAGE = 30;
+const REVIEWS_PER_PAGE = 30;
 
-export const AdminJournalsTable = () => {
+export const AdminReviewsJournalTable = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [journalToDelete, setJournalToDelete] = useState<
+    const [reviewToDelete, setReviewToDelete] = useState<
     { id: string; } | null>(null);
-    const [filters, setFilters] = useState<Partial<JournalFilters>>(
-        { sort: AdminSort.NameAsc },
-    );
-    const [getJournal, {
-        data: journalData,
+    const [filters, setFilters] = useState<Partial<ReviewFilters>>({
+        sort: AdminSort.JournalNameAsc,
+    });
+    const [getReviews, {
+        data: reviewsData,
         isLoading,
         isFetching,
-    }] = useLazyGetAdminJournalListQuery();
-    const [deleteJournal, { isLoading: isDeleting }] = useDeleteAdminJournalMutation();
+    }] = useLazyGetAdminReviewsJournalQuery();
+    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewJournalMutation();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await getJournal({
+                await getReviews({
                     page: currentPage,
-                    limit: JOURNAL_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.NameAsc,
-                    name: filters.name,
+                    limit: REVIEWS_PER_PAGE,
+                    sort: filters.sort ?? AdminSort.IdAsc,
+                    journalId: filters.journalId,
+                    journalName: filters.journalName,
                 }).unwrap();
             } catch {
                 setToast({
-                    text: "Произошла ошибка при загрузке журналов",
+                    text: "Произошла ошибка при загрузке комментариев",
                     type: HintType.Error,
                 });
             }
         };
         fetchData();
-    }, [currentPage, filters, getJournal]);
+    }, [currentPage, filters, getReviews]);
 
     const handleOpenDeleteModal = (id: string) => {
-        setJournalToDelete({ id });
+        setReviewToDelete({ id });
     };
 
     const handleCloseDeleteModal = () => {
-        setJournalToDelete(null);
+        setReviewToDelete(null);
     };
 
     const handleConfirmDelete = async () => {
         setToast(undefined);
-        if (!journalToDelete) return;
+        if (!reviewToDelete) return;
 
         try {
-            await deleteJournal(journalToDelete.id).unwrap();
+            await deleteReview(reviewToDelete.id).unwrap();
             setToast({
-                text: "Журнал был успешно удален",
+                text: "Комментарий был успешно удален",
                 type: HintType.Success,
             });
         } catch {
@@ -154,8 +165,8 @@ export const AdminJournalsTable = () => {
             hideable: false,
         },
         {
-            field: "name",
-            headerName: "Название журнала",
+            field: "journalName",
+            headerName: "Журнал",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -164,7 +175,7 @@ export const AdminJournalsTable = () => {
         },
         {
             field: "isActive",
-            headerName: "Опубликован",
+            headerName: "Опубликовано",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -173,22 +184,14 @@ export const AdminJournalsTable = () => {
             type: "boolean",
         },
         {
-            field: "reviewCount",
-            headerName: "Кол-во комментариев",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 180,
-        },
-        {
             field: "created",
-            headerName: "Дата создания",
+            headerName: "Дата",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
             width: 180,
+            type: "boolean",
         },
         {
             field: "actions",
@@ -200,7 +203,7 @@ export const AdminJournalsTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminJournalPersonalPageUrl(locale, params.row.id),
+                    getAdminReviewJournalPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
@@ -211,7 +214,7 @@ export const AdminJournalsTable = () => {
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Редактировать журнал"
+                            title="Редактировать комментарий"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
@@ -219,7 +222,7 @@ export const AdminJournalsTable = () => {
                         <button
                             onClick={handleDeleteClick}
                             type="button"
-                            title="Удалить журнал"
+                            title="Удалить комментарий"
                             className={cn(styles.btnIcon, styles.btnDelete)}
                         >
                             <ReactSVG src={deleteIcon} />
@@ -237,25 +240,19 @@ export const AdminJournalsTable = () => {
     }
 
     const renderTable = () => {
-        if (!journalData) {
-            return <span className={styles.text}>Журналы не были найдены</span>;
+        if (!reviewsData) {
+            return <span className={styles.text}>Комментариев не было найдено</span>;
         }
-        const adaptedData: any[] = journalData.data.map((journal) => {
-            const {
-                id, name,
-                created, isActive, reviewCount,
-            } = journal;
-            return {
-                id,
-                name,
-                isActive,
-                reviewCount,
-                created,
-            };
-        });
+        const tableData = reviewsData.data.map((review) => ({
+            id: review.id,
+            journalName: review.journal.name,
+            isActive: review.isActive,
+            created: review.created,
+        }));
+
         return (
             <DataGrid
-                rows={adaptedData ?? []}
+                rows={tableData}
                 columns={columns}
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
@@ -265,8 +262,8 @@ export const AdminJournalsTable = () => {
     };
 
     const totalPages = () => {
-        if (!journalData) return 0;
-        return Math.ceil(journalData.pagination.total / JOURNAL_PER_PAGE);
+        if (!reviewsData) return 0;
+        return Math.ceil(reviewsData.pagination.total / REVIEWS_PER_PAGE);
     };
 
     const handleApplyFilters = () => {
@@ -276,20 +273,14 @@ export const AdminJournalsTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
+            <h2>Таблица комментариев</h2>
             <div className={styles.actionButtons}>
-                <ButtonLink
-                    type="primary"
-                    className={styles.btn}
-                    path={getAdminJournalCreatePageUrl(locale)}
-                >
-                    Добавить журнал
-                </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
                     onApply={handleApplyFilters}
                     disabled={isLoading}
-                    customFields={journalCustomFields}
+                    customFields={reviewCustomFields}
                 />
             </div>
             <div className={styles.table}>
@@ -301,8 +292,8 @@ export const AdminJournalsTable = () => {
                 onPageChange={setCurrentPage}
             />
             <ConfirmActionModal
-                isModalOpen={!!journalToDelete}
-                description={`Вы уверены, что хотите удалить журнал "${journalToDelete?.id}"? Это действие нельзя отменить.`}
+                isModalOpen={!!reviewToDelete}
+                description={`Вы уверены, что хотите удалить комментарий "${reviewToDelete?.id}"? Это действие нельзя отменить.`}
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
                 confirmTextButton="Удалить"

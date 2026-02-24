@@ -6,7 +6,9 @@ export {
     useLazyGetReviewsByJournalIdQuery,
     useCreateReviewJournalMutation,
 } from "./api/journalApi";
-export type { GetJournal, GetJournals, GetReviewsJournal } from "./model/journalSchema";
+export type {
+    GetJournal, GetJournals, GetReviewsJournal,
+} from "./model/journalSchema";
 export {
     journalAdapter, journalApiAdapter, journalCardAdapter,
     journalReviewsAdapter,

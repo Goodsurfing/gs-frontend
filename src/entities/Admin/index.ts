@@ -231,5 +231,7 @@ export {
 
 export type {
     GetAdminJournalsResponse, GetAdminJournal, CreateAdminJournal,
-    GetAdminReviewsJournal,
+    GetAdminReviewsJournal, GetAdminReviewJournal,
 } from "./model/types/adminJournalSchema";
+
+export { ReviewJournalInfoTable } from "./ui/ReviewJournalInfoTable/ReviewJournalInfoTable";

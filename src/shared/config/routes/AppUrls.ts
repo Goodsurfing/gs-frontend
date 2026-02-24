@@ -313,3 +313,5 @@ export const getAdminJournalsPageUrl: RoutePathFunction = (locale) => `/${locale
 export const getAdminJournalCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_journal}/create`;
 
 export const getAdminJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_journal}/${id}`;
+
+export const getAdminReviewJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_journals}/${id}`;

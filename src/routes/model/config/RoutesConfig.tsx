@@ -182,6 +182,7 @@ import {
     getAdminJournalsPageUrl,
     getAdminJournalCreatePageUrl,
     getAdminJournalPersonalPageUrl,
+    getAdminReviewJournalPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -249,6 +250,7 @@ import { AdminBlogPersonalPage } from "@/pages/AdminBlogPersonalPage";
 import { AdminJournalPage } from "@/pages/AdminJournalPage";
 import { AdminJournalCreatePage } from "@/pages/AdminJournalCreatePage";
 import { AdminJournalPersonalPage } from "@/pages/AdminJournalPersonalPage";
+import { AdminReviewJournalPersonalPage } from "@/pages/AdminReviewJournalPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -860,6 +862,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-journal-personal",
                 element: <AdminJournalPersonalPage />,
                 path: (locale: string) => getAdminJournalPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-review-journal-personal",
+                element: <AdminReviewJournalPersonalPage />,
+                path: (locale: string) => getAdminReviewJournalPersonalPageUrl(locale),
             },
         ],
     },
