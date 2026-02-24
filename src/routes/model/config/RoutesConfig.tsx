@@ -179,6 +179,10 @@ import {
     getVolunteerArticlesPersonalPageUrl,
     getAdminBlogPageUrl,
     getAdminBlogPersonalPageUrl,
+    getAdminJournalsPageUrl,
+    getAdminJournalCreatePageUrl,
+    getAdminJournalPersonalPageUrl,
+    getAdminReviewJournalPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -243,6 +247,10 @@ import { AdminCategoriesBlogPersonalPage } from "@/pages/AdminCategoriesBlogPers
 import { VolunteerArticlePersonalPage } from "@/pages/VolunteerArticlePersonalPage";
 import { AdminBlogPage } from "@/pages/AdminBlogPage";
 import { AdminBlogPersonalPage } from "@/pages/AdminBlogPersonalPage";
+import { AdminJournalPage } from "@/pages/AdminJournalPage";
+import { AdminJournalCreatePage } from "@/pages/AdminJournalCreatePage";
+import { AdminJournalPersonalPage } from "@/pages/AdminJournalPersonalPage";
+import { AdminReviewJournalPersonalPage } from "@/pages/AdminReviewJournalPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -839,6 +847,26 @@ const publicRoutes: RouteType[] = [
                 label: "admin-blog-personal",
                 element: <AdminBlogPersonalPage />,
                 path: (locale: string) => getAdminBlogPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-journal",
+                element: <AdminJournalPage />,
+                path: (locale: string) => getAdminJournalsPageUrl(locale),
+            },
+            {
+                label: "admin-journal-create",
+                element: <AdminJournalCreatePage />,
+                path: (locale: string) => getAdminJournalCreatePageUrl(locale),
+            },
+            {
+                label: "admin-journal-personal",
+                element: <AdminJournalPersonalPage />,
+                path: (locale: string) => getAdminJournalPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-review-journal-personal",
+                element: <AdminReviewJournalPersonalPage />,
+                path: (locale: string) => getAdminReviewJournalPersonalPageUrl(locale),
             },
         ],
     },

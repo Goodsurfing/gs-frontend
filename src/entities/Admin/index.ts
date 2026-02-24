@@ -213,3 +213,25 @@ export type {
 } from "./model/types/adminBlogSchema";
 
 export { blogAdapter, blogApiAdapter } from "./lib/adminBlogAdapter";
+
+// Journal
+
+export {
+    adminJournalApi,
+    useLazyGetAdminJournalListQuery,
+    useGetAdminJournalByIdQuery,
+    useCreateAdminJournalMutation,
+    useUpdateAdminJournalMutation,
+    useDeleteAdminJournalMutation,
+    useLazyGetAdminReviewsJournalQuery,
+    useGetAdminReviewJournalByIdQuery,
+    useUpdateAdminReviewJournalMutation,
+    useDeleteAdminReviewJournalMutation,
+} from "./api/adminJournalApi";
+
+export type {
+    GetAdminJournalsResponse, GetAdminJournal, CreateAdminJournal,
+    GetAdminReviewsJournal, GetAdminReviewJournal,
+} from "./model/types/adminJournalSchema";
+
+export { ReviewJournalInfoTable } from "./ui/ReviewJournalInfoTable/ReviewJournalInfoTable";

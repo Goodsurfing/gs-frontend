@@ -4,29 +4,37 @@ import { Link } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { Journal } from "@/entities/Article";
-
 import comment from "@/shared/assets/icons/comment.svg";
 import like from "@/shared/assets/icons/thumbsUp.svg";
 
 import styles from "./JournalCard.module.scss";
 
+export interface JournalCardType {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    comments: number;
+    likes: number;
+    image: string;
+}
+
 interface JournalCardProps {
-    journal: Journal;
+    journal: JournalCardType;
     className?: string;
 }
 
 export const JournalCard: FC<JournalCardProps> = (props) => {
     const {
         journal: {
-            title, description, date, comments, image, likes,
+            id, title, description, date, comments, image, likes,
         },
         className,
     } = props;
     const { locale } = useLocale();
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Link to={`/${locale}/journals/1`}>
+            <Link to={`/${locale}/journals/${id}`}>
                 <img className={styles.image} src={image} alt={title} />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>

@@ -147,7 +147,7 @@ export const AdminReviewsNewsTable = () => {
                 }).unwrap();
             } catch {
                 setToast({
-                    text: "Произошла ошибка при загрузке навыков",
+                    text: "Произошла ошибка при загрузке комментариев",
                     type: HintType.Error,
                 });
             }
