@@ -235,3 +235,23 @@ export type {
 } from "./model/types/adminJournalSchema";
 
 export { ReviewJournalInfoTable } from "./ui/ReviewJournalInfoTable/ReviewJournalInfoTable";
+
+// Video
+
+export type {
+    GetAdminReviewsVideo, GetAdminReviewVideo,
+    GetAdminVideo, GetAdminVideos,
+    UpdateAdminReviewVideo, UpdateAdminVideo,
+} from "./model/types/adminVideoSchema";
+
+export {
+    adminVideoApi,
+    useLazyGetAdminVideoListQuery,
+    useGetAdminVideoByIdQuery,
+    useUpdateAdminVideoMutation,
+    useDeleteAdminVideoMutation,
+    useLazyGetAdminReviewsVideoQuery,
+    useGetAdminReviewVideoByIdQuery,
+    useUpdateAdminReviewVideoMutation,
+    useDeleteAdminReviewVideoMutation,
+} from "./api/adminVideoApi";
