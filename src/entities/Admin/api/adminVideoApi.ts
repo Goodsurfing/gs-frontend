@@ -62,8 +62,8 @@ export const adminVideoApi = createApi({
             providesTags: ["review"],
         }),
         updateAdminReviewVideo: build.mutation<void, UpdateAdminReviewVideoParams>({
-            query: (body) => ({
-                url: "review-video/create",
+            query: ({ id, body }) => ({
+                url: `review-video/edit/${id}`,
                 method: "PATCH",
                 body,
             }),

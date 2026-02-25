@@ -51,3 +51,4 @@ export { AdminReviewJournalInfo } from "./ui/AdminReviewJournalInfo/AdminReviewJ
 export { AdminVideoTable } from "./ui/AdminVideoTable/AdminVideoTable";
 export { AdminVideoInfo } from "./ui/AdminVideoInfo/AdminVideoInfo";
 export { AdminReviewsVideoTable } from "./ui/AdminReviewsVideoTable/AdminReviewsVideoTable";
+export { AdminReviewVideoInfo } from "./ui/AdminReviewVideoInfo/AdminReviewVideoInfo";
