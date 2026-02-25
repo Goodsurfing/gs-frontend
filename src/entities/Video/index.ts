@@ -15,7 +15,10 @@ export {
     useCreateReviewVideoMutation,
 } from "./api/videoApi";
 
-export { videoApiAdapter, videoCardAdapter } from "./lib/videoAdapter";
+export {
+    videoApiAdapter, videoCardAdapter,
+    videoReviewsAdapter,
+} from "./lib/videoAdapter";
 
 export { VideoCard } from "./ui/VideoCard/VideoCard";
 export type { VideoCardType } from "./ui/VideoCard/VideoCard";
