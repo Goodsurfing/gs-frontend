@@ -4,7 +4,7 @@ import React, {
 import {
     ArticleContent, ArticleHeader, ArticleShare, Navigation,
 } from "@/features/Article";
-import { getNewsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getBlogPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { CommentWidget } from "@/widgets/Article";
@@ -113,7 +113,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             {data && (
                 <Navigation
                     breadcrumbs={[
-                        { name: "Новости", link: getNewsPageUrl(locale) },
+                        { name: "Блог", link: getBlogPageUrl(locale) },
                         { name: data.name },
                     ]}
                     className={styles.navigation}
@@ -123,9 +123,9 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
                 <ArticleHeader
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
-                    authorId={data?.author.id}
-                    authorAvatar={getMediaContent(data?.author.image?.thumbnails?.small)}
-                    authorName={getFullName(data?.author.firstName, data?.author.lastName)}
+                    authorId={data?.author?.id}
+                    authorAvatar={getMediaContent(data?.author?.image?.thumbnails?.small)}
+                    authorName={getFullName(data?.author?.firstName, data?.author?.lastName)}
                     category={data?.blogCategoryResult.name}
                     categoryColor={data?.blogCategoryResult.color}
                     date={data?.created ?? ""}

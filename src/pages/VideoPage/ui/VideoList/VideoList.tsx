@@ -1,13 +1,11 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
 
-import { Video } from "@/entities/Article";
-
-import { VideoCard } from "../VideoCard/VideoCard";
+import { VideoCard, VideoCardType } from "@/entities/Video";
 import styles from "./VideoList.module.scss";
 
 interface VideoListProps {
-    data?: Video[];
+    data?: VideoCardType[];
     className?: string;
 }
 

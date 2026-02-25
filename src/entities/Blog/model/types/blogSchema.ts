@@ -53,7 +53,7 @@ export type GetBlog = Omit<GetBlogList, "blogCategory"> & {
         firstName: string | null;
         lastName: string | null;
         image: Image | null;
-    }
+    } | null;
 };
 
 export interface GetBlogParams {

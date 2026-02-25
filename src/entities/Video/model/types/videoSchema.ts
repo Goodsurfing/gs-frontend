@@ -4,6 +4,15 @@ import { Pagination } from "@/types/api/pagination";
 import { CategoryNews } from "@/types/categories";
 import { Image } from "@/types/media";
 
+export interface VideoFields {
+    name: string;
+    url: string;
+    description: string;
+    isActive: boolean;
+    image: Image | null;
+    categoryId: number;
+}
+
 export interface GetVideos {
     id: string;
     name: string;

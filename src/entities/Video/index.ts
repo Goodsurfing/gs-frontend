@@ -1,6 +1,6 @@
 export type {
     CreateVideo, GetVideo, GetVideos, CreateReviewVideo,
-    GetReviewsVideo,
+    GetReviewsVideo, VideoFields,
 } from "./model/types/videoSchema";
 
 export {
@@ -14,3 +14,8 @@ export {
     useLazyGetReviewsVideoQuery,
     useCreateReviewVideoMutation,
 } from "./api/videoApi";
+
+export { videoApiAdapter, videoCardAdapter } from "./lib/videoAdapter";
+
+export { VideoCard } from "./ui/VideoCard/VideoCard";
+export type { VideoCardType } from "./ui/VideoCard/VideoCard";

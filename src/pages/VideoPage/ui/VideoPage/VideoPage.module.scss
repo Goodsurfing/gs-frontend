@@ -9,14 +9,35 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 60px;
-    flex-wrap: wrap;
-    gap: 10px;
+    column-gap: 30px;
+    row-gap: 10px;
 }
 
 .content {
     margin-top: 40px;
     display: flex;
     gap: 30px;
+}
+
+.videoFilter {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.videoListWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 370px;
 }
 
 .newsList {
@@ -42,6 +63,7 @@
         flex-wrap: wrap;
         flex-direction: column-reverse;
     }
+
     .memberBanner {
         max-width: none;
     }
