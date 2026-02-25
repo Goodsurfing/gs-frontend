@@ -319,3 +319,5 @@ export const getAdminReviewJournalPersonalPageUrl: RoutePathFunction = (locale, 
 export const getAdminVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_video}`;
 
 export const getAdminVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_video}/${id}`;
+
+export const getAdminReviewVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_video}/${id}`;

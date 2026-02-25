@@ -45,7 +45,7 @@ export const adminVideoApi = createApi({
         }),
         // Review
         getAdminReviewsVideo: build.query<GetAdminReviewsVideoResponse,
-        GetAdminReviewsVideoParams>({
+        Partial<GetAdminReviewsVideoParams>>({
             query: (params) => ({
                 url: "review-video/list",
                 method: "GET",
