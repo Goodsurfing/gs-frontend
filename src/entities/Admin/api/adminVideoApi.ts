@@ -81,6 +81,7 @@ export const adminVideoApi = createApi({
 
 export const {
     useLazyGetAdminVideoListQuery,
+    useLazyGetAdminVideoByIdQuery,
     useGetAdminVideoByIdQuery,
     useUpdateAdminVideoMutation,
     useDeleteAdminVideoMutation,

@@ -3,6 +3,22 @@ import { AdminSort } from "./adminSchema";
 import { Image } from "@/types/media";
 import { CategoryNews } from "@/types/categories";
 
+export interface AdminVideoAuthorFileds {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+}
+
+export interface AdminVideoFileds {
+    name: string;
+    url: string;
+    description: string;
+    isActive: boolean;
+    image: Image | null;
+    categoryId: number;
+    author: AdminVideoAuthorFileds | null;
+}
+
 export interface GetAdminVideosParams {
     sort: AdminSort;
     name: string;
@@ -16,7 +32,7 @@ export interface GetAdminVideos {
     id: string;
     name: string;
     categoryName: string;
-    isActive: string;
+    isActive: boolean;
     created: string;
     reviewCount: number;
     author: {

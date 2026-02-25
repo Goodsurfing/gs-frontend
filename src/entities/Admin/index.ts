@@ -242,11 +242,13 @@ export type {
     GetAdminReviewsVideo, GetAdminReviewVideo,
     GetAdminVideo, GetAdminVideos,
     UpdateAdminReviewVideo, UpdateAdminVideo,
+    AdminVideoFileds, AdminVideoAuthorFileds,
 } from "./model/types/adminVideoSchema";
 
 export {
     adminVideoApi,
     useLazyGetAdminVideoListQuery,
+    useLazyGetAdminVideoByIdQuery,
     useGetAdminVideoByIdQuery,
     useUpdateAdminVideoMutation,
     useDeleteAdminVideoMutation,
@@ -255,3 +257,5 @@ export {
     useUpdateAdminReviewVideoMutation,
     useDeleteAdminReviewVideoMutation,
 } from "./api/adminVideoApi";
+
+export { videoAdminAdapter, videoAdminApiAdapter } from "./lib/adminVideoAdapter";

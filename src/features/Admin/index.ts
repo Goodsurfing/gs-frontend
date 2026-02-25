@@ -28,3 +28,4 @@ export { AdminArticleForm } from "./ui/AdminArticleForm/ui/AdminArticleForm/Admi
 export type { AdminArticleFormFields } from "./ui/AdminArticleForm/ui/AdminArticleForm/AdminArticleForm";
 export { AdminJournalForm } from "./ui/AdminJournalForm/AdminJournalForm";
 export type { AdminJournalFormFields } from "./ui/AdminJournalForm/AdminJournalForm";
+export { AdminVideoForm } from "./ui/AdminVideoForm/AdminVideoForm";

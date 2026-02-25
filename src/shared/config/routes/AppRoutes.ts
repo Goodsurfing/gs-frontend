@@ -102,4 +102,5 @@ export enum AppRoutes {
     ADMIN_BLOG = "admin_blog",
     ADMIN_JOURNAL = "admin_journal",
     ADMIN_REVIEWS_JOURNALS = "admin_reviews_journals",
+    ADMIN_VIDEO = "admin_video",
 }
