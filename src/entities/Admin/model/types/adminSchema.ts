@@ -180,6 +180,8 @@ export enum AdminSort {
     LikeBlogDesc = "likeBlog:desc",
     JournalNameAsc = "journalName:asc",
     JournalNameDesc = "journalName:desc",
+    LikeCountAsc = "likeCount:asc",
+    LikeCountDesc = "likeCount:desc",
 }
 
 export interface GetAdminUserParams {

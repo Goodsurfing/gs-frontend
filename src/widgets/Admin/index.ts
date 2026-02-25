@@ -47,3 +47,8 @@ export { AdminJournalsTable } from "./ui/AdminJournalsTable/AdminJournalsTable";
 export { AdminJournalInfo } from "./ui/AdminJournalInfo/AdminJournalInfo";
 export { AdminReviewsJournalTable } from "./ui/AdminReviewsJournalTable/AdminReviewsJournalTable";
 export { AdminReviewJournalInfo } from "./ui/AdminReviewJournalInfo/AdminReviewJournalInfo";
+
+export { AdminVideoTable } from "./ui/AdminVideoTable/AdminVideoTable";
+export { AdminVideoInfo } from "./ui/AdminVideoInfo/AdminVideoInfo";
+export { AdminReviewsVideoTable } from "./ui/AdminReviewsVideoTable/AdminReviewsVideoTable";
+export { AdminReviewVideoInfo } from "./ui/AdminReviewVideoInfo/AdminReviewVideoInfo";

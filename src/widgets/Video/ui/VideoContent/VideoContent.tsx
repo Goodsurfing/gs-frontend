@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import styles from "./VideoContent.module.scss";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
+import styles from "./VideoContent.module.scss";
 
 interface VideoContentProps {
     url: string;
@@ -9,7 +9,6 @@ interface VideoContentProps {
 }
 
 export const VideoContent: FC<VideoContentProps> = (props) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { url, className } = props;
 
     return (
@@ -17,7 +16,7 @@ export const VideoContent: FC<VideoContentProps> = (props) => {
             <VideoPlayer
                 width="750px"
                 height="424px"
-                url="https://vkvideo.ru/video-150368366_456239379"
+                url={url}
                 controls
                 playing={false}
             />

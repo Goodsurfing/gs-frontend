@@ -1,65 +1,21 @@
 import React from "react";
 
-import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { CommentWidget } from "@/widgets/Article";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import {
-    ArticleHeader,
-    ArticleShare,
-    Navigation,
-} from "@/features/Article";
-
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import { getVideoPageUrl, getVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-
-import { VideoContent } from "../VideoContent/VideoContent";
-import styles from "./VideoPersonalPage.module.scss";
+import { VideoPersonal } from "@/widgets/Video";
 
 const VideoPersonalPage = () => {
     const { locale } = useLocale();
-    const { t } = useTranslation();
+    const { id } = useParams<{ id: string }>();
 
     return (
         <MainPageLayout>
-            <div className={styles.wrapper}>
-                <Navigation
-                    breadcrumbs={[
-                        { name: t("Видео"), link: getVideoPageUrl(locale) },
-                        { name: "Япония, которая взрывает мозг. Большой выпуск" },
-                    ]}
-                    className={styles.navigation}
-                />
-                <div className={styles.articleWrapper}>
-                    <ArticleHeader
-                        className={styles.articleHeader}
-                        title="Япония, которая взрывает мозг. Большой выпуск"
-                        authorAvatar={defaultImage}
-                        authorName="Алексей Петров"
-                        category="Категория"
-                        date="17 мая 2017"
-                        likes={0}
-                        reviews={0}
-                        locale={locale}
-                    />
-                    <VideoContent className={styles.content} url="https://www.youtube.com/watch?v=Gb0TQ7VeApY" />
-                    <ArticleShare
-                        className={styles.shareBlock}
-                        url={getVideoPersonalPageUrl(locale)}
-                    />
-                </div>
-                <div className={styles.commentWrapper}>
-                    <CommentWidget
-                        comments={[]}
-                        commentsCount={0}
-                        onNextComments={() => {}}
-                        onSend={() => {}}
-                        locale={locale}
-                    />
-                </div>
-            </div>
+            {id && (
+                <VideoPersonal videoId={id} locale={locale} />
+            )}
         </MainPageLayout>
     );
 };

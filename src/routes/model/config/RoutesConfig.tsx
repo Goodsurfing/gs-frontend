@@ -183,6 +183,9 @@ import {
     getAdminJournalCreatePageUrl,
     getAdminJournalPersonalPageUrl,
     getAdminReviewJournalPersonalPageUrl,
+    getAdminVideoPageUrl,
+    getAdminVideoPersonalPageUrl,
+    getAdminReviewVideoPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -251,6 +254,9 @@ import { AdminJournalPage } from "@/pages/AdminJournalPage";
 import { AdminJournalCreatePage } from "@/pages/AdminJournalCreatePage";
 import { AdminJournalPersonalPage } from "@/pages/AdminJournalPersonalPage";
 import { AdminReviewJournalPersonalPage } from "@/pages/AdminReviewJournalPersonalPage";
+import { AdminVideoPage } from "@/pages/AdminVideoPage";
+import { AdminVideoPersonalPage } from "@/pages/AdminVideoPersonalPage";
+import { AdminReviewVideoPersonalPage } from "@/pages/AdminRevieVideoPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -867,6 +873,21 @@ const publicRoutes: RouteType[] = [
                 label: "admin-review-journal-personal",
                 element: <AdminReviewJournalPersonalPage />,
                 path: (locale: string) => getAdminReviewJournalPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-video",
+                element: <AdminVideoPage />,
+                path: (locale: string) => getAdminVideoPageUrl(locale),
+            },
+            {
+                label: "admin-video-personal",
+                element: <AdminVideoPersonalPage />,
+                path: (locale: string) => getAdminVideoPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-review-video-personal",
+                element: <AdminReviewVideoPersonalPage />,
+                path: (locale: string) => getAdminReviewVideoPersonalPageUrl(locale),
             },
         ],
     },

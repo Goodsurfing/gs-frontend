@@ -23,11 +23,13 @@ import {
     adminReducer, adminApi, adminCourseApi, adminNewsApi,
     adminBlogApi,
     adminJournalApi,
+    adminVideoApi,
 } from "@/entities/Admin";
 import { courseApi } from "@/entities/Academy";
 import { newsApi } from "@/entities/News";
 import { blogApi } from "@/entities/Blog";
 import { journalApi } from "@/entities/Journal";
+import { videoApi } from "@/entities/Video";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -50,11 +52,13 @@ const rootReducer = combineReducers({
     [newsApi.reducerPath]: newsApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
     [journalApi.reducerPath]: journalApi.reducer,
+    [videoApi.reducerPath]: videoApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [adminCourseApi.reducerPath]: adminCourseApi.reducer,
     [adminNewsApi.reducerPath]: adminNewsApi.reducer,
     [adminBlogApi.reducerPath]: adminBlogApi.reducer,
     [adminJournalApi.reducerPath]: adminJournalApi.reducer,
+    [adminVideoApi.reducerPath]: adminVideoApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -75,11 +79,13 @@ export const setupStore = () => configureStore({
         blogApi.middleware,
         newsApi.middleware,
         journalApi.middleware,
+        videoApi.middleware,
         adminApi.middleware,
         adminCourseApi.middleware,
         adminNewsApi.middleware,
         adminBlogApi.middleware,
         adminJournalApi.middleware,
+        adminVideoApi.middleware,
         authMiddleware,
     ]),
 });

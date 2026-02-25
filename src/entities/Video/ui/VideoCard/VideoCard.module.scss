@@ -9,8 +9,11 @@
 }
 
 .image {
-    max-width: 480px;
     object-fit: cover;
+}
+
+.noImage {
+    background-color: var(--bg-accent);
 }
 
 .container {

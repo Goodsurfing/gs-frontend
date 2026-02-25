@@ -315,3 +315,9 @@ export const getAdminJournalCreatePageUrl: RoutePathFunction = (locale) => `/${l
 export const getAdminJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_journal}/${id}`;
 
 export const getAdminReviewJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_journals}/${id}`;
+
+export const getAdminVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_video}`;
+
+export const getAdminVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_video}/${id}`;
+
+export const getAdminReviewVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_video}/${id}`;
