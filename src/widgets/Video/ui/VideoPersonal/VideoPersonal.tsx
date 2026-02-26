@@ -20,6 +20,7 @@ import { CommentWidget } from "@/widgets/Article";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface VideoPersonalProps {
     videoId: string;
@@ -31,6 +32,7 @@ const VISIBLE_COUNT = 10;
 export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
     const { videoId, locale } = props;
     const { t } = useTranslation();
+    const { isAuth } = useAuth();
     const { getFullName } = useGetFullName();
 
     const [toast, setToast] = useState<ToastAlert>();
@@ -73,8 +75,15 @@ export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
     }, [reviewsData, page]);
 
     const onLike = async () => {
-        setToast(undefined);
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы поставить лайк, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
+            setToast(undefined);
             await putLike(videoId).unwrap();
         } catch {
             setToast({

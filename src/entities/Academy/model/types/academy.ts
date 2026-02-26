@@ -158,4 +158,6 @@ export interface GetLesson {
         id: string;
         name: string;
     }
+    prevVideoId: string | null;
+    nextVideoId: string | null;
 }

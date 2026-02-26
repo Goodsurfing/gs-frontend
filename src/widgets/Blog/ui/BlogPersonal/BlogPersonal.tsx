@@ -20,6 +20,7 @@ import {
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./BlogPersonal.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface BlogPersonalProps {
     blogId: number;
@@ -30,6 +31,7 @@ const VISIBLE_COUNT = 10;
 export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const { blogId } = props;
     const { locale } = useLocale();
+    const { isAuth } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewBlog[]>([]);
@@ -72,8 +74,15 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     }, [reviewsData, page]);
 
     const onLike = async () => {
-        setToast(undefined);
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы поставить лайк, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
+            setToast(undefined);
             await putLike(blogId).unwrap();
         } catch {
             setToast({

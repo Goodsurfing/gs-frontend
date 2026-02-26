@@ -40,7 +40,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                         const resultOffers = await getOffers(
                             {
                                 categoryIds: myProfileData.favoriteCategories,
-                                sort: OfferSort.AverageRatingDesc,
+                                sort: OfferSort.Recommendation,
                             },
                         ).unwrap();
                         setFilteredOffers(resultOffers.data.slice(0, 10));

@@ -61,6 +61,7 @@ export interface AdminUsers {
     isVerified: boolean;
     isVolunteer: boolean;
     isOrganization: boolean;
+    isDelete: boolean;
     isActive: boolean; // is block
     isPayment: boolean;
     endPayment: string;

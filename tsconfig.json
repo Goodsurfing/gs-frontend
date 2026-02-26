@@ -36,6 +36,6 @@
         "module": "CommonJS"
       }
     },
-    "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./src/**/*"],
+    "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./config/assets.d.ts", "./src/**/*"],
     "exclude": ["node_modules", "dist", "public", "typings/browser.d.ts", "typings/browser/**"]
   }

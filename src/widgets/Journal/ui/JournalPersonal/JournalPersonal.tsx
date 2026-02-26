@@ -16,6 +16,7 @@ import {
     useGetJournalByIdQuery, useLazyGetReviewsByJournalIdQuery, usePutLikeJournalMutation,
 } from "@/entities/Journal";
 import styles from "./JournalPersonal.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface JournalPersonalProps {
     journalId: string;
@@ -41,6 +42,7 @@ const getCalameoEmbedUrl = (url?: string) => {
 export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const { journalId } = props;
     const { locale } = useLocale();
+    const { isAuth } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsJournal[]>([]);
@@ -82,8 +84,15 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     }, [reviewsData, page]);
 
     const onLike = async () => {
-        setToast(undefined);
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы поставить лайк, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
+            setToast(undefined);
             await putLike(journalId).unwrap();
         } catch {
             setToast({

@@ -1,11 +1,12 @@
 import React, { FC, useEffect } from "react";
 import { Navigation } from "@/features/Article";
-import { getAcademyCoursePageUrl, getAcademyMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAcademyCoursePageUrl, getAcademyLessonPageUrl, getAcademyMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetCourseLessonByIdQuery, useWatchLessonMutation } from "@/entities/Academy/api/courseApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { LessonVideo } from "../LessonVideo/LessonVideo";
 import { LessonReview } from "@/features/Academy";
+import CustomLink from "@/shared/ui/Link/Link";
 import styles from "./LessonPersonal.module.scss";
 
 interface LessonPersonalProps {
@@ -17,6 +18,9 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
     const { locale } = useLocale();
     const { data, isLoading } = useGetCourseLessonByIdQuery(lessonId);
     const [watchLesson] = useWatchLessonMutation();
+
+    const prevLessonId = data?.prevVideoId ?? null;
+    const nextLessonId = data?.nextVideoId ?? null;
 
     useEffect(() => {
         watchLesson(lessonId);
@@ -49,6 +53,25 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                         <LessonVideo className={styles.lessonVideo} videoUrl={data?.url} />
                     </>
                 )}
+                <div className={styles.buttons}>
+                    {prevLessonId && (
+                        <CustomLink
+                            to={getAcademyLessonPageUrl(locale, prevLessonId)}
+                            variant="DEFAULT"
+                        >
+                            🠐 Предыдущая лекция
+                        </CustomLink>
+                    )}
+                    {nextLessonId && (
+                        <CustomLink
+                            to={getAcademyLessonPageUrl(locale, nextLessonId)}
+                            variant="DEFAULT"
+                            style={{ marginLeft: prevLessonId === null ? "auto" : 0 }}
+                        >
+                            Следующая лекция 🠒
+                        </CustomLink>
+                    )}
+                </div>
             </div>
             <div className={styles.commentWrapper}>
                 <LessonReview lessonId={lessonId} locale={locale} canReview={data?.isCanReview} />

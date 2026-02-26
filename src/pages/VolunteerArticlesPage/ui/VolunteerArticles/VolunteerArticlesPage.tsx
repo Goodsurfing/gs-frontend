@@ -14,14 +14,30 @@ const limit = 10;
 
 const VolunteerArticlesPage = () => {
     const { t } = useTranslation("volunteer");
-    const [getBlogList, { data, isLoading, isFetching }] = useLazyGetBlogListQuery();
+    const [getBlogList, {
+        data: blogData,
+        isLoading: isLoadingBlog, isFetching: isFetchingBlog,
+    }] = useLazyGetBlogListQuery();
+    const [getBlogDraftList, {
+        data: blogDraftData,
+        isLoading: isLoadingBlogDraft, isFetching: isFetchingBlogDraft,
+    }] = useLazyGetBlogListQuery();
     const [deleteBlog] = useDeleteBlogMutation();
     const [page, setPage] = useState<number>(1);
+    const [pageDraft, setPageDraft] = useState<number>(1);
     const [toast, setToast] = useState<ToastAlert>();
 
     useEffect(() => {
-        getBlogList({ page, limit, isAuth: true });
+        getBlogList({
+            page, limit, isAuth: true, isActive: true,
+        });
     }, [getBlogList, page]);
+
+    useEffect(() => {
+        getBlogDraftList({
+            page: pageDraft, limit, isAuth: true, isActive: false,
+        });
+    }, [getBlogDraftList, pageDraft]);
 
     const handleDeleteArticle = async (id: string) => {
         try {
@@ -38,15 +54,19 @@ const VolunteerArticlesPage = () => {
         }
     };
 
-    const articles = data?.data ?? [];
-    const pagination = data?.pagination;
+    const articles = blogData?.data ?? [];
+    const articlesDraft = blogDraftData?.data ?? [];
+    const pagination = blogData?.pagination;
+    const paginationDraft = blogDraftData?.pagination;
     const totalPages = pagination ? Math.max(1, Math.ceil(pagination.total / pagination.limit)) : 1;
+    const totalPagesDraft = paginationDraft
+        ? Math.max(1, Math.ceil(paginationDraft.total / paginationDraft.limit)) : 1;
 
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h2>{t("volunteer-articles.Мои статьи")}</h2>
-            {(isLoading || isFetching) ? (
+            {(isLoadingBlog || isFetchingBlog) ? (
                 <MiniLoader />
             ) : (
                 <div className={styles.list}>
@@ -55,13 +75,38 @@ const VolunteerArticlesPage = () => {
                         className={styles.container}
                         onDelete={handleDeleteArticle}
                     />
-                    <OfferPagination
-                        currentPage={page}
-                        totalPages={totalPages}
-                        onPageChange={(p) => setPage(p)}
-                        className={styles.pagination}
-                    />
+                    {(pagination?.total !== 0) && (
+                        <OfferPagination
+                            currentPage={page}
+                            totalPages={totalPages}
+                            onPageChange={(p) => setPage(p)}
+                            className={styles.pagination}
+                        />
+                    )}
+
                 </div>
+            )}
+            {(isLoadingBlogDraft || isFetchingBlogDraft) ? (
+                <MiniLoader />
+            ) : (
+                (paginationDraft?.total !== 0) && (
+                    <div className={styles.draftWrapper}>
+                        <h2>{t("volunteer-articles.Черновики")}</h2>
+                        <div className={styles.list}>
+                            <ArticlesList
+                                articles={blogArticleCardAdapter(articlesDraft)}
+                                className={styles.container}
+                                onDelete={handleDeleteArticle}
+                            />
+                            <OfferPagination
+                                currentPage={pageDraft}
+                                totalPages={totalPagesDraft}
+                                onPageChange={(p) => setPageDraft(p)}
+                                className={styles.pagination}
+                            />
+                        </div>
+                    </div>
+                )
             )}
         </div>
     );

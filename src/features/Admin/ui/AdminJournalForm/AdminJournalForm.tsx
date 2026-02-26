@@ -6,11 +6,13 @@ import { InputField } from "@/shared/ui/InputField/InputField";
 import { Image } from "@/types/media";
 import { UploadArticleCover } from "../AdminArticleForm/ui/UploadArticleCover/UploadArticleCover";
 import styles from "./AdminJournalForm.module.scss";
+import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 interface AdminJournalFormProps {
     className?: string;
     initialData?: AdminJournalFormFields;
     onComplete: (data: AdminJournalFormFields) => void;
+    onErrorUploadImage: (error: string) => void;
     isLoading: boolean;
 }
 
@@ -18,6 +20,7 @@ export interface AdminJournalFormFields {
     image: Image;
     name: string;
     description: string;
+    url: string;
     isActive: boolean;
 }
 
@@ -25,13 +28,14 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
     (props: AdminJournalFormProps) => {
         const {
             className, initialData, onComplete,
-            isLoading,
+            isLoading, onErrorUploadImage,
         } = props;
         const {
             register,
             control,
             reset,
             handleSubmit,
+            formState: { errors },
         } = useForm<AdminJournalFormFields>({
             mode: "onChange",
         });
@@ -109,12 +113,26 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
                         )}
                     />
                 </div>
+                <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                        <TextEditor
+                            onChange={field.onChange}
+                            value={field.value}
+                            onErrorUploadImage={onErrorUploadImage}
+                        />
+                    )}
+                />
+                {errors.description && (
+                    <p className={styles.error}>{errors.description.message}</p>
+                )}
                 <div className={styles.field}>
                     <span className={styles.title}>
                         Ссылка на calameo
                     </span>
                     <Controller
-                        name="description"
+                        name="url"
                         rules={{
                             required: "Поле обязательно для заполнения",
                         }}

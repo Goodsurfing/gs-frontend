@@ -29,5 +29,13 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
         },
     };
 
-    return [babelLoader, codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader];
+    const pdfLoader: webpack.RuleSetRule = {
+        test: /\.pdf$/i,
+        type: "asset/resource",
+        generator: {
+            filename: "./docs/[contenthash].[ext]",
+        },
+    };
+
+    return [babelLoader, codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader, pdfLoader];
 }

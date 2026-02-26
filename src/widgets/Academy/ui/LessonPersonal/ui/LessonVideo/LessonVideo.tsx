@@ -4,6 +4,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
 import styles from "./LessonVideo.module.scss";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
 
@@ -16,6 +17,9 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
     const { className, videoUrl } = props;
     const { isAuth } = useAuth();
     const { locale } = useLocale();
+    const { width } = useWindowDimensions();
+
+    const videoWidth = width <= 1000 ? "100%" : "750px";
 
     if (!isAuth) {
         return (
@@ -32,7 +36,7 @@ export const LessonVideo: FC<LessonVideoProps> = (props) => {
         <div className={cn(styles.wrapper, className)}>
             {videoUrl ? (
                 <VideoPlayer
-                    width="750px"
+                    width={videoWidth}
                     height="424px"
                     url={videoUrl}
                     controls

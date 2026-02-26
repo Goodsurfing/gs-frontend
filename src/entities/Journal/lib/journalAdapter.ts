@@ -28,6 +28,7 @@ export const journalAdapter = (data: GetAdminJournal): AdminJournalFormFields =>
         image,
         name,
         isActive,
+        url: "",
     };
 };
 

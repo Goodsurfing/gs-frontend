@@ -13,7 +13,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
-import styles from "./AdminUsersTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
@@ -26,6 +25,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import styles from "./AdminUsersTable.module.scss";
 
 const USERS_PER_PAGE = 30;
 
@@ -288,6 +288,16 @@ export const AdminUsersTable = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 150,
+        },
+        {
+            field: "isDelete",
+            headerName: "Удалён",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 150,
+            type: "boolean",
         },
         {
             field: "dateRegistration",
