@@ -115,7 +115,7 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                             {t("personal.У волонтера пока нет вакансий в которых он участвовал")}
                         </div>
                     )}
-                    {(!loading && offersData.length === 0) && (
+                    {(!loading && offersData.length > 0) && (
                         <div
                             className={styles.containerList}
                             ref={scrollContainerRef}

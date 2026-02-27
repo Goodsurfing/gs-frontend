@@ -38,6 +38,7 @@ export interface GetBlogListParams {
     sort: AdminSort;
     lang: Locale;
     isAuth: boolean;
+    isActive: boolean;
     name: string;
     blogCategoryId: number;
     page: number;

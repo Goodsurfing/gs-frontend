@@ -44,6 +44,7 @@ export const AuthByEmail = memo(() => {
         "Данный пользователь уже существует": t("login.Данный пользователь уже существует"),
         "Некорректно введены данные": t("login.Некорректно введены данные"),
         "Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту.": t("login.Для входа в систему необходимо подтвердить email адрес. Проверьте вашу почту."),
+        "Пользователь был удален или не создавался": "Пользователь был удален или не создавался",
     };
 
     const onError = useCallback((errorText: string) => {
@@ -81,7 +82,7 @@ export const AuthByEmail = memo(() => {
                 onSuccess={onSuccess}
                 onError={onError}
             />
-            <AuthByVk redirect="signin" onSuccess={onSuccess} />
+            <AuthByVk redirect="signin" onSuccess={onSuccess} onError={onError} />
             {/* <div className={styles.socials}>
                 <SocialAuthContainer />
             </div> */}

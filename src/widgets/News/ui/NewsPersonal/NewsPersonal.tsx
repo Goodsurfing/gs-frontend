@@ -17,6 +17,7 @@ import { CommentWidget } from "@/widgets/Article";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MAIN_URL } from "@/shared/constants/api";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./NewsPersonal.module.scss";
 
 interface NewsPersonalProps {
@@ -28,6 +29,7 @@ const VISIBLE_COUNT = 10;
 export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const { newsId } = props;
     const { locale } = useLocale();
+    const { isAuth } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsNews[]>([]);
@@ -69,8 +71,15 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     }, [reviewsData, page]);
 
     const onLike = async () => {
-        setToast(undefined);
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы поставить лайк, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
+            setToast(undefined);
             await putLike(newsId).unwrap();
         } catch {
             setToast({

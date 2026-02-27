@@ -8,7 +8,7 @@ import cn from "classnames";
 import Offer from "@/containers/OffersContainer/Offer/Offer";
 
 import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
-import { OfferApi, useLazyGetOffersQuery } from "@/entities/Offer";
+import { OfferApi, OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./OffersContainer.module.scss";
@@ -27,7 +27,9 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
 
     useEffect(() => {
         const fetchOffers = async () => {
-            await getOffersData(undefined)
+            await getOffersData({
+                sort: OfferSort.Recommendation,
+            })
                 .unwrap()
                 .then((result) => {
                     setOffers(result.data.slice(0, 10));

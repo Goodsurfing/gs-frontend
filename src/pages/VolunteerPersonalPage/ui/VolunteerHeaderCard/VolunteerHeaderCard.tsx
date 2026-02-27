@@ -202,25 +202,25 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                     </span>
                                 </span>
                                 <div className={styles.socials}>
-                                    {vk !== "" && (
+                                    {((vk !== "") && (vk !== null)) && (
                                         <a href={vk ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={vkIcon} />
                                             <p className={styles.socialLabel}>Вконтакте</p>
                                         </a>
                                     )}
-                                    {telegram !== "" && (
+                                    {((telegram !== "") && (telegram !== null)) && (
                                         <a href={telegram ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={telegramIcon} />
                                             <p className={styles.socialLabel}>Telegram</p>
                                         </a>
                                     )}
-                                    {facebook !== "" && (
+                                    {((facebook !== "") && (facebook !== null)) && (
                                         <a href={facebook ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={facebookIcon} />
                                             <p className={styles.socialLabel}>Facebook</p>
                                         </a>
                                     )}
-                                    {instagram !== "" && (
+                                    {((instagram !== "") && (instagram !== null)) && (
                                         <a href={instagram ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={instaIcon} />
                                             <p className={styles.socialLabel}>Instagram</p>

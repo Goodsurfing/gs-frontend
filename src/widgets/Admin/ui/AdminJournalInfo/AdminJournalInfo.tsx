@@ -43,6 +43,16 @@ export const AdminJournalInfo: FC<AdminJournalInfoProps> = (props) => {
         }
     };
 
+    const onErrorUploadImage = (error: string) => {
+        setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: error,
+                type: HintType.Error,
+            });
+        }, 0);
+    };
+
     if (isLoading) {
         return (<MiniLoader />);
     }
@@ -71,6 +81,7 @@ export const AdminJournalInfo: FC<AdminJournalInfoProps> = (props) => {
             <AdminJournalForm
                 initialData={journalAdapter(journalData)}
                 onComplete={onSubmit}
+                onErrorUploadImage={onErrorUploadImage}
                 isLoading={isUpdateLoading}
             />
         </div>

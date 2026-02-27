@@ -77,54 +77,64 @@ export const HostOffersCard: FC<HostOffersCardProps> = memo((props: HostOffersCa
         fetchHostOffers(true);
     }, [fetchHostOffers]);
 
+    const filteredOffers = hostOffers.filter((offer) => offer.status !== "draft");
+
+    const renderOffersList = () => (
+        <div>
+            {filteredOffers.map((offer) => {
+                const {
+                    id, title, shortDescription, address, image, categories,
+                    acceptedApplicationsCount, averageRating, reviewsCount,
+                } = offer;
+                return (
+                    <OfferCard
+                        key={offer.id}
+                        locale={locale}
+                        status={offer.status === "active" ? "opened" : "closed"}
+                        data={{
+                            id,
+                            title,
+                            shortDescription,
+                            address,
+                            imagePath: image?.thumbnails?.medium,
+                            categories,
+                            acceptedApplicationsCount,
+                            averageRating,
+                            reviewsCount,
+                        }}
+                    />
+                );
+            })}
+        </div>
+    );
+
     return (
         <div id="2" className={cn(className, styles.wrapper)}>
             <Text title={t("personalHost.Вакансии")} titleSize="h3" />
             <div className={styles.container}>
                 {loading && <MiniLoader />}
-                {!loading && hostOffers.length === 0 && (
+                {!loading && filteredOffers.length === 0 && (
                     <div>{t("personalHost.У организации пока нет вакансий")}</div>
                 )}
             </div>
 
-            <div className={styles.containerList} id="offers-scroll-container">
-                <InfiniteScroll
-                    dataLength={hostOffers.length}
-                    next={() => fetchHostOffers(false)}
-                    hasMore={hasMore}
-                    loader={<MiniLoader className={styles.loader} />}
-                    scrollThreshold="70%"
-                    scrollableTarget="offers-scroll-container"
-                    height={560}
-                >
-                    <div>
-                        {hostOffers.map((offer) => {
-                            const {
-                                id, title, shortDescription, address, image, categories,
-                                acceptedApplicationsCount, averageRating, reviewsCount,
-                            } = offer;
-                            return (
-                                <OfferCard
-                                    key={offer.id}
-                                    locale={locale}
-                                    status={offer.status === "active" ? "opened" : "closed"}
-                                    data={{
-                                        id,
-                                        title,
-                                        shortDescription,
-                                        address,
-                                        imagePath: image?.thumbnails?.medium,
-                                        categories,
-                                        acceptedApplicationsCount,
-                                        averageRating,
-                                        reviewsCount,
-                                    }}
-                                />
-                            );
-                        })}
-                    </div>
-                </InfiniteScroll>
-            </div>
+            {filteredOffers.length > 3 ? (
+                <div className={styles.containerList} id="offers-scroll-container">
+                    <InfiniteScroll
+                        dataLength={hostOffers.length}
+                        next={() => fetchHostOffers(false)}
+                        hasMore={hasMore}
+                        loader={<MiniLoader className={styles.loader} />}
+                        scrollThreshold="70%"
+                        scrollableTarget="offers-scroll-container"
+                        height={560}
+                    >
+                        {renderOffersList()}
+                    </InfiniteScroll>
+                </div>
+            ) : (
+                renderOffersList()
+            )}
         </div>
     );
 });

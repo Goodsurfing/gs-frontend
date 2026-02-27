@@ -262,9 +262,9 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     <HandySvg src={linkIcon} />
                 </ToggleButton>
                 {isLoadingImage ? <MiniLoader className={styles.miniloader} /> : (
-                    <ToggleButton value="image" className={styles.toggleButton}>
+                    <ToggleButton value="imageEditor" className={styles.toggleButton}>
                         <InputFile
-                            id="upload image"
+                            id="upload image editor"
                             onChange={addImage}
                             wrapperClassName={styles.imageButton}
                             labelClassName={styles.imageButton}

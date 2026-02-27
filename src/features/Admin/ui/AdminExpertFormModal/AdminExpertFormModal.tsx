@@ -136,10 +136,10 @@ export const AdminExpertFormModal: FC<AdminExpertFormModalProps> = ({
                                 name="project"
                                 label="Описание эксперта"
                                 placeholder="Расскажите о достижениях и опыте эксперта"
-                                maxLength={500}
-                                description="Не более 50 знаков"
+                                maxLength={200}
+                                description="Не более 200 знаков"
                                 rules={{
-                                    maxLength: { value: 50, message: "Превышено ограничение в 50 символов" },
+                                    maxLength: { value: 200, message: "Превышено ограничение в 200 символов" },
                                 }}
                             />
                             {errors.project && (

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     max-width: 373px;
+
     a {
         text-decoration: none;
         color: inherit;
@@ -10,7 +11,8 @@
 
 .image {
     width: 100%;
-    max-width: 480px;
+    max-width: 320px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -50,7 +52,8 @@
     margin-top: 20px;
 }
 
-.date, .description {
+.date,
+.description {
     color: var(--text-caption);
     font-size: 14px;
 }

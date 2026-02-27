@@ -127,6 +127,7 @@ export enum OfferSort {
     AverageRatingDesc = "averageRating:desc",
     PopularityAsc = "popularity:asc",
     PopularityDesc = "popularity:desc",
+    Recommendation = "recommendation",
 }
 
 export interface GetHostOffersFilters {

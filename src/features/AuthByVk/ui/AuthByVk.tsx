@@ -23,10 +23,11 @@ const langLib: Record<Locale, VKID.Languages> = {
 interface AuthByVkProps {
     redirect: string;
     onSuccess?: () => void;
+    onError: (message: string) => void;
 }
 
 export const AuthByVk: FC<AuthByVkProps> = (props) => {
-    const { redirect, onSuccess } = props;
+    const { redirect, onSuccess, onError } = props;
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { locale } = useLocale();
     const dispatch = useAppDispatch();
@@ -97,6 +98,13 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                                 Authorization: `Bearer ${accessToken}`,
                             },
                         });
+
+                        if (responseJwtToken.status === 401) {
+                            localStorage.removeItem("vk_code_verifier");
+                            onError("Пользователь был удален или не создавался");
+                            return;
+                        }
+
                         const data = await responseJwtToken.json();
 
                         if (data) {
@@ -125,7 +133,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
         };
 
         vkIdInit();
-    }, [locale, redirect, onSuccess, redirectUrl, dispatch]);
+    }, [locale, redirect, onSuccess, onError, redirectUrl, dispatch]);
 
     return (
         <div className={styles.wrapper}>

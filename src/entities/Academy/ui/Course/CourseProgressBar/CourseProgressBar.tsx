@@ -15,10 +15,14 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
 
     const step = 100 / totalLessons;
 
-    const marks = Array.from({ length: totalLessons }, (_, i) => ({
-        value: (i + 0.5) * step,
-        label: `${i + 1} урок`,
-    }));
+    const marks = Array.from({ length: totalLessons }, (_, i) => {
+        const lessonNumber = i + 1;
+        const shouldShowLabel = totalLessons <= 15 || (lessonNumber % 5 === 0);
+        return {
+            value: (i + 0.5) * step,
+            label: shouldShowLabel ? `${lessonNumber} урок` : "",
+        };
+    });
 
     let thumbValue;
     if (finishedLessons === 0) {
@@ -29,6 +33,15 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
         thumbValue = marks[finishedLessons - 1].value;
     }
 
+    const getValueLabel = () => {
+        const getLessonWord = (num: number) => {
+            if (num % 10 === 1 && num % 100 !== 11) return "урок";
+            if ([2, 3, 4].includes(num % 10) && ![12, 13, 14].includes(num % 100)) return "урока";
+            return "уроков";
+        };
+        return `${finishedLessons} ${getLessonWord(finishedLessons)} пройдено`;
+    };
+
     return (
         <div className={cn(styles.wrapper, className)}>
             <h2>Прогресс по курсу</h2>
@@ -38,6 +51,7 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
                     value={thumbValue}
                     step={step}
                     valueLabelDisplay="auto"
+                    valueLabelFormat={getValueLabel}
                     marks={marks}
                 />
             </div>

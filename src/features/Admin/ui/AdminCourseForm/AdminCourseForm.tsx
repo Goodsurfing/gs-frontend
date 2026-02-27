@@ -385,7 +385,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         control={control}
                         name="name"
                         minLength={3}
-                        maxLength={60}
+                        maxLength={200}
                         isError={!!errors.name?.message}
                     />
                     {errors?.name?.message && (

@@ -8,7 +8,7 @@ import cn from "classnames";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
-import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./SearchOffers.module.scss";
 import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
@@ -161,7 +161,10 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                             const offerStatus = offer.status === "active" ? "opened" : "closed";
                                             return (
                                                 <a
-                                                    href={getOffersMapPageUrl(locale)}
+                                                    href={getOfferPersonalPageUrl(
+                                                        locale,
+                                                        String(offer.id),
+                                                    )}
                                                     key={offer.id}
                                                     className={cn(styles.dropdownItem, { [styles.closed]: offerStatus === "closed" })}
                                                 >

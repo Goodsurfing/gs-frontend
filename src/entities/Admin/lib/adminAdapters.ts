@@ -19,13 +19,14 @@ export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
         const {
             id, email, firstName, lastName, created,
             lastVisit, endPayment, isActive, isPayment,
-            isVolunteer, isOrganization,
+            isVolunteer, isOrganization, isDelete,
         } = user;
         return {
             id,
             name: getFullName(firstName, lastName),
             email,
             isActive,
+            isDelete,
             isConfirmed: true,
             isHost: isOrganization,
             isMembership: isPayment,

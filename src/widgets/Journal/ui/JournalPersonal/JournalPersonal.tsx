@@ -2,6 +2,7 @@ import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
 import {
+    ArticleContent,
     ArticleHeader, ArticleShare, Navigation,
 } from "@/features/Article";
 import { getJournalsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -16,6 +17,7 @@ import {
     useGetJournalByIdQuery, useLazyGetReviewsByJournalIdQuery, usePutLikeJournalMutation,
 } from "@/entities/Journal";
 import styles from "./JournalPersonal.module.scss";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 
 interface JournalPersonalProps {
     journalId: string;
@@ -41,12 +43,14 @@ const getCalameoEmbedUrl = (url?: string) => {
 export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const { journalId } = props;
     const { locale } = useLocale();
+    const { isAuth } = useAuth();
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsJournal[]>([]);
 
     const { data, isLoading } = useGetJournalByIdQuery(journalId);
-    const embedUrl = getCalameoEmbedUrl(data?.description);
+    const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
+    const embedUrl = getCalameoEmbedUrl(data?.url);
     const [putLike] = usePutLikeJournalMutation();
     const [createReview] = useCreateReviewJournalMutation();
     const [getReviews, { data: reviewsData }] = useLazyGetReviewsByJournalIdQuery();
@@ -82,8 +86,15 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     }, [reviewsData, page]);
 
     const onLike = async () => {
-        setToast(undefined);
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы поставить лайк, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
+            setToast(undefined);
             await putLike(journalId).unwrap();
         } catch {
             setToast({
@@ -140,7 +151,8 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
                     locale={locale}
                 />
                 <div className={styles.content}>
-                    {embedUrl ? (
+                    <ArticleContent className={styles.articleContent} content={articleContent} />
+                    {embedUrl && (
                         <iframe
                             src={embedUrl}
                             title={data?.name ?? ""}
@@ -149,8 +161,6 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
                             allowFullScreen
                             loading="lazy"
                         />
-                    ) : (
-                        <p>Данный журнал пустой</p>
                     )}
                 </div>
                 <ArticleShare

@@ -25,10 +25,11 @@ export interface GetAdminJournalsResponse {
 export type GetAdminJournal = GetAdminJournals & {
     description: string;
     image: Image;
+    url: string;
 };
 
 export type CreateAdminJournal = Pick<GetAdminJournal, "name" |
-"description" | "isActive"> & {
+"description" | "isActive" | "url"> & {
     imageId: string;
 };
 

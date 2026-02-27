@@ -37,6 +37,16 @@ const AdminJournalCreatePage = () => {
         }
     };
 
+    const onErrorUploadImage = (error: string) => {
+        setToast(undefined);
+        setTimeout(() => {
+            setToast({
+                text: error,
+                type: HintType.Error,
+            });
+        }, 0);
+    };
+
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -47,6 +57,7 @@ const AdminJournalCreatePage = () => {
             />
             <AdminJournalForm
                 onComplete={onSubmit}
+                onErrorUploadImage={onErrorUploadImage}
                 isLoading={isLoading}
             />
         </div>

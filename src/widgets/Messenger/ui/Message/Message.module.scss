@@ -92,23 +92,30 @@
     }
 
     .messageContent {
-        margin-left: auto;
+        margin-left: 8px;
     }
 
     .avatar {
         align-self: flex-end;
-        display: none;
+        // display: none;
     }
 
     .userMessage {
         align-self: flex-start;
-        margin-left: 0;
+        margin-left: 8px;
     }
 
     .otherMessage {
         align-self: flex-end;
+        justify-content: flex-end;
     }
 }
+
+// @media (max-width: 1000px) {
+//     .messageContent {
+//         margin-left: 8px;
+//     }
+// }
 
 @media (max-width: 480px) {
     .message {
