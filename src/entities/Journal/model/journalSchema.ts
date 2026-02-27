@@ -25,6 +25,7 @@ export interface GetJournalsResponse {
 
 export type GetJournal = GetJournals & {
     isHasLike: boolean;
+    url: string;
 };
 
 export interface GetReviewsJournal {

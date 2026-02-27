@@ -139,7 +139,7 @@ export const AdminJournalForm: FC<AdminJournalFormProps> = memo(
                         control={control}
                         render={({ field, fieldState }) => (
                             <InputField
-                                name="description"
+                                name="url"
                                 register={register}
                                 error={Boolean(fieldState.error)}
                                 helperText={fieldState.error?.message}

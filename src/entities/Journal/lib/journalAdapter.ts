@@ -9,26 +9,27 @@ import { getFullName } from "@/shared/lib/getFullName";
 
 export const journalApiAdapter = (data: AdminJournalFormFields): CreateAdminJournal => {
     const {
-        description, image, name, isActive,
+        description, image, name, isActive, url,
     } = data;
     return {
         description,
         imageId: image.id,
         name,
         isActive,
+        url,
     };
 };
 
 export const journalAdapter = (data: GetAdminJournal): AdminJournalFormFields => {
     const {
-        description, image, name, isActive,
+        description, image, name, isActive, url,
     } = data;
     return {
         description,
         image,
         name,
         isActive,
-        url: "",
+        url,
     };
 };
 
