@@ -62,6 +62,13 @@ export interface GetBlogParams {
     lang: Locale;
 }
 
+export interface PublicBlogParams {
+    id: number;
+    body: {
+        isActive: boolean;
+    }
+}
+
 export type CreateBlog = Pick<GetBlog, "name" | "description" | "isActive"> & {
     imageId: string;
     categoryId: number | null;

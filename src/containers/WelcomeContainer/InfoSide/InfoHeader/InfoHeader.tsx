@@ -169,35 +169,32 @@ const InfoHeader = memo(() => {
                             <Link to={getPrivacyPolicyPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.privacy-policy")}
                             </Link>
-                            <Link to={getAboutProjectPageUrl(locale)}>
-                                {t("main.welcome.header.about-project.about-goodsurfing")}
-                            </Link>
                             <Link to={getFindJobPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.find-job")}
                             </Link>
                         </Popup>
                     </div>
-                </div>
-
-                {isAuth ? (
-                    <>
+                    {isAuth && (
                         <div className={styles.link}>
                             <Link to={getProfileInfoPageUrl(locale)}>
                                 {t("main.welcome.header.profile")}
                             </Link>
                         </div>
-                        <div className={styles.link}>
-                            <Button
-                                onClick={handleLogout}
-                                className={styles.btn}
-                                variant="FILL"
-                                color="WHITE"
-                                size="MEDIUM"
-                            >
-                                {t("main.welcome.header.exit")}
-                            </Button>
-                        </div>
-                    </>
+                    )}
+                </div>
+
+                {isAuth ? (
+                    <div className={styles.link}>
+                        <Button
+                            onClick={handleLogout}
+                            className={styles.btn}
+                            variant="FILL"
+                            color="WHITE"
+                            size="MEDIUM"
+                        >
+                            {t("main.welcome.header.exit")}
+                        </Button>
+                    </div>
                 ) : (
                     <div className={styles.link}>
                         <ButtonLink

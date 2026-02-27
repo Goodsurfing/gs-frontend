@@ -33,6 +33,7 @@ export interface ArticleCardType {
     id: string;
     image?: string;
     name: string;
+    isActive: boolean;
     category: {
         id: number;
         name: string;

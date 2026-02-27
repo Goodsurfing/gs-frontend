@@ -34,7 +34,7 @@
 	flex-direction: column;
 	max-width: 713px;
 
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 }
 
 .activity {
@@ -61,6 +61,18 @@
 	font-size: 22px;
 	line-height: 150%;
 	max-width: 580px;
+}
+
+@media screen and (max-width: 1600px) {
+	.title {
+		font-size: 48px;
+	}
+}
+
+@media screen and (max-width: 1400px) {
+	.title {
+		font-size: 32px;
+	}
 }
 
 @media screen and (max-width: 1000px) {

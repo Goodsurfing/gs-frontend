@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ArticlesList } from "../ArticlesList/ArticlesList";
-import { blogArticleCardAdapter, useDeleteBlogMutation, useLazyGetBlogListQuery } from "@/entities/Blog";
+import {
+    blogArticleCardAdapter, useDeleteBlogMutation,
+    useLazyGetBlogListQuery, usePublicBlogByIdMutation,
+} from "@/entities/Blog";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -23,6 +26,7 @@ const VolunteerArticlesPage = () => {
         isLoading: isLoadingBlogDraft, isFetching: isFetchingBlogDraft,
     }] = useLazyGetBlogListQuery();
     const [deleteBlog] = useDeleteBlogMutation();
+    const [publicBlog] = usePublicBlogByIdMutation();
     const [page, setPage] = useState<number>(1);
     const [pageDraft, setPageDraft] = useState<number>(1);
     const [toast, setToast] = useState<ToastAlert>();
@@ -54,6 +58,21 @@ const VolunteerArticlesPage = () => {
         }
     };
 
+    const handlePublicArticle = async (id: string) => {
+        try {
+            await publicBlog({ id: Number(id), body: { isActive: true } }).unwrap();
+            setToast({
+                text: t("volunteer-articles.Статья опубликована"),
+                type: HintType.Success,
+            });
+        } catch (error) {
+            setToast({
+                text: t("volunteer-articles.Ошибка публикации статьи"),
+                type: HintType.Error,
+            });
+        }
+    };
+
     const articles = blogData?.data ?? [];
     const articlesDraft = blogDraftData?.data ?? [];
     const pagination = blogData?.pagination;
@@ -74,6 +93,7 @@ const VolunteerArticlesPage = () => {
                         articles={blogArticleCardAdapter(articles)}
                         className={styles.container}
                         onDelete={handleDeleteArticle}
+                        onPublic={handlePublicArticle}
                     />
                     {(pagination?.total !== 0) && (
                         <OfferPagination
@@ -97,6 +117,7 @@ const VolunteerArticlesPage = () => {
                                 articles={blogArticleCardAdapter(articlesDraft)}
                                 className={styles.container}
                                 onDelete={handleDeleteArticle}
+                                onPublic={handlePublicArticle}
                             />
                             <OfferPagination
                                 currentPage={pageDraft}

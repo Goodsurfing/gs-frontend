@@ -87,7 +87,12 @@
     "volunteer-articles": {
         "Мои статьи": "My articles",
         "Черновики": "Drafts",
+        "Опубликовать": "Publish",
         "Редактировать": "Edit",
-        "Удалить": "Delete"
+        "Удалить": "Delete",
+        "Статья удалена": "Article Deleted",
+        "Ошибка удаления статьи": "Article Delete Error",
+        "Статья опубликована": "Article Published",
+        "Ошибка публикации статьи": "Article Publish Error"
     }
 }

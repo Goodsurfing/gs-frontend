@@ -145,7 +145,12 @@ export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProp
                         className={styles.inputSearch}
                         inputProps={{ "aria-label": "Поиск вакансий" }}
                     />
-                    {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
+                    {searchInput.length > 0 && (
+                        <CloseButton
+                            className={styles.closeButton}
+                            onClick={handleClear}
+                        />
+                    )}
 
                 </Paper>
                 <button onClick={handleSubmit} type="button" className={styles.searchButton}>
