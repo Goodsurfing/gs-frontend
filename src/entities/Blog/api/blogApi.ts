@@ -12,6 +12,7 @@ import {
     GetBlogParams,
     UpdateBlogParams,
     GetReviewsBlogParams,
+    PublicBlogParams,
 } from "../model/types/blogSchema";
 
 export const blogApi = createApi({
@@ -34,6 +35,14 @@ export const blogApi = createApi({
                 params: { lang },
             }),
             providesTags: ["blog"],
+        }),
+        publicBlogById: build.mutation<void, PublicBlogParams>({
+            query: ({ id, body }) => ({
+                url: `blog/toggle-active${id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["blog"],
         }),
         createBlog: build.mutation<void, CreateBlog>({
             query: (body) => ({
@@ -97,6 +106,7 @@ export const blogApi = createApi({
 export const {
     useLazyGetBlogListQuery,
     useGetBlogByIdQuery,
+    usePublicBlogByIdMutation,
     useCreateBlogMutation,
     useUpdateBlogMutation,
     usePutLikeBlogMutation,

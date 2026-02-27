@@ -1,5 +1,13 @@
 .wrapper {
 	flex: 1;
-
 	height: 100%;
+
+	.bullet {
+		background-color: #fff;
+		opacity: var(--swiper-pagination-bullet-inactive-opacity, .6);
+	}
+
+	.bulletActive {
+		opacity: 1;
+	}
 }

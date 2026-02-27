@@ -9,7 +9,7 @@ export const blogArticleCardAdapter = (
 ): ArticleCardType[] => data.map((blog) => {
     const {
         id, name, image, created, blogCategory, likeCount,
-        reviewCount,
+        reviewCount, isActive,
     } = blog;
     return {
         id: String(id),
@@ -19,6 +19,7 @@ export const blogArticleCardAdapter = (
         created,
         likeCount,
         reviewCount,
+        isActive,
     };
 });
 

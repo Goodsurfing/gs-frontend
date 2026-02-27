@@ -16,7 +16,12 @@ export const Principles: FC<PrinciplesProps> = (props: PrinciplesProps) => {
     const { principlesData } = useAboutProjects();
 
     const renderPrinciples = useMemo(() => principlesData.map((item, index) => (
-        <PrinciplesItem title={item.title} description={item.description} key={index} />
+        <PrinciplesItem
+            image={item.image}
+            title={item.title}
+            description={item.description}
+            key={index}
+        />
     )), [principlesData]);
 
     return (

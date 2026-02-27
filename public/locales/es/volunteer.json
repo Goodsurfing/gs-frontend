@@ -88,6 +88,11 @@
         "Мои статьи": "Mis artículos",
         "Черновики": "Damas",
         "Редактировать": "Editar",
-        "Удалить": "Borrar"
+        "Опубликовать": "Publicar",
+        "Удалить": "Borrar",
+        "Статья удалена": "Artículo eliminado",
+        "Ошибка удаления статьи": "Error al eliminar artículo",
+        "Статья опубликована": "Artículo publicado",
+        "Ошибка публикации статьи": "Error al publicar artículo"
     }
 }

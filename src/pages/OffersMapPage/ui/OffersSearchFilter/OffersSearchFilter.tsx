@@ -48,6 +48,7 @@ export const OffersSearchFilter = () => {
     const searchRef = useRef<SearchOffersRef>(null);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [initialSearchValue, setInitialSearchValue] = useState<string>();
 
     const initialCategories = (searchParams.get("category") ?? "")
         .split(",")
@@ -129,6 +130,14 @@ export const OffersSearchFilter = () => {
         onChangePage(1);
     }, []);
 
+    useEffect(() => {
+        const searchParam = searchParams.get("search");
+        if (searchParam) {
+            onApplySearch(searchParam);
+            setInitialSearchValue(searchParam);
+        }
+    }, [searchParams, onApplySearch]);
+
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         const preparedData = offersFilterApiAdapter(data);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
@@ -193,6 +202,7 @@ export const OffersSearchFilter = () => {
                             placeholder={t("Поиск")}
                             buttonText={t("Посмотреть все")}
                             ref={searchRef}
+                            initialValue={initialSearchValue}
                         />
                         <OffersList
                             data={offersData?.data}

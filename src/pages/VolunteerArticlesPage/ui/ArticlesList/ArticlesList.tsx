@@ -8,19 +8,23 @@ interface ArticlesListProps {
     articles: ArticleCardType[];
     className?: string
     onDelete: (id: string) => void;
+    onPublic: (id: string) => void;
 }
 
 export const ArticlesList: FC<ArticlesListProps> = memo((props: ArticlesListProps) => {
-    const { articles, className, onDelete } = props;
+    const {
+        articles, className, onDelete, onPublic,
+    } = props;
     const renderArticles = useMemo(() => articles.map(
         (article, index) => (
             <ArticleEditCard
                 article={article}
                 key={index}
                 onDelete={onDelete}
+                onPublic={onPublic}
             />
         ),
-    ), [articles, onDelete]);
+    ), [articles, onDelete, onPublic]);
 
     return (
         <div className={cn(className, styles.wrapper)}>{renderArticles}</div>

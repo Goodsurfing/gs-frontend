@@ -25,11 +25,14 @@ interface ArticleEditCardProps {
     article: ArticleCardType;
     className?: string;
     onDelete: (id: string) => void;
+    onPublic: (id: string) => void;
 }
 
 export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
     (props: ArticleEditCardProps) => {
-        const { article, className, onDelete } = props;
+        const {
+            article, className, onDelete, onPublic,
+        } = props;
         const { locale } = useLocale();
         const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
         const popupRef = useRef(null);
@@ -63,6 +66,15 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
                             >
                                 {t("volunteer-articles.Редактировать")}
                             </Link>
+                            {!article.isActive && (
+                                <button
+                                    type="button"
+                                    className={styles.popupButton}
+                                    onClick={() => onPublic(article.id)}
+                                >
+                                    {t("volunteer-articles.Опубликовать")}
+                                </button>
+                            )}
                             <button
                                 type="button"
                                 className={styles.popupButton}

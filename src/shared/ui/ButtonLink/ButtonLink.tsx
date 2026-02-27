@@ -6,7 +6,7 @@ import LocaleLink from "@/components/LocaleLink/LocaleLink";
 import styles from "./ButtonLink.module.scss";
 
 export interface ButtonLinkProps {
-    type: "primary" | "secondary" | "outlined";
+    type: "primary" | "secondary" | "outlined" | "white-outlined";
     size?: "LARGE" | "MEDIUM" | "SMALL" | "EXTRA-SMALL";
     path: string;
     className?: string;
@@ -33,6 +33,7 @@ const ButtonLink = memo(({
                 [styles.primary]: type === "primary",
                 [styles.secondary]: type === "secondary",
                 [styles.outlined]: type === "outlined",
+                [styles.whiteOutlined]: type === "white-outlined",
                 ...(size && styles[size] ? { [styles[size]]: size } : {}),
                 // [styles[size]]: size,
             },

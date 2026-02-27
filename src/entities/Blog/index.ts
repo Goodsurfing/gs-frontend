@@ -2,6 +2,7 @@ export {
     blogApi,
     useLazyGetBlogListQuery,
     useGetBlogByIdQuery,
+    usePublicBlogByIdMutation,
     useCreateBlogMutation,
     useUpdateBlogMutation,
     usePutLikeBlogMutation,

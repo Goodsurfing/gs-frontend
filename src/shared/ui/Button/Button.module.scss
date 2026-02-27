@@ -18,11 +18,13 @@
 	&.BLUE {
 		border: 1px solid var(--accent-color);
 		background-color: var(--accent-color);
+
 		&:hover {
 			cursor: pointer;
 			color: var(--accent-color);
 			background-color: #fff;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -31,11 +33,28 @@
 	&.GREEN {
 		background-color: var(--button-1);
 		border: 1px solid var(--button-1);
+
 		&:hover {
 			cursor: pointer;
 			color: var(--button-1);
 			background-color: #fff;
 		}
+
+		&:disabled {
+			opacity: 0.7;
+		}
+	}
+
+	&.WHITE {
+		background-color: var(--text-secondary-1);
+		border: 1px solid var(--text-secondary-1);
+		color: var(--text-primary-1);
+
+		&:hover {
+			cursor: pointer;
+			border: 1px solid var(--text-primary-1);
+		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -44,11 +63,13 @@
 	&.GRAY {
 		background-color: var(--text-caption);
 		border: 1px solid var(--text-caption);
+
 		&:hover {
 			cursor: pointer;
 			color: var(--text-caption);
 			background-color: #fff;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -57,26 +78,30 @@
 	&.BLACK {
 		background-color: var(--text-primary-2);
 		border: 1px solid var(--text-primary-2);
+
 		&:hover {
 			cursor: pointer;
 			color: var(--text-primary-2);
 			background-color: #fff;
 		}
+
 		&:disabled {
-			opacity: 0.7;	
+			opacity: 0.7;
 		}
 	}
 
 	&.RED {
 		background-color: var(--error-color);
 		border: 1px solid var(--error-color);
+
 		&:hover {
 			cursor: pointer;
 			color: var(--error-color);
 			background-color: #fff;
 		}
+
 		&:disabled {
-			opacity: 0.7;	
+			opacity: 0.7;
 		}
 	}
 }
@@ -98,6 +123,23 @@
 			background-color: var(--accent-color);
 			color: var(--text-secondary-1);
 		}
+
+		&:disabled {
+			opacity: 0.7;
+		}
+	}
+
+	&.WHITE {
+		background-color: transparent;
+		border-color: var(--text-secondary-1);
+		color: var(--text-secondary-1);
+
+		&:hover {
+			cursor: pointer;
+			background-color: var(--text-secondary-1);
+			color: var(--text-primary-1);
+		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -112,6 +154,7 @@
 			background-color: var(--button-1);
 			color: var(--text-secondary-1);
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -126,6 +169,7 @@
 			background-color: var(--text-caption);
 			color: var(--text-secondary-1);
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -140,6 +184,7 @@
 			background-color: var(--text-primary-2);
 			color: var(--text-secondary-1);
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -162,6 +207,7 @@
 		&:hover {
 			cursor: pointer;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -174,6 +220,7 @@
 		&:hover {
 			cursor: pointer;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -186,6 +233,7 @@
 		&:hover {
 			cursor: pointer;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}
@@ -198,6 +246,7 @@
 		&:hover {
 			cursor: pointer;
 		}
+
 		&:disabled {
 			opacity: 0.7;
 		}

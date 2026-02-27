@@ -7,9 +7,6 @@ import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
-
 import { userActions } from "@/entities/User";
 
 import {
@@ -36,8 +33,9 @@ import Arrow from "@/shared/ui/Arrow/Arrow";
 import Button from "@/shared/ui/Button/Button";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
-import styles from "./InfoHeader.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { InfoMobileHeader } from "../InfoMobileHeader/ui/InfoMobileHeader/InfoMobileHeader";
+import styles from "./InfoHeader.module.scss";
 
 interface DropdownState {
     isCommunityOpened: boolean;
@@ -50,7 +48,7 @@ const InfoHeader = memo(() => {
     const { t } = useTranslation();
     const { locale } = useLocale();
     const navigate = useNavigate();
-    const { myProfile, isAuth } = useAuth();
+    const { isAuth } = useAuth();
 
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
@@ -98,100 +96,110 @@ const InfoHeader = memo(() => {
     return (
         <>
             <div className={styles.mobile__header__wrapper}>
-                <MobileHeader />
+                <InfoMobileHeader />
             </div>
             <header className={styles.header}>
-                <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
-                <div
-                    ref={communityRef}
-                    className={styles.link}
-                    onClick={() => handleOpenDropdown("COMMUNITY")}
-                >
-                    <p>{t("main.welcome.header.community.title")}</p>
-                    <Arrow isOpen={dropdownOpened.isCommunityOpened} />
-                    <Popup isOpen={dropdownOpened.isCommunityOpened} className={styles.popup}>
-                        <Link to={getBlogPageUrl(locale)}>
-                            {t("main.welcome.header.community.blog")}
-                        </Link>
-                        <Link to={getVideoPageUrl(locale)}>
-                            {t("main.welcome.header.community.video")}
-                        </Link>
-                        {/* <Link to={getMainPageUrl(locale)}>
+                {/* <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} /> */}
+                <div className={styles.left}>
+                    <div
+                        ref={communityRef}
+                        className={styles.link}
+                        onClick={() => handleOpenDropdown("COMMUNITY")}
+                    >
+                        <p>{t("main.welcome.header.community.title")}</p>
+                        <Arrow
+                            className={styles.arrow}
+                            classNameOpen={styles.arrowOpen}
+                            isOpen={dropdownOpened.isCommunityOpened}
+                        />
+                        <Popup isOpen={dropdownOpened.isCommunityOpened} className={styles.popup}>
+                            <Link to={getBlogPageUrl(locale)}>
+                                {t("main.welcome.header.community.blog")}
+                            </Link>
+                            <Link to={getVideoPageUrl(locale)}>
+                                {t("main.welcome.header.community.video")}
+                            </Link>
+                            {/* <Link to={getMainPageUrl(locale)}>
                             {t("main.welcome.header.community.experts")}
                         </Link> */}
-                        <Link to={getAmbassadorsPageUrl(locale)}>
-                            {t("main.welcome.header.community.ambassadors")}
-                        </Link>
-                        <Link to={getAcademyMainPageUrl(locale)}>
-                            {t("main.welcome.header.community.courses")}
-                        </Link>
-                        <Link to={getJournalsPageUrl(locale)}>
-                            {t("main.welcome.header.community.journal")}
-                        </Link>
-                    </Popup>
-                </div>
-                <div
-                    ref={aboutProjectRef}
-                    className={styles.link}
-                    onClick={() => handleOpenDropdown("ABOUT")}
-                >
-                    <p>{t("main.welcome.header.about-project.title")}</p>
-                    <Arrow isOpen={dropdownOpened.isAboutProjectOpened} />
-                    <Popup isOpen={dropdownOpened.isAboutProjectOpened} className={styles.popup}>
-                        <Link to={getNewsPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.news")}
-                        </Link>
-                        <Link to={getAboutProjectPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.about-goodsurfing")}
-                        </Link>
-                        <Link to={getNPOPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.about-npo")}
-                        </Link>
-                        <Link to={getOurTeamPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.our-team")}
-                        </Link>
-                        <Link to={getMembershipPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.how-it-works")}
-                        </Link>
-                        <Link to={getRulesPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.rules")}
-                        </Link>
-                        <Link to={getPrivacyPolicyPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.privacy-policy")}
-                        </Link>
-                        <Link to={getAboutProjectPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.about-goodsurfing")}
-                        </Link>
-                        <Link to={getFindJobPageUrl(locale)}>
-                            {t("main.welcome.header.about-project.find-job")}
-                        </Link>
-                    </Popup>
-                </div>
-
-                {isAuth ? (
-                    <>
+                            <Link to={getAmbassadorsPageUrl(locale)}>
+                                {t("main.welcome.header.community.ambassadors")}
+                            </Link>
+                            <Link to={getAcademyMainPageUrl(locale)}>
+                                {t("main.welcome.header.community.courses")}
+                            </Link>
+                            <Link to={getJournalsPageUrl(locale)}>
+                                {t("main.welcome.header.community.journal")}
+                            </Link>
+                        </Popup>
+                    </div>
+                    <div
+                        ref={aboutProjectRef}
+                        className={styles.link}
+                        onClick={() => handleOpenDropdown("ABOUT")}
+                    >
+                        <p>{t("main.welcome.header.about-project.title")}</p>
+                        <Arrow
+                            className={styles.arrow}
+                            classNameOpen={styles.arrowOpen}
+                            isOpen={dropdownOpened.isAboutProjectOpened}
+                        />
+                        <Popup
+                            isOpen={dropdownOpened.isAboutProjectOpened}
+                            className={styles.popup}
+                        >
+                            <Link to={getNewsPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.news")}
+                            </Link>
+                            <Link to={getAboutProjectPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.about-goodsurfing")}
+                            </Link>
+                            <Link to={getNPOPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.about-npo")}
+                            </Link>
+                            <Link to={getOurTeamPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.our-team")}
+                            </Link>
+                            <Link to={getMembershipPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.how-it-works")}
+                            </Link>
+                            <Link to={getRulesPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.rules")}
+                            </Link>
+                            <Link to={getPrivacyPolicyPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.privacy-policy")}
+                            </Link>
+                            <Link to={getFindJobPageUrl(locale)}>
+                                {t("main.welcome.header.about-project.find-job")}
+                            </Link>
+                        </Popup>
+                    </div>
+                    {isAuth && (
                         <div className={styles.link}>
                             <Link to={getProfileInfoPageUrl(locale)}>
                                 {t("main.welcome.header.profile")}
                             </Link>
                         </div>
-                        <div className={styles.link}>
-                            <Button
-                                onClick={handleLogout}
-                                className={styles.btn}
-                                variant="FILL"
-                                color="BLUE"
-                                size="MEDIUM"
-                            >
-                                {t("main.welcome.header.exit")}
-                            </Button>
-                        </div>
-                    </>
+                    )}
+                </div>
+
+                {isAuth ? (
+                    <div className={styles.link}>
+                        <Button
+                            onClick={handleLogout}
+                            className={styles.btn}
+                            variant="FILL"
+                            color="WHITE"
+                            size="MEDIUM"
+                        >
+                            {t("main.welcome.header.exit")}
+                        </Button>
+                    </div>
                 ) : (
                     <div className={styles.link}>
                         <ButtonLink
                             className={styles.btn}
-                            type="outlined"
+                            type="white-outlined"
                             path={getSignInPageUrl(locale)}
                         >
                             {t("main.welcome.header.sign-in")}

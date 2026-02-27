@@ -2,7 +2,7 @@ import React, {
     forwardRef,
     useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState,
 } from "react";
-import { IconButton, InputBase, Paper } from "@mui/material";
+import { InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -10,40 +10,38 @@ import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./SearchOffers.module.scss";
 import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import useDebounce from "@/shared/hooks/useDebounce";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import Button from "@/shared/ui/Button/Button";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
+import styles from "./InfoSearchOffers.module.scss";
 
-interface SearchOffersProps {
+interface InfoSearchOffersProps {
     onSubmit: (search: string) => void;
     onResetFilters: () => void;
     placeholder?: string;
     buttonText?: string;
     className?: string;
-    initialValue?: string;
 }
 
 export interface SearchOffersRef {
     clearSearch: () => void;
 }
 
-export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
+export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProps>(
     (
         {
             onSubmit, onResetFilters,
             placeholder = "Поиск", buttonText = "Посмотреть все", className,
-            initialValue,
         },
         ref,
     ) => {
         const [fetchOffersDropdown, {
             data: offersDropdown,
             isLoading: offersDropdownIsLoading, isFetching: offersDropdownIsFetching,
-        }] = useLazyGetOffersQuery(); // Нужно заменить на отдельный запрос от основного
+        }] = useLazyGetOffersQuery();
         const isLoading = useMemo(() => offersDropdownIsLoading
     || offersDropdownIsFetching, [offersDropdownIsFetching,
             offersDropdownIsLoading]);
@@ -63,12 +61,6 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                 setSearchInput("");
             },
         }));
-
-        useEffect(() => {
-            if (initialValue) {
-                setSearchInput(initialValue);
-            }
-        }, [initialValue]);
 
         useEffect(() => {
             if (searchInput.trim().length > 0) {
@@ -123,9 +115,10 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
         }, []);
 
         return (
-            <div ref={containerRef} className={cn(className)} style={{ position: "relative" }}>
+            <div ref={containerRef} className={cn(styles.wrapper, className)}>
                 <Paper
                     sx={{
+                        width: "100%",
                         p: "3px 6px",
                         border: "1px solid var(--bg-field)",
                         display: "flex",
@@ -149,13 +142,21 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                 handleSubmit();
                             }
                         }}
+                        className={styles.inputSearch}
                         inputProps={{ "aria-label": "Поиск вакансий" }}
                     />
-                    {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
-                    <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
-                        <ReactSVG className={styles.searchIcn} src={searchIcon} />
-                    </IconButton>
+                    {searchInput.length > 0 && (
+                        <CloseButton
+                            className={styles.closeButton}
+                            onClick={handleClear}
+                        />
+                    )}
+
                 </Paper>
+                <button onClick={handleSubmit} type="button" className={styles.searchButton}>
+                    Найти
+                    <ReactSVG className={styles.searchIcn} src={searchIcon} />
+                </button>
 
                 {(dropdownVisible && searchInput.length > 0) && (
                     <div className={styles.dropdown}>

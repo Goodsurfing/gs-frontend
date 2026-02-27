@@ -13,7 +13,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import styles from "./JournalsPage.module.scss";
 
-const limit = 10;
+const limit = 9;
 
 const getSortByFilter = (filter: TagsOption): AdminSort => {
     switch (filter) {
