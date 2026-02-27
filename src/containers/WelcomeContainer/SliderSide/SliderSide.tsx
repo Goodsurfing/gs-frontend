@@ -10,22 +10,29 @@ import Slide from "@/containers/WelcomeContainer/SliderSide/Slide/Slide";
 import { useTranslatedSliderData } from "@/containers/WelcomeContainer/SliderSide/Slider.data";
 
 import styles from "./SliderSide.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 const SliderSide: FC = memo(() => {
     const sliderData = useTranslatedSliderData();
+    const { locale } = useLocale();
+
     return (
         <div className={styles.wrapper}>
             <Swiper
                 modules={[Pagination, Autoplay, EffectFade]}
                 effect="fade"
                 slidesPerView={1}
-                autoplay
-                pagination={{ clickable: true }}
+                // autoplay
+                pagination={{
+                    clickable: true,
+                    bulletClass: `swiper-pagination-bullet ${styles.bullet}`,
+                    bulletActiveClass: `swiper-pagination-bullet-active ${styles.bulletActive}`,
+                }}
             >
                 {sliderData
                     && sliderData.map((item, index) => (
                         <SwiperSlide key={index}>
-                            <Slide {...item} />
+                            <Slide {...item} locale={locale} />
                         </SwiperSlide>
                     ))}
             </Swiper>

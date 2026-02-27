@@ -1,11 +1,22 @@
 .wrapper {
 	display: flex;
-	overflow: hidden;
+	overflow: visible;
 	align-items: flex-start;
 	flex-basis: 50%;
 	flex-direction: column;
+	height: 100%;
 
 	padding: 28px 48px;
+}
+
+.searchWrapper {
+	width: 100%;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 40px;
 }
 
 .content {
@@ -13,19 +24,28 @@
 	flex-direction: column;
 
 	width: 100%;
-	padding-top: 80px;
+	padding-top: 100px;
+	height: 100%;
 }
 
 .info {
 	display: flex;
 	align-items: flex-start;
 	flex-direction: column;
+	max-width: 713px;
 
-	margin-bottom: 100px;
+	margin-bottom: 20px;
+}
+
+.activity {
+	margin-top: auto;
 }
 
 .title {
 	margin-bottom: 40px;
+	font-size: 72px;
+	line-height: 100%;
+	font-weight: 400;
 
 	text-align: left !important;
 
@@ -38,7 +58,9 @@
 	color: var(--color-dark-blue);
 
 	font-weight: 400;
+	font-size: 22px;
 	line-height: 150%;
+	max-width: 580px;
 }
 
 @media screen and (max-width: 1000px) {
@@ -52,6 +74,11 @@
 
 	.title {
 		text-align: center !important;
+		font-size: 48px;
+	}
+
+	.title {
+		font-size: 48px;
 	}
 
 	.activityTitle {
@@ -72,5 +99,9 @@
 
 	.btn {
 		font-size: 0.875rem;
+	}
+
+	.title {
+		font-size: 32px;
 	}
 }

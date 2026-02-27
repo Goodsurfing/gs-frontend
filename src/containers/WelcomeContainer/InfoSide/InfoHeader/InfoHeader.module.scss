@@ -2,8 +2,12 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
-	width: 100%;
+	padding: 17px 70px;
+	width: 50%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 3;
 }
 
 .link {
@@ -19,7 +23,7 @@
 		transition: color 0.2s ease-in-out;
 		text-decoration: none;
 
-		color: var(--color-blue);
+		color: var(--text-secondary-1);
 
 		font-size: 1rem;
 		font-weight: 600;
@@ -31,12 +35,26 @@
 	}
 }
 
+.arrow {
+	border-color: var(--text-secondary-1) transparent transparent;
+}
+
+.arrowOpen {
+	border-color: transparent transparent var(--text-secondary-1);
+}
+
 .btn {
 	padding: 9px 10px;
 }
 
 .link {
 	position: relative;
+}
+
+.left {
+	display: flex;
+	align-items: center;
+	gap: 24px;
 }
 
 .popup {
@@ -66,19 +84,21 @@
 	}
 
 	&::before {
-        content: "";
-        position: absolute;
-        top: -8px;
-        left: 20px;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 10px solid var(--bg-field);
-    }
+		content: "";
+		position: absolute;
+		top: -8px;
+		left: 20px;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 10px solid var(--bg-field);
+	}
 }
 
 .mobile__header__wrapper {
 	display: none;
-
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 }
 
