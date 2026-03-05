@@ -20,12 +20,13 @@ export const donationApi = createApi({
     baseQuery: baseQueryV3,
     tagTypes: ["donation"],
     endpoints: (build) => ({
-        getDonations: build.query<GetDonationsResponse, GetDonationsParams>({
+        getDonations: build.query<GetDonationsResponse, Partial<GetDonationsParams>>({
             query: (params) => ({
                 url: "fundraise/list",
                 method: "GET",
                 params,
             }),
+            providesTags: ["donation"],
         }),
         getDonation: build.query<GetDonation, GetDonationParams>({
             query: ({ id, lang }) => ({
@@ -33,31 +34,36 @@ export const donationApi = createApi({
                 method: "GET",
                 params: { lang },
             }),
+            providesTags: ["donation"],
         }),
-        getDonationsMap: build.query<GetDonationsMap[], GetDonationsMapParams>({
+        getDonationsMap: build.query<GetDonationsMap[], Partial<GetDonationsMapParams>>({
             query: (params) => ({
                 url: "fundraise/for-map/list",
                 method: "GET",
                 params,
             }),
+            providesTags: ["donation"],
         }),
         deleteDonationById: build.mutation<void, string>({
             query: (id) => ({
                 url: `fundraise/${id}`,
                 method: "DELETE",
             }),
+            invalidatesTags: ["donation"],
         }),
         createDonation: build.mutation<CreateDonationResponse, void>({
             query: () => ({
                 url: "fundraise/create",
                 method: "POST",
             }),
+            invalidatesTags: ["donation"],
         }),
         getDonationAddress: build.query<GetDonationAddress, string>({
             query: (id) => ({
                 url: `fundraise/address/${id}`,
                 method: "GET",
             }),
+            providesTags: ["donation"],
         }),
         updateDonationAddress: build.mutation<void, UpdateDonationAddressRequest>({
             query: ({ id, body }) => ({
@@ -65,12 +71,14 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
         getDonationWhen: build.query<GetDonationWhen, string>({
             query: (id) => ({
                 url: `fundraise/when/${id}`,
                 method: "GET",
             }),
+            providesTags: ["donation"],
         }),
         updateDonationWhen: build.mutation<void, UpdateDonationWhenRequest>({
             query: ({ id, body }) => ({
@@ -78,12 +86,14 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
         getDonationHowMany: build.query<GetDonationHowMany, string>({
             query: (id) => ({
                 url: `fundraise/how-many/${id}`,
                 method: "GET",
             }),
+            providesTags: ["donation"],
         }),
         updateDonationHowMany: build.mutation<void, UpdateDonationHowManyRequest>({
             query: ({ id, body }) => ({
@@ -91,12 +101,14 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
         getDonationDescription: build.query<GetDonationDescription, string>({
             query: (id) => ({
                 url: `fundraise/description/${id}`,
                 method: "GET",
             }),
+            providesTags: ["donation"],
         }),
         updateDonationDescription: build.mutation<void, UpdateDonationDescriptionRequest>({
             query: ({ id, body }) => ({
@@ -104,12 +116,14 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
         getDonationAutoMessages: build.query<GetDonationAutoMessages, string>({
             query: (id) => ({
                 url: `fundraise/description/${id}`,
                 method: "GET",
             }),
+            providesTags: ["donation"],
         }),
         updateDonationAutoMessages: build.mutation<void, UpdateDonationAutoMessagesRequest>({
             query: ({ id, body }) => ({
@@ -117,6 +131,7 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
         updateDonationStatus: build.mutation<void, UpdateDonationStatusRequest>({
             query: ({ id, body }) => ({
@@ -124,6 +139,7 @@ export const donationApi = createApi({
                 method: "PATCH",
                 body,
             }),
+            invalidatesTags: ["donation"],
         }),
     }),
 });

@@ -4,10 +4,13 @@ import { Pagination } from "@/types/api/pagination";
 import { CategoryNews } from "@/types/categories";
 import { Image } from "@/types/media";
 
+export type DonationSort = "urgency" | "popular";
+
 export interface DonationFilterFields {
-    category: number[];
+    category?: number;
     showFinishedProjects: boolean;
     showSuccessProjects: boolean;
+    sort: DonationSort;
 }
 
 export type DonationStatus = "draft" | "active" | "close";

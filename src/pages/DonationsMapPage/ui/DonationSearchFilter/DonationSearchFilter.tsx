@@ -10,13 +10,14 @@ import { useTranslation } from "react-i18next";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
 import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
-import { DonationFilterFields } from "@/entities/Donation";
+import { donationFilterApiAdapter, DonationFilterFields, donationMapFilterApiAdapter, useLazyGetDonationsMapQuery, useLazyGetDonationsQuery } from "@/entities/Donation";
 import styles from "./DonationSearchFilter.module.scss";
+import { AdminSort } from "@/entities/Admin";
+import { SearchDonations } from "@/widgets/Donation";
 
 const defaultValues: DonationFilterFields = {
-    category: [],
+    sort: "urgency",
     showFinishedProjects: false,
     showSuccessProjects: false,
 };
@@ -28,12 +29,13 @@ const PER_PAGE = 20;
 export const DonationSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
-    const [fetchAllOffersMap,
+    const [fetchDonations, { data: donationsData, 
+        isLoading, isFetching }] = useLazyGetDonationsQuery();
+    const [fetchAllDonationsMap,
         {
-            data: allOffersMap = [], isLoading: isAllOffersMapLoading,
-            isFetching: isAllOffersMapFetching,
-        }] = useLazyGetAllOffersMapQuery();
+            data: allDonationsMap = [], isLoading: isAllDonationsMapLoading,
+            isFetching: isAllDonationsMapFetching,
+        }] = useLazyGetDonationsMapQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
@@ -41,13 +43,13 @@ export const DonationSearchFilter = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
 
-    const initialCategories = (searchParams.get("category") ?? "")
+    const initialCategories = ((searchParams.get("category") ?? "")
         .split(",")
         .map((str) => str.trim())
         .map(Number)
-        .filter((id) => !Number.isNaN(id) && id > 0);
+        .filter((id) => !Number.isNaN(id) && id > 0)?.[0]) ?? 0;
 
-    const offerFilterForm = useForm<OffersFilterFields>({
+    const donationFilterForm = useForm<DonationFilterFields>({
         mode: "onChange",
         defaultValues: {
             ...defaultFilterValues,
@@ -57,26 +59,26 @@ export const DonationSearchFilter = () => {
 
     const {
         watch, setValue, reset, handleSubmit,
-    } = offerFilterForm;
+    } = donationFilterForm;
 
     const [isSyncing, setIsSyncing] = useState(false);
 
     useEffect(() => {
         const watchData = watch();
-        const preparedData = offersFilterApiAdapter(watchData);
-        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        const preparedData = donationFilterApiAdapter(watchData);
+        fetchDonations({ ...preparedData, limit: PER_PAGE, page: currentPage });
     }, [currentPage]);
 
     useEffect(() => {
         const watchData = watch();
-        const preparedData = offersFilterApiAdapter(watchData);
-        fetchAllOffersMap({ ...preparedData });
+        const preparedData = donationMapFilterApiAdapter(watchData);
+        fetchAllDonationsMap({ ...preparedData });
     }, []);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             if (!isSyncing && name === "category") {
-                const newCategory = (value.category || []).join(",");
+                const newCategory = value.category ? String(value.category) : "";
                 setSearchParams((prev) => {
                     const updated = new URLSearchParams(prev);
                     if (newCategory) {
@@ -94,16 +96,11 @@ export const DonationSearchFilter = () => {
     useEffect(() => {
         setIsSyncing(true);
 
-        const categoriesFromURL = searchParams.get("category") ?? "";
-        const parsedCategories = categoriesFromURL
-            .split(",")
-            .map((str) => {
-                const num = Number(str.trim());
-                return Number.isNaN(num) || num <= 0 ? null : num;
-            })
-            .filter((id): id is number => id !== null);
+        const categoryFromURL = searchParams.get("category") ?? "";
+        const num = Number(categoryFromURL.trim());
+        const parsedCategory = !Number.isNaN(num) && num > 0 ? num : 0;
 
-        setValue("category", parsedCategories);
+        setValue("category", parsedCategory);
         setIsSyncing(false);
     }, [searchParams, setValue]);
 
@@ -113,10 +110,10 @@ export const DonationSearchFilter = () => {
 
     const onApplySearch = useCallback(async (search: string) => {
         setSearchParams(new URLSearchParams());
-        fetchOffers({
-            sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
+        fetchDonations({
+            sort: AdminSort.EndDateDesc, name: search, limit: PER_PAGE, page: 1,
         });
-        fetchAllOffersMap({ search });
+        fetchAllDonationsMap({ name: search });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -129,19 +126,19 @@ export const DonationSearchFilter = () => {
         }
     }, [searchParams, onApplySearch]);
 
-    const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
-        const preparedData = offersFilterApiAdapter(data);
-        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        fetchAllOffersMap({ ...preparedData });
+    const onApplyFilters = useCallback(handleSubmit(async (data: DonationFilterFields) => {
+        const preparedData = donationFilterApiAdapter(data);
+        fetchDonations({ ...preparedData, limit: PER_PAGE, page: 1 });
+        fetchAllDonationsMap({ ...preparedData });
         onChangePage(1);
     }), []);
 
     const onResetFilters = useCallback(async () => {
         setSearchParams(new URLSearchParams());
         searchRef.current?.clearSearch();
-        const preparedData = offersFilterApiAdapter(defaultValues);
-        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        fetchAllOffersMap({ ...preparedData });
+        const preparedData = donationFilterApiAdapter(defaultValues);
+        fetchDonations({ ...preparedData, limit: PER_PAGE, page: 1 });
+        fetchAllDonationsMap({ ...preparedData });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -152,15 +149,15 @@ export const DonationSearchFilter = () => {
 
     useEffect(() => {
         const subscription = watch((value, { name, type }) => {
-            if ((name === "offersSort.showClosedOffers" || name === "offersSort.sortValue") && type === "change") {
+            if ((name === "sort") && type === "change") {
                 if (debounceTimeoutRef.current) {
                     clearTimeout(debounceTimeoutRef.current);
                 }
 
                 debounceTimeoutRef.current = setTimeout(() => {
-                    const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
-                    fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
-                    fetchAllOffersMap({ ...preparedData });
+                    const preparedData = donationFilterApiAdapter(value as DonationFilterFields);
+                    fetchDonations({ ...preparedData, limit: PER_PAGE, page: currentPage });
+                    fetchAllDonationsMap({ ...preparedData });
                 }, 300);
             }
         });
@@ -174,7 +171,7 @@ export const DonationSearchFilter = () => {
     }, []);
 
     return (
-        <FormProvider {...offerFilterForm}>
+        <FormProvider {...donationFilterForm}>
             <div className={styles.wrapper}>
                 <OffersFilter
                     onSubmit={onApplyFilters}
@@ -186,7 +183,7 @@ export const DonationSearchFilter = () => {
                         [styles.closed]: !isMapOpened,
                     })}
                     >
-                        <SearchOffers
+                        <SearchDonations
                             className={styles.searchWrapper}
                             onSubmit={onApplySearch}
                             onResetFilters={onResetFilters}
@@ -196,7 +193,7 @@ export const DonationSearchFilter = () => {
                             initialValue={initialSearchValue}
                         />
                         <OffersList
-                            data={offersData?.data}
+                            data={donationsData?.data}
                             isLoading={isLoading || isFetching}
                             className={cn(styles.offersList)}
                             onChangeMapOpen={handleMapOpen}

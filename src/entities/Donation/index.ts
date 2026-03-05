@@ -1,4 +1,8 @@
-export type { DonationFilterFields } from "./model/types/donationSchema";
+export type {
+    DonationFilterFields,
+    DonationSort,
+} from "./model/types/donationSchema";
+
 export {
     donationApi,
     useLazyGetDonationsQuery,
@@ -19,3 +23,8 @@ export {
     useUpdateDonationAutoMessagesMutation,
     useUpdateDonationStatusMutation,
 } from "./api/donationApi";
+
+export {
+    donationFilterApiAdapter,
+    donationMapFilterApiAdapter,
+} from "./lib/donationAdapter";
