@@ -30,6 +30,7 @@ import { newsApi } from "@/entities/News";
 import { blogApi } from "@/entities/Blog";
 import { journalApi } from "@/entities/Journal";
 import { videoApi } from "@/entities/Video";
+import { donationApi } from "@/entities/Donation";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -53,6 +54,7 @@ const rootReducer = combineReducers({
     [blogApi.reducerPath]: blogApi.reducer,
     [journalApi.reducerPath]: journalApi.reducer,
     [videoApi.reducerPath]: videoApi.reducer,
+    [donationApi.reducerPath]: donationApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [adminCourseApi.reducerPath]: adminCourseApi.reducer,
     [adminNewsApi.reducerPath]: adminNewsApi.reducer,
@@ -80,6 +82,7 @@ export const setupStore = () => configureStore({
         newsApi.middleware,
         journalApi.middleware,
         videoApi.middleware,
+        donationApi.middleware,
         adminApi.middleware,
         adminCourseApi.middleware,
         adminNewsApi.middleware,

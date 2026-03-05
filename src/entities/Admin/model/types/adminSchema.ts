@@ -183,6 +183,8 @@ export enum AdminSort {
     JournalNameDesc = "journalName:desc",
     LikeCountAsc = "likeCount:asc",
     LikeCountDesc = "likeCount:desc",
+    EndDateAsc = "endDate:asc",
+    EndDateDesc = "endDate:desc",
 }
 
 export interface GetAdminUserParams {

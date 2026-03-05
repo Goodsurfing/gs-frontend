@@ -1,0 +1,236 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import cn from "classnames";
+import React, {
+    useCallback, useEffect, useRef, useState,
+} from "react";
+import { DefaultValues, FormProvider, useForm } from "react-hook-form";
+
+import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { OffersList, OffersMap } from "@/widgets/OffersMap";
+import { OffersFilter } from "../OffersFilter/OffersFilter";
+import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
+import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
+import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
+import { DonationFilterFields } from "@/entities/Donation";
+import styles from "./DonationSearchFilter.module.scss";
+
+const defaultValues: DonationFilterFields = {
+    category: [],
+    showFinishedProjects: false,
+    showSuccessProjects: false,
+};
+
+const defaultFilterValues: DefaultValues<DonationFilterFields> = defaultValues;
+
+const PER_PAGE = 20;
+
+export const DonationSearchFilter = () => {
+    const [isMapOpened, setMapOpened] = useState<boolean>(true);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [fetchOffers, { data: offersData, isLoading, isFetching }] = useLazyGetOffersQuery();
+    const [fetchAllOffersMap,
+        {
+            data: allOffersMap = [], isLoading: isAllOffersMapLoading,
+            isFetching: isAllOffersMapFetching,
+        }] = useLazyGetAllOffersMapQuery();
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const { t } = useTranslation("offers-map");
+    const searchRef = useRef<SearchOffersRef>(null);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [initialSearchValue, setInitialSearchValue] = useState<string>();
+
+    const initialCategories = (searchParams.get("category") ?? "")
+        .split(",")
+        .map((str) => str.trim())
+        .map(Number)
+        .filter((id) => !Number.isNaN(id) && id > 0);
+
+    const offerFilterForm = useForm<OffersFilterFields>({
+        mode: "onChange",
+        defaultValues: {
+            ...defaultFilterValues,
+            category: initialCategories,
+        },
+    });
+
+    const {
+        watch, setValue, reset, handleSubmit,
+    } = offerFilterForm;
+
+    const [isSyncing, setIsSyncing] = useState(false);
+
+    useEffect(() => {
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+    }, [currentPage]);
+
+    useEffect(() => {
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
+        fetchAllOffersMap({ ...preparedData });
+    }, []);
+
+    useEffect(() => {
+        const subscription = watch((value, { name }) => {
+            if (!isSyncing && name === "category") {
+                const newCategory = (value.category || []).join(",");
+                setSearchParams((prev) => {
+                    const updated = new URLSearchParams(prev);
+                    if (newCategory) {
+                        updated.set("category", newCategory);
+                    } else {
+                        updated.delete("category");
+                    }
+                    return updated;
+                });
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, [watch, setSearchParams, isSyncing]);
+
+    useEffect(() => {
+        setIsSyncing(true);
+
+        const categoriesFromURL = searchParams.get("category") ?? "";
+        const parsedCategories = categoriesFromURL
+            .split(",")
+            .map((str) => {
+                const num = Number(str.trim());
+                return Number.isNaN(num) || num <= 0 ? null : num;
+            })
+            .filter((id): id is number => id !== null);
+
+        setValue("category", parsedCategories);
+        setIsSyncing(false);
+    }, [searchParams, setValue]);
+
+    const onChangePage = useCallback((pageItem: number) => {
+        setCurrentPage(pageItem);
+    }, []);
+
+    const onApplySearch = useCallback(async (search: string) => {
+        setSearchParams(new URLSearchParams());
+        fetchOffers({
+            sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
+        });
+        fetchAllOffersMap({ search });
+        reset(defaultValues);
+        onChangePage(1);
+    }, []);
+
+    useEffect(() => {
+        const searchParam = searchParams.get("search");
+        if (searchParam) {
+            onApplySearch(searchParam);
+            setInitialSearchValue(searchParam);
+        }
+    }, [searchParams, onApplySearch]);
+
+    const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
+        const preparedData = offersFilterApiAdapter(data);
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        fetchAllOffersMap({ ...preparedData });
+        onChangePage(1);
+    }), []);
+
+    const onResetFilters = useCallback(async () => {
+        setSearchParams(new URLSearchParams());
+        searchRef.current?.clearSearch();
+        const preparedData = offersFilterApiAdapter(defaultValues);
+        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+        fetchAllOffersMap({ ...preparedData });
+        reset(defaultValues);
+        onChangePage(1);
+    }, []);
+
+    const handleMapOpen = useCallback(() => {
+        setMapOpened((prev) => !prev);
+    }, []);
+
+    useEffect(() => {
+        const subscription = watch((value, { name, type }) => {
+            if ((name === "offersSort.showClosedOffers" || name === "offersSort.sortValue") && type === "change") {
+                if (debounceTimeoutRef.current) {
+                    clearTimeout(debounceTimeoutRef.current);
+                }
+
+                debounceTimeoutRef.current = setTimeout(() => {
+                    const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
+                    fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+                    fetchAllOffersMap({ ...preparedData });
+                }, 300);
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    return (
+        <FormProvider {...offerFilterForm}>
+            <div className={styles.wrapper}>
+                <OffersFilter
+                    onSubmit={onApplyFilters}
+                    onResetFilters={onResetFilters}
+                    className={styles.filter}
+                />
+                <div className={styles.wrapperOffersMap}>
+                    <div className={cn(styles.searchOffersList, {
+                        [styles.closed]: !isMapOpened,
+                    })}
+                    >
+                        <SearchOffers
+                            className={styles.searchWrapper}
+                            onSubmit={onApplySearch}
+                            onResetFilters={onResetFilters}
+                            placeholder={t("Поиск")}
+                            buttonText={t("Посмотреть все")}
+                            ref={searchRef}
+                            initialValue={initialSearchValue}
+                        />
+                        <OffersList
+                            data={offersData?.data}
+                            isLoading={isLoading || isFetching}
+                            className={cn(styles.offersList)}
+                            onChangeMapOpen={handleMapOpen}
+                            mapOpenValue={isMapOpened}
+                            currentPage={currentPage}
+                            offersPerPage={OFFERS_PER_PAGE}
+                            onChangePage={onChangePage}
+                            total={offersData?.pagination.total ?? 0}
+                        />
+                    </div>
+                    {isMapOpened && (
+                        <OffersMap
+                            offersData={allOffersMap}
+                            isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
+                            className={styles.offersMap}
+                            classNameMap={styles.offersMap}
+                        />
+                    )}
+                </div>
+                <OffersSearchFilterMobile
+                    data={offersData?.data}
+                    allOffersMapData={allOffersMap}
+                    isLoadingAllOffersMap={isAllOffersMapLoading || isAllOffersMapFetching}
+                    isLoading={isLoading || isFetching}
+                    className={styles.mobile}
+                    onApplySearch={onApplySearch}
+                    onSubmit={onApplyFilters}
+                    onResetFilters={onResetFilters}
+                    currentPage={currentPage}
+                    offersPerPage={OFFERS_PER_PAGE}
+                    total={offersData?.pagination.total ?? 0}
+                    onChangePage={onChangePage}
+                />
+            </div>
+        </FormProvider>
+    );
+};

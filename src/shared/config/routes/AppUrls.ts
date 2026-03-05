@@ -180,6 +180,10 @@ export const getAcademyCoursePageUrl: RoutePathFunction = (locale, id = ":id") =
 
 export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.academy_lesson}/${id}`;
 
+// Donation
+
+export const getDonationsMapPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.donation_map}`;
+
 // Admin pages
 
 export const getAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin}`;
