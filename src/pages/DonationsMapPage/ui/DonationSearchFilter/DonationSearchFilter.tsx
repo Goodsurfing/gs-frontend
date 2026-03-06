@@ -7,14 +7,17 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { OffersList, OffersMap } from "@/widgets/OffersMap";
-import { OffersFilter } from "../OffersFilter/OffersFilter";
-import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
-import { donationFilterApiAdapter, DonationFilterFields, donationMapFilterApiAdapter, useLazyGetDonationsMapQuery, useLazyGetDonationsQuery } from "@/entities/Donation";
-import styles from "./DonationSearchFilter.module.scss";
+import { DonationsFilter } from "../DonationsFilter/DonationsFilter";
+import {
+    donationFilterApiAdapter, DonationFilterFields, donationMapFilterApiAdapter,
+    useLazyGetDonationsMapQuery, useLazyGetDonationsQuery,
+} from "@/entities/Donation";
 import { AdminSort } from "@/entities/Admin";
-import { SearchDonations } from "@/widgets/Donation";
+import {
+    DonationsList, DonationsMap, SearchDonations, SearchDonationsRef,
+} from "@/widgets/Donation";
+import styles from "./DonationSearchFilter.module.scss";
+import { mockCardDonations } from "@/entities/Donation/data/mockDonations";
 
 const defaultValues: DonationFilterFields = {
     sort: "urgency",
@@ -29,16 +32,18 @@ const PER_PAGE = 20;
 export const DonationSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [fetchDonations, { data: donationsData, 
-        isLoading, isFetching }] = useLazyGetDonationsQuery();
+    const [fetchDonations, {
+        data: donationsData,
+        isLoading, isFetching,
+    }] = useLazyGetDonationsQuery();
     const [fetchAllDonationsMap,
         {
             data: allDonationsMap = [], isLoading: isAllDonationsMapLoading,
             isFetching: isAllDonationsMapFetching,
         }] = useLazyGetDonationsMapQuery();
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const { t } = useTranslation("offers-map");
-    const searchRef = useRef<SearchOffersRef>(null);
+    const { t } = useTranslation("donation");
+    const searchRef = useRef<SearchDonationsRef>(null);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
@@ -173,7 +178,7 @@ export const DonationSearchFilter = () => {
     return (
         <FormProvider {...donationFilterForm}>
             <div className={styles.wrapper}>
-                <OffersFilter
+                <DonationsFilter
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
                     className={styles.filter}
@@ -192,28 +197,29 @@ export const DonationSearchFilter = () => {
                             ref={searchRef}
                             initialValue={initialSearchValue}
                         />
-                        <OffersList
-                            data={donationsData?.data}
+                        <DonationsList
+                            data={mockCardDonations}
                             isLoading={isLoading || isFetching}
                             className={cn(styles.offersList)}
                             onChangeMapOpen={handleMapOpen}
                             mapOpenValue={isMapOpened}
                             currentPage={currentPage}
-                            offersPerPage={OFFERS_PER_PAGE}
+                            donationsPerPage={PER_PAGE}
                             onChangePage={onChangePage}
-                            total={offersData?.pagination.total ?? 0}
+                            total={donationsData?.pagination.total ?? 0}
                         />
                     </div>
                     {isMapOpened && (
-                        <OffersMap
-                            offersData={allOffersMap}
-                            isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
+                        <DonationsMap
+                            donationsData={allDonationsMap}
+                            isDonationsLoading={isAllDonationsMapLoading
+                                || isAllDonationsMapFetching}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                         />
                     )}
                 </div>
-                <OffersSearchFilterMobile
+                {/* <OffersSearchFilterMobile
                     data={offersData?.data}
                     allOffersMapData={allOffersMap}
                     isLoadingAllOffersMap={isAllOffersMapLoading || isAllOffersMapFetching}
@@ -226,7 +232,7 @@ export const DonationSearchFilter = () => {
                     offersPerPage={OFFERS_PER_PAGE}
                     total={offersData?.pagination.total ?? 0}
                     onChangePage={onChangePage}
-                />
+                /> */}
             </div>
         </FormProvider>
     );

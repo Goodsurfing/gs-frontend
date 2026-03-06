@@ -11,24 +11,24 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { YmapType } from "@/entities/Map";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
-import "./yandex-map-restyle-ballon.scss";
-import { OfferMap } from "@/entities/Offer";
-import styles from "./OffersMap.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import "./yandex-map-restyle-ballon.scss";
+import { GetDonationsMap } from "@/entities/Donation";
+import styles from "./DonationsMap.module.scss";
 
-interface OffersMapProps {
+interface DonationsMapProps {
     className?: string;
     classNameMap?: string;
-    offersData: OfferMap[];
-    isOffersLoading: boolean;
+    donationsData: GetDonationsMap[];
+    isDonationsLoading: boolean;
 }
 
-export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
+export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProps) => {
     const {
-        className, classNameMap, isOffersLoading,
-        offersData,
+        className, classNameMap, isDonationsLoading,
+        donationsData,
     } = props;
     const { locale } = useLocale();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
@@ -36,36 +36,36 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const objectManagerRef = useRef<any>(null);
 
     const features = useMemo(() => {
-        if (isOffersLoading || !offersData.length) return [];
+        if (isDonationsLoading || !donationsData.length) return [];
 
-        return offersData
-            .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
-            .map((offer) => {
-                const imgSrc = offer?.image?.contentUrl;
-                const title = offer.name || "Без названия";
-                const categoryName = offer.categories[0]?.name ?? "Без категории";
-                const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
+        return donationsData
+            .filter((donation) => typeof donation.latitude === "number" && typeof donation.longitude === "number")
+            .map((donation) => {
+                const imgSrc = donation?.image?.contentUrl;
+                const title = donation.name || "Без названия";
+                const categoryName = donation.categories[0]?.name ?? "Без категории";
+                const categoryColor = donation.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
+            <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
-              <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
+              <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
             </div>
           </div>
         `;
 
                 return {
                     type: "Feature",
-                    id: offer.id.toString(),
-                    geometry: { type: "Point", coordinates: [offer.latitude, offer.longitude] },
+                    id: donation.id,
+                    geometry: { type: "Point", coordinates: [donation.latitude, donation.longitude] },
                     properties: {
-                        name: offer.name ?? "Вакансия без названия",
+                        name: donation.name ?? "Сбор без названия",
                         balloonContent,
-                        clusterCaption: offer.name ?? "Вакансия без названия",
-                        hintContent: offer.name ?? "Вакансия без названия",
+                        clusterCaption: donation.name ?? "Сбор без названия",
+                        hintContent: donation.name ?? "Сбор без названия",
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
@@ -77,9 +77,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     },
                 };
             });
-    }, [isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory]);
+    }, [isDonationsLoading, donationsData, locale, ymapState?.templateLayoutFactory]);
 
-    if (isOffersLoading) {
+    if (isDonationsLoading) {
         return (
             <div className={cn(className, styles.wrapper)}>
                 <div className={styles.loadingPlaceholder}>

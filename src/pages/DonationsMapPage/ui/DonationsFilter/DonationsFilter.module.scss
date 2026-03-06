@@ -23,6 +23,15 @@
     transform: translateY(0);
 }
 
+.categories {
+    margin-right: 20px;
+}
+
+.switch label {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
 .top {
     padding: 20px 50px;
     display: flex;

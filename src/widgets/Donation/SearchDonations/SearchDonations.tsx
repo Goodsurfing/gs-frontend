@@ -5,6 +5,7 @@ import React, {
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
@@ -56,6 +57,7 @@ export const SearchDonations = forwardRef<SearchDonationsRef, SearchDonationsPro
         const inputRef = useRef<HTMLInputElement>(null);
 
         const { locale } = useLocale();
+        const { t } = useTranslation("donation");
 
         useImperativeHandle(ref, () => ({
             clearSearch() {
@@ -145,7 +147,7 @@ export const SearchDonations = forwardRef<SearchDonationsRef, SearchDonationsPro
                                 handleSubmit();
                             }
                         }}
-                        inputProps={{ "aria-label": "Поиск сборов" }}
+                        inputProps={{ "aria-label": t("Поиск сборов") }}
                     />
                     {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
                     <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
@@ -190,7 +192,7 @@ export const SearchDonations = forwardRef<SearchDonationsRef, SearchDonationsPro
                                         ))}
                                     </>
                                 ) : (
-                                    <span>Данные сборы отсутсвуют </span>
+                                    <span>{t("Данные сборы отсутсвуют")}</span>
                                 )}
                                 <Button
                                     onClick={handleSubmit}
