@@ -17,56 +17,54 @@ import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
 import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
-import { OfferApi, OfferMap } from "@/entities/Offer";
-
-// import { getUserAuthData } from "@/entities/User";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
-// import { useAppSelector } from "@/shared/hooks/redux";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SquareButton } from "@/shared/ui/SquareButton/SquareButton";
 import { Text } from "@/shared/ui/Text/Text";
+import {
+    DonationCard, donationCardAdapter, DonationFilterFields, GetDonations, GetDonationsMap,
+} from "@/entities/Donation";
+import styles from "./DonationsSearchFilterMobile.module.scss";
+import { SearchDonations } from "@/widgets/Donation";
 
-import { OffersMobileFilter } from "../OffersMobileFilter/OffersMobileFilter";
-import styles from "./OffersSearchFilterMobile.module.scss";
+type SelectedTabType = "filter" | "map" | "donations";
 
-type SelectedTabType = "filter" | "map" | "offers";
-
-interface OffersSearchFilterMobileProps {
+interface DonationsSearchFilterMobileProps {
     className?: string;
-    allOffersMapData: OfferMap[];
-    isLoadingAllOffersMap: boolean;
-    data?: OfferApi[];
+    allDonationsMapData: GetDonationsMap[];
+    isLoadingAllDonationsMap: boolean;
+    data?: GetDonations[];
     isLoading: boolean;
     onApplySearch: (search: string) => void;
     onSubmit: () => void;
     onResetFilters: () => void;
     total: number;
     currentPage: number;
-    offersPerPage: number;
+    donationsPerPage: number;
     onChangePage: (pageItem: number) => void;
 }
 
-const MemoizedOfferCard = React.memo(OfferCard);
-const MemoizedSearchOffers = React.memo(SearchOffers);
+const MemoizedDonationCard = React.memo(DonationCard);
+const MemoizedSearchDonations = React.memo(SearchDonations);
 
-export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
+export const DonationsSearchFilterMobile: FC<DonationsSearchFilterMobileProps> = ({
     className,
     data,
-    allOffersMapData,
-    isLoadingAllOffersMap,
+    allDonationsMapData,
+    isLoadingAllDonationsMap,
     isLoading,
     onApplySearch,
     onSubmit,
     onResetFilters,
     currentPage,
-    offersPerPage,
+    donationsPerPage,
     total,
     onChangePage,
 }) => {
-    const { control } = useFormContext();
-    const { t } = useTranslation("offers-map");
+    const { control } = useFormContext<DonationFilterFields>();
+    const { t } = useTranslation("donation");
     const { locale } = useLocale();
-    const [selectedTab, setSelectedTab] = useState<SelectedTabType>("offers");
+    const [selectedTab, setSelectedTab] = useState<SelectedTabType>("donations");
 
     const [isPending, startTransition] = useTransition();
 
@@ -85,16 +83,16 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
 
     const handleSubmit = useCallback(() => {
         onSubmit();
-        setSelectedTab("offers");
+        setSelectedTab("donations");
     }, [onSubmit]);
 
     const handleReset = useCallback(() => {
         onResetFilters();
-        setSelectedTab("offers");
+        setSelectedTab("donations");
     }, [onResetFilters]);
 
-    const handleOffersTab = useCallback(() => {
-        setSelectedTab("offers");
+    const handleDonationsTab = useCallback(() => {
+        setSelectedTab("donations");
     }, []);
 
     const handleFilterTab = useCallback(() => {
@@ -107,14 +105,14 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
 
     const tabStates = useMemo(
         () => ({
-            isOffersTabOpened: selectedTab === "offers",
+            isDonationsTabOpened: selectedTab === "donations",
             isFilterTabOpened: selectedTab === "filter",
             isMapTabOpened: selectedTab === "map",
         }),
         [selectedTab],
     );
 
-    const renderOfferCards = useMemo(() => {
+    const renderDonationCards = useMemo(() => {
         if (isLoading || isPending) {
             return (
                 <div className={cn(styles.wrapper, className)}>
@@ -127,39 +125,25 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                 <Text
                     className={styles.error}
                     textSize="primary"
-                    text={t("Вакансии не были найдены")}
+                    text={t("Сборы не были найдены")}
                 />
             );
         }
 
-        return data.map((offer) => (
-            <MemoizedOfferCard
+        return data.map((donation) => (
+            <MemoizedDonationCard
                 locale={locale}
-                classNameCard={styles.offerCard}
-                className={cn(styles.offer, {
-                    [styles.closed]: offer.status !== "active",
-                })}
-                status={offer.status === "active" ? "opened" : "closed"}
-                data={{
-                    id: offer.id,
-                    title: offer.title,
-                    shortDescription: offer.shortDescription,
-                    imagePath: offer.image?.contentUrl,
-                    categories: offer.categories.map((cat) => cat.name),
-                    address: offer.address,
-                    acceptedApplicationsCount: offer.acceptedApplicationsCount,
-                    averageRating: offer.averageRating,
-                    reviewsCount: offer.reviewsCount,
-                }}
-                key={offer.id}
+                className={cn(styles.donation)}
+                data={donationCardAdapter(donation)}
+                key={donation.id}
             />
         ));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locale, t, isLoading, isPending, data]);
 
     const totalPages = useMemo(
-        () => (data ? Math.ceil(total / offersPerPage) : 1),
-        [data, offersPerPage, total],
+        () => (data ? Math.ceil(total / donationsPerPage) : 1),
+        [data, donationsPerPage, total],
     );
 
     return (
@@ -167,12 +151,12 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
             <div className={styles.top}>
                 <SquareButton
                     className={cn(styles.button, styles.icon, {
-                        [styles.active]: tabStates.isOffersTabOpened,
+                        [styles.active]: tabStates.isDonationsTabOpened,
                     })}
-                    isActive={tabStates.isOffersTabOpened}
-                    onClick={handleOffersTab}
+                    isActive={tabStates.isDonationsTabOpened}
+                    onClick={handleDonationsTab}
                 >
-                    {t("Список вакансий")}
+                    {t("Список сборов")}
                     <ReactSVG src={searchIcon} />
                 </SquareButton>
                 <div className={styles.buttons}>
@@ -191,33 +175,20 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                         {t("Фильтр")}
                     </SquareButton>
                 </div>
-                {tabStates.isOffersTabOpened && (
-                    <>
-                        <Controller
-                            name="offersSort.sortValue"
-                            control={control}
-                            render={({ field }) => (
-                                <SelectSort
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    className={styles.sortWrapper}
-                                    classNameControl={styles.sort}
-                                    classNameDropdown={styles.sortDropdown}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="offersSort.showClosedOffers"
-                            control={control}
-                            render={({ field }) => (
-                                <SwitchClosedOffers
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    className={styles.closedOffers}
-                                />
-                            )}
-                        />
-                    </>
+                {tabStates.isDonationsTabOpened && (
+                    <Controller
+                        name="sort"
+                        control={control}
+                        render={({ field }) => (
+                            <SelectSort
+                                value={field.value}
+                                onChange={field.onChange}
+                                className={styles.sortWrapper}
+                                classNameControl={styles.sort}
+                                classNameDropdown={styles.sortDropdown}
+                            />
+                        )}
+                    />
                 )}
             </div>
             {tabStates.isOffersTabOpened && (

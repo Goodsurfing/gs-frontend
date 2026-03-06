@@ -16,8 +16,8 @@ import { AdminSort } from "@/entities/Admin";
 import {
     DonationsList, DonationsMap, SearchDonations, SearchDonationsRef,
 } from "@/widgets/Donation";
-import styles from "./DonationSearchFilter.module.scss";
 import { mockCardDonations } from "@/entities/Donation/data/mockDonations";
+import styles from "./DonationSearchFilter.module.scss";
 
 const defaultValues: DonationFilterFields = {
     sort: "urgency",
