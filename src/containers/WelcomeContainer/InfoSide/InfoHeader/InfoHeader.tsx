@@ -14,6 +14,7 @@ import {
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
+    getDonationsMapPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
     getMainPageUrl,
@@ -40,9 +41,10 @@ import styles from "./InfoHeader.module.scss";
 interface DropdownState {
     isCommunityOpened: boolean;
     isAboutProjectOpened: boolean;
+    isDonationOpened: boolean;
 }
 
-type ButtonNav = "COMMUNITY" | "ABOUT";
+type ButtonNav = "COMMUNITY" | "ABOUT" | "DONATION";
 
 const InfoHeader = memo(() => {
     const { t } = useTranslation();
@@ -52,10 +54,12 @@ const InfoHeader = memo(() => {
 
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
+    const donationRef = useRef(null);
 
     const [dropdownOpened, setDropdownOpened] = useState<DropdownState>({
         isCommunityOpened: false,
         isAboutProjectOpened: false,
+        isDonationOpened: false,
     });
 
     const dispatch = useAppDispatch();
@@ -73,6 +77,10 @@ const InfoHeader = memo(() => {
         aboutProjectRef,
         () => setDropdownOpened((prev) => ({ ...prev, isAboutProjectOpened: false })),
     );
+    useOnClickOutside(
+        donationRef,
+        () => setDropdownOpened((prev) => ({ ...prev, isDonationOpened: false })),
+    );
 
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
@@ -86,6 +94,11 @@ const InfoHeader = memo(() => {
                     return {
                         ...prev,
                         isAboutProjectOpened: !prev.isAboutProjectOpened,
+                    };
+                case "DONATION":
+                    return {
+                        ...prev,
+                        isDonationOpened: !prev.isDonationOpened,
                     };
                 default:
                     return prev;
@@ -130,6 +143,47 @@ const InfoHeader = memo(() => {
                             </Link>
                             <Link to={getJournalsPageUrl(locale)}>
                                 {t("main.welcome.header.community.journal")}
+                            </Link>
+                        </Popup>
+                    </div>
+                    <div
+                        ref={donationRef}
+                        className={styles.link}
+                        onClick={() => handleOpenDropdown("DONATION")}
+                    >
+                        <p>{t("main.welcome.header.donation.title")}</p>
+                        <Arrow
+                            className={styles.arrow}
+                            classNameOpen={styles.arrowOpen}
+                            isOpen={dropdownOpened.isDonationOpened}
+                        />
+                        <Popup
+                            className={styles.popup}
+                            isOpen={dropdownOpened.isDonationOpened}
+                        >
+                            <Link
+                                className={styles.dropdownLink}
+                                to={getMainPageUrl(locale)}
+                            >
+                                {t("main.welcome.header.donation.support-goodsurfing")}
+                            </Link>
+                            <Link
+                                className={styles.dropdownLink}
+                                to={getDonationsMapPageUrl(locale)}
+                            >
+                                {t("main.welcome.header.donation.support-other-projects")}
+                            </Link>
+                            <Link
+                                className={styles.dropdownLink}
+                                to={getMainPageUrl(locale)}
+                            >
+                                {t("main.welcome.header.donation.public-reports")}
+                            </Link>
+                            <Link
+                                className={styles.dropdownLink}
+                                to={getMainPageUrl(locale)}
+                            >
+                                {t("main.welcome.header.donation.rating-donations")}
                             </Link>
                         </Popup>
                     </div>

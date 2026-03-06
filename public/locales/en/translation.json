@@ -85,6 +85,13 @@
                     "baikal": "Baikal",
                     "view-all": "View all"
                 },
+                "donation": {
+                    "title": "Support",
+                    "support-goodsurfing": "Support Goodsurfing",
+                    "support-other-projects": "Support other projects",
+                    "public-reports": "Public reporting",
+                    "rating-donations": "Donor rating"
+                },
                 "about-project": {
                     "title": "About project",
                     "about-npo": "About-NPO",

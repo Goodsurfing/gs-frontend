@@ -205,6 +205,13 @@
           "title": "title",
           "video": "video"
         },
+        "donation": {
+          "public-reports": "public-reports",
+          "rating-donations": "rating-donations",
+          "support-goodsurfing": "support-goodsurfing",
+          "support-other-projects": "support-other-projects",
+          "title": "title"
+        },
         "exit": "exit",
         "favorite": "favorite",
         "for-organizers": {

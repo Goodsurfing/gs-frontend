@@ -6,10 +6,10 @@ import { OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
 import { useCategories } from "@/shared/data/categories";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
-import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { MediaObjectType } from "@/types/media";
+import styles from "./OfferCard.module.scss";
 
 type OfferData = Pick<OfferApi, "id"> &
 Partial<
