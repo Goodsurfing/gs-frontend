@@ -184,6 +184,8 @@ export const getAcademyLessonPageUrl: RoutePathFunction = (locale, id = ":id") =
 
 export const getDonationsMapPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.donation_map}`;
 
+export const getDonationPersonalPage: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.donation_personal}/${id}`;
+
 // Admin pages
 
 export const getAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin}`;

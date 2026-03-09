@@ -1,0 +1,132 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    align-items: stretch;
+    min-height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.backgroundImage {
+    position: absolute;
+    z-index: -1;
+    border-radius: 10px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), lightgray 50% / cover no-repeat;
+    background-position: center top;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 560px;
+    height: 100%;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 60px;
+    gap: 15px;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 140px;
+
+}
+
+.topPart {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 1080px;
+    gap: 20px;
+
+    .title {
+        // max-width: 1080px;
+        font: var(--font-h1);
+        color: var(--text-secondary-1);
+        overflow-wrap: break-word;
+    }
+
+    
+
+    .icon svg{
+        width: 13px;
+        height: 13px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .stats {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        font: var(--font-primary);
+        color: var(--text-secondary-1);
+    }
+
+    .location {
+        font: var(--font-primary);
+        color: var(--text-secondary-1);
+    }
+    
+    .black {
+        color: var(--text-secondary-2);
+    }
+}
+
+.botPart {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+
+.right {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-self: flex-end;
+    height: fit-content;
+    flex-wrap: wrap;
+}
+
+.reviewsCount {
+    color: white;
+}
+
+@media (max-width: 992px) {
+    .content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 40px 10px;
+    }
+
+    .left {
+        gap: 30px;
+    }
+
+    .topPart {
+        .title {
+            font-size: 26px;
+        }
+    }
+
+    .info {
+        flex-direction: column;
+    }
+}
