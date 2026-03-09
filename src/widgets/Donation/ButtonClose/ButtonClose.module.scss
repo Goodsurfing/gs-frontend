@@ -1,0 +1,43 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--bg-field);
+    position: absolute;
+    left: 100%;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.wrapper.closed {
+    position: relative;
+    left: auto;
+    z-index: auto;
+}
+
+.arrow {
+    transition: transform 0.5s ease;
+    fill: var(--text-secondary-2);
+    margin: 0 auto;
+}
+
+.arrow.closed {
+    transform: rotate(180deg);
+}
+
+.text {
+    visibility: hidden;
+    margin-left: auto;
+    opacity: 0;
+    color: var(--text-primary-1);
+    font-weight: 500;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.text.closed {
+    visibility: visible;
+    opacity: 1;
+}

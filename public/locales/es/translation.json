@@ -85,6 +85,13 @@
                     "baikal": "Baikal",
                     "view-all": "Ver todo"
                 },
+                "donation": {
+                    "title": "Apoya",
+                    "support-goodsurfing": "Apoya Goodsurfing",
+                    "support-other-projects": "Apoya otros proyectos",
+                    "public-reports": "Informes públicos",
+                    "rating-donations": "Calificación del donante"
+                },
                 "about-project": {
                     "title": "Sobre el proyecto",
                     "about-npo": "Sobre las OSFL",

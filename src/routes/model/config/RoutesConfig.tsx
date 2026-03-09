@@ -186,6 +186,7 @@ import {
     getAdminVideoPageUrl,
     getAdminVideoPersonalPageUrl,
     getAdminReviewVideoPersonalPageUrl,
+    getDonationsMapPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -257,6 +258,7 @@ import { AdminReviewJournalPersonalPage } from "@/pages/AdminReviewJournalPerson
 import { AdminVideoPage } from "@/pages/AdminVideoPage";
 import { AdminVideoPersonalPage } from "@/pages/AdminVideoPersonalPage";
 import { AdminReviewVideoPersonalPage } from "@/pages/AdminRevieVideoPersonalPage";
+import { DonationsMapPage } from "@/pages/DonationsMapPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -652,6 +654,12 @@ const publicRoutes: RouteType[] = [
         label: "academy-lesson",
         element: <AcademyLessonPage />,
         path: (locale: string) => getAcademyLessonPageUrl(locale),
+    },
+    // Donation
+    {
+        label: "donations-map",
+        element: <DonationsMapPage />,
+        path: (locale: string) => getDonationsMapPageUrl(locale),
     },
     // Admin dashboard
     {

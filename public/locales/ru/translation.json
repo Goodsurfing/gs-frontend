@@ -85,6 +85,13 @@
                     "baikal": "Байкал",
                     "view-all": "Посмотреть все"
                 },
+                "donation": {
+                    "title": "Поддержать",
+                    "support-goodsurfing": "Поддержать Гудсёрфинг",
+                    "support-other-projects": "Поддержать другие проекты",
+                    "public-reports": "Публичная отчётность",
+                    "rating-donations": "Рейтинг жертвователей"
+                },
                 "about-project": {
                     "title": "О проекте",
                     "about-npo": "Об НКО",

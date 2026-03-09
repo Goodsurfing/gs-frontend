@@ -13,8 +13,10 @@ import {
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
+    getDonationsMapPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
+    getMainPageUrl,
     getMembershipPageUrl,
     getNPOPageUrl,
     getNewsPageUrl,
@@ -33,15 +35,17 @@ interface DropdownState {
     isCommunityOpened: boolean;
     isAboutProjectOpened: boolean;
     isOffersOpened: boolean;
+    isDonationOpened: boolean;
 }
 
-type ButtonNav = "OFFERS" | "COMMUNITY" | "ABOUT";
+type ButtonNav = "OFFERS" | "COMMUNITY" | "ABOUT" | "DONATION";
 
 export const MainHeaderNav = () => {
     const { locale } = useLocale();
     const communityRef = useRef(null);
     const aboutProjectRef = useRef(null);
     const offersRef = useRef(null);
+    const donationRef = useRef(null);
 
     const { t } = useTranslation();
 
@@ -49,6 +53,7 @@ export const MainHeaderNav = () => {
         isCommunityOpened: false,
         isAboutProjectOpened: false,
         isOffersOpened: false,
+        isDonationOpened: false,
     });
 
     const navigate = useNavigate();
@@ -61,6 +66,9 @@ export const MainHeaderNav = () => {
     ));
     useOnClickOutside(offersRef, () => setDropdownOpened(
         (prev) => ({ ...prev, isOffersOpened: false }),
+    ));
+    useOnClickOutside(donationRef, () => setDropdownOpened(
+        (prev) => ({ ...prev, isDonationOpened: false }),
     ));
 
     const handleOpenDropdown = (type: ButtonNav) => {
@@ -80,6 +88,11 @@ export const MainHeaderNav = () => {
                     return {
                         ...prev,
                         isOffersOpened: !prev.isOffersOpened,
+                    };
+                case "DONATION":
+                    return {
+                        ...prev,
+                        isDonationOpened: !prev.isDonationOpened,
                     };
                 default:
                     return prev;
@@ -244,6 +257,45 @@ export const MainHeaderNav = () => {
                     </Link>
                 </Popup>
             </div>
+            <div className={styles.btnDonation}>
+                <div
+                    onClick={() => handleOpenDropdown("DONATION")}
+                    ref={donationRef}
+                    className={styles.btnNav}
+                >
+                    {t("main.welcome.header.donation.title")}
+                    <Arrow isOpen={dropdownOpened.isDonationOpened} />
+                </div>
+                <Popup
+                    className={styles.popup}
+                    isOpen={dropdownOpened.isDonationOpened}
+                >
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getMainPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.support-goodsurfing")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getDonationsMapPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.support-other-projects")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getMainPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.public-reports")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getMainPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.rating-donations")}
+                    </Link>
+                </Popup>
+            </div>
             <div className={styles.btnAbout}>
                 <div
                     onClick={() => handleOpenDropdown("ABOUT")}
@@ -259,7 +311,7 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to="https://community.goodsurfing.org/"
+                        to={getNewsPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.news")}
                     </Link>
@@ -300,12 +352,6 @@ export const MainHeaderNav = () => {
                         to={getPrivacyPolicyPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.privacy-policy")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getNewsPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.about-project.news")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}

@@ -14,7 +14,7 @@ interface CategoriesProps {
     className?: string;
     isOpen: boolean
     onClick: MouseEventHandler<HTMLDivElement>
-    value: number[]
+    value?: number | number[];
     onChange: (value?: number | number[]) => void
 }
 
@@ -33,7 +33,10 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
             >
                 <div className={styles.inner}>
                     {t("Направление деятельности")}
-                    <BluePoint isShow={value.length > 0} className={styles.bluePoint} />
+                    <BluePoint
+                        isShow={!!(value && (Array.isArray(value) ? value.length > 0 : true))}
+                        className={styles.bluePoint}
+                    />
                 </div>
                 <Arrow isOpen={isOpen} className={cn(styles.arrow, { [styles.open]: isOpen })} />
             </div>

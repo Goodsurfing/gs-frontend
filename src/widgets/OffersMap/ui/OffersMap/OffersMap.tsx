@@ -94,7 +94,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             <YMaps query={{ load: "package.full" }}>
                 <Map
                     defaultState={{
-                        center: [50, 50], zoom: 2, controls: [],
+                        center: [50, 50], zoom: 2.05, controls: [],
                     }}
                     width="100%"
                     height="100%"
@@ -102,7 +102,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     options={{
                         suppressMapOpenBlock: true,
                         restrictMapArea: [
-                            [85.23618, -178.9],
+                            [83.23618, -178.9],
                             [-73.87011, 181],
                         ],
                         maxZoom: 18,

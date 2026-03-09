@@ -1,0 +1,78 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 70px);
+    flex: 1;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    // height: calc(100vh - rem);
+    flex: 1;
+    overflow: scroll;
+    will-change: transform;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--color-white);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background-color: var(--bg-accent);
+    }
+}
+
+.miniLoader {
+    margin-top: 20px;
+}
+
+.searchWrapper {
+    padding: 12px 30px;
+}
+
+.offer {
+    width: 100%;
+    min-width: 520px;
+}
+
+.donationCard {
+    padding: 10px;
+    height: fit-content;
+    border-bottom: 1px solid var(--bg-accent);
+}
+
+.offer.closed {
+    width: 50%;
+    border-left: 1px solid var(--bg-accent);
+}
+
+.list.closed {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: baseline;
+}
+
+.error {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+.miniLoader {
+    padding: 20px;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+@media (max-width: 1280px) {
+    .offer.closed {
+        width: 100%;
+    }
+}
