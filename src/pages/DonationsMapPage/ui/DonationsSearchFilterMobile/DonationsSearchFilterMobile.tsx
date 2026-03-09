@@ -10,11 +10,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import {
     OfferPagination,
-    OffersMap,
-    SwitchClosedOffers,
 } from "@/widgets/OffersMap";
-import { OfferCard } from "@/widgets/OffersMap/ui/OfferCard/OfferCard";
-import { SearchOffers } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { SelectSort } from "@/widgets/OffersMap/ui/SelectSort/SelectSort";
 
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
@@ -25,7 +21,8 @@ import {
     DonationCard, donationCardAdapter, DonationFilterFields, GetDonations, GetDonationsMap,
 } from "@/entities/Donation";
 import styles from "./DonationsSearchFilterMobile.module.scss";
-import { SearchDonations } from "@/widgets/Donation";
+import { DonationsMap, SearchDonations } from "@/widgets/Donation";
+import { DonationsMobileFilter } from "../DonationsMobileFilter/DonationsMobileFilter";
 
 type SelectedTabType = "filter" | "map" | "donations";
 
@@ -191,10 +188,10 @@ export const DonationsSearchFilterMobile: FC<DonationsSearchFilterMobileProps> =
                     />
                 )}
             </div>
-            {tabStates.isOffersTabOpened && (
+            {tabStates.isDonationsTabOpened && (
                 <>
                     <div className={styles.searchWrapper}>
-                        <MemoizedSearchOffers
+                        <MemoizedSearchDonations
                             onSubmit={handleApplySearch}
                             onResetFilters={handleReset}
                             placeholder={t("Поиск")}
@@ -206,7 +203,7 @@ export const DonationsSearchFilterMobile: FC<DonationsSearchFilterMobileProps> =
                         {" "}
                         {t("вариантов")}
                     </div>
-                    <div className={styles.list}>{renderOfferCards}</div>
+                    <div className={styles.list}>{renderDonationCards}</div>
                     <OfferPagination
                         currentPage={currentPage}
                         totalPages={totalPages}
@@ -216,15 +213,15 @@ export const DonationsSearchFilterMobile: FC<DonationsSearchFilterMobileProps> =
                 </>
             )}
             {tabStates.isMapTabOpened && (
-                <OffersMap
-                    offersData={allOffersMapData}
-                    isOffersLoading={isLoadingAllOffersMap}
+                <DonationsMap
+                    donationsData={allDonationsMapData}
+                    isDonationsLoading={isLoadingAllDonationsMap}
                     className={styles.offersMap}
                     classNameMap={styles.offersMap}
                 />
             )}
             {tabStates.isFilterTabOpened && (
-                <OffersMobileFilter
+                <DonationsMobileFilter
                     onSubmitFilters={handleSubmit}
                     onResetFilters={onResetFilters}
                 />

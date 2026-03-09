@@ -18,6 +18,7 @@ import {
 } from "@/widgets/Donation";
 import { mockCardDonations } from "@/entities/Donation/data/mockDonations";
 import styles from "./DonationSearchFilter.module.scss";
+import { DonationsSearchFilterMobile } from "../DonationsSearchFilterMobile/DonationsSearchFilterMobile";
 
 const defaultValues: DonationFilterFields = {
     sort: "urgency",
@@ -219,20 +220,20 @@ export const DonationSearchFilter = () => {
                         />
                     )}
                 </div>
-                {/* <OffersSearchFilterMobile
-                    data={offersData?.data}
-                    allOffersMapData={allOffersMap}
-                    isLoadingAllOffersMap={isAllOffersMapLoading || isAllOffersMapFetching}
+                <DonationsSearchFilterMobile
+                    data={donationsData?.data}
+                    allDonationsMapData={allDonationsMap}
+                    isLoadingAllDonationsMap={isAllDonationsMapLoading || isAllDonationsMapFetching}
                     isLoading={isLoading || isFetching}
                     className={styles.mobile}
                     onApplySearch={onApplySearch}
                     onSubmit={onApplyFilters}
                     onResetFilters={onResetFilters}
                     currentPage={currentPage}
-                    offersPerPage={OFFERS_PER_PAGE}
-                    total={offersData?.pagination.total ?? 0}
+                    donationsPerPage={PER_PAGE}
+                    total={donationsData?.pagination.total ?? 0}
                     onChangePage={onChangePage}
-                /> */}
+                />
             </div>
         </FormProvider>
     );
