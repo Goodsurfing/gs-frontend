@@ -47,7 +47,7 @@ export interface GetDonationsParams {
     limit: number;
 }
 
-export type GetDonation = Omit<GetDonations, "shortDescription" | "isSuccess" | "isClose" | "organization"> & {
+export type GetDonation = Omit<GetDonations, "shortDescription" | "isClose" | "organization"> & {
     status: DonationStatus;
     address: string;
     description: string;
@@ -61,6 +61,13 @@ export type GetDonation = Omit<GetDonations, "shortDescription" | "isSuccess" | 
     longitude: number;
     isCanSupport: boolean;
     categories: CategoryNews[];
+    galleryImages: Image[];
+    organization: {
+        id: string;
+        name: string;
+        description: string;
+        image: Image;
+    }
 };
 
 export interface GetDonationParams {

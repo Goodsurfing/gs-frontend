@@ -28,7 +28,7 @@ export const donationApi = createApi({
             }),
             providesTags: ["donation"],
         }),
-        getDonation: build.query<GetDonation, GetDonationParams>({
+        getDonationById: build.query<GetDonation, GetDonationParams>({
             query: ({ id, lang }) => ({
                 url: `fundraise/element/${id}`,
                 method: "GET",
@@ -146,7 +146,8 @@ export const donationApi = createApi({
 
 export const {
     useLazyGetDonationsQuery,
-    useGetDonationQuery,
+    useGetDonationByIdQuery,
+    useLazyGetDonationByIdQuery,
     useLazyGetDonationsMapQuery,
     useGetDonationsMapQuery,
     useDeleteDonationByIdMutation,

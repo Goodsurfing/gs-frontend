@@ -1,0 +1,32 @@
+.left {
+    flex: 2;
+}
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.wrapper {
+    flex-wrap: nowrap;
+}
+
+.infoCard {
+    width: 100%;
+}
+
+
+@media (max-width: 576px) {
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

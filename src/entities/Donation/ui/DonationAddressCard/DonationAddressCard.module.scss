@@ -1,0 +1,15 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.map {
+    display: block;
+    height: 180px;
+    margin-top: 20px;
+}
+
+.title {
+    margin-bottom: 10px;
+}

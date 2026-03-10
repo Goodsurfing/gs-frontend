@@ -9,5 +9,29 @@
     "Поиск сборов": "Buscar tarifas",
     "Данные сборы отсутсвуют": "Estas tarifas no están disponibles",
     "Поиск": "Buscar",
-    "Посмотреть все": "Ver todo"
+    "Посмотреть все": "Ver todo",
+    "donationPersonal": {
+        "Чтобы участвовать, станьте гудсёрфером": "Para participar, conviértete en Goodsurfer",
+        "Поддержать": "Apoyo",
+        "Редактировать": "Editar",
+        "Людей поддержало": "Personas apoyadas",
+        "active": "Activo",
+        "close": "Cerrado",
+        "draft": "Borrador",
+        "Описание": "Descripción",
+        "Местоположение": "Ubicación",
+        "Фотографии": "Fotos",
+        "Организация": "Organización",
+        "Участники": "Participantes",
+        "Точная дата не указана": "Fecha exacta no especificada",
+        "Не имеет даты старта": "Sin fecha de inicio",
+        "Дата старта": "Fecha de inicio",
+        "Дней осталось": "Días restantes",
+        "Средств собрано": "Fondos recaudados",
+        "Проект собрал": "Proyecto recaudado",
+        "Описание не было заполнено": "La descripción no se completó",
+        "Подробнее": "Más detalles",
+        "Поделиться сбором": "Compartir colección",
+        "Фотографии не были добавлены": ""
+    }
 }

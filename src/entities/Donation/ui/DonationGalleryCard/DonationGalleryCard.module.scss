@@ -1,0 +1,23 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wrapper p {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.image {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    cursor: pointer;
+}

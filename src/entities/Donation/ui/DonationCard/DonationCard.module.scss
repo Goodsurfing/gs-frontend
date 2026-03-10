@@ -99,6 +99,14 @@
     color: var(--text-secondary-2);
 }
 
+.content {
+    width: 100%;
+}
+
+.progressBar {
+    margin-bottom: 8px;
+}
+
 @media (max-width: 480px) {
     .wrapper {
         padding: 1rem;
