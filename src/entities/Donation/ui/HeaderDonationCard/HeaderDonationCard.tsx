@@ -157,6 +157,8 @@ export const HeaderDonationCard = memo((props: HeaderDonationCardProps) => {
                                             [styles.black]: !isImage,
                                         })}
                                     >
+                                        {t("donationPersonal.Проект собрал")}
+                                        {" "}
                                         {percentAmountCollect}
                                         {" "}
                                         %
@@ -174,6 +176,8 @@ export const HeaderDonationCard = memo((props: HeaderDonationCardProps) => {
                                                 [styles.black]: !isImage,
                                             })}
                                         >
+                                            {t("donationPersonal.Средств собрано")}
+                                            {" "}
                                             {percentAmountCollect}
                                             {" "}
                                             %
@@ -189,6 +193,8 @@ export const HeaderDonationCard = memo((props: HeaderDonationCardProps) => {
                                                 [styles.black]: !isImage,
                                             })}
                                         >
+                                            {t("donationPersonal.Дней осталось")}
+                                            {" "}
                                             {daysLeft}
                                         </span>
                                     </div>

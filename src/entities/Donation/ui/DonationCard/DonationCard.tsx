@@ -6,11 +6,12 @@ import { useTranslation } from "react-i18next";
 import flagIcon from "@/shared/assets/icons/donation/flag.svg";
 import calendarIcon from "@/shared/assets/icons/donation/calendar.svg";
 import checkIcon from "@/shared/assets/icons/donation/check.svg";
-import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { getDonationPersonalPage } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 
 import { Locale } from "@/entities/Locale";
 import styles from "./DonationCard.module.scss";
+import { DonationProgressBar } from "../DonationProgressBar/DonationProgressBar";
 
 export interface DonationCardType {
     id: string;
@@ -44,7 +45,7 @@ export const DonationCard: FC<DonationCardProps> = memo((props: DonationCardProp
 
     return (
         <Link
-            to={getMainPageUrl(locale)}
+            to={getDonationPersonalPage(locale, data.id)}
             className={cn(styles.wrapper, className)}
         >
             <div className={styles.imageWrapper}>
@@ -54,6 +55,11 @@ export const DonationCard: FC<DonationCardProps> = memo((props: DonationCardProp
                 )}
             </div>
             <div className={styles.content}>
+                <DonationProgressBar
+                    value={percentAmountCollect}
+                    isSuccess={isSuccess}
+                    className={styles.progressBar}
+                />
                 <p className={styles.title}>{textSlice(title, 50, "title")}</p>
                 <div className={styles.subtitle}>
                     <p className={styles.organizationName}>{textSlice(organizationName, 25, "none")}</p>

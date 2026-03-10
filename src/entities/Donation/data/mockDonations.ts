@@ -1,4 +1,4 @@
-import { GetDonations } from "../model/types/donationSchema";
+import { GetDonation, GetDonations } from "../model/types/donationSchema";
 import mockImg from "@/shared/assets/images/default-offer-image.png";
 
 export const mockCardDonations: GetDonations[] = [
@@ -73,3 +73,31 @@ export const mockCardDonations: GetDonations[] = [
         isSuccess: true,
     },
 ];
+
+export const mockDonation: GetDonation = {
+    id: "1",
+    image: mockImg,
+    name: "Тестовый сбор 1",
+    description: "Полное описание",
+    address: "Москва, Россия",
+    amount: 1500,
+    minAmount: 1000,
+    categories: [],
+    galleryImages: [],
+    status: "active",
+    isCanEdit: true,
+    isCanSupport: false,
+    isSuccess: true,
+    latitude: 50,
+    longitude: 50,
+    daysLeft: 3,
+    peopleSupportCount: 50,
+    percentAmountCollect: 43,
+    startDate: "4.04.2026",
+    organization: {
+        id: "1",
+        name: "Тестовая организация",
+        image: mockImg,
+        description: "Тут находится описание организации",
+    },
+};

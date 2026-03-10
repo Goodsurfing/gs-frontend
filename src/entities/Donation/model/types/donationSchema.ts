@@ -62,6 +62,12 @@ export type GetDonation = Omit<GetDonations, "shortDescription" | "isClose" | "o
     isCanSupport: boolean;
     categories: CategoryNews[];
     galleryImages: Image[];
+    organization: {
+        id: string;
+        name: string;
+        description: string;
+        image: Image;
+    }
 };
 
 export interface GetDonationParams {
