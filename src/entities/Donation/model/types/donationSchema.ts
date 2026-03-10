@@ -170,3 +170,10 @@ export interface UpdateDonationStatusRequest {
     id: string;
     body: UpdateDonationStatus;
 }
+
+// Reports
+
+export interface GetDonationReports {
+    name: string;
+    files: Image[];
+}

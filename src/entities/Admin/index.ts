@@ -259,3 +259,19 @@ export {
 } from "./api/adminVideoApi";
 
 export { videoAdminAdapter, videoAdminApiAdapter } from "./lib/adminVideoAdapter";
+
+// Donation
+
+export {
+    adminDonationApi,
+    useGetAdminDonationReportsQuery,
+    useGetAdminDonationReportQuery,
+    useCreateAdminDonationReportMutation,
+    useUpdateAdminDonationReportMutation,
+    useDeleteAdminDonationReportMutation,
+} from "./api/adminDonationApi";
+
+export type {
+    CreateAdminDonationReport,
+    GetAdminDonationReport,
+} from "./model/types/adminDonationSchema";

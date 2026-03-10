@@ -4,7 +4,7 @@ import {
     CreateDonationResponse,
     GetDonation, GetDonationAddress,
     GetDonationAutoMessages, GetDonationDescription,
-    GetDonationHowMany, GetDonationParams, GetDonationsMap,
+    GetDonationHowMany, GetDonationParams, GetDonationReports, GetDonationsMap,
     GetDonationsMapParams, GetDonationsParams, GetDonationsResponse,
     GetDonationWhen,
     UpdateDonationAddressRequest,
@@ -18,7 +18,7 @@ import {
 export const donationApi = createApi({
     reducerPath: "donationApi",
     baseQuery: baseQueryV3,
-    tagTypes: ["donation"],
+    tagTypes: ["donation", "report"],
     endpoints: (build) => ({
         getDonations: build.query<GetDonationsResponse, Partial<GetDonationsParams>>({
             query: (params) => ({
@@ -141,6 +141,13 @@ export const donationApi = createApi({
             }),
             invalidatesTags: ["donation"],
         }),
+        getDonationPublicReports: build.query<GetDonationReports[], void>({
+            query: () => ({
+                url: "report/list",
+                method: "GET",
+            }),
+            providesTags: ["report"],
+        }),
     }),
 });
 
@@ -163,4 +170,5 @@ export const {
     useGetDonationAutoMessagesQuery,
     useUpdateDonationAutoMessagesMutation,
     useUpdateDonationStatusMutation,
+    useGetDonationPublicReportsQuery,
 } = donationApi;

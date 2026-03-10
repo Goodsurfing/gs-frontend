@@ -27,6 +27,7 @@ export {
     useGetDonationAutoMessagesQuery,
     useUpdateDonationAutoMessagesMutation,
     useUpdateDonationStatusMutation,
+    useGetDonationPublicReportsQuery,
 } from "./api/donationApi";
 
 export {
