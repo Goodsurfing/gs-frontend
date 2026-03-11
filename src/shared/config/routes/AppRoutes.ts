@@ -70,6 +70,7 @@ export enum AppRoutes {
     ACADEMY_LESSON = "academy_lesson",
     DONATION_MAP = "donation_map",
     DONATION_PERSONAL = "donation_personal",
+    DONATION_REPORTS = "donation_reports",
     NOT_FOUND = "not_found",
     ADMIN = "admin",
     ADMIN_SIGN_IN = "admin_sign_in",

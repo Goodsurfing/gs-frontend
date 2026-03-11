@@ -191,6 +191,7 @@ import {
     getAdminDonationReportsPageUrl,
     getAdminDonationReportCreatePageUrl,
     getAdminDonationReportPersonalPageUrl,
+    getDonationReports,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -267,6 +268,7 @@ import { DonationPersonalPage } from "@/pages/DonationPersonalPage";
 import { AdminDonationReportsPage } from "@/pages/AdminDonationReportsPage";
 import { AdminDonationReportCreatePage } from "@/pages/AdminDonationReportCreatePage";
 import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPersonalPage";
+import { DonationReportsPage } from "@/pages/DonationReportsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -673,6 +675,11 @@ const publicRoutes: RouteType[] = [
         label: "donation-personal",
         element: <DonationPersonalPage />,
         path: (locale: string) => getDonationPersonalPage(locale),
+    },
+    {
+        label: "donation-reports",
+        element: <DonationReportsPage />,
+        path: (locale: string) => getDonationReports(locale),
     },
     // Admin dashboard
     {

@@ -77,6 +77,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ACADEMY_LESSON]: "/academy-lesson",
     [AppRoutes.DONATION_MAP]: "/donation-map",
     [AppRoutes.DONATION_PERSONAL]: "/donation-personal",
+    [AppRoutes.DONATION_REPORTS]: "/donation-reports",
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",

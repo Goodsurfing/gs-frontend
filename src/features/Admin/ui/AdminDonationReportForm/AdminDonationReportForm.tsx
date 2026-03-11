@@ -76,9 +76,9 @@ export const AdminDonationReportForm: FC<AdminDonationReportFormProps> = (props)
         setIsModalOpen(false);
     };
 
-    const handleDeleteFile = (e: React.MouseEvent, index: number) => {
+    const handleDeleteFile = (fileId: string) => {
         if (window.confirm("Вы уверены, что хотите удалить файл?")) {
-            const updatedFiles = files.filter((_, i) => i !== index);
+            const updatedFiles = files.filter((file) => file.file.id !== fileId);
             setValue("files", updatedFiles, { shouldValidate: true, shouldDirty: true });
         }
     };
@@ -143,7 +143,7 @@ export const AdminDonationReportForm: FC<AdminDonationReportFormProps> = (props)
                                         size="SMALL"
                                         variant="FILL"
                                         type="button"
-                                        onClick={(e) => handleDeleteFile(e, index)}
+                                        onClick={() => handleDeleteFile(field.file.id)}
                                         className={styles.deleteButton}
                                     >
                                         Удалить
