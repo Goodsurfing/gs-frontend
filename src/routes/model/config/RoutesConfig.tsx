@@ -188,6 +188,9 @@ import {
     getAdminReviewVideoPersonalPageUrl,
     getDonationsMapPageUrl,
     getDonationPersonalPage,
+    getAdminDonationReportsPageUrl,
+    getAdminDonationReportCreatePageUrl,
+    getAdminDonationReportPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -261,6 +264,9 @@ import { AdminVideoPersonalPage } from "@/pages/AdminVideoPersonalPage";
 import { AdminReviewVideoPersonalPage } from "@/pages/AdminRevieVideoPersonalPage";
 import { DonationsMapPage } from "@/pages/DonationsMapPage";
 import { DonationPersonalPage } from "@/pages/DonationPersonalPage";
+import { AdminDonationReportsPage } from "@/pages/AdminDonationReportsPage";
+import { AdminDonationReportCreatePage } from "@/pages/AdminDonationReportCreatePage";
+import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -903,6 +909,26 @@ const publicRoutes: RouteType[] = [
                 label: "admin-review-video-personal",
                 element: <AdminReviewVideoPersonalPage />,
                 path: (locale: string) => getAdminReviewVideoPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-donation-reports",
+                element: <AdminDonationReportsPage />,
+                path: (locale: string) => getAdminDonationReportsPageUrl(locale),
+            },
+            {
+                label: "admin-donation-reports",
+                element: <AdminDonationReportsPage />,
+                path: (locale: string) => getAdminDonationReportsPageUrl(locale),
+            },
+            {
+                label: "admin-donation-report-create",
+                element: <AdminDonationReportCreatePage />,
+                path: (locale: string) => getAdminDonationReportCreatePageUrl(locale),
+            },
+            {
+                label: "admin-donation-report-personal",
+                element: <AdminDonationReportPersonalPage />,
+                path: (locale: string) => getAdminDonationReportPersonalPageUrl(locale),
             },
         ],
     },

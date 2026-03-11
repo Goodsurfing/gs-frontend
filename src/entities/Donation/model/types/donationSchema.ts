@@ -175,5 +175,8 @@ export interface UpdateDonationStatusRequest {
 
 export interface GetDonationReports {
     name: string;
-    files: Image[];
+    files: {
+        name: string;
+        file: Image;
+    }[];
 }

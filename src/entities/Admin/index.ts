@@ -274,4 +274,6 @@ export {
 export type {
     CreateAdminDonationReport,
     GetAdminDonationReport,
+    AdminDonationReportFields,
+    AdminDonationReportFileFields,
 } from "./model/types/adminDonationSchema";

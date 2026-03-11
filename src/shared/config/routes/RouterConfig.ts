@@ -115,4 +115,5 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_REVIEWS_JOURNALS]: "/admin/reviews-journals",
     [AppRoutes.ADMIN_VIDEO]: "/admin/video",
     [AppRoutes.ADMIN_REVIEWS_VIDEO]: "/admin/reviews-video",
+    [AppRoutes.ADMIN_DONATION_REPORTS]: "/admin/donation-reports",
 };

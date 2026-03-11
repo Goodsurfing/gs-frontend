@@ -12,6 +12,16 @@
   }
 }
 
+.fileIcon {
+  background-color: var(--text-primary-1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dropzoneActive {
   border-color: #007bff;
   background-color: #f0f8ff;
@@ -38,7 +48,7 @@
 }
 
 .errorMessage {
-    color: #d32f2f;
-    font-size: 0.875rem;
-    margin-top: 4px;
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 4px;
 }

@@ -25,9 +25,10 @@ export const adminDonationApi = createApi({
             providesTags: ["report"],
         }),
         createAdminDonationReport: build.mutation<void, CreateAdminDonationReport>({
-            query: () => ({
+            query: (body) => ({
                 url: "report/create",
                 method: "POST",
+                body,
             }),
             invalidatesTags: ["report"],
         }),

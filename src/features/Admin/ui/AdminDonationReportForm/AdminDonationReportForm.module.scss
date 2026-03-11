@@ -1,0 +1,117 @@
+.formWrapper {
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.dropzone {
+  padding: 20px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #007bff;
+  }
+}
+
+.dropzoneActive {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.dropzoneError {
+  border-color: #dc3545;
+}
+
+.preview {
+  display: flex;
+  justify-content: center;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.error {
+  margin: 0;
+}
+
+.filesSection {
+  margin-top: 20px;
+}
+
+.filesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fileItemWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+.fileItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+
+  &:hover {
+    .fileName {
+      color: var(--text-primary-1);
+    }
+  }
+}
+
+.fileName {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+.fileActions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    pointer-events: none;
+  }
+}
+
+.emptyList {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 8px;
+}
