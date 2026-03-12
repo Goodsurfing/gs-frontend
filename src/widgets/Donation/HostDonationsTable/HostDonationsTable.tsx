@@ -1,33 +1,34 @@
 import React from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { SelectRatingSort } from "@/widgets/Donation";
-import sortDownIcon from "@/shared/assets/icons/donation/sort-down.svg";
-import sortUpIcon from "@/shared/assets/icons/donation/sort-up.svg";
-import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
+import { SelectRatingSort } from "../SelectRatingSort/SelectRatingSort";
 import { DonationRatingSort } from "@/entities/Donation";
-import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import CustomLink from "@/shared/ui/Link/Link";
-import { mockRatingDonation } from "@/entities/Donation/data/mockDonations";
-import styles from "./DonationRating.module.scss";
+import sortDownIcon from "@/shared/assets/icons/donation/sort-down.svg";
+import sortUpIcon from "@/shared/assets/icons/donation/sort-up.svg";
+import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
+import { mockHostDonation } from "@/entities/Donation/data/mockDonations";
+import styles from "./HostDonationsTable.module.scss";
 
-interface DonationRatingFields {
+interface HostDonationRatingFields {
     filter: DonationRatingSort;
     sort: "asc" | "desc";
     search: string;
+    searchDonation: string;
 }
 
-const defaultValues: DefaultValues<DonationRatingFields> = {
+const defaultValues: DefaultValues<HostDonationRatingFields> = {
     filter: "numberDonations",
     sort: "desc",
 };
 
-export const DonationRating = () => {
+export const HostDonationsTable = () => {
     const { locale } = useLocale();
-    const form = useForm<DonationRatingFields>({
+    const form = useForm<HostDonationRatingFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -45,13 +46,13 @@ export const DonationRating = () => {
             hideable: false,
         },
         {
-            field: "name",
+            field: "author",
             headerName: "ФИО",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
-            width: 340,
+            width: 280,
             renderCell: (params) => (
                 <CustomLink
                     className={styles.link}
@@ -59,13 +60,13 @@ export const DonationRating = () => {
                     target="_blank"
                     to={getVolunteerPersonalPageUrl(locale, params.row.id)}
                 >
-                    {params.row.name}
+                    {params.row.author}
                 </CustomLink>
             ),
         },
         {
-            field: "numberDonations",
-            headerName: "Количество пожертвований, руб.",
+            field: "nameDonation",
+            headerName: "Название сбора",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -74,8 +75,17 @@ export const DonationRating = () => {
         },
         {
             field: "totalAmountDonations",
-            headerName: "Общая сумма пожертвований, руб.",
+            headerName: "Сумма пожертвования, руб.",
             width: 260,
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "date",
+            headerName: "Дата",
+            width: 200,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -125,6 +135,18 @@ export const DonationRating = () => {
                     />
                 </div>
                 <Controller
+                    name="searchDonation"
+                    control={control}
+                    render={({ field }) => (
+                        <SearchInput
+                            sx={{ maxWidth: "370px" }}
+                            value={field.value}
+                            onChange={(value) => { field.onChange(value); }}
+                            placeholder="Название сбора"
+                        />
+                    )}
+                />
+                <Controller
                     name="search"
                     control={control}
                     render={({ field }) => (
@@ -139,7 +161,7 @@ export const DonationRating = () => {
             </div>
             <div className={styles.table}>
                 <DataGrid
-                    rows={mockRatingDonation}
+                    rows={mockHostDonation}
                     columns={columns}
                     sx={{
                         border: 0,

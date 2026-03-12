@@ -37,6 +37,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_REVIEW]: "/host/review",
     [AppRoutes.HOST_NOTES]: "/host/notes",
+    [AppRoutes.HOST_DONATIONS]: "/host/donations",
     [AppRoutes.HOST_VIDEO]: "/host/video",
     [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",

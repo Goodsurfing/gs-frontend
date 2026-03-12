@@ -134,3 +134,35 @@ export const mockRatingDonation = [
         totalAmountDonations: 3000,
     },
 ];
+
+export const mockHostDonation = [
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+
+];

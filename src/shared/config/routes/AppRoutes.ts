@@ -32,6 +32,7 @@ export enum AppRoutes {
     HOST_TEAM = "host_team",
     HOST_REVIEW = "host_review",
     HOST_NOTES = "host_notes",
+    HOST_DONATIONS = "host_donations",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",
