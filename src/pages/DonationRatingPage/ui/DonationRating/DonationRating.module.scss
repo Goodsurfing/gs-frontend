@@ -60,4 +60,23 @@
 
 .table {
     height: 65vh;
+    width: 100%;
+    overflow: auto;
+}
+
+@media(max-width: 1200px) {
+    .filters {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 460px) {
+    .filtersLeft {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .sort {
+        width: 100%;
+    }
 }

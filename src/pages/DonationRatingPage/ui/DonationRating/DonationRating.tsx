@@ -95,6 +95,7 @@ export const DonationRating = () => {
                                 value={field.value}
                                 onChange={field.onChange}
                                 classNameDropdown={styles.dropdown}
+                                className={styles.sort}
                             />
                         )}
                     />
