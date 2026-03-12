@@ -1,6 +1,7 @@
 export type {
     DonationFilterFields,
     DonationSort,
+    DonationRatingSort,
     GetDonations,
     GetDonationsMap,
     GetDonation,
@@ -36,7 +37,7 @@ export {
     donationCardAdapter,
 } from "./lib/donationAdapter";
 
-export { useSortDonations } from "./lib/useSortDonations";
+export { useSortDonations, useSortRatingDonations } from "./lib/useSortDonations";
 
 export { DonationCard } from "./ui/DonationCard/DonationCard";
 export { HeaderDonationCard } from "./ui/HeaderDonationCard/HeaderDonationCard";

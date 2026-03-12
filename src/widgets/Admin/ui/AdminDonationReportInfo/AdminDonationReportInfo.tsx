@@ -26,6 +26,7 @@ export const AdminDonationReportInfo: FC<AdminDonationReportInfoProps> = (props)
             name, files,
         } = data;
         const filesTemp = files.map((file) => ({
+            id: file.id,
             name: file.name,
             fileId: file.file.id,
         }));

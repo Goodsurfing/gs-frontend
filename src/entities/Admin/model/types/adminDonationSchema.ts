@@ -1,6 +1,7 @@
 import { Image } from "@/types/media";
 
 export interface AdminDonationReportFileFields {
+    id: string | null;
     name: string;
     file: Image;
 }
@@ -11,7 +12,7 @@ export interface AdminDonationReportFields {
 }
 
 export interface GetAdminDonationReports {
-    id: string;
+    id: string | null;
     name: string;
 }
 
@@ -30,8 +31,9 @@ export type CreateAdminDonationReport = Omit<GetAdminDonationReport, "id" | "fil
     }[]
 };
 
-export type UpdateAdminDonationReport = Omit<CreateAdminDonationReport, "files"> & {
+export type UpdateAdminDonationReport = Omit<GetAdminDonationReport, "id" | "files"> & {
     files: {
+        id: string | null;
         name: string;
         fileId: string;
     }[]

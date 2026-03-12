@@ -6,6 +6,8 @@ import { Image } from "@/types/media";
 
 export type DonationSort = "urgency" | "popular";
 
+export type DonationRatingSort = "numberDonations" | "totalAmountDonations";
+
 export interface DonationFilterFields {
     category?: number;
     showFinishedProjects: boolean;

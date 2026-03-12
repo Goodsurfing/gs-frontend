@@ -1,0 +1,63 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.link {
+    color: var(--text-primary-1);
+    transition: all 0.3s ease;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.filters {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.filtersLeft {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.sortWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+
+    path {
+        fill: var(--text-caption);
+        transition: all 0.3s ease;
+    }
+
+    &:hover path {
+        fill: var(--text-primary-1);
+    }
+}
+
+.sort.active {
+    path {
+        fill: var(--text-primary-1);
+    }
+}
+
+.dropdown {
+    margin-top: 0;
+}
+
+.table {
+    height: 65vh;
+}

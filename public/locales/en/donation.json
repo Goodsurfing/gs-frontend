@@ -10,6 +10,8 @@
     "Данные сборы отсутсвуют": "These fees are not available",
     "Поиск": "Search",
     "Посмотреть все": "View all",
+    "По кол-ву пожертвований": "By number of donations",
+    "По общей сумме пожертвований": "By total donation amount",
     "donationPersonal": {
         "Чтобы участвовать, станьте гудсёрфером": "To participate, become a Goodsurfer",
         "Поддержать": "Support",

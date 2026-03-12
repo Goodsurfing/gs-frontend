@@ -101,3 +101,36 @@ export const mockDonation: GetDonation = {
         description: "Тут находится описание организации",
     },
 };
+
+export const mockRatingDonation = [
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+];

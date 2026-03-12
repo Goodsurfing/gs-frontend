@@ -71,6 +71,7 @@ export enum AppRoutes {
     DONATION_MAP = "donation_map",
     DONATION_PERSONAL = "donation_personal",
     DONATION_REPORTS = "donation_reports",
+    DONATION_RATING = "donation_rating",
     NOT_FOUND = "not_found",
     ADMIN = "admin",
     ADMIN_SIGN_IN = "admin_sign_in",
