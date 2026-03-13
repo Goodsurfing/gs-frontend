@@ -4,6 +4,7 @@ import aboutMeIcon from "@/shared/assets/icons/navbar/volunteer/about-me.svg";
 import skillsIcon from "@/shared/assets/icons/navbar/volunteer/skills.svg";
 import reviewsIcon from "@/shared/assets/icons/navbar/volunteer/reviews.svg";
 import feedbackIcon from "@/shared/assets/icons/navbar/mail.svg";
+import supportIcon from "@/shared/assets/icons/navbar/support.svg";
 // import friendsIcon from "@/shared/assets/icons/navbar/volunteer/friends.svg";
 import galleryIcon from "@/shared/assets/icons/navbar/volunteer/photo-gallery.svg";
 import blogIcon from "@/shared/assets/icons/navbar/volunteer/blog.svg";
@@ -31,6 +32,11 @@ export const useVolunteerSidebarData = () => {
             text: t("main.sidebar.Заявки"),
             icon: feedbackIcon,
             route: "/volunteer/notes",
+        },
+        {
+            text: t("main.sidebar.Поддержать"),
+            icon: supportIcon,
+            route: "/volunteer/donations",
         },
         // {
         //     text: t("main.sidebar.Подписки"),

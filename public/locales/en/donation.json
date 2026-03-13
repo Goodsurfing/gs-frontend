@@ -35,5 +35,11 @@
         "Подробнее": "More details",
         "Поделиться сбором": "Share collection",
         "Фотографии не были добавлены": "Photos were not added"
+    },
+    "donationRecommendation": {
+        "Поддержать другие проекты": "Support other projects",
+        "Произошла ошибка загрузки пожертвований": "An error occurred while loading donations",
+        "Поддержать": "Support",
+        "На данный момент проектов нет": "No projects available at the moment"
     }
 }

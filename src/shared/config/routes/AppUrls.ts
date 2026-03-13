@@ -126,6 +126,8 @@ export const getVolunteerReviewPageUrl: RoutePathFunction = (locale) => `/${loca
 
 export const getVolunteerNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_notes}`;
 
+export const getVolunteerDonationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_donations}`;
+
 export const getVolunteerSubscribersPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_subscribers}`;
 
 export const getVolunteerGalleryPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.volunteer_gallery}`;

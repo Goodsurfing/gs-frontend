@@ -7,3 +7,4 @@ export { DonationSubmenu } from "./DonationSubmenu/DonationSubmenu";
 export { SelectSort } from "./SelectSort/SelectSort";
 export { SelectRatingSort } from "./SelectRatingSort/SelectRatingSort";
 export { HostDonationsTable } from "./HostDonationsTable/HostDonationsTable";
+export { DonationsRecomendationsWidget } from "./DonationsRecomendationsWidget/DonationsRecomendationsWidget";

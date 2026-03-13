@@ -1,0 +1,32 @@
+.wrapper {
+    background-color: var(--color-white);
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0px 5px 20px rgba(14, 29, 39, 0.05);
+}
+
+.top {
+    display: flex;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--text-caption);
+    justify-content: space-between;
+}
+
+.settings {
+    text-decoration: none;
+    color: var(--text-primary-1);
+}
+
+.container {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (max-width: 576px) {
+    .top {
+        flex-wrap: wrap;
+        row-gap: 10px;
+    }
+}

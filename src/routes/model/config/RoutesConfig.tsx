@@ -194,6 +194,7 @@ import {
     getDonationReports,
     getDonationRating,
     getHostDonationsPageUrl,
+    getVolunteerDonationsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -273,6 +274,7 @@ import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPers
 import { DonationReportsPage } from "@/pages/DonationReportsPage";
 import { DonationRatingPage } from "@/pages/DonationRatingPage";
 import { HostDonationsPage } from "@/pages/HostDonationsPage";
+import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -503,6 +505,11 @@ const publicRoutes: RouteType[] = [
                 label: "volunteer-notes",
                 element: <VolunteerNotesPage />,
                 path: (locale: string) => getVolunteerNotesPageUrl(locale),
+            },
+            {
+                label: "volunteer-donations",
+                element: <VolunteerDonationsPage />,
+                path: (locale: string) => getVolunteerDonationsPageUrl(locale),
             },
             {
                 label: "volunteer-subscribers",

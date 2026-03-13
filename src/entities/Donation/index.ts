@@ -40,6 +40,7 @@ export {
 export { useSortDonations, useSortRatingDonations } from "./lib/useSortDonations";
 
 export { DonationCard } from "./ui/DonationCard/DonationCard";
+export { VolunteerDonationCard } from "./ui/VolunteerDonationCard/VolunteerDonationCard";
 export { HeaderDonationCard } from "./ui/HeaderDonationCard/HeaderDonationCard";
 export { DonationInfoCard } from "./ui/DonationInfoCard/DonationInfoCard";
 export { DonationProgressBar } from "./ui/DonationProgressBar/DonationProgressBar";

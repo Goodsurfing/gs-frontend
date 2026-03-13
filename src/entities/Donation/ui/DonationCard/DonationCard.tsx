@@ -85,6 +85,8 @@ export const DonationCard: FC<DonationCardProps> = memo((props: DonationCardProp
                                     {t("Собрано")}
                                     {" "}
                                     {percentAmountCollect}
+                                    {" "}
+                                    %
                                 </span>
                             </div>
                             <div className={styles.iconWrapper}>

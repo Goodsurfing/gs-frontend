@@ -48,6 +48,7 @@ export enum AppRoutes {
     VOLUNTEER_SKILLS = "volunteer_skills",
     VOLUNTEER_REVIEW = "volunteer_review",
     VOLUNTEER_NOTES = "volunteer_notes",
+    VOLUNTEER_DONATIONS = "volunteer_donations",
     VOLUNTEER_SUBSCRIBERS = "volunteer_subscribers",
     VOLUNTEER_GALLERY = "volunteer_gallery",
     VOLUNTEER_CREATE_ARTICLE = "volunteer_create_article",

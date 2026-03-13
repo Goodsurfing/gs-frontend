@@ -55,6 +55,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.VOLUNTEER_SKILLS]: "/volunteer/skills",
     [AppRoutes.VOLUNTEER_REVIEW]: "/volunteer/review",
     [AppRoutes.VOLUNTEER_NOTES]: "/volunteer/notes",
+    [AppRoutes.VOLUNTEER_DONATIONS]: "/volunteer/donations",
     [AppRoutes.VOLUNTEER_SUBSCRIBERS]: "/volunteer/subscribers",
     [AppRoutes.VOLUNTEER_GALLERY]: "/volunteer/gallery",
     [AppRoutes.VOLUNTEER_CREATE_ARTICLE]: "/volunteer/create-article",
