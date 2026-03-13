@@ -1,5 +1,20 @@
-.wrapepr ul,
+.wrapper ul,
 .wrapper ol {
     padding-left: 30px;
     padding-bottom: 15px;
+    padding-top: 10px;
+}
+
+.wrapper img {
+    max-width: 100%;
+    padding: 15px 0;
+}
+
+.wrapper a {
+    color: var(--text-primary-1);
+    text-decoration: none;
+}
+
+.wrapper a:hover {
+    text-decoration: underline;
 }
