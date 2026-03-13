@@ -3,9 +3,11 @@ import {
 } from "react";
 import { useDropzone, Accept } from "react-dropzone";
 import cn from "classnames";
+import { ReactSVG } from "react-svg";
 import { ErrorText } from "../ErrorText/ErrorText";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "../MiniLoader/MiniLoader";
+import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 import styles from "./ImageDropzone.module.scss";
 
 export interface ImageDropzoneProps {
@@ -26,6 +28,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         "image/jpeg": [".jpeg", ".jpg"],
         "image/png": [".png"],
         "image/svg+xml": [".svg"],
+        "application/pdf": [".pdf"],
     },
     maxSize = 2 * 1024 * 1024, // 2 МБ
     className,
@@ -57,8 +60,8 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
             };
         }
 
-        const validMimeTypes = ["image/jpeg", "image/png", "image/svg+xml"];
-        const validExtensions = [".jpg", ".jpeg", ".png", ".svg"];
+        const validMimeTypes = ["image/jpeg", "image/png", "image/svg+xml", "application/pdf"];
+        const validExtensions = [".jpg", ".jpeg", ".png", ".svg", ".pdf"];
 
         const fileExtension = file.name.toLowerCase().split(".").pop();
         const hasValidExtension = fileExtension ? validExtensions.includes(`.${fileExtension}`) : false;
@@ -68,7 +71,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         if (!hasValidMimeType && !hasValidExtension) {
             return {
                 valid: false,
-                message: "Разрешены только JPG, PNG, SVG",
+                message: "Разрешены только JPG, PNG, SVG и PDF",
             };
         }
 
@@ -105,10 +108,18 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
 
     const hasError = externalError || !!internalError;
 
+    const isPdfPreview = (url: string | null): boolean => url?.toLowerCase().endsWith(".pdf") ?? false;
+
     let dropzoneContent;
 
     if (isLoading) {
         dropzoneContent = <div className={styles.loading}><MiniLoader /></div>;
+    } else if (preview && isPdfPreview(preview)) {
+        dropzoneContent = (
+            <div className={styles.preview}>
+                <ReactSVG src={fileIcon} className={styles.fileIcon} />
+            </div>
+        );
     } else if (preview) {
         dropzoneContent = (
             <div className={styles.preview}>
@@ -116,6 +127,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
             </div>
         );
     } else {
+    // Пустое состояние: только текст, без иконки
         dropzoneContent = (
             <p className={styles.placeholder}>
                 Перетащите изображение сюда или кликните для выбора

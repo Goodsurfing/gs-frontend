@@ -1,4 +1,4 @@
-import { Slider } from "@mui/material";
+import { Slider, styled } from "@mui/material";
 import cn from "classnames";
 import React, { FC } from "react";
 
@@ -9,6 +9,22 @@ interface CourseProgressBarProps {
     totalLessons: number;
     finishedLessons: number;
 }
+
+const CustomSlider = styled(Slider)({
+    "& .MuiSlider-thumb": {
+        color: "#3DABF7 !important",
+        "&:hover, &:focus, &.Mui-active": {
+            boxShadow: "0 0 0 8px rgba(61, 171, 247, 0.16)",
+        },
+    },
+    "& .MuiSlider-track": {
+        color: "#3DABF7 !important",
+        backgroundColor: "#3DABF7 !important",
+    },
+    "& .MuiSlider-rail": {
+        color: "#000000",
+    },
+});
 
 export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
     const { className, finishedLessons, totalLessons } = props;
@@ -46,7 +62,7 @@ export const CourseProgressBar: FC<CourseProgressBarProps> = (props) => {
         <div className={cn(styles.wrapper, className)}>
             <h2>Прогресс по курсу</h2>
             <div className={styles.sliderWrapper}>
-                <Slider
+                <CustomSlider
                     aria-label="Course progress"
                     value={thumbValue}
                     step={step}

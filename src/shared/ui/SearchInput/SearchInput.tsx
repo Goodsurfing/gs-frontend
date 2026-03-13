@@ -13,11 +13,13 @@ interface SearchInputProps {
     className?: string;
     value: string;
     onChange: (value: string) => void;
+    placeholder?: string;
 }
 
 export const SearchInput: FC<SearchInputProps> = (props) => {
     const {
         sx, className, value, onChange,
+        placeholder,
     } = props;
     const { t } = useTranslation();
 
@@ -39,7 +41,7 @@ export const SearchInput: FC<SearchInputProps> = (props) => {
         >
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
-                placeholder={t("Поиск")}
+                placeholder={placeholder ?? t("Поиск")}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             />

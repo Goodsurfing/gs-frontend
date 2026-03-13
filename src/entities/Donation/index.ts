@@ -1,6 +1,7 @@
 export type {
     DonationFilterFields,
     DonationSort,
+    DonationRatingSort,
     GetDonations,
     GetDonationsMap,
     GetDonation,
@@ -27,6 +28,7 @@ export {
     useGetDonationAutoMessagesQuery,
     useUpdateDonationAutoMessagesMutation,
     useUpdateDonationStatusMutation,
+    useGetDonationPublicReportsQuery,
 } from "./api/donationApi";
 
 export {
@@ -35,9 +37,10 @@ export {
     donationCardAdapter,
 } from "./lib/donationAdapter";
 
-export { useSortDonations } from "./lib/useSortDonations";
+export { useSortDonations, useSortRatingDonations } from "./lib/useSortDonations";
 
 export { DonationCard } from "./ui/DonationCard/DonationCard";
+export { VolunteerDonationCard } from "./ui/VolunteerDonationCard/VolunteerDonationCard";
 export { HeaderDonationCard } from "./ui/HeaderDonationCard/HeaderDonationCard";
 export { DonationInfoCard } from "./ui/DonationInfoCard/DonationInfoCard";
 export { DonationProgressBar } from "./ui/DonationProgressBar/DonationProgressBar";

@@ -44,6 +44,9 @@
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
         "Ваш отзыв был отправлен": "Your review has been submitted"
     },
+    "hostDonations": {
+        "Пожертвования": "Donations"
+    },
     "hostDescription": {
         "Создание организации": "Creating an organization",
         "Создать организацию": "Create organization",

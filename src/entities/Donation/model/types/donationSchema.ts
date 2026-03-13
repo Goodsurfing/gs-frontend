@@ -6,6 +6,8 @@ import { Image } from "@/types/media";
 
 export type DonationSort = "urgency" | "popular";
 
+export type DonationRatingSort = "numberDonations" | "totalAmountDonations";
+
 export interface DonationFilterFields {
     category?: number;
     showFinishedProjects: boolean;
@@ -169,4 +171,14 @@ export interface UpdateDonationStatus {
 export interface UpdateDonationStatusRequest {
     id: string;
     body: UpdateDonationStatus;
+}
+
+// Reports
+
+export interface GetDonationReports {
+    name: string;
+    files: {
+        name: string;
+        file: Image;
+    }[];
 }

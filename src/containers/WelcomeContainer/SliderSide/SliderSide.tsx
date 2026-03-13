@@ -9,8 +9,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Slide from "@/containers/WelcomeContainer/SliderSide/Slide/Slide";
 import { useTranslatedSliderData } from "@/containers/WelcomeContainer/SliderSide/Slider.data";
 
-import styles from "./SliderSide.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./SliderSide.module.scss";
 
 const SliderSide: FC = memo(() => {
     const sliderData = useTranslatedSliderData();
@@ -22,7 +22,7 @@ const SliderSide: FC = memo(() => {
                 modules={[Pagination, Autoplay, EffectFade]}
                 effect="fade"
                 slidesPerView={1}
-                // autoplay
+                autoplay
                 pagination={{
                     clickable: true,
                     bulletClass: `swiper-pagination-bullet ${styles.bullet}`,

@@ -10,6 +10,8 @@
     "Данные сборы отсутсвуют": "Estas tarifas no están disponibles",
     "Поиск": "Buscar",
     "Посмотреть все": "Ver todo",
+    "По кол-ву пожертвований": "Por número de donaciones",
+    "По общей сумме пожертвований": "Por monto total de donaciones",
     "donationPersonal": {
         "Чтобы участвовать, станьте гудсёрфером": "Para participar, conviértete en Goodsurfer",
         "Поддержать": "Apoyo",
@@ -33,5 +35,11 @@
         "Подробнее": "Más detalles",
         "Поделиться сбором": "Compartir colección",
         "Фотографии не были добавлены": ""
+    },
+    "donationRecommendation": {
+        "Поддержать другие проекты": "Apoyar otros proyectos",
+        "Произошла ошибка загрузки пожертвований": "Se produjo un error al cargar las donaciones",
+        "Поддержать": "Apoyar",
+        "На данный момент проектов нет": "No hay proyectos disponibles en este momento"
     }
 }

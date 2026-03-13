@@ -4,3 +4,7 @@ export { DonationsList } from "./DonationsList/DonationsList";
 export { DonationsMap } from "./DonationsMap/DonationsMap";
 export { SwitchDonationFilter } from "./SwitchDonationFilter/SwitchDonationFilter";
 export { DonationSubmenu } from "./DonationSubmenu/DonationSubmenu";
+export { SelectSort } from "./SelectSort/SelectSort";
+export { SelectRatingSort } from "./SelectRatingSort/SelectRatingSort";
+export { HostDonationsTable } from "./HostDonationsTable/HostDonationsTable";
+export { DonationsRecomendationsWidget } from "./DonationsRecomendationsWidget/DonationsRecomendationsWidget";

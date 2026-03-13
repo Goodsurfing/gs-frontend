@@ -80,6 +80,17 @@ export const useAdminPagesSidebarData = () => {
                 },
             ],
         },
+        {
+            route: "/admin",
+            text: "Поддержка",
+            dropdownItems: [
+                {
+                    route: "/donation-reports",
+                    text: "Публичная отчётность",
+                },
+            ],
+
+        },
     ];
     return { AdminPagesSidebarData };
 };
