@@ -101,3 +101,68 @@ export const mockDonation: GetDonation = {
         description: "Тут находится описание организации",
     },
 };
+
+export const mockRatingDonation = [
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+    {
+        id: "1",
+        name: "Мария Иванова",
+        numberDonations: 57,
+        totalAmountDonations: 3000,
+    },
+];
+
+export const mockHostDonation = [
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+    {
+        id: "1",
+        author: "Мария Иванова",
+        nameDonation: "Тестовый сбор",
+        totalAmountDonations: 3000,
+        date: "24.08.2026",
+    },
+
+];

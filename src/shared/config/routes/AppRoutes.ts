@@ -32,6 +32,7 @@ export enum AppRoutes {
     HOST_TEAM = "host_team",
     HOST_REVIEW = "host_review",
     HOST_NOTES = "host_notes",
+    HOST_DONATIONS = "host_donations",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",
@@ -70,6 +71,8 @@ export enum AppRoutes {
     ACADEMY_LESSON = "academy_lesson",
     DONATION_MAP = "donation_map",
     DONATION_PERSONAL = "donation_personal",
+    DONATION_REPORTS = "donation_reports",
+    DONATION_RATING = "donation_rating",
     NOT_FOUND = "not_found",
     ADMIN = "admin",
     ADMIN_SIGN_IN = "admin_sign_in",
@@ -106,4 +109,5 @@ export enum AppRoutes {
     ADMIN_REVIEWS_JOURNALS = "admin_reviews_journals",
     ADMIN_VIDEO = "admin_video",
     ADMIN_REVIEWS_VIDEO = "admin_reviews_video",
+    ADMIN_DONATION_REPORTS = "admin_donation_reports",
 }

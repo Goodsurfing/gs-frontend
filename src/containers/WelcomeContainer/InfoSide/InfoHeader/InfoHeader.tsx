@@ -14,6 +14,8 @@ import {
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
+    getDonationRating,
+    getDonationReports,
     getDonationsMapPageUrl,
     getFindJobPageUrl,
     getJournalsPageUrl,
@@ -175,13 +177,13 @@ const InfoHeader = memo(() => {
                             </Link>
                             <Link
                                 className={styles.dropdownLink}
-                                to={getMainPageUrl(locale)}
+                                to={getDonationReports(locale)}
                             >
                                 {t("main.welcome.header.donation.public-reports")}
                             </Link>
                             <Link
                                 className={styles.dropdownLink}
-                                to={getMainPageUrl(locale)}
+                                to={getDonationRating(locale)}
                             >
                                 {t("main.welcome.header.donation.rating-donations")}
                             </Link>

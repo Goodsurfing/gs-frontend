@@ -37,6 +37,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.HOST_GALLERY]: "/host/gallery",
     [AppRoutes.HOST_REVIEW]: "/host/review",
     [AppRoutes.HOST_NOTES]: "/host/notes",
+    [AppRoutes.HOST_DONATIONS]: "/host/donations",
     [AppRoutes.HOST_VIDEO]: "/host/video",
     [AppRoutes.HOST_TEAM]: "/host/team",
     [AppRoutes.MY_OFFERS]: "/host/my-offers",
@@ -77,6 +78,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ACADEMY_LESSON]: "/academy-lesson",
     [AppRoutes.DONATION_MAP]: "/donation-map",
     [AppRoutes.DONATION_PERSONAL]: "/donation-personal",
+    [AppRoutes.DONATION_REPORTS]: "/donation-reports",
+    [AppRoutes.DONATION_RATING]: "/donation-rating",
     [AppRoutes.SIGN_UP]: "/signup",
     [AppRoutes.SIGN_IN]: "/signin",
     [AppRoutes.NOT_FOUND]: "*",
@@ -115,4 +118,5 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ADMIN_REVIEWS_JOURNALS]: "/admin/reviews-journals",
     [AppRoutes.ADMIN_VIDEO]: "/admin/video",
     [AppRoutes.ADMIN_REVIEWS_VIDEO]: "/admin/reviews-video",
+    [AppRoutes.ADMIN_DONATION_REPORTS]: "/admin/donation-reports",
 };
