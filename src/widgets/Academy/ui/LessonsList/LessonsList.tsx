@@ -1,5 +1,5 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -8,6 +8,7 @@ import { LessonCard } from "@/entities/Academy";
 import { useLazyGetCourseLessonsQuery } from "@/entities/Academy/api/courseApi";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { OfferPagination } from "@/widgets/OffersMap";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./LessonsList.module.scss";
 
 interface LessonsListProps {
@@ -20,7 +21,7 @@ const LIMIT = 10;
 export const LessonsList: FC<LessonsListProps> = (props) => {
     const { className, courseId } = props;
     const { locale } = useLocale();
-    const [currentPage, setCurrentPage] = useState(1);
+    const { page, setPage } = useNewsFilters();
 
     const [fetchLessons, {
         data,
@@ -32,15 +33,11 @@ export const LessonsList: FC<LessonsListProps> = (props) => {
 
     useEffect(() => {
         try {
-            fetchLessons({ page: currentPage, limit: LIMIT, courseId });
+            fetchLessons({ page, limit: LIMIT, courseId });
         } catch {
             // epmty
         }
-    }, [fetchLessons, currentPage, courseId]);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+    }, [fetchLessons, page, courseId]);
 
     const renderLessons = data ? data?.data.map((lesson) => {
         const {
@@ -72,8 +69,8 @@ export const LessonsList: FC<LessonsListProps> = (props) => {
             {error && <div>Ошибка загрузки уроков</div>}
             {!isFetching && !isLoading && totalPages > 1 && (
                 <OfferPagination
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
+                    currentPage={page}
+                    onPageChange={setPage}
                     totalPages={totalPages}
                 />
             )}

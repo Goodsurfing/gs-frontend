@@ -1,7 +1,6 @@
 .wrapper ul,
 .wrapper ol {
     padding-left: 30px;
-    padding-bottom: 15px;
     padding-top: 10px;
 }
 
@@ -17,4 +16,8 @@
 
 .wrapper a:hover {
     text-decoration: underline;
+}
+
+.wrapper p {
+    margin-top: 15px;
 }

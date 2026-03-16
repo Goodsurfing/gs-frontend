@@ -38,7 +38,7 @@ export const blogApi = createApi({
         }),
         publicBlogById: build.mutation<void, PublicBlogParams>({
             query: ({ id, body }) => ({
-                url: `blog/toggle-active${id}`,
+                url: `blog/toggle-active/${id}`,
                 method: "PATCH",
                 body,
             }),

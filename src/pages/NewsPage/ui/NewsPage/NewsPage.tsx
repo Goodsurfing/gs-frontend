@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
@@ -16,6 +16,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./NewsPage.module.scss";
 
 const limit = 10;
@@ -32,10 +33,10 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const NewsPage = () => {
     const { locale } = useLocale();
-    const [filterValue, setFilterValue] = useState<TagsOption>("new");
-    const [searchValue, setSearchValue] = useState<string>("");
-    const [categoryValue, setCategoryValue] = useState<number | undefined>();
-    const [page, setPage] = useState(1);
+    const {
+        page, sort, search, category, setPage,
+        setSort, setSearch, setCategory,
+    } = useNewsFilters();
 
     const [getNews, { data, isLoading, isFetching }] = useLazyGetNewsListQuery();
 
@@ -43,12 +44,12 @@ const NewsPage = () => {
         getNews({
             page,
             limit,
-            sort: getSortByFilter(filterValue),
+            sort: getSortByFilter(sort),
             lang: locale,
-            name: searchValue,
-            categoryId: categoryValue,
+            name: search,
+            categoryId: category,
         });
-    }, [page, filterValue, searchValue, locale, categoryValue, getNews]);
+    }, [page, locale, getNews, sort, search, category]);
 
     const totalPages = data?.pagination
         ? Math.ceil(data.pagination.total / data.pagination.limit)
@@ -63,11 +64,11 @@ const NewsPage = () => {
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>
-                    <ArticleFilter value={filterValue} onChange={setFilterValue} />
+                    <ArticleFilter value={sort} onChange={setSort} />
                     <SearchInput
                         sx={{ maxWidth: "370px" }}
-                        value={searchValue}
-                        onChange={(value) => { setSearchValue(value); }}
+                        value={search}
+                        onChange={(value) => { setSearch(value); }}
                     />
                 </div>
                 <div className={styles.content}>
@@ -90,8 +91,8 @@ const NewsPage = () => {
                         <Category
                             className={styles.category}
                             locale={locale}
-                            value={categoryValue}
-                            onChange={setCategoryValue}
+                            value={category}
+                            onChange={setCategory}
                         />
                         <MemberBanner className={styles.memberBanner} />
                     </div>

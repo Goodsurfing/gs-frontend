@@ -1,25 +1,27 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import { CourseCard } from "@/entities/Academy";
 import { useLazyGetCoursesQuery } from "@/entities/Academy/api/courseApi";
 
-import styles from "./CoursesList.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getFullName } from "@/shared/lib/getFullName";
 import { OfferPagination } from "@/widgets/OffersMap";
+import styles from "./CoursesList.module.scss";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 
 interface CoursesListProps {
     className?: string;
 }
 
+const coursesLimit = 10;
+
 export const CoursesList: FC<CoursesListProps> = (props) => {
     const { className } = props;
     const { locale } = useLocale();
-    const [currentPage, setCurrentPage] = useState(1);
-    const coursesLimit = 10;
+    const { page, setPage } = useNewsFilters();
 
     const [fetchCourses, {
         data,
@@ -31,15 +33,11 @@ export const CoursesList: FC<CoursesListProps> = (props) => {
 
     useEffect(() => {
         try {
-            fetchCourses({ page: currentPage, limit: coursesLimit, sort: AdminSort.CreatedDesc });
+            fetchCourses({ page, limit: coursesLimit, sort: AdminSort.CreatedDesc });
         } catch {
             // epmty
         }
-    }, [fetchCourses, currentPage, coursesLimit]);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+    }, [fetchCourses, page]);
 
     const renderCourses = data ? data.data.map((course) => {
         const {
@@ -74,8 +72,8 @@ export const CoursesList: FC<CoursesListProps> = (props) => {
             {error && <div>Ошибка загрузки курсов</div>}
             {!isFetching && !isLoading && totalPages > 1 && (
                 <OfferPagination
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
+                    currentPage={page}
+                    onPageChange={setPage}
                     totalPages={totalPages}
                 />
             )}

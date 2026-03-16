@@ -91,7 +91,7 @@ const VolunteerArticlesPage = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h2>{t("volunteer-articles.Мои статьи")}</h2>
-            {(pagination?.total === 0) && (
+            {((pagination?.total === 0) && (paginationDraft?.total === 0)) && (
                 <div className={styles.empty}>
                     <p>{t("volunteer-articles.На данный момент у вас нет добавленных статей. Создайте свою первую статью")}</p>
                     <ButtonLink
