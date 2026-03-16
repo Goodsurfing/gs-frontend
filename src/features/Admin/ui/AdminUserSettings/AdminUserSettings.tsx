@@ -172,9 +172,9 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 size="SMALL"
                 variant="FILL"
                 onClick={openDeleteModal}
-                disabled={isDeleting}
+                disabled={isDeleting || data.isDelete}
             >
-                Удалить пользователя
+                {data.isDelete ? "Пользователь удалён" : "Удалить пользователя"}
             </Button>
             <Button
                 className={styles.button}

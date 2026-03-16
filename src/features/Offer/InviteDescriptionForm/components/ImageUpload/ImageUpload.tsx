@@ -76,7 +76,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
                     )}
                     <br />
                     {t(
-                        "description.Изображение не должно превышать 2 МБ",
+                        "description.Изображение не должно превышать 5МБ",
                     )}
                 </span>
             )}

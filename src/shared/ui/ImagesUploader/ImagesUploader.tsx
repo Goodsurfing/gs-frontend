@@ -103,7 +103,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
                 file,
                 preview: URL.createObjectURL(file),
                 progress: 0,
-                sizeError: file.size > 2 * 1024 * 1024,
+                sizeError: file.size > 5 * 1024 * 1024, // 5 MB
             }));
 
             setFiles((prev) => [...prev, ...mappedFiles]);
@@ -278,7 +278,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
 
                         {f.sizeError && (
                             <div className={styles.errorText}>
-                                {t("Файл больше 2MB")}
+                                {t("Файл больше 5MB")}
                             </div>
                         )}
 

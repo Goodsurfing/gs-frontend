@@ -66,7 +66,7 @@
         "Написать в блог": "Write in the blog",
         "Редактировать статью": "Edit article",
         "Добавить фото обложки": "Add cover photo",
-        "Оптимальные размеры 2175 х 966. Вес не более 2МБ": "Optimal size 2175 x 966. Weight no more than 2MB",
+        "Оптимальные размеры 2175 х 966. Вес не более 5МБ": "Optimal size 2175 x 966. Weight no more than 5MB",
         "Название статьи": "Article title",
         "Заголовок вашей статьи": "Your article's headline",
         "Категория статьи": "Article category",
@@ -93,6 +93,8 @@
         "Статья удалена": "Article Deleted",
         "Ошибка удаления статьи": "Article Delete Error",
         "Статья опубликована": "Article Published",
-        "Ошибка публикации статьи": "Article Publish Error"
+        "Ошибка публикации статьи": "Article Publish Error",
+        "На данный момент у вас нет добавленных статей. Создайте свою первую статью": "You currently have no articles added. Create your first article.",
+        "Создать статью": "Create an article"
     }
 }

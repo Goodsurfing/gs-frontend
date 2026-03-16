@@ -228,9 +228,22 @@ export const AdminOrganizationsTable = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", disableColumnMenu: false },
         {
-            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
+            field: "id",
+            headerName: "ID",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "name",
+            headerName: "Название",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 240,
         },
         {
             field: "owner",
@@ -255,7 +268,7 @@ export const AdminOrganizationsTable = () => {
             field: "countVacancies",
             headerName: "Кол-во вакансий",
             type: "number",
-            sortable: true,
+            sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
@@ -265,7 +278,7 @@ export const AdminOrganizationsTable = () => {
             field: "countApplications",
             headerName: "Кол-во заявок",
             type: "number",
-            sortable: true,
+            sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,

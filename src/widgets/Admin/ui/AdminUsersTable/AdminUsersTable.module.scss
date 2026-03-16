@@ -32,3 +32,9 @@
 .btnDelete g {
     fill: var(--error-color);
 }
+
+.btnDelete {
+    &:disabled {
+        opacity: 0.6;
+    }
+}

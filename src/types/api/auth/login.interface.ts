@@ -1,6 +1,7 @@
 export interface LoginByEmailProps {
     email: string;
     password: string;
+    isRememberMe: boolean;
 }
 
 export type ResendVerificationRequest = Pick<LoginByEmailProps, "email">;

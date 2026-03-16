@@ -18,12 +18,14 @@ interface IFileInput extends InputFileProps {
     classname?: string;
 }
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const FileInput: FC<IFileInput> = (props) => {
     const { t } = useTranslation("profile");
     const {
         src,
         setFile,
-        fileSizeInMB = "2",
+        fileSizeInMB = "5",
         route,
         text = t("info.Посмотреть профиль"),
         classname,
@@ -33,7 +35,7 @@ const FileInput: FC<IFileInput> = (props) => {
     const [isError, setError] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0].size > 2097152) {
+        if (e.target.files && e.target.files[0].size > MAX_FILE_SIZE) {
             e.target.value = "";
             setError(true);
             return;

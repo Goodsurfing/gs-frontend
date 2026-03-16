@@ -418,7 +418,7 @@ export const AdminUsersTable = () => {
                             type="button"
                             title="Удалить пользователя"
                             className={cn(styles.btnIcon, styles.btnDelete)}
-                            disabled={isDeleting}
+                            disabled={isDeleting || params.row.isDelete}
                         >
                             <ReactSVG src={deleteIcon} />
                         </button>

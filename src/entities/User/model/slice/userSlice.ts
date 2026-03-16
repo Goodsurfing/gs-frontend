@@ -29,21 +29,16 @@ export const userSlice = createSlice({
                 roles,
             };
 
-            const storage = rememberMe ? localStorage : sessionStorage;
-
-            storage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({ username }));
-            storage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
-            storage.setItem(MERCURE_TOKEN_LOCALSTORAGE_KEY, JSON.stringify(mercureToken));
-            storage.setItem(ROLES_LOCALSTORAGE_KEY, JSON.stringify(roles));
+            localStorage.setItem(USER_LOCALSTORAGE_KEY, JSON.stringify({ username }));
+            localStorage.setItem(TOKEN_LOCALSTORAGE_KEY, JSON.stringify(token));
+            localStorage.setItem(MERCURE_TOKEN_LOCALSTORAGE_KEY, JSON.stringify(mercureToken));
+            localStorage.setItem(ROLES_LOCALSTORAGE_KEY, JSON.stringify(roles));
         },
         initAuthData: (state) => {
-            const getFromStorage = (key: string) => localStorage.getItem(key)
-            || sessionStorage.getItem(key);
-
-            const userRaw = getFromStorage(USER_LOCALSTORAGE_KEY);
-            const rolesRaw = getFromStorage(ROLES_LOCALSTORAGE_KEY);
-            const tokenRaw = getFromStorage(TOKEN_LOCALSTORAGE_KEY);
-            const mercureTokenRaw = getFromStorage(MERCURE_TOKEN_LOCALSTORAGE_KEY);
+            const userRaw = localStorage.getItem(USER_LOCALSTORAGE_KEY);
+            const rolesRaw = localStorage.getItem(ROLES_LOCALSTORAGE_KEY);
+            const tokenRaw = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
+            const mercureTokenRaw = localStorage.getItem(MERCURE_TOKEN_LOCALSTORAGE_KEY);
 
             if (userRaw && tokenRaw && mercureTokenRaw && rolesRaw) {
                 const user = JSON.parse(userRaw);
@@ -64,7 +59,7 @@ export const userSlice = createSlice({
         logout: (state) => {
             state.authData = undefined;
 
-            [localStorage, sessionStorage].forEach((storage) => {
+            [localStorage].forEach((storage) => {
                 storage.removeItem(USER_LOCALSTORAGE_KEY);
                 storage.removeItem(ROLES_LOCALSTORAGE_KEY);
                 storage.removeItem(TOKEN_LOCALSTORAGE_KEY);

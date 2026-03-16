@@ -93,11 +93,12 @@ export interface AdminUser {
     isOrganization: boolean;
     isActive: boolean;
     isPayment: boolean;
+    isDelete: boolean;
     endPayment: string;
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
-| "isVolunteer" | "isOrganization" | "isActive" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
+| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
 | "email" | "skills" | "image" | "achievements"> & {
     imageId: string | null;
     skillIds: number[];

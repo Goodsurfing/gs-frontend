@@ -11,12 +11,17 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { getVolunteerCreateArticlePageUrl } from "@/shared/config/routes/AppUrls";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./VolunteerArticlesPage.module.scss";
 
 const limit = 10;
 
 const VolunteerArticlesPage = () => {
     const { t } = useTranslation("volunteer");
+    const { locale } = useLocale();
+
     const [getBlogList, {
         data: blogData,
         isLoading: isLoadingBlog, isFetching: isFetchingBlog,
@@ -25,6 +30,7 @@ const VolunteerArticlesPage = () => {
         data: blogDraftData,
         isLoading: isLoadingBlogDraft, isFetching: isFetchingBlogDraft,
     }] = useLazyGetBlogListQuery();
+
     const [deleteBlog] = useDeleteBlogMutation();
     const [publicBlog] = usePublicBlogByIdMutation();
     const [page, setPage] = useState<number>(1);
@@ -85,6 +91,17 @@ const VolunteerArticlesPage = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h2>{t("volunteer-articles.Мои статьи")}</h2>
+            {(pagination?.total === 0) && (
+                <div className={styles.empty}>
+                    <p>{t("volunteer-articles.На данный момент у вас нет добавленных статей. Создайте свою первую статью")}</p>
+                    <ButtonLink
+                        path={getVolunteerCreateArticlePageUrl(locale)}
+                        type="primary"
+                    >
+                        {t("volunteer-articles.Создать статью")}
+                    </ButtonLink>
+                </div>
+            )}
             {(isLoadingBlog || isFetchingBlog) ? (
                 <MiniLoader />
             ) : (
