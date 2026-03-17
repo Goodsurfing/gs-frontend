@@ -34,6 +34,7 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/aos": "^3.0.7",
     "@types/circular-dependency-plugin": "^5.0.5",
+    "@types/copy-webpack-plugin": "^8.0.1",
     "@types/crypto-js": "^4.2.2",
     "@types/dompurify": "^3.0.5",
     "@types/dotenv-webpack": "^7.0.4",
