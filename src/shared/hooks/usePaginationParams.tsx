@@ -72,3 +72,69 @@ export const useNewsFilters = (): UseNewsFiltersReturn => {
         setCategory: (newCategory) => setFilters({ category: newCategory }),
     };
 };
+
+type QueryFilterValue = string | number | undefined;
+
+export const useQueryFilters = <T extends Record<string, QueryFilterValue>>(
+    defaults: T,
+    options?: { resetPageOnFilterChange?: boolean },
+) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const resetPageOnFilterChange = options?.resetPageOnFilterChange ?? true;
+
+    const getParam = <K extends keyof T>(key: K): T[K] => {
+        const value = searchParams.get(key as string);
+        if (value === null) return defaults[key];
+        if (typeof defaults[key] === "number") {
+            return Number(value) as T[K];
+        }
+        return (value || defaults[key]) as T[K];
+    };
+
+    const setFilters = (filters: Partial<T>) => {
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev);
+
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value === undefined || value === "") {
+                    newParams.delete(key);
+                } else {
+                    newParams.set(key, String(value));
+                }
+            });
+
+            if (resetPageOnFilterChange) {
+                const hasNonPageChanges = Object.keys(filters).some((k) => k !== "page");
+                if (hasNonPageChanges) {
+                    newParams.set("page", "1");
+                }
+            }
+
+            return newParams;
+        });
+
+        window.scrollTo(0, 0);
+    };
+
+    const clearFilters = () => {
+        const defaultParams: Record<string, string> = {};
+        Object.entries(defaults).forEach(([key, value]) => {
+            if (value !== undefined && value !== "") {
+                defaultParams[key] = String(value);
+            }
+        });
+        setSearchParams(defaultParams);
+        window.scrollTo(0, 0);
+    };
+
+    const filters = {} as T;
+    Object.keys(defaults).forEach((key) => {
+        filters[key as keyof T] = getParam(key as keyof T);
+    });
+
+    return {
+        filters,
+        setFilters,
+        clearFilters,
+    };
+};

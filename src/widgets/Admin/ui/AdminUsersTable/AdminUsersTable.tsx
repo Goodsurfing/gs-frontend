@@ -25,6 +25,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./AdminUsersTable.module.scss";
 
 const USERS_PER_PAGE = 30;
@@ -159,11 +160,17 @@ const customFields: CustomFilterField<keyof UserFilters>[] = [
 ];
 
 export const AdminUsersTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [filters, setFilters] = useState<Partial<UserFilters>>({
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        id: undefined,
+        email: undefined,
+        firstName: undefined,
+        lastName: undefined,
         sort: AdminSort.IdAsc,
     });
 
@@ -185,7 +192,7 @@ export const AdminUsersTable = () => {
             setToast(undefined);
             try {
                 await getUsers({
-                    page: currentPage,
+                    page: filters.page,
                     limit: USERS_PER_PAGE,
                     id: filters.id,
                     email: filters.email,
@@ -202,10 +209,11 @@ export const AdminUsersTable = () => {
         };
 
         fetchData();
-    }, [currentPage, filters, getUsers]);
+    }, [filters.email, filters.firstName, filters.id,
+        filters.lastName, filters.page, filters.sort, getUsers]);
 
-    const handleOpenDeleteModal = (id: string, name: string) => {
-        setUserToDelete({ id, name });
+    const handleOpenDeleteModal = (idValue: string, name: string) => {
+        setUserToDelete({ id: idValue, name });
     };
 
     const handleCloseDeleteModal = () => {
@@ -232,8 +240,8 @@ export const AdminUsersTable = () => {
         }
     };
 
-    const handleOpenToggleModal = (id: number, isActive: boolean, name: string) => {
-        setUserToToggle({ id, isActive, name });
+    const handleOpenToggleModal = (idValue: number, isActive: boolean, name: string) => {
+        setUserToToggle({ id: idValue, isActive, name });
     };
 
     const handleCloseToggleModal = () => {
@@ -445,6 +453,7 @@ export const AdminUsersTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -454,24 +463,19 @@ export const AdminUsersTable = () => {
         return Math.ceil(usersData.pagination.total / USERS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <AdminFiltersTable
                 filters={filters}
                 onFilterChange={setFilters}
-                onApply={handleApplyFilters}
                 customFields={customFields}
             />
             {renderTable()}
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!userToDelete}

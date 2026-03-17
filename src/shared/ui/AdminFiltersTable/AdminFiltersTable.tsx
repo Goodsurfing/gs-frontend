@@ -31,7 +31,7 @@ export interface CustomFilterField<T extends string = string> {
 interface AdminFiltersTableProps<T extends Record<string, any> = {}> {
     filters: Partial<FilterFields<T>>;
     onFilterChange: (filters: Partial<FilterFields<T>>) => void;
-    onApply: () => void;
+    onApply?: () => void;
     disabled?: boolean;
     customFields: CustomFilterField<keyof T & string>[];
     textButton?: string;
@@ -67,7 +67,7 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
 
     const handleApply = () => {
         onFilterChange(localFilters);
-        onApply();
+        onApply?.();
         handleClose();
     };
 
@@ -78,7 +78,7 @@ export const AdminFiltersTable = <T extends Record<string, any> = {}>({
 
         setLocalFilters(resetValues);
         onFilterChange(resetValues);
-        onApply();
+        onApply?.();
         handleClose();
     };
 
