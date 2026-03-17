@@ -25,18 +25,19 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import styles from "./AdminReviewVolunteersTable.module.scss";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface AchievementFilters {
-    sort?: AdminReviewVolunteerSort;
-    authorLastName?: string;
-    authorFirstName?: string;
+    sortVolunteer?: AdminReviewVolunteerSort;
+    authorLastNameVolunteer?: string;
+    authorFirstNameVolunteer?: string;
     volunteerFirstName?: string;
     volunteerLastName?: string;
 }
 
 const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
     {
-        key: "authorFirstName",
+        key: "authorFirstNameVolunteer",
         label: "Имя автора",
         render: ({ value, onChange, disabled }) => (
             <TextField
@@ -50,7 +51,7 @@ const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
         ),
     },
     {
-        key: "authorLastName",
+        key: "authorLastNameVolunteer",
         label: "Фамилия автора",
         render: ({ value, onChange, disabled }) => (
             <TextField
@@ -92,7 +93,7 @@ const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
         ),
     },
     {
-        key: "sort",
+        key: "sortVolunteer",
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
             <FormControl fullWidth size="small" disabled={disabled}>
@@ -129,15 +130,22 @@ const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
 const REVIEWS_PER_PAGE = 30;
 
 export const AdminReviewVolunteersTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewToDelete, setReviewToDelete] = useState<
     { id: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<AchievementFilters>>({
-        sort: AdminSort.IdAsc,
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        pageVolunteer: 1,
+        sortVolunteer: AdminSort.IdAsc,
+        authorLastNameVolunteer: undefined,
+        authorFirstNameVolunteer: undefined,
+        volunteerFirstName: undefined,
+        volunteerLastName: undefined,
     });
+
     const { getFullName } = useGetFullName();
     const [getReviews, {
         data: reviewsData,
@@ -150,11 +158,11 @@ export const AdminReviewVolunteersTable = () => {
         const fetchData = async () => {
             setToast(undefined);
             await getReviews({
-                page: currentPage,
+                page: filters.pageVolunteer,
                 limit: REVIEWS_PER_PAGE,
-                sort: filters.sort ?? AdminSort.IdAsc,
-                authorFirstName: filters.authorFirstName,
-                authorLastName: filters.authorLastName,
+                sort: filters.sortVolunteer ?? AdminSort.IdAsc,
+                authorFirstName: filters.authorFirstNameVolunteer,
+                authorLastName: filters.authorLastNameVolunteer,
                 volunteerFirstName: filters.volunteerFirstName,
                 volunteerLastName: filters.volunteerLastName,
             }).unwrap()
@@ -167,7 +175,11 @@ export const AdminReviewVolunteersTable = () => {
         };
 
         fetchData();
-    }, [currentPage, filters, getReviews]);
+    }, [filters.authorFirstNameVolunteer,
+        filters.authorLastNameVolunteer,
+        filters.pageVolunteer,
+        filters.sortVolunteer, filters.volunteerFirstName,
+        filters.volunteerLastName, getReviews]);
 
     const handleOpenDeleteModal = (id: string) => {
         setReviewToDelete({ id });
@@ -344,10 +356,6 @@ export const AdminReviewVolunteersTable = () => {
         return Math.ceil(reviewsData.pagination.total / REVIEWS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -356,7 +364,6 @@ export const AdminReviewVolunteersTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={skillCustomFields}
                 />
@@ -365,9 +372,9 @@ export const AdminReviewVolunteersTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.pageVolunteer}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ pageVolunteer: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!reviewToDelete}

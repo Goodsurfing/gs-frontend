@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { useCallback, useMemo } from "react";
 import { TagsOption } from "@/features/Article";
 
 interface NewsFilters {
@@ -82,20 +83,11 @@ export const useQueryFilters = <T extends Record<string, QueryFilterValue>>(
     const [searchParams, setSearchParams] = useSearchParams();
     const resetPageOnFilterChange = options?.resetPageOnFilterChange ?? true;
 
-    const getParam = <K extends keyof T>(key: K): T[K] => {
-        const value = searchParams.get(key as string);
-        if (value === null) return defaults[key];
-        if (typeof defaults[key] === "number") {
-            return Number(value) as T[K];
-        }
-        return (value || defaults[key]) as T[K];
-    };
-
-    const setFilters = (filters: Partial<T>) => {
+    const setFilters = useCallback((newFilters: Partial<T>) => {
         setSearchParams((prev) => {
             const newParams = new URLSearchParams(prev);
 
-            Object.entries(filters).forEach(([key, value]) => {
+            Object.entries(newFilters).forEach(([key, value]) => {
                 if (value === undefined || value === "") {
                     newParams.delete(key);
                 } else {
@@ -104,7 +96,7 @@ export const useQueryFilters = <T extends Record<string, QueryFilterValue>>(
             });
 
             if (resetPageOnFilterChange) {
-                const hasNonPageChanges = Object.keys(filters).some((k) => k !== "page");
+                const hasNonPageChanges = Object.keys(newFilters).some((k) => k !== "page");
                 if (hasNonPageChanges) {
                     newParams.set("page", "1");
                 }
@@ -114,9 +106,9 @@ export const useQueryFilters = <T extends Record<string, QueryFilterValue>>(
         });
 
         window.scrollTo(0, 0);
-    };
+    }, [resetPageOnFilterChange, setSearchParams]);
 
-    const clearFilters = () => {
+    const clearFilters = useCallback(() => {
         const defaultParams: Record<string, string> = {};
         Object.entries(defaults).forEach(([key, value]) => {
             if (value !== undefined && value !== "") {
@@ -125,12 +117,24 @@ export const useQueryFilters = <T extends Record<string, QueryFilterValue>>(
         });
         setSearchParams(defaultParams);
         window.scrollTo(0, 0);
-    };
+    }, [defaults, setSearchParams]);
 
-    const filters = {} as T;
-    Object.keys(defaults).forEach((key) => {
-        filters[key as keyof T] = getParam(key as keyof T);
-    });
+    const filters = useMemo(() => {
+        const getParam = <K extends keyof T>(key: K): T[K] => {
+            const value = searchParams.get(key as string);
+            if (value === null) return defaults[key];
+            if (typeof defaults[key] === "number") {
+                return Number(value) as T[K];
+            }
+            return (value || defaults[key]) as T[K];
+        };
+
+        const result = {} as T;
+        Object.keys(defaults).forEach((key) => {
+            result[key as keyof T] = getParam(key as keyof T);
+        });
+        return result;
+    }, [searchParams, defaults]);
 
     return {
         filters,

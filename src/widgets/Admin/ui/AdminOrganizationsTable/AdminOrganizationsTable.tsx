@@ -24,6 +24,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 type OrganizationsFilters = Omit<Partial<GetAdminOrganizationParams>, "page" | "limit">;
 
@@ -125,13 +126,17 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
 ];
 
 export const AdminOrganizationsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [filters, setFilters] = useState<Partial<OrganizationsFilters>>({
+    const { filters, setFilters } = useQueryFilters({
+        page: 1,
         sort: AdminSort.IdAsc,
+        firstName: undefined,
+        lastName: undefined,
+        name: undefined,
     });
+
     const [toggleAdminOrganizationActive,
         { isLoading: isTogglingActive }] = useToggleAdminOrganizationActiveMutation();
     const [organizationToDelete, setOrganizationToDelete] = useState<
@@ -150,7 +155,7 @@ export const AdminOrganizationsTable = () => {
             setToast(undefined);
             try {
                 await getOrganizations({
-                    page: currentPage,
+                    page: filters.page,
                     limit: ORGANIZATIONS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.IdAsc,
                     firstName: filters.firstName,
@@ -166,7 +171,8 @@ export const AdminOrganizationsTable = () => {
         };
 
         fetchData();
-    }, [currentPage, filters, getOrganizations]);
+    }, [filters.firstName, filters.lastName, filters.name,
+        filters.page, filters.sort, getOrganizations]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
         setOrganizationToDelete({ id, name });
@@ -377,24 +383,19 @@ export const AdminOrganizationsTable = () => {
         return Math.ceil(organizationsData.pagination.total / ORGANIZATIONS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <AdminFiltersTable
                 filters={filters}
                 onFilterChange={setFilters}
-                onApply={handleApplyFilters}
                 customFields={customFields}
             />
             {renderTable()}
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!organizationToDelete}

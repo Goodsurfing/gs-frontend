@@ -29,6 +29,7 @@ import {
 import { getAdminReviewCoursePersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
 import styles from "./AdminReviewsCoursesTable.module.scss";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface ReviewCourseFilters {
     courseName?: string;
@@ -145,15 +146,21 @@ const reviewCourseCustomFields: CustomFilterField<keyof ReviewCourseFilters>[] =
 const REVIEWS_COURSES_PER_PAGE = 30;
 
 export const AdminReviewsCoursesTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewToDelete, setReviewToDelete] = useState<
     { id: number; } | null>(null);
-    const [filters, setFilters] = useState<Partial<ReviewCourseFilters>>(
-        { sort: AdminSort.FioAsc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.FioAsc,
+        courseName: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        lessonId: undefined,
+    });
     const [getReviews, {
         data: reviewsData,
         isLoading,
@@ -165,7 +172,7 @@ export const AdminReviewsCoursesTable = () => {
         const fetchData = async () => {
             try {
                 await getReviews({
-                    page: currentPage,
+                    page: filters.page,
                     limit: REVIEWS_COURSES_PER_PAGE,
                     videoCourseId: filters?.lessonId,
                     sort: filters.sort,
@@ -181,7 +188,8 @@ export const AdminReviewsCoursesTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getReviews]);
+    }, [filters.courseName, filters.firstName, filters.lastName,
+        filters?.lessonId, filters.page, filters.sort, getReviews]);
 
     const handleOpenDeleteModal = (id: number) => {
         setReviewToDelete({ id });
@@ -336,6 +344,7 @@ export const AdminReviewsCoursesTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -345,10 +354,6 @@ export const AdminReviewsCoursesTable = () => {
         return Math.ceil(reviewsData.pagination.total / REVIEWS_COURSES_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -356,7 +361,6 @@ export const AdminReviewsCoursesTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={reviewCourseCustomFields}
                 />
@@ -365,9 +369,9 @@ export const AdminReviewsCoursesTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!reviewToDelete}

@@ -17,11 +17,12 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminOffersTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./AdminOffersTable.module.scss";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface OfferFilters {
     userId?: string;
@@ -131,15 +132,21 @@ const offerCustomFields: CustomFilterField<keyof OfferFilters>[] = [
 const OFFERS_PER_PAGE = 30;
 
 export const AdminOffersTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [offerToDelete, setOfferToDelete] = useState<
     { id: string; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<OfferFilters>>(
-        { sort: AdminSort.VacancyIdDesc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.VacancyIdDesc,
+        organizationName: undefined,
+        userId: undefined,
+        vacancyName: undefined,
+    });
+
     const [getOffers, {
         data: offersData,
         isLoading,
@@ -151,7 +158,7 @@ export const AdminOffersTable = () => {
         const fetchData = async () => {
             try {
                 await getOffers({
-                    page: currentPage,
+                    page: filters.page,
                     limit: OFFERS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.VacancyIdDesc,
                     organizationName: filters.organizationName,
@@ -166,7 +173,8 @@ export const AdminOffersTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getOffers]);
+    }, [filters.organizationName, filters.page, filters.sort,
+        filters.userId, filters.vacancyName, getOffers]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
         setOfferToDelete({ id, name });
@@ -363,10 +371,6 @@ export const AdminOffersTable = () => {
         return Math.ceil(offersData.pagination.total / OFFERS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -374,7 +378,6 @@ export const AdminOffersTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={offerCustomFields}
                 />
@@ -383,9 +386,9 @@ export const AdminOffersTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!offerToDelete}

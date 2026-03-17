@@ -23,6 +23,7 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface AchievementFilters {
     id?: number;
@@ -93,15 +94,20 @@ const skillCustomFields: CustomFilterField<keyof AchievementFilters>[] = [
 const ACHIEVEMENTS_PER_PAGE = 30;
 
 export const AdminAchievementsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [achievementToDelete, setAchievementToDelete] = useState<
     { id: number; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<AchievementFilters>>({
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
         sort: AdminSort.IdAsc,
+        id: undefined,
+        name: undefined,
     });
+
     const [getAchievements, {
         data: achievemnetsData,
         isLoading,
@@ -112,7 +118,7 @@ export const AdminAchievementsTable = () => {
     useEffect(() => {
         const fetchData = async () => {
             await getAchievements({
-                page: currentPage,
+                page: filters.page,
                 limit: ACHIEVEMENTS_PER_PAGE,
                 sort: filters.sort ?? AdminSort.IdAsc,
                 id: filters.id,
@@ -127,7 +133,7 @@ export const AdminAchievementsTable = () => {
         };
 
         fetchData();
-    }, [currentPage, filters, getAchievements]);
+    }, [filters.id, filters.name, filters.page, filters.sort, getAchievements]);
 
     const handleOpenDeleteModal = (id: number, name: string) => {
         setAchievementToDelete({ id, name });
@@ -257,10 +263,6 @@ export const AdminAchievementsTable = () => {
         return Math.ceil(achievemnetsData.pagination.total / ACHIEVEMENTS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -276,7 +278,6 @@ export const AdminAchievementsTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={skillCustomFields}
                 />
@@ -285,9 +286,9 @@ export const AdminAchievementsTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!achievementToDelete}

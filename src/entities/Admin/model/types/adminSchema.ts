@@ -430,11 +430,8 @@ export interface EditReviewVacancy {
     }
 }
 
-export type AdminReviewVacancySort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "vacancy.name:asc" |
-"vacancy.name:desc" | "rating:asc" | "rating:desc" | "created:asc" | "created:desc";
-
 export interface GetAdminReviewVacancyListParams {
-    sort?: AdminReviewVacancySort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
@@ -467,11 +464,8 @@ export interface EditAdminReviewVolunteerRequest {
     reviewId: string;
 }
 
-export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "rating:asc" | "rating:desc" |
-"created:asc" | "created:desc";
-
 export interface GetAdminReviewVolunteerListParams {
-    sort?: AdminReviewVolunteerSort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     volunteerLastName?: string;
