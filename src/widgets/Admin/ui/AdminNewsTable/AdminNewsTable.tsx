@@ -22,9 +22,10 @@ import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminNewsCreatePageUrl, getAdminNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./AdminNewsTable.module.scss";
 import { getFullName } from "@/shared/lib/getFullName";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./AdminNewsTable.module.scss";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface NewsFilters {
     name?: string;
@@ -120,15 +121,21 @@ const newsCustomFields: CustomFilterField<keyof NewsFilters>[] = [
 const NEWS_PER_PAGE = 30;
 
 export const AdminNewsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [newsToDelete, setNewsToDelete] = useState<
     { id: string; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<NewsFilters>>(
-        { sort: AdminSort.NameAsc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.NameAsc,
+        firstName: undefined,
+        lastName: undefined,
+        name: undefined,
+    });
+
     const [getNews, {
         data: newsData,
         isLoading,
@@ -140,7 +147,7 @@ export const AdminNewsTable = () => {
         const fetchData = async () => {
             try {
                 await getNews({
-                    page: currentPage,
+                    page: filters.page,
                     limit: NEWS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.NameAsc,
                     firstName: filters.firstName,
@@ -155,7 +162,8 @@ export const AdminNewsTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getNews]);
+    }, [filters.firstName, filters.lastName, filters.name,
+        filters.page, filters.sort, getNews]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
         setNewsToDelete({ id, name });
@@ -321,6 +329,7 @@ export const AdminNewsTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -330,10 +339,6 @@ export const AdminNewsTable = () => {
         return Math.ceil(newsData.pagination.total / NEWS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -341,7 +346,6 @@ export const AdminNewsTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={newsCustomFields}
                 />
@@ -357,9 +361,9 @@ export const AdminNewsTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!newsToDelete}

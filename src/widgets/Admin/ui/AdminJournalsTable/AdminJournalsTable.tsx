@@ -18,12 +18,13 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminJournalsTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./AdminJournalsTable.module.scss";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface JournalFilters {
     name?: string;
@@ -81,15 +82,19 @@ const journalCustomFields: CustomFilterField<keyof JournalFilters>[] = [
 const JOURNAL_PER_PAGE = 30;
 
 export const AdminJournalsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [journalToDelete, setJournalToDelete] = useState<
     { id: string; } | null>(null);
-    const [filters, setFilters] = useState<Partial<JournalFilters>>(
-        { sort: AdminSort.NameAsc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.NameAsc,
+        name: undefined,
+    });
+
     const [getJournal, {
         data: journalData,
         isLoading,
@@ -101,7 +106,7 @@ export const AdminJournalsTable = () => {
         const fetchData = async () => {
             try {
                 await getJournal({
-                    page: currentPage,
+                    page: filters.page,
                     limit: JOURNAL_PER_PAGE,
                     sort: filters.sort ?? AdminSort.NameAsc,
                     name: filters.name,
@@ -114,7 +119,7 @@ export const AdminJournalsTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getJournal]);
+    }, [filters.name, filters.page, filters.sort, getJournal]);
 
     const handleOpenDeleteModal = (id: string) => {
         setJournalToDelete({ id });
@@ -260,6 +265,7 @@ export const AdminJournalsTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -267,10 +273,6 @@ export const AdminJournalsTable = () => {
     const totalPages = () => {
         if (!journalData) return 0;
         return Math.ceil(journalData.pagination.total / JOURNAL_PER_PAGE);
-    };
-
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
     };
 
     return (
@@ -287,7 +289,6 @@ export const AdminJournalsTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={journalCustomFields}
                 />
@@ -296,9 +297,9 @@ export const AdminJournalsTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!journalToDelete}
