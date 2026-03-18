@@ -252,7 +252,10 @@ export const AdminUsersTable = () => {
         if (!userToToggle) return;
 
         try {
-            await toggleAdminUserActive(userToToggle.id.toString()).unwrap();
+            await toggleAdminUserActive({
+                id: userToToggle.id.toString(),
+                isActive: !userToToggle.isActive,
+            }).unwrap();
             setToast({
                 text: `Пользователь успешно ${
                     userToToggle.isActive ? "заблокирован" : "разблокирован"
@@ -290,7 +293,7 @@ export const AdminUsersTable = () => {
         },
         {
             field: "name",
-            headerName: "Имя",
+            headerName: "ФИО",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,

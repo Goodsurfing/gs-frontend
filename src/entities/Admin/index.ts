@@ -8,8 +8,6 @@ export type {
     AdminUserFields,
     AdminOrganization,
     UpdateAdminOrganization,
-    AdminReviewVacancySort,
-    AdminReviewVolunteerSort,
     AdminVacancyWhere,
     AdminVacancyWhen,
     AdminVacancyWhoNeeds,

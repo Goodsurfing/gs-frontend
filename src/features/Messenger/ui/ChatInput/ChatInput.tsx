@@ -78,9 +78,9 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     const handleAttachmentValue = async (file?: File) => {
         setAttachmentLoading(true);
         if (file) {
-            const maxSize = 2 * 1024 * 1024;
+            const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
-                onError(t("Файл слишком большой. Максимальный размер: 2MB"));
+                onError(t("Файл слишком большой. Максимальный размер: 5MB"));
                 setAttachmentLoading(false);
                 return;
             }

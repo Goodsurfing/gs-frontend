@@ -68,7 +68,10 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const handleConfirmToggle = async () => {
         setToast(undefined);
         try {
-            await toggleAdminUserActive(userId).unwrap();
+            await toggleAdminUserActive({
+                id: userId,
+                isActive: !isActive,
+            }).unwrap();
             setToast({
                 text: `Пользователь успешно ${isActive ? "заблокирован" : "разблокирован"}`,
                 type: HintType.Success,

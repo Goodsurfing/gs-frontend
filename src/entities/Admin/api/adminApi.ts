@@ -455,10 +455,11 @@ export const adminApi = createApi({
             },
             invalidatesTags: ["user"],
         }),
-        toggleAdminUserActive: build.mutation<void, string>({
-            query: (userId) => ({
-                url: `user/toggle-active/${userId}`,
+        toggleAdminUserActive: build.mutation<void, { id: string; isActive: boolean; }>({
+            query: ({ id, isActive }) => ({
+                url: `user/toggle-active/${id}`,
                 method: "POST",
+                body: { isActive },
             }),
             invalidatesTags: ["user"],
         }),

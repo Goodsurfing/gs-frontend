@@ -89,6 +89,7 @@
         "Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией": "By clicking this button, you delete your account and all information you’ve entered. It cannot be restored. Only re-registration is possible.",
         "Ошибка при удалении профиля": "Error deleting profile",
         "Ошибка при изменении статуса активности профиля": "Error changing profile activity status",
+        "Ваш аккаунт был заблокирован администратором. Обратитесь в службу поддержки": "Your account has been blocked by an administrator. Please contact support",
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": " Are you sure you want to delete your account? This action cannot be undone.",
         "Удалить": "Delete",
         "Отмена": "Cancel",

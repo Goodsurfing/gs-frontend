@@ -357,14 +357,6 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getAboutProjectPageUrl(locale)}
-                    >
-                        {t(
-                            "main.welcome.header.about-project.about-goodsurfing",
-                        )}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
                         to={getFindJobPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.find-job")}

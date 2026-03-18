@@ -43,21 +43,31 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
     const [toast, setToast] = useState<ToastAlert>();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+    const getErrorText = useCallback((errorCode: string): string => {
+        switch (errorCode) {
+            case "IS_ADMIN_BLOCK":
+                return t("privacy.Ваш аккаунт был заблокирован администратором. Обратитесь в службу поддержки");
+            default:
+                return t("privacy.Ошибка при изменении статуса активности профиля");
+        }
+    }, [t]);
+
     const handleLogout = useCallback(() => {
         dispatch(userActions.logout());
         navigate(getMainPageUrl(locale));
     }, [dispatch, locale, navigate]);
 
     const handleDeleteProfile = useCallback(async () => {
+        setToast(undefined);
         if (!myProfile || isProfileDeleting) return;
         try {
             await deleteProfile().unwrap();
             handleLogout();
         } catch (e) {
-            setToast({
+            setTimeout(() => setToast({
                 type: HintType.Error,
                 text: t("privacy.Ошибка при удалении профиля"),
-            });
+            }), 0);
         } finally {
             setIsDeleteModalOpen(false);
         }
@@ -75,6 +85,7 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
     const toggleTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const scheduleToggleActive = useCallback((checked: boolean) => {
+        setToast(undefined);
         if (toggleTimerRef.current) {
             clearTimeout(toggleTimerRef.current);
         }
@@ -84,16 +95,17 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
                     await toggleActive({
                         body: { isActive: !checked },
                     }).unwrap();
-                } catch (e) {
-                    setToast({
+                } catch (e: any) {
+                    setActiveProfile(!checked);
+                    setTimeout(() => setToast({
                         type: HintType.Error,
-                        text: t("privacy.Ошибка при изменении статуса активности профиля"),
-                    });
+                        text: getErrorText(e.data.error),
+                    }), 0);
                 }
             }
             toggleTimerRef.current = null;
         }, debounceDelay);
-    }, [myProfile, t, toggleActive]);
+    }, [getErrorText, myProfile, toggleActive]);
 
     const updateToggleActiveProfile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         const { checked } = event.target;

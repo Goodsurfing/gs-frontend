@@ -101,23 +101,17 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
                     <MenuItem value={AdminSort.NameAsc}>Название ↑</MenuItem>
                     <MenuItem value={AdminSort.NameDesc}>Название ↓</MenuItem>
 
-                    <MenuItem value={AdminSort.FioAsc}>ФИО ↑</MenuItem>
-                    <MenuItem value={AdminSort.FioDesc}>ФИО ↓</MenuItem>
+                    <MenuItem value={AdminSort.FioAsc}>Владелец ↑</MenuItem>
+                    <MenuItem value={AdminSort.FioDesc}>Владелец ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CreatedAsc}>Создан ↑</MenuItem>
                     <MenuItem value={AdminSort.CreatedDesc}>Создан ↓</MenuItem>
-
-                    <MenuItem value={AdminSort.LastVisitAsc}>Сотрудники ↑</MenuItem>
-                    <MenuItem value={AdminSort.LastVisitDesc}>Сотрудники ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CountVacanciesAsc}>Кол-во вакансий ↑</MenuItem>
                     <MenuItem value={AdminSort.CountVacanciesDesc}>Кол-во вакансий ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CountApplicationsAsc}>Кол-во заявок ↑</MenuItem>
                     <MenuItem value={AdminSort.CountApplicationsDesc}>Кол-во заявок ↓</MenuItem>
-
-                    <MenuItem value={AdminSort.IsOrganizationAsc}>Организация ↑</MenuItem>
-                    <MenuItem value={AdminSort.IsOrganizationDesc}>Организация ↓</MenuItem>
 
                 </Select>
             </FormControl>

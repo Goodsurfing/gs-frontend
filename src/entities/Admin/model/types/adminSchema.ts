@@ -501,7 +501,7 @@ export interface GetAdminOffersParams {
 
 export interface GetAdminOffers {
     id: number;
-    categoryName: string;
+    categories: { name: string }[];
     user: {
         id: string;
         firstName: string
@@ -509,7 +509,7 @@ export interface GetAdminOffers {
     },
     organizationName: string;
     name: string;
-    isActive: boolean;
+    status: OfferStatus;
     countTotalApplication: number;
     countAcceptApplication: number;
     countCanselApplication: number;
