@@ -46,6 +46,7 @@ export interface AdminLessonFields {
     image: Image | null;
     videoUrl: string;
     sort: number;
+    files: Image[];
 }
 
 export interface GetAdminCourses {
@@ -252,6 +253,7 @@ export interface GetAdminCourseLesson {
     sort: number;
     duration: number;
     image: Image;
+    files: Image[];
 }
 
 export interface CreateAdminCourseLesson {
@@ -262,6 +264,7 @@ export interface CreateAdminCourseLesson {
     imageId: string | null;
     duration: number;
     sort: number;
+    fileIds: string[];
 }
 
 export interface UpdateAdminCourseLesson {

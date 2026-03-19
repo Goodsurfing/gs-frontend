@@ -114,7 +114,7 @@ export const adminCourseLessonsAdapter = (data: GetAdminCourseLessons): AdminLes
 
 export const adminCourseLessonAdapter = (data: GetAdminCourseLesson): AdminLessonFields => {
     const {
-        id, description, duration, image, name, sort, url,
+        id, description, duration, image, name, sort, url, files,
     } = data;
 
     return {
@@ -125,13 +125,14 @@ export const adminCourseLessonAdapter = (data: GetAdminCourseLesson): AdminLesso
         image,
         videoUrl: url,
         sort,
+        files,
     };
 };
 
 export const adminCourseLessonApiAdapter = (data: AdminLessonFields, courseId: string):
 CreateAdminCourseLesson => {
     const {
-        name, description, duration, image, videoUrl, sort,
+        name, description, duration, image, videoUrl, sort, files,
     } = data;
 
     return {
@@ -142,5 +143,6 @@ CreateAdminCourseLesson => {
         url: videoUrl,
         sort,
         courseId,
+        fileIds: files.map((f) => f.id),
     };
 };
