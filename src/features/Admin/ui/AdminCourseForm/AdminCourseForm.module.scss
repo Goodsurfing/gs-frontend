@@ -149,9 +149,36 @@
 .expertActions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.75rem 1.25rem;
     border-top: 1px solid #f0f0f0;
     background-color: #fafafa;
+}
+
+.expertSortInput {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    width: 120px;
+    transition: border-color 0.2s;
+
+    &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type=number] {
+        -moz-appearance: textfield;
+    }
 }
 
 .noExperts, .noLessons {

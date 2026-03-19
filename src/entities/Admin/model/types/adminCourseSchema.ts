@@ -28,6 +28,7 @@ export interface AdminExpertFields {
     country: string;
     city: string;
     image: Image | null;
+    sort: number;
 }
 
 export interface AdminLessonsFields {
@@ -119,6 +120,7 @@ export interface GetAdminCourseExpert {
     country: string;
     city: string;
     image: Image;
+    sort: number;
 }
 
 export interface CreateAdminCourseRequest {
@@ -129,7 +131,7 @@ export interface CreateAdminCourseRequest {
     isActive: boolean;
     imageId: string | null;
     authorId: string;
-    expertIds: string[];
+    experts: { id: string; sort: number }[];
 
     // duration: number;
     // lessons: CreateAdminLesson[];

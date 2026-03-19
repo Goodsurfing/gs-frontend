@@ -31,8 +31,8 @@ import {
     useDeleteAdminCourseLessonMutation,
     useLazyGetAdminCourseLessonQuery,
 } from "@/entities/Admin/api/adminCourseApi";
-import styles from "./AdminCourseForm.module.scss";
 import { OfferPagination } from "@/widgets/OffersMap";
+import styles from "./AdminCourseForm.module.scss";
 
 interface AdminCourseFormProps {
     className?: string;
@@ -148,7 +148,6 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         }
     };
 
-    // Уроки
     const handleAddLesson = () => {
         setEditingLessonId(null);
         setEditingLessonData(null);
@@ -535,6 +534,29 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                 </div>
                                             </div>
                                             <div className={styles.expertActions}>
+                                                <Controller
+                                                    name={`experts.${index}.sort`}
+                                                    control={control}
+                                                    defaultValue={0}
+                                                    render={({ field }) => {
+                                                        const handleSortChange = (
+                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                        ) => {
+                                                            field.onChange(Number(e.target.value));
+                                                        };
+                                                        return (
+                                                            <input
+                                                                type="number"
+                                                                {...field}
+                                                                value={field.value ?? 0}
+                                                                onChange={handleSortChange}
+                                                                placeholder="Номер сортировки"
+                                                                className={styles.expertSortInput}
+                                                                min="0"
+                                                            />
+                                                        );
+                                                    }}
+                                                />
                                                 <Button
                                                     type="button"
                                                     color="RED"
@@ -599,16 +621,12 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     </Button>
                 </div>
             </form>
-
-            {/* Модальное окно выбора экспертов */}
             <AdminExpertSelectorModal
                 isOpen={isExpertSelectorOpen}
                 onClose={handleCloseExpertSelector}
                 selectedExperts={expertFields}
                 onExpertsChange={handleExpertsChange}
             />
-
-            {/* Модальное окно добавления/редактирования урока */}
             <AdminLessonFormModal
                 isOpen={isLessonModalOpen}
                 onClose={handleCloseLessonModal}
