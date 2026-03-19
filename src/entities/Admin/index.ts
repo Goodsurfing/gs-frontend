@@ -160,6 +160,7 @@ export type {
 export {
     adminCourseAdapter, adminCreateCourseApiAdapter,
     adminCourseLessonsAdapter,
+    adminCourseExpertsAdapter,
 } from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";

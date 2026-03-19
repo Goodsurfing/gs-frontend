@@ -13,7 +13,6 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminReviewVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import {
-    AdminReviewVolunteerSort,
     AdminSort,
     useDeleteAdminReviewVolunteerMutation,
     useLazyGetAdminReviewVolunteerListQuery,
@@ -28,7 +27,7 @@ import { useGetFullName } from "@/shared/lib/getFullName";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface AchievementFilters {
-    sortVolunteer?: AdminReviewVolunteerSort;
+    sortVolunteer?: AdminSort;
     authorLastNameVolunteer?: string;
     authorFirstNameVolunteer?: string;
     volunteerFirstName?: string;

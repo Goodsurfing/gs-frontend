@@ -12,7 +12,7 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminReviewVacancyPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import {
-    AdminReviewVacancySort, AdminSort, useDeleteAdminReviewVacancyMutation,
+    AdminSort, useDeleteAdminReviewVacancyMutation,
     useLazyGetAdminReviewVacanciesListQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -29,7 +29,7 @@ import styles from "./AdminReviewVacanciesTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface ReviewVacancyFilters {
-    sort?: AdminReviewVacancySort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;

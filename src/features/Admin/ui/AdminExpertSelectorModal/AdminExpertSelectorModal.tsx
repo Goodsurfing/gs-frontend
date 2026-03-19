@@ -1,6 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
 import {
-    AdminExpertFields, useCreateAdminExpertMutation, useDeleteAdminExpertMutation,
+    AdminExpertFields,
+    adminCourseExpertsAdapter,
+    useCreateAdminExpertMutation,
+    useDeleteAdminExpertMutation,
     useGetCourseExpertsQuery, useUpdateAdminExpertMutation,
 } from "@/entities/Admin";
 import { Modal } from "@/shared/ui/Modal/Modal";
@@ -34,7 +37,7 @@ export const AdminExpertSelectorModal: FC<AdminExpertSelectorModalProps> = ({
     const [createCourseExpert] = useCreateAdminExpertMutation();
     const [updateCourseExpert] = useUpdateAdminExpertMutation();
     const [deleteCourseExpert, { isLoading: isLoadingDelete }] = useDeleteAdminExpertMutation();
-    const experts = expertsData?.data ?? [];
+    const experts = (expertsData?.data ?? []).map(adminCourseExpertsAdapter);
     const totalPages = Math.ceil((expertsData?.pagination?.total ?? 0) / limit);
 
     useEffect(() => {
