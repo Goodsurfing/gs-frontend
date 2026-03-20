@@ -13,7 +13,7 @@ export const adminCourseAdapter = (
 ): AdminCourseFields => {
     const {
         name, description, aboutAuthor, courseFor, isActive,
-        author, experts, image,
+        author, experts, image, sort,
     } = data;
 
     const authorTemp = {
@@ -50,6 +50,7 @@ export const adminCourseAdapter = (
         author: authorTemp,
         experts: expertsTemp,
         lessons: lessonsTemp,
+        sort,
     };
 };
 
@@ -57,10 +58,10 @@ export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdmi
     const {
         name, image, aboutAuthor, aboutCourse,
         experts, forWhom, isPublic,
-        author,
+        author, sort,
     } = data;
 
-    const sortedExperts = [...experts].sort((a, b) => a.sort - b.sort);
+    // const sortedExperts = [...experts].sort((a, b) => a.sort - b.sort);
 
     return {
         name,
@@ -69,11 +70,12 @@ export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdmi
         aboutAuthor,
         courseFor: forWhom,
         authorId: author?.id ?? "",
-        experts: sortedExperts.map((expert) => ({
+        experts: experts.map((expert) => ({
             id: expert.id,
             sort: expert.sort,
         })),
         isActive: isPublic,
+        sort,
     };
 };
 

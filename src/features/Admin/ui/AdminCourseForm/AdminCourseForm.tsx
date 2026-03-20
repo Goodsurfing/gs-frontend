@@ -51,6 +51,7 @@ const defaultValues: DefaultValues<AdminCourseFields> = {
     experts: [],
     lessons: [],
     author: null,
+    sort: 0,
 };
 
 export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
@@ -482,6 +483,20 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             <ErrorText text={errors.image.message} className={styles.error} />
                         )}
                     </div>
+                    <InputControl
+                        label="Сортировка"
+                        type="number"
+                        control={control}
+                        name="sort"
+                        placeholder="Введите сортировку"
+                        isError={!!errors.sort}
+                    />
+                    {errors.sort && (
+                        <ErrorText
+                            text={errors.sort.message}
+                            className={styles.error}
+                        />
+                    )}
                     <div className={styles.expertsSection}>
                         <div className={styles.sectionHeader}>
                             <h3 className={styles.sectionTitle}>Эксперты курса</h3>

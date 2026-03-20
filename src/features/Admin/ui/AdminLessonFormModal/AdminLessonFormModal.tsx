@@ -105,6 +105,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                 maxLength={1000}
                                 description="Не более 1000 знаков"
                                 rules={{
+                                    required: "Описание урока обязательное",
                                     maxLength: { value: 1000, message: "Превышено ограничение в 1000 символов" },
                                 }}
                             />

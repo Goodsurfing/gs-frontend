@@ -18,6 +18,7 @@ export interface AdminCourseFields {
     lessons: AdminLessonsFields[];
     isPublic: boolean;
     author: AdminCourseAuthorFileds | null;
+    sort: number;
 }
 
 export interface AdminExpertFields {
@@ -93,6 +94,7 @@ export interface GetAdminCourse {
         image: Image | null;
     }
     experts: GetAdminCourseExpert[];
+    sort: number;
     // duration: number;
     // lessons: GetAdminLesson[];
     // totalStart: number;
@@ -133,6 +135,7 @@ export interface CreateAdminCourseRequest {
     imageId: string | null;
     authorId: string;
     experts: { id: string; sort: number }[];
+    sort: number;
 
     // duration: number;
     // lessons: CreateAdminLesson[];
