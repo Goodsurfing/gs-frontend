@@ -5,7 +5,7 @@ import {
     GetAdminReviewsVideoResponse,
     GetAdminReviewVideo,
     GetAdminVideo, GetAdminVideosParams, GetAdminVideosResponse,
-    UpdateAdminReviewVideoParams, UpdateAdminVideoParams,
+    UpdateAdminReviewVideoParams, UpdateAdminVideo, UpdateAdminVideoParams,
 } from "../model/types/adminVideoSchema";
 
 export const adminVideoApi = createApi({
@@ -27,6 +27,14 @@ export const adminVideoApi = createApi({
                 method: "GET",
             }),
             providesTags: ["video"],
+        }),
+        createAdminVideo: build.mutation<void, UpdateAdminVideo>({
+            query: (body) => ({
+                url: "video/video",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["video"],
         }),
         updateAdminVideo: build.mutation<void, UpdateAdminVideoParams>({
             query: ({ id, body }) => ({
@@ -82,6 +90,7 @@ export const adminVideoApi = createApi({
 export const {
     useLazyGetAdminVideoListQuery,
     useLazyGetAdminVideoByIdQuery,
+    useCreateAdminVideoMutation,
     useGetAdminVideoByIdQuery,
     useUpdateAdminVideoMutation,
     useDeleteAdminVideoMutation,

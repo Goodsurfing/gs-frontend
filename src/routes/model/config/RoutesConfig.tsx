@@ -195,6 +195,8 @@ import {
     getDonationRating,
     getHostDonationsPageUrl,
     getVolunteerDonationsPageUrl,
+    getAdminBlogCreatePageUrl,
+    getAdminVideoCreatePageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -275,6 +277,8 @@ import { DonationReportsPage } from "@/pages/DonationReportsPage";
 import { DonationRatingPage } from "@/pages/DonationRatingPage";
 import { HostDonationsPage } from "@/pages/HostDonationsPage";
 import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
+import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
+import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -904,6 +908,11 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getAdminBlogPersonalPageUrl(locale),
             },
             {
+                label: "admin-blog-create",
+                element: <AdminBlogCreatePage />,
+                path: (locale: string) => getAdminBlogCreatePageUrl(locale),
+            },
+            {
                 label: "admin-journal",
                 element: <AdminJournalPage />,
                 path: (locale: string) => getAdminJournalsPageUrl(locale),
@@ -932,6 +941,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-video-personal",
                 element: <AdminVideoPersonalPage />,
                 path: (locale: string) => getAdminVideoPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-video-create",
+                element: <AdminVideoCreatePage />,
+                path: (locale: string) => getAdminVideoCreatePageUrl(locale),
             },
             {
                 label: "admin-review-video-personal",

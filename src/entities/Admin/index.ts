@@ -249,6 +249,7 @@ export {
     adminVideoApi,
     useLazyGetAdminVideoListQuery,
     useLazyGetAdminVideoByIdQuery,
+    useCreateAdminVideoMutation,
     useGetAdminVideoByIdQuery,
     useUpdateAdminVideoMutation,
     useDeleteAdminVideoMutation,
