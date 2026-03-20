@@ -21,10 +21,11 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl, getJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./AdminJournalsTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import CustomLink from "@/shared/ui/Link/Link";
 
 interface JournalFilters {
     name?: string;
@@ -166,6 +167,20 @@ export const AdminJournalsTable = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 240,
+            renderCell: (params) => {
+                const url = getJournalPersonalPageUrl(locale, params.row.id);
+                return (
+                    <CustomLink
+                        to={url}
+                        variant="DEFAULT"
+                        target="_blank"
+                        title="Открыть журнал"
+                        className={styles.journalLink}
+                    >
+                        {params.row.name}
+                    </CustomLink>
+                );
+            },
         },
         {
             field: "isActive",

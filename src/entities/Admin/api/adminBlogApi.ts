@@ -5,6 +5,7 @@ import {
     GetAdminBlog, GetAdminBlogCategoriesParams, GetAdminBlogCategoriesResponse,
     GetAdminBlogCategory, GetAdminBlogListParams, GetAdminBlogListResponse,
     GetAdminReviewBlog, GetAdminReviewBlogParams, GetAdminReviewsBlogResponse,
+    UpdateAdminBlog,
     UpdateAdminBlogParams,
     UpdateAdminReviewBlogParams,
     UpdateBlogCategoryParams,
@@ -29,6 +30,14 @@ export const adminBlogApi = createApi({
                 method: "GET",
             }),
             providesTags: ["blog"],
+        }),
+        createAdminBlog: build.mutation<void, UpdateAdminBlog>({
+            query: (body) => ({
+                url: "blog/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["blog"],
         }),
         updateAdminBlog: build.mutation<void, UpdateAdminBlogParams>({
             query: ({ id, body }) => ({
@@ -124,6 +133,7 @@ export const adminBlogApi = createApi({
 export const {
     useLazyGetAdminBlogListQuery,
     useGetAdminBlogByIdQuery,
+    useCreateAdminBlogMutation,
     useUpdateAdminBlogMutation,
     useDeleteAdminBlogMutation,
     useLazyGetAdminBlogCategoriesQuery,

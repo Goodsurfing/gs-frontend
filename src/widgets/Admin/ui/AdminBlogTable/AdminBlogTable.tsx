@@ -21,9 +21,10 @@ import styles from "./AdminBlogTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminBlogCreatePageUrl, getAdminBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface BlogFilters {
     name?: string;
@@ -128,7 +129,7 @@ export const AdminBlogTable = () => {
         filters, setFilters,
     } = useQueryFilters({
         page: 1,
-        sort: AdminSort.NameAsc,
+        sort: AdminSort.CreatedDesc,
         firstName: undefined,
         lastName: undefined,
         name: undefined,
@@ -147,7 +148,7 @@ export const AdminBlogTable = () => {
                 await getBlog({
                     page: filters.page,
                     limit: BLOG_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.NameAsc,
+                    sort: filters.sort ?? AdminSort.CreatedDesc,
                     name: filters.name,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
@@ -328,6 +329,7 @@ export const AdminBlogTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -347,6 +349,13 @@ export const AdminBlogTable = () => {
                     disabled={isLoading}
                     customFields={blogCustomFields}
                 />
+                <ButtonLink
+                    path={getAdminBlogCreatePageUrl(locale)}
+                    type="primary"
+                    className={styles.btn}
+                >
+                    Добавить статью в блог
+                </ButtonLink>
             </div>
             <div className={styles.table}>
                 {renderTable()}

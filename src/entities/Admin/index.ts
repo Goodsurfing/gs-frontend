@@ -192,6 +192,7 @@ export {
     adminBlogApi,
     useLazyGetAdminBlogListQuery,
     useGetAdminBlogByIdQuery,
+    useCreateAdminBlogMutation,
     useUpdateAdminBlogMutation,
     useDeleteAdminBlogMutation,
     useLazyGetAdminBlogCategoriesQuery,

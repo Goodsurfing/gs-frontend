@@ -6,6 +6,14 @@
     height: 65vh;
 }
 
+.journalLink {
+    color: var(--text-primary-1);
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .actionButtons {
     display: flex;
     gap: 20px;
