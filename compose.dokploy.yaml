@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gs-frontend.rule=Host(\`${MAIN_HOST:-goodsurfing.voknil.ru}\`)"
+      - "traefik.http.routers.gs-frontend.rule=Host(`goodsurfing.voknil.ru`)"
       - "traefik.http.routers.gs-frontend.entrypoints=websecure"
       - "traefik.http.routers.gs-frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.gs-frontend.loadbalancer.server.port=80"
