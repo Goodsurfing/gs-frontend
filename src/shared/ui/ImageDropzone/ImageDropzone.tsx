@@ -30,7 +30,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         "image/svg+xml": [".svg"],
         "application/pdf": [".pdf"],
     },
-    maxSize = 2 * 1024 * 1024, // 2 МБ
+    maxSize = 5 * 1024 * 1024, // 5 МБ
     className,
     isLoading = false,
 }) => {

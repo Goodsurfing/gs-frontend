@@ -7,10 +7,10 @@ import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 import { checkWidthAndHeight } from "@/shared/utils/files/checkWidthAndHeight";
 
-import styles from "./ImageInput.module.scss";
 import { ImageInputComponentProps } from "./types";
+import styles from "./ImageInput.module.scss";
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 МБ
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 МБ
 
 const ImageInput: FC<ImageInputComponentProps> = ({
     img,
@@ -42,7 +42,7 @@ const ImageInput: FC<ImageInputComponentProps> = ({
             }
 
             if (file.size > MAX_FILE_SIZE) {
-                onUploadError?.(t("description.Размер файла превышает 2 МБ"));
+                onUploadError?.(t("description.Размер файла превышает 5МБ"));
                 return;
             }
 

@@ -13,7 +13,7 @@ import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 
 type GalleryImage = MediaObjectType | GalleryItem | Image;
 
-type Label = "Добавить фото" | "Добавить сертификат";
+type Label = "Добавить фото" | "Добавить сертификат" | "Добавить файлы";
 
 interface ImagesUploaderProps {
     uploadedImgs: MediaObjectType[] | GalleryItem[] | Image[];
@@ -51,6 +51,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
     const labelTranslate: Record<Label, string> = {
         "Добавить фото": t("Добавить фото"),
         "Добавить сертификат": t("Добавить сертификат"),
+        "Добавить файлы": "Добавить файлы",
     };
 
     const uploadSingleFile = useCallback(
@@ -103,7 +104,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
                 file,
                 preview: URL.createObjectURL(file),
                 progress: 0,
-                sizeError: file.size > 2 * 1024 * 1024,
+                sizeError: file.size > 5 * 1024 * 1024, // 5 MB
             }));
 
             setFiles((prev) => [...prev, ...mappedFiles]);
@@ -278,7 +279,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
 
                         {f.sizeError && (
                             <div className={styles.errorText}>
-                                {t("Файл больше 2MB")}
+                                {t("Файл больше 5MB")}
                             </div>
                         )}
 

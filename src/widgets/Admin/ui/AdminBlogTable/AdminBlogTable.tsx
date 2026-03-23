@@ -21,8 +21,10 @@ import styles from "./AdminBlogTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminBlogCreatePageUrl, getAdminBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface BlogFilters {
     name?: string;
@@ -118,15 +120,21 @@ const blogCustomFields: CustomFilterField<keyof BlogFilters>[] = [
 const BLOG_PER_PAGE = 30;
 
 export const AdminBlogTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [blogToDelete, setBlogToDelete] = useState<
     { id: string; } | null>(null);
-    const [filters, setFilters] = useState<Partial<BlogFilters>>(
-        { sort: AdminSort.NameAsc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.CreatedDesc,
+        firstName: undefined,
+        lastName: undefined,
+        name: undefined,
+    });
+
     const [getBlog, {
         data: blogData,
         isLoading,
@@ -138,9 +146,9 @@ export const AdminBlogTable = () => {
         const fetchData = async () => {
             try {
                 await getBlog({
-                    page: currentPage,
+                    page: filters.page,
                     limit: BLOG_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.NameAsc,
+                    sort: filters.sort ?? AdminSort.CreatedDesc,
                     name: filters.name,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
@@ -153,7 +161,8 @@ export const AdminBlogTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getBlog]);
+    }, [filters.firstName, filters.lastName, filters.name,
+        filters.page, filters.sort, getBlog]);
 
     const handleOpenDeleteModal = (id: string) => {
         setBlogToDelete({ id });
@@ -320,6 +329,7 @@ export const AdminBlogTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -329,10 +339,6 @@ export const AdminBlogTable = () => {
         return Math.ceil(blogData.pagination.total / BLOG_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -340,18 +346,24 @@ export const AdminBlogTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={blogCustomFields}
                 />
+                <ButtonLink
+                    path={getAdminBlogCreatePageUrl(locale)}
+                    type="primary"
+                    className={styles.btn}
+                >
+                    Добавить статью в блог
+                </ButtonLink>
             </div>
             <div className={styles.table}>
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!blogToDelete}

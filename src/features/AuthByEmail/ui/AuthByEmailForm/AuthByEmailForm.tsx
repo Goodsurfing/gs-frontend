@@ -41,6 +41,7 @@ export const AuthByEmailForm = memo(({
             const formData = {
                 email: data.email,
                 password: data.password,
+                isRememberMe: data.isRememberMe,
             };
             const { accessToken, mercureToken, roles } = await loginUser(formData).unwrap();
 

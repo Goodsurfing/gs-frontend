@@ -8,8 +8,6 @@ export type {
     AdminUserFields,
     AdminOrganization,
     UpdateAdminOrganization,
-    AdminReviewVacancySort,
-    AdminReviewVolunteerSort,
     AdminVacancyWhere,
     AdminVacancyWhen,
     AdminVacancyWhoNeeds,
@@ -162,6 +160,7 @@ export type {
 export {
     adminCourseAdapter, adminCreateCourseApiAdapter,
     adminCourseLessonsAdapter,
+    adminCourseExpertsAdapter,
 } from "./lib/adminCourseAdapter";
 
 export { ReviewCourseInfoTable } from "./ui/ReviewCourseInfoTable/ReviewCourseInfoTable";
@@ -193,6 +192,7 @@ export {
     adminBlogApi,
     useLazyGetAdminBlogListQuery,
     useGetAdminBlogByIdQuery,
+    useCreateAdminBlogMutation,
     useUpdateAdminBlogMutation,
     useDeleteAdminBlogMutation,
     useLazyGetAdminBlogCategoriesQuery,
@@ -249,6 +249,7 @@ export {
     adminVideoApi,
     useLazyGetAdminVideoListQuery,
     useLazyGetAdminVideoByIdQuery,
+    useCreateAdminVideoMutation,
     useGetAdminVideoByIdQuery,
     useUpdateAdminVideoMutation,
     useDeleteAdminVideoMutation,

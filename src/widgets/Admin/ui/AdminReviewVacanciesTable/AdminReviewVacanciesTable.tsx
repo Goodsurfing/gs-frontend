@@ -12,7 +12,7 @@ import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getAdminReviewVacancyPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import {
-    AdminReviewVacancySort, AdminSort, useDeleteAdminReviewVacancyMutation,
+    AdminSort, useDeleteAdminReviewVacancyMutation,
     useLazyGetAdminReviewVacanciesListQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
@@ -26,9 +26,10 @@ import {
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { textSlice } from "@/shared/lib/textSlice";
 import styles from "./AdminReviewVacanciesTable.module.scss";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface ReviewVacancyFilters {
-    sort?: AdminReviewVacancySort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
@@ -113,15 +114,21 @@ const reviewVacancyCustomFields: CustomFilterField<keyof ReviewVacancyFilters>[]
 const REVIEWS_PER_PAGE = 30;
 
 export const AdminReviewVacanciesTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [reviewToDelete, setReviewlToDelete] = useState<
     { id: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<ReviewVacancyFilters>>({
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
         sort: AdminSort.IdAsc,
+        authorLastName: undefined,
+        authorFirstName: undefined,
+        vacancyName: undefined,
     });
+
     const { getFullName } = useGetFullName();
     const [getReviews, {
         data: reviewsData,
@@ -135,7 +142,7 @@ export const AdminReviewVacanciesTable = () => {
             setToast(undefined);
             try {
                 await getReviews({
-                    page: currentPage,
+                    page: filters.page,
                     limit: REVIEWS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.IdAsc,
                     authorFirstName: filters.authorFirstName,
@@ -150,7 +157,8 @@ export const AdminReviewVacanciesTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getReviews]);
+    }, [filters.authorFirstName, filters.authorLastName,
+        filters.page, filters.sort, filters.vacancyName, getReviews]);
 
     const handleOpenDeleteModal = (id: string) => {
         setReviewlToDelete({ id });
@@ -319,6 +327,7 @@ export const AdminReviewVacanciesTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -326,10 +335,6 @@ export const AdminReviewVacanciesTable = () => {
     const totalPages = () => {
         if (!reviewsData) return 0;
         return Math.ceil(reviewsData.pagination.total / REVIEWS_PER_PAGE);
-    };
-
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
     };
 
     return (
@@ -340,7 +345,6 @@ export const AdminReviewVacanciesTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={reviewVacancyCustomFields}
                 />
@@ -349,9 +353,9 @@ export const AdminReviewVacanciesTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!reviewToDelete}

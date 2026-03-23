@@ -22,6 +22,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import styles from "./VideoPage.module.scss";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 
 const limit = 10;
 
@@ -37,11 +38,11 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const VideoPage = () => {
     const { locale } = useLocale();
-    const [filterValue, setFilterValue] = useState<TagsOption>("new");
-    const [searchValue, setSearchValue] = useState<string>("");
-    const [categoryValue, setCategoryValue] = useState<number | undefined>();
+    const {
+        page, sort, search, category, setPage,
+        setSort, setSearch, setCategory,
+    } = useNewsFilters();
     const [toast, setToast] = useState<ToastAlert>();
-    const [page, setPage] = useState(1);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [initialVideoData, setInitialVideoData] = useState<VideoFields | null>(null);
@@ -53,12 +54,12 @@ const VideoPage = () => {
         getVideoList({
             page,
             limit,
-            sort: getSortByFilter(filterValue),
+            sort: getSortByFilter(sort),
             lang: locale,
-            name: searchValue,
-            categoryId: categoryValue,
+            name: search,
+            categoryId: category,
         });
-    }, [page, filterValue, searchValue, locale, categoryValue, getVideoList]);
+    }, [page, locale, getVideoList, sort, search, category]);
 
     const totalPages = data?.pagination
         ? Math.ceil(data.pagination.total / data.pagination.limit)
@@ -87,10 +88,10 @@ const VideoPage = () => {
             getVideoList({
                 page: 1,
                 limit,
-                sort: getSortByFilter(filterValue),
+                sort: getSortByFilter(sort),
                 lang: locale,
-                name: searchValue,
-                categoryId: categoryValue,
+                name: search,
+                categoryId: category,
             });
         } catch (error) {
             setToast({ text: "Ошибка при добавлении видео", type: HintType.Error });
@@ -105,13 +106,13 @@ const VideoPage = () => {
                 <div className={styles.top}>
                     <VideoFilter
                         className={styles.videoFilter}
-                        value={filterValue}
-                        onChange={setFilterValue}
+                        value={sort}
+                        onChange={setSort}
                         onAddVideoClick={handleAddVideoClick}
                     />
                     <VideoSearch
-                        value={searchValue}
-                        onChange={(value) => { setSearchValue(value); }}
+                        value={search}
+                        onChange={(value) => { setSearch(value); }}
                     />
                 </div>
                 <div className={styles.content}>
@@ -134,8 +135,8 @@ const VideoPage = () => {
                         <Category
                             className={styles.category}
                             locale={locale}
-                            value={categoryValue}
-                            onChange={setCategoryValue}
+                            value={category}
+                            onChange={setCategory}
                         />
                         <MemberBanner className={styles.memberBanner} />
                     </div>

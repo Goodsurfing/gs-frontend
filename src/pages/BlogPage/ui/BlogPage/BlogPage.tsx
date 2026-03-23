@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
@@ -16,6 +16,7 @@ import { TagsOption } from "@/features/Article";
 import { blogArticleCardAdapter, useLazyGetBlogListQuery } from "@/entities/Blog";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./BlogPage.module.scss";
 
 const limit = 10;
@@ -32,10 +33,10 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const BlogPage = () => {
     const { locale } = useLocale();
-    const [filterValue, setFilterValue] = useState<TagsOption>("new");
-    const [searchValue, setSearchValue] = useState<string>("");
-    const [categoryValue, setCategoryValue] = useState<number | undefined>();
-    const [page, setPage] = useState(1);
+    const {
+        page, sort, category, search,
+        setPage, setSort, setCategory, setSearch,
+    } = useNewsFilters();
 
     const [getBlogList, { data, isLoading, isFetching }] = useLazyGetBlogListQuery();
 
@@ -43,20 +44,16 @@ const BlogPage = () => {
         getBlogList({
             page,
             limit,
-            sort: getSortByFilter(filterValue),
+            sort: getSortByFilter(sort),
             lang: locale,
-            name: searchValue,
-            blogCategoryId: categoryValue,
+            name: search,
+            blogCategoryId: category,
         });
-    }, [page, filterValue, searchValue, locale, categoryValue, getBlogList]);
+    }, [page, locale, getBlogList, sort, search, category]);
 
     const totalPages = data?.pagination
         ? Math.ceil(data.pagination.total / data.pagination.limit)
         : 1;
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
 
     return (
         <MainPageLayout>
@@ -65,13 +62,13 @@ const BlogPage = () => {
                 <div className={styles.top}>
                     <ArticleFilter
                         className={styles.articleFilter}
-                        value={filterValue}
-                        onChange={setFilterValue}
+                        value={sort}
+                        onChange={setSort}
                     />
                     <SearchInput
                         className={styles.search}
-                        value={searchValue}
-                        onChange={(value) => { setSearchValue(value); }}
+                        value={search}
+                        onChange={(value) => { setSearch(value); }}
                     />
                 </div>
                 <div className={styles.content}>
@@ -85,7 +82,7 @@ const BlogPage = () => {
                                 <OfferPagination
                                     currentPage={page}
                                     totalPages={totalPages}
-                                    onPageChange={handlePageChange}
+                                    onPageChange={setPage}
                                 />
                             </div>
                         )}
@@ -94,8 +91,8 @@ const BlogPage = () => {
                         <Category
                             className={styles.category}
                             locale={locale}
-                            value={categoryValue}
-                            onChange={setCategoryValue}
+                            value={category}
+                            onChange={setCategory}
                         />
                         <MemberBanner className={styles.memberBanner} />
                     </div>

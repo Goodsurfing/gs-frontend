@@ -68,7 +68,10 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const handleConfirmToggle = async () => {
         setToast(undefined);
         try {
-            await toggleAdminUserActive(userId).unwrap();
+            await toggleAdminUserActive({
+                id: userId,
+                isActive: !isActive,
+            }).unwrap();
             setToast({
                 text: `Пользователь успешно ${isActive ? "заблокирован" : "разблокирован"}`,
                 type: HintType.Success,
@@ -172,9 +175,9 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 size="SMALL"
                 variant="FILL"
                 onClick={openDeleteModal}
-                disabled={isDeleting}
+                disabled={isDeleting || data.isDelete}
             >
-                Удалить пользователя
+                {data.isDelete ? "Пользователь удалён" : "Удалить пользователя"}
             </Button>
             <Button
                 className={styles.button}

@@ -31,8 +31,8 @@ import {
     useDeleteAdminCourseLessonMutation,
     useLazyGetAdminCourseLessonQuery,
 } from "@/entities/Admin/api/adminCourseApi";
-import styles from "./AdminCourseForm.module.scss";
 import { OfferPagination } from "@/widgets/OffersMap";
+import styles from "./AdminCourseForm.module.scss";
 
 interface AdminCourseFormProps {
     className?: string;
@@ -51,6 +51,7 @@ const defaultValues: DefaultValues<AdminCourseFields> = {
     experts: [],
     lessons: [],
     author: null,
+    sort: 0,
 };
 
 export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
@@ -74,14 +75,14 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     const [isExpertSelectorOpen, setIsExpertSelectorOpen] = useState(false);
 
     const {
-        fields: expertFields,
         remove: removeExpert,
         replace: replaceExperts,
     } = useFieldArray({
         control,
         name: "experts",
-        keyName: "fieldId",
     });
+
+    const experts = watch("experts");
 
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
     const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
@@ -148,7 +149,6 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
         }
     };
 
-    // Уроки
     const handleAddLesson = () => {
         setEditingLessonId(null);
         setEditingLessonData(null);
@@ -169,6 +169,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     image: l.image || null,
                     videoUrl: l.url || "",
                     sort: l.sort ?? 0,
+                    files: l.files ?? [],
                 });
             } else {
                 setEditingLessonData(null);
@@ -199,6 +200,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         courseId: course.id,
                         imageId: data.image?.id || null,
                         sort: Number(data.sort),
+                        fileIds: data.files.map((f) => f.id),
                     },
                 }).unwrap();
             } else {
@@ -210,6 +212,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     courseId: course.id,
                     imageId: data.image?.id || "",
                     sort: Number(data.sort),
+                    fileIds: data.files.map((f) => f.id),
                 }).unwrap();
             }
 
@@ -480,6 +483,20 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             <ErrorText text={errors.image.message} className={styles.error} />
                         )}
                     </div>
+                    <InputControl
+                        label="Сортировка"
+                        type="number"
+                        control={control}
+                        name="sort"
+                        placeholder="Введите сортировку"
+                        isError={!!errors.sort}
+                    />
+                    {errors.sort && (
+                        <ErrorText
+                            text={errors.sort.message}
+                            className={styles.error}
+                        />
+                    )}
                     <div className={styles.expertsSection}>
                         <div className={styles.sectionHeader}>
                             <h3 className={styles.sectionTitle}>Эксперты курса</h3>
@@ -494,15 +511,15 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                             </Button>
                         </div>
 
-                        {expertFields.length > 0 ? (
+                        {experts.length > 0 ? (
                             <div className={styles.expertsGrid}>
-                                {expertFields.map((expert, index) => {
+                                {experts.map((expert, index) => {
                                     const description = expert.project || "Описание отсутствует";
                                     const formattedDescription = description.length > 100
                                         ? `${description.slice(0, 100)}...`
                                         : description;
                                     return (
-                                        <div key={expert.id} className={styles.expertCard}>
+                                        <div key={`${expert.id}-${index}`} className={styles.expertCard}>
                                             <div className={styles.expertImageWrapper}>
                                                 {expert.image ? (
                                                     <img
@@ -535,6 +552,38 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                 </div>
                                             </div>
                                             <div className={styles.expertActions}>
+                                                <Controller
+                                                    name={`experts.${index}.sort`}
+                                                    control={control}
+                                                    defaultValue={0}
+                                                    render={({ field: sortField }) => {
+                                                        const handleSortChange = (
+                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                        ) => {
+                                                            const value = e.target.value === "" ? "" : Number(e.target.value);
+                                                            sortField.onChange(value);
+                                                        };
+                                                        const handleFocus = () => {
+                                                            // @ts-ignore
+                                                            if (sortField.value === "" || sortField.value === 0) {
+                                                                sortField.onChange("");
+                                                            }
+                                                        };
+                                                        return (
+                                                            <input
+                                                                type="number"
+                                                                {...sortField}
+                                                                // @ts-ignore
+                                                                value={sortField.value === "" ? "" : sortField.value ?? 0}
+                                                                onChange={handleSortChange}
+                                                                onFocus={handleFocus}
+                                                                placeholder="Номер сортировки"
+                                                                className={styles.expertSortInput}
+                                                                min="0"
+                                                            />
+                                                        );
+                                                    }}
+                                                />
                                                 <Button
                                                     type="button"
                                                     color="RED"
@@ -599,16 +648,12 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                     </Button>
                 </div>
             </form>
-
-            {/* Модальное окно выбора экспертов */}
             <AdminExpertSelectorModal
                 isOpen={isExpertSelectorOpen}
                 onClose={handleCloseExpertSelector}
-                selectedExperts={expertFields}
+                selectedExperts={experts}
                 onExpertsChange={handleExpertsChange}
             />
-
-            {/* Модальное окно добавления/редактирования урока */}
             <AdminLessonFormModal
                 isOpen={isLessonModalOpen}
                 onClose={handleCloseLessonModal}

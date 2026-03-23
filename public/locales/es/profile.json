@@ -89,6 +89,7 @@
         "Нажимая эту кнопку вы удаляете ваш аккаунт со всей заполненной вами информацией": "Al hacer clic en este botón, eliminas tu cuenta junto con toda la información ingresada. No se puede recuperar. Solo es posible registrarse nuevamente.",
         "Ошибка при удалении профиля": "Error al eliminar el perfil",
         "Ошибка при изменении статуса активности профиля": "Error al cambiar el estado de actividad del perfil",
+                "Ваш аккаунт был заблокирован администратором. Обратитесь в службу поддержки": "Su cuenta ha sido bloqueada por un administrador. Póngase en contacto con el servicio поддержки",
         "Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.": "¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
         "Удалить": "Borrar",
         "Отмена": "Cancelar",

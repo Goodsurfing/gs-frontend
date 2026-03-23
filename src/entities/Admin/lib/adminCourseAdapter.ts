@@ -13,7 +13,7 @@ export const adminCourseAdapter = (
 ): AdminCourseFields => {
     const {
         name, description, aboutAuthor, courseFor, isActive,
-        author, experts, image,
+        author, experts, image, sort,
     } = data;
 
     const authorTemp = {
@@ -37,6 +37,7 @@ export const adminCourseAdapter = (
         city: expert.city,
         country: expert.country,
         project: expert.project,
+        sort: expert.sort,
     }));
 
     return {
@@ -49,6 +50,7 @@ export const adminCourseAdapter = (
         author: authorTemp,
         experts: expertsTemp,
         lessons: lessonsTemp,
+        sort,
     };
 };
 
@@ -56,8 +58,10 @@ export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdmi
     const {
         name, image, aboutAuthor, aboutCourse,
         experts, forWhom, isPublic,
-        author,
+        author, sort,
     } = data;
+
+    // const sortedExperts = [...experts].sort((a, b) => a.sort - b.sort);
 
     return {
         name,
@@ -66,8 +70,12 @@ export const adminCreateCourseApiAdapter = (data: AdminCourseFields): CreateAdmi
         aboutAuthor,
         courseFor: forWhom,
         authorId: author?.id ?? "",
-        expertIds: experts.map((expert) => expert.id),
+        experts: experts.map((expert) => ({
+            id: expert.id,
+            sort: expert.sort,
+        })),
         isActive: isPublic,
+        sort,
     };
 };
 
@@ -87,6 +95,7 @@ export const adminCourseExpertsAdapter = (data: GetAdminExperts): AdminExpertFie
         country,
         project,
         image,
+        sort: 0,
     };
 };
 
@@ -107,7 +116,7 @@ export const adminCourseLessonsAdapter = (data: GetAdminCourseLessons): AdminLes
 
 export const adminCourseLessonAdapter = (data: GetAdminCourseLesson): AdminLessonFields => {
     const {
-        id, description, duration, image, name, sort, url,
+        id, description, duration, image, name, sort, url, files,
     } = data;
 
     return {
@@ -118,13 +127,14 @@ export const adminCourseLessonAdapter = (data: GetAdminCourseLesson): AdminLesso
         image,
         videoUrl: url,
         sort,
+        files,
     };
 };
 
 export const adminCourseLessonApiAdapter = (data: AdminLessonFields, courseId: string):
 CreateAdminCourseLesson => {
     const {
-        name, description, duration, image, videoUrl, sort,
+        name, description, duration, image, videoUrl, sort, files,
     } = data;
 
     return {
@@ -135,5 +145,6 @@ CreateAdminCourseLesson => {
         url: videoUrl,
         sort,
         courseId,
+        fileIds: files.map((f) => f.id),
     };
 };

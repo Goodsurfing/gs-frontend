@@ -93,11 +93,12 @@ export interface AdminUser {
     isOrganization: boolean;
     isActive: boolean;
     isPayment: boolean;
+    isDelete: boolean;
     endPayment: string;
 }
 
 export type UpdateAdminUser = Omit<AdminUser, "created" | "lastVisit" | "isVerified"
-| "isVolunteer" | "isOrganization" | "isActive" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
+| "isVolunteer" | "isOrganization" | "isActive" | "isDelete" | "isPayment" | "endPayment" | "imagePath" | "thumbnails"
 | "email" | "skills" | "image" | "achievements"> & {
     imageId: string | null;
     skillIds: number[];
@@ -429,11 +430,8 @@ export interface EditReviewVacancy {
     }
 }
 
-export type AdminReviewVacancySort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "vacancy.name:asc" |
-"vacancy.name:desc" | "rating:asc" | "rating:desc" | "created:asc" | "created:desc";
-
 export interface GetAdminReviewVacancyListParams {
-    sort?: AdminReviewVacancySort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     vacancyName?: string;
@@ -466,11 +464,8 @@ export interface EditAdminReviewVolunteerRequest {
     reviewId: string;
 }
 
-export type AdminReviewVolunteerSort = "id:asc" | "id:desc" | "fio.author:asc" | "fio.author:desc" | "rating:asc" | "rating:desc" |
-"created:asc" | "created:desc";
-
 export interface GetAdminReviewVolunteerListParams {
-    sort?: AdminReviewVolunteerSort;
+    sort?: AdminSort;
     authorLastName?: string;
     authorFirstName?: string;
     volunteerLastName?: string;
@@ -506,7 +501,7 @@ export interface GetAdminOffersParams {
 
 export interface GetAdminOffers {
     id: number;
-    categoryName: string;
+    categories: { name: string }[];
     user: {
         id: string;
         firstName: string
@@ -514,7 +509,7 @@ export interface GetAdminOffers {
     },
     organizationName: string;
     name: string;
-    isActive: boolean;
+    status: OfferStatus;
     countTotalApplication: number;
     countAcceptApplication: number;
     countCanselApplication: number;

@@ -320,6 +320,8 @@ export const getAdminBlogPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getAdminBlogPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_blog}/${id}`;
 
+export const getAdminBlogCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_blog}/create`;
+
 // Admin Journals
 
 export const getAdminJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_journal}`;
@@ -330,11 +332,17 @@ export const getAdminJournalPersonalPageUrl: RoutePathFunction = (locale, id = "
 
 export const getAdminReviewJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_journals}/${id}`;
 
+// Admin Video
+
 export const getAdminVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_video}`;
 
 export const getAdminVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_video}/${id}`;
 
+export const getAdminVideoCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_video}/create`;
+
 export const getAdminReviewVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_reviews_video}/${id}`;
+
+// Admin Donation
 
 export const getAdminDonationReportsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_donation_reports}`;
 

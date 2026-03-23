@@ -18,6 +18,7 @@ export interface AdminCourseFields {
     lessons: AdminLessonsFields[];
     isPublic: boolean;
     author: AdminCourseAuthorFileds | null;
+    sort: number;
 }
 
 export interface AdminExpertFields {
@@ -28,6 +29,7 @@ export interface AdminExpertFields {
     country: string;
     city: string;
     image: Image | null;
+    sort: number;
 }
 
 export interface AdminLessonsFields {
@@ -45,6 +47,7 @@ export interface AdminLessonFields {
     image: Image | null;
     videoUrl: string;
     sort: number;
+    files: Image[];
 }
 
 export interface GetAdminCourses {
@@ -91,6 +94,7 @@ export interface GetAdminCourse {
         image: Image | null;
     }
     experts: GetAdminCourseExpert[];
+    sort: number;
     // duration: number;
     // lessons: GetAdminLesson[];
     // totalStart: number;
@@ -119,6 +123,7 @@ export interface GetAdminCourseExpert {
     country: string;
     city: string;
     image: Image;
+    sort: number;
 }
 
 export interface CreateAdminCourseRequest {
@@ -129,7 +134,8 @@ export interface CreateAdminCourseRequest {
     isActive: boolean;
     imageId: string | null;
     authorId: string;
-    expertIds: string[];
+    experts: { id: string; sort: number }[];
+    sort: number;
 
     // duration: number;
     // lessons: CreateAdminLesson[];
@@ -250,6 +256,7 @@ export interface GetAdminCourseLesson {
     sort: number;
     duration: number;
     image: Image;
+    files: Image[];
 }
 
 export interface CreateAdminCourseLesson {
@@ -260,6 +267,7 @@ export interface CreateAdminCourseLesson {
     imageId: string | null;
     duration: number;
     sort: number;
+    fileIds: string[];
 }
 
 export interface UpdateAdminCourseLesson {

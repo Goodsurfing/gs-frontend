@@ -17,7 +17,7 @@ export const UserInfoTable: FC<UserInfoTableProps> = (props) => {
     const { userId, data } = props;
     const {
         created, lastVisit, endPayment, isPayment, isActive,
-        isVerified, isOrganization, isVolunteer,
+        isVerified, isOrganization, isVolunteer, isDelete,
     } = data;
 
     const rows = [
@@ -26,6 +26,7 @@ export const UserInfoTable: FC<UserInfoTableProps> = (props) => {
         { label: "Последний вход", value: lastVisit },
         { label: "Окончание членства", value: endPayment },
         { label: "Активное членство", value: isPayment ? YesText : NoText },
+        { label: "Пользователь удалён", value: isDelete ? YesText : NoText },
         { label: "Активный пользователь", value: isActive ? YesText : NoText },
         { label: "Подтверждён", value: isVerified ? YesText : NoText },
         { label: "Хост", value: isOrganization ? YesText : NoText },

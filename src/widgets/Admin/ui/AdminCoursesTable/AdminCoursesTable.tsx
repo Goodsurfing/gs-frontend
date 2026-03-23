@@ -25,6 +25,7 @@ import {
 import { getAdminCourseCreatePageUrl, getAdminCoursePersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface CoursesFilters {
     authorFirstName?: string;
@@ -128,15 +129,21 @@ const courseCustomFields: CustomFilterField<keyof CoursesFilters>[] = [
 const COURSES_PER_PAGE = 30;
 
 export const AdminCoursesTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [courseToDelete, setCourseToDelete] = useState<
     { id: number; } | null>(null);
-    const [filters, setFilters] = useState<Partial<CoursesFilters>>(
-        { sort: AdminSort.IdAsc },
-    );
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.IdAsc,
+        authorFirstName: undefined,
+        authorLastName: undefined,
+        courseName: undefined,
+    });
+
     const [getCourses, {
         data: coursesData,
         isLoading,
@@ -148,7 +155,7 @@ export const AdminCoursesTable = () => {
         const fetchData = async () => {
             try {
                 await getCourses({
-                    page: currentPage,
+                    page: filters.page,
                     limit: COURSES_PER_PAGE,
                     sort: filters.sort ?? AdminSort.IdAsc,
                     authorFirstName: filters.authorFirstName,
@@ -163,7 +170,8 @@ export const AdminCoursesTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getCourses]);
+    }, [filters.authorFirstName, filters.authorLastName,
+        filters.courseName, filters.page, filters.sort, getCourses]);
 
     const handleOpenDeleteModal = (id: number) => {
         setCourseToDelete({ id });
@@ -339,6 +347,7 @@ export const AdminCoursesTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -346,10 +355,6 @@ export const AdminCoursesTable = () => {
     const totalPages = () => {
         if (!coursesData) return 0;
         return Math.ceil(coursesData.pagination.total / COURSES_PER_PAGE);
-    };
-
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
     };
 
     return (
@@ -366,7 +371,6 @@ export const AdminCoursesTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={courseCustomFields}
                 />
@@ -375,9 +379,9 @@ export const AdminCoursesTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!courseToDelete}

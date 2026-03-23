@@ -28,15 +28,31 @@
 .btnIcon svg {
     width: 25px;
     height: auto;
-    transition: all 0.3 ease;
+    transition: all 0.3s ease;
 }
 
 .btnIcon:hover {
     scale: 1.05;
 }
 
+.btnEdit path {
+    stroke: var(--accent-color);
+}
+
+.btnEdit svg {
+    fill: none;
+}
+
 .btnShow g {
-    fill: var(--accent-color);
+    fill: var(--text-primary-2);
+}
+
+.btnPublish svg {
+    fill: var(--text-caption);
+}
+
+.btnPublish.active svg {
+    fill: var(--button-1);
 }
 
 .btnBlock g {

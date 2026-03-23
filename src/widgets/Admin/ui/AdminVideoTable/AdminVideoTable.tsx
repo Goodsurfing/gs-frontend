@@ -22,8 +22,9 @@ import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getFullName } from "@/shared/lib/getFullName";
-import { getAdminVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminVideoCreatePageUrl, getAdminVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./AdminVideoTable.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface VideoFilters {
     name?: string;
@@ -356,6 +357,13 @@ export const AdminVideoTable = () => {
                     disabled={isLoading}
                     customFields={videoCustomFields}
                 />
+                <ButtonLink
+                    path={getAdminVideoCreatePageUrl(locale)}
+                    type="primary"
+                    className={styles.btn}
+                >
+                    Добавить видео
+                </ButtonLink>
             </div>
             <div className={styles.table}>
                 {renderTable()}

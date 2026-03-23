@@ -39,7 +39,11 @@ export const AdminAuth = () => {
     const onSubmit: SubmitHandler<LoginAdminFields> = useCallback(async (data) => {
         const { email, password, rememberMe } = data;
         try {
-            const { accessToken, mercureToken, roles } = await login({ email, password }).unwrap();
+            const { accessToken, mercureToken, roles } = await login({
+                email,
+                password,
+                isRememberMe: rememberMe,
+            }).unwrap();
 
             dispatch(userActions.setAuthData({
                 username: data.email,

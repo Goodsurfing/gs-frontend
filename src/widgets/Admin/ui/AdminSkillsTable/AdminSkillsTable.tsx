@@ -22,16 +22,17 @@ import styles from "./AdminSkillsTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 interface SkillFilters {
-    id?: number;
-    name?: string;
-    sort?: AdminSort;
+    idSkill?: number;
+    nameSkill?: string;
+    sortSkill?: AdminSort;
 }
 
 const skillCustomFields: CustomFilterField<keyof SkillFilters>[] = [
     {
-        key: "id",
+        key: "idSkill",
         label: "ID",
         render: ({ value, onChange, disabled }) => (
             <TextField
@@ -47,7 +48,7 @@ const skillCustomFields: CustomFilterField<keyof SkillFilters>[] = [
         ),
     },
     {
-        key: "name",
+        key: "nameSkill",
         label: "Название навыка",
         render: ({ value, onChange, disabled }) => (
             <TextField
@@ -61,7 +62,7 @@ const skillCustomFields: CustomFilterField<keyof SkillFilters>[] = [
         ),
     },
     {
-        key: "sort",
+        key: "sortSkill",
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
             <FormControl fullWidth size="small" disabled={disabled}>
@@ -92,15 +93,20 @@ const skillCustomFields: CustomFilterField<keyof SkillFilters>[] = [
 const SKILLS_PER_PAGE = 30;
 
 export const AdminSkillsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [skillToDelete, setSkillToDelete] = useState<
     { id: number; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<SkillFilters>>({
-        sort: AdminSort.IdAsc,
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        pageSkill: 1,
+        sortSkill: AdminSort.IdAsc,
+        idSkill: undefined,
+        nameSkill: undefined,
     });
+
     const [getSkills, {
         data: skillsData,
         isLoading,
@@ -112,11 +118,11 @@ export const AdminSkillsTable = () => {
         const fetchData = async () => {
             try {
                 await getSkills({
-                    page: currentPage,
+                    page: filters.pageSkill,
                     limit: SKILLS_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.IdAsc,
-                    id: filters.id,
-                    name: filters.name,
+                    sort: filters.sortSkill ?? AdminSort.IdAsc,
+                    id: filters.idSkill,
+                    name: filters.nameSkill,
                 }).unwrap();
             } catch {
                 setToast({
@@ -126,7 +132,7 @@ export const AdminSkillsTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getSkills]);
+    }, [filters.idSkill, filters.nameSkill, filters.pageSkill, filters.sortSkill, getSkills]);
 
     const handleOpenDeleteModal = (id: number, name: string) => {
         setSkillToDelete({ id, name });
@@ -252,10 +258,6 @@ export const AdminSkillsTable = () => {
         return Math.ceil(skillsData.pagination.total / SKILLS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -271,7 +273,6 @@ export const AdminSkillsTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={skillCustomFields}
                 />
@@ -280,9 +281,9 @@ export const AdminSkillsTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.pageSkill}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ pageSkill: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!skillToDelete}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
     useForm, SubmitHandler, FormProvider, Controller,
 } from "react-hook-form";
@@ -6,6 +6,7 @@ import { Modal } from "@/shared/ui/Modal/Modal";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
+import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { AdminLessonFields } from "@/entities/Admin";
@@ -36,6 +37,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
             sort: 0,
             image: null,
             videoUrl: "",
+            files: [],
         },
     });
 
@@ -45,6 +47,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
         control,
         formState: { errors, isSubmitting },
     } = form;
+    const [uploadError, setUploadError] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (isOpen && initialData) {
@@ -57,8 +60,10 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                 sort: 0,
                 image: null,
                 videoUrl: "",
+                files: [],
             });
         }
+        setUploadError(undefined);
     }, [isOpen, initialData, reset]);
 
     const onSubmitForm: SubmitHandler<AdminLessonFields> = async (data) => {
@@ -100,6 +105,7 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                 maxLength={1000}
                                 description="Не более 1000 знаков"
                                 rules={{
+                                    required: "Описание урока обязательное",
                                     maxLength: { value: 1000, message: "Превышено ограничение в 1000 символов" },
                                 }}
                             />
@@ -165,7 +171,6 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                     className={styles.error}
                                 />
                             )}
-
                             <div className={styles.field}>
                                 <div className={styles.label}>Обложка урока</div>
                                 <Controller
@@ -207,6 +212,47 @@ export const AdminLessonFormModal: FC<AdminLessonFormModalProps> = ({
                                     />
                                 )}
                             </div>
+                            <Controller
+                                name="files"
+                                control={control}
+                                defaultValue={[]}
+                                render={({ field }) => (
+                                    <div className={styles.field}>
+                                        <div className={styles.label}>Файлы</div>
+                                        <ImagesUploader
+                                            uploadedImgs={field.value ?? []}
+                                            onUpload={async (imgs) => {
+                                                const nextFiles = [
+                                                    ...(field.value ?? []),
+                                                    ...imgs.map((i) => ({
+                                                        id: i.id,
+                                                        contentUrl: i.contentUrl,
+                                                        thumbnails: i.thumbnails,
+                                                    })),
+                                                ];
+                                                field.onChange(nextFiles);
+                                            }}
+                                            onDelete={(imgId) => {
+                                                const currentFiles = field.value ?? [];
+                                                const remaining = currentFiles
+                                                    .filter((f) => f.id !== imgId);
+                                                field.onChange(remaining);
+                                            }}
+                                            onError={(error) => setUploadError(error)}
+                                            isOnlyImgFormat={false}
+                                            maxLength={10}
+                                            label="Добавить файлы"
+                                        />
+                                        {uploadError && (
+                                            <ErrorText
+                                                text={uploadError}
+                                                className={styles.error}
+                                            />
+                                        )}
+                                    </div>
+                                )}
+                            />
+
                         </div>
 
                         <div className={styles.actions}>

@@ -63,7 +63,7 @@ export type UpdateAdminVideo = Pick<GetAdminVideo, "name"
 
 export interface UpdateAdminVideoParams {
     id: string;
-    body: UpdateAdminVideo
+    body: UpdateAdminVideo;
 }
 
 // Review

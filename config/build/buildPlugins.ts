@@ -5,6 +5,8 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import Dotenv from "dotenv-webpack";
+import CopyPlugin from "copy-webpack-plugin";
+import path from "path";
 import { BuildOptions } from "./types/config";
 
 const MAX_CYCLES = 5;
@@ -30,6 +32,23 @@ export function buildPlugins({
         new Dotenv(),
         new webpack.ids.HashedModuleIdsPlugin(),
     ];
+
+    if (!isDev) {
+        plugins.push(
+            new CopyPlugin({
+                patterns: [
+                    {   
+                        from: path.join(paths.src, "../public"),
+                        to: paths.build,
+                        globOptions: {
+                            ignore: ["**/index.html"],
+                        },
+                        noErrorOnMissing: true,
+                    },
+                ],
+            })
+        );
+    }   
 
     if (isDev) {
         plugins.push(new ReactRefreshWebpackPlugin());

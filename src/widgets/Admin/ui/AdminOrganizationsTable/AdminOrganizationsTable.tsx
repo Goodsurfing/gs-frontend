@@ -24,6 +24,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 
 type OrganizationsFilters = Omit<Partial<GetAdminOrganizationParams>, "page" | "limit">;
 
@@ -100,23 +101,17 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
                     <MenuItem value={AdminSort.NameAsc}>Название ↑</MenuItem>
                     <MenuItem value={AdminSort.NameDesc}>Название ↓</MenuItem>
 
-                    <MenuItem value={AdminSort.FioAsc}>ФИО ↑</MenuItem>
-                    <MenuItem value={AdminSort.FioDesc}>ФИО ↓</MenuItem>
+                    <MenuItem value={AdminSort.FioAsc}>Владелец ↑</MenuItem>
+                    <MenuItem value={AdminSort.FioDesc}>Владелец ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CreatedAsc}>Создан ↑</MenuItem>
                     <MenuItem value={AdminSort.CreatedDesc}>Создан ↓</MenuItem>
-
-                    <MenuItem value={AdminSort.LastVisitAsc}>Сотрудники ↑</MenuItem>
-                    <MenuItem value={AdminSort.LastVisitDesc}>Сотрудники ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CountVacanciesAsc}>Кол-во вакансий ↑</MenuItem>
                     <MenuItem value={AdminSort.CountVacanciesDesc}>Кол-во вакансий ↓</MenuItem>
 
                     <MenuItem value={AdminSort.CountApplicationsAsc}>Кол-во заявок ↑</MenuItem>
                     <MenuItem value={AdminSort.CountApplicationsDesc}>Кол-во заявок ↓</MenuItem>
-
-                    <MenuItem value={AdminSort.IsOrganizationAsc}>Организация ↑</MenuItem>
-                    <MenuItem value={AdminSort.IsOrganizationDesc}>Организация ↓</MenuItem>
 
                 </Select>
             </FormControl>
@@ -125,13 +120,17 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
 ];
 
 export const AdminOrganizationsTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [filters, setFilters] = useState<Partial<OrganizationsFilters>>({
+    const { filters, setFilters } = useQueryFilters({
+        page: 1,
         sort: AdminSort.IdAsc,
+        firstName: undefined,
+        lastName: undefined,
+        name: undefined,
     });
+
     const [toggleAdminOrganizationActive,
         { isLoading: isTogglingActive }] = useToggleAdminOrganizationActiveMutation();
     const [organizationToDelete, setOrganizationToDelete] = useState<
@@ -150,7 +149,7 @@ export const AdminOrganizationsTable = () => {
             setToast(undefined);
             try {
                 await getOrganizations({
-                    page: currentPage,
+                    page: filters.page,
                     limit: ORGANIZATIONS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.IdAsc,
                     firstName: filters.firstName,
@@ -166,7 +165,8 @@ export const AdminOrganizationsTable = () => {
         };
 
         fetchData();
-    }, [currentPage, filters, getOrganizations]);
+    }, [filters.firstName, filters.lastName, filters.name,
+        filters.page, filters.sort, getOrganizations]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
         setOrganizationToDelete({ id, name });
@@ -228,9 +228,22 @@ export const AdminOrganizationsTable = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", disableColumnMenu: false },
         {
-            field: "name", headerName: "Название", disableColumnMenu: false, width: 240,
+            field: "id",
+            headerName: "ID",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "name",
+            headerName: "Название",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 240,
         },
         {
             field: "owner",
@@ -255,7 +268,7 @@ export const AdminOrganizationsTable = () => {
             field: "countVacancies",
             headerName: "Кол-во вакансий",
             type: "number",
-            sortable: true,
+            sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
@@ -265,7 +278,7 @@ export const AdminOrganizationsTable = () => {
             field: "countApplications",
             headerName: "Кол-во заявок",
             type: "number",
-            sortable: true,
+            sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
@@ -364,24 +377,19 @@ export const AdminOrganizationsTable = () => {
         return Math.ceil(organizationsData.pagination.total / ORGANIZATIONS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <AdminFiltersTable
                 filters={filters}
                 onFilterChange={setFilters}
-                onApply={handleApplyFilters}
                 customFields={customFields}
             />
             {renderTable()}
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!organizationToDelete}

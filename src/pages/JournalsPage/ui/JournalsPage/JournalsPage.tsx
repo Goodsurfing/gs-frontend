@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
@@ -11,6 +11,7 @@ import { AdminSort } from "@/entities/Admin";
 import { journalCardAdapter, useLazyGetJournalListQuery } from "@/entities/Journal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./JournalsPage.module.scss";
 
 const limit = 9;
@@ -27,8 +28,9 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const JournalsPage = () => {
     const { locale } = useLocale();
-    const [filterValue, setFilterValue] = useState<TagsOption>("new");
-    const [page, setPage] = useState(1);
+    const {
+        page, sort, setPage, setSort,
+    } = useNewsFilters();
 
     const [getNews, { data, isLoading, isFetching }] = useLazyGetJournalListQuery();
 
@@ -36,24 +38,20 @@ const JournalsPage = () => {
         getNews({
             page,
             limit,
-            sort: getSortByFilter(filterValue),
+            sort: getSortByFilter(sort),
         });
-    }, [page, filterValue, locale, getNews]);
+    }, [page, sort, locale, getNews]);
 
     const totalPages = data?.pagination
         ? Math.ceil(data.pagination.total / data.pagination.limit)
         : 1;
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
 
     return (
         <MainPageLayout>
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>
-                    <JournalFilter value={filterValue} onChange={setFilterValue} />
+                    <JournalFilter value={sort} onChange={setSort} />
                 </div>
                 <div className={styles.content}>
                     {(isLoading || isFetching) ? <MiniLoader /> : (
@@ -65,7 +63,7 @@ const JournalsPage = () => {
                             <OfferPagination
                                 currentPage={page}
                                 totalPages={totalPages}
-                                onPageChange={handlePageChange}
+                                onPageChange={setPage}
                             />
                         </div>
                     )}

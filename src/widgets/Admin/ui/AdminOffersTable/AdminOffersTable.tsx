@@ -6,22 +6,26 @@ import {
 } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
+import editIcon from "@/shared/assets/icons/admin/edit.svg";
+import publishIcon from "@/shared/assets/icons/admin/publish.svg";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     AdminSort, useDeleteAdminOfferMutation, useLazyGetAdminOffersQuery,
+    useUpdateAdminVacancyStatusMutation,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminOffersTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAdminVacancyWherePageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminVacancyWherePageUrl, getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminOffersTable.module.scss";
 
 interface OfferFilters {
     userId?: string;
@@ -131,27 +135,36 @@ const offerCustomFields: CustomFilterField<keyof OfferFilters>[] = [
 const OFFERS_PER_PAGE = 30;
 
 export const AdminOffersTable = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
     const [offerToDelete, setOfferToDelete] = useState<
     { id: string; name: string } | null>(null);
-    const [filters, setFilters] = useState<Partial<OfferFilters>>(
-        { sort: AdminSort.VacancyIdDesc },
-    );
+    const [offerToPublish, setOfferToPublish] = useState<
+    { id: string; name: string, isActive: boolean } | null>(null);
+    const {
+        filters, setFilters,
+    } = useQueryFilters({
+        page: 1,
+        sort: AdminSort.VacancyIdDesc,
+        organizationName: undefined,
+        userId: undefined,
+        vacancyName: undefined,
+    });
+
     const [getOffers, {
         data: offersData,
         isLoading,
         isFetching,
     }] = useLazyGetAdminOffersQuery();
     const [deleteOffer, { isLoading: isDeleting }] = useDeleteAdminOfferMutation();
+    const [publishOffer, { isLoading: isPublishing }] = useUpdateAdminVacancyStatusMutation();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 await getOffers({
-                    page: currentPage,
+                    page: filters.page,
                     limit: OFFERS_PER_PAGE,
                     sort: filters.sort ?? AdminSort.VacancyIdDesc,
                     organizationName: filters.organizationName,
@@ -166,7 +179,8 @@ export const AdminOffersTable = () => {
             }
         };
         fetchData();
-    }, [currentPage, filters, getOffers]);
+    }, [filters.organizationName, filters.page, filters.sort,
+        filters.userId, filters.vacancyName, getOffers]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
         setOfferToDelete({ id, name });
@@ -193,6 +207,37 @@ export const AdminOffersTable = () => {
             });
         } finally {
             handleCloseDeleteModal();
+        }
+    };
+
+    const handleOpenPublishModal = (id: string, name: string, isActive: boolean) => {
+        setOfferToPublish({ id, name, isActive });
+    };
+
+    const handleClosePublishModal = () => {
+        setOfferToPublish(null);
+    };
+
+    const handleConfirmPublish = async () => {
+        setToast(undefined);
+        if (!offerToPublish) return;
+
+        try {
+            await publishOffer({
+                id: offerToPublish.id,
+                status: offerToPublish.isActive ? "draft" : "active",
+            }).unwrap();
+            setToast({
+                text: `Вакансия была успешна ${offerToPublish.isActive ? "распубликована" : "опубликована"}`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: `Произошла ошибка при удалении ${offerToPublish.isActive ? "распубликации" : "публикации"}`,
+                type: HintType.Error,
+            });
+        } finally {
+            handleClosePublishModal();
         }
     };
 
@@ -281,14 +326,22 @@ export const AdminOffersTable = () => {
         {
             field: "actions",
             headerName: "Действия",
-            width: 160,
+            width: 220,
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
+                    getOfferPersonalPageUrl(locale, params.row.id),
+                );
+                const handleEdit = () => navigate(
                     getAdminVacancyWherePageUrl(locale, params.row.id),
+                );
+                const handlePublish = () => handleOpenPublishModal(
+                    params.row.id,
+                    params.row.name || `ID: ${params.row.id}`,
+                    params.row.isActive,
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
@@ -299,10 +352,30 @@ export const AdminOffersTable = () => {
                         <button
                             onClick={handleView}
                             type="button"
-                            title="Редактировать вакансию"
+                            title="Посмотреть вакансию"
                             className={cn(styles.btnIcon, styles.btnShow)}
                         >
                             <ReactSVG src={showIcon} />
+                        </button>
+                        <button
+                            onClick={handleEdit}
+                            type="button"
+                            title="Редактировать вакансию"
+                            className={cn(styles.btnIcon, styles.btnEdit)}
+                        >
+                            <ReactSVG src={editIcon} />
+                        </button>
+                        <button
+                            onClick={handlePublish}
+                            type="button"
+                            title={params.row.isActive ? "Распубликовать вакансию" : "Опубликовать вакансию"}
+                            className={cn(
+                                styles.btnIcon,
+                                styles.btnPublish,
+                                { [styles.active]: !params.row.isActive },
+                            )}
+                        >
+                            <ReactSVG src={publishIcon} />
                         </button>
                         <button
                             onClick={handleDeleteClick}
@@ -330,18 +403,18 @@ export const AdminOffersTable = () => {
         }
         const adaptedData: any[] = offersData.data.map((offer) => {
             const {
-                id, name, categoryName,
-                organizationName, isActive, countTotalApplication,
+                id, name, categories,
+                organizationName, status, countTotalApplication,
                 countAcceptApplication, countCanselApplication,
                 user,
             } = offer;
             return {
                 id,
                 name,
-                categoryName,
+                categoryName: categories[0]?.name,
                 userId: user.id,
                 organizationName,
-                isActive,
+                isActive: status === "active" || status === "disabled",
                 countTotalApplication,
                 countAcceptApplication,
                 countCanselApplication,
@@ -354,6 +427,7 @@ export const AdminOffersTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };
@@ -363,10 +437,6 @@ export const AdminOffersTable = () => {
         return Math.ceil(offersData.pagination.total / OFFERS_PER_PAGE);
     };
 
-    const handleApplyFilters = () => {
-        setCurrentPage(1);
-    };
-
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
@@ -374,7 +444,6 @@ export const AdminOffersTable = () => {
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
-                    onApply={handleApplyFilters}
                     disabled={isLoading}
                     customFields={offerCustomFields}
                 />
@@ -383,9 +452,9 @@ export const AdminOffersTable = () => {
                 {renderTable()}
             </div>
             <OfferPagination
-                currentPage={currentPage}
+                currentPage={filters.page}
                 totalPages={totalPages()}
-                onPageChange={setCurrentPage}
+                onPageChange={(newPage) => setFilters({ page: newPage })}
             />
             <ConfirmActionModal
                 isModalOpen={!!offerToDelete}
@@ -396,6 +465,16 @@ export const AdminOffersTable = () => {
                 cancelTextButton="Отмена"
                 isLoading={isDeleting}
                 buttonsDisabled={isDeleting}
+            />
+            <ConfirmActionModal
+                isModalOpen={!!offerToPublish}
+                description={`Вы уверены, что хотите "${offerToPublish?.isActive ? "распубликовать" : "опубликовать"}" вакансию "${offerToPublish?.name}"? Это действие нельзя отменить.`}
+                onConfirm={handleConfirmPublish}
+                onClose={handleClosePublishModal}
+                confirmTextButton={offerToPublish?.isActive ? "Распубликовать" : "Опубликовать"}
+                cancelTextButton="Отмена"
+                isLoading={isPublishing}
+                buttonsDisabled={isPublishing}
             />
         </div>
     );
