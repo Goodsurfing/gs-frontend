@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { AdminReviewJournalInfo } from "@/widgets/Admin";
+import { AdminReviewBlogInfo } from "@/widgets/Admin";
 
 const AdminReviewBlogPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -15,7 +15,7 @@ const AdminReviewBlogPersonalPage = () => {
 
     return (
         <div>
-            <AdminReviewJournalInfo reviewId={id} />
+            <AdminReviewBlogInfo reviewId={id} />
         </div>
     );
 };

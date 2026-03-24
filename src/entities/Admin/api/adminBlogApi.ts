@@ -105,7 +105,7 @@ export const adminBlogApi = createApi({
             providesTags: ["review"],
         }),
         getAdminReviewBlogById: build.query<GetAdminReviewBlog,
-        number>({
+        string>({
             query: (id) => ({
                 url: `review-blog/element/${id}`,
                 method: "GET",

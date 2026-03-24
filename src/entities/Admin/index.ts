@@ -214,6 +214,8 @@ export type {
 
 export { blogAdapter, blogApiAdapter } from "./lib/adminBlogAdapter";
 
+export { ReviewBlogInfoTable } from "./ui/ReviewBlogInfoTable/ReviewBlogInfoTable";
+
 // Journal
 
 export {

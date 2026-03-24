@@ -113,6 +113,6 @@ export type GetAdminReviewBlog = Omit<GetAdminReviewsBlog, "blog">;
 export type UpdateAdminReviewBlog = Pick<GetAdminReviewBlog, "description" | "isActive">;
 
 export interface UpdateAdminReviewBlogParams {
-    id: number;
+    id: string;
     body: UpdateAdminReviewBlog;
 }
