@@ -99,7 +99,7 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
                     />
                     <span className={styles.smallDescription}>
                         {t(
-                            "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 2МБ",
+                            "volunteer-create-article.Оптимальные размеры 2175 х 966. Вес не более 5МБ",
                         )}
                     </span>
                 </div>
