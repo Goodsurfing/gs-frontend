@@ -5,7 +5,7 @@ import { AdminVideoFileds, useCreateAdminVideoMutation, videoAdminApiAdapter } f
 import {
     AdminVideoForm,
 } from "@/features/Admin";
-import { getAdminBlogPageUrl, getAdminVideoPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminVideoPageUrl } from "@/shared/config/routes/AppUrls";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
@@ -38,9 +38,9 @@ const AdminVideoCreatePage = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <h1>Добавление статьи</h1>
-            <Breadcrumbs items={[{ label: "Все новости", to: getAdminBlogPageUrl(locale) },
-                { label: "Создание статьи" },
+            <h1>Добавление видео</h1>
+            <Breadcrumbs items={[{ label: "Все видео", to: getAdminVideoPageUrl(locale) },
+                { label: "Создание видео" },
             ]}
             />
             <AdminVideoForm

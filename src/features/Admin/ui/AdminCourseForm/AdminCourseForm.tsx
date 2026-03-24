@@ -484,7 +484,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         )}
                     </div>
                     <InputControl
-                        label="Сортировка"
+                        label="Сортировка курса"
                         type="number"
                         control={control}
                         name="sort"

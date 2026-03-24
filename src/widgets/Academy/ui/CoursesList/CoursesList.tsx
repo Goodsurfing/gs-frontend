@@ -33,7 +33,7 @@ export const CoursesList: FC<CoursesListProps> = (props) => {
 
     useEffect(() => {
         try {
-            fetchCourses({ page, limit: coursesLimit, sort: AdminSort.CreatedDesc });
+            fetchCourses({ page, limit: coursesLimit, sort: AdminSort.SortDesc });
         } catch {
             // epmty
         }
