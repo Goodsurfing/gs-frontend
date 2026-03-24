@@ -9,11 +9,11 @@ import cn from "classnames";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getAdminReviewVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminReviewBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import {
     AdminSort,
-    useDeleteAdminReviewVideoMutation,
-    useLazyGetAdminReviewsVideoQuery,
+    useDeleteAdminReviewBlogMutation,
+    useLazyGetAdminReviewsBlogQuery,
 } from "@/entities/Admin";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
@@ -23,23 +23,23 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import styles from "./AdminReviewsVideoTable.module.scss";
+import styles from "./AdminReviewsBlogTable.module.scss";
 
 interface ReviewFilters {
-    videoId?: string;
+    blogId?: string;
+    blogName?: string;
     firstName?: string;
     lastName?: string;
-    videoName?: string;
     sort?: AdminSort;
 }
 
 const reviewCustomFields: CustomFilterField<keyof ReviewFilters>[] = [
     {
-        key: "videoId",
-        label: "ID видео",
+        key: "blogId",
+        label: "ID статьи",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="ID видео"
+                label="ID статьи"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
                 fullWidth
@@ -49,11 +49,11 @@ const reviewCustomFields: CustomFilterField<keyof ReviewFilters>[] = [
         ),
     },
     {
-        key: "videoName",
-        label: "Название видео",
+        key: "blogName",
+        label: "Название блога",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="Название видео"
+                label="Название блога"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -119,7 +119,7 @@ const reviewCustomFields: CustomFilterField<keyof ReviewFilters>[] = [
 
 const REVIEWS_PER_PAGE = 30;
 
-export const AdminReviewsVideoTable = () => {
+export const AdminReviewsBlogTable = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const navigate = useNavigate();
     const { locale } = useLocale();
@@ -133,8 +133,8 @@ export const AdminReviewsVideoTable = () => {
         data: reviewsData,
         isLoading,
         isFetching,
-    }] = useLazyGetAdminReviewsVideoQuery();
-    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewVideoMutation();
+    }] = useLazyGetAdminReviewsBlogQuery();
+    const [deleteReview, { isLoading: isDeleting }] = useDeleteAdminReviewBlogMutation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -145,8 +145,8 @@ export const AdminReviewsVideoTable = () => {
                     sort: filters.sort,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
-                    videoId: filters.videoId,
-                    videoName: filters.videoName,
+                    blogId: filters.blogId,
+                    blogName: filters.blogName,
                 }).unwrap();
             } catch {
                 setToast({
@@ -196,8 +196,8 @@ export const AdminReviewsVideoTable = () => {
             hideable: false,
         },
         {
-            field: "videoName",
-            headerName: "Видео",
+            field: "blogName",
+            headerName: "Статья",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -234,7 +234,7 @@ export const AdminReviewsVideoTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminReviewVideoPersonalPageUrl(locale, params.row.id),
+                    getAdminReviewBlogPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id);
@@ -276,7 +276,7 @@ export const AdminReviewsVideoTable = () => {
         }
         const tableData = reviewsData.data.map((review) => ({
             id: review.id,
-            videoName: review.video.name,
+            blogName: review.blog.name,
             isActive: review.isActive,
             created: review.created,
         }));
