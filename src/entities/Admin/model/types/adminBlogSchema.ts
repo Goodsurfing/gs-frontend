@@ -100,7 +100,7 @@ export interface GetAdminReviewsBlogResponse {
 
 export interface GetAdminReviewBlogParams {
     sort: AdminSort;
-    blogId: number;
+    blogId: string;
     firstName: string;
     lastName: string;
     blogName: string;

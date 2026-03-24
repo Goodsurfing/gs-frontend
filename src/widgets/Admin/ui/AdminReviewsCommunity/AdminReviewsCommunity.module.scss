@@ -9,3 +9,10 @@
     display: flex;
     gap: 15px;
 }
+
+@media (max-width: 1400px) {
+    .buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
