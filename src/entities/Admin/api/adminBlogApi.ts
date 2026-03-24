@@ -120,7 +120,7 @@ export const adminBlogApi = createApi({
             }),
             invalidatesTags: ["review"],
         }),
-        deleteAdminReviewBlog: build.mutation<void, number>({
+        deleteAdminReviewBlog: build.mutation<void, string>({
             query: (id) => ({
                 url: `review-blog/${id}`,
                 method: "DELETE",

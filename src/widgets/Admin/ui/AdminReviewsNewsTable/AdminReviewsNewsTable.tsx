@@ -284,6 +284,7 @@ export const AdminReviewsNewsTable = () => {
                 sx={{ border: 0 }}
                 rowsPerPageOptions={[]}
                 disableSelectionOnClick
+                hideFooter
             />
         );
     };

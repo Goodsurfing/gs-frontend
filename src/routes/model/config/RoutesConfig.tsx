@@ -197,6 +197,7 @@ import {
     getVolunteerDonationsPageUrl,
     getAdminBlogCreatePageUrl,
     getAdminVideoCreatePageUrl,
+    getAdminReviewBlogPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -279,6 +280,7 @@ import { HostDonationsPage } from "@/pages/HostDonationsPage";
 import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
 import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
 import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
+import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -911,6 +913,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-blog-create",
                 element: <AdminBlogCreatePage />,
                 path: (locale: string) => getAdminBlogCreatePageUrl(locale),
+            },
+            {
+                label: "admin-review-blog-personal",
+                element: <AdminReviewBlogPersonalPage />,
+                path: (locale: string) => getAdminReviewBlogPersonalPageUrl(locale),
             },
             {
                 label: "admin-journal",

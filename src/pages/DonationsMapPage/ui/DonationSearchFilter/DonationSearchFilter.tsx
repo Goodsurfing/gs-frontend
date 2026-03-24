@@ -16,9 +16,8 @@ import { AdminSort } from "@/entities/Admin";
 import {
     DonationsList, DonationsMap, SearchDonations, SearchDonationsRef,
 } from "@/widgets/Donation";
-import { mockCardDonations } from "@/entities/Donation/data/mockDonations";
-import styles from "./DonationSearchFilter.module.scss";
 import { DonationsSearchFilterMobile } from "../DonationsSearchFilterMobile/DonationsSearchFilterMobile";
+import styles from "./DonationSearchFilter.module.scss";
 
 const defaultValues: DonationFilterFields = {
     sort: "urgency",
@@ -199,9 +198,9 @@ export const DonationSearchFilter = () => {
                             initialValue={initialSearchValue}
                         />
                         <DonationsList
-                            data={mockCardDonations}
-                            isLoading={isLoading || isFetching}
+                            data={donationsData?.data}
                             className={cn(styles.offersList)}
+                            isLoading={isLoading || isFetching}
                             onChangeMapOpen={handleMapOpen}
                             mapOpenValue={isMapOpened}
                             currentPage={currentPage}
