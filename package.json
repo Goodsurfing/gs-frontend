@@ -5,9 +5,9 @@
   "author": "GS",
   "scripts": {
     "lint": "eslint src/ --cache --color --ext .jsx,.js,.tsx,.ts --ignore-pattern node_modules",
-    "start": "webpack serve --env port=443",
+    "start": "cross-env NODE_OPTIONS=\"--require ts-node/register\" webpack serve --env port=443",
     "start:analyze": "concurrently \"npm run start --env analyze=true\"",
-    "build:prod": "webpack --env mode=production",
+    "build:prod": "cross-env NODE_OPTIONS=\"--require ts-node/register\" webpack --env mode=production",
     "clean": "rm -rf dist",
     "bootstrap": "mkdir dist",
     "build": "npm run clean && npm run bootstrap && webpack --progress --mode production --profile --json > dist/stats.json",
@@ -18,7 +18,7 @@
     "lint:ts": "npx eslint ./src --fix",
     "lint:scss": "npx stylelint ./src --fix",
     "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
-    "type-check": "set NODE_OPTIONS=--max-old-space-size=8192 && tsc --noEmit"
+    "type-check": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
@@ -55,6 +55,7 @@
     "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^8.2.0",
     "copy-webpack-plugin": "^9.1.0",
+    "cross-env": "^10.1.0",
     "css-loader": "^6.8.1",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^8.42.0",

@@ -6,8 +6,6 @@ import { buildBabelLoader } from "./loaders/buildBabelLoader";
 export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
     const { isDev } = options;
 
-    const babelLoader = buildBabelLoader(options);
-
     const codeBabelLoader = buildBabelLoader({ ...options, isTsx: false });
     const tsxCodeBabelLoader = buildBabelLoader({ ...options, isTsx: true });
 
@@ -22,7 +20,7 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
     };
 
     const imgLoader: webpack.RuleSetRule = {
-        test: /\.(png|jpg|jpeg)$/i,
+        test: /\.(png|jpg|jpeg|webp)$/i,
         type: "asset/resource",
         generator: {
             filename: "./img/[contenthash].[ext]",
@@ -37,5 +35,5 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
         },
     };
 
-    return [babelLoader, codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader, pdfLoader];
+    return [codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader, pdfLoader];
 }
