@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # 1. For build React app
-FROM node:14.18 AS development
+FROM node:20-alpine AS development
 
 # Set working directory
 WORKDIR /app
@@ -26,7 +26,7 @@ CMD [ "npm", "start" ]
 
 FROM development AS build
 
-RUN npm run build:prod
+RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build:prod
 
 
 FROM development as dev-envs
