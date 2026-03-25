@@ -20,7 +20,7 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
     };
 
     const imgLoader: webpack.RuleSetRule = {
-        test: /\.(png|jpg|jpeg)$/i,
+        test: /\.(png|jpg|jpeg|webp)$/i,
         type: "asset/resource",
         generator: {
             filename: "./img/[contenthash].[ext]",
