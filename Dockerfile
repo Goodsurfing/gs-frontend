@@ -10,7 +10,8 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
-RUN npm install --legacy-peer-deps
+RUN --mount=type=cache,target=/root/.npm \
+    npm install --legacy-peer-deps
 
 COPY . /app
 ARG REACT_APP_API_BASE_URL
@@ -26,7 +27,8 @@ CMD [ "npm", "start" ]
 
 FROM development AS build
 
-RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build:prod
+RUN --mount=type=cache,target=/app/node_modules/.cache \
+    NODE_OPTIONS=--max-old-space-size=2048 npm run build:prod
 
 
 FROM development as dev-envs
