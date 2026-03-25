@@ -5,9 +5,9 @@
   "author": "GS",
   "scripts": {
     "lint": "eslint src/ --cache --color --ext .jsx,.js,.tsx,.ts --ignore-pattern node_modules",
-    "start": "webpack serve --env port=443",
+    "start": "NODE_OPTIONS='--require ts-node/register' webpack serve --env port=443",
     "start:analyze": "concurrently \"npm run start --env analyze=true\"",
-    "build:prod": "webpack --env mode=production",
+    "build:prod": "NODE_OPTIONS='--require ts-node/register' webpack --env mode=production",
     "clean": "rm -rf dist",
     "bootstrap": "mkdir dist",
     "build": "npm run clean && npm run bootstrap && webpack --progress --mode production --profile --json > dist/stats.json",
