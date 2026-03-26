@@ -8,7 +8,7 @@ import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForHost.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 
 interface ForHostProps {
     className?: string;
@@ -22,6 +22,10 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
 
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
+    };
+
+    const handleGetMembership = () => {
+        navigate(getPaymentPageUrl(locale));
     };
 
     return (
@@ -175,7 +179,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                         </div>
                     </div>
                     <div className={styles.columnFooter}>
-                        <Button color="GREEN" size="SMALL" variant="FILL">
+                        <Button color="GREEN" size="SMALL" variant="FILL" onClick={handleGetMembership}>
                             {t("for-host.Получить членство")}
                         </Button>
                     </div>
