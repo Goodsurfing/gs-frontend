@@ -1,0 +1,174 @@
+.container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+}
+
+.title {
+    margin: 0;
+    color: #0c2238;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.subtitle {
+    margin: 10px 0 28px;
+    color: #536a81;
+    font-size: 18px;
+    line-height: 1.45;
+}
+
+.formCard {
+    background: #fff;
+    border: 1px solid #dbe6ef;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgb(16 44 74 / 6%);
+    padding: 24px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.sectionTitle {
+    margin: 0 0 16px;
+    color: #0c2238;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.amountButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.amountButton {
+    min-width: 130px;
+    padding: 12px 16px;
+    border: 1px solid #c9d8e6;
+    border-radius: 12px;
+    background: #fff;
+    color: #23415f;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+        border-color: #5a90c2;
+    }
+}
+
+.amountButtonActive {
+    border-color: #0a66c2;
+    background: rgb(10 102 194 / 8%);
+    color: #0a66c2;
+}
+
+.customAmount {
+    margin-top: 14px;
+}
+
+.membershipLabel {
+    margin-top: 14px;
+    color: #5d748a;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.fields {
+    display: grid;
+    gap: 12px;
+}
+
+.checkboxes {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #38516b;
+    font-size: 15px;
+    line-height: 1.4;
+
+    input {
+        margin-top: 2px;
+        width: 18px;
+        height: 18px;
+    }
+
+    a {
+        display: inline;
+    }
+}
+
+.submitRow {
+    margin-top: 18px;
+
+    button {
+        width: 100%;
+    }
+}
+
+.fieldError {
+    margin: 2px 0 0;
+    color: #d32f2f;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.errorBox {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff3f3;
+    border: 1px solid #f4b0b0;
+    color: #a63636;
+}
+
+.backLink {
+    margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+    .title {
+        font-size: 34px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .formCard {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .sectionTitle {
+        font-size: 22px;
+    }
+
+    .amountButton {
+        min-width: 100px;
+        font-size: 16px;
+    }
+}
