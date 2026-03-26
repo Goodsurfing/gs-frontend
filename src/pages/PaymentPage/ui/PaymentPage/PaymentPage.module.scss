@@ -19,6 +19,71 @@
     line-height: 1.45;
 }
 
+.projectCard {
+    margin: 18px 0 20px;
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid #dbe6ef;
+    box-shadow: 0 8px 24px rgb(16 44 74 / 6%);
+    background: #fff;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 14px;
+}
+
+.projectImage {
+    width: 100%;
+    height: 148px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.projectContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.projectTag {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgb(10 102 194 / 10%);
+    color: #0a66c2;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.projectTitle {
+    margin: 2px 0 0;
+    color: #0c2238;
+    font-size: 22px;
+    line-height: 1.25;
+}
+
+.projectOrg {
+    margin: 0;
+    color: #3a5878;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.projectDescription {
+    margin: 0;
+    color: #5f7891;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.projectProgress {
+    margin: 2px 0 0;
+    color: #0a66c2;
+    font-size: 14px;
+    font-weight: 700;
+}
+
 .formCard {
     background: #fff;
     border: 1px solid #dbe6ef;
@@ -143,6 +208,14 @@
         font-size: 34px;
     }
 
+    .projectCard {
+        grid-template-columns: 1fr;
+    }
+
+    .projectImage {
+        height: 180px;
+    }
+
     .grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -156,6 +229,24 @@
 
     .subtitle {
         font-size: 16px;
+    }
+
+    .projectCard {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .projectImage {
+        height: 160px;
+        border-radius: 10px;
+    }
+
+    .projectTitle {
+        font-size: 19px;
+    }
+
+    .projectDescription {
+        font-size: 14px;
     }
 
     .formCard {

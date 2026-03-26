@@ -15,10 +15,18 @@ import {
     getPrivacyPolicyPageUrl,
     getRulesPageUrl,
 } from "@/shared/config/routes/AppUrls";
+import supportImage from "@/shared/assets/images/supportImage.jpg";
 
 import styles from "./PaymentPage.module.scss";
 
 const PRESET_AMOUNTS = [300, 1500, 5000];
+
+const PROJECT_PREVIEW = {
+    title: "Системная поддержка выездного волонтёрства Гудсёрфинг",
+    organization: "АНО «Гудсёрфинг»",
+    description: "Помогите команде развивать платформу, сопровождать волонтёров и запускать новые полезные проекты.",
+    progress: "Собрано 67%",
+};
 
 interface FormErrors {
     amount?: string;
@@ -94,9 +102,21 @@ const PaymentPage: React.FC = () => {
         <MainPageLayout>
             <div className={styles.container}>
                 <h1 className={styles.title}>Пожертвование</h1>
-                <p className={styles.subtitle}>
-                    Поддержите развитие Гудсёрфинга и выездного волонтёрства
-                </p>
+
+                <div className={styles.projectCard}>
+                    <img
+                        src={supportImage}
+                        alt="Проект для пожертвования"
+                        className={styles.projectImage}
+                    />
+                    <div className={styles.projectContent}>
+                        <span className={styles.projectTag}>Проект для поддержки</span>
+                        <h2 className={styles.projectTitle}>{PROJECT_PREVIEW.title}</h2>
+                        <p className={styles.projectOrg}>{PROJECT_PREVIEW.organization}</p>
+                        <p className={styles.projectDescription}>{PROJECT_PREVIEW.description}</p>
+                        <p className={styles.projectProgress}>{PROJECT_PREVIEW.progress}</p>
+                    </div>
+                </div>
 
                 <form className={styles.formCard} onSubmit={handleSubmit}>
                     <div className={styles.grid}>
