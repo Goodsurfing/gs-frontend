@@ -1,4 +1,34 @@
+import { DonationStatus } from "@/entities/Donation";
 import { Image } from "@/types/media";
+import { AdminSort } from "./adminSchema";
+
+// Admin Donations
+
+export interface GetAdminDonations {
+    id: string;
+    name: string;
+    category: string;
+    firstName: string;
+    lastName: string;
+    status: DonationStatus;
+    amount: number;
+    minAmount: number;
+    peopleSupportCount: number;
+    percentAmountCollect: number;
+    moneyRaised: number;
+    endDate: number;
+}
+
+export interface GetAdminDonationsParams {
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    sort: AdminSort;
+    page: number;
+    limit: number;
+}
+
+// Donation Reports
 
 export interface AdminDonationReportFileFields {
     id: string | null;
