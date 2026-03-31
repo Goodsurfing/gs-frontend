@@ -70,6 +70,12 @@
         "addressRequired": "Please specify an address",
         "saved": "Address saved successfully"
     },
+    "hostFundraiseWhen": {
+        "title": "Specify by what date you need to complete the fundraising",
+        "dateLabel": "End date for receiving donations",
+        "untilAmount": "I accept donations until the minimum amount is collected",
+        "saved": "Fundraising time settings were saved"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },

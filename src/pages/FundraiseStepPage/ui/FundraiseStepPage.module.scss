@@ -31,9 +31,46 @@
     color: var(--color-gray-text);
 }
 
+.whenForm {
+    margin-top: 24px;
+    max-width: 980px;
+}
+
+.whenLabel {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-black-primary);
+}
+
+.whenControlsRow {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 40px;
+    align-items: center;
+}
+
+.whenSwitch {
+    margin: 0;
+}
+
+.whenSwitchText {
+    max-width: 560px;
+    color: var(--color-black-primary);
+}
+
+.whenSave {
+    margin-top: 28px;
+    min-width: 260px;
+}
+
 @media (max-width: 992px) {
     .title,
     .description {
         text-align: center;
+    }
+
+    .whenSave {
+        width: 100%;
     }
 }

@@ -70,6 +70,12 @@
         "addressRequired": "Por favor indica una dirección",
         "saved": "Dirección guardada correctamente"
     },
+    "hostFundraiseWhen": {
+        "title": "Indica hasta qué fecha necesitas completar la recaudación",
+        "dateLabel": "Fecha límite para recibir donaciones",
+        "untilAmount": "Acepto donaciones hasta que se reúna la cantidad mínima",
+        "saved": "La configuración del plazo de recaudación se guardó"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },
