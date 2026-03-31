@@ -145,6 +145,7 @@ const HostFundraisePage: FC = () => {
             <Button
                 variant="FILL"
                 color="BLUE"
+                size="MEDIUM"
                 className={styles.addButton}
                 onClick={handleAddFundraise}
                 disabled={isCreating}
