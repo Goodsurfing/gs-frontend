@@ -14,7 +14,7 @@ export const useFundraiseSideMenuData = () => {
 
     const SideMenuData: SidebarContentProps[] = [
         {
-            text: t("main.sidebar.К сборам"),
+            text: t("main.sidebar.К сборам", { defaultValue: "К сборам" }),
             icon: backIcon,
             route: "/host/donations",
         },
@@ -29,7 +29,7 @@ export const useFundraiseSideMenuData = () => {
             route: "/fundraise/when",
         },
         {
-            text: t("main.sidebar.Сколько"),
+            text: t("main.sidebar.Сколько", { defaultValue: "Сколько" }),
             icon: viewListIcon,
             route: "/fundraise/amount",
         },
@@ -39,7 +39,9 @@ export const useFundraiseSideMenuData = () => {
             route: "/fundraise/description",
         },
         {
-            text: t("main.sidebar.Настройка автоматических сообщений"),
+            text: t("main.sidebar.Настройка автоматических сообщений", {
+                defaultValue: "Настройка авто-сообщений",
+            }),
             icon: writeIcon,
             route: "/fundraise/auto-messages",
         },
