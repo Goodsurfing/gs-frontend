@@ -76,6 +76,13 @@
         "untilAmount": "Acepto donaciones hasta que se reúna la cantidad mínima",
         "saved": "La configuración del plazo de recaudación se guardó"
     },
+    "hostFundraiseHowMany": {
+        "title": "Indica la cantidad que necesitas para realizar el proyecto",
+        "amountLabel": "Indica la cantidad deseada en rublos",
+        "minAmountLabel": "Indica la cantidad mínima en rublos necesaria para realizar el proyecto",
+        "hint": "Si en el paso anterior elegiste continuar la recaudación hasta alcanzar la cantidad mínima, la campaña seguirá activa hasta llegar a ese valor.",
+        "saved": "Las cantidades de recaudación se guardaron"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },

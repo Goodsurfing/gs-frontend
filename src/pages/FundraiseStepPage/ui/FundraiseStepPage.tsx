@@ -1,4 +1,7 @@
 import {
+    ChangeEvent,
+    Dispatch,
+    SetStateAction,
     useCallback,
     useEffect,
     useMemo,
@@ -11,8 +14,10 @@ import { useParams } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     useGetDonationAddressQuery,
+    useGetDonationHowManyQuery,
     useGetDonationWhenQuery,
     useUpdateDonationAddressMutation,
+    useUpdateDonationHowManyMutation,
     useUpdateDonationWhenMutation,
 } from "@/entities/Donation";
 import { getGeoObjectByCoordinates } from "@/features/MapWithAddress";
@@ -29,6 +34,7 @@ import Button from "@/shared/ui/Button/Button";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import Input from "@/shared/ui/Input/Input";
 import Switch from "@/shared/ui/Switch/Switch";
 
 import styles from "./FundraiseStepPage.module.scss";
@@ -44,6 +50,9 @@ const FundraiseStepPage = () => {
 
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [isUntilAmountCollected, setIsUntilAmountCollected] = useState(false);
+
+    const [amount, setAmount] = useState("");
+    const [minAmount, setMinAmount] = useState("");
 
     const {
         data: donationAddress,
@@ -63,6 +72,17 @@ const FundraiseStepPage = () => {
 
     const [updateDonationWhen, { isLoading: isSavingWhen }] = useUpdateDonationWhenMutation();
 
+    const {
+        data: donationHowMany,
+        isLoading: isLoadingHowMany,
+    } = useGetDonationHowManyQuery(id || "", {
+        skip: !id || step !== "amount",
+    });
+
+    const [updateDonationHowMany, {
+        isLoading: isSavingHowMany,
+    }] = useUpdateDonationHowManyMutation();
+
     const title = useMemo(() => {
         const map: Record<string, string> = {
             where: t("hostFundraiseWhere.title", {
@@ -73,7 +93,10 @@ const FundraiseStepPage = () => {
                 defaultValue: "Укажите до какой даты вам нужно завершить сбор средств",
                 ns: "host",
             }),
-            amount: t("main.sidebar.Сколько", { ns: "translation" }),
+            amount: t("hostFundraiseHowMany.title", {
+                defaultValue: "Укажите сумму, которая вам необходима для проведения проекта",
+                ns: "host",
+            }),
             description: t("main.sidebar.Описание", { ns: "translation" }),
             "auto-messages": t("main.sidebar.Настройка автоматических сообщений", {
                 ns: "translation",
@@ -166,6 +189,17 @@ const FundraiseStepPage = () => {
         }
     }, [step, donationWhen]);
 
+    useEffect(() => {
+        if (step !== "amount") {
+            return;
+        }
+
+        if (donationHowMany) {
+            setAmount(donationHowMany.amount ? String(donationHowMany.amount) : "");
+            setMinAmount(donationHowMany.minAmount ? String(donationHowMany.minAmount) : "");
+        }
+    }, [step, donationHowMany]);
+
     const onSubmitWhere = async (data: AddressFormFormFields) => {
         if (!id) {
             return;
@@ -218,6 +252,41 @@ const FundraiseStepPage = () => {
             setToast({
                 text: t("hostFundraiseWhen.saved", {
                     defaultValue: "Настройки срока сбора сохранены",
+                    ns: "host",
+                }),
+                type: HintType.Success,
+            });
+        } catch (error: unknown) {
+            setToast({ text: getErrorText(error), type: HintType.Error });
+        }
+    };
+
+    const handleAmountInput = (
+        setter: Dispatch<SetStateAction<string>>,
+    ) => (event: ChangeEvent<HTMLInputElement>) => {
+        const cleanValue = event.target.value.replace(/[^\d]/g, "");
+        setter(cleanValue);
+    };
+
+    const handleHowManySubmit = async () => {
+        if (!id) {
+            return;
+        }
+
+        setToast(undefined);
+
+        try {
+            await updateDonationHowMany({
+                id,
+                body: {
+                    amount: Number(amount || 0),
+                    minAmount: Number(minAmount || 0),
+                },
+            }).unwrap();
+
+            setToast({
+                text: t("hostFundraiseHowMany.saved", {
+                    defaultValue: "Суммы сбора сохранены",
                     ns: "host",
                 }),
                 type: HintType.Success,
@@ -295,6 +364,54 @@ const FundraiseStepPage = () => {
                         className={styles.whenSave}
                         onClick={handleWhenSubmit}
                         disabled={isLoadingWhen || isSavingWhen}
+                    >
+                        {t("Сохранить", { ns: "offer" })}
+                    </Button>
+                </Box>
+            </div>
+        );
+    }
+
+    if (step === "amount") {
+        return (
+            <div className={styles.wrapper}>
+                {toast && <HintPopup text={toast.text} type={toast.type} />}
+                <h1 className={styles.title}>{title}</h1>
+                <Box className={styles.amountForm}>
+                    <Input
+                        label={t("hostFundraiseHowMany.amountLabel", {
+                            defaultValue: "Укажите желаемую сумму в рублях",
+                            ns: "host",
+                        })}
+                        value={amount}
+                        onChange={handleAmountInput(setAmount)}
+                        inputMode="numeric"
+                        disabled={isLoadingHowMany || isSavingHowMany}
+                    />
+                    <Input
+                        className={styles.amountSecondInput}
+                        label={t("hostFundraiseHowMany.minAmountLabel", {
+                            defaultValue: "Укажите минимальную сумму в рублях, необходимую для проведения проекта",
+                            ns: "host",
+                        })}
+                        value={minAmount}
+                        onChange={handleAmountInput(setMinAmount)}
+                        inputMode="numeric"
+                        disabled={isLoadingHowMany || isSavingHowMany}
+                    />
+                    <Typography className={styles.amountHint}>
+                        {t("hostFundraiseHowMany.hint", {
+                            defaultValue: "Если на предыдущем этапе вы выбрали продолжать сбор до тех пор, пока не будет собрана минимальная сумма, сбор будет активен до тех пор, пока сумма пожертвований не достигнет этого значения.",
+                            ns: "host",
+                        })}
+                    </Typography>
+                    <Button
+                        variant="FILL"
+                        color="BLUE"
+                        size="MEDIUM"
+                        className={styles.amountSave}
+                        onClick={handleHowManySubmit}
+                        disabled={isLoadingHowMany || isSavingHowMany}
                     >
                         {t("Сохранить", { ns: "offer" })}
                     </Button>

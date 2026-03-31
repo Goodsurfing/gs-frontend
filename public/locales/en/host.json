@@ -76,6 +76,13 @@
         "untilAmount": "I accept donations until the minimum amount is collected",
         "saved": "Fundraising time settings were saved"
     },
+    "hostFundraiseHowMany": {
+        "title": "Specify the amount you need to run the project",
+        "amountLabel": "Specify the desired amount in rubles",
+        "minAmountLabel": "Specify the minimum amount in rubles required to run the project",
+        "hint": "If at the previous step you chose to continue fundraising until the minimum amount is collected, the fundraiser will remain active until this threshold is reached.",
+        "saved": "Fundraising amounts were saved"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },
