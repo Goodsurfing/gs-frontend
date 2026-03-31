@@ -47,12 +47,14 @@ interface InviteDescriptionFormProps {
     isLoadingGetData: boolean;
     isLoadingUpdateData: boolean;
     linkNext: string;
+    storageKeyPrefix?: string;
 }
 
 export const InviteDescriptionForm: FC<InviteDescriptionFormProps> = (props) => {
     const {
         initialData, onComplete, isLoadingGetData, isLoadingUpdateData,
         linkNext, imageGallery, onUploadImageGallery,
+        storageKeyPrefix = OFFER_DESCRIPTION_FORM,
     } = props;
 
     const form = useForm<OfferDescriptionField>({
@@ -70,26 +72,29 @@ export const InviteDescriptionForm: FC<InviteDescriptionFormProps> = (props) => 
     const { t } = useTranslation("offer");
     const watch = useWatch({ control });
 
-    const hasSavedDataInSession = useCallback(() => sessionStorage.getItem(`${OFFER_DESCRIPTION_FORM}${id}`) !== null, [id]);
+    const hasSavedDataInSession = useCallback(
+        () => sessionStorage.getItem(`${storageKeyPrefix}${id}`) !== null,
+        [id, storageKeyPrefix],
+    );
 
     const saveFormData = useCallback(
         (data: OfferDescriptionField) => {
             sessionStorage.setItem(
-                `${OFFER_DESCRIPTION_FORM}${id}`,
+                `${storageKeyPrefix}${id}`,
                 JSON.stringify(inviteDescriptionApiAdapter(data)),
             );
         },
-        [id],
+        [id, storageKeyPrefix],
     );
 
     const loadFormData = useCallback((): Partial<OfferDescriptionField> | null => {
         const savedData = sessionStorage.getItem(
-            `${OFFER_DESCRIPTION_FORM}${id}`,
+            `${storageKeyPrefix}${id}`,
         );
         return savedData
             ? fromSessionStorageAdapter(JSON.parse(savedData), initialData?.coverImage)
             : null;
-    }, [id, initialData?.coverImage]);
+    }, [id, initialData?.coverImage, storageKeyPrefix]);
 
     const initializeForm = useCallback(() => {
         const savedData = loadFormData();

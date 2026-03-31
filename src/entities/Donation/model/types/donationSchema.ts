@@ -140,7 +140,14 @@ export type GetDonationDescription = Pick<GetDonation, "id"
     categoryIds: number[];
 };
 
-export type UpdateDonationDescription = Omit<GetDonationDescription, | "id">;
+export interface UpdateDonationDescription {
+    name: string;
+    shortDescription: string;
+    description: string;
+    imageId: string;
+    galleryImageIds: string[];
+    categoryIds: number[];
+}
 
 export interface UpdateDonationDescriptionRequest {
     id: string;

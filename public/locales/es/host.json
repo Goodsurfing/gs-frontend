@@ -83,6 +83,10 @@
         "hint": "Si en el paso anterior elegiste continuar la recaudación hasta alcanzar la cantidad mínima, la campaña seguirá activa hasta llegar a ese valor.",
         "saved": "Las cantidades de recaudación se guardaron"
     },
+    "hostFundraiseDescription": {
+        "title": "Descripción de la invitación",
+        "saved": "La descripción de la recaudación se guardó"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },

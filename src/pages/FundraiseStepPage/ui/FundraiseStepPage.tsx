@@ -14,20 +14,27 @@ import { useParams } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     useGetDonationAddressQuery,
+    useGetDonationDescriptionQuery,
     useGetDonationHowManyQuery,
     useGetDonationWhenQuery,
     useUpdateDonationAddressMutation,
+    useUpdateDonationDescriptionMutation,
     useUpdateDonationHowManyMutation,
     useUpdateDonationWhenMutation,
 } from "@/entities/Donation";
 import { getGeoObjectByCoordinates } from "@/features/MapWithAddress";
 import {
     AddressFormFormFields,
+    InviteDescriptionForm,
+    OfferDescriptionField,
     OfferWhereForm,
     offerWhereFormApiAdapter,
 } from "@/features/Offer";
 import { getFundraiseStepPageUrl } from "@/shared/config/routes/AppUrls";
-import { FUNDRAISE_WHERE_FORM } from "@/shared/constants/localstorage";
+import {
+    FUNDRAISE_DESCRIPTION_FORM,
+    FUNDRAISE_WHERE_FORM,
+} from "@/shared/constants/localstorage";
 import { formattingDate } from "@/shared/lib/formatDate";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import Button from "@/shared/ui/Button/Button";
@@ -53,6 +60,10 @@ const FundraiseStepPage = () => {
 
     const [amount, setAmount] = useState("");
     const [minAmount, setMinAmount] = useState("");
+
+    const [initialDescriptionForm,
+        setInitialDescriptionForm] = useState<Partial<OfferDescriptionField> | null>(null);
+    const [galleryImageIds, setGalleryImageIds] = useState<string[]>([]);
 
     const {
         data: donationAddress,
@@ -83,6 +94,17 @@ const FundraiseStepPage = () => {
         isLoading: isSavingHowMany,
     }] = useUpdateDonationHowManyMutation();
 
+    const {
+        data: donationDescription,
+        isLoading: isLoadingDescription,
+    } = useGetDonationDescriptionQuery(id || "", {
+        skip: !id || step !== "description",
+    });
+
+    const [updateDonationDescription, {
+        isLoading: isSavingDescription,
+    }] = useUpdateDonationDescriptionMutation();
+
     const title = useMemo(() => {
         const map: Record<string, string> = {
             where: t("hostFundraiseWhere.title", {
@@ -97,7 +119,10 @@ const FundraiseStepPage = () => {
                 defaultValue: "Укажите сумму, которая вам необходима для проведения проекта",
                 ns: "host",
             }),
-            description: t("main.sidebar.Описание", { ns: "translation" }),
+            description: t("hostFundraiseDescription.title", {
+                defaultValue: "Описание приглашения",
+                ns: "host",
+            }),
             "auto-messages": t("main.sidebar.Настройка автоматических сообщений", {
                 ns: "translation",
             }),
@@ -200,6 +225,25 @@ const FundraiseStepPage = () => {
         }
     }, [step, donationHowMany]);
 
+    useEffect(() => {
+        if (step !== "description") {
+            return;
+        }
+
+        if (donationDescription) {
+            setInitialDescriptionForm({
+                title: donationDescription.name || "",
+                shortDescription: donationDescription.shortDescription || "",
+                fullDescription: donationDescription.description || "",
+                coverImage: donationDescription.image,
+                category: donationDescription.categoryIds || [],
+            });
+            setGalleryImageIds(
+                donationDescription.galleryImages?.map((image) => image.id) || [],
+            );
+        }
+    }, [step, donationDescription]);
+
     const onSubmitWhere = async (data: AddressFormFormFields) => {
         if (!id) {
             return;
@@ -287,6 +331,43 @@ const FundraiseStepPage = () => {
             setToast({
                 text: t("hostFundraiseHowMany.saved", {
                     defaultValue: "Суммы сбора сохранены",
+                    ns: "host",
+                }),
+                type: HintType.Success,
+            });
+        } catch (error: unknown) {
+            setToast({ text: getErrorText(error), type: HintType.Error });
+        }
+    };
+
+    const onUploadDescriptionGallery = (imageIds: string[]) => {
+        setGalleryImageIds(imageIds);
+    };
+
+    const onSubmitDescription = async (data: OfferDescriptionField) => {
+        if (!id || !data.coverImage?.id) {
+            return;
+        }
+
+        setToast(undefined);
+
+        try {
+            await updateDonationDescription({
+                id,
+                body: {
+                    name: data.title,
+                    shortDescription: data.shortDescription,
+                    description: data.fullDescription,
+                    imageId: data.coverImage.id,
+                    galleryImageIds,
+                    categoryIds: data.category,
+                },
+            }).unwrap();
+
+            sessionStorage.removeItem(`${FUNDRAISE_DESCRIPTION_FORM}${id}`);
+            setToast({
+                text: t("hostFundraiseDescription.saved", {
+                    defaultValue: "Описание сбора сохранено",
                     ns: "host",
                 }),
                 type: HintType.Success,
@@ -416,6 +497,25 @@ const FundraiseStepPage = () => {
                         {t("Сохранить", { ns: "offer" })}
                     </Button>
                 </Box>
+            </div>
+        );
+    }
+
+    if (step === "description") {
+        return (
+            <div className={styles.wrapper}>
+                {toast && <HintPopup text={toast.text} type={toast.type} />}
+                <h1 className={styles.title}>{title}</h1>
+                <InviteDescriptionForm
+                    initialData={initialDescriptionForm}
+                    imageGallery={donationDescription?.galleryImages}
+                    onComplete={onSubmitDescription}
+                    onUploadImageGallery={onUploadDescriptionGallery}
+                    isLoadingGetData={isLoadingDescription}
+                    isLoadingUpdateData={isSavingDescription}
+                    linkNext={getFundraiseStepPageUrl(locale, "auto-messages", id || ":id")}
+                    storageKeyPrefix={FUNDRAISE_DESCRIPTION_FORM}
+                />
             </div>
         );
     }

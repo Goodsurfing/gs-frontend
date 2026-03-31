@@ -83,6 +83,10 @@
         "hint": "If at the previous step you chose to continue fundraising until the minimum amount is collected, the fundraiser will remain active until this threshold is reached.",
         "saved": "Fundraising amounts were saved"
     },
+    "hostFundraiseDescription": {
+        "title": "Invitation description",
+        "saved": "Fundraise description was saved"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },
