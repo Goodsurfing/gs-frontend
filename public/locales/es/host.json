@@ -44,6 +44,63 @@
         "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
         "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
     },
+    "hostFundraises": {
+        "Мои сборы": "Mis recaudaciones",
+        "Черновики": "Borradores",
+        "Добавить сбор": "Añadir recaudación",
+        "Редактировать": "Editar",
+        "Закрыть": "Cerrar",
+        "Удалить": "Eliminar",
+        "Нет сборов": "No hay recaudaciones",
+        "Собрано": "Recaudado",
+        "Осталось дней": "Días restantes",
+        "Вы уверены что хотите изменить сбор?": "¿Estás seguro de que quieres cambiar la recaudación?",
+        "Ок": "Ok",
+        "Отмена": "Cancelar"
+    },
+    "hostFundraiseWelcome": {
+        "Привет!": "¡Hola!",
+        "Начать": "Comenzar",
+        "description": "Aquí puedes crear y añadir tu recaudación al sitio. Mientras tanto, te ofreceremos consejos y ejemplos útiles.",
+        "hint": "Ahora puedes organizar una recaudación para tu proyecto en el sitio. Nos alegra que esta oportunidad te haya interesado y esperamos que logres reunir la cantidad necesaria.",
+        "stepPlaceholder": "Este paso se conectará pronto. Por ahora, puedes volver a la lista de recaudaciones."
+    },
+    "hostFundraiseWhere": {
+        "title": "Dónde se llevará a cabo tu proyecto",
+        "addressRequired": "Por favor indica una dirección",
+        "saved": "Dirección guardada correctamente"
+    },
+    "hostFundraiseWhen": {
+        "title": "Indica hasta qué fecha necesitas completar la recaudación",
+        "dateLabel": "Fecha límite para recibir donaciones",
+        "untilAmount": "Acepto donaciones hasta que se reúna la cantidad mínima",
+        "saved": "La configuración del plazo de recaudación se guardó"
+    },
+    "hostFundraiseHowMany": {
+        "title": "Indica la cantidad que necesitas para realizar el proyecto",
+        "amountLabel": "Indica la cantidad deseada en rublos",
+        "minAmountLabel": "Indica la cantidad mínima en rublos necesaria para realizar el proyecto",
+        "hint": "Si en el paso anterior elegiste continuar la recaudación hasta alcanzar la cantidad mínima, la campaña seguirá activa hasta llegar a ese valor.",
+        "saved": "Las cantidades de recaudación se guardaron"
+    },
+    "hostFundraiseDescription": {
+        "title": "Descripción de la invitación",
+        "saved": "La descripción de la recaudación se guardó"
+    },
+    "hostFundraiseAutoMessages": {
+        "title": "Configuración de mensajes automáticos",
+        "wordsTitle": "Palabras de agradecimiento",
+        "wordsDescription": "Puedes escribir palabras de agradecimiento para todos tus donantes. Este mensaje se enviará automáticamente después de cada donación.",
+        "max": "No más de 1000 caracteres",
+        "addLinkTitle": "Añadir enlace",
+        "addLinkDescription": "Puedes adjuntar un enlace a tu comunidad o sitio web donde se pueda seguir el progreso del proyecto.",
+        "addLinkButton": "Añadir enlace",
+        "publish": "Publicar",
+        "saveChanges": "Guardar cambios",
+        "saveDraft": "Guardar como borrador",
+        "published": "Recaudación publicada",
+        "savedDraft": "Recaudación guardada como borrador"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },

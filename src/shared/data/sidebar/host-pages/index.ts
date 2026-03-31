@@ -4,6 +4,7 @@ import globeIcon from "@/shared/assets/icons/navbar/globe.svg";
 import houseIcon from "@/shared/assets/icons/navbar/home.svg";
 import mailIcon from "@/shared/assets/icons/navbar/mail.svg";
 import supportIcon from "@/shared/assets/icons/navbar/support.svg";
+import fundraiseIcon from "@/shared/assets/icons/navbar/check.svg";
 
 import { SidebarContentProps } from "@/widgets/Sidebar";
 
@@ -27,6 +28,11 @@ export const useHostPagesSidebarData = () => {
         },
         {
             route: "/host/donations",
+            text: t("main.sidebar.Сборы", { defaultValue: "Сборы" }),
+            icon: fundraiseIcon,
+        },
+        {
+            route: "/host/donation-rating",
             text: t("main.sidebar.Пожертвования"),
             icon: supportIcon,
         },

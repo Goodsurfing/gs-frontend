@@ -20,6 +20,8 @@ import { NPOPage } from "@/pages/NPOPage";
 import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
+import { FundraiseStepPage } from "@/pages/FundraiseStepPage";
+import { FundraiseWelcomePage } from "@/pages/FundraiseWelcomePage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
@@ -68,6 +70,10 @@ import {
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
     getHostNotesPageUrl,
+    getHostDonationRatingPageUrl,
+    getFundraisePageUrl,
+    getFundraiseStepPageUrl,
+    getFundraiseWelcomePageUrl,
     getHostPageUrl,
     getHostPersonalPageUrl,
     getHostRegisterPageUrl,
@@ -279,6 +285,7 @@ import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPers
 import { DonationReportsPage } from "@/pages/DonationReportsPage";
 import { DonationRatingPage } from "@/pages/DonationRatingPage";
 import { HostDonationsPage } from "@/pages/HostDonationsPage";
+import { HostFundraisePage } from "@/pages/HostFundraisePage";
 import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
 import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
 import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
@@ -422,8 +429,13 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "host-donations",
-                element: <HostDonationsPage />,
+                element: <HostFundraisePage />,
                 path: (locale: string) => getHostDonationsPageUrl(locale),
+            },
+            {
+                label: "host-donation-rating",
+                element: <HostDonationsPage />,
+                path: (locale: string) => getHostDonationRatingPageUrl(locale),
             },
         ],
     },
@@ -431,6 +443,23 @@ const publicRoutes: RouteType[] = [
         label: "host-personal",
         element: <HostPersonalPage />,
         path: (locale: string) => getHostPersonalPageUrl(locale),
+    },
+    {
+        label: "fundraise-layout",
+        element: AuthRoutes.fundraise,
+        path: (locale: string) => getFundraisePageUrl(locale),
+        children: [
+            {
+                label: "fundraise-welcome",
+                element: <FundraiseWelcomePage />,
+                path: (locale: string) => getFundraiseWelcomePageUrl(locale),
+            },
+            {
+                label: "fundraise-step",
+                element: <FundraiseStepPage />,
+                path: (locale: string) => getFundraiseStepPageUrl(locale),
+            },
+        ],
     },
     {
         label: "offer-layout",

@@ -25,6 +25,7 @@ interface OfferWhereFormProps {
     isLoadingUpdateData: boolean;
     linkNext: string;
     hasUnsavedChanges: boolean;
+    storageKeyPrefix?: string;
 }
 
 export const OfferWhereForm = memo((props: OfferWhereFormProps) => {
@@ -33,6 +34,7 @@ export const OfferWhereForm = memo((props: OfferWhereFormProps) => {
         isLoadingGetData, isLoadingUpdateData,
         hasUnsavedChanges, linkNext,
         onComplete, onFormChange,
+        storageKeyPrefix = OFFER_WHERE_FORM,
     } = props;
 
     const {
@@ -62,9 +64,9 @@ export const OfferWhereForm = memo((props: OfferWhereFormProps) => {
     useEffect(() => {
         onFormChange(isDirty);
         if (isDirty) {
-            sessionStorage.setItem(`${OFFER_WHERE_FORM}${offerId}`, JSON.stringify(watch()));
+            sessionStorage.setItem(`${storageKeyPrefix}${offerId}`, JSON.stringify(watch()));
         }
-    }, [isDirty, offerId, onFormChange, watch]);
+    }, [isDirty, offerId, onFormChange, watch, storageKeyPrefix]);
 
     const onSubmit = handleSubmit(onComplete);
 

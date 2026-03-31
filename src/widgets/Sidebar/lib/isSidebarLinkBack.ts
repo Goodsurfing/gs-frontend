@@ -4,6 +4,7 @@ import { SidebarContentProps } from "../model/types/sidebar";
 export const isSidebarLinkBack = (route: string) => {
     const pathBackLinkData: string[] = [
         "/host/my-offers",
+        "/host/donations",
         "/admin/vacancies",
         "/volunteer/articles",
         "/volunteer/create-article",
