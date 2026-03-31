@@ -65,6 +65,11 @@
         "hint": "Ahora puedes organizar una recaudación para tu proyecto en el sitio. Nos alegra que esta oportunidad te haya interesado y esperamos que logres reunir la cantidad necesaria.",
         "stepPlaceholder": "Este paso se conectará pronto. Por ahora, puedes volver a la lista de recaudaciones."
     },
+    "hostFundraiseWhere": {
+        "title": "Dónde se llevará a cabo tu proyecto",
+        "addressRequired": "Por favor indica una dirección",
+        "saved": "Dirección guardada correctamente"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },

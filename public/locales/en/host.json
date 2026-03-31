@@ -65,6 +65,11 @@
         "hint": "You can now organize a fundraiser for your project on the website. We're glad this opportunity interested you, and we hope you collect the amount you need.",
         "stepPlaceholder": "This step will be connected soon. For now, you can go back to the fundraises list."
     },
+    "hostFundraiseWhere": {
+        "title": "Where will your project take place",
+        "addressRequired": "Please specify an address",
+        "saved": "Address saved successfully"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },

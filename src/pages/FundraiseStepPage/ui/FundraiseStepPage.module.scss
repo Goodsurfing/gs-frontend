@@ -10,6 +10,21 @@
     line-height: 120%;
 }
 
+.form {
+    margin-top: 24px;
+    max-width: 880px;
+}
+
+.error {
+    font-size: 0.75rem;
+    color: #d32f2f;
+    margin-top: 10px;
+}
+
+.actions {
+    margin-top: 30px;
+}
+
 .description {
     margin-top: 20px;
     max-width: 700px;
