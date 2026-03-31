@@ -4,6 +4,7 @@ import { PrivateRouteVolunteerGuard } from "@/routes/model/guards/PrivateRouteVo
 import { FavoriteOffersPage } from "@/pages/FavoriteOffersPage";
 import { MessengerPage } from "@/pages/MessengerPage";
 import { OfferLayoutPage } from "@/pages/OfferLayoutPage/OfferLayoutPage";
+import { FundraiseLayoutPage } from "@/pages/FundraiseLayoutPage";
 import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
@@ -38,6 +39,13 @@ export const AuthRoutes = {
     [AppRoutes.OFFERS]: (
         <PrivateRouteGuard>
             <OfferLayoutPage />
+        </PrivateRouteGuard>
+    ),
+    [AppRoutes.FUNDRAISE]: (
+        <PrivateRouteGuard>
+            <PrivateRouteHostGuard>
+                <FundraiseLayoutPage />
+            </PrivateRouteHostGuard>
         </PrivateRouteGuard>
     ),
     [AppRoutes.MESSENGER]: (

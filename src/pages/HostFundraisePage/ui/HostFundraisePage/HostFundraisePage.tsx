@@ -14,7 +14,10 @@ import {
     useUpdateDonationStatusMutation,
 } from "@/entities/Donation";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getDonationPersonalPage } from "@/shared/config/routes/AppUrls";
+import {
+    getDonationPersonalPage,
+    getFundraiseWelcomePageUrl,
+} from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -54,7 +57,12 @@ const HostFundraisePage: FC = () => {
         refetchAll();
     }, [refetchAll]);
 
-    const handleEditClick = (id: string) => {
+    const handleEditClick = (id: string, isDraft = false) => {
+        if (isDraft) {
+            navigate(getFundraiseWelcomePageUrl(locale, id));
+            return;
+        }
+
         navigate(getDonationPersonalPage(locale, id));
     };
 
@@ -90,11 +98,11 @@ const HostFundraisePage: FC = () => {
     const handleAddFundraise = async () => {
         try {
             const result = await createFundraise().unwrap();
-            navigate(getDonationPersonalPage(locale, result.id));
+            navigate(getFundraiseWelcomePageUrl(locale, result.id));
         } catch { /* empty */ }
     };
 
-    const renderCards = (items: GetDonations[]) => {
+    const renderCards = (items: GetDonations[], isDraft = false) => {
         if (!items.length) {
             return <span className={styles.empty}>{t("hostFundraises.Нет сборов")}</span>;
         }
@@ -102,7 +110,7 @@ const HostFundraisePage: FC = () => {
             <HostFundraiseCard
                 key={fundraise.id}
                 fundraise={fundraise}
-                onEditClick={() => handleEditClick(fundraise.id)}
+                onEditClick={() => handleEditClick(fundraise.id, isDraft)}
                 onCloseClick={() => handleCloseClick(fundraise.id)}
                 onDeleteClick={() => handleDeleteClick(fundraise.id)}
             />
@@ -130,7 +138,7 @@ const HostFundraisePage: FC = () => {
                 <div className={styles.drafts}>
                     <h2 className={styles.draftsTitle}>{t("hostFundraises.Черновики")}</h2>
                     <div className={styles.list}>
-                        {renderCards(draftItems)}
+                        {renderCards(draftItems, true)}
                     </div>
                 </div>
             )}

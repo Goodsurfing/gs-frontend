@@ -20,6 +20,8 @@ import { NPOPage } from "@/pages/NPOPage";
 import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
+import { FundraiseStepPage } from "@/pages/FundraiseStepPage";
+import { FundraiseWelcomePage } from "@/pages/FundraiseWelcomePage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
@@ -69,6 +71,9 @@ import {
     getHostGalleryPageUrl,
     getHostNotesPageUrl,
     getHostDonationRatingPageUrl,
+    getFundraisePageUrl,
+    getFundraiseStepPageUrl,
+    getFundraiseWelcomePageUrl,
     getHostPageUrl,
     getHostPersonalPageUrl,
     getHostRegisterPageUrl,
@@ -434,6 +439,23 @@ const publicRoutes: RouteType[] = [
         label: "host-personal",
         element: <HostPersonalPage />,
         path: (locale: string) => getHostPersonalPageUrl(locale),
+    },
+    {
+        label: "fundraise-layout",
+        element: AuthRoutes.fundraise,
+        path: (locale: string) => getFundraisePageUrl(locale),
+        children: [
+            {
+                label: "fundraise-welcome",
+                element: <FundraiseWelcomePage />,
+                path: (locale: string) => getFundraiseWelcomePageUrl(locale),
+            },
+            {
+                label: "fundraise-step",
+                element: <FundraiseStepPage />,
+                path: (locale: string) => getFundraiseStepPageUrl(locale),
+            },
+        ],
     },
     {
         label: "offer-layout",

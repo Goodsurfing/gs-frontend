@@ -58,6 +58,13 @@
         "Ок": "Ok",
         "Отмена": "Cancel"
     },
+    "hostFundraiseWelcome": {
+        "Привет!": "Hello!",
+        "Начать": "Start",
+        "description": "Here you can create and add your fundraise to the website. Meanwhile, we will suggest helpful tips and examples.",
+        "hint": "You can now organize a fundraiser for your project on the website. We're glad this opportunity interested you, and we hope you collect the amount you need.",
+        "stepPlaceholder": "This step will be connected soon. For now, you can go back to the fundraises list."
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },
