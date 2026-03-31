@@ -87,6 +87,20 @@
         "title": "Invitation description",
         "saved": "Fundraise description was saved"
     },
+    "hostFundraiseAutoMessages": {
+        "title": "Automatic messages settings",
+        "wordsTitle": "Words of gratitude",
+        "wordsDescription": "You can write words of gratitude to all donors. This message will be sent automatically after a donation is made.",
+        "max": "No more than 1000 characters",
+        "addLinkTitle": "Add link",
+        "addLinkDescription": "You can attach a link to your community or website where donors can follow the project progress.",
+        "addLinkButton": "Add link",
+        "publish": "Publish",
+        "saveChanges": "Save changes",
+        "saveDraft": "Save as draft",
+        "published": "Fundraise published",
+        "savedDraft": "Fundraise saved as draft"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },

@@ -13,13 +13,17 @@ import { useParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
+    DonationStatus,
     useGetDonationAddressQuery,
+    useGetDonationAutoMessagesQuery,
     useGetDonationDescriptionQuery,
     useGetDonationHowManyQuery,
     useGetDonationWhenQuery,
     useUpdateDonationAddressMutation,
+    useUpdateDonationAutoMessagesMutation,
     useUpdateDonationDescriptionMutation,
     useUpdateDonationHowManyMutation,
+    useUpdateDonationStatusMutation,
     useUpdateDonationWhenMutation,
 } from "@/entities/Donation";
 import { getGeoObjectByCoordinates } from "@/features/MapWithAddress";
@@ -37,12 +41,15 @@ import {
 } from "@/shared/constants/localstorage";
 import { formattingDate } from "@/shared/lib/formatDate";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Button from "@/shared/ui/Button/Button";
+import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 import Switch from "@/shared/ui/Switch/Switch";
+import Textarea from "@/shared/ui/Textarea/Textarea";
 
 import styles from "./FundraiseStepPage.module.scss";
 
@@ -64,6 +71,10 @@ const FundraiseStepPage = () => {
     const [initialDescriptionForm,
         setInitialDescriptionForm] = useState<Partial<OfferDescriptionField> | null>(null);
     const [galleryImageIds, setGalleryImageIds] = useState<string[]>([]);
+
+    const [wordsGratitude, setWordsGratitude] = useState("");
+    const [urlProgressWork, setUrlProgressWork] = useState<string[]>([""]);
+    const [autoMessageStatus, setAutoMessageStatus] = useState<DonationStatus>("draft");
 
     const {
         data: donationAddress,
@@ -105,6 +116,21 @@ const FundraiseStepPage = () => {
         isLoading: isSavingDescription,
     }] = useUpdateDonationDescriptionMutation();
 
+    const {
+        data: donationAutoMessages,
+        isLoading: isLoadingAutoMessages,
+    } = useGetDonationAutoMessagesQuery(id || "", {
+        skip: !id || step !== "auto-messages",
+    });
+
+    const [updateDonationAutoMessages, {
+        isLoading: isSavingAutoMessages,
+    }] = useUpdateDonationAutoMessagesMutation();
+
+    const [updateDonationStatus, {
+        isLoading: isSavingDonationStatus,
+    }] = useUpdateDonationStatusMutation();
+
     const title = useMemo(() => {
         const map: Record<string, string> = {
             where: t("hostFundraiseWhere.title", {
@@ -123,8 +149,9 @@ const FundraiseStepPage = () => {
                 defaultValue: "Описание приглашения",
                 ns: "host",
             }),
-            "auto-messages": t("main.sidebar.Настройка автоматических сообщений", {
-                ns: "translation",
+            "auto-messages": t("hostFundraiseAutoMessages.title", {
+                defaultValue: "Настройка автоматических сообщений",
+                ns: "host",
             }),
         };
 
@@ -243,6 +270,22 @@ const FundraiseStepPage = () => {
             );
         }
     }, [step, donationDescription]);
+
+    useEffect(() => {
+        if (step !== "auto-messages") {
+            return;
+        }
+
+        if (donationAutoMessages) {
+            setWordsGratitude(donationAutoMessages.wordsGratitude || "");
+            setUrlProgressWork(
+                donationAutoMessages.urlProgressWork?.length
+                    ? donationAutoMessages.urlProgressWork
+                    : [""],
+            );
+            setAutoMessageStatus(donationAutoMessages.status || "draft");
+        }
+    }, [step, donationAutoMessages]);
 
     const onSubmitWhere = async (data: AddressFormFormFields) => {
         if (!id) {
@@ -370,6 +413,63 @@ const FundraiseStepPage = () => {
                     defaultValue: "Описание сбора сохранено",
                     ns: "host",
                 }),
+                type: HintType.Success,
+            });
+        } catch (error: unknown) {
+            setToast({ text: getErrorText(error), type: HintType.Error });
+        }
+    };
+
+    const handleProgressLinkChange = (index: number, value: string) => {
+        setUrlProgressWork((prev) => prev.map((link, i) => (i === index ? value : link)));
+    };
+
+    const handleAddProgressLink = () => {
+        setUrlProgressWork((prev) => [...prev, ""]);
+    };
+
+    const handleRemoveProgressLink = (index: number) => {
+        setUrlProgressWork((prev) => {
+            const updated = prev.filter((_, i) => i !== index);
+            return updated.length ? updated : [""];
+        });
+    };
+
+    const handleAutoMessagesSubmit = async (status: DonationStatus) => {
+        if (!id) {
+            return;
+        }
+
+        setToast(undefined);
+
+        try {
+            await updateDonationAutoMessages({
+                id,
+                body: {
+                    wordsGratitude,
+                    urlProgressWork: urlProgressWork
+                        .map((url) => url.trim())
+                        .filter(Boolean),
+                    status,
+                },
+            }).unwrap();
+
+            await updateDonationStatus({
+                id,
+                body: { status },
+            }).unwrap();
+
+            setAutoMessageStatus(status);
+            setToast({
+                text: status === "active"
+                    ? t("hostFundraiseAutoMessages.published", {
+                        defaultValue: "Сбор опубликован",
+                        ns: "host",
+                    })
+                    : t("hostFundraiseAutoMessages.savedDraft", {
+                        defaultValue: "Сбор сохранён в черновики",
+                        ns: "host",
+                    }),
                 type: HintType.Success,
             });
         } catch (error: unknown) {
@@ -516,6 +616,125 @@ const FundraiseStepPage = () => {
                     linkNext={getFundraiseStepPageUrl(locale, "auto-messages", id || ":id")}
                     storageKeyPrefix={FUNDRAISE_DESCRIPTION_FORM}
                 />
+            </div>
+        );
+    }
+
+    if (step === "auto-messages") {
+        return (
+            <div className={styles.wrapper}>
+                {toast && <HintPopup text={toast.text} type={toast.type} />}
+                <h1 className={styles.title}>{title}</h1>
+                <div className={styles.autoMessagesForm}>
+                    <p className={styles.autoMessagesLabel}>
+                        {t("hostFundraiseAutoMessages.wordsTitle", {
+                            defaultValue: "Слова благодарности",
+                            ns: "host",
+                        })}
+                    </p>
+                    <Textarea
+                        label={t("hostFundraiseAutoMessages.wordsDescription", {
+                            defaultValue: "Вы можете написать слова благодарности всем вашим жертвователям. Данное сообщение будет автоматически отправляться после совершения пожертвования.",
+                            ns: "host",
+                        })}
+                        description={t("hostFundraiseAutoMessages.max", {
+                            defaultValue: "Не более 1000 знаков",
+                            ns: "host",
+                        })}
+                        value={wordsGratitude}
+                        onChange={(event) => {
+                            setWordsGratitude(event.target.value);
+                        }}
+                        maxLength={1000}
+                    />
+
+                    <p className={styles.autoMessagesLabel}>
+                        {t("hostFundraiseAutoMessages.addLinkTitle", {
+                            defaultValue: "Добавить ссылку",
+                            ns: "host",
+                        })}
+                    </p>
+                    <p className={styles.autoMessagesHint}>
+                        {t("hostFundraiseAutoMessages.addLinkDescription", {
+                            defaultValue: "Вы можете прикрепить ссылку на ваше сообщество или сайт, где можно следить за ходом проекта.",
+                            ns: "host",
+                        })}
+                    </p>
+
+                    <div className={styles.autoMessagesLinks}>
+                        {urlProgressWork.map((link, index) => (
+                            <div key={`${index}-${link}`} className={styles.autoMessagesLinkRow}>
+                                <Input
+                                    value={link}
+                                    onChange={(event) => {
+                                        handleProgressLinkChange(index, event.target.value);
+                                    }}
+                                    disabled={isLoadingAutoMessages || isSavingAutoMessages}
+                                />
+                                <CloseButton
+                                    className={styles.autoMessagesRemoveLink}
+                                    onClick={() => {
+                                        handleRemoveProgressLink(index);
+                                    }}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    <AddButton
+                        className={styles.autoMessagesAddButton}
+                        text={t("hostFundraiseAutoMessages.addLinkButton", {
+                            defaultValue: "Добавить ссылку",
+                            ns: "host",
+                        })}
+                        onClick={handleAddProgressLink}
+                        disabled={isLoadingAutoMessages || isSavingAutoMessages}
+                    />
+
+                    <div className={styles.autoMessagesButtons}>
+                        <Button
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="FILL"
+                            onClick={() => {
+                                handleAutoMessagesSubmit("active");
+                            }}
+                            disabled={
+                                isLoadingAutoMessages
+                                || isSavingAutoMessages
+                                || isSavingDonationStatus
+                            }
+                        >
+                            {autoMessageStatus === "draft"
+                                ? t("hostFundraiseAutoMessages.publish", {
+                                    defaultValue: "Опубликовать",
+                                    ns: "host",
+                                })
+                                : t("hostFundraiseAutoMessages.saveChanges", {
+                                    defaultValue: "Сохранить изменения",
+                                    ns: "host",
+                                })}
+                        </Button>
+                        <Button
+                            color="BLUE"
+                            size="MEDIUM"
+                            variant="OUTLINE"
+                            onClick={() => {
+                                handleAutoMessagesSubmit("draft");
+                            }}
+                            disabled={
+                                isLoadingAutoMessages
+                                || isSavingAutoMessages
+                                || isSavingDonationStatus
+                            }
+                        >
+                            {t("hostFundraiseAutoMessages.saveDraft", {
+                                defaultValue: "Сохранить в черновики",
+                                ns: "host",
+                            })}
+                        </Button>
+                    </div>
+                </div>
             </div>
         );
     }

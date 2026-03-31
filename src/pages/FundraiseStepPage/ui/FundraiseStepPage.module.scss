@@ -85,6 +85,49 @@
     min-width: 260px;
 }
 
+.autoMessagesForm {
+    margin-top: 24px;
+    max-width: 880px;
+}
+
+.autoMessagesLabel {
+    margin-bottom: 8px;
+    color: var(--text-caption);
+    font: var(--font-m);
+}
+
+.autoMessagesHint {
+    margin-bottom: 12px;
+    color: var(--color-gray-text);
+    font-size: 0.875rem;
+}
+
+.autoMessagesLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.autoMessagesLinkRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.autoMessagesRemoveLink {
+    margin-top: 10px;
+}
+
+.autoMessagesAddButton {
+    margin-top: 14px;
+}
+
+.autoMessagesButtons {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+}
+
 @media (max-width: 992px) {
     .title,
     .description {
@@ -94,5 +137,9 @@
     .whenSave,
     .amountSave {
         width: 100%;
+    }
+
+    .autoMessagesButtons {
+        flex-direction: column;
     }
 }
