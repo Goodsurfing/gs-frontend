@@ -27,12 +27,12 @@ export const useHostPagesSidebarData = () => {
             icon: mailIcon,
         },
         {
-            route: "/host/fundraise-list",
+            route: "/host/donations",
             text: t("main.sidebar.Сборы"),
             icon: fundraiseIcon,
         },
         {
-            route: "/host/donations",
+            route: "/host/donation-rating",
             text: t("main.sidebar.Пожертвования"),
             icon: supportIcon,
         },
