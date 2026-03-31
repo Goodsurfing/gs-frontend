@@ -95,6 +95,17 @@ export const useAdminPagesSidebarData = () => {
             ],
 
         },
+        {
+            route: "/admin",
+            text: "Лидер",
+            dropdownItems: [
+                {
+                    route: "/ambassadors",
+                    text: "Амбассадоры",
+                },
+            ],
+
+        },
     ];
     return { AdminPagesSidebarData };
 };

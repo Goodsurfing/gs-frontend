@@ -3,6 +3,7 @@ import {
     AdminOrganization,
     AdminOrganizations,
     AdminOrganizationsFields, AdminUser, AdminUserFields, AdminUsers, AdminUsersFields,
+    GetAdminAmbassadors,
     UpdateAdminOrganization,
     UpdateAdminUser,
 } from "../model/types/adminSchema";
@@ -12,6 +13,7 @@ import {
     HostDescriptionMainInfoFields, HostDescriptionSocialFields,
     HostDescriptionTypeFields, OrganizationType,
 } from "@/features/HostDescription/model/types/hostDescription";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     if (!data) return [];
@@ -220,3 +222,20 @@ export const adminOrganizationApiAdapter = (
         otherType: type.otherOrganizationType,
     };
 };
+
+// Ambassadors
+
+export const adminAmbassadorsAdapter = (data: GetAdminAmbassadors[]) => data.map((ambassador) => {
+    const {
+        id, firstName, lastName, address,
+        description, image, sort,
+    } = ambassador;
+    return {
+        id,
+        name: getFullName(firstName, lastName),
+        address,
+        description,
+        image: getMediaContent(image.contentUrl),
+        sort,
+    };
+});
