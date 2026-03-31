@@ -23,6 +23,8 @@ import { NPOPage } from "@/pages/NPOPage";
 import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
 import { OfferConditionsPage } from "@/pages/OfferConditionsPage";
+import { FundraiseStepPage } from "@/pages/FundraiseStepPage";
+import { FundraiseWelcomePage } from "@/pages/FundraiseWelcomePage";
 import { OfferFinishingTouchesPage } from "@/pages/OfferFinishingTouches";
 import { OfferPersonalPage } from "@/pages/OfferPersonalPage";
 import { OfferWelcomePage } from "@/pages/OfferWelcomePage";
@@ -71,6 +73,10 @@ import {
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
     getHostNotesPageUrl,
+    getHostDonationRatingPageUrl,
+    getFundraisePageUrl,
+    getFundraiseStepPageUrl,
+    getFundraiseWelcomePageUrl,
     getHostPageUrl,
     getHostPersonalPageUrl,
     getHostRegisterPageUrl,
@@ -204,6 +210,8 @@ import {
     getAdminBlogCreatePageUrl,
     getAdminVideoCreatePageUrl,
     getAdminReviewBlogPersonalPageUrl,
+    getAdminDonationsPageUrl,
+    getAdminAmbassadorsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -283,10 +291,13 @@ import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPers
 import { DonationReportsPage } from "@/pages/DonationReportsPage";
 import { DonationRatingPage } from "@/pages/DonationRatingPage";
 import { HostDonationsPage } from "@/pages/HostDonationsPage";
+import { HostFundraisePage } from "@/pages/HostFundraisePage";
 import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
 import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
 import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
 import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
+import { AdminDonationsPage } from "@/pages/AdminDonationsPage";
+import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -424,8 +435,13 @@ const publicRoutes: RouteType[] = [
             },
             {
                 label: "host-donations",
-                element: <HostDonationsPage />,
+                element: <HostFundraisePage />,
                 path: (locale: string) => getHostDonationsPageUrl(locale),
+            },
+            {
+                label: "host-donation-rating",
+                element: <HostDonationsPage />,
+                path: (locale: string) => getHostDonationRatingPageUrl(locale),
             },
         ],
     },
@@ -433,6 +449,23 @@ const publicRoutes: RouteType[] = [
         label: "host-personal",
         element: <HostPersonalPage />,
         path: (locale: string) => getHostPersonalPageUrl(locale),
+    },
+    {
+        label: "fundraise-layout",
+        element: AuthRoutes.fundraise,
+        path: (locale: string) => getFundraisePageUrl(locale),
+        children: [
+            {
+                label: "fundraise-welcome",
+                element: <FundraiseWelcomePage />,
+                path: (locale: string) => getFundraiseWelcomePageUrl(locale),
+            },
+            {
+                label: "fundraise-step",
+                element: <FundraiseStepPage />,
+                path: (locale: string) => getFundraiseStepPageUrl(locale),
+            },
+        ],
     },
     {
         label: "offer-layout",
@@ -987,11 +1020,6 @@ const publicRoutes: RouteType[] = [
                 path: (locale: string) => getAdminDonationReportsPageUrl(locale),
             },
             {
-                label: "admin-donation-reports",
-                element: <AdminDonationReportsPage />,
-                path: (locale: string) => getAdminDonationReportsPageUrl(locale),
-            },
-            {
                 label: "admin-donation-report-create",
                 element: <AdminDonationReportCreatePage />,
                 path: (locale: string) => getAdminDonationReportCreatePageUrl(locale),
@@ -1000,6 +1028,16 @@ const publicRoutes: RouteType[] = [
                 label: "admin-donation-report-personal",
                 element: <AdminDonationReportPersonalPage />,
                 path: (locale: string) => getAdminDonationReportPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-donations",
+                element: <AdminDonationsPage />,
+                path: (locale: string) => getAdminDonationsPageUrl(locale),
+            },
+            {
+                label: "admin-ambassadors",
+                element: <AdminAmbassadorsPage />,
+                path: (locale: string) => getAdminAmbassadorsPageUrl(locale),
             },
         ],
     },

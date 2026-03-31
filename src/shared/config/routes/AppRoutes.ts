@@ -33,6 +33,10 @@ export enum AppRoutes {
     HOST_REVIEW = "host_review",
     HOST_NOTES = "host_notes",
     HOST_DONATIONS = "host_donations",
+    HOST_DONATION_RATING = "host_donation_rating",
+    FUNDRAISE = "fundraise",
+    FUNDRAISE_WELCOME = "fundraise_welcome",
+    FUNDRAISE_STEP = "fundraise_step",
     OFFERS = "offers",
     MY_OFFERS = "my_offers",
     OFFERS_WELCOME = "offers_welcome",
@@ -115,4 +119,6 @@ export enum AppRoutes {
     ADMIN_VIDEO = "admin_video",
     ADMIN_REVIEWS_VIDEO = "admin_reviews_video",
     ADMIN_DONATION_REPORTS = "admin_donation_reports",
+    ADMIN_DONATION = "admin_donation",
+    ADMIN_AMBASSADOR = "admin_ambassador",
 }

@@ -44,6 +44,63 @@
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
         "Ваш отзыв был отправлен": "Your review has been submitted"
     },
+    "hostFundraises": {
+        "Мои сборы": "My Fundraises",
+        "Черновики": "Drafts",
+        "Добавить сбор": "Add fundraise",
+        "Редактировать": "Edit",
+        "Закрыть": "Close",
+        "Удалить": "Delete",
+        "Нет сборов": "No fundraises",
+        "Собрано": "Collected",
+        "Осталось дней": "Days left",
+        "Вы уверены что хотите изменить сбор?": "Are you sure you want to change the fundraise?",
+        "Ок": "Ok",
+        "Отмена": "Cancel"
+    },
+    "hostFundraiseWelcome": {
+        "Привет!": "Hello!",
+        "Начать": "Start",
+        "description": "Here you can create and add your fundraise to the website. Meanwhile, we will suggest helpful tips and examples.",
+        "hint": "You can now organize a fundraiser for your project on the website. We're glad this opportunity interested you, and we hope you collect the amount you need.",
+        "stepPlaceholder": "This step will be connected soon. For now, you can go back to the fundraises list."
+    },
+    "hostFundraiseWhere": {
+        "title": "Where will your project take place",
+        "addressRequired": "Please specify an address",
+        "saved": "Address saved successfully"
+    },
+    "hostFundraiseWhen": {
+        "title": "Specify by what date you need to complete the fundraising",
+        "dateLabel": "End date for receiving donations",
+        "untilAmount": "I accept donations until the minimum amount is collected",
+        "saved": "Fundraising time settings were saved"
+    },
+    "hostFundraiseHowMany": {
+        "title": "Specify the amount you need to run the project",
+        "amountLabel": "Specify the desired amount in rubles",
+        "minAmountLabel": "Specify the minimum amount in rubles required to run the project",
+        "hint": "If at the previous step you chose to continue fundraising until the minimum amount is collected, the fundraiser will remain active until this threshold is reached.",
+        "saved": "Fundraising amounts were saved"
+    },
+    "hostFundraiseDescription": {
+        "title": "Invitation description",
+        "saved": "Fundraise description was saved"
+    },
+    "hostFundraiseAutoMessages": {
+        "title": "Automatic messages settings",
+        "wordsTitle": "Words of gratitude",
+        "wordsDescription": "You can write words of gratitude to all donors. This message will be sent automatically after a donation is made.",
+        "max": "No more than 1000 characters",
+        "addLinkTitle": "Add link",
+        "addLinkDescription": "You can attach a link to your community or website where donors can follow the project progress.",
+        "addLinkButton": "Add link",
+        "publish": "Publish",
+        "saveChanges": "Save changes",
+        "saveDraft": "Save as draft",
+        "published": "Fundraise published",
+        "savedDraft": "Fundraise saved as draft"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },

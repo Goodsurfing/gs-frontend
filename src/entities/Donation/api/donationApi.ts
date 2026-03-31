@@ -120,7 +120,7 @@ export const donationApi = createApi({
         }),
         getDonationAutoMessages: build.query<GetDonationAutoMessages, string>({
             query: (id) => ({
-                url: `fundraise/description/${id}`,
+                url: `fundraise/automatic-messages/${id}`,
                 method: "GET",
             }),
             providesTags: ["donation"],

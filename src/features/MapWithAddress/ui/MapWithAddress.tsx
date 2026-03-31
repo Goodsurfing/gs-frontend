@@ -75,6 +75,17 @@ const MapWithAddress = ({
             || (keyCode >= 97 && keyCode <= 122)
             || keyCode === 32;
 
+        if (keyCode === 13 && !field.value.geoObject && options.length > 0) {
+            event.preventDefault();
+            const firstGeoObject = options[0];
+            field.onChange({
+                ...field.value,
+                geoObject: firstGeoObject,
+                address: `${firstGeoObject?.description ? `${firstGeoObject.description}, ` : ""}${firstGeoObject?.name}`,
+            });
+            return;
+        }
+
         if ((isBackspaceOrDelete || isAlphanumeric) && field.value.geoObject) {
             field.onChange({ ...field.value, geoObject: null });
         }

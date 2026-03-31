@@ -86,6 +86,18 @@ export const getHostNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${R
 
 export const getHostDonationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_donations}`;
 
+export const getHostDonationRatingPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_donation_rating}`;
+
+export const getFundraisePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.fundraise}`;
+
+export const getFundraiseWelcomePageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.fundraise_welcome}/${id}`;
+
+export const getFundraiseStepPageUrl: RoutePathFunction = (
+    locale,
+    step = ":step",
+    id = ":id",
+) => `/${locale}${RoutePath.fundraise}/${step}/${id}`;
+
 export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_video}`;
 
 export const getHostTeamPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_team}`;
@@ -363,3 +375,11 @@ export const getAdminDonationReportsPageUrl: RoutePathFunction = (locale) => `/$
 export const getAdminDonationReportPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_donation_reports}/${id}`;
 
 export const getAdminDonationReportCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_donation_reports}/create`;
+
+export const getAdminDonationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_donation}`;
+
+export const getAdminDonationsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_donation}/${id}`;
+
+// Admin Ambassadors
+
+export const getAdminAmbassadorsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_ambassador}`;

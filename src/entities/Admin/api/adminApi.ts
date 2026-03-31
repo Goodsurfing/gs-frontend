@@ -20,7 +20,9 @@ import {
     EditAdminReviewVolunteerRequest,
     EditAdminSkillRequest, EditAdminTransferRequest,
     EditReviewVacancy, GetAdminAchievementsParams,
-    GetAdminAchievementsResponse, GetAdminFoodParams, GetAdminFoodResponse,
+    GetAdminAchievementsResponse,
+    GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
+    GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
     GetAdminOffersParams,
     GetAdminOffersRequest,
@@ -75,7 +77,7 @@ export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
-        "house", "food", "organization", "offer",
+        "house", "food", "organization", "offer", "ambassadors",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -817,6 +819,23 @@ export const adminApi = createApi({
             }),
             providesTags: ["user"],
         }),
+        // Ambassadors
+        getAdminAmbassadors: build.query<GetAdminAmbassadorsResponse, GetAdminAmbassadorsParams>({
+            query: (params) => ({
+                url: "ambassadors/list",
+                method: "GET",
+                params,
+            }),
+            providesTags: ["ambassadors"],
+        }),
+        deleteAdminAmbassador: build.mutation<void,
+        number>({
+            query: (id) => ({
+                url: `ambassadors/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["ambassadors"],
+        }),
     }),
 });
 
@@ -905,4 +924,6 @@ export const {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
+    useLazyGetAdminAmbassadorsQuery,
+    useDeleteAdminAmbassadorMutation,
 } = adminApi;

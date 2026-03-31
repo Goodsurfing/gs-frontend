@@ -30,8 +30,22 @@
 
 	cursor: pointer;
 
+	.arrowIcon {
+		display: block;
+		width: 20px;
+		height: 38px;
+		background-color: var(--text-caption);
+		transition: background-color 0.3s ease;
+		mask: url("../../shared/assets/icons/slider-arrow.svg") no-repeat center / contain;
+		-webkit-mask: url("../../shared/assets/icons/slider-arrow.svg") no-repeat center / contain;
+	}
+
+	&:hover .arrowIcon {
+		background-color: var(--text-primary-1);
+	}
+
 	&:last-child {
-		img {
+		.arrowIcon {
 			transform: rotate(180deg);
 		}
 	}

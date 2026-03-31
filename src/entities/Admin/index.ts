@@ -30,6 +30,7 @@ export {
     adminUsersAdapter, adminUserAdapter, adminUpdateUserAdapter,
     adminOrganizationAdapter, adminOrganizationApiAdapter,
     adminOrganizationsAdapter, adminUserApiAdapter,
+    adminAmbassadorsAdapter,
 } from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";
@@ -122,6 +123,8 @@ export {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
+    useLazyGetAdminAmbassadorsQuery,
+    useDeleteAdminAmbassadorMutation,
 } from "./api/adminApi";
 
 export {
@@ -267,6 +270,8 @@ export { videoAdminAdapter, videoAdminApiAdapter } from "./lib/adminVideoAdapter
 
 export {
     adminDonationApi,
+    useLazyGetAdminDonationsQuery,
+    useDeleteAdminDonationMutation,
     useGetAdminDonationReportsQuery,
     useGetAdminDonationReportQuery,
     useCreateAdminDonationReportMutation,
@@ -280,3 +285,5 @@ export type {
     AdminDonationReportFields,
     AdminDonationReportFileFields,
 } from "./model/types/adminDonationSchema";
+
+export { adminDonationsAdapter } from "./lib/adminDonationAdapter";

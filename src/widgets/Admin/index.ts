@@ -57,3 +57,6 @@ export { AdminReviewVideoInfo } from "./ui/AdminReviewVideoInfo/AdminReviewVideo
 
 export { AdminDonationReportsTable } from "./ui/AdminDonationReportsTable/AdminDonationReportsTable";
 export { AdminDonationReportInfo } from "./ui/AdminDonationReportInfo/AdminDonationReportInfo";
+export { AdminDonationsTable } from "./ui/AdminDonationsTable/AdminDonationsTable";
+
+export { AdminAmbassadorsTable } from "./ui/AdminAmbassadorsTable/AdminAmbassadorsTable";
