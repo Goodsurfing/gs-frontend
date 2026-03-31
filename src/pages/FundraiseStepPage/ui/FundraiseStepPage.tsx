@@ -4,44 +4,36 @@ import {
     useMemo,
     useState,
 } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
-import { MapWithAddress, getGeoObjectByCoordinates } from "@/features/MapWithAddress";
-import { AddressFormFormFields } from "@/features/Offer";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     useGetDonationAddressQuery,
     useUpdateDonationAddressMutation,
 } from "@/entities/Donation";
+import { getGeoObjectByCoordinates } from "@/features/MapWithAddress";
+import {
+    AddressFormFormFields,
+    OfferWhereForm,
+    offerWhereFormApiAdapter,
+} from "@/features/Offer";
+import { getFundraiseStepPageUrl } from "@/shared/config/routes/AppUrls";
 import { FUNDRAISE_WHERE_FORM } from "@/shared/constants/localstorage";
-import Button from "@/shared/ui/Button/Button";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 
 import styles from "./FundraiseStepPage.module.scss";
 
 const FundraiseStepPage = () => {
     const { t } = useTranslation(["host", "translation"]);
+    const { locale } = useLocale();
     const { step, id } = useParams<{ step: string; id: string }>();
-    const [toast, setToast] = useState<ToastAlert>();
 
-    const {
-        handleSubmit,
-        formState: { errors, isDirty },
-        control,
-        reset,
-        watch,
-    } = useForm<AddressFormFormFields>({
-        mode: "onChange",
-        defaultValues: {
-            address: {
-                address: "",
-                geoObject: null,
-            },
-        },
-    });
+    const [toast, setToast] = useState<ToastAlert>();
+    const [initialDataForm, setInitialDataForm] = useState<AddressFormFormFields | null>(null);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     const {
         data: donationAddress,
@@ -69,28 +61,38 @@ const FundraiseStepPage = () => {
         return map[step ?? ""] || t("main.sidebar.Где", { ns: "translation" });
     }, [step, t]);
 
-    const loadGeoObject = useCallback(async (latitude: number, longitude: number) => {
-        const geoObject = await getGeoObjectByCoordinates(longitude, latitude);
+    const hasSavedDataInSession = useCallback(
+        () => sessionStorage.getItem(`${FUNDRAISE_WHERE_FORM}${id}`) !== null,
+        [id],
+    );
 
-        if (!geoObject) {
+    const fetchGeoObject = useCallback(async (
+        whereData: { longitude: number; latitude: number },
+    ) => {
+        const geoObject = await getGeoObjectByCoordinates(
+            whereData.longitude,
+            whereData.latitude,
+        );
+
+        if (geoObject) {
             return {
                 address: {
-                    address: "",
-                    geoObject: null,
+                    address: `${geoObject.description}, ${geoObject.name}`,
+                    geoObject: {
+                        name: geoObject.name,
+                        description: geoObject.description,
+                        Point: {
+                            pos: `${whereData.longitude} ${whereData.latitude}`,
+                        },
+                    },
                 },
             };
         }
 
         return {
             address: {
-                address: `${geoObject.description ? `${geoObject.description}, ` : ""}${geoObject.name}`,
-                geoObject: {
-                    name: geoObject.name,
-                    description: geoObject.description,
-                    Point: {
-                        pos: `${longitude} ${latitude}`,
-                    },
-                },
+                address: "",
+                geoObject: null,
             },
         };
     }, []);
@@ -100,56 +102,54 @@ const FundraiseStepPage = () => {
             return;
         }
 
-        const saved = sessionStorage.getItem(`${FUNDRAISE_WHERE_FORM}${id}`);
-        if (saved) {
-            try {
-                reset(JSON.parse(saved));
-                return;
-            } catch {
-                sessionStorage.removeItem(`${FUNDRAISE_WHERE_FORM}${id}`);
+        setHasUnsavedChanges(hasSavedDataInSession());
+
+        const loadInitialData = async () => {
+            const savedData = sessionStorage.getItem(`${FUNDRAISE_WHERE_FORM}${id}`);
+
+            if (savedData) {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    setInitialDataForm(parsed);
+                    return;
+                } catch {
+                    sessionStorage.removeItem(`${FUNDRAISE_WHERE_FORM}${id}`);
+                }
             }
-        }
 
-        if (donationAddress?.latitude && donationAddress?.longitude) {
-            loadGeoObject(donationAddress.latitude, donationAddress.longitude).then((data) => {
-                reset(data);
-            });
-        }
-    }, [step, id, donationAddress, loadGeoObject, reset]);
+            if (donationAddress?.latitude && donationAddress?.longitude) {
+                const adapted = await fetchGeoObject(donationAddress);
+                setInitialDataForm(adapted);
+            } else {
+                setInitialDataForm({
+                    address: {
+                        address: "",
+                        geoObject: null,
+                    },
+                });
+            }
+        };
 
-    useEffect(() => {
-        if (!id || step !== "where") {
-            return;
-        }
+        loadInitialData();
+    }, [step, id, donationAddress, fetchGeoObject, hasSavedDataInSession]);
 
-        if (isDirty) {
-            sessionStorage.setItem(`${FUNDRAISE_WHERE_FORM}${id}`, JSON.stringify(watch()));
-        }
-    }, [id, isDirty, step, watch]);
-
-    const onSubmitWhere = handleSubmit(async (data) => {
+    const onSubmitWhere = async (data: AddressFormFormFields) => {
         if (!id) {
             return;
         }
 
-        const pos = data.address.geoObject?.Point.pos || "";
-        const [longitude, latitude] = pos.split(" ").map(Number);
+        setToast(undefined);
 
-        if (!data.address.geoObject || Number.isNaN(longitude) || Number.isNaN(latitude)) {
-            return;
-        }
+        const prepared = offerWhereFormApiAdapter(data);
 
         try {
             await updateDonationAddress({
                 id,
-                body: {
-                    address: data.address.address,
-                    longitude,
-                    latitude,
-                },
+                body: prepared,
             }).unwrap();
 
             sessionStorage.removeItem(`${FUNDRAISE_WHERE_FORM}${id}`);
+            setHasUnsavedChanges(false);
             setToast({
                 text: t("hostFundraiseWhere.saved", {
                     defaultValue: "Адрес успешно сохранён",
@@ -160,7 +160,11 @@ const FundraiseStepPage = () => {
         } catch (error: unknown) {
             setToast({ text: getErrorText(error), type: HintType.Error });
         }
-    });
+    };
+
+    const onFormChange = (isDirty: boolean) => {
+        setHasUnsavedChanges(isDirty);
+    };
 
     if (step !== "where") {
         return (
@@ -177,41 +181,20 @@ const FundraiseStepPage = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <h1 className={styles.title}>{title}</h1>
-            <form className={styles.form} onSubmit={onSubmitWhere}>
-                <Controller
-                    control={control}
-                    name="address"
-                    rules={{
-                        validate: (value) => value?.geoObject !== null || t("hostFundraiseWhere.addressRequired", {
-                            defaultValue: "Укажите адрес",
-                            ns: "host",
-                        }),
-                    }}
-                    render={({ field }) => (
-                        <MapWithAddress
-                            field={field}
-                            onCoordinatesChange={(coords) => coords}
-                        />
-                    )}
+            {id && (
+                <OfferWhereForm
+                    initialData={initialDataForm}
+                    onComplete={onSubmitWhere}
+                    onFormChange={onFormChange}
+                    isLoadingGetData={isLoadingAddress}
+                    isLoadingUpdateData={isSaving}
+                    linkNext={getFundraiseStepPageUrl(locale, "when", id)}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    className={styles.form}
+                    offerId={id}
+                    storageKeyPrefix={FUNDRAISE_WHERE_FORM}
                 />
-
-                {errors.address && (
-                    <p className={styles.error}>{errors.address.message}</p>
-                )}
-
-                <div className={styles.actions}>
-                    <Button
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                        type="submit"
-                        onClick={onSubmitWhere}
-                        disabled={isSaving || isLoadingAddress}
-                    >
-                        {t("Сохранить", { ns: "offer" })}
-                    </Button>
-                </div>
-            </form>
+            )}
         </div>
     );
 };
