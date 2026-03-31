@@ -44,6 +44,20 @@
         "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
         "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
     },
+    "hostFundraises": {
+        "Мои сборы": "Mis recaudaciones",
+        "Черновики": "Borradores",
+        "Добавить сбор": "Añadir recaudación",
+        "Редактировать": "Editar",
+        "Закрыть": "Cerrar",
+        "Удалить": "Eliminar",
+        "Нет сборов": "No hay recaudaciones",
+        "Собрано": "Recaudado",
+        "Осталось дней": "Días restantes",
+        "Вы уверены что хотите изменить сбор?": "¿Estás seguro de que quieres cambiar la recaudación?",
+        "Ок": "Ok",
+        "Отмена": "Cancelar"
+    },
     "hostDonations": {
         "Пожертвования": "Donaciones"
     },

@@ -68,6 +68,7 @@ import {
     getHostDashboardPageUrl,
     getHostGalleryPageUrl,
     getHostNotesPageUrl,
+    getHostFundraisesListPageUrl,
     getHostPageUrl,
     getHostPersonalPageUrl,
     getHostRegisterPageUrl,
@@ -277,6 +278,7 @@ import { AdminDonationReportPersonalPage } from "@/pages/AdminDonationReportPers
 import { DonationReportsPage } from "@/pages/DonationReportsPage";
 import { DonationRatingPage } from "@/pages/DonationRatingPage";
 import { HostDonationsPage } from "@/pages/HostDonationsPage";
+import { HostFundraisePage } from "@/pages/HostFundraisePage";
 import { VolunteerDonationsPage } from "@/pages/VolunteerDonationsPage";
 import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
 import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
@@ -415,6 +417,11 @@ const publicRoutes: RouteType[] = [
                 label: "host-notes",
                 element: <HostNotesPage />,
                 path: (locale: string) => getHostNotesPageUrl(locale),
+            },
+            {
+                label: "host-fundraise-list",
+                element: <HostFundraisePage />,
+                path: (locale: string) => getHostFundraisesListPageUrl(locale),
             },
             {
                 label: "host-donations",

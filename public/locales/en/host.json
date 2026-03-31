@@ -44,6 +44,20 @@
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
         "Ваш отзыв был отправлен": "Your review has been submitted"
     },
+    "hostFundraises": {
+        "Мои сборы": "My Fundraises",
+        "Черновики": "Drafts",
+        "Добавить сбор": "Add fundraise",
+        "Редактировать": "Edit",
+        "Закрыть": "Close",
+        "Удалить": "Delete",
+        "Нет сборов": "No fundraises",
+        "Собрано": "Collected",
+        "Осталось дней": "Days left",
+        "Вы уверены что хотите изменить сбор?": "Are you sure you want to change the fundraise?",
+        "Ок": "Ok",
+        "Отмена": "Cancel"
+    },
     "hostDonations": {
         "Пожертвования": "Donations"
     },

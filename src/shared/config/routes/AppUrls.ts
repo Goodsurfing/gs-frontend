@@ -84,6 +84,8 @@ export const getHostReviewPageUrl: RoutePathFunction = (locale) => `/${locale}${
 
 export const getHostNotesPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_notes}`;
 
+export const getHostFundraisesListPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_fundraise_list}`;
+
 export const getHostDonationsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_donations}`;
 
 export const getHostVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.host_video}`;

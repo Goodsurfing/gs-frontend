@@ -1,0 +1,135 @@
+.card {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background-color: var(--color-white);
+    box-shadow: 0px 5px 20px 0px #2121210d;
+    padding: 1.25rem;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0px 5px 20px 0px rgb(33 33 33 / 15%);
+    }
+}
+
+.imageWrapper {
+    flex-shrink: 0;
+    width: 180px;
+    height: 140px;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.progressBar {
+    width: 100%;
+}
+
+.title {
+    font-family: "Lato";
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 22px;
+    color: var(--color-black-primary);
+    margin: 0;
+}
+
+.organization {
+    font-family: "Lato";
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--white-theme-color);
+    margin: 0;
+}
+
+.description {
+    font-family: "Lato";
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-black-primary);
+    opacity: 0.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.stats {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Lato";
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-black-primary);
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 1200px) {
+    .card {
+        flex-wrap: wrap;
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        flex-wrap: wrap;
+
+        .imageWrapper {
+            width: 100%;
+            height: 180px;
+        }
+
+        .buttons {
+            grid-template-columns: 1fr;
+        }
+    }
+}
