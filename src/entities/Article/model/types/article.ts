@@ -42,5 +42,4 @@ export interface ArticleCardType {
     created: string;
     likeCount: number;
     reviewCount: number;
-
 }

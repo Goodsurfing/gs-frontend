@@ -24,7 +24,7 @@ export const AdminDonationReportsTable = () => {
     const navigate = useNavigate();
     const { locale } = useLocale();
     const [toast, setToast] = useState<ToastAlert>();
-    const [offerToDelete, setOfferToDelete] = useState<
+    const [reportToDelete, setReportToDelete] = useState<
     { id: string; name: string } | null>(null);
     const {
         data: reportsData,
@@ -44,19 +44,19 @@ export const AdminDonationReportsTable = () => {
     }, [isError]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
-        setOfferToDelete({ id, name });
+        setReportToDelete({ id, name });
     };
 
     const handleCloseDeleteModal = () => {
-        setOfferToDelete(null);
+        setReportToDelete(null);
     };
 
     const handleConfirmDelete = async () => {
         setToast(undefined);
-        if (!offerToDelete) return;
+        if (!reportToDelete) return;
 
         try {
-            await deleteReport(offerToDelete.id).unwrap();
+            await deleteReport(reportToDelete.id).unwrap();
             setToast({
                 text: "Отчёт был успешно удален",
                 type: HintType.Success,
@@ -175,8 +175,8 @@ export const AdminDonationReportsTable = () => {
                 {renderTable()}
             </div>
             <ConfirmActionModal
-                isModalOpen={!!offerToDelete}
-                description={`Вы уверены, что хотите удалить вакансию "${offerToDelete?.name}"? Это действие нельзя отменить.`}
+                isModalOpen={!!reportToDelete}
+                description={`Вы уверены, что хотите удалить вакансию "${reportToDelete?.name}"? Это действие нельзя отменить.`}
                 onConfirm={handleConfirmDelete}
                 onClose={handleCloseDeleteModal}
                 confirmTextButton="Удалить"

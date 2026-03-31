@@ -1,19 +1,85 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useTranslation } from "react-i18next";
-import { communityNewsData } from "@/containers/CommunityNewsContainer/CommunityNews.data";
 import CommunityNewsItem from "@/containers/CommunityNewsContainer/CommunityNewsItem/CommunityNewsItem";
 
-import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
-
+import { useLazyGetBlogListQuery } from "@/entities/Blog";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { AdminSort } from "@/entities/Admin";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./CommunityNewsContainer.module.scss";
 
 const CommunityNewsContainer: FC = () => {
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
     const { t } = useTranslation("main");
+    const { locale } = useLocale();
+
+    const [getBlogList, { data, isLoading }] = useLazyGetBlogListQuery();
+
+    useEffect(() => {
+        getBlogList({
+            page: 1,
+            limit: 20,
+            sort: AdminSort.LikeBlogDesc,
+            lang: locale,
+        });
+    }, [locale, getBlogList]);
+
+    const renderSlider = isLoading ? <MiniLoader /> : (
+        <div className={styles.slider}>
+            <Swiper
+                modules={[Pagination, Navigation]}
+                spaceBetween={10}
+                slidesPerView={3}
+                navigation={{ prevEl, nextEl }}
+                breakpoints={{
+                    1100: {
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                        slidesOffsetBefore: 0,
+                        centeredSlides: false,
+                    },
+                    992: {
+                        slidesPerView: 2,
+                        slidesOffsetBefore: 10,
+                        centeredSlides: false,
+                    },
+                    480: {
+                        slidesPerView: 1,
+                        slidesOffsetBefore: 80,
+                        centeredSlides: false,
+                    },
+                    400: {
+                        slidesPerView: 1,
+                        slidesOffsetBefore: 20,
+                        centeredSlides: false,
+                    },
+                    0: {
+                        slidesPerView: 1,
+                        slidesOffsetBefore: 0,
+                        centeredSlides: true,
+                    },
+                }}
+            >
+                {data
+                            && data.data.map((item, index) => (
+                                <SwiperSlide key={index}>
+                                    <CommunityNewsItem
+                                        id={item.id.toString()}
+                                        title={item.name}
+                                        date={item.created}
+                                        image={getMediaContent(item.image.thumbnails?.large)}
+                                        locale={locale}
+                                    />
+                                </SwiperSlide>
+                            ))}
+            </Swiper>
+        </div>
+    );
 
     return (
         <div className={styles.wrapper}>
@@ -25,56 +91,14 @@ const CommunityNewsContainer: FC = () => {
                     ref={(node) => setPrevEl(node)}
                     className={styles.arrow}
                 >
-                    <img src={arrowSliderIcon} alt="Previous" />
+                    <span className={styles.arrowIcon} aria-hidden="true" />
                 </div>
-                <div className={styles.slider}>
-                    <Swiper
-                        modules={[Pagination, Navigation]}
-                        spaceBetween={10}
-                        slidesPerView={3}
-                        navigation={{ prevEl, nextEl }}
-                        breakpoints={{
-                            1100: {
-                                slidesPerView: 3,
-                                spaceBetween: 10,
-                                slidesOffsetBefore: 0,
-                                centeredSlides: false,
-                            },
-                            992: {
-                                slidesPerView: 2,
-                                slidesOffsetBefore: 10,
-                                centeredSlides: false,
-                            },
-                            480: {
-                                slidesPerView: 1,
-                                slidesOffsetBefore: 80,
-                                centeredSlides: false,
-                            },
-                            400: {
-                                slidesPerView: 1,
-                                slidesOffsetBefore: 20,
-                                centeredSlides: false,
-                            },
-                            0: {
-                                slidesPerView: 1,
-                                slidesOffsetBefore: 0,
-                                centeredSlides: true,
-                            },
-                        }}
-                    >
-                        {communityNewsData
-                            && communityNewsData.map((item, index) => (
-                                <SwiperSlide key={index}>
-                                    <CommunityNewsItem {...item} />
-                                </SwiperSlide>
-                            ))}
-                    </Swiper>
-                </div>
+                {renderSlider}
                 <div
                     ref={(node) => setNextEl(node)}
                     className={styles.arrow}
                 >
-                    <img src={arrowSliderIcon} alt="Next" />
+                    <span className={styles.arrowIcon} aria-hidden="true" />
                 </div>
             </div>
         </div>

@@ -670,3 +670,30 @@ export interface GetAdminUsersResponse {
     firstName: string | null;
     lastName: string | null;
 }
+
+// Ambassadors
+
+export interface GetAdminAmbassadors {
+    id: number;
+    firstName: string;
+    lastName: string;
+    description: string;
+    address: string;
+    sort: number;
+    image: Image;
+}
+
+export interface GetAdminAmbassadorsResponse {
+    data: GetAdminAmbassadors[];
+    pagination: Pagination;
+}
+
+export interface GetAdminAmbassadorsParams {
+    page: number;
+    limit: number;
+    sort: AdminSort;
+    firstName?: string;
+    lastName?: string;
+    description?: string;
+    address?: string;
+}
