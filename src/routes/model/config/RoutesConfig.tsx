@@ -199,6 +199,7 @@ import {
     getAdminVideoCreatePageUrl,
     getAdminReviewBlogPersonalPageUrl,
     getAdminDonationsPageUrl,
+    getAdminAmbassadorsPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -283,6 +284,7 @@ import { AdminBlogCreatePage } from "@/pages/AdminBlogCreatePage";
 import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
 import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
 import { AdminDonationsPage } from "@/pages/AdminDonationsPage";
+import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -980,6 +982,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-donations",
                 element: <AdminDonationsPage />,
                 path: (locale: string) => getAdminDonationsPageUrl(locale),
+            },
+            {
+                label: "admin-ambassadors",
+                element: <AdminAmbassadorsPage />,
+                path: (locale: string) => getAdminAmbassadorsPageUrl(locale),
             },
         ],
     },
