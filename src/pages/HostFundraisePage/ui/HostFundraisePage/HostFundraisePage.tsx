@@ -1,4 +1,9 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import {
+    FC,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,8 +28,14 @@ const HostFundraisePage: FC = () => {
     const { locale } = useLocale();
     const navigate = useNavigate();
 
-    const [fetchActive, { data: activeData, isLoading: isLoadingActive }] = useLazyGetDonationsQuery();
-    const [fetchDrafts, { data: draftsData, isLoading: isLoadingDrafts }] = useLazyGetDonationsQuery();
+    const [fetchActive, {
+        data: activeData,
+        isLoading: isLoadingActive,
+    }] = useLazyGetDonationsQuery();
+    const [fetchDrafts, {
+        data: draftsData,
+        isLoading: isLoadingDrafts,
+    }] = useLazyGetDonationsQuery();
     const [deleteFundraise] = useDeleteDonationByIdMutation();
     const [updateStatus] = useUpdateDonationStatusMutation();
     const [createFundraise, { isLoading: isCreating }] = useCreateDonationMutation();
