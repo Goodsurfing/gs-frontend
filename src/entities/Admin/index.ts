@@ -267,6 +267,8 @@ export { videoAdminAdapter, videoAdminApiAdapter } from "./lib/adminVideoAdapter
 
 export {
     adminDonationApi,
+    useLazyGetAdminDonationsQuery,
+    useDeleteAdminDonationMutation,
     useGetAdminDonationReportsQuery,
     useGetAdminDonationReportQuery,
     useCreateAdminDonationReportMutation,
@@ -280,3 +282,5 @@ export type {
     AdminDonationReportFields,
     AdminDonationReportFileFields,
 } from "./model/types/adminDonationSchema";
+
+export { adminDonationsAdapter } from "./lib/adminDonationAdapter";

@@ -85,6 +85,10 @@ export const useAdminPagesSidebarData = () => {
             text: "Поддержка",
             dropdownItems: [
                 {
+                    route: "/donations",
+                    text: "Все сборы",
+                },
+                {
                     route: "/donation-reports",
                     text: "Публичная отчётность",
                 },
