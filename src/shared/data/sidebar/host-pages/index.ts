@@ -28,7 +28,7 @@ export const useHostPagesSidebarData = () => {
         },
         {
             route: "/host/donations",
-            text: t("main.sidebar.Сборы"),
+            text: t("main.sidebar.Сборы", { defaultValue: "Сборы" }),
             icon: fundraiseIcon,
         },
         {
