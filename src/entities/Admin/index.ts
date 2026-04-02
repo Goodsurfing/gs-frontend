@@ -124,6 +124,9 @@ export {
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
     useLazyGetAdminAmbassadorsQuery,
+    useGetAdminAmbassadorByIdQuery,
+    useCreateAdminAmbassadorMutation,
+    useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
 } from "./api/adminApi";
 

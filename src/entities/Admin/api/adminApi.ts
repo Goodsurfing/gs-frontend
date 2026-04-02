@@ -13,6 +13,7 @@ import {
     AdminVacancyWhere,
     AdminVacancyWhoNeeds,
     CreateAdminAchievementsRequest,
+    CreateAdminAmbassador,
     CreateAdminFoodRequest,
     CreateAdminHouseRequest,
     CreateAdminSkillRequest, CreateAdminTransferRequest,
@@ -21,6 +22,7 @@ import {
     EditAdminSkillRequest, EditAdminTransferRequest,
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
+    GetAdminAmbassadors,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
     GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
@@ -43,6 +45,7 @@ import {
     GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
+    UpdateAdminAmbassador,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
     UpdateAdminVacancyConditionsRequest,
@@ -822,16 +825,41 @@ export const adminApi = createApi({
         // Ambassadors
         getAdminAmbassadors: build.query<GetAdminAmbassadorsResponse, GetAdminAmbassadorsParams>({
             query: (params) => ({
-                url: "ambassadors/list",
+                url: "leader/list",
                 method: "GET",
                 params,
             }),
             providesTags: ["ambassadors"],
         }),
+        getAdminAmbassadorById: build.query<GetAdminAmbassadors, string>({
+            query: (id) => ({
+                url: `leader/element/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["ambassadors"],
+        }),
+        createAdminAmbassador: build.mutation<void,
+        CreateAdminAmbassador>({
+            query: (body) => ({
+                url: "leader/create",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["ambassadors"],
+        }),
+        updateAdminAmbassador: build.mutation<void,
+        UpdateAdminAmbassador>({
+            query: ({ id, body }) => ({
+                url: `leader/edit/${id}`,
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["ambassadors"],
+        }),
         deleteAdminAmbassador: build.mutation<void,
         number>({
             query: (id) => ({
-                url: `ambassadors/${id}`,
+                url: `leader/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["ambassadors"],
@@ -925,5 +953,8 @@ export const {
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
     useLazyGetAdminAmbassadorsQuery,
+    useGetAdminAmbassadorByIdQuery,
+    useCreateAdminAmbassadorMutation,
+    useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
 } = adminApi;

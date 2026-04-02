@@ -26,14 +26,30 @@ import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./AdminAmbassadorsTable.module.scss";
 
 interface AmbassadorsFilters {
+    id?: string;
     firstName?: string;
     lastName?: string;
     description?: string;
-    address?: string;
+    city?: string;
+    country?: string;
     sort?: AdminSort;
 }
 
 const ambassadorsCustomFields: CustomFilterField<keyof AmbassadorsFilters>[] = [
+    {
+        key: "id",
+        label: "Поиск по id",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Поиск по id"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
     {
         key: "firstName",
         label: "Поиск по имени пользователя",
@@ -77,11 +93,25 @@ const ambassadorsCustomFields: CustomFilterField<keyof AmbassadorsFilters>[] = [
         ),
     },
     {
-        key: "address",
-        label: "Поиск по адресу",
+        key: "city",
+        label: "Поиск по городу",
         render: ({ value, onChange, disabled }) => (
             <TextField
-                label="Поиск по адресу"
+                label="Поиск по городу"
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value || undefined)}
+                fullWidth
+                size="small"
+                disabled={disabled}
+            />
+        ),
+    },
+    {
+        key: "country",
+        label: "Поиск по стране",
+        render: ({ value, onChange, disabled }) => (
+            <TextField
+                label="Поиск по стране"
                 value={value ?? ""}
                 onChange={(e) => onChange(e.target.value || undefined)}
                 fullWidth
@@ -135,7 +165,9 @@ export const AdminAmbassadorsTable = () => {
         firstName: undefined,
         lastName: undefined,
         description: undefined,
-        address: undefined,
+        city: undefined,
+        country: undefined,
+        id: undefined,
     });
 
     const [getAmbassadors, {
@@ -154,8 +186,10 @@ export const AdminAmbassadorsTable = () => {
                     sort: filters.sort ?? AdminSort.IdDesc,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
-                    address: filters.address,
+                    city: filters.city,
+                    country: filters.country,
                     description: filters.description,
+                    id: filters.id,
                 }).unwrap();
             } catch {
                 setToast({
@@ -165,7 +199,8 @@ export const AdminAmbassadorsTable = () => {
             }
         };
         fetchData();
-    }, [filters.address, filters.description, filters.firstName,
+    }, [filters.city, filters.country,
+        filters.description, filters.firstName, filters.id,
         filters.lastName, filters.page, filters.sort, getAmbassadors]);
 
     const handleOpenDeleteModal = (id: number, name: string) => {

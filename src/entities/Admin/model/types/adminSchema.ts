@@ -678,7 +678,8 @@ export interface GetAdminAmbassadors {
     firstName: string;
     lastName: string;
     description: string;
-    address: string;
+    city: string;
+    country: string;
     sort: number;
     image: Image;
 }
@@ -692,8 +693,21 @@ export interface GetAdminAmbassadorsParams {
     page: number;
     limit: number;
     sort: AdminSort;
+    id?: string;
     firstName?: string;
     lastName?: string;
     description?: string;
-    address?: string;
+    country?: string;
+    city?: string;
+}
+
+export type CreateAdminAmbassador = Omit<GetAdminAmbassadors,
+"id" | "image"> & {
+    userId: string | null;
+    imageId: string;
+};
+
+export interface UpdateAdminAmbassador {
+    id: string;
+    body: CreateAdminAmbassador;
 }

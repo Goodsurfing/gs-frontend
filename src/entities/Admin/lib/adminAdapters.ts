@@ -1,4 +1,4 @@
-import { getFullName } from "@/shared/lib/getFullName";
+import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
 import {
     AdminOrganization,
     AdminOrganizations,
@@ -227,13 +227,13 @@ export const adminOrganizationApiAdapter = (
 
 export const adminAmbassadorsAdapter = (data: GetAdminAmbassadors[]) => data.map((ambassador) => {
     const {
-        id, firstName, lastName, address,
+        id, firstName, lastName, city, country,
         description, image, sort,
     } = ambassador;
     return {
         id,
         name: getFullName(firstName, lastName),
-        address,
+        address: getFullAddress(city, country),
         description,
         image: getMediaContent(image.contentUrl),
         sort,
