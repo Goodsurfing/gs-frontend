@@ -21,9 +21,10 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAmbassadorsPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminAmbassadorCreatePageUrl, getAdminAmbassadorPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./AdminAmbassadorsTable.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 interface AmbassadorsFilters {
     id?: string;
@@ -296,7 +297,7 @@ export const AdminAmbassadorsTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleEdit = () => navigate(
-                    getAmbassadorsPageUrl(locale, params.row.id),
+                    getAdminAmbassadorPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
@@ -358,6 +359,13 @@ export const AdminAmbassadorsTable = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminAmbassadorCreatePageUrl(locale)}
+                >
+                    Добавить навык
+                </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}

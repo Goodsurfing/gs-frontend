@@ -673,6 +673,17 @@ export interface GetAdminUsersResponse {
 
 // Ambassadors
 
+export interface AdminAmbassadorsFields {
+    firstName: string;
+    lastName: string;
+    description: string;
+    city: string;
+    country: string;
+    sort: number;
+    userId: string | null;
+    image: Image;
+}
+
 export interface GetAdminAmbassadors {
     id: number;
     firstName: string;
@@ -683,6 +694,10 @@ export interface GetAdminAmbassadors {
     sort: number;
     image: Image;
 }
+
+export type GetAdminAmbassador = GetAdminAmbassadors & {
+    userId: string;
+};
 
 export interface GetAdminAmbassadorsResponse {
     data: GetAdminAmbassadors[];

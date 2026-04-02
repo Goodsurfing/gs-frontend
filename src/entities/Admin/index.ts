@@ -18,6 +18,7 @@ export type {
     UpdateAdminVacancyDescription,
     UpdateAdminVacancyFinishingTouches,
     GetAdminUsersResponse,
+    AdminAmbassadorsFields,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -30,7 +31,7 @@ export {
     adminUsersAdapter, adminUserAdapter, adminUpdateUserAdapter,
     adminOrganizationAdapter, adminOrganizationApiAdapter,
     adminOrganizationsAdapter, adminUserApiAdapter,
-    adminAmbassadorsAdapter,
+    adminAmbassadorsAdapter, adminAmbassadorApiAdapter,
 } from "./lib/adminAdapters";
 
 export { UserInfoTable } from "./ui/UserInfoTable/UserInfoTable";

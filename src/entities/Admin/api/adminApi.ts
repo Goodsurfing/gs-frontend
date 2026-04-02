@@ -22,7 +22,7 @@ import {
     EditAdminSkillRequest, EditAdminTransferRequest,
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
-    GetAdminAmbassadors,
+    GetAdminAmbassador,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
     GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
@@ -831,7 +831,7 @@ export const adminApi = createApi({
             }),
             providesTags: ["ambassadors"],
         }),
-        getAdminAmbassadorById: build.query<GetAdminAmbassadors, string>({
+        getAdminAmbassadorById: build.query<GetAdminAmbassador, string>({
             query: (id) => ({
                 url: `leader/element/${id}`,
                 method: "GET",
