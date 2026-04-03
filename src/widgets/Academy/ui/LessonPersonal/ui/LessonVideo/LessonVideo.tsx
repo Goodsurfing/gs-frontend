@@ -5,8 +5,8 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
-import styles from "./LessonVideo.module.scss";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
+import styles from "./LessonVideo.module.scss";
 
 interface LessonVideoProps {
     className?: string;

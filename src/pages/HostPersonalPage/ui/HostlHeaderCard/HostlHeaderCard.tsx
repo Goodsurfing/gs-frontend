@@ -14,8 +14,8 @@ import {
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
 
-import styles from "./HostlHeaderCard.module.scss";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
+import styles from "./HostlHeaderCard.module.scss";
 
 interface HostlHeaderCardProps {
     host: Host;

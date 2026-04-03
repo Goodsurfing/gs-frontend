@@ -4,9 +4,9 @@ import { Controller, useForm } from "react-hook-form";
 import Button from "@/shared/ui/Button/Button";
 import { InputField } from "@/shared/ui/InputField/InputField";
 import { Image } from "@/types/media";
+import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 import { UploadArticleCover } from "../AdminArticleForm/ui/UploadArticleCover/UploadArticleCover";
 import styles from "./AdminJournalForm.module.scss";
-import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 
 interface AdminJournalFormProps {
     className?: string;

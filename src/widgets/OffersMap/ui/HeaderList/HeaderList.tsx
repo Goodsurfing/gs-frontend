@@ -2,12 +2,12 @@ import React, { FC } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 import styles from "./HeaderList.module.scss";
 import { SwitchClosedOffers } from "../SwitchClosedOffers/SwitchClosedOffers";
 import { SelectSort } from "../SelectSort/SelectSort";
 import { ButtonClose } from "../ButtonClose/ButtonClose";
-import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
-import { OffersFilterFields } from "@/pages/OffersMapPage/model/types";
 
 interface HeaderListProps {
     isShowMap: boolean;

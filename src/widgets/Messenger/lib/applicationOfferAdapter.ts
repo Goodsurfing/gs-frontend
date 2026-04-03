@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/shared/constants/api";
-import { ChatFormFields } from "../model/types/chatForm";
 import { formattingDate } from "@/shared/lib/formatDate";
+import { ChatFormFields } from "../model/types/chatForm";
 
 export const applicationOfferAdapter = (
     data: ChatFormFields,

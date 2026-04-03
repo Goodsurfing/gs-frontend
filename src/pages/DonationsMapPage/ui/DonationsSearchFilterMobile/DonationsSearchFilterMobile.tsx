@@ -20,8 +20,8 @@ import { Text } from "@/shared/ui/Text/Text";
 import {
     DonationCard, donationCardAdapter, DonationFilterFields, GetDonations, GetDonationsMap,
 } from "@/entities/Donation";
-import styles from "./DonationsSearchFilterMobile.module.scss";
 import { DonationsMap, SearchDonations } from "@/widgets/Donation";
+import styles from "./DonationsSearchFilterMobile.module.scss";
 import { DonationsMobileFilter } from "../DonationsMobileFilter/DonationsMobileFilter";
 
 type SelectedTabType = "filter" | "map" | "donations";

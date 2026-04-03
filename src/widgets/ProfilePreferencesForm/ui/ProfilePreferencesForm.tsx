@@ -6,14 +6,14 @@ import { Activity } from "@/features/ProfilePreferences";
 
 import Button from "@/shared/ui/Button/Button";
 
-import { ProfilePreferencesField } from "../model/types/profilePreferences";
-import { profilePreferencesAdapter, profilePreferencesApiAdapter } from "../lib/profilePreferencesAdapter";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useGetProfileInfoQuery, useUpdateProfilePreferencesMutation } from "@/entities/Profile";
-import styles from "./ProfilePreferencesForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ProfilePreferencesForm.module.scss";
+import { profilePreferencesAdapter, profilePreferencesApiAdapter } from "../lib/profilePreferencesAdapter";
+import { ProfilePreferencesField } from "../model/types/profilePreferences";
 
 const defaultValues: DefaultValues<ProfilePreferencesField> = {
     favoriteCategories: [],

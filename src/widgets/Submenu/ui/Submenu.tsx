@@ -3,9 +3,9 @@ import {
     memo, useState, useEffect, ReactNode,
 } from "react";
 
+import { Anchor } from "@/shared/ui/Anchor/Anchor";
 import { SubmenuItem } from "../model/types/submenu";
 import styles from "./Submenu.module.scss";
-import { Anchor } from "@/shared/ui/Anchor/Anchor";
 
 interface SubmenuProps {
     items: SubmenuItem[];

@@ -12,8 +12,8 @@ import useDebounce from "@/shared/hooks/useDebounce";
 import Input from "@/shared/ui/Input/Input";
 import { getFullName } from "@/shared/lib/getFullName";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
-import styles from "./AdminUsersSearchInput.module.scss";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
+import styles from "./AdminUsersSearchInput.module.scss";
 
 interface AdminUsersSearchInputProps {
     onChange: (value: AdminCourseAuthorFileds | null) => void;

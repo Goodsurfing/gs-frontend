@@ -19,19 +19,19 @@ const InputControlComponent = <T extends FieldValues>({
     ...restInputProps
 }: InputControlProps<T>) => (
     <Controller
-        control={control}
-        name={name}
-        rules={rules}
-        render={({ field }) => (
+            control={control}
+            name={name}
+            rules={rules}
+            render={({ field }) => (
             <Input
-                value={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                isError={isError}
-                {...restInputProps}
-            />
-        )}
-    />
-);
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    isError={isError}
+                    {...restInputProps}
+                />
+            )}
+        />
+    );
 
 export const InputControl = memo(InputControlComponent) as typeof InputControlComponent;

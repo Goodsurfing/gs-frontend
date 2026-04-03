@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import { AdminUserInfoForm } from "../AdminUserInfoForm/AdminUserInfoForm";
 import { AdminUser } from "@/entities/Admin";
+import { AdminUserInfoForm } from "../AdminUserInfoForm/AdminUserInfoForm";
 
 interface AdminUserInfoProps {
     className?: string;

@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import cn from "classnames";
 import Button from "@/shared/ui/Button/Button";
 import { Modal } from "@/shared/ui/Modal/Modal";
-import styles from "./AdminUpdateAchievement.module.scss";
 import { Achievement } from "@/types/achievements";
+import styles from "./AdminUpdateAchievement.module.scss";
 
 interface AdminUpdateAchievementProps {
     achievements: Achievement[];

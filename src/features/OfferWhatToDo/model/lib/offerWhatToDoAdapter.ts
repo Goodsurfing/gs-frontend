@@ -1,7 +1,7 @@
 import { OfferWhatToDo } from "@/entities/Offer";
 
-import { OfferWhatToDoFormFields } from "../types/offerWhatToDo";
 import { UpdateOfferWhatToDo } from "@/entities/Offer/model/types/offerWhatToDo";
+import { OfferWhatToDoFormFields } from "../types/offerWhatToDo";
 
 export const offerWhatToDoApiAdapter = (
     data: OfferWhatToDoFormFields,

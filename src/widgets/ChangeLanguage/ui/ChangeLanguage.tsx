@@ -9,12 +9,12 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 
-import { changeLanguageData, languageIconsData } from "../model/data/ChangeLanguage.data";
-import styles from "./ChangeLanguage.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { useUpdateProfileInfoMutation } from "@/entities/Profile/api/profileApi";
 import { Profile } from "@/entities/Profile";
 import { updateProfileDataAdapter } from "@/features/ProfileInfo";
+import styles from "./ChangeLanguage.module.scss";
+import { changeLanguageData, languageIconsData } from "../model/data/ChangeLanguage.data";
 
 interface ChangeLanguageProps {
     className?: string;

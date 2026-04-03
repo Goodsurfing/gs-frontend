@@ -11,10 +11,10 @@ import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { ProfileInfoFields } from "../../model/types/profileInfo";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { ProfileInfoFields } from "../../model/types/profileInfo";
 import styles from "./ProfileInfoFormAvatar.module.scss";
 
 interface ProfileInfoFormAvatarProps {

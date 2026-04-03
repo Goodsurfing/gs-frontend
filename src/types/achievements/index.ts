@@ -1,5 +1,5 @@
-import { Image } from "../media";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { Image } from "../media";
 
 export interface Achievement {
     id: number;

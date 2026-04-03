@@ -5,8 +5,8 @@ import { SidebarProvider } from "@/widgets/Sidebar";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getUserInited, userActions } from "@/entities/User";
 import { LangRouter } from "@/routes";
-import { MessengerProvider } from "./providers/MessengerProvider/ui/MessengerProvider";
 import { AuthProvider } from "@/routes/model/guards/AuthProvider";
+import { MessengerProvider } from "./providers/MessengerProvider/ui/MessengerProvider";
 
 export const App: FC = () => {
     const dispatch = useAppDispatch();

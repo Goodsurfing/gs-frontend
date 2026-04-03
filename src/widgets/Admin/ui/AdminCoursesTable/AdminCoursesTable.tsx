@@ -18,7 +18,6 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminCoursesTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
@@ -26,6 +25,7 @@ import { getAdminCourseCreatePageUrl, getAdminCoursePersonalPageUrl } from "@/sh
 import { getFullName } from "@/shared/lib/getFullName";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminCoursesTable.module.scss";
 
 interface CoursesFilters {
     authorFirstName?: string;

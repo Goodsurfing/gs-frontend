@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import styles from "./TextCard.module.scss";
 import Section from "@/shared/ui/Section/Section";
+import styles from "./TextCard.module.scss";
 
 interface TextCardProps {
     title: string;

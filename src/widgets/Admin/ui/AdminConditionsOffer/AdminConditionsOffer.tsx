@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "./AdminConditionsOffer.module.scss";
 import Button from "@/shared/ui/Button/Button";
+import styles from "./AdminConditionsOffer.module.scss";
 import { AdminHousesTable } from "../AdminHousesTable/AdminHousesTable";
 import { AdminFoodsTable } from "../AdminFoodsTable/AdminFoodsTable";
 import { AdminTransfersTable } from "../AdminTransfersTable/AdminTransfersTable";

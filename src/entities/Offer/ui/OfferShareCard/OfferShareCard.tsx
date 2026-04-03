@@ -6,8 +6,8 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShareBlock } from "@/shared/ui/ShareBlock/ShareBlock";
 
-import styles from "./OfferShareCard.module.scss";
 import { MAIN_URL } from "@/shared/constants/api";
+import styles from "./OfferShareCard.module.scss";
 
 interface OfferShareCardProps {
     offerId: string;

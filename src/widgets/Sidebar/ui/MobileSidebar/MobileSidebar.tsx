@@ -5,12 +5,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
+import { getHostInfoUrl } from "@/shared/config/routes/AppUrls";
 import {
     isHostActiveCheck,
     isSidebarLinkBack,
 } from "../../lib/isSidebarLinkBack";
 import { SidebarContentProps } from "../../model/types/sidebar";
-import { getHostInfoUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./MobileSidebar.module.scss";
 
 interface MobileSidebarProps {

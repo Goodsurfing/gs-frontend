@@ -16,7 +16,6 @@ import showIcon from "@/shared/assets/icons/admin/show.svg";
 import blockIcon from "@/shared/assets/icons/admin/block.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./AdminOrganizationsTable.module.scss";
 import { getAdminPersonalOrganizationPageUrl } from "@/shared/config/routes/AppUrls";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
@@ -25,6 +24,7 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminOrganizationsTable.module.scss";
 
 type OrganizationsFilters = Omit<Partial<GetAdminOrganizationParams>, "page" | "limit">;
 

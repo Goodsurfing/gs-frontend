@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./ForHost.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./ForHost.module.scss";
 
 interface ForHostProps {
     className?: string;

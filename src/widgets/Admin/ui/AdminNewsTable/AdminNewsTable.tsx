@@ -24,8 +24,8 @@ import {
 import { getAdminNewsCreatePageUrl, getAdminNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import styles from "./AdminNewsTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminNewsTable.module.scss";
 
 interface NewsFilters {
     name?: string;

@@ -9,12 +9,12 @@ import {
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import { Application } from "../../model/types/application";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
+import { Application } from "../../model/types/application";
 import styles from "./RequestCard.module.scss";
 
 interface RequestCardProps {

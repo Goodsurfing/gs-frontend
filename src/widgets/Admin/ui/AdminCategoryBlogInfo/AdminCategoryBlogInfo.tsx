@@ -6,10 +6,10 @@ import { AdminCategoryFields, AdminCategoryForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminCategoryBlogInfo.module.scss";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminCategoriesBlogPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminCategoryBlogInfo.module.scss";
 
 interface AdminCategoryBlogInfoProps {
     categoryId: number;

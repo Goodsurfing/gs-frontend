@@ -8,12 +8,12 @@ import { useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
-import { OfferWhatToDo } from "../../model/types/offerWhatToDo";
 import { InfoCard, InfoCardItem } from "@/shared/ui/InfoCard/InfoCard";
-import styles from "./OfferWhatToDoCard.module.scss";
 import { useTranslateTimeType } from "@/shared/hooks/useTimeType";
 import { successIcon } from "@/shared/data/icons/skills";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./OfferWhatToDoCard.module.scss";
+import { OfferWhatToDo } from "../../model/types/offerWhatToDo";
 
 interface OfferWhatToDoCardProps {
     whatToDo: OfferWhatToDo;

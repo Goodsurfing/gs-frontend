@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
-import { TravelFields } from "../../model/types/offerConditions";
 
-import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { Transfer } from "@/shared/data/conditions";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import { TravelFields } from "../../model/types/offerConditions";
 import styles from "./ConditionsTravel.module.scss";
 
 interface ConditionsTravelProps {

@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./AdminOrganizationsPage.module.scss";
 import { AdminOrganizationsTable } from "@/widgets/Admin";
+import styles from "./AdminOrganizationsPage.module.scss";
 
 const AdminOrganizationsPage = () => (
     <div className={styles.wrapper}>

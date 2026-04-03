@@ -4,7 +4,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ArticleHeader, ArticleShare, Navigation } from "@/features/Article";
 import { getVideoPageUrl, getVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./VideoPersonal.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import {
     GetReviewsVideo,
@@ -14,13 +13,14 @@ import {
 } from "@/entities/Video";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import { VideoContent } from "../VideoContent/VideoContent";
 import { MAIN_URL } from "@/shared/constants/api";
 import { CommentWidget } from "@/widgets/Article";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { VideoContent } from "../VideoContent/VideoContent";
+import styles from "./VideoPersonal.module.scss";
 
 interface VideoPersonalProps {
     videoId: string;

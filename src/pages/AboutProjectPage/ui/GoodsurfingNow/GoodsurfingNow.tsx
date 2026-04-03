@@ -8,9 +8,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 
-import { GoodsurfingNowItem } from "../GoodsurfingNowItem/GoodsurfingNowItem";
 import { useGetGoodsurfingTodayQuery } from "@/entities/Admin/api/adminApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { GoodsurfingNowItem } from "../GoodsurfingNowItem/GoodsurfingNowItem";
 import styles from "./GoodsurfingNow.module.scss";
 
 interface GoodsurfingNowProps {

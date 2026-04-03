@@ -11,9 +11,9 @@ import { useGetMyVolunteerQuery } from "@/entities/Volunteer";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
 
+import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 import { EditVolunteer } from "../EditVolunteer/EditVolunteer";
 import styles from "./VolunteerFill.module.scss";
-import { useGetProfileOccupancyQuery } from "@/entities/Profile";
 
 interface VolunteerFillProps {
     className?: string;

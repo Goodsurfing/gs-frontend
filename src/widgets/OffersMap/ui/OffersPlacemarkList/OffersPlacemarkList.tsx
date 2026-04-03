@@ -3,8 +3,8 @@ import React, { FC, useMemo } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { OfferPlacemark } from "../OfferPlacemark/OfferPlacemark";
 import { OfferMap } from "@/entities/Offer";
+import { OfferPlacemark } from "../OfferPlacemark/OfferPlacemark";
 import styles from "./OffersPlacemarkList.module.scss";
 
 interface OffersPlacemarkListProps {

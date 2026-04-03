@@ -4,8 +4,8 @@ import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Locale } from "@/entities/Locale";
-import { DonationCard, DonationCardType } from "../DonationCard/DonationCard";
 import Button from "@/shared/ui/Button/Button";
+import { DonationCard, DonationCardType } from "../DonationCard/DonationCard";
 import styles from "./VolunteerDonationCard.module.scss";
 
 interface VolunteerDonationCardProps {

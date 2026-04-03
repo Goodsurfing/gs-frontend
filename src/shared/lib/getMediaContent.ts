@@ -1,6 +1,6 @@
 import { GalleryItem, Image, MediaObjectType } from "@/types/media";
-import { BASE_URL } from "../constants/api";
 import { ImageType } from "@/entities/Profile";
+import { BASE_URL } from "../constants/api";
 
 type MediaContentSize = "SMALL" | "MEDIUM" | "LARGE" | "ORIGINAL";
 

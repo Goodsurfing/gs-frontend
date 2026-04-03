@@ -6,8 +6,8 @@ import ResetPasswordContainer from "@/containers/ResetPasswordContainer/ResetPas
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import styles from "./ResetPasswordPage.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./ResetPasswordPage.module.scss";
 
 const ResetPasswordPage: FC = () => {
     const { locale } = useLocale();

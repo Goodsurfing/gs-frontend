@@ -76,28 +76,28 @@ export const MainHeaderNav = () => {
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
             switch (type) {
-                case "COMMUNITY":
-                    return {
-                        ...prev,
-                        isCommunityOpened: !prev.isCommunityOpened,
-                    };
-                case "ABOUT":
-                    return {
-                        ...prev,
-                        isAboutProjectOpened: !prev.isAboutProjectOpened,
-                    };
-                case "OFFERS":
-                    return {
-                        ...prev,
-                        isOffersOpened: !prev.isOffersOpened,
-                    };
-                case "DONATION":
-                    return {
-                        ...prev,
-                        isDonationOpened: !prev.isDonationOpened,
-                    };
-                default:
-                    return prev;
+            case "COMMUNITY":
+                return {
+                    ...prev,
+                    isCommunityOpened: !prev.isCommunityOpened,
+                };
+            case "ABOUT":
+                return {
+                    ...prev,
+                    isAboutProjectOpened: !prev.isAboutProjectOpened,
+                };
+            case "OFFERS":
+                return {
+                    ...prev,
+                    isOffersOpened: !prev.isOffersOpened,
+                };
+            case "DONATION":
+                return {
+                    ...prev,
+                    isDonationOpened: !prev.isDonationOpened,
+                };
+            default:
+                return prev;
             }
         });
     };

@@ -8,10 +8,10 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import Button from "@/shared/ui/Button/Button";
 import { AdminDonationReportFields, AdminDonationReportFileFields } from "@/entities/Admin";
-import { AdminDonationReportFileModal } from "../AdminDonationReportFileModal/AdminDonationReportFileModal";
-import styles from "./AdminDonationReportForm.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { AdminDonationReportFileModal } from "../AdminDonationReportFileModal/AdminDonationReportFileModal";
+import styles from "./AdminDonationReportForm.module.scss";
 
 export type { AdminDonationReportFields } from "@/entities/Admin";
 

@@ -5,8 +5,8 @@ import { HostDescriptionForm } from "@/features/HostDescription";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 
-import styles from "./HostMainInfoPage.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./HostMainInfoPage.module.scss";
 
 const HostMainInfoPage: FC = () => {
     const { t, ready } = useTranslation("host");

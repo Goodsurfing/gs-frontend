@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./FavoriteOffersPage.module.scss";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import styles from "./FavoriteOffersPage.module.scss";
 import { FavoriteOffers } from "./FavoriteOffers/FavoriteOffers";
 
 const FavoriteOffersPage = () => (

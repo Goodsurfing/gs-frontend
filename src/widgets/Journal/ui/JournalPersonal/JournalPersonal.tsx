@@ -16,8 +16,8 @@ import {
     GetReviewsJournal, journalReviewsAdapter, useCreateReviewJournalMutation,
     useGetJournalByIdQuery, useLazyGetReviewsByJournalIdQuery, usePutLikeJournalMutation,
 } from "@/entities/Journal";
-import styles from "./JournalPersonal.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./JournalPersonal.module.scss";
 
 interface JournalPersonalProps {
     journalId: string;

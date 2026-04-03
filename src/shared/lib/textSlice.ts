@@ -7,16 +7,16 @@ export const textSlice = (
 ): string => {
     if (!text || text === "") {
         switch (textType) {
-            case "title":
-                return "Без заголовка";
-            case "description":
-                return "Без описания";
-            case "address":
-                return "Без адреса";
-            case "none":
-                return "";
-            default:
-                return "";
+        case "title":
+            return "Без заголовка";
+        case "description":
+            return "Без описания";
+        case "address":
+            return "Без адреса";
+        case "none":
+            return "";
+        default:
+            return "";
         }
     }
     return text.length > length ? `${text.slice(0, length - 1)}..` : text;

@@ -7,9 +7,9 @@ import { RequestsWidget } from "@/widgets/RequestsWidget";
 
 import { DashboardNotifications } from "@/widgets/DashboardNotifications/";
 
-import styles from "./HostDashboard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./HostDashboard.module.scss";
 
 const HostDashboardPage: FC = () => {
     const { ready } = useTranslation("host");

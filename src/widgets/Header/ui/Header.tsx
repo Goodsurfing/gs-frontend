@@ -6,9 +6,9 @@ import cn from "classnames";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import { Logotype } from "@/widgets/Loogtype";
 
-import styles from "./Header.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
+import styles from "./Header.module.scss";
 
 interface HeaderProps {
     className?: string;

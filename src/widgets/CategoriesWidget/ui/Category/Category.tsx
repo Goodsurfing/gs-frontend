@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import threeDots from "@/shared/assets/icons/three-dots.svg";
 
-import styles from "./Category.module.scss";
 import { getVacancyText } from "@/shared/data/categories";
 import { Locale } from "@/entities/Locale";
+import styles from "./Category.module.scss";
 
 interface CategoryProps {
     title: string;

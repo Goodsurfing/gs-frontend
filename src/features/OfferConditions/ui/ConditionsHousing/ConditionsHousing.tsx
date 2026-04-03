@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-import { HousingFields } from "../../model/types/offerConditions";
-import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { House } from "@/shared/data/conditions";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import { HousingFields } from "../../model/types/offerConditions";
 import styles from "./ConditionsHousing.module.scss";
 
 export interface ConditionsHousingProps {

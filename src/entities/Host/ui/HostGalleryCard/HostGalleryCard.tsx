@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 
-import styles from "./HostGalleryCard.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./HostGalleryCard.module.scss";
 
 interface HostGalleryCardProps {
     className?: string;

@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import styles from "./OfferQuestions.module.scss";
 import Input from "@/shared/ui/Input/Input";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
+import styles from "./OfferQuestions.module.scss";
 
 interface OfferQuestionsProps {
     value: string[];

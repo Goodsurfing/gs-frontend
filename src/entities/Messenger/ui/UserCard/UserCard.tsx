@@ -8,16 +8,16 @@ import { useTranslation } from "react-i18next";
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import {
-    ChatsList,
-} from "../../model/types/messenger";
-import styles from "./UserCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { formatMessageDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getOfferStateColor } from "@/shared/lib/offerState";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { useGetProfileInfoByIdQuery } from "@/entities/Profile/api/profileApi";
+import styles from "./UserCard.module.scss";
+import {
+    ChatsList,
+} from "../../model/types/messenger";
 
 interface UserCardProps {
     dataChat: ChatsList;

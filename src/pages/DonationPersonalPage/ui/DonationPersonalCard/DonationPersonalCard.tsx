@@ -4,8 +4,8 @@ import {
     getMediaContentsArray,
 } from "@/shared/lib/getMediaContent";
 import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
-import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
 import { GetDonation, HeaderDonationCard } from "@/entities/Donation";
+import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
 import { DonationPersonalCardCategory } from "../DonationPersonalCardCategory/DonationPersonalCardCategory";
 
 interface DonationPersonalCardProps {

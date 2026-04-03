@@ -5,8 +5,8 @@ import { VolunteerSkillsForm } from "@/features/VolunteerSkills";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import styles from "./VolunteerSkillsPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./VolunteerSkillsPage.module.scss";
 
 const VolunteerSkillsPage = () => {
     const { t, ready } = useTranslation("volunteer");

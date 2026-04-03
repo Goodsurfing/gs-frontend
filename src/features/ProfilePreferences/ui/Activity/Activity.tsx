@@ -3,11 +3,11 @@ import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
-import { CategoryCard } from "../CategoryCard/CategoryCard";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./Activity.module.scss";
 
 interface ActivityProps {

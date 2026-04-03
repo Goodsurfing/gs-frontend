@@ -22,12 +22,12 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { volunteerSkillsAdapter, volunteerSkillsApiAdapter } from "../../lib/volunteerSkillsAdapter";
-import { VolunteerSkillsField } from "../../model/types/volunteerSkills";
-import { VolunteerLanguage } from "../VolunteerLanguage/VolunteerLanguage";
 import { VOLUNTEER_SKILLS_FORM } from "@/shared/constants/localstorage";
 import { Profile, useUpdateVolunteerMutation } from "@/entities/Profile";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { volunteerSkillsAdapter, volunteerSkillsApiAdapter } from "../../lib/volunteerSkillsAdapter";
+import { VolunteerSkillsField } from "../../model/types/volunteerSkills";
+import { VolunteerLanguage } from "../VolunteerLanguage/VolunteerLanguage";
 import styles from "./VolunteerSkillsForm.module.scss";
 
 interface VolunteerSkillsFormProps {

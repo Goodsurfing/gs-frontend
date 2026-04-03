@@ -6,9 +6,9 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { getSignInPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 
-import styles from "./ConfirmEmailSuccessPage.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ConfirmEmailSuccessPage.module.scss";
 
 const ConfirmEmailSuccessPage: FC = () => {
     const { locale } = useLocale();

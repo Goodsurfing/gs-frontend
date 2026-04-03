@@ -3,8 +3,7 @@ import React, { FC, useMemo } from "react";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { ArticleCardType } from "@/entities/Article";
-import { ArticleCard } from "@/entities/Article/";
+import { ArticleCardType, ArticleCard } from "@/entities/Article";
 
 import { getBlogPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 

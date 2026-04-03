@@ -9,9 +9,9 @@ import { Host } from "@/entities/Host";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
-import styles from "./VolunteerHostCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
+import styles from "./VolunteerHostCard.module.scss";
 
 interface VolunteerHostCardProps {
     host: Host;

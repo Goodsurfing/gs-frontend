@@ -7,8 +7,8 @@ import {
     Box,
     Typography,
 } from "@mui/material";
-import styles from "./AdminFiltersTable.module.scss";
 import { AdminSort } from "@/entities/Admin";
+import styles from "./AdminFiltersTable.module.scss";
 
 export interface BaseFilterFields {
     sort?: AdminSort;

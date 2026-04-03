@@ -22,6 +22,8 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Input from "@/shared/ui/Input/Input";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import {
     offerWhoNeedsAdapter,
 } from "../../lib/offerWhoNeedsAdapter";
@@ -30,8 +32,6 @@ import { AgeComponent, MINIMAL_AGE_FOR_VOLUNTEER } from "../Age/Age";
 import { GenderComponent } from "../Gender/Gender";
 import LanguagesGroup from "../LanguagesGroup/LanguagesGroup";
 import Location from "../Location/Location";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./WhoNeedsForm.module.scss";
 
 const ageDefaultValue: Age = { minAge: MINIMAL_AGE_FOR_VOLUNTEER, maxAge: 18 };

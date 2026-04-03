@@ -4,10 +4,10 @@ import React, {
 import { Map, YMaps } from "@pbe/react-yandex-maps";
 import classNames from "classnames";
 import { YMapsModules } from "@pbe/react-yandex-maps/typings/util/typing";
+import { Locale } from "@/entities/Locale";
 import { MapDefaultState, YmapType } from "../../model/types/map";
 
 import styles from "./Ymap.module.scss";
-import { Locale } from "@/entities/Locale";
 
 export interface MapProps {
     modules?: YMapsModules;

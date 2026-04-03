@@ -19,8 +19,8 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import styles from "./AdminReviewsNewsTable.module.scss";
 import { getFullName } from "@/shared/lib/getFullName";
+import styles from "./AdminReviewsNewsTable.module.scss";
 
 interface ReviewFilters {
     id?: string;

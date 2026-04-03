@@ -7,12 +7,12 @@ import { HostMember } from "@/entities/Host";
 import deleteIcn from "@/shared/assets/icons/delete.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import styles from "./TeamCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Profile } from "@/entities/Profile";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Locale } from "@/entities/Locale";
+import styles from "./TeamCard.module.scss";
 
 interface TeamCardProps {
     teamUser?: HostMember;

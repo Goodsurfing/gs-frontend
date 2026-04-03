@@ -1,5 +1,5 @@
-import { MessageTypeMocked, UserChatType } from "../types/messenger";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
+import { MessageTypeMocked, UserChatType } from "../types/messenger";
 
 export const mockedChatUser: UserChatType = {
     id: "1",

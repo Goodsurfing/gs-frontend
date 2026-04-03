@@ -1,8 +1,8 @@
 import { ArticleCardType } from "@/entities/Article";
-import { GetBlogList, GetReviewBlog } from "../model/types/blogSchema";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Comments } from "@/features/Article";
 import { getFullName } from "@/shared/lib/getFullName";
+import { GetBlogList, GetReviewBlog } from "../model/types/blogSchema";
 
 export const blogArticleCardAdapter = (
     data: GetBlogList[],

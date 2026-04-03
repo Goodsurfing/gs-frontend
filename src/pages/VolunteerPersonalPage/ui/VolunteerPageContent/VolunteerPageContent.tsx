@@ -2,10 +2,10 @@ import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import styles from "./VolunteerPageContent.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
 import { VolunteerInfoCard } from "@/entities/Volunteer/ui/VolunteerInfoCard/VolunteerInfoCard";
 import { ProfileById } from "@/entities/Profile";
+import styles from "./VolunteerPageContent.module.scss";
 
 interface VolunteerPageContentProps {
     profileData?: ProfileById;

@@ -2,20 +2,14 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import { authApi } from "@/store/api/authApi";
 
-import { localeApi } from "./api/localeApi";
-
 import { userReducer } from "@/entities/User";
 
 import { profileApi, profileReducer } from "@/entities/Profile";
 
 import { galleryApi, galleryReducer } from "@/entities/Gallery";
 
-import registerReducer from "./reducers/registerSlice";
-import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
-import { organizationApi } from "./api/organizationApi";
 import { hostApi } from "@/entities/Host";
 import { offerApi } from "@/entities/Offer";
-import { authMiddleware } from "./middlewares/authMiddleware";
 import { reviewApi } from "@/entities/Review";
 import { volunteerApi } from "@/entities/Volunteer";
 import { chatApi } from "@/entities/Chat";
@@ -32,6 +26,11 @@ import { blogApi } from "@/entities/Blog";
 import { journalApi } from "@/entities/Journal";
 import { videoApi } from "@/entities/Video";
 import { donationApi } from "@/entities/Donation";
+import { authMiddleware } from "./middlewares/authMiddleware";
+import { organizationApi } from "./api/organizationApi";
+import { userOrganizationInfoApi } from "./api/userOrganizationInfoApi";
+import registerReducer from "./reducers/registerSlice";
+import { localeApi } from "./api/localeApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,

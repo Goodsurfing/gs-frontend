@@ -3,12 +3,12 @@ import React, {
 } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
-import styles from "./Categories.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
 import { OfferCategories } from "@/widgets/OfferCategories";
-import { BluePoint } from "../BluePoint/BluePoint";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { BluePoint } from "../BluePoint/BluePoint";
+import styles from "./Categories.module.scss";
 
 interface CategoriesProps {
     className?: string;

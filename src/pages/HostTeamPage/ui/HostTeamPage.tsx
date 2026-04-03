@@ -1,8 +1,8 @@
 import { FC } from "react";
 
 import { TeamForm } from "@/features/TeamForm";
-import styles from "./HostTeamPage.module.scss";
 import { useGetMyHostQuery } from "@/entities/Host";
+import styles from "./HostTeamPage.module.scss";
 
 const HostTeamPage: FC = () => {
     const { data: hostData } = useGetMyHostQuery();

@@ -1,8 +1,8 @@
 import React, { FC, memo } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
-import styles from "./OfferExtraConditionsCard.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./OfferExtraConditionsCard.module.scss";
 
 interface OfferExtraConditionsCardProps {
     extraConditions: string;

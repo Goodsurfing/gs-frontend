@@ -2,10 +2,10 @@ import React, { FC } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { SelectSort } from "../SelectSort/SelectSort";
-import { ButtonClose } from "../ButtonClose/ButtonClose";
 import { DonationFilterFields } from "@/entities/Donation";
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import { SelectSort } from "../SelectSort/SelectSort";
+import { ButtonClose } from "../ButtonClose/ButtonClose";
 import styles from "./HeaderList.module.scss";
 
 interface HeaderListProps {

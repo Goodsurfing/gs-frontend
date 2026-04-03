@@ -2,9 +2,9 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
+import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 import { ambassadorsData } from "../../model/data/ambassadors";
 import styles from "./Ambassador.module.scss";
-import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 
 interface AmbassadorProps {
     className?: string;

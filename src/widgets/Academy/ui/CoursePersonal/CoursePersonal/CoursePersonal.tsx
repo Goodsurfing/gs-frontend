@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import styles from "./CoursePersonal.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
-import { CourseContent } from "../CourseContent/CourseContent";
 import { useGetCourseByIdQuery } from "@/entities/Academy";
+import { CourseContent } from "../CourseContent/CourseContent";
+import styles from "./CoursePersonal.module.scss";
 import { Header } from "../Header/Header";
 
 interface CoursePersonalProps {

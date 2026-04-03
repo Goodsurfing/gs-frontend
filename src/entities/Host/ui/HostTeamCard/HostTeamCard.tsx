@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next";
 
 import { TeamCard } from "@/features/TeamForm/ui/TeamCard/TeamCard";
 
-import { useGetHostMembersByIdQuery } from "../../api/hostApi";
-import styles from "./HostTeamCard.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
+import styles from "./HostTeamCard.module.scss";
+import { useGetHostMembersByIdQuery } from "../../api/hostApi";
 
 interface HostTeamCardProps {
     hostId: string;

@@ -10,8 +10,8 @@ import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { useGetChatListData } from "@/entities/Chat";
 import { ChatsList, UserCard } from "@/entities/Messenger";
 
-import { ListFilter } from "../ListFilter/ListFilter";
 import { useMessenger } from "@/app/providers/MessengerProvider";
+import { ListFilter } from "../ListFilter/ListFilter";
 import styles from "./MessengerList.module.scss";
 
 interface MessengerListProps {

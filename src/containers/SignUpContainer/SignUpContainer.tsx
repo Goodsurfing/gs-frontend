@@ -12,9 +12,9 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 import { AuthByVk } from "@/features/AuthByVk";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import styles from "./SignUpContainer.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import styles from "./SignUpContainer.module.scss";
 
 const SignUpContainer: FC = () => {
     const { locale } = useLocale();

@@ -1,6 +1,6 @@
 import type { Profile } from "@/entities/Profile";
-import { ProfileInfoFields } from "../model/types/profileInfo";
 import { parseDate } from "@/shared/lib/formatDate";
+import { ProfileInfoFields } from "../model/types/profileInfo";
 
 export function profileInfoFormAdapter(data: Profile): ProfileInfoFields {
     const {

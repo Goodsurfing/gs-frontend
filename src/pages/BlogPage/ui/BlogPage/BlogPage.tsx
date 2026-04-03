@@ -6,10 +6,6 @@ import { MemberBanner } from "@/features/MemberBanner";
 
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 
-import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
-import { ArticlesList } from "../ArticlesList/ArticlesList";
-import { Category } from "../Category/Category";
-import { Header } from "../Header/Header";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
 import { TagsOption } from "@/features/Article";
@@ -17,17 +13,21 @@ import { blogArticleCardAdapter, useLazyGetBlogListQuery } from "@/entities/Blog
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { Header } from "../Header/Header";
+import { Category } from "../Category/Category";
+import { ArticlesList } from "../ArticlesList/ArticlesList";
+import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
 import styles from "./BlogPage.module.scss";
 
 const limit = 10;
 
 const getSortByFilter = (filter: TagsOption): AdminSort => {
     switch (filter) {
-        case "popular":
-            return AdminSort.LikeBlogDesc;
-        case "new":
-        default:
-            return AdminSort.CreatedDesc;
+    case "popular":
+        return AdminSort.LikeBlogDesc;
+    case "new":
+    default:
+        return AdminSort.CreatedDesc;
     }
 };
 

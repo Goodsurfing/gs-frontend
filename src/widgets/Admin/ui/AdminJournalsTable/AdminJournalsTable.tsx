@@ -23,9 +23,9 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminJournalCreatePageUrl, getAdminJournalPersonalPageUrl, getJournalPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import styles from "./AdminJournalsTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import CustomLink from "@/shared/ui/Link/Link";
+import styles from "./AdminJournalsTable.module.scss";
 
 interface JournalFilters {
     name?: string;

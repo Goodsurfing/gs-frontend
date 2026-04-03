@@ -6,6 +6,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 
+import { ProfileById } from "@/entities/Profile";
+import { useLazyGetHostByIdQuery } from "@/entities/Host";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
 import { VolunteerLanguagesCard } from "../VolunteerLanguagesCard/VolunteerLanguagesCard";
@@ -14,11 +17,8 @@ import { VolunteerSkillsCard } from "../VolunteerSkillsCard/VolunteerSkillsCard"
 import { VolunteerVideoGalleryCard } from "../VolunteerVideoGalleryCard/VolunteerVideoGalleryCard";
 import { VolunteerCertificatesCard } from "../VolunteerCertificatesCard/VolunteerCertificatesCard";
 import { VolunteerOffersCard } from "../VolunteerOffersCard/VolunteerOffersCard";
-import { ProfileById } from "@/entities/Profile";
 import { VolunteerHostCard } from "../VolunteerHostCard/VolunteerHostCard";
-import { useLazyGetHostByIdQuery } from "@/entities/Host";
 import styles from "./VolunteerInfoCard.module.scss";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 interface VolunteerInfoCardProps {
     className?: string;

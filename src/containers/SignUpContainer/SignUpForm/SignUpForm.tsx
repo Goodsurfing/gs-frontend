@@ -18,8 +18,8 @@ import { setRegisterUserData } from "@/store/reducers/registerSlice";
 
 import { IAuthFormData, IRegisterFormData } from "@/types/api/auth/register.interface";
 
-import styles from "./SignUpForm.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./SignUpForm.module.scss";
 
 const SignUpForm: FC = () => {
     const [registerUser, { isError }] = authApi.useRegisterUserMutation();

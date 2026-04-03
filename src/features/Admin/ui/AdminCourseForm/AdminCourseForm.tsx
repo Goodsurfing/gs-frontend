@@ -19,11 +19,8 @@ import {
 } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
-import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
-import { AdminExpertSelectorModal } from "../AdminExpertSelectorModal/AdminExpertSelectorModal";
 import {
     useLazyGetAdminCourseLessonsQuery,
     useCreateAdminCourseLessonMutation,
@@ -32,6 +29,9 @@ import {
     useLazyGetAdminCourseLessonQuery,
 } from "@/entities/Admin/api/adminCourseApi";
 import { OfferPagination } from "@/widgets/OffersMap";
+import { AdminExpertSelectorModal } from "../AdminExpertSelectorModal/AdminExpertSelectorModal";
+import { AdminUsersSearchForm } from "../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
+import { AdminLessonFormModal } from "../AdminLessonFormModal/AdminLessonFormModal";
 import styles from "./AdminCourseForm.module.scss";
 
 interface AdminCourseFormProps {

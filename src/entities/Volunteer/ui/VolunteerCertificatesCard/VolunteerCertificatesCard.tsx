@@ -1,5 +1,5 @@
 import React, { FC, memo, useMemo } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import cn from "classnames";
 import "swiper/css";
 import "swiper/css/navigation";

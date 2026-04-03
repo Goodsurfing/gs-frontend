@@ -5,8 +5,8 @@ import { ReactSVG } from "react-svg";
 import eye from "@/shared/assets/icons/eye.svg";
 import eyeHide from "@/shared/assets/icons/eye-hide.svg";
 
-import styles from "./InputField.module.scss";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import styles from "./InputField.module.scss";
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;

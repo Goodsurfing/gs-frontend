@@ -1,7 +1,7 @@
 import { Pagination } from "@/types/api/pagination";
-import { AdminSort } from "./adminSchema";
 import { Image } from "@/types/media";
 import { CategoryNews } from "@/types/categories";
+import { AdminSort } from "./adminSchema";
 
 export interface AdminVideoAuthorFileds {
     id: string;

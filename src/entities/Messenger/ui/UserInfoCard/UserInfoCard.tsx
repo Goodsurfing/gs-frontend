@@ -20,7 +20,6 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 
-import styles from "./UserInfoCard.module.scss";
 import { formatDate } from "@/shared/lib/formatDate";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { ProfileById } from "@/entities/Profile";
@@ -28,6 +27,7 @@ import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import { textSlice } from "@/shared/lib/textSlice";
 import CustomLink from "@/shared/ui/Link/Link";
+import styles from "./UserInfoCard.module.scss";
 
 interface UserInfoCardProps {
     user: ProfileById;

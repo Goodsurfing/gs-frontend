@@ -9,6 +9,9 @@ import { useTranslation } from "react-i18next";
 import { OFFER_WHEN_FORM } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
 
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import {
     offerWhenFormAdapter,
     offerWhenFormApiAdapter,
@@ -23,10 +26,7 @@ import { OfferWhenPeriods } from "../OfferWhenPeriods/OfferWhenPeriods";
 import { OfferWhenRequests } from "../OfferWhenRequests/OfferWhenRequests";
 import { OfferWhenSlider } from "../OfferWhenSlider/OfferWhenSlider";
 import { OfferWhenTimeSettings } from "../OfferWhenTimeSettings/OfferWhenTimeSettings";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./OfferWhenForm.module.scss";
-import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
 interface OfferWhenFormProps {
     initialData?: OfferWhenFields | null;

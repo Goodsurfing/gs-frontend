@@ -2,8 +2,8 @@ import React, { FC, memo } from "react";
 
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import styles from "./OfferContributorCard.module.scss";
 import CustomLink from "@/shared/ui/Link/Link";
+import styles from "./OfferContributorCard.module.scss";
 
 interface OfferContributorCardProps {
     url: string;

@@ -5,11 +5,11 @@ import { OfferCard } from "@/entities/Offer";
 
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
-import { TermsApplication } from "../TermsApplication/TermsApplication";
-import styles from "./OfferApplication.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useCategories } from "@/shared/data/categories";
 import { FormApplicationOffer, FormApplicationStatus } from "@/entities/Application";
+import styles from "./OfferApplication.module.scss";
+import { TermsApplication } from "../TermsApplication/TermsApplication";
 
 type OfferApplcation = Omit<FormApplicationOffer, "applicationEndDate" | "categories"> & {
     categoryName: string;

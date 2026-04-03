@@ -7,9 +7,9 @@ import cancelIcon from "@/shared/assets/icons/mobile-cancel.svg";
 import { getAdminUsersPageUrl, getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
-import styles from "./AdminSignInPage.module.scss";
 import { AdminAuth } from "@/features/Admin";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./AdminSignInPage.module.scss";
 
 const AdminSignInPage = () => {
     const { locale } = useLocale();

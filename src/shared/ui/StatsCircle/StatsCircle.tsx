@@ -7,10 +7,10 @@ import {
 import { memo, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import cn from "classnames";
+import { createDoughnutData } from "@/shared/utils/chartJS";
 import styles from "./StatsCircle.module.scss";
 
 import { IStatsCircle } from "./StatsCircle.types";
-import { createDoughnutData } from "@/shared/utils/chartJS";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

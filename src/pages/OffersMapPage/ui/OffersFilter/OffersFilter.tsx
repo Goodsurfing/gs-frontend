@@ -10,8 +10,8 @@ import { PeriodsFilter } from "@/widgets/OffersMap/ui/PeriodsFilter/PeriodsFilte
 
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import styles from "./OffersFilter.module.scss";
 import Button from "@/shared/ui/Button/Button";
+import styles from "./OffersFilter.module.scss";
 
 interface DropdownState {
     isCategoriesOpened: boolean;
@@ -52,26 +52,26 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
             switch (type) {
-                case "CATEGORIES":
-                    return {
-                        isExtraFiltersOpened: false,
-                        isPeriodsOpened: false,
-                        isCategoriesOpened: !prev.isCategoriesOpened,
-                    };
-                case "PERIODS":
-                    return {
-                        isCategoriesOpened: false,
-                        isExtraFiltersOpened: false,
-                        isPeriodsOpened: !prev.isPeriodsOpened,
-                    };
-                case "EXTRAFILTERS":
-                    return {
-                        isCategoriesOpened: false,
-                        isPeriodsOpened: false,
-                        isExtraFiltersOpened: !prev.isExtraFiltersOpened,
-                    };
-                default:
-                    return prev;
+            case "CATEGORIES":
+                return {
+                    isExtraFiltersOpened: false,
+                    isPeriodsOpened: false,
+                    isCategoriesOpened: !prev.isCategoriesOpened,
+                };
+            case "PERIODS":
+                return {
+                    isCategoriesOpened: false,
+                    isExtraFiltersOpened: false,
+                    isPeriodsOpened: !prev.isPeriodsOpened,
+                };
+            case "EXTRAFILTERS":
+                return {
+                    isCategoriesOpened: false,
+                    isPeriodsOpened: false,
+                    isExtraFiltersOpened: !prev.isExtraFiltersOpened,
+                };
+            default:
+                return prev;
             }
         });
     };

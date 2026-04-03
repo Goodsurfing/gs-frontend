@@ -12,11 +12,11 @@ import {
     ExtraFeatures,
     Facilities,
 } from "@/entities/Offer/model/types/offerConditions";
-import styles from "./OfferTermsCard.module.scss";
-import { TermsCard } from "../FacilityCard/TermsCard";
 import { Text } from "@/shared/ui/Text/Text";
 import { FoodImageObject, HouseImageObject, TransferImageObject } from "@/shared/data/conditions";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { TermsCard } from "../FacilityCard/TermsCard";
+import styles from "./OfferTermsCard.module.scss";
 
 interface OfferTermsCardProps {
     facilities: Facilities[];

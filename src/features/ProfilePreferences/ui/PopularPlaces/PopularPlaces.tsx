@@ -2,9 +2,9 @@ import React, { FC, memo, useState } from "react";
 
 import { SelectableGroup } from "@/shared/ui/SelectableGroup/SelectableGroup";
 
+import { usePopularPlaces } from "@/shared/data/popularPlaces";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
 import styles from "./PopularPlaces.module.scss";
-import { usePopularPlaces } from "@/shared/data/popularPlaces";
 
 export const PopularPlaces: FC = memo(() => {
     const { tags } = usePopularPlaces();

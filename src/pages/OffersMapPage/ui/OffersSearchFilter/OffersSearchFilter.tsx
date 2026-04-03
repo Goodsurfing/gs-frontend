@@ -9,13 +9,13 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
 
+import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
+import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
 import styles from "./OffersSearchFilter.module.scss";
-import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
-import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 const defaultValues: OffersFilterFields = {
     offersSort: {

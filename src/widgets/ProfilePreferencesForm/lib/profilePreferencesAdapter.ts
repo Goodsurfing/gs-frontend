@@ -1,5 +1,5 @@
-import { ProfilePreferencesField } from "../model/types/profilePreferences";
 import { Profile, UpdateProfilePreferences } from "@/entities/Profile";
+import { ProfilePreferencesField } from "../model/types/profilePreferences";
 
 export const profilePreferencesApiAdapter = (
     data: ProfilePreferencesField,

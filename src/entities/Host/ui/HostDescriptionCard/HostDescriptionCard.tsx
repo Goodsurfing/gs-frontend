@@ -2,8 +2,8 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Host } from "../../model/types/host";
 import { Text } from "@/shared/ui/Text/Text";
+import { Host } from "../../model/types/host";
 import styles from "./HostDescriptionCard.module.scss";
 
 interface HostDescriptionCardProps {

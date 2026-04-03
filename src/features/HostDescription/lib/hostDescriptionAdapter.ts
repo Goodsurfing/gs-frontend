@@ -1,4 +1,5 @@
 import { CreateHost, Host, HostApi } from "@/entities/Host";
+import { BASE_URL } from "@/shared/constants/api";
 import {
     HostDescriptionFormFields,
     HostDescriptionMainInfoFields,
@@ -6,7 +7,6 @@ import {
     HostDescriptionTypeFields,
     OrganizationType,
 } from "../model/types/hostDescription";
-import { BASE_URL } from "@/shared/constants/api";
 
 const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ"] as const;
 

@@ -4,10 +4,10 @@ import { AdminFoodFields, AdminFoodForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useEditFoodMutation, useGetFoodByIdQuery } from "@/entities/Admin";
-import styles from "./AdminFoodInfo.module.scss";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminFoodInfo.module.scss";
 
 interface AdminFoodInfoProps {
     foodId: number;

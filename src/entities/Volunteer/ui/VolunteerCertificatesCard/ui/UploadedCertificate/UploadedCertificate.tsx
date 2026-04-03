@@ -4,8 +4,8 @@ import { ReactSVG } from "react-svg";
 import cn from "classnames";
 import closeBtnImg from "@/shared/assets/icons/delete.svg";
 
-import styles from "./UploadedCertificate.module.scss";
 import fileIcon from "@/shared/assets/icons/skills/administration.svg";
+import styles from "./UploadedCertificate.module.scss";
 
 interface UploadedCertificateProps {
     certificate: string;

@@ -1,7 +1,7 @@
 import { Pagination } from "@/types/api/pagination";
-import { AdminSort } from "./adminSchema";
 import { Image } from "@/types/media";
 import { BlogCategory } from "@/entities/Blog";
+import { AdminSort } from "./adminSchema";
 
 export interface GetAdminBlogList {
     id: number;

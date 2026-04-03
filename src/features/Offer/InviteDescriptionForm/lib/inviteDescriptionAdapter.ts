@@ -1,7 +1,7 @@
 import { OfferDescription, UpdateOfferDescription } from "@/entities/Offer";
 
-import { OfferDescriptionField } from "../model/types/inviteDescription";
 import { Image } from "@/types/media";
+import { OfferDescriptionField } from "../model/types/inviteDescription";
 
 export const inviteDescriptionApiAdapter = (
     data: OfferDescriptionField,

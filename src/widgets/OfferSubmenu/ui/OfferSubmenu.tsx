@@ -14,9 +14,9 @@ import {
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
 import Button, { ButtonColor, ButtonSize, ButtonVariant } from "@/shared/ui/Button/Button";
 
-import styles from "./OfferSubmenu.module.scss";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
+import styles from "./OfferSubmenu.module.scss";
 
 interface OfferSubmenuProps {
     offerData: Offer;

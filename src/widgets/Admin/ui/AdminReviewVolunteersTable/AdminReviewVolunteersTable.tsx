@@ -22,9 +22,9 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import styles from "./AdminReviewVolunteersTable.module.scss";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminReviewVolunteersTable.module.scss";
 
 interface AchievementFilters {
     sortVolunteer?: AdminSort;

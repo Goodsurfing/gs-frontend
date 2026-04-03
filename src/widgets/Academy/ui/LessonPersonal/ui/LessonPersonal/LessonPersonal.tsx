@@ -4,9 +4,9 @@ import { getAcademyCoursePageUrl, getAcademyLessonPageUrl, getAcademyMainPageUrl
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetCourseLessonByIdQuery, useWatchLessonMutation } from "@/entities/Academy/api/courseApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { LessonVideo } from "../LessonVideo/LessonVideo";
 import { LessonReview } from "@/features/Academy";
 import CustomLink from "@/shared/ui/Link/Link";
+import { LessonVideo } from "../LessonVideo/LessonVideo";
 import styles from "./LessonPersonal.module.scss";
 
 interface LessonPersonalProps {

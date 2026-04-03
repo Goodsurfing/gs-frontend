@@ -5,9 +5,9 @@ import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
 import logoIcon from "@/shared/assets/icons/logo-black.svg";
-import styles from "./EmptyHeader.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./EmptyHeader.module.scss";
 
 interface EmptyHeaderProps {
     children?: ReactNode;

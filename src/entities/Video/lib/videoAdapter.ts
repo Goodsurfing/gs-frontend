@@ -1,10 +1,10 @@
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Comments } from "@/features/Article";
+import { getFullName } from "@/shared/lib/getFullName";
 import {
     CreateVideo, GetReviewsVideo, GetVideos, VideoFields,
 } from "../model/types/videoSchema";
 import { VideoCardType } from "../ui/VideoCard/VideoCard";
-import { Comments } from "@/features/Article";
-import { getFullName } from "@/shared/lib/getFullName";
 
 export const videoApiAdapter = (video: VideoFields): CreateVideo => {
     const {

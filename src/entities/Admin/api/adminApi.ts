@@ -1,6 +1,18 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import {
+    CategoryCountVacancy, CreateCategoryParams, GetCategory,
+    GetCategoryRequest, GetCategoryResponse, UpdateCategoryParams,
+} from "@/types/categories";
+import { PaginationParams } from "@/types/api/pagination";
+import { GetSkillRequest, Skill } from "@/types/skills";
+import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
+import {
+    Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
+} from "@/shared/data/conditions";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
+import {
     AdminOrganization,
     AdminReviewVacancy,
     AdminReviewVolunteer,
@@ -56,18 +68,6 @@ import {
     UpdateAdminVacancyWhereRequest,
     UpdateAdminVacancyWhoNeedsRequest,
 } from "../model/types/adminSchema";
-import {
-    CategoryCountVacancy, CreateCategoryParams, GetCategory,
-    GetCategoryRequest, GetCategoryResponse, UpdateCategoryParams,
-} from "@/types/categories";
-import { PaginationParams } from "@/types/api/pagination";
-import { GetSkillRequest, Skill } from "@/types/skills";
-import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achievements";
-import {
-    Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
-} from "@/shared/data/conditions";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
-import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
 
 interface GoodsurfingToday {
     volunteerCount: number;

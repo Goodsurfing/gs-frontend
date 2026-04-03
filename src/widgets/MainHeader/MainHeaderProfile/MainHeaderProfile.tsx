@@ -24,8 +24,8 @@ import Arrow from "@/shared/ui/Arrow/Arrow";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
-import styles from "./MainHeaderProfile.module.scss";
 import { textSlice } from "@/shared/lib/textSlice";
+import styles from "./MainHeaderProfile.module.scss";
 
 interface MainHeaderProfileProps {
     profileData?: Profile;

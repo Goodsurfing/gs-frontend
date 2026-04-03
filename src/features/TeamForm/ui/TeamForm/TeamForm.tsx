@@ -18,12 +18,12 @@ import {
 import { InfoText } from "@/shared/ui/InfoText/InfoText";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { Text as TextShared } from "@/shared/ui/Text/Text";
 import { TeamCard } from "../TeamCard/TeamCard";
 import { TeamInput } from "../TeamInput/TeamInput";
 import { Text } from "../Text/Text";
 import styles from "./TeamForm.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { Text as TextShared } from "@/shared/ui/Text/Text";
 
 interface TeamFormProps {
     hostId: string;

@@ -2,10 +2,10 @@ import cn from "classnames";
 import { memo } from "react";
 
 import { useTranslation } from "react-i18next";
+import { TextWithPoint } from "@/shared/ui/TextWithPoint/TextWithPoint";
 import { StatsChartPoints } from "../../model/types/chart";
 
 import styles from "./StatsPoints.module.scss";
-import { TextWithPoint } from "@/shared/ui/TextWithPoint/TextWithPoint";
 
 interface StatsPointsProps {
     className?: string;

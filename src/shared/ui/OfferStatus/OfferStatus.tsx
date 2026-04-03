@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import styles from "./OfferStatus.module.scss";
 import { OfferStatus as OfferStatusType } from "@/entities/Offer";
 import { useOfferStatus } from "@/shared/hooks/useOfferStatus";
+import styles from "./OfferStatus.module.scss";
 
 interface OfferStatusProps {
     status: OfferStatusType;

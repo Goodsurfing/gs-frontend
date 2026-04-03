@@ -1,7 +1,7 @@
 {
     "root": true,
     "plugins": ["@typescript-eslint"],
-    "extends": ["airbnb", "airbnb-typescript", "airbnb/hooks"],
+    "extends": ["airbnb", "airbnb/hooks"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
@@ -16,12 +16,11 @@
         "no-underscore-dangle": "off",
         "react/react-in-jsx-scope": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
-        "@typescript-eslint/indent": ["error", 4],
+        "indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
         "arrow-body-style": ["error", "as-needed"],
         "no-console": "error",
-        "@typescript-eslint/type-annotation-spacing": ["error"],
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/no-static-element-interactions": "off",
@@ -41,7 +40,7 @@
                 "unnamedComponents": "arrow-function"
             }
         ],
-        "@typescript-eslint/quotes": ["error", "double"],
+        "quotes": ["error", "double"],
         "semi": "error",
         "no-param-reassign": 0,
         "linebreak-style": ["warn", "unix"],
@@ -49,8 +48,7 @@
             "allowForLoopAfterthoughts": true
         }],
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/semi": ["error"]
+        "@typescript-eslint/no-var-requires": 0
     },
     "env": {
         "browser": true,
@@ -58,10 +56,34 @@
         "node": true,
         "es2021": true
     },
-    "overrides": [{
-        "files": ["**/src/**/*.test.{ts,tsx}"],
-        "rules": {
-            "i18next/no-literal-string": "off"
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "project": "./tsconfig.json"
+            },
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+            }
         }
-    }]
+    },
+    "overrides": [
+        {
+            "files": ["**/*.{ts,tsx}"],
+            "extends": ["plugin:@typescript-eslint/recommended"],
+            "rules": {
+                "no-undef": "off",
+                "no-unused-vars": "off",
+                "no-redeclare": "off",
+                "camelcase": "off",
+                "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-redeclare": "off"
+            }
+        },
+        {
+            "files": ["**/src/**/*.test.{ts,tsx}"],
+            "rules": {
+                "i18next/no-literal-string": "off"
+            }
+        }
+    ]
 }

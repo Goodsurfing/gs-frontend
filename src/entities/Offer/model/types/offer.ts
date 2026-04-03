@@ -2,6 +2,8 @@ import { CategoryWithoutImage } from "@/types/categories";
 
 import { Article } from "@/entities/Article";
 
+import { Pagination } from "@/types/api/pagination";
+import { Image } from "@/types/media";
 import {
     OfferConditions,
 } from "./offerConditions";
@@ -16,8 +18,6 @@ import { OfferWhatToDo } from "./offerWhatToDo";
 import { OfferWhen, OfferWhenPeriods, OldOfferWhen } from "./offerWhen";
 import { OfferWhere } from "./offerWhere";
 import { OfferWhoNeeds, OldOfferWhoNeeds } from "./offerWhoNeeds";
-import { Pagination } from "@/types/api/pagination";
-import { Image } from "@/types/media";
 
 export interface UpdateOldOffer {
     where: OfferWhere;

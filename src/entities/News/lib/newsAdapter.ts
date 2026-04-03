@@ -1,8 +1,8 @@
 import { Comments } from "@/features/Article";
-import { GetNewsList, GetReviewsNews } from "../model/types/newsSchema";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getFullName } from "@/shared/lib/getFullName";
 import { ArticleCardType } from "@/entities/Article";
+import { GetNewsList, GetReviewsNews } from "../model/types/newsSchema";
 
 export const newsReviewsAdapter = (data: GetReviewsNews[]): Comments[] => data.map((value) => {
     const { author, created, description } = value;

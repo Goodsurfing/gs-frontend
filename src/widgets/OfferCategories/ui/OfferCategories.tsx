@@ -1,10 +1,10 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { FC, MouseEvent } from "react";
 
-import styles from "./OfferCategories.module.scss";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./OfferCategories.module.scss";
 
 interface OfferCategoriesProps {
     value?: number | number[];

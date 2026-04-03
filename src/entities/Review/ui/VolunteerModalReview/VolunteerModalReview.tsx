@@ -3,9 +3,9 @@ import React, { FC } from "react";
 import { ReviewTypeFields } from "@/features/Notes";
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { NotDoneReviewVolunteer } from "../../model/types/review";
 import { MiniOfferReview } from "../MiniOfferReview/MiniOfferReview";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface VolunteerModalReviewProps {
     application: NotDoneReviewVolunteer | null;

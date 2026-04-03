@@ -11,12 +11,12 @@ import errorIcon from "@/shared/assets/icons/error.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import fileIcon from "@/shared/assets/icons/skills/administration.svg";
 
-import styles from "./Message.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useLazyGetMediaObjectByIdQuery } from "@/entities/Gallery";
 import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./Message.module.scss";
 
 interface MessageProps {
     locale: Locale;

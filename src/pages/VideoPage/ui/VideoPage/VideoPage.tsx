@@ -4,11 +4,6 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 
 import { MemberBanner } from "@/features/MemberBanner";
 
-import { Category } from "../Category/Category";
-import { Header } from "../Header/Header";
-import { VideoFilter } from "../VideoFilter/VideoFilter";
-import { VideoList } from "../VideoList/VideoList";
-import { VideoSearch } from "../VideoSearch/VideoSearch";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { TagsOption } from "@/features/Article";
 import { AdminSort } from "@/entities/Admin";
@@ -21,18 +16,23 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./VideoPage.module.scss";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./VideoPage.module.scss";
+import { VideoSearch } from "../VideoSearch/VideoSearch";
+import { VideoList } from "../VideoList/VideoList";
+import { VideoFilter } from "../VideoFilter/VideoFilter";
+import { Header } from "../Header/Header";
+import { Category } from "../Category/Category";
 
 const limit = 10;
 
 const getSortByFilter = (filter: TagsOption): AdminSort => {
     switch (filter) {
-        case "popular":
-            return AdminSort.LikeCountDesc;
-        case "new":
-        default:
-            return AdminSort.CreatedDesc;
+    case "popular":
+        return AdminSort.LikeCountDesc;
+    case "new":
+    default:
+        return AdminSort.CreatedDesc;
     }
 };
 

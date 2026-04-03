@@ -9,8 +9,8 @@ import { useGetProfileInfoQuery } from "@/entities/Profile";
 
 import { PageLayout } from "@/widgets/PageLayout";
 
-import { FillSidebarData } from "../lib/fillSidebarData";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { FillSidebarData } from "../lib/fillSidebarData";
 import styles from "./HostsLayoutPage.module.scss";
 
 export const HostsLayoutPage = () => {

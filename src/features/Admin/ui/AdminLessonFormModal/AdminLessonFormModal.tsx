@@ -10,8 +10,8 @@ import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Button from "@/shared/ui/Button/Button";
 import { AdminLessonFields } from "@/entities/Admin";
-import styles from "./AdminLessonFormModal.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
+import styles from "./AdminLessonFormModal.module.scss";
 
 interface AdminLessonFormModalProps {
     isOpen: boolean;

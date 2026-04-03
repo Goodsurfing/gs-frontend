@@ -1,16 +1,16 @@
 import React, {
     FC, memo, useMemo,
 } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
-import styles from "./VideoGallery.module.scss";
 import { Video } from "@/entities/Host/model/types/host";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
+import styles from "./VideoGallery.module.scss";
 
 interface VideoGalleryProps {
     videos: Video[] | string[];

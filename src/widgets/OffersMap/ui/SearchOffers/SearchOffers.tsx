@@ -10,13 +10,13 @@ import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./SearchOffers.module.scss";
 import { OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import useDebounce from "@/shared/hooks/useDebounce";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import Button from "@/shared/ui/Button/Button";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
+import styles from "./SearchOffers.module.scss";
 
 interface SearchOffersProps {
     onSubmit: (search: string) => void;

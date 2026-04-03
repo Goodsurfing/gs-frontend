@@ -1,10 +1,9 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper.min.css";
 
 import { useTranslation } from "react-i18next";
 import { ReviewSlide } from "../ReviewSlide/ReviewSlide";

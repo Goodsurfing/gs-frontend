@@ -4,9 +4,9 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { FullDescriptionProps } from "./types";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import { FullDescriptionProps } from "./types";
 import styles from "./FullDescription.module.scss";
 import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 

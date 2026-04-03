@@ -16,12 +16,12 @@ import {
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 
-import { ReviewFields } from "../../model/types/notes";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdWithoutTagsMutation } from "@/entities/Chat";
-import styles from "./NotesHostForm.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import styles from "./NotesHostForm.module.scss";
+import { ReviewFields } from "../../model/types/notes";
 
 const APPLICATIONS_PER_PAGE = 10;
 

@@ -8,10 +8,10 @@ import { OfferCategories } from "@/widgets/OfferCategories";
 import Button from "@/shared/ui/Button/Button";
 import { InputField } from "@/shared/ui/InputField/InputField";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
-import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
-import { useTranslateError } from "../../hooks/useErrorTranslate";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
+import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
+import { useTranslateError } from "../../hooks/useErrorTranslate";
 import styles from "./ArticleForm.module.scss";
 import { BlogCategories } from "../BlogCategories/BlogCategories";
 

@@ -11,6 +11,17 @@ import {
 
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Textarea from "@/shared/ui/Textarea/Textarea";
+import Button from "@/shared/ui/Button/Button";
+import {
+    NOT_SELECTED,
+} from "@/shared/constants/messages";
+import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { useGetPublicFoodsQuery, useGetPublicHousesQuery, useGetPublicTransfersQuery } from "@/entities/Admin";
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import type { OfferConditionsFormFields } from "../../model/types/offerConditions";
 
 import { defaultFormFields } from "../../model/data/defaultFormFields";
@@ -22,19 +33,7 @@ import { ConditionsFacilities } from "../ConditionsFacilities/ConditionsFaciliti
 import { ConditionsExtraFeatures } from "../ConditionsExtraFeatures/ConditionsExtraFeatures";
 import { ConditionsPayment } from "../ConditionsPayment/ConditionsPayment";
 
-import Textarea from "@/shared/ui/Textarea/Textarea";
-import Button from "@/shared/ui/Button/Button";
-
-import {
-    NOT_SELECTED,
-} from "@/shared/constants/messages";
-import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { OFFER_CONDITIONS_FORM } from "@/shared/constants/localstorage";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { useGetPublicFoodsQuery, useGetPublicHousesQuery, useGetPublicTransfersQuery } from "@/entities/Admin";
 import styles from "./OfferConditionsForm.module.scss";
-import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface OfferConditionsFormProps {
     initialData?: OfferConditionsFormFields | null;

@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import { FormControlLabel, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import styles from "./ProvidedFilter.module.scss";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import { Provided } from "@/pages/OffersMapPage";
+import styles from "./ProvidedFilter.module.scss";
 
 interface ProvidedFilterProps {
     value: Provided[];

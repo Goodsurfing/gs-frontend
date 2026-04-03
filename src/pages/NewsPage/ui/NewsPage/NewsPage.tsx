@@ -6,10 +6,6 @@ import { MemberBanner } from "@/features/MemberBanner";
 
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 
-import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
-import { Category } from "../Category/Category";
-import { Header } from "../Header/Header";
-import { NewsList } from "../NewsList/NewsList";
 import { TagsOption } from "@/features/Article";
 import { useLazyGetNewsListQuery } from "@/entities/News";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -17,17 +13,21 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { NewsList } from "../NewsList/NewsList";
+import { Header } from "../Header/Header";
+import { Category } from "../Category/Category";
+import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
 import styles from "./NewsPage.module.scss";
 
 const limit = 10;
 
 const getSortByFilter = (filter: TagsOption): AdminSort => {
     switch (filter) {
-        case "popular":
-            return AdminSort.LikeNewsDesc;
-        case "new":
-        default:
-            return AdminSort.CreatedDesc;
+    case "popular":
+        return AdminSort.LikeNewsDesc;
+    case "new":
+    default:
+        return AdminSort.CreatedDesc;
     }
 };
 

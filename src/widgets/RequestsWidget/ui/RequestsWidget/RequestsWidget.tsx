@@ -22,8 +22,8 @@ import { Text } from "@/shared/ui/Text/Text";
 
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { useGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdMutation } from "@/entities/Chat";
-import styles from "./RequestsWidget.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import styles from "./RequestsWidget.module.scss";
 
 interface RequestsWidgetProps {
     className?: string;

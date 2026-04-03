@@ -19,11 +19,11 @@ import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
 
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 import { useSubmenuVolunteerItems } from "../../model/data/submenuData";
 import { VolunteerHeaderCard } from "../VolunteerHeaderCard/VolunteerHeaderCard";
 import { VolunteerPageContent } from "../VolunteerPageContent/VolunteerPageContent";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 import styles from "./VolunteerPersonalPage.module.scss";
 
 export const VolunteerPersonalPage = () => {

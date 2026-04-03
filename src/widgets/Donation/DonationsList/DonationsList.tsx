@@ -9,9 +9,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 
-import { HeaderList } from "../HeaderList/HeaderList";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { DonationCard, donationCardAdapter, GetDonations } from "@/entities/Donation";
+import { HeaderList } from "../HeaderList/HeaderList";
 import styles from "./DonationsList.module.scss";
 
 interface DonationsListProps {

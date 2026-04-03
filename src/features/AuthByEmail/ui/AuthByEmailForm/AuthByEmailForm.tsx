@@ -7,14 +7,14 @@ import { useAppDispatch } from "@/shared/hooks/redux";
 
 import { userActions } from "@/entities/User";
 
-import styles from "./AuthByEmailForm.module.scss";
 import InputField from "@/components/InputField/InputField";
 import Button from "@/shared/ui/Button/Button";
 
-import { AuthByEmailHelp } from "../AuthByEmailHelp/AuthByEmailHelp";
 import { authApi } from "@/store/api/authApi";
 import { LoginByEmailFields } from "@/types/api/auth/login.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import { AuthByEmailHelp } from "../AuthByEmailHelp/AuthByEmailHelp";
+import styles from "./AuthByEmailForm.module.scss";
 
 interface AuthByEmailFormProps {
     className?: string;

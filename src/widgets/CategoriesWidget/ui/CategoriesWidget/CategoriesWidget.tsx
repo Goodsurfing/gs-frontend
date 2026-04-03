@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import { useCategories } from "@/shared/data/categories";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
-import { Category } from "../Category/Category";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./CategoriesWidget.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./CategoriesWidget.module.scss";
+import { Category } from "../Category/Category";
 
 interface CategoriesWidgetProps {
     className?: string;

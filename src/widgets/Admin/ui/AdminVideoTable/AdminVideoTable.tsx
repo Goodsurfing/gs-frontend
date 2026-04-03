@@ -23,8 +23,8 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getFullName } from "@/shared/lib/getFullName";
 import { getAdminVideoCreatePageUrl, getAdminVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./AdminVideoTable.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./AdminVideoTable.module.scss";
 
 interface VideoFilters {
     name?: string;

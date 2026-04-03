@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { ReviewAboutOffers, ReviewAboutVolunteers } from "@/widgets/HostReview/";
-import { Title } from "./Title/Title";
 
 import { useGetMyHostQuery } from "@/entities/Host";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Title } from "./Title/Title";
 import styles from "./HostReviewPage.module.scss";
 
 const HostReviewPage: FC = () => {

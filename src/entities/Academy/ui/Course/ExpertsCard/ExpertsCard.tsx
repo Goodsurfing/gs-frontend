@@ -5,9 +5,9 @@ import { GetExpert } from "@/entities/Academy";
 import Section from "@/shared/ui/Section/Section";
 import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 
-import styles from "./ExpertsCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
+import styles from "./ExpertsCard.module.scss";
 
 interface ExpertsCardProps {
     experts: GetExpert[];

@@ -4,10 +4,10 @@ import {
 import { useDropzone, Accept } from "react-dropzone";
 import cn from "classnames";
 import { ReactSVG } from "react-svg";
-import { ErrorText } from "../ErrorText/ErrorText";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { MiniLoader } from "../MiniLoader/MiniLoader";
 import fileIcon from "@/shared/assets/icons/skills/administration.svg";
+import { ErrorText } from "../ErrorText/ErrorText";
+import { MiniLoader } from "../MiniLoader/MiniLoader";
 import styles from "./ImageDropzone.module.scss";
 
 export interface ImageDropzoneProps {

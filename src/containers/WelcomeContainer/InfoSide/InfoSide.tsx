@@ -12,9 +12,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import LogotypeIcon from "@/shared/assets/icons/logo-black.svg";
+import { SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 import { InfoSearchOffers } from "./InfoSearchOffers/InfoSearchOffers";
 import styles from "./InfoSide.module.scss";
-import { SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
 
 const InfoSide: FC = memo(() => {
     const { t } = useTranslation();

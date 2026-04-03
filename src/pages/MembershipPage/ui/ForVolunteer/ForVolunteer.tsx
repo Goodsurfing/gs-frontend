@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./ForVolunteer.module.scss";
 import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ForVolunteer.module.scss";
 
 interface ForVolunteerProps {
     className?: string;

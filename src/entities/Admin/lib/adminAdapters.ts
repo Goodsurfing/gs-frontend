@@ -1,4 +1,11 @@
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
+import { parseDate } from "@/shared/lib/formatDate";
+import { HostDescriptionFormFields } from "@/features/HostDescription";
+import {
+    HostDescriptionMainInfoFields, HostDescriptionSocialFields,
+    HostDescriptionTypeFields, OrganizationType,
+} from "@/features/HostDescription/model/types/hostDescription";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import {
     AdminOrganization,
     AdminOrganizations,
@@ -7,13 +14,6 @@ import {
     UpdateAdminOrganization,
     UpdateAdminUser,
 } from "../model/types/adminSchema";
-import { parseDate } from "@/shared/lib/formatDate";
-import { HostDescriptionFormFields } from "@/features/HostDescription";
-import {
-    HostDescriptionMainInfoFields, HostDescriptionSocialFields,
-    HostDescriptionTypeFields, OrganizationType,
-} from "@/features/HostDescription/model/types/hostDescription";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 export const adminUsersAdapter = (data?: AdminUsers[]): AdminUsersFields[] => {
     if (!data) return [];

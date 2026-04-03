@@ -6,9 +6,9 @@ import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
-import styles from "./AddOffer.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { getOffersWelcomePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./AddOffer.module.scss";
 
 export const AddOffer: FC = () => {
     const { t } = useTranslation("host");

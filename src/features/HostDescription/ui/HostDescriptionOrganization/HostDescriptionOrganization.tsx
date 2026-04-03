@@ -11,8 +11,8 @@ import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
-import { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
+import { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import styles from "./HostDescriptionOrganization.module.scss";
 
 interface HostDescriptionOrganizationProps {

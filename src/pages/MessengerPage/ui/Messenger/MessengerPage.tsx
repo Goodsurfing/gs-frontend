@@ -11,8 +11,8 @@ import { Chat, MessengerList } from "@/widgets/Messenger";
 import { getMessengerPageUrl } from "@/shared/config/routes/AppUrls";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
-import styles from "./MessengerPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./MessengerPage.module.scss";
 
 const MessengerPage = () => {
     const { id: selectedChat, offerId } = useParams();

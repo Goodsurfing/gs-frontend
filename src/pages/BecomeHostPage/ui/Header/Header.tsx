@@ -1,10 +1,10 @@
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
-import styles from "./Header.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { locale } = useLocale();

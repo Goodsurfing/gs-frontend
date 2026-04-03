@@ -31,7 +31,7 @@ interface BtnNavState {
  * ```
  */
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-export const VerticalSlider = <T,>({
+export const VerticalSlider = <T, >({
     className,
     classNameWrapper,
     classNameSlide,

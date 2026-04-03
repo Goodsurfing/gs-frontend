@@ -3,9 +3,9 @@ import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
 import { VideoGallery } from "@/widgets/VideoGallery";
+import { Text } from "@/shared/ui/Text/Text";
 import { Video } from "../../model/types/host";
 import styles from "./HostVideoGalleryCard.module.scss";
-import { Text } from "@/shared/ui/Text/Text";
 
 interface HostVideoGalleryCardProps {
     className?: string;

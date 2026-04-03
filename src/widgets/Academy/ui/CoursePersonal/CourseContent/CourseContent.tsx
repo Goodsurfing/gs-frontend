@@ -5,8 +5,8 @@ import {
     CourseProgressBar, ExpertsCard, GetCourse, TextCard,
 } from "@/entities/Academy";
 
-import styles from "./CourseContent.module.scss";
 import Section from "@/shared/ui/Section/Section";
+import styles from "./CourseContent.module.scss";
 import { LessonsList } from "../../LessonsList/LessonsList";
 
 interface CourseContentProps {

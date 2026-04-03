@@ -16,13 +16,13 @@ import locationIcon from "@/shared/assets/icons/location.svg";
 import useDebounce from "@/shared/hooks/useDebounce";
 import AutoComplete from "@/shared/ui/AutoComplete/AutoComplete";
 
+import { AddressFormFormFields } from "@/features/Offer";
 import { validateCoordinates } from "../model/lib/validateCoordinates";
 import {
     getGeoObjectByCoordinates,
     getGeoObjectCollection,
 } from "../model/services/getGeoObjectCollection/getGeoObjectCollection";
 import styles from "./MapWithAddress.module.scss";
-import { AddressFormFormFields } from "@/features/Offer";
 
 interface MapWithAddressProps {
     className?: string;

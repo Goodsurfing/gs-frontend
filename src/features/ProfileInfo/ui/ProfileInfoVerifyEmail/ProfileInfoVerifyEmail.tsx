@@ -3,9 +3,9 @@ import { ReactSVG } from "react-svg";
 import { useTranslation } from "react-i18next";
 import infoIcon from "@/shared/assets/icons/icon-info.svg";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import styles from "./ProfileInfoVerifyEmail.module.scss";
 import { getVerifyEmailPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ProfileInfoVerifyEmail.module.scss";
 
 export const ProfileInfoVerifyEmail: FC = () => {
     const { locale } = useLocale();

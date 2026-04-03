@@ -1,7 +1,7 @@
 import { UpdateVolunteer } from "@/entities/Volunteer";
-import { VolunteerSkillsField } from "../model/types/volunteerSkills";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
 import { Profile } from "@/entities/Profile";
+import { VolunteerSkillsField } from "../model/types/volunteerSkills";
 
 export const volunteerSkillsAdapter = (data: VolunteerSkillsField): UpdateVolunteer => {
     const {

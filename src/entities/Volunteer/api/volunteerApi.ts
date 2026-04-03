@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
 import { WhatToDoSkillType } from "@/types/skills";
 import { Profile } from "@/entities/Profile";
 import { MediaObjectType } from "@/types/media";
+import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
 
 interface UpdateVolunteerParams {
     profileId: string;

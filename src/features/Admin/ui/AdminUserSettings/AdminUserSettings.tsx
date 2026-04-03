@@ -1,10 +1,8 @@
 import React, { FC, useState } from "react";
-import styles from "./AdminUserSettings.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
-import { AdminUpdateAchievement } from "../AdminUpdateAchievement/AdminUpdateAchievement";
 import {
     adminUpdateUserAdapter,
     AdminUser, useDeleteUserMutation,
@@ -13,8 +11,10 @@ import {
 } from "@/entities/Admin";
 import { getFullName } from "@/shared/lib/getFullName";
 import { Achievement } from "@/types/achievements";
-import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { AdminUpdateSkills } from "../AdminUpdateSkills/AdminUpdateSkills";
+import { AdminUpdateAchievement } from "../AdminUpdateAchievement/AdminUpdateAchievement";
+import styles from "./AdminUserSettings.module.scss";
 
 interface AdminUserSettingsProps {
     userId: string;

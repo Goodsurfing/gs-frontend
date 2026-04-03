@@ -20,7 +20,7 @@ interface AutoCompleteProps<T> {
 }
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-const AutoComplete = <T,>({
+const AutoComplete = <T, >({
     className,
     options,
     inputValue,

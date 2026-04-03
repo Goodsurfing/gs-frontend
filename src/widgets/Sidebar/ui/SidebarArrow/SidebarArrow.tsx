@@ -1,9 +1,8 @@
 import { memo } from "react";
 import cn from "classnames";
 import { ReactSVG } from "react-svg";
-import { useSidebarContext } from "../SidebarContext/SidebarContext";
-
 import arrow from "@/shared/assets/icons/arrow.svg";
+import { useSidebarContext } from "../SidebarContext/SidebarContext";
 
 import styles from "./SidebarArrow.module.scss";
 

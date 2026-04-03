@@ -23,8 +23,8 @@ import { VerticalSlider } from "@/shared/ui/VerticalSlider/VerticalSlider";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { NotDoneReviewVolunteer } from "@/entities/Review/model/types/review";
-import styles from "./ReviewAboutOffers.module.scss";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import styles from "./ReviewAboutOffers.module.scss";
 
 interface ReviewAboutOffersProps {
     locale: Locale;

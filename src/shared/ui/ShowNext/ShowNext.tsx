@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
-import styles from "./ShowNext.module.scss";
 import arrowIcon from "@/shared/assets/icons/arrow-down.svg";
+import styles from "./ShowNext.module.scss";
 
 interface ShowNextProps {
     className?: string;

@@ -5,9 +5,9 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
 
-import styles from "./ResetPasswordVerifyPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./ResetPasswordVerifyPage.module.scss";
 
 const ResetPasswordVerifyPage: FC = () => {
     const { locale } = useLocale();

@@ -12,13 +12,13 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import Input from "@/shared/ui/Input/Input";
 import { SelectComponent } from "@/shared/ui/Select/Select";
 
+import { MounthType } from "@/app/types/shared-kernel";
 import {
     birthDateData,
     birthMounthData,
 } from "../../model/data/birthData";
 import { ProfileInfoFields } from "../../model/types/profileInfo";
 import styles from "./ProfileInfoFormBirthDate.module.scss";
-import { MounthType } from "@/app/types/shared-kernel";
 
 interface ProfileInfoFormBirthDateProps {
     className?: string;

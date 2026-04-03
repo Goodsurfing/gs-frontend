@@ -9,8 +9,8 @@ import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
 import Button from "@/shared/ui/Button/Button";
 import { DonationFilterFields } from "@/entities/Donation";
-import styles from "./DonationsFilter.module.scss";
 import { SwitchDonationFilter } from "@/widgets/Donation";
+import styles from "./DonationsFilter.module.scss";
 
 interface DropdownState {
     isCategoriesOpened: boolean;
@@ -42,12 +42,12 @@ export const DonationsFilter: FC<DonationsFilterProps> = (props) => {
     const handleOpenDropdown = (type: ButtonNav) => {
         setDropdownOpened((prev) => {
             switch (type) {
-                case "CATEGORIES":
-                    return {
-                        isCategoriesOpened: !prev.isCategoriesOpened,
-                    };
-                default:
-                    return prev;
+            case "CATEGORIES":
+                return {
+                    isCategoriesOpened: !prev.isCategoriesOpened,
+                };
+            default:
+                return prev;
             }
         });
     };

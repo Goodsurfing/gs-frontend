@@ -12,8 +12,8 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 import { useChangePasswordMutation, useChangePasswordWithoutOldPasswordMutation, useGetProfilePasswordIsChangeQuery } from "@/entities/Profile";
 
-import styles from "./ProfileResetPasswordForm.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./ProfileResetPasswordForm.module.scss";
 
 interface FormDataImplemintaion {
     currentPassword: string;

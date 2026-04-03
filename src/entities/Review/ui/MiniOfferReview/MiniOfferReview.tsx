@@ -8,8 +8,8 @@ import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
 import { textSlice } from "@/shared/lib/textSlice";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
-import styles from "./MiniOfferReview.module.scss";
 import { FormApplicationStatus } from "@/entities/Application";
+import styles from "./MiniOfferReview.module.scss";
 
 interface MiniOfferReviewProps {
     className?: string;

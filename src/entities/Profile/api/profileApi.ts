@@ -1,12 +1,12 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
+import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { UpdateVolunteer } from "@/entities/Volunteer";
 import {
     Profile, ProfileById, UpdateProfile, UpdateProfileCertificates,
     UpdateProfileImageGallery, UpdateProfilePreferences,
     UpdateProfileVideoGallery,
 } from "../model/types/profile";
-import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
-import { UpdateVolunteer } from "@/entities/Volunteer";
 
 interface ChangePasswordRequest {
     plainPassword: string;

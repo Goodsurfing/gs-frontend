@@ -9,13 +9,13 @@ import InputField from "@/components/InputField/InputField";
 
 import useQuery from "@/shared/hooks/useQuery";
 
-import styles from "./ResetPasswordThirdStep.module.scss";
 import { authApi } from "@/store/api/authApi";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { getErrorText } from "@/shared/lib/getErrorText";
+import styles from "./ResetPasswordThirdStep.module.scss";
 
 interface IFormData {
     password: string;

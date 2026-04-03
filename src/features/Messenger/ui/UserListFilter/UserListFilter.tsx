@@ -9,9 +9,9 @@ import Popup from "@/components/Popup/Popup";
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
+import { FormApplicationStatus } from "@/entities/Application";
 import { filterData } from "../../data/filter.data";
 import styles from "./UserListFilter.module.scss";
-import { FormApplicationStatus } from "@/entities/Application";
 
 interface UserListFilterProps {
     filterValue: FormApplicationStatus | null

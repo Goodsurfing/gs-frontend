@@ -2,9 +2,9 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
-import styles from "./VolunteerGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./VolunteerGalleryCard.module.scss";
 
 interface VolunteerGalleryCardProps {
     className?: string;

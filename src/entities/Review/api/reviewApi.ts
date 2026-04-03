@@ -1,6 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { PaginationParams } from "@/types/api/pagination";
 import {
     ApplicationReview, ApplicationReviewResponse,
     CreateOfferReview,
@@ -19,8 +21,6 @@ import {
     NotDoneReviewHost,
     NotDoneReviewVolunteer,
 } from "../model/types/review";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
-import { PaginationParams } from "@/types/api/pagination";
 
 interface ReviewRequest {
     reviewId: string;

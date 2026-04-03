@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { ArticlesList } from "../ArticlesList/ArticlesList";
 import {
     blogArticleCardAdapter, useDeleteBlogMutation,
     useLazyGetBlogListQuery, usePublicBlogByIdMutation,
@@ -14,6 +13,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getVolunteerCreateArticlePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { ArticlesList } from "../ArticlesList/ArticlesList";
 import styles from "./VolunteerArticlesPage.module.scss";
 
 const limit = 10;

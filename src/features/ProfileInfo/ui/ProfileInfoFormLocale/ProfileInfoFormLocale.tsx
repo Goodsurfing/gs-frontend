@@ -9,8 +9,8 @@ import { useAppSelector } from "@/shared/hooks/redux";
 
 import { getProfileReadonly } from "@/entities/Profile";
 
-import { localeLanguage } from "../../model/data/localeData";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
+import { localeLanguage } from "../../model/data/localeData";
 import styles from "./ProfileInfoFormLocale.module.scss";
 
 interface ProfileInfoFormLocaleProps {

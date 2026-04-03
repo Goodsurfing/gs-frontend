@@ -18,11 +18,11 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./AdminSkillsTable.module.scss";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminSkillsTable.module.scss";
 
 interface SkillFilters {
     idSkill?: number;

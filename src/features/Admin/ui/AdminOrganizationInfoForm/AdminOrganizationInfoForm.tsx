@@ -9,7 +9,6 @@ import {
 } from "@/features/HostDescription";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminOrganizationInfoForm.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import {
     AdminOrganization, adminOrganizationAdapter, adminOrganizationApiAdapter,
@@ -22,6 +21,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./AdminOrganizationInfoForm.module.scss";
 
 interface AdminOrganizationInfoFormProps {
     className?: string;

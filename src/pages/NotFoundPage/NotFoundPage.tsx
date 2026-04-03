@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-import styles from "./NotFoundPage.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./NotFoundPage.module.scss";
 
 const NotFoundPage = () => {
     const { locale } = useLocale();

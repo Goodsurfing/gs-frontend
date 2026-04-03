@@ -10,12 +10,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useTranslation } from "react-i18next";
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
-import styles from "./VolunteerOffersCard.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { OfferCard } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./VolunteerOffersCard.module.scss";
 
 interface VolunteerOffersCardProps {
     className?: string;

@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, FC } from "react";
 import cn from "classnames";
-import styles from "./CommentInput.module.scss";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 import Button from "@/shared/ui/Button/Button";
+import styles from "./CommentInput.module.scss";
 
 interface CommentInputProps {
     value: string;

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { AdminOrganizationInfoForm } from "../AdminOrganizationInfoForm/AdminOrganizationInfoForm";
 import { AdminOrganization } from "@/entities/Admin";
+import { AdminOrganizationInfoForm } from "../AdminOrganizationInfoForm/AdminOrganizationInfoForm";
 
 interface AdminUserInfoProps {
     className?: string;

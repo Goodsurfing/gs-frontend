@@ -3,10 +3,10 @@ import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 
-import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
-import { NotesCard } from "../NotesCard/NotesCard";
 import { Application, FormApplicationStatus } from "@/entities/Application";
 import { Locale } from "@/entities/Locale";
+import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
+import { NotesCard } from "../NotesCard/NotesCard";
 import styles from "./NotesContainer.module.scss";
 
 export type VariantType = "host" | "volunteer";

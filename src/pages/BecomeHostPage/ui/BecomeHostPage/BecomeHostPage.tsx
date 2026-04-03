@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./BecomeHostPage.module.scss";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import styles from "./BecomeHostPage.module.scss";
 import { Header } from "../Header/Header";
 import { WhoCanInvite } from "../WhoCanInvite/WhoCanInvite";
 import { HowCanHelp } from "../HowCanHelp/HowCanHelp";

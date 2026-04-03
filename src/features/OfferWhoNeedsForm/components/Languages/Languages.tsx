@@ -4,9 +4,9 @@ import SelectField from "@/components/SelectField/SelectField";
 import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
 import { useAllLangs, useLangsLevels } from "@/shared/data/languages";
+import { LevelLanguage } from "@/types/languages";
 import { LanguagesProps } from "./types";
 import styles from "./Languages.module.scss";
-import { LevelLanguage } from "@/types/languages";
 
 const Languages: FC<LanguagesProps> = (props) => {
     const {

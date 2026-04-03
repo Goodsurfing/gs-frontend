@@ -6,7 +6,6 @@ import {
 import { ReactSVG } from "react-svg";
 import { useNavigate } from "react-router-dom";
 import cn from "classnames";
-import styles from "./AdminAchievementsTable.module.scss";
 import showIcon from "@/shared/assets/icons/admin/show.svg";
 import deleteIcon from "@/shared/assets/icons/admin/delete.svg";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -24,6 +23,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminAchievementsTable.module.scss";
 
 interface AchievementFilters {
     id?: number;

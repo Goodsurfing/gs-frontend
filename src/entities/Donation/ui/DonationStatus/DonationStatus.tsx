@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import { DonationStatus as DonationStatusType } from "../../model/types/donationSchema";
 import { useDonationStatus } from "@/shared/hooks/useDonationStatus";
+import { DonationStatus as DonationStatusType } from "../../model/types/donationSchema";
 import styles from "./DonationStatus.module.scss";
 
 interface DonationStatusProps {

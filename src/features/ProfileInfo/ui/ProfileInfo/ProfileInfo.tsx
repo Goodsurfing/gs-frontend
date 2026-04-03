@@ -3,9 +3,9 @@ import { memo } from "react";
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { ProfileInfoForm } from "../ProfileInfoForm/ProfileInfoForm";
 import { ProfileInfoVerifyEmail } from "../ProfileInfoVerifyEmail/ProfileInfoVerifyEmail";
 
 interface ProfileInfoProps {

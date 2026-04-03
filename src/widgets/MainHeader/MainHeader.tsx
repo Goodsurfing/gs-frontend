@@ -20,10 +20,10 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {

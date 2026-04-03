@@ -3,7 +3,6 @@ import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
-import { SelectRatingSort } from "../SelectRatingSort/SelectRatingSort";
 import { DonationRatingSort } from "@/entities/Donation";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import CustomLink from "@/shared/ui/Link/Link";
@@ -12,6 +11,7 @@ import sortUpIcon from "@/shared/assets/icons/donation/sort-up.svg";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 import { mockHostDonation } from "@/entities/Donation/data/mockDonations";
+import { SelectRatingSort } from "../SelectRatingSort/SelectRatingSort";
 import styles from "./HostDonationsTable.module.scss";
 
 interface HostDonationRatingFields {

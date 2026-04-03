@@ -1,12 +1,12 @@
 import { memo } from "react";
 import cn from "classnames";
 import { NavLink, useLocation } from "react-router-dom";
+import compareRoutes from "@/shared/utils/routes/compareRoutes";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import { DropdownItem } from "../../model/types/sidebar";
 import { useSidebarContext } from "../SidebarContext/SidebarContext";
-import compareRoutes from "@/shared/utils/routes/compareRoutes";
 
 import styles from "./SidebarDropdown.module.scss";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface SidebarDropdownProps {
     route: string;

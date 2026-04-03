@@ -3,8 +3,8 @@ import React, { FC, memo } from "react";
 
 import { Host } from "@/entities/Host";
 
-import styles from "./HostPageContent.module.scss";
 import { HostInfoCard } from "@/entities/Host/ui/HostInfoCard/HostInfoCard";
+import styles from "./HostPageContent.module.scss";
 
 interface HostPageContentProps {
     className?: string;

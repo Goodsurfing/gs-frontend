@@ -1,5 +1,5 @@
-import { CreateAdminNews, GetAdminNews } from "../model/types/adminNewsSchema";
 import { AdminArticleFormFields } from "@/features/Admin";
+import { CreateAdminNews, GetAdminNews } from "../model/types/adminNewsSchema";
 
 export const newsAdapter = (data: GetAdminNews): AdminArticleFormFields => {
     const {

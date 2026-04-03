@@ -9,8 +9,8 @@ import { AdminSort } from "@/entities/Admin";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getFullName } from "@/shared/lib/getFullName";
 import { OfferPagination } from "@/widgets/OffersMap";
-import styles from "./CoursesList.module.scss";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./CoursesList.module.scss";
 
 interface CoursesListProps {
     className?: string;

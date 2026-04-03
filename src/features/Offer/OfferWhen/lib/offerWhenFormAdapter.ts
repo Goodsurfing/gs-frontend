@@ -1,9 +1,9 @@
 import { OfferWhen, OldOfferWhen, OldOfferWhenPeriods } from "@/entities/Offer";
 
+import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
 import {
     DatePeriods, EndSettings, OfferWhenFields, TimeSettingsControls,
 } from "../model/types/offerWhen";
-import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
 
 export const offerWhenFormApiAdapter = (
     offerWhenForm: OfferWhenFields,

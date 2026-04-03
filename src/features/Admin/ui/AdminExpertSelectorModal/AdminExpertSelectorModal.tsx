@@ -7,9 +7,9 @@ import {
     useGetCourseExpertsQuery, useUpdateAdminExpertMutation,
 } from "@/entities/Admin";
 import { Modal } from "@/shared/ui/Modal/Modal";
+import { OfferPagination } from "@/widgets/OffersMap";
 import styles from "./AdminExpertSelectorModal.module.scss";
 import { AdminExpertFormModal } from "../AdminExpertFormModal/AdminExpertFormModal";
-import { OfferPagination } from "@/widgets/OffersMap";
 
 interface AdminExpertSelectorModalProps {
     isOpen: boolean;

@@ -6,8 +6,8 @@ import { getMainPageUrl, getProfilePageUrl } from "@/shared/config/routes/AppUrl
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { VerifyEmailWidget } from "@/widgets/VerifyEmailWidget";
-import styles from "./VerifyEmailPage.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./VerifyEmailPage.module.scss";
 
 const VerifyEmailPage = () => {
     const { locale } = useLocale();

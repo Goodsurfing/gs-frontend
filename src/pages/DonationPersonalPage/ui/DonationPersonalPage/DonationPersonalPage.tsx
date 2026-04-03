@@ -10,8 +10,8 @@ import { Text } from "@/shared/ui/Text/Text";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { GetDonation, useLazyGetDonationByIdQuery } from "@/entities/Donation";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { DonationPersonalCard } from "../DonationPersonalCard/DonationPersonalCard";
 import { DonationSubmenu } from "@/widgets/Donation";
+import { DonationPersonalCard } from "../DonationPersonalCard/DonationPersonalCard";
 import { DonationPageContent } from "../DonationPageContent/DonationPageContent";
 import styles from "./DonationPersonalPage.module.scss";
 

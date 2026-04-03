@@ -18,21 +18,21 @@ export const initialState: DropdownState = {
 
 export const toggleDropdownReducer = (state: DropdownState, action: Action) => {
     switch (action.type) {
-        case "COMMUNITY":
-            return { ...state, isCommunityOpened: !state.isCommunityOpened };
-        case "ABOUT":
-            return {
-                ...state,
-                isAboutProjectOpened: !state.isAboutProjectOpened,
-            };
-        case "SUPPORT":
-            return {
-                ...state,
-                isSupportOpened: !state.isSupportOpened,
-            };
-        case "OFFERS":
-            return { ...state, isOffersOpened: !state.isOffersOpened };
-        default:
-            return state;
+    case "COMMUNITY":
+        return { ...state, isCommunityOpened: !state.isCommunityOpened };
+    case "ABOUT":
+        return {
+            ...state,
+            isAboutProjectOpened: !state.isAboutProjectOpened,
+        };
+    case "SUPPORT":
+        return {
+            ...state,
+            isSupportOpened: !state.isSupportOpened,
+        };
+    case "OFFERS":
+        return { ...state, isOffersOpened: !state.isOffersOpened };
+    default:
+        return state;
     }
 };

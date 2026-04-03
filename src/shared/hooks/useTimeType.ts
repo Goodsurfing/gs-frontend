@@ -6,14 +6,14 @@ export const useTranslateTimeType = (): ((timeType: TimeType) => string) => {
 
     return (timeType: TimeType): string => {
         switch (timeType) {
-            case "week":
-                return t("whatToDo.week", "неделя");
-            case "day":
-                return t("whatToDo.day", "день");
-            case "month":
-                return t("whatToDo.month", "месяц");
-            default:
-                return timeType;
+        case "week":
+            return t("whatToDo.week", "неделя");
+        case "day":
+            return t("whatToDo.day", "день");
+        case "month":
+            return t("whatToDo.month", "месяц");
+        default:
+            return timeType;
         }
     };
 };

@@ -1,5 +1,6 @@
 import { memo } from "react";
 
+import { Host } from "@/entities/Host";
 import {
     HostDescriptionOrganization,
 } from "../HostDescriptionOrganization/HostDescriptionOrganization";
@@ -12,7 +13,6 @@ import {
 } from "../HostDescriptionAvatar/HostDescriptionAvatar";
 
 import styles from "./HostDescriptionFormContent.module.scss";
-import { Host } from "@/entities/Host";
 
 interface HostDescriptionFormContentProps {
     host?: Host;

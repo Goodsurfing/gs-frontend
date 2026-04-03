@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 import { useParams } from "react-router-dom";
-import styles from "./OfferWherePage.module.scss";
 import { OfferWhere } from "@/widgets/Offer";
+import styles from "./OfferWherePage.module.scss";
 
 const OfferWherePage = () => {
     const { t } = useTranslation("offer");

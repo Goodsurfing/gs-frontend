@@ -10,8 +10,8 @@ import star from "@/shared/assets/icons/offers/star.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { textSlice } from "@/shared/lib/textSlice";
 
-import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
+import styles from "./OfferCard.module.scss";
 
 interface OfferCardProps {
     offerId: number;

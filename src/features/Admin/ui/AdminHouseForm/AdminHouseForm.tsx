@@ -9,8 +9,8 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
-import styles from "./AdminHouseForm.module.scss";
 import { GetHouse, House } from "@/shared/data/conditions";
+import styles from "./AdminHouseForm.module.scss";
 
 interface AdminHouseFormProps {
     className?: string;

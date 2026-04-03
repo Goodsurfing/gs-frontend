@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE_URL } from "@/shared/constants/api";
-import { useGetMessagesByChatIdQuery } from "../api/chatApi";
 import { MessageType } from "@/entities/Messenger";
+import { useGetMessagesByChatIdQuery } from "../api/chatApi";
 
 export const useGetChatMessages = (
     chatId: string | undefined,

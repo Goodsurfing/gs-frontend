@@ -2,9 +2,9 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
+import { Text } from "@/shared/ui/Text/Text";
 import { OfferDescription } from "../../model/types/offerDescription";
 import styles from "./OfferDescriptionCard.module.scss";
-import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferDescriptionCardProps {
     className?: string;

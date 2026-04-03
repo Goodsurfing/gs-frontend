@@ -8,12 +8,12 @@ import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { LoginAdminFields } from "@/types/api/auth/login.interface";
 import InputField from "@/components/InputField/InputField";
 import Button from "@/shared/ui/Button/Button";
-import styles from "./AdminAuth.module.scss";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import { authApi } from "@/store/api/authApi";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { userActions } from "@/entities/User";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./AdminAuth.module.scss";
 
 export const AdminAuth = () => {
     const { locale } = useLocale();

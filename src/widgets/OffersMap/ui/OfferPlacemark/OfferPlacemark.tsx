@@ -11,8 +11,8 @@ import { useCategories } from "@/shared/data/categories";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./OfferPlacemark.module.scss";
 import { textSlice } from "@/shared/lib/textSlice";
+import styles from "./OfferPlacemark.module.scss";
 
 interface OfferPlacemarkProps {
     id: string;

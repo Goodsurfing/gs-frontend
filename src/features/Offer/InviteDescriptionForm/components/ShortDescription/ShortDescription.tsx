@@ -4,9 +4,9 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
-import { ShortDescriptionProps } from "./types";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
+import { ShortDescriptionProps } from "./types";
 import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 
 const ShortDescription: FC<ShortDescriptionProps> = () => {

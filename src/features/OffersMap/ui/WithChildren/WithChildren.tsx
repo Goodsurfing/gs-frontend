@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { FormControlLabel, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import styles from "./WithChildren.module.scss";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
+import styles from "./WithChildren.module.scss";
 
 interface WithChildrenProps {
     value: boolean;

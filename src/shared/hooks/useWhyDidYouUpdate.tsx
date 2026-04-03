@@ -28,7 +28,7 @@ export const useWhyDidYouUpdate = <T extends Record<string, any>>(name: string, 
 };
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-export const useValueTracker = <T,>(name: string, value: T): void => {
+export const useValueTracker = <T, >(name: string, value: T): void => {
     const prevValueRef = useRef<T>();
 
     useEffect(() => {

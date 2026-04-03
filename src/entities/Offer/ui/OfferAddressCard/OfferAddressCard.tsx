@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 import { YMap, YmapType } from "@/entities/Map";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { Text } from "@/shared/ui/Text/Text";
 import { OfferWhere } from "../../model/types/offerWhere";
 import styles from "./OfferAddressCard.module.scss";
-import { Text } from "@/shared/ui/Text/Text";
 
 interface OfferAddressCardProps {
     address: OfferWhere;

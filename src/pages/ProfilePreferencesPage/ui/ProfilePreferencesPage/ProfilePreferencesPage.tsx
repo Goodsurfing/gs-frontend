@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { ProfilePreferencesForm } from "@/widgets/ProfilePreferencesForm";
-import styles from "./ProfilePreferencesPage.module.scss";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./ProfilePreferencesPage.module.scss";
 
 const ProfilePreferencesPage: FC = () => {
     const { data, isLoading } = useGetProfileInfoQuery();

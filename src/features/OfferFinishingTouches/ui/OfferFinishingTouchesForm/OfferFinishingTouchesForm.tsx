@@ -16,6 +16,8 @@ import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
+import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import {
     offerFinishingTouchesAdapter,
     offerFinishingTouchesApiAdapter,
@@ -24,8 +26,6 @@ import { OfferFinishingTouchesFormFields } from "../../model/types/offerFinishin
 import { OfferFinishingTouchesExtras } from "../OfferFinishingTouchesExtras/OfferFinishingTouchesExtras";
 import { OfferQuestionnaire } from "../OfferQuestionnaire/OfferQuestionnaire";
 import { OfferQuestions } from "../OfferQuestions/OfferQuestions";
-import { OFFER_FINISHING_TOUCHES_FORM } from "@/shared/constants/localstorage";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./OfferFinishingTouchesForm.module.scss";
 
 interface OfferFinishingTouchesFormProps {

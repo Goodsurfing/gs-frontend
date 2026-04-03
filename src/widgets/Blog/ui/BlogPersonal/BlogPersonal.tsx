@@ -19,8 +19,8 @@ import {
 } from "@/entities/Blog";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetFullName } from "@/shared/lib/getFullName";
-import styles from "./BlogPersonal.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./BlogPersonal.module.scss";
 
 interface BlogPersonalProps {
     blogId: number;

@@ -3,11 +3,11 @@ import {
 } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { RouteType } from "../../model/types/langRouter";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
-import { allRoutes } from "../../model/config/RoutesConfig";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { allRoutes } from "../../model/config/RoutesConfig";
+import { RouteType } from "../../model/types/langRouter";
 
 export const defaultLocale = "ru";
 export const availableLocales = ["ru", "en", "es"];

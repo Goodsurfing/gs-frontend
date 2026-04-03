@@ -8,8 +8,8 @@ import {
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { InputButton } from "@/shared/ui/InputWithIcon/InputWithIcon";
 
-import styles from "./InputWithButton.module.scss";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
+import styles from "./InputWithButton.module.scss";
 
 export interface InputWithButtonProps {
     value: string;

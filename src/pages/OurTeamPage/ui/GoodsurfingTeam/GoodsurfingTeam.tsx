@@ -2,9 +2,9 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
+import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 import { goodSurfingData } from "../../model/data/ourTeam";
 import styles from "./GoodsurfingTeam.module.scss";
-import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
 
 interface GoodsurfingTeamProps {
     className?: string;

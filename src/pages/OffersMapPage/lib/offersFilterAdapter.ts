@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { GetOffersFilters, OfferSort } from "@/entities/Offer";
 
-import { OffersFilterFields } from "../model/types";
 import { formattingDate } from "@/shared/lib/formatDate";
+import { OffersFilterFields } from "../model/types";
 
 export const offersFilterApiAdapter = (
     data: OffersFilterFields,

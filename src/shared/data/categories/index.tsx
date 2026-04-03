@@ -14,8 +14,8 @@ import onlineImage from "@/shared/assets/images/categories/11.png";
 import paidWork from "@/shared/assets/images/categories/12.png";
 import international from "@/shared/assets/images/categories/13.png";
 import other from "@/shared/assets/images/categories/14.png";
-import { InviteCategoryType } from "./model/types/offerCategory";
 import { CategoryType } from "@/types/categories";
+import { InviteCategoryType } from "./model/types/offerCategory";
 
 export const useCategories = () => {
     const { t } = useTranslation();

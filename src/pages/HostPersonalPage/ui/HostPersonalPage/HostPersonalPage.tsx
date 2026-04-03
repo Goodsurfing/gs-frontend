@@ -15,11 +15,11 @@ import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
 
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 import { useSubmenuItems } from "../../model/data/submenuData";
 import { HostPageContent } from "../HostPageContent/HostPageContent";
 import { HostlHeaderCard } from "../HostlHeaderCard/HostlHeaderCard";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useLazyGetMyChatsListQuery } from "@/entities/Chat";
 import styles from "./HostPersonalPage.module.scss";
 
 export const HostPersonalPage = () => {

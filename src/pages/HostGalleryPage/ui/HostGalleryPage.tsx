@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 
 import { useTranslation } from "react-i18next";
-import { Title as HostGalleryTitle } from "./Title/Title";
 
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HostGallery } from "@/features/Gallery";
 import { useGetMyHostQuery } from "@/entities/Host";
+import { Title as HostGalleryTitle } from "./Title/Title";
 import styles from "./HostGalleryPage.module.scss";
 
 const HostGalleryPage: FC = () => {

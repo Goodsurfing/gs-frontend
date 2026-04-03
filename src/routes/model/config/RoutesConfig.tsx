@@ -209,7 +209,6 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
-import { RouteType } from "../types/langRouter";
 import { OfferDescriptionPage } from "@/pages/OfferDescriptionPage";
 import { BlogPage } from "@/pages/BlogPage";
 import { BlogPersonalPage } from "@/pages/BlogPersonalPage";
@@ -292,6 +291,7 @@ import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
 import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
 import { AdminDonationsPage } from "@/pages/AdminDonationsPage";
 import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
+import { RouteType } from "../types/langRouter";
 
 const publicRoutes: RouteType[] = [
     {

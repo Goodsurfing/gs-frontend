@@ -25,8 +25,8 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { textSlice } from "@/shared/lib/textSlice";
-import styles from "./AdminReviewVacanciesTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminReviewVacanciesTable.module.scss";
 
 interface ReviewVacancyFilters {
     sort?: AdminSort;

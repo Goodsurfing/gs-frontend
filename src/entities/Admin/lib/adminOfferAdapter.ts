@@ -2,6 +2,11 @@ import {
     AddressFormFormFields, DatePeriods, EndSettings,
     OfferDescriptionField, OfferWhenFields, TimeSettingsControls,
 } from "@/features/Offer";
+import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
+import { MAX_AGE_FOR_VOLUNTEER, MINIMAL_AGE_FOR_VOLUNTEER, OfferWhoNeedsFields } from "@/features/OfferWhoNeedsForm";
+import { OfferWhatToDoFormFields } from "@/features/OfferWhatToDo";
+import { OfferConditionsFormFields } from "@/features/OfferConditions";
+import { OfferFinishingTouchesFormFields } from "@/features/OfferFinishingTouches";
 import {
     AdminVacancyConditions,
     AdminVacancyDescription, AdminVacancyFinishingTouches,
@@ -11,11 +16,6 @@ import {
     UpdateAdminVacancyWhatToDo, UpdateAdminVacancyWhen,
     UpdateAdminVacancyWhere, UpdateAdminVacancyWhoNeeds,
 } from "../model/types/adminSchema";
-import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
-import { MAX_AGE_FOR_VOLUNTEER, MINIMAL_AGE_FOR_VOLUNTEER, OfferWhoNeedsFields } from "@/features/OfferWhoNeedsForm";
-import { OfferWhatToDoFormFields } from "@/features/OfferWhatToDo";
-import { OfferConditionsFormFields } from "@/features/OfferConditions";
-import { OfferFinishingTouchesFormFields } from "@/features/OfferFinishingTouches";
 
 // OfferWhere
 

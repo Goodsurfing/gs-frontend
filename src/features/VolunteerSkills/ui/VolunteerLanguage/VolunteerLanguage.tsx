@@ -11,10 +11,10 @@ import { useTranslation } from "react-i18next";
 import { HandySvg } from "@handy-ones/handy-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
-import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
-import styles from "./VolunteerLanguage.module.scss";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { Language } from "@/types/languages";
+import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
+import styles from "./VolunteerLanguage.module.scss";
 
 interface VolunteerLanguageProps {
     value?: Language[];

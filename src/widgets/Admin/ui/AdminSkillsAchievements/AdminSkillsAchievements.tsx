@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "./AdminSkillsAchievements.module.scss";
 import Button from "@/shared/ui/Button/Button";
+import styles from "./AdminSkillsAchievements.module.scss";
 import { AdminSkillsTable } from "../AdminSkillsTable/AdminSkillsTable";
 import { AdminAchievementsTable } from "../AdminAchievementsTable/AdminAchievementsTable";
 

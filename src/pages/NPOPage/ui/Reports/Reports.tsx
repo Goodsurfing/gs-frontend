@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { reportsMinUstData, reportsActivityData } from "../../model/data/npo";
 import { ReportItem } from "@/shared/ui/ReportItem/ReportItem";
+import { reportsMinUstData, reportsActivityData } from "../../model/data/npo";
 import styles from "./Reports.module.scss";
 
 export const Reports = () => {

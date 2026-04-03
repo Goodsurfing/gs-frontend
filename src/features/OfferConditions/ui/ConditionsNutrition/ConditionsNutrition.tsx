@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 
 import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-import { NutritionFields } from "../../model/types/offerConditions";
-import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Food } from "@/shared/data/conditions";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { ConditionsItem } from "../ConditionsItem/ConditionsItem";
+import { NutritionFields } from "../../model/types/offerConditions";
 import styles from "./ConditionsNutrition.module.scss";
 
 interface ConditionsNutritionProps {

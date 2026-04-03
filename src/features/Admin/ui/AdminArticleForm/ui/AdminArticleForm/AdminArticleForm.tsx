@@ -8,12 +8,12 @@ import { OfferCategories } from "@/widgets/OfferCategories";
 import Button from "@/shared/ui/Button/Button";
 import { InputField } from "@/shared/ui/InputField/InputField";
 import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
-import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
+import { BlogCategories } from "@/features/ArticleForm";
+import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import styles from "./AdminArticleForm.module.scss";
 import { AdminUsersSearchForm } from "../../../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
-import { BlogCategories } from "@/features/ArticleForm";
 
 type Categories = "Offer" | "Blog";
 

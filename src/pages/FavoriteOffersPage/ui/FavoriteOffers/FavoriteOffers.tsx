@@ -8,9 +8,9 @@ import { mockedOffersData } from "@/entities/Offer/model/data/mockedOfferData";
 import Button from "@/shared/ui/Button/Button";
 import emptyIcon from "@/shared/assets/icons/empty-favorite-heart.svg";
 
-import styles from "./FavoriteOffers.module.scss";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./FavoriteOffers.module.scss";
 // import { Offer } from "@/entities/Offer";
 // import { OfferCard } from "@/widgets/OffersMap";
 

@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import ImageInput from "@/components/ImageInput/ImageInput";
 
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./ExtraImagesItem.module.scss";
 import ExtraImagesItemBackground from "./ExtraImagesItemBackground/ExtraImagesItemBackground";
 import ExtraImagesItemButton from "./ExtraImagesItemButton/ExtraImagesItemButton";
 import { ExtraImagesItemProps } from "./types";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
     img,

@@ -7,14 +7,14 @@ import { getProfileInfoPageUrl, getSignUpPageUrl } from "@/shared/config/routes/
 import { useLocale } from "@/app/providers/LocaleProvider";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 // import SocialAuthContainer from "@/containers/SocialAuthContainer/SocialAuthContainer";
-import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AuthByVk } from "@/features/AuthByVk";
 import { NextRouteType, useNextRoutes } from "@/routes/model/lib/useNextRoutes";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import styles from "./AuthByEmail.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./AuthByEmail.module.scss";
+import { AuthByEmailForm } from "../AuthByEmailForm/AuthByEmailForm";
 
 export const AuthByEmail = memo(() => {
     const [error, setError] = useState("");

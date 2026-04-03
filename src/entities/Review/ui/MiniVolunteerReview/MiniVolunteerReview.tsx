@@ -10,8 +10,8 @@ import CustomLink from "@/shared/ui/Link/Link";
 import { Locale } from "@/entities/Locale";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
-import styles from "./MiniVolunteerReview.module.scss";
 import { FormApplicationStatus } from "@/entities/Application";
+import styles from "./MiniVolunteerReview.module.scss";
 
 interface MiniVolunteerReviewProps {
     className?: string;

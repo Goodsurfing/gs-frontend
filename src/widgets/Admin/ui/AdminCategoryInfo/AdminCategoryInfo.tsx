@@ -4,10 +4,10 @@ import { AdminCategoryFields, AdminCategoryForm } from "@/features/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./AdminCategoryInfo.module.scss";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminCategoriesVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminCategoryInfo.module.scss";
 
 interface AdminCategoryInfoProps {
     categoryId: number;

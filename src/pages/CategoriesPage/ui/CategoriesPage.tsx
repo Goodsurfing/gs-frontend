@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { CategoriesWidget } from "@/widgets/CategoriesWidget";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
-import styles from "./CategoriesPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./CategoriesPage.module.scss";
 
 const CategoriesPage = () => {
     const { t } = useTranslation();

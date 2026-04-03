@@ -7,9 +7,9 @@ import InputField from "@/components/InputField/InputField";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
-import styles from "./VerifyEmailForm.module.scss";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./VerifyEmailForm.module.scss";
 // import Input from "@/shared/ui/Input/Input";
 
 interface FormDataImplemintaion {

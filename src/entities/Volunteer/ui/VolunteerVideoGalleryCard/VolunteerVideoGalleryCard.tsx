@@ -6,8 +6,8 @@ import { VideoGallery } from "@/widgets/VideoGallery/ui/VideoGallery/VideoGaller
 
 import { Video } from "@/entities/Host/model/types/host";
 
-import styles from "./VolunteerVideoGalleryCard.module.scss";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./VolunteerVideoGalleryCard.module.scss";
 
 interface VolunteerVideoGalleryCardProps {
     className?: string;

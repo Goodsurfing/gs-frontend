@@ -2,8 +2,8 @@ import cn from "classnames";
 import { memo, useMemo } from "react";
 
 import { useCategories } from "@/shared/data/categories";
-import styles from "./OfferPersonalCardCategory.module.scss";
 import { CategoryImageObject } from "@/types/categories";
+import styles from "./OfferPersonalCardCategory.module.scss";
 
 interface OfferPersonalCardCategoryProps {
     className?: string;

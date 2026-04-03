@@ -7,9 +7,9 @@ import menIcon from "@/shared/assets/icons/offers/men.svg";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
+import { useFormatGenders } from "@/shared/hooks/useFormatGenders";
 import { OfferWhoNeeds } from "../../model/types/offerWhoNeeds";
 import styles from "./OfferWhoNeedsCard.module.scss";
-import { useFormatGenders } from "@/shared/hooks/useFormatGenders";
 
 interface OfferWhoNeedsCardProps {
     className?: string;

@@ -16,8 +16,8 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
-import styles from "./OffersRecomendationsWidget.module.scss";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
+import styles from "./OffersRecomendationsWidget.module.scss";
 
 interface OffersRecomendationsWidgetProps {
     className?: string;

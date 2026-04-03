@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { AdminUsersSearchInput } from "../AdminUsersSearchInput/AdminUsersSearchInput";
 import { AdminCourseAuthorFileds } from "@/entities/Admin";
-import styles from "./AdminUsersSearchForm.module.scss";
 import { getFullName } from "@/shared/lib/getFullName";
+import { AdminUsersSearchInput } from "../AdminUsersSearchInput/AdminUsersSearchInput";
+import styles from "./AdminUsersSearchForm.module.scss";
 
 interface AdminUsersSearchFormProps {
     value: AdminCourseAuthorFileds | null;

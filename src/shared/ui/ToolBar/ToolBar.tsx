@@ -27,9 +27,9 @@ import imageIcon from "@/shared/assets/icons/textEditor/image.svg";
 import alignJustifyIcon from "@/shared/assets/icons/textEditor/alignJustify.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 
-import InputFile from "../InputFile/InputFile";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import InputFile from "../InputFile/InputFile";
 import styles from "./ToolBar.module.scss";
 import { MiniLoader } from "../MiniLoader/MiniLoader";
 
@@ -151,17 +151,17 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     const handleAlignText = (event: MouseEvent<HTMLElement>, newAlign: string | null) => {
         setAlignText(newAlign);
         switch (newAlign) {
-            case "left":
-                editor.commands.setTextAlign("left");
-                break;
-            case "center":
-                editor.commands.setTextAlign("center");
-                break;
-            case "justify":
-                editor.commands.setTextAlign("justify");
-                break;
-            default:
-                break;
+        case "left":
+            editor.commands.setTextAlign("left");
+            break;
+        case "center":
+            editor.commands.setTextAlign("center");
+            break;
+        case "justify":
+            editor.commands.setTextAlign("justify");
+            break;
+        default:
+            break;
         }
     };
 

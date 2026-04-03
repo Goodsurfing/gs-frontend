@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./AdminUsersPage.module.scss";
 import { AdminUsersTable } from "@/widgets/Admin";
+import styles from "./AdminUsersPage.module.scss";
 
 const AdminUsersPage = () => (
     <div className={styles.wrapper}>

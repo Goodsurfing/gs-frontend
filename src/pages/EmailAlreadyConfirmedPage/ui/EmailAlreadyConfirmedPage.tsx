@@ -5,8 +5,8 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { getSignInPageUrl, getSignUpPageUrl } from "@/shared/config/routes/AppUrls";
 
-import styles from "./EmailAlreadyConfirmedPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./EmailAlreadyConfirmedPage.module.scss";
 
 const EmailAlreadyConfirmedPage: FC = () => {
     const { locale } = useLocale();

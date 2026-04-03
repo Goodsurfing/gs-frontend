@@ -9,9 +9,9 @@ import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
-import styles from "./OfferOrganizationCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
+import styles from "./OfferOrganizationCard.module.scss";
 
 interface OfferOrganizationCardProps {
     organization: OfferOrganization;

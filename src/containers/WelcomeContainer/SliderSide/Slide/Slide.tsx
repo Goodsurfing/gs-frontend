@@ -4,8 +4,8 @@ import CustomLink from "@/shared/ui/Link/Link";
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import sliderVolunteerImg from "@/shared/assets/images/slider-volunteer.png";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
-import styles from "./Slide.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./Slide.module.scss";
 
 interface SlideProps {
     title: string;

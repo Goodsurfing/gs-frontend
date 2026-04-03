@@ -9,10 +9,10 @@ import { Locale } from "@/entities/Locale";
 
 import { generateCodeVerifier, generateState } from "@/shared/lib/pkce";
 
-import styles from "./AuthByVk.module.scss";
 import { BASE_VK_URI } from "@/shared/constants/api";
 import { userActions } from "@/entities/User";
 import { useAppDispatch } from "@/shared/hooks/redux";
+import styles from "./AuthByVk.module.scss";
 
 const langLib: Record<Locale, VKID.Languages> = {
     ru: VKID.Languages.RUS,

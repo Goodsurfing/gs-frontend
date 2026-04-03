@@ -4,12 +4,12 @@ import { VideoForm } from "@/features/VideoForm";
 
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 
+import { VolunteerCertificateGallery, VolunteerGallery } from "@/features/Gallery";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { TitleCertificate } from "../TitleCertificate/TitleCertificate";
 import { TitleGallery } from "../TitleGallery/TitleGallery";
 import { TitleVideoGallery } from "../TitleVideoGallery/TitleVideoGallery";
-import { VolunteerCertificateGallery, VolunteerGallery } from "@/features/Gallery";
 import styles from "./VolunteerGalleryPage.module.scss";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 const VolunteerGalleryPage = () => {
     const { data: profileData, isLoading } = useGetProfileInfoQuery();

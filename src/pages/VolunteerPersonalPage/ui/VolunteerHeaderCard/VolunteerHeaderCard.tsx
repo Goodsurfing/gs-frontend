@@ -23,8 +23,8 @@ import { useLanguagesWithComma } from "@/shared/data/languages";
 import { getAge } from "@/shared/lib/getAge";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { ProfileById } from "@/entities/Profile";
-import styles from "./VolunteerHeaderCard.module.scss";
 import { AchievementModal } from "@/entities/Volunteer";
+import styles from "./VolunteerHeaderCard.module.scss";
 
 interface VolunteerHeaderCardProps {
     profileData: ProfileById;

@@ -1,10 +1,9 @@
 import cn from "classnames";
 import React, { FC } from "react";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
-import "swiper/swiper-bundle.min.css";
-import "swiper/swiper.min.css";
+import "swiper/css/bundle";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -14,8 +13,8 @@ import {
 } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
-import styles from "./ReviewSlider.module.scss";
 import useWindowDimensions from "@/shared/hooks/useWindowDimensions";
+import styles from "./ReviewSlider.module.scss";
 
 export interface ReviewAuthor {
     name: string;

@@ -5,8 +5,8 @@ import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
 import { getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 
-import styles from "./ConfirmErrorPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./ConfirmErrorPage.module.scss";
 
 const ConfirmErrorPage: FC = () => {
     const { locale } = useLocale();

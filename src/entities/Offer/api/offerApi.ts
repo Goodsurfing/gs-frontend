@@ -2,6 +2,9 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 
+import { GalleryItem } from "@/types/media";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { PaginationIdParams } from "@/types/api/pagination";
 import {
     GetAllOffersMapFilters,
     GetHostOffersFilters, GetHostOffersResponse,
@@ -12,13 +15,10 @@ import {
     OfferSort,
     UpdateOldOffer,
 } from "../model/types/offer";
-import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
 import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
 import { UpdateOfferDescriptionParams } from "../model/types/offerDescription";
-import { PaginationIdParams } from "@/types/api/pagination";
 
 interface UpdateOfferParams {
     id: number;

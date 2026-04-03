@@ -2,11 +2,11 @@ import React, { FC, memo } from "react";
 import cn from "classnames";
 
 import { useTranslation } from "react-i18next";
-import styles from "./OfferGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Text } from "@/shared/ui/Text/Text";
 import { Image } from "@/types/media";
 import { BASE_URL } from "@/shared/constants/api";
+import styles from "./OfferGalleryCard.module.scss";
 
 interface OfferGalleryCardProps {
     galleryImages?: Image[];

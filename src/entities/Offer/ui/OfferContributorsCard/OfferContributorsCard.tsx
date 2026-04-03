@@ -7,14 +7,14 @@ import { useTranslation } from "react-i18next";
 import { OfferContributorCard } from "@/entities/Volunteer/ui/OfferContributorCard/OfferContributorCard";
 
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
-import { useLazyGetOfferParticipantListByOfferIdQuery } from "../../api/offerApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { OfferParticipant } from "../../model/types/offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
 import { Text } from "@/shared/ui/Text/Text";
+import { OfferParticipant } from "../../model/types/offer";
+import { useLazyGetOfferParticipantListByOfferIdQuery } from "../../api/offerApi";
 import styles from "./OfferContributorsCard.module.scss";
 
 interface OfferContributorsCardProps {

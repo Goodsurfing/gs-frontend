@@ -3,9 +3,9 @@ import React, { FC, memo } from "react";
 
 import { useTranslation } from "react-i18next";
 import { useFormatLanguages } from "@/shared/data/languages";
-import styles from "./OfferLanguagesCard.module.scss";
 import { Language } from "@/types/languages";
 import { Text } from "@/shared/ui/Text/Text";
+import styles from "./OfferLanguagesCard.module.scss";
 
 interface OfferLanguagesCardProps {
     languages: Language[];

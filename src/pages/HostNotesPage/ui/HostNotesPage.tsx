@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import { NotesHostForm } from "@/features/Notes";
 
-import styles from "./HostNotesPage.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./HostNotesPage.module.scss";
 
 const HostNotesPage = () => {
     const { t, ready } = useTranslation("host");

@@ -7,13 +7,13 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getHostInfoUrl, getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 
-import styles from "./HostDescriptionAvatar.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { HostDescriptionFormFields } from "../../model/types/hostDescription";
 import { BASE_URL } from "@/shared/constants/api";
+import { HostDescriptionFormFields } from "../../model/types/hostDescription";
+import styles from "./HostDescriptionAvatar.module.scss";
 
 interface HostDescriptionAvatarProps {
     className?: string;

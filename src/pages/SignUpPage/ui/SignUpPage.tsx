@@ -4,10 +4,10 @@ import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
 import SignUpContainer from "@/containers/SignUpContainer/SignUpContainer";
 
-import styles from "./SignUpPage.module.scss";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import styles from "./SignUpPage.module.scss";
 
 const SignUpPage: FC = () => {
     const { locale } = useLocale();

@@ -2,10 +2,10 @@ import React, { FC } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import styles from "./FindOffer.module.scss";
 import Button from "@/shared/ui/Button/Button";
 import { Locale } from "@/entities/Locale";
 import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import styles from "./FindOffer.module.scss";
 
 interface FindOfferProps {
     className?: string;

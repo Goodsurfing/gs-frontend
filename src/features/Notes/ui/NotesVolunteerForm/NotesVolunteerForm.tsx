@@ -17,8 +17,8 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
-import { ReviewFields } from "../../model/types/notes";
 import { useLazyGetMyVolunteerApplicationsQuery } from "@/entities/Chat";
+import { ReviewFields } from "../../model/types/notes";
 import styles from "./NotesVolunteerForm.module.scss";
 
 const APPLICATION_PER_PAGE = 10;

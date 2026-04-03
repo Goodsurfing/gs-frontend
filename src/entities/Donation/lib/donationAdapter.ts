@@ -1,9 +1,9 @@
 import { AdminSort } from "@/entities/Admin";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import {
     DonationFilterFields, GetDonations, GetDonationsMapParams, GetDonationsParams,
 } from "../model/types/donationSchema";
 import { DonationCardType } from "../ui/DonationCard/DonationCard";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 export const donationFilterApiAdapter = (data: DonationFilterFields):
 Partial<GetDonationsParams> => {

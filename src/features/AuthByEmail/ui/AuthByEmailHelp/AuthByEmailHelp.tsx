@@ -4,8 +4,8 @@ import { getResetPasswordPageUrl } from "@/shared/config/routes/AppUrls";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
-import styles from "./AuthByEmailHelp.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AuthByEmailHelp.module.scss";
 
 interface AuthByEmailHelpProps {
     value: boolean;

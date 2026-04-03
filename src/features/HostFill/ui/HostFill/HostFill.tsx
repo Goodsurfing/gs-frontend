@@ -1,15 +1,15 @@
 import { memo } from "react";
 import cn from "classnames";
 
-import styles from "./HostFill.module.scss";
-import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
 import { StatsChartPoints, StatsPoints } from "@/entities/Stats";
 import { FillDiagram } from "@/shared/ui/FillDiagram/FillDiagram";
-import { EditHost } from "../EditHost/EditHost";
-import { CreateHost } from "../CreateHost/CreateHost";
 import { useGetMyHostQuery } from "@/entities/Host/api/hostApi";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useGetOfferReviewsQuery } from "@/entities/Review";
+import { CreateHost } from "../CreateHost/CreateHost";
+import { EditHost } from "../EditHost/EditHost";
+import { HostFillTitle } from "../HostFillTitle/HostFillTitle";
+import styles from "./HostFill.module.scss";
 
 interface HostFillProps {
     className?: string;

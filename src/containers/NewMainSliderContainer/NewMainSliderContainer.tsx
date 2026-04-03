@@ -27,7 +27,6 @@ import {
     getVideoPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
-import styles from "./NewMainSliderContainer.module.scss";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import Arrow from "@/shared/ui/Arrow/Arrow";
 import Popup from "@/components/Popup/Popup";
@@ -38,6 +37,7 @@ import sliderVolunteerImg from "@/shared/assets/images/slider-volunteer.png";
 import sliderBackpackImg from "@/shared/assets/icons/slider-backpack.png";
 import sliderHouseImg from "@/shared/assets/icons/slider-house.png";
 import { MobileSelect } from "@/widgets/MobileHeader/ui/MobileSelect/MobileSelect";
+import styles from "./NewMainSliderContainer.module.scss";
 
 type SliderState = "MIDDLE" | "LEFT-FULL" | "LEFT-HALF" | "LEFT" | "RIGHT" | "RIGHT-FULL" | "RIGHT-HALF";
 
@@ -108,18 +108,18 @@ export const NewMainSliderContainer = () => {
     const handleOpenDropdownMenu = (type: ButtonNav) => {
         setDropdownMenuOpened((prev) => {
             switch (type) {
-                case "COMMUNITY":
-                    return {
-                        ...prev,
-                        isCommunityOpened: !prev.isCommunityOpened,
-                    };
-                case "ABOUT":
-                    return {
-                        ...prev,
-                        isAboutProjectOpened: !prev.isAboutProjectOpened,
-                    };
-                default:
-                    return prev;
+            case "COMMUNITY":
+                return {
+                    ...prev,
+                    isCommunityOpened: !prev.isCommunityOpened,
+                };
+            case "ABOUT":
+                return {
+                    ...prev,
+                    isAboutProjectOpened: !prev.isAboutProjectOpened,
+                };
+            default:
+                return prev;
             }
         });
     };

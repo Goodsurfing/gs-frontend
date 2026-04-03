@@ -2,9 +2,9 @@ import { memo, useCallback } from "react";
 
 import { ExtraConditions } from "@/entities/Offer";
 
+import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import styles from "./OfferFinishingTouchesExtras.module.scss";
 import { useExtraConditionsData } from "../../model/data/extraConditionsData";
-import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 
 interface OfferFinishingTouchesExtrasProps {
     className?: string;

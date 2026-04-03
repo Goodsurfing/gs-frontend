@@ -7,9 +7,9 @@ import { HostDescriptionForm } from "@/features/HostDescription";
 import { useGetProfileInfoQuery } from "@/entities/Profile";
 import { getHostInfoUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./HostRegisterPage.module.scss";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
+import styles from "./HostRegisterPage.module.scss";
 
 const HostRegisterPage: FC = () => {
     const { t, ready } = useTranslation("host");

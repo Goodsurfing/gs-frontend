@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 
-import { Header } from "../Header/Header";
-import { JournalFilter } from "../JournalFilter/JournalFilter";
-import { JournalsList } from "../JournalsList/JournalsList";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { TagsOption } from "@/features/Article";
 import { AdminSort } from "@/entities/Admin";
@@ -12,17 +9,20 @@ import { journalCardAdapter, useLazyGetJournalListQuery } from "@/entities/Journ
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { JournalsList } from "../JournalsList/JournalsList";
+import { JournalFilter } from "../JournalFilter/JournalFilter";
+import { Header } from "../Header/Header";
 import styles from "./JournalsPage.module.scss";
 
 const limit = 9;
 
 const getSortByFilter = (filter: TagsOption): AdminSort => {
     switch (filter) {
-        case "popular":
-            return AdminSort.LikeNewsDesc;
-        case "new":
-        default:
-            return AdminSort.CreatedDesc;
+    case "popular":
+        return AdminSort.LikeNewsDesc;
+    case "new":
+    default:
+        return AdminSort.CreatedDesc;
     }
 };
 

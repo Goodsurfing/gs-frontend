@@ -5,9 +5,9 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { useEditHouseMutation, useGetHouseByIdQuery } from "@/entities/Admin";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
-import styles from "./AdminHouseInfo.module.scss";
 import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminHouseInfo.module.scss";
 
 interface AdminHouseInfoProps {
     houseId: number;

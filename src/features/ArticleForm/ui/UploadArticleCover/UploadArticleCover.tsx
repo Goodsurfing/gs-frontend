@@ -7,10 +7,10 @@ import cameraIcon from "@/shared/assets/icons/photo-camera.svg";
 import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
 
-import styles from "./UploadArticleCover.module.scss";
 import { Image } from "@/types/media";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
+import styles from "./UploadArticleCover.module.scss";
 
 interface UploadArticleCoverProps {
     id: string;

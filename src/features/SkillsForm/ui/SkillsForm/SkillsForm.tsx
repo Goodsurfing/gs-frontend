@@ -1,12 +1,12 @@
 import React, { FC, memo } from "react";
 import { Control, Controller } from "react-hook-form";
 
-import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
-import { Skills } from "../Skills/Skills";
-import styles from "./SkillsForm.module.scss";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { AdditionalSkills } from "../AdditionalSkills/AdditionalSkills";
+import { Skills } from "../Skills/Skills";
+import styles from "./SkillsForm.module.scss";
 
 interface SkillsFormProps {
     control: Control<any>;

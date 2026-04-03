@@ -8,9 +8,9 @@ import {
     FormApplication, FormApplicationStatus, FullFormApplication,
     GetHostFormApplicationResponse, GetVolunteerFormApplicationResponse,
 } from "@/entities/Application";
-import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 import { PaginationParams } from "@/types/api/pagination";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 
 interface MessagesRequest {
     chatId: string;

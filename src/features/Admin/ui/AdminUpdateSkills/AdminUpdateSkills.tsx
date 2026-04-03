@@ -8,8 +8,8 @@ import { AdditionalSkills, Skills } from "@/features/SkillsForm";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicSkillsQuery } from "@/entities/Admin";
 import { AdditionalSkillsType } from "@/features/OfferWhatToDo";
-import styles from "./AdminUpdateSkills.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./AdminUpdateSkills.module.scss";
 
 interface AdminUpdateSkillsProps {
     currentSkillIds: number[];

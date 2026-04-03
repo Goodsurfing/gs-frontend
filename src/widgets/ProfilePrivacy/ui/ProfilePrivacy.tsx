@@ -45,10 +45,10 @@ export const ProfilePrivacy: FC<ProfilePrivacyProps> = memo((props: ProfilePriva
 
     const getErrorText = useCallback((errorCode: string): string => {
         switch (errorCode) {
-            case "IS_ADMIN_BLOCK":
-                return t("privacy.Ваш аккаунт был заблокирован администратором. Обратитесь в службу поддержки");
-            default:
-                return t("privacy.Ошибка при изменении статуса активности профиля");
+        case "IS_ADMIN_BLOCK":
+            return t("privacy.Ваш аккаунт был заблокирован администратором. Обратитесь в службу поддержки");
+        default:
+            return t("privacy.Ошибка при изменении статуса активности профиля");
         }
     }, [t]);
 

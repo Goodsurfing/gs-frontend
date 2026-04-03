@@ -1,10 +1,10 @@
 import cn from "classnames";
 import React, { FC, useMemo } from "react";
 
+import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import { Comment } from "../Comment/Comment";
 import styles from "./CommentList.module.scss";
 import { Comments } from "../../model/types/articleSchema";
-import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 
 interface CommentListProps {
     className?: string;

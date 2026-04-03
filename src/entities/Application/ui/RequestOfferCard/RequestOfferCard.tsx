@@ -10,11 +10,11 @@ import { textSlice } from "@/shared/lib/textSlice";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 
-import styles from "./RequestOfferCard.module.scss";
-import { Application } from "../../model/types/application";
 import { Locale } from "@/entities/Locale";
 import CustomLink from "@/shared/ui/Link/Link";
 import { useApplicationStatus } from "@/shared/hooks/useApplicationStatus";
+import { Application } from "../../model/types/application";
+import styles from "./RequestOfferCard.module.scss";
 
 interface RequestOfferCardProps {
     application: Application;

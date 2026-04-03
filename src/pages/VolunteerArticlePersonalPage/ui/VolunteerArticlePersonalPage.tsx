@@ -3,8 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { VolunteerArticleInfo } from "@/widgets/Article";
-import styles from "./VolunteerArticlePersonalPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./VolunteerArticlePersonalPage.module.scss";
 
 const VolunteerArticlePersonalPage = () => {
     const { t } = useTranslation("volunteer");

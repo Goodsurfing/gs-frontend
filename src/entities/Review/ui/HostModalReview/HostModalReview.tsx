@@ -4,9 +4,9 @@ import { ReviewTypeFields } from "@/features/Notes";
 
 import { ModalReview } from "@/shared/ui/ModalReview/ModalReview";
 import { Locale } from "@/entities/Locale";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { NotDoneReviewHost } from "../../model/types/review";
 import { MiniVolunteerReview } from "../MiniVolunteerReview/MiniVolunteerReview";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface HostModalReviewProps {
     review: NotDoneReviewHost | null;

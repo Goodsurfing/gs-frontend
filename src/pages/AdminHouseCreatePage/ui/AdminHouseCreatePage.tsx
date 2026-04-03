@@ -6,8 +6,8 @@ import { getAdminConditionsVacanciesPageUrl } from "@/shared/config/routes/AppUr
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { AdminHouseForm, AdminHouseFields } from "@/features/Admin";
-import styles from "./AdminHouseCreatePage.module.scss";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
+import styles from "./AdminHouseCreatePage.module.scss";
 
 const AdminHouseCreatePage = () => {
     const { locale } = useLocale();

@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { ProfileInfoForm } from "@/features/ProfileInfo";
 
-import styles from "./ProfileInfoPage.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import styles from "./ProfileInfoPage.module.scss";
 
 const ProfileInfoPage: FC = () => {
     const { t, ready } = useTranslation("profile");

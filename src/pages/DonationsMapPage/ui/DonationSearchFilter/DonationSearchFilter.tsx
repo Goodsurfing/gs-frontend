@@ -7,7 +7,6 @@ import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { DonationsFilter } from "../DonationsFilter/DonationsFilter";
 import {
     donationFilterApiAdapter, DonationFilterFields, donationMapFilterApiAdapter,
     useLazyGetDonationsMapQuery, useLazyGetDonationsQuery,
@@ -16,6 +15,7 @@ import { AdminSort } from "@/entities/Admin";
 import {
     DonationsList, DonationsMap, SearchDonations, SearchDonationsRef,
 } from "@/widgets/Donation";
+import { DonationsFilter } from "../DonationsFilter/DonationsFilter";
 import { DonationsSearchFilterMobile } from "../DonationsSearchFilterMobile/DonationsSearchFilterMobile";
 import styles from "./DonationSearchFilter.module.scss";
 

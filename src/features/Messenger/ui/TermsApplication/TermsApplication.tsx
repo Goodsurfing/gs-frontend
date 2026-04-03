@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
-import styles from "./TermsApplication.module.scss";
 import DateInput from "@/shared/ui/DateInput/DateInput";
 import IconButtonComponent from "@/shared/ui/IconButtonComponent/IconButtonComponent";
 import { successIcon } from "@/shared/data/icons/skills";
@@ -9,6 +8,7 @@ import { formatDate } from "@/shared/lib/formatDate";
 import { Locale } from "@/entities/Locale";
 import Button from "@/shared/ui/Button/Button";
 import { FormApplicationStatus } from "@/entities/Application";
+import styles from "./TermsApplication.module.scss";
 
 interface DateType {
     start: Date | undefined;

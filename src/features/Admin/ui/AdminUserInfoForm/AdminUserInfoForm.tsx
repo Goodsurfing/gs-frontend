@@ -14,13 +14,13 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import {
     AdminUser, adminUserAdapter, AdminUserFields, useUpdateAdminUserMutation,
 } from "@/entities/Admin";
-import styles from "./AdminUserInfoForm.module.scss";
 import { adminUserApiAdapter } from "@/entities/Admin/lib/adminAdapters";
 import { ErrorType } from "@/types/api/error";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ProfileInfoFormContent } from "@/features/ProfileInfo";
+import styles from "./AdminUserInfoForm.module.scss";
 
 interface AdminUserInfoFormProps {
     className?: string;

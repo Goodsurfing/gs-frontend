@@ -28,8 +28,8 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminReviewCoursePersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getFullName } from "@/shared/lib/getFullName";
-import styles from "./AdminReviewsCoursesTable.module.scss";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import styles from "./AdminReviewsCoursesTable.module.scss";
 
 interface ReviewCourseFilters {
     courseName?: string;

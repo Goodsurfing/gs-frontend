@@ -12,12 +12,11 @@ import sendIcon from "@/shared/assets/icons/send-arrow.svg";
 import smileIcon from "@/shared/assets/icons/chat-smile.svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
-import styles from "./ChatInput.module.scss";
-
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { MediaObjectType } from "@/types/media";
+import styles from "./ChatInput.module.scss";
 
 interface AttachmentType {
     filename: string;

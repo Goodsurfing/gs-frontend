@@ -2,8 +2,8 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { foundersData } from "../../model/data/ourTeam";
 import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
+import { foundersData } from "../../model/data/ourTeam";
 import styles from "./Founders.module.scss";
 
 interface FoundersProps {

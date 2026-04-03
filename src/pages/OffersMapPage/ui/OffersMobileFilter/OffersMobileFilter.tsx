@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import styles from "./OffersMobileFilter.module.scss";
 import Button from "@/shared/ui/Button/Button";
-import { OffersFilterFields } from "../../model/types";
 import { PeriodsFilter, ParticipationPeriod } from "@/widgets/OffersMap";
 import { OfferCategories } from "@/widgets/OfferCategories";
 import { LanguagesGroup, WithChildren } from "@/features/OffersMap";
 import { ProvidedFilter } from "@/widgets/OffersMap/ui/ProvidedFilter/ProvidedFilter";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { OffersFilterFields } from "../../model/types";
+import styles from "./OffersMobileFilter.module.scss";
 
 interface OffersMobileFilterProps {
     onSubmitFilters: () => void;

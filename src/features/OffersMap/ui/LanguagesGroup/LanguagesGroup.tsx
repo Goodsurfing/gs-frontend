@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from "react";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import styles from "./LanguagesGroup.module.scss";
 import { useAllLangs } from "@/shared/data/languages";
+import styles from "./LanguagesGroup.module.scss";
 
 interface LanguagesGroupProps {
     value: string[];

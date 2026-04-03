@@ -12,14 +12,14 @@ import { useTranslation } from "react-i18next";
 import { SkillsForm } from "@/features/SkillsForm";
 import Button from "@/shared/ui/Button/Button";
 import Textarea from "@/shared/ui/Textarea/Textarea";
-import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
-import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
-import { offerWhatToDoApiAdapter, sessionStorageToFormAdapter } from "../../model/lib/offerWhatToDoAdapter";
 import { OFFER_WHAT_TO_DO_FORM } from "@/shared/constants/localstorage";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import { offerWhatToDoApiAdapter, sessionStorageToFormAdapter } from "../../model/lib/offerWhatToDoAdapter";
+import { WorkingHoursField } from "../WorkingHoursField/WorkingHoursField";
+import { OfferWhatToDoFormFields } from "../../model/types/offerWhatToDo";
 import styles from "./OfferWhatToDoForm.module.scss";
 
 interface OfferWhatToDoFormProps {

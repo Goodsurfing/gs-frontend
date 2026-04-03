@@ -9,10 +9,10 @@ import { MapWithAddress } from "@/features/MapWithAddress";
 import { OFFER_WHERE_FORM } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
 
-import { AddressFormFormFields } from "../model/types/addressForm";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
+import { AddressFormFormFields } from "../model/types/addressForm";
 import styles from "./OfferWhereForm.module.scss";
 
 interface OfferWhereFormProps {

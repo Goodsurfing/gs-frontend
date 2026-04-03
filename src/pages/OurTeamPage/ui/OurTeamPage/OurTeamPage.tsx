@@ -5,11 +5,11 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 
 // import Button from "@/shared/ui/Button/Button";
 
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { Founders } from "../Founders/Founders";
 import { GoodsurfingTeam } from "../GoodsurfingTeam/GoodsurfingTeam";
 import { Header } from "../Header/Header";
 import styles from "./OurTeamPage.module.scss";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 const OurTeamPage = () => {
     const { t } = useTranslation("our-team");

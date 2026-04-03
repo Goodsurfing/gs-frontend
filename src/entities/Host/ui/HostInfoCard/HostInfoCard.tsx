@@ -1,6 +1,8 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
+import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import { Host } from "../../model/types/host";
 // import { HostArticleCard } from "../HostArticleCard/HostArticleCard";
 import { HostDescriptionCard } from "../HostDescriptionCard/HostDescriptionCard";
@@ -8,10 +10,8 @@ import { HostOffersCard } from "../HostOffersCard/HostOffersCard";
 // import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
 import styles from "./HostInfoCard.module.scss";
 import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
 import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 import { HostReviewCard } from "../HostReviewCard/HostReviewCard";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface HostInfoCardProps {
     className?: string;

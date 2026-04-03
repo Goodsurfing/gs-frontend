@@ -15,6 +15,10 @@ import { OFFER_DESCRIPTION_FORM } from "@/shared/constants/localstorage";
 import Button from "@/shared/ui/Button/Button";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { OfferGallery } from "@/features/Gallery";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { Image } from "@/types/media";
 import {
     fromSessionStorageAdapter,
     inviteDescriptionApiAdapter,
@@ -25,11 +29,7 @@ import EventName from "../EventName/EventName";
 import FullDescription from "../FullDescription/FullDescription";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ShortDescription from "../ShortDescription/ShortDescription";
-import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
-import { OfferGallery } from "@/features/Gallery";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./InviteDescriptionForm.module.scss";
-import { Image } from "@/types/media";
 
 const defaultValues: DefaultValues<OfferDescriptionField> = {
     title: "",

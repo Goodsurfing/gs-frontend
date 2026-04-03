@@ -4,12 +4,12 @@ import cn from "classnames";
 import { ReactSVG } from "react-svg";
 import { useTranslation } from "react-i18next";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import styles from "./ImagesUploader.module.scss";
 import plusIcon from "@/shared/assets/icons/plus-icon.svg";
 import { GalleryItem, Image, MediaObjectType } from "@/types/media";
 import { getMediaContent, getMediaContentsArray } from "@/shared/lib/getMediaContent";
-import { ModalGallery } from "../ModalGallery/ModalGallery";
 import fileIcon from "@/shared/assets/icons/skills/administration.svg";
+import { ModalGallery } from "../ModalGallery/ModalGallery";
+import styles from "./ImagesUploader.module.scss";
 
 type GalleryImage = MediaObjectType | GalleryItem | Image;
 

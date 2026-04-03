@@ -10,10 +10,10 @@ import {
 
 import useDebounce from "@/shared/hooks/useDebounce";
 
+import { Locale } from "@/entities/Locale";
 import { statusColors } from "../../model/lib/statusColors";
 import { NotesContainer, VariantType } from "../NotesContainer/NotesContainer";
 import styles from "./NotesWidget.module.scss";
-import { Locale } from "@/entities/Locale";
 
 interface NotesWidgetProps {
     notes: Application[];

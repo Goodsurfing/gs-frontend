@@ -9,8 +9,7 @@ import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
-import { ArticleCardType } from "@/entities/Article";
-import { ArticleCard } from "@/entities/Article/";
+import { ArticleCardType, ArticleCard } from "@/entities/Article";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
 import {

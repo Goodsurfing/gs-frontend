@@ -13,10 +13,10 @@ import defaultImage from "@/shared/assets/images/default-offer-image.png";
 
 import "./yandex-map-restyle-ballon.scss";
 import { OfferMap } from "@/entities/Offer";
-import styles from "./OffersMap.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./OffersMap.module.scss";
 
 interface OffersMapProps {
     className?: string;

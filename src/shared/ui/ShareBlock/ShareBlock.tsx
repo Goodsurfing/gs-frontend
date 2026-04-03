@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import styles from "./ShareBlock.module.scss";
 import {
     telegramIcon,
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
+import styles from "./ShareBlock.module.scss";
 
 interface ShareBlockProps {
     className?: string

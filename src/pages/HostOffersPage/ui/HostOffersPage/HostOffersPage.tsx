@@ -12,12 +12,12 @@ import {
 
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 
-import { HostOffersList } from "../HostOffersList/HostOffersList";
 import { useGetMyHostQuery } from "@/entities/Host";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { HostOffersList } from "../HostOffersList/HostOffersList";
 import styles from "./HostOffersPage.module.scss";
 
 type SeletecBtnType = "delete" | "every_open" | "close";

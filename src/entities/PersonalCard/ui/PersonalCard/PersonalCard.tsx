@@ -21,8 +21,8 @@ import { OfferStatus } from "@/shared/ui/OfferStatus/OfferStatus";
 import { useAppSelector } from "@/shared/hooks/redux";
 import { getUserAuthData } from "@/entities/User";
 import { textSlice } from "@/shared/lib/textSlice";
-import styles from "./PersonalCard.module.scss";
 import { useTranslateSubmenu } from "@/shared/hooks/useTranslateSubmenu";
+import styles from "./PersonalCard.module.scss";
 
 interface PersonalCardProps {
     offerId: string;

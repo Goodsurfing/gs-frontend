@@ -9,9 +9,9 @@ import { ProfileLayoutPage } from "@/pages/ProfileLayoutPage";
 import { ProfileResetPasswordPage } from "@/pages/ProfileResetPasswordPage";
 import { VolunteerLayoutPage } from "@/pages/VolunteerLayoutPage";
 
-import { AppRoutes } from "./AppRoutes";
 import { HostsLayoutPage } from "@/pages/HostsLayoutPage";
 import { PrivateRouteHostGuard } from "@/routes/model/guards/PrivateRouteHostGuard";
+import { AppRoutes } from "./AppRoutes";
 
 export const AuthRoutes = {
     [AppRoutes.PROFILE]: (

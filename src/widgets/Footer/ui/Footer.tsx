@@ -26,8 +26,8 @@ import {
     // getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
-import styles from "./Footer.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import styles from "./Footer.module.scss";
 
 export const Footer = memo(() => {
     const { locale } = useLocale();

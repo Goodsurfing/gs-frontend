@@ -2,10 +2,10 @@ import { CreateAdminJournal, GetAdminJournal } from "@/entities/Admin";
 import { AdminJournalFormFields } from "@/features/Admin";
 
 import { JournalCardType } from "@/entities/Article";
-import { GetJournals, GetReviewsJournal } from "../model/journalSchema";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Comments } from "@/features/Article";
 import { getFullName } from "@/shared/lib/getFullName";
+import { GetJournals, GetReviewsJournal } from "../model/journalSchema";
 
 export const journalApiAdapter = (data: AdminJournalFormFields): CreateAdminJournal => {
     const {

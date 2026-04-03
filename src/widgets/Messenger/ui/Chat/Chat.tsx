@@ -39,14 +39,14 @@ import {
 } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { Modal } from "@/shared/ui/Modal/Modal";
 
-import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
-import { ChatFormFields } from "../../model/types/chatForm";
-import { Message } from "../Message/Message";
-import { SendMessage } from "../SendMessage/SendMessage";
 import { API_BASE_URL } from "@/shared/constants/api";
 import { getMessengerPageIdUrl } from "@/shared/config/routes/AppUrls";
 import { useMessenger } from "@/app/providers/MessengerProvider";
 import { useGetFullName } from "@/shared/lib/getFullName";
+import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
+import { ChatFormFields } from "../../model/types/chatForm";
+import { Message } from "../Message/Message";
+import { SendMessage } from "../SendMessage/SendMessage";
 import styles from "./Chat.module.scss";
 
 interface ChatProps {

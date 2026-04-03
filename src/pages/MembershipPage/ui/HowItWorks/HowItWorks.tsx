@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
 import { useTranslation } from "react-i18next";
-import { Item } from "../Item/Item";
 
 import plannerIcon from "@/shared/assets/images/membership/flat-color-icons_planner.svg";
 import okIcon from "@/shared/assets/images/membership/flat-color-icons_ok.svg";
@@ -9,6 +8,7 @@ import listIcon from "@/shared/assets/images/membership/flat-color-icons_todo-li
 import likeIcon from "@/shared/assets/images/membership/flat-color-icons_like.svg";
 import smsIcon from "@/shared/assets/images/membership/flat-color-icons_sms.svg";
 import globeIcon from "@/shared/assets/images/membership/flat-color-icons_globe.svg";
+import { Item } from "../Item/Item";
 import styles from "./HowItWorks.module.scss";
 
 interface HowItWorksProps {

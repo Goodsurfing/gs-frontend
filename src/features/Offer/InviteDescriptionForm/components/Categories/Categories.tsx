@@ -6,8 +6,8 @@ import { OfferCategories } from "@/widgets/OfferCategories";
 
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { THIS_FIELD_IS_REQUIRED } from "@/shared/constants/messages";
-import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useErrorTranslate } from "../../hooks/useErrorTranslate";
 import styles from "./Categories.module.scss";
 
 const Categories = () => {

@@ -9,8 +9,8 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { Breadcrumbs } from "@/shared/ui/Breadcrumbs/Breadcrumbs";
 import { getAdminCoursesPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./AdminCourseInfo.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import styles from "./AdminCourseInfo.module.scss";
 
 interface AdminCourseInfoProps {
     courseId: string;

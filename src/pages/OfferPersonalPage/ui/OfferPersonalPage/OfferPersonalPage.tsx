@@ -11,9 +11,9 @@ import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 import { Text } from "@/shared/ui/Text/Text";
 
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
 import { OfferPersonalCard } from "../OfferPersonalCard/OfferPersonalCard";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./OfferPersonalPage.module.scss";
 
 export const OfferPersonalPage = () => {

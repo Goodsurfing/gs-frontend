@@ -3,9 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { VideoListProps } from "@/widgets/VideoList";
 
-import styles from "./VideoList.module.scss";
 import { CloseButton } from "@/shared/ui/CloseButton/CloseButton";
 import VideoPlayer from "@/shared/ui/VideoPlayer/VideoPlayer";
+import styles from "./VideoList.module.scss";
 
 export const VideoList: React.FC<VideoListProps> = ({ videosURL, onDelete }) => {
     const { t } = useTranslation("volunteer");

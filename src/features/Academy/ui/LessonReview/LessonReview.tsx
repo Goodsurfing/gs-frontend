@@ -10,9 +10,9 @@ import { ReviewWidget } from "@/widgets/ReviewWidget";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getSignInPageUrl, getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { ShowNext } from "@/shared/ui/ShowNext/ShowNext";
-import styles from "./LessonReview.module.scss";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./LessonReview.module.scss";
 
 interface LessonReviewProps {
     lessonId: string;

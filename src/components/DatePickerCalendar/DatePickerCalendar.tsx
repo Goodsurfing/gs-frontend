@@ -12,6 +12,7 @@ import CalendarComponent from "@/shared/ui/CalendarComponent/CalendarComponent";
 
 import calendarIcon from "@/shared/assets/icons/calendar.svg";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
 import styles from "./DatePickerCalendar.module.scss";
 import { DatePickerCalendarProps } from "./type";
 import { useLatest } from "./useLatest";
@@ -20,7 +21,6 @@ import {
     getInputValueFromDate,
     isInRange,
 } from "./utils";
-import { useLocale } from "@/app/providers/LocaleProvider";
 
 const DatePickerCalendar: FC<DatePickerCalendarProps> = ({
     value,

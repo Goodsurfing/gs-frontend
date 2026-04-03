@@ -8,8 +8,8 @@ import { useSkillsData } from "@/shared/data/skills";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
-import styles from "./VolunteerSkillsCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import styles from "./VolunteerSkillsCard.module.scss";
 
 interface VolunteerSkillsCardProps {
     skills?: GetSkill[];

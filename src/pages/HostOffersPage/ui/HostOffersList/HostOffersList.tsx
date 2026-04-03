@@ -3,11 +3,11 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 import { HostOffer } from "@/entities/Offer";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./HostOffersList.module.scss";
 import { useCategories } from "@/shared/data/categories";
+import styles from "./HostOffersList.module.scss";
+import HostOffersPageCard from "../HostOffersPageCard/HostOffersPageCard";
 
 interface HostOffersListProps {
     offers?: HostOffer[]
