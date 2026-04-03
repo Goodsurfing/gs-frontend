@@ -18,7 +18,6 @@ interface BtnNavState {
     canSwipePrev: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/comma-dangle
 /** Slider for vertical scrolling of components
  *
  * Usage example
@@ -30,7 +29,6 @@ interface BtnNavState {
  * />
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/comma-dangle
 export const VerticalSlider = <T, >({
     className,
     classNameWrapper,

@@ -19,20 +19,20 @@ const TextAreaControlComponent = <T extends FieldValues>({
     name,
     ...restTextAreaProps
 }: TextAreaControlProps<T>) => (
-    <Controller
-            control={control}
-            name={name}
-            rules={rules}
-            render={({ field }) => (
-            <Textarea
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    value={field.value}
-                    label={label}
-                    {...restTextAreaProps}
-                />
+        <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+                <Textarea
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                value={field.value}
+                label={label}
+                {...restTextAreaProps}
+            />
             )}
-        />
+    />
     );
 
 export const TextAreaControl = memo(TextAreaControlComponent) as typeof TextAreaControlComponent;

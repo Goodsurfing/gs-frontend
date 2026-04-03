@@ -6,7 +6,6 @@ interface UsePersistFormProps<T> {
     enabled?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/comma-dangle
 export const usePersistForm = <T, >({
     value,
     localStorageKey,
