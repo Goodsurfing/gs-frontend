@@ -131,12 +131,10 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                             className={styles.error}
                         />
                     )}
-                    <TextAreaControl
+                    <InputControl
                         label="ID пользователя"
                         control={control}
                         name="userId"
-                        minLength={3}
-                        maxLength={200}
                         isError={!!errors.userId?.message}
                     />
                     {errors?.userId?.message && (
