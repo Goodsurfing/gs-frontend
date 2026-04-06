@@ -12,6 +12,12 @@
     align-items: center;
 }
 
+.img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
 .btnIcon {
     background: transparent;
     border: none;

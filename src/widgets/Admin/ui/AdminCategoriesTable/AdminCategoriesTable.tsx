@@ -13,10 +13,10 @@ import { useDeleteCategoryVacancyMutation, useLazyGetCategoriesVacancyQuery } fr
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./AdminCategoriesTable.module.scss";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
+import styles from "./AdminCategoriesTable.module.scss";
 
 const CATEGORIES_PER_PAGE = 30;
 
@@ -178,7 +178,7 @@ export const AdminCategoriesTable = () => {
 
     const renderTable = () => {
         if (!categoriesData) {
-            return <span className={styles.text}>Категорий не было найдено</span>;
+            return <span>Категорий не было найдено</span>;
         }
         return (
             <DataGrid

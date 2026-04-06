@@ -1,8 +1,11 @@
 import { getFullAddress, getFullName } from "@/shared/lib/getFullName";
 import {
+    AdminAmbassadorsFields,
     AdminOrganization,
     AdminOrganizations,
     AdminOrganizationsFields, AdminUser, AdminUserFields, AdminUsers, AdminUsersFields,
+    CreateAdminAmbassador,
+    GetAdminAmbassador,
     GetAdminAmbassadors,
     UpdateAdminOrganization,
     UpdateAdminUser,
@@ -239,3 +242,39 @@ export const adminAmbassadorsAdapter = (data: GetAdminAmbassadors[]) => data.map
         sort,
     };
 });
+
+export const adminAmbassadorApiAdapter = (data: AdminAmbassadorsFields): CreateAdminAmbassador => {
+    const {
+        firstName, lastName, description,
+        city, country, sort, image, userId,
+    } = data;
+
+    return {
+        firstName,
+        lastName,
+        description,
+        city,
+        country,
+        sort,
+        imageId: image.id,
+        userId,
+    };
+};
+
+export const adminAmbassadorAdapter = (data: GetAdminAmbassador): AdminAmbassadorsFields => {
+    const {
+        firstName, lastName, description,
+        city, country, sort, image, userId,
+    } = data;
+
+    return {
+        firstName,
+        lastName,
+        description,
+        city,
+        country,
+        sort,
+        image,
+        userId,
+    };
+};

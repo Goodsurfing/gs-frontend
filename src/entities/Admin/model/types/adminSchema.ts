@@ -673,8 +673,19 @@ export interface GetAdminUsersResponse {
 
 // Ambassadors
 
+export interface AdminAmbassadorsFields {
+    firstName: string;
+    lastName: string;
+    description: string;
+    city: string;
+    country: string;
+    sort: number;
+    userId: string | null;
+    image: Image;
+}
+
 export interface GetAdminAmbassadors {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     description: string;
@@ -684,9 +695,27 @@ export interface GetAdminAmbassadors {
     image: Image;
 }
 
+export type GetAmbassadors = Omit<GetAdminAmbassadors, "sort"> & {
+    userId: string;
+};
+
+export interface GetAmbassadorsResponse {
+    data: GetAmbassadors[];
+    pagination: Pagination;
+}
+
+export type GetAdminAmbassador = GetAdminAmbassadors & {
+    userId: string;
+};
+
 export interface GetAdminAmbassadorsResponse {
     data: GetAdminAmbassadors[];
     pagination: Pagination;
+}
+
+export interface GetAmbassadorsParams {
+    page: number;
+    limit: number;
 }
 
 export interface GetAdminAmbassadorsParams {

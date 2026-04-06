@@ -21,8 +21,9 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import {
     AdminFiltersTable, CustomFilterField,
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
-import { getAmbassadorsPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminAmbassadorCreatePageUrl, getAdminAmbassadorPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./AdminAmbassadorsTable.module.scss";
 
 interface AmbassadorsFilters {
@@ -284,7 +285,13 @@ export const AdminAmbassadorsTable = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 180,
-            type: "boolean",
+            renderCell: (params) => (
+                <img
+                    className={styles.img}
+                    src={params.row.image}
+                    alt={params.row.image}
+                />
+            ),
         },
         {
             field: "actions",
@@ -296,7 +303,7 @@ export const AdminAmbassadorsTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleEdit = () => navigate(
-                    getAmbassadorsPageUrl(locale, params.row.id),
+                    getAdminAmbassadorPersonalPageUrl(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);
@@ -334,7 +341,7 @@ export const AdminAmbassadorsTable = () => {
 
     const renderTable = () => {
         if (!ambassadorsData) {
-            return <span className={styles.text}>Абмассадоры не были найдены</span>;
+            return <span>Абмассадоры не были найдены</span>;
         }
         const adaptedData: any[] = adminAmbassadorsAdapter(ambassadorsData.data);
         return (
@@ -358,6 +365,13 @@ export const AdminAmbassadorsTable = () => {
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminAmbassadorCreatePageUrl(locale)}
+                >
+                    Добавить навык
+                </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
                     onFilterChange={setFilters}
