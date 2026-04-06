@@ -5,6 +5,7 @@ import {
     AdminOrganizations,
     AdminOrganizationsFields, AdminUser, AdminUserFields, AdminUsers, AdminUsersFields,
     CreateAdminAmbassador,
+    GetAdminAmbassador,
     GetAdminAmbassadors,
     UpdateAdminOrganization,
     UpdateAdminUser,
@@ -256,6 +257,24 @@ export const adminAmbassadorApiAdapter = (data: AdminAmbassadorsFields): CreateA
         country,
         sort,
         imageId: image.id,
+        userId,
+    };
+};
+
+export const adminAmbassadorAdapter = (data: GetAdminAmbassador): AdminAmbassadorsFields => {
+    const {
+        firstName, lastName, description,
+        city, country, sort, image, userId,
+    } = data;
+
+    return {
+        firstName,
+        lastName,
+        description,
+        city,
+        country,
+        sort,
+        image,
         userId,
     };
 };

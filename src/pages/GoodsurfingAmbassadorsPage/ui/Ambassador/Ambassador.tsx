@@ -7,6 +7,7 @@ import { useGetAmbassadorsQuery } from "@/entities/Admin";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
 import styles from "./Ambassador.module.scss";
+import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface AmbassadorProps {
     className?: string;
@@ -17,6 +18,7 @@ export const Ambassador: FC<AmbassadorProps> = memo((props: AmbassadorProps) => 
     const { t } = useTranslation("ambassadors");
     const { data } = useGetAmbassadorsQuery({ limit: 50, page: 1 });
     const { getFullName } = useGetFullName();
+    const { locale } = useLocale();
 
     const renderItems = useMemo(
         () => {
@@ -28,10 +30,11 @@ export const Ambassador: FC<AmbassadorProps> = memo((props: AmbassadorProps) => 
                     description={item.description}
                     address={getFullAddress(item.city, item.country)}
                     key={index}
+                    locale={locale}
                 />
             ));
         },
-        [data, getFullName],
+        [data, getFullName, locale],
     );
     return (
         <section className={cn(className)}>

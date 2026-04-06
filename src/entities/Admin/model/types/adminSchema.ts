@@ -695,6 +695,15 @@ export interface GetAdminAmbassadors {
     image: Image;
 }
 
+export type GetAmbassadors = Omit<GetAdminAmbassadors, "sort"> & {
+    userId: string;
+};
+
+export interface GetAmbassadorsResponse {
+    data: GetAmbassadors[];
+    pagination: Pagination;
+}
+
 export type GetAdminAmbassador = GetAdminAmbassadors & {
     userId: string;
 };
