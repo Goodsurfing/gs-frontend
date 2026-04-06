@@ -685,7 +685,7 @@ export interface AdminAmbassadorsFields {
 }
 
 export interface GetAdminAmbassadors {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     description: string;

@@ -23,6 +23,7 @@ import {
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
     GetAdminAmbassador,
+    GetAdminAmbassadors,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
     GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
@@ -823,6 +824,13 @@ export const adminApi = createApi({
             providesTags: ["user"],
         }),
         // Ambassadors
+        getAmbassadors: build.query<GetAdminAmbassadors[], void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}leader/list`,
+                method: "GET",
+            }),
+            providesTags: ["ambassadors"],
+        }),
         getAdminAmbassadors: build.query<GetAdminAmbassadorsResponse, GetAdminAmbassadorsParams>({
             query: (params) => ({
                 url: "leader/list",
@@ -952,6 +960,7 @@ export const {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
+    useGetAmbassadorsQuery,
     useLazyGetAdminAmbassadorsQuery,
     useGetAdminAmbassadorByIdQuery,
     useCreateAdminAmbassadorMutation,

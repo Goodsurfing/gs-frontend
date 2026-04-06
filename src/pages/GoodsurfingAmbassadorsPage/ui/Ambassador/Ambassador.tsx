@@ -2,9 +2,11 @@ import cn from "classnames";
 import React, { FC, memo, useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
-import { ambassadorsData } from "../../model/data/ambassadors";
-import styles from "./Ambassador.module.scss";
 import { TeamItem } from "@/shared/ui/TeamItem/TeamItem";
+import { useGetAmbassadorsQuery } from "@/entities/Admin";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getFullAddress, useGetFullName } from "@/shared/lib/getFullName";
+import styles from "./Ambassador.module.scss";
 
 interface AmbassadorProps {
     className?: string;
@@ -13,21 +15,23 @@ interface AmbassadorProps {
 export const Ambassador: FC<AmbassadorProps> = memo((props: AmbassadorProps) => {
     const { className } = props;
     const { t } = useTranslation("ambassadors");
+    const { data } = useGetAmbassadorsQuery();
+    const { getFullName } = useGetFullName();
 
     const renderItems = useMemo(
-        () => ambassadorsData.map((item, index) => (
+        () => data?.map((item, index) => (
             <TeamItem
-                image={item.image}
-                name={item.name}
+                image={getMediaContent(item.image.contentUrl)}
+                name={getFullName(item.firstName, item.lastName)}
                 description={item.description}
-                address={item.description}
+                address={getFullAddress(item.city, item.country)}
                 key={index}
             />
         )),
-        [],
+        [data, getFullName],
     );
     return (
-        <section className={cn(className, styles.wrapper)}>
+        <section className={cn(className)}>
             <h2 className={styles.title}>{t("Наши Амбассадоры")}</h2>
             <div className={styles.container}>{renderItems}</div>
         </section>

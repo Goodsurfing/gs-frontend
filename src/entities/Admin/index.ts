@@ -124,6 +124,7 @@ export {
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
+    useGetAmbassadorsQuery,
     useLazyGetAdminAmbassadorsQuery,
     useGetAdminAmbassadorByIdQuery,
     useCreateAdminAmbassadorMutation,
