@@ -23,7 +23,6 @@ import {
     EditReviewVacancy, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
     GetAdminAmbassador,
-    GetAdminAmbassadors,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
     GetAdminFoodParams, GetAdminFoodResponse,
     GetAdminHouseParams, GetAdminHouseResponse,
@@ -42,6 +41,7 @@ import {
     GetAdminUserResponse,
     GetAdminUsersParams,
     GetAdminUsersResponse,
+    GetAmbassadorsParams,
     GetHouseRequest,
     GetPublicSkillRequest,
     SearchUsersParams,
@@ -824,7 +824,7 @@ export const adminApi = createApi({
             providesTags: ["user"],
         }),
         // Ambassadors
-        getAmbassadors: build.query<GetAdminAmbassadors[], void>({
+        getAmbassadors: build.query<GetAdminAmbassadorsResponse, GetAmbassadorsParams>({
             query: () => ({
                 url: `${API_BASE_URL_V3}leader/list`,
                 method: "GET",

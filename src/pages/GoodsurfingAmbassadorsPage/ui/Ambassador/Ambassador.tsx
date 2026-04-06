@@ -15,19 +15,22 @@ interface AmbassadorProps {
 export const Ambassador: FC<AmbassadorProps> = memo((props: AmbassadorProps) => {
     const { className } = props;
     const { t } = useTranslation("ambassadors");
-    const { data } = useGetAmbassadorsQuery();
+    const { data } = useGetAmbassadorsQuery({ limit: 50, page: 1 });
     const { getFullName } = useGetFullName();
 
     const renderItems = useMemo(
-        () => data?.map((item, index) => (
-            <TeamItem
-                image={getMediaContent(item.image.contentUrl)}
-                name={getFullName(item.firstName, item.lastName)}
-                description={item.description}
-                address={getFullAddress(item.city, item.country)}
-                key={index}
-            />
-        )),
+        () => {
+            if (!data) return null;
+            return data.data.map((item, index) => (
+                <TeamItem
+                    image={getMediaContent(item.image.contentUrl)}
+                    name={getFullName(item.firstName, item.lastName)}
+                    description={item.description}
+                    address={getFullAddress(item.city, item.country)}
+                    key={index}
+                />
+            ));
+        },
         [data, getFullName],
     );
     return (

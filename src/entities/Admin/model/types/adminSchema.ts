@@ -704,6 +704,11 @@ export interface GetAdminAmbassadorsResponse {
     pagination: Pagination;
 }
 
+export interface GetAmbassadorsParams {
+    page: number;
+    limit: number;
+}
+
 export interface GetAdminAmbassadorsParams {
     page: number;
     limit: number;
