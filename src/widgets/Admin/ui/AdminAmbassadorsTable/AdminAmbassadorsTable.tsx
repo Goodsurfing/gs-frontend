@@ -370,7 +370,7 @@ export const AdminAmbassadorsTable = () => {
                     className={styles.btn}
                     path={getAdminAmbassadorCreatePageUrl(locale)}
                 >
-                    Добавить навык
+                    Добавить амбассадора
                 </ButtonLink>
                 <AdminFiltersTable
                     filters={filters}
