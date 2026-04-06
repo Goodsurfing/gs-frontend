@@ -23,8 +23,8 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { getAdminAmbassadorCreatePageUrl, getAdminAmbassadorPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
-import styles from "./AdminAmbassadorsTable.module.scss";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import styles from "./AdminAmbassadorsTable.module.scss";
 
 interface AmbassadorsFilters {
     id?: string;
@@ -285,7 +285,13 @@ export const AdminAmbassadorsTable = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 180,
-            type: "boolean",
+            renderCell: (params) => (
+                <img
+                    className={styles.img}
+                    src={params.row.image}
+                    alt={params.row.image}
+                />
+            ),
         },
         {
             field: "actions",
@@ -335,7 +341,7 @@ export const AdminAmbassadorsTable = () => {
 
     const renderTable = () => {
         if (!ambassadorsData) {
-            return <span className={styles.text}>Абмассадоры не были найдены</span>;
+            return <span>Абмассадоры не были найдены</span>;
         }
         const adaptedData: any[] = adminAmbassadorsAdapter(ambassadorsData.data);
         return (

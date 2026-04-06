@@ -11,6 +11,7 @@ import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
 import { AdminAmbassadorsFields } from "@/entities/Admin";
 import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
+import uploadFile from "@/shared/hooks/files/useUploadFile";
 import styles from "./AdminAmbassadorForm.module.scss";
 
 interface AdminAmbassadorFormProps {
@@ -130,6 +131,20 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                             className={styles.error}
                         />
                     )}
+                    <TextAreaControl
+                        label="ID пользователя"
+                        control={control}
+                        name="userId"
+                        minLength={3}
+                        maxLength={200}
+                        isError={!!errors.userId?.message}
+                    />
+                    {errors?.userId?.message && (
+                        <ErrorText
+                            text={errors.userId.message}
+                            className={styles.error}
+                        />
+                    )}
                     <InputControl
                         label="Сортировка курса"
                         type="number"
@@ -154,8 +169,26 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <ImageDropzone
-                                    value={value.contentUrl}
-                                    onChange={onChange}
+                                    value={value?.contentUrl}
+                                    onChange={async (file) => {
+                                        if (!file) {
+                                            onChange(undefined);
+                                            return;
+                                        }
+
+                                        try {
+                                            const result = await uploadFile(file.name, file);
+                                            if (result) {
+                                                onChange({
+                                                    id: result.id,
+                                                    contentUrl: result.contentUrl,
+                                                    thumbnails: result.thumbnails,
+                                                });
+                                            }
+                                        } catch {
+                                            onChange(undefined);
+                                        }
+                                    }}
                                     error={!!errors.image}
                                 />
                             )}
