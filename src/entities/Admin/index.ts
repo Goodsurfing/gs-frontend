@@ -132,6 +132,9 @@ export {
     useCreateAdminAmbassadorMutation,
     useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
+    useGetAbouProjectPageInfoQuery,
+    useGetAdminAbouProjectPageInfoQuery,
+    useUpdateAdminAbouProjectPageInfoMutation,
 } from "./api/adminApi";
 
 export {

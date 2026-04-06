@@ -20,7 +20,7 @@ import {
     EditAdminAchievementsRequest, EditAdminFoodRequest, EditAdminHouseRequest,
     EditAdminReviewVolunteerRequest,
     EditAdminSkillRequest, EditAdminTransferRequest,
-    EditReviewVacancy, GetAdminAchievementsParams,
+    EditReviewVacancy, GetAdminAboutProjectInfo, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
     GetAdminAmbassador,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
@@ -47,6 +47,7 @@ import {
     GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
+    UpdateAdminAboutProjectInfo,
     UpdateAdminAmbassador,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
@@ -82,7 +83,7 @@ export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
-        "house", "food", "organization", "offer", "ambassadors",
+        "house", "food", "organization", "offer", "ambassadors", "about",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -873,6 +874,30 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["ambassadors"],
         }),
+        // About project
+        getAbouProjectPageInfo: build.query<GetAmbassadorsResponse, GetAmbassadorsParams>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}gudserfing/element`,
+                method: "GET",
+            }),
+            providesTags: ["about"],
+        }),
+        getAdminAbouProjectPageInfo: build.query<GetAdminAboutProjectInfo, void>({
+            query: () => ({
+                url: "gudserfing/element",
+                method: "GET",
+            }),
+            providesTags: ["about"],
+        }),
+        updateAdminAbouProjectPageInfo: build.mutation<void,
+        UpdateAdminAboutProjectInfo>({
+            query: (body) => ({
+                url: "gudserfing/edit",
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["about"],
+        }),
     }),
 });
 
@@ -967,4 +992,7 @@ export const {
     useCreateAdminAmbassadorMutation,
     useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
+    useGetAbouProjectPageInfoQuery,
+    useGetAdminAbouProjectPageInfoQuery,
+    useUpdateAdminAbouProjectPageInfoMutation,
 } = adminApi;
