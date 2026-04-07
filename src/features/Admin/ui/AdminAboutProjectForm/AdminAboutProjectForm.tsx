@@ -1,4 +1,4 @@
-﻿import cn from "classnames";
+import cn from "classnames";
 import React, {
     FC, memo, useEffect, useState,
 } from "react";

@@ -5,21 +5,17 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/swiper.min.css";
 
-import defaultImage from "@/shared/assets/images/personalCardMOCK.png";
-import defaultImage1 from "@/shared/assets/images/default-offer-image.png";
-import defaultImage2 from "@/shared/assets/images/findJobHeader.png";
-
-import styles from "./Gallery.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
+import { Image } from "@/types/media";
+import styles from "./Gallery.module.scss";
 
 interface GalleryProps {
     className?: string;
+    gallery: Image[];
 }
 
-const data = [defaultImage, defaultImage1, defaultImage2, defaultImage];
-
 export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
-    const { className } = props;
+    const { className, gallery } = props;
     const { t } = useTranslation("about-project");
 
     return (
@@ -27,7 +23,10 @@ export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
             <h2 className={styles.title}>
                 {t("Фото со встреч и командной работы")}
             </h2>
-            <ImageGallerySlider images={data} className={styles.gallery} />
+            <ImageGallerySlider
+                images={gallery.map((img) => img.contentUrl)}
+                className={styles.gallery}
+            />
         </section>
     );
 };

@@ -9,19 +9,39 @@ import { Mission } from "../Mission/Mission";
 import { Principles } from "../Principles/Principles";
 import { GoodsurfingNow } from "../GoodsurfingNow/GoodsurfingNow";
 import { Gallery } from "../Gallery/Gallery";
+import { useGetAbouProjectPageInfoQuery } from "@/entities/Admin";
+import Preloader from "@/shared/ui/Preloader/Preloader";
 import styles from "./AboutProjectPage.module.scss";
 
-const AboutProjectPage = () => (
-    <MainPageLayout>
-        <div className={styles.wrapper}>
-            <Header />
-            <Mission className={styles.section} />
-            <HowItStarted className={styles.section} />
-            <Principles className={cn(styles.section, styles.extraPadding)} />
-            <GoodsurfingNow className={cn(styles.section, styles.extraPadding)} />
-            <Gallery className={styles.section} />
-        </div>
-    </MainPageLayout>
-);
+const AboutProjectPage = () => {
+    const { data, isLoading } = useGetAbouProjectPageInfoQuery();
+
+    if (isLoading || !data) {
+        return (
+            <MainPageLayout>
+                <Preloader />
+            </MainPageLayout>
+        );
+    }
+
+    return (
+        <MainPageLayout>
+            <div className={styles.wrapper}>
+                <Header />
+                <Mission className={styles.section} description={data.mission} />
+                <HowItStarted className={styles.section} description={data.howAllStart} />
+                <Principles
+                    className={cn(styles.section, styles.extraPadding)}
+                    principles={data.principles}
+                />
+                <GoodsurfingNow
+                    className={cn(styles.section, styles.extraPadding)}
+                    today={data.today}
+                />
+                <Gallery className={styles.section} gallery={data.galleryImages} />
+            </div>
+        </MainPageLayout>
+    );
+};
 
 export default AboutProjectPage;

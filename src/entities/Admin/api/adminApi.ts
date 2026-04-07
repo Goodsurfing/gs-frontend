@@ -20,7 +20,7 @@ import {
     EditAdminAchievementsRequest, EditAdminFoodRequest, EditAdminHouseRequest,
     EditAdminReviewVolunteerRequest,
     EditAdminSkillRequest, EditAdminTransferRequest,
-    EditReviewVacancy, GetAdminAboutProjectInfo, GetAdminAchievementsParams,
+    EditReviewVacancy, GetAboutProjectInfo, GetAdminAboutProjectInfo, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
     GetAdminAmbassador,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
@@ -71,13 +71,6 @@ import {
 } from "@/shared/data/conditions";
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
-
-interface GoodsurfingToday {
-    volunteerCount: number;
-    vacancyCountryCount: number;
-    vacancyCount: number;
-    reviewCount: number;
-}
 
 export const adminApi = createApi({
     reducerPath: "adminApi",
@@ -687,13 +680,6 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
-        getGoodsurfingToday: build.query<GoodsurfingToday,
-        void>({
-            query: () => ({
-                url: `${API_BASE_URL_V3}goodsurfing/today`,
-                method: "GET",
-            }),
-        }),
         getAdminVacancyWhere: build.query<AdminVacancyWhere, string>({
             query: (offerId) => ({
                 url: `vacancy/address/${offerId}`,
@@ -875,7 +861,7 @@ export const adminApi = createApi({
             invalidatesTags: ["ambassadors"],
         }),
         // About project
-        getAbouProjectPageInfo: build.query<GetAmbassadorsResponse, GetAmbassadorsParams>({
+        getAbouProjectPageInfo: build.query<GetAboutProjectInfo, void>({
             query: () => ({
                 url: `${API_BASE_URL_V3}gudserfing/element`,
                 method: "GET",
@@ -961,7 +947,6 @@ export const {
     useGetPublicAchievementsQuery,
     useGetPublicCategoriesVacancyQuery,
     useGetPublicSkillsQuery,
-    useGetGoodsurfingTodayQuery,
     useEditAdminReviewVolunteerMutation,
     useDeleteAdminReviewVolunteerMutation,
     useLazyGetAdminReviewVolunteerListQuery,
