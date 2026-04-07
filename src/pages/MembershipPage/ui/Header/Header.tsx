@@ -1,11 +1,21 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import Button from "@/shared/ui/Button/Button";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
+    const navigate = useNavigate();
+    const { locale } = useLocale();
+
+    const handleGetMembership = () => {
+        navigate(getPaymentPageUrl(locale));
+    };
+
     return (
         <section className={styles.wrapeprImage}>
             <h1 className={styles.title}>
@@ -23,7 +33,14 @@ export const Header = () => {
                 <li>{t("header.Поддержка интересного и важного проекта")}</li>
             </ul>
             <div className={styles.buttonPrice}>
-                <Button color="GREEN" size="SMALL" variant="FILL">{t("header.Получить членство")}</Button>
+                <Button
+                    color="GREEN"
+                    size="SMALL"
+                    variant="FILL"
+                    onClick={handleGetMembership}
+                >
+                    {t("header.Получить членство")}
+                </Button>
                 <span className={styles.price}>1 500 руб</span>
             </div>
         </section>

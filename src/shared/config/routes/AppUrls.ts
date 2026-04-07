@@ -156,6 +156,18 @@ export const getVolunteerPersonalPageUrl: RoutePathFunction = (locale, id = ":id
 
 export const getMembershipPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.membership}`;
 
+export const getPaymentPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment}`;
+
+export const getPaymentSuccessPageUrl: RoutePathFunction = (locale, paymentId?: string) => {
+    const baseUrl = `/${locale}${RoutePath.payment_success}`;
+    return paymentId ? `${baseUrl}?payment_id=${paymentId}` : baseUrl;
+};
+
+export const getPaymentFailPageUrl: RoutePathFunction = (locale, paymentId?: string) => {
+    const baseUrl = `/${locale}${RoutePath.payment_fail}`;
+    return paymentId ? `${baseUrl}?payment_id=${paymentId}` : baseUrl;
+};
+
 export const getAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.about_project}`;
 
 export const getNPOPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.npo}`;
@@ -371,7 +383,3 @@ export const getAdminDonationsPersonalPageUrl: RoutePathFunction = (locale, id =
 // Admin Ambassadors
 
 export const getAdminAmbassadorsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_ambassador}`;
-
-export const getAdminAmbassadorCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_ambassador}/create`;
-
-export const getAdminAmbassadorPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_ambassador}/${id}`;
