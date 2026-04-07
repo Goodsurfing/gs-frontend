@@ -20,6 +20,8 @@ export type {
     GetAdminUsersResponse,
     AdminAmbassadorsFields,
     GetAdminAmbassador,
+    AboutProjectInfoFields,
+    AboutProjectPrinciples,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
@@ -122,7 +124,6 @@ export {
     useGetAdminVacancyFinishingTouchesQuery,
     useUpdateAdminVacancyWhatToDoMutation,
     useUpdateAdminVacancyFinishingTouchesMutation,
-    useGetGoodsurfingTodayQuery,
     useUpdateAdminVacancyImageGalleryMutation,
     useUpdateAdminVacancyStatusMutation,
     useLazyGetAdminSearchUsersQuery,
@@ -132,6 +133,9 @@ export {
     useCreateAdminAmbassadorMutation,
     useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
+    useGetAbouProjectPageInfoQuery,
+    useGetAdminAbouProjectPageInfoQuery,
+    useUpdateAdminAbouProjectPageInfoMutation,
 } from "./api/adminApi";
 
 export {

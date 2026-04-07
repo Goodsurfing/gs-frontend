@@ -740,3 +740,37 @@ export interface UpdateAdminAmbassador {
     id: string;
     body: CreateAdminAmbassador;
 }
+
+// About project
+
+export interface AboutProjectInfoFields {
+    mission: string;
+    howAllStart: string;
+    principles: AboutProjectPrinciples[];
+    galleryImages: Image[];
+}
+
+export interface AboutProjectPrinciples {
+    name: string;
+    image: Image;
+    description: string;
+}
+
+export interface GetAboutProjectInfo {
+    mission: string;
+    howAllStart: string;
+    today: {
+        volunteerCount: number;
+        vacancyCountryCount: number;
+        vacancyCount: number;
+        reviewCount: number;
+    };
+    principles: AboutProjectPrinciples[];
+    galleryImages: Image[];
+}
+
+export type GetAdminAboutProjectInfo = Omit<GetAboutProjectInfo, "today">;
+
+export type UpdateAdminAboutProjectInfo = Omit<GetAdminAboutProjectInfo, "galleryImages"> & {
+    galleryImageIds: string[];
+};

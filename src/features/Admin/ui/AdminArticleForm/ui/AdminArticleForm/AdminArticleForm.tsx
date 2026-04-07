@@ -11,9 +11,9 @@ import { TextEditor } from "@/shared/ui/TextEditor/TextEditor";
 import { UploadArticleCover } from "../UploadArticleCover/UploadArticleCover";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { Image } from "@/types/media";
-import styles from "./AdminArticleForm.module.scss";
 import { AdminUsersSearchForm } from "../../../AdminUsersSearchForm/ui/AdminUsersSearchForm/AdminUsersSearchForm";
 import { BlogCategories } from "@/features/ArticleForm";
+import styles from "./AdminArticleForm.module.scss";
 
 type Categories = "Offer" | "Blog";
 

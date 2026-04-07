@@ -1,0 +1,143 @@
+﻿.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.smallDescription {
+    font-size: 10px;
+    color: var(--text-caption);
+}
+
+.title {
+    font-size: 14px;
+    color: var(--text-caption);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input {
+    &:focus {
+        border: 1px solid var(--text-primary-1);
+    }
+}
+
+.imgWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error {
+    font-size: 0.75rem;
+    color: #d32f2f;
+    margin: 0;
+}
+
+.categoryWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.principlesSection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: 18px;
+}
+
+.principlesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.principleCard {
+    border: 1px solid black;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.principleContent {
+    display: flex;
+    gap: 12px;
+}
+
+.principleImage {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.principleText {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.principleName {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.principleDescription {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.principleActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.emptyPrinciples {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-caption);
+}
+
+.containerButtons {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+
+    button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .sectionHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .containerButtons {
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+}
+

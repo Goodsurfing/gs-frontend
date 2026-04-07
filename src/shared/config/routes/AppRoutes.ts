@@ -121,4 +121,5 @@ export enum AppRoutes {
     ADMIN_DONATION_REPORTS = "admin_donation_reports",
     ADMIN_DONATION = "admin_donation",
     ADMIN_AMBASSADOR = "admin_ambassador",
+    ADMIN_ABOUT_PROJECT = "admin_about_project",
 }

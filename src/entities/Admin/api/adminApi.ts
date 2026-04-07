@@ -20,7 +20,7 @@ import {
     EditAdminAchievementsRequest, EditAdminFoodRequest, EditAdminHouseRequest,
     EditAdminReviewVolunteerRequest,
     EditAdminSkillRequest, EditAdminTransferRequest,
-    EditReviewVacancy, GetAdminAchievementsParams,
+    EditReviewVacancy, GetAboutProjectInfo, GetAdminAboutProjectInfo, GetAdminAchievementsParams,
     GetAdminAchievementsResponse,
     GetAdminAmbassador,
     GetAdminAmbassadorsParams, GetAdminAmbassadorsResponse,
@@ -47,6 +47,7 @@ import {
     GetPublicSkillRequest,
     SearchUsersParams,
     SearchUsersResponse,
+    UpdateAdminAboutProjectInfo,
     UpdateAdminAmbassador,
     UpdateAdminOrganizationRequest,
     UpdateAdminUserRequest,
@@ -71,18 +72,11 @@ import {
 import { API_BASE_URL_V3 } from "@/shared/constants/api";
 import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
 
-interface GoodsurfingToday {
-    volunteerCount: number;
-    vacancyCountryCount: number;
-    vacancyCount: number;
-    reviewCount: number;
-}
-
 export const adminApi = createApi({
     reducerPath: "adminApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["skill", "user", "reviewVacancy", "reviewVolunteer", "category", "achievement", "transfer",
-        "house", "food", "organization", "offer", "ambassadors",
+        "house", "food", "organization", "offer", "ambassadors", "about",
     ],
     endpoints: (build) => ({
         createSkill: build.mutation<void, CreateAdminSkillRequest>({
@@ -686,13 +680,6 @@ export const adminApi = createApi({
             }),
             providesTags: ["category"],
         }),
-        getGoodsurfingToday: build.query<GoodsurfingToday,
-        void>({
-            query: () => ({
-                url: `${API_BASE_URL_V3}goodsurfing/today`,
-                method: "GET",
-            }),
-        }),
         getAdminVacancyWhere: build.query<AdminVacancyWhere, string>({
             query: (offerId) => ({
                 url: `vacancy/address/${offerId}`,
@@ -873,6 +860,30 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["ambassadors"],
         }),
+        // About project
+        getAbouProjectPageInfo: build.query<GetAboutProjectInfo, void>({
+            query: () => ({
+                url: `${API_BASE_URL_V3}gudserfing/element`,
+                method: "GET",
+            }),
+            providesTags: ["about"],
+        }),
+        getAdminAbouProjectPageInfo: build.query<GetAdminAboutProjectInfo, void>({
+            query: () => ({
+                url: "gudserfing/element",
+                method: "GET",
+            }),
+            providesTags: ["about"],
+        }),
+        updateAdminAbouProjectPageInfo: build.mutation<void,
+        UpdateAdminAboutProjectInfo>({
+            query: (body) => ({
+                url: "gudserfing/edit",
+                method: "PATCH",
+                body,
+            }),
+            invalidatesTags: ["about"],
+        }),
     }),
 });
 
@@ -936,7 +947,6 @@ export const {
     useGetPublicAchievementsQuery,
     useGetPublicCategoriesVacancyQuery,
     useGetPublicSkillsQuery,
-    useGetGoodsurfingTodayQuery,
     useEditAdminReviewVolunteerMutation,
     useDeleteAdminReviewVolunteerMutation,
     useLazyGetAdminReviewVolunteerListQuery,
@@ -967,4 +977,7 @@ export const {
     useCreateAdminAmbassadorMutation,
     useUpdateAdminAmbassadorMutation,
     useDeleteAdminAmbassadorMutation,
+    useGetAbouProjectPageInfoQuery,
+    useGetAdminAbouProjectPageInfoQuery,
+    useUpdateAdminAbouProjectPageInfoMutation,
 } = adminApi;

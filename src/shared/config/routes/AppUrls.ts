@@ -383,3 +383,11 @@ export const getAdminDonationsPersonalPageUrl: RoutePathFunction = (locale, id =
 // Admin Ambassadors
 
 export const getAdminAmbassadorsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_ambassador}`;
+
+export const getAdminAmbassadorCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_ambassador}/create`;
+
+export const getAdminAmbassadorPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_ambassador}/${id}`;
+
+// Admin About Project
+
+export const getAdminAboutProjectPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_about_project}`;

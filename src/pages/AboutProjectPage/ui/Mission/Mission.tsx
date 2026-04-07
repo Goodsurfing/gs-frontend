@@ -11,10 +11,11 @@ import { getNPOPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface MissionProps {
     className?: string;
+    description: string;
 }
 
 export const Mission: FC<MissionProps> = (props: MissionProps) => {
-    const { className } = props;
+    const { className, description } = props;
     const { t } = useTranslation("about-project");
     const navigate = useNavigate();
     const { locale } = useLocale();
@@ -27,9 +28,7 @@ export const Mission: FC<MissionProps> = (props: MissionProps) => {
         <section className={cn(className, styles.wrapper)}>
             <h2 className={styles.title}>{t("Миссия ГудСёрфинга")}</h2>
             <p className={styles.description}>
-                {t(
-                    "Миccия Гудсёрфинга – развитие выездного добровольчества",
-                )}
+                {description}
             </p>
             <Button
                 className={styles.button}

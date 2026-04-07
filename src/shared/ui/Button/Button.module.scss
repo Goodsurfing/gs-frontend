@@ -213,6 +213,19 @@
 		}
 	}
 
+	&.RED {
+		border-color: transparent;
+		color: var(--error-color);
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		&:disabled {
+			opacity: 0.7;
+		}
+	}
+
 	&.GREEN {
 		border-color: transparent;
 		color: var(--button-1);
