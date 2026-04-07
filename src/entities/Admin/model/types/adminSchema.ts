@@ -771,6 +771,9 @@ export interface GetAboutProjectInfo {
 
 export type GetAdminAboutProjectInfo = Omit<GetAboutProjectInfo, "today">;
 
-export type UpdateAdminAboutProjectInfo = Omit<GetAdminAboutProjectInfo, "galleryImages"> & {
+export type UpdateAdminAboutProjectInfo = Omit<GetAdminAboutProjectInfo, "galleryImages" | "principles"> & {
     galleryImageIds: string[];
+    principles: (Omit<AboutProjectPrinciples, "image"> & {
+        imageId: string;
+    })[];
 };

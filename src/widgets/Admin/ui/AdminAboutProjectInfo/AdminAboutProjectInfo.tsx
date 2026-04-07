@@ -2,6 +2,7 @@ import React, { FC, useMemo, useState } from "react";
 
 import {
     AboutProjectInfoFields,
+    AboutProjectPrinciples,
     useGetAdminAbouProjectPageInfoQuery,
     useUpdateAdminAbouProjectPageInfoMutation,
 } from "@/entities/Admin";
@@ -33,12 +34,19 @@ export const AdminAboutProjectInfo: FC = () => {
 
     const onSubmit = async (data: AboutProjectInfoFields) => {
         setToast(undefined);
+        const principlesTemp: (Omit<AboutProjectPrinciples, "image"> & {
+            imageId: string;
+        })[] = data.principles.map((principle) => ({
+            name: principle.name,
+            description: principle.description,
+            imageId: principle.image.id,
+        }));
 
         try {
             await updateAboutProject({
                 mission: data.mission,
                 howAllStart: data.howAllStart,
-                principles: data.principles,
+                principles: principlesTemp,
                 galleryImageIds: data.galleryImages.map((image) => image.id),
             }).unwrap();
 

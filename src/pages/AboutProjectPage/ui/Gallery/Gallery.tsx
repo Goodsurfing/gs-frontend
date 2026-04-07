@@ -7,6 +7,7 @@ import "swiper/swiper.min.css";
 
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Image } from "@/types/media";
+import { BASE_URL } from "@/shared/constants/api";
 import styles from "./Gallery.module.scss";
 
 interface GalleryProps {
@@ -24,7 +25,7 @@ export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
                 {t("Фото со встреч и командной работы")}
             </h2>
             <ImageGallerySlider
-                images={gallery.map((img) => img.contentUrl)}
+                images={gallery.map((img) => `${BASE_URL}${img.contentUrl.slice(1)}`)}
                 className={styles.gallery}
             />
         </section>

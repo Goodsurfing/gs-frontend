@@ -22,7 +22,7 @@ const Textarea: FC<IText> = ({
     className,
     classNameTextarea,
     required,
-    maxLength = 1000,
+    maxLength,
     id,
     name,
     isError = false,
