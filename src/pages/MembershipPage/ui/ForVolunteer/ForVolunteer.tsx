@@ -7,7 +7,7 @@ import checkIcon from "@/shared/assets/icons/select-check.svg";
 import Button from "@/shared/ui/Button/Button";
 
 import styles from "./ForVolunteer.module.scss";
-import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 interface ForVolunteerProps {
@@ -24,6 +24,10 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
 
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
+    };
+
+    const handleGetMembership = () => {
+        navigate(getPaymentPageUrl(locale));
     };
 
     return (
@@ -185,7 +189,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                         </div>
                     </div>
                     <div className={styles.columnFooter}>
-                        <Button color="GREEN" size="SMALL" variant="FILL">
+                        <Button color="GREEN" size="SMALL" variant="FILL" onClick={handleGetMembership}>
                             {t("for-volunteer.Получить членство")}
                         </Button>
                     </div>

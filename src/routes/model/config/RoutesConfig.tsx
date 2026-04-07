@@ -16,6 +16,9 @@ import { JournalPersonalPage } from "@/pages/JournalPersonalPage";
 import { JournalsPage } from "@/pages/JournalsPage";
 import { MainPage } from "@/pages/MainPage";
 import { MembershipPage } from "@/pages/MembershipPage";
+import { PaymentPage } from "@/pages/PaymentPage";
+import { PaymentSuccessPage } from "@/pages/PaymentSuccessPage";
+import { PaymentFailPage } from "@/pages/PaymentFailPage";
 import { NPOPage } from "@/pages/NPOPage";
 import { NewsPage } from "@/pages/NewsPage";
 import { NewsPersonalPage } from "@/pages/NewsPersonalPage";
@@ -85,6 +88,9 @@ import {
     getJournalsPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
+    getPaymentPageUrl,
+    getPaymentSuccessPageUrl,
+    getPaymentFailPageUrl,
     getMessengerPageCreateUrl,
     getMessengerPageIdUrl,
     getMessengerPageUrl,
@@ -206,8 +212,6 @@ import {
     getAdminReviewBlogPersonalPageUrl,
     getAdminDonationsPageUrl,
     getAdminAmbassadorsPageUrl,
-    getAdminAmbassadorCreatePageUrl,
-    getAdminAmbassadorPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -294,8 +298,6 @@ import { AdminVideoCreatePage } from "@/pages/AdminVideoCreatePage";
 import { AdminReviewBlogPersonalPage } from "@/pages/AdminReviewBlogPersonalPage";
 import { AdminDonationsPage } from "@/pages/AdminDonationsPage";
 import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
-import AdminAmbassadorCreatePage from "@/pages/AdminAmbassadorCreatePage/ui/AdminAmbassadorCreatePage";
-import { AdminAmbassadorPersonalPage } from "@/pages/AdminAmbassadorPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -585,6 +587,22 @@ const publicRoutes: RouteType[] = [
         label: "membership",
         element: <MembershipPage />,
         path: (locale: string) => getMembershipPageUrl(locale),
+    },
+    {
+        label: "payment",
+        element: <PaymentPage />,
+        path: (locale: string) => getPaymentPageUrl(locale),
+        authOnly: true,
+    },
+    {
+        label: "payment-success",
+        element: <PaymentSuccessPage />,
+        path: (locale: string) => getPaymentSuccessPageUrl(locale),
+    },
+    {
+        label: "payment-fail",
+        element: <PaymentFailPage />,
+        path: (locale: string) => getPaymentFailPageUrl(locale),
     },
     {
         label: "reset-password",
@@ -1020,16 +1038,6 @@ const publicRoutes: RouteType[] = [
                 label: "admin-ambassadors",
                 element: <AdminAmbassadorsPage />,
                 path: (locale: string) => getAdminAmbassadorsPageUrl(locale),
-            },
-            {
-                label: "admin-ambassador-create",
-                element: <AdminAmbassadorCreatePage />,
-                path: (locale: string) => getAdminAmbassadorCreatePageUrl(locale),
-            },
-            {
-                label: "admin-ambassador-personal",
-                element: <AdminAmbassadorPersonalPage />,
-                path: (locale: string) => getAdminAmbassadorPersonalPageUrl(locale),
             },
         ],
     },
