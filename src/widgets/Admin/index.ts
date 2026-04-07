@@ -61,3 +61,5 @@ export { AdminDonationsTable } from "./ui/AdminDonationsTable/AdminDonationsTabl
 
 export { AdminAmbassadorsTable } from "./ui/AdminAmbassadorsTable/AdminAmbassadorsTable";
 export { AdminAmbassadorInfo } from "./ui/AdminAmbassadorInfo/AdminAmbassadorInfo";
+
+export { AdminAboutProjectInfo } from "./ui/AdminAboutProjectInfo/AdminAboutProjectInfo";

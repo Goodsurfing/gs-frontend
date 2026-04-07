@@ -20,6 +20,7 @@ export type {
     GetAdminUsersResponse,
     AdminAmbassadorsFields,
     GetAdminAmbassador,
+    AboutProjectInfoFields,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";

@@ -4,17 +4,20 @@ import React, {
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import { Image, MediaObjectType } from "@/types/media";
 import { getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
+import styles from "./OfferGallery.module.scss";
 
 interface OfferGalleryProps {
+    label?: string;
     className?: string;
     imageGallery?: Image[];
-    onUploadImageGallery: (data: string[]) => void;
+    onUploadImageGallery?: (data: string[]) => void;
+    onChangeImageGallery?: (data: Image[]) => void;
 }
 
 export const OfferGallery: FC<OfferGalleryProps> = (props) => {
     const {
         className, imageGallery = [],
-        onUploadImageGallery,
+        onUploadImageGallery, onChangeImageGallery, label,
     } = props;
 
     const [imgs, setImgs] = useState<Image[]>([]);
@@ -29,13 +32,15 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
 
     const handleOnUpload = useCallback(
         async (images: MediaObjectType[]) => {
+            const updatedGalleryImages = [...imageGallery, ...images];
             const currentGalleryImages = getMediaContentsApiArray(
-                [...imageGallery, ...images],
+                updatedGalleryImages,
             );
 
-            onUploadImageGallery(currentGalleryImages);
+            onUploadImageGallery?.(currentGalleryImages);
+            onChangeImageGallery?.(updatedGalleryImages);
         },
-        [imageGallery, onUploadImageGallery],
+        [imageGallery, onChangeImageGallery, onUploadImageGallery],
     );
 
     const handleOnDelete = useCallback(async (galleryId: string) => {
@@ -47,11 +52,17 @@ export const OfferGallery: FC<OfferGalleryProps> = (props) => {
 
         const galleryImagesTemp = getMediaContentsApiArray(updatedGalleryImages);
 
-        onUploadImageGallery(galleryImagesTemp);
-    }, [imageGallery, onUploadImageGallery]);
+        onUploadImageGallery?.(galleryImagesTemp);
+        onChangeImageGallery?.(updatedGalleryImages);
+    }, [imageGallery, onChangeImageGallery, onUploadImageGallery]);
 
     return (
         <div className={className}>
+            {label && (
+                <span className={styles.label}>
+                    {label}
+                </span>
+            )}
             <ImagesUploader
                 uploadedImgs={imgs}
                 onUpload={handleOnUpload}

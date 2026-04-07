@@ -743,6 +743,13 @@ export interface UpdateAdminAmbassador {
 
 // About project
 
+export interface AboutProjectInfoFields {
+    mission: string;
+    howAllStart: string;
+    principles: AboutProjectPrinciples[];
+    galleryImages: Image[];
+}
+
 export interface AboutProjectPrinciples {
     name: string;
     image: Image;

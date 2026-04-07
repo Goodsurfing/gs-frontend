@@ -1,0 +1,51 @@
+﻿.modalContent {
+    width: min(640px, 90vw);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.modalTitle {
+    margin: 0 0 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.error {
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column-reverse;
+    }
+
+    .actions button {
+        width: 100%;
+    }
+}
+
