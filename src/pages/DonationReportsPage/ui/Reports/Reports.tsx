@@ -32,14 +32,14 @@ export const Reports = () => {
 
     if (isLoading) {
         return (
-            <div className={styles.wrapper}>
+            <div>
                 <MiniLoader />
             </div>
         );
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div>
             {renderReports}
         </div>
     );

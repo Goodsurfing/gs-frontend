@@ -5,7 +5,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import { Description } from "../Description/Description";
 import { Documents } from "../Documents/Documents";
 import { Header } from "../Header/Header";
-import { Reports } from "../Reports/Reports";
+import { Reports } from "@/pages/DonationReportsPage";
 import styles from "./NPOPage.module.scss";
 
 const NPOPage = () => (
