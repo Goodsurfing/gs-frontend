@@ -18,7 +18,7 @@ export interface DonationListItem {
     id: string;
     amount: number;
     isAnonymous: boolean;
-    donorName: string | null;
+    fullName: string | null;
     createdAt: string;
 }
 
@@ -78,7 +78,7 @@ export const donationPaymentApi = createApi({
         { fundraiseId: string; page?: number; limit?: number }
         >({
             query: ({ fundraiseId, page = 1, limit = 20 }) => ({
-                url: `${API_BASE_URL_V3}donation/fundraise/${fundraiseId}?page=${page}&limit=${limit}`,
+                url: `${API_BASE_URL_V3}donation/fundraise/${fundraiseId}/list?page=${page}&limit=${limit}`,
                 method: "GET",
             }),
             providesTags: ["donationList"],
