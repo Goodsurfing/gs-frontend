@@ -13,15 +13,19 @@ export const adminDonationApi = createApi({
     endpoints: (build) => ({
         getAdminDonations: build.query<GetAdminDonations[], GetAdminDonationsParams>({
             query: (params) => ({
-                url: "donation/list",
+                url: "fundraise/list",
                 method: "GET",
                 params,
             }),
+            transformResponse: (response: { data: GetAdminDonations[] } | GetAdminDonations[]) => {
+                if (Array.isArray(response)) return response;
+                return response.data ?? [];
+            },
             providesTags: ["donation"],
         }),
         deleteAdminDonation: build.mutation<void, string>({
             query: (id) => ({
-                url: `donation/${id}`,
+                url: `fundraise/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["donation"],

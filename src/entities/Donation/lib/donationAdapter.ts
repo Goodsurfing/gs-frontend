@@ -13,7 +13,7 @@ Partial<GetDonationsParams> => {
     } = data;
 
     return {
-        categoryId: category === 0 ? undefined : category,
+        categoryId: category ? (category as number) : undefined,
         isCloseProject: showFinishedProjects,
         isSuccessProject: showSuccessProjects,
         sort: sort === "urgency" ? AdminSort.EndDateDesc : undefined,
@@ -28,7 +28,7 @@ Partial<GetDonationsMapParams> => {
     } = data;
 
     return {
-        categoryId: category,
+        categoryId: category ? (category as number) : undefined,
         isCloseProject: showFinishedProjects,
         isSuccessProject: showSuccessProjects,
     };
