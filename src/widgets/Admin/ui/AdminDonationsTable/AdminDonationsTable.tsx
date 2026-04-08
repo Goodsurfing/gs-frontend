@@ -24,7 +24,7 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { getAdminDonationsPageUrl } from "@/shared/config/routes/AppUrls";
+import { getDonationPersonalPage } from "@/shared/config/routes/AppUrls";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import styles from "./AdminDonationsTable.module.scss";
@@ -293,6 +293,11 @@ export const AdminDonationsTable = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 240,
+            renderCell: (params) => {
+                const ts = params.value;
+                if (!ts) return "—";
+                return new Date(ts * 1000).toLocaleDateString("ru-RU");
+            },
         },
         {
             field: "actions",
@@ -304,7 +309,7 @@ export const AdminDonationsTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminDonationsPageUrl(locale, params.row.id),
+                    getDonationPersonalPage(locale, params.row.id),
                 );
                 const handleDeleteClick = () => {
                     handleOpenDeleteModal(params.row.id, params.row.name || `ID: ${params.row.id}`);

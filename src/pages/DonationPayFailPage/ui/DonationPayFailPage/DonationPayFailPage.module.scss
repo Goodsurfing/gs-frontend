@@ -1,0 +1,46 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 60px 16px;
+}
+
+.card {
+    text-align: center;
+    background: #fff;
+    border: 1px solid #dbe6ef;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgb(16 44 74 / 6%);
+    padding: 40px 32px;
+}
+
+.icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #ffebee;
+    color: #c62828;
+    font-size: 32px;
+    line-height: 64px;
+}
+
+.title {
+    margin: 0 0 12px;
+    color: #0c2238;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.text {
+    margin: 0 0 24px;
+    color: #536a81;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}

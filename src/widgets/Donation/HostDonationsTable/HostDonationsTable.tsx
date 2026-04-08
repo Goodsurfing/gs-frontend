@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { ReactSVG } from "react-svg";
@@ -11,7 +11,8 @@ import sortDownIcon from "@/shared/assets/icons/donation/sort-down.svg";
 import sortUpIcon from "@/shared/assets/icons/donation/sort-up.svg";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
-import { mockHostDonation } from "@/entities/Donation/data/mockDonations";
+import { useGetHostDonationsQuery } from "@/store/api/donationPaymentApi";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./HostDonationsTable.module.scss";
 
 interface HostDonationRatingFields {
@@ -28,13 +29,47 @@ const defaultValues: DefaultValues<HostDonationRatingFields> = {
 
 export const HostDonationsTable = () => {
     const { locale } = useLocale();
+    const { data: hostData, isLoading } = useGetHostDonationsQuery({ limit: 100 });
     const form = useForm<HostDonationRatingFields>({
         mode: "onChange",
         defaultValues,
     });
     const {
         control,
+        watch,
     } = form;
+
+    const searchValue = watch("search");
+    const searchDonationValue = watch("searchDonation");
+    const sortValue = watch("sort");
+
+    const rows = useMemo(() => {
+        if (!hostData?.data) return [];
+
+        let mapped = hostData.data.map((item) => ({
+            id: item.id,
+            author: item.donorName,
+            nameDonation: item.fundraiseName,
+            totalAmountDonations: item.amount,
+            date: item.createdAt,
+        }));
+
+        if (searchValue) {
+            const q = searchValue.toLowerCase();
+            mapped = mapped.filter((r) => r.author.toLowerCase().includes(q));
+        }
+
+        if (searchDonationValue) {
+            const q = searchDonationValue.toLowerCase();
+            mapped = mapped.filter((r) => r.nameDonation.toLowerCase().includes(q));
+        }
+
+        mapped.sort((a, b) => sortValue === "asc"
+            ? a.totalAmountDonations - b.totalAmountDonations
+            : b.totalAmountDonations - a.totalAmountDonations);
+
+        return mapped;
+    }, [hostData, searchValue, searchDonationValue, sortValue]);
 
     const columns: GridColDef[] = [
         {
@@ -160,9 +195,11 @@ export const HostDonationsTable = () => {
                 />
             </div>
             <div className={styles.table}>
+                {isLoading && <MiniLoader />}
                 <DataGrid
-                    rows={mockHostDonation}
+                    rows={rows}
                     columns={columns}
+                    loading={isLoading}
                     sx={{
                         border: 0,
                         "& .MuiDataGrid-columnHeaderTitle": {

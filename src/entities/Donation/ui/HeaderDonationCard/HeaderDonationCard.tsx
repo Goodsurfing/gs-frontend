@@ -9,6 +9,7 @@ import flagIcon from "@/shared/assets/icons/donation/flag.svg";
 import calendarIcon from "@/shared/assets/icons/donation/calendar.svg";
 import checkIcon from "@/shared/assets/icons/donation/check.svg";
 import {
+    getDonationPayPageUrl,
     getDonationPersonalPage,
     getProfileRolePageUrl,
     getSignInPageUrl,
@@ -80,7 +81,7 @@ export const HeaderDonationCard = memo((props: HeaderDonationCardProps) => {
         if (isNeedToBecomeVolunteer) {
             navigate(`${getProfileRolePageUrl(locale)}?nextDonation=${donationId}`);
         } else if (isAuth) {
-            navigate(getDonationPersonalPage(locale, donationId));
+            navigate(getDonationPayPageUrl(locale, donationId));
         } else {
             navigate(`${getSignInPageUrl(locale)}?next=donation&nextId=${donationId}`);
         }
