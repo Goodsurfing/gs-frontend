@@ -71,7 +71,7 @@ export const DonationDonorsCard = memo((props: DonationDonorsCardProps) => {
                             <span className={styles.donorName}>
                                 {donor.isAnonymous
                                     ? t("donationPersonal.Аноним")
-                                    : donor.donorName || t("donationPersonal.Аноним")}
+                                    : donor.fullName || t("donationPersonal.Аноним")}
                             </span>
                             <span className={styles.donorDate}>
                                 {new Date(donor.createdAt).toLocaleDateString("ru-RU")}
