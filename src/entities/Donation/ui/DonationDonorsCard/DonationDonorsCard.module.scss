@@ -1,0 +1,71 @@
+.wrapper {
+    margin-top: 40px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #212b36;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border-radius: 10px;
+}
+
+.donorInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.donorName {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212b36;
+}
+
+.donorDate {
+    font-size: 12px;
+    color: #919eab;
+}
+
+.amount {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1b6b93;
+    white-space: nowrap;
+}
+
+.empty {
+    color: #919eab;
+    font-size: 14px;
+    padding: 16px 0;
+}
+
+.stats {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    font-size: 14px;
+    color: #637381;
+}
+
+.statValue {
+    font-weight: 700;
+    color: #212b36;
+}

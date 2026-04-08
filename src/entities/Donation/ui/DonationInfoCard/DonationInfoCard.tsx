@@ -9,6 +9,7 @@ import { DonationAddressCard } from "../DonationAddressCard/DonationAddressCard"
 import { DonationOrganizationCard } from "../DonationOrganizationCard/DonationOrganizationCard";
 import { DonationGalleryCard } from "../DonationGalleryCard/DonationGalleryCard";
 import { DonationShareCard } from "../DonationShareCard/DonationShareCard";
+import { DonationDonorsCard } from "../DonationDonorsCard/DonationDonorsCard";
 import styles from "./DonationInfoCard.module.scss";
 
 interface DonationInfoCardProps {
@@ -58,7 +59,10 @@ export const DonationInfoCard = memo((props: DonationInfoCardProps) => {
                 galleryImages={donation.galleryImages}
                 className={styles.container}
             />
-            {/* TODO: Ещё один блок с участниками сбора */}
+            <DonationDonorsCard
+                fundraiseId={donation.id}
+                className={styles.container}
+            />
             <DonationShareCard donationId={donation.id} title={donation.name} />
         </div>
     );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
@@ -11,7 +11,8 @@ import { DonationRatingSort } from "@/entities/Donation";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import CustomLink from "@/shared/ui/Link/Link";
-import { mockRatingDonation } from "@/entities/Donation/data/mockDonations";
+import { useGetDonationRatingQuery } from "@/store/api/donationPaymentApi";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./DonationRating.module.scss";
 
 interface DonationRatingFields {
@@ -27,13 +28,42 @@ const defaultValues: DefaultValues<DonationRatingFields> = {
 
 export const DonationRating = () => {
     const { locale } = useLocale();
+    const { data: ratingData, isLoading } = useGetDonationRatingQuery({ limit: 100 });
     const form = useForm<DonationRatingFields>({
         mode: "onChange",
         defaultValues,
     });
     const {
         control,
+        watch,
     } = form;
+
+    const filterValue = watch("filter");
+    const sortValue = watch("sort");
+    const searchValue = watch("search");
+
+    const rows = useMemo(() => {
+        if (!ratingData) return [];
+
+        let mapped = ratingData.map((item) => ({
+            id: item.userId,
+            name: item.userName,
+            numberDonations: item.donationCount,
+            totalAmountDonations: item.totalAmount,
+        }));
+
+        if (searchValue) {
+            const q = searchValue.toLowerCase();
+            mapped = mapped.filter((r) => r.name.toLowerCase().includes(q));
+        }
+
+        mapped.sort((a, b) => {
+            const field = filterValue === "numberDonations" ? "numberDonations" : "totalAmountDonations";
+            return sortValue === "asc" ? a[field] - b[field] : b[field] - a[field];
+        });
+
+        return mapped;
+    }, [ratingData, filterValue, sortValue, searchValue]);
 
     const columns: GridColDef[] = [
         {
@@ -138,9 +168,11 @@ export const DonationRating = () => {
                 />
             </div>
             <div className={styles.table}>
+                {isLoading && <MiniLoader />}
                 <DataGrid
-                    rows={mockRatingDonation}
+                    rows={rows}
                     columns={columns}
+                    loading={isLoading}
                     sx={{
                         border: 0,
                         "& .MuiDataGrid-columnHeaderTitle": {

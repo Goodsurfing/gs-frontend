@@ -215,6 +215,9 @@ import {
     getAdminAmbassadorCreatePageUrl,
     getAdminAmbassadorPersonalPageUrl,
     getAdminAboutProjectPageUrl,
+    getDonationPayPageUrl,
+    getDonationPaySuccessPageUrl,
+    getDonationPayFailPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -304,6 +307,9 @@ import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
 import AdminAmbassadorCreatePage from "@/pages/AdminAmbassadorCreatePage/ui/AdminAmbassadorCreatePage";
 import { AdminAmbassadorPersonalPage } from "@/pages/AdminAmbassadorPersonalPage";
 import { AdminAboutProjectPersonalPage } from "@/pages/AdminAboutProjectPersonalPage";
+import { DonationPayPage } from "@/pages/DonationPayPage";
+import { DonationPaySuccessPage } from "@/pages/DonationPaySuccessPage";
+import { DonationPayFailPage } from "@/pages/DonationPayFailPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -768,6 +774,21 @@ const publicRoutes: RouteType[] = [
         label: "donation-rating",
         element: <DonationRatingPage />,
         path: (locale: string) => getDonationRating(locale),
+    },
+    {
+        label: "donation-pay",
+        element: <DonationPayPage />,
+        path: (locale: string) => getDonationPayPageUrl(locale),
+    },
+    {
+        label: "donation-pay-success",
+        element: <DonationPaySuccessPage />,
+        path: (locale: string) => getDonationPaySuccessPageUrl(locale),
+    },
+    {
+        label: "donation-pay-fail",
+        element: <DonationPayFailPage />,
+        path: (locale: string) => getDonationPayFailPageUrl(locale),
     },
     // Admin dashboard
     {

@@ -218,6 +218,12 @@ export const getDonationReports: RoutePathFunction = (locale) => `/${locale}${Ro
 
 export const getDonationRating: RoutePathFunction = (locale) => `/${locale}${RoutePath.donation_rating}`;
 
+export const getDonationPayPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.donation_pay}/${id}`;
+
+export const getDonationPaySuccessPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.donation_pay_success}/${id}`;
+
+export const getDonationPayFailPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.donation_pay_fail}/${id}`;
+
 // Admin pages
 
 export const getAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin}`;
