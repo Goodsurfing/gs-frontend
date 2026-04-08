@@ -44,8 +44,8 @@ export const Categories = forwardRef<HTMLDivElement, CategoriesProps>((props, re
                 className={styles.popup}
                 isOpen={isOpen}
             >
-                <div className={styles.popupContainer} ref={ref}>
-                    <OfferCategories value={value} onChange={onChange} locale={locale} />
+                <div className={styles.popupContainer}>
+                    <OfferCategories value={value} onChange={onChange} locale={locale} exclusive />
                 </div>
             </Popup>
         </div>

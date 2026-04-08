@@ -42,6 +42,10 @@ export const donationApi = createApi({
                 method: "GET",
                 params,
             }),
+            transformResponse: (response: Record<string, GetDonationsMap> | GetDonationsMap[]) => {
+                if (Array.isArray(response)) return response;
+                return Object.values(response);
+            },
             providesTags: ["donation"],
         }),
         deleteDonationById: build.mutation<void, string>({

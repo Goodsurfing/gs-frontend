@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/shared/api/baseQuery/baseQuery";
-import { API_BASE_URL } from "@/shared/constants/api";
+import { API_BASE_URL_V3 } from "@/shared/constants/api";
 
 export interface CreateDonationPaymentRequest {
     fundraiseId: string;
@@ -64,7 +64,7 @@ export const donationPaymentApi = createApi({
     endpoints: (build) => ({
         createDonationPayment: build.mutation<CreateDonationPaymentResponse, CreateDonationPaymentRequest>({
             query: (data) => ({
-                url: `${API_BASE_URL}donations`,
+                url: `${API_BASE_URL_V3}donation`,
                 method: "POST",
                 body: data,
             }),
@@ -72,20 +72,20 @@ export const donationPaymentApi = createApi({
         }),
         getDonationsByFundraise: build.query<DonationListResponse, { fundraiseId: string; page?: number; limit?: number }>({
             query: ({ fundraiseId, page = 1, limit = 20 }) => ({
-                url: `${API_BASE_URL}donations/fundraise/${fundraiseId}?page=${page}&limit=${limit}`,
+                url: `${API_BASE_URL_V3}donation/fundraise/${fundraiseId}?page=${page}&limit=${limit}`,
                 method: "GET",
             }),
             providesTags: ["donationList"],
         }),
         getDonationRating: build.query<DonationRatingItem[], { limit?: number }>({
             query: ({ limit = 50 }) => ({
-                url: `${API_BASE_URL}donations/rating?limit=${limit}`,
+                url: `${API_BASE_URL_V3}donation/rating?limit=${limit}`,
                 method: "GET",
             }),
         }),
         getHostDonations: build.query<HostDonationsResponse, { page?: number; limit?: number; sort?: string }>({
             query: ({ page = 1, limit = 20, sort }) => ({
-                url: `${API_BASE_URL}donations/host?page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ""}`,
+                url: `${API_BASE_URL_V3}donation/host?page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ""}`,
                 method: "GET",
             }),
             providesTags: ["donationList"],
