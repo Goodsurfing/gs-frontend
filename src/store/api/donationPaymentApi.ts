@@ -62,7 +62,10 @@ export const donationPaymentApi = createApi({
     baseQuery,
     tagTypes: ["donationList"],
     endpoints: (build) => ({
-        createDonationPayment: build.mutation<CreateDonationPaymentResponse, CreateDonationPaymentRequest>({
+        createDonationPayment: build.mutation<
+        CreateDonationPaymentResponse,
+        CreateDonationPaymentRequest
+        >({
             query: (data) => ({
                 url: `${API_BASE_URL_V3}donation`,
                 method: "POST",
@@ -70,7 +73,10 @@ export const donationPaymentApi = createApi({
             }),
             invalidatesTags: ["donationList"],
         }),
-        getDonationsByFundraise: build.query<DonationListResponse, { fundraiseId: string; page?: number; limit?: number }>({
+        getDonationsByFundraise: build.query<
+        DonationListResponse,
+        { fundraiseId: string; page?: number; limit?: number }
+        >({
             query: ({ fundraiseId, page = 1, limit = 20 }) => ({
                 url: `${API_BASE_URL_V3}donation/fundraise/${fundraiseId}?page=${page}&limit=${limit}`,
                 method: "GET",
@@ -83,7 +89,10 @@ export const donationPaymentApi = createApi({
                 method: "GET",
             }),
         }),
-        getHostDonations: build.query<HostDonationsResponse, { page?: number; limit?: number; sort?: string }>({
+        getHostDonations: build.query<
+        HostDonationsResponse,
+        { page?: number; limit?: number; sort?: string }
+        >({
             query: ({ page = 1, limit = 20, sort }) => ({
                 url: `${API_BASE_URL_V3}donation/host?page=${page}&limit=${limit}${sort ? `&sort=${sort}` : ""}`,
                 method: "GET",

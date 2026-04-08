@@ -64,9 +64,9 @@ export const HostDonationsTable = () => {
             mapped = mapped.filter((r) => r.nameDonation.toLowerCase().includes(q));
         }
 
-        mapped.sort((a, b) => sortValue === "asc"
+        mapped.sort((a, b) => (sortValue === "asc"
             ? a.totalAmountDonations - b.totalAmountDonations
-            : b.totalAmountDonations - a.totalAmountDonations);
+            : b.totalAmountDonations - a.totalAmountDonations));
 
         return mapped;
     }, [hostData, searchValue, searchDonationValue, sortValue]);
