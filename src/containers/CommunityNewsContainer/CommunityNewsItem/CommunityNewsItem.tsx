@@ -25,7 +25,7 @@ const CommunityNewsItem: FC<CommunityNewsItemProps> = ({
         variant="DEFAULT"
         className={styles.wrapper}
     >
-        {image ? <img src={image} alt={title} className={styles.image} />
+        {image ? <img src={image} alt={title} loading="lazy" className={styles.image} />
             : <div className={styles.noImage} />}
         <p className={styles.date}>{date}</p>
         <h3 className={styles.title} title={title}>{title}</h3>

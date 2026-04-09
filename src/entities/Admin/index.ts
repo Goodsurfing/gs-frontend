@@ -298,3 +298,15 @@ export type {
 } from "./model/types/adminDonationSchema";
 
 export { adminDonationsAdapter } from "./lib/adminDonationAdapter";
+
+// Our Team
+
+export {
+    adminOurTeamApi,
+    useGetOurTeamListQuery,
+    useLazyGetAdminOurTeamListQuery,
+    useGetAdminOurTeamByIdQuery,
+    useCreateAdminOurTeamMutation,
+    useUpdateAdminOurTeamMutation,
+    useDeleteAdminOurTeamMutation,
+} from "./api/adminOurTeamApi";
