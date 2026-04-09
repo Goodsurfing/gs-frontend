@@ -6,7 +6,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
-import { getAdminPersonalUserPageUrl } from "@/shared/config/routes/AppUrls";
+import { getAdminOurTeamCreatePageUrl, getAdminOurTeamPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import showIcon from "@/shared/assets/icons/admin/show.svg";
@@ -25,6 +25,7 @@ import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./AdminOurTeamTable.module.scss";
+import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
 const PER_PAGE = 30;
 
@@ -196,7 +197,7 @@ export const AdminOurTeamTable = () => {
             hideable: false,
             renderCell: (params) => {
                 const handleView = () => navigate(
-                    getAdminPersonalUserPageUrl(locale, params.row.id),
+                    getAdminOurTeamPersonalPageUrl(locale, params.row.id),
                 );
 
                 const handleDeleteClick = () => {
@@ -258,11 +259,20 @@ export const AdminOurTeamTable = () => {
     return (
         <div className={styles.wrapper}>
             {toast && <HintPopup text={toast.text} type={toast.type} />}
-            <AdminFiltersTable
-                filters={filters}
-                onFilterChange={setFilters}
-                customFields={customFields}
-            />
+            <div className={styles.actionButtons}>
+                <ButtonLink
+                    type="primary"
+                    className={styles.btn}
+                    path={getAdminOurTeamCreatePageUrl(locale)}
+                >
+                    Добавить участника
+                </ButtonLink>
+                <AdminFiltersTable
+                    filters={filters}
+                    onFilterChange={setFilters}
+                    customFields={customFields}
+                />
+            </div>
             {renderTable()}
             <OfferPagination
                 currentPage={filters.page}

@@ -1,5 +1,7 @@
 import { getFullName } from "@/shared/lib/getFullName";
-import { GetAdminOurTeams } from "../model/types/adminOurTeam";
+import {
+    CreateAdminOurTeam, GetAdminOurTeam, GetAdminOurTeams, OurTeamFields,
+} from "../model/types/adminOurTeam";
 
 export const adminOurTeamAdapter = (data: GetAdminOurTeams[]) => {
     const result = data.map((item) => {
@@ -15,4 +17,40 @@ export const adminOurTeamAdapter = (data: GetAdminOurTeams[]) => {
         };
     });
     return result;
+};
+
+export const adminOurTeamApiAdapter = (data: OurTeamFields): CreateAdminOurTeam => {
+    const {
+        firstName, lastName, position, isFounder, sort,
+        image, vkontakte, telegram, userId,
+    } = data;
+    return {
+        firstName,
+        lastName,
+        position,
+        isFounder,
+        sort,
+        imageId: image.id,
+        vkontakte,
+        telegram,
+        userId,
+    };
+};
+
+export const adminOurTeamPersonalAdapter = (data: GetAdminOurTeam): OurTeamFields => {
+    const {
+        firstName, lastName, position, isFounder, sort,
+        image, vkontakte, telegram, userId,
+    } = data;
+    return {
+        firstName,
+        lastName,
+        position,
+        isFounder,
+        sort,
+        image,
+        vkontakte,
+        telegram,
+        userId,
+    };
 };

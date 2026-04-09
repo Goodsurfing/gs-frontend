@@ -65,3 +65,4 @@ export { AdminAmbassadorInfo } from "./ui/AdminAmbassadorInfo/AdminAmbassadorInf
 export { AdminAboutProjectInfo } from "./ui/AdminAboutProjectInfo/AdminAboutProjectInfo";
 
 export { AdminOurTeamTable } from "./ui/AdminOurTeamTable/AdminOurTeamTable";
+export { AdminOurTeamInfo } from "./ui/AdminOurTeamInfo/AdminOurTeamInfo";

@@ -2,6 +2,16 @@
     height: 70vh;
 }
 
+.actionButtons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 20px;
+}
+
 .btnIcon {
     background: transparent;
     border: none;

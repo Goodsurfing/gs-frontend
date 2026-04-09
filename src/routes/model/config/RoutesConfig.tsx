@@ -216,6 +216,7 @@ import {
     getAdminAmbassadorPersonalPageUrl,
     getAdminAboutProjectPageUrl,
     getAdminOurTeamPageUrl,
+    getAdminOurTeamPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -306,6 +307,7 @@ import AdminAmbassadorCreatePage from "@/pages/AdminAmbassadorCreatePage/ui/Admi
 import { AdminAmbassadorPersonalPage } from "@/pages/AdminAmbassadorPersonalPage";
 import { AdminAboutProjectPersonalPage } from "@/pages/AdminAboutProjectPersonalPage";
 import { AdminOurTeamPage } from "@/pages/AdminOurTeamPage";
+import { AdminOurTeamPersonalPage } from "@/pages/AdminOurTeamPersonalPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -1066,6 +1068,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-our-team",
                 element: <AdminOurTeamPage />,
                 path: (locale: string) => getAdminOurTeamPageUrl(locale),
+            },
+            {
+                label: "admin-our-team-personal",
+                element: <AdminOurTeamPersonalPage />,
+                path: (locale: string) => getAdminOurTeamPersonalPageUrl(locale),
             },
         ],
     },

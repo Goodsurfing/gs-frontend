@@ -311,4 +311,8 @@ export {
     useDeleteAdminOurTeamMutation,
 } from "./api/adminOurTeamApi";
 
-export { adminOurTeamAdapter } from "./lib/adminOurTeamAdapter";
+export { adminOurTeamAdapter, adminOurTeamApiAdapter } from "./lib/adminOurTeamAdapter";
+
+export type {
+    OurTeamFields,
+} from "./model/types/adminOurTeam";

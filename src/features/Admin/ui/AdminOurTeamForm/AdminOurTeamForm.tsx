@@ -5,32 +5,34 @@ import {
     Controller,
     SubmitHandler,
 } from "react-hook-form";
+import { FormControlLabel, Typography } from "@mui/material";
 import { ErrorText } from "@/shared/ui/ErrorText/ErrorText";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 import { ImageDropzone } from "@/shared/ui/ImageDropzone/ImageDropzone";
 import Button from "@/shared/ui/Button/Button";
-import { AdminAmbassadorsFields } from "@/entities/Admin";
-import { TextAreaControl } from "@/shared/ui/TextAreaControl/TextAreaControl";
+import { OurTeamFields } from "@/entities/Admin";
+import styles from "./AdminOurTeamForm.module.scss";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
-import styles from "./AdminAmbassadorForm.module.scss";
+import SwitchComponent from "@/shared/ui/Switch/Switch";
 
-interface AdminAmbassadorFormProps {
+interface AdminOurTeamFormProps {
     className?: string;
-    initialData?: AdminAmbassadorsFields;
-    onSubmit?: (data: AdminAmbassadorsFields) => void;
+    initialData?: OurTeamFields;
+    onSubmit?: (data: OurTeamFields) => void;
     isLoading: boolean;
 }
 
-const defaultValues: DefaultValues<AdminAmbassadorsFields> = {
+const defaultValues: DefaultValues<OurTeamFields> = {
     image: undefined,
+    isFounder: false,
 };
 
-export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
+export const AdminOurTeamForm: FC<AdminOurTeamFormProps> = (props) => {
     const {
         className, initialData, onSubmit, isLoading,
     } = props;
 
-    const form = useForm<AdminAmbassadorsFields>({
+    const form = useForm<OurTeamFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -38,7 +40,7 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
         handleSubmit, reset, control, formState: { errors },
     } = form;
 
-    const onSubmitForm: SubmitHandler<AdminAmbassadorsFields> = (data) => {
+    const onSubmitForm: SubmitHandler<OurTeamFields> = (data) => {
         onSubmit?.(data);
     };
 
@@ -62,8 +64,6 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="firstName"
-                        minLength={3}
-                        maxLength={60}
                         isError={!!errors.firstName?.message}
                     />
                     {errors?.firstName?.message && (
@@ -77,8 +77,6 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
                         name="lastName"
-                        minLength={3}
-                        maxLength={60}
                         isError={!!errors.lastName?.message}
                     />
                     {errors?.lastName?.message && (
@@ -87,73 +85,42 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                             className={styles.error}
                         />
                     )}
+                    <Controller
+                        name="isFounder"
+                        control={control}
+                        render={({ field: { value, onChange } }) => (
+                            <FormControlLabel
+                                label={(
+                                    <Typography
+                                        sx={{
+                                            fontFamily: "Lato",
+                                            fontWeight: "400",
+                                            fontSize: "16px",
+                                            color: "#212121",
+                                        }}
+                                    >
+                                        Основатель
+                                    </Typography>
+                                )}
+                                control={(
+                                    <SwitchComponent
+                                        checked={Boolean(value)}
+                                        onChange={(_, checked) => onChange(checked)}
+                                    />
+                                )}
+                            />
+                        )}
+                    />
                     <InputControl
-                        label="Город"
+                        label="Позиция"
                         rules={{ required: "Это поле является обязательным" }}
                         control={control}
-                        name="city"
-                        minLength={3}
-                        maxLength={60}
-                        isError={!!errors.city?.message}
+                        name="position"
+                        isError={!!errors.position?.message}
                     />
-                    {errors?.city?.message && (
+                    {errors?.position?.message && (
                         <ErrorText
-                            text={errors.city.message}
-                            className={styles.error}
-                        />
-                    )}
-                    <InputControl
-                        label="Страна"
-                        rules={{ required: "Это поле является обязательным" }}
-                        control={control}
-                        name="country"
-                        minLength={3}
-                        maxLength={60}
-                        isError={!!errors.country?.message}
-                    />
-                    {errors?.country?.message && (
-                        <ErrorText
-                            text={errors.country.message}
-                            className={styles.error}
-                        />
-                    )}
-                    <TextAreaControl
-                        label="Описание"
-                        control={control}
-                        name="description"
-                        minLength={3}
-                        maxLength={200}
-                        isError={!!errors.description?.message}
-                    />
-                    {errors?.description?.message && (
-                        <ErrorText
-                            text={errors.description.message}
-                            className={styles.error}
-                        />
-                    )}
-                    <InputControl
-                        label="ID пользователя"
-                        control={control}
-                        name="userId"
-                        isError={!!errors.userId?.message}
-                    />
-                    {errors?.userId?.message && (
-                        <ErrorText
-                            text={errors.userId.message}
-                            className={styles.error}
-                        />
-                    )}
-                    <InputControl
-                        label="Сортировка"
-                        type="number"
-                        control={control}
-                        name="sort"
-                        placeholder="Введите сортировку"
-                        isError={!!errors.sort}
-                    />
-                    {errors.sort && (
-                        <ErrorText
-                            text={errors.sort.message}
+                            text={errors.position.message}
                             className={styles.error}
                         />
                     )}
@@ -195,6 +162,56 @@ export const AdminAmbassadorForm: FC<AdminAmbassadorFormProps> = (props) => {
                             <ErrorText text={errors.image.message} className={styles.error} />
                         )}
                     </div>
+                    <InputControl
+                        label="Сортировка"
+                        type="number"
+                        control={control}
+                        name="sort"
+                        placeholder="Введите сортировку"
+                        isError={!!errors.sort}
+                    />
+                    {errors.sort && (
+                        <ErrorText
+                            text={errors.sort.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Вконтакте"
+                        control={control}
+                        name="vkontakte"
+                        isError={!!errors.vkontakte?.message}
+                    />
+                    {errors?.vkontakte?.message && (
+                        <ErrorText
+                            text={errors.vkontakte.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Телеграм"
+                        control={control}
+                        name="telegram"
+                        isError={!!errors.telegram?.message}
+                    />
+                    {errors?.telegram?.message && (
+                        <ErrorText
+                            text={errors.telegram.message}
+                            className={styles.error}
+                        />
+                    )}
+                    <InputControl
+                        label="Id пользователя"
+                        control={control}
+                        name="userId"
+                        isError={!!errors.userId?.message}
+                    />
+                    {errors?.userId?.message && (
+                        <ErrorText
+                            text={errors.userId.message}
+                            className={styles.error}
+                        />
+                    )}
                 </div>
                 <Button
                     type="submit"

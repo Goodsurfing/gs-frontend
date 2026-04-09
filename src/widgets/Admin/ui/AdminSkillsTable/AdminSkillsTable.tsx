@@ -240,7 +240,7 @@ export const AdminSkillsTable = () => {
 
     const renderTable = () => {
         if (!skillsData) {
-            return <span className={styles.text}>Навыков не было найдено</span>;
+            return <span>Навыков не было найдено</span>;
         }
         return (
             <DataGrid

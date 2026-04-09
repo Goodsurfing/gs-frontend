@@ -2,6 +2,18 @@ import { Pagination } from "@/types/api/pagination";
 import { Image } from "@/types/media";
 import { AdminSort } from "./adminSchema";
 
+export interface OurTeamFields {
+    firstName: string;
+    lastName: string;
+    position: string;
+    vkontakte: string;
+    telegram: string;
+    image: Image;
+    isFounder: boolean;
+    sort: number;
+    userId: string;
+}
+
 export interface GetOurTeamParams {
     isFounder: boolean;
     page: number;
