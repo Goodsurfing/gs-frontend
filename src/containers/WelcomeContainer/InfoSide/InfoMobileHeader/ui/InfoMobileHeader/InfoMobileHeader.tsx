@@ -15,6 +15,9 @@ import {
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBlogPageUrl,
+    getDonationRating,
+    getDonationReports,
+    getDonationsMapPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
     getJournalsPageUrl,
@@ -230,6 +233,37 @@ export const InfoMobileHeader: FC = () => {
                         to={getJournalsPageUrl(locale)}
                     >
                         {t("main.welcome.header.community.journal")}
+                    </Link>
+                </MobileSelect>
+                <MobileSelect
+                    classNameSelectContainer={styles.selectContainer}
+                    isOpen={dropdownOpened.isSupportOpened}
+                    title={t("main.welcome.header.donation.title")}
+                    onClick={() => handleOpenDropdown("SUPPORT")}
+                >
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getMainPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.support-goodsurfing")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getDonationsMapPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.donation.support-other-projects")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getDonationReports(locale)}
+                    >
+                        {t("main.welcome.header.donation.public-reports")}
+                    </Link>
+                    <Link
+                        className={styles.dropdownLink}
+                        to={getDonationRating(locale)}
+                    >
+                        {t("main.welcome.header.donation.rating-donations")}
                     </Link>
                 </MobileSelect>
                 <MobileSelect
