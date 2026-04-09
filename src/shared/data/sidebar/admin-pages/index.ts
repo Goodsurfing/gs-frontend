@@ -108,11 +108,15 @@ export const useAdminPagesSidebarData = () => {
         },
         {
             route: "/admin",
-            text: "Система",
+            text: "О Гудсёрфинге",
             dropdownItems: [
                 {
                     route: "/about-project",
-                    text: "О гудсёрфинге",
+                    text: "О проекте",
+                },
+                {
+                    route: "/our-team",
+                    text: "Наша команда",
                 },
             ],
 

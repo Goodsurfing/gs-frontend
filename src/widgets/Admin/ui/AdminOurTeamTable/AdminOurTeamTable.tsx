@@ -24,7 +24,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { OfferPagination } from "@/widgets/OffersMap";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import { useQueryFilters } from "@/shared/hooks/usePaginationParams";
-import styles from "./AdminUsersTable.module.scss";
+import styles from "./AdminOurTeamTable.module.scss";
 
 const PER_PAGE = 30;
 
@@ -236,7 +236,7 @@ export const AdminOurTeamTable = () => {
 
     const renderTable = () => {
         if (!usersData) {
-            return <span className={styles.text}>Участников не было найдено</span>;
+            return <span>Участников не было найдено</span>;
         }
         return (
             <DataGrid

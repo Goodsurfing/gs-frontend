@@ -1,1 +1,1 @@
-export { AdminUsersPageAsync as AdminUsersPage } from "./ui/AdminUsersPage.async";
+export { AdminOurTeamPageAsync as AdminOurTeamPage } from "./ui/AdminOurTeamPage.async";

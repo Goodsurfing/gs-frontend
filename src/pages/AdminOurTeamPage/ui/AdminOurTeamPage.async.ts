@@ -1,3 +1,3 @@
 import { lazy } from "react";
 
-export const AdminUsersPageAsync = lazy(() => import("./AdminUsersPage"));
+export const AdminOurTeamPageAsync = lazy(() => import("./AdminOurTeamPage"));
