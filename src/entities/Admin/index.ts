@@ -310,3 +310,5 @@ export {
     useUpdateAdminOurTeamMutation,
     useDeleteAdminOurTeamMutation,
 } from "./api/adminOurTeamApi";
+
+export { adminOurTeamAdapter } from "./lib/adminOurTeamAdapter";
