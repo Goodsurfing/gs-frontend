@@ -27,6 +27,14 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
         },
     };
 
+    const fontLoader: webpack.RuleSetRule = {
+        test: /\.(woff2?|ttf|eot)$/i,
+        type: "asset/resource",
+        generator: {
+            filename: "./fonts/[contenthash][ext]",
+        },
+    };
+
     const pdfLoader: webpack.RuleSetRule = {
         test: /\.pdf$/i,
         type: "asset/resource",
@@ -35,5 +43,5 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
         },
     };
 
-    return [codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader, pdfLoader];
+    return [codeBabelLoader, tsxCodeBabelLoader, ...cssLoader, svgLoader, imgLoader, fontLoader, pdfLoader];
 }
