@@ -91,7 +91,7 @@ export const AdminOurTeamTable = () => {
                 await getUsers({
                     page: filters.page,
                     limit: PER_PAGE,
-                    sort: filters.sort ?? AdminSort.IdAsc,
+                    sort: filters.sort ?? AdminSort.SortDesc,
                 }).unwrap();
             } catch (error) {
                 setToast({
@@ -151,17 +151,8 @@ export const AdminOurTeamTable = () => {
             width: 150,
         },
         {
-            field: "name",
-            headerName: "ФИО",
-            sortable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            hideable: false,
-            width: 150,
-        },
-        {
             field: "position",
-            headerName: "ФИО",
+            headerName: "Позиция",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,
@@ -180,7 +171,7 @@ export const AdminOurTeamTable = () => {
         },
         {
             field: "sort",
-            headerName: "Дата регистрации",
+            headerName: "Сортировка",
             sortable: false,
             filterable: false,
             disableColumnMenu: true,

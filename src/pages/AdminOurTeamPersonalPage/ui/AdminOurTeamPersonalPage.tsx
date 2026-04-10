@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { AdminSkillInfo } from "@/widgets/Admin";
+import { AdminOurTeamInfo } from "@/widgets/Admin";
 
 const AdminOurTeamPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -15,7 +15,7 @@ const AdminOurTeamPersonalPage = () => {
 
     return (
         <div>
-            <AdminSkillInfo skillId={Number(id)} />
+            <AdminOurTeamInfo memberId={id} />
         </div>
     );
 };
