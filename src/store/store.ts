@@ -34,6 +34,7 @@ import { journalApi } from "@/entities/Journal";
 import { videoApi } from "@/entities/Video";
 import { donationApi } from "@/entities/Donation";
 import { paymentApi } from "./api/paymentApi";
+import { donationPaymentApi } from "./api/donationPaymentApi";
 
 const rootReducer = combineReducers({
     register: registerReducer,
@@ -67,6 +68,7 @@ const rootReducer = combineReducers({
     [adminDonationApi.reducerPath]: adminDonationApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
     [adminOurTeamApi.reducerPath]: adminOurTeamApi.reducer,
+    [donationPaymentApi.reducerPath]: donationPaymentApi.reducer,
 });
 
 export const setupStore = () => configureStore({
@@ -98,6 +100,7 @@ export const setupStore = () => configureStore({
         adminDonationApi.middleware,
         paymentApi.middleware,
         adminOurTeamApi.middleware,
+        donationPaymentApi.middleware,
         authMiddleware,
     ]),
 });
