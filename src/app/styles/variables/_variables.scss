@@ -3,10 +3,12 @@
 	src:
 		local("Lato Regular"),
 		local("Lato-Regular"),
+		url("@/shared/assets/fonts/lato/Lato-Regular.woff2") format("woff2"),
 		url("@/shared/assets/fonts/lato/Lato-Regular.ttf") format("truetype");
 
 	font-weight: 400;
 	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
@@ -14,10 +16,12 @@
 	src:
 		local("Lato Medium"),
 		local("Lato-Medium"),
+		url("@/shared/assets/fonts/lato/Lato-Medium.woff2") format("woff2"),
 		url("@/shared/assets/fonts/lato/Lato-Medium.ttf") format("truetype");
 
 	font-weight: 500;
 	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
@@ -25,10 +29,12 @@
 	src:
 		local("Lato Semibold"),
 		local("Lato-Semibold"),
+		url("@/shared/assets/fonts/lato/Lato-Semibold.woff2") format("woff2"),
 		url("@/shared/assets/fonts/lato/Lato-Semibold.ttf") format("truetype");
 
 	font-weight: 600;
 	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
@@ -36,10 +42,12 @@
 	src:
 		local("Lato Bold"),
 		local("Lato Bold"),
+		url("@/shared/assets/fonts/lato/Lato-Bold.woff2") format("woff2"),
 		url("@/shared/assets/fonts/lato/Lato-Bold.ttf") format("truetype");
 
 	font-weight: 700;
 	font-style: normal;
+	font-display: swap;
 }
 
 :root {
