@@ -24,6 +24,7 @@ const ReviewsContainer: FC = () => {
                         ref={(node) => setPrevEl(node)}
                         src={arrowIcon}
                         alt="Prev"
+                        loading="lazy"
                         className={styles.arrow}
                     />
                     <img

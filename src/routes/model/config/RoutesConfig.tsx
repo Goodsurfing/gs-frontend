@@ -215,6 +215,9 @@ import {
     getAdminAmbassadorCreatePageUrl,
     getAdminAmbassadorPersonalPageUrl,
     getAdminAboutProjectPageUrl,
+    getAdminOurTeamPageUrl,
+    getAdminOurTeamPersonalPageUrl,
+    getAdminOurTeamCreatePageUrl,
     getDonationPayPageUrl,
     getDonationPaySuccessPageUrl,
     getDonationPayFailPageUrl,
@@ -307,6 +310,9 @@ import { AdminAmbassadorsPage } from "@/pages/AdminAmbassadorsPage";
 import AdminAmbassadorCreatePage from "@/pages/AdminAmbassadorCreatePage/ui/AdminAmbassadorCreatePage";
 import { AdminAmbassadorPersonalPage } from "@/pages/AdminAmbassadorPersonalPage";
 import { AdminAboutProjectPersonalPage } from "@/pages/AdminAboutProjectPersonalPage";
+import { AdminOurTeamPage } from "@/pages/AdminOurTeamPage";
+import { AdminOurTeamPersonalPage } from "@/pages/AdminOurTeamPersonalPage";
+import { AdminOurTeamCreatePage } from "@/pages/AdminOurTeamCreatePage";
 import { DonationPayPage } from "@/pages/DonationPayPage";
 import { DonationPaySuccessPage } from "@/pages/DonationPaySuccessPage";
 import { DonationPayFailPage } from "@/pages/DonationPayFailPage";
@@ -1080,6 +1086,21 @@ const publicRoutes: RouteType[] = [
                 label: "admin-about-project",
                 element: <AdminAboutProjectPersonalPage />,
                 path: (locale: string) => getAdminAboutProjectPageUrl(locale),
+            },
+            {
+                label: "admin-our-team",
+                element: <AdminOurTeamPage />,
+                path: (locale: string) => getAdminOurTeamPageUrl(locale),
+            },
+            {
+                label: "admin-our-team-personal",
+                element: <AdminOurTeamPersonalPage />,
+                path: (locale: string) => getAdminOurTeamPersonalPageUrl(locale),
+            },
+            {
+                label: "admin-our-team-create",
+                element: <AdminOurTeamCreatePage />,
+                path: (locale: string) => getAdminOurTeamCreatePageUrl(locale),
             },
         ],
     },
