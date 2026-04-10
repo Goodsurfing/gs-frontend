@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import slideImage1 from "@/shared/assets/images/welcome-slider/2.webp";
 import slideImage3 from "@/shared/assets/images/welcome-slider/5.webp";
-import { getOffersMapPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
+import { getBecomeHostPageUrl, getOffersMapPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 
@@ -25,7 +25,7 @@ export const useTranslatedSliderData = () => {
             text: t("Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте. Найдите помощников для задач на сезон, экспедицию или долгий проект."),
             description: t("С нами уже больше 1500 проектов"),
             image: slideImage3,
-            buttonLink: link,
+            buttonLink: getBecomeHostPageUrl(locale),
             buttonLinkText: "Стать хостом",
         },
     ];
