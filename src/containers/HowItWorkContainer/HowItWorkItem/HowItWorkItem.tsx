@@ -17,7 +17,7 @@ const HowItWorkItem: FC<HowItWorkItemProps> = ({
             <h4>{title}</h4>
             <p>{text}</p>
         </div>
-        <img src={image} alt={title} />
+        <img src={image} alt={title} loading="lazy" />
     </div>
 );
 
