@@ -28,6 +28,7 @@ export interface GetOurTeams {
     vkontakte: string;
     telegram: string;
     image: Image;
+    userId: string | null;
 }
 
 export interface GetOurTeamResponse {
