@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import slideImage1 from "@/shared/assets/images/welcome-slider/2.webp";
-import slideImage2 from "@/shared/assets/images/welcome-slider/3.webp";
 import slideImage3 from "@/shared/assets/images/welcome-slider/5.webp";
 import { getOffersMapPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -22,20 +21,12 @@ export const useTranslatedSliderData = () => {
             buttonLinkText: "Присоединиться к сообществу",
         },
         {
-            title: t("Находи своих в путешествиях"),
-            text: t("Участвуй в волонтёрских проектах и экспедициях, знакомься с людьми по духу и открывай новые места вместе с командой"),
-            description: t("Сообщество, поддержка и друзья в каждом маршруте"),
-            image: slideImage2,
-            buttonLink: link,
-            buttonLinkText: "Присоединиться к сообществу",
-        },
-        {
-            title: t("Открывай море возможностей"),
-            text: t("Выбирай проекты у моря: эко-лагеря, помощь локальным инициативам и путешествия, которые приносят реальную пользу"),
-            description: t("Путешествуй с пользой для людей и природы"),
+            title: t("Примите тех, кто хочет помогать и делайте мир лучше вместе"),
+            text: t("Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте. Найдите помощников для задач на сезон, экспедицию или долгий проект."),
+            description: t("С нами уже больше 1500 проектов"),
             image: slideImage3,
             buttonLink: link,
-            buttonLinkText: "Присоединиться к сообществу",
+            buttonLinkText: "Стать хостом",
         },
     ];
 
