@@ -326,3 +326,7 @@ export {
 } from "./api/adminSystemApi";
 
 export { adminSystemAdminAdapter } from "./lib/adminSystemAdapter";
+
+export type {
+    AdminSystemFields,
+} from "./model/types/adminSystemSchema";

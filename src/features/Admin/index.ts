@@ -36,3 +36,4 @@ export type { AdminDonationReportFileFields } from "./ui/AdminDonationReportFile
 export { AdminAmbassadorForm } from "./ui/AdminAmbassadorForm/AdminAmbassadorForm";
 export { AdminAboutProjectForm } from "./ui/AdminAboutProjectForm/AdminAboutProjectForm";
 export { AdminOurTeamForm } from "./ui/AdminOurTeamForm/AdminOurTeamForm";
+export { AdminSystemAdminForm } from "./ui/AdminSystemAdminForm/AdminSystemAdminForm";

@@ -1,5 +1,10 @@
 import { Pagination } from "@/types/api/pagination";
+import { AdminCourseAuthorFileds } from "./adminCourseSchema";
 import { AdminSort } from "./adminSchema";
+
+export interface AdminSystemFields {
+    user: AdminCourseAuthorFileds | null;
+}
 
 export interface GetAdminSystemListParams {
     sort: AdminSort;

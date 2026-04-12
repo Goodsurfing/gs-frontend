@@ -17,6 +17,7 @@ import { AdminFiltersTable, CustomFilterField } from "@/shared/ui/AdminFiltersTa
 
 interface AdminUsersSearchInputProps {
     onChange: (value: AdminCourseAuthorFileds | null) => void;
+    label?: string;
 }
 
 type SearchType = "id" | "email";
@@ -54,7 +55,7 @@ const offerCustomFields: CustomFilterField<keyof SearchUserFilters>[] = [
 ];
 
 export const AdminUsersSearchInput: FC<AdminUsersSearchInputProps> = (props) => {
-    const { onChange } = props;
+    const { onChange, label = "Поиск пользователя" } = props;
 
     const dropwownRef = useRef(null);
 
@@ -155,7 +156,7 @@ export const AdminUsersSearchInput: FC<AdminUsersSearchInputProps> = (props) => 
     return (
         <div className={styles.wrapper}>
             <label htmlFor="input" className={styles.text}>
-                Добавление автора
+                {label}
             </label>
 
             <div className={styles.contentWrapper}>
@@ -180,7 +181,7 @@ export const AdminUsersSearchInput: FC<AdminUsersSearchInputProps> = (props) => 
                 <AddButton
                     id="add-button"
                     disabled={!selectedUser || isLoading}
-                    text="Добавить автора"
+                    text="Добавить пользователя"
                     onClick={() => onAddUser()}
                 />
             </div>
