@@ -321,5 +321,8 @@ export type {
 
 export {
     adminSystemApi, useGetSystemAdminListQuery,
+    useLazyGetSystemAdminListQuery,
     useCreateSystemAdminMutation, useDeleteSystemAdminMutation,
 } from "./api/adminSystemApi";
+
+export { adminSystemAdminAdapter } from "./lib/adminSystemAdapter";

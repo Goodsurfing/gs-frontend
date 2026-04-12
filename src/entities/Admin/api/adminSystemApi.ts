@@ -1,13 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { GetAdminSystemListParams, GetAdminSystemListResponse } from "../model/types/adminSystemSchema";
+import { CreateAdminSystem, GetAdminSystemListParams, GetAdminSystemListResponse } from "../model/types/adminSystemSchema";
 
 export const adminSystemApi = createApi({
     reducerPath: "adminSystemApi",
     baseQuery: baseAdminQueryAcceptJson,
     tagTypes: ["admin"],
     endpoints: (build) => ({
-        getSystemAdminList: build.query<GetAdminSystemListResponse, GetAdminSystemListParams>({
+        getSystemAdminList: build.query<GetAdminSystemListResponse,
+        Partial<GetAdminSystemListParams>>({
             query: (params) => ({
                 url: "system-admin/list",
                 method: "GET",
@@ -15,7 +16,7 @@ export const adminSystemApi = createApi({
             }),
             providesTags: ["admin"],
         }),
-        createSystemAdmin: build.mutation<GetAdminSystemListResponse, GetAdminSystemListParams>({
+        createSystemAdmin: build.mutation<void, CreateAdminSystem>({
             query: (body) => ({
                 url: "system-admin/add-role",
                 method: "POST",
@@ -34,6 +35,7 @@ export const adminSystemApi = createApi({
 });
 
 export const {
-    useGetSystemAdminListQuery, useCreateSystemAdminMutation,
+    useGetSystemAdminListQuery,
+    useLazyGetSystemAdminListQuery, useCreateSystemAdminMutation,
     useDeleteSystemAdminMutation,
 } = adminSystemApi;

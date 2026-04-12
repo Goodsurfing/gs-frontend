@@ -221,6 +221,7 @@ import {
     getDonationPayPageUrl,
     getDonationPaySuccessPageUrl,
     getDonationPayFailPageUrl,
+    getAdminSystemAdminPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -316,6 +317,7 @@ import { AdminOurTeamCreatePage } from "@/pages/AdminOurTeamCreatePage";
 import { DonationPayPage } from "@/pages/DonationPayPage";
 import { DonationPaySuccessPage } from "@/pages/DonationPaySuccessPage";
 import { DonationPayFailPage } from "@/pages/DonationPayFailPage";
+import { AdminSystemAdminPage } from "@/pages/AdminSystemAdminPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -1101,6 +1103,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-our-team-create",
                 element: <AdminOurTeamCreatePage />,
                 path: (locale: string) => getAdminOurTeamCreatePageUrl(locale),
+            },
+            {
+                label: "admin-system-admin",
+                element: <AdminSystemAdminPage />,
+                path: (locale: string) => getAdminSystemAdminPageUrl(locale),
             },
         ],
     },

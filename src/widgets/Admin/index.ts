@@ -66,3 +66,5 @@ export { AdminAboutProjectInfo } from "./ui/AdminAboutProjectInfo/AdminAboutProj
 
 export { AdminOurTeamTable } from "./ui/AdminOurTeamTable/AdminOurTeamTable";
 export { AdminOurTeamInfo } from "./ui/AdminOurTeamInfo/AdminOurTeamInfo";
+
+export { AdminSystemAdminTable } from "./ui/AdminSystemAdminTable/AdminSystemAdminTable";

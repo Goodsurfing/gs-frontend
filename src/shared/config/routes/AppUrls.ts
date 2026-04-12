@@ -405,3 +405,9 @@ export const getAdminOurTeamPageUrl: RoutePathFunction = (locale) => `/${locale}
 export const getAdminOurTeamCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_our_team}/create`;
 
 export const getAdminOurTeamPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_our_team}/${id}`;
+
+// Admin System Admin
+
+export const getAdminSystemAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_system_admin}`;
+
+export const getAdminSystemAdminCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_system_admin}/create`;
