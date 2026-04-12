@@ -316,3 +316,10 @@ export { adminOurTeamAdapter, adminOurTeamApiAdapter } from "./lib/adminOurTeamA
 export type {
     OurTeamFields,
 } from "./model/types/adminOurTeam";
+
+// Admin System
+
+export {
+    adminSystemApi, useGetSystemAdminListQuery,
+    useCreateSystemAdminMutation, useDeleteSystemAdminMutation,
+} from "./api/adminSystemApi";
