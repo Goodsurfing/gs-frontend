@@ -16,6 +16,10 @@ services:
       - "traefik.http.routers.gs-frontend.entrypoints=websecure"
       - "traefik.http.routers.gs-frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.gs-frontend.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.gs-frontend-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.gs-frontend-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.gs-frontend-headers.headers.stsPreload=true"
+      - "traefik.http.routers.gs-frontend.middlewares=gs-frontend-headers"
     networks:
       - dokploy-network
 
