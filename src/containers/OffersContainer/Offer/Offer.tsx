@@ -42,6 +42,7 @@ const Offer: FC<OfferProps> = (props) => {
                 src={image ? getMediaContent(image?.contentUrl) : defaultImage}
                 className={styles.image}
                 alt={title}
+                loading="lazy"
             />
             <div className={styles.content}>
                 <h4 className={styles.title}>

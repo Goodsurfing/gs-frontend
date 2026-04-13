@@ -13,7 +13,7 @@ const BenefitItem: FC<BenefitItemProps> = ({
     title, text, image, dataAos,
 }) => (
     <div className={styles.item} data-aos={dataAos}>
-        <img src={image} alt={title} />
+        <img src={image} alt={title} loading="lazy" />
         <h3>{title}</h3>
         <p>{text}</p>
     </div>
