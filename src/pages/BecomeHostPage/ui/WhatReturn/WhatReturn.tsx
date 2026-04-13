@@ -3,9 +3,9 @@ import "aos/dist/aos.css";
 import cn from "classnames";
 import React, { useEffect } from "react";
 
-import whatReturn1 from "@/shared/assets/images/become-host/whatReturn1.png";
-import whatReturn2 from "@/shared/assets/images/become-host/whatReturn2.png";
-import whatReturn3 from "@/shared/assets/images/become-host/whatReturn3.png";
+import whatReturn1 from "@/shared/assets/images/become-host/whatReturn1.webp";
+import whatReturn2 from "@/shared/assets/images/become-host/whatReturn2.webp";
+import whatReturn3 from "@/shared/assets/images/become-host/whatReturn3.webp";
 
 import styles from "./WhatReturn.module.scss";
 

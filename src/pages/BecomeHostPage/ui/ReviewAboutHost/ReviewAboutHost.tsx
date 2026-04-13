@@ -5,7 +5,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { Review, ReviewSlider } from "@/widgets/Review";
 
-import mockedImage from "@/shared/assets/images/personalCardMOCK.png";
+import mockedImage from "@/shared/assets/images/personalCardMOCK.webp";
 import { getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import Button from "@/shared/ui/Button/Button";
 

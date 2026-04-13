@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import registrationImage from "@/shared/assets/images/npo/768c32464538f17202027cdcf5925a45.png";
-import certificateImage from "@/shared/assets/images/npo/a56ccf958a9811de0657b7adb856c10e.png";
+import registrationImage from "@/shared/assets/images/npo/768c32464538f17202027cdcf5925a45.webp";
+import certificateImage from "@/shared/assets/images/npo/a56ccf958a9811de0657b7adb856c10e.webp";
 import { Modal } from "@/shared/ui/Modal/Modal";
 
 import styles from "./Documents.module.scss";
