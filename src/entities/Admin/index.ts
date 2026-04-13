@@ -330,3 +330,13 @@ export { adminSystemAdminAdapter } from "./lib/adminSystemAdapter";
 export type {
     AdminSystemFields,
 } from "./model/types/adminSystemSchema";
+
+export {
+    adminBannerMarketingApi,
+    useGetBannerMarketingQuery,
+    useGetAdminBannerMarketingListQuery,
+    useGetAdminBannerMarketingQuery,
+    useCreateAdminBannerMarketingMutation,
+    useUpdateAdminBannerMarketingMutation,
+    useDeleteAdminBannerMarketingMutation,
+} from "./api/adminBannerMarketingApi";
