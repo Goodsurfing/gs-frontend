@@ -1,12 +1,10 @@
 # syntax=docker/dockerfile:1.4
 
-# 1. For build React app
+# 1. Install dependencies
 FROM node:20-alpine AS development
 
-# Set working directory
 WORKDIR /app
 
-# 
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
@@ -14,51 +12,37 @@ RUN --mount=type=cache,target=/root/.npm \
     npm install --legacy-peer-deps
 
 COPY . /app
-ARG REACT_APP_API_BASE_URL
-ARG REACT_APP_API_YANDEX_KEY
-ARG REACT_APP_MAIN_URL
-ARG REACT_VKID_CLIENT_ID
 
+ARG VITE_API_BASE_URL
+ARG VITE_API_YANDEX_KEY
+ARG VITE_MAIN_URL
+ARG VITE_VKID_CLIENT_ID
+
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_API_YANDEX_KEY=$VITE_API_YANDEX_KEY
+ENV VITE_MAIN_URL=$VITE_MAIN_URL
+ENV VITE_VKID_CLIENT_ID=$VITE_VKID_CLIENT_ID
 
 ENV CI=true
 ENV PORT=3000
 
 CMD [ "npm", "start" ]
 
+# 2. Build
 FROM development AS build
 
-RUN --mount=type=cache,target=/app/node_modules/.cache \
-    NODE_OPTIONS=--max-old-space-size=2048 npm run build:prod
+RUN npm run build:prod
 
-
-FROM development as dev-envs
-RUN apt-get update && apt-get install -y --no-install-recommends git
-
-RUN useradd -s /bin/bash -m vscode; \
-    groupadd docker; \
-    usermod -aG docker vscode;
-
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-CMD [ "npm", "start" ]
-
-# 2. For Nginx setup
+# 3. Serve with Nginx
 FROM nginx:alpine
 
-# Copy config nginx
 COPY --from=build /app/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 
-# Remove default nginx static assets
 RUN rm -rf ./*
 
-# Copy locales files
-COPY --from=build /app/public/locales ./locales
-
-# Copy static assets from builder stage
+# Vite copies public/ into dist/ automatically (includes locales)
 COPY --from=build /app/dist .
 
-# Containers run nginx with global directives and daemon off
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
