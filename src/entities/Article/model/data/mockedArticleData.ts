@@ -1,7 +1,7 @@
 import { Article, Journal, Video } from "@/entities/Article";
 
 import articleDefaultImage from "@/shared/assets/images/articles/article1.png";
-import journalDefaultImage from "@/shared/assets/images/journalDefault.png";
+import journalDefaultImage from "@/shared/assets/images/journalDefault.webp";
 
 export const mockedArticlesData: Article[] = [
     {

@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 
 import rightIcon from "@/shared/assets/icons/review-right-icon.svg";
 import defaultAvatar from "@/shared/assets/images/default-avatar.jpg";
-import reviewIcon from "@/shared/assets/images/membership/review-photo.png";
+import reviewIcon from "@/shared/assets/images/membership/review-photo.webp";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 
 import styles from "./ReviewSlide.module.scss";

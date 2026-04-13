@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ReviewAboutGoodsurfers.module.scss";
-import mockedImage from "@/shared/assets/images/personalCardMOCK.png";
+import mockedImage from "@/shared/assets/images/personalCardMOCK.webp";
 import { ReviewSlider, Review } from "@/widgets/Review";
 
 export const ReviewAboutGoodsurfers = () => {

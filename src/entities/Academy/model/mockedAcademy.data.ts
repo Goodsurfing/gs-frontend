@@ -1,4 +1,4 @@
-import mockCourseImg from "@/shared/assets/images/mock-course.png";
+import mockCourseImg from "@/shared/assets/images/mock-course.webp";
 import dmitryImage from "@/shared/assets/images/our-team/dmitry.png";
 import milanaImage from "@/shared/assets/images/our-team/milana.png";
 
