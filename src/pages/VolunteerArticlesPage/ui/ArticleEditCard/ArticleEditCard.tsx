@@ -1,10 +1,10 @@
-import { HandySvg } from "@handy-ones/handy-svg";
 import cn from "classnames";
 import React, {
     FC, memo, useCallback, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { ReactSVG } from "react-svg";
 import Popup from "@/components/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -56,7 +56,7 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
                         className={styles.button}
                         onClick={handleShowPopup}
                     >
-                        <HandySvg src={threeDotsIcon} />
+                        <ReactSVG src={threeDotsIcon} />
                     </button>
                     <Popup className={styles.popup} isOpen={isPopupOpen}>
                         <div className={styles.content}>

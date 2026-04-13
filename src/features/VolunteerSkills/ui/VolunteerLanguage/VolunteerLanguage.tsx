@@ -8,13 +8,13 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import { LanguageLevelComponent } from "../LanguageLevelComponent/LanguageLevelComponent";
-import styles from "./VolunteerLanguage.module.scss";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import { Language } from "@/types/languages";
+import styles from "./VolunteerLanguage.module.scss";
 
 interface VolunteerLanguageProps {
     value?: Language[];
@@ -74,11 +74,10 @@ export const VolunteerLanguage: FC<VolunteerLanguageProps> = memo(
                         }}
                         isTitle={false}
                     />
-                    <HandySvg
+                    <ReactSVG
                         className={styles.deleteIcon}
                         onClick={() => handleDeleteLanguage(index)}
                         src={deleteIcon}
-                        alt="delete"
                     />
                 </div>
             )),

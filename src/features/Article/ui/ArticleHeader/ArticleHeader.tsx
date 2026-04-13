@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import likesIcon from "@/shared/assets/icons/thumbsUp.svg";
 import commentsIcon from "@/shared/assets/icons/comment.svg";
 import CustomLink from "@/shared/ui/Link/Link";
@@ -55,11 +55,11 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
                 </div>
                 <div className={styles.containerIcon}>
                     <div className={cn(styles.wrapperIcon, styles.like)} onClick={onLike}>
-                        <HandySvg src={likesIcon} className={styles.icon} />
+                        <ReactSVG src={likesIcon} className={styles.icon} />
                         <span className={styles.number}>{likes}</span>
                     </div>
                     <div className={styles.wrapperIcon}>
-                        <HandySvg src={commentsIcon} className={styles.icon} />
+                        <ReactSVG src={commentsIcon} className={styles.icon} />
                         <span className={styles.number}>{reviews}</span>
                     </div>
                 </div>

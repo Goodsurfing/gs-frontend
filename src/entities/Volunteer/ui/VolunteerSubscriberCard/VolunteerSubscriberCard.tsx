@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import { Profile } from "@/entities/Profile";
 
 import deleteIcon from "@/shared/assets/icons/delete.svg";
@@ -43,9 +43,8 @@ export const VolunteerSubscriberCard: FC<VolunteerSubscriberCardProps> = memo(
                     alt="message icon"
                     className={styles.messageIcon}
                 />
-                <HandySvg
+                <ReactSVG
                     src={deleteIcon}
-                    alt="delete icon"
                     className={styles.deleteIcon}
                 />
             </div>

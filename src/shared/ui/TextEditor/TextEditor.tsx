@@ -9,7 +9,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import cn from "classnames";
 import React, { useEffect } from "react";
-import { HandySvg } from "@handy-ones/handy-svg";
+import { ReactSVG } from "react-svg";
 import deleteIcon from "@/shared/assets/icons/delete.svg";
 
 import { ToolBar } from "@/shared/ui/ToolBar/ToolBar";
@@ -72,7 +72,7 @@ export const TextEditor: React.FC<TiptapEditorProps> = ({
                 <EditorContent editor={editor} />
             </div>
             <div onClick={clearContent}>
-                <HandySvg src={deleteIcon} />
+                <ReactSVG src={deleteIcon} />
             </div>
         </div>
     );

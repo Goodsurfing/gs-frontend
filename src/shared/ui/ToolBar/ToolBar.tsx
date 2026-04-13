@@ -1,4 +1,3 @@
-import { HandySvg } from "@handy-ones/handy-svg";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { type Editor } from "@tiptap/react";
 import cn from "classnames";
@@ -13,6 +12,7 @@ import React, {
     useState,
 } from "react";
 
+import { ReactSVG } from "react-svg";
 import ArrowLeftIcon from "@/shared/assets/icons/textEditor/arrowLeft.svg";
 import linkIcon from "@/shared/assets/icons/textEditor/link.svg";
 import smileIcon from "@/shared/assets/icons/textEditor/smile.svg";
@@ -182,7 +182,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     aria-label="bold"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={boldIcon} />
+                    <ReactSVG src={boldIcon} />
                 </ToggleButton>
                 <ToggleButton
                     onClick={() => editor.chain().toggleItalic().run()}
@@ -190,7 +190,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     aria-label="italic"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={italicIcon} />
+                    <ReactSVG src={italicIcon} />
                 </ToggleButton>
                 <ToggleButton
                     onClick={() => editor.chain().toggleUnderline().run()}
@@ -198,7 +198,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     aria-label="underlined"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={underlineIcon} />
+                    <ReactSVG src={underlineIcon} />
                 </ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
@@ -213,21 +213,21 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     aria-label="left"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={alignLeftIcon} />
+                    <ReactSVG src={alignLeftIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="center"
                     aria-label="center"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={alignCenterIcon} />
+                    <ReactSVG src={alignCenterIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="justify"
                     aria-label="justify"
                     className={styles.toggleButton}
                 >
-                    <HandySvg src={alignJustifyIcon} />
+                    <ReactSVG src={alignJustifyIcon} />
                 </ToggleButton>
             </ToggleButtonGroup>
             <ToggleButtonGroup
@@ -241,7 +241,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     className={styles.toggleButton}
                     selected={activeListType === "ordered"}
                 >
-                    <HandySvg src={orderedListIcon} />
+                    <ReactSVG src={orderedListIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="bullet"
@@ -250,7 +250,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     className={styles.toggleButton}
                     selected={activeListType === "bullet"}
                 >
-                    <HandySvg src={bulletListIcon} />
+                    <ReactSVG src={bulletListIcon} />
                 </ToggleButton>
             </ToggleButtonGroup>
             <div className={styles.container}>
@@ -259,7 +259,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     className={styles.toggleButton}
                     onClick={setUnsetLink}
                 >
-                    <HandySvg src={linkIcon} />
+                    <ReactSVG src={linkIcon} />
                 </ToggleButton>
                 {isLoadingImage ? <MiniLoader className={styles.miniloader} /> : (
                     <ToggleButton value="imageEditor" className={styles.toggleButton}>
@@ -268,7 +268,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                             onChange={addImage}
                             wrapperClassName={styles.imageButton}
                             labelClassName={styles.imageButton}
-                            labelChildren={<HandySvg src={imageIcon} />}
+                            labelChildren={<ReactSVG src={imageIcon} />}
                         />
                     </ToggleButton>
                 )}
@@ -279,7 +279,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                         className={styles.toggleButton}
                         onClick={() => setShowEmojiPicker((prev) => !prev)}
                     >
-                        <HandySvg src={smileIcon} />
+                        <ReactSVG src={smileIcon} />
                     </ToggleButton>
                     {showEmojiPicker && (
                         <div className={styles.emojiModal} ref={emojiRef}>
@@ -300,7 +300,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     })}
                     onClick={() => editor.chain().focus().undo().run()}
                 >
-                    <HandySvg src={ArrowLeftIcon} />
+                    <ReactSVG src={ArrowLeftIcon} />
                 </ToggleButton>
                 <ToggleButton
                     value="forward"
@@ -310,7 +310,7 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
                     })}
                     onClick={() => editor.chain().focus().redo().run()}
                 >
-                    <HandySvg src={ArrowLeftIcon} />
+                    <ReactSVG src={ArrowLeftIcon} />
                 </ToggleButton>
             </div>
         </div>
