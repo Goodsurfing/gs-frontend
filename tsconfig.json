@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       "ignoreDeprecations": "6.0",
+      "rootDir": "./src",
       "outDir": "./dist/",
       "strict": true,
       "noImplicitAny": true,
