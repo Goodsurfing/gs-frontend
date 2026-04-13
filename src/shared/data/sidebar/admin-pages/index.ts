@@ -121,6 +121,17 @@ export const useAdminPagesSidebarData = () => {
             ],
 
         },
+        {
+            route: "/admin",
+            text: "Система",
+            dropdownItems: [
+                {
+                    route: "/system-admin",
+                    text: "Администраторы",
+                },
+            ],
+
+        },
     ];
     return { AdminPagesSidebarData };
 };

@@ -401,7 +401,11 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                         name="author"
                         control={control}
                         render={({ field }) => (
-                            <AdminUsersSearchForm value={field.value} onChange={field.onChange} />
+                            <AdminUsersSearchForm
+                                label="Автор курса"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
                         )}
                     />
                     <TextAreaControl
