@@ -83,6 +83,9 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
                     try {
                         const responseAccessToken = await fetch(`${BASE_VK_URI}access-token`, {
                             method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
                             body: JSON.stringify({
                                 code,
                                 deviceId,
