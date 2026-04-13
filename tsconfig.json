@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
+      "ignoreDeprecations": "6.0",
       "outDir": "./dist/",
       "strict": true,
       "noImplicitAny": true,
       "module": "ESNext",
-      "target": "es5",
+      "target": "ESNext",
       "jsx": "react-jsx",
       "allowJs": true,
       "moduleResolution": "node",
       "baseUrl": ".",
+      "types": ["vite/client", "node"],
       "plugins": [{ "name": "typescript-plugin-css-modules" }],
       "paths": {
         "@/*": ["src/*"],
@@ -28,13 +30,8 @@
       "resolveJsonModule": true,
       "allowSyntheticDefaultImports": true,
       "isolatedModules": true,
-      "incremental": true,     
+      "incremental": true,
       "tsBuildInfoFile": ".tsbuildinfo"
-    },
-    "ts-node": {
-      "compilerOptions": {
-        "module": "CommonJS"
-      }
     },
     "include": ["./config/jest/jest-setup.ts", "./config/jest/setupTests.ts", "./config/assets.d.ts", "./src/**/*"],
     "exclude": ["node_modules", "dist", "public", "typings/browser.d.ts", "typings/browser/**"]

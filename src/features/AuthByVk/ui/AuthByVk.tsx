@@ -32,9 +32,9 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
     const { locale } = useLocale();
     const dispatch = useAppDispatch();
     const hasTriedAuth = useRef(false);
-    const redirectUrl = process.env.NODE_ENV === "development"
+    const redirectUrl = import.meta.env.DEV
         ? `https://localhost/${locale}/${redirect}`
-        : `${process.env.REACT_APP_MAIN_URL}/${locale}/${redirect}`;
+        : `${import.meta.env.VITE_MAIN_URL}/${locale}/${redirect}`;
 
     useEffect(() => {
         if (hasTriedAuth.current) return;
@@ -49,7 +49,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
             const state = generateState(32);
 
             VKID.Config.init({
-                app: Number(process.env.REACT_VKID_CLIENT_ID),
+                app: Number(import.meta.env.VITE_VKID_CLIENT_ID),
                 redirectUrl,
                 scope: "email",
                 codeVerifier,
