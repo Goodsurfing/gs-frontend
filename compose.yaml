@@ -4,6 +4,11 @@ services:
   frontend:
     build:
       context: .
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_API_YANDEX_KEY: ${VITE_API_YANDEX_KEY:-}
+        VITE_MAIN_URL: ${VITE_MAIN_URL}
+        VITE_VKID_CLIENT_ID: ${VITE_VKID_CLIENT_ID:-54011426}
     restart: unless-stopped
     container_name: gs_frontend
     labels:
