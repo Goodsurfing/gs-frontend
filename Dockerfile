@@ -45,4 +45,7 @@ RUN rm -rf ./*
 # Vite copies public/ into dist/ automatically (includes locales)
 COPY --from=build /app/dist .
 
+# Remove dev-only MSW service worker from production
+RUN rm -f ./mockServiceWorker.js
+
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
