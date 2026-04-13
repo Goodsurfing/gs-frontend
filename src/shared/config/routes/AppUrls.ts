@@ -1,3 +1,4 @@
+import { Locale } from "@/entities/Locale";
 import { RoutePath } from "./RouterConfig";
 
 export type RoutePathFunction = (locale: string | Locale, id?: string, extraId?: string) => string;

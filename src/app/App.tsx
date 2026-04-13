@@ -18,7 +18,7 @@ export const App: FC = () => {
 
     return (
         <YMaps query={{
-            apikey: process.env.REACT_APP_API_YANDEX_KEY,
+            apikey: import.meta.env.VITE_API_YANDEX_KEY,
             ns: "use-load-option",
             load: "Map,Placemark,control.ZoomControl,geocode,geoObject.addon.hint",
         }}

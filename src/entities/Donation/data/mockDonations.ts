@@ -1,5 +1,7 @@
 import { GetDonation, GetDonations } from "../model/types/donationSchema";
-import mockImg from "@/shared/assets/images/default-offer-image.png";
+import mockImgSrc from "@/shared/assets/images/default-offer-image.png";
+
+const mockImg = { id: "mock", contentUrl: mockImgSrc } as any;
 
 export const mockCardDonations: GetDonations[] = [
     {
