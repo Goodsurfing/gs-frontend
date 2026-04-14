@@ -14,6 +14,15 @@ import { LocaleProvider } from "./app/providers/LocaleProvider";
 
 const root = createRoot(document.getElementById("root")!);
 
+// Глобальный fallback для битых изображений (S3 миграция)
+document.addEventListener("error", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "IMG" && !target.dataset.fallback) {
+        target.dataset.fallback = "true";
+        (target as HTMLImageElement).src = "/placeholder-missing.svg";
+    }
+}, true);
+
 const store = setupStore();
 
 const Root = (
