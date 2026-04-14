@@ -334,9 +334,18 @@ export type {
 export {
     adminBannerMarketingApi,
     useGetBannerMarketingQuery,
-    useGetAdminBannerMarketingListQuery,
+    useLazyGetAdminBannerMarketingListQuery,
     useGetAdminBannerMarketingQuery,
     useCreateAdminBannerMarketingMutation,
     useUpdateAdminBannerMarketingMutation,
     useDeleteAdminBannerMarketingMutation,
 } from "./api/adminBannerMarketingApi";
+
+export type {
+    AdminBannerMarketingFileds,
+} from "./model/types/adminBannerMarketingSchema";
+
+export {
+    adminBannerMarketingListAdapter, adminBannerMarketingApiAdapter,
+    adminBannerMarketingAdapter,
+} from "./lib/adminBannerMarketingAdapter";

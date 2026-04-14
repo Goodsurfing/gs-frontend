@@ -412,3 +412,11 @@ export const getAdminOurTeamPersonalPageUrl: RoutePathFunction = (locale, id = "
 export const getAdminSystemAdminPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_system_admin}`;
 
 export const getAdminSystemAdminCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_system_admin}/create`;
+
+// Admin Banner Marketing
+
+export const getAdminBannerMarketingPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_banner_marketing}`;
+
+export const getAdminBannerMarketingCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_banner_marketing}/create`;
+
+export const getAdminBannerMarketingPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_banner_marketing}/${id}`;
