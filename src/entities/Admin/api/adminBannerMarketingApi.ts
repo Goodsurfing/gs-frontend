@@ -66,7 +66,7 @@ export const adminBannerMarketingApi = createApi({
 
 export const {
     useGetBannerMarketingQuery,
-    useGetAdminBannerMarketingListQuery,
+    useLazyGetAdminBannerMarketingListQuery,
     useGetAdminBannerMarketingQuery,
     useCreateAdminBannerMarketingMutation,
     useUpdateAdminBannerMarketingMutation,

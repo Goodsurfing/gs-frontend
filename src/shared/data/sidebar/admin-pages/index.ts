@@ -129,6 +129,10 @@ export const useAdminPagesSidebarData = () => {
                     route: "/system-admin",
                     text: "Администраторы",
                 },
+                {
+                    route: "/banner-marketing",
+                    text: "Реклама",
+                },
             ],
 
         },

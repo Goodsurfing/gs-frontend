@@ -8,6 +8,14 @@ export const enum BannerMarketingType {
     MAIN_PAGE = "MAIN_PAGE",
 }
 
+export interface AdminBannerMarketingFileds {
+    url: string;
+    description: string;
+    type: BannerMarketingType;
+    isActive: boolean;
+    image: Image;
+}
+
 export interface GetBannerMarketingParams {
     type: BannerMarketingType;
 }
@@ -26,7 +34,7 @@ export interface GetAdminBannerMarketingListParams {
 
 export interface GetAdminBannerMarketingList {
     id: string;
-    name: string;
+    // name: string;
     url: string;
     description: string;
     isActive: boolean;

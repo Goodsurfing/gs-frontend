@@ -223,6 +223,7 @@ import {
     getDonationPayFailPageUrl,
     getAdminSystemAdminPageUrl,
     getAdminSystemAdminCreatePageUrl,
+    getAdminBannerMarketingPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { AuthRoutes } from "@/shared/config/routes/AuthRoutes";
 
@@ -320,6 +321,7 @@ import { DonationPaySuccessPage } from "@/pages/DonationPaySuccessPage";
 import { DonationPayFailPage } from "@/pages/DonationPayFailPage";
 import { AdminSystemAdminPage } from "@/pages/AdminSystemAdminPage";
 import { AdminSystemAdminCreatePage } from "@/pages/AdminSystemAdminCreatePage";
+import { AdminBannerMarketingPage } from "@/pages/AdminBannerMarketingPage";
 
 const publicRoutes: RouteType[] = [
     {
@@ -1115,6 +1117,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-system-admin-create",
                 element: <AdminSystemAdminCreatePage />,
                 path: (locale: string) => getAdminSystemAdminCreatePageUrl(locale),
+            },
+            {
+                label: "admin-banner-marketing",
+                element: <AdminBannerMarketingPage />,
+                path: (locale: string) => getAdminBannerMarketingPageUrl(locale),
             },
         ],
     },

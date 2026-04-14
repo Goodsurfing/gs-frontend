@@ -68,3 +68,5 @@ export { AdminOurTeamTable } from "./ui/AdminOurTeamTable/AdminOurTeamTable";
 export { AdminOurTeamInfo } from "./ui/AdminOurTeamInfo/AdminOurTeamInfo";
 
 export { AdminSystemAdminTable } from "./ui/AdminSystemAdminTable/AdminSystemAdminTable";
+
+export { AdminBannerMarketingTable } from "./ui/AdminBannerMarketingTable/AdminBannerMarketingTable";
