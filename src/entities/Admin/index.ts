@@ -345,6 +345,8 @@ export type {
     AdminBannerMarketingFileds,
 } from "./model/types/adminBannerMarketingSchema";
 
+export { BannerMarketingType } from "./model/types/adminBannerMarketingSchema";
+
 export {
     adminBannerMarketingListAdapter, adminBannerMarketingApiAdapter,
     adminBannerMarketingAdapter,

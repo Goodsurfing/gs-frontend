@@ -11,9 +11,9 @@ export const enum BannerMarketingType {
 export interface AdminBannerMarketingFileds {
     url: string;
     description: string;
-    type: BannerMarketingType;
+    type: BannerMarketingType | null;
     isActive: boolean;
-    image: Image;
+    image?: Image;
 }
 
 export interface GetBannerMarketingParams {
@@ -51,7 +51,7 @@ export type GetAdminMarketingBanner = GetAdminBannerMarketingList & {
 };
 
 export type CreateAdminBannerMarketing = Omit<GetAdminBannerMarketingList, "id"> & {
-    imageId: string;
+    imageId: string | null;
 };
 
 export interface UpdateAdminBannerMarketingParams {
