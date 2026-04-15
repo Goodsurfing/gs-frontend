@@ -25,9 +25,13 @@ export const adminBannerMarketingApiAdapter = (
         description, image, isActive, type, url,
     } = data;
 
+    if (!type) {
+        throw new Error("Banner type is required");
+    }
+
     return {
         description,
-        imageId: image.id,
+        imageId: image?.id ?? null,
         isActive,
         type,
         url,
