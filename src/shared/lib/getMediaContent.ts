@@ -26,9 +26,9 @@ export const getMediaContent = (
             return toAbsoluteUrl(value.contentUrl);
         }
 
-        if (value.thumbnails
-            && value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails]) {
-            return toAbsoluteUrl(value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails]);
+        const sizeKey = size.toLowerCase() as keyof typeof value.thumbnails;
+        if (value.thumbnails && value.thumbnails[sizeKey]) {
+            return toAbsoluteUrl(value.thumbnails[sizeKey]);
         }
 
         // fallback на оригинал, если нужного thumbnail нет
