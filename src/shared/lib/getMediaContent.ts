@@ -4,6 +4,13 @@ import { ImageType } from "@/entities/Profile";
 
 type MediaContentSize = "SMALL" | "MEDIUM" | "LARGE" | "ORIGINAL";
 
+const toAbsoluteUrl = (url: string): string => {
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+        return url;
+    }
+    return `${BASE_URL}${url.startsWith("/") ? url.slice(1) : url}`;
+};
+
 export const getMediaContent = (
     value: string | MediaObjectType | ImageType | undefined,
     size: MediaContentSize = "ORIGINAL",
@@ -11,21 +18,21 @@ export const getMediaContent = (
     if (!value) return undefined;
 
     if (typeof value === "string") {
-        return `${BASE_URL}${value.slice(1)}`;
+        return toAbsoluteUrl(value);
     }
 
     if (typeof value === "object" && "contentUrl" in value) {
         if (size === "ORIGINAL") {
-            return `${BASE_URL}${value.contentUrl.slice(1)}`;
+            return toAbsoluteUrl(value.contentUrl);
         }
 
-        if (value.thumbnails
-            && value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails]) {
-            return `${BASE_URL}${value.thumbnails[size.toLowerCase() as keyof typeof value.thumbnails].slice(1)}`;
+        const sizeKey = size.toLowerCase() as keyof typeof value.thumbnails;
+        if (value.thumbnails && value.thumbnails[sizeKey]) {
+            return toAbsoluteUrl(value.thumbnails[sizeKey]);
         }
 
         // fallback на оригинал, если нужного thumbnail нет
-        return `${BASE_URL}${value.contentUrl.slice(1)}`;
+        return toAbsoluteUrl(value.contentUrl);
     }
 
     return undefined;
@@ -38,13 +45,13 @@ export const getMediaContentsArray = (images: (GalleryItem | MediaObjectType
             return image;
         }
         if ("mediaObject" in image) {
-            return `${BASE_URL}${image.mediaObject.contentUrl.slice(1)}`;
+            return toAbsoluteUrl(image.mediaObject.contentUrl);
         }
         if ("contentUrl" in image && "id" in image && !("@id" in image)) {
-            return `${BASE_URL}${image.contentUrl.slice(1)}`;
+            return toAbsoluteUrl(image.contentUrl);
         }
 
-        return `${BASE_URL}${image.contentUrl.slice(1)}`;
+        return toAbsoluteUrl(image.contentUrl);
     });
     return newImages;
 };

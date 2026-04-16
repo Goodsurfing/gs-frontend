@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Изображение недоступно">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3f4f6"/>
+      <stop offset="100%" stop-color="#e5e7eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <g fill="none" stroke="#9ca3af" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <rect x="350" y="220" width="500" height="320" rx="24"/>
+    <circle cx="500" cy="340" r="36"/>
+    <path d="M410 500l110-110 75 75 80-80 115 115"/>
+  </g>
+  <text x="600" y="620" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="38" fill="#6b7280">Изображение недоступно</text>
+  <text x="600" y="665" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" fill="#9ca3af">placeholder</text>
+</svg>

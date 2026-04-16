@@ -11,7 +11,7 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useGetDonationByIdQuery } from "@/entities/Donation/api/donationApi";
 import { useCreateDonationPaymentMutation } from "@/store/api/donationPaymentApi";
 import { getDonationPersonalPage, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
-import { BASE_URL } from "@/shared/constants/api";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import styles from "./DonationPayPage.module.scss";
 
@@ -90,7 +90,7 @@ const DonationPayPage: React.FC = () => {
     }
 
     const imageUrl = fundraise?.image?.contentUrl
-        ? `${BASE_URL}${fundraise.image.contentUrl}`
+        ? getMediaContent(fundraise.image.contentUrl)
         : undefined;
 
     return (
