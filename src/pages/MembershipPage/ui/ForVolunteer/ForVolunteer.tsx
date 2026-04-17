@@ -10,9 +10,7 @@ import styles from "./ForVolunteer.module.scss";
 import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetTariffsQuery } from "@/store/api/membershipApi";
-
-const VOLUNTEER_TARIFF_CODE = "volunteer_990";
-const VOLUNTEER_FALLBACK_PRICE_RUB = 990;
+import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
 
 interface ForVolunteerProps {
     className?: string;
@@ -27,15 +25,15 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
     const { locale } = useLocale();
 
     const { data: tariffs } = useGetTariffsQuery("VOLUNTEER");
-    const tariff = tariffs?.find((item) => item.code === VOLUNTEER_TARIFF_CODE);
-    const priceRub = tariff?.priceRub ?? VOLUNTEER_FALLBACK_PRICE_RUB;
+    const tariff = tariffs?.find((item) => item.code === TARIFF_CODE.VOLUNTEER);
+    const priceRub = tariff?.priceRub ?? TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.VOLUNTEER];
 
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
     };
 
     const handleGetMembership = () => {
-        navigate(`${getPaymentPageUrl(locale)}?tariff=${VOLUNTEER_TARIFF_CODE}`);
+        navigate(`${getPaymentPageUrl(locale)}?tariff=${TARIFF_CODE.VOLUNTEER}`);
     };
 
     return (

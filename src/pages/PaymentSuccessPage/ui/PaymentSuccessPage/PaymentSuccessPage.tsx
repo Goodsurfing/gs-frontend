@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
@@ -8,9 +8,27 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMyOffersPageUrl, getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./PaymentSuccessPage.module.scss";
+
+const VOLUNTEER_BENEFITS = [
+    "Неограниченный доступ ко всем направлениям и видам путешествий",
+    "Прямое общение с хостом",
+    "Поддержка в путешествиях со стороны Гудсёрфинга",
+    "Доступ к образовательным материалам",
+    "Поддержка интересного и важного проекта",
+];
+
+const HOST_BENEFITS = [
+    "Неограниченная публикация объявлений на платформе",
+    "Доступ к уникальным чатам платформы",
+    "Метка «Партнёр Гудсёрфинга» в профиле",
+    "Доступ к Академии и офлайн-мероприятиям",
+    "Скидки на платные размещения",
+];
+
+const POLL_INTERVAL_MS = 3000;
 
 const PaymentSuccessPage: React.FC = () => {
     const { locale } = useLocale();
@@ -20,17 +38,18 @@ const PaymentSuccessPage: React.FC = () => {
 
     const paymentId = searchParams.get("payment_id");
 
-    // Обновляем статус членства после успешной оплаты
-    const { isLoading, refetch } = useGetCurrentMembershipQuery(undefined, {
+    const [shouldPoll, setShouldPoll] = useState<boolean>(Boolean(paymentId));
+
+    const { data: membership, isLoading } = useGetCurrentMembershipQuery(undefined, {
         skip: !isAuth,
+        pollingInterval: shouldPoll && isAuth ? POLL_INTERVAL_MS : 0,
     });
 
     useEffect(() => {
-        // Обновляем статус членства при загрузке страницы успеха
-        if (isAuth && paymentId) {
-            refetch();
+        if (membership?.isActive) {
+            setShouldPoll(false);
         }
-    }, [isAuth, paymentId, refetch]);
+    }, [membership?.isActive]);
 
     useEffect(() => {
         if (!isAuth) {
@@ -42,7 +61,7 @@ const PaymentSuccessPage: React.FC = () => {
         return <Preloader />;
     }
 
-    if (isLoading) {
+    if (isLoading && !membership) {
         return (
             <MainPageLayout>
                 <div className={styles.container}>
@@ -53,6 +72,13 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     const userName = myProfile.firstName || myProfile.email || "пользователь";
+    const isHost = membership?.tariff?.forRole === "HOST";
+    const benefits = isHost ? HOST_BENEFITS : VOLUNTEER_BENEFITS;
+    const ctaText = isHost ? "Перейти к объявлениям" : "Искать путешествия";
+    const ctaUrl = isHost ? getMyOffersPageUrl(locale) : getOffersMapPageUrl(locale);
+    const callToAction = isHost
+        ? "Самое время опубликовать объявление и принять волонтёров."
+        : "Самое время подобрать для себя идеальное путешествие со смыслом в этом году.";
 
     return (
         <MainPageLayout>
@@ -84,26 +110,22 @@ const PaymentSuccessPage: React.FC = () => {
                     <div className={styles.benefits}>
                         <h2 className={styles.benefitsTitle}>Теперь для вас доступно:</h2>
                         <ul className={styles.benefitsList}>
-                            <li>Неограниченный доступ ко всем направлениям и видам путешествий</li>
-                            <li>Прямое общение с хостом</li>
-                            <li>Поддержка в путешествиях со стороны Гудсёрфинга</li>
-                            <li>Доступ к образовательным материалам</li>
-                            <li>Поддержка интересного и важного проекта</li>
+                            {benefits.map((item) => (
+                                <li key={item}>{item}</li>
+                            ))}
                         </ul>
                     </div>
 
-                    <p className={styles.callToAction}>
-                        Самое время подобрать для себя идеальное путешествие со смыслом в этом году.
-                    </p>
+                    <p className={styles.callToAction}>{callToAction}</p>
 
                     <div className={styles.buttonWrapper}>
                         <Button
                             color="BLUE"
                             size="LARGE"
                             variant="FILL"
-                            onClick={() => navigate(getOffersMapPageUrl(locale))}
+                            onClick={() => navigate(ctaUrl)}
                         >
-                            Искать путешествия
+                            {ctaText}
                         </Button>
                     </div>
                 </div>

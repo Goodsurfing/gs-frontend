@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
@@ -9,10 +10,13 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useCheckoutMembershipMutation } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
+import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentPage.module.scss";
 
-const DEFAULT_TARIFF_CODE = "volunteer_990";
+const isFetchError = (err: unknown): err is FetchBaseQueryError => (
+    typeof err === "object" && err !== null && "status" in err
+);
 
 const PaymentPage: React.FC = () => {
     const { locale } = useLocale();
@@ -23,34 +27,41 @@ const PaymentPage: React.FC = () => {
     const [checkoutMembership, { isLoading }] = useCheckoutMembershipMutation();
     const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const startedRef = useRef(false);
 
-    const tariffCode = searchParams.get("tariff") || DEFAULT_TARIFF_CODE;
+    const tariffCode = searchParams.get("tariff") || TARIFF_CODE.VOLUNTEER;
 
     useEffect(() => {
         if (!isAuth || !myProfile) {
             navigate(`/${locale}/signin`);
             return;
         }
+        if (startedRef.current) return;
+        startedRef.current = true;
 
-        const initializeCheckout = async () => {
-            try {
-                const result = await checkoutMembership({ tariffCode }).unwrap();
-
+        checkoutMembership({ tariffCode }).unwrap()
+            .then((result) => {
                 if (result.paymentUrl) {
                     setPaymentUrl(result.paymentUrl);
                     window.location.href = result.paymentUrl;
                 } else {
                     setErrorMessage("Не удалось получить ссылку на оплату");
                 }
-            } catch (err: any) {
-                const detail = err?.data?.detail
-                    || err?.data?.title
-                    || err?.data?.error;
-                setErrorMessage(detail || "Произошла ошибка при создании платежа");
-            }
-        };
-
-        initializeCheckout();
+            })
+            .catch((err: unknown) => {
+                if (isFetchError(err) && err.status === 409) {
+                    navigate(getMembershipPageUrl(locale));
+                    return;
+                }
+                const data = isFetchError(err)
+                    ? (err.data as { detail?: string; title?: string } | undefined)
+                    : undefined;
+                setErrorMessage(
+                    data?.detail
+                    || data?.title
+                    || "Произошла ошибка при создании платежа",
+                );
+            });
     }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode]);
 
     const handlePayClick = () => {
