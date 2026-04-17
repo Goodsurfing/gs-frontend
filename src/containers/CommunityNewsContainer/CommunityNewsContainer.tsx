@@ -8,7 +8,6 @@ import CommunityNewsItem from "@/containers/CommunityNewsContainer/CommunityNews
 import { useLazyGetBlogListQuery } from "@/entities/Blog";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { AdminSort } from "@/entities/Admin";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import styles from "./CommunityNewsContainer.module.scss";
 
@@ -72,7 +71,7 @@ const CommunityNewsContainer: FC = () => {
                                         id={item.id.toString()}
                                         title={item.name}
                                         date={item.created}
-                                        image={getMediaContent(item.image.thumbnails?.large)}
+                                        image={item.image.thumbnails?.large}
                                         locale={locale}
                                     />
                                 </SwiperSlide>

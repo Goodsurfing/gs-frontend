@@ -10,7 +10,6 @@ import starIcon from "@/shared/assets/icons/star.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useCategories } from "@/shared/data/categories";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { textSlice } from "@/shared/lib/textSlice";
 
 import styles from "./Offer.module.scss";
@@ -39,7 +38,7 @@ const Offer: FC<OfferProps> = (props) => {
     return (
         <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>
             <img
-                src={image ? getMediaContent(image?.contentUrl) : defaultImage}
+                src={image ? image?.contentUrl : defaultImage}
                 className={styles.image}
                 alt={title}
                 loading="lazy"

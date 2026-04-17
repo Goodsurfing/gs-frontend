@@ -14,10 +14,9 @@ export const adminBannerMarketingApi = createApi({
     endpoints: (build) => ({
         getBannerMarketing: build.query<BannerMarketingElement,
         GetBannerMarketingParams>({
-            query: (params) => ({
-                url: `${API_BASE_URL_V3}marketing-banner/element/{type}`,
+            query: ({ type }) => ({
+                url: `${API_BASE_URL_V3}marketing-banner/element/${type}`,
                 method: "GET",
-                params,
             }),
             providesTags: ["banner"],
         }),

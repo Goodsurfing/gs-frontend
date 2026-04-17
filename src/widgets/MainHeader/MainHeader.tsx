@@ -24,8 +24,9 @@ import { MainHeaderNav } from "./MainHeaderNav/MainHeaderNav";
 import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import styles from "./MainHeader.module.scss";
 import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
+import { BannerMarketingType, useGetBannerMarketingQuery } from "@/entities/Admin";
+import styles from "./MainHeader.module.scss";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
@@ -35,11 +36,14 @@ const MainHeader: FC = () => {
     const { data: membershipStatus } = useGetMembershipStatusQuery(undefined, {
         skip: !isAuth,
     });
+    const { data } = useGetBannerMarketingQuery(
+        { type: BannerMarketingType.UNDER_HEADER_ALL_PAGES },
+    );
 
     const hasMembership = membershipStatus?.hasMembership ?? false;
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <header className={styles.header}>
                 <div className={styles.left}>
                     <LocaleLink
@@ -98,7 +102,19 @@ const MainHeader: FC = () => {
             <div className={styles.mobile}>
                 <MobileHeader />
             </div>
-        </>
+            {data && (
+                <div className={styles.banner}>
+                    <p>{data.description}</p>
+                    <ButtonLink
+                        className={styles.bannerBtn}
+                        path={data.url}
+                        type="outlined"
+                    >
+                        Подробнее
+                    </ButtonLink>
+                </div>
+            )}
+        </div>
     );
 };
 

@@ -13,8 +13,9 @@ import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import LogotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import { InfoSearchOffers } from "./InfoSearchOffers/InfoSearchOffers";
-import styles from "./InfoSide.module.scss";
 import { SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
+import ActivityContainer from "./ActivityContainer/ActivityContainer";
+import styles from "./InfoSide.module.scss";
 
 const InfoSide: FC = memo(() => {
     const { t } = useTranslation();
@@ -46,10 +47,6 @@ const InfoSide: FC = memo(() => {
                     <SectionTitle classNames={styles.title}>
                         {t("main.welcome.title")}
                     </SectionTitle>
-                    {/* <ButtonLink className={styles.btn} type="primary"
-                    path={getOffersMapPageUrl(locale)}>
-                        {t("main.welcome.offers-btn")}
-                    </ButtonLink> */}
                     <InfoSearchOffers
                         className={styles.searchWrapper}
                         onSubmit={onApplySearch}
@@ -60,7 +57,7 @@ const InfoSide: FC = memo(() => {
                     />
                 </div>
 
-                {/* <ActivityContainer locale={locale} /> */}
+                <ActivityContainer locale={locale} />
                 <div className={styles.activity}>
                     <h3 className={styles.activityTitle}>
                         {t("main.welcome.activity-title")}
