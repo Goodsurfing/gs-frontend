@@ -25,18 +25,18 @@ import MainHeaderProfile from "./MainHeaderProfile/MainHeaderProfile";
 import { MessangerInfo } from "./MessangerInfo/MessangerInfo";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import styles from "./MainHeader.module.scss";
-import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
+import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
 
 const MainHeader: FC = () => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
 
-    const { data: membershipStatus } = useGetMembershipStatusQuery(undefined, {
+    const { data: membership } = useGetCurrentMembershipQuery(undefined, {
         skip: !isAuth,
     });
 
-    const hasMembership = membershipStatus?.hasMembership ?? false;
+    const hasMembership = membership?.isActive ?? false;
 
     return (
         <>

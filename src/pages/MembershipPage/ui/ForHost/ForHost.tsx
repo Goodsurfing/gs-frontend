@@ -9,6 +9,10 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./ForHost.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
+import { useGetTariffsQuery } from "@/store/api/membershipApi";
+
+const HOST_TARIFF_CODE = "host_4990";
+const HOST_FALLBACK_PRICE_RUB = 4990;
 
 interface ForHostProps {
     className?: string;
@@ -20,12 +24,16 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const navigate = useNavigate();
     const { locale } = useLocale();
 
+    const { data: tariffs } = useGetTariffsQuery("HOST");
+    const tariff = tariffs?.find((item) => item.code === HOST_TARIFF_CODE);
+    const priceRub = tariff?.priceRub ?? HOST_FALLBACK_PRICE_RUB;
+
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
     };
 
     const handleGetMembership = () => {
-        navigate(getPaymentPageUrl(locale));
+        navigate(`${getPaymentPageUrl(locale)}?tariff=${HOST_TARIFF_CODE}`);
     };
 
     return (
@@ -87,7 +95,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
                     <div className={styles.columnHeader}>
                         <h2 className={styles.columnTitle}>{t("for-host.Членство")}</h2>
                         <span className={styles.price}>
-                            1 500
+                            {priceRub.toLocaleString("ru-RU")}
                             {" "}
                             <span className={styles.smallPrice}>руб/год</span>
                         </span>

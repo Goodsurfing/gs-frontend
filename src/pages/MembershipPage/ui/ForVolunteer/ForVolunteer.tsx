@@ -9,6 +9,10 @@ import Button from "@/shared/ui/Button/Button";
 import styles from "./ForVolunteer.module.scss";
 import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useGetTariffsQuery } from "@/store/api/membershipApi";
+
+const VOLUNTEER_TARIFF_CODE = "volunteer_990";
+const VOLUNTEER_FALLBACK_PRICE_RUB = 990;
 
 interface ForVolunteerProps {
     className?: string;
@@ -22,12 +26,16 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
     const navigate = useNavigate();
     const { locale } = useLocale();
 
+    const { data: tariffs } = useGetTariffsQuery("VOLUNTEER");
+    const tariff = tariffs?.find((item) => item.code === VOLUNTEER_TARIFF_CODE);
+    const priceRub = tariff?.priceRub ?? VOLUNTEER_FALLBACK_PRICE_RUB;
+
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
     };
 
     const handleGetMembership = () => {
-        navigate(getPaymentPageUrl(locale));
+        navigate(`${getPaymentPageUrl(locale)}?tariff=${VOLUNTEER_TARIFF_CODE}`);
     };
 
     return (
@@ -95,7 +103,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (
                     <div className={styles.columnHeader}>
                         <h2 className={styles.columnTitle}>{t("for-volunteer.Членство")}</h2>
                         <span className={styles.price}>
-                            1 500
+                            {priceRub.toLocaleString("ru-RU")}
                             {" "}
                             <span className={styles.smallPrice}>руб/год</span>
                         </span>

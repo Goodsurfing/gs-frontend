@@ -6,7 +6,7 @@ import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useGetMembershipStatusQuery } from "@/store/api/paymentApi";
+import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
 
@@ -21,7 +21,7 @@ const PaymentSuccessPage: React.FC = () => {
     const paymentId = searchParams.get("payment_id");
 
     // Обновляем статус членства после успешной оплаты
-    const { isLoading, refetch } = useGetMembershipStatusQuery(undefined, {
+    const { isLoading, refetch } = useGetCurrentMembershipQuery(undefined, {
         skip: !isAuth,
     });
 
