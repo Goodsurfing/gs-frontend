@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import Section from "@/shared/ui/Section/Section";
 
 import BecomeHostContainer from "@/containers/BecomeHostContainer/BecomeHostContainer";
-import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer";
 import CommunityNewsContainer from "@/containers/CommunityNewsContainer/CommunityNewsContainer";
 import { Footer } from "@/widgets/Footer";
 // import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
@@ -17,8 +16,9 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { BannerCard } from "../BannerCard/BannerCard";
 import WelcomeContainer from "../WelcomeContainer/WelcomeContainer";
 import { HowItWorkContainer } from "../HowItWorkContainer/HowItWorkContainer";
-import styles from "./MainPage.module.scss";
 import { OffersSlider } from "@/widgets/OffersSlider";
+import styles from "./MainPage.module.scss";
+import { BenefitsContainer } from "@/widgets/BenefitsContainer";
 
 const MainPage: FC = () => {
     const { t, ready } = useTranslation("main");

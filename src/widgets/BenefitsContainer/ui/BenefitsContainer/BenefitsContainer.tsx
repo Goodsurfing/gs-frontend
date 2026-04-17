@@ -2,12 +2,11 @@ import React, { FC, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import BenefitItem from "@/containers/BenefitsContainer/BenefitItem/BenefitItem";
-import { useBenefitsData } from "@/containers/BenefitsContainer/Benefits.data";
-
+import { useBenefitsData } from "./Benefits.data";
+import BenefitItem from "../BenefitItem/BenefitItem";
 import styles from "./BenefitsContainer.module.scss";
 
-const BenefitsContainer: FC = () => {
+export const BenefitsContainer: FC = () => {
     const benefitsData = useBenefitsData();
 
     useEffect(() => {
@@ -25,5 +24,3 @@ const BenefitsContainer: FC = () => {
         </div>
     );
 };
-
-export default BenefitsContainer;
