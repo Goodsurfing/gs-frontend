@@ -1,9 +1,8 @@
 import { FC, memo } from "react";
 
-import InfoSide from "@/containers/WelcomeContainer/InfoSide/InfoSide";
-import SliderSide from "@/containers/WelcomeContainer/SliderSide/SliderSide";
-
 import InfoHeader from "./InfoSide/InfoHeader/InfoHeader";
+import InfoSide from "./InfoSide/InfoSide";
+import SliderSide from "./SliderSide/SliderSide";
 import styles from "./WelcomeContainer.module.scss";
 
 const WelcomeContainer: FC = memo(() => (

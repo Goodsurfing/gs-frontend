@@ -1,22 +1,23 @@
 import React, { FC } from "react";
 
 import { useTranslation } from "react-i18next";
-import ActivityItem from "@/containers/WelcomeContainer/InfoSide/ActivityContainer/ActivityItem/ActivityItem";
+import cn from "classnames";
 import defaultImage from "@/shared/assets/images/categories/a8.png";
 
 import { getCategoriesPageUrl } from "@/shared/config/routes/AppUrls";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import ActivityItem from "./ActivityItem/ActivityItem";
 import styles from "./ActivityContainer.module.scss";
 
 interface ActivityContainerProps {
     locale: Locale;
+    className?: string;
 }
 
 const ActivityContainer: FC<ActivityContainerProps> = (props) => {
-    const { locale } = props;
+    const { locale, className } = props;
     const {
         data: categoriesData,
         isLoading,
@@ -36,7 +37,7 @@ const ActivityContainer: FC<ActivityContainerProps> = (props) => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={cn(styles.wrapper, className)}>
             {categoriesData.slice(0, 3).map((item, index) => (
                 <ActivityItem
                     title={item.name}

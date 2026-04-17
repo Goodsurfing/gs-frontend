@@ -6,10 +6,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Slide from "@/containers/WelcomeContainer/SliderSide/Slide/Slide";
-import { useTranslatedSliderData } from "@/containers/WelcomeContainer/SliderSide/Slider.data";
-
 import { useLocale } from "@/app/providers/LocaleProvider";
+import Slide from "./Slide/Slide";
+import { useTranslatedSliderData } from "./Slider.data";
 import styles from "./SliderSide.module.scss";
 
 const SliderSide: FC = memo(() => {
