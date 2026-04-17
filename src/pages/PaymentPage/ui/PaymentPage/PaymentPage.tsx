@@ -1,55 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useCreatePaymentMutation } from "@/store/api/paymentApi";
+import { useCheckoutMembershipMutation } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 
 import styles from "./PaymentPage.module.scss";
+
+const DEFAULT_TARIFF_CODE = "volunteer_990";
 
 const PaymentPage: React.FC = () => {
     const { locale } = useLocale();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const { isAuth, myProfile } = useAuth();
 
-    const [createPayment, { isLoading }] = useCreatePaymentMutation();
+    const [checkoutMembership, { isLoading }] = useCheckoutMembershipMutation();
     const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    const tariffCode = searchParams.get("tariff") || DEFAULT_TARIFF_CODE;
+
     useEffect(() => {
         if (!isAuth || !myProfile) {
-            // Редирект на страницу входа, если не авторизован
             navigate(`/${locale}/signin`);
             return;
         }
 
-        // Создаем платеж при загрузке страницы
-        const initializePayment = async () => {
+        const initializeCheckout = async () => {
             try {
-                const result = await createPayment({
-                    amount: "1500.00",
-                    currency: "RUB",
-                    description: "Оплата членства в сообществе Гудсёрфинга",
-                }).unwrap();
+                const result = await checkoutMembership({ tariffCode }).unwrap();
 
-                if (result.payment_url) {
-                    setPaymentUrl(result.payment_url);
-                    // Автоматический редирект на страницу оплаты
-                    window.location.href = result.payment_url;
+                if (result.paymentUrl) {
+                    setPaymentUrl(result.paymentUrl);
+                    window.location.href = result.paymentUrl;
                 } else {
                     setErrorMessage("Не удалось получить ссылку на оплату");
                 }
             } catch (err: any) {
-                setErrorMessage(err?.data?.error || "Произошла ошибка при создании платежа");
+                const detail = err?.data?.detail
+                    || err?.data?.title
+                    || err?.data?.error;
+                setErrorMessage(detail || "Произошла ошибка при создании платежа");
             }
         };
 
-        initializePayment();
-    }, [isAuth, myProfile, createPayment, navigate, locale]);
+        initializeCheckout();
+    }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode]);
 
     const handlePayClick = () => {
         if (paymentUrl) {
@@ -84,7 +86,7 @@ const PaymentPage: React.FC = () => {
                             color="BLUE"
                             size="MEDIUM"
                             variant="FILL"
-                            onClick={() => navigate(`/${locale}/membership`)}
+                            onClick={() => navigate(getMembershipPageUrl(locale))}
                         >
                             Вернуться на страницу членства
                         </Button>
@@ -99,7 +101,7 @@ const PaymentPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <p className={styles.text}>
-                        Списание средств происходит в российских рублях (1500 рублей).
+                        Списание средств происходит в российских рублях.
                     </p>
                     <p className={styles.text}>
                         Банк автоматически произведет конвертацию в валюту, используемой вами карты.

@@ -5,15 +5,24 @@ import { useNavigate } from "react-router-dom";
 import Button from "@/shared/ui/Button/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
+import { useGetTariffsQuery } from "@/store/api/membershipApi";
 import styles from "./Header.module.scss";
+
+const DEFAULT_TARIFF_CODE = "volunteer_990";
+const DEFAULT_FALLBACK_PRICE_RUB = 990;
 
 export const Header = () => {
     const { t } = useTranslation("membership");
     const navigate = useNavigate();
     const { locale } = useLocale();
 
+    const { data: tariffs } = useGetTariffsQuery();
+    const minPriceRub = tariffs && tariffs.length > 0
+        ? Math.min(...tariffs.map((item) => item.priceRub))
+        : DEFAULT_FALLBACK_PRICE_RUB;
+
     const handleGetMembership = () => {
-        navigate(getPaymentPageUrl(locale));
+        navigate(`${getPaymentPageUrl(locale)}?tariff=${DEFAULT_TARIFF_CODE}`);
     };
 
     return (
@@ -41,7 +50,9 @@ export const Header = () => {
                 >
                     {t("header.Получить членство")}
                 </Button>
-                <span className={styles.price}>1 500 руб</span>
+                <span className={styles.price}>
+                    {`от ${minPriceRub.toLocaleString("ru-RU")} руб`}
+                </span>
             </div>
         </section>
     );
