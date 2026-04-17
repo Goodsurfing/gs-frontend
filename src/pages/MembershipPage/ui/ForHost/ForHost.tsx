@@ -10,9 +10,7 @@ import styles from "./ForHost.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { getPaymentPageUrl, getProfileRolePageUrl } from "@/shared/config/routes/AppUrls";
 import { useGetTariffsQuery } from "@/store/api/membershipApi";
-
-const HOST_TARIFF_CODE = "host_4990";
-const HOST_FALLBACK_PRICE_RUB = 4990;
+import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
 
 interface ForHostProps {
     className?: string;
@@ -25,15 +23,15 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     const { locale } = useLocale();
 
     const { data: tariffs } = useGetTariffsQuery("HOST");
-    const tariff = tariffs?.find((item) => item.code === HOST_TARIFF_CODE);
-    const priceRub = tariff?.priceRub ?? HOST_FALLBACK_PRICE_RUB;
+    const tariff = tariffs?.find((item) => item.code === TARIFF_CODE.HOST);
+    const priceRub = tariff?.priceRub ?? TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.HOST];
 
     const handleNavigateToRole = () => {
         navigate(getProfileRolePageUrl(locale));
     };
 
     const handleGetMembership = () => {
-        navigate(`${getPaymentPageUrl(locale)}?tariff=${HOST_TARIFF_CODE}`);
+        navigate(`${getPaymentPageUrl(locale)}?tariff=${TARIFF_CODE.HOST}`);
     };
 
     return (

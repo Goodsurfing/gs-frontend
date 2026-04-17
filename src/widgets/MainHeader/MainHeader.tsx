@@ -80,7 +80,7 @@ const MainHeader: FC = () => {
                                     className={styles.membership}
                                     disabled={hasMembership}
                                 >
-                                    {hasMembership ? "Членство получено" : "Членство"}
+                                    {hasMembership ? "Членство активно" : "Членство"}
                                 </Button>
                             </LocaleLink>
                         </>
