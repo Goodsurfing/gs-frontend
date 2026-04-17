@@ -4,11 +4,9 @@ import React, { FC, memo, useState } from "react";
 import { OfferApi, OfferCard as OfferCardComponent } from "@/entities/Offer";
 
 import { useCategories } from "@/shared/data/categories";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import { Locale } from "@/entities/Locale";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import { MediaObjectType } from "@/types/media";
 import styles from "./OfferCard.module.scss";
 
 type OfferData = Pick<OfferApi, "id"> &
@@ -25,7 +23,7 @@ OfferApi,
 >,
 "imagePath"
 > & {
-    imagePath?: string | MediaObjectType;
+    imagePath?: string;
     categories: string[];
 }
 >;
@@ -53,7 +51,6 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         locale,
     } = props;
 
-    const imageCover = getMediaContent(imagePath, "SMALL");
     const { getTranslation } = useCategories();
     const [isFavorite, setFavorite] = useState<boolean>(false);
 
@@ -73,7 +70,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 title={title}
                 description={shortDescription}
                 category={getTranslation(categories?.[0])}
-                image={imageCover}
+                image={imagePath}
                 location={address}
                 rating={averageRating}
                 reviews={reviewsCount}

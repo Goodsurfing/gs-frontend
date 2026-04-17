@@ -19,6 +19,7 @@ import { OfferTermsCard } from "../OfferTermsCard/ui/OfferTermsCard/OfferTermsCa
 import { OfferWhatToDoCard } from "../OfferWhatToDoCard/OfferWhatToDoCard";
 import { OfferWhenCard } from "../OfferWhenCard/OfferWhenCard";
 import { OfferWhoNeedsCard } from "../OfferWhoNeedsCard/OfferWhoNeedsCard";
+import { OfferBannerCard } from "../OfferBannerCard/OfferBannerCard";
 import styles from "./OfferInfoCard.module.scss";
 
 interface HostInfoCardProps {
@@ -38,6 +39,7 @@ export const OfferInfoCard = memo((props: HostInfoCardProps) => {
 
     return (
         <div className={cn(className)}>
+            <OfferBannerCard />
             {offer.when && <OfferWhenCard offerWhen={offer.when} />}
             {offer.howNeed && (
                 <OfferWhoNeedsCard
