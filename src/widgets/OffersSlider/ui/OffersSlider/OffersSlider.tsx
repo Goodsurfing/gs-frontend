@@ -5,19 +5,19 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import cn from "classnames";
-import Offer from "@/containers/OffersContainer/Offer/Offer";
 
 import arrowSliderIcon from "@/shared/assets/icons/slider-arrow.svg";
 import { OfferApi, OfferSort, useLazyGetOffersQuery } from "@/entities/Offer";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import styles from "./OffersContainer.module.scss";
+import Offer from "../Offer/Offer";
+import styles from "./OffersSlider.module.scss";
 
-interface OffersContainerProps {
+interface OffersSliderProps {
     className?: string;
 }
 
-const OffersContainer: FC<OffersContainerProps> = (props) => {
+export const OffersSlider: FC<OffersSliderProps> = (props) => {
     const { className } = props;
     const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
     const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
@@ -101,5 +101,3 @@ const OffersContainer: FC<OffersContainerProps> = (props) => {
         </div>
     );
 };
-
-export default OffersContainer;

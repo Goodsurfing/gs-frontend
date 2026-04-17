@@ -7,17 +7,18 @@ import BecomeHostContainer from "@/containers/BecomeHostContainer/BecomeHostCont
 import BenefitsContainer from "@/containers/BenefitsContainer/BenefitsContainer";
 import CommunityNewsContainer from "@/containers/CommunityNewsContainer/CommunityNewsContainer";
 import { Footer } from "@/widgets/Footer";
-import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
-import OffersContainer from "@/containers/OffersContainer/OffersContainer";
 // import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
 import ReviewsContainer from "@/containers/ReviewsContainer/ReviewsContainer";
 import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
-import WelcomeContainer from "@/containers/WelcomeContainer/WelcomeContainer";
 
 import Preloader from "@/shared/ui/Preloader/Preloader";
 // import { NewMainSliderContainer }
 // from "@/containers/NewMainSliderContainer/NewMainSliderContainer";
+import { BannerCard } from "../BannerCard/BannerCard";
+import WelcomeContainer from "../WelcomeContainer/WelcomeContainer";
+import { HowItWorkContainer } from "../HowItWorkContainer/HowItWorkContainer";
 import styles from "./MainPage.module.scss";
+import { OffersSlider } from "@/widgets/OffersSlider";
 
 const MainPage: FC = () => {
     const { t, ready } = useTranslation("main");
@@ -35,8 +36,9 @@ const MainPage: FC = () => {
             <Section title={t("Как это работает?")}>
                 <HowItWorkContainer />
             </Section>
+            <BannerCard />
             <Section title={t("Интересные вакансии")} className={styles.offersContainer}>
-                <OffersContainer />
+                <OffersSlider />
             </Section>
             <Section title={t("Наши преимущества")}>
                 <BenefitsContainer />

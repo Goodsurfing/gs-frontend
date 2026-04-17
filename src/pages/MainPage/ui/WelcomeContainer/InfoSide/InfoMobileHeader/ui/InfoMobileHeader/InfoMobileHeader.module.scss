@@ -179,9 +179,3 @@
 	position: relative;
 	z-index: 1001;
 }
-
-@media(max-width:1000px) {
-	.burger {
-		background-color: var(--accent-color);
-	}
-}

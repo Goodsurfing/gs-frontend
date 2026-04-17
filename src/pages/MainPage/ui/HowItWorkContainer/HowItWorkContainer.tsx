@@ -3,14 +3,14 @@ import cn from "classnames";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useTranslation } from "react-i18next";
-import { useHowItWorkData } from "@/containers/HowItWorkContainer/HowItWork.data";
-import HowItWorkItem from "@/containers/HowItWorkContainer/HowItWorkItem/HowItWorkItem";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 
+import HowItWorkItem from "./HowItWorkItem/HowItWorkItem";
+import { useHowItWorkData } from "./HowItWork.data";
 import styles from "./HowItWorkContainer.module.scss";
 
 interface HowItWorkContainerProps {
@@ -18,7 +18,7 @@ interface HowItWorkContainerProps {
     showButton?: boolean;
 }
 
-const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
+export const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
     const { className, showButton = true } = props;
     const { locale } = useLocale();
     const howItWorkData = useHowItWorkData();
@@ -54,5 +54,3 @@ const HowItWorkContainer: FC<HowItWorkContainerProps> = (props) => {
         </div>
     );
 };
-
-export default HowItWorkContainer;
