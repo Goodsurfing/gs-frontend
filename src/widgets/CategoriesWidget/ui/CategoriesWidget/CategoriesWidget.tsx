@@ -7,9 +7,8 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { Category } from "../Category/Category";
 import { useGetPublicCategoriesVacancyQuery } from "@/entities/Admin";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import styles from "./CategoriesWidget.module.scss";
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
+import styles from "./CategoriesWidget.module.scss";
 
 interface CategoriesWidgetProps {
     className?: string;
@@ -42,7 +41,7 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
             <Category
                 className={styles.category}
                 title={getTranslation(category.name) ?? ""}
-                image={getMediaContent(category.imagePath)}
+                image={category.imagePath}
                 vacancyNumber={category.vacancyCount}
                 key={index}
                 link={`/offers-map?category=${category.id}`}

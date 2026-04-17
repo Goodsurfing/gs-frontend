@@ -37,10 +37,10 @@ const ActivityContainer: FC<ActivityContainerProps> = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            {categoriesData.slice(0, 7).map((item, index) => (
+            {categoriesData.slice(0, 3).map((item, index) => (
                 <ActivityItem
                     title={item.name}
-                    image={getMediaContent(item.imagePath) ?? ""}
+                    image={item.imagePath}
                     path={`/${locale}/offers-map?category=${item.id}`}
                     key={index}
                     locale={locale}

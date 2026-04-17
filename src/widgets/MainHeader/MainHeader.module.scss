@@ -1,8 +1,25 @@
-.header {
+.wrapper {
     position: sticky;
     z-index: 11;
     top: 0;
+}
 
+.banner {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    // position: absolute;
+    background: var(--bg-field);
+}
+
+.bannerBtn {
+    padding: 10px 25px;
+}
+
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
