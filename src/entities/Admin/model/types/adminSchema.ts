@@ -188,6 +188,8 @@ export enum AdminSort {
     EndDateDesc = "endDate:desc",
     SortAsc = "sort:asc",
     SortDesc = "sort:desc",
+    TypeAsc = "type:asc",
+    TypeDesc = "type:desc",
 }
 
 export interface GetAdminUserParams {

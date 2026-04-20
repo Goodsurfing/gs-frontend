@@ -1,0 +1,129 @@
+.wrapper {
+	display: flex;
+	overflow: visible;
+	align-items: flex-start;
+	flex-basis: 50%;
+	flex-direction: column;
+	height: 100%;
+
+	padding: 28px 48px;
+}
+
+.searchWrapper {
+	width: 100%;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 40px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+
+	width: 100%;
+	padding-top: 100px;
+	height: 100%;
+}
+
+.info {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	max-width: 713px;
+
+	margin-bottom: 40px;
+}
+
+.categories {
+	margin-bottom: 15px;
+}
+
+.activity {
+	margin-top: auto;
+}
+
+.title {
+	margin-bottom: 40px;
+	font-size: 72px;
+	line-height: 100%;
+	font-weight: 400;
+
+	text-align: left !important;
+
+	color: var(--color-dark-blue);
+}
+
+.activityTitle {
+	margin-bottom: 20px;
+
+	color: var(--color-dark-blue);
+
+	font-weight: 400;
+	font-size: 22px;
+	line-height: 150%;
+	max-width: 580px;
+}
+
+@media screen and (max-height: 1000px) {
+	.activityTitle {
+		font-size: 18px;
+	}
+}
+
+@media screen and (max-width: 1600px) {
+	.title {
+		font-size: 48px;
+	}
+}
+
+@media screen and (max-width: 1400px) {
+	.title {
+		font-size: 32px;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.content {
+		align-items: center;
+	}
+
+	.info {
+		align-items: center;
+	}
+
+	.title {
+		text-align: center !important;
+		font-size: 48px;
+	}
+
+	.title {
+		font-size: 48px;
+	}
+
+	.activityTitle {
+		text-align: center;
+	}
+
+	.activity {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.wrapper {
+		padding: 20px;
+	}
+
+	.btn {
+		font-size: 0.875rem;
+	}
+
+	.title {
+		font-size: 32px;
+	}
+}
