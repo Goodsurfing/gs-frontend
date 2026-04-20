@@ -1,5 +1,4 @@
 import React from "react";
-import HowItWorkContainer from "@/containers/HowItWorkContainer/HowItWorkContainer";
 
 import { CoursesList } from "@/widgets/Academy";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
@@ -7,6 +6,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 import Section from "@/shared/ui/Section/Section";
 
 import { Header } from "../Header/Header";
+import { HowItWorkContainer } from "@/pages/MainPage";
 import styles from "./AcademyMainPage.module.scss";
 
 const AcademyMainPage = () => (
