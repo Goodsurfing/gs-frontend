@@ -1,0 +1,63 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Target environment'
+        type: choice
+        options: [staging, prod]
+        required: true
+      sha:
+        description: 'Commit SHA to rollback to (must exist as sha-<value> tag in CR)'
+        required: true
+
+concurrency:
+  group: rollback-${{ inputs.env }}
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Resolve registry
+        id: reg
+        run: |
+          if [ "${{ inputs.env }}" = "prod" ]; then
+            echo "registry=${{ vars.PROD_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "env_tag=prod" >> $GITHUB_OUTPUT
+          else
+            echo "registry=cr.yandex/crpspj7jl594r3ekjv50" >> $GITHUB_OUTPUT
+            echo "env_tag=staging" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Login to CR
+        run: |
+          KEY='${{ inputs.env == ''prod'' && secrets.YC_SA_KEY_JSON_PROD || secrets.YC_SA_KEY_JSON }}'
+          echo "$KEY" > /tmp/sa.json
+          docker run --rm -v /tmp/sa.json:/key.json cr.yandex/yc/yc:latest \
+            --service-account-key /key.json iam create-token \
+            | docker login -u iam --password-stdin cr.yandex
+          rm /tmp/sa.json
+
+      - name: Retag sha-<sha> as :<env>
+        run: |
+          REG="${{ steps.reg.outputs.registry }}"
+          TAG="${{ steps.reg.outputs.env_tag }}"
+          SHA="${{ inputs.sha }}"
+          docker pull "$REG/gs-frontend:sha-$SHA"
+          docker tag  "$REG/gs-frontend:sha-$SHA" "$REG/gs-frontend:$TAG"
+          docker push "$REG/gs-frontend:$TAG"
+
+      - name: SSH pull+up on VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ inputs.env == 'prod' && secrets.PROD_HOST || secrets.STAGING_HOST }}
+          username: ubuntu
+          key: ${{ inputs.env == 'prod' && secrets.PROD_SSH_KEY || secrets.STAGING_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/gs
+            sudo docker compose pull frontend
+            sudo docker compose up -d frontend
