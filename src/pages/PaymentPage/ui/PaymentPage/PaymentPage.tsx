@@ -53,14 +53,23 @@ const PaymentPage: React.FC = () => {
                     navigate(getMembershipPageUrl(locale));
                     return;
                 }
-                const data = isFetchError(err)
-                    ? (err.data as { detail?: string; title?: string } | undefined)
+
+                const status = isFetchError(err) ? err.status : null;
+                const data = isFetchError(err) && typeof err.data === "object" && err.data !== null
+                    ? (err.data as { detail?: string; title?: string })
                     : undefined;
-                setErrorMessage(
-                    data?.detail
-                    || data?.title
-                    || "Произошла ошибка при создании платежа",
-                );
+
+                // 502/503/504 или сетевой сбой — бэк отдаёт честное сообщение в detail,
+                // но если пришла сырая HTML-страница (например, таймаут Traefik),
+                // err.data будет строкой и мы покажем свой дружелюбный текст.
+                const providerUnavailable = status === 502 || status === 503 || status === 504
+                    || status === "FETCH_ERROR" || status === "TIMEOUT_ERROR";
+
+                const fallback = providerUnavailable
+                    ? "Сервис оплаты временно недоступен. Попробуйте позже."
+                    : "Произошла ошибка при создании платежа";
+
+                setErrorMessage(data?.detail || data?.title || fallback);
             });
     }, [isAuth, myProfile, checkoutMembership, navigate, locale, tariffCode]);
 
