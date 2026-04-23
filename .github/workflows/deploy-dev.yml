@@ -1,0 +1,77 @@
+name: Deploy to dev
+
+on:
+  push:
+    branches: [develop, dev]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ${{ vars.DEV_REGISTRY }}
+  IMAGE: gs-frontend
+  VITE_API_BASE_URL: https://api-dev.goodsurfing.org
+  VITE_MAIN_URL: https://dev.goodsurfing.org
+  VITE_VKID_CLIENT_ID: "54505769"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to Yandex Container Registry
+        run: |
+          echo '${{ secrets.YC_SA_KEY_JSON }}' > /tmp/sa.json
+          docker run --rm -v /tmp/sa.json:/key.json cr.yandex/yc/yc:latest \
+            --service-account-key /key.json iam create-token \
+            | docker login -u iam --password-stdin cr.yandex
+          rm /tmp/sa.json
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          build-args: |
+            VITE_API_BASE_URL=${{ env.VITE_API_BASE_URL }}
+            VITE_MAIN_URL=${{ env.VITE_MAIN_URL }}
+            VITE_VKID_CLIENT_ID=${{ env.VITE_VKID_CLIENT_ID }}
+            VITE_API_YANDEX_KEY=${{ secrets.YANDEX_MAPS_API_KEY }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE }}:dev
+            ${{ env.REGISTRY }}/${{ env.IMAGE }}:sha-${{ github.sha }}
+          push: true
+          cache-from: type=gha,scope=gs-frontend-dev
+          cache-to: type=gha,mode=max,scope=gs-frontend-dev
+
+      - name: Deploy to VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEV_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/gs
+            sudo docker compose pull frontend
+            sudo docker compose up -d frontend
+            sleep 3
+            sudo docker compose ps frontend
+
+      - name: Smoke test
+        run: |
+          set -e
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://dev.goodsurfing.org/healthz)
+            if [ "$code" = "200" ]; then echo "frontend OK"; exit 0; fi
+            echo "attempt $i → $code"
+            sleep 10
+          done
+          echo "Frontend smoke test failed"
+          exit 1
