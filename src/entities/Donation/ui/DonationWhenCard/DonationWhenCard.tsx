@@ -16,6 +16,8 @@ interface DonationWhenCardProps {
     isSuccess: boolean;
 }
 
+const fmt = new Intl.NumberFormat("ru-RU");
+
 export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
     const {
         className,
@@ -34,6 +36,12 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
         return dateStart || emptyMessage;
     };
 
+    const showProgress = percentAmountCollect !== null && amount !== null;
+    const progressText = showProgress
+        ? `${fmt.format(Math.round((amount * percentAmountCollect) / 100))} ₽`
+            + ` / ${fmt.format(amount)} ₽ (${percentAmountCollect}%)`
+        : null;
+
     return (
         <div className={cn(className)} id="description">
             <InfoCard className={styles.wrapper}>
@@ -50,13 +58,18 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
                         className={styles.infoCard}
                     />
                 )}
-                {percentAmountCollect && (
+                {showProgress && (
                     <InfoCardItem
-                        title={isSuccess ? t("donationPersonal.Проект собрал") : t("donationPersonal.Средств собрано")}
-                        text={`${percentAmountCollect}%/${amount} ₽`}
+                        title={isSuccess
+                            ? t("donationPersonal.Проект собрал")
+                            : t("donationPersonal.Средств собрано")}
+                        text={progressText ?? undefined}
                         className={styles.infoCard}
                     >
-                        <DonationProgressBar value={percentAmountCollect} isSuccess={isSuccess} />
+                        <DonationProgressBar
+                            value={percentAmountCollect as number}
+                            isSuccess={isSuccess}
+                        />
                     </InfoCardItem>
                 )}
             </InfoCard>
