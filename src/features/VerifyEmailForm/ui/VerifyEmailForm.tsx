@@ -53,6 +53,7 @@ export const VerifyEmailForm = () => {
         try {
             const response = await fetch(`${API_BASE_URL_V3}send-email`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
