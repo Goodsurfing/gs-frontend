@@ -1,22 +1,33 @@
-name: Pull request Check / Lint
+name: Lint
 
-on: [push]
-  
+on:
+  pull_request:
+  push:
+    branches: [main, master, develop, dev]
+  workflow_dispatch:
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  Lint:
+  lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.8.1]
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v3
-      - name: Starting Node.JS ${{ matrix.nove-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.nove-version }}
-      - name: Install deps
-        run: npm install
-      - name: Run Eslint
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint
         run: npm run lint
-      - name: Run Type-check
+
+      - name: Type-check
         run: npm run type-check
