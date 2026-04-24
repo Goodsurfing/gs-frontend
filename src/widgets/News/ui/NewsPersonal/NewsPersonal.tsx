@@ -90,6 +90,13 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     };
 
     const onComment = async (description: string) => {
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы оставить комментарий, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
             await createNews({ newsId, description }).unwrap();
             await fetchReviews(1);
