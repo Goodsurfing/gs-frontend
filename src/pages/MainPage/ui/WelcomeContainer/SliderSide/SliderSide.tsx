@@ -21,7 +21,7 @@ const SliderSide: FC = memo(() => {
                 modules={[Pagination, Autoplay, EffectFade]}
                 effect="fade"
                 slidesPerView={1}
-                autoplay
+                autoplay={{ delay: 7000, disableOnInteraction: false }}
                 pagination={{
                     clickable: true,
                     bulletClass: `swiper-pagination-bullet ${styles.bullet}`,
