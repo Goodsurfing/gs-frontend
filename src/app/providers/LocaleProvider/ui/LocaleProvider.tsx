@@ -1,5 +1,5 @@
 import {
-    createContext, useState, useMemo, FC, ReactNode,
+    createContext, useState, useMemo, useEffect, FC, ReactNode,
 } from "react";
 
 export type Locale = "ru" | "en" | "es";
@@ -25,6 +25,10 @@ interface LocaleProviderProps {
 
 export const LocaleProvider: FC<LocaleProviderProps> = ({ initialLanguage, children }) => {
     const [locale, setLocale] = useState(initialLanguage || defaultLocale);
+
+    useEffect(() => {
+        document.documentElement.lang = locale;
+    }, [locale]);
 
     const defaultProps = useMemo(() => ({
         locale,
