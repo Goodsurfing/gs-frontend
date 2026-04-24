@@ -19,7 +19,6 @@ import {
     getAmbassadorsPageUrl,
     getBlogPageUrl,
     getDonationRating,
-    getDonationReports,
     getDonationsMapPageUrl,
     getFindJobPageUrl,
     getHostDashboardPageUrl,
