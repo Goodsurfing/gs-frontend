@@ -38,7 +38,8 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 type="url"
             />
             <p className={styles.bannedNotice}>
-                Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ.
+                {'Ссылки на Facebook и Instagram не отображаются на публичной '
+                + 'странице — эти сервисы заблокированы на территории РФ.'}
             </p>
         </div>
     );
