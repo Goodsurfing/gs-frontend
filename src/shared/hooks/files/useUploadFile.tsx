@@ -32,6 +32,7 @@ const sendRequestForGenerateUploadLink = async (
     formData.append("file", data);
     const response = await fetch(`${API_BASE_URL}media_objects`, {
         method: "POST",
+        credentials: "include",
         headers: new Headers({
             Accept: "application/ld+json",
             Authorization: `Bearer ${token}`,

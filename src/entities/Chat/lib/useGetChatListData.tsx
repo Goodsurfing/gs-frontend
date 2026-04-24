@@ -33,6 +33,7 @@ export const useGetChatListData = (
             const chatListResponse = await fetch(
                 `${API_BASE_URL}personal/chats${queryPart}`,
                 {
+                    credentials: "include",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

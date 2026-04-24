@@ -7,6 +7,7 @@ export const userOrganizationInfoApi = createApi({
     reducerPath: "userOrganizationInfoApi",
     baseQuery: fetchBaseQuery({
         baseUrl: API_ORGANIZATIONS_BASE_URL,
+        credentials: "include",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
             if (token) {

@@ -13,7 +13,7 @@ import { RootState } from "@/store/store";
 export const galleryApi = createApi({
     reducerPath: "galleryApi",
     baseQuery: fetchBaseQuery({
-        credentials: "same-origin",
+        credentials: "include",
         baseUrl: `${API_BASE_URL}`,
         prepareHeaders: (headers, { getState }) => {
             const state = getState() as RootState;

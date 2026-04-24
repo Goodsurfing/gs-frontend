@@ -8,6 +8,7 @@ export const localeApi = createApi({
     reducerPath: "localeApi",
     baseQuery: fetchBaseQuery({
         baseUrl: API_TRANSLATION_BASE_URL,
+        credentials: "include",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem(TOKEN_LOCALSTORAGE_KEY);
 

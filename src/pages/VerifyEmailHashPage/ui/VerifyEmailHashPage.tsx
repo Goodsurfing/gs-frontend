@@ -30,6 +30,7 @@ const VerifyEmailHashPage = () => {
         try {
             const response = await fetch(`${API_BASE_URL_V3}verify/email/${id}`, {
                 method: "GET",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,

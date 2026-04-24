@@ -7,6 +7,7 @@ import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: API_BASE_URL,
+    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
         const token = state.user.authData?.token
@@ -24,6 +25,7 @@ export const baseQuery = fetchBaseQuery({
 
 export const baseQueryAcceptJson = fetchBaseQuery({
     baseUrl: API_BASE_URL,
+    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
         const token = state.user.authData?.token
@@ -45,6 +47,7 @@ export const baseQueryAcceptJson = fetchBaseQuery({
 
 export const baseQueryV3 = fetchBaseQuery({
     baseUrl: API_BASE_URL_V3,
+    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
         const token = state.user.authData?.token
@@ -65,6 +68,7 @@ export const baseQueryV3 = fetchBaseQuery({
 
 export const baseAdminQueryAcceptJson = fetchBaseQuery({
     baseUrl: API_ADMIN_BASE_URL,
+    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;
         const token = state.user.authData?.token
