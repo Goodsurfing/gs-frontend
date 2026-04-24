@@ -28,7 +28,7 @@ export const DonationDonorsCard = memo((props: DonationDonorsCardProps) => {
 
     if (!data || data.donationCount === 0) {
         return (
-            <div className={cn(className, styles.wrapper)}>
+            <div className={cn(className, styles.wrapper)} id="participants">
                 <h3 className={styles.title}>
                     {t("donationPersonal.Участники сбора")}
                 </h3>
@@ -42,7 +42,7 @@ export const DonationDonorsCard = memo((props: DonationDonorsCardProps) => {
     const formatAmount = (amount: number) => amount.toLocaleString("ru-RU");
 
     return (
-        <div className={cn(className, styles.wrapper)}>
+        <div className={cn(className, styles.wrapper)} id="participants">
             <h3 className={styles.title}>
                 {t("donationPersonal.Участники сбора")}
             </h3>
