@@ -26,12 +26,9 @@ jobs:
       - uses: docker/setup-buildx-action@v3
 
       - name: Login to Yandex Container Registry
-        run: |
-          echo '${{ secrets.YC_SA_KEY_JSON }}' > /tmp/sa.json
-          docker run --rm -v /tmp/sa.json:/key.json cr.yandex/yc/yc:latest \
-            --service-account-key /key.json iam create-token \
-            | docker login -u iam --password-stdin cr.yandex
-          rm /tmp/sa.json
+        uses: yc-actions/yc-cr-login@v3
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
