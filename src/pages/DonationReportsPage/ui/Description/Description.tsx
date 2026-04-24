@@ -37,7 +37,9 @@ export const Description: FC<DescriptionProps> = (props: DescriptionProps) => {
                 и информационных услуг», зарегистрировано 5 дополнительных видов деятельности.
                 <br />
                 Организации присвоены ИНН 1655405070, ОГРН 1181690059682,
-                ОКПО 31801426.support@goodsurfing.org
+                ОКПО 31801426.
+                <br />
+                support@goodsurfing.org
             </p>
             <br />
             <p className={styles.title}>Банковские реквизиты:</p>
