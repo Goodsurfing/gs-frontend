@@ -54,7 +54,7 @@ export const DonationRating = () => {
 
         if (searchValue) {
             const q = searchValue.toLowerCase();
-            mapped = mapped.filter((r) => r.name.toLowerCase().includes(q));
+            mapped = mapped.filter((r) => r.name?.toLowerCase().includes(q) ?? false);
         }
 
         mapped.sort((a, b) => {
