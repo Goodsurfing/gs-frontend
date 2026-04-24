@@ -105,6 +105,13 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     };
 
     const onComment = async (description: string) => {
+        if (!isAuth) {
+            setToast({
+                text: "Чтобы оставить комментарий, нужно авторизоваться",
+                type: HintType.Error,
+            });
+            return;
+        }
         try {
             await createReview({ journalId, description }).unwrap();
             await fetchReviews(1);
