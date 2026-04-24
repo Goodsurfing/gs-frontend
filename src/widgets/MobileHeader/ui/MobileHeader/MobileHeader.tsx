@@ -259,7 +259,7 @@ const MobileHeader: FC = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-goodsurfing")}
                     </Link>
@@ -271,7 +271,7 @@ const MobileHeader: FC = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getDonationReports(locale)}
+                        to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.public-reports")}
                     </Link>

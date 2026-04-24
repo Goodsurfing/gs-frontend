@@ -274,7 +274,7 @@ export const MainHeaderNav = () => {
                 >
                     <Link
                         className={styles.dropdownLink}
-                        to={getMainPageUrl(locale)}
+                        to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.support-goodsurfing")}
                     </Link>
@@ -286,7 +286,7 @@ export const MainHeaderNav = () => {
                     </Link>
                     <Link
                         className={styles.dropdownLink}
-                        to={getDonationReports(locale)}
+                        to={getNPOPageUrl(locale)}
                     >
                         {t("main.welcome.header.donation.public-reports")}
                     </Link>
