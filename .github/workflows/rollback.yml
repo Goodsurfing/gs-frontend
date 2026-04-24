@@ -12,14 +12,13 @@ on:
         description: 'Commit SHA to rollback to (must exist as sha-<value> tag in CR)'
         required: true
 
-concurrency:
-  group: rollback-${{ inputs.env }}
-  cancel-in-progress: false
-
 jobs:
   rollback:
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    concurrency:
+      group: rollback-${{ inputs.env }}
+      cancel-in-progress: false
     steps:
       - name: Resolve registry
         id: reg
@@ -32,14 +31,10 @@ jobs:
             echo "env_tag=staging" >> $GITHUB_OUTPUT
           fi
 
-      - name: Login to CR
-        run: |
-          KEY='${{ inputs.env == ''prod'' && secrets.YC_SA_KEY_JSON_PROD || secrets.YC_SA_KEY_JSON }}'
-          echo "$KEY" > /tmp/sa.json
-          docker run --rm -v /tmp/sa.json:/key.json cr.yandex/yc/yc:latest \
-            --service-account-key /key.json iam create-token \
-            | docker login -u iam --password-stdin cr.yandex
-          rm /tmp/sa.json
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v3
+        with:
+          yc-sa-json-credentials: ${{ inputs.env == 'prod' && secrets.YC_SA_KEY_JSON_PROD || secrets.YC_SA_KEY_JSON }}
 
       - name: Retag sha-<sha> as :<env>
         run: |
