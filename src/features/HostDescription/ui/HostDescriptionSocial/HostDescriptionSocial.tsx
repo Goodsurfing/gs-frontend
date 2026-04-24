@@ -5,8 +5,6 @@ import cn from "classnames";
 import { InputControl } from "@/shared/ui/InputControl/InputControl";
 
 import {
-    facebookIcon,
-    instaIcon,
     telegramIcon,
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
@@ -31,23 +29,6 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 type="url"
             />
             <InputControl
-                label="Facebook"
-                img={facebookIcon}
-                id="fb"
-                name="socialMedia.facebook"
-                control={control}
-                type="url"
-            />
-            <InputControl
-                className={styles.telegram}
-                label="Instagram"
-                img={instaIcon}
-                id="inst"
-                name="socialMedia.instagram"
-                control={control}
-                type="url"
-            />
-            <InputControl
                 className={styles.instagram}
                 label="Telegram"
                 img={telegramIcon}
@@ -56,6 +37,9 @@ export const HostDescriptionSocial = memo((props: HostDescriptionSocialProps) =>
                 control={control}
                 type="url"
             />
+            <p className={styles.bannedNotice}>
+                Ссылки на Facebook и Instagram не отображаются на публичной странице — эти сервисы заблокированы на территории РФ.
+            </p>
         </div>
     );
 });

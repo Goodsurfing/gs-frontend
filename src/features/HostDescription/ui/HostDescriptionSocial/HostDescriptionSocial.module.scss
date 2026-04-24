@@ -8,6 +8,13 @@
     .instagram {
         margin-top: 1.875rem;
     }
+
+    .bannedNotice {
+        grid-column: 1 / -1;
+        margin-top: 0.75rem;
+        font-size: 0.8125rem;
+        color: #8494A1;
+    }
 }
 
 @media (max-width: 800px) {

@@ -8,8 +8,6 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 import {
-    facebookIcon,
-    instaIcon,
     telegramIcon,
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
@@ -30,7 +28,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
             host: {
-                name, type, address, avatar, vk, telegram, facebook, instagram,
+                name, type, address, avatar, vk, telegram,
             },
             isEdit,
             isAuth,
@@ -95,18 +93,6 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                             <a href={telegram} target="_blank" rel="noreferrer" className={styles.social}>
                                 <ReactSVG src={telegramIcon} />
                                 <p className={styles.socialLabel}>Telegram</p>
-                            </a>
-                        )}
-                        {facebook !== "" && (
-                            <a href={facebook} target="_blank" rel="noreferrer" className={styles.social}>
-                                <ReactSVG src={facebookIcon} />
-                                <p className={styles.socialLabel}>Facebook</p>
-                            </a>
-                        )}
-                        {instagram !== "" && (
-                            <a href={instagram} target="_blank" rel="noreferrer" className={styles.social}>
-                                <ReactSVG src={instaIcon} />
-                                <p className={styles.socialLabel}>Instagram</p>
                             </a>
                         )}
                     </div>
