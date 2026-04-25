@@ -41,61 +41,61 @@ const MainHeader: FC = () => {
 
     return (
         <div className={cn(styles.wrapper, { [styles.scrolled]: scrolled })}>
-                <header className={styles.header}>
-                    <div className={styles.left}>
-                        <LocaleLink
-                            to={getMainPageUrl(locale)}
-                            className={styles.logo}
-                        >
-                            <img src={logotypeIcon} alt="GoodSurfing" />
-                        </LocaleLink>
-                    </div>
-                    <div className={styles.nav}>
-                        <MainHeaderNav />
-                    </div>
-                    <div className={styles.right}>
-                        <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
-                        {(isAuth && myProfile) ? (
-                            <>
-                                <div className={styles.icons}>
-                                    <LocaleLink
-                                        to={getMessengerPageUrl(locale)}
-                                        className={styles.icon}
-                                    >
-                                        <MessangerInfo />
-                                    </LocaleLink>
-                                </div>
-                                <MainHeaderProfile
-                                    profileData={myProfile}
-                                    isLoading={profileIsLoading}
-                                />
-                            </>
-                        ) : (
-                            <ButtonLink
-                                className={styles.btn}
-                                type="outlined"
-                                path={getSignInPageUrl(locale)}
-                            >
-                                {t("main.welcome.header.sign-in")}
-                            </ButtonLink>
-                        )}
-                    </div>
-                </header>
-                <div className={styles.mobile}>
-                    <MobileHeader />
+            <header className={styles.header}>
+                <div className={styles.left}>
+                    <LocaleLink
+                        to={getMainPageUrl(locale)}
+                        className={styles.logo}
+                    >
+                        <img src={logotypeIcon} alt="GoodSurfing" />
+                    </LocaleLink>
                 </div>
-                {data && (
-                    <div className={styles.banner}>
-                        <p>{data.description}</p>
+                <div className={styles.nav}>
+                    <MainHeaderNav />
+                </div>
+                <div className={styles.right}>
+                    <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
+                    {(isAuth && myProfile) ? (
+                        <>
+                            <div className={styles.icons}>
+                                <LocaleLink
+                                    to={getMessengerPageUrl(locale)}
+                                    className={styles.icon}
+                                >
+                                    <MessangerInfo />
+                                </LocaleLink>
+                            </div>
+                            <MainHeaderProfile
+                                profileData={myProfile}
+                                isLoading={profileIsLoading}
+                            />
+                        </>
+                    ) : (
                         <ButtonLink
-                            className={styles.bannerBtn}
-                            path={data.url}
+                            className={styles.btn}
                             type="outlined"
+                            path={getSignInPageUrl(locale)}
                         >
-                            Подробнее
+                            {t("main.welcome.header.sign-in")}
                         </ButtonLink>
-                    </div>
-                )}
+                    )}
+                </div>
+            </header>
+            <div className={styles.mobile}>
+                <MobileHeader />
+            </div>
+            {data && (
+                <div className={styles.banner}>
+                    <p>{data.description}</p>
+                    <ButtonLink
+                        className={styles.bannerBtn}
+                        path={data.url}
+                        type="outlined"
+                    >
+                        Подробнее
+                    </ButtonLink>
+                </div>
+            )}
         </div>
     );
 };
