@@ -1,0 +1,220 @@
+/* Donation block */
+.donationSection {
+    background-color: #f5f7f5;
+}
+
+.inner {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+}
+
+.left {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sectionTitle {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.3;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #616161;
+    line-height: 1.6;
+}
+
+.btnDonate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    text-align: center;
+
+    &:hover {
+        background-color: #388E3C;
+    }
+}
+
+.right {
+    flex: 1;
+    min-width: 0;
+}
+
+.rightTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.fundsIntro {
+    font-size: 0.9375rem;
+    color: #424242;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.fundsList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.fundsItem {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9375rem;
+    color: #424242;
+    line-height: 1.5;
+}
+
+.fundsCheck {
+    color: #4CAF50;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.whyImportant {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.whyText {
+    font-size: 0.9375rem;
+    color: #616161;
+    line-height: 1.6;
+}
+
+.whyTextAccent {
+    font-size: 0.9375rem;
+    color: #1a5c33;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.reportsLink {
+    font-size: 0.875rem;
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/* How else to help */
+.helpSection {
+    background-color: white;
+}
+
+.helpInner {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.helpTitle {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.helpCards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.helpCard {
+    border-radius: 12px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cardBlue {
+    background-color: #1565C0;
+    color: white;
+}
+
+.cardGreen {
+    background-color: #2e7d53;
+    color: white;
+}
+
+.helpCardIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.helpCardTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+}
+
+.helpCardText {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .inner {
+        flex-direction: column;
+    }
+
+    .left {
+        flex: none;
+        width: 100%;
+    }
+
+    .helpCards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .helpCards {
+        grid-template-columns: 1fr;
+    }
+
+    .sectionTitle,
+    .helpTitle {
+        font-size: 1.375rem;
+    }
+}
