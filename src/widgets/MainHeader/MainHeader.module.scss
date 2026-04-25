@@ -1,7 +1,3 @@
-.spacer {
-    height: 88px;
-}
-
 .wrapper {
     position: fixed;
     top: 16px;
@@ -152,10 +148,6 @@
 }
 
 @media (max-width: 992px) {
-    .spacer {
-        display: none;
-    }
-
     .wrapper {
         position: sticky;
         top: 0;

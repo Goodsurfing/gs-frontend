@@ -40,9 +40,7 @@ const MainHeader: FC = () => {
     }, []);
 
     return (
-        <>
-            <div className={styles.spacer} aria-hidden="true" />
-            <div className={cn(styles.wrapper, { [styles.scrolled]: scrolled })}>
+        <div className={cn(styles.wrapper, { [styles.scrolled]: scrolled })}>
                 <header className={styles.header}>
                     <div className={styles.left}>
                         <LocaleLink
@@ -98,8 +96,7 @@ const MainHeader: FC = () => {
                         </ButtonLink>
                     </div>
                 )}
-            </div>
-        </>
+        </div>
     );
 };
 
