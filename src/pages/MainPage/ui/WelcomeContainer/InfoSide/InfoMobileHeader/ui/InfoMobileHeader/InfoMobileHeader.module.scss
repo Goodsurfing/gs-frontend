@@ -170,6 +170,22 @@
     font-weight: 600;
 }
 
+.buttonMembership {
+    width: 100%;
+    background-color: #4CAF50 !important;
+    color: white !important;
+    padding: 25px 20px;
+    justify-content: start;
+    text-transform: none;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: 600;
+
+    &:hover {
+        background-color: #388E3C !important;
+    }
+}
+
 .changeLanguageOpen{
 	position: relative;
 	z-index: 1001;
