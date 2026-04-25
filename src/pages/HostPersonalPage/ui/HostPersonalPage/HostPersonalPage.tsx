@@ -77,7 +77,7 @@ export const HostPersonalPage = () => {
     if (!id || !hostData || isError) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text textSize="primary" text={t("personalHost.Произошла ошибка")} />
                 </div>
@@ -89,7 +89,7 @@ export const HostPersonalPage = () => {
     if (isHostUnavailable) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text textSize="primary" text={t("personalHost.Организация недоступна")} />
                 </div>
@@ -130,7 +130,7 @@ export const HostPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <MainHeader />
+            <MainHeader variant="static" />
             <div className={styles.content}>
                 <HostlHeaderCard
                     host={hostData}

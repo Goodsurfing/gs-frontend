@@ -11,12 +11,15 @@ interface MainPageLayoutProps {
     children: ReactNode;
     isFooterShow?: boolean;
     className?: string;
+    headerVariant?: "floating" | "static";
 }
 
 export const MainPageLayout: FC<MainPageLayoutProps> = (
     props: MainPageLayoutProps,
 ) => {
-    const { children, isFooterShow = true, className } = props;
+    const {
+        children, isFooterShow = true, className, headerVariant,
+    } = props;
 
     const location = useLocation();
 
@@ -26,7 +29,7 @@ export const MainPageLayout: FC<MainPageLayoutProps> = (
 
     return (
         <div className={cn(styles.layout, className)}>
-            <MainHeader />
+            <MainHeader variant={headerVariant} />
             <div className={styles.content}>
                 {children}
             </div>

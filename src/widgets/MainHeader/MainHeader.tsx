@@ -23,7 +23,13 @@ import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { BannerMarketingType, useGetBannerMarketingQuery } from "@/entities/Admin";
 import styles from "./MainHeader.module.scss";
 
-const MainHeader: FC = () => {
+type Variant = "floating" | "static";
+
+interface MainHeaderProps {
+    variant?: Variant;
+}
+
+const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
@@ -40,7 +46,7 @@ const MainHeader: FC = () => {
     }, []);
 
     return (
-        <div className={cn(styles.wrapper, { [styles.scrolled]: scrolled })}>
+        <div className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}>
             <header className={styles.header}>
                 <div className={styles.left}>
                     <LocaleLink

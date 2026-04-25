@@ -51,7 +51,7 @@ export const DonationPersonalPage = () => {
     if (!id || isError) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text
                         className={styles.error}
@@ -68,7 +68,7 @@ export const DonationPersonalPage = () => {
         if (donationData.status === "draft") {
             return (
                 <div className={styles.wrapper}>
-                    <MainHeader />
+                    <MainHeader variant="static" />
                     <div className={styles.content}>
                         <Text
                             className={styles.error}
@@ -83,7 +83,7 @@ export const DonationPersonalPage = () => {
 
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <DonationPersonalCard
                         id={id}
