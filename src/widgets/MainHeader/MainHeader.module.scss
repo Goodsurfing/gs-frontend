@@ -1,7 +1,40 @@
+.spacer {
+    height: 88px;
+}
+
 .wrapper {
-    position: sticky;
-    z-index: 11;
-    top: 0;
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 1100px;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.header {
+    height: 60px;
+    padding: 0 8px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: saturate(1.6) blur(16px);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(14, 29, 39, 0.12),
+                0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scrolled .header {
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 32px rgba(14, 29, 39, 0.16);
 }
 
 .banner {
@@ -11,104 +44,134 @@
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    // position: absolute;
     background: var(--bg-field);
+    pointer-events: auto;
 }
 
 .bannerBtn {
     padding: 10px 25px;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-
-    padding: 20px 50px;
-
-    border-bottom: 1px #dfe6eb;
-
-    background-color: var(--color-white);
-    box-shadow: 0 1px 0 #dfe6eb;
-}
-
 .left {
     display: flex;
     align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
 
     .logo {
-        margin-right: 25px;
+        display: flex;
+        align-items: center;
+
+        img {
+            display: block;
+            height: 36px;
+            width: auto;
+        }
     }
+}
+
+.nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
 }
 
 .right {
     display: flex;
     align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
 
     .icons {
         display: flex;
         align-items: center;
-        gap: 20px;
-        margin-right: 40px;
+        gap: 12px;
     }
 }
 
-.icon {
-    svg {
-        fill: var(--bg-accent);
-    }
+.icon svg {
+    fill: var(--bg-accent);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 999px;
+    white-space: nowrap;
 }
 
 .membershipWrapper {
-    margin-left: 24px;
+    display: inline-flex;
 }
 
 .membership {
+    height: 40px;
+    padding: 0 18px;
     background-color: var(--button-1);
     color: var(--text-secondary-1);
-    padding: 5px 15px;
-    font-weight: 400;
-    font-size: 16px;
-    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 999px;
     border: 1px solid var(--button-1);
     box-sizing: border-box;
     font-family: Lato;
     text-transform: none;
-    transition: all 0.3s ease;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    box-shadow: 0 2px 8px rgba(85, 184, 147, 0.3);
 
     &:hover {
         background-color: #fff;
         color: var(--button-1);
     }
+
+    &.Mui-disabled {
+        opacity: 0.7;
+    }
 }
 
 .mobile {
     display: none;
-    position: sticky;
-    z-index: 30;
-    top: 0;
-    padding: 20px;
-    background-color: var(--color-white);
 }
 
-.btn {
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 9px 10px;
+@media (max-width: 1080px) {
+    .wrapper {
+        max-width: 980px;
+    }
+
+    .header {
+        padding: 0 8px 0 16px;
+        gap: 8px;
+    }
 }
 
-@media screen and (max-width: 992px) {
+@media (max-width: 992px) {
+    .spacer {
+        display: none;
+    }
+
+    .wrapper {
+        position: sticky;
+        top: 0;
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        background: var(--color-white);
+    }
+
     .header {
         display: none;
     }
 
     .mobile {
         display: block;
+        padding: 16px 20px;
     }
 }
