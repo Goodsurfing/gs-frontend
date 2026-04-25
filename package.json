@@ -17,9 +17,12 @@
     "lint:ts": "npx eslint ./src --fix",
     "lint:scss": "npx stylelint ./src --fix",
     "prettier": "prettier --write \"**/*.{ts,tsx,js}\"",
-    "type-check": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit"
+    "type-check": "cross-env NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit",
+    "e2e": "E2E_IAP_TOKEN=yiap_66fa6fb58d3632ec2a187696244db59ea858be9c playwright test",
+    "e2e:ui": "E2E_IAP_TOKEN=yiap_66fa6fb58d3632ec2a187696244db59ea858be9c playwright test --ui"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

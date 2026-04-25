@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "include": ["e2e/**/*", "playwright.config.ts"],
+    "compilerOptions": {
+        "rootDir": ".",
+        "noEmit": true,
+        "moduleResolution": "bundler",
+        "types": ["node"]
+    }
+}
