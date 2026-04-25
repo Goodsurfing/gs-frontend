@@ -1,55 +1,44 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import Button from "@/shared/ui/Button/Button";
+import { Link } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
-import { useGetTariffsQuery } from "@/store/api/membershipApi";
-import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
+import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
-    const navigate = useNavigate();
     const { locale } = useLocale();
 
-    const { data: tariffs } = useGetTariffsQuery("VOLUNTEER");
-    const tariff = tariffs?.find((item) => item.code === TARIFF_CODE.VOLUNTEER);
-    const priceRub = tariff?.priceRub ?? TARIFF_FALLBACK_PRICE_RUB[TARIFF_CODE.VOLUNTEER];
-
-    const handleGetMembership = () => {
-        navigate(`${getPaymentPageUrl(locale)}?tariff=${TARIFF_CODE.VOLUNTEER}`);
-    };
-
     return (
-        <section className={styles.wrapeprImage}>
-            <h1 className={styles.title}>
-                <span>{t("header.Оформи членство Гудсёрфинга")}</span>
-                <br />
-                <span>{t("header.и открой для себя бескрайний мир")}</span>
-                <br />
-                <span>{t("header.путешествий со смыслом!")}</span>
-            </h1>
-            <ul className={styles.list}>
-                <li>{t("header.Неограниченный доступ ко всем направлениям и видам путешествий")}</li>
-                <li>{t("header.Прямое общение с хостом")}</li>
-                <li>{t("header.Поддержка в путешествиях со стороны Гудсёрфинга")}</li>
-                <li>{t("header.Доступ к образовательным материалам")}</li>
-                <li>{t("header.Поддержка интересного и важного проекта")}</li>
-            </ul>
-            <div className={styles.buttonPrice}>
-                <Button
-                    color="GREEN"
-                    size="SMALL"
-                    variant="FILL"
-                    onClick={handleGetMembership}
-                >
-                    {t("header.Получить членство")}
-                </Button>
-                <span className={styles.price}>
-                    {`от ${priceRub.toLocaleString("ru-RU")} руб`}
-                </span>
+        <section className={styles.wrapper}>
+            <div className={styles.content}>
+                <h1 className={styles.title}>
+                    {t(
+                        "header.title",
+                        "Стань частью сообщества Гудсёрфинга, путешествуй со смыслом и помогай проекту, который делает это возможным.",
+                    )}
+                </h1>
+                <p className={styles.description}>
+                    {t(
+                        "header.desc1",
+                        "Гудсёрфинг — членская организация, которая работает благодаря людям, которые его поддерживают.",
+                    )}
+                </p>
+                <p className={styles.description}>
+                    {t(
+                        "header.desc2",
+                        "Членство — это способ не просто пользоваться проектом, а помогать ему жить и развиваться.",
+                    )}
+                </p>
+                <div className={styles.buttons}>
+                    <a href="#tariffs" className={styles.btnPrimary}>
+                        {t("header.cta-main", "Получить членство")}
+                    </a>
+                    <a href="#support" className={styles.btnSecondary}>
+                        {t("header.cta-secondary", "Поддержать без членства")}
+                    </a>
+                </div>
             </div>
         </section>
     );
