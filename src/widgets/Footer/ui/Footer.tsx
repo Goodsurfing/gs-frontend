@@ -9,6 +9,8 @@ import { ChangeLanguage } from "@/widgets/ChangeLanguage";
 import footerLogo from "@/shared/assets/icons/footer/logo.svg";
 import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
 import vkIcon from "@/shared/assets/icons/footer/vk.svg";
+import youtubeIcon from "@/shared/assets/icons/footer/youtube.svg";
+import maxIcon from "@/shared/assets/icons/footer/max.svg";
 import {
     getAboutProjectPageUrl,
     getAmbassadorsPageUrl,
@@ -64,6 +66,20 @@ export const Footer = memo(() => {
                                 rel="noreferrer"
                             >
                                 <img src={vkIcon} alt="VK" />
+                            </a>
+                            <a
+                                href="https://www.youtube.com/@goodsurfing"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <img src={youtubeIcon} alt="YouTube" />
+                            </a>
+                            <a
+                                href="https://max.ru/goodsurfing"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <img src={maxIcon} alt="MAX" />
                             </a>
                         </div>
                         <a
