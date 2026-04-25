@@ -251,6 +251,14 @@ export const Footer = memo(() => {
                                 >
                                     {t("main.welcome.header.donation.public-reports")}
                                 </Link>
+                                <a
+                                    className={styles.link}
+                                    href="/assets/docs/npo/Публичная_оферта.pdf"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    {t("main.welcome.header.donation.public-offer")}
+                                </a>
                             </div>
                         </div>
                     </nav>

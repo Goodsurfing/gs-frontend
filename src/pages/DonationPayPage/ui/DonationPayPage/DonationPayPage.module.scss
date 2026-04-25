@@ -180,6 +180,18 @@
     margin-top: 16px;
 }
 
+.offerNote {
+    margin: 10px 0 0;
+    color: #7a99b2;
+    font-size: 13px;
+    line-height: 1.4;
+
+    a {
+        color: #0a66c2;
+        text-decoration: underline;
+    }
+}
+
 .loading {
     display: flex;
     justify-content: center;

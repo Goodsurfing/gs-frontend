@@ -191,6 +191,17 @@ const DonationPayPage: React.FC = () => {
                                     {isCreating ? "Создание платежа..." : `Поддержать — ${amount} ₽`}
                                 </Button>
                             </div>
+                            <p className={styles.offerNote}>
+                                Нажимая кнопку, вы принимаете условия{" "}
+                                <a
+                                    href="/assets/docs/npo/Публичная_оферта.pdf"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    публичной оферты
+                                </a>
+                                {" "}о заключении договора пожертвования.
+                            </p>
                         </section>
                     </div>
                 </form>
