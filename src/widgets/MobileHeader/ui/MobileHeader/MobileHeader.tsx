@@ -30,9 +30,7 @@ import {
     getNewsPageUrl,
     getOffersMapPageUrl,
     getOurTeamPageUrl,
-    getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
-    getRulesPageUrl,
     getSignInPageUrl,
     getVideoPageUrl,
     getVolunteerDashboardPageUrl,
@@ -318,18 +316,6 @@ const MobileHeader: FC = () => {
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getRulesPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.about-project.rules")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getPrivacyPolicyPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.about-project.privacy-policy")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}

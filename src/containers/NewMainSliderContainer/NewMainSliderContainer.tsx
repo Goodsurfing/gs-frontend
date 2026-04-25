@@ -22,8 +22,8 @@ import {
     getMessengerPageUrl,
     getNewsPageUrl,
     getNPOPageUrl, getOffersMapPageUrl, getOurTeamPageUrl,
-    getPrivacyPolicyPageUrl, getProfileInfoPageUrl,
-    getRulesPageUrl, getSignInPageUrl,
+    getProfileInfoPageUrl,
+    getSignInPageUrl,
     getVideoPageUrl,
     getVolunteerDashboardPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -278,12 +278,6 @@ export const NewMainSliderContainer = () => {
                             </Link>
                             <Link to={getMembershipPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.how-it-works")}
-                            </Link>
-                            <Link to={getRulesPageUrl(locale)}>
-                                {t("main.welcome.header.about-project.rules")}
-                            </Link>
-                            <Link to={getPrivacyPolicyPageUrl(locale)}>
-                                {t("main.welcome.header.about-project.privacy-policy")}
                             </Link>
                             <Link to="https://community.goodsurfing.org/">
                                 {t("main.welcome.header.about-project.news")}
@@ -540,18 +534,6 @@ export const NewMainSliderContainer = () => {
                         to={getMembershipPageUrl(locale)}
                     >
                         {t("main.welcome.header.about-project.how-it-works")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getRulesPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.about-project.rules")}
-                    </Link>
-                    <Link
-                        className={styles.dropdownLink}
-                        to={getPrivacyPolicyPageUrl(locale)}
-                    >
-                        {t("main.welcome.header.about-project.privacy-policy")}
                     </Link>
                     <Link
                         className={styles.dropdownLink}
