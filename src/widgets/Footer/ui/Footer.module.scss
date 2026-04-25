@@ -10,7 +10,9 @@
 
 .copyright {
 	display: flex;
+	align-items: center;
 	justify-content: center;
+	gap: 24px;
 
 	padding-top: 15px;
 	padding-bottom: 40px;
@@ -24,6 +26,24 @@
 		font-size: 0.875rem;
 		font-weight: 500;
 		line-height: 171%;
+	}
+
+	&__links {
+		display: flex;
+		gap: 16px;
+	}
+
+	&__link {
+		color: #82949F;
+
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 171%;
+		text-decoration: underline;
+
+		&:hover {
+			color: var(--color-white);
+		}
 	}
 }
 
@@ -174,5 +194,10 @@
 		&__item {
 			margin-bottom: 30px;
 		}
+	}
+
+	.copyright {
+		flex-direction: column;
+		gap: 8px;
 	}
 }

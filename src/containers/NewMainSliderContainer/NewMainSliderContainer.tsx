@@ -16,6 +16,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getUserAuthData, userActions } from "@/entities/User";
 import {
     getAboutProjectPageUrl, getAcademyMainPageUrl, getAmbassadorsPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getFindJobPageUrl, getHostDashboardPageUrl, getJournalsPageUrl,
     getMainPageUrl, getMembershipPageUrl,
@@ -290,6 +291,11 @@ export const NewMainSliderContainer = () => {
                             </Link>
                         </Popup>
                     </div>
+                    <div className={styles.link}>
+                        <Link to={getBecomeHostPageUrl(locale)}>
+                            {t("main.welcome.header.for-organizers.become-a-host")}
+                        </Link>
+                    </div>
                     {isAuth ? (
                         <>
                             <div className={styles.link}>
@@ -556,6 +562,12 @@ export const NewMainSliderContainer = () => {
                         {t("main.welcome.header.about-project.find-job")}
                     </Link>
                 </MobileSelect>
+                <ButtonMenu
+                    onClick={() => navigate(getBecomeHostPageUrl(locale))}
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.for-organizers.become-a-host")}
+                </ButtonMenu>
                 {authData ? (
                     <>
                         <ButtonMenu

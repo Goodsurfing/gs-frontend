@@ -17,6 +17,7 @@ import {
     getAboutProjectPageUrl,
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getDonationRating,
     getDonationsMapPageUrl,
@@ -324,6 +325,12 @@ const MobileHeader: FC = () => {
                         {t("main.welcome.header.about-project.find-job")}
                     </Link>
                 </MobileSelect>
+                <Button
+                    onClick={() => navigate(getBecomeHostPageUrl(locale))}
+                    className={styles.button}
+                >
+                    {t("main.welcome.header.for-organizers.become-a-host")}
+                </Button>
                 {authData ? (
                     <>
                         <Button

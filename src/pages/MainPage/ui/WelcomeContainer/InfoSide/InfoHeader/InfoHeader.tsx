@@ -13,6 +13,7 @@ import {
     getAboutProjectPageUrl,
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getDonationRating,
     getDonationReports,
@@ -221,6 +222,11 @@ const InfoHeader = memo(() => {
                                 {t("main.welcome.header.about-project.find-job")}
                             </Link>
                         </Popup>
+                    </div>
+                    <div className={styles.link}>
+                        <Link to={getBecomeHostPageUrl(locale)}>
+                            {t("main.welcome.header.for-organizers.become-a-host")}
+                        </Link>
                     </div>
                     {isAuth && (
                         <div className={styles.link}>

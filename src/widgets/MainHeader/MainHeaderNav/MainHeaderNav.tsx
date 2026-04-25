@@ -12,6 +12,7 @@ import {
     getAboutProjectPageUrl,
     getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
+    getBecomeHostPageUrl,
     getBlogPageUrl,
     getDonationRating,
     getDonationsMapPageUrl,
@@ -346,6 +347,11 @@ export const MainHeaderNav = () => {
                         {t("main.welcome.header.about-project.find-job")}
                     </Link>
                 </Popup>
+            </div>
+            <div>
+                <Link className={styles.btnNav} to={getBecomeHostPageUrl(locale)}>
+                    {t("main.welcome.header.for-organizers.become-a-host")}
+                </Link>
             </div>
         </div>
     );
