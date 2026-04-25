@@ -10,6 +10,7 @@ import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
 import { DonationRatingSort } from "@/entities/Donation";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import CustomLink from "@/shared/ui/Link/Link";
 import { useGetDonationRatingQuery } from "@/store/api/donationPaymentApi";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -28,6 +29,7 @@ const defaultValues: DefaultValues<DonationRatingFields> = {
 
 export const DonationRating = () => {
     const { locale } = useLocale();
+    const { isAuth } = useAuth();
     const { data: ratingData, isLoading } = useGetDonationRatingQuery({ limit: 100 });
     const form = useForm<DonationRatingFields>({
         mode: "onChange",
@@ -54,7 +56,7 @@ export const DonationRating = () => {
 
         if (searchValue) {
             const q = searchValue.toLowerCase();
-            mapped = mapped.filter((r) => r.name.toLowerCase().includes(q));
+            mapped = mapped.filter((r) => r.name?.toLowerCase().includes(q) ?? false);
         }
 
         mapped.sort((a, b) => {
@@ -82,7 +84,7 @@ export const DonationRating = () => {
             disableColumnMenu: true,
             hideable: false,
             width: 340,
-            renderCell: (params) => (
+            renderCell: (params) => (isAuth ? (
                 <CustomLink
                     className={styles.link}
                     variant="DEFAULT"
@@ -91,7 +93,9 @@ export const DonationRating = () => {
                 >
                     {params.row.name}
                 </CustomLink>
-            ),
+            ) : (
+                <span>{params.row.name}</span>
+            )),
         },
         {
             field: "numberDonations",
@@ -172,6 +176,7 @@ export const DonationRating = () => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
+                    columnVisibilityModel={{ id: isAuth }}
                     loading={isLoading}
                     sx={{
                         border: 0,

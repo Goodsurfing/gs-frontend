@@ -55,6 +55,10 @@ jobs:
           key: ${{ secrets.DEV_SSH_KEY }}
           script: |
             set -e
+            TOKEN=$(curl -sf -H 'Metadata-Flavor: Google' \
+              'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' \
+              | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+            echo "$TOKEN" | sudo docker login cr.yandex -u iam --password-stdin
             cd /opt/gs
             sudo docker compose pull frontend
             sudo docker compose up -d frontend

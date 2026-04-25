@@ -11,7 +11,7 @@ export const useHowItWorkData = () => {
     const howItWorkData = [
         {
             title: t("Регистрация"),
-            text: t("Бесплатно зарегистрируйтесь и заполните свой профиль"),
+            text: t("Зарегистрируйтесь и заполните свой профиль, оформите членство"),
             image: image1,
         },
         {

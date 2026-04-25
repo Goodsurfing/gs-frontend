@@ -87,7 +87,7 @@ export const AuthByEmail = memo(() => {
                 <SocialAuthContainer />
             </div> */}
             <div className={styles.redirect}>
-                {t("login.Не зарегистрированы на Гудсерфинге?")}
+                {t("login.Не зарегистрированы на Гудсёрфинге?")}
                 {" "}
                 <LocaleLink to={getSignUpPageUrl(locale)}>
                     {t("login.Зарегистрироваться")}

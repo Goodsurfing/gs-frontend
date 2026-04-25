@@ -13,12 +13,12 @@ export const useTranslateDonationSubmenu = () => {
             id: "address",
         },
         {
-            text: t("donationPersonal.Фотографии", "Фотографии"),
-            id: "gallery",
-        },
-        {
             text: t("donationPersonal.Организация", "Организация"),
             id: "organization",
+        },
+        {
+            text: t("donationPersonal.Фотографии", "Фотографии"),
+            id: "gallery",
         },
         {
             text: t("donationPersonal.Участники", "Участники"),

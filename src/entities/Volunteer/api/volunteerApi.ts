@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
 import { VolunteerApi, VolunteerType } from "../model/types/volunteer";
 import { WhatToDoSkillType } from "@/types/skills";
-import { Profile } from "@/entities/Profile";
+import { Profile, profileApi } from "@/entities/Profile";
 import { MediaObjectType } from "@/types/media";
 
 interface UpdateVolunteerParams {
@@ -41,6 +41,10 @@ export const volunteerApi = createApi({
                 body,
             }),
             invalidatesTags: ["volunteer"],
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+                dispatch(profileApi.util.invalidateTags(["profile"]));
+            },
         }),
         getVolunteerById: build.query<GetVolunteerResponse, string>({
             query: (profileId) => ({
@@ -59,6 +63,10 @@ export const volunteerApi = createApi({
                 body: JSON.stringify(body),
             }),
             invalidatesTags: ["volunteer"],
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+                dispatch(profileApi.util.invalidateTags(["profile"]));
+            },
         }),
     }),
 });
