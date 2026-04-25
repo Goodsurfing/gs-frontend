@@ -234,6 +234,25 @@ export const Footer = memo(() => {
                                 </Link>
                             </div>
                         </div>
+                        <div className={styles.menu__item}>
+                            <h4 className={styles.menu__title}>
+                                {t("main.welcome.header.donation.title")}
+                            </h4>
+                            <div className={styles.menu__content}>
+                                <Link
+                                    className={styles.link}
+                                    to={getMembershipPageUrl(locale)}
+                                >
+                                    {t("main.welcome.header.donation.support-goodsurfing")}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getNPOPageUrl(locale)}
+                                >
+                                    {t("main.welcome.header.donation.public-reports")}
+                                </Link>
+                            </div>
+                        </div>
                     </nav>
                 </div>
             </footer>
@@ -242,6 +261,20 @@ export const Footer = memo(() => {
                     © GoodSurfing, 2017-
                     {new Date().getFullYear()}
                 </p>
+                <div className={styles.copyright__links}>
+                    <Link
+                        className={styles.copyright__link}
+                        to={getRulesPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.about-project.rules")}
+                    </Link>
+                    <Link
+                        className={styles.copyright__link}
+                        to={getPrivacyPolicyPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.about-project.privacy-policy")}
+                    </Link>
+                </div>
             </div>
         </>
     );
