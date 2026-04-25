@@ -59,7 +59,7 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     };
 
     const freeFeatures = [
-        t("for-host.free-feature-1", "Размещать на сайте не больше одной вакансии в год"),
+        t("for-host.free-feature-1", "До 1 опубликованной вакансии в год"),
         t("for-host.free-feature-2", "Участвовать в онлайн-мероприятиях Гудсёрфинга"),
         t("for-host.free-feature-3", "Просматривать материалы Гудсёрфинг Академии"),
     ];
