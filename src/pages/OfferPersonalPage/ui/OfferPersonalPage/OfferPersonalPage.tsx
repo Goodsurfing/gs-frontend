@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,7 @@ import styles from "./OfferPersonalPage.module.scss";
 
 export const OfferPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
     const [offerData, setOfferData] = useState<Offer>();
     const { myProfile } = useAuth();
     const { ready } = useTranslation();
@@ -54,8 +55,15 @@ export const OfferPersonalPage = () => {
                     <Text
                         className={styles.error}
                         textSize="primary"
-                        text="Произошла ошибка"
+                        text="Вакансия не найдена или произошла ошибка"
                     />
+                    <button
+                        type="button"
+                        className={styles.backButton}
+                        onClick={() => navigate(-1)}
+                    >
+                        Назад
+                    </button>
                 </div>
                 <Footer />
             </div>
