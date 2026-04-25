@@ -1,4 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import {
+    describe, it, expect, vi,
+} from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { rest } from "msw";
@@ -51,9 +53,7 @@ describe("AuthByEmailForm", () => {
 
     it("вызывает onError при ошибке 401 от сервера", async () => {
         server.use(
-            rest.post("*/api/v1/token", (req, res, ctx) =>
-                res(ctx.status(401), ctx.json({ message: "Неверный email или пароль" })),
-            ),
+            rest.post("*/api/v1/token", (req, res, ctx) => res(ctx.status(401), ctx.json({ message: "Неверный email или пароль" }))),
         );
 
         const onError = vi.fn();
