@@ -8,8 +8,9 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { RoleCard } from "@/features/ProfileRole";
 
-import { useGetProfileInfoQuery } from "@/entities/Profile";
+import { profileApi, useGetProfileInfoQuery } from "@/entities/Profile";
 import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
+import { useAppDispatch } from "@/shared/hooks/redux";
 
 import { getHostRegisterPageUrl, getOfferPersonalPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -43,6 +44,7 @@ export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
 
     const { roleData } = useRoleData();
 
+    const dispatch = useAppDispatch();
     const [createVolunteer, { isLoading }] = useCreateVolunteerMutation();
     const { data: myProfile, refetch: profileRefetch } = useGetProfileInfoQuery();
 
@@ -96,6 +98,7 @@ export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
                         type: HintType.Success,
                     });
                     profileRefetch();
+                    dispatch(profileApi.util.invalidateTags(["profile"]));
                     setTimeout(() => {
                         if (next) {
                             navigate(getOfferPersonalPageUrl(locale, next));
