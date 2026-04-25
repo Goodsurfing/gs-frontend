@@ -90,6 +90,7 @@ export default defineConfig(({ mode }) => {
             globals: true,
             environment: "jsdom",
             setupFiles: ["./src/test-setup.ts"],
+            include: ["src/**/*.test.{ts,tsx}"],
             env: {
                 VITE_API_BASE_URL: "http://localhost",
                 VITE_MAIN_URL: "http://localhost",
