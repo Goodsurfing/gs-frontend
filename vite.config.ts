@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+// @ts-ignore — vitest/config types not always found in strict TS 6
+import type { UserConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
@@ -83,5 +85,20 @@ export default defineConfig(({ mode }) => {
         },
 
         assetsInclude: ["**/*.pdf"],
-    };
+
+        test: {
+            globals: true,
+            environment: "jsdom",
+            setupFiles: ["./src/test-setup.ts"],
+            env: {
+                VITE_API_BASE_URL: "http://localhost",
+                VITE_MAIN_URL: "http://localhost",
+            },
+            css: {
+                modules: {
+                    classNameStrategy: "non-scoped",
+                },
+            },
+        },
+    } as UserConfig;
 });
