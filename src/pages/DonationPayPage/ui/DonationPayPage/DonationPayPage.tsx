@@ -192,7 +192,7 @@ const DonationPayPage: React.FC = () => {
                                 </Button>
                             </div>
                             <p className={styles.offerNote}>
-                                Нажимая кнопку, вы принимаете условия{" "}
+                                {"Нажимая кнопку, вы принимаете условия "}
                                 <a
                                     href="/assets/docs/npo/Публичная_оферта.pdf"
                                     target="_blank"
@@ -200,7 +200,7 @@ const DonationPayPage: React.FC = () => {
                                 >
                                     публичной оферты
                                 </a>
-                                {" "}о заключении договора пожертвования.
+                                {" о заключении договора пожертвования."}
                             </p>
                         </section>
                     </div>
