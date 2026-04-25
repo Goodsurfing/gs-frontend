@@ -1,14 +1,10 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
     const { t } = useTranslation("membership");
-    const { locale } = useLocale();
 
     return (
         <section className={styles.wrapper}>
