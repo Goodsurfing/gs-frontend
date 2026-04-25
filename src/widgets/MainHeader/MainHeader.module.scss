@@ -9,6 +9,37 @@
     pointer-events: none;
 }
 
+/* Статичная (обычная) шапка в потоке — для функциональных страниц
+   (карты, формы, личные кабинеты), где плавающая капсула неуместна. */
+.static {
+    position: sticky;
+    top: 0;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    pointer-events: auto;
+    background-color: var(--color-white);
+    border-bottom: 1px solid #dfe6eb;
+
+    .header {
+        max-width: 1360px;
+        margin: 0 auto;
+        height: 64px;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+.static.scrolled .header {
+    background: transparent;
+    box-shadow: none;
+}
+
 .header {
     height: 60px;
     padding: 0 8px 0 20px;

@@ -5,7 +5,11 @@ import { DonationSearchFilter } from "../DonationSearchFilter/DonationSearchFilt
 import styles from "./DonationsMapPage.module.scss";
 
 const DonationsMapPage = () => (
-    <MainPageLayout isFooterShow={false} className={styles.wrapper}>
+    <MainPageLayout
+        isFooterShow={false}
+        headerVariant="static"
+        className={styles.wrapper}
+    >
         <DonationSearchFilter />
     </MainPageLayout>
 );
