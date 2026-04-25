@@ -237,6 +237,14 @@ const InfoHeader = memo(() => {
                     )}
                 </div>
 
+                <div className={styles.link}>
+                    <Link
+                        className={styles.btnMembership}
+                        to={getMembershipPageUrl(locale)}
+                    >
+                        {t("main.welcome.header.membership", "Членство")}
+                    </Link>
+                </div>
                 {isAuth ? (
                     <div className={styles.link}>
                         <Button

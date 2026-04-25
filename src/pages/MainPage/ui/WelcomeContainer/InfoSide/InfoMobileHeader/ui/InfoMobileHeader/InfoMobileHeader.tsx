@@ -316,6 +316,12 @@ export const InfoMobileHeader: FC = () => {
                 >
                     {t("main.welcome.header.for-organizers.become-a-host")}
                 </Button>
+                <Button
+                    onClick={() => navigate(getMembershipPageUrl(locale))}
+                    className={styles.buttonMembership}
+                >
+                    {t("main.welcome.header.membership", "Членство")}
+                </Button>
                 {authData ? (
                     <>
                         <Button

@@ -353,6 +353,11 @@ export const MainHeaderNav = () => {
                     {t("main.welcome.header.for-organizers.become-a-host")}
                 </Link>
             </div>
+            <div>
+                <Link className={styles.btnMembership} to={getMembershipPageUrl(locale)}>
+                    {t("main.welcome.header.membership", "Членство")}
+                </Link>
+            </div>
         </div>
     );
 };
