@@ -24,9 +24,7 @@ import {
     getNPOPageUrl,
     getNewsPageUrl,
     getOurTeamPageUrl,
-    getPrivacyPolicyPageUrl,
     getProfileInfoPageUrl,
-    getRulesPageUrl,
     getSignInPageUrl,
     getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -218,12 +216,6 @@ const InfoHeader = memo(() => {
                             </Link>
                             <Link to={getMembershipPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.how-it-works")}
-                            </Link>
-                            <Link to={getRulesPageUrl(locale)}>
-                                {t("main.welcome.header.about-project.rules")}
-                            </Link>
-                            <Link to={getPrivacyPolicyPageUrl(locale)}>
-                                {t("main.welcome.header.about-project.privacy-policy")}
                             </Link>
                             <Link to={getFindJobPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.find-job")}
