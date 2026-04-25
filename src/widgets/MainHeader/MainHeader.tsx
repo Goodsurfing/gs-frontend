@@ -41,7 +41,6 @@ const MainHeader: FC = () => {
 
     return (
         <>
-            <div className={styles.spacer} aria-hidden="true" />
             <div className={cn(styles.wrapper, { [styles.scrolled]: scrolled })}>
                 <header className={styles.header}>
                     <div className={styles.left}>
