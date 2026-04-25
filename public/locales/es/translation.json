@@ -90,7 +90,8 @@
                     "support-goodsurfing": "Apoya Goodsurfing",
                     "support-other-projects": "Apoya otros proyectos",
                     "public-reports": "Informes públicos",
-                    "rating-donations": "Calificación del donante"
+                    "rating-donations": "Calificación del donante",
+                    "public-offer": "Oferta pública"
                 },
                 "about-project": {
                     "title": "Sobre el proyecto",
@@ -135,7 +136,7 @@
             "Сколько": "Importe",
             "Условия": "Condiciones",
             "Последние штрихи": "Últimos retoques",
-            "Настройка автоматических сообщений": "Configuración de mensajes automáticos", 
+            "Настройка автоматических сообщений": "Configuración de mensajes automáticos",
             "Рабочий стол": "Panel de host",
             "Предложения": "Vacantes",
             "Заявки": "Aplicaciones",
