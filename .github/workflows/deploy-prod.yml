@@ -16,8 +16,8 @@ concurrency:
 env:
   REGISTRY: ${{ vars.PROD_REGISTRY }}
   IMAGE: gs-frontend
-  VITE_API_BASE_URL: https://api.goodsurfing.org
-  VITE_MAIN_URL: https://goodsurfing.org
+  VITE_API_BASE_URL: https://api-prod.goodsurfing.org
+  VITE_MAIN_URL: https://prod.goodsurfing.org
   VITE_VKID_CLIENT_ID: "54505769"
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Login to Yandex Container Registry
         uses: yc-actions/yc-cr-login@v3
         with:
-          yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON_PROD }}
+          yc-sa-json-credentials: ${{ secrets.YC_SA_KEY_JSON }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -68,7 +68,7 @@ jobs:
         run: |
           set -e
           for i in 1 2 3 4 5; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://goodsurfing.org/)
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://prod.goodsurfing.org/)
             if [ "$code" = "200" ]; then echo "OK"; exit 0; fi
             sleep 15
           done
