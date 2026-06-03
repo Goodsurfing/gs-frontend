@@ -5,6 +5,9 @@ dist/
 coverage
 http-requests
 .env
+.env.local
+.env.*.local
+!.env.development
 .eslintcache
 localhost+1-key.pem
 localhost+1.pem
