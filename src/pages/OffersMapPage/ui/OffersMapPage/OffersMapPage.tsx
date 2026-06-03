@@ -5,7 +5,11 @@ import { OffersSearchFilter } from "../OffersSearchFilter/OffersSearchFilter";
 import styles from "./OffersMapPage.module.scss";
 
 const OffersMapPage = () => (
-    <MainPageLayout isFooterShow={false} className={styles.wrapper}>
+    <MainPageLayout
+        isFooterShow={false}
+        headerVariant="static"
+        className={styles.wrapper}
+    >
         <OffersSearchFilter />
     </MainPageLayout>
 );

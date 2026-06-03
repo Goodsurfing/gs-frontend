@@ -1,20 +1,23 @@
 import { FC, memo } from "react";
 
-import InfoHeader from "./InfoSide/InfoHeader/InfoHeader";
+import MainHeader from "@/widgets/MainHeader/MainHeader";
+
 import InfoSide from "./InfoSide/InfoSide";
 import SliderSide from "./SliderSide/SliderSide";
 import styles from "./WelcomeContainer.module.scss";
 
 const WelcomeContainer: FC = memo(() => (
-    <main className={styles.wrapper}>
-        <div className={styles.info}>
-            <InfoSide />
-        </div>
-        <div className={styles.slider}>
-            <InfoHeader />
-            <SliderSide />
-        </div>
-    </main>
+    <>
+        <MainHeader />
+        <main className={styles.wrapper}>
+            <div className={styles.info}>
+                <InfoSide />
+            </div>
+            <div className={styles.slider}>
+                <SliderSide />
+            </div>
+        </main>
+    </>
 ));
 
 export default WelcomeContainer;

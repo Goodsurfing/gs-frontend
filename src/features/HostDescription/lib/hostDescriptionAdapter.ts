@@ -47,7 +47,7 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
         socialMedia: hostSocialFields,
         address: data.address,
         avatar: data?.avatar ? {
-            id: `${BASE_URL}api/v1/media_objects/${data.avatar.id}`,
+            id: `${BASE_URL}/api/v1/media_objects/${data.avatar.id}`,
             contentUrl: data.avatar.contentUrl,
             thumbnails: data.avatar.thumbnails,
         } : undefined,

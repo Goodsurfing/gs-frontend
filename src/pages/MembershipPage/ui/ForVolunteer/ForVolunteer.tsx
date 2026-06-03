@@ -59,7 +59,7 @@ export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) =>
     };
 
     const freeFeatures = [
-        t("for-volunteer.free-feature-1", "Можете отправить отклик на вакансию не больше 3 раз в год"),
+        t("for-volunteer.free-feature-1", "До 3 откликов в год — на разные волонтёрские вакансии"),
         t("for-volunteer.free-feature-2", "Участвовать в онлайн-мероприятиях Гудсёрфинга"),
         t("for-volunteer.free-feature-3", "Просматривать материалы Гудсёрфинг Академии"),
     ];

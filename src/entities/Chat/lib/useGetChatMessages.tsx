@@ -48,8 +48,8 @@ export const useGetChatMessages = (
     useEffect(() => {
         if (!mercureToken || !chatId || !profileId) return;
 
-        const url = new URL(`${BASE_URL}.well-known/mercure`);
-        url.searchParams.append("topic", `${BASE_URL}api/v1/users/${profileId}/messages/?chat=${chatId}`);
+        const url = new URL(`${BASE_URL}/.well-known/mercure`);
+        url.searchParams.append("topic", `${BASE_URL}/api/v1/users/${profileId}/messages/?chat=${chatId}`);
         url.searchParams.append("authorization", mercureToken);
 
         const eventSource = new EventSource(url);

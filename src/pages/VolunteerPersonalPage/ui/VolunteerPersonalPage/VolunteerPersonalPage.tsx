@@ -78,7 +78,7 @@ export const VolunteerPersonalPage = () => {
     if (!id) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text
                         className={styles.error}
@@ -94,7 +94,7 @@ export const VolunteerPersonalPage = () => {
     if (!profileData) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text
                         className={styles.error}
@@ -110,7 +110,7 @@ export const VolunteerPersonalPage = () => {
     if (!isOwnProfile && profileData.isActive === false) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text
                         className={styles.error}
@@ -155,7 +155,7 @@ export const VolunteerPersonalPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            <MainHeader />
+            <MainHeader variant="static" />
             <div className={styles.content}>
                 <VolunteerHeaderCard
                     profileData={profileData}
