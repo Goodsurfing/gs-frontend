@@ -1,9 +1,14 @@
 // In dev (`npm start`) the SPA must hit the Vite dev-server (which proxies
-// to staging) with relative paths — otherwise CORS/IAP kick in. Force an
-// empty origin so any value left over in a stray .env / .env.local from
-// a developer's previous setup doesn't poison the build.
-const API_ORIGIN = import.meta.env.DEV
-    ? ""
+// to staging) so CORS/IAP doesn't kick in. We use the running page origin
+// (typically http://localhost:3000) — NOT an empty string — because several
+// RTK Query endpoints inject API_BASE_URL_V3 directly into `url:` while
+// using `baseQuery` with baseUrl=API_BASE_URL (a.k.a. /api/v1/). When both
+// are relative, RTK joins them and you get nonsense like
+// `/api/v1/api/v3/profile`. When the injected URL is absolute, RTK's
+// `isAbsoluteUrl` short-circuits and uses it verbatim. Browser still hits
+// localhost:3000 so the Vite proxy catches it.
+const API_ORIGIN = import.meta.env.DEV && typeof window !== "undefined"
+    ? window.location.origin
     : `${import.meta.env.VITE_API_BASE_URL}`.replace(/\/+$/, "");
 
 export const BASE_URL = API_ORIGIN;
