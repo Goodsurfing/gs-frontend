@@ -75,13 +75,26 @@ export default defineConfig(({ mode }) => {
             // path the SPA actually uses against the API (REST + admin +
             // IAP login flow + uploaded media). Everything else (HTML,
             // /assets/*, /locales/*) stays on the Vite dev server.
+            //
+            // We do NOT statically set `headers: { Authorization: ... }` on
+            // the proxy config: that would clobber any user JWT the SPA
+            // attaches via baseQuery prepareHeaders (Symfony then sees the
+            // IAP token, fails JWT parsing, and answers 401 to authenticated
+            // calls). Instead inject IAP only when the original request
+            // doesn't already carry an Authorization header.
             proxy: {
                 "^/(api|admin|auth|oauth2|static-media|media)(/|$)": {
                     target: devProxyTarget,
                     changeOrigin: true,
                     secure: true,
-                    headers: devProxyHeaders,
                     cookieDomainRewrite: { "*": "" },
+                    configure: (proxy) => {
+                        proxy.on("proxyReq", (proxyReq, req) => {
+                            if (devIapToken && !req.headers.authorization) {
+                                proxyReq.setHeader("Authorization", `Bearer ${devIapToken}`);
+                            }
+                        });
+                    },
                 },
             },
         },
