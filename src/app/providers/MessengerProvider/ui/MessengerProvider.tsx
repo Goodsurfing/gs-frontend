@@ -80,8 +80,8 @@ export const MessengerProvider: FC<MessengerProviderProps> = ({ children }) => {
     useEffect(() => {
         if (!mercureToken || !myProfile?.id || !isAuth) return;
 
-        const url = new URL(`${BASE_URL}.well-known/mercure`);
-        url.searchParams.append("topic", `${BASE_URL}api/v1/users/${myProfile.id}/messages/{?chat}`);
+        const url = new URL(`${BASE_URL}/.well-known/mercure`);
+        url.searchParams.append("topic", `${BASE_URL}/api/v1/users/${myProfile.id}/messages/{?chat}`);
         url.searchParams.append("authorization", mercureToken);
 
         const eventSource = new EventSource(url);
