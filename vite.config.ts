@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 // @ts-ignore — vitest/config types not always found in strict TS 6
@@ -6,6 +6,23 @@ import type { UserConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
+    const env = loadEnv(mode, process.cwd(), "");
+
+    // When developers run `npm start`, route the API calls through the Vite
+    // dev-server proxy so they hit staging without CORS pain. The IAP token
+    // is injected as a Bearer header — same trick the e2e suite uses
+    // (see e2e/global-setup.ts).
+    //
+    // Behaviour selectors:
+    // - VITE_DEV_API_TARGET (default https://api-staging.goodsurfing.org) — where the
+    //   proxy forwards to. Override to dev/prod if needed.
+    // - VITE_DEV_IAP_TOKEN — the yiap-prefixed bypass token. If empty, the
+    //   proxy still works (you'll get 302 to /auth/login from IAP — clear signal).
+    const devProxyTarget = env.VITE_DEV_API_TARGET || "https://api-staging.goodsurfing.org";
+    const devIapToken = env.VITE_DEV_IAP_TOKEN || "";
+    const devProxyHeaders: Record<string, string> = devIapToken
+        ? { Authorization: `Bearer ${devIapToken}` }
+        : {};
 
     return {
         plugins: [react()],
@@ -54,6 +71,19 @@ export default defineConfig(({ mode }) => {
         server: {
             port: 3000,
             open: true,
+            // Forward backend/IAP paths to the chosen target. Matches every
+            // path the SPA actually uses against the API (REST + admin +
+            // IAP login flow + uploaded media). Everything else (HTML,
+            // /assets/*, /locales/*) stays on the Vite dev server.
+            proxy: {
+                "^/(api|admin|auth|oauth2|static-media|media)(/|$)": {
+                    target: devProxyTarget,
+                    changeOrigin: true,
+                    secure: true,
+                    headers: devProxyHeaders,
+                    cookieDomainRewrite: { "*": "" },
+                },
+            },
         },
 
         build: {
