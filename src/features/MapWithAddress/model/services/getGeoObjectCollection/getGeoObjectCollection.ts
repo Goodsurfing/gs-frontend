@@ -26,8 +26,6 @@ export const getGeoObjectCollection = async (
             `${API_YANDEX_BASE_URL}`,
             {
                 params: {
-                    apikey: import.meta.env.VITE_API_YANDEX_KEY,
-                    format: "json",
                     geocode: address,
                     lang: languageList[language],
                 },
@@ -46,8 +44,6 @@ export const getGeoObjectByAddress = async (address: string) => {
             `${API_YANDEX_BASE_URL}`,
             {
                 params: {
-                    apikey: import.meta.env.VITE_API_YANDEX_KEY,
-                    format: "json",
                     geocode: address,
                 },
             },
@@ -74,8 +70,6 @@ export const getGeoObjectByCoordinates = async (
         const roundedLatitude = latitude.toFixed(6);
         const res = await axios.get(`${API_YANDEX_BASE_URL}`, {
             params: {
-                apikey: import.meta.env.VITE_API_YANDEX_KEY,
-                format: "json",
                 geocode: `${roundedLongitude}, ${roundedLatitude}`,
             },
         });
