@@ -4,7 +4,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ImagesUploader } from "@/shared/ui/ImagesUploader/ImagesUploader";
 import { MediaObjectType } from "@/types/media";
-import { getHostMediaContentsApiArray, getMediaContentsApiArray } from "@/shared/lib/getMediaContent";
+import { getHostMediaContentsApiArray } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { Host, useUpdateHostMutation } from "@/entities/Host";
@@ -61,13 +61,13 @@ export const HostGallery: FC<HostGalleryProps> = (props) => {
         const currentGalleryImages = hostData.galleryImages;
 
         const updatedGalleryImages = currentGalleryImages.filter(
-            (image) => image["@id"] !== mediaObjectUrl,
+            (image) => image.id !== mediaObjectUrl,
         );
 
         await updateHost({
             id: hostData.id,
             body: {
-                galleryImages: getMediaContentsApiArray(updatedGalleryImages),
+                galleryImages: getHostMediaContentsApiArray(updatedGalleryImages),
             },
         }).unwrap()
             .then(() => {

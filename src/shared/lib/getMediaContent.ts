@@ -61,10 +61,7 @@ export const getMediaContentsApiArray = (images: Image[]) => {
     return newImages;
 };
 
-export const getHostMediaContentsApiArray = (images: MediaObjectType[]) => {
-    const newImages = images.map((image) => `${BASE_URL}${image["@id"].slice(1)}`);
-    return newImages;
-};
+export const getHostMediaContentsApiArray = (images: MediaObjectType[]) => images.map((image) => image["@id"]);
 
 export const getImageDetails = (image: GalleryItem | string | MediaObjectType) => {
     if (typeof image === "string") {
