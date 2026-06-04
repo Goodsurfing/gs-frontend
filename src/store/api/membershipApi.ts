@@ -46,6 +46,22 @@ export interface CheckoutResponse {
     tariffCode: string;
 }
 
+export type PaymentStatusValue =
+    | "PENDING"
+    | "PROCESSING"
+    | "SUCCESS"
+    | "CANCELLED"
+    | "FAILED"
+    | "REFUNDED";
+
+export interface PaymentStatusResponse {
+    id: string;
+    status: PaymentStatusValue;
+    amount: string;
+    currency: string;
+    paidAt: string | null;
+}
+
 export const membershipApi = createApi({
     reducerPath: "membershipApi",
     baseQuery,
@@ -74,6 +90,12 @@ export const membershipApi = createApi({
             }),
             invalidatesTags: ["membership"],
         }),
+        getPaymentStatus: build.query<PaymentStatusResponse, string>({
+            query: (id) => ({
+                url: `${API_BASE_URL}payments/${id}`,
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -81,4 +103,5 @@ export const {
     useGetTariffsQuery,
     useGetCurrentMembershipQuery,
     useCheckoutMembershipMutation,
+    useGetPaymentStatusQuery,
 } = membershipApi;

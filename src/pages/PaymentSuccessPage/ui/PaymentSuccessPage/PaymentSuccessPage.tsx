@@ -6,9 +6,16 @@ import Button from "@/shared/ui/Button/Button";
 import Preloader from "@/shared/ui/Preloader/Preloader";
 
 import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { useGetCurrentMembershipQuery } from "@/store/api/membershipApi";
+import {
+    useGetCurrentMembershipQuery,
+    useGetPaymentStatusQuery,
+} from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getMyOffersPageUrl, getOffersMapPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getMyOffersPageUrl,
+    getMembershipPageUrl,
+    getOffersMapPageUrl,
+} from "@/shared/config/routes/AppUrls";
 
 import styles from "./PaymentSuccessPage.module.scss";
 
@@ -29,6 +36,9 @@ const HOST_BENEFITS = [
 ];
 
 const POLL_INTERVAL_MS = 3000;
+const POLL_TIMEOUT_MS = 60_000;
+
+const FAIL_STATUSES = new Set(["CANCELLED", "FAILED", "REFUNDED"]);
 
 const PaymentSuccessPage: React.FC = () => {
     const { locale } = useLocale();
@@ -38,18 +48,49 @@ const PaymentSuccessPage: React.FC = () => {
 
     const paymentId = searchParams.get("payment_id");
 
-    const [shouldPoll, setShouldPoll] = useState<boolean>(Boolean(paymentId));
+    const [shouldPoll, setShouldPoll] = useState(Boolean(paymentId));
+    const [timedOut, setTimedOut] = useState(false);
 
-    const { data: membership, isLoading } = useGetCurrentMembershipQuery(undefined, {
-        skip: !isAuth,
-        pollingInterval: shouldPoll && isAuth ? POLL_INTERVAL_MS : 0,
+    const { data: membership, isLoading: membershipLoading } = useGetCurrentMembershipQuery(
+        undefined,
+        {
+            skip: !isAuth,
+            pollingInterval: shouldPoll && isAuth ? POLL_INTERVAL_MS : 0,
+        },
+    );
+
+    const { data: payment } = useGetPaymentStatusQuery(paymentId!, {
+        skip: !paymentId || !isAuth,
+        pollingInterval: shouldPoll && isAuth
+            ? POLL_INTERVAL_MS
+            : 0,
     });
 
+    // Таймаут поллинга — если через 60 сек не пришёл webhook
+    useEffect(() => {
+        if (!shouldPoll) return undefined;
+        const timer = setTimeout(() => {
+            setShouldPoll(false);
+            setTimedOut(true);
+        }, POLL_TIMEOUT_MS);
+        return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Остановить поллинг при активном членстве
     useEffect(() => {
         if (membership?.isActive) {
             setShouldPoll(false);
         }
     }, [membership?.isActive]);
+
+    // Редирект при отменённом или проваленном платеже
+    useEffect(() => {
+        if (!payment) return;
+        if (FAIL_STATUSES.has(payment.status)) {
+            navigate(`/${locale}/payment/fail?reason=cancelled`);
+        }
+    }, [payment, navigate, locale]);
 
     useEffect(() => {
         if (!isAuth) {
@@ -61,11 +102,51 @@ const PaymentSuccessPage: React.FC = () => {
         return <Preloader />;
     }
 
-    if (isLoading && !membership) {
+    // Первичная загрузка
+    if (membershipLoading && !membership) {
         return (
             <MainPageLayout>
                 <div className={styles.container}>
                     <Preloader />
+                </div>
+            </MainPageLayout>
+        );
+    }
+
+    // Ждём подтверждения от платёжного провайдера
+    if (shouldPoll && !membership?.isActive) {
+        return (
+            <MainPageLayout>
+                <div className={styles.container}>
+                    <Preloader />
+                </div>
+            </MainPageLayout>
+        );
+    }
+
+    // Webhook не пришёл за 60 секунд
+    if (timedOut && !membership?.isActive) {
+        return (
+            <MainPageLayout>
+                <div className={styles.container}>
+                    <div className={styles.content}>
+                        <h1 className={styles.title}>Платёж обрабатывается</h1>
+                        <p className={styles.subtitle}>
+                            Подтверждение занимает дольше обычного.
+                            Проверьте статус на странице членства через несколько минут
+                            или обратитесь в службу поддержки.
+                        </p>
+                        <div className={styles.buttonWrapper}>
+                            <Button
+                                color="BLUE"
+                                size="LARGE"
+                                variant="FILL"
+                                onClick={() => navigate(getMembershipPageUrl(locale))}
+                            >
+                                На страницу членства
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </MainPageLayout>
         );
