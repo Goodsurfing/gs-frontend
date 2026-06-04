@@ -1,5 +1,5 @@
 export const makeGeoUrl = (geocode: string) => {
-    const url = new URL("https://geocode-maps.yandex.ru/1.x");
+    const url = new URL("https://geocode-maps.yandex.ru/v1");
     const format = "json";
     const geocodeParam = geocode;
     url.searchParams.set("apikey", import.meta.env.VITE_API_YANDEX_KEY || "");

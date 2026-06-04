@@ -23,7 +23,7 @@ export const API_VACANCY_BASE_URL = `${API_ORIGIN}/api/vacancies/`;
 export const API_USER_BASE_URL = `${API_ORIGIN}/api/users/`;
 export const API_MEDIA_BASE_URL = `${API_ORIGIN}/api/media_objects/`;
 export const API_TRANSLATION_BASE_URL = `${API_ORIGIN}/api/v1/translation`;
-export const API_YANDEX_BASE_URL = "https://geocode-maps.yandex.ru/1.x/";
+export const API_YANDEX_BASE_URL = `${API_ORIGIN}/api/v1/geocode`;
 // Used for OAuth/IAP redirect-back URLs. In dev — origin of the running
 // dev-server (typically http://localhost:3000), not a baked-in production URL.
 export const MAIN_URL = import.meta.env.DEV && typeof window !== "undefined"
