@@ -22,7 +22,7 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
 
     if (!data) {
         return (
-            <MainPageLayout>
+            <MainPageLayout headerVariant="static">
                 <div className={styles.wrapper}>
                     <p>Курс не был найден</p>
                 </div>
@@ -31,7 +31,7 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
     }
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             <div className={styles.wrapper}>
                 <Header course={data} />
                 <CourseContent course={data} courseId={courseId} />

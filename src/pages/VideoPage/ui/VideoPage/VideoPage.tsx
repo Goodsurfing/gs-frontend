@@ -99,7 +99,7 @@ const VideoPage = () => {
     };
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Header />
             <div className={styles.container}>

@@ -10,7 +10,7 @@ import { HowItWorkContainer } from "@/pages/MainPage";
 import styles from "./AcademyMainPage.module.scss";
 
 const AcademyMainPage = () => (
-    <MainPageLayout>
+    <MainPageLayout headerVariant="static">
         <div className={styles.wrapper}>
             <Header />
             <Section title="Как это работает?">

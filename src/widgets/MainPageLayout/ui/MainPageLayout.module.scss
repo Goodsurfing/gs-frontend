@@ -4,6 +4,16 @@
     min-height: 100vh;
 }
 
+.floating {
+    padding-top: 100px;
+}
+
 .content {
     flex: 1;
+}
+
+@media (max-width: 992px) {
+    .floating {
+        padding-top: 0;
+    }
 }

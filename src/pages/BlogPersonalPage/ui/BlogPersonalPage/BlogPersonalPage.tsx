@@ -9,7 +9,7 @@ const BlogPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             <BlogPersonal blogId={Number(id)} />
         </MainPageLayout>
     );
