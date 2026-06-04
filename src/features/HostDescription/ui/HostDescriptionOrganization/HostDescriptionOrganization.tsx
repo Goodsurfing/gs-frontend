@@ -27,6 +27,8 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
     const { control, formState: { errors } } = useFormContext<HostDescriptionFormFields>();
     const formWatch = useWatch<HostDescriptionFormFields>({ control });
 
+    const isOtherType = formWatch.type?.organizationType === "Другое";
+
     const otherInputDisabled = () => {
         if (formWatch.type && formWatch.type.organizationType) {
             if (formWatch.type.organizationType !== "Другое") {
@@ -101,7 +103,19 @@ export const HostDescriptionOrganization = memo((props: HostDescriptionOrganizat
                     control={control}
                     maxLength={1000}
                     disabled={otherInputDisabled()}
+                    isError={!!errors.type?.otherOrganizationType?.message}
+                    rules={{
+                        validate: (value) => !isOtherType
+                            || (typeof value === "string" && value.trim().length > 0)
+                            || t("hostDescription.Это поле является обязательным"),
+                    }}
                 />
+                {errors.type?.otherOrganizationType?.message && (
+                    <ErrorText
+                        text={errors.type.otherOrganizationType.message}
+                        className={styles.error}
+                    />
+                )}
             </div>
             <div className={styles.website}>
                 <InputControl
