@@ -7,7 +7,7 @@ const AcademyLessonPage = () => {
     const { id } = useParams<{ id: string; }>();
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             {id && (
                 <LessonPersonal lessonId={id} />
             )}

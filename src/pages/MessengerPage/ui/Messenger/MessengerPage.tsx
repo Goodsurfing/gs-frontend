@@ -52,7 +52,7 @@ const MessengerPage = () => {
 
     return (
         <div className={styles.layout}>
-            <MainHeader />
+            <MainHeader variant="static" />
             <div className={styles.wrapper}>
                 <h2 className={styles.title}>{t("Сообщения")}</h2>
                 <div className={styles.content}>

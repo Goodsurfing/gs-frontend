@@ -28,7 +28,7 @@ export const MainPageLayout: FC<MainPageLayoutProps> = (
     }, [location.pathname]);
 
     return (
-        <div className={cn(styles.layout, className)}>
+        <div className={cn(styles.layout, headerVariant !== "static" ? styles.floating : undefined, className)}>
             <MainHeader variant={headerVariant} />
             <div className={styles.content}>
                 {children}

@@ -15,7 +15,7 @@ export const PageLayout: FC<PageLayoutProps> = ({ children, sidebarContent, wrap
     const { isOpen } = useSidebarContext();
     return (
         <div id="page-layout" className={styles.layout}>
-            <MainHeader />
+            <MainHeader variant="static" />
             <Sidebar
                 content={sidebarContent}
                 classNameSidebar={styles.sidebar}

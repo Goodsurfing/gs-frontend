@@ -12,7 +12,7 @@ const VideoPersonalPage = () => {
     const { id } = useParams<{ id: string }>();
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             {id && (
                 <VideoPersonal videoId={id} locale={locale} />
             )}
