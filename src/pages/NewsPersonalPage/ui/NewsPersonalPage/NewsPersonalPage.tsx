@@ -9,7 +9,7 @@ import { NewsPersonal } from "@/widgets/News";
 const NewsPersonalPage = () => {
     const { id } = useParams<{ id: string; }>();
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             {id && (
                 <NewsPersonal newsId={id} />
             )}

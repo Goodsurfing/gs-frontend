@@ -60,7 +60,7 @@ const NewsPage = () => {
     };
 
     return (
-        <MainPageLayout>
+        <MainPageLayout headerVariant="static">
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>
