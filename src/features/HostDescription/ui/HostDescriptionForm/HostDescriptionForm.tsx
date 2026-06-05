@@ -124,6 +124,9 @@ export const HostDescriptionForm = memo((props: HostDescriptionFormProps) => {
                 });
             }
             sessionStorage.removeItem(HOST_DESCRIPTION_FORM);
+            // Сбрасываем isDirty, чтобы эффект сохранения в sessionStorage
+            // не успел перезаписать только что удалённые данные до прихода рефетча
+            reset(data);
         } catch {
             setToast({
                 text: t("hostDescription.Произошла ошибка"),
