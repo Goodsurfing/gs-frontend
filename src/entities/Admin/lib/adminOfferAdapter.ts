@@ -273,13 +273,17 @@ export const offerConditionsAdapter = (
         transferIds,
     } = offerConditions;
 
+    const normalizedHouseIds = houseIds || [];
+    const normalizedFoodIds = foodIds || [];
+    const normalizedTransferIds = transferIds || [];
+
     return {
         extraConditions: additionalConditions || "",
         extraFeatures: { extraFeatures: additionalFeatures },
         facilities: { facilities: conveniences },
-        housing: { switchState: true, housing: houseIds || [] },
-        nutrition: { switchState: true, nutrition: foodIds || [] },
-        travel: { switchState: true, travel: transferIds || [] },
+        housing: { switchState: normalizedHouseIds.length > 0, housing: normalizedHouseIds },
+        nutrition: { switchState: normalizedFoodIds.length > 0, nutrition: normalizedFoodIds },
+        travel: { switchState: normalizedTransferIds.length > 0, travel: normalizedTransferIds },
         payment: {
             currency: currency ?? "RUB",
             contribution: volunteerContributions ?? 0,
