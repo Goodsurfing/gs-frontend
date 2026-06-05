@@ -52,9 +52,9 @@ export const offerConditionsAdapter = (
         extraConditions: additionalConditions || "",
         extraFeatures: { extraFeatures: additionalFeatures },
         facilities: { facilities: conveniences },
-        housing: { switchState: true, housing: housesTemp || [] },
-        nutrition: { switchState: true, nutrition: foodTemp || [] },
-        travel: { switchState: true, travel: transferTemp || [] },
+        housing: { switchState: housesTemp.length > 0, housing: housesTemp },
+        nutrition: { switchState: foodTemp.length > 0, nutrition: foodTemp },
+        travel: { switchState: transferTemp.length > 0, travel: transferTemp },
         payment: {
             currency,
             contribution: volunteerContributions,
