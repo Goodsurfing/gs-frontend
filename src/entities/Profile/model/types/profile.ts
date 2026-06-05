@@ -46,6 +46,7 @@ export interface Profile {
 }
 
 export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "favoriteCategories"> & {
+    isMember?: boolean;
     volunteer: {
         externalInfo: string | null;
         skills: GetSkill[];

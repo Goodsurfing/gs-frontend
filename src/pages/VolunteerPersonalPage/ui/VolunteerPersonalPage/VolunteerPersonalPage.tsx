@@ -164,6 +164,7 @@ export const VolunteerPersonalPage = () => {
                     isShowWriteButton={!!myChatsListData}
                     handleEditClick={handleEditClick}
                     handleWriteClick={handleWriteClick}
+                    isMember={profileData.isMember}
                 />
                 <Submenu
                     className={styles.navMenu}
