@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "ISC",
   "author": "GS",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "vite --port 3000",
     "build": "vite build",

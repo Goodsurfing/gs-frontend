@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 // import { medalsData } from "@/shared/data/medals";
 import { ReactSVG } from "react-svg";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
-// import memberIcon from "@/shared/assets/icons/select-check.svg";
+import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 import {
@@ -33,6 +33,7 @@ interface VolunteerHeaderCardProps {
     isShowWriteButton: boolean;
     handleWriteClick: () => void;
     handleEditClick: () => void;
+    isMember?: boolean;
 }
 
 export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
@@ -44,6 +45,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             handleWriteClick,
             handleEditClick,
             isShowWriteButton,
+            isMember,
         } = props;
 
         const { t } = useTranslation("profile");
@@ -170,13 +172,13 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                     {" "}
                                     {getAge(birthDate)}
                                 </span>
-                                {/* {isMember && (
-                                <img
-                                    src={memberIcon}
-                                    className={styles.memberIcon}
-                                    alt="member"
-                                />
-                            )} */}
+                                {isMember && (
+                                    <img
+                                        src={memberIcon}
+                                        className={styles.memberIcon}
+                                        alt="member"
+                                    />
+                                )}
                             </div>
                             <h3 className={styles.name}>
                                 {renderName}
