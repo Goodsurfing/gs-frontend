@@ -241,7 +241,7 @@ export interface AdminOrganizations {
     isActive: boolean;
 }
 
-export type UpdateAdminOrganization = Omit<AdminOrganization, "id" | "isActive" | "image"
+export type UpdateAdminOrganization = Omit<AdminOrganization, "id" | "image"
 | "countVacancies" | "countApplications"> & {
     imageId: string | null;
 };

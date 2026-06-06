@@ -205,6 +205,7 @@ export const adminOrganizationAdapter = (data: AdminOrganization): HostDescripti
 
 export const adminOrganizationApiAdapter = (
     data: HostDescriptionFormFields,
+    isActive: boolean,
 ): UpdateAdminOrganization => {
     const {
         address, avatar, mainInfo, socialMedia, type,
@@ -223,6 +224,7 @@ export const adminOrganizationApiAdapter = (
         telegram: socialMedia?.telegram ?? "",
         website: mainInfo?.website ?? "",
         otherType: type.otherOrganizationType,
+        isActive,
     };
 };
 
