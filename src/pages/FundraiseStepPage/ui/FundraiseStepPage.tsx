@@ -174,7 +174,7 @@ const FundraiseStepPage = () => {
         if (geoObject) {
             return {
                 address: {
-                    address: `${geoObject.description}, ${geoObject.name}`,
+                    address: `${geoObject.description ? `${geoObject.description}, ` : ""}${geoObject.name}`,
                     geoObject: {
                         name: geoObject.name,
                         description: geoObject.description,
