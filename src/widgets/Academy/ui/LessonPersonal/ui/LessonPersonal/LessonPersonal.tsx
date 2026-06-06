@@ -52,31 +52,34 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                             {data?.description}
                         </p>
                         <LessonVideo className={styles.lessonVideo} videoUrl={data?.url} />
-                        {data?.files && data.files.length > 0 && (
-                            <div className={styles.filesSection}>
-                                <h3 className={styles.filesTitle}>Материалы к уроку</h3>
-                                <ul className={styles.filesList}>
-                                    {data.files.map((file) => {
-                                        const url = getMediaContent(file.contentUrl);
-                                        const fileName = file.contentUrl.split("/").pop() || "Файл";
-                                        return url ? (
-                                            <li key={file.id} className={styles.filesItem}>
-                                                <a
-                                                    href={url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    download
-                                                    className={styles.filesLink}
-                                                >
-                                                    {"📎 "}
-                                                    {fileName}
-                                                </a>
-                                            </li>
-                                        ) : null;
-                                    })}
-                                </ul>
-                            </div>
-                        )}
+                        {(() => {
+                            const validFiles = (data?.files ?? []).filter((f) => f.contentUrl);
+                            if (!validFiles.length) return null;
+                            return (
+                                <div className={styles.filesSection}>
+                                    <h3 className={styles.filesTitle}>Материалы к уроку</h3>
+                                    <ul className={styles.filesList}>
+                                        {validFiles.map((file) => {
+                                            const url = getMediaContent(file.contentUrl);
+                                            const fileName = file.contentUrl.split("/").pop() || "Файл";
+                                            return (
+                                                <li key={file.id} className={styles.filesItem}>
+                                                    <a
+                                                        href={url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className={styles.filesLink}
+                                                    >
+                                                        {"📎 "}
+                                                        {fileName}
+                                                    </a>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            );
+                        })()}
                     </>
                 )}
                 <div className={styles.buttons}>
