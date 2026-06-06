@@ -28,17 +28,25 @@ const AboutProjectPage = () => {
         <MainPageLayout>
             <div className={styles.wrapper}>
                 <Header />
-                <Mission className={styles.section} description={data.mission} />
-                <HowItStarted className={styles.section} description={data.howAllStart} />
-                <Principles
-                    className={cn(styles.section, styles.extraPadding)}
-                    principles={data.principles}
-                />
+                {data.mission && (
+                    <Mission className={styles.section} description={data.mission} />
+                )}
+                {data.howAllStart && (
+                    <HowItStarted className={styles.section} description={data.howAllStart} />
+                )}
+                {data.principles.length > 0 && (
+                    <Principles
+                        className={cn(styles.section, styles.extraPadding)}
+                        principles={data.principles}
+                    />
+                )}
                 <GoodsurfingNow
                     className={cn(styles.section, styles.extraPadding)}
                     today={data.today}
                 />
-                <Gallery className={styles.section} gallery={data.galleryImages} />
+                {data.galleryImages.length > 0 && (
+                    <Gallery className={styles.section} gallery={data.galleryImages} />
+                )}
             </div>
         </MainPageLayout>
     );

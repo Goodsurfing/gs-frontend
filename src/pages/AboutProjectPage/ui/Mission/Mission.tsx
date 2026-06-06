@@ -11,7 +11,7 @@ import { getNPOPageUrl } from "@/shared/config/routes/AppUrls";
 
 interface MissionProps {
     className?: string;
-    description: string;
+    description: string | null;
 }
 
 export const Mission: FC<MissionProps> = (props: MissionProps) => {
