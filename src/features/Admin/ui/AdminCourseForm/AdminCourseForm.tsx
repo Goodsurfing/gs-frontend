@@ -65,7 +65,7 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     });
     const {
         handleSubmit, reset, control, formState: { errors },
-        watch,
+        watch, setValue,
     } = form;
 
     const isPublicValue = watch("isPublic");
@@ -254,10 +254,15 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
     };
 
     const handleTogglePublish = () => {
-        reset((prev) => ({
-            ...prev,
-            isPublic: !prev.isPublic,
-        }));
+        if (!course) {
+            setValue("isPublic", !isPublicValue, { shouldDirty: true });
+            return;
+        }
+        const newValue = !isPublicValue;
+        setValue("isPublic", newValue, { shouldDirty: true });
+        handleSubmit(onSubmitForm, () => {
+            setValue("isPublic", !newValue, { shouldDirty: false });
+        })();
     };
 
     const renderLessonsSection = () => {
