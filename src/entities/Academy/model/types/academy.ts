@@ -154,7 +154,7 @@ export interface GetLesson {
     averageRating: number;
     image: Image;
     isCanReview: boolean;
-    files: Image[];
+    files?: Image[];
     course: {
         id: string;
         name: string;
