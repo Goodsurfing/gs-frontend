@@ -74,7 +74,7 @@ export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (pr
         setToast(undefined);
         try {
             if (hostData) {
-                const preparedData = adminOrganizationApiAdapter(data);
+                const preparedData = adminOrganizationApiAdapter(data, hostData.isActive);
                 await updateHost({ id: hostData.id, body: { ...preparedData } }).unwrap();
                 setToast({
                     text: "Данные успешно изменены",
