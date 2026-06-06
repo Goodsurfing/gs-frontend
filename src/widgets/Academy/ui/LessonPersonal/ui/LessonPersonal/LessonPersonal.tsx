@@ -7,6 +7,7 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { LessonVideo } from "../LessonVideo/LessonVideo";
 import { LessonReview } from "@/features/Academy";
 import CustomLink from "@/shared/ui/Link/Link";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./LessonPersonal.module.scss";
 
 interface LessonPersonalProps {
@@ -51,6 +52,31 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                             {data?.description}
                         </p>
                         <LessonVideo className={styles.lessonVideo} videoUrl={data?.url} />
+                        {data?.files && data.files.length > 0 && (
+                            <div className={styles.filesSection}>
+                                <h3 className={styles.filesTitle}>Материалы к уроку</h3>
+                                <ul className={styles.filesList}>
+                                    {data.files.map((file) => {
+                                        const url = getMediaContent(file.contentUrl);
+                                        const fileName = file.contentUrl.split("/").pop() || "Файл";
+                                        return url ? (
+                                            <li key={file.id} className={styles.filesItem}>
+                                                <a
+                                                    href={url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    download
+                                                    className={styles.filesLink}
+                                                >
+                                                    {"📎 "}
+                                                    {fileName}
+                                                </a>
+                                            </li>
+                                        ) : null;
+                                    })}
+                                </ul>
+                            </div>
+                        )}
                     </>
                 )}
                 <div className={styles.buttons}>
