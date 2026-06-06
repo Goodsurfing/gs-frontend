@@ -13,6 +13,10 @@ export const getErrorText = (error: unknown): string => {
             if ("title" in data) {
                 return String(data.title);
             }
+            // JWT 401 errors return { code, message } without detail/title
+            if ("message" in data) {
+                return String(data.message);
+            }
         }
         if ("message" in error) {
             return String(error.message);
