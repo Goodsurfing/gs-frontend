@@ -25,8 +25,8 @@ export const AdminAboutProjectInfo: FC = () => {
         }
 
         return {
-            mission: aboutProjectData.mission,
-            howAllStart: aboutProjectData.howAllStart,
+            mission: aboutProjectData.mission ?? "",
+            howAllStart: aboutProjectData.howAllStart ?? "",
             principles: aboutProjectData.principles,
             galleryImages: aboutProjectData.galleryImages,
         };
