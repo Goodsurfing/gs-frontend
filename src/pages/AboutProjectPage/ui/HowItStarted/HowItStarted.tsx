@@ -6,7 +6,7 @@ import styles from "./HowItStarted.module.scss";
 
 interface HowItStartedProps {
     className?: string;
-    description: string;
+    description: string | null;
 }
 
 export const HowItStarted: FC<HowItStartedProps> = (

@@ -759,8 +759,8 @@ export interface AboutProjectPrinciples {
 }
 
 export interface GetAboutProjectInfo {
-    mission: string;
-    howAllStart: string;
+    mission: string | null;
+    howAllStart: string | null;
     today: {
         volunteerCount: number;
         vacancyCountryCount: number;
