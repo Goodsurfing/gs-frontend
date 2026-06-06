@@ -17,7 +17,7 @@ env:
   REGISTRY: ${{ vars.PROD_REGISTRY }}
   IMAGE: gs-frontend
   VITE_API_BASE_URL: https://api-prod.goodsurfing.org
-  VITE_MAIN_URL: https://prod.goodsurfing.org
+  VITE_MAIN_URL: https://goodsurfing.org
   VITE_VKID_CLIENT_ID: "6499153"
 
 jobs:
