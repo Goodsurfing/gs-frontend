@@ -37,6 +37,47 @@
     margin: 40px auto;
 }
 
+.filesSection {
+    margin-top: 32px;
+    margin-bottom: 8px;
+}
+
+.filesTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.filesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filesItem {
+    display: flex;
+    align-items: center;
+}
+
+.filesLink {
+    color: var(--text-primary-1);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-primary-1, #e0e0e0);
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    word-break: break-all;
+
+    &:hover {
+        background-color: var(--bg-secondary-1, #f5f5f5);
+        text-decoration: underline;
+    }
+}
+
 .buttons {
     width: 100%;
     display: flex;
