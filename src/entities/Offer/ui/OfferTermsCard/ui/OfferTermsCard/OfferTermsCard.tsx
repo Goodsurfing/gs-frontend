@@ -97,6 +97,16 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             ));
         };
 
+        const hasContent = facilities.length > 0
+            || housing.length > 0
+            || paidTravel.length > 0
+            || nutrition.length > 0
+            || extraFeatures.length > 0;
+
+        if (!hasContent) {
+            return null;
+        }
+
         return (
             <div className={cn(className, styles.wrapper)} id="terms">
                 <Text title={t("personalOffer.Условия")} titleSize="h3" />
