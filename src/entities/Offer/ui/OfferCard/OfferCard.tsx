@@ -5,18 +5,13 @@ import { ReactSVG } from "react-svg";
 
 import { useTranslation } from "react-i18next";
 import heartIcon from "@/shared/assets/icons/heart-icon.svg";
+// import like from "@/shared/assets/icons/offers/like.svg";
 import star from "@/shared/assets/icons/offers/star.svg";
 import { getMainPageUrl } from "@/shared/config/routes/AppUrls";
-import { formatDuration } from "@/shared/lib/formatDuration";
+import { textSlice } from "@/shared/lib/textSlice";
 
 import styles from "./OfferCard.module.scss";
 import { Locale } from "@/entities/Locale";
-
-const BADGE_LABELS: Record<string, string> = {
-    new: "Новое",
-    popular: "Популярное",
-    urgent: "Срочно",
-};
 
 interface OfferCardProps {
     offerId: number;
@@ -24,15 +19,11 @@ interface OfferCardProps {
     title?: string;
     location?: string;
     category?: string;
-    categoryColor?: string;
-    tags?: string[];
     rating?: number;
+    // likes?: string;
     reviews?: number;
     went?: number;
     description?: string;
-    durationMinDays?: number;
-    durationMaxDays?: number;
-    badge?: "new" | "popular" | "urgent" | null;
     link?: string;
     className?: string;
     isImageShow?: boolean;
@@ -49,8 +40,6 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         title,
         description,
         category,
-        categoryColor,
-        tags,
         location,
         rating,
         reviews,
@@ -62,139 +51,84 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         isFavorite,
         locale,
         handleFavoriteClick,
-        durationMinDays,
-        durationMaxDays,
-        badge,
     } = props;
     const { t } = useTranslation();
-
-    const duration = formatDuration(durationMinDays, durationMaxDays);
-
-    if (!isImageShow) {
-        return (
-            <Link
-                to={link ?? getMainPageUrl(locale)}
-                className={cn(styles.compactWrapper, className)}
-            >
-                <div className={styles.content}>
-                    <p className={styles.title}>{title}</p>
-                    <div className={styles.subtitle}>
-                        <span className={styles.location}>{location}</span>
-                        {category && <span className={styles.category}>{category}</span>}
-                    </div>
-                    <div className={styles.stats}>
-                        {!!rating && (
-                            <div className={styles.rating}>
-                                <img src={star} alt="star-icon" loading="lazy" />
-                                <span>{rating}</span>
-                            </div>
-                        )}
-                        <div className={styles.extraInfo}>
-                            {reviews != null && (
-                                <span className={styles.review}>
-                                    {t("Отзывов")}
-                                    {": "}
-                                    {reviews}
-                                </span>
-                            )}
-                            {went != null && (
-                                <span className={styles.went}>
-                                    {t("Отправились")}
-                                    {": "}
-                                    {went}
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                    {description && (
-                        <p className={styles.description}>{description}</p>
-                    )}
-                </div>
-            </Link>
-        );
-    }
 
     return (
         <Link
             to={link ?? getMainPageUrl(locale)}
             className={cn(styles.wrapper, className)}
         >
-            <div className={styles.imageWrapper}>
-                {image
-                    ? <img src={image} alt="offer-img" loading="lazy" />
-                    : (
-                        <div
-                            className={styles.imagePlaceholder}
-                            style={categoryColor ? { background: `linear-gradient(135deg, ${categoryColor}cc, ${categoryColor})` } : undefined}
+            {isImageShow && (
+                <div className={styles.imageWrapper}>
+                    {image ? <img src={image} alt="offer-img" loading="lazy" /> : <div className={styles.imagePlaceholder} />}
+                    {isFavoriteIconShow && (
+                        <ReactSVG
+                            src={heartIcon}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleFavoriteClick?.(offerId);
+                            }}
+                            className={cn(styles.favorite, {
+                                [styles.active]: isFavorite,
+                            })}
                         />
                     )}
-                {badge && (
-                    <span className={cn(styles.badge, styles[`badge_${badge}`])}>
-                        {BADGE_LABELS[badge]}
-                    </span>
-                )}
-                {isFavoriteIconShow && (
-                    <button
-                        type="button"
-                        className={cn(styles.favBtn, { [styles.favBtnActive]: isFavorite })}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleFavoriteClick?.(offerId);
-                        }}
-                        aria-label="В избранное"
-                    >
-                        <ReactSVG src={heartIcon} />
-                    </button>
-                )}
-            </div>
-
-            <div className={styles.content}>
-                {category && (
-                    <div
-                        className={styles.kicker}
-                        style={categoryColor ? { color: categoryColor } : undefined}
-                    >
-                        {category}
-                    </div>
-                )}
-                <p className={styles.title}>{title}</p>
-                {(location || duration) && (
-                    <div className={styles.meta}>
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className={styles.pinIcon}>
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                        </svg>
-                        {location && <span>{location}</span>}
-                        {duration && (
-                            <>
-                                <span className={styles.dot} />
-                                <span>{duration}</span>
-                            </>
-                        )}
-                    </div>
-                )}
-                <div className={styles.bottom}>
-                    {tags && tags.length > 0 && (
-                        <div className={styles.tags}>
-                            {tags.slice(0, 3).map((tag) => (
-                                <span key={tag} className={styles.tag}>{tag}</span>
-                            ))}
-                        </div>
-                    )}
-                    {!!rating && (
-                        <div className={styles.ratingRow}>
-                            <span className={styles.starIcon}>★</span>
-                            <b>{rating}</b>
-                            {reviews != null && reviews > 0 && (
-                                <span className={styles.reviewCount}>
-                                    {reviews}
-                                    {" "}
-                                    отз.
-                                </span>
-                            )}
-                        </div>
-                    )}
                 </div>
+            )}
+            <div className={styles.content}>
+                <p className={styles.title}>{textSlice(title, 50, "title")}</p>
+                <div className={styles.subtitle}>
+                    <span className={styles.location}>{location}</span>
+                    <br />
+                    <span className={styles.category}>{category}</span>
+                </div>
+                <div className={styles.stats}>
+                    {!!rating && (
+                        <div className={styles.rating}>
+                            <img src={star} alt="star-icon" loading="lazy" />
+                            <span>{rating}</span>
+                        </div>
+                    )}
+                    {/* <div
+                        style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "0.75rem",
+                        }}
+                    >
+                        {rating && (
+                            <div className={styles.rating}>
+                                <img src={star} alt="star-icon" />
+                                <span>{rating}</span>
+                            </div>
+                        )}
+                        {likes && (
+                            <div className={styles.likes}>
+                                <img src={like} alt="heart-icon" />
+                                <span>{likes}</span>
+                            </div>
+                        )}
+                    </div> */}
+                    <div className={styles.extraInfo}>
+                        <span className={styles.review}>
+                            {t("Отзывов")}
+                            :
+                            {" "}
+                            {reviews}
+                        </span>
+                        <span className={styles.went}>
+                            {t("Отправились")}
+                            :
+                            {" "}
+                            {went}
+                        </span>
+                    </div>
+                </div>
+                <p className={styles.description}>
+                    {textSlice(description, 110, "description")}
+                </p>
             </div>
         </Link>
     );

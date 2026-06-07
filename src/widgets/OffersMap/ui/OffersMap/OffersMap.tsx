@@ -18,15 +18,6 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
-function escapeHtml(str: string): string {
-    return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-}
-
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
@@ -51,22 +42,17 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
             .map((offer) => {
                 const imgSrc = offer?.image?.contentUrl;
-                const title = escapeHtml(offer.name || "Без названия");
-                const categoryName = escapeHtml(offer.categories[0]?.name ?? "Без категории");
-                const categoryColor = escapeHtml(offer.categories[0]?.color ?? "var(--text-caption)");
-
-                const offerUrl = getOfferPersonalPageUrl(locale, offer.id.toString());
-                const imgUrl = escapeHtml(getMediaContent(imgSrc) ?? defaultImage);
+                const title = offer.name || "Без названия";
+                const categoryName = offer.categories[0]?.name ?? "Без категории";
+                const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <a href="${offerUrl}">
-              <div class="${styles.balloonImage}" style="background-image:url('${imgUrl}')"></div>
-            </a>
-            <div class="${styles.balloonBody}">
-              <div class="${styles.balloonKicker}" style="color:${categoryColor}">${categoryName}</div>
+            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
+            <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
-              <a href="${offerUrl}" class="${styles.balloonLink}">Подробнее →</a>
+              <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
+              <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
             </div>
           </div>
         `;
