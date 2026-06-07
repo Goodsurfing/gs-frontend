@@ -146,10 +146,15 @@ export const OffersSearchFilterMobile: FC<OffersSearchFilterMobileProps> = ({
                     shortDescription: offer.shortDescription,
                     imagePath: offer.image?.contentUrl,
                     categories: offer.categories.map((cat) => cat.name),
+                    categoryColor: offer.categories[0]?.color,
                     address: offer.address,
                     acceptedApplicationsCount: offer.acceptedApplicationsCount,
                     averageRating: offer.averageRating,
                     reviewsCount: offer.reviewsCount,
+                    durationMinDays: offer.durationMinDays,
+                    durationMaxDays: offer.durationMaxDays,
+                    updated: offer.updated,
+                    applicationEndDate: offer.applicationEndDate,
                 }}
                 key={offer.id}
             />

@@ -1,3 +1,9 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .loading {
     display: none;
 }
@@ -8,66 +14,117 @@
     width: 100%;
 }
 
+/* ── Cluster icon ─────────────────────────────────────────── */
 .customClusterIcon {
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--accent-color); 
+    background-color: var(--color-blue, #3DABF7);
     border: 4px solid #fff;
     border-radius: 50%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
-    color: var(--text-secondary-1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
     font-weight: 700;
     font-size: 14px;
     box-sizing: border-box;
-    transition: all 0.3s ease;
 }
 
-.clusterBalloon  a {
-    text-decoration: none;
-    color: var(--text-primary-1);
-}
-
-.balloonLink {
-    color: var(--accent-color);
-}
-
-.balloonImage {
-    width: 100px;
-    height: 50px;
-    object-fit: cover;
-}
-
-.balloonTitle {
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.balloonCategory {
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.balloonLink {
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.balloonLink:hover {
-    text-decoration: underline;
-}
-
+/* ── Placemark dot ────────────────────────────────────────── */
 .customPlacemarkIcon {
     width: 30px;
     height: 30px;
-    border: 5px solid var(--text-secondary-1);
+    border: 4px solid #fff;
     border-radius: 50%;
     box-sizing: border-box;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Balloon popup ────────────────────────────────────────── */
+.balloonWrapper {
+    width: 210px;
+    font-family: Lato, system-ui, sans-serif;
+    overflow: hidden;
+}
+
+.balloonImage {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    background-color: #ECF1F4;
+    display: block;
+}
+
+.balloonBody {
+    padding: 11px 13px 13px;
+}
+
+.balloonKicker {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #EEA52D;
+    margin-bottom: 4px;
+}
+
+.balloonTitle {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #0E1D27;
+    margin-bottom: 9px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.balloonLink {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-blue, #3DABF7);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s;
+
+    &:hover {
+        color: #1E93E4;
+    }
+}
+
+/* ── Cluster balloon ──────────────────────────────────────── */
+.clusterBalloon {
+    padding: 12px;
+
+    h3 {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #0E1D27;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--color-blue, #3DABF7);
+        font-size: 13px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .loadingPlaceholder {
