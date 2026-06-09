@@ -65,13 +65,13 @@ export const OfferReviewsCard: FC<OfferReviewsCardProps> = memo(
         useEffect(() => {
             if (reviewsData?.data) {
                 setReviews((prev) => {
-                    if (page === 1) {
+                    if (reviewsData.pagination.page === 1) {
                         return [...reviewsData.data];
                     }
                     return [...prev, ...reviewsData.data];
                 });
             }
-        }, [reviewsData, page]);
+        }, [reviewsData]);
 
         const handleSendReview = useCallback(async () => {
             if (!canReview || !commentInput.trim() || rating === null) return;
