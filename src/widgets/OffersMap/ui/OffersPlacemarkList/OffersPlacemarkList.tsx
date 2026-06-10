@@ -18,7 +18,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
 
     const offersPlacemarkList = useMemo(
         () => data.map(({
-            id, name, categories, latitude, longitude,
+            id, name, categories, latitude, longitude, image,
         }) => {
             if (typeof latitude === "number" && typeof longitude === "number") {
                 return (
@@ -28,6 +28,7 @@ export const OffersPlacemarkList: FC<OffersPlacemarkListProps> = (props) => {
                         geometry={[latitude, longitude]}
                         locale={locale}
                         categoryColor={categories[0]?.color}
+                        imageUrl={image?.contentUrl}
                         key={id}
                     />
                 );
