@@ -50,7 +50,7 @@ export const OfferPersonalPage = () => {
     if (!id || isError) {
         return (
             <div className={styles.wrapper}>
-                <MainHeader />
+                <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text
                         className={styles.error}

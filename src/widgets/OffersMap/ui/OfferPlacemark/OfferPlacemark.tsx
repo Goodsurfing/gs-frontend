@@ -19,12 +19,13 @@ interface OfferPlacemarkProps {
     geometry: number[];
     name: string;
     categoryColor?: string;
+    imageUrl?: string;
     locale: string;
 }
 
 export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacemarkProps) => {
     const {
-        id, categoryColor, name, geometry, locale,
+        id, categoryColor, name, geometry, locale, imageUrl,
     } = props;
 
     const navigate = useNavigate();
@@ -106,7 +107,9 @@ export const OfferPlacemark: FC<OfferPlacemarkProps> = memo((props: OfferPlacema
             options={{
                 iconLayout: "default#imageWithContent",
                 iconContentLayout: ymaps?.templateLayoutFactory?.createClass?.(
-                    `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
+                    imageUrl
+                        ? `<div style="background: url('${imageUrl}') center/cover no-repeat;" class="${styles.customPlacemarkIcon}"></div>`
+                        : `<div style="background-color: ${categoryColor || "var(--accent-color)"};" class="${styles.customPlacemarkIcon}"></div>`,
                 ),
                 hideIconOnBalloonOpen: false,
                 openEmptyBalloon: false,
