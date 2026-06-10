@@ -12,10 +12,11 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import styles from "./OffersSearchFilter.module.scss";
 import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
+import { getCategoryIdsFromUrlParam, getCategoryUrlParamFromIds } from "../../lib/categoryUrlParams";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
 import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
+import styles from "./OffersSearchFilter.module.scss";
 
 const defaultValues: OffersFilterFields = {
     offersSort: {
@@ -50,11 +51,7 @@ export const OffersSearchFilter = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
 
-    const initialCategories = (searchParams.get("category") ?? "")
-        .split(",")
-        .map((str) => str.trim())
-        .map(Number)
-        .filter((id) => !Number.isNaN(id) && id > 0);
+    const initialCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -68,7 +65,7 @@ export const OffersSearchFilter = () => {
         watch, setValue, reset, handleSubmit,
     } = offerFilterForm;
 
-    const [isSyncing, setIsSyncing] = useState(false);
+    const isSyncingRef = useRef(false);
 
     useEffect(() => {
         const watchData = watch();
@@ -84,8 +81,8 @@ export const OffersSearchFilter = () => {
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
-            if (!isSyncing && name === "category") {
-                const newCategory = (value.category || []).join(",");
+            if (!isSyncingRef.current && name === "category") {
+                const newCategory = getCategoryUrlParamFromIds(value.category);
                 setSearchParams((prev) => {
                     const updated = new URLSearchParams(prev);
                     if (newCategory) {
@@ -98,22 +95,15 @@ export const OffersSearchFilter = () => {
             }
         });
         return () => subscription.unsubscribe();
-    }, [watch, setSearchParams, isSyncing]);
+    }, [watch, setSearchParams]);
 
     useEffect(() => {
-        setIsSyncing(true);
+        isSyncingRef.current = true;
 
-        const categoriesFromURL = searchParams.get("category") ?? "";
-        const parsedCategories = categoriesFromURL
-            .split(",")
-            .map((str) => {
-                const num = Number(str.trim());
-                return Number.isNaN(num) || num <= 0 ? null : num;
-            })
-            .filter((id): id is number => id !== null);
+        const parsedCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
         setValue("category", parsedCategories);
-        setIsSyncing(false);
+        isSyncingRef.current = false;
     }, [searchParams, setValue]);
 
     const onChangePage = useCallback((pageItem: number) => {
