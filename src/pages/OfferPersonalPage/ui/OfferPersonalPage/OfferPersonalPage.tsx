@@ -2,13 +2,18 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocale } from "@/app/providers/LocaleProvider";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 import { OfferSubmenu } from "@/widgets/OfferSubmenu";
 
 import { Offer, useLazyGetOfferByIdQuery } from "@/entities/Offer";
 
+import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoUrl } from "@/shared/lib/getSeoUrl";
 import Preloader from "@/shared/ui/Preloader/Preloader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 import { Text } from "@/shared/ui/Text/Text";
 
 import { OfferPageContent } from "../OfferPageContent/OfferPageContent";
@@ -21,7 +26,9 @@ export const OfferPersonalPage = () => {
     const navigate = useNavigate();
     const [offerData, setOfferData] = useState<Offer>();
     const { myProfile } = useAuth();
+    const { locale } = useLocale();
     const { ready } = useTranslation();
+    const { t: tMain, ready: readyMain } = useTranslation("main");
     const { ready: readyOffer } = useTranslation("offer");
 
     const [getOfferData, { isLoading, isError }] = useLazyGetOfferByIdQuery();
@@ -39,7 +46,7 @@ export const OfferPersonalPage = () => {
         fetchOffers();
     }, [getOfferData, id]);
 
-    if (isLoading || !ready || !readyOffer) {
+    if (isLoading || !ready || !readyMain || !readyOffer) {
         return (
             <div className={styles.wrapper}>
                 <Preloader />
@@ -87,8 +94,21 @@ export const OfferPersonalPage = () => {
             );
         }
 
+        const seoTitle = offerData.description?.title || tMain("seo.title");
+        const seoDescription = offerData.description?.shortDescription
+            || offerData.description?.description
+            || tMain("seo.description");
+        const seoUrl = getSeoUrl(getOfferPersonalPageUrl(locale, id));
+        const seoImage = getMediaContent(offerData.description?.image?.contentUrl);
+
         return (
             <div className={styles.wrapper}>
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    ogImage={seoImage}
+                />
                 <MainHeader />
                 <div className={styles.content}>
                     <OfferPersonalCard

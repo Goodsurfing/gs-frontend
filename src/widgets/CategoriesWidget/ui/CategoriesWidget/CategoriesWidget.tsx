@@ -40,7 +40,7 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
         const renderCategories = () => categoriesData.map((category, index) => (
             <Category
                 className={styles.category}
-                title={getTranslation(category.name) ?? ""}
+                title={category.name ?? ""}
                 image={category.imagePath}
                 vacancyNumber={category.vacancyCount}
                 key={index}
