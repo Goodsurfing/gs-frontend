@@ -1,23 +1,28 @@
 import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
-import {
-    ArticleContent, ArticleHeader, ArticleShare, Navigation,
-} from "@/features/Article";
-import { getNewsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useTranslation } from "react-i18next";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import {
     GetReviewsNews,
     newsReviewsAdapter,
     useCreateReviewNewsMutation, useGetNewsByIdQuery,
     useLazyGetReviewsNewsQuery, usePutLikeNewsMutation,
 } from "@/entities/News";
+import {
+    ArticleContent, ArticleHeader, ArticleShare, Navigation,
+} from "@/features/Article";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { CommentWidget } from "@/widgets/Article";
+import { getNewsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { MAIN_URL } from "@/shared/constants/api";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { MAIN_URL } from "@/shared/constants/api";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 import styles from "./NewsPersonal.module.scss";
 
 interface NewsPersonalProps {
@@ -30,6 +35,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const { newsId } = props;
     const { locale } = useLocale();
     const { isAuth } = useAuth();
+    const { t, ready } = useTranslation("news");
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsNews[]>([]);
@@ -120,8 +126,29 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
         );
     }
 
+    const seoTitle = data?.name || t("seo.title");
+    const seoDescription = data?.description
+        ? getSeoDescription(data.description) || t("seo.description")
+        : t("seo.description");
+    const seoUrl = getSeoUrl(getNewsPersonalPageUrl(locale, newsId));
+    const seoImage = getMediaContent(data?.image?.contentUrl);
+    const seoKeywords = [
+        data?.name,
+        data?.category.name,
+        t("seo.keywords"),
+    ].filter(Boolean).join(", ");
+
     return (
         <div className={styles.wrapper}>
+            {ready && (
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    keywords={seoKeywords}
+                    ogImage={seoImage}
+                />
+            )}
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {data && (
                 <Navigation
