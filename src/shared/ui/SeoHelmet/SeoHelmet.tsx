@@ -6,6 +6,7 @@ interface SeoHelmetProps {
     title: string;
     description: string;
     canonicalUrl: string;
+    keywords?: string;
     ogImage?: string;
     ogTitle?: string;
     ogDescription?: string;
@@ -17,6 +18,7 @@ export const SeoHelmet: FC<SeoHelmetProps> = (props) => {
         title,
         description,
         canonicalUrl,
+        keywords,
         ogImage = ogImageDefault,
         ogTitle = title,
         ogDescription = description,
@@ -27,6 +29,7 @@ export const SeoHelmet: FC<SeoHelmetProps> = (props) => {
         <Helmet>
             <title>{title}</title>
             <meta name="description" content={description} />
+            {keywords && <meta name="keywords" content={keywords} />}
             <link rel="canonical" href={canonicalUrl} />
             <meta property="og:title" content={ogTitle} />
             <meta property="og:description" content={ogDescription} />

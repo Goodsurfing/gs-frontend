@@ -49,12 +49,12 @@
     "Крым": "Crimea",
     "Примите тех, кто хочет помогать и делайте мир лучше вместе": "Welcome those who want to help and make the world better together",
     "Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте. Найдите помощников для задач на сезон, экспедицию или долгий проект.": "We connect you with people ready to come and help on site. Find helpers for seasonal tasks, expeditions, or long-term projects.",
-    "С нами уже больше 1500 проектов": "Already over 1,500 projects with us"
-,
+    "С нами уже больше 1500 проектов": "Already over 1,500 projects with us",
     "seo": {
         "title": "GoodSurfing — meaningful volunteer travel",
         "description": "GoodSurfing helps you find volunteer projects, expeditions, and internships so you can travel, help, and change the world.",
         "ogTitle": "GoodSurfing — travel, help, change the world",
-        "ogDescription": "Find volunteer opportunities and meaningful projects around the world on GoodSurfing."
+        "ogDescription": "Find volunteer opportunities and meaningful projects around the world on GoodSurfing.",
+        "keywords": "GoodSurfing, volunteer travel, volunteering, meaningful travel, opportunities, projects, expeditions, internships"
     }
 }

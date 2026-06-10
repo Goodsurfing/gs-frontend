@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { MainPageLayout } from "@/widgets/MainPageLayout";
-
-import { MemberBanner } from "@/features/MemberBanner";
-
-import { Category } from "../Category/Category";
-import { Header } from "../Header/Header";
-import { VideoFilter } from "../VideoFilter/VideoFilter";
-import { VideoList } from "../VideoList/VideoList";
-import { VideoSearch } from "../VideoSearch/VideoSearch";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { TagsOption } from "@/features/Article";
 import { AdminSort } from "@/entities/Admin";
 import {
     useCreateVideoMutation, useLazyGetVideoListQuery,
     videoApiAdapter, videoCardAdapter, VideoFields,
 } from "@/entities/Video";
+import { TagsOption } from "@/features/Article";
 import { VideoModalForm } from "@/features/Video/ui/VideoModalForm/VideoModalForm";
+import { MainPageLayout } from "@/widgets/MainPageLayout";
 import { OfferPagination } from "@/widgets/OffersMap";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import styles from "./VideoPage.module.scss";
+
+import { MemberBanner } from "@/features/MemberBanner";
+
+import { getVideoPageUrl } from "@/shared/config/routes/AppUrls";
 import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { getSeoUrl } from "@/shared/lib/getSeoUrl";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import { Category } from "../Category/Category";
+import { Header } from "../Header/Header";
+import { VideoFilter } from "../VideoFilter/VideoFilter";
+import { VideoList } from "../VideoList/VideoList";
+import { VideoSearch } from "../VideoSearch/VideoSearch";
+import styles from "./VideoPage.module.scss";
 
 const limit = 10;
 
@@ -38,6 +42,7 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const VideoPage = () => {
     const { locale } = useLocale();
+    const { t, ready } = useTranslation("video");
     const {
         page, sort, search, category, setPage,
         setSort, setSearch, setCategory,
@@ -100,6 +105,16 @@ const VideoPage = () => {
 
     return (
         <MainPageLayout headerVariant="static">
+            {ready && (
+                <SeoHelmet
+                    title={t("seo.title")}
+                    description={t("seo.description")}
+                    canonicalUrl={getSeoUrl(getVideoPageUrl(locale))}
+                    keywords={t("seo.keywords")}
+                    ogTitle={t("seo.ogTitle")}
+                    ogDescription={t("seo.ogDescription")}
+                />
+            )}
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             <Header />
             <div className={styles.container}>

@@ -2,9 +2,7 @@ import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { ArticleHeader, ArticleShare, Navigation } from "@/features/Article";
-import { getVideoPageUrl, getVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
-import styles from "./VideoPersonal.module.scss";
+
 import { Locale } from "@/app/providers/LocaleProvider/ui/LocaleProvider";
 import {
     GetReviewsVideo,
@@ -12,15 +10,20 @@ import {
     useLazyGetReviewsVideoQuery, usePutLikeVideoMutation,
     videoReviewsAdapter,
 } from "@/entities/Video";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { useGetFullName } from "@/shared/lib/getFullName";
-import { VideoContent } from "../VideoContent/VideoContent";
-import { MAIN_URL } from "@/shared/constants/api";
+import { ArticleHeader, ArticleShare, Navigation } from "@/features/Article";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { CommentWidget } from "@/widgets/Article";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { getVideoPageUrl, getVideoPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { MAIN_URL } from "@/shared/constants/api";
+import { useGetFullName } from "@/shared/lib/getFullName";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import { VideoContent } from "../VideoContent/VideoContent";
+import styles from "./VideoPersonal.module.scss";
 
 interface VideoPersonalProps {
     videoId: string;
@@ -32,6 +35,7 @@ const VISIBLE_COUNT = 10;
 export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
     const { videoId, locale } = props;
     const { t } = useTranslation();
+    const { t: tVideo, ready: readyVideo } = useTranslation("video");
     const { isAuth } = useAuth();
     const { getFullName } = useGetFullName();
 
@@ -117,8 +121,29 @@ export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
         );
     }
 
+    const seoTitle = data?.name || tVideo("seo.title");
+    const seoDescription = data?.description
+        ? getSeoDescription(data.description) || tVideo("seo.description")
+        : tVideo("seo.description");
+    const seoUrl = getSeoUrl(getVideoPersonalPageUrl(locale, videoId));
+    const seoImage = getMediaContent(data?.image?.contentUrl);
+    const seoKeywords = [
+        data?.name,
+        data?.categoryResult.name,
+        tVideo("seo.keywords"),
+    ].filter(Boolean).join(", ");
+
     return (
         <div className={styles.wrapper}>
+            {readyVideo && (
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    keywords={seoKeywords}
+                    ogImage={seoImage}
+                />
+            )}
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {data && (
                 <Navigation
