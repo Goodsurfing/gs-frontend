@@ -36,10 +36,6 @@ export const HostPersonalPage = () => {
     const navigate = useNavigate();
     const { isAuth, myProfile } = useAuth();
 
-    const isOwner = !!myProfile && myProfile.id === hostData?.owner.id;
-
-    const isHostUnavailable = hostData && !hostData.active && !isOwner;
-
     const handleEditClick = () => {
         navigate(getHostInfoUrl(locale));
     };
@@ -80,18 +76,6 @@ export const HostPersonalPage = () => {
                 <MainHeader variant="static" />
                 <div className={styles.content}>
                     <Text textSize="primary" text={t("personalHost.Произошла ошибка")} />
-                </div>
-                <Footer />
-            </div>
-        );
-    }
-
-    if (isHostUnavailable) {
-        return (
-            <div className={styles.wrapper}>
-                <MainHeader variant="static" />
-                <div className={styles.content}>
-                    <Text textSize="primary" text={t("personalHost.Организация недоступна")} />
                 </div>
                 <Footer />
             </div>
