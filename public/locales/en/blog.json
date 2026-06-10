@@ -1,4 +1,10 @@
 {
     "Блог": "Blog",
-    "Добавить статью": "Add Article"
+    "Добавить статью": "Add Article",
+    "seo": {
+        "title": "GoodSurfing Blog - stories, news, and meaningful travel",
+        "description": "Read GoodSurfing articles about volunteer travel, projects, communities, and meaningful travel experiences.",
+        "ogTitle": "GoodSurfing Blog",
+        "ogDescription": "Stories, news, and useful articles about meaningful travel."
+    }
 }
