@@ -68,8 +68,10 @@ jobs:
         run: |
           set -e
           for i in 1 2 3 4 5; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 https://prod.goodsurfing.org/)
-            if [ "$code" = "200" ]; then echo "OK"; exit 0; fi
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 ${{ env.VITE_MAIN_URL }}/healthz)
+            if [ "$code" = "200" ]; then echo "frontend OK"; exit 0; fi
+            echo "attempt $i -> $code"
             sleep 15
           done
+          echo "Frontend smoke test failed"
           exit 1
