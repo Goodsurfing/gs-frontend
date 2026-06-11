@@ -187,6 +187,7 @@
         width: 100%;
         max-width: 100%;
         background: var(--color-white);
+        pointer-events: auto;
     }
 
     .header {
@@ -196,5 +197,6 @@
     .mobile {
         display: block;
         padding: 16px 20px;
+        pointer-events: auto;
     }
 }
