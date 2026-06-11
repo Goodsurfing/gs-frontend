@@ -6,5 +6,12 @@
     "АНО «Гудсёрфинг» зарегистрирована 20 июля 2018 г.": "Goodsurfing ANO was registered on July 20, 2018, by the registrar INTERDISTRICT INSPECTION OF THE FEDERAL TAX SERVICE No. 18 IN THE REPUBLIC OF TATARSTAN. The organization's leader is director Ilya Alexandrovich Popov. The legal address of Goodsurfing ANO is 420043, Republic of Tatarstan, Kazan, Boynichnaya Street, house 5, room 25. The main type of activity is 'Consulting and Information Services,' with 5 additional registered types of activities. The organization 'AUTONOMOUS NON-PROFIT ORGANIZATION 'INFORMATION CENTER FOR THE DEVELOPMENT OF VOLUNTEERISM 'GOODSURFING – GOOD TRAVELS'' has been assigned TIN 1655405070, OGRN 1181690059682, OKPO 31801426.",
     "Уставные документы": "Charter documents",
     "Отчёты МинЮст": "Reports to the Ministry of Justice",
-    "Отчёты о деятельности": "Activity reports"
+    "Отчёты о деятельности": "Activity reports",
+    "seo": {
+        "title": "GoodSurfing ANO - non-profit organization for good travel",
+        "description": "Information about GoodSurfing ANO: organization details, charter documents, Ministry of Justice reports, and activities.",
+        "keywords": "GoodSurfing, GoodSurfing ANO, non-profit organization, good travel, volunteering, charter documents, reports",
+        "ogTitle": "GoodSurfing ANO",
+        "ogDescription": "Organization details, documents, and reports of the GoodSurfing non-profit organization."
+    }
 }
