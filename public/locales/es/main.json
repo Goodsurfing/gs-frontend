@@ -56,5 +56,12 @@
         "ogTitle": "GoodSurfing — viaja, ayuda, cambia el mundo",
         "ogDescription": "Encuentra oportunidades de voluntariado y proyectos con sentido en todo el mundo en GoodSurfing.",
         "keywords": "GoodSurfing, viajes de voluntariado, voluntariado, viajes con sentido, oportunidades, proyectos, expediciones, practicas"
+    },
+    "geo": {
+        "about": {
+            "volunteering": "Proyectos de voluntariado",
+            "travel": "Viajes con sentido",
+            "expeditions": "Expediciones y prácticas"
+        }
     }
 }
