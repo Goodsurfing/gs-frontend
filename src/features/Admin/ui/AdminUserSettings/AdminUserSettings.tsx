@@ -7,8 +7,11 @@ import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmAction
 import { AdminUpdateAchievement } from "../AdminUpdateAchievement/AdminUpdateAchievement";
 import {
     adminUpdateUserAdapter,
-    AdminUser, useDeleteUserMutation,
-    useGetPublicAchievementsQuery, useToggleAdminUserActiveMutation,
+    AdminUser,
+    useActivateUserMembershipMutation,
+    useDeleteUserMutation,
+    useGetPublicAchievementsQuery,
+    useToggleAdminUserActiveMutation,
     useUpdateAdminUserMutation,
 } from "@/entities/Admin";
 import { getFullName } from "@/shared/lib/getFullName";
@@ -40,6 +43,8 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const [toggleAdminUserActive,
         { isLoading: isTogglingActive }] = useToggleAdminUserActiveMutation();
     const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+    const [activateMembership,
+        { isLoading: isActivatingMembership }] = useActivateUserMembershipMutation();
 
     const openDeleteModal = () => setIsDeleteModalOpen(true);
     const closeDeleteModal = () => setIsDeleteModalOpen(false);
@@ -89,12 +94,22 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
     const openMembershipModal = () => setIsMembershipModalOpen(true);
     const closeMembershipModal = () => setIsMembershipModalOpen(false);
 
-    const handleConfirmMembership = () => {
-        setToast({
-            text: "Активация членства: не реализовано",
-            type: HintType.Error,
-        });
-        closeMembershipModal();
+    const handleConfirmMembership = async () => {
+        setToast(undefined);
+        try {
+            await activateMembership(userId).unwrap();
+            setToast({
+                text: `Членство для "${userName}" активировано`,
+                type: HintType.Success,
+            });
+        } catch {
+            setToast({
+                text: "Не удалось активировать членство",
+                type: HintType.Error,
+            });
+        } finally {
+            closeMembershipModal();
+        }
     };
 
     const openAchievementModal = () => setIsAchievementModalOpen(true);
@@ -185,6 +200,7 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 size="SMALL"
                 variant="FILL"
                 onClick={openMembershipModal}
+                disabled={isActivatingMembership}
             >
                 Активировать членство
             </Button>
@@ -235,6 +251,7 @@ export const AdminUserSettings: FC<AdminUserSettingsProps> = (props) => {
                 onClose={closeMembershipModal}
                 confirmTextButton="Активировать"
                 cancelTextButton="Отмена"
+                isLoading={isActivatingMembership}
             />
             <AdminUpdateAchievement
                 achievements={achievementsData ?? []}

@@ -91,6 +91,7 @@ export {
     useLazyGetTransfersQuery, useGetPublicFoodsQuery,
     useLazyGetUsersQuery,
     useUpdateAdminUserMutation,
+    useActivateUserMembershipMutation,
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
     useGetUserByIdQuery,
