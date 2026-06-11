@@ -1,5 +1,27 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
 .loading {
     display: none;
+}
+
+.balloonWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 4px;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: hidden;
 }
 
 .map {
