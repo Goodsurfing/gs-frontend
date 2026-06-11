@@ -464,6 +464,13 @@ export const adminApi = createApi({
             }),
             invalidatesTags: ["user"],
         }),
+        activateUserMembership: build.mutation<void, string>({
+            query: (userId) => ({
+                url: `user/activate-membership/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["user"],
+        }),
         deleteUser: build.mutation<void, string>({
             query: (userId) => ({
                 url: `user/${userId}`,
@@ -936,6 +943,7 @@ export const {
     useGetPublicTransfersQuery,
     useLazyGetUsersQuery,
     useUpdateAdminUserMutation,
+    useActivateUserMembershipMutation,
     useDeleteUserMutation,
     useToggleAdminUserActiveMutation,
     useGetUserByIdQuery,
