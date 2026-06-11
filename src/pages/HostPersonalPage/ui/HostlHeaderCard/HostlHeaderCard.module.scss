@@ -29,10 +29,22 @@
     color: var(--text-secondary-2);
 }
 
+.nameWrapper {
+    display: flex;
+    align-items: center;
+}
+
 .name {
     font-size: 26px;
     font-weight: 400;
     color: var(--text-secondary-2);
+}
+
+.memberIcon {
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    vertical-align: middle;
 }
 
 .addres {

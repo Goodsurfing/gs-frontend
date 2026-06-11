@@ -11,6 +11,7 @@ import {
     telegramIcon,
     vkIcon,
 } from "@/shared/data/icons/socialIcons";
+import memberIcon from "@/shared/assets/icons/select-check.svg";
 
 import styles from "./HostlHeaderCard.module.scss";
 import { useGetTypeOrganization } from "@/shared/hooks/useGetTypeOrganization";
@@ -28,7 +29,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
     (props: HostlHeaderCardProps) => {
         const {
             host: {
-                name, type, address, avatar, vk, telegram,
+                name, type, address, avatar, vk, telegram, owner,
             },
             isEdit,
             isAuth,
@@ -80,7 +81,16 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                         {t("personalHost.Организация/")}
                         {getTranslate(type)}
                     </span>
-                    <h3 className={styles.name}>{name}</h3>
+                    <div className={styles.nameWrapper}>
+                        <h3 className={styles.name}>{name}</h3>
+                        {owner?.isMember && (
+                            <img
+                                src={memberIcon}
+                                className={styles.memberIcon}
+                                alt="member"
+                            />
+                        )}
+                    </div>
                     <span className={styles.address}>{address}</span>
                     <div className={styles.socials}>
                         {vk !== "" && (

@@ -12,7 +12,12 @@ import { profileApi, useGetProfileInfoQuery } from "@/entities/Profile";
 import { CreateVolunteerRequest, useCreateVolunteerMutation } from "@/entities/Volunteer";
 import { useAppDispatch } from "@/shared/hooks/redux";
 
-import { getHostRegisterPageUrl, getOfferPersonalPageUrl, getVolunteerDashboardPageUrl } from "@/shared/config/routes/AppUrls";
+import {
+    getHostDashboardPageUrl,
+    getHostRegisterPageUrl,
+    getOfferPersonalPageUrl,
+    getVolunteerDashboardPageUrl,
+} from "@/shared/config/routes/AppUrls";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { ConfirmActionModal } from "@/shared/ui/ConfirmActionModal/ConfirmActionModal";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -125,19 +130,24 @@ export const ProfileRoleWidget: FC<ProfileRoleWidgetProps> = (props) => {
     const renderRole = (rolesProfile: RoleInfo[]) => {
         if (!myProfile) return;
         return rolesProfile.map((role, index) => {
-            const isDisabled = (role.id === "volunteer" && myProfile.volunteer !== null)
+            const hasRole = (role.id === "volunteer" && myProfile.volunteer !== null)
                 || (role.id === "host" && myProfile.hostId !== null);
 
-            const buttonText = isDisabled ? role.disabledButtonText : role.buttonText;
+            const buttonText = hasRole ? role.disabledButtonText : role.buttonText;
+            const handleClick = hasRole
+                ? () => navigate(role.id === "volunteer"
+                    ? getVolunteerDashboardPageUrl(locale)
+                    : getHostDashboardPageUrl(locale))
+                : () => handleCardClick(role.id);
+
             return (
                 <RoleCard
                     titleRole={role.titleRole}
                     descriptionRole={role.descriptionRole}
                     imageRole={role.imageRole}
                     buttonText={buttonText}
-                    buttonDisabled={isDisabled}
                     key={index}
-                    onClick={() => handleCardClick(role.id)}
+                    onClick={handleClick}
                 />
             );
         });
