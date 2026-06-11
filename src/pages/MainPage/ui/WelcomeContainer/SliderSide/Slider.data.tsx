@@ -25,11 +25,17 @@ export const useTranslatedSliderData = () => {
     };
 
     const volunteerDesc = statsData?.today.volunteerCount
-        ? t("slider.volunteerCount", { count: formatCount(statsData.today.volunteerCount) })
+        ? t("slider.volunteerCount", {
+            count: statsData.today.volunteerCount,
+            displayCount: formatCount(statsData.today.volunteerCount),
+        })
         : t("С нами уже 90 000 путешественников со смыслом со всего мира");
 
     const vacancyDesc = statsData?.today.vacancyCount
-        ? t("slider.vacancyCount", { count: formatCount(statsData.today.vacancyCount) })
+        ? t("slider.vacancyCount", {
+            count: statsData.today.vacancyCount,
+            displayCount: formatCount(statsData.today.vacancyCount),
+        })
         : t("С нами уже больше 1500 проектов");
 
     const sliderData = [
