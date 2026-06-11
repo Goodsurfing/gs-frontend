@@ -2,17 +2,21 @@ import { useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { GetDonation, useLazyGetDonationByIdQuery } from "@/entities/Donation";
+import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { getDonationPersonalPage } from "@/shared/config/routes/AppUrls";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import Preloader from "@/shared/ui/Preloader/Preloader";
+import { Text } from "@/shared/ui/Text/Text";
+import { DonationSubmenu } from "@/widgets/Donation";
 import { Footer } from "@/widgets/Footer";
 import MainHeader from "@/widgets/MainHeader/MainHeader";
 
-import Preloader from "@/shared/ui/Preloader/Preloader";
-import { Text } from "@/shared/ui/Text/Text";
-import { useAuth } from "@/routes/model/guards/AuthProvider";
-import { GetDonation, useLazyGetDonationByIdQuery } from "@/entities/Donation";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { DonationPersonalCard } from "../DonationPersonalCard/DonationPersonalCard";
-import { DonationSubmenu } from "@/widgets/Donation";
 import { DonationPageContent } from "../DonationPageContent/DonationPageContent";
+import { DonationPersonalCard } from "../DonationPersonalCard/DonationPersonalCard";
 import styles from "./DonationPersonalPage.module.scss";
 
 export const DonationPersonalPage = () => {
@@ -21,7 +25,7 @@ export const DonationPersonalPage = () => {
     const { myProfile } = useAuth();
     const { locale } = useLocale();
     const { ready } = useTranslation();
-    const { ready: readyDonation } = useTranslation("donation");
+    const { t: tDonation, ready: readyDonation } = useTranslation("donation");
 
     const [getDonationData, { isLoading, isError }] = useLazyGetDonationByIdQuery();
 
@@ -81,8 +85,23 @@ export const DonationPersonalPage = () => {
             );
         }
 
+        const seoTitle = donationData.name || tDonation("personalSeo.title");
+        const seoDescription = donationData.description
+            ? getSeoDescription(donationData.description)
+            : tDonation("personalSeo.description");
+        const seoUrl = getSeoUrl(getDonationPersonalPage(locale, id));
+        const seoImage = getMediaContent(donationData.image?.contentUrl)
+            || getMediaContent(donationData.galleryImages?.[0]?.contentUrl);
+
         return (
             <div className={styles.wrapper}>
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription || tDonation("personalSeo.description")}
+                    canonicalUrl={seoUrl}
+                    keywords={tDonation("personalSeo.keywords")}
+                    ogImage={seoImage}
+                />
                 <MainHeader variant="static" />
                 <div className={styles.content}>
                     <DonationPersonalCard

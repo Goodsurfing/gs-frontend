@@ -48,5 +48,10 @@
         "keywords": "GoodSurfing, ranking de donantes, donaciones, caridad, apoyo a proyectos, donantes",
         "ogTitle": "Ranking de donantes de GoodSurfing",
         "ogDescription": "Consulta el ranking de participantes que apoyan proyectos de GoodSurfing con donaciones."
+    },
+    "personalSeo": {
+        "title": "Proyecto de recaudación de GoodSurfing",
+        "description": "Apoya un proyecto de recaudación en GoodSurfing y ayúdalo a reunir los fondos necesarios.",
+        "keywords": "GoodSurfing, recaudación, donaciones, caridad, apoyar proyecto, ayuda"
     }
 }
