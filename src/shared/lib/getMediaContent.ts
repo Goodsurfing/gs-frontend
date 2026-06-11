@@ -8,7 +8,7 @@ const toAbsoluteUrl = (url: string): string => {
     if (url.startsWith("http://") || url.startsWith("https://")) {
         return url;
     }
-    return `${BASE_URL}${url.startsWith("/") ? url.slice(1) : url}`;
+    return `${BASE_URL}${url.startsWith("/") ? url : `/${url}`}`;
 };
 
 export const getMediaContent = (
