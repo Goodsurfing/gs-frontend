@@ -33,6 +33,10 @@
         border-radius: 0;
         box-shadow: none;
     }
+
+    .banner {
+        border-radius: 0;
+    }
 }
 
 .static.scrolled .header {
@@ -65,18 +69,40 @@
 }
 
 .banner {
-    padding: 10px;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    background: var(--bg-field);
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 20px;
+    width: 100%;
+    background: #02CC9B;
     pointer-events: auto;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 0 0 10px 10px;
+    flex-wrap: wrap;
+    transition: background 0.15s ease;
+
+    &:hover {
+        background: #00B589;
+    }
 }
 
-.bannerBtn {
-    padding: 10px 25px;
+.bannerText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.bannerCta {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    text-decoration: underline;
+    flex-shrink: 0;
 }
 
 .left {
@@ -198,5 +224,19 @@
         display: block;
         padding: 16px 20px;
         pointer-events: auto;
+    }
+
+    .banner {
+        border-radius: 0;
+        padding: 10px 16px;
+        gap: 6px;
+    }
+
+    .bannerText {
+        font-size: 13px;
+    }
+
+    .bannerCta {
+        font-size: 13px;
     }
 }

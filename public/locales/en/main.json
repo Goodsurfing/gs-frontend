@@ -51,8 +51,8 @@
     "Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте. Найдите помощников для задач на сезон, экспедицию или долгий проект.": "We connect you with people ready to come and help on site. Find helpers for seasonal tasks, expeditions, or long-term projects.",
     "С нами уже больше 1500 проектов": "Already over 1,500 projects with us",
     "slider": {
-        "volunteerCount": "We've already got over {{count}} meaningful travelers from all over the world with us",
-        "vacancyCount": "Already over {{count}} projects with us"
+        "volunteerCount": "We've already got over {{displayCount}} meaningful travelers from all over the world with us",
+        "vacancyCount": "Already over {{displayCount}} projects with us"
     },
     "seo": {
         "title": "GoodSurfing — meaningful volunteer travel",
