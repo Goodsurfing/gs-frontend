@@ -1,13 +1,17 @@
 import React, { FC, useEffect } from "react";
-import { Navigation } from "@/features/Article";
-import { getAcademyCoursePageUrl, getAcademyLessonPageUrl, getAcademyMainPageUrl } from "@/shared/config/routes/AppUrls";
+import { useTranslation } from "react-i18next";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetCourseLessonByIdQuery, useWatchLessonMutation } from "@/entities/Academy/api/courseApi";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { LessonVideo } from "../LessonVideo/LessonVideo";
 import { LessonReview } from "@/features/Academy";
-import CustomLink from "@/shared/ui/Link/Link";
+import { Navigation } from "@/features/Article";
+import { getAcademyCoursePageUrl, getAcademyLessonPageUrl, getAcademyMainPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
+import CustomLink from "@/shared/ui/Link/Link";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import { LessonVideo } from "../LessonVideo/LessonVideo";
 import styles from "./LessonPersonal.module.scss";
 
 interface LessonPersonalProps {
@@ -17,6 +21,7 @@ interface LessonPersonalProps {
 export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
     const { lessonId } = props;
     const { locale } = useLocale();
+    const { t, ready } = useTranslation("academy");
     const { data, isLoading } = useGetCourseLessonByIdQuery(lessonId);
     const [watchLesson] = useWatchLessonMutation();
 
@@ -27,8 +32,29 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
         watchLesson(lessonId);
     }, [lessonId, watchLesson]);
 
+    const seoTitle = data?.name || t("seo.lesson.title");
+    const seoDescription = data?.description
+        ? getSeoDescription(data.description) || t("seo.lesson.description")
+        : t("seo.lesson.description");
+    const seoUrl = getSeoUrl(getAcademyLessonPageUrl(locale, lessonId));
+    const seoImage = getMediaContent(data?.image?.contentUrl);
+    const seoKeywords = [
+        data?.name,
+        data?.course.name,
+        t("seo.lesson.keywords"),
+    ].filter(Boolean).join(", ");
+
     return (
         <div className={styles.wrapper}>
+            {ready && data && (
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    keywords={seoKeywords}
+                    ogImage={seoImage}
+                />
+            )}
             {data && (
                 <Navigation
                     breadcrumbs={[
