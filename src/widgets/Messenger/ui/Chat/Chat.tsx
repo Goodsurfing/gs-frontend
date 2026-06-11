@@ -202,6 +202,7 @@ export const Chat: FC<ChatProps> = (props) => {
         const processMessages = async () => {
             let currentDate = "";
             const today = new Date().toDateString();
+            const effectiveCompanion = companionData ?? chatData?.otherParticipants?.[0];
 
             const elements = await Promise.all(
                 messages.map(async (message) => {
@@ -217,8 +218,11 @@ export const Chat: FC<ChatProps> = (props) => {
                     let userAvatar;
 
                     if (isUserCompanion) {
-                        userName = getFullName(companionData?.firstName, companionData?.lastName);
-                        userAvatar = getMediaContent(companionData?.image?.contentUrl);
+                        userName = getFullName(
+                            effectiveCompanion?.firstName,
+                            effectiveCompanion?.lastName,
+                        );
+                        userAvatar = getMediaContent(effectiveCompanion?.image?.contentUrl);
                     } else {
                         userName = getFullName(
                             myProfileData.firstName,
@@ -317,7 +321,7 @@ export const Chat: FC<ChatProps> = (props) => {
 
         processMessages();
     }, [messages, getApplicationData, myProfileData, locale,
-        readMessage, onApplicationSubmit, companionData]);
+        readMessage, onApplicationSubmit, companionData, chatData]);
 
     if (!id || !myProfileData) {
         return (
@@ -452,7 +456,10 @@ export const Chat: FC<ChatProps> = (props) => {
                             onClick={handleBackButton}
                         />
                         <span className={styles.userName}>
-                            {getFullName(companionData?.firstName, companionData?.lastName)}
+                            {getFullName(
+                                (companionData ?? chatData?.otherParticipants?.[0])?.firstName,
+                                (companionData ?? chatData?.otherParticipants?.[0])?.lastName,
+                            )}
                         </span>
                     </div>
                     <div className={styles.settingsInfo}>
