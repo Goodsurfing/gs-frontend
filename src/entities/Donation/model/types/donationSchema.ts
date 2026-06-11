@@ -110,7 +110,9 @@ export type GetDonationWhen = Pick<GetDonation, "id"> & {
     isUntilAmountCollected: boolean;
 };
 
-export type UpdateDonationWhen = Omit<GetDonationWhen, | "id">;
+export type UpdateDonationWhen = Omit<GetDonationWhen, "id" | "endDate"> & {
+    endDate: string | null;
+};
 
 export interface UpdateDonationWhenRequest {
     id: string;

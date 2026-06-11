@@ -331,7 +331,7 @@ const FundraiseStepPage = () => {
             await updateDonationWhen({
                 id,
                 body: {
-                    endDate: formattingDate(endDate) || "",
+                    endDate: isUntilAmountCollected ? null : (formattingDate(endDate) || null),
                     isUntilAmountCollected,
                 },
             }).unwrap();
