@@ -2,5 +2,12 @@
     "Наша команда": "Nuestro Equipo",
     "Основатели": "Fundadores",
     "Команда Гудсёрфинга": "Equipo Goodsurfing",
-    "Хочу в команду": "Quiero Unirme al Equipo"
+    "Хочу в команду": "Quiero Unirme al Equipo",
+    "seo": {
+        "title": "Equipo de GoodSurfing",
+        "description": "Conoce a los fundadores y al equipo de GoodSurfing, la plataforma para voluntariado y viajes con sentido.",
+        "keywords": "GoodSurfing, equipo de GoodSurfing, fundadores, voluntariado, viajes con sentido",
+        "ogTitle": "Equipo de GoodSurfing",
+        "ogDescription": "Las personas que crean y desarrollan GoodSurfing."
+    }
 }
