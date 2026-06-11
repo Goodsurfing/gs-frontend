@@ -20,5 +20,12 @@
         "отзывов": "reseñas",
         "ГудСёрфинг сегодня": "Goodsurfing hoy",
         "Присоединиться": "Unirse",
-        "Фото со встреч и командной работы": "Fotos de reuniones y trabajo en equipo"
+        "Фото со встреч и командной работы": "Fotos de reuniones y trabajo en equipo",
+        "seo": {
+            "title": "Sobre GoodSurfing - viajes con sentido",
+            "description": "La historia, misión y principios de GoodSurfing: una plataforma para voluntariado, expediciones y viajes con sentido.",
+            "keywords": "GoodSurfing, sobre el proyecto, viajes con sentido, voluntariado, expediciones, misión de GoodSurfing",
+            "ogTitle": "Sobre GoodSurfing",
+            "ogDescription": "Conoce cómo comenzó GoodSurfing, qué impulsa al equipo y qué principios dan forma a la plataforma."
+        }
 }
