@@ -97,6 +97,7 @@ const HostOffersPage = () => {
     };
 
     const handleDeleteClick = (offerId: number) => {
+        setDeleteOfferError(false);
         setSelectedOffer(offerId);
         setSelectedBtnOffer("delete");
     };

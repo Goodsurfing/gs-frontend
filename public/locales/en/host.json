@@ -33,7 +33,7 @@
         "Ок": "Ok",
         "Отмена": "Cancel",
         "Удалить": "Delete",
-        "Вакансию удалить нельзя": "This offer posting cannot be deleted"
+        "Вакансию удалить нельзя": "Cannot delete an offer with submitted applications"
     },
     "hostNotes": {
         "Мои заявки": "My applications",
