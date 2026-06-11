@@ -43,6 +43,7 @@ export interface Profile {
     favoriteCategories: number[];
     isActive: boolean;
     isVerified: boolean;
+    isMember?: boolean;
 }
 
 export type ProfileById = Omit<Profile, "volunteer" | "email" | "isVerified" | "favoriteCategories"> & {
