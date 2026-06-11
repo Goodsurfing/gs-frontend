@@ -1,0 +1,21 @@
+{
+    "seo": {
+        "main": {
+            "title": "GoodSurfing Academy - courses on travel and volunteering",
+            "description": "Learn meaningful travel with GoodSurfing Academy: take expert courses, complete tasks, and build skills for volunteer projects.",
+            "keywords": "GoodSurfing, academy, courses, volunteering, meaningful travel, learning, expeditions, projects",
+            "ogTitle": "GoodSurfing Academy",
+            "ogDescription": "Courses and lessons from experts about meaningful travel and volunteering."
+        },
+        "course": {
+            "title": "GoodSurfing Academy Course",
+            "description": "A GoodSurfing Academy course about meaningful travel, volunteering, and useful skills for projects.",
+            "keywords": "GoodSurfing, course, academy, volunteering, meaningful travel, learning"
+        },
+        "lesson": {
+            "title": "GoodSurfing Academy Lesson",
+            "description": "A GoodSurfing Academy lesson with practical knowledge about meaningful travel and volunteering.",
+            "keywords": "GoodSurfing, lesson, academy, course, volunteering, meaningful travel"
+        }
+    }
+}

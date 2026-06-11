@@ -41,5 +41,17 @@
         "Произошла ошибка загрузки пожертвований": "An error occurred while loading donations",
         "Поддержать": "Support",
         "На данный момент проектов нет": "No projects available at the moment"
+    },
+    "ratingSeo": {
+        "title": "GoodSurfing donor rating",
+        "description": "A ranking of participants who support GoodSurfing projects with donations: number of donations and total amount contributed.",
+        "keywords": "GoodSurfing, donor rating, donations, charity, project support, donors",
+        "ogTitle": "GoodSurfing donor rating",
+        "ogDescription": "Explore the ranking of participants supporting GoodSurfing projects with donations."
+    },
+    "personalSeo": {
+        "title": "GoodSurfing fundraising project",
+        "description": "Support a fundraising project on GoodSurfing and help it collect the necessary funds.",
+        "keywords": "GoodSurfing, fundraising, donations, charity, support project, help"
     }
 }

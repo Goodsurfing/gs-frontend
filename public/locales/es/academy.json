@@ -1,0 +1,21 @@
+{
+    "seo": {
+        "main": {
+            "title": "Academia GoodSurfing - cursos sobre viajes y voluntariado",
+            "description": "Aprende a viajar con sentido con la Academia GoodSurfing: toma cursos de expertos, completa tareas y desarrolla habilidades para proyectos de voluntariado.",
+            "keywords": "GoodSurfing, academia, cursos, voluntariado, viajes con sentido, aprendizaje, expediciones, proyectos",
+            "ogTitle": "Academia GoodSurfing",
+            "ogDescription": "Cursos y lecciones de expertos sobre viajes con sentido y voluntariado."
+        },
+        "course": {
+            "title": "Curso de la Academia GoodSurfing",
+            "description": "Un curso de la Academia GoodSurfing sobre viajes con sentido, voluntariado y habilidades útiles para proyectos.",
+            "keywords": "GoodSurfing, curso, academia, voluntariado, viajes con sentido, aprendizaje"
+        },
+        "lesson": {
+            "title": "Lección de la Academia GoodSurfing",
+            "description": "Una lección de la Academia GoodSurfing con conocimientos prácticos sobre viajes con sentido y voluntariado.",
+            "keywords": "GoodSurfing, lección, academia, curso, voluntariado, viajes con sentido"
+        }
+    }
+}

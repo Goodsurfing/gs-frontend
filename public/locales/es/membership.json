@@ -72,6 +72,34 @@
     },
     "questions": {
         "Остались вопросы?": "¿Tienes preguntas?",
-        "Сейчас ответим": "Te responderemos ahora"
+        "Сейчас ответим": "Te responderemos ahora",
+        "faq": {
+            "why-pay": {
+                "question": "¿Por qué debería pagar si ya ayudo como voluntario?",
+                "answer": "Tu cuota de membresía apoya la infraestructura del proyecto: desarrollo del sitio web, creación de contenido, organización de eventos y soporte legal. Así ayudas a GoodSurfing a crecer y mejorar para todos los participantes."
+            },
+            "not-renew": {
+                "question": "¿Qué pasa si no renuevo mi membresía?",
+                "answer": "Siempre puedes seguir formando parte de la comunidad, leer el blog y participar en eventos abiertos. Sin embargo, el acceso a proyectos de voluntariado y materiales cerrados estará limitado hasta que renueves tu membresía."
+            },
+            "money": {
+                "question": "¿A dónde va mi dinero?",
+                "answer": "Somos una organización sin fines de lucro y todos los fondos se destinan al desarrollo del proyecto. Puedes consultar nuestros informes e información financiera en la sección Sobre la NPO."
+            }
+        }
+    },
+    "geo": {
+        "about": {
+            "membership": "Membresía GoodSurfing",
+            "volunteering": "Voluntariado de viaje",
+            "travel": "Viajes con sentido"
+        }
+    },
+    "seo": {
+        "title": "Membresía GoodSurfing - viajes con sentido sin límites",
+        "description": "Obtén una membresía GoodSurfing para apoyar el proyecto, acceder a más oportunidades de voluntariado y unirte a una comunidad de viajeros con sentido.",
+        "keywords": "GoodSurfing, membresía, voluntariado, viajes con sentido, comunidad, apoyar proyecto",
+        "ogTitle": "Membresía GoodSurfing",
+        "ogDescription": "Únete a la comunidad GoodSurfing y apoya el desarrollo de viajes con sentido."
     }
 }

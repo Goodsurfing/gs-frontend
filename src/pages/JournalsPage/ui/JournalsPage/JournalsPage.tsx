@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { AdminSort } from "@/entities/Admin";
+import { journalCardAdapter, useLazyGetJournalListQuery } from "@/entities/Journal";
+import { TagsOption } from "@/features/Article";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import { OfferPagination } from "@/widgets/OffersMap";
+import { getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { getSeoUrl } from "@/shared/lib/getSeoUrl";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 
 import { Header } from "../Header/Header";
 import { JournalFilter } from "../JournalFilter/JournalFilter";
 import { JournalsList } from "../JournalsList/JournalsList";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { TagsOption } from "@/features/Article";
-import { AdminSort } from "@/entities/Admin";
-import { journalCardAdapter, useLazyGetJournalListQuery } from "@/entities/Journal";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { OfferPagination } from "@/widgets/OffersMap";
-import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./JournalsPage.module.scss";
 
 const limit = 9;
@@ -28,6 +32,7 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const JournalsPage = () => {
     const { locale } = useLocale();
+    const { t, ready } = useTranslation("journals");
     const {
         page, sort, setPage, setSort,
     } = useNewsFilters();
@@ -48,6 +53,16 @@ const JournalsPage = () => {
 
     return (
         <MainPageLayout>
+            {ready && (
+                <SeoHelmet
+                    title={t("seo.title")}
+                    description={t("seo.description")}
+                    canonicalUrl={getSeoUrl(getJournalsPageUrl(locale))}
+                    keywords={t("seo.keywords")}
+                    ogTitle={t("seo.ogTitle")}
+                    ogDescription={t("seo.ogDescription")}
+                />
+            )}
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>

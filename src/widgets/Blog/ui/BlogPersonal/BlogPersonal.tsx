@@ -1,26 +1,34 @@
 import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
-import {
-    ArticleContent, ArticleHeader, ArticleShare, Navigation,
-} from "@/features/Article";
-import { getBlogPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useTranslation } from "react-i18next";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { CommentWidget } from "@/widgets/Article";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { MAIN_URL } from "@/shared/constants/api";
 import {
     blogReviewsAdapter,
     GetReviewBlog,
     useCreateReviewBlogMutation, useGetBlogByIdQuery,
     useLazyGetReviewsBlogQuery, usePutLikeBlogMutation,
 } from "@/entities/Blog";
-import { getMediaContent } from "@/shared/lib/getMediaContent";
-import { useGetFullName } from "@/shared/lib/getFullName";
-import styles from "./BlogPersonal.module.scss";
+import {
+    ArticleContent, ArticleHeader, ArticleShare, Navigation,
+} from "@/features/Article";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { CommentWidget } from "@/widgets/Article";
+import {
+    getBlogPageUrl,
+    getBlogPersonalPageUrl,
+    getNewsPersonalPageUrl,
+} from "@/shared/config/routes/AppUrls";
+import { MAIN_URL } from "@/shared/constants/api";
+import { useGetFullName } from "@/shared/lib/getFullName";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import styles from "./BlogPersonal.module.scss";
 
 interface BlogPersonalProps {
     blogId: number;
@@ -32,6 +40,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const { blogId } = props;
     const { locale } = useLocale();
     const { isAuth } = useAuth();
+    const { t, ready } = useTranslation("blog");
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewBlog[]>([]);
@@ -116,8 +125,23 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
         );
     }
 
+    const seoTitle = data?.name || t("seo.title");
+    const seoDescription = data?.description
+        ? getSeoDescription(data.description) || t("seo.description")
+        : t("seo.description");
+    const seoUrl = getSeoUrl(getBlogPersonalPageUrl(locale, String(blogId)));
+    const seoImage = getMediaContent(data?.image?.contentUrl);
+
     return (
         <div className={styles.wrapper}>
+            {ready && (
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    ogImage={seoImage}
+                />
+            )}
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {data && (
                 <Navigation

@@ -41,6 +41,7 @@ const MainPage: FC = () => {
                 title={t("seo.title")}
                 description={t("seo.description")}
                 canonicalUrl={mainPageSeoUrl}
+                keywords={t("seo.keywords")}
                 ogTitle={t("seo.ogTitle")}
                 ogDescription={t("seo.ogDescription")}
             />
