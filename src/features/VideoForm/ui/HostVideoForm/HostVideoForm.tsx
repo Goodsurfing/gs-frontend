@@ -43,14 +43,16 @@ export const HostVideoForm: FC<HostVideoFormProps> = (props) => {
     const addVideo = useCallback(
         (newVideo: VideoFormImplementation) => {
             setToast(undefined);
+            const updatedVideos = [...videos, newVideo.video];
             updateHost({
                 id: host.id,
                 body: {
-                    videoGallery: [...videos, newVideo.video],
+                    videoGallery: updatedVideos,
                 },
             })
                 .unwrap()
                 .then(() => {
+                    setVideos(updatedVideos);
                     setToast({
                         text: t("hostVideo.Данные успешно изменены"),
                         type: HintType.Success,

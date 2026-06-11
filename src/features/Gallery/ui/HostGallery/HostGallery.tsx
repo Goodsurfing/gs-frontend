@@ -91,7 +91,10 @@ export const HostGallery: FC<HostGalleryProps> = (props) => {
                 uploadedImgs={imgs}
                 onUpload={handleOnUpload}
                 onDelete={handleOnDelete}
-                onError={() => {}}
+                onError={(error) => setToast({
+                    text: error ?? t("volunteer-gallery.Произошла ошибка с обновлением галереи"),
+                    type: HintType.Error,
+                })}
             />
         </div>
     );
