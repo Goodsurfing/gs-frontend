@@ -56,5 +56,12 @@
         "ogTitle": "GoodSurfing — travel, help, change the world",
         "ogDescription": "Find volunteer opportunities and meaningful projects around the world on GoodSurfing.",
         "keywords": "GoodSurfing, volunteer travel, volunteering, meaningful travel, opportunities, projects, expeditions, internships"
+    },
+    "geo": {
+        "about": {
+            "volunteering": "Volunteer projects",
+            "travel": "Meaningful travel",
+            "expeditions": "Expeditions and internships"
+        }
     }
 }
