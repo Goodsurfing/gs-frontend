@@ -66,11 +66,21 @@ export const OffersSearchFilter = () => {
     } = offerFilterForm;
 
     const isSyncingRef = useRef(false);
+    const currentSearchRef = useRef<string>("");
 
     useEffect(() => {
-        const watchData = watch();
-        const preparedData = offersFilterApiAdapter(watchData);
-        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        if (currentSearchRef.current) {
+            fetchOffers({
+                sort: OfferSort.UpdatedDesc,
+                search: currentSearchRef.current,
+                limit: OFFERS_PER_PAGE,
+                page: currentPage,
+            });
+        } else {
+            const watchData = watch();
+            const preparedData = offersFilterApiAdapter(watchData);
+            fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        }
     }, [currentPage]);
 
     useEffect(() => {
@@ -111,6 +121,7 @@ export const OffersSearchFilter = () => {
     }, []);
 
     const onApplySearch = useCallback(async (search: string) => {
+        currentSearchRef.current = search;
         setSearchParams(new URLSearchParams());
         fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
@@ -129,6 +140,7 @@ export const OffersSearchFilter = () => {
     }, [searchParams, onApplySearch]);
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
+        currentSearchRef.current = "";
         const preparedData = offersFilterApiAdapter(data);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         fetchAllOffersMap({ ...preparedData });
@@ -136,6 +148,7 @@ export const OffersSearchFilter = () => {
     }), []);
 
     const onResetFilters = useCallback(async () => {
+        currentSearchRef.current = "";
         setSearchParams(new URLSearchParams());
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
@@ -158,8 +171,17 @@ export const OffersSearchFilter = () => {
 
                 debounceTimeoutRef.current = setTimeout(() => {
                     const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
-                    fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
-                    fetchAllOffersMap({ ...preparedData });
+                    if (currentSearchRef.current) {
+                        fetchOffers({
+                            ...preparedData,
+                            search: currentSearchRef.current,
+                            limit: OFFERS_PER_PAGE,
+                            page: currentPage,
+                        });
+                    } else {
+                        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+                        fetchAllOffersMap({ ...preparedData });
+                    }
                 }, 300);
             }
         });
