@@ -56,8 +56,9 @@ export type GetDonation = Omit<GetDonations, "shortDescription" | "isClose" | "o
     startDate: string;
     peopleSupportCount: number;
     percentAmountCollect: number;
+    collectedAmount: number;
     daysLeft: number;
-    amount: number;
+    amount: number | null;
     minAmount: number;
     latitude: number;
     longitude: number;

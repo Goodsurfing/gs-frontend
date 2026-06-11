@@ -83,6 +83,7 @@ export const mockDonation: GetDonation = {
     description: "Полное описание",
     address: "Москва, Россия",
     amount: 1500,
+    collectedAmount: 0,
     minAmount: 1000,
     categories: [],
     galleryImages: [],
