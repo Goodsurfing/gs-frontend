@@ -28,13 +28,23 @@
 
 .closeBtnIcon {
     cursor: pointer;
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     position: absolute;
     top: 30%;
     right: -2rem;
+    transition: transform 0.15s ease;
 
     svg {
-        fill: var(--text-caption);
+        fill: var(--text-primary-2);
+        transition: fill 0.15s ease;
+    }
+
+    &:hover {
+        transform: scale(1.15);
+
+        svg {
+            fill: var(--error-color);
+        }
     }
 }
