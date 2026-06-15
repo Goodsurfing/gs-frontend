@@ -358,6 +358,16 @@ export const MainHeaderNav = () => {
                     {t("main.welcome.header.membership", "Членство")}
                 </Link>
             </div>
+            <div>
+                <Link className={styles.btnNav} to="https://expedition.goodsurfing.org/">
+                    {t("main.welcome.header.expeditions", "Экспедиции")}
+                </Link>
+            </div>
+            <div>
+                <Link className={styles.btnNav} to="https://international.goodsurfing.org/">
+                    {t("main.welcome.header.international-volunteering", "Международное волонтёрство")}
+                </Link>
+            </div>
         </div>
     );
 };

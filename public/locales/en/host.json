@@ -17,7 +17,8 @@
         "Оставить отзыв": "Leave a review",
         "Напишите ваш отзыв": "Write your review",
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
-        "Ваш отзыв был отправлен": "Your review has been submitted"
+        "Ваш отзыв был отправлен": "Your review has been submitted",
+        "Поставьте оценку, чтобы оставить отзыв": "Rate the project to leave a review"
     },
     "hostOffers": {
         "Мои вакансии": "My Offers",

@@ -102,6 +102,14 @@ export const ModalReview: FC<ModalReviewProps> = (props) => {
                     maxLength={500}
                 />
                 {errorText && (<ErrorText text={errorText} />)}
+                {!stars && (
+                    <p className={styles.hint}>
+                        {t(
+                            "host-dashboard.Поставьте оценку, чтобы оставить отзыв",
+                            "Поставьте оценку, чтобы оставить отзыв",
+                        )}
+                    </p>
+                )}
                 <Button
                     onClick={() => handleSendReview()}
                     variant="FILL"
