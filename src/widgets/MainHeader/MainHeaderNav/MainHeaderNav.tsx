@@ -354,11 +354,6 @@ export const MainHeaderNav = () => {
                 </Link>
             </div>
             <div>
-                <Link className={styles.btnMembership} to={getMembershipPageUrl(locale)}>
-                    {t("main.welcome.header.membership", "Членство")}
-                </Link>
-            </div>
-            <div>
                 <Link className={styles.btnNav} to="https://expedition.goodsurfing.org/">
                     {t("main.welcome.header.expeditions", "Экспедиции")}
                 </Link>
