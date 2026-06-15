@@ -30,6 +30,10 @@ export const useGetTypeOrganization = () => {
             text: t("hostDescription.ООПТ"),
             value: "ООПТ",
         },
+        {
+            text: t("hostDescription.НКО"),
+            value: "НКО",
+        },
     ];
 
     const getTranslate = (type: string) => {
@@ -38,6 +42,7 @@ export const useGetTypeOrganization = () => {
             ОАО: t("hostDescription.ОАО"),
             ООО: t("hostDescription.ООО"),
             ООПТ: t("hostDescription.ООПТ"),
+            НКО: t("hostDescription.НКО"),
         };
 
         return translations[type] ?? type;

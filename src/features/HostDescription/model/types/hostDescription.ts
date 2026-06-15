@@ -1,6 +1,6 @@
 import { Image } from "@/types/media";
 
-export type OrganizationType = "ООО" | "ООПТ" | "ОАО" | "ИП" | "Другое";
+export type OrganizationType = "ООО" | "ООПТ" | "ОАО" | "ИП" | "НКО" | "Другое";
 
 export type HostDescriptionTypeFields = {
     organizationType: OrganizationType;

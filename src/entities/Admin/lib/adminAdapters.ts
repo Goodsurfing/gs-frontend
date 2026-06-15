@@ -161,7 +161,7 @@ AdminOrganizationsFields[] => {
     return result;
 };
 
-const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ"] as const;
+const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ", "НКО"] as const;
 const isOrganizationType = (x: any): x is OrganizationType => organizationType.includes(x);
 
 export const adminOrganizationAdapter = (data: AdminOrganization): HostDescriptionFormFields => {

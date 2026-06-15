@@ -8,7 +8,7 @@ import {
 } from "../model/types/hostDescription";
 import { BASE_URL } from "@/shared/constants/api";
 
-const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ"] as const;
+const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ", "НКО"] as const;
 
 const isOrganizationType = (x: any): x is OrganizationType => organizationType.includes(x);
 
