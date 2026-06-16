@@ -133,7 +133,7 @@
 .right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     flex-shrink: 0;
 
     .icons {
@@ -217,14 +217,14 @@
     display: none;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1366px) {
     .header {
         padding: 0 12px;
-        gap: 10px;
+        gap: 12px;
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
     .wrapper {
         position: sticky;
         top: 0;
