@@ -57,20 +57,6 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
     return (
         <Box className={styles.wrapper}>
             <Box className={styles.dateWrapper}>
-                <DateInputs
-                    onDateChange={handleTempPeriodChange}
-                    value={tempPeriod}
-                    close={(
-                        <CloseButton
-                            className={cn(
-                                styles.btn,
-                                { [styles.active]: !!(tempPeriod.start || tempPeriod.end) },
-                            )}
-                            onClick={resetTempPeriod}
-                        />
-                    )}
-                />
-
                 {value.map((dates, index) => (
                     <DateInputs
                         key={index}
@@ -84,6 +70,20 @@ export const OfferWhenPeriods = memo(({ value, onChange }: OfferWhenPeriodsProps
                         )}
                     />
                 ))}
+
+                <DateInputs
+                    onDateChange={handleTempPeriodChange}
+                    value={tempPeriod}
+                    close={(
+                        <CloseButton
+                            className={cn(
+                                styles.btn,
+                                { [styles.active]: !!(tempPeriod.start || tempPeriod.end) },
+                            )}
+                            onClick={resetTempPeriod}
+                        />
+                    )}
+                />
             </Box>
             <Box className={styles.add}>
                 <AddButton text={t("when.Добавить период")} onClick={onAddBtnClick} />
