@@ -2,12 +2,9 @@ import { memo, useCallback, useState } from "react";
 
 import { Offer } from "@/entities/Offer";
 import { PersonalCard } from "@/entities/PersonalCard";
-
-import {
-    getMediaContent,
-    getMediaContentsArray,
-} from "@/shared/lib/getMediaContent";
 import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { Image } from "@/types/media";
 
 import { OfferPersonalCardCategory } from "../OfferPersonalCardCategory/OfferPersonalCardCategory";
 import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
@@ -16,6 +13,12 @@ interface OfferPersonalCardProps {
     id: string;
     offerData: Offer;
     isVolunteer: boolean;
+}
+
+function galleryUrls(images: Image[]): string[] {
+    return images.map((img) => img.thumbnails?.large
+        ?? img.thumbnails?.medium
+        ?? img.contentUrl).filter(Boolean) as string[];
 }
 
 export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
@@ -33,7 +36,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
     const showImageBlock = offerData.galleryImages.length > 0 ? (
         <OfferPersonalCardImageBlock
             onImagesClick={onImagesClick}
-            images={getMediaContentsArray(offerData.galleryImages)}
+            images={galleryUrls(offerData.galleryImages)}
         />
     ) : null;
 
@@ -62,7 +65,7 @@ export const OfferPersonalCard = memo((props: OfferPersonalCardProps) => {
                 <ModalGallery
                     isOpen={isModalOpen}
                     onClose={handleModalClose}
-                    images={getMediaContentsArray(offerData.galleryImages)}
+                    images={galleryUrls(offerData.galleryImages)}
                 />
             )}
         </>

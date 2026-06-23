@@ -13,19 +13,19 @@ import youtubeIcon from "@/shared/assets/icons/footer/youtube.svg";
 import maxIcon from "@/shared/assets/icons/footer/max.svg";
 import {
     getAboutProjectPageUrl,
+    getAcademyMainPageUrl,
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
-    // getBlogPageUrl,
+    getBlogPageUrl,
     getFindJobPageUrl,
-    // getJournalsPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
+    getNewsPageUrl,
     getNPOPageUrl,
-    // getNewsPageUrl,
     getOurTeamPageUrl,
     getPrivacyPolicyPageUrl,
     getRulesPageUrl,
-    // getVideoPageUrl,
+    getVideoPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
 import styles from "./Footer.module.scss";
@@ -100,13 +100,13 @@ export const Footer = memo(() => {
                             <div className={styles.menu__content}>
                                 <Link
                                     className={styles.link}
-                                    to="https://community.goodsurfing.org/category/post/"
+                                    to={getBlogPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.blog")}
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to="https://community.goodsurfing.org/filmy/"
+                                    to={getVideoPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.video")}
                                 </Link>
@@ -126,7 +126,7 @@ export const Footer = memo(() => {
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to="https://community.goodsurfing.org/courses/"
+                                    to={getAcademyMainPageUrl(locale)}
                                 >
                                     {t("main.welcome.header.community.courses")}
                                 </Link>
@@ -197,7 +197,7 @@ export const Footer = memo(() => {
                                 </Link>
                                 <Link
                                     className={styles.link}
-                                    to="https://community.goodsurfing.org/"
+                                    to={getNewsPageUrl(locale)}
                                 >
                                     {t(
                                         "main.welcome.header.about-project.news",
