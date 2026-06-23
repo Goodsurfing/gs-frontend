@@ -1,8 +1,6 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
-
-import { useCategories } from "@/shared/data/categories";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import { Category } from "../Category/Category";
@@ -18,7 +16,6 @@ interface CategoriesWidgetProps {
 export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
     (props: CategoriesWidgetProps) => {
         const { className, locale } = props;
-        const { getTranslation } = useCategories();
         const {
             data: categoriesData,
             isLoading,
@@ -40,7 +37,7 @@ export const CategoriesWidget: FC<CategoriesWidgetProps> = memo(
         const renderCategories = () => categoriesData.map((category, index) => (
             <Category
                 className={styles.category}
-                title={getTranslation(category.name) ?? ""}
+                title={category.name ?? ""}
                 image={category.imagePath}
                 vacancyNumber={category.vacancyCount}
                 key={index}

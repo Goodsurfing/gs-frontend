@@ -39,7 +39,7 @@ import {
     FUNDRAISE_DESCRIPTION_FORM,
     FUNDRAISE_WHERE_FORM,
 } from "@/shared/constants/localstorage";
-import { formattingDate } from "@/shared/lib/formatDate";
+import { formattingDate, parseDateApi } from "@/shared/lib/formatDate";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { AddButton } from "@/shared/ui/AddButton/AddButton";
 import Button from "@/shared/ui/Button/Button";
@@ -236,7 +236,7 @@ const FundraiseStepPage = () => {
         }
 
         if (donationWhen) {
-            setEndDate(donationWhen.endDate ? new Date(donationWhen.endDate) : undefined);
+            setEndDate(parseDateApi(donationWhen.endDate));
             setIsUntilAmountCollected(Boolean(donationWhen.isUntilAmountCollected));
         }
     }, [step, donationWhen]);
@@ -331,7 +331,7 @@ const FundraiseStepPage = () => {
             await updateDonationWhen({
                 id,
                 body: {
-                    endDate: formattingDate(endDate) || "",
+                    endDate: isUntilAmountCollected ? null : (formattingDate(endDate) || null),
                     isUntilAmountCollected,
                 },
             }).unwrap();

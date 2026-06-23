@@ -72,6 +72,34 @@
     },
     "questions": {
         "Остались вопросы?": "Have questions?",
-        "Сейчас ответим": "We'll answer them now"
+        "Сейчас ответим": "We'll answer them now",
+        "faq": {
+            "why-pay": {
+                "question": "Why should I pay if I already help as a volunteer?",
+                "answer": "Your membership fee supports the project infrastructure: website development, content creation, event organization, and legal support. This helps GoodSurfing grow and become better for all participants."
+            },
+            "not-renew": {
+                "question": "What happens if I do not renew my membership?",
+                "answer": "You can always remain part of the community, read the blog, and join open events. However, access to volunteer projects and closed materials will be limited until you renew your membership."
+            },
+            "money": {
+                "question": "Where does my money go?",
+                "answer": "We are a non-profit organization, and all funds go toward developing the project. You can review our reports and financial information in the About NPO section."
+            }
+        }
+    },
+    "geo": {
+        "about": {
+            "membership": "GoodSurfing membership",
+            "volunteering": "Outbound volunteering",
+            "travel": "Travel with meaning"
+        }
+    },
+    "seo": {
+        "title": "GoodSurfing membership - meaningful travel without limits",
+        "description": "Get a GoodSurfing membership to support the project, unlock more volunteering opportunities, and join a community of meaningful travelers.",
+        "keywords": "GoodSurfing, membership, volunteering, travel with meaning, community, support project",
+        "ogTitle": "GoodSurfing membership",
+        "ogDescription": "Join the GoodSurfing community and support the development of meaningful travel."
     }
 }

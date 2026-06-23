@@ -90,7 +90,8 @@ export const parseDate = (dateString: string | null | undefined) => {
 export const parseDateApi = (dateStr: string | null | undefined): Date | undefined => {
     if (!dateStr) return undefined;
 
-    const parts = dateStr.split(".");
+    // API отдаёт даты как d.m.Y и d-m-Y — поддерживаем оба разделителя.
+    const parts = dateStr.split(/[.\-/]/);
     if (parts.length !== 3) return undefined;
 
     const [day, month, year] = parts.map(Number);

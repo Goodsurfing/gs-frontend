@@ -1,22 +1,26 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { AdminSort } from "@/entities/Admin";
+import { useLazyGetNewsListQuery } from "@/entities/News";
+import { TagsOption } from "@/features/Article";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import { OfferPagination } from "@/widgets/OffersMap";
 
 import { MemberBanner } from "@/features/MemberBanner";
 
+import { getNewsPageUrl } from "@/shared/config/routes/AppUrls";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { getSeoUrl } from "@/shared/lib/getSeoUrl";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 
 import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
 import { Category } from "../Category/Category";
 import { Header } from "../Header/Header";
 import { NewsList } from "../NewsList/NewsList";
-import { TagsOption } from "@/features/Article";
-import { useLazyGetNewsListQuery } from "@/entities/News";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { OfferPagination } from "@/widgets/OffersMap";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { AdminSort } from "@/entities/Admin";
-import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./NewsPage.module.scss";
 
 const limit = 10;
@@ -33,6 +37,7 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const NewsPage = () => {
     const { locale } = useLocale();
+    const { t, ready } = useTranslation("news");
     const {
         page, sort, search, category, setPage,
         setSort, setSearch, setCategory,
@@ -61,6 +66,16 @@ const NewsPage = () => {
 
     return (
         <MainPageLayout headerVariant="static">
+            {ready && (
+                <SeoHelmet
+                    title={t("seo.title")}
+                    description={t("seo.description")}
+                    canonicalUrl={getSeoUrl(getNewsPageUrl(locale))}
+                    keywords={t("seo.keywords")}
+                    ogTitle={t("seo.ogTitle")}
+                    ogDescription={t("seo.ogDescription")}
+                />
+            )}
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>

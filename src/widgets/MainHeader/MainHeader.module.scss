@@ -33,6 +33,10 @@
         border-radius: 0;
         box-shadow: none;
     }
+
+    .banner {
+        border-radius: 0;
+    }
 }
 
 .static.scrolled .header {
@@ -65,18 +69,40 @@
 }
 
 .banner {
-    padding: 10px;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    background: var(--bg-field);
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 20px;
+    width: 100%;
+    background: #02CC9B;
     pointer-events: auto;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 0 0 10px 10px;
+    flex-wrap: wrap;
+    transition: background 0.15s ease;
+
+    &:hover {
+        background: #00B589;
+    }
 }
 
-.bannerBtn {
-    padding: 10px 25px;
+.bannerText {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.bannerCta {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    text-decoration: underline;
+    flex-shrink: 0;
 }
 
 .left {
@@ -107,7 +133,7 @@
 .right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     flex-shrink: 0;
 
     .icons {
@@ -131,6 +157,30 @@
     font-weight: 600;
     border-radius: 10px;
     white-space: nowrap;
+}
+
+.membershipCta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 14px;
+    background-color: #02CC9B;
+    border: 1px solid #02CC9B;
+    color: var(--color-white);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        background-color: #00B589;
+        border-color: #00B589;
+        color: var(--color-white);
+    }
 }
 
 .membershipWrapper {
@@ -167,18 +217,14 @@
     display: none;
 }
 
-@media (max-width: 1080px) {
-    .wrapper {
-        max-width: 980px;
-    }
-
+@media (max-width: 1366px) {
     .header {
-        padding: 0 8px 0 16px;
-        gap: 8px;
+        padding: 0 12px;
+        gap: 12px;
     }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1280px) {
     .wrapper {
         position: sticky;
         top: 0;
@@ -187,6 +233,7 @@
         width: 100%;
         max-width: 100%;
         background: var(--color-white);
+        pointer-events: auto;
     }
 
     .header {
@@ -196,5 +243,20 @@
     .mobile {
         display: block;
         padding: 16px 20px;
+        pointer-events: auto;
+    }
+
+    .banner {
+        border-radius: 0;
+        padding: 10px 16px;
+        gap: 6px;
+    }
+
+    .bannerText {
+        font-size: 13px;
+    }
+
+    .bannerCta {
+        font-size: 13px;
     }
 }

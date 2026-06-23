@@ -1,22 +1,26 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { blogArticleCardAdapter, useLazyGetBlogListQuery } from "@/entities/Blog";
+import { AdminSort } from "@/entities/Admin";
+import { TagsOption } from "@/features/Article";
 import { MainPageLayout } from "@/widgets/MainPageLayout";
+import { OfferPagination } from "@/widgets/OffersMap";
 
 import { MemberBanner } from "@/features/MemberBanner";
 
+import { getBlogPageUrl } from "@/shared/config/routes/AppUrls";
+import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
+import { getSeoUrl } from "@/shared/lib/getSeoUrl";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { SearchInput } from "@/shared/ui/SearchInput/SearchInput";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 
 import { ArticleFilter } from "../ArticleFilter/ArticleFilter";
 import { ArticlesList } from "../ArticlesList/ArticlesList";
 import { Category } from "../Category/Category";
 import { Header } from "../Header/Header";
-import { useLocale } from "@/app/providers/LocaleProvider";
-import { AdminSort } from "@/entities/Admin";
-import { TagsOption } from "@/features/Article";
-import { blogArticleCardAdapter, useLazyGetBlogListQuery } from "@/entities/Blog";
-import { OfferPagination } from "@/widgets/OffersMap";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { useNewsFilters } from "@/shared/hooks/usePaginationParams";
 import styles from "./BlogPage.module.scss";
 
 const limit = 10;
@@ -33,6 +37,7 @@ const getSortByFilter = (filter: TagsOption): AdminSort => {
 
 const BlogPage = () => {
     const { locale } = useLocale();
+    const { t, ready } = useTranslation("blog");
     const {
         page, sort, category, search,
         setPage, setSort, setCategory, setSearch,
@@ -57,6 +62,15 @@ const BlogPage = () => {
 
     return (
         <MainPageLayout headerVariant="static">
+            {ready && (
+                <SeoHelmet
+                    title={t("seo.title")}
+                    description={t("seo.description")}
+                    canonicalUrl={getSeoUrl(getBlogPageUrl(locale))}
+                    ogTitle={t("seo.ogTitle")}
+                    ogDescription={t("seo.ogDescription")}
+                />
+            )}
             <Header />
             <div className={styles.container}>
                 <div className={styles.top}>

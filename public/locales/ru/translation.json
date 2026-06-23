@@ -120,7 +120,9 @@
                 "sign-in": "Вход",
                 "sign-up": "Регистрация",
                 "exit": "Выход",
-                "membership": "Членство"
+                "membership": "Членство",
+                "expeditions": "Экспедиции",
+                "international-volunteering": "Международное волонтёрство"
             },
             "title": "Найди своё путешествие со смыслом",
             "offers-btn": "Все вакансии",

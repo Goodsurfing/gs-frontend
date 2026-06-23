@@ -1,23 +1,28 @@
 import React, {
     FC, useCallback, useEffect, useState,
 } from "react";
-import {
-    ArticleContent,
-    ArticleHeader, ArticleShare, Navigation,
-} from "@/features/Article";
-import { getJournalsPageUrl, getNewsPersonalPageUrl } from "@/shared/config/routes/AppUrls";
+import { useTranslation } from "react-i18next";
+
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
-import { CommentWidget } from "@/widgets/Article";
-import HintPopup from "@/shared/ui/HintPopup/HintPopup";
-import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
-import { MAIN_URL } from "@/shared/constants/api";
 import {
     GetReviewsJournal, journalReviewsAdapter, useCreateReviewJournalMutation,
     useGetJournalByIdQuery, useLazyGetReviewsByJournalIdQuery, usePutLikeJournalMutation,
 } from "@/entities/Journal";
-import styles from "./JournalPersonal.module.scss";
+import {
+    ArticleContent,
+    ArticleHeader, ArticleShare, Navigation,
+} from "@/features/Article";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import { CommentWidget } from "@/widgets/Article";
+import { getJournalPersonalPageUrl, getJournalsPageUrl } from "@/shared/config/routes/AppUrls";
+import { MAIN_URL } from "@/shared/constants/api";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSeoDescription, getSeoUrl } from "@/shared/lib/getSeoUrl";
+import HintPopup from "@/shared/ui/HintPopup/HintPopup";
+import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
+import { SeoHelmet } from "@/shared/ui/SeoHelmet";
+import styles from "./JournalPersonal.module.scss";
 
 interface JournalPersonalProps {
     journalId: string;
@@ -44,6 +49,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const { journalId } = props;
     const { locale } = useLocale();
     const { isAuth } = useAuth();
+    const { t, ready } = useTranslation("journals");
     const [toast, setToast] = useState<ToastAlert>();
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsJournal[]>([]);
@@ -135,8 +141,28 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
         );
     }
 
+    const seoTitle = data?.name || t("seo.title");
+    const seoDescription = data?.description
+        ? getSeoDescription(data.description) || t("seo.description")
+        : t("seo.description");
+    const seoUrl = getSeoUrl(getJournalPersonalPageUrl(locale, journalId));
+    const seoImage = getMediaContent(data?.image?.contentUrl);
+    const seoKeywords = [
+        data?.name,
+        t("seo.keywords"),
+    ].filter(Boolean).join(", ");
+
     return (
         <div className={styles.wrapper}>
+            {ready && (
+                <SeoHelmet
+                    title={seoTitle}
+                    description={seoDescription}
+                    canonicalUrl={seoUrl}
+                    keywords={seoKeywords}
+                    ogImage={seoImage}
+                />
+            )}
             {toast && <HintPopup text={toast.text} type={toast.type} />}
             {data && (
                 <Navigation
@@ -172,7 +198,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
                 </div>
                 <ArticleShare
                     className={styles.shareBlock}
-                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, data?.id)}`}
+                    url={`${MAIN_URL}${getJournalPersonalPageUrl(locale, data?.id)}`}
                 />
             </div>
             <div className={styles.commentWrapper}>

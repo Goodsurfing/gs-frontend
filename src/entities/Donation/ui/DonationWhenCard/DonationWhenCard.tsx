@@ -12,6 +12,7 @@ interface DonationWhenCardProps {
     dateStart: string | null;
     daysLeft: number | null;
     percentAmountCollect: number | null;
+    collectedAmount: number;
     amount: number | null;
     isSuccess: boolean;
 }
@@ -25,6 +26,7 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
         daysLeft,
         amount,
         percentAmountCollect,
+        collectedAmount,
         isSuccess,
     } = props;
     const { t } = useTranslation("donation");
@@ -36,11 +38,16 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
         return dateStart || emptyMessage;
     };
 
-    const showProgress = percentAmountCollect !== null && amount !== null;
-    const progressText = showProgress
-        ? `${fmt.format(Math.round((amount * percentAmountCollect) / 100))} ₽`
-            + ` / ${fmt.format(amount)} ₽ (${percentAmountCollect}%)`
-        : null;
+    const hasTargetAmount = amount !== null && amount > 0;
+    const showProgress = collectedAmount > 0 || hasTargetAmount;
+    const getProgressText = () => {
+        if (!showProgress) return null;
+        if (hasTargetAmount) {
+            return `${fmt.format(collectedAmount)} ₽ / ${fmt.format(amount)} ₽ (${percentAmountCollect ?? 0}%)`;
+        }
+        return `${fmt.format(collectedAmount)} ₽`;
+    };
+    const progressText = getProgressText();
 
     return (
         <div className={cn(className)} id="description">
@@ -67,7 +74,7 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
                         className={styles.infoCard}
                     >
                         <DonationProgressBar
-                            value={percentAmountCollect as number}
+                            value={percentAmountCollect ?? 0}
                             isSuccess={isSuccess}
                         />
                     </InfoCardItem>

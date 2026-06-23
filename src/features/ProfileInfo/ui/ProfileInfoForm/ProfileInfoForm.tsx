@@ -2,6 +2,9 @@ import cn from "classnames";
 import { memo, useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getProfilePreferencesPageUrl } from "@/shared/config/routes/AppUrls";
 import { ErrorType } from "@/types/api/error";
 
 import {
@@ -46,6 +49,12 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
     const { handleSubmit, reset, control } = form;
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { locale } = useLocale();
+
+    useEffect(() => {
+        dispatch(profileActions.setReadonly(false));
+    }, [dispatch]);
 
     const onSubmit: SubmitHandler<ProfileInfoFields> = async (data) => {
         setToast(undefined);
@@ -104,6 +113,17 @@ export const ProfileInfoForm = memo((props: ProfileInfoFormProps) => {
                     >
                         {isLocked ? t("info.Редактировать") : t("info.Отмена")}
                     </button>
+                    <div className={styles.submitBtn}>
+                        <Button
+                            type="button"
+                            variant="FILL"
+                            size="MEDIUM"
+                            color="BLUE"
+                            onClick={() => navigate(getProfilePreferencesPageUrl(locale))}
+                        >
+                            {t("info.Дальше", "Дальше")}
+                        </Button>
+                    </div>
                 </form>
                 <ProfileInfoFormAvatar userId={profile.id} />
             </div>

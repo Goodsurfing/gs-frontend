@@ -29,6 +29,7 @@ export const DonationInfoCard = memo((props: DonationInfoCardProps) => {
         <div className={cn(className)}>
             <DonationWhenCard
                 amount={donation.amount}
+                collectedAmount={donation.collectedAmount}
                 dateStart={donation.startDate}
                 daysLeft={donation.daysLeft}
                 percentAmountCollect={donation.percentAmountCollect}

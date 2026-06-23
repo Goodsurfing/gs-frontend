@@ -27,6 +27,18 @@ interface OffersFilterProps {
     onResetFilters: () => void;
 }
 
+const normalizeCategoryValue = (value?: number | number[]) => {
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    if (value) {
+        return [value];
+    }
+
+    return [];
+};
+
 export const OffersFilter: FC<OffersFilterProps> = (props) => {
     const { className, onResetFilters, onSubmit } = props;
     const { control } = useFormContext();
@@ -95,7 +107,7 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
                     render={({ field }) => (
                         <Categories
                             value={field.value}
-                            onChange={field.onChange}
+                            onChange={(value) => field.onChange(normalizeCategoryValue(value))}
                             onClick={() => handleOpenDropdown("CATEGORIES")}
                             isOpen={dropdownOpened.isCategoriesOpened}
                             ref={categoriesRef}

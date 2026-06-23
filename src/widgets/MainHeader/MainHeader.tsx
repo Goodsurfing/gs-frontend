@@ -11,6 +11,7 @@ import MobileHeader from "@/widgets/MobileHeader/ui/MobileHeader/MobileHeader";
 import logotypeIcon from "@/shared/assets/icons/logo-black.svg";
 import {
     getMainPageUrl,
+    getMembershipPageUrl,
     getMessengerPageUrl,
     getSignInPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -47,6 +48,17 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
 
     return (
         <div className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}>
+            {data && (
+                <a
+                    href={data.url}
+                    className={styles.banner}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span className={styles.bannerText}>{data.description}</span>
+                    <span className={styles.bannerCta}>Подробнее →</span>
+                </a>
+            )}
             <header className={styles.header}>
                 <div className={styles.left}>
                     <LocaleLink
@@ -60,6 +72,12 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
                     <MainHeaderNav />
                 </div>
                 <div className={styles.right}>
+                    <LocaleLink
+                        to={getMembershipPageUrl(locale)}
+                        className={styles.membershipCta}
+                    >
+                        {t("main.welcome.header.membership", "Членство")}
+                    </LocaleLink>
                     <ChangeLanguage localeApi={myProfile?.locale} profileData={myProfile} />
                     {(isAuth && myProfile) ? (
                         <>
@@ -90,18 +108,6 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
             <div className={styles.mobile}>
                 <MobileHeader />
             </div>
-            {data && (
-                <div className={styles.banner}>
-                    <p>{data.description}</p>
-                    <ButtonLink
-                        className={styles.bannerBtn}
-                        path={data.url}
-                        type="outlined"
-                    >
-                        Подробнее
-                    </ButtonLink>
-                </div>
-            )}
         </div>
     );
 };

@@ -12,10 +12,11 @@ import { OffersList, OffersMap } from "@/widgets/OffersMap";
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
 import { OffersSearchFilterMobile } from "../OffersSearchFilterMobile/OffersSearchFilterMobile";
-import styles from "./OffersSearchFilter.module.scss";
 import { OfferSort, useLazyGetAllOffersMapQuery, useLazyGetOffersQuery } from "@/entities/Offer";
+import { getCategoryIdsFromUrlParam, getCategoryUrlParamFromIds } from "../../lib/categoryUrlParams";
 import { offersFilterApiAdapter } from "../../lib/offersFilterAdapter";
 import { SearchOffers, SearchOffersRef } from "@/widgets/OffersMap/ui/SearchOffers/SearchOffers";
+import styles from "./OffersSearchFilter.module.scss";
 
 const defaultValues: OffersFilterFields = {
     offersSort: {
@@ -34,35 +35,6 @@ const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
 const OFFERS_PER_PAGE = 20;
 
-const CATEGORY_SLUG_TO_ID: Record<string, number> = {
-    hostels: 1,
-    reserves_and_parks: 2,
-    farm: 3,
-    animals: 4,
-    teaching: 5,
-    children: 6,
-    charity: 7,
-    sports: 8,
-    art: 9,
-    archeology: 10,
-    other: 11,
-    online: 12,
-    paid_work: 13,
-    international: 14,
-};
-
-function parseCategoryParam(raw: string): number[] {
-    return raw
-        .split(",")
-        .map((str) => {
-            const trimmed = str.trim();
-            const num = Number(trimmed);
-            if (!Number.isNaN(num) && num > 0) return num;
-            return CATEGORY_SLUG_TO_ID[trimmed] ?? null;
-        })
-        .filter((id): id is number => id !== null);
-}
-
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -79,7 +51,7 @@ export const OffersSearchFilter = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
 
-    const initialCategories = parseCategoryParam(searchParams.get("category") ?? "");
+    const initialCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -93,12 +65,22 @@ export const OffersSearchFilter = () => {
         watch, setValue, reset, handleSubmit,
     } = offerFilterForm;
 
-    const [isSyncing, setIsSyncing] = useState(false);
+    const isSyncingRef = useRef(false);
+    const currentSearchRef = useRef<string>("");
 
     useEffect(() => {
-        const watchData = watch();
-        const preparedData = offersFilterApiAdapter(watchData);
-        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        if (currentSearchRef.current) {
+            fetchOffers({
+                sort: OfferSort.UpdatedDesc,
+                search: currentSearchRef.current,
+                limit: OFFERS_PER_PAGE,
+                page: currentPage,
+            });
+        } else {
+            const watchData = watch();
+            const preparedData = offersFilterApiAdapter(watchData);
+            fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+        }
     }, [currentPage]);
 
     useEffect(() => {
@@ -109,8 +91,8 @@ export const OffersSearchFilter = () => {
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
-            if (!isSyncing && name === "category") {
-                const newCategory = (value.category || []).join(",");
+            if (!isSyncingRef.current && name === "category") {
+                const newCategory = getCategoryUrlParamFromIds(value.category);
                 setSearchParams((prev) => {
                     const updated = new URLSearchParams(prev);
                     if (newCategory) {
@@ -123,15 +105,15 @@ export const OffersSearchFilter = () => {
             }
         });
         return () => subscription.unsubscribe();
-    }, [watch, setSearchParams, isSyncing]);
+    }, [watch, setSearchParams]);
 
     useEffect(() => {
-        setIsSyncing(true);
+        isSyncingRef.current = true;
 
-        const parsedCategories = parseCategoryParam(searchParams.get("category") ?? "");
+        const parsedCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
         setValue("category", parsedCategories);
-        setIsSyncing(false);
+        isSyncingRef.current = false;
     }, [searchParams, setValue]);
 
     const onChangePage = useCallback((pageItem: number) => {
@@ -139,6 +121,7 @@ export const OffersSearchFilter = () => {
     }, []);
 
     const onApplySearch = useCallback(async (search: string) => {
+        currentSearchRef.current = search;
         setSearchParams(new URLSearchParams());
         fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
@@ -157,6 +140,7 @@ export const OffersSearchFilter = () => {
     }, [searchParams, onApplySearch]);
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
+        currentSearchRef.current = "";
         const preparedData = offersFilterApiAdapter(data);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
         fetchAllOffersMap({ ...preparedData });
@@ -164,6 +148,7 @@ export const OffersSearchFilter = () => {
     }), []);
 
     const onResetFilters = useCallback(async () => {
+        currentSearchRef.current = "";
         setSearchParams(new URLSearchParams());
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
@@ -186,8 +171,17 @@ export const OffersSearchFilter = () => {
 
                 debounceTimeoutRef.current = setTimeout(() => {
                     const preparedData = offersFilterApiAdapter(value as OffersFilterFields);
-                    fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
-                    fetchAllOffersMap({ ...preparedData });
+                    if (currentSearchRef.current) {
+                        fetchOffers({
+                            ...preparedData,
+                            search: currentSearchRef.current,
+                            limit: OFFERS_PER_PAGE,
+                            page: currentPage,
+                        });
+                    } else {
+                        fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
+                        fetchAllOffersMap({ ...preparedData });
+                    }
                 }, 300);
             }
         });

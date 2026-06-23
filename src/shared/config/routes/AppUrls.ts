@@ -199,7 +199,7 @@ export const getJournalPersonalPageUrl: RoutePathFunction = (locale) => `/${loca
 
 export const getVideoPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}`;
 
-export const getVideoPersonalPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.video}/:id`;
+export const getVideoPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.video}/${id}`;
 
 // Academy pages
 

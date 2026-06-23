@@ -1,6 +1,7 @@
 import { StyledEngineProvider } from "@mui/material";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { setupStore } from "@/store/store";
@@ -29,11 +30,13 @@ const Root = (
     <StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <StyledEngineProvider injectFirst>
-                    <LocaleProvider>
-                        <App />
-                    </LocaleProvider>
-                </StyledEngineProvider>
+                <HelmetProvider>
+                    <StyledEngineProvider injectFirst>
+                        <LocaleProvider>
+                            <App />
+                        </LocaleProvider>
+                    </StyledEngineProvider>
+                </HelmetProvider>
             </Provider>
         </BrowserRouter>
     </StrictMode>

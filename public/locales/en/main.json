@@ -19,8 +19,8 @@
     "Получайте удовольствие от нового места и общения": "Enjoy the new place and social interactions",
     "Интересные вакансии": "Interesting vacancies",
     "Наши преимущества": "Our advantages",
-    "Бесплатно": "Free of charge",
-    "Вам не нужно платить ни за регистрацию, ни за общение с принимающей стороной. Наслаждайтесь путешествиями со смыслом свободно": "You don't need to pay for registration or communication with the host. Enjoy meaningful travel freely",
+    "Прямой контакт": "Direct contact",
+    "Общайтесь с принимающей стороной напрямую: задавайте вопросы, уточняйте условия, договаривайтесь о датах и формате участия. Так проще понять, подходит ли вам проект, ещё до поездки": "Communicate with the host directly: ask questions, clarify conditions, agree on dates and the format of participation. It is easier to understand whether the project suits you, even before the trip",
     "Больше возможностей": "More opportunities",
     "Гудсёрфинг объединяет самые разные направления путешествия со смыслом: от волонтёрства на фермах до археологических экспедиций": "Goodsurfing brings together diverse types of meaningful travel: from volunteering on farms to archaeological expeditions",
     "Надёжно": "Reliable",
@@ -49,5 +49,23 @@
     "Крым": "Crimea",
     "Примите тех, кто хочет помогать и делайте мир лучше вместе": "Welcome those who want to help and make the world better together",
     "Мы соединяем вас с людьми, готовыми приехать к вам и помочь на месте. Найдите помощников для задач на сезон, экспедицию или долгий проект.": "We connect you with people ready to come and help on site. Find helpers for seasonal tasks, expeditions, or long-term projects.",
-    "С нами уже больше 1500 проектов": "Already over 1,500 projects with us"
+    "С нами уже больше 1500 проектов": "Already over 1,500 projects with us",
+    "slider": {
+        "volunteerCount": "We've already got over {{displayCount}} meaningful travelers from all over the world with us",
+        "vacancyCount": "Already over {{displayCount}} projects with us"
+    },
+    "seo": {
+        "title": "GoodSurfing — meaningful volunteer travel",
+        "description": "GoodSurfing helps you find volunteer projects, expeditions, and internships so you can travel, help, and change the world.",
+        "ogTitle": "GoodSurfing — travel, help, change the world",
+        "ogDescription": "Find volunteer opportunities and meaningful projects around the world on GoodSurfing.",
+        "keywords": "GoodSurfing, volunteer travel, volunteering, meaningful travel, opportunities, projects, expeditions, internships"
+    },
+    "geo": {
+        "about": {
+            "volunteering": "Volunteer projects",
+            "travel": "Meaningful travel",
+            "expeditions": "Expeditions and internships"
+        }
+    }
 }

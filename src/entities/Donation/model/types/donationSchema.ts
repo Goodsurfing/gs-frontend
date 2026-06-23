@@ -56,8 +56,9 @@ export type GetDonation = Omit<GetDonations, "shortDescription" | "isClose" | "o
     startDate: string;
     peopleSupportCount: number;
     percentAmountCollect: number;
+    collectedAmount: number;
     daysLeft: number;
-    amount: number;
+    amount: number | null;
     minAmount: number;
     latitude: number;
     longitude: number;
@@ -110,7 +111,9 @@ export type GetDonationWhen = Pick<GetDonation, "id"> & {
     isUntilAmountCollected: boolean;
 };
 
-export type UpdateDonationWhen = Omit<GetDonationWhen, | "id">;
+export type UpdateDonationWhen = Omit<GetDonationWhen, "id" | "endDate"> & {
+    endDate: string | null;
+};
 
 export interface UpdateDonationWhenRequest {
     id: string;

@@ -11,6 +11,7 @@ import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import Input from "@/shared/ui/Input/Input";
 import { useChangePasswordMutation, useChangePasswordWithoutOldPasswordMutation, useGetProfilePasswordIsChangeQuery } from "@/entities/Profile";
+import { getErrorText } from "@/shared/lib/getErrorText";
 
 import styles from "./ProfileResetPasswordForm.module.scss";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
@@ -70,7 +71,7 @@ const ProfileResetPasswordForm: FC = () => {
                 reset();
             } catch (error) {
                 setToast({
-                    text: t("password.Произошла ошибка"),
+                    text: getErrorText(error),
                     type: HintType.Error,
                 });
             }

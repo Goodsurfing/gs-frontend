@@ -130,6 +130,12 @@ export const Footer = memo(() => {
                                 >
                                     {t("main.welcome.header.community.courses")}
                                 </Link>
+                                <Link
+                                    className={styles.link}
+                                    to="https://expedition.goodsurfing.org/"
+                                >
+                                    {t("main.welcome.header.expeditions", "Экспедиции")}
+                                </Link>
                                 {/* <Link
                                     className={styles.link}
                                     to={getMainPageUrl(locale)}
