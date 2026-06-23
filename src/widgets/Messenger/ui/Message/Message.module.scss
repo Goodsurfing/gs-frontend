@@ -101,13 +101,18 @@
     }
 
     .userMessage {
-        align-self: flex-start;
-        margin-left: 8px;
+        align-self: flex-end;
+        flex-direction: row-reverse;
+        margin-left: auto;
+
+        .messageContent {
+            margin-left: 0;
+            margin-right: 8px;
+        }
     }
 
     .otherMessage {
-        align-self: flex-end;
-        justify-content: flex-end;
+        align-self: flex-start;
     }
 }
 

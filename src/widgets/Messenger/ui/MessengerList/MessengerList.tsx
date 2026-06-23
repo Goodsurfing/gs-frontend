@@ -60,7 +60,13 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
     }, [statusValue]);
 
     useEffect(() => {
-        setFilteredChatList([...chatsList]);
+        const sorted = [...chatsList].sort((a, b) => {
+            const getTime = (chat: typeof a) => (chat.lastMessage?.createdAt
+                ? new Date(chat.lastMessage.createdAt).getTime()
+                : chat.id);
+            return getTime(b) - getTime(a);
+        });
+        setFilteredChatList(sorted);
     }, [chatsList]);
 
     const loadMore = () => {

@@ -78,10 +78,8 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
                             sx={{
                                 maxHeight: "35px",
                                 padding: "5px 10px",
-                                border: `${color} !important`,
+                                border: `2px solid ${color} !important`,
                                 borderRadius: "26px !important",
-                                borderWidth: "2px !important",
-                                borderStyle: "solid !important",
                                 boxSizing: "content-box",
                                 textTransform: "none",
                                 color: "#212121",
@@ -90,25 +88,11 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
 
                                 "&:hover": {
                                     cursor: "pointer",
-                                    border: color,
+                                    borderColor: color,
                                     borderRadius: "26px",
-                                    borderWidth: "2px",
-                                    borderStyle: "solid",
                                     outline: "none",
                                 },
 
-                                "&:selected:hover": {
-                                    backgroundColor: "transparent",
-                                },
-
-                                "&:selected": {
-                                    cursor: "pointer",
-                                    border: color,
-                                    borderRadius: "26px",
-                                    borderWidth: "2px",
-                                    borderStyle: "solid",
-                                    outline: "none",
-                                },
                                 "&.Mui-selected": {
                                     backgroundColor: color,
                                 },
