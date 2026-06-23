@@ -38,14 +38,14 @@ export const useCategories = () => {
             image: farmImage,
             value: "farm",
             color: "#C6E7E6",
-            text: t("category-offer.Ферма"),
+            text: t("category-offer.Работа на ферме"),
             path: "/offers-map?category=farm",
         },
         {
             image: animalsImage,
             value: "animals",
             color: "#C7C1E8",
-            text: t("category-offer.Животные"),
+            text: t("category-offer.Работа с животными"),
             path: "/offers-map?category=animals",
         },
         {
@@ -59,7 +59,7 @@ export const useCategories = () => {
             image: childrenImage,
             value: "children",
             color: "#C4D8E9",
-            text: t("category-offer.Дети"),
+            text: t("category-offer.Работа с детьми"),
             path: "/offers-map?category=children",
         },
         {
@@ -122,12 +122,13 @@ export const useCategories = () => {
 
     const getTranslation = (category: string | undefined): string | undefined => {
         const translations: Record<string, string> = {
-            "Работа в хостеле": t("category-offer.Хостелы"),
+            "Работа в хостеле": t("category-offer.Работа в хостеле"),
             "Заповедники и парки": t("category-offer.Заповедники и парки"),
-            "Работа на ферме": t("category-offer.Ферма"),
-            "Работа с животными": t("category-offer.Животные"),
+            "Заповедники и нац. парки": t("category-offer.Заповедники и нац. парки"),
+            "Работа на ферме": t("category-offer.Работа на ферме"),
+            "Работа с животными": t("category-offer.Работа с животными"),
             Преподавание: t("category-offer.Преподавание"),
-            "Работа с детьми": t("category-offer.Дети"),
+            "Работа с детьми": t("category-offer.Работа с детьми"),
             Благотворительность: t("category-offer.Благотворительность"),
             Спорт: t("category-offer.Спорт"),
             Искусство: t("category-offer.Искусство"),
