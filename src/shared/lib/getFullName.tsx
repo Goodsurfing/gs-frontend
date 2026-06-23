@@ -9,7 +9,7 @@ export const useGetFullName = () => {
     ) => {
         if (!firstName && !lastName) return t("Анонимный пользователь");
 
-        const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
+        const renderFullName = `${firstName || ""} ${lastName || ""}`.trim();
         return (renderFullName);
     };
 

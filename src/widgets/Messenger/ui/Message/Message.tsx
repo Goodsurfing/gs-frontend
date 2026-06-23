@@ -31,8 +31,26 @@ interface MessageProps {
     onImageClick?: (src: string) => void;
 }
 
+const URL_REGEX = /(https?:\/\/[^\s<>"']+)/g;
+
+function escapeHtml(text: string): string {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function linkify(text: string): string {
+    return escapeHtml(text).replace(
+        URL_REGEX,
+        (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;word-break:break-all;">${url}</a>`,
+    );
+}
+
 function renderTextWithEmoji(text: string) {
-    return twemoji.parse(text, {
+    return twemoji.parse(linkify(text), {
         folder: "svg",
         ext: ".svg",
         base: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/",

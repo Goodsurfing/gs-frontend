@@ -34,6 +34,35 @@ const defaultFilterValues: DefaultValues<OffersFilterFields> = defaultValues;
 
 const OFFERS_PER_PAGE = 20;
 
+const CATEGORY_SLUG_TO_ID: Record<string, number> = {
+    hostels: 1,
+    reserves_and_parks: 2,
+    farm: 3,
+    animals: 4,
+    teaching: 5,
+    children: 6,
+    charity: 7,
+    sports: 8,
+    art: 9,
+    archeology: 10,
+    other: 11,
+    online: 12,
+    paid_work: 13,
+    international: 14,
+};
+
+function parseCategoryParam(raw: string): number[] {
+    return raw
+        .split(",")
+        .map((str) => {
+            const trimmed = str.trim();
+            const num = Number(trimmed);
+            if (!Number.isNaN(num) && num > 0) return num;
+            return CATEGORY_SLUG_TO_ID[trimmed] ?? null;
+        })
+        .filter((id): id is number => id !== null);
+}
+
 export const OffersSearchFilter = () => {
     const [isMapOpened, setMapOpened] = useState<boolean>(true);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -50,11 +79,7 @@ export const OffersSearchFilter = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
 
-    const initialCategories = (searchParams.get("category") ?? "")
-        .split(",")
-        .map((str) => str.trim())
-        .map(Number)
-        .filter((id) => !Number.isNaN(id) && id > 0);
+    const initialCategories = parseCategoryParam(searchParams.get("category") ?? "");
 
     const offerFilterForm = useForm<OffersFilterFields>({
         mode: "onChange",
@@ -103,14 +128,7 @@ export const OffersSearchFilter = () => {
     useEffect(() => {
         setIsSyncing(true);
 
-        const categoriesFromURL = searchParams.get("category") ?? "";
-        const parsedCategories = categoriesFromURL
-            .split(",")
-            .map((str) => {
-                const num = Number(str.trim());
-                return Number.isNaN(num) || num <= 0 ? null : num;
-            })
-            .filter((id): id is number => id !== null);
+        const parsedCategories = parseCategoryParam(searchParams.get("category") ?? "");
 
         setValue("category", parsedCategories);
         setIsSyncing(false);
