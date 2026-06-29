@@ -4,7 +4,7 @@ import { authApi } from "@/store/api/authApi";
 
 import { localeApi } from "./api/localeApi";
 
-import { userReducer } from "@/entities/User";
+import { userReducer, userActions } from "@/entities/User";
 
 import { profileApi, profileReducer } from "@/entities/Profile";
 
@@ -38,7 +38,7 @@ import { donationApi } from "@/entities/Donation";
 import { membershipApi } from "./api/membershipApi";
 import { donationPaymentApi } from "./api/donationPaymentApi";
 
-const rootReducer = combineReducers({
+const combinedReducer = combineReducers({
     register: registerReducer,
     profile: profileReducer,
     gallery: galleryReducer,
@@ -74,6 +74,22 @@ const rootReducer = combineReducers({
     [adminSystemApi.reducerPath]: adminSystemApi.reducer,
     [adminBannerMarketingApi.reducerPath]: adminBannerMarketingApi.reducer,
 });
+
+// При выходе из аккаунта сбрасываем весь стейт к initial: это очищает кэши RTK Query
+// всех api-слайсов и данные slice'ов (profile/gallery/admin/...), чтобы данные
+// предыдущего пользователя не «смешивались» после смены аккаунта (баг П27).
+// Флаг user._inited сохраняем — на нём держится рендер роутера (App.tsx),
+// сброс его в false дал бы белый экран.
+const rootReducer: typeof combinedReducer = (state, action) => {
+    if (action.type === userActions.logout.type) {
+        const inited = state?.user._inited ?? true;
+        const resetState = combinedReducer(undefined, action);
+        resetState.user._inited = inited;
+        return resetState;
+    }
+
+    return combinedReducer(state, action);
+};
 
 export const setupStore = () => configureStore({
     reducer: rootReducer,
