@@ -242,16 +242,16 @@ export const NewMainSliderContainer = () => {
                             isOpen={dropdownMenuOpened.isCommunityOpened}
                             className={styles.popup}
                         >
-                            <Link to="https://community.goodsurfing.org/category/post/">
+                            <Link to={getBlogPageUrl(locale)}>
                                 {t("main.welcome.header.community.blog")}
                             </Link>
-                            <Link to="https://community.goodsurfing.org/filmy/">
+                            <Link to={getVideoPageUrl(locale)}>
                                 {t("main.welcome.header.community.video")}
                             </Link>
                             <Link to={getAmbassadorsPageUrl(locale)}>
                                 {t("main.welcome.header.community.ambassadors")}
                             </Link>
-                            <Link to="https://community.goodsurfing.org/courses/">
+                            <Link to={getAcademyMainPageUrl(locale)}>
                                 {t("main.welcome.header.community.courses")}
                             </Link>
                         </Popup>
@@ -280,7 +280,7 @@ export const NewMainSliderContainer = () => {
                             <Link to={getMembershipPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.how-it-works")}
                             </Link>
-                            <Link to="https://community.goodsurfing.org/">
+                            <Link to={getNewsPageUrl(locale)}>
                                 {t("main.welcome.header.about-project.news")}
                             </Link>
                             <Link to={getAboutProjectPageUrl(locale)}>
