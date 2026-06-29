@@ -159,7 +159,7 @@ export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
                     authorAvatar={getMediaContent(data?.author.image.thumbnails?.small)}
-                    authorName={getFullName(data?.author.firsName, data?.author.lastName)}
+                    authorName={getFullName(data?.author.firstName, data?.author.lastName)}
                     category={data?.categoryResult.name}
                     categoryColor={data?.categoryResult.color}
                     date={data?.created ?? ""}

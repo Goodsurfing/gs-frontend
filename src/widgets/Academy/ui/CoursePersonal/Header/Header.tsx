@@ -67,7 +67,7 @@ export const Header: FC<HeaderProps> = (props) => {
                     <span className={styles.author}>
                         Автор:
                         {" "}
-                        {getFullName(author.firsName, author.lastName)}
+                        {getFullName(author.firstName, author.lastName)}
                     </span>
                     <Button
                         className={styles.button}
