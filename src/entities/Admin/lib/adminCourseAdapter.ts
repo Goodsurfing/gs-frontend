@@ -31,7 +31,7 @@ export const adminCourseAdapter = (
 
     const expertsTemp: AdminExpertFields[] = experts.map((expert) => ({
         id: expert.id,
-        firstName: expert.firsName,
+        firstName: expert.firstName,
         lastName: expert.lastName,
         image: expert.image,
         city: expert.city,

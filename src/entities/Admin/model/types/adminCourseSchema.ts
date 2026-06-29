@@ -117,7 +117,7 @@ export type GetAdminLesson = CreateAdminLesson & {
 
 export interface GetAdminCourseExpert {
     id: string;
-    firsName: string;
+    firstName: string;
     lastName: string;
     project: string;
     country: string;

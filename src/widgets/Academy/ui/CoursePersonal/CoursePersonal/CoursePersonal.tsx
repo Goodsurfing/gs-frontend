@@ -47,7 +47,7 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
     const seoImage = getMediaContent(data.image?.contentUrl);
     const seoKeywords = [
         data.name,
-        data.author?.firsName,
+        data.author?.firstName,
         data.author?.lastName,
         t("seo.course.keywords"),
     ].filter(Boolean).join(", ");
