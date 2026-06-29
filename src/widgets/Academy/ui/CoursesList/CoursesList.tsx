@@ -50,7 +50,7 @@ export const CoursesList: FC<CoursesListProps> = (props) => {
                     id,
                     title: name,
                     cover: getMediaContent(image.contentUrl),
-                    author: getFullName(author.firsName, author.lastName),
+                    author: getFullName(author.firstName, author.lastName),
                     description,
                     duration,
                     numberLessons: videoCount,

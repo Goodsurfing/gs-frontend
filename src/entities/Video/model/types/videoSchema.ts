@@ -51,7 +51,7 @@ export type GetVideo = Omit<GetVideos, "category"> & {
     categoryResult: CategoryNews;
     author: {
         id: string;
-        firsName: string;
+        firstName: string;
         lastName: string;
         image: Image;
     }

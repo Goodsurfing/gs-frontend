@@ -32,7 +32,7 @@ export interface GetNewsListResponse {
 export type GetNews = GetNewsList & {
     author: {
         id: string;
-        firsName: string | null;
+        firstName: string | null;
         lastName: string | null;
         image: Image | null;
     }

@@ -46,7 +46,7 @@ export interface Courses {
     videoCount: number;
     image: Image;
     author: {
-        firsName: string;
+        firstName: string;
         lastName: string;
     }
 }
@@ -82,7 +82,7 @@ export interface GetCourse {
     courseProgressNumber: number[];
     image: Image;
     author: {
-        firsName: string;
+        firstName: string;
         lastName: string;
     };
     experts: GetExpert[];
