@@ -59,7 +59,7 @@ export const userSlice = createSlice({
         logout: (state) => {
             state.authData = undefined;
 
-            [localStorage].forEach((storage) => {
+            [localStorage, sessionStorage].forEach((storage) => {
                 storage.removeItem(USER_LOCALSTORAGE_KEY);
                 storage.removeItem(ROLES_LOCALSTORAGE_KEY);
                 storage.removeItem(TOKEN_LOCALSTORAGE_KEY);
