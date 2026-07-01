@@ -1,6 +1,7 @@
 import cn from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
+import communityImage from "@/shared/assets/images/membership/membership-header.webp";
 
 import styles from "./WhyMembership.module.scss";
 
@@ -40,11 +41,8 @@ export const WhyMembership: FC<WhyMembershipProps> = ({ className }) => {
                 <div className={styles.imageWrap}>
                     <img
                         className={styles.image}
-                        src="/images/membership/community.jpg"
+                        src={communityImage}
                         alt="Волонтёры Гудсёрфинга"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
-                        }}
                     />
                 </div>
             </div>
