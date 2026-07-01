@@ -78,14 +78,23 @@ const combinedReducer = combineReducers({
 // При выходе из аккаунта сбрасываем весь стейт к initial: это очищает кэши RTK Query
 // всех api-слайсов и данные slice'ов (profile/gallery/admin/...), чтобы данные
 // предыдущего пользователя не «смешивались» после смены аккаунта (баг П27).
-// Флаг user._inited сохраняем — на нём держится рендер роутера (App.tsx),
-// сброс его в false дал бы белый экран.
+//
+// ВАЖНО: полный сброс делаем ТОЛЬКО при выходе из активной сессии (был authData).
+// authMiddleware дёргает logout() на любой ответ code:401 — в т.ч. на /profile у
+// гостя. Без этой проверки такой logout обнулял бы RTK Query-кэш при активной
+// подписке, и запрос профиля залипал в isFetching → форма входа висела на спиннере.
+// Для гостя logout проходит обычным slice-редьюсером, кэш не трогаем.
 const rootReducer: typeof combinedReducer = (state, action) => {
-    if (action.type === userActions.logout.type) {
+    if (action.type === userActions.logout.type && state?.user?.authData) {
         const inited = state?.user._inited ?? true;
         const resetState = combinedReducer(undefined, action);
-        resetState.user._inited = inited;
-        return resetState;
+        // resetState заморожен Immer — присваивание в поле кидает в прод-сборке
+        // «Cannot assign to read only property '_inited'» и роняет рендер роутера.
+        // Возвращаем новый объект иммутабельно.
+        return {
+            ...resetState,
+            user: { ...resetState.user, _inited: inited },
+        };
     }
 
     return combinedReducer(state, action);
