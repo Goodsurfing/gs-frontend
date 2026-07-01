@@ -84,8 +84,13 @@ const rootReducer: typeof combinedReducer = (state, action) => {
     if (action.type === userActions.logout.type) {
         const inited = state?.user._inited ?? true;
         const resetState = combinedReducer(undefined, action);
-        resetState.user._inited = inited;
-        return resetState;
+        // resetState заморожен Immer — присваивание в поле кидает в прод-сборке
+        // «Cannot assign to read only property '_inited'» и роняет рендер роутера.
+        // Возвращаем новый объект иммутабельно.
+        return {
+            ...resetState,
+            user: { ...resetState.user, _inited: inited },
+        };
     }
 
     return combinedReducer(state, action);
