@@ -10,10 +10,15 @@ export const Header = () => {
         <section className={styles.wrapper}>
             <div className={styles.content}>
                 <h1 className={styles.title}>
-                    {t(
-                        "header.title",
-                        "Стань частью сообщества Гудсёрфинга, путешествуй со смыслом и помогай проекту, который делает это возможным.",
-                    )}
+                    <span className={styles.titleLine}>
+                        {t("header.title-line-1", "Стань частью сообщества Гудсёрфинга,")}
+                    </span>
+                    <span className={styles.titleLine}>
+                        {t("header.title-line-2", "путешествуй со смыслом и помогай проекту,")}
+                    </span>
+                    <span className={styles.titleLine}>
+                        {t("header.title-line-3", "который делает это возможным.")}
+                    </span>
                 </h1>
                 <p className={styles.description}>
                     {t(
