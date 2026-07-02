@@ -2,6 +2,8 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 
+import whyMembershipImage from "@/shared/assets/images/membership/why.png";
+
 import styles from "./WhyMembership.module.scss";
 
 interface WhyMembershipProps {
@@ -40,11 +42,8 @@ export const WhyMembership: FC<WhyMembershipProps> = ({ className }) => {
                 <div className={styles.imageWrap}>
                     <img
                         className={styles.image}
-                        src="/images/membership/community.jpg"
+                        src={whyMembershipImage}
                         alt="Волонтёры Гудсёрфинга"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
-                        }}
                     />
                 </div>
             </div>
