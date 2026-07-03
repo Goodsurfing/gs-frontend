@@ -6,6 +6,7 @@ import {
     ExtraConditionsData, useExtraConditionsData,
 } from "@/features/OfferFinishingTouches/model/data/extraConditionsData";
 
+import verifiedIcon from "@/shared/assets/icons/select-check.svg";
 import { IconTextComponent } from "@/shared/ui/IconTextComponent/IconTextComponent";
 import { Text } from "@/shared/ui/Text/Text";
 
@@ -28,7 +29,7 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
     (props: OfferConditionsCardProps) => {
         const {
             className,
-            finishingTouches: { additionalConditions },
+            finishingTouches: { additionalConditions, onlyVerified },
         } = props;
         const { extraConditionsData } = useExtraConditionsData();
         const { t } = useTranslation("offer");
@@ -56,14 +57,23 @@ export const OfferConditionsCard: FC<OfferConditionsCardProps> = memo(
             });
         }, [additionalConditions, extraConditionsData]);
 
-        if (additionalConditions.length === 0) {
+        if (additionalConditions.length === 0 && !onlyVerified) {
             return null;
         }
 
         return (
             <div className={cn(className, styles.wrapper)}>
                 <Text title={t("personalOffer.Требования к участнику")} titleSize="h3" />
-                <div className={styles.cards}>{renderConditionsCard()}</div>
+                <div className={styles.cards}>
+                    {renderConditionsCard()}
+                    {onlyVerified && (
+                        <IconTextComponent
+                            text={t("finishingTouches.Принимать заявки только от проверенных участников")}
+                            icon={verifiedIcon}
+                            alt="onlyVerified"
+                        />
+                    )}
+                </div>
             </div>
         );
     },
