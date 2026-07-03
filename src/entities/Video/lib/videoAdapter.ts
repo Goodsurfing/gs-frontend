@@ -35,7 +35,7 @@ export const videoCardAdapter = (video: GetVideos[]): VideoCardType[] => video.m
         date: created,
         comments: reviewCount,
         likes: likeCount,
-        tag: { name: category?.name ?? "", color: category?.color ?? "var(--text-primary-1" },
+        tag: { name: category?.name ?? "", color: category?.color ?? "var(--text-primary-1)" },
     };
 });
 

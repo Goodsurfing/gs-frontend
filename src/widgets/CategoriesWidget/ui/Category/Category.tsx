@@ -63,7 +63,7 @@ export const Category: FC<CategoryProps> = memo((props: CategoryProps) => {
             onClick={navigateTo}
         >
             <div>
-                <span className={styles.title}>{title}</span>
+                <span lang={locale} className={styles.title}>{title}</span>
                 <br />
                 <span className={styles.vacancy}>
                     {vacancyNumber}
