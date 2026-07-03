@@ -17,7 +17,7 @@ export const Header = () => {
             </h2>
             <div className={styles.buttonPrice}>
                 <ButtonLink
-                    path={`/${locale}/offers-map?category=paid_work`}
+                    path={`/${locale}/offers-map?category=13`}
                     type="primary"
                     size="MEDIUM"
                     className={styles.button}
