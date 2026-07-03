@@ -33,10 +33,10 @@
 
 .paragraphAccent {
     font-size: 1.0625rem;
-    color: #1a5c33;
+    color: var(--button-1);
     font-weight: 600;
     line-height: 1.7;
-    border-left: 3px solid #4CAF50;
+    border-left: 3px solid var(--button-1);
     padding-left: 16px;
     margin-top: 8px;
 }
@@ -46,7 +46,7 @@
     min-width: 0;
     border-radius: 12px;
     overflow: hidden;
-    background-color: #e8f5e9;
+    // background-color: #e8f5e9;
     min-height: 280px;
     display: flex;
     align-items: center;
