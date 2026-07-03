@@ -31,7 +31,7 @@ export const useCategories = () => {
             image: reserveImage,
             value: "reserves_and_parks",
             color: "#C3A3E9",
-            text: t("category-offer.Заповедники и парки"),
+            text: t("category-offer.Заповедники и нац. парки"),
             path: "/offers-map?category=2",
         },
         {
