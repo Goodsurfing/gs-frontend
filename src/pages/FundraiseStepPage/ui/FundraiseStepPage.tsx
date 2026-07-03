@@ -388,7 +388,18 @@ const FundraiseStepPage = () => {
     };
 
     const onSubmitDescription = async (data: OfferDescriptionField) => {
-        if (!id || !data.coverImage?.id) {
+        if (!id) {
+            return;
+        }
+
+        if (!data.coverImage?.id) {
+            setToast({
+                text: t("hostFundraiseDescription.imageNotUploaded", {
+                    defaultValue: "Дождитесь загрузки фото обложки перед сохранением",
+                    ns: "host",
+                }),
+                type: HintType.Error,
+            });
             return;
         }
 
