@@ -69,12 +69,14 @@
     font-weight: 700;
     color: #212121;
     white-space: nowrap;
+    background-color: var(--bg-field);
+    border-radius: 10px;
+    padding: 8px 24px;
 }
 
 .cardPriceUnit {
     font-size: 0.875rem;
     font-weight: 400;
-    color: #757575;
 }
 
 .featureList {

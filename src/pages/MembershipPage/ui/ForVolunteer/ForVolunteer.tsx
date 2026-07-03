@@ -14,30 +14,11 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { useGetTariffsQuery } from "@/store/api/membershipApi";
 import { TARIFF_CODE, TARIFF_FALLBACK_PRICE_RUB } from "@/shared/constants/membership";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
+import checkIcon from "@/shared/assets/images/membership/check.svg";
 
 interface ForVolunteerProps {
     className?: string;
 }
-
-const CheckIcon = ({ active }: { active?: boolean }) => (
-    <svg
-        className={cn(styles.checkIcon, { [styles.checkIconActive]: active })}
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <circle cx="10" cy="10" r="10" fill={active ? "#4CAF50" : "#B0BEC5"} />
-        <path
-            d="M5.5 10L8.5 13L14.5 7"
-            stroke="white"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </svg>
-);
 
 export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) => {
     const { className } = props;
@@ -96,7 +77,14 @@ export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) =>
                         <ul className={styles.featureList}>
                             {freeFeatures.map((feature) => (
                                 <li key={feature} className={styles.featureItem}>
-                                    <CheckIcon active={false} />
+                                    <img
+                                        className={cn(styles.checkIcon)}
+                                        src={checkIcon}
+                                        alt=""
+                                        aria-hidden="true"
+                                        width="20"
+                                        height="20"
+                                    />
                                     <span>{feature}</span>
                                 </li>
                             ))}
@@ -130,7 +118,14 @@ export const ForVolunteer: FC<ForVolunteerProps> = (props: ForVolunteerProps) =>
                         <ul className={styles.featureList}>
                             {paidFeatures.map((feature) => (
                                 <li key={feature} className={styles.featureItem}>
-                                    <CheckIcon active />
+                                    <img
+                                        className={cn(styles.checkIcon)}
+                                        src={checkIcon}
+                                        alt=""
+                                        aria-hidden="true"
+                                        width="20"
+                                        height="20"
+                                    />
                                     <span>{feature}</span>
                                 </li>
                             ))}
