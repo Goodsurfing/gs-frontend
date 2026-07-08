@@ -59,11 +59,6 @@
     color: var(--color-black-primary);
 }
 
-.whenSave {
-    margin-top: 28px;
-    min-width: 260px;
-}
-
 .amountForm {
     margin-top: 24px;
     max-width: 820px;
@@ -80,8 +75,13 @@
     line-height: 1.4;
 }
 
-.amountSave {
-    margin-top: 24px;
+.stepButtons {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+}
+
+.stepButton {
     min-width: 260px;
 }
 
@@ -134,8 +134,11 @@
         text-align: center;
     }
 
-    .whenSave,
-    .amountSave {
+    .stepButtons {
+        flex-direction: column;
+    }
+
+    .stepButton {
         width: 100%;
     }
 

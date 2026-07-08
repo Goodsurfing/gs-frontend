@@ -1,3 +1,20 @@
+import i18n from "@/shared/config/i18n/i18n";
+
+const errorTranslationKeys: Record<string, string> = {
+    "Free account allows up to 3 applications. Get a membership to apply without limits.": "errors.freeAccountApplicationsLimit",
+    "Free account allows up to 1 published vacancy. Get a membership to publish without limits.": "errors.freeAccountPublishedVacancyLimit",
+};
+
+const getTranslatedErrorText = (message: string): string => {
+    const translationKey = errorTranslationKeys[message];
+
+    if (!translationKey) {
+        return message;
+    }
+
+    return i18n.t(translationKey, { defaultValue: message });
+};
+
 export const getErrorText = (error: unknown): string => {
     if (error && typeof error === "object") {
         if (
@@ -8,7 +25,7 @@ export const getErrorText = (error: unknown): string => {
             const data = error.data as Record<string, unknown>;
 
             if ("detail" in data) {
-                return String(data.detail);
+                return getTranslatedErrorText(String(data.detail));
             }
             if ("title" in data) {
                 return String(data.title);

@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Box, FormControlLabel, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {
@@ -57,6 +57,7 @@ const FundraiseStepPage = () => {
     const { t } = useTranslation(["host", "translation"]);
     const { locale } = useLocale();
     const { step, id } = useParams<{ step: string; id: string }>();
+    const navigate = useNavigate();
 
     const [toast, setToast] = useState<ToastAlert>();
     const [initialDataForm, setInitialDataForm] = useState<AddressFormFormFields | null>(null);
@@ -73,6 +74,7 @@ const FundraiseStepPage = () => {
     const [galleryImageIds, setGalleryImageIds] = useState<string[]>([]);
 
     const [wordsGratitude, setWordsGratitude] = useState("");
+    const [wordsGratitudeError, setWordsGratitudeError] = useState("");
     const [urlProgressWork, setUrlProgressWork] = useState<string[]>([""]);
     const [autoMessageStatus, setAutoMessageStatus] = useState<DonationStatus>("draft");
 
@@ -320,7 +322,7 @@ const FundraiseStepPage = () => {
         setHasUnsavedChanges(isDirty);
     };
 
-    const handleWhenSubmit = async () => {
+    const handleWhenSubmit = async (nextStep?: string) => {
         if (!id) {
             return;
         }
@@ -343,6 +345,10 @@ const FundraiseStepPage = () => {
                 }),
                 type: HintType.Success,
             });
+
+            if (nextStep) {
+                navigate(getFundraiseStepPageUrl(locale, nextStep, id));
+            }
         } catch (error: unknown) {
             setToast({ text: getErrorText(error), type: HintType.Error });
         }
@@ -355,7 +361,7 @@ const FundraiseStepPage = () => {
         setter(cleanValue);
     };
 
-    const handleHowManySubmit = async () => {
+    const handleHowManySubmit = async (nextStep?: string) => {
         if (!id) {
             return;
         }
@@ -378,6 +384,10 @@ const FundraiseStepPage = () => {
                 }),
                 type: HintType.Success,
             });
+
+            if (nextStep) {
+                navigate(getFundraiseStepPageUrl(locale, nextStep, id));
+            }
         } catch (error: unknown) {
             setToast({ text: getErrorText(error), type: HintType.Error });
         }
@@ -452,6 +462,16 @@ const FundraiseStepPage = () => {
         }
 
         setToast(undefined);
+
+        if (!wordsGratitude.trim()) {
+            setWordsGratitudeError(t("hostFundraiseAutoMessages.required", {
+                defaultValue: "Данное поле является обязательным",
+                ns: "host",
+            }));
+            return;
+        }
+
+        setWordsGratitudeError("");
 
         try {
             await updateDonationAutoMessages({
@@ -549,16 +569,28 @@ const FundraiseStepPage = () => {
                             )}
                         />
                     </Box>
-                    <Button
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                        className={styles.whenSave}
-                        onClick={handleWhenSubmit}
-                        disabled={isLoadingWhen || isSavingWhen}
-                    >
-                        {t("Сохранить", { ns: "offer" })}
-                    </Button>
+                    <div className={styles.stepButtons}>
+                        <Button
+                            variant="FILL"
+                            color="BLUE"
+                            size="MEDIUM"
+                            className={styles.stepButton}
+                            onClick={() => handleWhenSubmit()}
+                            disabled={isLoadingWhen || isSavingWhen}
+                        >
+                            {t("Сохранить", { ns: "offer" })}
+                        </Button>
+                        <Button
+                            variant="OUTLINE"
+                            color="BLUE"
+                            size="MEDIUM"
+                            className={styles.stepButton}
+                            onClick={() => handleWhenSubmit("amount")}
+                            disabled={isLoadingWhen || isSavingWhen}
+                        >
+                            {t("Дальше", { ns: "offer" })}
+                        </Button>
+                    </div>
                 </Box>
             </div>
         );
@@ -597,16 +629,28 @@ const FundraiseStepPage = () => {
                             ns: "host",
                         })}
                     </Typography>
-                    <Button
-                        variant="FILL"
-                        color="BLUE"
-                        size="MEDIUM"
-                        className={styles.amountSave}
-                        onClick={handleHowManySubmit}
-                        disabled={isLoadingHowMany || isSavingHowMany}
-                    >
-                        {t("Сохранить", { ns: "offer" })}
-                    </Button>
+                    <div className={styles.stepButtons}>
+                        <Button
+                            variant="FILL"
+                            color="BLUE"
+                            size="MEDIUM"
+                            className={styles.stepButton}
+                            onClick={() => handleHowManySubmit()}
+                            disabled={isLoadingHowMany || isSavingHowMany}
+                        >
+                            {t("Сохранить", { ns: "offer" })}
+                        </Button>
+                        <Button
+                            variant="OUTLINE"
+                            color="BLUE"
+                            size="MEDIUM"
+                            className={styles.stepButton}
+                            onClick={() => handleHowManySubmit("description")}
+                            disabled={isLoadingHowMany || isSavingHowMany}
+                        >
+                            {t("Дальше", { ns: "offer" })}
+                        </Button>
+                    </div>
                 </Box>
             </div>
         );
@@ -655,9 +699,16 @@ const FundraiseStepPage = () => {
                         value={wordsGratitude}
                         onChange={(event) => {
                             setWordsGratitude(event.target.value);
+                            if (event.target.value.trim()) {
+                                setWordsGratitudeError("");
+                            }
                         }}
                         maxLength={1000}
+                        isError={Boolean(wordsGratitudeError)}
                     />
+                    {wordsGratitudeError && (
+                        <p className={styles.error}>{wordsGratitudeError}</p>
+                    )}
 
                     <p className={styles.autoMessagesLabel}>
                         {t("hostFundraiseAutoMessages.addLinkTitle", {

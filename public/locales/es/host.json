@@ -93,6 +93,7 @@
         "wordsTitle": "Palabras de agradecimiento",
         "wordsDescription": "Puedes escribir palabras de agradecimiento para todos tus donantes. Este mensaje se enviará automáticamente después de cada donación.",
         "max": "No más de 1000 caracteres",
+        "required": "Este campo es obligatorio",
         "addLinkTitle": "Añadir enlace",
         "addLinkDescription": "Puedes adjuntar un enlace a tu comunidad o sitio web donde se pueda seguir el progreso del proyecto.",
         "addLinkButton": "Añadir enlace",

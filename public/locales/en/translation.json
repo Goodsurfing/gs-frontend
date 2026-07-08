@@ -233,6 +233,10 @@
         "Отклонить": "Reject",
         "Адрес не указан": "Address not specified"
     },
+    "errors": {
+        "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
+        "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits."
+    },
     "Не задано": "Not specified",
     "journals": "Journals",
     "news": "News",
