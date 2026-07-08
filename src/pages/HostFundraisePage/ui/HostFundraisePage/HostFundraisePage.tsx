@@ -134,7 +134,7 @@ const HostFundraisePage: FC = () => {
                 <div className={styles.drafts}>
                     <h2 className={styles.draftsTitle}>{t("hostFundraises.Черновики")}</h2>
                     <div className={styles.list}>
-                        {renderCards(draftItems, true)}
+                        {renderCards(draftItems)}
                     </div>
                 </div>
             )}
