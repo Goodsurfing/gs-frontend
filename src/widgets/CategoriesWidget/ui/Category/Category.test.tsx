@@ -1,4 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import {
+    describe, it, expect, vi,
+} from "vitest";
 import { screen } from "@testing-library/react";
 import { readFileSync } from "fs";
 import { join } from "path";

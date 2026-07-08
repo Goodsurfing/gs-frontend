@@ -1,4 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import {
+    describe, it, expect, vi,
+} from "vitest";
 import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { renderWithProviders } from "@/test-utils";
@@ -20,7 +22,7 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
  * работа" (13).
  */
 describe("FindJobPage Header", () => {
-    it('кнопка "Найти работу" ведёт на числовой ID категории, а не на строковый слаг', () => {
+    it("кнопка \"Найти работу\" ведёт на числовой ID категории, а не на строковый слаг", () => {
         renderWithProviders(
             <MemoryRouter>
                 <Header />

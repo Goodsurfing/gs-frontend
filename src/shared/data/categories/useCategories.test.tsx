@@ -1,4 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import {
+    describe, it, expect, vi,
+} from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useCategories } from "./index";
 
@@ -14,7 +16,7 @@ vi.mock("react-i18next", () => ({
  * но ловушка могла всплыть при будущем использовании tags/getTranslation.
  */
 describe("useCategories", () => {
-    it('tags содержит правильный лейбл "Заповедники и нац. парки"', () => {
+    it("tags содержит правильный лейбл \"Заповедники и нац. парки\"", () => {
         const { result } = renderHook(() => useCategories());
 
         const reservesTag = result.current.tags.find((tag) => tag.value === "reserves_and_parks");
