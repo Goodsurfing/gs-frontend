@@ -93,6 +93,7 @@
         "wordsTitle": "Words of gratitude",
         "wordsDescription": "You can write words of gratitude to all donors. This message will be sent automatically after a donation is made.",
         "max": "No more than 1000 characters",
+        "required": "This field is required",
         "addLinkTitle": "Add link",
         "addLinkDescription": "You can attach a link to your community or website where donors can follow the project progress.",
         "addLinkButton": "Add link",

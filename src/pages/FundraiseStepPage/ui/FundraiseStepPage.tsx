@@ -74,6 +74,7 @@ const FundraiseStepPage = () => {
     const [galleryImageIds, setGalleryImageIds] = useState<string[]>([]);
 
     const [wordsGratitude, setWordsGratitude] = useState("");
+    const [wordsGratitudeError, setWordsGratitudeError] = useState("");
     const [urlProgressWork, setUrlProgressWork] = useState<string[]>([""]);
     const [autoMessageStatus, setAutoMessageStatus] = useState<DonationStatus>("draft");
 
@@ -462,6 +463,16 @@ const FundraiseStepPage = () => {
 
         setToast(undefined);
 
+        if (!wordsGratitude.trim()) {
+            setWordsGratitudeError(t("hostFundraiseAutoMessages.required", {
+                defaultValue: "Данное поле является обязательным",
+                ns: "host",
+            }));
+            return;
+        }
+
+        setWordsGratitudeError("");
+
         try {
             await updateDonationAutoMessages({
                 id,
@@ -688,9 +699,16 @@ const FundraiseStepPage = () => {
                         value={wordsGratitude}
                         onChange={(event) => {
                             setWordsGratitude(event.target.value);
+                            if (event.target.value.trim()) {
+                                setWordsGratitudeError("");
+                            }
                         }}
                         maxLength={1000}
+                        isError={Boolean(wordsGratitudeError)}
                     />
+                    {wordsGratitudeError && (
+                        <p className={styles.error}>{wordsGratitudeError}</p>
+                    )}
 
                     <p className={styles.autoMessagesLabel}>
                         {t("hostFundraiseAutoMessages.addLinkTitle", {
