@@ -8,6 +8,7 @@ import flagIcon from "@/shared/assets/icons/donation/flag.svg";
 import styles from "./HostFundraiseCard.module.scss";
 
 interface HostFundraiseCardProps {
+    onCardClick: () => void;
     fundraise: GetDonations;
     onEditClick: MouseEventHandler<HTMLButtonElement>;
     onCloseClick: MouseEventHandler<HTMLButtonElement>;
@@ -15,6 +16,7 @@ interface HostFundraiseCardProps {
 }
 
 export const HostFundraiseCard = memo(({
+    onCardClick,
     fundraise,
     onEditClick,
     onCloseClick,
@@ -35,7 +37,17 @@ export const HostFundraiseCard = memo(({
     const imageSrc = getMediaContent(image?.contentUrl);
 
     return (
-        <div className={styles.card}>
+        <div
+            className={styles.card}
+            onClick={onCardClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    onCardClick();
+                }
+            }}
+        >
             <div className={styles.imageWrapper}>
                 {imageSrc ? (
                     <img src={imageSrc} alt={name ?? ""} className={styles.image} />
@@ -75,7 +87,10 @@ export const HostFundraiseCard = memo(({
                     variant="FILL"
                     color="GREEN"
                     size="SMALL"
-                    onClick={onEditClick}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        onEditClick(event);
+                    }}
                 >
                     {t("hostFundraises.Редактировать")}
                 </Button>
@@ -83,7 +98,10 @@ export const HostFundraiseCard = memo(({
                     variant="OUTLINE"
                     color="GRAY"
                     size="SMALL"
-                    onClick={onCloseClick}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        onCloseClick(event);
+                    }}
                 >
                     {t("hostFundraises.Закрыть")}
                 </Button>
@@ -91,7 +109,10 @@ export const HostFundraiseCard = memo(({
                     variant="FILL"
                     color="RED"
                     size="SMALL"
-                    onClick={onDeleteClick}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        onDeleteClick(event);
+                    }}
                 >
                     {t("hostFundraises.Удалить")}
                 </Button>

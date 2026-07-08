@@ -57,13 +57,8 @@ const HostFundraisePage: FC = () => {
         refetchAll();
     }, [refetchAll]);
 
-    const handleEditClick = (id: string, isDraft = false) => {
-        if (isDraft) {
-            navigate(getFundraiseWelcomePageUrl(locale, id));
-            return;
-        }
-
-        navigate(getDonationPersonalPage(locale, id));
+    const handleEditClick = (id: string) => {
+        navigate(getFundraiseWelcomePageUrl(locale, id));
     };
 
     const handleCloseClick = (id: string) => {
@@ -102,7 +97,7 @@ const HostFundraisePage: FC = () => {
         } catch { /* empty */ }
     };
 
-    const renderCards = (items: GetDonations[], isDraft = false) => {
+    const renderCards = (items: GetDonations[]) => {
         if (!items.length) {
             return <span className={styles.empty}>{t("hostFundraises.Нет сборов")}</span>;
         }
@@ -110,7 +105,8 @@ const HostFundraisePage: FC = () => {
             <HostFundraiseCard
                 key={fundraise.id}
                 fundraise={fundraise}
-                onEditClick={() => handleEditClick(fundraise.id, isDraft)}
+                onCardClick={() => navigate(getDonationPersonalPage(locale, fundraise.id))}
+                onEditClick={() => handleEditClick(fundraise.id)}
                 onCloseClick={() => handleCloseClick(fundraise.id)}
                 onDeleteClick={() => handleDeleteClick(fundraise.id)}
             />
