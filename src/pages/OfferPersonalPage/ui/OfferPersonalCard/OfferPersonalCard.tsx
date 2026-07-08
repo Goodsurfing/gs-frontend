@@ -15,7 +15,7 @@ interface OfferPersonalCardProps {
     isVolunteer: boolean;
 }
 
-function galleryUrls(images: Image[]): string[] {
+export function galleryUrls(images: Image[]): string[] {
     return images.map((img) => img.thumbnails?.large
         ?? img.thumbnails?.medium
         ?? img.contentUrl).filter(Boolean) as string[];

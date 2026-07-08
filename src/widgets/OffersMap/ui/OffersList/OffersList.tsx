@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { OfferApi } from "@/entities/Offer";
+import { getOfferImagePath } from "./getOfferImagePath";
 
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { Text } from "@/shared/ui/Text/Text";
@@ -84,7 +85,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                         id: offer.id,
                         title: offer.title,
                         shortDescription: offer.shortDescription,
-                        imagePath: offer.image?.thumbnails?.medium ?? offer.image?.contentUrl,
+                        imagePath: getOfferImagePath(offer.image),
                         categories: offer.categories.map((cat) => cat.name),
                         address: offer.address,
                         acceptedApplicationsCount: offer.acceptedApplicationsCount,
