@@ -233,6 +233,7 @@
         "Адрес не указан": "Dirección no especificada"
     },
     "errors": {
+        "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
         "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites."
     },
     "Не задано": "No especificado",

@@ -1,6 +1,7 @@
 import i18n from "@/shared/config/i18n/i18n";
 
 const errorTranslationKeys: Record<string, string> = {
+    "Free account allows up to 3 applications. Get a membership to apply without limits.": "errors.freeAccountApplicationsLimit",
     "Free account allows up to 1 published vacancy. Get a membership to publish without limits.": "errors.freeAccountPublishedVacancyLimit",
 };
 
