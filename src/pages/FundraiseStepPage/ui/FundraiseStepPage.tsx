@@ -51,6 +51,8 @@ import Input from "@/shared/ui/Input/Input";
 import Switch from "@/shared/ui/Switch/Switch";
 import Textarea from "@/shared/ui/Textarea/Textarea";
 
+import { getMissingCoverImageToast } from "./getMissingCoverImageToast";
+
 import styles from "./FundraiseStepPage.module.scss";
 
 const FundraiseStepPage = () => {
@@ -402,14 +404,9 @@ const FundraiseStepPage = () => {
             return;
         }
 
-        if (!data.coverImage?.id) {
-            setToast({
-                text: t("hostFundraiseDescription.imageNotUploaded", {
-                    defaultValue: "Дождитесь загрузки фото обложки перед сохранением",
-                    ns: "host",
-                }),
-                type: HintType.Error,
-            });
+        const missingCoverImageToast = getMissingCoverImageToast(data.coverImage, t);
+        if (missingCoverImageToast) {
+            setToast(missingCoverImageToast);
             return;
         }
 
@@ -422,7 +419,7 @@ const FundraiseStepPage = () => {
                     name: data.title,
                     shortDescription: data.shortDescription,
                     description: data.fullDescription,
-                    imageId: data.coverImage.id,
+                    imageId: data.coverImage?.id as string,
                     galleryImageIds,
                     categoryIds: data.category,
                 },
