@@ -232,6 +232,9 @@
         "Отклонить": "Rechazar",
         "Адрес не указан": "Dirección no especificada"
     },
+    "errors": {
+        "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites."
+    },
     "Не задано": "No especificado",
     "journals": "Revistas",
     "news": "Noticias",
