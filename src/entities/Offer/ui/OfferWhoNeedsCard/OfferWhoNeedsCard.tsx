@@ -21,11 +21,16 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
     const { className, whoNeeds } = props;
     const { t } = useTranslation("offer");
     const formattedGenders = useFormatGenders(whoNeeds.genders);
-    const receptionPlaceText = whoNeeds.receptionPlace === "foreigners"
-        ? t("whoNeeds.Только иностранцев")
-        : whoNeeds.receptionPlace === "compatriot"
-            ? t("whoNeeds.Только из моей страны")
-            : null;
+
+    let receptionPlaceText = null;
+
+    if (whoNeeds.receptionPlace === "foreigners") {
+        receptionPlaceText = t("whoNeeds.Только иностранцев");
+    }
+
+    if (whoNeeds.receptionPlace === "compatriot") {
+        receptionPlaceText = t("whoNeeds.Только из моей страны");
+    }
 
     return (
         <div className={cn(className, styles.wrapper)}>
