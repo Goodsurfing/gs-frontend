@@ -36,7 +36,7 @@ export const getErrorText = (error: unknown): string => {
             }
             // { error: "msg" }
             if ("error" in data) {
-                return String(data.error);
+                return getTranslatedErrorText(String(data.error));
             }
             // JWT 401 errors return { code, message } without detail/title
             if ("message" in data) {
