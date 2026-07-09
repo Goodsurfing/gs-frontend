@@ -50,7 +50,10 @@ const PaymentPage: React.FC = () => {
             })
             .catch((err: unknown) => {
                 if (isFetchError(err) && err.status === 409) {
-                    navigate(getMembershipPageUrl(locale));
+                    // Раньше здесь был молчаливый переход на страницу членства
+                    // без сообщения — выглядело так, будто клик по оплате
+                    // "просто возвращает на начало страницы" (row 95).
+                    setErrorMessage("У вас уже есть активное членство.");
                     return;
                 }
 
