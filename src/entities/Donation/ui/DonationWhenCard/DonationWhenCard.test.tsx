@@ -70,4 +70,24 @@ describe("DonationWhenCard", () => {
 
         expect(screen.queryByText("donationPersonal.Средств собрано")).not.toBeInTheDocument();
     });
+
+    /**
+     * Регресс-guard для row 77: сборы без указанной даты окончания
+     * (daysLeft=null у API) показывали заголовок «Дней осталось» с пустым
+     * значением вместо того, чтобы скрыть блок целиком.
+     */
+    it("не показывает «Дней осталось», если у сбора нет даты окончания (daysLeft=null)", () => {
+        renderWithProviders(
+            <DonationWhenCard
+                dateStart="2026-01-01"
+                daysLeft={null}
+                percentAmountCollect={null}
+                collectedAmount={0}
+                amount={null}
+                isSuccess={false}
+            />,
+        );
+
+        expect(screen.queryByText("donationPersonal.Дней осталось")).not.toBeInTheDocument();
+    });
 });

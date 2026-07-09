@@ -22,7 +22,7 @@ export interface GetDonations {
     name: string | null;
     shortDescription: string | null;
     percentAmountCollect: number;
-    daysLeft: number;
+    daysLeft: number | null;
     isSuccess: boolean;
     isClose: boolean;
     isCanEdit: boolean;
@@ -57,7 +57,7 @@ export type GetDonation = Omit<GetDonations, "shortDescription" | "isClose" | "o
     peopleSupportCount: number;
     percentAmountCollect: number;
     collectedAmount: number;
-    daysLeft: number;
+    daysLeft: number | null;
     amount: number | null;
     minAmount: number;
     latitude: number;

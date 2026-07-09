@@ -33,7 +33,7 @@ interface HeaderDonationCardProps {
     location?: string;
     peopleSupportCount: number;
     percentAmountCollect: number;
-    daysLeft: number;
+    daysLeft: number | null;
     isSuccess: boolean;
     imageBlock?: ReactNode;
     canEdit: boolean;
@@ -184,21 +184,23 @@ export const HeaderDonationCard = memo((props: HeaderDonationCardProps) => {
                                             %
                                         </span>
                                     </div>
-                                    <div className={styles.stats}>
-                                        <IconComponent
-                                            className={styles.icon}
-                                            icon={calendarIcon}
-                                        />
-                                        <span
-                                            className={cn(styles.ratingText, {
-                                                [styles.black]: !isImage,
-                                            })}
-                                        >
-                                            {t("donationPersonal.Дней осталось")}
-                                            {" "}
-                                            {daysLeft}
-                                        </span>
-                                    </div>
+                                    {daysLeft !== null && (
+                                        <div className={styles.stats}>
+                                            <IconComponent
+                                                className={styles.icon}
+                                                icon={calendarIcon}
+                                            />
+                                            <span
+                                                className={cn(styles.ratingText, {
+                                                    [styles.black]: !isImage,
+                                                })}
+                                            >
+                                                {t("donationPersonal.Дней осталось")}
+                                                {" "}
+                                                {daysLeft}
+                                            </span>
+                                        </div>
+                                    )}
                                 </>
                             )}
 
