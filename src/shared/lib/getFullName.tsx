@@ -27,7 +27,11 @@ export const getFullName = (
 ) => {
     if (!firstName && !lastName) return "Не указан";
 
-    const renderFullName = `${lastName || ""} ${firstName || ""}`.trim();
+    // Порядок «Имя Фамилия» — как в useGetFullName() выше. Раньше здесь был
+    // обратный порядок «Фамилия Имя», из-за чего одно и то же ФИО выглядело
+    // по-разному в зависимости от того, через хук или эту функцию рендерилось
+    // (row 103 — блог/видео/новости/админ-таблицы vs отзывы/чат/команда).
+    const renderFullName = `${firstName || ""} ${lastName || ""}`.trim();
     return (renderFullName);
 };
 
