@@ -2,6 +2,7 @@ import cn from "classnames";
 import React, { FC, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
+import { Pagination } from "@mui/material";
 
 import { NotesApplicationCard } from "../NotesApplicationCard/NotesApplicationCard";
 import { NotesCard } from "../NotesCard/NotesCard";
@@ -21,6 +22,13 @@ interface NotesContainerProps {
     onAcceptClick?: (applicationId: number) => void;
     onCancelClick?: (applicationId: number) => void;
     locale: Locale;
+    // Реальное количество заявок этого статуса (все страницы), не только
+    // notes.length — раньше заголовок колонки показывал количество на
+    // текущей странице общего списка (row 101).
+    total?: number;
+    page?: number;
+    totalPages?: number;
+    onPageChange?: (page: number) => void;
 }
 
 export const NotesContainer: FC<NotesContainerProps> = memo(
@@ -36,6 +44,10 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
             onAcceptClick,
             onCancelClick,
             locale,
+            total,
+            page,
+            totalPages,
+            onPageChange,
         } = props;
         const { t } = useTranslation();
 
@@ -81,7 +93,7 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                     style={{ borderBottom: `2px solid ${color}` }}
                 >
                     <span className={styles.title}>{translateLib[status]}</span>
-                    <span className={styles.number}>{notes?.length || 0}</span>
+                    <span className={styles.number}>{total ?? notes?.length ?? 0}</span>
                 </div>
                 <div className={styles.container}>
                     <Droppable
@@ -99,6 +111,15 @@ export const NotesContainer: FC<NotesContainerProps> = memo(
                             </div>
                         )}
                     </Droppable>
+                    {!!totalPages && totalPages > 1 && (
+                        <Pagination
+                            className={styles.pagination}
+                            count={totalPages}
+                            page={page}
+                            onChange={(_, newPage) => onPageChange?.(newPage)}
+                            size="small"
+                        />
+                    )}
                 </div>
             </div>
         );

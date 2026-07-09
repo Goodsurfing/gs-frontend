@@ -41,7 +41,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
     } = props;
     const {
         volunteer, vacancy, status, startDate, endDate, chatId,
-        id, isHasReview,
+        id, isHasReview, createdAt,
     } = application;
 
     const { t } = useTranslation();
@@ -110,6 +110,13 @@ export const RequestCard = memo((props: RequestCardProps) => {
                 >
                     {vacancy.title}
                 </Link>
+                {createdAt && (
+                    <span className={styles.applicationDate}>
+                        {t("notes.Заявка получена")}
+                        {" "}
+                        {createdAt}
+                    </span>
+                )}
             </div>
             <div className={styles.buttons}>
                 {(showButtons && status === "accepted") && (

@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
-import { Pagination } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-import { NotesWidget } from "@/widgets/NotesWidget";
+import { NotesContainer } from "@/widgets/NotesWidget";
+import { statusColors } from "@/widgets/NotesWidget/model/lib/statusColors";
 
 import {
-    FormApplicationStatus,
     Application,
+    FormApplicationStatus,
 } from "@/entities/Application";
 import { HostModalReview, useCreateVolunteerReviewMutation } from "@/entities/Review";
 import { getErrorText } from "@/shared/lib/getErrorText";
@@ -15,15 +16,53 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
+import SelectField from "@/components/SelectField/SelectField";
 
 import { ReviewFields } from "../../model/types/notes";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { useLazyGetMyHostApplicationsQuery, useUpdateApplicationFormStatusByIdWithoutTagsMutation } from "@/entities/Chat";
+import {
+    useGetMyHostApplicationsQuery,
+    useUpdateApplicationFormStatusByIdMutation,
+} from "@/entities/Chat";
+import { useGetMyHostQuery } from "@/entities/Host";
+import { useLazyGetHostAllOffersByIdQuery } from "@/entities/Offer";
 import styles from "./NotesHostForm.module.scss";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 
 const APPLICATIONS_PER_PAGE = 10;
+
+interface VacancyOption {
+    label: string;
+    value: number | undefined;
+}
+
+// Раньше все статусы тянулись одной общей страницей и раскладывались по 3
+// колонкам уже на фронте — счётчики и постраничность каждой колонки были
+// неверными (row 101). Теперь у каждой колонки своя независимая
+// пагинация и свой реальный total с бэкенда.
+const useApplicationsColumn = (status: FormApplicationStatus, vacancyId?: number) => {
+    const [page, setPage] = useState(1);
+
+    const { data, isFetching } = useGetMyHostApplicationsQuery({
+        status,
+        vacancyId,
+        limit: APPLICATIONS_PER_PAGE,
+        page,
+    });
+
+    return {
+        status,
+        notes: data?.data ?? [],
+        total: data?.pagination.total ?? 0,
+        totalPages: data?.pagination
+            ? Math.ceil(data.pagination.total / APPLICATIONS_PER_PAGE)
+            : 0,
+        page,
+        setPage,
+        isFetching,
+    };
+};
 
 export const NotesHostForm = () => {
     const defaultValues: DefaultValues<ReviewFields> = {
@@ -44,33 +83,40 @@ export const NotesHostForm = () => {
     const [selectedApplication,
         setSelectedApplication] = useState<Application | null>(null);
 
-    const [adaptedApplications, setAdaptedApplications] = useState<Application[]>([]);
-    const [page, setPage] = useState<number>(1);
-    const [getApplications,
-        { data: applicationData, isLoading }] = useLazyGetMyHostApplicationsQuery();
+    const [vacancyId, setVacancyId] = useState<number | undefined>(undefined);
+
+    const { data: myHost } = useGetMyHostQuery();
+    const [fetchVacancies, { data: vacanciesData }] = useLazyGetHostAllOffersByIdQuery();
+
+    React.useEffect(() => {
+        if (myHost?.id) {
+            fetchVacancies({
+                organizationId: myHost.id,
+                limit: 100,
+                page: 1,
+                statuses: ["active", "disabled"],
+            });
+        }
+    }, [myHost?.id, fetchVacancies]);
+
+    const vacancyOptions = useMemo<VacancyOption[]>(() => [
+        { label: t("hostNotes.Все вакансии"), value: undefined },
+        ...(vacanciesData?.data ?? []).map((vacancy) => ({
+            label: vacancy.title ?? t("hostNotes.Без названия"),
+            value: vacancy.id,
+        })),
+    ], [vacanciesData, t]);
+
+    const newColumn = useApplicationsColumn("new", vacancyId);
+    const acceptedColumn = useApplicationsColumn("accepted", vacancyId);
+    const canceledColumn = useApplicationsColumn("canceled", vacancyId);
+    const columns = [newColumn, acceptedColumn, canceledColumn];
+
     const [createVolunteerReview] = useCreateVolunteerReviewMutation();
-    const [updateApplicationStatus,
-        { isLoading: updateApplicationLoading },
-    ] = useUpdateApplicationFormStatusByIdWithoutTagsMutation();
+    const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const { locale } = useLocale();
 
-    const fetchApplications = useCallback(async (limit: number, pageItem: number) => {
-        await getApplications({ limit, page: pageItem });
-    }, [getApplications]);
-
-    useEffect(() => {
-        fetchApplications(APPLICATIONS_PER_PAGE, page);
-    }, [fetchApplications, page]);
-
-    useEffect(() => {
-        if (applicationData) {
-            setAdaptedApplications(applicationData.data);
-        }
-    }, [applicationData]);
-
-    const totalPageCount = applicationData ? Math.ceil(
-        applicationData.pagination.total / APPLICATIONS_PER_PAGE,
-    ) : 0;
+    const isLoading = columns.every((column) => column.isFetching && column.notes.length === 0);
 
     const onReviewClick = (application: Application) => {
         setSelectedApplication(application);
@@ -127,6 +173,16 @@ export const NotesHostForm = () => {
         }
     };
 
+    const onDragEnd = (result: DropResult) => {
+        const { destination, source, draggableId } = result;
+
+        if (!destination || destination.droppableId === source.droppableId) {
+            return;
+        }
+
+        handleUpdateStatus(Number(draggableId), destination.droppableId as FormApplicationStatus);
+    };
+
     if (isLoading) {
         return (
             <div><MiniLoader /></div>
@@ -136,21 +192,40 @@ export const NotesHostForm = () => {
     return (
         <div className={styles.wrapper}>
             {toastTop && <HintPopup text={toastTop.text} type={toastTop.type} />}
-            <NotesWidget
-                className={styles.notes}
-                notes={adaptedApplications}
-                variant="host"
-                onReviewClick={onReviewClick}
-                updateApplicationStatus={handleUpdateStatus}
-                isDragDisable={updateApplicationLoading || isLoading}
-                locale={locale}
+            <SelectField
+                isSearchable={false}
+                name="vacancyFilter"
+                label={t("hostNotes.Вакансия")}
+                options={vacancyOptions}
+                value={vacancyOptions.find((option) => option.value === vacancyId)}
+                onChange={(option) => {
+                    const selected = option as VacancyOption | null;
+                    setVacancyId(selected?.value);
+                    columns.forEach((column) => column.setPage(1));
+                }}
             />
-            <Pagination
-                count={totalPageCount}
-                page={page}
-                onChange={(_, newPage) => setPage(newPage)}
-                size="large"
-            />
+            <DragDropContext onDragEnd={onDragEnd}>
+                <div className={styles.notes}>
+                    {columns.map((column) => (
+                        <NotesContainer
+                            key={column.status}
+                            onReviewClick={onReviewClick}
+                            onAcceptClick={(appId) => handleUpdateStatus(appId, "accepted")}
+                            onCancelClick={(appId) => handleUpdateStatus(appId, "canceled")}
+                            status={column.status}
+                            notes={column.notes}
+                            total={column.total}
+                            page={column.page}
+                            totalPages={column.totalPages}
+                            onPageChange={column.setPage}
+                            color={statusColors[column.status]}
+                            variant="host"
+                            isDragDisable={false}
+                            locale={locale}
+                        />
+                    ))}
+                </div>
+            </DragDropContext>
             <Controller
                 name="review"
                 control={control}
