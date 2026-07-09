@@ -39,6 +39,13 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
         isLoading: isApplicationsLoading,
         refetch,
     } = useGetMyHostApplicationsQuery({ limit: APPLICATIONS_PER_PAGE, page: 1 });
+    // Реальное число новых заявок по всем страницам, не только среди
+    // первых APPLICATIONS_PER_PAGE вперемешку со всеми статусами (row 101).
+    const { data: newApplicationsData } = useGetMyHostApplicationsQuery({
+        status: "new",
+        limit: 1,
+        page: 1,
+    });
     const [createVolunteerReview] = useCreateVolunteerReviewMutation();
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const { t } = useTranslation("host");
@@ -151,11 +158,7 @@ export const RequestsWidget = memo((props: RequestsWidgetProps) => {
                         {t("host-dashboard.Новых заявок")}
                         {": "}
                         <span className={styles.requestsCount}>
-                            {applications
-                                ? applications.data.filter(
-                                    (app) => app.status === "new",
-                                ).length
-                                : 0}
+                            {newApplicationsData?.pagination.total ?? 0}
                         </span>
                     </p>
                 </div>

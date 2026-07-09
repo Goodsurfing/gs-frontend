@@ -94,6 +94,7 @@ export interface Application {
     status: FormApplicationStatus;
     chatId: number | null;
     isHasReview: boolean;
+    createdAt: string | null;
 }
 
 export type GetFormApplication = Omit<FullFormApplication, "volunteer"> & {

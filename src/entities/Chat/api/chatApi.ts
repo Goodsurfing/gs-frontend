@@ -27,6 +27,11 @@ interface UpdateFormApplicationStatus {
     status: FormApplicationStatus;
 }
 
+export interface GetHostApplicationsParams extends PaginationParams {
+    status?: FormApplicationStatus;
+    vacancyId?: number;
+}
+
 export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: baseQueryAcceptJson,
@@ -109,7 +114,8 @@ export const chatApi = createApi({
             }),
             providesTags: ["application"],
         }),
-        getMyHostApplications: build.query<GetHostFormApplicationResponse, PaginationParams>({
+        getMyHostApplications: build.query<
+        GetHostFormApplicationResponse, GetHostApplicationsParams>({
             query: (params) => ({
                 url: `${API_BASE_URL_V3}application/list-of-organization`,
                 method: "GET",
