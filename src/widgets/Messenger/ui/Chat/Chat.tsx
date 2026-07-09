@@ -40,6 +40,7 @@ import {
 import { Modal } from "@/shared/ui/Modal/Modal";
 
 import { applicationOfferAdapter } from "../../lib/applicationOfferAdapter";
+import { getEffectiveCompanion } from "./getEffectiveCompanion";
 import { ChatFormFields } from "../../model/types/chatForm";
 import { Message } from "../Message/Message";
 import { SendMessage } from "../SendMessage/SendMessage";
@@ -202,7 +203,7 @@ export const Chat: FC<ChatProps> = (props) => {
         const processMessages = async () => {
             let currentDate = "";
             const today = new Date().toDateString();
-            const effectiveCompanion = companionData ?? chatData?.otherParticipants?.[0];
+            const effectiveCompanion = getEffectiveCompanion(companionData, chatData);
 
             const elements = await Promise.all(
                 messages.map(async (message) => {
@@ -457,8 +458,8 @@ export const Chat: FC<ChatProps> = (props) => {
                         />
                         <span className={styles.userName}>
                             {getFullName(
-                                (companionData ?? chatData?.otherParticipants?.[0])?.firstName,
-                                (companionData ?? chatData?.otherParticipants?.[0])?.lastName,
+                                getEffectiveCompanion(companionData, chatData)?.firstName,
+                                getEffectiveCompanion(companionData, chatData)?.lastName,
                             )}
                         </span>
                     </div>
