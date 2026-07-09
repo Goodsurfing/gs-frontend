@@ -11,7 +11,7 @@ export interface MessageType {
     text?: string;
     attachments: string[] | MediaObjectType[];
     createdAt: string;
-    // chat: string;
+    chat: string;
     applicationForm?: string;
     readByUserIds: string[];
 }

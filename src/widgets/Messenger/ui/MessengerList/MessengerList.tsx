@@ -33,6 +33,7 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
         onChangeSearchValue,
         onChangeStatusValue,
         fetchChats,
+        applyIncomingMessage,
     } = useGetChatListData(token, mercureToken);
     const { registerMessageUpdateCallback, registerOnMessageCallback } = useMessenger();
 
@@ -45,11 +46,15 @@ export const MessengerList: FC<MessengerListProps> = (props: MessengerListProps)
         });
     }, [fetchChats, registerMessageUpdateCallback]);
 
+    // Точечное обновление вместо полного fetchChats на каждое сообщение —
+    // иначе список постоянно перезапрашивался и пересортировывался целиком,
+    // из-за чего непрочитанные чаты "моргали" и уезжали из видимой области
+    // (row 116).
     useEffect(() => {
-        registerOnMessageCallback(() => {
-            fetchChats();
+        registerOnMessageCallback((msg) => {
+            applyIncomingMessage(msg);
         });
-    }, [fetchChats, registerOnMessageCallback]);
+    }, [applyIncomingMessage, registerOnMessageCallback]);
 
     const handleTextChange = (text: string) => {
         onChangeSearchValue(text);

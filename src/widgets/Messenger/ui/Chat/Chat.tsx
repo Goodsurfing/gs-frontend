@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, {
-    FC, Fragment, useCallback, useEffect, useState,
+    FC, Fragment, useCallback, useEffect, useRef, useState,
 } from "react";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -175,16 +175,23 @@ export const Chat: FC<ChatProps> = (props) => {
         // }
     }, [isChatCreate, offerId, getOfferData]);
 
+    // Ref, а не state: отмечаем последнее уже прочитанное сообщение конкретного
+    // чата, чтобы не дёргать readMessage/onReadMessage повторно на каждый
+    // ре-рендер messages (это вызывало каскад полных рефетчей списка чатов —
+    // "моргание" и схлопывание непрочитанных в списке, row 116).
+    const lastReadMessageIdRef = useRef<Record<string, number>>({});
+
     useEffect(() => {
-        if (messages) {
-            messages.forEach(async (message, index) => {
-                if (index === 0) {
-                    await readMessage({ message: `${API_BASE_URL}messages/${message.id}` });
-                    onReadMessage();
-                }
-            }, []);
-        }
-    }, [messages, onReadMessage, readMessage]);
+        if (!messages?.length || !id) return;
+        const latestMessage = messages[0];
+        if (lastReadMessageIdRef.current[id] === latestMessage.id) return;
+
+        lastReadMessageIdRef.current[id] = latestMessage.id;
+        (async () => {
+            await readMessage({ message: `${API_BASE_URL}messages/${latestMessage.id}` });
+            onReadMessage();
+        })();
+    }, [messages, id, onReadMessage, readMessage]);
 
     const onApplicationSubmit = useCallback(async (
         status: FormApplicationStatus,

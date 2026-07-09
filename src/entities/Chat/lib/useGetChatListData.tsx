@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { FormApplicationStatus } from "@/entities/Application";
 import {
-    ChatsList,
+    ChatsList, MessageType,
 } from "@/entities/Messenger";
 
 import { API_BASE_URL } from "@/shared/constants/api";
@@ -52,27 +52,29 @@ export const useGetChatListData = (
         fetchChats();
     }, [fetchChats]);
 
-    // useEffect(() => {
-    //     const unsubscribe = registerOnMessageCallback((updatedMessage: MessageType) => {
-    //         const tempUpdatedChatId = updatedMessage.chat.split("/").pop();
-    //         if (!tempUpdatedChatId) return;
+    // Точечно обновляет lastMessage/countUnreadMessages чата по SSE-событию,
+    // без полного сетевого рефетча всего списка (был источник "моргания" и
+    // схлопывания непрочитанных чатов при активной переписке — row 116).
+    // Если чата ещё нет в текущем списке (например, только что создан) —
+    // просто игнорируем событие, он появится при следующем обычном fetchChats.
+    const applyIncomingMessage = useCallback((updatedMessage: MessageType) => {
+        const tempUpdatedChatId = updatedMessage.chat?.split("/").pop();
+        if (!tempUpdatedChatId) return;
+        const updatedChatId = parseInt(tempUpdatedChatId, 10);
 
-    //         console.log("updatedMessage", updatedMessage);
-    //         const updatedChatId = parseInt(tempUpdatedChatId, 10);
+        setChatsList((prev) => prev.map((chat) => {
+            if (chat.id !== updatedChatId || !chat.lastMessage) return chat;
 
-    //         // setChatsList((prev) => prev.map((chat) => (chat.id === updatedChatId
-    //         //     ? {
-    //         //         ...chat,
-    //         //         lastMessage: updatedMessage,
-    //         //         countUnreadMessages: chat.countUnreadMessages + 1,
-    //         //     }
-    //         //     : chat)));
-    //     });
-
-    //     return () => {
-    //         unsubscribe();
-    //     };
-    // }, [registerOnMessageCallback]);
+            return {
+                ...chat,
+                // author у ChatsList.lastMessage — Profile, а в SSE-пейлоаде
+                // только id автора строкой; author нигде не рендерится в
+                // превью чата (см. UserCard), поэтому оставляем прежний.
+                lastMessage: { ...updatedMessage, author: chat.lastMessage.author },
+                countUnreadMessages: chat.countUnreadMessages + 1,
+            };
+        }));
+    }, []);
 
     const onChangeSearchValue = (value: string) => {
         setSearchValue(value);
@@ -89,5 +91,6 @@ export const useGetChatListData = (
         onChangeSearchValue,
         onChangeStatusValue,
         fetchChats,
+        applyIncomingMessage,
     };
 };
