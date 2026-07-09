@@ -14,7 +14,9 @@ import { MessageType } from "@/entities/Messenger";
  */
 describe("useGetChatListData.applyIncomingMessage", () => {
     const initialChats = [
-        { id: 1, lastMessage: undefined, otherParticipants: [], countUnreadMessages: 0 },
+        {
+            id: 1, lastMessage: undefined, otherParticipants: [], countUnreadMessages: 0,
+        },
         {
             id: 2,
             lastMessage: {
