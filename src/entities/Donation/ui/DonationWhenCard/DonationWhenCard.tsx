@@ -58,7 +58,7 @@ export const DonationWhenCard = memo((props: DonationWhenCardProps) => {
                 >
                     {donationDateStart()}
                 </InfoCardItem>
-                {(daysLeft && !isSuccess) && (
+                {(daysLeft !== null && !isSuccess) && (
                     <InfoCardItem
                         title={t("donationPersonal.Дней осталось")}
                         text={daysLeft}

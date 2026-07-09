@@ -19,7 +19,7 @@ export interface DonationCardType {
     title?: string | null;
     organizationName: string;
     description?: string | null;
-    daysLeft: number;
+    daysLeft: number | null;
     percentAmountCollect: number;
     isSuccess: boolean;
 }
@@ -89,14 +89,16 @@ export const DonationCard: FC<DonationCardProps> = memo((props: DonationCardProp
                                     %
                                 </span>
                             </div>
-                            <div className={styles.iconWrapper}>
-                                <img src={calendarIcon} alt="calendar" />
-                                <span>
-                                    {t("Осталось")}
-                                    {" "}
-                                    {daysLeft}
-                                </span>
-                            </div>
+                            {daysLeft !== null && (
+                                <div className={styles.iconWrapper}>
+                                    <img src={calendarIcon} alt="calendar" />
+                                    <span>
+                                        {t("Осталось")}
+                                        {" "}
+                                        {daysLeft}
+                                    </span>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
