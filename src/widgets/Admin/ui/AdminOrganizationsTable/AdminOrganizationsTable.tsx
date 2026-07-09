@@ -8,7 +8,7 @@ import {
 import cn from "classnames";
 import {
     adminOrganizationsAdapter,
-    AdminSort, GetAdminOrganizationParams, useDeleteOrganizationMutation,
+    AdminSort, GetAdminOrganizationParams, MembershipStatusFilter, useDeleteOrganizationMutation,
     useLazyGetOrganizationsQuery,
     useToggleAdminOrganizationActiveMutation,
 } from "@/entities/Admin";
@@ -74,6 +74,29 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
         ),
     },
     {
+        key: "membershipStatus",
+        label: "Членство",
+        render: ({ value, onChange, disabled }) => (
+            <FormControl fullWidth size="small" disabled={disabled}>
+                <InputLabel id="custom-membership-status-label" sx={{ background: "background.paper", px: 0.5 }}>
+                    Членство
+                </InputLabel>
+                <Select
+                    labelId="custom-membership-status-label"
+                    value={value ?? ""}
+                    label="Членство"
+                    onChange={(e) => onChange(
+                        (e.target.value || undefined) as MembershipStatusFilter | undefined,
+                    )}
+                >
+                    <MenuItem value="">Все</MenuItem>
+                    <MenuItem value="active">Активно</MenuItem>
+                    <MenuItem value="inactive">Неактивно</MenuItem>
+                </Select>
+            </FormControl>
+        ),
+    },
+    {
         key: "sort",
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
@@ -83,7 +106,7 @@ const customFields: CustomFilterField<keyof OrganizationsFilters>[] = [
                 </InputLabel>
                 <Select
                     labelId="custom-sort-label"
-                    value={value || AdminSort.IdAsc}
+                    value={value || AdminSort.CreatedDesc}
                     label="Сортировка"
                     onChange={(e) => onChange(e.target.value as AdminSort)}
                     MenuProps={{
@@ -125,10 +148,11 @@ export const AdminOrganizationsTable = () => {
     const [toast, setToast] = useState<ToastAlert>();
     const { filters, setFilters } = useQueryFilters({
         page: 1,
-        sort: AdminSort.IdAsc,
+        sort: AdminSort.CreatedDesc,
         firstName: undefined,
         lastName: undefined,
         name: undefined,
+        membershipStatus: undefined,
     });
 
     const [toggleAdminOrganizationActive,
@@ -151,10 +175,11 @@ export const AdminOrganizationsTable = () => {
                 await getOrganizations({
                     page: filters.page,
                     limit: ORGANIZATIONS_PER_PAGE,
-                    sort: filters.sort ?? AdminSort.IdAsc,
+                    sort: filters.sort ?? AdminSort.CreatedDesc,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
                     name: filters.name,
+                    membershipStatus: filters.membershipStatus,
                 }).unwrap();
             } catch (error) {
                 setToast({
@@ -165,7 +190,7 @@ export const AdminOrganizationsTable = () => {
         };
 
         fetchData();
-    }, [filters.firstName, filters.lastName, filters.name,
+    }, [filters.firstName, filters.lastName, filters.name, filters.membershipStatus,
         filters.page, filters.sort, getOrganizations]);
 
     const handleOpenDeleteModal = (id: string, name: string) => {
@@ -292,6 +317,24 @@ export const AdminOrganizationsTable = () => {
             filterable: false,
             disableColumnMenu: true,
             hideable: false,
+        },
+        {
+            field: "isMembership",
+            headerName: "Членство",
+            type: "boolean",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+        },
+        {
+            field: "endMembership",
+            headerName: "Окончание членства",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 140,
         },
         {
             field: "actions",

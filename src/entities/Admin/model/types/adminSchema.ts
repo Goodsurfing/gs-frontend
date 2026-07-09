@@ -192,12 +192,15 @@ export enum AdminSort {
     TypeDesc = "type:desc",
 }
 
+export type MembershipStatusFilter = "active" | "inactive";
+
 export interface GetAdminUserParams {
     sort: AdminSort;
     id: number; // search by id user
     email: string; // search by email of user
     firstName: string; // search by first name of user
     lastName: string; // search by last name of user
+    membershipStatus: MembershipStatusFilter;
     page: number;
     limit: number;
 }
@@ -239,6 +242,8 @@ export interface AdminOrganizations {
     countVacancies: number;
     countApplications: number;
     isActive: boolean;
+    isMembership: boolean;
+    endMembership: string | null;
 }
 
 export type UpdateAdminOrganization = Omit<AdminOrganization, "id" | "image"
@@ -256,6 +261,7 @@ export interface GetAdminOrganizationParams {
     name: string; // search by organization name
     firstName: string;
     lastName: string;
+    membershipStatus: MembershipStatusFilter;
     page: number;
     limit: number;
 }
@@ -273,6 +279,8 @@ export interface AdminOrganizationsFields {
     countVacancies: number;
     countApplications: number;
     isActive: boolean;
+    isMembership: boolean;
+    endMembership: string | null;
 }
 
 export interface CreateAdminSkillRequest {

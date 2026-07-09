@@ -22,6 +22,7 @@ export type {
     GetAdminAmbassador,
     AboutProjectInfoFields,
     AboutProjectPrinciples,
+    MembershipStatusFilter,
 } from "./model/types/adminSchema";
 
 export { AdminSort } from "./model/types/adminSchema";
