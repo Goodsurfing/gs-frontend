@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { AdminOrganization } from "../model/types/adminSchema";
-import { adminOrganizationAdapter } from "./adminAdapters";
+import { AdminOrganization, AdminOrganizations } from "../model/types/adminSchema";
+import { adminOrganizationAdapter, adminOrganizationsAdapter } from "./adminAdapters";
 
 const baseOrganization: AdminOrganization = {
     id: "1",
@@ -32,5 +32,40 @@ describe("adminOrganizationAdapter", () => {
 
         expect(result.type?.organizationType).toBe("НКО");
         expect(result.type?.otherOrganizationType).toBe("");
+    });
+});
+
+const baseOrganizationListItem: AdminOrganizations = {
+    id: "1",
+    name: "Организация",
+    lastName: "Иванов",
+    firstName: "Иван",
+    countVacancies: 0,
+    countApplications: 0,
+    isActive: true,
+    isMembership: false,
+    endMembership: null,
+};
+
+/**
+ * Регресс-guard для rows 112/113/115: у организаций не было видно
+ * членство владельца (организационный тариф) в списке админки — только у
+ * пользователей, и то было захардкожено в false на бэке.
+ */
+describe("adminOrganizationsAdapter", () => {
+    it("пробрасывает isMembership и endMembership из API-ответа в строку таблицы", () => {
+        const [result] = adminOrganizationsAdapter([
+            { ...baseOrganizationListItem, isMembership: true, endMembership: "01.01.2027" },
+        ]);
+
+        expect(result.isMembership).toBe(true);
+        expect(result.endMembership).toBe("01.01.2027");
+    });
+
+    it("отражает isMembership=false, когда у владельца нет активного членства", () => {
+        const [result] = adminOrganizationsAdapter([baseOrganizationListItem]);
+
+        expect(result.isMembership).toBe(false);
+        expect(result.endMembership).toBeNull();
     });
 });

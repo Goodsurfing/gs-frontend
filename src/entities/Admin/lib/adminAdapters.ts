@@ -145,7 +145,7 @@ AdminOrganizationsFields[] => {
     const result: AdminOrganizationsFields[] = data.map((host) => {
         const {
             id, name, firstName, lastName, countApplications, countVacancies,
-            isActive,
+            isActive, isMembership, endMembership,
         } = host;
         return {
             id,
@@ -155,6 +155,8 @@ AdminOrganizationsFields[] => {
             countApplications,
             countVacancies,
             isActive,
+            isMembership,
+            endMembership,
         };
     });
 

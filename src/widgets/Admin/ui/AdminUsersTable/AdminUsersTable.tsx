@@ -18,7 +18,8 @@ import {
 } from "@/shared/ui/AdminFiltersTable/AdminFiltersTable";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import {
-    AdminSort, adminUsersAdapter, useDeleteUserMutation, useLazyGetUsersQuery,
+    AdminSort, adminUsersAdapter, MembershipStatusFilter,
+    useDeleteUserMutation, useLazyGetUsersQuery,
     useToggleAdminUserActiveMutation,
 } from "@/entities/Admin";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -35,6 +36,7 @@ interface UserFilters {
     email?: string;
     firstName?: string;
     lastName?: string;
+    membershipStatus?: MembershipStatusFilter;
     sort?: AdminSort;
 }
 
@@ -97,6 +99,29 @@ const customFields: CustomFilterField<keyof UserFilters>[] = [
         ),
     },
     {
+        key: "membershipStatus",
+        label: "Членство",
+        render: ({ value, onChange, disabled }) => (
+            <FormControl fullWidth size="small" disabled={disabled}>
+                <InputLabel id="custom-membership-status-label" sx={{ background: "background.paper", px: 0.5 }}>
+                    Членство
+                </InputLabel>
+                <Select
+                    labelId="custom-membership-status-label"
+                    value={value ?? ""}
+                    label="Членство"
+                    onChange={(e) => onChange(
+                        (e.target.value || undefined) as MembershipStatusFilter | undefined,
+                    )}
+                >
+                    <MenuItem value="">Все</MenuItem>
+                    <MenuItem value="active">Активно</MenuItem>
+                    <MenuItem value="inactive">Неактивно</MenuItem>
+                </Select>
+            </FormControl>
+        ),
+    },
+    {
         key: "sort",
         label: "Сортировка",
         render: ({ value, onChange, disabled }) => (
@@ -106,7 +131,7 @@ const customFields: CustomFilterField<keyof UserFilters>[] = [
                 </InputLabel>
                 <Select
                     labelId="custom-sort-label"
-                    value={value || AdminSort.IdAsc}
+                    value={value || AdminSort.CreatedDesc}
                     label="Сортировка"
                     onChange={(e) => onChange(e.target.value as AdminSort)}
                     MenuProps={{
@@ -171,7 +196,8 @@ export const AdminUsersTable = () => {
         email: undefined,
         firstName: undefined,
         lastName: undefined,
-        sort: AdminSort.IdAsc,
+        membershipStatus: undefined,
+        sort: AdminSort.CreatedDesc,
     });
 
     const [userToDelete, setUserToDelete] = useState<
@@ -198,7 +224,8 @@ export const AdminUsersTable = () => {
                     email: filters.email,
                     firstName: filters.firstName,
                     lastName: filters.lastName,
-                    sort: filters.sort ?? AdminSort.IdAsc,
+                    membershipStatus: filters.membershipStatus,
+                    sort: filters.sort ?? AdminSort.CreatedDesc,
                 }).unwrap();
             } catch (error) {
                 setToast({
@@ -210,7 +237,7 @@ export const AdminUsersTable = () => {
 
         fetchData();
     }, [filters.email, filters.firstName, filters.id,
-        filters.lastName, filters.page, filters.sort, getUsers]);
+        filters.lastName, filters.membershipStatus, filters.page, filters.sort, getUsers]);
 
     const handleOpenDeleteModal = (idValue: string, name: string) => {
         setUserToDelete({ id: idValue, name });
