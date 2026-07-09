@@ -103,7 +103,14 @@
         // display: none;
     }
 
+    // Row 102, п.24: своё сообщение — слева, сообщение собеседника —
+    // справа (по явной просьбе в фидбэк-документе, разворот привычной
+    // конвенции мессенджеров).
     .userMessage {
+        align-self: flex-start;
+    }
+
+    .otherMessage {
         align-self: flex-end;
         flex-direction: row-reverse;
         margin-left: auto;
@@ -112,10 +119,6 @@
             margin-left: 0;
             margin-right: 8px;
         }
-    }
-
-    .otherMessage {
-        align-self: flex-start;
     }
 }
 
