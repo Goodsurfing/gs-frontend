@@ -1,11 +1,12 @@
 import React, {
-    ChangeEvent, FC, useCallback,
+    ChangeEvent, FC, useCallback, useState,
 } from "react";
 
 import { useTranslation } from "react-i18next";
 import cameraIcon from "@/shared/assets/icons/photo-camera.svg";
 import Button from "@/shared/ui/Button/Button";
 import InputFile from "@/shared/ui/InputFile/InputFile";
+import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 
 import styles from "./UploadArticleCover.module.scss";
 import { Image } from "@/types/media";
@@ -23,12 +24,17 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
 ) => {
     const { id, onUpload, img } = props;
     const { t } = useTranslation("volunteer");
+    // Загрузка обложки может занимать заметное время (row 61 — "долго
+    // грузится, ощущение что не сработало"), а раньше в течение всего
+    // запроса не было никакой обратной связи.
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleUpload = useCallback(
         async (e: ChangeEvent<HTMLInputElement>) => {
             const fileList = e.target.files;
             if (fileList && fileList.length > 0) {
                 const file = fileList[0];
+                setIsUploading(true);
                 await uploadFile(file.name, file)
                     .then((result) => {
                         if (result) {
@@ -41,6 +47,9 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
                     })
                     .catch(() => {
                         onUpload?.(null);
+                    })
+                    .finally(() => {
+                        setIsUploading(false);
                     });
             }
         },
@@ -56,51 +65,61 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
             {img && (
                 <div className={styles.imageWrapper}>
                     <img src={getMediaContent(img.contentUrl)} alt="uploaded" className={styles.imageCover} />
-                    <div className={styles.containerButtons}>
-                        <InputFile
-                            id="upload image"
-                            onChange={handleUpload}
-                            wrapperClassName={styles.inputButton}
-                            uploadedImageClassName={styles.hiddenImg}
-                            labelClassName={styles.inputButton}
-                            labelChildren={(
-                                <div
-                                    className={styles.buttons}
-                                >
-                                    {t("volunteer-create-article.Изменить")}
-                                </div>
-                            )}
-                        />
-                        <Button
-                            className={styles.buttons}
-                            color="BLUE"
-                            size="SMALL"
-                            variant="OUTLINE"
-                            onClick={handleDelete}
-                        >
-                            {t("volunteer-create-article.Удалить")}
-                        </Button>
-                    </div>
+                    {isUploading ? (
+                        <MiniLoader className={styles.loader} />
+                    ) : (
+                        <div className={styles.containerButtons}>
+                            <InputFile
+                                id="upload image"
+                                onChange={handleUpload}
+                                wrapperClassName={styles.inputButton}
+                                uploadedImageClassName={styles.hiddenImg}
+                                labelClassName={styles.inputButton}
+                                labelChildren={(
+                                    <div
+                                        className={styles.buttons}
+                                    >
+                                        {t("volunteer-create-article.Изменить")}
+                                    </div>
+                                )}
+                            />
+                            <Button
+                                className={styles.buttons}
+                                color="BLUE"
+                                size="SMALL"
+                                variant="OUTLINE"
+                                onClick={handleDelete}
+                            >
+                                {t("volunteer-create-article.Удалить")}
+                            </Button>
+                        </div>
+                    )}
                 </div>
             )}
             {!img
             && (
-                <InputFile
-                    onChange={handleUpload}
-                    imageURL={img}
-                    id={id}
-                    uploadedImageClassName={styles.hiddenImg}
-                    labelClassName={styles.btn}
-                    labelChildren={(
-                        <div className={styles.innerWrapper}>
-                            <img
-                                src={cameraIcon}
-                                alt="add item"
-                            />
-                            <span className={styles.text}>{t("volunteer-create-article.Добавить фото обложки")}</span>
-                        </div>
-                    )}
-                />
+                isUploading ? (
+                    <div className={styles.btn}>
+                        <MiniLoader className={styles.loader} />
+                    </div>
+                ) : (
+                    <InputFile
+                        onChange={handleUpload}
+                        imageURL={img}
+                        id={id}
+                        uploadedImageClassName={styles.hiddenImg}
+                        labelClassName={styles.btn}
+                        labelChildren={(
+                            <div className={styles.innerWrapper}>
+                                <img
+                                    src={cameraIcon}
+                                    alt="add item"
+                                />
+                                <span className={styles.text}>{t("volunteer-create-article.Добавить фото обложки")}</span>
+                            </div>
+                        )}
+                    />
+                )
             )}
         </div>
     );
