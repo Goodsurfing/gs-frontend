@@ -59,7 +59,10 @@
     font-weight: 500;
     color: var(--text-secondary-2);
     font-size: 0.875rem;
-    word-break: break-all;
+    // break-all резало слова посреди буквы вместо переноса по границе слова
+    // (row 102, п.24) — overflow-wrap переносит только слово, которое само
+    // по себе не помещается в строку, иначе перенос по обычным пробелам.
+    overflow-wrap: break-word;
     white-space: pre-line;
 }
 
