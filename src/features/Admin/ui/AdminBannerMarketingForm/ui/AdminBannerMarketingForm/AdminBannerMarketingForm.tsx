@@ -48,6 +48,7 @@ const bannerMarketingTypeConfig: Record<BannerMarketingType, BannerMarketingType
 const requiredErrorMessage = "Это поле является обязательным";
 
 const defaultValues: DefaultValues<AdminBannerMarketingFileds> = {
+    name: "",
     image: undefined,
     isActive: false,
     type: null,
@@ -110,6 +111,17 @@ export const AdminBannerMarketingForm: FC<AdminBannerMarketingFormProps> = (prop
                             <SelectType value={value} onChange={onChange} />
                         )}
                     />
+
+                    <InputControl
+                        label="Внутреннее название (чтобы отличать баннеры в списке)"
+                        rules={{ required: requiredErrorMessage }}
+                        control={control}
+                        name="name"
+                        isError={!!errors.name?.message}
+                    />
+                    {errors.name?.message && (
+                        <ErrorText text={errors.name.message} className={styles.error} />
+                    )}
 
                     {isFieldVisible("description") && (
                         <>

@@ -6,10 +6,11 @@ import {
 export const adminBannerMarketingListAdapter = (data: GetAdminBannerMarketingList[]) => data.map(
     (item) => {
         const {
-            id, description, url, isActive, type,
+            id, name, description, url, isActive, type,
         } = item;
         return {
             id,
+            name,
             description,
             url,
             isActive,
@@ -22,7 +23,7 @@ export const adminBannerMarketingApiAdapter = (
     data: AdminBannerMarketingFileds,
 ): CreateAdminBannerMarketing => {
     const {
-        description, image, isActive, type, url,
+        name, description, image, isActive, type, url,
     } = data;
 
     if (!type) {
@@ -30,6 +31,7 @@ export const adminBannerMarketingApiAdapter = (
     }
 
     return {
+        name,
         description,
         imageId: image?.id ?? null,
         isActive,
@@ -42,10 +44,11 @@ export const adminBannerMarketingAdapter = (
     data: GetAdminMarketingBanner,
 ): AdminBannerMarketingFileds => {
     const {
-        description, image, isActive, type, url,
+        name, description, image, isActive, type, url,
     } = data;
 
     return {
+        name,
         description,
         image,
         isActive,
