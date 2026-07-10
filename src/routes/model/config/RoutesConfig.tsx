@@ -225,6 +225,7 @@ import {
     getAdminSystemAdminCreatePageUrl,
     getAdminBannerMarketingPageUrl,
     getAdminBannerMarketingCreatePageUrl,
+    getAdminBannerMarketingPersonalPageUrl,
     getAdminFeedbackPageUrl,
     getAdminFeedbackPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
@@ -326,6 +327,7 @@ import { AdminSystemAdminPage } from "@/pages/AdminSystemAdminPage";
 import { AdminSystemAdminCreatePage } from "@/pages/AdminSystemAdminCreatePage";
 import { AdminBannerMarketingPage } from "@/pages/AdminBannerMarketingPage";
 import { AdminBannerMarketingCreatePage } from "@/pages/AdminBannerMarketingCreatePage";
+import { AdminBannerMarketingPersonalPage } from "@/pages/AdminBannerMarketingPersonalPage";
 import { AdminFeedbackPage } from "@/pages/AdminFeedbackPage";
 import { AdminFeedbackPersonalPage } from "@/pages/AdminFeedbackPersonalPage";
 
@@ -1133,6 +1135,11 @@ const publicRoutes: RouteType[] = [
                 label: "admin-banner-marketing-create",
                 element: <AdminBannerMarketingCreatePage />,
                 path: (locale: string) => getAdminBannerMarketingCreatePageUrl(locale),
+            },
+            {
+                label: "admin-banner-marketing-personal",
+                element: <AdminBannerMarketingPersonalPage />,
+                path: (locale: string) => getAdminBannerMarketingPersonalPageUrl(locale),
             },
             {
                 label: "admin-feedback",
