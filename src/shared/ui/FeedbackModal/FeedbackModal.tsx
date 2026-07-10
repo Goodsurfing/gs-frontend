@@ -76,12 +76,14 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
             <div className={cn(styles.wrapper, { [styles.active]: isOpen })}>
                 <h2>Напишите нам</h2>
                 <Input
+                    id="feedback-name"
                     label="Ваше имя"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     maxLength={255}
                 />
                 <Input
+                    id="feedback-email"
                     label="E-mail"
                     type="email"
                     value={email}
@@ -89,6 +91,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
                     maxLength={255}
                 />
                 <Textarea
+                    id="feedback-message"
                     label="Сообщение"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
