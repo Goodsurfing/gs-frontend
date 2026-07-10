@@ -1,5 +1,7 @@
 import React, { FC, useState } from "react";
 import { createPortal } from "react-dom";
+import { CircularProgress } from "@mui/material";
+import cn from "classnames";
 
 import { useCreateFeedbackMutation } from "@/entities/Feedback";
 
@@ -10,6 +12,7 @@ import { ErrorText } from "../ErrorText/ErrorText";
 import IconComponent from "../IconComponent/IconComponent";
 import closeIcon from "@/shared/assets/icons/delete.svg";
 import styles from "./FeedbackModal.module.scss";
+import buttonStyles from "../Button/Button.module.scss";
 
 const EMAIL_REGEXP = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -57,7 +60,10 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
     if (!isOpen) return null;
 
     return createPortal(
-        <>
+        // "modal" class matches the selector in _default.scss that defines
+        // theme CSS variables (--accent-color etc.) — without it, anything
+        // portaled straight to <body> renders colourless (buttons, borders).
+        <div className="modal">
             <div className={styles.backdrop} onClick={handleClose} />
             <div className={styles.panel}>
                 <button
@@ -102,19 +108,28 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
                             maxLength={2000}
                         />
                         {errorText && (<ErrorText text={errorText} />)}
-                        <Button
+                        <button
+                            type="button"
                             onClick={handleSubmit}
-                            variant="FILL"
-                            size="MEDIUM"
-                            color="BLUE"
                             disabled={!isValid || isLoading}
+                            className={cn(
+                                buttonStyles.btn,
+                                buttonStyles.FILL,
+                                buttonStyles.BLUE,
+                                buttonStyles.MEDIUM,
+                                styles.submitButton,
+                            )}
                         >
-                            Отправить
-                        </Button>
+                            {isLoading ? (
+                                <CircularProgress size={20} sx={{ color: "#fff" }} />
+                            ) : (
+                                <span className={buttonStyles.text}>Отправить</span>
+                            )}
+                        </button>
                     </>
                 )}
             </div>
-        </>,
+        </div>,
         document.body,
     );
 };

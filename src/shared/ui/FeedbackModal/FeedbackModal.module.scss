@@ -61,6 +61,11 @@
     color: var(--gray-color, #7a7a7a);
 }
 
+.submitButton {
+    padding: 12px 20px;
+    width: 100%;
+}
+
 @keyframes pop-in {
     from {
         opacity: 0;
