@@ -7,10 +7,12 @@ import { API_URL, IAP_TOKEN } from '../config';
  * обоснование CORS/IAP в payment.spec.ts, та же проблема применима к
  * любому кросс-origin запросу с нестандартным заголовком).
  *
- * Использует тестовые вакансии из E2ETestFixtures::makeVacancy() (4 шт.,
- * "E2E Тестовая вакансия 1..4 — не удалять") — пересоздаются при каждом
- * /api/test/reset (см. global-setup.ts, вызывается один раз перед всеми
- * тестами), поэтому явного reset() в этом файле нет.
+ * Использует тестовые вакансии из E2ETestFixtures::makeVacancy() (5 шт.,
+ * "E2E Тестовая вакансия 1..5 — не удалять"; 5-я — с закрытым приёмом
+ * заявок) и то, что host@test.com в фикстуре одновременно хост и волонтёр
+ * — пересоздаются при каждом /api/test/reset (см. global-setup.ts,
+ * вызывается один раз перед всеми тестами), поэтому явного reset() в этом
+ * файле нет.
  *
  * Ни ID организации, ни ID вакансий не фиксированы: у обеих сущностей
  * #[ORM\GeneratedValue(strategy: 'CUSTOM')]/автоинкремент, и Doctrine's
@@ -235,6 +237,48 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         expect(fourthResp.status(), 'четвёртый отклик без членства должен быть заблокирован лимитом').toBe(403);
         const body = await fourthResp.json();
         expect(body.type).toBe('application_limit_exceeded');
+
+        await api.dispose();
+    });
+
+    test('хост не может откликнуться на вакансию своей же организации', async ({}, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
+
+        const api = await request.newContext({
+            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+        });
+
+        // host@test.com в фикстуре одновременно и хост, и волонтёр —
+        // реалистичный кейс, встречается на проде.
+        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const orgId = await getHostOrgId(api, hostAuth);
+        const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 4 — не удалять');
+
+        const applyResp = await applyToVacancy(api, hostAuth, vacancyId);
+        expect(applyResp.status(), 'хост не должен иметь возможность откликнуться на вакансию своей организации').toBe(400);
+        const body = await applyResp.json();
+        expect(body.type).toBe('cannot_apply_to_own_organization_vacancy');
+
+        await api.dispose();
+    });
+
+    test('нельзя откликнуться на вакансию с закрытым приёмом заявок', async ({}, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
+
+        const api = await request.newContext({
+            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+        });
+
+        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const orgId = await getHostOrgId(api, hostAuth);
+        // 5-я фикстурная вакансия — applicationEndDate в прошлом.
+        const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 5 — не удалять');
+        const volAuth = await registerFreshVolunteer(api, 'closed');
+
+        const applyResp = await applyToVacancy(api, volAuth, vacancyId);
+        expect(applyResp.status(), 'отклик на вакансию с закрытым приёмом заявок должен быть отклонён').toBe(400);
+        const body = await applyResp.json();
+        expect(body.type).toBe('application_period_closed');
 
         await api.dispose();
     });
