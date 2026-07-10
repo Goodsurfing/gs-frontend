@@ -76,12 +76,9 @@ export default defineConfig(({ mode }) => {
             // IAP login flow + uploaded media). Everything else (HTML,
             // /assets/*, /locales/*) stays on the Vite dev server.
             //
-            // We do NOT statically set `headers: { Authorization: ... }` on
-            // the proxy config: that would clobber any user JWT the SPA
-            // attaches via baseQuery prepareHeaders (Symfony then sees the
-            // IAP token, fails JWT parsing, and answers 401 to authenticated
-            // calls). Instead inject IAP only when the original request
-            // doesn't already carry an Authorization header.
+            // IAP only inspects X-Forwarded-Authorization for the bypass
+            // token — Authorization is passed through untouched, so this
+            // never clobbers a real user JWT set via baseQuery prepareHeaders.
             proxy: {
                 "^/(api|admin|auth|oauth2|static-media|media)(/|$)": {
                     target: devProxyTarget,
@@ -89,10 +86,9 @@ export default defineConfig(({ mode }) => {
                     secure: true,
                     cookieDomainRewrite: { "*": "" },
                     configure: (proxy) => {
-                        proxy.on("proxyReq", (proxyReq, req) => {
-                            if (devIapToken && !req.headers.authorization) {
-                                proxyReq.setHeader("Authorization", `Bearer ${devIapToken}`);
-                            }
+                        proxy.on("proxyReq", (proxyReq) => {
+                            if (!devIapToken) return;
+                            proxyReq.setHeader("X-Forwarded-Authorization", `Bearer ${devIapToken}`);
                         });
                     },
                 },
