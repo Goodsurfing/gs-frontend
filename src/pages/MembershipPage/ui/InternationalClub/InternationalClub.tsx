@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import checkIcon from "@/shared/assets/images/membership/check.svg";
 import internationalClubImage from "@/shared/assets/images/membership/international-club.png";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import { useLocale } from "@/app/providers/LocaleProvider";
+import { getPaymentPageUrl } from "@/shared/config/routes/AppUrls";
+import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./InternationalClub.module.scss";
 
@@ -12,10 +15,16 @@ interface InternationalClubProps {
     className?: string;
 }
 
+// "Узнать подробнее" — по ТЗ ведёт на внешний информационный сайт клуба.
+// "Стать участником" (joinPath ниже) ведёт на внутреннюю оплату — это
+// разные кнопки с разным назначением, не опечатка.
 const INTERNATIONAL_CLUB_URL = "https://international.goodsurfing.org/";
 
 export const InternationalClub: FC<InternationalClubProps> = ({ className }) => {
     const { t } = useTranslation("membership");
+    const { locale } = useLocale();
+
+    const joinPath = `${getPaymentPageUrl(locale)}?tariff=${TARIFF_CODE.INTERNATIONAL}`;
 
     const membershipBenefits = [
         t("international-club.benefit-1"),
@@ -24,6 +33,7 @@ export const InternationalClub: FC<InternationalClubProps> = ({ className }) => 
         t("international-club.benefit-4"),
         t("international-club.benefit-5"),
         t("international-club.benefit-6"),
+        t("international-club.benefit-7"),
     ];
     const contributionBenefits = [
         t("international-club.contribution-1"),
@@ -53,7 +63,7 @@ export const InternationalClub: FC<InternationalClubProps> = ({ className }) => 
                         </ul>
                         <ButtonLink
                             className={styles.primaryButton}
-                            path={INTERNATIONAL_CLUB_URL}
+                            path={joinPath}
                             type="primary"
                         >
                             {t("international-club.join-button")}

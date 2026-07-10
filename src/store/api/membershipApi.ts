@@ -4,6 +4,8 @@ import { API_BASE_URL } from "@/shared/constants/api";
 
 export type TariffForRole = "VOLUNTEER" | "HOST" | "BOTH";
 
+export type TariffCategory = "REGULAR" | "INTERNATIONAL";
+
 export type MembershipStatus =
     | "PENDING"
     | "ACTIVE"
@@ -21,6 +23,7 @@ export interface Tariff {
     currency: string;
     durationDays: number;
     forRole: TariffForRole;
+    category: TariffCategory;
     active: boolean;
     sort: number;
 }
@@ -60,6 +63,12 @@ export interface PaymentStatusResponse {
     amount: string;
     currency: string;
     paidAt: string | null;
+    // Однозначная привязка к тарифу ЭТОГО конкретного платежа. С тех пор как
+    // у юзера может быть больше одного активного членства одновременно
+    // (REGULAR + INTERNATIONAL), "текущее активное членство" уже не
+    // однозначно говорит, что именно только что купили — а этот платёж
+    // всегда про один конкретный тариф.
+    tariffCode: string | null;
 }
 
 export const membershipApi = createApi({
@@ -78,6 +87,16 @@ export const membershipApi = createApi({
         getCurrentMembership: build.query<CurrentMembership, void>({
             query: () => ({
                 url: `${API_BASE_URL}membership/current`,
+                method: "GET",
+            }),
+            providesTags: ["membership"],
+        }),
+        // Все активные членства сразу — может быть и REGULAR, и
+        // INTERNATIONAL одновременно. getCurrentMembership выше схлопывает
+        // до одного и оставлен только ради обратной совместимости.
+        getCurrentAllMemberships: build.query<CurrentMembership[], void>({
+            query: () => ({
+                url: `${API_BASE_URL}membership/current-all`,
                 method: "GET",
             }),
             providesTags: ["membership"],
@@ -102,6 +121,7 @@ export const membershipApi = createApi({
 export const {
     useGetTariffsQuery,
     useGetCurrentMembershipQuery,
+    useGetCurrentAllMembershipsQuery,
     useCheckoutMembershipMutation,
     useGetPaymentStatusQuery,
 } = membershipApi;

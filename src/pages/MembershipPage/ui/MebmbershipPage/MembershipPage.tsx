@@ -98,8 +98,11 @@ const MembershipPage = () => {
                 <WhyMembership />
                 <ForVolunteer className={styles.section} />
                 <HowItWorks className={styles.section} />
-                <InternationalClub className={styles.section} />
                 <ForHost className={styles.section} />
+                {/* "После обычного мембершипа" по ТЗ — после обоих блоков
+                    покупки регулярного членства (ForVolunteer/ForHost),
+                    перед донатами. */}
+                <InternationalClub className={styles.section} />
                 <DonationSection className={styles.section} />
                 <WhatIsGoodsurfing className={styles.section} />
                 <Review className={styles.section} />
