@@ -1,11 +1,11 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import { FeedbackModal } from "@/shared/ui/FeedbackModal/FeedbackModal";
+import { useFeedbackWidget } from "@/app/providers/FeedbackWidgetProvider";
 
 import footerLogo from "@/shared/assets/icons/footer/logo.svg";
 import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
@@ -36,7 +36,7 @@ export const Footer = memo(() => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile } = useAuth();
-    const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+    const { openFeedbackModal } = useFeedbackWidget();
 
     return (
         <>
@@ -87,7 +87,7 @@ export const Footer = memo(() => {
                         <button
                             type="button"
                             className={styles.write}
-                            onClick={() => setIsFeedbackModalOpen(true)}
+                            onClick={openFeedbackModal}
                         >
                             {t("main.welcome.header.write-us")}
                         </button>
@@ -291,10 +291,6 @@ export const Footer = memo(() => {
                     </Link>
                 </div>
             </div>
-            <FeedbackModal
-                isOpen={isFeedbackModalOpen}
-                onClose={() => setIsFeedbackModalOpen(false)}
-            />
         </>
     );
 });
