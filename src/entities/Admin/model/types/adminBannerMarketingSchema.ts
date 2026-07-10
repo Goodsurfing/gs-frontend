@@ -9,6 +9,7 @@ export const enum BannerMarketingType {
 }
 
 export interface AdminBannerMarketingFileds {
+    name: string;
     url: string;
     description: string;
     type: BannerMarketingType | null;
@@ -23,7 +24,7 @@ export interface GetBannerMarketingParams {
 export interface BannerMarketingElement {
     url: string;
     description: string;
-    image: Image;
+    image?: Image;
 }
 
 export interface GetAdminBannerMarketingListParams {
@@ -34,7 +35,7 @@ export interface GetAdminBannerMarketingListParams {
 
 export interface GetAdminBannerMarketingList {
     id: string;
-    // name: string;
+    name: string;
     url: string;
     description: string;
     isActive: boolean;
@@ -47,7 +48,7 @@ export interface GetAdminBannerMarketingListResponse {
 }
 
 export type GetAdminMarketingBanner = GetAdminBannerMarketingList & {
-    image: Image;
+    image?: Image;
 };
 
 export type CreateAdminBannerMarketing = Omit<GetAdminBannerMarketingList, "id"> & {

@@ -142,6 +142,15 @@ export const AdminBannerMarketingTable = () => {
             hideable: false,
         },
         {
+            field: "name",
+            headerName: "Название",
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            hideable: false,
+            width: 150,
+        },
+        {
             field: "description",
             headerName: "Текст рекламы",
             sortable: false,
