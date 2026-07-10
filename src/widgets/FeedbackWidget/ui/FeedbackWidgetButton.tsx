@@ -14,13 +14,16 @@ export const FeedbackWidgetButton = memo(() => {
     }
 
     return (
-        <button
-            type="button"
-            className={styles.button}
-            onClick={openFeedbackModal}
-            title="Напишите нам"
-        >
-            <ReactSVG src={chatIcon} className={styles.icon} />
-        </button>
+        <div className={styles.wrapper}>
+            <span className={styles.tooltip}>Напишите нам</span>
+            <button
+                type="button"
+                className={styles.button}
+                onClick={openFeedbackModal}
+                title="Напишите нам"
+            >
+                <ReactSVG src={chatIcon} className={styles.icon} />
+            </button>
+        </div>
     );
 });
