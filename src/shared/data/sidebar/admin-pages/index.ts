@@ -123,6 +123,17 @@ export const useAdminPagesSidebarData = () => {
         },
         {
             route: "/admin",
+            text: "Обратная связь",
+            dropdownItems: [
+                {
+                    route: "/feedback",
+                    text: "Обращения",
+                },
+            ],
+
+        },
+        {
+            route: "/admin",
             text: "Система",
             dropdownItems: [
                 {

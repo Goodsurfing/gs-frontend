@@ -1,0 +1,36 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 700px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: 12px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: var(--text-caption, #7a7a7a);
+}
+
+.message {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
