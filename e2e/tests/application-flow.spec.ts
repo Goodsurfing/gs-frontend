@@ -113,6 +113,20 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         });
     };
 
+    const sendMessage = (
+        api: APIRequestContext,
+        auth: Record<string, string>,
+        chatIri: string,
+        text: string,
+    ) => api.post('/api/v1/messages', { data: { chat: chatIri, text }, headers: auth });
+
+    const getChatMessages = async (api: APIRequestContext, auth: Record<string, string>, chatIri: string) => {
+        const resp = await api.get(`${chatIri}/messages`, { headers: auth });
+        expect(resp.ok(), await resp.text()).toBeTruthy();
+        const body = await resp.json();
+        return (Array.isArray(body) ? body : body['hydra:member'] ?? body.data) as { text?: string }[];
+    };
+
     test('отклик создаёт заявку и чат, принятие меняет статус для обеих сторон', async ({}, testInfo) => {
         test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
 
@@ -279,6 +293,45 @@ test.describe('Волонтёр и хост: заявки на вакансию'
         expect(applyResp.status(), 'отклик на вакансию с закрытым приёмом заявок должен быть отклонён').toBe(400);
         const body = await applyResp.json();
         expect(body.type).toBe('application_period_closed');
+
+        await api.dispose();
+    });
+
+    test('переписка в чате после отклика — обе стороны видят сообщения друг друга', async ({}, testInfo) => {
+        test.skip(testInfo.project.name !== 'vol', 'чистый API-тест, не нужно дублировать по storageState-проектам');
+
+        const api = await request.newContext({
+            baseURL: API_URL, extraHTTPHeaders: iapHeaders, ignoreHTTPSErrors: true,
+        });
+
+        const hostAuth = await login(api, 'host@test.com', 'Test1234!');
+        const orgId = await getHostOrgId(api, hostAuth);
+        const vacancyId = await findVacancyByTitle(api, orgId, 'E2E Тестовая вакансия 4 — не удалять');
+        const volAuth = await registerFreshVolunteer(api, 'chat');
+
+        const applyResp = await applyToVacancy(api, volAuth, vacancyId);
+        expect(applyResp.ok(), await applyResp.text()).toBeTruthy();
+        const application = await applyResp.json();
+        const chatIri = application.chat as string;
+        expect(chatIri, 'отклик должен создать чат').toBeTruthy();
+
+        // Волонтёр пишет первым.
+        const volMessageText = 'Здравствуйте! Расскажите подробнее про условия';
+        const volMessageResp = await sendMessage(api, volAuth, chatIri, volMessageText);
+        expect(volMessageResp.ok(), await volMessageResp.text()).toBeTruthy();
+
+        // Хост видит сообщение волонтёра и отвечает.
+        const hostSeesMessages = await getChatMessages(api, hostAuth, chatIri);
+        expect(hostSeesMessages.some((m) => m.text === volMessageText), 'хост должен видеть сообщение волонтёра').toBeTruthy();
+
+        const hostReplyText = 'Добрый день! Подробности вышлю на почту';
+        const hostReplyResp = await sendMessage(api, hostAuth, chatIri, hostReplyText);
+        expect(hostReplyResp.ok(), await hostReplyResp.text()).toBeTruthy();
+
+        // Волонтёр видит оба сообщения — своё и ответ хоста.
+        const volSeesMessages = await getChatMessages(api, volAuth, chatIri);
+        expect(volSeesMessages.some((m) => m.text === volMessageText)).toBeTruthy();
+        expect(volSeesMessages.some((m) => m.text === hostReplyText), 'волонтёр должен видеть ответ хоста').toBeTruthy();
 
         await api.dispose();
     });
