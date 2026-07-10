@@ -82,14 +82,6 @@ export const Footer = memo(() => {
                                 <img src={maxIcon} alt="MAX" />
                             </a>
                         </div>
-                        <a
-                            className={styles.write}
-                            href="https://vk.com/"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {t("main.welcome.header.write-us")}
-                        </a>
                     </div>
 
                     <nav className={styles.menu}>

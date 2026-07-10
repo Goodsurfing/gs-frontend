@@ -353,3 +353,17 @@ export {
     adminBannerMarketingListAdapter, adminBannerMarketingApiAdapter,
     adminBannerMarketingAdapter,
 } from "./lib/adminBannerMarketingAdapter";
+
+export {
+    adminFeedbackApi,
+    useLazyGetAdminFeedbackListQuery,
+    useGetAdminFeedbackByIdQuery,
+    useUpdateAdminFeedbackMutation,
+    useDeleteAdminFeedbackMutation,
+} from "./api/adminFeedbackApi";
+
+export type {
+    GetAdminFeedback,
+} from "./model/types/adminFeedbackSchema";
+
+export { FeedbackStatus } from "./model/types/adminFeedbackSchema";

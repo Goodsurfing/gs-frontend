@@ -1,0 +1,50 @@
+.wrapper {
+    height: 70vh;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 20px;
+}
+
+.btnIcon {
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnIcon svg {
+    width: 25px;
+    height: auto;
+    transition: all 0.3 ease;
+}
+
+.btnIcon:hover {
+    scale: 1.05;
+}
+
+.btnShow g {
+    fill: var(--accent-color);
+}
+
+.btnBlock g {
+    fill: var(--text-caption);
+}
+
+.btnDelete g {
+    fill: var(--error-color);
+}
+
+.btnDelete {
+    &:disabled {
+        opacity: 0.6;
+    }
+}

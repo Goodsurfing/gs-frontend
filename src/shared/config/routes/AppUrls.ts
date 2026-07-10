@@ -420,3 +420,9 @@ export const getAdminBannerMarketingPageUrl: RoutePathFunction = (locale) => `/$
 export const getAdminBannerMarketingCreatePageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_banner_marketing}/create`;
 
 export const getAdminBannerMarketingPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_banner_marketing}/${id}`;
+
+// Admin Feedback
+
+export const getAdminFeedbackPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.admin_feedback}`;
+
+export const getAdminFeedbackPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.admin_feedback}/${id}`;

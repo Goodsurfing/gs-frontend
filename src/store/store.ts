@@ -28,6 +28,7 @@ import {
     adminOurTeamApi,
     adminSystemApi,
     adminBannerMarketingApi,
+    adminFeedbackApi,
 } from "@/entities/Admin";
 import { courseApi } from "@/entities/Academy";
 import { newsApi } from "@/entities/News";
@@ -37,6 +38,7 @@ import { videoApi } from "@/entities/Video";
 import { donationApi } from "@/entities/Donation";
 import { membershipApi } from "./api/membershipApi";
 import { donationPaymentApi } from "./api/donationPaymentApi";
+import { feedbackApi } from "@/entities/Feedback";
 
 const combinedReducer = combineReducers({
     register: registerReducer,
@@ -73,6 +75,8 @@ const combinedReducer = combineReducers({
     [donationPaymentApi.reducerPath]: donationPaymentApi.reducer,
     [adminSystemApi.reducerPath]: adminSystemApi.reducer,
     [adminBannerMarketingApi.reducerPath]: adminBannerMarketingApi.reducer,
+    [feedbackApi.reducerPath]: feedbackApi.reducer,
+    [adminFeedbackApi.reducerPath]: adminFeedbackApi.reducer,
 });
 
 // При выходе из аккаунта сбрасываем весь стейт к initial: это очищает кэши RTK Query
@@ -132,6 +136,8 @@ export const setupStore = () => configureStore({
         donationPaymentApi.middleware,
         adminSystemApi.middleware,
         adminBannerMarketingApi.middleware,
+        feedbackApi.middleware,
+        adminFeedbackApi.middleware,
         authMiddleware,
     ]),
 });
