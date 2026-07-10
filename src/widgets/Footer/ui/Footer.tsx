@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useLocale } from "@/app/providers/LocaleProvider";
 
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import { useFeedbackWidget } from "@/app/providers/FeedbackWidgetProvider";
 
 import footerLogo from "@/shared/assets/icons/footer/logo.svg";
 import tgIcon from "@/shared/assets/icons/footer/telegram.svg";
@@ -36,7 +35,6 @@ export const Footer = memo(() => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const { myProfile } = useAuth();
-    const { openFeedbackModal } = useFeedbackWidget();
 
     return (
         <>
@@ -84,13 +82,6 @@ export const Footer = memo(() => {
                                 <img src={maxIcon} alt="MAX" />
                             </a>
                         </div>
-                        <button
-                            type="button"
-                            className={styles.write}
-                            onClick={openFeedbackModal}
-                        >
-                            {t("main.welcome.header.write-us")}
-                        </button>
                     </div>
 
                     <nav className={styles.menu}>
