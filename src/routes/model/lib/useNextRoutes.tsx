@@ -4,10 +4,11 @@ import {
     getHostPersonalPageUrl,
     getMessengerPageCreateUrl,
     getOfferPersonalPageUrl,
+    getPaymentPageUrl,
     getVolunteerPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 
-export type NextRouteType = "offer" | "messenger" | "host" | "volunteer";
+export type NextRouteType = "offer" | "messenger" | "host" | "volunteer" | "payment";
 
 export const useNextRoutes = () => {
     const { locale } = useLocale();
@@ -18,6 +19,7 @@ export const useNextRoutes = () => {
             host: getHostPersonalPageUrl(locale, id),
             messenger: getMessengerPageCreateUrl(locale, id),
             volunteer: getVolunteerPersonalPageUrl(locale, id),
+            payment: `${getPaymentPageUrl(locale)}?tariff=${id}`,
         };
 
         return nextRoutes[type];
