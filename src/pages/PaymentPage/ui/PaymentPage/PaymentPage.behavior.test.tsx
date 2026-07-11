@@ -38,11 +38,13 @@ describe("PaymentPage — реальное поведение чекаута", (
         // чтобы проверить факт редиректа, не пытаясь реально перейти по URL.
         // @ts-expect-error — намеренно упрощённый мок под тест
         delete window.location;
-        window.location = { href: "" } as Location;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).location = { href: "" };
     });
 
     afterEach(() => {
-        window.location = originalLocation;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).location = originalLocation;
     });
 
     it("при успешном чекауте редиректит на paymentUrl от бэка", async () => {
