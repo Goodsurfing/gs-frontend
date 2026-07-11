@@ -83,6 +83,25 @@ describe("PaymentSuccessPage — реальное поведение по paymen
         expect(screen.queryByText(/можете пользоваться всеми возможностями портала/i)).not.toBeInTheDocument();
     });
 
+    /**
+     * Замечание бизнеса: international не должен читаться как рядовая
+     * оплата членства ("вы успешно оплатили...") — нужна отдельная
+     * приветственная рамка ("вступили в клуб").
+     */
+    it("международный тариф: заголовок приветствует в клуб, а не сообщает про оплату", async () => {
+        mockMembershipCurrent("host_4990");
+        mockPaymentStatus("SUCCESS", "international_5000");
+
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/ru/payment/success?payment_id=p1"]}>
+                <PaymentSuccessPage />
+            </MemoryRouter>,
+        );
+
+        expect(await screen.findByText(/вы вступили в Международный клуб/i)).toBeInTheDocument();
+        expect(screen.queryByText(/вы успешно оплатили членство/i)).not.toBeInTheDocument();
+    });
+
     it("host-тариф: показывает host-контент и CTA на публикацию вакансий", async () => {
         mockMembershipCurrent("host_4990");
         mockPaymentStatus("SUCCESS", "host_4990");
@@ -94,6 +113,7 @@ describe("PaymentSuccessPage — реальное поведение по paymen
         );
 
         expect(await screen.findByText(/перейти к объявлениям/i)).toBeInTheDocument();
+        expect(screen.getByText(/вы успешно оплатили членство/i)).toBeInTheDocument();
     });
 
     it("volunteer-тариф (дефолт): показывает контент про поиск путешествий", async () => {
@@ -107,6 +127,7 @@ describe("PaymentSuccessPage — реальное поведение по paymen
         );
 
         expect(await screen.findByText(/искать путешествия/i)).toBeInTheDocument();
+        expect(screen.getByText(/вы успешно оплатили членство/i)).toBeInTheDocument();
     });
 
     it("пока payment.status не SUCCESS — показывает прелоадер, а не контент", async () => {

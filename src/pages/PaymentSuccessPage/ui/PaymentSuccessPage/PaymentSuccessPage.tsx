@@ -185,20 +185,29 @@ const PaymentSuccessPage: React.FC = () => {
         purchaseKind = "host";
     }
 
+    // У international своя приветственная рамка ("вступили в клуб"), а не
+    // общая транзакционная ("оплатили членство") — по замечанию бизнеса
+    // международный клуб не должен читаться как рядовая оплата членства.
     const PURCHASE_KIND_CONFIG = {
         international: {
+            title: "Добро пожаловать,",
+            subtitle: "вы вступили в Международный клуб GoodSurfing",
             benefits: INTERNATIONAL_BENEFITS,
             ctaText: "На страницу членства",
             ctaUrl: getMembershipPageUrl(locale),
-            callToAction: "Добро пожаловать в международный клуб GoodSurfing.",
+            callToAction: "Впереди — закрытые встречи и международные программы для участников клуба.",
         },
         host: {
+            title: "Спасибо,",
+            subtitle: "вы успешно оплатили членство в сообществе Гудсёрфинга",
             benefits: HOST_BENEFITS,
             ctaText: "Перейти к объявлениям",
             ctaUrl: getMyOffersPageUrl(locale),
             callToAction: "Самое время опубликовать объявление и принять волонтёров.",
         },
         volunteer: {
+            title: "Спасибо,",
+            subtitle: "вы успешно оплатили членство в сообществе Гудсёрфинга",
             benefits: VOLUNTEER_BENEFITS,
             ctaText: "Искать путешествия",
             ctaUrl: getOffersMapPageUrl(locale),
@@ -207,7 +216,7 @@ const PaymentSuccessPage: React.FC = () => {
     } as const;
 
     const {
-        benefits, ctaText, ctaUrl, callToAction,
+        title, subtitle, benefits, ctaText, ctaUrl, callToAction,
     } = PURCHASE_KIND_CONFIG[purchaseKind];
 
     return (
@@ -215,13 +224,13 @@ const PaymentSuccessPage: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.content}>
                     <h1 className={styles.title}>
-                        Спасибо,
+                        {title}
                         {" "}
                         <span className={styles.username}>{userName}</span>
-                        ,
+                        {isInternational ? "!" : ","}
                     </h1>
                     <p className={styles.subtitle}>
-                        вы успешно оплатили членство в сообществе Гудсёрфинга
+                        {subtitle}
                     </p>
 
                     <div className={styles.info}>

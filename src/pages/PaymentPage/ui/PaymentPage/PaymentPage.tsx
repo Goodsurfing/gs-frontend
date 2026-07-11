@@ -9,7 +9,7 @@ import Preloader from "@/shared/ui/Preloader/Preloader";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 import { useCheckoutMembershipMutation } from "@/store/api/membershipApi";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getMembershipPageUrl } from "@/shared/config/routes/AppUrls";
+import { getMembershipPageUrl, getSignInPageUrl } from "@/shared/config/routes/AppUrls";
 import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentPage.module.scss";
@@ -33,7 +33,11 @@ const PaymentPage: React.FC = () => {
 
     useEffect(() => {
         if (!isAuth || !myProfile) {
-            navigate(`/${locale}/signin`);
+            // Прокидываем next/nextId, чтобы после логина AuthByEmail
+            // вернул пользователя сюда же с тем же tariffCode, а не на
+            // дефолтную страницу профиля (row: "просит войти — перебрасывает
+            // в личный кабинет — нужно искать страницу оплаты заново").
+            navigate(`${getSignInPageUrl(locale)}?next=payment&nextId=${tariffCode}`);
             return;
         }
         if (startedRef.current) return;
