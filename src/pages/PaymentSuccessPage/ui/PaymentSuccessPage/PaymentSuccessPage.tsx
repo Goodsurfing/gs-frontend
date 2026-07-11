@@ -16,6 +16,7 @@ import {
     getMembershipPageUrl,
     getOffersMapPageUrl,
 } from "@/shared/config/routes/AppUrls";
+import { TARIFF_CODE } from "@/shared/constants/membership";
 
 import styles from "./PaymentSuccessPage.module.scss";
 
@@ -33,6 +34,14 @@ const HOST_BENEFITS = [
     "Метка «Партнёр Гудсёрфинга» в профиле",
     "Доступ к Академии и офлайн-мероприятиям",
     "Скидки на платные размещения",
+];
+
+const INTERNATIONAL_BENEFITS = [
+    "Международный статус участника",
+    "Доступ к закрытому международному клубу",
+    "Приглашения на международные встречи",
+    "Участие в международных образовательных программах",
+    "Приоритетная информация о зарубежных проектах",
 ];
 
 const POLL_INTERVAL_MS = 3000;
@@ -77,12 +86,18 @@ const PaymentSuccessPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Остановить поллинг при активном членстве
+    // Останавливаем поллинг по статусу ИМЕННО ЭТОГО платежа (payment.status),
+    // не по membership.isActive — тот смотрит на /membership/current, а с тех
+    // пор как активных членств может быть несколько одновременно (REGULAR +
+    // INTERNATIONAL), membership.isActive мог быть true с самого начала
+    // (например, у юзера уже было активное host_4990, а сейчас оплачивается
+    // international) — тогда поллинг завершился бы мгновенно, до того как
+    // НОВЫЙ платёж реально подтвердится.
     useEffect(() => {
-        if (membership?.isActive) {
+        if (payment?.status === "SUCCESS") {
             setShouldPoll(false);
         }
-    }, [membership?.isActive]);
+    }, [payment?.status]);
 
     // Редирект при отменённом или проваленном платеже
     useEffect(() => {
@@ -114,7 +129,7 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     // Ждём подтверждения от платёжного провайдера
-    if (shouldPoll && !membership?.isActive) {
+    if (shouldPoll && payment?.status !== "SUCCESS") {
         return (
             <MainPageLayout>
                 <div className={styles.container}>
@@ -125,7 +140,7 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     // Webhook не пришёл за 60 секунд
-    if (timedOut && !membership?.isActive) {
+    if (timedOut && payment?.status !== "SUCCESS") {
         return (
             <MainPageLayout>
                 <div className={styles.container}>
@@ -153,13 +168,47 @@ const PaymentSuccessPage: React.FC = () => {
     }
 
     const userName = myProfile.firstName || myProfile.email || "пользователь";
-    const isHost = membership?.tariff?.forRole === "HOST";
-    const benefits = isHost ? HOST_BENEFITS : VOLUNTEER_BENEFITS;
-    const ctaText = isHost ? "Перейти к объявлениям" : "Искать путешествия";
-    const ctaUrl = isHost ? getMyOffersPageUrl(locale) : getOffersMapPageUrl(locale);
-    const callToAction = isHost
-        ? "Самое время опубликовать объявление и принять волонтёров."
-        : "Самое время подобрать для себя идеальное путешествие со смыслом в этом году.";
+
+    // Раньше "какой тариф купили" определяли по /membership/current — но с
+    // тех пор как у юзера может быть больше одного активного членства
+    // одновременно (REGULAR + INTERNATIONAL), "текущее активное" уже не
+    // однозначно говорит, что именно только что оплатили. payment.tariffCode
+    // привязан к конкретно ЭТОМУ платежу, поэтому однозначен всегда.
+    const purchasedTariffCode = payment?.tariffCode ?? membership?.tariff?.code;
+    const isInternational = purchasedTariffCode === TARIFF_CODE.INTERNATIONAL;
+    const isHost = purchasedTariffCode === TARIFF_CODE.HOST;
+
+    let purchaseKind: "international" | "host" | "volunteer" = "volunteer";
+    if (isInternational) {
+        purchaseKind = "international";
+    } else if (isHost) {
+        purchaseKind = "host";
+    }
+
+    const PURCHASE_KIND_CONFIG = {
+        international: {
+            benefits: INTERNATIONAL_BENEFITS,
+            ctaText: "На страницу членства",
+            ctaUrl: getMembershipPageUrl(locale),
+            callToAction: "Добро пожаловать в международный клуб GoodSurfing.",
+        },
+        host: {
+            benefits: HOST_BENEFITS,
+            ctaText: "Перейти к объявлениям",
+            ctaUrl: getMyOffersPageUrl(locale),
+            callToAction: "Самое время опубликовать объявление и принять волонтёров.",
+        },
+        volunteer: {
+            benefits: VOLUNTEER_BENEFITS,
+            ctaText: "Искать путешествия",
+            ctaUrl: getOffersMapPageUrl(locale),
+            callToAction: "Самое время подобрать для себя идеальное путешествие со смыслом в этом году.",
+        },
+    } as const;
+
+    const {
+        benefits, ctaText, ctaUrl, callToAction,
+    } = PURCHASE_KIND_CONFIG[purchaseKind];
 
     return (
         <MainPageLayout>
@@ -176,16 +225,26 @@ const PaymentSuccessPage: React.FC = () => {
                     </p>
 
                     <div className={styles.info}>
-                        <p>
-                            Теперь вы можете пользоваться всеми возможностями портала
-                            {" "}
-                            goodsurfing.org.
-                        </p>
-                        <p>
-                            Уже сейчас на вашем аккаунте появилась специальная метка
-                            {" "}
-                            верифицированного пользователя.
-                        </p>
+                        {isInternational ? (
+                            <p>
+                                Международное членство — это отдельный статус, не связанный
+                                {" "}
+                                с обычными правами на платформе goodsurfing.org.
+                            </p>
+                        ) : (
+                            <>
+                                <p>
+                                    Теперь вы можете пользоваться всеми возможностями портала
+                                    {" "}
+                                    goodsurfing.org.
+                                </p>
+                                <p>
+                                    Уже сейчас на вашем аккаунте появилась специальная метка
+                                    {" "}
+                                    верифицированного пользователя.
+                                </p>
+                            </>
+                        )}
                     </div>
 
                     <div className={styles.benefits}>

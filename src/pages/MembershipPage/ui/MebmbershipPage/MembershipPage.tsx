@@ -15,6 +15,7 @@ import { ForHost } from "../ForHost/ForHost";
 import { ForVolunteer } from "../ForVolunteer/ForVolunteer";
 import { Header } from "../Header/Header";
 import { HowItWorks } from "../HowItWorks/HowItWorks";
+import { InternationalClub } from "../InternationalClub/InternationalClub";
 import { Questions } from "../Questions/Questions";
 import { Review } from "../Review/Review";
 import { WhatIsGoodsurfing } from "../WhatIsGoodsurfing/WhatIsGoodsurfing";
@@ -98,6 +99,10 @@ const MembershipPage = () => {
                 <ForVolunteer className={styles.section} />
                 <HowItWorks className={styles.section} />
                 <ForHost className={styles.section} />
+                {/* "После обычного мембершипа" по ТЗ — после обоих блоков
+                    покупки регулярного членства (ForVolunteer/ForHost),
+                    перед донатами. */}
+                <InternationalClub className={styles.section} />
                 <DonationSection className={styles.section} />
                 <WhatIsGoodsurfing className={styles.section} />
                 <Review className={styles.section} />

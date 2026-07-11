@@ -27,6 +27,28 @@
         "5. При необходимости пользуетесь чатом поддержки для планирования своего путешествия": "5. If necessary, use the support chat to plan your journey",
         "6. Делаете доброе дело и получаете незабываемые впечатления": "6. Do a good deed and get unforgettable impressions"
     },
+    "international-club": {
+        "title": "GoodSurfing International Club",
+        "subtitle": "For those who want to go beyond one country.",
+        "description": "International membership is designed for participants who want to build connections with volunteer organizations worldwide, join international projects, and support the growth of GoodSurfing's global community.",
+        "includes-title": "What's included",
+        "benefit-1": "international member status;",
+        "benefit-2": "access to the private international club;",
+        "benefit-3": "invitations to international meetings;",
+        "benefit-4": "participation in international educational programs;",
+        "benefit-5": "priority information about projects abroad;",
+        "benefit-6": "opportunities to connect with partner organizations from different countries;",
+        "benefit-7": "support for the growth of the GoodSurfing international network.",
+        "join-button": "Join the international club",
+        "image-alt": "Members of the GoodSurfing international community",
+        "contribution-title": "Your contribution helps",
+        "contribution-description": "Your charitable contribution helps develop GoodSurfing's international programs:",
+        "contribution-1": "create new partnerships with organizations around the world;",
+        "contribution-2": "launch joint international programs;",
+        "contribution-3": "represent Russian projects on international platforms;",
+        "contribution-4": "develop cultural exchange and volunteering.",
+        "learn-more-button": "Learn more about international volunteering"
+    },
     "for-volunteer": {
         "Для волонтёра": "For Volunteer",
         "Без членства": "Without Membership",

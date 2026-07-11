@@ -27,6 +27,28 @@
         "5. При необходимости пользуетесь чатом поддержки для планирования своего путешествия": "5. Si es necesario, utiliza el chat de soporte para planificar tu viaje",
         "6. Делаете доброе дело и получаете незабываемые впечатления": "6. Haz una buena acción y obtén experiencias inolvidables"
     },
+     "international-club": {
+        "title": "Club Internacional GoodSurfing",
+        "subtitle": "Para quienes quieren ir más allá de un solo país.",
+        "description": "La membresía internacional está creada para quienes desean conectar con organizaciones de voluntariado de todo el mundo, participar en proyectos internacionales y apoyar el desarrollo de la comunidad global de GoodSurfing.",
+        "includes-title": "Qué incluye",
+        "benefit-1": "estatus de miembro internacional;",
+        "benefit-2": "acceso al club internacional privado;",
+        "benefit-3": "invitaciones a encuentros internacionales;",
+        "benefit-4": "participación en programas educativos internacionales;",
+        "benefit-5": "información prioritaria sobre proyectos en el extranjero;",
+        "benefit-6": "oportunidades para colaborar con organizaciones asociadas de distintos países;",
+        "benefit-7": "apoyo al desarrollo de la red internacional de GoodSurfing.",
+        "join-button": "Unirse al club internacional",
+        "image-alt": "Miembros de la comunidad internacional de GoodSurfing",
+        "contribution-title": "Tu contribución ayuda",
+        "contribution-description": "Tu contribución benéfica permite desarrollar la actividad internacional de GoodSurfing:",
+        "contribution-1": "crear nuevas alianzas con organizaciones de todo el mundo;",
+        "contribution-2": "lanzar programas internacionales conjuntos;",
+        "contribution-3": "representar proyectos rusos en plataformas internacionales;",
+        "contribution-4": "desarrollar el intercambio cultural y el voluntariado.",
+        "learn-more-button": "Más información sobre voluntariado internacional"
+    },
     "for-volunteer": {
         "Для волонтёра": "Para el voluntario",
         "Без членства": "Sin membresía",
