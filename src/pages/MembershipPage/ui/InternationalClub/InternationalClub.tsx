@@ -43,7 +43,11 @@ export const InternationalClub: FC<InternationalClubProps> = ({ className }) => 
     ];
 
     return (
-        <section className={cn(className, styles.wrapper)} aria-labelledby="international-club-title">
+        <section
+            className={cn(className, styles.wrapper)}
+            id="international"
+            aria-labelledby="international-club-title"
+        >
             <div className={styles.inner}>
                 <header className={styles.header}>
                     <h2 id="international-club-title" className={styles.title}>
