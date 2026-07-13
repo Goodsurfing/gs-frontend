@@ -24,8 +24,25 @@ export const MainPageLayout: FC<MainPageLayoutProps> = (
     const location = useLocation();
 
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [location.pathname]);
+        const animationFrameId = window.requestAnimationFrame(() => {
+            if (location.hash) {
+                const targetId = decodeURIComponent(location.hash.slice(1));
+                const target = document.getElementById(targetId);
+
+                if (target) {
+                    const anchorOffset = 80;
+                    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+
+                    window.scrollTo(0, targetTop - anchorOffset);
+                    return;
+                }
+            }
+
+            window.scrollTo(0, 0);
+        });
+
+        return () => window.cancelAnimationFrame(animationFrameId);
+    }, [location.hash, location.pathname]);
 
     return (
         <div className={cn(styles.layout, headerVariant !== "static" ? styles.floating : undefined, className)}>
