@@ -10,6 +10,7 @@ import { MainPageLayout } from "@/widgets/MainPageLayout";
 
 import { Description } from "../Description/Description";
 import { Documents } from "../Documents/Documents";
+import { GovernmentReports } from "../GovernmentReports/GovernmentReports";
 import { Header } from "../Header/Header";
 import styles from "./NPOPage.module.scss";
 
@@ -34,6 +35,7 @@ const NPOPage = () => {
                 <div className={styles.content}>
                     <Description />
                     <Documents />
+                    <GovernmentReports />
                     <Reports />
                 </div>
             </div>
