@@ -8,14 +8,15 @@ export const blogArticleCardAdapter = (
     data: GetBlogList[],
 ): ArticleCardType[] => data.map((blog) => {
     const {
-        id, name, image, created, blogCategory, likeCount,
+        id, name, image, created, blogCategories, likeCount,
         reviewCount, isActive,
     } = blog;
     return {
         id: String(id),
         name,
         image: getMediaContent(image.thumbnails?.large),
-        category: blogCategory,
+        category: blogCategories[0],
+        categories: blogCategories,
         created,
         likeCount,
         reviewCount,

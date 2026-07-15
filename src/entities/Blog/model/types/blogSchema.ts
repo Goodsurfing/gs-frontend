@@ -26,7 +26,7 @@ export interface GetBlogList {
     reviewCount: number;
     likeCount: number;
     image: Image;
-    blogCategory: BlogCategory;
+    blogCategories: BlogCategory[];
 }
 
 export interface GetBlogListResponse {
@@ -45,10 +45,10 @@ export interface GetBlogListParams {
     limit: number;
 }
 
-export type GetBlog = Omit<GetBlogList, "blogCategory"> & {
+export type GetBlog = Omit<GetBlogList, "blogCategories"> & {
     isHasLike: boolean;
     isGudserfing: boolean;
-    blogCategoryResult: BlogCategory;
+    blogCategoryResults: BlogCategory[];
     author: {
         id: string;
         firstName: string | null;
@@ -71,7 +71,7 @@ export interface PublicBlogParams {
 
 export type CreateBlog = Pick<GetBlog, "name" | "description" | "isActive"> & {
     imageId: string;
-    categoryId: number | null;
+    categoryIds: number[];
 };
 
 export interface UpdateBlogParams {

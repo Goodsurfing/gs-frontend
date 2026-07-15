@@ -18,12 +18,14 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
     (props: ArticleCardProps) => {
         const {
             article: {
-                image, name, category, created,
+                image, name, category, categories, created,
                 likeCount, reviewCount,
             },
             className,
             path,
         } = props;
+
+        const tags = categories && categories.length > 0 ? categories : [category];
 
         return (
             <Link className={styles.link} to={path}>
@@ -36,15 +38,18 @@ export const ArticleCard: FC<ArticleCardProps> = memo(
                     <span className={styles.title}>{name}</span>
                     <div className={styles.container}>
                         <span className={styles.date}>{created}</span>
-                        <div
-                            className={cn(
-                                styles.tag,
-                                { [styles.tagSmall]: category.name.length > 25 },
-                            )}
-                            style={{ backgroundColor: category.color === "" ? "#3DABF7" : category.color }}
-                        >
-                            {category.name}
-                        </div>
+                        {tags.map((tag) => (
+                            <div
+                                key={tag.id}
+                                className={cn(
+                                    styles.tag,
+                                    { [styles.tagSmall]: tag.name.length > 25 },
+                                )}
+                                style={{ backgroundColor: tag.color === "" ? "#3DABF7" : tag.color }}
+                            >
+                                {tag.name}
+                            </div>
+                        ))}
                     </div>
                     <p className={styles.description}>
                         {/* {description.substring(0, 300)} */}

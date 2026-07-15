@@ -4,14 +4,14 @@ import { GetAdminBlog, UpdateAdminBlog } from "../model/types/adminBlogSchema";
 export const blogAdapter = (data: GetAdminBlog): AdminArticleFormFields => {
     const {
         name, image, description, isActive,
-        category, author,
+        categories, author,
     } = data;
 
     return {
         name,
         image,
         description,
-        categoryId: category.id,
+        categoryIds: categories.map((category) => category.id),
         isActive,
         author,
     };
@@ -20,7 +20,7 @@ export const blogAdapter = (data: GetAdminBlog): AdminArticleFormFields => {
 export const blogApiAdapter = (data: AdminArticleFormFields): UpdateAdminBlog => {
     const {
         name, image, description, isActive,
-        categoryId, author,
+        categoryIds, author,
     } = data;
 
     return {
@@ -28,7 +28,7 @@ export const blogApiAdapter = (data: AdminArticleFormFields): UpdateAdminBlog =>
         description,
         isActive,
         imageId: image.id,
-        blogCategoryId: categoryId,
+        blogCategoryIds: categoryIds ?? [],
         authorId: author?.id ?? "",
     };
 };
