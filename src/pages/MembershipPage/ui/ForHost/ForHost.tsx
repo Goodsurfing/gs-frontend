@@ -58,7 +58,10 @@ export const ForHost: FC<ForHostProps> = (props: ForHostProps) => {
     ];
 
     return (
-        <section className={cn(className, styles.wrapper)}>
+        // id="host" — якорь на секцию членства организатора: ссылки с
+        // рабочего стола хоста и с international-сайта ведут на /membership#host
+        // (у ForVolunteer уже есть id="tariffs", у InternationalClub — id="international").
+        <section id="host" className={cn(className, styles.wrapper)}>
             <div className={styles.inner}>
                 <h2 className={styles.sectionTitle}>
                     {t("for-host.section-title", "Если вы — организатор, который создаёт возможности")}
