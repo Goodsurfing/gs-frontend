@@ -35,11 +35,11 @@ export type GetAdminBlog = Omit<GetAdminBlogList, "categoryName"> & {
     description: string;
     isGudserfing: boolean;
     image: Image;
-    category: BlogCategory;
+    categories: BlogCategory[];
 };
 
 export type UpdateAdminBlog = Pick<GetAdminBlog, "name" | "description" | "isActive"> & {
-    blogCategoryId: number;
+    blogCategoryIds: number[];
     imageId: string;
     authorId: string;
 };

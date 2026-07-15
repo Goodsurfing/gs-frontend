@@ -97,8 +97,6 @@ const blogCustomFields: CustomFilterField<keyof BlogFilters>[] = [
                 >
                     <MenuItem value={AdminSort.NameAsc}>Название статьи ↑</MenuItem>
                     <MenuItem value={AdminSort.NameDesc}>Название статьи ↓</MenuItem>
-                    <MenuItem value={AdminSort.CategoryNameAsc}>Категории ↑</MenuItem>
-                    <MenuItem value={AdminSort.CategoryNameDesc}>Категории ↓</MenuItem>
                     <MenuItem value={AdminSort.FioAsc}>ФИО автора ↑</MenuItem>
                     <MenuItem value={AdminSort.FioDesc}>ФИО автора ↓</MenuItem>
                     <MenuItem value={AdminSort.IsActiveAsc}>

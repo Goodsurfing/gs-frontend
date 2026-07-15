@@ -39,6 +39,11 @@ export interface ArticleCardType {
         name: string;
         color: string;
     };
+    categories?: {
+        id: number;
+        name: string;
+        color: string;
+    }[];
     created: string;
     likeCount: number;
     reviewCount: number;

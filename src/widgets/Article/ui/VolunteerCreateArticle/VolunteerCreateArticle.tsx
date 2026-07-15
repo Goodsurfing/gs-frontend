@@ -25,7 +25,7 @@ export const VolunteerCreateArticle: FC<VolunteerCreateArticleProps> = (props) =
     const onSubmit = async (data: ArticleFormFields) => {
         setToast(undefined);
         const {
-            name, description, image, isActive, categoryId,
+            name, description, image, isActive, categoryIds,
         } = data;
         try {
             await createBlog({
@@ -33,7 +33,7 @@ export const VolunteerCreateArticle: FC<VolunteerCreateArticleProps> = (props) =
                 description,
                 imageId: image?.id,
                 isActive,
-                categoryId: categoryId || null,
+                categoryIds: categoryIds || [],
             }).unwrap();
             onSuccess();
         } catch {

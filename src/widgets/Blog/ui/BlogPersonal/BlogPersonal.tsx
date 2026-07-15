@@ -159,8 +159,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
                     authorId={data?.author?.id}
                     authorAvatar={getMediaContent(data?.author?.image?.thumbnails?.small)}
                     authorName={getFullName(data?.author?.firstName, data?.author?.lastName)}
-                    category={data?.blogCategoryResult.name}
-                    categoryColor={data?.blogCategoryResult.color}
+                    categories={data?.blogCategoryResults}
                     date={data?.created ?? ""}
                     likes={data?.likeCount ?? 0}
                     reviews={data?.reviewCount ?? 0}

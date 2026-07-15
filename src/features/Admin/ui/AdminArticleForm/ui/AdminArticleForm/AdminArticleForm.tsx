@@ -29,7 +29,8 @@ interface AdminArticleFormProps {
 export interface AdminArticleFormFields {
     image: Image;
     name: string;
-    categoryId: number;
+    categoryId?: number;
+    categoryIds?: number[];
     description: string;
     author: {
         id: string;
@@ -142,13 +143,13 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
                     <span className={styles.title}>
                         {t("volunteer-create-article.Категория статьи")}
                     </span>
-                    <Controller
-                        name="categoryId"
-                        control={control}
-                        rules={{ required: "Выберите категорию" }}
-                        render={({ field, fieldState }) => (
-                            <div className={styles.categoryWrapper}>
-                                {category === "Offer" ? (
+                    {category === "Offer" ? (
+                        <Controller
+                            name="categoryId"
+                            control={control}
+                            rules={{ required: "Выберите категорию" }}
+                            render={({ field, fieldState }) => (
+                                <div className={styles.categoryWrapper}>
                                     <OfferCategories
                                         locale={locale}
                                         exclusive
@@ -157,25 +158,40 @@ export const AdminArticleForm: FC<AdminArticleFormProps> = memo(
                                             value ? Number(value) : undefined,
                                         )}
                                     />
-                                )
-                                    : (
-                                        <BlogCategories
-                                            locale={locale}
-                                            exclusive
-                                            value={field.value ? Number(field.value) : undefined}
-                                            onChange={(value) => field.onChange(
-                                                value ? Number(value) : undefined,
-                                            )}
-                                        />
+                                    {fieldState.error && (
+                                        <span className={styles.error}>
+                                            {fieldState.error.message}
+                                        </span>
                                     )}
-                                {fieldState.error && (
-                                    <span className={styles.error}>
-                                        {fieldState.error.message}
-                                    </span>
-                                )}
-                            </div>
-                        )}
-                    />
+                                </div>
+                            )}
+                        />
+                    ) : (
+                        <Controller
+                            name="categoryIds"
+                            control={control}
+                            rules={{
+                                validate: (value) => (
+                                    (Array.isArray(value) && value.length > 0)
+                                        || "Выберите хотя бы одну категорию"
+                                ),
+                            }}
+                            render={({ field, fieldState }) => (
+                                <div className={styles.categoryWrapper}>
+                                    <BlogCategories
+                                        locale={locale}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                    />
+                                    {fieldState.error && (
+                                        <span className={styles.error}>
+                                            {fieldState.error.message}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+                        />
+                    )}
                 </div>
                 <Controller
                     name="description"

@@ -17,6 +17,7 @@ interface ArticleHeaderProps {
     date: string;
     category?: string;
     categoryColor?: string;
+    categories?: { name: string; color: string }[];
     likes: number;
     reviews: number;
     onLike?: () => void;
@@ -26,8 +27,14 @@ interface ArticleHeaderProps {
 export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps) => {
     const {
         className, authorId, authorAvatar, authorName, category, date, title,
-        categoryColor, onLike, likes, reviews, locale,
+        categoryColor, categories, onLike, likes, reviews, locale,
     } = props;
+    let tags: { name: string; color: string }[] = [];
+    if (categories && categories.length > 0) {
+        tags = categories;
+    } else if (category && categoryColor) {
+        tags = [{ name: category, color: categoryColor }];
+    }
     return (
         <div className={cn(className, styles.wrapper)}>
             <h1 className={styles.title}>{title}</h1>
@@ -44,14 +51,15 @@ export const ArticleHeader: FC<ArticleHeaderProps> = (props: ArticleHeaderProps)
                         </CustomLink>
                     )}
                     <span className={styles.date}>{date}</span>
-                    {(category && categoryColor) && (
+                    {tags.map((tag) => (
                         <div
+                            key={tag.name}
                             className={styles.category}
-                            style={{ backgroundColor: categoryColor }}
+                            style={{ backgroundColor: tag.color }}
                         >
-                            {category}
+                            {tag.name}
                         </div>
-                    )}
+                    ))}
                 </div>
                 <div className={styles.containerIcon}>
                     <div className={cn(styles.wrapperIcon, styles.like)} onClick={onLike}>

@@ -31,7 +31,7 @@ export const VolunteerArticleInfo: FC<VolunteerArticleInfoProps> = (props) => {
     const onSubmit = async (data: ArticleFormFields) => {
         setToast(undefined);
         const {
-            name, description, image, isActive, categoryId,
+            name, description, image, isActive, categoryIds,
         } = data;
         try {
             await updateBlog({
@@ -41,7 +41,7 @@ export const VolunteerArticleInfo: FC<VolunteerArticleInfoProps> = (props) => {
                     description,
                     imageId: image?.id,
                     isActive,
-                    categoryId: categoryId || null,
+                    categoryIds: categoryIds || [],
                 },
             }).unwrap();
             const successToast = isActive ? "Статья успешно обновлена и опубликована" : "Статья успешно сохранена в черновиках";
@@ -54,14 +54,14 @@ export const VolunteerArticleInfo: FC<VolunteerArticleInfoProps> = (props) => {
     useEffect(() => {
         if (articleData) {
             const {
-                name, description, image, isActive, blogCategoryResult,
+                name, description, image, isActive, blogCategoryResults,
             } = articleData;
             setInitialDataForm({
                 name,
                 description,
                 image,
                 isActive,
-                categoryId: blogCategoryResult?.id,
+                categoryIds: blogCategoryResults?.map((c) => c.id),
             });
         }
     }, [articleData]);
