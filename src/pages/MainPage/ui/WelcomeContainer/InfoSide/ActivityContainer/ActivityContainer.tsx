@@ -38,7 +38,7 @@ const ActivityContainer: FC<ActivityContainerProps> = (props) => {
 
     return (
         <div className={cn(styles.wrapper, className)}>
-            {categoriesData.slice(0, 3).map((item, index) => (
+            {categoriesData.slice(0, 7).map((item, index) => (
                 <ActivityItem
                     title={item.name}
                     image={item.imagePath}
