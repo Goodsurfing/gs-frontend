@@ -9,6 +9,7 @@ import { Tooltip } from "@mui/material";
 // import { medalsData } from "@/shared/data/medals";
 import { ReactSVG } from "react-svg";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSocialLink } from "@/shared/lib/getSocialLink";
 import memberIcon from "@/shared/assets/icons/select-check.svg";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
@@ -208,25 +209,25 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                 </span>
                                 <div className={styles.socials}>
                                     {((vk !== "") && (vk !== null)) && (
-                                        <a href={vk ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
+                                        <a href={getSocialLink(vk, "vk")} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={vkIcon} />
                                             <p className={styles.socialLabel}>Вконтакте</p>
                                         </a>
                                     )}
                                     {((telegram !== "") && (telegram !== null)) && (
-                                        <a href={telegram ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
+                                        <a href={getSocialLink(telegram, "telegram")} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={telegramIcon} />
                                             <p className={styles.socialLabel}>Telegram</p>
                                         </a>
                                     )}
                                     {((facebook !== "") && (facebook !== null)) && (
-                                        <a href={facebook ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
+                                        <a href={getSocialLink(facebook, "facebook")} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={facebookIcon} />
                                             <p className={styles.socialLabel}>Facebook</p>
                                         </a>
                                     )}
                                     {((instagram !== "") && (instagram !== null)) && (
-                                        <a href={instagram ?? undefined} target="_blank" rel="noreferrer" className={styles.social}>
+                                        <a href={getSocialLink(instagram, "instagram")} target="_blank" rel="noreferrer" className={styles.social}>
                                             <ReactSVG src={instaIcon} />
                                             <p className={styles.socialLabel}>Instagram</p>
                                         </a>

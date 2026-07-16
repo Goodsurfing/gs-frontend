@@ -5,6 +5,7 @@ import { ReactSVG } from "react-svg";
 import { Host } from "@/entities/Host";
 
 import { getMediaContent } from "@/shared/lib/getMediaContent";
+import { getSocialLink } from "@/shared/lib/getSocialLink";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import Button from "@/shared/ui/Button/Button";
 import {
@@ -94,13 +95,13 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
                     <span className={styles.address}>{address}</span>
                     <div className={styles.socials}>
                         {vk !== "" && (
-                            <a href={vk} target="_blank" rel="noreferrer" className={styles.social}>
+                            <a href={getSocialLink(vk, "vk")} target="_blank" rel="noreferrer" className={styles.social}>
                                 <ReactSVG src={vkIcon} />
                                 <p className={styles.socialLabel}>Вконтакте</p>
                             </a>
                         )}
                         {telegram !== "" && (
-                            <a href={telegram} target="_blank" rel="noreferrer" className={styles.social}>
+                            <a href={getSocialLink(telegram, "telegram")} target="_blank" rel="noreferrer" className={styles.social}>
                                 <ReactSVG src={telegramIcon} />
                                 <p className={styles.socialLabel}>Telegram</p>
                             </a>
