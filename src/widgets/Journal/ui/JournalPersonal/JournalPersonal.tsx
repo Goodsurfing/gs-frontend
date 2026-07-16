@@ -25,7 +25,7 @@ import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 import styles from "./JournalPersonal.module.scss";
 
 interface JournalPersonalProps {
-    journalId: string;
+    journalIdOrSlug: string;
 }
 
 const VISIBLE_COUNT = 10;
@@ -46,7 +46,7 @@ const getCalameoEmbedUrl = (url?: string) => {
 };
 
 export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
-    const { journalId } = props;
+    const { journalIdOrSlug } = props;
     const { locale } = useLocale();
     const { isAuth } = useAuth();
     const { t, ready } = useTranslation("journals");
@@ -54,14 +54,21 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const [page, setPage] = useState<number>(1);
     const [reviews, setReviews] = useState<GetReviewsJournal[]>([]);
 
-    const { data, isLoading } = useGetJournalByIdQuery(journalId);
+    const { data, isLoading } = useGetJournalByIdQuery(journalIdOrSlug);
     const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
     const embedUrl = getCalameoEmbedUrl(data?.url);
     const [putLike] = usePutLikeJournalMutation();
     const [createReview] = useCreateReviewJournalMutation();
     const [getReviews, { data: reviewsData }] = useLazyGetReviewsByJournalIdQuery();
 
+    // Реальный id, а не journalIdOrSlug (может быть slug из URL) — лайки/
+    // комментарии на бэкенде завязаны на настоящий id (row 117).
+    const journalId = data?.id;
+
     const fetchReviews = useCallback(async (pageItem: number) => {
+        if (journalId === undefined) {
+            return;
+        }
         try {
             await getReviews({
                 journalId,
@@ -99,6 +106,9 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
             });
             return;
         }
+        if (journalId === undefined) {
+            return;
+        }
         try {
             setToast(undefined);
             await putLike(journalId).unwrap();
@@ -116,6 +126,9 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
                 text: "Чтобы оставить комментарий, нужно авторизоваться",
                 type: HintType.Error,
             });
+            return;
+        }
+        if (journalId === undefined) {
             return;
         }
         try {
@@ -145,7 +158,10 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     const seoDescription = data?.description
         ? getSeoDescription(data.description) || t("seo.description")
         : t("seo.description");
-    const seoUrl = getSeoUrl(getJournalPersonalPageUrl(locale, journalId));
+    // data?.slug, а не journalIdOrSlug (сырой параметр из URL) — иначе переход
+    // по старой ссылке с голым UUID даёт canonical на ту же нечитаемую
+    // ссылку, а не на новый человекопонятный slug (row 117).
+    const seoUrl = getSeoUrl(getJournalPersonalPageUrl(locale, data?.slug ?? journalIdOrSlug));
     const seoImage = getMediaContent(data?.image?.contentUrl);
     const seoKeywords = [
         data?.name,
@@ -198,7 +214,7 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
                 </div>
                 <ArticleShare
                     className={styles.shareBlock}
-                    url={`${MAIN_URL}${getJournalPersonalPageUrl(locale, data?.id)}`}
+                    url={`${MAIN_URL}${getJournalPersonalPageUrl(locale, data?.slug ?? data?.id)}`}
                 />
             </div>
             <div className={styles.commentWrapper}>

@@ -31,6 +31,7 @@ export interface Video {
 
 export interface ArticleCardType {
     id: string;
+    slug: string;
     image?: string;
     name: string;
     isActive: boolean;

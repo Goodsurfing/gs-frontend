@@ -10,6 +10,7 @@ export interface GetJournalsParams {
 
 export interface GetJournals {
     id: string;
+    slug: string;
     name: string;
     description: string;
     created: string;

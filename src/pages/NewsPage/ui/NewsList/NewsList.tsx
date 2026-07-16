@@ -20,7 +20,7 @@ export const NewsList: FC<NewsListProps> = (props) => {
             article={newsArticleCardAdapter(article)}
             key={article.id}
             className={styles.article}
-            path={getNewsPersonalPageUrl(locale, article.id.toString())}
+            path={getNewsPersonalPageUrl(locale, article.slug)}
         />
     )), [data, locale]);
 

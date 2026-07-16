@@ -17,10 +17,11 @@ export const newsReviewsAdapter = (data: GetReviewsNews[]): Comments[] => data.m
 
 export const newsArticleCardAdapter = (data: GetNewsList): ArticleCardType => {
     const {
-        id, category, created, name, image, likeCount, reviewCount,
+        id, slug, category, created, name, image, likeCount, reviewCount,
     } = data;
     return {
         id,
+        slug,
         category,
         created,
         likeCount,

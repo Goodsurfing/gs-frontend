@@ -9,7 +9,7 @@ const JournalPersonalPage = () => {
     return (
         <MainPageLayout>
             {id && (
-                <JournalPersonal journalId={id} />
+                <JournalPersonal journalIdOrSlug={id} />
             )}
         </MainPageLayout>
     );

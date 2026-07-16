@@ -35,10 +35,11 @@ export const journalAdapter = (data: GetAdminJournal): AdminJournalFormFields =>
 
 export const journalCardAdapter = (data: GetJournals[]): JournalCardType[] => data.map((item) => {
     const {
-        id, name, image, likeCount, reviewCount, created,
+        id, slug, name, image, likeCount, reviewCount, created,
     } = item;
     return {
         id,
+        slug,
         title: name,
         image: getMediaContent(image.contentUrl) ?? "",
         description: "",

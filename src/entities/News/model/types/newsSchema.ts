@@ -15,6 +15,7 @@ export interface GetNewsListParams {
 
 export interface GetNewsList {
     id: string;
+    slug: string;
     name: string;
     description: string;
     created: string;

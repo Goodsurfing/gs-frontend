@@ -11,6 +11,7 @@ import styles from "./JournalCard.module.scss";
 
 export interface JournalCardType {
     id: string;
+    slug: string;
     title: string;
     description: string;
     date: string;
@@ -27,14 +28,14 @@ interface JournalCardProps {
 export const JournalCard: FC<JournalCardProps> = (props) => {
     const {
         journal: {
-            id, title, description, date, comments, image, likes,
+            slug, title, description, date, comments, image, likes,
         },
         className,
     } = props;
     const { locale } = useLocale();
     return (
         <div className={cn(className, styles.wrapper)}>
-            <Link to={`/${locale}/journals/${id}`}>
+            <Link to={`/${locale}/journals/${slug}`}>
                 <img className={styles.image} src={image} alt={title} />
                 <span className={styles.title}>{title}</span>
                 <div className={styles.container}>
