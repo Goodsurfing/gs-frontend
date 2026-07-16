@@ -6,6 +6,18 @@
 	box-shadow: 0 5px 20px rgb(14 29 39 / 5%);
 }
 
+.image {
+	// Источники фото — разного разрешения (портретное/широкое), но слайд
+	// должен всегда занимать одну и ту же высоту, иначе Swiper (effect="fade")
+	// оставляет пустое место под короткими слайдами.
+	width: 480px;
+	height: 400px;
+
+	object-fit: cover;
+
+	flex-shrink: 0;
+}
+
 .info {
 	display: flex;
 	flex-direction: column;
