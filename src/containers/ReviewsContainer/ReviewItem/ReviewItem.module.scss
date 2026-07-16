@@ -14,6 +14,11 @@
 	padding: 30px 20px 20px;
 
 	.title {
+		// Отступ справа, чтобы длинный заголовок не наезжал на стрелки
+		// навигации слайдера (position: absolute, top: 34px, right: 40px
+		// в ReviewsContainer.module.scss).
+		padding-right: 90px;
+
 		color: var(--color-black-primary);
 
 		font-size: 1.125rem;
@@ -56,6 +61,14 @@
 		align-items: center;
 
 		width: 100%;
+	}
+
+	.title {
+		// Стрелки навигации скрыты на этой ширине (см. .arrow в
+		// ReviewsContainer.module.scss) — отступ под них больше не нужен.
+		padding-right: 0;
+
+		text-align: center;
 	}
 
 	.text {
