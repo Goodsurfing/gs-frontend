@@ -25,7 +25,7 @@ export const ArticlesList: FC<ArticlesListProps> = (props) => {
                 article={article}
                 key={key}
                 className={styles.article}
-                path={getBlogPersonalPageUrl(locale, article.id.toString())}
+                path={getBlogPersonalPageUrl(locale, article.slug)}
             />
         )),
         [data, locale],

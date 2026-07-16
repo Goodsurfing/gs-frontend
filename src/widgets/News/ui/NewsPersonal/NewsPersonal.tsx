@@ -130,7 +130,10 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
     const seoDescription = data?.description
         ? getSeoDescription(data.description) || t("seo.description")
         : t("seo.description");
-    const seoUrl = getSeoUrl(getNewsPersonalPageUrl(locale, newsId));
+    // data?.slug, а не newsId (сырой параметр из URL) — иначе переход по
+    // старой ссылке с голым UUID даёт canonical на ту же нечитаемую ссылку,
+    // а не на новый человекопонятный slug (весь смысл ЧПУ, row 117).
+    const seoUrl = getSeoUrl(getNewsPersonalPageUrl(locale, data?.slug ?? newsId));
     const seoImage = getMediaContent(data?.image?.contentUrl);
     const seoKeywords = [
         data?.name,
@@ -174,7 +177,7 @@ export const NewsPersonal: FC<NewsPersonalProps> = (props) => {
                 <ArticleContent className={styles.content} content={articleContent} />
                 <ArticleShare
                     className={styles.shareBlock}
-                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, data?.id)}`}
+                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, data?.slug)}`}
                 />
             </div>
             <div className={styles.commentWrapper}>

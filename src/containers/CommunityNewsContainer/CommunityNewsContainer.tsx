@@ -69,7 +69,7 @@ const CommunityNewsContainer: FC = () => {
                             && data.data.map((item, index) => (
                                 <SwiperSlide key={index}>
                                     <CommunityNewsItem
-                                        id={item.id.toString()}
+                                        id={item.slug}
                                         title={item.name}
                                         date={item.created}
                                         image={getMediaContent(item.image, "LARGE")}

@@ -19,6 +19,7 @@ export interface GetBlogCategoriesParams {
 
 export interface GetBlogList {
     id: number;
+    slug: string;
     name: string;
     description: string;
     created: string;
@@ -58,7 +59,9 @@ export type GetBlog = Omit<GetBlogList, "blogCategories"> & {
 };
 
 export interface GetBlogParams {
-    id: number;
+    // string — slug или сырой id из URL (row 117, ЧПУ); number — реальный id,
+    // когда он уже известен на руках (VolunteerArticleInfo и т.п.)
+    id: number | string;
     lang: Locale;
 }
 

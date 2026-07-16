@@ -18,7 +18,6 @@ import { CommentWidget } from "@/widgets/Article";
 import {
     getBlogPageUrl,
     getBlogPersonalPageUrl,
-    getNewsPersonalPageUrl,
 } from "@/shared/config/routes/AppUrls";
 import { MAIN_URL } from "@/shared/constants/api";
 import { useGetFullName } from "@/shared/lib/getFullName";
@@ -31,13 +30,13 @@ import { SeoHelmet } from "@/shared/ui/SeoHelmet";
 import styles from "./BlogPersonal.module.scss";
 
 interface BlogPersonalProps {
-    blogId: number;
+    blogIdOrSlug: string;
 }
 
 const VISIBLE_COUNT = 10;
 
 export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
-    const { blogId } = props;
+    const { blogIdOrSlug } = props;
     const { locale } = useLocale();
     const { isAuth } = useAuth();
     const { t, ready } = useTranslation("blog");
@@ -46,13 +45,20 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const [reviews, setReviews] = useState<GetReviewBlog[]>([]);
     const { getFullName } = useGetFullName();
 
-    const { data, isLoading } = useGetBlogByIdQuery({ id: blogId, lang: locale });
+    const { data, isLoading } = useGetBlogByIdQuery({ id: blogIdOrSlug, lang: locale });
     const articleContent = data?.description ?? "<p>Данная статья пустая</p>";
     const [putLike] = usePutLikeBlogMutation();
     const [createBlog] = useCreateReviewBlogMutation();
     const [getReviews, { data: reviewsData }] = useLazyGetReviewsBlogQuery();
 
+    // Реальный числовой id статьи, а не blogIdOrSlug (это может быть slug из
+    // URL) — лайки/комментарии/отклики на бэкенде завязаны на настоящий id.
+    const blogId = data?.id;
+
     const fetchReviews = useCallback(async (pageItem: number) => {
+        if (blogId === undefined) {
+            return;
+        }
         try {
             await getReviews({
                 blogId,
@@ -90,6 +96,9 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
             });
             return;
         }
+        if (blogId === undefined) {
+            return;
+        }
         try {
             setToast(undefined);
             await putLike(blogId).unwrap();
@@ -102,6 +111,9 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     };
 
     const onComment = async (description: string) => {
+        if (blogId === undefined) {
+            return;
+        }
         try {
             await createBlog({ blogId, description }).unwrap();
             await fetchReviews(1);
@@ -129,7 +141,10 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     const seoDescription = data?.description
         ? getSeoDescription(data.description) || t("seo.description")
         : t("seo.description");
-    const seoUrl = getSeoUrl(getBlogPersonalPageUrl(locale, String(blogId)));
+    // data?.slug, а не blogIdOrSlug (сырой параметр из URL) — иначе переход
+    // по старой ссылке с голым числовым id даёт canonical на ту же
+    // нечитаемую ссылку, а не на новый человекопонятный slug (row 117).
+    const seoUrl = getSeoUrl(getBlogPersonalPageUrl(locale, data?.slug ?? blogIdOrSlug));
     const seoImage = getMediaContent(data?.image?.contentUrl);
 
     return (
@@ -169,7 +184,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
                 <ArticleContent className={styles.content} content={articleContent} />
                 <ArticleShare
                     className={styles.shareBlock}
-                    url={`${MAIN_URL}${getNewsPersonalPageUrl(locale, String(data?.id))}`}
+                    url={`${MAIN_URL}${getBlogPersonalPageUrl(locale, data?.slug ?? String(data?.id))}`}
                 />
             </div>
             <div className={styles.commentWrapper}>

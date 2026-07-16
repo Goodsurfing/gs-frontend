@@ -49,7 +49,10 @@ export const ArticleEditCard: FC<ArticleEditCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <ArticleCard path={getBlogPersonalPageUrl(locale, article.id)} article={article} />
+                <ArticleCard
+                    path={getBlogPersonalPageUrl(locale, article.slug)}
+                    article={article}
+                />
                 <div ref={popupRef} className={styles.buttonContent}>
                     <button
                         type="button"

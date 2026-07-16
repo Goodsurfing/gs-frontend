@@ -10,7 +10,9 @@ const BlogPersonalPage = () => {
 
     return (
         <MainPageLayout headerVariant="static">
-            <BlogPersonal blogId={Number(id)} />
+            {id && (
+                <BlogPersonal blogIdOrSlug={id} />
+            )}
         </MainPageLayout>
     );
 };
