@@ -6,8 +6,8 @@ interface ReviewItemProps {
     title: string;
     text: string;
     image: string;
-    author: string;
-    avatar: string;
+    author?: string;
+    avatar?: string;
 }
 
 const ReviewItem: FC<ReviewItemProps> = ({
@@ -22,10 +22,14 @@ const ReviewItem: FC<ReviewItemProps> = ({
         <div className={styles.info}>
             <h3 className={styles.title}>{title}</h3>
             <p className={styles.text}>{text}</p>
-            <div className={styles.user}>
-                <img src={avatar} alt={author} className={styles.avatar} loading="lazy" />
-                <p className={styles.author}>{author}</p>
-            </div>
+            {author && (
+                <div className={styles.user}>
+                    {avatar && (
+                        <img src={avatar} alt={author} className={styles.avatar} loading="lazy" />
+                    )}
+                    <p className={styles.author}>{author}</p>
+                </div>
+            )}
         </div>
     </div>
 );
