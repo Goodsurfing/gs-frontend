@@ -12,7 +12,7 @@ const toAbsoluteUrl = (url: string): string => {
 };
 
 export const getMediaContent = (
-    value: string | MediaObjectType | ImageType | undefined,
+    value: string | MediaObjectType | ImageType | Image | undefined,
     size: MediaContentSize = "ORIGINAL",
 ): string | undefined => {
     if (!value) return undefined;

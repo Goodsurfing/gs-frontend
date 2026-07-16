@@ -72,7 +72,7 @@ const CommunityNewsContainer: FC = () => {
                                         id={item.id.toString()}
                                         title={item.name}
                                         date={item.created}
-                                        image={getMediaContent(item.image.thumbnails?.large)}
+                                        image={getMediaContent(item.image, "LARGE")}
                                         locale={locale}
                                     />
                                 </SwiperSlide>
