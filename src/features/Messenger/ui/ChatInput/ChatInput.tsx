@@ -57,6 +57,7 @@ export const ChatInput: FC<ChatInputProps> = (props) => {
     };
 
     const handleSendMessage = () => {
+        if (disabled) return;
         if (inputValue.trim() || attachmentValue) {
             const formMessage: SendMessageType = {
                 text: inputValue,
