@@ -23,7 +23,7 @@ export const GoodsurfingTeam: FC<GoodsurfingTeamProps> = memo((props: Goodsurfin
     const renderItems = useMemo(
         () => data?.data.map((item, index) => (
             <TeamItem
-                image={getMediaContent(item.image.contentUrl)}
+                image={getMediaContent(item.image, "LARGE")}
                 name={getFullName(item.firstName, item.lastName)}
                 description={item.position}
                 vk={item.vkontakte}
