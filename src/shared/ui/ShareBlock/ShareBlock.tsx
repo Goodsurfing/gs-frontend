@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import styles from "./ShareBlock.module.scss";
 import {
     telegramIcon,
@@ -15,8 +16,9 @@ interface ShareBlockProps {
 
 export const ShareBlock: FC<ShareBlockProps> = (props: ShareBlockProps) => {
     const {
-        className, label = "Поделиться", textTitle, url,
+        className, label, textTitle, url,
     } = props;
+    const { t } = useTranslation();
     const sharVkUrl = `https://vk.com/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(textTitle)}`;
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(textTitle)}`;
 
@@ -30,7 +32,7 @@ export const ShareBlock: FC<ShareBlockProps> = (props: ShareBlockProps) => {
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <span>{label}</span>
+            <span>{label ?? t("Поделиться")}</span>
             <div className={styles.container}>
                 <img src={vkIcon} alt="vkontakte" className={styles.icon} onClick={handleVkShare} />
                 {/* <img

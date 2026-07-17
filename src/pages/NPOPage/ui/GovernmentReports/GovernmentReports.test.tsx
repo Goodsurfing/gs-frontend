@@ -6,7 +6,15 @@ import { MemoryRouter } from "react-router-dom";
 import { GovernmentReports } from "./GovernmentReports";
 
 vi.mock("react-i18next", () => ({
-    useTranslation: () => ({ t: (_key: string, fallback?: string) => fallback ?? _key }),
+    useTranslation: () => ({
+        t: (key: string, fallbackOrOptions?: string | Record<string, unknown>) => {
+            if (typeof fallbackOrOptions === "string") return fallbackOrOptions;
+            if (fallbackOrOptions && typeof fallbackOrOptions === "object") {
+                return key.replace(/\{\{(\w+)\}\}/g, (_, token) => String(fallbackOrOptions[token] ?? ""));
+            }
+            return key;
+        },
+    }),
 }));
 
 /**
@@ -18,7 +26,7 @@ vi.mock("react-i18next", () => ({
 describe("GovernmentReports", () => {
     it("рендерит обе секции отчётов", () => {
         render(<MemoryRouter><GovernmentReports /></MemoryRouter>);
-        expect(screen.getByText("Отчёты в Минюст")).toBeInTheDocument();
+        expect(screen.getByText("Отчёты Минюст")).toBeInTheDocument();
         expect(screen.getByText("Отчёты о деятельности")).toBeInTheDocument();
     });
 

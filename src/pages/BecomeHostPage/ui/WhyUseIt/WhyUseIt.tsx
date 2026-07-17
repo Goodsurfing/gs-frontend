@@ -2,11 +2,14 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect } from "react";
 import { ReactSVG } from "react-svg";
+import { useTranslation } from "react-i18next";
 
 import { whyUseItData } from "../../data/becomeHost";
 import styles from "./WhyUseIt.module.scss";
 
 export const WhyUseIt = () => {
+    const { t } = useTranslation("become-host");
+
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
 
@@ -22,13 +25,13 @@ export const WhyUseIt = () => {
             key={index}
         >
             <ReactSVG src={mark.image} />
-            <span className={styles.title}>{mark.title}</span>
+            <span className={styles.title}>{t(mark.title)}</span>
         </div>
     ));
 
     return (
         <div className={styles.wrapper}>
-            <h2>Зачем пользоваться Гудсёрфингом</h2>
+            <h2>{t("Зачем пользоваться Гудсёрфингом")}</h2>
             <div className={styles.container}>{renderMarks()}</div>
         </div>
     );

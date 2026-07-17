@@ -52,9 +52,9 @@ export const HostReviewCard: FC<HostReviewCardProps> = memo((props: HostReviewCa
                 setError(null);
             }
         } catch {
-            setError("Произошла ошибка загрузки отзывов");
+            setError(t("personalHost.Произошла ошибка загрузки отзывов"));
         }
-    }, [getReviewsData, hostId]);
+    }, [getReviewsData, hostId, t]);
 
     useEffect(() => {
         fetchReviews(page);

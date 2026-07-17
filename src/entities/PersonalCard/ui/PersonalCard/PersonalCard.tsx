@@ -146,7 +146,7 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                                 [styles.black]: !isImage,
                             })}
                             >
-                                Кол-во отзывов:
+                                {t("Кол-во отзывов:")}
                                 {" "}
                                 {reviewsCount}
                             </p>

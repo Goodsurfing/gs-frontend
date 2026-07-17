@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -10,6 +11,7 @@ import styles from "./WhoIsGoodsurfers.module.scss";
 
 export const WhoIsGoodsurfers = () => {
     const { locale } = useLocale();
+    const { t } = useTranslation("become-host");
 
     const navigate = useNavigate();
 
@@ -19,14 +21,12 @@ export const WhoIsGoodsurfers = () => {
 
     return (
         <div className={styles.wrapper}>
-            <h2>Кто такие гудсёрферы</h2>
+            <h2>{t("Кто такие гудсёрферы")}</h2>
             <p>
-                Гудсёрферы – это люди из разных регионов и стран, которые готовы
-                приложить свои знания и труд на проживание, питание и опыт. Это
-                люди разных возрастов, пола и профессий.
+                {t("Гудсёрферы – это люди из разных регионов и стран, которые готовы приложить свои знания и труд на проживание, питание и опыт. Это люди разных возрастов, пола и профессий.")}
                 <br />
                 <br />
-                <b>Найдите своих идеальных гудсёрферов!</b>
+                <b>{t("Найдите своих идеальных гудсёрферов!")}</b>
             </p>
             <Button
                 className={styles.button}
@@ -35,7 +35,7 @@ export const WhoIsGoodsurfers = () => {
                 variant="FILL"
                 onClick={navigateClick}
             >
-                Начать сейчас
+                {t("Начать сейчас")}
             </Button>
         </div>
     );

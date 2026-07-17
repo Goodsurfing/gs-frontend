@@ -180,6 +180,7 @@
         "Галерея не заполнена": "La galería está vacía",
         "Видеогалерея не заполнена": "La galería de videos está vacía",
         "Произошла ошибка": "Se produjo un error",
-        "Организация недоступна": "Organización no disponible"
+        "Организация недоступна": "Organización no disponible",
+        "Произошла ошибка загрузки отзывов": "Se produjo un error al cargar las reseñas"
     }
 }

@@ -17,7 +17,7 @@ export const ArticleShare: FC<ArticleShareProps> = memo((props: ArticleShareProp
         <ShareBlock
             className={className}
             label={t("Поделиться")}
-            textTitle="Статья"
+            textTitle={t("Статья")}
             url={url}
         />
     );

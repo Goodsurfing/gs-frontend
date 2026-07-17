@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { CircularProgress } from "@mui/material";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 
 import { useCreateFeedbackMutation } from "@/entities/Feedback";
 
@@ -23,6 +24,7 @@ interface FeedbackModalProps {
 
 export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
     const { isOpen, onClose } = props;
+    const { t } = useTranslation();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -53,7 +55,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
             await createFeedback({ name, email, message }).unwrap();
             setIsSent(true);
         } catch {
-            setErrorText("Не удалось отправить сообщение. Попробуйте ещё раз.");
+            setErrorText(t("Не удалось отправить сообщение. Попробуйте ещё раз."));
         }
     };
 
@@ -70,24 +72,24 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
                     type="button"
                     className={styles.closeButton}
                     onClick={handleClose}
-                    aria-label="Закрыть"
+                    aria-label={t("Закрыть")}
                 >
                     <IconComponent icon={closeIcon} alt="close" className={styles.closeIcon} />
                 </button>
                 {isSent ? (
                     <>
-                        <h2>Спасибо! Ваше сообщение отправлено.</h2>
-                        <p className={styles.description}>Мы ответим вам на указанный email.</p>
+                        <h2>{t("Спасибо! Ваше сообщение отправлено.")}</h2>
+                        <p className={styles.description}>{t("Мы ответим вам на указанный email.")}</p>
                         <Button onClick={handleClose} variant="FILL" size="MEDIUM" color="BLUE">
-                            Закрыть
+                            {t("Закрыть")}
                         </Button>
                     </>
                 ) : (
                     <>
-                        <h2>Напишите нам</h2>
+                        <h2>{t("Напишите нам")}</h2>
                         <Input
                             id="feedback-name"
-                            label="Ваше имя"
+                            label={t("Ваше имя")}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             maxLength={255}
@@ -102,7 +104,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
                         />
                         <Textarea
                             id="feedback-message"
-                            label="Сообщение"
+                            label={t("Сообщение")}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             maxLength={2000}
@@ -123,7 +125,7 @@ export const FeedbackModal: FC<FeedbackModalProps> = (props) => {
                             {isLoading ? (
                                 <CircularProgress size={20} sx={{ color: "#fff" }} />
                             ) : (
-                                <span className={buttonStyles.text}>Отправить</span>
+                                <span className={buttonStyles.text}>{t("Отправить")}</span>
                             )}
                         </button>
                     </>

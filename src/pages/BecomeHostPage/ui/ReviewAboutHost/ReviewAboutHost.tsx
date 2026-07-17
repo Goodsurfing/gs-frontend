@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -14,6 +15,7 @@ import styles from "./ReviewAboutHost.module.scss";
 export const ReviewAboutHost = () => {
     const navigate = useNavigate();
     const { locale } = useLocale();
+    const { t } = useTranslation("become-host");
 
     const navigateClick = () => {
         navigate(getProfileRolePageUrl(locale));
@@ -41,7 +43,7 @@ export const ReviewAboutHost = () => {
     ];
     return (
         <div className={styles.wrapper}>
-            <h2>Отзывы о хостах</h2>
+            <h2>{t("Отзывы о хостах")}</h2>
             <ReviewSlider
                 about="host"
                 reviews={mockedReview}
@@ -55,7 +57,7 @@ export const ReviewAboutHost = () => {
                 variant="FILL"
                 onClick={navigateClick}
             >
-                Начните принимать волонтеров со всей России и мира
+                {t("Начните принимать волонтеров со всей России и мира")}
             </Button>
         </div>
     );

@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC, memo } from "react";
+import { useTranslation } from "react-i18next";
 
 // import { ArticleCard } from "@/entities/Article/";
 
@@ -18,6 +19,7 @@ export const VolunteerArticlesCard: FC<VolunteerArticlesCardProps> = memo(
     (props: VolunteerArticlesCardProps) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { className, articles } = props;
+        const { t } = useTranslation("profile");
 
         // const renderCards = useMemo(
         //     () => {
@@ -39,7 +41,7 @@ export const VolunteerArticlesCard: FC<VolunteerArticlesCardProps> = memo(
 
         return (
             <div className={cn(className, styles.wrapper)}>
-                <h3>Статьи об организации</h3>
+                <h3>{t("personal.Статьи об организации")}</h3>
                 <div className={styles.container}>
                     {/* {renderCards} */}
                 </div>

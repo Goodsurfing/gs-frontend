@@ -2,6 +2,7 @@ import * as VKID from "@vkid/sdk";
 import React, {
     FC, useEffect, useRef,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -28,6 +29,7 @@ interface AuthByVkProps {
 
 export const AuthByVk: FC<AuthByVkProps> = (props) => {
     const { redirect, onSuccess, onError } = props;
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement | null>(null);
     const { locale } = useLocale();
     const dispatch = useAppDispatch();
@@ -104,7 +106,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
 
                         if (responseJwtToken.status === 401) {
                             localStorage.removeItem("vk_code_verifier");
-                            onError("Пользователь был удален или не создавался");
+                            onError(t("login.Пользователь был удален или не создавался"));
                             return;
                         }
 
@@ -136,7 +138,7 @@ export const AuthByVk: FC<AuthByVkProps> = (props) => {
         };
 
         vkIdInit();
-    }, [locale, redirect, onSuccess, onError, redirectUrl, dispatch]);
+    }, [locale, redirect, onSuccess, onError, redirectUrl, dispatch, t]);
 
     return (
         <div className={styles.wrapper}>

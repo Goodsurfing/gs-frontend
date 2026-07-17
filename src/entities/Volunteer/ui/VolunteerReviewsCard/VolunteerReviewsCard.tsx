@@ -57,9 +57,9 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
                     setError(null);
                 }
             } catch {
-                setError("Произошла ошибка загрузки отзывов");
+                setError(t("personal.Произошла ошибка загрузки отзывов"));
             }
-        }, [getReviewsData, volunteerId]);
+        }, [getReviewsData, volunteerId, t]);
 
         useEffect(() => {
             fetchReviews(page);

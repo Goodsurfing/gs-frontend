@@ -46,7 +46,7 @@ export const GovernmentReports = () => {
                 {reports.map((report) => (
                     <ReportItem
                         key={report.file}
-                        title={`${report.year} год`}
+                        title={t("{{year}} год", { year: report.year })}
                         url={reportUrl(report.file)}
                     />
                 ))}
@@ -56,7 +56,7 @@ export const GovernmentReports = () => {
 
     return (
         <div className={styles.wrapper}>
-            {renderSection("Отчёты в Минюст", "Отчёты в Минюст", MINISTRY_REPORTS)}
+            {renderSection("Отчёты МинЮст", "Отчёты Минюст", MINISTRY_REPORTS)}
             {renderSection("Отчёты о деятельности", "Отчёты о деятельности", ACTIVITY_REPORTS)}
         </div>
     );
