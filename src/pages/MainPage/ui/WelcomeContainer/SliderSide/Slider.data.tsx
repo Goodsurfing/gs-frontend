@@ -45,7 +45,7 @@ export const useTranslatedSliderData = () => {
             description: volunteerDesc,
             image: slideImage1,
             buttonLink: link,
-            buttonLinkText: "Присоединиться к сообществу",
+            buttonLinkText: t("Присоединиться к сообществу"),
         },
         {
             title: t("Примите тех, кто хочет помогать и делайте мир лучше вместе"),
@@ -53,7 +53,7 @@ export const useTranslatedSliderData = () => {
             description: vacancyDesc,
             image: slideImage3,
             buttonLink: getBecomeHostPageUrl(locale),
-            buttonLinkText: "Стать хостом",
+            buttonLinkText: t("Стать хостом"),
         },
     ];
 
