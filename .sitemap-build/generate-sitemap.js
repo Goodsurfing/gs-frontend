@@ -19,6 +19,7 @@ const publicStaticPaths = [
     "/journals",
     "/video",
     "/privacy-policy",
+    "/payment-security-policy",
     "/our-team",
     "/ambassadors",
     "/academy-main",

@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.description {
+    line-height: 1.5;
+}
+
+.link {
+    color: var(--text-primary-1);
+}

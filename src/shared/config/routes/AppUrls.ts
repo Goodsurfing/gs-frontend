@@ -193,6 +193,8 @@ export const getNewsPersonalPageUrl: RoutePathFunction = (locale, id = ":id") =>
 
 export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.privacy_policy}`;
 
+export const getPaymentSecurityPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment_security_policy}`;
+
 export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}`;
 
 export const getJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.journals}/${id}`;
