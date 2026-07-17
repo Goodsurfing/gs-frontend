@@ -73,6 +73,29 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
         }
     }, [editor]);
 
+    useEffect(() => {
+        if (editor) {
+            const updateAlignType = () => {
+                if (editor.isActive({ textAlign: "center" })) {
+                    setAlignText("center");
+                } else if (editor.isActive({ textAlign: "justify" })) {
+                    setAlignText("justify");
+                } else {
+                    setAlignText("left");
+                }
+            };
+
+            updateAlignType();
+            editor.on("selectionUpdate", updateAlignType);
+            editor.on("update", updateAlignType);
+
+            return () => {
+                editor.off("selectionUpdate", updateAlignType);
+                editor.off("update", updateAlignType);
+            };
+        }
+    }, [editor]);
+
     if (!editor) {
         return null;
     }
@@ -149,20 +172,10 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
     };
 
     const handleAlignText = (event: MouseEvent<HTMLElement>, newAlign: string | null) => {
-        setAlignText(newAlign);
-        switch (newAlign) {
-            case "left":
-                editor.commands.setTextAlign("left");
-                break;
-            case "center":
-                editor.commands.setTextAlign("center");
-                break;
-            case "justify":
-                editor.commands.setTextAlign("justify");
-                break;
-            default:
-                break;
+        if (!newAlign) {
+            return;
         }
+        editor.chain().focus().setTextAlign(newAlign).run();
     };
 
     editor.on("update", () => {
