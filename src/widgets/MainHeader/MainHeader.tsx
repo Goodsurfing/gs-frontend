@@ -56,7 +56,10 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
                     rel="noopener noreferrer"
                 >
                     <span className={styles.bannerText}>{data.description}</span>
-                    <span className={styles.bannerCta}>Подробнее →</span>
+                    <span className={styles.bannerCta}>
+                        {t("Подробнее")}
+                        {" →"}
+                    </span>
                 </a>
             )}
             <header className={styles.header}>
