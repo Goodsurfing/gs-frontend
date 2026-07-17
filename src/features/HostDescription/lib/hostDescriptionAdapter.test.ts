@@ -43,14 +43,16 @@ describe("hostDescriptionFormAdapter", () => {
 
 /**
  * Регресс-guard (row 88): поле avatar.id вручную собиралось как полный
- * внешний URL (`${BASE_URL}/api/v1/media_objects/${id}`) вместо сырого
- * id медиа-объекта. Бэкенд ожидает такой же id, как во всех остальных
- * рабочих загрузках (см. ProfileInfoFormAvatar — result.id). Из-за
- * несовпадения формата avatar_id не проставлялся ни у одной организации
- * на проде — иконка организации никогда не сохранялась и не отображалась.
+ * внешний URL (`${BASE_URL}/api/v1/media_objects/${id}`) вместо
+ * относительного IRI (`/api/v1/media_objects/{id}`), который на самом
+ * деле ожидает бэкенд для organizations (подтверждено вживую на
+ * стейдже: PATCH возвращал 400 "Invalid IRI" и на голом id, и на полном
+ * внешнем URL). Из-за несовпадения формата avatar_id не проставлялся ни
+ * у одной организации на проде — иконка организации никогда не
+ * сохранялась и не отображалась.
  */
 describe("hostDescriptionFormAdapter avatar id", () => {
-    it("передаёт сырой id медиа-объекта, а не сконструированный URL", () => {
+    it("реконструирует относительный IRI медиа-объекта, а не внешний URL с доменом", () => {
         const hostWithAvatar: Host = {
             ...baseHost,
             avatar: {
@@ -64,14 +66,14 @@ describe("hostDescriptionFormAdapter avatar id", () => {
 
         const result = hostDescriptionFormAdapter(hostWithAvatar);
 
-        expect(result.avatar?.id).toBe("media-object-uuid-123");
+        expect(result.avatar?.id).toBe("/api/v1/media_objects/media-object-uuid-123");
     });
 });
 
 describe("hostDescriptionApiAdapterUpdate avatar id", () => {
-    it("отправляет сырой id медиа-объекта в теле запроса", () => {
+    it("отправляет IRI медиа-объекта в теле запроса как есть", () => {
         const result = hostDescriptionApiAdapterUpdate({
-            avatar: { id: "media-object-uuid-456", contentUrl: "/media/avatar.jpg" },
+            avatar: { id: "/api/v1/media_objects/media-object-uuid-456", contentUrl: "/media/avatar.jpg" },
             mainInfo: {
                 aboutInfo: "", organization: "", shortOrganization: "", website: "",
             },
@@ -82,6 +84,6 @@ describe("hostDescriptionApiAdapterUpdate avatar id", () => {
             address: "",
         });
 
-        expect(result.avatar).toBe("media-object-uuid-456");
+        expect(result.avatar).toBe("/api/v1/media_objects/media-object-uuid-456");
     });
 });
