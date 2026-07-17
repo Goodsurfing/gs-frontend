@@ -36,6 +36,7 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                             <Avatar
                                 className={styles.image}
                                 icon={getMediaContent(organization.image?.contentUrl)}
+                                text={organization.name}
                             />
                             {/* <img
                                 className={styles.image}

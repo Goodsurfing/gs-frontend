@@ -33,7 +33,12 @@ export const ReviewWidget: FC<ReviewWidgetProps> = memo(
                         <img src={star} alt="rating" />
                         <span className={styles.rating}>{stars}</span>
                     </div>
-                    <Avatar icon={avatar} className={styles.avatar} onClick={navigateTo} />
+                    <Avatar
+                        icon={avatar}
+                        text={name}
+                        className={styles.avatar}
+                        onClick={navigateTo}
+                    />
                     <span className={styles.name} onClick={navigateTo}>{name}</span>
                     {/* <span className={styles.date}>
                         /

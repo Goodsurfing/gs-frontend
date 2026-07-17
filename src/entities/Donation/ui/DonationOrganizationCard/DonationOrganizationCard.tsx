@@ -44,6 +44,7 @@ export const DonationOrganizationCard: FC<DonationOrganizationCardProps> = memo(
                             <Avatar
                                 className={styles.image}
                                 icon={getMediaContent(image?.contentUrl)}
+                                text={name}
                             />
                             <span className={styles.name}>
                                 {name}

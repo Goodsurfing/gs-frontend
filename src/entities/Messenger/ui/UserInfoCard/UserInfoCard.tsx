@@ -138,6 +138,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                 >
                     <Avatar
                         icon={getMediaContent(image?.thumbnails?.small)}
+                        text={getFullName(firstName, lastName)}
                         size="LARGE"
                     />
                     <div className={styles.userInfo}>

@@ -31,7 +31,7 @@ export const VolunteerHostCard: FC<VolunteerHostCardProps> = memo(
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
                         <div className={styles.nameContainer}>
-                            <Avatar icon={getMediaContent(host.avatar?.contentUrl)} size="SMALL" />
+                            <Avatar icon={getMediaContent(host.avatar?.contentUrl)} text={host.name} size="SMALL" />
                             <span className={styles.name}>
                                 {host.name}
                             </span>

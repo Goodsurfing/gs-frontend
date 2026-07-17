@@ -42,6 +42,7 @@ export const MiniOfferReview: FC<MiniOfferReviewProps> = (props) => {
                 <div className={styles.mainInfo}>
                     <Avatar
                         icon={image}
+                        text={name}
                         alt="offer title image"
                         className={styles.avatar}
                     />
