@@ -13,7 +13,6 @@ import { getMediaContent } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { HostDescriptionFormFields } from "../../model/types/hostDescription";
-import { BASE_URL } from "@/shared/constants/api";
 
 interface HostDescriptionAvatarProps {
     className?: string;
@@ -43,7 +42,7 @@ export const HostDescriptionAvatar = memo(
                 const result = await uploadFile(file.name, file);
                 if (result) {
                     const avatarData = {
-                        id: `${BASE_URL}${result?.["@id"].slice(1)}`,
+                        id: result.id,
                         contentUrl: result.contentUrl,
                     };
                     onChange(avatarData);
