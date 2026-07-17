@@ -45,8 +45,12 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
         type: hostTypeFields,
         socialMedia: hostSocialFields,
         address: data.address,
+        // Organizations принимает avatar только как IRI (например
+        // "/api/v1/media_objects/{id}"), а не как сырой id — бэкенд
+        // отдаёт avatar.id уже без префикса, поэтому реконструируем
+        // тот же относительный путь, что использует загрузка файла.
         avatar: data?.avatar ? {
-            id: data.avatar.id,
+            id: `/api/v1/media_objects/${data.avatar.id}`,
             contentUrl: data.avatar.contentUrl,
             thumbnails: data.avatar.thumbnails,
         } : undefined,

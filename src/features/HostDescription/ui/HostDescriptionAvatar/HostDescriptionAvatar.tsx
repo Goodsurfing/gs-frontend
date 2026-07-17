@@ -41,8 +41,10 @@ export const HostDescriptionAvatar = memo(
             try {
                 const result = await uploadFile(file.name, file);
                 if (result) {
+                    // Organizations принимает avatar только как IRI (@id),
+                    // а не как сырой id — в отличие от профиля волонтёра.
                     const avatarData = {
-                        id: result.id,
+                        id: result["@id"],
                         contentUrl: result.contentUrl,
                     };
                     onChange(avatarData);
