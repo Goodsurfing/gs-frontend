@@ -236,7 +236,8 @@
     },
     "errors": {
         "freeAccountApplicationsLimit": "Free account allows up to 3 applications. Get a membership to apply without limits.",
-        "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits."
+        "freeAccountPublishedVacancyLimit": "Free account allows up to 1 published vacancy. Get a membership to publish without limits.",
+        "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply."
     },
     "Не задано": "Not specified",
     "journals": "Journals",
