@@ -5,6 +5,7 @@ import React, {
 import { InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
@@ -55,6 +56,7 @@ export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProp
 
         const { getTranslation } = useCategories();
         const { locale } = useLocale();
+        const { t } = useTranslation();
 
         useImperativeHandle(ref, () => ({
             clearSearch() {
@@ -143,7 +145,7 @@ export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProp
                             }
                         }}
                         className={styles.inputSearch}
-                        inputProps={{ "aria-label": "Поиск вакансий" }}
+                        inputProps={{ "aria-label": t("Поиск вакансий") }}
                     />
                     {searchInput.length > 0 && (
                         <CloseButton
@@ -154,7 +156,7 @@ export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProp
 
                 </Paper>
                 <button onClick={handleSubmit} type="button" className={styles.searchButton}>
-                    Найти
+                    {t("Найти")}
                     <ReactSVG className={styles.searchIcn} src={searchIcon} />
                 </button>
 
@@ -200,7 +202,7 @@ export const InfoSearchOffers = forwardRef<SearchOffersRef, InfoSearchOffersProp
                                         })}
                                     </>
                                 ) : (
-                                    <span>Данные вакансии отсутсвуют </span>
+                                    <span>{t("Данные вакансии отсутсвуют")}</span>
                                 )}
                                 <Button
                                     onClick={handleSubmit}

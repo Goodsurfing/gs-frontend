@@ -1,9 +1,11 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { BannerMarketingType, useGetBannerMarketingQuery } from "@/entities/Admin";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
 import styles from "./BannerCard.module.scss";
 
 export const BannerCard = () => {
+    const { t } = useTranslation();
     const { data } = useGetBannerMarketingQuery(
         { type: BannerMarketingType.MAIN_PAGE },
     );
@@ -26,7 +28,7 @@ export const BannerCard = () => {
                     path={data.url}
                     className={styles.linkButton}
                 >
-                    Подробнее
+                    {t("Подробнее")}
                 </ButtonLink>
             </div>
         </section>
