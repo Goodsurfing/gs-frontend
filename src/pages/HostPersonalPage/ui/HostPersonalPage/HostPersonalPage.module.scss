@@ -14,7 +14,7 @@
 
 .navMenu {
     position: sticky;
-    top: 6.5rem;
+    top: calc(var(--header-offset, 6.5rem) + 12px);
     z-index: 8;
 }
 
