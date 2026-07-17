@@ -75,7 +75,14 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
             ) {
                 return <span>{languages}</span>;
             }
-            return <span>{t("personal.Языки не были указаны")}</span>;
+            return <span>—</span>;
+        };
+
+        const renderLocation = () => {
+            if (!country && !city) {
+                return <span>—</span>;
+            }
+            return <span>{[country, city].filter(Boolean).join(", ")}</span>;
         };
 
         const renderAchievements = () => {
@@ -194,10 +201,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                                     :
                                     {" "}
                                     <span className={styles.subText}>
-                                        {country || t("personal.Страна не указана")}
-                                        ,
-                                        {" "}
-                                        {city || t("personal.Город не указан")}
+                                        {renderLocation()}
                                     </span>
                                 </span>
                                 <span className={styles.languages}>
