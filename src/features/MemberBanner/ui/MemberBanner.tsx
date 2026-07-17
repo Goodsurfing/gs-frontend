@@ -12,24 +12,30 @@ import styles from "./MemberBanner.module.scss";
 
 interface MemberBannerProps {
     className?: string;
+    title?: string;
+    buttonText?: string;
+    anchor?: string;
 }
 
 export const MemberBanner: FC<MemberBannerProps> = memo((props: MemberBannerProps) => {
-    const { className } = props;
+    const {
+        className, title, buttonText, anchor,
+    } = props;
     const { t } = useTranslation("volunteer");
     const navigate = useNavigate();
     const { locale } = useLocale();
 
     const handleClick = () => {
-        navigate(getMembershipPageUrl(locale));
+        const url = getMembershipPageUrl(locale);
+        navigate(anchor ? `${url}#${anchor}` : url);
     };
     return (
         <div className={cn(styles.wrapper, className)} style={{ backgroundImage: `url(${banner})` }}>
             <h3 className={styles.title}>
-                {t("volunteer-dashboard.Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!")}
+                {title ?? t("volunteer-dashboard.Оформи членство Гудсёрфинга и открой для себя бескрайний мир путешествий со смыслом!")}
             </h3>
             <Button color="BLUE" size="SMALL" variant="FILL" onClick={handleClick} className={styles.button}>
-                {t("volunteer-dashboard.Получить членство")}
+                {buttonText ?? t("volunteer-dashboard.Получить членство")}
             </Button>
         </div>
     );
