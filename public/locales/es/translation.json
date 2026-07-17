@@ -235,7 +235,8 @@
     },
     "errors": {
         "freeAccountApplicationsLimit": "La cuenta gratuita permite enviar hasta 3 solicitudes. Obtén una membresía para postularte sin límites.",
-        "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites."
+        "freeAccountPublishedVacancyLimit": "La cuenta gratuita permite publicar hasta 1 vacante. Obtén una membresía para publicar sin límites.",
+        "onlyVerifiedVolunteersAllowed": "Esta vacante solo acepta solicitudes de participantes verificados. Obtén una membresía para postularte."
     },
     "Не задано": "No especificado",
     "journals": "Revistas",
