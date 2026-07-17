@@ -24,12 +24,14 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
     } = props;
     const { t } = useTranslation("offer");
     const emptyMessage = t("personalOffer.Точная дата не указана");
+    const notSpecified = t("personalOffer.notSpecified");
     const offerPeriodEnd = () => {
         if (!applicationEndDate) {
             return t("personalOffer.Не имеет даты окончания");
         }
         return applicationEndDate || emptyMessage;
     };
+    const formatDurationDays = (days: number) => (days > 0 ? days : notSpecified);
 
     const isHavePeriods = periods.length > 0;
     const isRenderGridPeriods = periods.length > 3;
@@ -62,11 +64,11 @@ export const OfferWhenCard = memo((props: OfferWhenProps) => {
                 <div className={styles.right}>
                     <InfoCardItem
                         title={t("personalOffer.Минимум дней")}
-                        text={durationMinDays}
+                        text={formatDurationDays(durationMinDays)}
                     />
                     <InfoCardItem
                         title={t("personalOffer.Максимум дней")}
-                        text={durationMaxDays}
+                        text={formatDurationDays(durationMaxDays)}
                     />
                     <InfoCardItem
                         title={t("personalOffer.Прием заявок до")}
