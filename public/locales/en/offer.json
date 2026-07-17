@@ -236,5 +236,7 @@
     "Данные успешно изменены": "Data has been successfully updated",
     "Произошла ошибка": "An error occurred",
     "Сохранить": "Save",
-    "Дальше": "Next"
+    "Дальше": "Next",
+    "Избранные вакансии": "Favorite vacancies",
+    "Кол-во отзывов:": "Number of reviews:"
 }

@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from "react";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import { AchievementWithImage } from "@/types/achievements";
 import { Modal } from "@/shared/ui/Modal/Modal";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -13,6 +14,7 @@ interface AchievementModalProps {
 
 export const AchievementModal: FC<AchievementModalProps> = (props) => {
     const { achievements, isModalOpen, onClose } = props;
+    const { t } = useTranslation("profile");
 
     useEffect(() => {
         document.body.style.overflow = isModalOpen ? "hidden" : "";
@@ -39,7 +41,7 @@ export const AchievementModal: FC<AchievementModalProps> = (props) => {
             )}
         >
             <div className={cn(styles.wrapper, { [styles.active]: isModalOpen })}>
-                <h3>Все достижения пользователя</h3>
+                <h3>{t("personal.Все достижения пользователя")}</h3>
                 <div className={styles.container}>
                     {renderAchievements()}
                 </div>

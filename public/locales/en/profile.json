@@ -134,6 +134,9 @@
         "Здесь будут размещены видео волонтера.": "Volunteer videos will be displayed here.",
         "Добавленные видео": "Uploaded Videos",
         "Профиль недоступен": "Profile unavailable",
-         "Ещё": "More"
+         "Ещё": "More",
+        "Произошла ошибка загрузки отзывов": "An error occurred while loading reviews",
+        "Все достижения пользователя": "All user achievements",
+        "Статьи об организации": "Articles about the organization"
     }
 }

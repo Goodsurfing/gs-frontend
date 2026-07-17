@@ -1,6 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import cn from "classnames";
 import React, { FC, MouseEventHandler, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import Button from "../Button/Button";
 import { Modal } from "../Modal/Modal";
@@ -23,13 +24,15 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
         description,
         onConfirm,
         onClose,
-        confirmTextButton = "Ок",
-        cancelTextButton = "Отмена",
+        confirmTextButton,
+        cancelTextButton,
         isModalOpen = false,
         isLoading = false,
         buttonsDisabled = false,
         className,
     } = props;
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         document.body.style.overflow = isModalOpen ? "hidden" : "";
@@ -59,7 +62,7 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
                                 onClick={onConfirm}
                                 disabled={buttonsDisabled}
                             >
-                                {confirmTextButton}
+                                {confirmTextButton ?? t("Ок")}
                             </Button>
                             <Button
                                 className={styles.gray}
@@ -69,7 +72,7 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = (props) => {
                                 onClick={onClose}
                                 disabled={buttonsDisabled}
                             >
-                                {cancelTextButton}
+                                {cancelTextButton ?? t("Отмена")}
                             </Button>
                         </div>
                     </>

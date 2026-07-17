@@ -51,7 +51,8 @@
         "Сообщение с подтверждением отправлено на ваш email": "A confirmation message has been sent to your E-mail",
         "Отправить ещё раз": "Resend",
         "Отправить ещё раз через {{seconds}}": "Resend in {{seconds}} seconds",
-        "Подтвердить": "Confirm"
+        "Подтвердить": "Confirm",
+        "Пользователь был удален или не создавался": "The user was deleted or was never created"
     },
     "main": {
         "welcome": {
@@ -240,6 +241,19 @@
         "onlyVerifiedVolunteersAllowed": "This vacancy only accepts applications from verified participants. Get a membership to apply."
     },
     "Не задано": "Not specified",
+    "Ок": "Ok",
+    "Отмена": "Cancel",
+    "Неподдерживаемая ссылка на видео.": "Unsupported video link.",
+    "Неподдерживаемая ссылка на Rutube-видео.": "Unsupported Rutube video link.",
+    "Закрыть": "Close",
+    "Спасибо! Ваше сообщение отправлено.": "Thank you! Your message has been sent.",
+    "Мы ответим вам на указанный email.": "We will reply to the email you provided.",
+    "Напишите нам": "Write to us",
+    "Ваше имя": "Your name",
+    "Сообщение": "Message",
+    "Отправить": "Send",
+    "Статья": "Article",
+    "Подробнее": "Learn more",
     "journals": "Journals",
     "news": "News",
     "Видео": "Video",

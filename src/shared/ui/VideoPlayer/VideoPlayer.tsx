@@ -1,5 +1,6 @@
 import React, { CSSProperties, useState } from "react";
 import ReactPlayer from "react-player";
+import { useTranslation } from "react-i18next";
 import styles from "./VideoPlayer.module.scss";
 
 interface VideoPlayerProps {
@@ -23,6 +24,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
         style,
     } = props;
     const [isPlaying, setIsPlaying] = useState<boolean>(playing);
+    const { t } = useTranslation();
 
     const isVkVideo = url.includes("vk.com") || url.includes("vkvideo.ru");
     const isRutubeVideo = url.includes("rutube.ru");
@@ -75,7 +77,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
         if (!vkEmbedUrl) {
             return (
                 <div className={styles.error}>
-                    <p>Неподдерживаемая ссылка на видео.</p>
+                    <p>{t("Неподдерживаемая ссылка на видео.")}</p>
                 </div>
             );
         }
@@ -118,7 +120,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
         if (!videoId) {
             return (
                 <div className={styles.error}>
-                    <p>Неподдерживаемая ссылка на Rutube-видео.</p>
+                    <p>{t("Неподдерживаемая ссылка на Rutube-видео.")}</p>
                 </div>
             );
         }

@@ -13,7 +13,7 @@ const EmailAlreadyConfirmedPage: FC = () => {
     const { t } = useTranslation();
 
     return (
-        <SignLayout cancelText="Отменить" cancelPath={getSignUpPageUrl(locale)}>
+        <SignLayout cancelText={t("login.Отменить")} cancelPath={getSignUpPageUrl(locale)}>
             <div className={styles.wrapper}>
                 <SignTitle>{t("login.Почта уже была подтверждена")}</SignTitle>
                 <div className={styles.content}>

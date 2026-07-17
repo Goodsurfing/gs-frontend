@@ -182,6 +182,7 @@
         "Галерея не заполнена": "The gallery is empty",
         "Видеогалерея не заполнена": "The video gallery is empty",
         "Произошла ошибка": "An error occurred",
-        "Организация недоступна": "Organization unavailable"
+        "Организация недоступна": "Organization unavailable",
+        "Произошла ошибка загрузки отзывов": "An error occurred while loading reviews"
     }
 }
