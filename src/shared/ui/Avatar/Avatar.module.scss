@@ -1,6 +1,7 @@
 .wrapper {
     display: flex;
     flex-shrink: 0;
+    container-type: inline-size;
 }
 
 .SMALL, .MEDIUM, .LARGE, .DEFAULT {
@@ -45,6 +46,7 @@
     color: var(--bg-primary-1);
     font-weight: 600;
     font-size: 18px;
+    font-size: 40cqw;
     flex-shrink: 0;
 }
 
