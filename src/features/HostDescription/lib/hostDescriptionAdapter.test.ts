@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { Host } from "@/entities/Host";
-import { hostDescriptionFormAdapter } from "./hostDescriptionAdapter";
+import {
+    hostDescriptionApiAdapterUpdate,
+    hostDescriptionFormAdapter,
+} from "./hostDescriptionAdapter";
 
 const baseHost: Host = {
     id: "1",
@@ -35,5 +38,50 @@ describe("hostDescriptionFormAdapter", () => {
 
         expect(result.type?.organizationType).toBe("НКО");
         expect(result.type?.otherOrganizationType).toBe("");
+    });
+});
+
+/**
+ * Регресс-guard (row 88): поле avatar.id вручную собиралось как полный
+ * внешний URL (`${BASE_URL}/api/v1/media_objects/${id}`) вместо сырого
+ * id медиа-объекта. Бэкенд ожидает такой же id, как во всех остальных
+ * рабочих загрузках (см. ProfileInfoFormAvatar — result.id). Из-за
+ * несовпадения формата avatar_id не проставлялся ни у одной организации
+ * на проде — иконка организации никогда не сохранялась и не отображалась.
+ */
+describe("hostDescriptionFormAdapter avatar id", () => {
+    it("передаёт сырой id медиа-объекта, а не сконструированный URL", () => {
+        const hostWithAvatar: Host = {
+            ...baseHost,
+            avatar: {
+                id: "media-object-uuid-123",
+                contentUrl: "/media/avatar.jpg",
+                isImage: true,
+                originalHeight: 100,
+                originalWidth: 100,
+            },
+        };
+
+        const result = hostDescriptionFormAdapter(hostWithAvatar);
+
+        expect(result.avatar?.id).toBe("media-object-uuid-123");
+    });
+});
+
+describe("hostDescriptionApiAdapterUpdate avatar id", () => {
+    it("отправляет сырой id медиа-объекта в теле запроса", () => {
+        const result = hostDescriptionApiAdapterUpdate({
+            avatar: { id: "media-object-uuid-456", contentUrl: "/media/avatar.jpg" },
+            mainInfo: {
+                aboutInfo: "", organization: "", shortOrganization: "", website: "",
+            },
+            socialMedia: {
+                facebook: "", instagram: "", telegram: "", vk: "",
+            },
+            type: { organizationType: "НКО", otherOrganizationType: "" },
+            address: "",
+        });
+
+        expect(result.avatar).toBe("media-object-uuid-456");
     });
 });

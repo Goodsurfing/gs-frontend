@@ -6,7 +6,6 @@ import {
     HostDescriptionTypeFields,
     OrganizationType,
 } from "../model/types/hostDescription";
-import { BASE_URL } from "@/shared/constants/api";
 
 const organizationType: readonly OrganizationType[] = ["ИП", "ОАО", "ООО", "ООПТ", "НКО"] as const;
 
@@ -47,7 +46,7 @@ export const hostDescriptionFormAdapter = (data?: Host): Partial<HostDescription
         socialMedia: hostSocialFields,
         address: data.address,
         avatar: data?.avatar ? {
-            id: `${BASE_URL}/api/v1/media_objects/${data.avatar.id}`,
+            id: data.avatar.id,
             contentUrl: data.avatar.contentUrl,
             thumbnails: data.avatar.thumbnails,
         } : undefined,
