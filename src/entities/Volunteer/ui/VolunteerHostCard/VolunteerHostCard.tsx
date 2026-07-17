@@ -8,6 +8,7 @@ import { Host } from "@/entities/Host";
 
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import CustomLink from "@/shared/ui/Link/Link";
 
 import styles from "./VolunteerHostCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -30,12 +31,16 @@ export const VolunteerHostCard: FC<VolunteerHostCardProps> = memo(
                 </h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
-                        <div className={styles.nameContainer}>
-                            <Avatar icon={getMediaContent(host.avatar?.contentUrl)} size="SMALL" />
+                        <CustomLink
+                            to={getHostPersonalPageUrl(locale, host.id)}
+                            variant="DEFAULT"
+                            className={styles.nameContainer}
+                        >
+                            <Avatar icon={getMediaContent(host.avatar?.contentUrl)} text={host.name} size="SMALL" />
                             <span className={styles.name}>
                                 {host.name}
                             </span>
-                        </div>
+                        </CustomLink>
                         <p className={styles.description}>
                             {host.type}
                         </p>

@@ -23,6 +23,7 @@ export const ReviewAboutVolunteerCard: FC<ReviewAboutVolunteerCardProps> = (prop
                     <Avatar
                         className={styles.avatar}
                         icon={getMediaContent(author.imagePath)}
+                        text={username}
                         alt="AVATAR"
                     />
                     <div className={styles.userInfoContainer}>

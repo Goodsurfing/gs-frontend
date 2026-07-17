@@ -31,6 +31,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
                     <Avatar
                         className={styles.avatar}
                         icon={getMediaContent(image)}
+                        text={userName}
                         alt="AVATAR"
                     />
                     <div className={styles.userInfoContainer}>

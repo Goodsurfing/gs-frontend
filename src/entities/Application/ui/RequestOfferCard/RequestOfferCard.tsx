@@ -60,6 +60,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
                 <div className={styles.mainInfo}>
                     <Avatar
                         icon={imageCover}
+                        text={vacancy.title}
                         alt="offer title image"
                         className={styles.avatar}
                     />

@@ -55,6 +55,7 @@ export const MiniVolunteerReview = memo((props: MiniVolunteerReviewProps) => {
                 >
                     <Avatar
                         icon={image}
+                        text={userName}
                         className={styles.image}
                         size="MEDIUM"
                     />

@@ -68,6 +68,7 @@ export const ReviewSlider: FC<ReviewSliderProps> = (props) => {
                             <Avatar
                                 size="SMALL"
                                 icon={review.author?.avatar}
+                                text={review.author?.name}
                             />
                             <span className={styles.name}>
                                 {review.author?.name}

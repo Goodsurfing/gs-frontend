@@ -25,7 +25,7 @@ export const VolunteerSubscriberCard: FC<VolunteerSubscriberCardProps> = memo(
         } = props;
         return (
             <div className={cn(className, styles.wrapper)}>
-                <Avatar icon={image?.contentUrl} className={styles.avatar} />
+                <Avatar icon={image?.contentUrl} text={`${firstName} ${lastName}`} className={styles.avatar} />
                 <div className={styles.info}>
                     <span className={styles.name}>
                         {firstName}

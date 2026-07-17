@@ -16,7 +16,7 @@ export const OfferContributorCard: FC<OfferContributorCardProps> = memo(
         const { avatar, name, url } = props;
         return (
             <CustomLink className={styles.wrapper} to={url} variant="DEFAULT">
-                <Avatar icon={avatar} className={styles.avatar} />
+                <Avatar icon={avatar} text={name} className={styles.avatar} />
                 <span className={styles.name}>{name}</span>
             </CustomLink>
         );

@@ -73,6 +73,7 @@ export const HostlHeaderCard: FC<HostlHeaderCardProps> = memo(
             <div className={styles.wrapper}>
                 <Avatar
                     icon={getMediaContent(avatar)}
+                    text={name}
                     size="DEFAULT"
                     className={styles.image}
                     alt="avatar"

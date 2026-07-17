@@ -117,9 +117,9 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
 
     const renderAvatar = userId ? (
         <CustomLink to={getVolunteerPersonalPageUrl(locale, userId)} variant="DEFAULT">
-            <Avatar icon={avatar} className={styles.avatar} size="SMALL" />
+            <Avatar icon={avatar} text={username} className={styles.avatar} size="SMALL" />
         </CustomLink>
-    ) : <Avatar icon={avatar} className={styles.avatar} size="SMALL" />;
+    ) : <Avatar icon={avatar} text={username} className={styles.avatar} size="SMALL" />;
 
     if (file) {
         return (

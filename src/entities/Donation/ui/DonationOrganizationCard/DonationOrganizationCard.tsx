@@ -7,6 +7,7 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import CustomLink from "@/shared/ui/Link/Link";
 
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { Image } from "@/types/media";
@@ -40,15 +41,20 @@ export const DonationOrganizationCard: FC<DonationOrganizationCardProps> = memo(
                 </h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
-                        <div className={styles.nameContainer}>
+                        <CustomLink
+                            to={getHostPersonalPageUrl(locale, id)}
+                            variant="DEFAULT"
+                            className={styles.nameContainer}
+                        >
                             <Avatar
                                 className={styles.image}
                                 icon={getMediaContent(image?.contentUrl)}
+                                text={name}
                             />
                             <span className={styles.name}>
                                 {name}
                             </span>
-                        </div>
+                        </CustomLink>
                         <p className={styles.description}>
                             {description}
                         </p>

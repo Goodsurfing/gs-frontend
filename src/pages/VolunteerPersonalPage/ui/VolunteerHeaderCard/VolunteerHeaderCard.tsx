@@ -164,6 +164,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.mainInfo}>
                         <Avatar
                             icon={getMediaContent(image?.contentUrl)}
+                            text={renderName}
                             className={styles.image}
                             alt="avatar"
                         />
