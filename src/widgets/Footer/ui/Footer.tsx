@@ -23,6 +23,7 @@ import {
     getNewsPageUrl,
     getNPOPageUrl,
     getOurTeamPageUrl,
+    getPaymentSecurityPolicyPageUrl,
     getPrivacyPolicyPageUrl,
     getRulesPageUrl,
     getVideoPageUrl,
@@ -257,6 +258,12 @@ export const Footer = memo(() => {
                                 >
                                     {t("main.welcome.header.donation.public-offer")}
                                 </a>
+                                <Link
+                                    className={styles.link}
+                                    to={getPaymentSecurityPolicyPageUrl(locale)}
+                                >
+                                    {t("main.welcome.header.donation.payment-security-policy")}
+                                </Link>
                             </div>
                         </div>
                     </nav>
