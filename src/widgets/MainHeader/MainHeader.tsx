@@ -1,5 +1,7 @@
 import cn from "classnames";
-import React, { FC, useEffect, useState } from "react";
+import React, {
+    FC, useEffect, useRef, useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import LocaleLink from "@/components/LocaleLink/LocaleLink";
 
@@ -35,6 +37,7 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
     const { t } = useTranslation();
     const { myProfile, profileIsLoading, isAuth } = useAuth();
     const [scrolled, setScrolled] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
     const { data } = useGetBannerMarketingQuery(
         { type: BannerMarketingType.UNDER_HEADER_ALL_PAGES },
@@ -46,8 +49,42 @@ const MainHeader: FC<MainHeaderProps> = ({ variant = "floating" }) => {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    // Публикуем реальную занятую хедером высоту (капсула + опциональный
+    // баннер) как CSS-переменную, чтобы sticky-подменю на других страницах
+    // (offer/host/volunteer/donation) не заезжали под шапку/друг на друга —
+    // раньше у них был захардкожен top: 6.5rem, который не учитывал
+    // появление баннера под шапкой.
+    useEffect(() => {
+        const element = wrapperRef.current;
+        if (!element) {
+            return undefined;
+        }
+
+        const updateHeaderOffset = () => {
+            const { bottom } = element.getBoundingClientRect();
+            document.documentElement.style.setProperty(
+                "--header-offset",
+                `${Math.max(bottom, 0)}px`,
+            );
+        };
+
+        updateHeaderOffset();
+
+        const resizeObserver = new ResizeObserver(updateHeaderOffset);
+        resizeObserver.observe(element);
+        window.addEventListener("resize", updateHeaderOffset);
+
+        return () => {
+            resizeObserver.disconnect();
+            window.removeEventListener("resize", updateHeaderOffset);
+        };
+    }, [data, variant, scrolled]);
+
     return (
-        <div className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}>
+        <div
+            ref={wrapperRef}
+            className={cn(styles.wrapper, styles[variant], { [styles.scrolled]: scrolled })}
+        >
             {data && (
                 <a
                     href={data.url}
