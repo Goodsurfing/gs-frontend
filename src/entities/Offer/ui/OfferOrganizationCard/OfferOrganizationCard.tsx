@@ -8,6 +8,7 @@ import { OfferOrganization } from "@/entities/Offer";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { Avatar } from "@/shared/ui/Avatar/Avatar";
 import ButtonLink from "@/shared/ui/ButtonLink/ButtonLink";
+import CustomLink from "@/shared/ui/Link/Link";
 
 import styles from "./OfferOrganizationCard.module.scss";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
@@ -32,21 +33,20 @@ export const OfferOrganizationCard: FC<OfferOrganizationCardProps> = memo(
                 </h3>
                 <div className={styles.container}>
                     <div className={styles.fullInfoContainer}>
-                        <div className={styles.nameContainer}>
+                        <CustomLink
+                            to={getHostPersonalPageUrl(locale, organization.id)}
+                            variant="DEFAULT"
+                            className={styles.nameContainer}
+                        >
                             <Avatar
                                 className={styles.image}
                                 icon={getMediaContent(organization.image?.contentUrl)}
                                 text={organization.name}
                             />
-                            {/* <img
-                                className={styles.image}
-                                src={organizationDefaultImage}
-                                alt="organization"
-                            /> */}
                             <span className={styles.name}>
                                 {organization.name}
                             </span>
-                        </div>
+                        </CustomLink>
                         <p className={styles.description}>
                             {getTranslate(organization.type)}
                         </p>
