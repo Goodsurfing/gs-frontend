@@ -34,7 +34,12 @@
         "Описание не было заполнено": "Description was not filled in",
         "Подробнее": "More details",
         "Поделиться сбором": "Share collection",
-        "Фотографии не были добавлены": "Photos were not added"
+        "Фотографии не были добавлены": "Photos were not added",
+        "Участники сбора": "Fundraiser participants",
+        "Пока нет пожертвований": "No donations yet",
+        "Аноним": "Anonymous",
+        "Всего": "Total",
+        "Собрано": "Raised"
     },
     "donationRecommendation": {
         "Поддержать другие проекты": "Support other projects",
