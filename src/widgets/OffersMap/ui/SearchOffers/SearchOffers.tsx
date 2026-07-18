@@ -5,6 +5,7 @@ import React, {
 import { IconButton, InputBase, Paper } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import cn from "classnames";
+import { useTranslation } from "react-i18next";
 import searchIcon from "@/shared/assets/icons/search-icon.svg";
 import defaultImage from "@/shared/assets/images/default-offer-image.png";
 import { useCategories } from "@/shared/data/categories";
@@ -57,6 +58,7 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
 
         const { getTranslation } = useCategories();
         const { locale } = useLocale();
+        const { t } = useTranslation();
 
         useImperativeHandle(ref, () => ({
             clearSearch() {
@@ -149,7 +151,7 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                 handleSubmit();
                             }
                         }}
-                        inputProps={{ "aria-label": "Поиск вакансий" }}
+                        inputProps={{ "aria-label": t("Поиск вакансий") }}
                     />
                     {searchInput.length > 0 && <CloseButton onClick={handleClear} />}
                     <IconButton onClick={handleSubmit} type="button" sx={{ p: "10px" }} aria-label="search">
@@ -199,7 +201,7 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                         })}
                                     </>
                                 ) : (
-                                    <span>Данные вакансии отсутсвуют </span>
+                                    <span>{t("Данные вакансии отсутсвуют")}</span>
                                 )}
                                 <Button
                                     onClick={handleSubmit}
