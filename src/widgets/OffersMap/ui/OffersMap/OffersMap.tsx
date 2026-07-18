@@ -5,6 +5,7 @@ import cn from "classnames";
 import React, {
     FC, memo, useMemo, useRef, useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 
@@ -31,9 +32,16 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         offersData,
     } = props;
     const { locale } = useLocale();
+    const { t } = useTranslation();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
+
+    const noTitle = t("Без названия");
+    const noCategory = t("Без категории");
+    const offerWithoutName = t("Вакансия без названия");
+    const learnMore = t("Подробнее");
+    const vacancyListTitle = t("Список вакансий:");
 
     const features = useMemo(() => {
         if (isOffersLoading || !offersData.length) return [];
@@ -42,8 +50,8 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
             .map((offer) => {
                 const imgSrc = offer?.image?.contentUrl;
-                const title = offer.name || "Без названия";
-                const categoryName = offer.categories[0]?.name ?? "Без категории";
+                const title = offer.name || noTitle;
+                const categoryName = offer.categories[0]?.name ?? noCategory;
                 const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
@@ -52,7 +60,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>
-              <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">Подробнее</a>
+              <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}" class="${styles.balloonLink}">${learnMore}</a>
             </div>
           </div>
         `;
@@ -62,10 +70,10 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     id: offer.id.toString(),
                     geometry: { type: "Point", coordinates: [offer.latitude, offer.longitude] },
                     properties: {
-                        name: offer.name ?? "Вакансия без названия",
+                        name: offer.name ?? offerWithoutName,
                         balloonContent,
-                        clusterCaption: offer.name ?? "Вакансия без названия",
-                        hintContent: offer.name ?? "Вакансия без названия",
+                        clusterCaption: offer.name ?? offerWithoutName,
+                        hintContent: offer.name ?? offerWithoutName,
                     },
                     options: {
                         iconLayout: "default#imageWithContent",
@@ -77,7 +85,10 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     },
                 };
             });
-    }, [isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory]);
+    }, [
+        isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory,
+        noTitle, noCategory, offerWithoutName, learnMore,
+    ]);
 
     if (isOffersLoading) {
         return (
@@ -144,7 +155,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                                 clusterIconOffset: [-20, -20],
                                 clusterBalloonContentLayout: ymapState.templateLayoutFactory.createClass(`
                             <div class="${styles.clusterBalloon}">
-                                <h3>Список вакансий:</h3>
+                                <h3>${vacancyListTitle}</h3>
                                 <ul>
                                     {% for geoObject in properties.geoObjects %}
                                         <li> <a href="{{geoObject.properties.url}}">{{ geoObject.properties.name }}</a></li>

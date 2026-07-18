@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import arrowIcon from "@/shared/assets/icons/arrow-right.svg";
 
@@ -12,6 +13,7 @@ interface ButtonCloseProps {
 
 export const ButtonClose: FC<ButtonCloseProps> = (props) => {
     const { value, onChange } = props;
+    const { t } = useTranslation();
 
     return (
         <>
@@ -19,7 +21,7 @@ export const ButtonClose: FC<ButtonCloseProps> = (props) => {
                 className={cn(styles.text, { [styles.closed]: !value })}
                 onClick={() => onChange(!value)}
             >
-                Вернуться к карте
+                {t("Вернуться к карте")}
             </span>
             <div
                 className={cn(styles.wrapper, { [styles.closed]: !value })}
