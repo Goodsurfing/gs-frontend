@@ -15,7 +15,8 @@
         "desc1": "GoodSurfing is a membership organization powered by the people who support it.",
         "desc2": "Membership is a way not just to use the project, but to help it live and grow.",
         "cta-main": "Get membership",
-        "cta-secondary": "Support without membership"
+        "cta-secondary": "Support without membership",
+        "title": "Become part of the GoodSurfing community, travel with meaning, and support the project that makes it possible."
     },
     "how-it-works": {
         "Как это работает": "How It Works",
@@ -65,7 +66,17 @@
         "Получение статуса амбассадора (при выполнении условий)": "Obtaining ambassador status (subject to conditions)",
         "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participation in offline events of GoodSurfing",
         "Повышенное доверие организатора волонтёрского проекта при отборе участников (специальная метка в профиле)": "Increased trust of the organizer of the volunteer project in the selection of participants (special label in the profile)",
-        "Получить членство": "Get membership"
+        "Получить членство": "Get membership",
+        "section-title": "If you're a traveler who wants to change the world",
+        "free-feature-2": "Participate in GoodSurfing's online events",
+        "free-feature-3": "Browse materials in the GoodSurfing Academy",
+        "paid-feature-1": "Unlimited access to volunteer projects and unlimited applications",
+        "paid-feature-2": "Priority when hosts choose project participants",
+        "paid-feature-3": "Access to closed educational materials and events",
+        "paid-feature-4": "Media support for volunteers",
+        "paid-feature-5": "Increased trust from hosts (special badge on your profile)",
+        "paid-feature-6": "Ability to publish in the Community",
+        "price-unit": "RUB/year"
     },
     "for-host": {
         "Для организатора": "For Host",
@@ -78,17 +89,26 @@
         "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
         "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
         "Зарегистрироваться": "Register",
-        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Number of free ads on the GoodSurfing platform",
         "не ограничено": "unlimited",
         "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Access to unique chats of the GoodSurfing platform",
-        "Доступ к Академии «Гудсёрфинг»": "Access to the GoodSurfing Academy",
         "Получение статуса амбассадора (при выполнении условий)": "Obtaining ambassador status (subject to conditions)",
-        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participation in online events of GoodSurfing",
         "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participation in offline events of GoodSurfing",
         "Повышенное доверие волонтёров при выборе проекта для участия (специальная метка в профиле)": "Increased trust of volunteers when choosing a project to participate in (special label in the profile)",
-        "Доступ к блогу «Гудсёрфинг»": "Access to the GoodSurfing blog",
         "Скидка для размещения рекламы и объявлений по платным тарифам на платформе «Гудсёрфинг»": "Discount for placing ads and announcements on paid tariffs on the GoodSurfing platform",
-        "Получить членство": "Get membership"
+        "Получить членство": "Get membership",
+        "section-title": "If you're a host who creates opportunities",
+        "free-feature-2": "Participate in GoodSurfing's online events",
+        "free-feature-3": "Browse materials in the GoodSurfing Academy",
+        "paid-feature-1": "Publish an unlimited number of volunteer listings",
+        "paid-feature-2": "Direct access to active, verified volunteers",
+        "paid-feature-3": "Media support for your projects",
+        "paid-feature-4": "Increased trust and GoodSurfing Partner status",
+        "paid-feature-5": "Participation in closed events and access to training programs",
+        "paid-feature-6": "Letters of recommendation from GoodSurfing for your projects",
+        "paid-feature-7": "Personal support",
+        "paid-feature-8": "Promotion consultations",
+        "paid-feature-9": "Ability to launch fundraisers",
+        "price-unit": "RUB/year"
     },
     "what-is-goodsurfing": {
         "Что делает Гудсёрфинг и как он помогает развиваться сообществу": "What GoodSurfing does and how it helps the community develop",
@@ -130,5 +150,33 @@
         "keywords": "GoodSurfing, membership, volunteering, travel with meaning, community, support project",
         "ogTitle": "GoodSurfing membership",
         "ogDescription": "Join the GoodSurfing community and support the development of meaningful travel."
+    },
+    "why-membership": {
+        "title": "Why membership matters",
+        "p1": "GoodSurfing was born from the idea that travel can be not only exciting but also useful. Inspired by the idea of mutual aid, we created a platform that makes outbound volunteering accessible, clear, and safe. Today we're an international community bringing together thousands of people ready to help others and make themselves and the world around them better.",
+        "p2": "For GoodSurfing to remain a living project, it needs support — and that support comes from the community members themselves.",
+        "p3": "Your membership is a contribution toward making sure meaningful travel and volunteer projects continue to exist."
+    },
+    "donation": {
+        "title": "Support GoodSurfing",
+        "subtitle": "A one-time contribution of any size helps the project live and grow.",
+        "cta": "Support the project",
+        "funds-title": "Where the funds go",
+        "funds-intro": "We are a non-profit organization, and our main goal is not to make a profit but to develop outbound volunteering. Every ruble of membership fees goes toward:",
+        "funds-1": "Supporting and developing the technical side of the service: the website and technical infrastructure",
+        "funds-2": "Creating useful content and educational programs",
+        "funds-3": "Running events and supporting the community",
+        "funds-4": "Launching new useful initiatives for volunteers and hosts",
+        "funds-5": "The organization's operating costs",
+        "why-p1": "Many people want useful social projects to exist. But such projects don't run on their own — behind them is always a team's work, digital infrastructure, and constant development.",
+        "why-p2": "Your support makes GoodSurfing sustainable, not just a one-time enthusiast project.",
+        "reports-link": "Public reports →",
+        "help-title": "Other ways you can help",
+        "help-1-title": "Spread the word",
+        "help-1-text": "Share information about our project on your social media — it helps us reach more people.",
+        "help-2-title": "Corporate partnership",
+        "help-2-text": "If your company cares about social responsibility, consider becoming our partner.",
+        "help-3-title": "Become a volunteer",
+        "help-3-text": "We're always glad to welcome people ready to support us with their actions. Joining the team is simple — just message us on social media."
     }
 }

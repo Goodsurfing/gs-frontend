@@ -20,7 +20,8 @@
         "Напишите ваш отзыв": "Write your review",
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
         "Ваш отзыв был отправлен": "Your review has been submitted",
-        "Поставьте оценку, чтобы оставить отзыв": "Rate the project to leave a review"
+        "Поставьте оценку, чтобы оставить отзыв": "Rate the project to leave a review",
+        "На данный момент заявки отсутсвуют": "There are no requests at the moment"
     },
     "hostOffers": {
         "Мои вакансии": "My Offers",
@@ -45,7 +46,9 @@
         "Оставить отзыв": "Leave a review",
         "Напишите ваш отзыв": "Write your review",
         "На данный момент заявки отсутствуют": "There are no requests at the moment",
-        "Ваш отзыв был отправлен": "Your review has been submitted"
+        "Ваш отзыв был отправлен": "Your review has been submitted",
+        "Основная информация": "Main information",
+        "На данный момент заявки отсутсвуют": "There are no requests at the moment"
     },
     "hostFundraises": {
         "Мои сборы": "My Fundraises",
@@ -131,7 +134,8 @@
         "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Tell us about you, your team, and why volunteers should choose you to participate",
         "Это поле является обязательным": "This field is required",
         "Не более 200 знаков": "No more than 200 characters",
-        "Не более 1000 знаков": "No more than 1000 characters"
+        "Не более 1000 знаков": "No more than 1000 characters",
+        "Сохранить": "Save"
     },
     "hostGallery": {
         "Фотогалерея организации": "Organization photo gallery",

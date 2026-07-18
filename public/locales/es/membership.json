@@ -15,7 +15,8 @@
         "desc1": "GoodSurfing es una organización de membresía que funciona gracias a las personas que la apoyan.",
         "desc2": "La membresía no es solo una forma de usar el proyecto, sino de ayudarlo a vivir y crecer.",
         "cta-main": "Obtener membresía",
-        "cta-secondary": "Apoyar sin membresía"
+        "cta-secondary": "Apoyar sin membresía",
+        "title": "Forma parte de la comunidad GoodSurfing, viaja con sentido y apoya el proyecto que lo hace posible."
     },
     "how-it-works": {
         "Как это работает": "Cómo funciona",
@@ -27,7 +28,7 @@
         "5. При необходимости пользуетесь чатом поддержки для планирования своего путешествия": "5. Si es necesario, utiliza el chat de soporte para planificar tu viaje",
         "6. Делаете доброе дело и получаете незабываемые впечатления": "6. Haz una buena acción y obtén experiencias inolvidables"
     },
-     "international-club": {
+    "international-club": {
         "title": "Club Internacional GoodSurfing",
         "subtitle": "Para quienes quieren ir más allá de un solo país.",
         "description": "La membresía internacional está creada para quienes desean conectar con organizaciones de voluntariado de todo el mundo, participar en proyectos internacionales y apoyar el desarrollo de la comunidad global de GoodSurfing.",
@@ -65,7 +66,17 @@
         "Получение статуса амбассадора (при выполнении условий)": "Obtención del estatus de embajador (cumpliendo con condiciones)",
         "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos fuera de línea de GoodSurfing",
         "Повышенное доверие организатора волонтёрского проекта при отборе участников (специальная метка в профиле)": "Mayor confianza del organizador del proyecto de voluntariado al seleccionar participantes (etiqueta especial en el perfil)",
-        "Получить членство": "Obtener membresía"
+        "Получить членство": "Obtener membresía",
+        "section-title": "Si eres un viajero que quiere cambiar el mundo",
+        "free-feature-2": "Participar en los eventos en línea de GoodSurfing",
+        "free-feature-3": "Explorar los materiales de la Academia GoodSurfing",
+        "paid-feature-1": "Acceso ilimitado a proyectos de voluntariado y número ilimitado de postulaciones",
+        "paid-feature-2": "Prioridad al ser elegido como participante del proyecto",
+        "paid-feature-3": "Acceso a materiales educativos y eventos exclusivos",
+        "paid-feature-4": "Apoyo mediático para voluntarios",
+        "paid-feature-5": "Mayor confianza por parte del anfitrión (etiqueta especial en el perfil)",
+        "paid-feature-6": "Posibilidad de publicar en la Comunidad",
+        "price-unit": "RUB/año"
     },
     "for-host": {
         "Для организатора": "Para el anfitrión",
@@ -78,17 +89,26 @@
         "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
         "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
         "Зарегистрироваться": "Registrarse",
-        "Количество бесплатных объявлений на платформе «Гудсёрфинг»": "Número de anuncios gratuitos en la plataforma GoodSurfing",
         "не ограничено": "sin restricciones",
         "Доступ к уникальным чатам платформы «Гудсёрфинг»": "Acceso a chats exclusivos de la plataforma GoodSurfing",
-        "Доступ к Академии «Гудсёрфинг»": "Acceso a la Academia GoodSurfing",
         "Получение статуса амбассадора (при выполнении условий)": "Obtención del estatus de embajador (cumpliendo con condiciones)",
-        "Участие в онлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos en línea de GoodSurfing",
         "Участие в офлайн-мероприятиях «Гудсёрфинг»": "Participación en eventos fuera de línea de GoodSurfing",
         "Повышенное доверие волонтёров при выборе проекта для участия (специальная метка в профиле)": "Mayor confianza de los voluntarios al elegir un proyecto para participar (etiqueta especial en el perfil)",
-        "Доступ к блогу «Гудсёрфинг»": "Acceso al blog de GoodSurfing",
         "Скидка для размещения рекламы и объявлений по платным тарифам на платформе «Гудсёрфинг»": "Descuento para colocar publicidad y anuncios en tarifas pagadas en la plataforma GoodSurfing",
-        "Получить членство": "Obtener membresía"
+        "Получить членство": "Obtener membresía",
+        "section-title": "Si eres un anfitrión que crea oportunidades",
+        "free-feature-2": "Participar en los eventos en línea de GoodSurfing",
+        "free-feature-3": "Explorar los materiales de la Academia GoodSurfing",
+        "paid-feature-1": "Posibilidad de publicar un número ilimitado de vacantes de voluntariado",
+        "paid-feature-2": "Acceso directo a voluntarios activos y verificados",
+        "paid-feature-3": "Apoyo mediático para tus proyectos",
+        "paid-feature-4": "Mayor confianza y estatus de Socio de GoodSurfing",
+        "paid-feature-5": "Participación en eventos exclusivos y acceso a programas de formación",
+        "paid-feature-6": "Cartas de recomendación de GoodSurfing para tus proyectos",
+        "paid-feature-7": "Soporte personalizado",
+        "paid-feature-8": "Asesoramiento en promoción",
+        "paid-feature-9": "Posibilidad de abrir colectas de donaciones",
+        "price-unit": "RUB/año"
     },
     "what-is-goodsurfing": {
         "Что делает Гудсёрфинг и как он помогает развиваться сообществу": "Qué hace GoodSurfing y cómo ayuda al desarrollo de la comunidad",
@@ -130,5 +150,33 @@
         "keywords": "GoodSurfing, membresía, voluntariado, viajes con sentido, comunidad, apoyar proyecto",
         "ogTitle": "Membresía GoodSurfing",
         "ogDescription": "Únete a la comunidad GoodSurfing y apoya el desarrollo de viajes con sentido."
+    },
+    "why-membership": {
+        "title": "Por qué es importante la membresía",
+        "p1": "GoodSurfing nació de la idea de que viajar puede ser no solo emocionante, sino también útil. Inspirados por la idea de la ayuda mutua, creamos una plataforma que hace que el voluntariado itinerante sea accesible, claro y seguro. Hoy somos una comunidad internacional que reúne a miles de personas dispuestas a ayudar a otros y hacer de sí mismas y del mundo que las rodea un lugar mejor.",
+        "p2": "Para que GoodSurfing siga siendo un proyecto vivo, necesita un apoyo: ese apoyo son los propios miembros de la comunidad.",
+        "p3": "Tu membresía es una contribución para que los viajes solidarios y los proyectos de voluntariado sigan existiendo."
+    },
+    "donation": {
+        "title": "Apoya a GoodSurfing",
+        "subtitle": "Una contribución única de cualquier tamaño ayuda al proyecto a vivir y crecer.",
+        "cta": "Apoyar el proyecto",
+        "funds-title": "En qué se invierten los fondos",
+        "funds-intro": "Somos una organización sin fines de lucro, y nuestro objetivo principal no es obtener ganancias, sino desarrollar el voluntariado itinerante. Cada rublo de las cuotas de membresía se destina a:",
+        "funds-1": "El soporte y desarrollo de la parte tecnológica del servicio: el funcionamiento del sitio web y la infraestructura técnica",
+        "funds-2": "La creación de contenido útil y programas educativos",
+        "funds-3": "La organización de eventos y el apoyo a la comunidad",
+        "funds-4": "El lanzamiento de nuevas iniciativas útiles para voluntarios y anfitriones",
+        "funds-5": "El trabajo operativo de la organización",
+        "why-p1": "Muchas personas quieren que existan proyectos sociales útiles. Pero esos proyectos no funcionan por sí solos: detrás de ellos siempre hay el trabajo de un equipo, infraestructura digital y desarrollo constante.",
+        "why-p2": "Tu ayuda hace que GoodSurfing sea sostenible, y no solo un proyecto entusiasta puntual.",
+        "reports-link": "Informes públicos →",
+        "help-title": "Otras formas de ayudar",
+        "help-1-title": "Difundir información",
+        "help-1-text": "Comparte información sobre nuestro proyecto en tus redes sociales; esto nos ayuda a llegar a más personas.",
+        "help-2-title": "Alianza corporativa",
+        "help-2-text": "Si tu empresa está interesada en la responsabilidad social, considera la posibilidad de convertirte en nuestro socio.",
+        "help-3-title": "Conviértete en voluntario",
+        "help-3-text": "Siempre nos alegra recibir a personas dispuestas a apoyarnos con sus acciones. Unirte al equipo es muy sencillo: escríbenos sobre tu interés en nuestras redes sociales."
     }
 }

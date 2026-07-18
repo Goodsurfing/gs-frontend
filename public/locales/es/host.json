@@ -20,7 +20,8 @@
         "Напишите ваш отзыв": "Escriba su reseña",
         "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
         "Ваш отзыв был отправлен": "Su reseña ha sido enviada",
-        "Поставьте оценку, чтобы оставить отзыв": "Califica el proyecto para dejar una reseña"
+        "Поставьте оценку, чтобы оставить отзыв": "Califica el proyecto para dejar una reseña",
+        "На данный момент заявки отсутсвуют": "No hay solicitudes en este momento"
     },
     "hostOffers": {
         "Мои вакансии": "Mis ofertas de trabajo",
@@ -45,7 +46,9 @@
         "Оставить отзыв": "Dejar una reseña",
         "Напишите ваш отзыв": "Escriba su reseña",
         "На данный момент заявки отсутствуют": "No hay solicitudes en este momento",
-        "Ваш отзыв был отправлен": "Su reseña ha sido enviada"
+        "Ваш отзыв был отправлен": "Su reseña ha sido enviada",
+        "Основная информация": "Información principal",
+        "На данный момент заявки отсутсвуют": "No hay solicitudes en este momento"
     },
     "hostFundraises": {
         "Мои сборы": "Mis recaudaciones",
@@ -154,7 +157,8 @@
         "Расскажите о вас, вашей команде и почему волонтёры должны выбрать вас для участия": "Cuéntanos sobre ti, tu equipo y por qué los voluntarios deberían elegirte para participar",
         "Не более 200 знаков": "No más de 200 caracteres",
         "Не более 1000 знаков": "No más de 1000 caracteres",
-        "Это поле является обязательным": "Este campo es obligatorio"
+        "Это поле является обязательным": "Este campo es obligatorio",
+        "Сохранить": "Guardar"
     },
     "hostReviews": {
         "Отзывы": "Reseñas",

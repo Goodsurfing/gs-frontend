@@ -34,7 +34,12 @@
         "Описание не было заполнено": "La descripción no se completó",
         "Подробнее": "Más detalles",
         "Поделиться сбором": "Compartir colección",
-        "Фотографии не были добавлены": ""
+        "Фотографии не были добавлены": "No se agregaron fotos",
+        "Участники сбора": "Participantes de la colecta",
+        "Пока нет пожертвований": "Aún no hay donaciones",
+        "Аноним": "Anónimo",
+        "Всего": "Total",
+        "Собрано": "Recaudado"
     },
     "donationRecommendation": {
         "Поддержать другие проекты": "Apoyar otros proyectos",
