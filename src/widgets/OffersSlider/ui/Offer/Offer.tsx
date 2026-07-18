@@ -39,7 +39,7 @@ const Offer: FC<OfferProps> = (props) => {
     return (
         <Link to={getOfferPersonalPageUrl(locale, id.toString())} className={styles.item}>
             <img
-                src={image ? getMediaContent(image?.contentUrl) : defaultImage}
+                src={image ? getMediaContent(image, "MEDIUM") : defaultImage}
                 className={styles.image}
                 alt={title}
                 loading="lazy"

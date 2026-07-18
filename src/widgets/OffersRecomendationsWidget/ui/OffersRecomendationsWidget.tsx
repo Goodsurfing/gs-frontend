@@ -66,7 +66,7 @@ export const OffersRecomendationsWidget: FC<OffersRecomendationsWidgetProps> = m
                             id: offer.id,
                             title: offer.title,
                             shortDescription: offer.shortDescription,
-                            imagePath: offer.image?.contentUrl,
+                            imagePath: offer.image?.thumbnails?.medium ?? offer.image?.contentUrl,
                             categories: offer.categories.map((cat) => cat.name),
                             address: offer.address,
                             acceptedApplicationsCount: offer.acceptedApplicationsCount,
