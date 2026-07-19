@@ -142,27 +142,38 @@ export const PersonalCard = memo((props: PersonalCardProps) => {
                             >
                                 {location}
                             </span>
-                            <p className={cn(styles.reviewsCount, {
-                                [styles.black]: !isImage,
-                            })}
-                            >
-                                {t("Кол-во отзывов:")}
-                                {" "}
-                                {reviewsCount}
-                            </p>
-                            <div className={styles.rating}>
-                                <IconComponent
-                                    className={styles.star}
-                                    icon={star}
-                                />
-                                <span
-                                    className={cn(styles.ratingText, {
+                            {reviewsCount > 0 ? (
+                                <>
+                                    <p className={cn(styles.reviewsCount, {
                                         [styles.black]: !isImage,
                                     })}
+                                    >
+                                        {t("Кол-во отзывов:")}
+                                        {" "}
+                                        {reviewsCount}
+                                    </p>
+                                    <div className={styles.rating}>
+                                        <IconComponent
+                                            className={styles.star}
+                                            icon={star}
+                                        />
+                                        <span
+                                            className={cn(styles.ratingText, {
+                                                [styles.black]: !isImage,
+                                            })}
+                                        >
+                                            {rating}
+                                        </span>
+                                    </div>
+                                </>
+                            ) : (
+                                <p className={cn(styles.reviewsCount, {
+                                    [styles.black]: !isImage,
+                                })}
                                 >
-                                    {rating}
-                                </span>
-                            </div>
+                                    {t("Пока нет отзывов")}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className={styles.botPart}>{imageBlock}</div>
