@@ -25,7 +25,7 @@ export const Ambassador: FC<AmbassadorProps> = memo((props: AmbassadorProps) => 
             if (!data) return null;
             return data.data.map((item, index) => (
                 <TeamItem
-                    image={getMediaContent(item.image.contentUrl)}
+                    image={getMediaContent(item.image, "MEDIUM")}
                     name={getFullName(item.firstName, item.lastName)}
                     description={item.description}
                     address={getFullAddress(item.city, item.country)}
