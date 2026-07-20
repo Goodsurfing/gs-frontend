@@ -101,7 +101,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const {
         messages, fetchMoreMessages, hasMore,
     } = useGetChatMessages(
-        id,
+        isChatCreate ? undefined : id,
         mercureToken,
         myProfileData?.id,
     );
@@ -109,7 +109,7 @@ export const Chat: FC<ChatProps> = (props) => {
     const [updateApplicationStatus] = useUpdateApplicationFormStatusByIdMutation();
     const [readMessage] = useReadMessageMutation();
     const [getApplicationData] = useLazyGetApplicationFormByIdQuery();
-    const { data: chatData } = useGetChatQuery(id ?? "");
+    const { data: chatData } = useGetChatQuery(id ?? "", { skip: isChatCreate || !id });
     const [getProfileData] = useLazyGetProfileInfoByIdQuery();
 
     useEffect(() => {
