@@ -73,3 +73,24 @@ jobs:
           done
           echo "Frontend smoke test failed"
           exit 1
+
+  notify:
+    needs: build-and-deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Telegram
+        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && secrets.TELEGRAM_CHAT_ID != '' }}
+        continue-on-error: true
+        run: |
+          if [ "${{ needs['build-and-deploy'].result }}" = "success" ]; then
+            STATUS="✅ успешно"
+          else
+            STATUS="🔴 ошибка (${{ needs['build-and-deploy'].result }})"
+          fi
+          TEXT="*gs-frontend* деплой в *staging* — ${STATUS}
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            --data-urlencode chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            --data-urlencode parse_mode="Markdown" \
+            --data-urlencode text="$TEXT"
