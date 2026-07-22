@@ -80,6 +80,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.VIDEO]: "/video",
     [AppRoutes.PRIVACY_POLICY]: "/privacy-policy",
     [AppRoutes.PAYMENT_SECURITY_POLICY]: "/payment-security-policy",
+    [AppRoutes.FEEDBACK]: "/feedback",
     [AppRoutes.OUR_TEAM]: "/our-team",
     [AppRoutes.AMBASSADORS]: "/ambassadors",
     [AppRoutes.ACADEMY_MAIN]: "/academy-main",

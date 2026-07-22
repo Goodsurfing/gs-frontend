@@ -34,6 +34,7 @@ import { OfferWherePage } from "@/pages/OfferWherePage";
 import { OfferWhoNeedsPage } from "@/pages/OfferWhoNeeds";
 import { OffersMapPage } from "@/pages/OffersMapPage";
 import { OurTeamPage } from "@/pages/OurTeamPage";
+import { FeedbackPage } from "@/pages/FeedbackPage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 import { PaymentSecurityPolicyPage } from "@/pages/PaymentSecurityPolicyPage";
 import { ProfileInfoPage } from "@/pages/ProfileInfoPage";
@@ -111,6 +112,7 @@ import {
     getOffersWherePageUrl,
     getOffersWhoNeedsPageUrl,
     getOurTeamPageUrl,
+    getFeedbackPageUrl,
     getPrivacyPolicyPageUrl,
     getPaymentSecurityPolicyPageUrl,
     getProfileInfoPageUrl,
@@ -765,6 +767,11 @@ const publicRoutes: RouteType[] = [
         label: "payment-security-policy",
         element: <PaymentSecurityPolicyPage />,
         path: (locale: string) => getPaymentSecurityPolicyPageUrl(locale),
+    },
+    {
+        label: "feedback",
+        element: <FeedbackPage />,
+        path: (locale: string) => getFeedbackPageUrl(locale),
     },
     {
         label: "academy-main",

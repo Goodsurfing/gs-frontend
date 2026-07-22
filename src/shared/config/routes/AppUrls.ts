@@ -195,6 +195,8 @@ export const getPrivacyPolicyPageUrl: RoutePathFunction = (locale) => `/${locale
 
 export const getPaymentSecurityPolicyPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.payment_security_policy}`;
 
+export const getFeedbackPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.feedback}`;
+
 export const getJournalsPageUrl: RoutePathFunction = (locale) => `/${locale}${RoutePath.journals}`;
 
 export const getJournalPersonalPageUrl: RoutePathFunction = (locale, id = ":id") => `/${locale}${RoutePath.journals}/${id}`;
