@@ -31,7 +31,7 @@ export const Avatar = memo((props: AvatarProps) => {
     } = props;
 
     return (
-        <div className={cn(styles.wrapper, className)} onClick={onClick}>
+        <div className={cn(styles.wrapper, styles[size], className)} onClick={onClick}>
             {icon && <img src={icon} alt={alt} className={styles[size]} />}
             {!icon
                 && (text ? (
