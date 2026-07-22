@@ -5,8 +5,6 @@ import { SidebarProvider } from "@/widgets/Sidebar";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import { getUserInited, userActions } from "@/entities/User";
 import { LangRouter } from "@/routes";
-import { FeedbackWidgetProvider } from "@/app/providers/FeedbackWidgetProvider";
-import { FeedbackWidgetButton } from "@/widgets/FeedbackWidget";
 import { MessengerProvider } from "./providers/MessengerProvider/ui/MessengerProvider";
 import { AuthProvider } from "@/routes/model/guards/AuthProvider";
 
@@ -29,10 +27,7 @@ export const App: FC = () => {
                 <AuthProvider>
                     <MessengerProvider>
                         <SidebarProvider initialValue={{ isOpen: true }}>
-                            <FeedbackWidgetProvider>
-                                {inited && <LangRouter />}
-                                {inited && <FeedbackWidgetButton />}
-                            </FeedbackWidgetProvider>
+                            {inited && <LangRouter />}
                         </SidebarProvider>
                     </MessengerProvider>
                 </AuthProvider>

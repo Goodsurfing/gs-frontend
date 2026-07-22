@@ -45,4 +45,20 @@ describe("Footer", () => {
         expect(allLinks).toContain("/ru/blog");
         expect(allLinks).toContain("/ru/video");
     });
+
+    /**
+     * Обратная связь перенесена с плавающего виджета ("Напишите нам" в
+     * правом нижнем углу на каждой странице) на отдельный экран, доступный
+     * только по ссылке в футере.
+     */
+    it("содержит ссылку на отдельный экран обратной связи", () => {
+        renderWithProviders(
+            <MemoryRouter>
+                <Footer />
+            </MemoryRouter>,
+        );
+
+        const allLinks = screen.getAllByRole("link").map((el) => el.getAttribute("href"));
+        expect(allLinks).toContain("/ru/feedback");
+    });
 });

@@ -17,6 +17,7 @@ import {
     getAmbassadorsPageUrl,
     getBecomeHostPageUrl,
     getBlogPageUrl,
+    getFeedbackPageUrl,
     getFindJobPageUrl,
     getMainPageUrl,
     getMembershipPageUrl,
@@ -210,6 +211,14 @@ export const Footer = memo(() => {
                                 >
                                     {t(
                                         "main.welcome.header.about-project.find-job",
+                                    )}
+                                </Link>
+                                <Link
+                                    className={styles.link}
+                                    to={getFeedbackPageUrl(locale)}
+                                >
+                                    {t(
+                                        "main.welcome.header.about-project.feedback",
                                     )}
                                 </Link>
                             </div>
