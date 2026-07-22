@@ -101,6 +101,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                 terms={terms}
                 onChange={handleDates}
                 isSuccess={isClosed || false}
+                hasFixedDates={hasFixedDates}
                 isHost={isHost}
                 onSubmit={onSubmit}
                 onApplicationSubmit={onApplicationSubmit}

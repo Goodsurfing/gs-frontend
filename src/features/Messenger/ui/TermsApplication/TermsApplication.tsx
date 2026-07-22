@@ -19,6 +19,7 @@ interface TermsApplicationProps {
     className?: string;
     isHost?: boolean;
     isSuccess: boolean;
+    hasFixedDates?: boolean;
     terms: DateType;
     min?: Date;
     max?: Date;
@@ -31,7 +32,7 @@ interface TermsApplicationProps {
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
         className, onChange, onSubmit, onApplicationSubmit, terms, max, isHost,
-        isSuccess = false, locale,
+        isSuccess = false, hasFixedDates = false, locale,
         // Прибытие не может быть в прошлом, даже если вызывающий компонент
         // не передал свой min (row: "явно можно подаваться... на даты в прошлом").
         min = new Date(),
@@ -69,7 +70,7 @@ export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     }, [onApplicationSubmit]);
 
     const renderLine = () => {
-        if (!isSuccess) {
+        if (!isSuccess && !hasFixedDates) {
             return (
                 <span className={styles.line}>{t("Укажите в какие даты вы хотите участвовать")}</span>
             );
