@@ -11,7 +11,7 @@ const FeedbackPage = () => (
     <MainPageLayout>
         <div className={styles.wrapper}>
             <Header />
-            <FeedbackForm className={styles.form} />
+            <FeedbackForm />
         </div>
     </MainPageLayout>
 );
