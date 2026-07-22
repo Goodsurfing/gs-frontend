@@ -42,11 +42,22 @@ function escapeHtml(text: string): string {
         .replace(/'/g, "&#39;");
 }
 
-function linkify(text: string): string {
-    return escapeHtml(text).replace(
-        URL_REGEX,
-        (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;word-break:break-all;">${url}</a>`,
-    );
+export function linkify(text: string): string {
+    // Регекс должен резать URL по границам ДО экранирования: escapeHtml
+    // превращает "'" и ">" в многосимвольные HTML-сущности (&#39;, &gt;),
+    // и если запускать URL_REGEX после escapeHtml, символьный класс
+    // [^\s<>"'] перестаёт видеть эти сущности как стоп-символы — URL
+    // "прожирает" всё до ближайшего пробела включительно (например,
+    // href='...' из вставленного HTML-сниппета проглатывал следующее
+    // слово текста в ссылку).
+    return text
+        .split(URL_REGEX)
+        .map((part, index) => {
+            const escaped = escapeHtml(part);
+            if (index % 2 === 0) return escaped;
+            return `<a href="${escaped}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;word-break:break-all;">${escaped}</a>`;
+        })
+        .join("");
 }
 
 function renderTextWithEmoji(text: string) {
