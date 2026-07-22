@@ -68,7 +68,7 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
         }
         return (
             <span className={styles.line}>
-                {t("Вы подали заявку на данную вакансию")}
+                {t("Укажите даты, чтобы отправить заявку")}
             </span>
         );
     };
