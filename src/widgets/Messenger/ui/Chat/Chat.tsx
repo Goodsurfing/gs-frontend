@@ -29,7 +29,7 @@ import { Profile, ProfileById, useLazyGetProfileInfoByIdQuery } from "@/entities
 import arrowIcon from "@/shared/assets/icons/accordion-arrow.svg";
 import arrowBackIcon from "@/shared/assets/icons/arrow.svg";
 import chatIcon from "@/shared/assets/icons/chat.svg";
-import { formatDate, formatMessageDate } from "@/shared/lib/formatDate";
+import { formatDate, formatMessageDate, parseDateApi } from "@/shared/lib/formatDate";
 import { getErrorText } from "@/shared/lib/getErrorText";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
@@ -74,7 +74,9 @@ export const Chat: FC<ChatProps> = (props) => {
         locale, myProfileData, recipientVolunteer, recipientOrganization,
     } = props;
 
-    const { handleSubmit, control, reset } = useForm<ChatFormFields>({
+    const {
+        handleSubmit, control, reset, setValue,
+    } = useForm<ChatFormFields>({
         mode: "onChange",
         defaultValues,
     });
@@ -174,6 +176,25 @@ export const Chat: FC<ChatProps> = (props) => {
         //     fetchOrganization();
         // }
     }, [isChatCreate, offerId, getOfferData]);
+
+    // Если у вакансии ровно один период — даты участия по сути уже заданы
+    // хостом (row: "почему кнопка неактивна, если я подал заявку" — при
+    // единственном возможном периоде просить волонтёра ещё раз выбрать
+    // даты в календаре было лишним и путающим шагом).
+    const fixedPeriod = offerData?.when && !offerData.when.isFullYearAcceptable
+        && offerData.when.periods.length === 1
+        ? offerData.when.periods[0]
+        : undefined;
+
+    const hasPrefilledFixedDatesRef = useRef(false);
+    useEffect(() => {
+        if (!fixedPeriod || hasPrefilledFixedDatesRef.current) return;
+        const start = parseDateApi(fixedPeriod.start);
+        const end = parseDateApi(fixedPeriod.end);
+        if (!start || !end) return;
+        hasPrefilledFixedDatesRef.current = true;
+        setValue("applicationForm", { startDate: start, endDate: end });
+    }, [fixedPeriod, setValue]);
 
     // Ref, а не state: отмечаем последнее уже прочитанное сообщение конкретного
     // чата, чтобы не дёргать readMessage/onReadMessage повторно на каждый
@@ -437,6 +458,7 @@ export const Chat: FC<ChatProps> = (props) => {
                                 isHost={false}
                                 username={username}
                                 isClosed={applicationIsClosed}
+                                hasFixedDates={Boolean(fixedPeriod)}
                                 onSubmit={handleVolunteerSubmitOfferApplication}
                             />
                         )}
