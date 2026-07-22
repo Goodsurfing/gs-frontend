@@ -24,13 +24,17 @@ const OFFER_DATA = {
     categoryName: "",
 };
 
-const renderOfferApplication = (isClosed: boolean) => renderWithProviders(
+const renderOfferApplication = (
+    isClosed: boolean,
+    hasFixedDates: boolean = false,
+) => renderWithProviders(
     <MemoryRouter>
         <OfferApplication
             offerData={OFFER_DATA}
             isHost={false}
             username="Иван Иванов"
             isClosed={isClosed}
+            hasFixedDates={hasFixedDates}
             terms={{ start: undefined, end: undefined }}
             onChange={() => {}}
         />
@@ -56,5 +60,12 @@ describe("OfferApplication — заголовок соответствует р�
 
         expect(screen.getByText((_, el) => el?.textContent === "Иван Иванов подал заявку на вакансию")).toBeInTheDocument();
         expect(screen.queryByText("Укажите даты, чтобы отправить заявку")).not.toBeInTheDocument();
+    });
+
+    it("у вакансии уже есть фиксированные даты — заголовок вообще не показывается", () => {
+        renderOfferApplication(false, true);
+
+        expect(screen.queryByText("Укажите даты, чтобы отправить заявку")).not.toBeInTheDocument();
+        expect(screen.queryByText((_, el) => el?.textContent === "Иван Иванов подал заявку на вакансию")).not.toBeInTheDocument();
     });
 });

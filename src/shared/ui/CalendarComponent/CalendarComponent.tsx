@@ -9,7 +9,7 @@ import { ICalendarComponent } from "./types";
 const CalendarComponent: React.FC<ICalendarComponent> = forwardRef(
     (props: ICalendarComponent, ref) => {
         const {
-            className, value, onChange, locale,
+            className, value, onChange, locale, minDate, maxDate,
         } = props;
         const onDatePick = useCallback(
             (date: Date) => {
@@ -27,6 +27,8 @@ const CalendarComponent: React.FC<ICalendarComponent> = forwardRef(
                 tileClassName={styles.tile}
                 className={cn(className, styles.calendar)}
                 locale={locale}
+                minDate={minDate}
+                maxDate={maxDate}
             />
         );
     },

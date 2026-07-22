@@ -20,6 +20,7 @@ interface OfferApplicationProps {
     isHost: boolean;
     username: string;
     isClosed?: boolean;
+    hasFixedDates?: boolean;
     onSubmit?: () => void;
     terms: DatesType;
     onChange: (terms: DatesType) => void;
@@ -33,7 +34,7 @@ interface DatesType {
 
 export const OfferApplication: FC<OfferApplicationProps> = (props) => {
     const {
-        isHost, username, isClosed, onSubmit, terms, onChange, offerData,
+        isHost, username, isClosed, hasFixedDates, onSubmit, terms, onChange, offerData,
         onApplicationSubmit,
     } = props;
     const {
@@ -65,6 +66,9 @@ export const OfferApplication: FC<OfferApplicationProps> = (props) => {
                     {t("подал заявку на вакансию")}
                 </span>
             );
+        }
+        if (hasFixedDates) {
+            return null;
         }
         return (
             <span className={styles.line}>

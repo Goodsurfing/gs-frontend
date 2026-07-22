@@ -30,8 +30,11 @@ interface TermsApplicationProps {
 
 export const TermsApplication: FC<TermsApplicationProps> = (props) => {
     const {
-        className, onChange, onSubmit, onApplicationSubmit, terms, max, min, isHost,
+        className, onChange, onSubmit, onApplicationSubmit, terms, max, isHost,
         isSuccess = false, locale,
+        // Прибытие не может быть в прошлом, даже если вызывающий компонент
+        // не передал свой min (row: "явно можно подаваться... на даты в прошлом").
+        min = new Date(),
     } = props;
 
     const { t } = useTranslation("messenger");
