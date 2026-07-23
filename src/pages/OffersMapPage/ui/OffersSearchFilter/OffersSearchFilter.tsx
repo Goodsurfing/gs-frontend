@@ -101,7 +101,7 @@ export const OffersSearchFilter = () => {
                         updated.delete("category");
                     }
                     return updated;
-                });
+                }, { replace: true });
             }
         });
         return () => subscription.unsubscribe();
@@ -122,7 +122,11 @@ export const OffersSearchFilter = () => {
 
     const onApplySearch = useCallback(async (search: string) => {
         currentSearchRef.current = search;
-        setSearchParams(new URLSearchParams());
+        const params = new URLSearchParams();
+        if (search) {
+            params.set("search", search);
+        }
+        setSearchParams(params);
         fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
         });
@@ -137,7 +141,11 @@ export const OffersSearchFilter = () => {
             onApplySearch(searchParam);
             setInitialSearchValue(searchParam);
         }
-    }, [searchParams, onApplySearch]);
+        // Only restore search from the URL on initial load — onApplySearch itself
+        // keeps the URL in sync afterwards, so re-running this on every
+        // searchParams change would re-trigger the same search and push
+        // duplicate history entries.
+    }, []);
 
     const onApplyFilters = useCallback(handleSubmit(async (data: OffersFilterFields) => {
         currentSearchRef.current = "";
