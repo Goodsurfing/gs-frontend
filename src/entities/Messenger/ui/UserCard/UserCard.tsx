@@ -59,7 +59,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
             )}
         >
             <Avatar
-                icon={getMediaContent(image?.contentUrl)}
+                icon={getMediaContent(image ?? undefined, "SMALL")}
                 isAvatarNoImgActive={id === dataChat.id.toString()}
                 text={firstName ?? undefined}
                 size="MEDIUM"

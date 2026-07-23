@@ -21,7 +21,7 @@ export const ReviewFullCard: FC<ReviewFullCardProps> = (props: ReviewFullCardPro
     } = review;
     const { getFullName } = useGetFullName();
     const userName = getFullName(volunteer.firstName, volunteer.lastName);
-    const image = getMediaContent(volunteer.image?.thumbnails?.small);
+    const image = getMediaContent(volunteer.image ?? undefined, "SMALL");
     const fullAddress = getFullAddress(volunteer.city, volunteer.country);
 
     return (

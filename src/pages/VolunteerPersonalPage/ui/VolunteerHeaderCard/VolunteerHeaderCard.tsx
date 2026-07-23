@@ -92,7 +92,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                         <div className={styles.medal} key={medal.id}>
                             <img
                                 className={styles.medalIcon}
-                                src={getMediaContent(medal.image.contentUrl)}
+                                src={getMediaContent(medal.image, "SMALL")}
                                 alt={medal.name}
                             />
                             <span>{medal.name}</span>
@@ -120,7 +120,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                     <div className={styles.medal} key={medal.id}>
                         <img
                             className={styles.medalIcon}
-                            src={getMediaContent(medal.image.contentUrl)}
+                            src={getMediaContent(medal.image, "SMALL")}
                             alt={medal.name}
                         />
                         <span>{medal.name}</span>
@@ -170,7 +170,7 @@ export const VolunteerHeaderCard: FC<VolunteerHeaderCardProps> = memo(
                 <div className={styles.wrapper}>
                     <div className={styles.mainInfo}>
                         <Avatar
-                            icon={getMediaContent(image?.contentUrl)}
+                            icon={getMediaContent(image ?? undefined, "MEDIUM")}
                             text={renderName}
                             className={styles.image}
                             alt="avatar"

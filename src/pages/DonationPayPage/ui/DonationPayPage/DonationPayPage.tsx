@@ -89,9 +89,7 @@ const DonationPayPage: React.FC = () => {
         );
     }
 
-    const imageUrl = fundraise?.image?.contentUrl
-        ? getMediaContent(fundraise.image.contentUrl)
-        : undefined;
+    const imageUrl = getMediaContent(fundraise?.image ?? undefined, "MEDIUM");
 
     return (
         <MainPageLayout>

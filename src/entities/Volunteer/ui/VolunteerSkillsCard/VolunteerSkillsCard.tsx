@@ -31,7 +31,7 @@ export const VolunteerSkillsCard: FC<VolunteerSkillsCardProps> = memo(
             return skills.map((item) => (
                 <IconTextComponent
                     text={getTranslation(item.name) ?? ""}
-                    icon={getMediaContent(item.image.contentUrl) ?? ""}
+                    icon={getMediaContent(item.image, "SMALL") ?? ""}
                     alt={item.name}
                     key={item.id}
                 />

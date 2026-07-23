@@ -88,7 +88,7 @@ const MainHeaderProfile: FC<MainHeaderProfileProps> = (props) => {
                 {textSlice(profileData.firstName, 13, "none") || textSlice(profileData.email, 13, "none")}
             </p>
             <Avatar
-                icon={getMediaContent(profileData.image?.contentUrl)}
+                icon={getMediaContent(profileData.image ?? undefined, "SMALL")}
                 text={profileData.firstName}
                 alt="avatar"
                 size="SMALL"

@@ -43,7 +43,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                     {vacancy.image?.thumbnails?.small ? (
                         <img
                             className={styles.img}
-                            src={getMediaContent(vacancy.image?.thumbnails?.small)}
+                            src={getMediaContent(vacancy.image ?? undefined, "SMALL")}
                             alt="offer"
                         />
                     ) : (
@@ -72,7 +72,7 @@ export const ReviewCardOffer: FC<ReviewCardOfferProps> = (props: ReviewCardOffer
                 <span className={styles.ratingNum}>{rating}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
                     <Avatar
-                        icon={getMediaContent(author?.image?.thumbnails?.small)}
+                        icon={getMediaContent(author?.image ?? undefined, "SMALL")}
                         text={getFullName(author?.firstName, author?.lastName)}
                         alt="avatar"
                         className={styles.avatar}

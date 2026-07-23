@@ -177,7 +177,7 @@ export const Message: FC<MessageProps> = memo((props: MessageProps) => {
                     {isUser && <span className={styles.name}>{username}</span>}
                     <img
                         className={styles.image}
-                        src={getMediaContent(image)}
+                        src={getMediaContent(image, "MEDIUM")}
                         alt=""
                         onClick={() => onImageClick?.(getMediaContent(image) ?? "")}
                     />

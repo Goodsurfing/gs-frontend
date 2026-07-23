@@ -24,7 +24,7 @@ export const AchievementModal: FC<AchievementModalProps> = (props) => {
         <div className={styles.medal} key={medal.id}>
             <img
                 className={styles.medalIcon}
-                src={getMediaContent(medal.image.contentUrl)}
+                src={getMediaContent(medal.image, "SMALL")}
                 alt={medal.name}
             />
             <span>{medal.name}</span>

@@ -42,7 +42,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             housingItems: HouseImageObject[],
         ) => housingItems.map((item) => (
             <TermsCard
-                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                icon={getMediaContent(item.image, "SMALL") ?? ""}
                 text={getTranslation(item.name) ?? ""}
                 key={item.id}
             />
@@ -52,7 +52,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             paidTravelItems: TransferImageObject[],
         ) => paidTravelItems.map((item) => (
             <TermsCard
-                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                icon={getMediaContent(item.image, "SMALL") ?? ""}
                 text={getTranslation(item.name) ?? ""}
                 key={item.id}
             />
@@ -62,7 +62,7 @@ export const OfferTermsCard: FC<OfferTermsCardProps> = memo(
             nutritionItems: FoodImageObject[],
         ) => nutritionItems.map((item) => (
             <TermsCard
-                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                icon={getMediaContent(item.image, "SMALL") ?? ""}
                 text={getTranslation(item.name) ?? ""}
                 key={item.id}
             />
