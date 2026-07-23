@@ -223,9 +223,13 @@ export const AdminOffersTable = () => {
         if (!offerToPublish) return;
 
         try {
+            // "disabled", а не "draft": перевод в draft бэкенд запрещает
+            // для вакансий с заявками (валидная бизнес-логика для
+            // черновиков), а disabled скрывает вакансию из публичных
+            // списков без этого ограничения
             await publishOffer({
                 id: offerToPublish.id,
-                status: offerToPublish.isActive ? "draft" : "active",
+                status: offerToPublish.isActive ? "disabled" : "active",
             }).unwrap();
             setToast({
                 text: `Вакансия была успешна ${offerToPublish.isActive ? "распубликована" : "опубликована"}`,
