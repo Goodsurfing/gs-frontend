@@ -16,6 +16,12 @@
     // height: 100%;
 }
 
+// такой же гаттер, как у .top в OffersFilter (padding: 20px 50px) — без него
+// карта упирается прямо в край экрана, а список слева отступ имеет.
+.offersMap {
+    margin-right: 50px;
+}
+
 .offersMap.close {
     display: none;
 }
