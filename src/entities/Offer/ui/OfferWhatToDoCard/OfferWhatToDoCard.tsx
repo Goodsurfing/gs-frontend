@@ -35,7 +35,7 @@ export const OfferWhatToDoCard: FC<OfferWhatToDoCardProps> = memo(
         const renderSkillsCard = useMemo(() => skills.map((item) => (
             <IconTextComponent
                 text={getTranslation(item.name) ?? ""}
-                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                icon={getMediaContent(item.image, "SMALL") ?? ""}
                 alt={item.name}
                 key={item.id}
             />

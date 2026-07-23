@@ -42,7 +42,7 @@ export const ReviewHostCardOffer: FC<ReviewHostCardOfferProps> = (
                     <span className={styles.title}>{vacancy.name}</span>
                     <img
                         className={styles.img}
-                        src={getMediaContent(vacancy.image.thumbnails?.small)}
+                        src={getMediaContent(vacancy.image, "SMALL")}
                         alt="offer"
                     />
                 </div>
@@ -68,7 +68,7 @@ export const ReviewHostCardOffer: FC<ReviewHostCardOfferProps> = (
                 <span className={styles.ratingNum}>{rating}</span>
                 <div className={styles.avatarInfoUser} onClick={navigateToVolunteer}>
                     <Avatar
-                        icon={getMediaContent(author.image?.thumbnails?.small)}
+                        icon={getMediaContent(author.image ?? undefined, "SMALL")}
                         text={getFullName(author.firstName, author.lastName)}
                         alt="avatar"
                         className={styles.avatar}

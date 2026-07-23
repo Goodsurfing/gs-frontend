@@ -68,7 +68,7 @@ export const VolunteerReviewsCard: FC<VolunteerReviewsCardProps> = memo(
         const renderReviews = reviews.map((review) => (
             <ReviewWidget
                 name={review.name}
-                avatar={getMediaContent(review.image?.thumbnails?.small)}
+                avatar={getMediaContent(review.image ?? undefined, "SMALL")}
                 reviewText={review.description}
                 stars={review.rating}
                 url={getHostPersonalPageUrl(locale, review.id)}

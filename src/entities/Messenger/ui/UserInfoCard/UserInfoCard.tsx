@@ -86,7 +86,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
         return volunteer.skills.map((item) => (
             <IconTextComponent
                 text={getTranslation(item.name) ?? ""}
-                icon={getMediaContent(item.image.contentUrl) ?? ""}
+                icon={getMediaContent(item.image, "SMALL") ?? ""}
                 alt={item.name}
                 key={item.id}
             />
@@ -137,7 +137,7 @@ export const UserInfoCard: FC<UserInfoCardProps> = (props) => {
                     onClick={() => navigateToVolunteer(user.id)}
                 >
                     <Avatar
-                        icon={getMediaContent(image?.thumbnails?.small)}
+                        icon={getMediaContent(image ?? undefined, "SMALL")}
                         text={getFullName(firstName, lastName)}
                         size="LARGE"
                     />

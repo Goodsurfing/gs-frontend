@@ -39,7 +39,7 @@ export const DonationPersonalCard = memo((props: DonationPersonalCardProps) => {
         <>
             <HeaderDonationCard
                 donationId={id}
-                image={getMediaContent(donationData.image?.contentUrl)}
+                image={getMediaContent(donationData.image ?? undefined, "LARGE")}
                 title={donationData.name}
                 location={donationData.address}
                 isSuccess={donationData.isSuccess}

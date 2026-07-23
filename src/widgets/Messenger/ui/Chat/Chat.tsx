@@ -251,14 +251,15 @@ export const Chat: FC<ChatProps> = (props) => {
                             effectiveCompanion?.firstName,
                             effectiveCompanion?.lastName,
                         );
-                        userAvatar = getMediaContent(effectiveCompanion?.image?.contentUrl);
+                        userAvatar = getMediaContent(effectiveCompanion?.image ?? undefined, "SMALL");
                     } else {
                         userName = getFullName(
                             myProfileData.firstName,
                             myProfileData.lastName,
                         );
                         userAvatar = getMediaContent(
-                            myProfileData.image?.contentUrl,
+                            myProfileData.image ?? undefined,
+                            "SMALL",
                         );
                     }
 
