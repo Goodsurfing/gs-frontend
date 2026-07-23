@@ -17,16 +17,24 @@ const TimeTypeOptions: TimeType[] = ["week", "day", "month"];
 
 const DayOffOptions: number[] = [0, 1, 2, 3, 4, 5, 6];
 
+const MAX_HOURS_BY_TIME_TYPE: Record<TimeType, number> = {
+    day: 24,
+    week: 168,
+    month: 744,
+};
+
 export const WorkingHoursField = memo(({ onChange, value }: Props) => {
     const { t } = useTranslation("offer");
+    const maxHours = MAX_HOURS_BY_TIME_TYPE[value.timeType];
     const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputString = +e.target.value;
-        if (inputString >= 0 && inputString <= 1000) {
+        if (inputString >= 0 && inputString <= maxHours) {
             onChange({ ...value, hours: +e.target.value });
         }
     };
     const handleTimeIntervalChange = (timeType: TimeType) => {
-        onChange({ ...value, timeType });
+        const clampedHours = Math.min(value.hours, MAX_HOURS_BY_TIME_TYPE[timeType]);
+        onChange({ ...value, timeType, hours: clampedHours });
     };
     const handleDayOffChange = (newValue: string) => {
         onChange({ ...value, dayOff: +newValue });
@@ -40,6 +48,8 @@ export const WorkingHoursField = memo(({ onChange, value }: Props) => {
                     <Input
                         inputClassName={styles.inputClassName}
                         type="number"
+                        min={0}
+                        max={maxHours}
                         onChange={handleHoursChange}
                         value={value.hours.toString()}
                     />
