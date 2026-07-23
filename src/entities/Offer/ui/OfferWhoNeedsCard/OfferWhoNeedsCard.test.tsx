@@ -7,7 +7,11 @@ import { OfferWhoNeedsCard } from "./OfferWhoNeedsCard";
 import { OfferWhoNeeds } from "../../model/types/offerWhoNeeds";
 
 vi.mock("react-i18next", () => ({
-    useTranslation: () => ({ t: (key: string) => key }),
+    useTranslation: () => ({
+        t: (key: string, params?: Record<string, unknown>) => (params
+            ? key.replace(/{{(\w+)}}/g, (_, name) => String(params[name]))
+            : key),
+    }),
 }));
 
 const baseWhoNeeds: OfferWhoNeeds = {
@@ -53,5 +57,22 @@ describe("OfferWhoNeedsCard", () => {
         );
 
         expect(screen.queryByText(/whoNeeds\.Только/)).not.toBeInTheDocument();
+    });
+
+    it("показывает возраст словами «от X до Y», когда есть верхняя граница", () => {
+        renderWithProviders(
+            <OfferWhoNeedsCard whoNeeds={{ ...baseWhoNeeds, ageMin: 18, ageMax: 55 }} />,
+        );
+
+        expect(screen.getByText("whoNeeds.от 18 до 55")).toBeInTheDocument();
+    });
+
+    it("показывает «от X» без верхней границы, когда ageMax достиг потолка (нет реального лимита)", () => {
+        renderWithProviders(
+            <OfferWhoNeedsCard whoNeeds={{ ...baseWhoNeeds, ageMin: 18, ageMax: 100 }} />,
+        );
+
+        expect(screen.getByText("whoNeeds.от 18")).toBeInTheDocument();
+        expect(screen.queryByText(/до 100/)).not.toBeInTheDocument();
     });
 });

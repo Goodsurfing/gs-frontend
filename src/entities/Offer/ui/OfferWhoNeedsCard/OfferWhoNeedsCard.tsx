@@ -11,6 +11,7 @@ import { Text } from "@/shared/ui/Text/Text";
 import { OfferWhoNeeds } from "../../model/types/offerWhoNeeds";
 import styles from "./OfferWhoNeedsCard.module.scss";
 import { useFormatGenders } from "@/shared/hooks/useFormatGenders";
+import { NO_AGE_LIMIT } from "@/shared/constants/offerAge";
 
 interface OfferWhoNeedsCardProps {
     className?: string;
@@ -21,6 +22,10 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
     const { className, whoNeeds } = props;
     const { t } = useTranslation("offer");
     const formattedGenders = useFormatGenders(whoNeeds.genders);
+
+    const ageText = whoNeeds.ageMax >= NO_AGE_LIMIT
+        ? t("whoNeeds.от {{min}}", { min: whoNeeds.ageMin })
+        : t("whoNeeds.от {{min}} до {{max}}", { min: whoNeeds.ageMin, max: whoNeeds.ageMax });
 
     let receptionPlaceText = null;
 
@@ -42,9 +47,9 @@ export const OfferWhoNeedsCard = memo((props: OfferWhoNeedsCardProps) => {
                     alt="genders"
                 />
                 <IconTextComponent
-                    text={`${whoNeeds.ageMin} - ${whoNeeds.ageMax}`}
+                    text={ageText}
                     icon={birthdayIcon}
-                    alt={`${whoNeeds.ageMin} - ${whoNeeds.ageMax}`}
+                    alt={ageText}
                 />
                 {receptionPlaceText && (
                     <IconTextComponent
