@@ -7,7 +7,7 @@ import "swiper/swiper.min.css";
 
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Image } from "@/types/media";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./Gallery.module.scss";
 
 interface GalleryProps {
@@ -25,7 +25,9 @@ export const Gallery: FC<GalleryProps> = (props: GalleryProps) => {
                 {t("Фото со встреч и командной работы")}
             </h2>
             <ImageGallerySlider
-                images={getMediaContentsArray(gallery)}
+                images={gallery
+                    .map((image) => getMediaContent(image, "LARGE"))
+                    .filter((url): url is string => Boolean(url))}
                 className={styles.gallery}
             />
         </section>

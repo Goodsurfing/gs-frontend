@@ -8,7 +8,7 @@ import { HostOffersCard } from "../HostOffersCard/HostOffersCard";
 // import { HostTeamCard } from "../HostTeamCard/HostTeamCard";
 import styles from "./HostInfoCard.module.scss";
 import { HostGalleryCard } from "../HostGalleryCard/HostGalleryCard";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { HostVideoGalleryCard } from "../HostVideoGalleryCard/HostVideoGalleryCard";
 import { HostReviewCard } from "../HostReviewCard/HostReviewCard";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -35,7 +35,9 @@ export const HostInfoCard: FC<HostInfoCardProps> = memo(
                     locale={locale}
                 />
                 <HostGalleryCard
-                    images={getMediaContentsArray(host.galleryImages)}
+                    images={host.galleryImages
+                        .map((image) => getMediaContent(image, "LARGE"))
+                        .filter((url): url is string => Boolean(url))}
                     className={styles.container}
                 />
                 <HostVideoGalleryCard
