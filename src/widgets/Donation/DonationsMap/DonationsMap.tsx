@@ -94,7 +94,7 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
             <YMaps query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, load: "package.full" }}>
                 <Map
                     defaultState={{
-                        center: [50, 50], zoom: 2.05, controls: [],
+                        center: [50, 50], zoom: 2.05, controls: ["zoomControl"],
                     }}
                     width="100%"
                     height="100%"
