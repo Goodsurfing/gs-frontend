@@ -102,7 +102,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
 
     return (
         <div className={cn(className, styles.wrapper)}>
-            <YMaps query={{ load: "package.full" }}>
+            <YMaps query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, load: "package.full" }}>
                 <Map
                     defaultState={{
                         center: [50, 50], zoom: 2.05, controls: [],

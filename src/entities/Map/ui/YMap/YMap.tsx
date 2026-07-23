@@ -67,7 +67,10 @@ export const YMap: FC<MapProps> = ({
     }, [mapLoaded, onClick]);
 
     return (
-        <YMaps key={locale} query={{ lang: languageList[locale] }}>
+        <YMaps
+            key={locale}
+            query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, lang: languageList[locale] }}
+        >
             <Map
                 instanceRef={(instance) => {
                     mapRef.current = instance;

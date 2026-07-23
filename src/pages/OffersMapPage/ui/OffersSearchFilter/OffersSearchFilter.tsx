@@ -178,6 +178,7 @@ export const OffersSearchFilter = () => {
                             limit: OFFERS_PER_PAGE,
                             page: currentPage,
                         });
+                        fetchAllOffersMap({ ...preparedData, search: currentSearchRef.current });
                     } else {
                         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
                         fetchAllOffersMap({ ...preparedData });
