@@ -46,7 +46,7 @@ export const ReviewHostMiniCard: FC<ReviewHostMiniCardProps> = (props: ReviewHos
     return (
         <div className={cn(styles.wrapper, className)}>
             <div className={styles.userInfoContainer} onClick={navigateToVolunteer}>
-                <Avatar icon={getMediaContent(image?.thumbnails?.small)} text={userName} size="SMALL" />
+                <Avatar icon={getMediaContent(image ?? undefined, "SMALL")} text={userName} size="SMALL" />
                 <div className={styles.nameAddress}>
                     <span className={styles.name}>
                         {userName}

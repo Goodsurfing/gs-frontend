@@ -242,7 +242,7 @@ export const adminAmbassadorsAdapter = (data: GetAdminAmbassadors[]) => data.map
         name: getFullName(firstName, lastName),
         address: getFullAddress(city, country),
         description,
-        image: getMediaContent(image.contentUrl),
+        image: getMediaContent(image, "MEDIUM"),
         sort,
     };
 });

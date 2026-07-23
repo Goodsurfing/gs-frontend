@@ -39,7 +39,7 @@ export const RequestOfferCard: FC<RequestOfferCardProps> = (props) => {
     } = application;
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const imageCover = getMediaContent(vacancy.image?.thumbnails?.small);
+    const imageCover = getMediaContent(vacancy.image ?? undefined, "SMALL");
     const { getTranslation } = useCategories();
     const { getApplicationStatus } = useApplicationStatus();
 

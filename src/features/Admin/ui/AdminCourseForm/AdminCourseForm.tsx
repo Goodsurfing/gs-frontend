@@ -534,7 +534,8 @@ export const AdminCourseForm: FC<AdminCourseFormProps> = (props) => {
                                                     <img
                                                         src={
                                                             getMediaContent(
-                                                                (expert.image as any)?.contentUrl,
+                                                                expert.image as any,
+                                                                "SMALL",
                                                             )
                                                         }
                                                         alt={`${expert.firstName} ${expert.lastName}`}

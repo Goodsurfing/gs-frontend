@@ -31,7 +31,7 @@ export const videoCardAdapter = (video: GetVideos[]): VideoCardType[] => video.m
         id,
         title: name,
         description,
-        image: getMediaContent(image?.thumbnails?.large),
+        image: getMediaContent(image ?? undefined, "LARGE"),
         date: created,
         comments: reviewCount,
         likes: likeCount,
@@ -43,7 +43,7 @@ export const videoReviewsAdapter = (data: GetReviewsVideo[]): Comments[] => data
     const { author, created, description } = value;
     return {
         authorId: author.id,
-        authorAvatar: getMediaContent(author?.image?.contentUrl),
+        authorAvatar: getMediaContent(author?.image ?? undefined, "SMALL"),
         authorName: getFullName(author.firstName, author.lastName),
         comment: description,
         date: created,

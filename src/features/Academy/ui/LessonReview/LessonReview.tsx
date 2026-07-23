@@ -89,7 +89,7 @@ export const LessonReview: FC<LessonReviewProps> = (props) => {
     const renderReviews = reviews.map((review, index) => (
         <ReviewWidget
             name={getFullName(review.author.firstName, review.author.lastName)}
-            avatar={getMediaContent(review.author.image?.thumbnails?.small)}
+            avatar={getMediaContent(review.author.image ?? undefined, "SMALL")}
             reviewText={review.description}
             stars={review.rating}
             url={getVolunteerPersonalPageUrl(locale, review.author.id)}

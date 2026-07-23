@@ -69,7 +69,7 @@ export const HostDescriptionAvatar = memo(
                                 fileClassname={styles.fileInput}
                                 className={className}
                                 id="profile-file"
-                                src={getMediaContent(field.value?.contentUrl)}
+                                src={getMediaContent(field.value ?? undefined, "MEDIUM")}
                                 setFile={(file?: File) => handleImageUpload(file, field.onChange)}
                                 route={hostId ? getHostPersonalPageUrl(locale, hostId)
                                     : getHostInfoUrl(locale)}

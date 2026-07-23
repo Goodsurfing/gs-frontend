@@ -180,7 +180,8 @@ export const SearchOffers = forwardRef<SearchOffersRef, SearchOffersProps>(
                                                 >
                                                     <img
                                                         src={getMediaContent(
-                                                            offer.image?.contentUrl,
+                                                            offer.image ?? undefined,
+                                                            "SMALL",
                                                         ) || defaultImage}
                                                         alt={offer.title}
                                                     />

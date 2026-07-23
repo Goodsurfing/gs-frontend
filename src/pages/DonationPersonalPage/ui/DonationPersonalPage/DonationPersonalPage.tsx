@@ -90,7 +90,11 @@ export const DonationPersonalPage = () => {
             ? getSeoDescription(donationData.description)
             : tDonation("personalSeo.description");
         const seoUrl = getSeoUrl(getDonationPersonalPage(locale, id));
+        // og:image: краулерам нужен оригинал
+        // eslint-disable-next-line no-restricted-syntax
         const seoImage = getMediaContent(donationData.image?.contentUrl)
+            // og:image: краулерам нужен оригинал
+            // eslint-disable-next-line no-restricted-syntax
             || getMediaContent(donationData.galleryImages?.[0]?.contentUrl);
 
         return (

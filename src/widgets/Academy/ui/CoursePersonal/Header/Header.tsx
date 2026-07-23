@@ -79,7 +79,7 @@ export const Header: FC<HeaderProps> = (props) => {
                         Начать обучение
                     </Button>
                 </div>
-                <img className={styles.cover} src={getMediaContent(image.contentUrl)} alt={name} />
+                <img className={styles.cover} src={getMediaContent(image, "LARGE")} alt={name} />
             </div>
         </div>
     );

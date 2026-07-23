@@ -174,7 +174,8 @@ export const SearchDonations = forwardRef<SearchDonationsRef, SearchDonationsPro
                                             >
                                                 <img
                                                     src={getMediaContent(
-                                                        donation.image?.contentUrl,
+                                                        donation.image ?? undefined,
+                                                        "SMALL",
                                                     ) || defaultImage}
                                                     alt={donation.name ?? undefined}
                                                 />

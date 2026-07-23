@@ -59,7 +59,7 @@ const ImageUpload: FC<ImageUploadProps> = (props) => {
 
     return (
         <ImageInput
-            img={getMediaContent(value?.contentUrl)}
+            img={getMediaContent(value ?? undefined, "MEDIUM")}
             setImg={handleImageUpload}
             onDelete={handleDelete}
             wrapperClassName={styles.input}

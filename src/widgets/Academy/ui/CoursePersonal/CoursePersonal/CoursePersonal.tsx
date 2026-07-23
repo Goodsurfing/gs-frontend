@@ -44,6 +44,8 @@ export const CoursePersonal: FC<CoursePersonalProps> = (props) => {
         ? getSeoDescription(data.description) || t("seo.course.description")
         : t("seo.course.description");
     const seoUrl = getSeoUrl(getAcademyCoursePageUrl(locale, courseId));
+    // og:image: краулерам нужен оригинал
+    // eslint-disable-next-line no-restricted-syntax
     const seoImage = getMediaContent(data.image?.contentUrl);
     const seoKeywords = [
         data.name,

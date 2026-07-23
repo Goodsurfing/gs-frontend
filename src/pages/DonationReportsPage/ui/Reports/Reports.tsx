@@ -14,6 +14,8 @@ export const Reports = () => {
             const renderFiles = report.files.map((file, indexFile) => (
                 <ReportItem
                     title={file.name}
+                    // скачивание файла: нужен оригинал
+                    // eslint-disable-next-line no-restricted-syntax
                     url={getMediaContent(file.file.contentUrl) ?? ""}
                     key={indexFile}
                 />

@@ -207,7 +207,8 @@ export const VolunteerOffersCard: FC<VolunteerOffersCardProps> = memo(
                                                                 shortDescription:
                                                             description?.shortDescription,
                                                                 imagePath: getMediaContent(
-                                                                    description?.image?.contentUrl,
+                                                                    description?.image ?? undefined,
+                                                                    "MEDIUM",
                                                                 ),
                                                                 address: where?.address,
                                                                 categories: categoriesTemp,

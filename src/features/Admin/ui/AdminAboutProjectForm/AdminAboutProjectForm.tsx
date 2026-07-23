@@ -158,7 +158,7 @@ export const AdminAboutProjectForm: FC<AdminAboutProjectFormProps> = memo(
                                         <div className={styles.principleContent}>
                                             {principle.image?.contentUrl && (
                                                 <img
-                                                    src={getMediaContent(principle.image.contentUrl) ?? ""}
+                                                    src={getMediaContent(principle.image, "MEDIUM") ?? ""}
                                                     alt={principle.name}
                                                     className={styles.principleImage}
                                                 />

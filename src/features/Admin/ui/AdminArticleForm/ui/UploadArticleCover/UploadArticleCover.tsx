@@ -55,7 +55,7 @@ export const UploadArticleCover: FC<UploadArticleCoverProps> = (
         <div className={styles.wrapper}>
             {img && (
                 <div className={styles.imageWrapper}>
-                    <img src={getMediaContent(img.contentUrl)} alt="uploaded" className={styles.imageCover} />
+                    <img src={getMediaContent(img, "LARGE")} alt="uploaded" className={styles.imageCover} />
                     <div className={styles.containerButtons}>
                         <InputFile
                             id="upload image"

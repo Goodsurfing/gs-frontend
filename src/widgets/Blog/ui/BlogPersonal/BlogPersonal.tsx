@@ -145,6 +145,8 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
     // по старой ссылке с голым числовым id даёт canonical на ту же
     // нечитаемую ссылку, а не на новый человекопонятный slug (row 117).
     const seoUrl = getSeoUrl(getBlogPersonalPageUrl(locale, data?.slug ?? blogIdOrSlug));
+    // og:image: краулерам нужен оригинал
+    // eslint-disable-next-line no-restricted-syntax
     const seoImage = getMediaContent(data?.image?.contentUrl);
 
     return (
@@ -172,7 +174,7 @@ export const BlogPersonal: FC<BlogPersonalProps> = (props) => {
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
                     authorId={data?.author?.id}
-                    authorAvatar={getMediaContent(data?.author?.image?.thumbnails?.small)}
+                    authorAvatar={getMediaContent(data?.author?.image ?? undefined, "SMALL")}
                     authorName={getFullName(data?.author?.firstName, data?.author?.lastName)}
                     categories={data?.blogCategoryResults}
                     date={data?.created ?? ""}

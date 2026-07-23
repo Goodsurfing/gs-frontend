@@ -99,6 +99,8 @@ export const OfferPersonalPage = () => {
             || offerData.description?.description
             || tMain("seo.description");
         const seoUrl = getSeoUrl(getOfferPersonalPageUrl(locale, id));
+        // og:image: краулерам нужен оригинал
+        // eslint-disable-next-line no-restricted-syntax
         const seoImage = getMediaContent(offerData.description?.image?.contentUrl);
 
         return (

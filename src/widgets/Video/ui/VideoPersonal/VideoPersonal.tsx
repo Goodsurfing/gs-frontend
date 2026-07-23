@@ -126,6 +126,8 @@ export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
         ? getSeoDescription(data.description) || tVideo("seo.description")
         : tVideo("seo.description");
     const seoUrl = getSeoUrl(getVideoPersonalPageUrl(locale, videoId));
+    // og:image: краулерам нужен оригинал
+    // eslint-disable-next-line no-restricted-syntax
     const seoImage = getMediaContent(data?.image?.contentUrl);
     const seoKeywords = [
         data?.name,
@@ -158,7 +160,7 @@ export const VideoPersonal: FC<VideoPersonalProps> = (props) => {
                 <ArticleHeader
                     className={styles.articleHeader}
                     title={data?.name ?? ""}
-                    authorAvatar={getMediaContent(data?.author.image.thumbnails?.small)}
+                    authorAvatar={getMediaContent(data?.author.image, "SMALL")}
                     authorName={getFullName(data?.author.firstName, data?.author.lastName)}
                     category={data?.categoryResult.name}
                     categoryColor={data?.categoryResult.color}

@@ -162,6 +162,8 @@ export const JournalPersonal: FC<JournalPersonalProps> = (props) => {
     // по старой ссылке с голым UUID даёт canonical на ту же нечитаемую
     // ссылку, а не на новый человекопонятный slug (row 117).
     const seoUrl = getSeoUrl(getJournalPersonalPageUrl(locale, data?.slug ?? journalIdOrSlug));
+    // og:image: краулерам нужен оригинал
+    // eslint-disable-next-line no-restricted-syntax
     const seoImage = getMediaContent(data?.image?.contentUrl);
     const seoKeywords = [
         data?.name,
