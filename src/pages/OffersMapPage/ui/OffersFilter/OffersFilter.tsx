@@ -88,8 +88,15 @@ export const OffersFilter: FC<OffersFilterProps> = (props) => {
         });
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter" && !(e.target instanceof HTMLButtonElement)) {
+            e.preventDefault();
+            onSubmit();
+        }
+    };
+
     return (
-        <div className={cn(styles.wrapper, className)}>
+        <div className={cn(styles.wrapper, className)} onKeyDown={handleKeyDown}>
             <div className={styles.top}>
                 <Controller
                     name="periods"
