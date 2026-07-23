@@ -66,6 +66,8 @@ export const OffersSearchFilter = () => {
     } = offerFilterForm;
 
     const isSyncingRef = useRef(false);
+    const isInternalCategoryPushRef = useRef(false);
+    const previousCategoryParamRef = useRef(searchParams.get("category"));
     const currentSearchRef = useRef<string>("");
 
     useEffect(() => {
@@ -93,6 +95,7 @@ export const OffersSearchFilter = () => {
         const subscription = watch((value, { name }) => {
             if (!isSyncingRef.current && name === "category") {
                 const newCategory = getCategoryUrlParamFromIds(value.category);
+                isInternalCategoryPushRef.current = true;
                 setSearchParams((prev) => {
                     const updated = new URLSearchParams(prev);
                     if (newCategory) {
@@ -110,9 +113,29 @@ export const OffersSearchFilter = () => {
     useEffect(() => {
         isSyncingRef.current = true;
 
-        const parsedCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
-
+        const categoryParam = searchParams.get("category");
+        const parsedCategories = getCategoryIdsFromUrlParam(categoryParam ?? "");
         setValue("category", parsedCategories);
+
+        const categoryParamChanged = categoryParam !== previousCategoryParamRef.current;
+        previousCategoryParamRef.current = categoryParam;
+
+        // A category change that we didn't push ourselves (e.g. the "Все вакансии"
+        // nav link, a Back/Forward navigation, or a shared URL) means the visible
+        // list needs to be re-applied immediately, same as clicking "Применить" —
+        // otherwise the URL/form reset but the displayed results stay stale.
+        const isExternalCategoryChange = categoryParamChanged
+            && !isInternalCategoryPushRef.current
+            && !currentSearchRef.current;
+
+        if (isExternalCategoryChange) {
+            const preparedData = offersFilterApiAdapter({ ...watch(), category: parsedCategories });
+            fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
+            fetchAllOffersMap({ ...preparedData });
+            setCurrentPage(1);
+        }
+        isInternalCategoryPushRef.current = false;
+
         isSyncingRef.current = false;
     }, [searchParams, setValue]);
 
