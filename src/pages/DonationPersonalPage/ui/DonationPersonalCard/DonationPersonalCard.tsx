@@ -1,12 +1,14 @@
 import { memo, useCallback, useState } from "react";
-import {
-    getMediaContent,
-    getMediaContentsArray,
-} from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import { ModalGallery } from "@/shared/ui/ModalGallery/ModalGallery";
 import { OfferPersonalCardImageBlock } from "../OfferPersonalCardImageBlock/OfferPersonalCardImageBlock";
 import { GetDonation, HeaderDonationCard } from "@/entities/Donation";
 import { DonationPersonalCardCategory } from "../DonationPersonalCardCategory/DonationPersonalCardCategory";
+import { Image } from "@/types/media";
+
+const getGalleryThumbnails = (images: Image[]) => images
+    .map((image) => getMediaContent(image, "LARGE"))
+    .filter((url): url is string => Boolean(url));
 
 interface DonationPersonalCardProps {
     id: string;
@@ -29,7 +31,7 @@ export const DonationPersonalCard = memo((props: DonationPersonalCardProps) => {
     const showImageBlock = donationData.galleryImages.length > 0 ? (
         <OfferPersonalCardImageBlock
             onImagesClick={onImagesClick}
-            images={getMediaContentsArray(donationData.galleryImages)}
+            images={getGalleryThumbnails(donationData.galleryImages)}
         />
     ) : null;
 
@@ -59,7 +61,7 @@ export const DonationPersonalCard = memo((props: DonationPersonalCardProps) => {
                 <ModalGallery
                     isOpen={isModalOpen}
                     onClose={handleModalClose}
-                    images={getMediaContentsArray(donationData.galleryImages)}
+                    images={getGalleryThumbnails(donationData.galleryImages)}
                 />
             )}
         </>

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Text } from "@/shared/ui/Text/Text";
 import { Image } from "@/types/media";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 import styles from "./DonationGalleryCard.module.scss";
 
 interface DonationGalleryCardProps {
@@ -17,7 +17,9 @@ export const DonationGalleryCard: FC<DonationGalleryCardProps> = memo(
     (props: DonationGalleryCardProps) => {
         const { galleryImages = [], className } = props;
         const { t } = useTranslation("donation");
-        const formatGallery = getMediaContentsArray(galleryImages);
+        const formatGallery = galleryImages
+            .map((image) => getMediaContent(image, "LARGE"))
+            .filter((url): url is string => Boolean(url));
 
         if (galleryImages.length === 0) {
             return (

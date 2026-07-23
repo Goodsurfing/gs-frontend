@@ -4,7 +4,7 @@ import React, {
 } from "react";
 
 import { useTranslation } from "react-i18next";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 import { VolunteerDesctiptionCard } from "../VolunteerDesctiptionCard/VolunteerDesctiptionCard";
 import { VolunteerGalleryCard } from "../VolunteerGalleryCard/VolunteerGalleryCard";
@@ -97,9 +97,9 @@ export const VolunteerInfoCard: FC<VolunteerInfoCardProps> = memo(
                 />
                 {showImageGallery && (
                     <VolunteerGalleryCard
-                        images={getMediaContentsArray(
-                            galleryImages,
-                        )}
+                        images={galleryImages
+                            .map((image) => getMediaContent(image, "LARGE"))
+                            .filter((url): url is string => Boolean(url))}
                         className={styles.container}
                     />
                 )}

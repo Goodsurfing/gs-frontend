@@ -6,7 +6,7 @@ import styles from "./OfferGalleryCard.module.scss";
 import { ImageGallerySlider } from "@/shared/ui/ImageGallerySlider/ImageGallerySlider";
 import { Text } from "@/shared/ui/Text/Text";
 import { Image } from "@/types/media";
-import { getMediaContentsArray } from "@/shared/lib/getMediaContent";
+import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 interface OfferGalleryCardProps {
     galleryImages?: Image[];
@@ -17,7 +17,11 @@ export const OfferGalleryCard: FC<OfferGalleryCardProps> = memo(
     (props: OfferGalleryCardProps) => {
         const { galleryImages = [], className } = props;
         const { t } = useTranslation("offer");
-        const formatGallery = getMediaContentsArray(galleryImages);
+        // "large"-thumbnail вместо оригинала — тут отдаётся ~1MB PNG на слайдер
+        // шириной 264px, при том что бэкенд уже готовит webp-миниатюры.
+        const formatGallery = galleryImages
+            .map((image) => getMediaContent(image, "LARGE"))
+            .filter((url): url is string => Boolean(url));
 
         if (galleryImages.length === 0) {
             return null;
