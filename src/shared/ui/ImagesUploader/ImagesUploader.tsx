@@ -221,7 +221,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = (props) => {
                         <div className={styles.imgWrapper} key={media.id}>
                             {isOnlyImgFormat ? (
                                 <img
-                                    src={getMediaContent(media.contentUrl)}
+                                    src={getMediaContent(media, "MEDIUM")}
                                     alt={media.contentUrl}
                                     onClick={() => {
                                         setModalOpen(true);

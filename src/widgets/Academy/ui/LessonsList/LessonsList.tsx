@@ -49,7 +49,7 @@ export const LessonsList: FC<LessonsListProps> = (props) => {
                     title: name,
                     description,
                     duration,
-                    thumbnail: getMediaContent(image.contentUrl),
+                    thumbnail: getMediaContent(image, "MEDIUM"),
                     id,
                     rating: averageRating,
                 }}

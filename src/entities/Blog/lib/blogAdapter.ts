@@ -15,7 +15,7 @@ export const blogArticleCardAdapter = (
         id: String(id),
         slug,
         name,
-        image: getMediaContent(image.thumbnails?.large),
+        image: getMediaContent(image, "LARGE"),
         category: blogCategories[0],
         categories: blogCategories,
         created,
@@ -29,7 +29,7 @@ export const blogReviewsAdapter = (data: GetReviewBlog[]): Comments[] => data.ma
     const { author, created, description } = value;
     return {
         authorId: author.id,
-        authorAvatar: getMediaContent(author?.image?.contentUrl),
+        authorAvatar: getMediaContent(author?.image ?? undefined, "SMALL"),
         authorName: getFullName(author.firstName, author.lastName),
         comment: description,
         date: created,

@@ -24,7 +24,7 @@ const ExtraImagesItem: FC<ExtraImagesItemProps> = ({
         <div className={styles.wrapper}>
             <ImageInput
                 id={id}
-                img={getMediaContent(img.contentUrl)}
+                img={getMediaContent(img, "MEDIUM")}
                 setImg={setImg}
                 onDelete={onDelete}
                 className={styles.main}

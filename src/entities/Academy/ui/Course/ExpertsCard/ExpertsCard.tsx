@@ -21,7 +21,7 @@ export const ExpertsCard: FC<ExpertsCardProps> = (props) => {
     const renderItems = useMemo(
         () => experts.map((item, index) => (
             <TeamItem
-                image={getMediaContent(item.image.contentUrl)}
+                image={getMediaContent(item.image, "MEDIUM")}
                 name={getFullName(item.firstName, item.lastName)}
                 description={item.project}
                 address={getFullAddress(item.city, item.country)}

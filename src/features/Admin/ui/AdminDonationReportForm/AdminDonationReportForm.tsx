@@ -129,6 +129,8 @@ export const AdminDonationReportForm: FC<AdminDonationReportFormProps> = (props)
                                     {" "}
                                     {/* Общий контейнер */}
                                     <CustomLink
+                                        // скачивание файла: нужен оригинал
+                                        // eslint-disable-next-line no-restricted-syntax
                                         to={getMediaContent(field.file.contentUrl) ?? ""}
                                         variant="DEFAULT"
                                         key={index}

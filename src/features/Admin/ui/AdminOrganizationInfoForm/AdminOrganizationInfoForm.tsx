@@ -156,7 +156,7 @@ export const AdminOrganizationInfoForm: FC<AdminOrganizationInfoFormProps> = (pr
                                     fileClassname={styles.fileInput}
                                     className={className}
                                     id="host-file"
-                                    src={getMediaContent(field.value?.contentUrl)}
+                                    src={getMediaContent(field.value ?? undefined, "MEDIUM")}
                                     setFile={(file) => handleImageUpload(file, field.onChange)}
                                     route={getHostPersonalPageUrl(locale, organization.id)}
                                 />

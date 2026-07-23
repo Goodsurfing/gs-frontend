@@ -41,7 +41,7 @@ export const journalCardAdapter = (data: GetJournals[]): JournalCardType[] => da
         id,
         slug,
         title: name,
-        image: getMediaContent(image.contentUrl) ?? "",
+        image: getMediaContent(image, "MEDIUM") ?? "",
         description: "",
         comments: reviewCount,
         likes: likeCount,
@@ -55,7 +55,7 @@ export const journalReviewsAdapter = (
     const { author, created, description } = value;
     return {
         authorId: author.id,
-        authorAvatar: getMediaContent(author.image?.contentUrl),
+        authorAvatar: getMediaContent(author.image ?? undefined, "SMALL"),
         authorName: getFullName(author.firstName, author.lastName),
         comment: description,
         date: created,

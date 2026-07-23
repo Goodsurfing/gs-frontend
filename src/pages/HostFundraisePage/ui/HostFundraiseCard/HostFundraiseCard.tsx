@@ -34,7 +34,7 @@ export const HostFundraiseCard = memo(({
         image,
     } = fundraise;
 
-    const imageSrc = getMediaContent(image?.contentUrl);
+    const imageSrc = getMediaContent(image ?? undefined, "MEDIUM");
 
     return (
         <div

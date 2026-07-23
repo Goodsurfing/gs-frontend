@@ -41,14 +41,14 @@ export const DonationsMap: FC<DonationsMapProps> = memo((props: DonationsMapProp
         return donationsData
             .filter((donation) => typeof donation.latitude === "number" && typeof donation.longitude === "number")
             .map((donation) => {
-                const imgSrc = donation?.image?.contentUrl;
+                const imgSrc = donation?.image ?? undefined;
                 const title = donation.name || "Без названия";
                 const categoryName = donation.categories[0]?.name ?? "Без категории";
                 const categoryColor = donation.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
+            <a href="${getOfferPersonalPageUrl(locale, donation.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "SMALL") ?? defaultImage}" /></a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>

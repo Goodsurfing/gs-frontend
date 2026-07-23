@@ -72,7 +72,7 @@ export const RequestCard = memo((props: RequestCardProps) => {
                     variant="DEFAULT"
                 >
                     <Avatar
-                        icon={getMediaContent(volunteer.image?.thumbnails?.small)}
+                        icon={getMediaContent(volunteer.image ?? undefined, "SMALL")}
                         text={userName}
                         className={styles.image}
                         size="MEDIUM"

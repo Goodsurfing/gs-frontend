@@ -49,14 +49,14 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         return offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
             .map((offer) => {
-                const imgSrc = offer?.image?.contentUrl;
+                const imgSrc = offer?.image ?? undefined;
                 const title = offer.name || noTitle;
                 const categoryName = offer.categories[0]?.name ?? noCategory;
                 const categoryColor = offer.categories[0]?.color ?? "var(--text-caption)";
 
                 const balloonContent = `
           <div class="${styles.balloonWrapper}">
-            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc) ?? defaultImage}" /></a>
+            <a href="${getOfferPersonalPageUrl(locale, offer.id.toString())}"><img class="${styles.balloonImage}" src="${getMediaContent(imgSrc, "SMALL") ?? defaultImage}" /></a>
             <div class="${styles.text}">
               <div class="${styles.balloonTitle}">${title}</div>
               <div class="${styles.balloonCategory}" style="color: ${categoryColor};">${categoryName}</div>

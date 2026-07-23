@@ -68,7 +68,7 @@ export const OfferContributorsCard: FC<OfferContributorsCardProps> = memo(
         const renderCards = offerParticipants.map((offerParticipant) => (
             <OfferContributorCard
                 url={getVolunteerPersonalPageUrl(locale, offerParticipant.id)}
-                avatar={getMediaContent(offerParticipant.image?.thumbnails?.small)}
+                avatar={getMediaContent(offerParticipant.image ?? undefined, "SMALL")}
                 name={getFullName(offerParticipant.firstName, offerParticipant.lastName)}
                 key={offerParticipant.id}
             />

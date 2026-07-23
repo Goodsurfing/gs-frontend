@@ -44,7 +44,7 @@ export const donationCardAdapter = (data: GetDonations): DonationCardType => {
         id,
         title: name,
         description: shortDescription,
-        image: getMediaContent(image?.contentUrl),
+        image: getMediaContent(image ?? undefined, "MEDIUM"),
         organizationName: organization.name,
         isSuccess,
         daysLeft,

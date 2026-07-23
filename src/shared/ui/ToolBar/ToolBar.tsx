@@ -118,6 +118,8 @@ export const ToolBar: FC<ToolBarProps> = memo((props: ToolBarProps) => {
             try {
                 const result = await uploadFile(file.name, file);
                 if (result && result.contentUrl) {
+                    // вставка в контент редактора: сохраняем оригинал
+                    // eslint-disable-next-line no-restricted-syntax
                     const imageUrl = getMediaContent(result.contentUrl);
                     if (imageUrl) {
                         editor?.chain().focus().setImage({ src: imageUrl }).run();

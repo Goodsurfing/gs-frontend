@@ -1,13 +1,21 @@
 {
     "root": true,
-    "plugins": ["@typescript-eslint"],
-    "extends": ["airbnb", "airbnb-typescript", "airbnb/hooks"],
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "airbnb",
+        "airbnb-typescript",
+        "airbnb/hooks"
+    ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "project": ["./tsconfig.json"],
+        "project": [
+            "./tsconfig.json"
+        ],
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
@@ -15,19 +23,47 @@
         "no-tabs": 0,
         "no-underscore-dangle": "off",
         "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
-        "@typescript-eslint/indent": ["error", 4],
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
-        "arrow-body-style": ["error", "as-needed"],
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".tsx"
+                ]
+            }
+        ],
+        "@typescript-eslint/indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
         "no-console": "error",
-        "@typescript-eslint/type-annotation-spacing": ["error"],
+        "@typescript-eslint/type-annotation-spacing": [
+            "error"
+        ],
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "jsx-a11y/no-static-element-interactions": "off",
         "jsx-a11y/label-has-associated-control": "warn",
         "react/no-array-index-key": "off",
-        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ],
         "react/button-has-type": "warn",
         "react/jsx-props-no-spreading": "off",
         "react/require-default-props": "off",
@@ -41,16 +77,46 @@
                 "unnamedComponents": "arrow-function"
             }
         ],
-        "@typescript-eslint/quotes": ["error", "double"],
+        "@typescript-eslint/quotes": [
+            "error",
+            "double"
+        ],
         "semi": "error",
         "no-param-reassign": 0,
-        "linebreak-style": ["warn", "unix"],
-        "no-plusplus": ["error", {
-            "allowForLoopAfterthoughts": true
-        }],
+        "linebreak-style": [
+            "warn",
+            "unix"
+        ],
+        "no-plusplus": [
+            "error",
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/semi": ["error"]
+        "@typescript-eslint/semi": [
+            "error"
+        ],
+        "no-restricted-syntax": [
+            "error",
+            {
+                "selector": "CallExpression[callee.name='getMediaContent'][arguments.0.property.name='contentUrl']",
+                "message": "Не передавайте .contentUrl в getMediaContent — передайте полный объект и размер (SMALL/MEDIUM/LARGE), иначе миниатюры недостижимы и грузится полноразмерный оригинал. Для сознательной загрузки оригинала (скачивание файла, og:image) добавьте eslint-disable с пояснением."
+            },
+            {
+                "selector": "CallExpression[callee.name='getMediaContent'][arguments.0.expression.property.name='contentUrl']",
+                "message": "Не передавайте .contentUrl в getMediaContent — передайте полный объект и размер (SMALL/MEDIUM/LARGE), иначе миниатюры недостижимы и грузится полноразмерный оригинал. Для сознательной загрузки оригинала (скачивание файла, og:image) добавьте eslint-disable с пояснением."
+            },
+            {
+                "selector": "CallExpression[callee.name='getMediaContent'][arguments.0.object.property.name='thumbnails']",
+                "message": "Не доставайте .thumbnails вручную — передайте полный объект и размер в getMediaContent, он сам сделает фолбэк на оригинал."
+            },
+            {
+                "selector": "CallExpression[callee.name='getMediaContent'][arguments.0.expression.object.property.name='thumbnails']",
+                "message": "Не доставайте .thumbnails вручную — передайте полный объект и размер в getMediaContent, он сам сделает фолбэк на оригинал."
+            }
+        ]
     },
     "env": {
         "browser": true,
@@ -58,10 +124,14 @@
         "node": true,
         "es2021": true
     },
-    "overrides": [{
-        "files": ["**/src/**/*.test.{ts,tsx}"],
-        "rules": {
-            "i18next/no-literal-string": "off"
+    "overrides": [
+        {
+            "files": [
+                "**/src/**/*.test.{ts,tsx}"
+            ],
+            "rules": {
+                "i18next/no-literal-string": "off"
+            }
         }
-    }]
+    ]
 }

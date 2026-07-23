@@ -8,7 +8,7 @@ export const newsReviewsAdapter = (data: GetReviewsNews[]): Comments[] => data.m
     const { author, created, description } = value;
     return {
         authorId: author.id,
-        authorAvatar: getMediaContent(author.image.contentUrl),
+        authorAvatar: getMediaContent(author.image, "SMALL"),
         authorName: getFullName(author.firstName, author.lastName),
         comment: description,
         date: created,

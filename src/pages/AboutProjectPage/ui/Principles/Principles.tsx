@@ -18,7 +18,7 @@ export const Principles: FC<PrinciplesProps> = (props: PrinciplesProps) => {
 
     const renderPrinciples = useMemo(() => principles.map((item, index) => (
         <PrinciplesItem
-            image={getMediaContent(item.image.contentUrl) ?? ""}
+            image={getMediaContent(item.image, "MEDIUM") ?? ""}
             title={item.name}
             description={item.description}
             key={index}

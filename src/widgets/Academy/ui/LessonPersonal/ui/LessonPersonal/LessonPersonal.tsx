@@ -37,6 +37,8 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
         ? getSeoDescription(data.description) || t("seo.lesson.description")
         : t("seo.lesson.description");
     const seoUrl = getSeoUrl(getAcademyLessonPageUrl(locale, lessonId));
+    // og:image: краулерам нужен оригинал
+    // eslint-disable-next-line no-restricted-syntax
     const seoImage = getMediaContent(data?.image?.contentUrl);
     const seoKeywords = [
         data?.name,
@@ -86,6 +88,8 @@ export const LessonPersonal: FC<LessonPersonalProps> = (props) => {
                                     <h3 className={styles.filesTitle}>Материалы к уроку</h3>
                                     <ul className={styles.filesList}>
                                         {validFiles.map((file) => {
+                                            // скачивание файла: нужен оригинал
+                                            // eslint-disable-next-line no-restricted-syntax
                                             const url = getMediaContent(file.contentUrl);
                                             const fileName = file.contentUrl.split("/").pop() || "Файл";
                                             return (
