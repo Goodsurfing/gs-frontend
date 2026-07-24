@@ -20,7 +20,7 @@ export const journalApi = createApi({
         }),
         getJournalById: build.query<GetJournal, string>({
             query: (id) => ({
-                url: `journal/element/${id}`,
+                url: `journal/${id}`,
                 method: "GET",
             }),
             providesTags: ["journal"],

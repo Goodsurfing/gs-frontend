@@ -64,7 +64,7 @@ export const adminCourseApi = createApi({
         getAdminReviewsCourses: build.query<GetAdminReviewsCoursesResponse,
         Partial<GetAdminReviewsCoursesParams>>({
             query: (params) => ({
-                url: "review/video-course/list",
+                url: "review-video-course/list",
                 method: "GET",
                 params,
             }),
@@ -72,14 +72,14 @@ export const adminCourseApi = createApi({
         }),
         getAdminReviewLessonById: build.query<GetAdminReviewLesson, string>({
             query: (reviewId) => ({
-                url: `review/video-course/element/${reviewId}`,
+                url: `review-video-course/element/${reviewId}`,
                 method: "GET",
             }),
             providesTags: ["review"],
         }),
         updateAdminReviewLesson: build.mutation<void, UpdateAdminReviewCourseRequest>({
             query: ({ id, body }) => ({
-                url: `review/video-course/edit/${id}`,
+                url: `review-video-course/edit/${id}`,
                 method: "PATCH",
                 body,
             }),
@@ -87,7 +87,7 @@ export const adminCourseApi = createApi({
         }),
         deleteAdminReviewLesson: build.mutation<void, number>({
             query: (reviewId) => ({
-                url: `review/video-course/${reviewId}`,
+                url: `review-video-course/${reviewId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["review"],

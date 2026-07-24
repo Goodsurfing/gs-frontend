@@ -30,7 +30,7 @@ export const blogApi = createApi({
         }),
         getBlogById: build.query<GetBlog, GetBlogParams>({
             query: ({ id, lang }) => ({
-                url: `blog/element/${id}`,
+                url: `blog/${id}`,
                 method: "GET",
                 params: { lang },
             }),

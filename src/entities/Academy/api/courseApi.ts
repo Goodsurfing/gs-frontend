@@ -29,7 +29,7 @@ export const courseApi = createApi({
         }),
         getCourseById: build.query<GetCourse, string>({
             query: (courseId) => ({
-                url: `course/element/${courseId}`,
+                url: `course/${courseId}`,
                 method: "GET",
             }),
             providesTags: ["course"],
@@ -44,7 +44,7 @@ export const courseApi = createApi({
         // Review on lessons
         getReviewsLesson: build.query<GetReviewsLessonResponse, GetReviewsLessonRequest>({
             query: ({ videoCourseId, page, limit }) => ({
-                url: `review/video-course/list/${videoCourseId}`,
+                url: `review-video-course/list/${videoCourseId}`,
                 method: "GET",
                 params: { page, limit },
             }),
@@ -52,7 +52,7 @@ export const courseApi = createApi({
         }),
         createReviewLesson: build.mutation<void, CreateReviewLessonRequest>({
             query: (body) => ({
-                url: "review/video-course/create",
+                url: "review-video-course/create",
                 method: "POST",
                 body,
             }),
@@ -69,7 +69,7 @@ export const courseApi = createApi({
         }),
         getCourseLessonById: build.query<GetLesson, string>({
             query: (courseId) => ({
-                url: `video-course/element/${courseId}`,
+                url: `video-course/${courseId}`,
                 method: "GET",
             }),
             providesTags: ["course"],
