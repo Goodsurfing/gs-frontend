@@ -870,14 +870,14 @@ export const adminApi = createApi({
         // About project
         getAbouProjectPageInfo: build.query<GetAboutProjectInfo, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}gudserfing/element`,
+                url: `${API_BASE_URL_V3}about-project/element`,
                 method: "GET",
             }),
             providesTags: ["about"],
         }),
         getAdminAbouProjectPageInfo: build.query<GetAdminAboutProjectInfo, void>({
             query: () => ({
-                url: "gudserfing/element",
+                url: "about-project/element",
                 method: "GET",
             }),
             providesTags: ["about"],
@@ -885,7 +885,7 @@ export const adminApi = createApi({
         updateAdminAbouProjectPageInfo: build.mutation<void,
         UpdateAdminAboutProjectInfo>({
             query: (body) => ({
-                url: "gudserfing/edit",
+                url: "about-project/edit",
                 method: "PATCH",
                 body,
             }),
