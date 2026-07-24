@@ -719,14 +719,14 @@ export const adminApi = createApi({
         }),
         getAdminVacancyWhoNeeds: build.query<AdminVacancyWhoNeeds, string>({
             query: (offerId) => ({
-                url: `vacancy/how-need/${offerId}`,
+                url: `vacancy/who-needs/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
         }),
         updateAdminVacancyWhoNeeds: build.mutation<void, UpdateAdminVacancyWhoNeedsRequest>({
             query: ({ offerId, body }) => ({
-                url: `vacancy/how-need/${offerId}`,
+                url: `vacancy/who-needs/${offerId}`,
                 method: "PATCH",
                 body,
             }),
@@ -787,7 +787,7 @@ export const adminApi = createApi({
         }),
         getAdminVacancyFinishingTouches: build.query<AdminVacancyFinishingTouches, string>({
             query: (offerId) => ({
-                url: `vacancy/finish-touche/${offerId}`,
+                url: `vacancy/finishing-touches/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -795,7 +795,7 @@ export const adminApi = createApi({
         updateAdminVacancyFinishingTouches: build.mutation<void,
         UpdateAdminVacancyFinishingTouchesRequest>({
             query: ({ offerId, body }) => ({
-                url: `vacancy/finish-touche/${offerId}`,
+                url: `vacancy/finishing-touches/${offerId}`,
                 method: "PATCH",
                 body,
             }),
