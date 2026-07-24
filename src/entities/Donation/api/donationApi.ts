@@ -30,7 +30,7 @@ export const donationApi = createApi({
         }),
         getDonationById: build.query<GetDonation, GetDonationParams>({
             query: ({ id, lang }) => ({
-                url: `fundraise/element/${id}`,
+                url: `fundraise/${id}`,
                 method: "GET",
                 params: { lang },
             }),

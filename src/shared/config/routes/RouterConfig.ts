@@ -29,8 +29,8 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.PROFILE_RESET_PASSWORD]: "/profile/reset-password",
     [AppRoutes.PROFILE_PRIVACY]: "/profile/privacy",
     [AppRoutes.HOST]: "/host",
-    [AppRoutes.OFFER_PERSONAL]: "/offer-personal", // :id
-    [AppRoutes.HOST_PERSONAL]: "/host-personal", // :id
+    [AppRoutes.OFFER_PERSONAL]: "/offers", // :id — публичная карточка вакансии
+    [AppRoutes.HOST_PERSONAL]: "/organizations", // :id — публичный профиль организации (не путать с /host — это кабинет своей)
     [AppRoutes.HOST_DASHBOARD]: "/host/host-dashboard",
     [AppRoutes.HOST_REGISTER]: "/host/register",
     [AppRoutes.HOST_INFO]: "/host/info",
@@ -64,7 +64,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.VOLUNTEER_GALLERY]: "/volunteer/gallery",
     [AppRoutes.VOLUNTEER_CREATE_ARTICLE]: "/volunteer/create-article",
     [AppRoutes.VOLUNTEER_ARTICLES]: "/volunteer/articles",
-    [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteer-personal", // :id
+    [AppRoutes.VOLUNTEER_PERSONAL]: "/volunteers", // :id — публичный профиль волонтёра (не путать с /volunteer — это кабинет своего)
     [AppRoutes.MEMBERSHIP]: "/membership",
     [AppRoutes.PAYMENT]: "/payment",
     [AppRoutes.PAYMENT_SUCCESS]: "/payment/success",
@@ -87,7 +87,7 @@ export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.ACADEMY_COURSE]: "/academy-course",
     [AppRoutes.ACADEMY_LESSON]: "/academy-lesson",
     [AppRoutes.DONATION_MAP]: "/donation-map",
-    [AppRoutes.DONATION_PERSONAL]: "/donation-personal",
+    [AppRoutes.DONATION_PERSONAL]: "/fundraise", // :id — публичная карточка сбора (несмотря на имя роута, это Fundraise, не Donation; см. AppUrls.ts)
     [AppRoutes.DONATION_REPORTS]: "/donation-reports",
     [AppRoutes.DONATION_RATING]: "/donation-rating",
     [AppRoutes.DONATION_PAY]: "/donation/pay",

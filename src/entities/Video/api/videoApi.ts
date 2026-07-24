@@ -24,7 +24,7 @@ export const videoApi = createApi({
         }),
         getVideoById: build.query<GetVideo, GetVideoParams>({
             query: ({ id, lang }) => ({
-                url: `video/element/${id}`,
+                url: `video/${id}`,
                 method: "GET",
                 params: { lang },
             }),

@@ -22,7 +22,7 @@ export const newsApi = createApi({
         }),
         getNewsById: build.query<GetNewsList, GetNewsParams>({
             query: ({ id, lang }) => ({
-                url: `news/element/${id}`,
+                url: `news/${id}`,
                 method: "GET",
                 params: { lang },
             }),

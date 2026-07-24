@@ -1,3 +1,4 @@
+import { LegacyIdRedirect } from "@/shared/ui/LegacyIdRedirect/LegacyIdRedirect";
 import { AboutProjectPage } from "@/pages/AboutProjectPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
 import { ConfirmEmailPage } from "@/pages/ConfirmEmailPage";
@@ -487,6 +488,11 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getHostPersonalPageUrl(locale),
     },
     {
+        label: "host-personal-legacy-redirect",
+        element: <LegacyIdRedirect to={getHostPersonalPageUrl} />,
+        path: (locale: string) => `/${locale}/host-personal/:id`,
+    },
+    {
         label: "fundraise-layout",
         element: AuthRoutes.fundraise,
         path: (locale: string) => getFundraisePageUrl(locale),
@@ -556,9 +562,19 @@ const publicRoutes: RouteType[] = [
         path: (locale: string) => getOfferPersonalPageUrl(locale),
     },
     {
+        label: "offer-personal-legacy-redirect",
+        element: <LegacyIdRedirect to={getOfferPersonalPageUrl} />,
+        path: (locale: string) => `/${locale}/offer-personal/:id`,
+    },
+    {
         label: "volunteer-personal",
         element: <VolunteerPersonalPage />,
         path: (locale: string) => getVolunteerPersonalPageUrl(locale),
+    },
+    {
+        label: "volunteer-personal-legacy-redirect",
+        element: <LegacyIdRedirect to={getVolunteerPersonalPageUrl} />,
+        path: (locale: string) => `/${locale}/volunteer-personal/:id`,
     },
     {
         label: "volunteer-layout",
@@ -798,6 +814,11 @@ const publicRoutes: RouteType[] = [
         label: "donation-personal",
         element: <DonationPersonalPage />,
         path: (locale: string) => getDonationPersonalPage(locale),
+    },
+    {
+        label: "donation-personal-legacy-redirect",
+        element: <LegacyIdRedirect to={getDonationPersonalPage} />,
+        path: (locale: string) => `/${locale}/donation-personal/:id`,
     },
     {
         label: "donation-reports",
