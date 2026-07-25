@@ -31,8 +31,14 @@
 }
 
 // Zoom control (+/- slider): Yandex positions it via an inline `inset`
-// (right/top offsets in px), which only ever anchors it to a corner.
-// Override to vertically center it on the map's right edge instead.
+// (right/top offsets in px), which only ever anchors it to a corner — and
+// its own positioning parent, .controls-pane, is collapsed to 0 height via
+// an inline `bottom` offset, so `top: 50%` on the control alone resolves
+// against a 0px box (no-op). Give the pane real height first, then center.
+.ymaps-2-1-79-controls-pane {
+    bottom: 0 !important;
+}
+
 .ymaps-2-1-79-controls__control:has(.ymaps-2-1-79-zoom) {
     inset: 50% 10px auto auto !important;
     transform: translateY(-50%);
