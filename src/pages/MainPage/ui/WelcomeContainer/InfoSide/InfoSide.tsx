@@ -19,7 +19,8 @@ const InfoSide: FC = memo(() => {
     const searchRef = useRef<SearchOffersRef>(null);
 
     const onApplySearch = useCallback(async (search: string) => {
-        navigate(`/${locale}/offers-map?search=${encodeURIComponent(search)}`);
+        const query = search ? `?search=${encodeURIComponent(search)}` : "";
+        navigate(`/${locale}/offers-map${query}`);
     }, [navigate, locale]);
 
     const onResetFilters = useCallback(async () => {
