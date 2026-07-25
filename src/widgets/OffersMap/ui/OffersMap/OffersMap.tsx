@@ -1,5 +1,5 @@
 import {
-    Map, ObjectManager, YMaps,
+    Map, ObjectManager, YMaps, ZoomControl,
 } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, {
@@ -105,7 +105,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
             <YMaps query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, load: "package.full" }}>
                 <Map
                     defaultState={{
-                        center: [50, 50], zoom: 2.05, controls: ["zoomControl"],
+                        center: [50, 50], zoom: 2.05, controls: [],
                     }}
                     width="100%"
                     height="100%"
@@ -128,6 +128,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     }}
                     className={cn(styles.map, classNameMap)}
                 >
+                    <ZoomControl options={{ position: { right: 10, top: 10 } }} />
                     {(ymapState && (features.length > 0)) && (
                         <ObjectManager
                             instanceRef={objectManagerRef}
