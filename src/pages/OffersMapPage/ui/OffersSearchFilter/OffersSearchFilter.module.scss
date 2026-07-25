@@ -46,7 +46,10 @@
 
 @media (max-width: 1400px) {
     .searchOffersList, .offersMap {
-        height: calc(100vh - 16.125rem);
+        // measured live: at this breakpoint the row's real top offset is
+        // ~13.75rem, not 16.125rem — the old value left a ~38px gap at the
+        // bottom of the viewport.
+        height: calc(100vh - 13.75rem);
     }
 }
 
