@@ -1,19 +1,26 @@
 .wrapper {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .filter {
     position: relative;
 }
 
+// flex:1 + min-height:0 fills exactly whatever height .filter/.searchWrapper
+// leave over — no magic number to keep in sync with the header's real height
+// (a fixed calc(100vh - Nrem) here previously left a growing gap at the
+// bottom whenever the header/filter bar's actual height drifted from N).
 .wrapperOffersMap {
     display: flex;
+    flex: 1;
+    min-height: 0;
 }
 
 .searchOffersList, .offersMap {
     flex: 1;
-    height: calc(100vh - 12rem);
-    // height: 100%;
+    height: 100%;
 }
 
 // небольшой гаттер от края экрана — без него карта упирается прямо в
@@ -42,12 +49,6 @@
 
 .searchWrapper {
     padding: 12px 30px;
-}
-
-@media (max-width: 1400px) {
-    .searchOffersList, .offersMap {
-        height: calc(100vh - 16.125rem);
-    }
 }
 
 @media (max-width: 992px) {
