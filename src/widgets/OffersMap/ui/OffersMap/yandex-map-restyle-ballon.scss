@@ -29,3 +29,11 @@
 .ymaps-2-1-79-b-cluster-content__header {
     display: none !important;
 }
+
+// Zoom control (+/- slider): Yandex positions it via an inline `inset`
+// (right/top offsets in px), which only ever anchors it to a corner.
+// Override to vertically center it on the map's right edge instead.
+.ymaps-2-1-79-controls__control:has(.ymaps-2-1-79-zoom) {
+    inset: 50% 10px auto auto !important;
+    transform: translateY(-50%);
+}
