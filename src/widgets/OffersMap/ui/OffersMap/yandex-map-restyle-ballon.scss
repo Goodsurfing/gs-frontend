@@ -35,11 +35,19 @@
 // its own positioning parent, .controls-pane, is collapsed to 0 height via
 // an inline `bottom` offset, so `top: 50%` on the control alone resolves
 // against a 0px box (no-op). Give the pane real height first, then center.
+//
+// Stretching the pane to the full map height turns it into a full-size
+// overlay that (by default) intercepts mouse events — silently breaking
+// map dragging/panning, since drags landing on the pane never reach the
+// map's own drag layer underneath. Make the pane click-through and opt
+// only the actual control back in.
 .ymaps-2-1-79-controls-pane {
     bottom: 0 !important;
+    pointer-events: none;
 }
 
 .ymaps-2-1-79-controls__control:has(.ymaps-2-1-79-zoom) {
     inset: 50% 10px auto auto !important;
     transform: translateY(-50%);
+    pointer-events: auto;
 }
