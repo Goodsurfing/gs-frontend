@@ -7,6 +7,14 @@
     box-shadow: 0px 5px 20px 0px #2121210d;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.wrapper.selected {
+    background-color: var(--bg-accent);
+    border-left-color: var(--accent-color);
 }
 
 .imageWrapper {
@@ -154,6 +162,21 @@
     letter-spacing: 0px;
     text-align: left;
     color: var(--white-theme-color);
+}
+
+.learnMore {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: "Lato";
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    color: var(--accent-color);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 @media (max-width: 480px) {

@@ -50,6 +50,7 @@ export const OffersSearchFilter = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
+    const [selectedOfferId, setSelectedOfferId] = useState<number>();
 
     const initialCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
@@ -193,6 +194,10 @@ export const OffersSearchFilter = () => {
         setMapOpened((prev) => !prev);
     }, []);
 
+    const handleSelectOffer = useCallback((offerId: number) => {
+        setSelectedOfferId(offerId);
+    }, []);
+
     useEffect(() => {
         const subscription = watch((value, { name, type }) => {
             if ((name === "offersSort.showClosedOffers" || name === "offersSort.sortValue") && type === "change") {
@@ -258,6 +263,8 @@ export const OffersSearchFilter = () => {
                             offersPerPage={OFFERS_PER_PAGE}
                             onChangePage={onChangePage}
                             total={offersData?.pagination.total ?? 0}
+                            selectedOfferId={selectedOfferId}
+                            onSelectOffer={handleSelectOffer}
                         />
                     </div>
                     {isMapOpened && (
@@ -266,6 +273,7 @@ export const OffersSearchFilter = () => {
                             isOffersLoading={isAllOffersMapLoading || isAllOffersMapFetching}
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
+                            selectedOfferId={selectedOfferId}
                         />
                     )}
                 </div>

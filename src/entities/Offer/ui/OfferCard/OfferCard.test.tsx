@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import {
+    describe, it, expect, vi,
+} from "vitest";
+import { screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import type { ComponentProps } from "react";
 import { renderWithProviders } from "@/test-utils";
@@ -37,5 +39,29 @@ describe("OfferCard", () => {
 
         expect(screen.getByText(/Отзывов/)).toBeInTheDocument();
         expect(screen.getByText(/Отправились/)).toBeInTheDocument();
+    });
+
+    it("клик по карточке вызывает onSelect, а не переход по ссылке", () => {
+        const onSelect = vi.fn();
+        renderCard({ onSelect });
+
+        fireEvent.click(screen.getByRole("button"));
+
+        expect(onSelect).toHaveBeenCalledWith(1);
+    });
+
+    it("клик по «Подробнее» не вызывает onSelect (переход по ссылке отдельно)", () => {
+        const onSelect = vi.fn();
+        renderCard({ onSelect, link: "/ru/offer-personal/1" });
+
+        fireEvent.click(screen.getByText("Подробнее"));
+
+        expect(onSelect).not.toHaveBeenCalled();
+    });
+
+    it("подсвечивает карточку, если isSelected=true", () => {
+        const { container } = renderCard({ isSelected: true });
+
+        expect(container.querySelector("[role=\"button\"]")?.className).toMatch(/selected/);
     });
 });
