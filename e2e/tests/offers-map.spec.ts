@@ -16,8 +16,12 @@ test.describe('Карта вакансий — интерактивность', 
         const map = page.locator('.ymaps-2-1-79-map').first();
         await expect(map).toBeVisible();
 
+        // .ymaps-2-1-79-ground-pane сам по себе всегда 0x0 (абсолютно
+        // спозиционирован, реальный размер несут дочерние тайлы с
+        // отрицательными отступами) — toBeVisible() тут не показатель,
+        // читаем transform напрямую.
         const groundPane = page.locator('.ymaps-2-1-79-ground-pane');
-        await expect(groundPane).toBeVisible();
+        await expect(groundPane).toBeAttached();
 
         const transformBefore = await groundPane.evaluate((el) => getComputedStyle(el).transform);
 
