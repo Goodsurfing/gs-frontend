@@ -3,7 +3,7 @@ import {
 } from "@pbe/react-yandex-maps";
 import cn from "classnames";
 import React, {
-    FC, memo, useMemo, useRef, useState,
+    FC, memo, useEffect, useMemo, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -19,17 +19,20 @@ import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";
 import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
+const FOCUS_ZOOM = 10;
+
 interface OffersMapProps {
     className?: string;
     classNameMap?: string;
     offersData: OfferMap[];
     isOffersLoading: boolean;
+    selectedOfferId?: number;
 }
 
 export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const {
         className, classNameMap, isOffersLoading,
-        offersData,
+        offersData, selectedOfferId,
     } = props;
     const { locale } = useLocale();
     const { t } = useTranslation();
@@ -89,6 +92,22 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory,
         noTitle, noCategory, offerWithoutName, learnMore,
     ]);
+
+    useEffect(() => {
+        if (!selectedOfferId || !mapRef.current) return;
+
+        const selectedOffer = offersData.find((offer) => offer.id === selectedOfferId);
+        if (!selectedOffer
+            || typeof selectedOffer.latitude !== "number"
+            || typeof selectedOffer.longitude !== "number") return;
+
+        const currentZoom = mapRef.current.getZoom();
+        mapRef.current.setCenter(
+            [selectedOffer.latitude, selectedOffer.longitude],
+            Math.max(currentZoom, FOCUS_ZOOM),
+            { duration: 400 },
+        );
+    }, [selectedOfferId, offersData]);
 
     if (isOffersLoading) {
         return (

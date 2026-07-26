@@ -29,7 +29,9 @@ interface OfferCardProps {
     isImageShow?: boolean;
     isFavoriteIconShow?: boolean;
     isFavorite: boolean;
+    isSelected?: boolean;
     handleFavoriteClick?: (offerId: number) => void;
+    onSelect?: (offerId: number) => void;
     locale: Locale;
 }
 
@@ -49,15 +51,25 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         isImageShow = true,
         isFavoriteIconShow = false,
         isFavorite,
+        isSelected = false,
         locale,
         handleFavoriteClick,
+        onSelect,
     } = props;
     const { t } = useTranslation();
 
     return (
-        <Link
-            to={link ?? getMainPageUrl(locale)}
-            className={cn(styles.wrapper, className)}
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={() => onSelect?.(offerId)}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelect?.(offerId);
+                }
+            }}
+            className={cn(styles.wrapper, className, { [styles.selected]: isSelected })}
         >
             {isImageShow && (
                 <div className={styles.imageWrapper}>
@@ -133,7 +145,14 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 <p className={styles.description}>
                     {textSlice(description, 110, "description")}
                 </p>
+                <Link
+                    to={link ?? getMainPageUrl(locale)}
+                    onClick={(e) => e.stopPropagation()}
+                    className={styles.learnMore}
+                >
+                    {t("Подробнее")}
+                </Link>
             </div>
-        </Link>
+        </div>
     );
 });
