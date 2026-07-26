@@ -12,6 +12,12 @@
 
 .searchOffersList, .offersMap {
     flex: 1;
+    // Without this, a flex item's automatic minimum width is its content's
+    // min-content size — and a `white-space: nowrap` node buried inside
+    // (e.g. OfferCard's truncated address) makes that min-content size the
+    // full unwrapped text width. That silently forces this column far wider
+    // than its `flex: 1` share, squeezing the map sibling down to nothing.
+    min-width: 0;
     height: calc(100vh - 12rem);
     // height: 100%;
 }
