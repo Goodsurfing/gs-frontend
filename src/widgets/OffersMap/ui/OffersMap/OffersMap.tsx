@@ -37,6 +37,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const { locale } = useLocale();
     const { t } = useTranslation();
     const [ymapState, setYmapState] = useState<YmapType | undefined>(undefined);
+    const [showNoLocationNotice, setShowNoLocationNotice] = useState(false);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
 
@@ -45,6 +46,7 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const offerWithoutName = t("Вакансия без названия");
     const learnMore = t("Подробнее");
     const vacancyListTitle = t("Список вакансий:");
+    const noLocationText = t("У этой вакансии не указано местоположение на карте");
 
     const features = useMemo(() => {
         if (isOffersLoading || !offersData.length) return [];
@@ -94,12 +96,24 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     ]);
 
     useEffect(() => {
-        if (!selectedOfferId || !mapRef.current) return;
+        if (!selectedOfferId) {
+            setShowNoLocationNotice(false);
+            return;
+        }
 
-        const selectedOffer = offersData.find((offer) => offer.id === selectedOfferId);
-        if (!selectedOffer
-            || typeof selectedOffer.latitude !== "number"
-            || typeof selectedOffer.longitude !== "number") return;
+        const offerById = offersData.find((offer) => offer.id === selectedOfferId);
+        const selectedOffer = offerById
+            && typeof offerById.latitude === "number"
+            && typeof offerById.longitude === "number"
+            ? offerById
+            : undefined;
+
+        // Часть вакансий физически не имеет координат в базе (адрес не
+        // геокодирован) — карте попросту нечем "сфокусироваться". Раньше
+        // клик по такой карточке в списке просто ничего не делал молча,
+        // что выглядело как баг; показываем явную причину вместо тишины.
+        setShowNoLocationNotice(!selectedOffer);
+        if (!selectedOffer || !mapRef.current) return;
 
         const currentZoom = mapRef.current.getZoom();
         mapRef.current.setCenter(
@@ -121,6 +135,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
 
     return (
         <div className={cn(className, styles.wrapper)}>
+            {showNoLocationNotice && (
+                <div className={styles.noLocationNotice}>{noLocationText}</div>
+            )}
             <YMaps query={{ apikey: import.meta.env.VITE_API_YANDEX_KEY, load: "package.full" }}>
                 <Map
                     defaultState={{
