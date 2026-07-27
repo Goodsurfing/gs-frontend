@@ -163,18 +163,13 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
         };
     }, [ymapState]);
 
-    if (isOffersLoading) {
-        return (
-            <div className={cn(className, styles.wrapper)}>
+    return (
+        <div className={cn(className, styles.wrapper)}>
+            {isOffersLoading && (
                 <div className={styles.loadingPlaceholder}>
                     <MiniLoader />
                 </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className={cn(className, styles.wrapper)}>
+            )}
             {showNoLocationNotice && (
                 <div className={styles.noLocationNotice}>{noLocationText}</div>
             )}
