@@ -178,7 +178,15 @@ export interface GetOffersFilters {
     limit: number;
 }
 
-export type GetAllOffersMapFilters = Omit<GetOffersFilters, "sort" | "page" | "limit">;
+export interface MapBounds {
+    boundsSwLat: number;
+    boundsSwLng: number;
+    boundsNeLat: number;
+    boundsNeLng: number;
+}
+
+export type GetAllOffersMapFilters = Omit<GetOffersFilters, "sort" | "page" | "limit">
+& MapBounds & { ids: number[] };
 
 export interface GetOffersResponse {
     data: OfferApi[];

@@ -20,6 +20,14 @@ import { getOfferPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { getMediaContent } from "@/shared/lib/getMediaContent";
 
 const FOCUS_ZOOM = 10;
+const BOUNDS_CHANGE_DEBOUNCE_MS = 400;
+
+export interface MapViewportBounds {
+    boundsSwLat: number;
+    boundsSwLng: number;
+    boundsNeLat: number;
+    boundsNeLng: number;
+}
 
 interface OffersMapProps {
     className?: string;
@@ -27,12 +35,20 @@ interface OffersMapProps {
     offersData: OfferMap[];
     isOffersLoading: boolean;
     selectedOfferId?: number;
+    // undefined — нет выбора/ещё не знаем; объект — координаты для фокуса;
+    // null — точно известно, что у вакансии нет координат (показать notice).
+    // Намеренно НЕ выводится из offersData самой карты: после того как
+    // маркеры стали viewport-scoped, отсутствие в offersData означает "вне
+    // текущей видимой области", а не "нет координат вообще" — это два разных
+    // случая, которые раньше смешивались.
+    selectedOfferCoordinates?: { latitude: number; longitude: number } | null;
+    onBoundsChange?: (bounds: MapViewportBounds) => void;
 }
 
 export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const {
         className, classNameMap, isOffersLoading,
-        offersData, selectedOfferId,
+        offersData, selectedOfferId, selectedOfferCoordinates, onBoundsChange,
     } = props;
     const { locale } = useLocale();
     const { t } = useTranslation();
@@ -40,6 +56,8 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const [showNoLocationNotice, setShowNoLocationNotice] = useState(false);
     const mapRef = useRef<any>(null);
     const objectManagerRef = useRef<any>(null);
+    const onBoundsChangeRef = useRef(onBoundsChange);
+    onBoundsChangeRef.current = onBoundsChange;
 
     const noTitle = t("Без названия");
     const noCategory = t("Без категории");
@@ -96,32 +114,54 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     ]);
 
     useEffect(() => {
-        if (!selectedOfferId) {
+        if (!selectedOfferId || selectedOfferCoordinates === undefined) {
             setShowNoLocationNotice(false);
             return;
         }
-
-        const offerById = offersData.find((offer) => offer.id === selectedOfferId);
-        const selectedOffer = offerById
-            && typeof offerById.latitude === "number"
-            && typeof offerById.longitude === "number"
-            ? offerById
-            : undefined;
 
         // Часть вакансий физически не имеет координат в базе (адрес не
         // геокодирован) — карте попросту нечем "сфокусироваться". Раньше
         // клик по такой карточке в списке просто ничего не делал молча,
         // что выглядело как баг; показываем явную причину вместо тишины.
-        setShowNoLocationNotice(!selectedOffer);
-        if (!selectedOffer || !mapRef.current) return;
+        setShowNoLocationNotice(selectedOfferCoordinates === null);
+        if (!selectedOfferCoordinates || !mapRef.current) return;
 
         const currentZoom = mapRef.current.getZoom();
         mapRef.current.setCenter(
-            [selectedOffer.latitude, selectedOffer.longitude],
+            [selectedOfferCoordinates.latitude, selectedOfferCoordinates.longitude],
             Math.max(currentZoom, FOCUS_ZOOM),
             { duration: 400 },
         );
-    }, [selectedOfferId, offersData]);
+    }, [selectedOfferId, selectedOfferCoordinates]);
+
+    useEffect(() => {
+        if (!ymapState || !mapRef.current) return undefined;
+
+        const map = mapRef.current;
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+        const emitBounds = () => {
+            const bounds = map.getBounds?.();
+            if (!bounds) return;
+            const [[swLat, swLng], [neLat, neLng]] = bounds;
+            onBoundsChangeRef.current?.({
+                boundsSwLat: swLat, boundsSwLng: swLng, boundsNeLat: neLat, boundsNeLng: neLng,
+            });
+        };
+
+        const handleBoundsChange = () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(emitBounds, BOUNDS_CHANGE_DEBOUNCE_MS);
+        };
+
+        map.events.add("boundschange", handleBoundsChange);
+        emitBounds();
+
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            map.events.remove("boundschange", handleBoundsChange);
+        };
+    }, [ymapState]);
 
     if (isOffersLoading) {
         return (

@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import cn from "classnames";
 import React, {
-    useCallback, useEffect, useRef, useState,
+    useCallback, useEffect, useMemo, useRef, useState,
 } from "react";
 import { DefaultValues, FormProvider, useForm } from "react-hook-form";
 
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { OffersList, OffersMap } from "@/widgets/OffersMap";
+import type { MapViewportBounds } from "@/widgets/OffersMap/ui/OffersMap/OffersMap";
 
 import { OffersFilterFields } from "../../model/types";
 import { OffersFilter } from "../OffersFilter/OffersFilter";
@@ -44,6 +45,15 @@ export const OffersSearchFilter = () => {
             data: allOffersMap = [], isLoading: isAllOffersMapLoading,
             isFetching: isAllOffersMapFetching,
         }] = useLazyGetAllOffersMapQuery();
+    // Отдельный вызов того же эндпоинта по конкретным id вместо bounds —
+    // даёт координаты/наличие локации именно для карточек текущей страницы
+    // списка, независимо от того, что сейчас видно в viewport карты. Без
+    // этого нельзя было бы отличить "у вакансии правда нет координат" от
+    // "координаты есть, но карта сейчас смотрит в другое место".
+    const [fetchPageOffersLocation, {
+        data: pageOffersLocation = [], isFetching: isPageLocationFetching,
+    }] = useLazyGetAllOffersMapQuery();
+    const mapBoundsRef = useRef<MapViewportBounds | null>(null);
     const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
@@ -71,6 +81,22 @@ export const OffersSearchFilter = () => {
     const previousCategoryParamRef = useRef(searchParams.get("category"));
     const currentSearchRef = useRef<string>("");
 
+    const fetchOffersMapWithBounds = useCallback((params: Record<string, unknown>) => {
+        fetchAllOffersMap({ ...params, ...(mapBoundsRef.current ?? {}) });
+    }, [fetchAllOffersMap]);
+
+    const handleBoundsChange = useCallback((bounds: MapViewportBounds) => {
+        mapBoundsRef.current = bounds;
+
+        const watchData = watch();
+        const preparedData = offersFilterApiAdapter(watchData);
+        if (currentSearchRef.current) {
+            fetchOffersMapWithBounds({ search: currentSearchRef.current });
+        } else {
+            fetchOffersMapWithBounds({ ...preparedData });
+        }
+    }, [watch, fetchOffersMapWithBounds]);
+
     useEffect(() => {
         if (currentSearchRef.current) {
             fetchOffers({
@@ -89,7 +115,7 @@ export const OffersSearchFilter = () => {
     useEffect(() => {
         const watchData = watch();
         const preparedData = offersFilterApiAdapter(watchData);
-        fetchAllOffersMap({ ...preparedData });
+        fetchOffersMapWithBounds({ ...preparedData });
     }, []);
 
     useEffect(() => {
@@ -132,7 +158,7 @@ export const OffersSearchFilter = () => {
         if (isExternalCategoryChange) {
             const preparedData = offersFilterApiAdapter({ ...watch(), category: parsedCategories });
             fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-            fetchAllOffersMap({ ...preparedData });
+            fetchOffersMapWithBounds({ ...preparedData });
             setCurrentPage(1);
         }
         isInternalCategoryPushRef.current = false;
@@ -142,6 +168,11 @@ export const OffersSearchFilter = () => {
 
     const onChangePage = useCallback((pageItem: number) => {
         setCurrentPage(pageItem);
+        // Выделенная карточка принадлежит текущей странице списка — при
+        // переходе на другую страницу она пропадает из виду, так что и
+        // выбор логично сбрасывать (заодно не даёт селекту "залипнуть" на
+        // id, для которого больше нет свежих данных о координатах).
+        setSelectedOfferId(undefined);
     }, []);
 
     const onApplySearch = useCallback(async (search: string) => {
@@ -154,7 +185,7 @@ export const OffersSearchFilter = () => {
         fetchOffers({
             sort: OfferSort.UpdatedDesc, search, limit: OFFERS_PER_PAGE, page: 1,
         });
-        fetchAllOffersMap({ search });
+        fetchOffersMapWithBounds({ search });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -175,7 +206,7 @@ export const OffersSearchFilter = () => {
         currentSearchRef.current = "";
         const preparedData = offersFilterApiAdapter(data);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        fetchAllOffersMap({ ...preparedData });
+        fetchOffersMapWithBounds({ ...preparedData });
         onChangePage(1);
     }), []);
 
@@ -185,7 +216,7 @@ export const OffersSearchFilter = () => {
         searchRef.current?.clearSearch();
         const preparedData = offersFilterApiAdapter(defaultValues);
         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: 1 });
-        fetchAllOffersMap({ ...preparedData });
+        fetchOffersMapWithBounds({ ...preparedData });
         reset(defaultValues);
         onChangePage(1);
     }, []);
@@ -197,6 +228,33 @@ export const OffersSearchFilter = () => {
     const handleSelectOffer = useCallback((offerId: number) => {
         setSelectedOfferId(offerId);
     }, []);
+
+    useEffect(() => {
+        const ids = offersData?.data.map((offer) => offer.id) ?? [];
+        if (ids.length > 0) {
+            fetchPageOffersLocation({ ids });
+        }
+    }, [offersData?.data]);
+
+    const offerIdsWithoutLocation = useMemo(() => {
+        if (isPageLocationFetching) return new Set<number>();
+
+        const withLocation = new Set(pageOffersLocation.map((offer) => offer.id));
+        return new Set(
+            (offersData?.data ?? [])
+                .map((offer) => offer.id)
+                .filter((id) => !withLocation.has(id)),
+        );
+    }, [pageOffersLocation, offersData?.data, isPageLocationFetching]);
+
+    const selectedOfferCoordinates = useMemo(() => {
+        if (!selectedOfferId || isPageLocationFetching) return undefined;
+
+        const match = pageOffersLocation.find((offer) => offer.id === selectedOfferId);
+        if (!match) return null;
+
+        return { latitude: match.latitude, longitude: match.longitude };
+    }, [selectedOfferId, pageOffersLocation, isPageLocationFetching]);
 
     useEffect(() => {
         const subscription = watch((value, { name, type }) => {
@@ -214,10 +272,12 @@ export const OffersSearchFilter = () => {
                             limit: OFFERS_PER_PAGE,
                             page: currentPage,
                         });
-                        fetchAllOffersMap({ ...preparedData, search: currentSearchRef.current });
+                        fetchOffersMapWithBounds({
+                            ...preparedData, search: currentSearchRef.current,
+                        });
                     } else {
                         fetchOffers({ ...preparedData, limit: OFFERS_PER_PAGE, page: currentPage });
-                        fetchAllOffersMap({ ...preparedData });
+                        fetchOffersMapWithBounds({ ...preparedData });
                     }
                 }, 300);
             }
@@ -265,6 +325,7 @@ export const OffersSearchFilter = () => {
                             total={offersData?.pagination.total ?? 0}
                             selectedOfferId={selectedOfferId}
                             onSelectOffer={handleSelectOffer}
+                            offerIdsWithoutLocation={offerIdsWithoutLocation}
                         />
                     </div>
                     {isMapOpened && (
@@ -274,6 +335,8 @@ export const OffersSearchFilter = () => {
                             className={styles.offersMap}
                             classNameMap={styles.offersMap}
                             selectedOfferId={selectedOfferId}
+                            selectedOfferCoordinates={selectedOfferCoordinates}
+                            onBoundsChange={handleBoundsChange}
                         />
                     )}
                 </div>

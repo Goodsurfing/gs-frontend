@@ -64,4 +64,18 @@ describe("OfferCard", () => {
 
         expect(container.querySelector("[role=\"button\"]")?.className).toMatch(/selected/);
     });
+
+    it("показывает бейдж «нет на карте», если hasLocation=false", () => {
+        renderCard({ hasLocation: false });
+
+        expect(screen.getByText("нет на карте")).toBeInTheDocument();
+    });
+
+    it("не показывает бейдж, если hasLocation не false (неизвестно/есть локация)", () => {
+        renderCard({ hasLocation: true });
+        expect(screen.queryByText("нет на карте")).not.toBeInTheDocument();
+
+        renderCard({});
+        expect(screen.queryByText("нет на карте")).not.toBeInTheDocument();
+    });
 });

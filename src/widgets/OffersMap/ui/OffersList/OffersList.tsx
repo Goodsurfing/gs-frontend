@@ -29,6 +29,7 @@ interface OffersListProps {
     onChangePage: (pageItem: number) => void;
     selectedOfferId?: number;
     onSelectOffer?: (offerId: number) => void;
+    offerIdsWithoutLocation?: Set<number>;
 }
 
 export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
@@ -44,6 +45,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
         isLoading,
         selectedOfferId,
         onSelectOffer,
+        offerIdsWithoutLocation,
     } = props;
 
     const { locale } = useLocale();
@@ -99,6 +101,7 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
                     key={offer.id}
                     isSelected={offer.id === selectedOfferId}
                     onSelect={onSelectOffer}
+                    hasLocation={!offerIdsWithoutLocation?.has(offer.id)}
                     // isFavoriteIconShow={!!isAuth}
                 />
             ));
@@ -111,7 +114,10 @@ export const OffersList: FC<OffersListProps> = (props: OffersListProps) => {
             />
         );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, isLoading, locale, mapOpenValue, t, selectedOfferId, onSelectOffer]);
+    }, [
+        data, isLoading, locale, mapOpenValue, t, selectedOfferId,
+        onSelectOffer, offerIdsWithoutLocation,
+    ]);
 
     const totalPages = Math.ceil(total / offersPerPage);
 

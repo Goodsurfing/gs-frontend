@@ -30,6 +30,9 @@ interface OfferCardProps {
     isFavoriteIconShow?: boolean;
     isFavorite: boolean;
     isSelected?: boolean;
+    // undefined — не знаем (ещё не проверяли/не актуально); false — точно
+    // известно, что у вакансии нет координат для карты.
+    hasLocation?: boolean;
     handleFavoriteClick?: (offerId: number) => void;
     onSelect?: (offerId: number) => void;
     locale: Locale;
@@ -52,6 +55,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         isFavoriteIconShow = false,
         isFavorite,
         isSelected = false,
+        hasLocation,
         locale,
         handleFavoriteClick,
         onSelect,
@@ -93,6 +97,9 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 <p className={styles.title}>{textSlice(title, 50, "title")}</p>
                 <div className={styles.subtitle}>
                     <span className={styles.location}>{location}</span>
+                    {hasLocation === false && (
+                        <span className={styles.noLocationBadge}>{t("нет на карте")}</span>
+                    )}
                     <br />
                     <span className={styles.category}>{category}</span>
                 </div>
