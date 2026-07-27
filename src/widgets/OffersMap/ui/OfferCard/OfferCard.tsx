@@ -36,6 +36,7 @@ interface OfferCardProps {
     // isFavoriteIconShow: boolean;
     isSelected?: boolean;
     onSelect?: (offerId: number) => void;
+    hasLocation?: boolean;
     locale: Locale;
 }
 
@@ -52,6 +53,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
         classNameCard,
         isSelected,
         onSelect,
+        hasLocation,
         locale,
     } = props;
 
@@ -85,6 +87,7 @@ export const OfferCard: FC<OfferCardProps> = memo((props: OfferCardProps) => {
                 isFavorite={isFavorite}
                 isSelected={isSelected}
                 onSelect={onSelect}
+                hasLocation={hasLocation}
                 locale={locale}
                 handleFavoriteClick={onFavoriteClick}
             />
