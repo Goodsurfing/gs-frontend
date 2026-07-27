@@ -12,6 +12,7 @@ const setCenter = vi.fn();
 const getZoom = vi.fn(() => 5);
 const getBounds = vi.fn(() => [[54, 36], [57, 39]]);
 const boundsChangeHandlers: Array<() => void> = [];
+const onLoadCalls = vi.fn();
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({ t: (key: string) => key }),
@@ -44,6 +45,7 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         };
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
+            onLoadCalls();
             onLoad?.({ templateLayoutFactory: { createClass: () => undefined } });
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
@@ -68,6 +70,7 @@ describe("OffersMap", () => {
         setCenter.mockClear();
         getZoom.mockClear();
         getBounds.mockClear();
+        onLoadCalls.mockClear();
         boundsChangeHandlers.length = 0;
     });
 
@@ -137,5 +140,40 @@ describe("OffersMap", () => {
         await waitFor(() => expect(onBoundsChange).toHaveBeenCalledWith({
             boundsSwLat: 54, boundsSwLng: 36, boundsNeLat: 57, boundsNeLng: 39,
         }), { timeout: 1000 });
+    });
+
+    it("не пересоздаёт карту при переключении isOffersLoading (регресс: карта уходила в бесконечный цикл unmount/remount)", async () => {
+        const onBoundsChange = vi.fn();
+        const { rerender } = render(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+                onBoundsChange={onBoundsChange}
+            />,
+        );
+
+        await waitFor(() => expect(onLoadCalls).toHaveBeenCalledTimes(1));
+
+        // isOffersLoading становится true — как только onBoundsChange
+        // из первого рендера триггерит фетч у родителя. Раньше это
+        // размонтировало <Map> целиком (early return вместо оверлея),
+        // из-за чего onLoad срабатывал заново -> emitBounds() -> новый
+        // фетч -> isOffersLoading снова true -> бесконечный цикл.
+        rerender(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading
+                onBoundsChange={onBoundsChange}
+            />,
+        );
+        rerender(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading={false}
+                onBoundsChange={onBoundsChange}
+            />,
+        );
+
+        expect(onLoadCalls).toHaveBeenCalledTimes(1);
     });
 });
