@@ -58,9 +58,19 @@ export const OffersSearchFilter = () => {
     const { t } = useTranslation("offers-map");
     const searchRef = useRef<SearchOffersRef>(null);
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    // Восстанавливаем страницу списка и выбранную карточку из URL — иначе при
+    // возврате кнопкой "назад" со страницы вакансии (открытой из списка или с
+    // карты) React Router размонтирует эту страницу заново, и весь локальный
+    // state (currentPage, selectedOfferId) сбрасывается к дефолту, хотя
+    // category/search такого не делают именно потому, что живут в URL.
+    const [currentPage, setCurrentPage] = useState<number>(
+        () => Number(searchParams.get("page")) || 1,
+    );
     const [initialSearchValue, setInitialSearchValue] = useState<string>();
-    const [selectedOfferId, setSelectedOfferId] = useState<number>();
+    const [selectedOfferId, setSelectedOfferId] = useState<number | undefined>(() => {
+        const offerIdParam = searchParams.get("offerId");
+        return offerIdParam ? Number(offerIdParam) : undefined;
+    });
 
     const initialCategories = getCategoryIdsFromUrlParam(searchParams.get("category") ?? "");
 
@@ -173,7 +183,17 @@ export const OffersSearchFilter = () => {
         // выбор логично сбрасывать (заодно не даёт селекту "залипнуть" на
         // id, для которого больше нет свежих данных о координатах).
         setSelectedOfferId(undefined);
-    }, []);
+        setSearchParams((prev) => {
+            const updated = new URLSearchParams(prev);
+            if (pageItem > 1) {
+                updated.set("page", String(pageItem));
+            } else {
+                updated.delete("page");
+            }
+            updated.delete("offerId");
+            return updated;
+        }, { replace: true });
+    }, [setSearchParams]);
 
     const onApplySearch = useCallback(async (search: string) => {
         currentSearchRef.current = search;
@@ -227,14 +247,30 @@ export const OffersSearchFilter = () => {
 
     const handleSelectOffer = useCallback((offerId: number) => {
         setSelectedOfferId(offerId);
-    }, []);
+        // Пишем в URL, чтобы кнопка "назад" со страницы вакансии (открытой
+        // и из списка, и с карты) вернула пользователя к тому же
+        // выделенному элементу, а не к чистому списку — см. fetchPageOffersLocation
+        // ниже, который подтягивает координаты именно по этому id.
+        setSearchParams((prev) => {
+            const updated = new URLSearchParams(prev);
+            updated.set("offerId", String(offerId));
+            return updated;
+        }, { replace: true });
+    }, [setSearchParams]);
 
     useEffect(() => {
         const ids = offersData?.data.map((offer) => offer.id) ?? [];
+        // selectedOfferId может не входить в текущую страницу списка — например,
+        // он был выбран кликом по маркеру на карте, а не карточкой из списка.
+        // Без этого координаты для восстановления после навигации "назад"
+        // никогда бы не подтянулись.
+        if (selectedOfferId && !ids.includes(selectedOfferId)) {
+            ids.push(selectedOfferId);
+        }
         if (ids.length > 0) {
             fetchPageOffersLocation({ ids });
         }
-    }, [offersData?.data]);
+    }, [offersData?.data, selectedOfferId]);
 
     const offerIdsWithoutLocation = useMemo(() => {
         if (isPageLocationFetching) return new Set<number>();

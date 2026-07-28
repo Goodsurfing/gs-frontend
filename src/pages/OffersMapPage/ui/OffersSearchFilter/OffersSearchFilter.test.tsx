@@ -165,6 +165,56 @@ describe("OffersSearchFilter", () => {
         expect(requestedIdsUrls.at(-1)).toContain("42");
     });
 
+    it("восстанавливает страницу и выбранную вакансию из URL (кнопка \"назад\" с карты/детальной)", async () => {
+        const requestedListUrls: string[] = [];
+        const requestedIdsUrls: string[] = [];
+        server.use(
+            rest.get("*/vacancy/list", (req, res, ctx) => {
+                requestedListUrls.push(req.url.toString());
+                return res(ctx.status(200), ctx.json({
+                    data: [{
+                        id: 99,
+                        title: "Test",
+                        shortDescription: "",
+                        image: null,
+                        categories: [],
+                        address: "",
+                        acceptedApplicationsCount: 0,
+                        averageRating: 0,
+                        reviewsCount: 0,
+                        status: "active",
+                    }],
+                    pagination: { total: 40 },
+                }));
+            }),
+            rest.get("*/vacancy/for-map/list", (req, res, ctx) => {
+                if (req.url.search.toLowerCase().includes("ids")) {
+                    requestedIdsUrls.push(req.url.toString());
+                }
+                return res(ctx.status(200), ctx.json([]));
+            }),
+            rest.get("*/category/list", (req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+        );
+
+        renderWithProviders(
+            <MemoryRouter initialEntries={["/ru/offers-map?page=2&offerId=99"]}>
+                <Routes>
+                    <Route path="/ru/offers-map" element={<OffersSearchFilter />} />
+                </Routes>
+            </MemoryRouter>,
+        );
+
+        await waitFor(() => expect(requestedListUrls.length).toBeGreaterThan(0));
+        expect(requestedListUrls.at(-1)).toContain("page=2");
+
+        await waitFor(() => expect(latestOffersMapProps.current.selectedOfferId).toBe(99));
+        // selectedOfferId (99) не входит в мокнутую страницу списка (id=99 —
+        // единственный элемент, но сценарий проверяет именно "id пришёл из URL,
+        // а не из onSelectOffer") — координаты для него всё равно должны
+        // запрашиваться, иначе карта не сможет выделить/отцентровать маркер.
+        await waitFor(() => expect(requestedIdsUrls.some((url) => url.includes("99"))).toBe(true));
+    });
+
     it("сбрасывает выбранную вакансию при смене страницы списка", async () => {
         server.use(
             rest.get("*/vacancy/list", (req, res, ctx) => res(ctx.status(200), ctx.json({
