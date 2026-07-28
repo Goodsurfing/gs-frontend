@@ -52,7 +52,9 @@ vi.mock("@pbe/react-yandex-maps", () => ({
         return <div>{children}</div>;
     },
     ZoomControl: () => null,
-    ObjectManager: () => null,
+    ObjectManager: ({ features }: { features: unknown[] }) => (
+        <div data-testid="object-manager">{features.length}</div>
+    ),
 }));
 
 const offer = (overrides: Partial<OfferMap> = {}): OfferMap => ({
@@ -175,5 +177,38 @@ describe("OffersMap", () => {
         );
 
         expect(onLoadCalls).toHaveBeenCalledTimes(1);
+    });
+
+    it("не прячет уже показанные маркеры на время bounds-рефетча (регресс: карта моргала при каждом перемещении)", async () => {
+        const { rerender } = render(
+            <OffersMap
+                offersData={[offer({ id: 1 }), offer({ id: 2 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("2"));
+
+        // Пользователь подвинул карту -> сработал onBoundsChange -> родитель
+        // начал bounds-рефетч: isOffersLoading=true, offersData на
+        // мгновение вернулся к [] (новая комбинация bounds ещё не в кеше).
+        rerender(
+            <OffersMap
+                offersData={[]}
+                isOffersLoading
+            />,
+        );
+
+        expect(screen.getByTestId("object-manager")).toHaveTextContent("2");
+
+        // Рефетч завершился с обновлённым набором вакансий для новых bounds.
+        rerender(
+            <OffersMap
+                offersData={[offer({ id: 3 })]}
+                isOffersLoading={false}
+            />,
+        );
+
+        await waitFor(() => expect(screen.getByTestId("object-manager")).toHaveTextContent("1"));
     });
 });

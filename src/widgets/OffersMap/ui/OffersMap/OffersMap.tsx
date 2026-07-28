@@ -58,6 +58,12 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const objectManagerRef = useRef<any>(null);
     const onBoundsChangeRef = useRef(onBoundsChange);
     onBoundsChangeRef.current = onBoundsChange;
+    // Пока идёт bounds-рефетч, offersData на мгновение становится [] —
+    // если сразу же чистить markers, ObjectManager размонтируется и
+    // смонтируется заново при приходе новых данных, и карта один раз
+    // моргает при каждом перемещении. Держим последний непустой набор
+    // маркеров на экране, пока не придут новые (stale-while-revalidate).
+    const lastFeaturesRef = useRef<any[]>([]);
 
     const noTitle = t("Без названия");
     const noCategory = t("Без категории");
@@ -67,9 +73,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
     const noLocationText = t("У этой вакансии не указано местоположение на карте");
 
     const features = useMemo(() => {
-        if (isOffersLoading || !offersData.length) return [];
+        if (isOffersLoading || !offersData.length) return lastFeaturesRef.current;
 
-        return offersData
+        const computed = offersData
             .filter((offer) => typeof offer.latitude === "number" && typeof offer.longitude === "number")
             .map((offer) => {
                 const imgSrc = offer?.image ?? undefined;
@@ -108,6 +114,9 @@ export const OffersMap: FC<OffersMapProps> = memo((props: OffersMapProps) => {
                     },
                 };
             });
+
+        lastFeaturesRef.current = computed;
+        return computed;
     }, [
         isOffersLoading, offersData, locale, ymapState?.templateLayoutFactory,
         noTitle, noCategory, offerWithoutName, learnMore,
