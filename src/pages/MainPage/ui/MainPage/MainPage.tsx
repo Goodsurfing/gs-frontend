@@ -5,16 +5,15 @@ import { useLocale } from "@/app/providers/LocaleProvider";
 import { MAIN_URL } from "@/shared/constants/api";
 import Section from "@/shared/ui/Section/Section";
 
-import BecomeHostContainer from "@/containers/BecomeHostContainer/BecomeHostContainer";
-import CommunityNewsContainer from "@/containers/CommunityNewsContainer/CommunityNewsContainer";
+import { BecomeHostContainer } from "@/widgets/BecomeHostContainer";
+import { CommunityNewsContainer } from "@/widgets/CommunityNewsContainer";
 import { Footer } from "@/widgets/Footer";
-// import PopularPlacesContainer from "@/containers/PopularPlacesContainer/PopularPlacesContainer";
-import ReviewsContainer from "@/containers/ReviewsContainer/ReviewsContainer";
-import VolunteerContainer from "@/containers/VolunteerContainer/VolunteerContainer";
+// import { PopularPlacesContainer } from "@/widgets/PopularPlacesContainer";
+import { ReviewsContainer } from "@/widgets/ReviewsContainer";
+import { VolunteerContainer } from "@/widgets/VolunteerContainer";
 
 import Preloader from "@/shared/ui/Preloader/Preloader";
-// import { NewMainSliderContainer }
-// from "@/containers/NewMainSliderContainer/NewMainSliderContainer";
+// import { NewMainSliderContainer } from "@/widgets/NewMainSliderContainer";
 import { BannerCard } from "../BannerCard/BannerCard";
 import WelcomeContainer from "../WelcomeContainer/WelcomeContainer";
 import { HowItWorkContainer } from "../HowItWorkContainer/HowItWorkContainer";

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 
-import ResetPasswordContainer from "@/containers/ResetPasswordContainer/ResetPasswordContainer";
+import { ResetPasswordContainer } from "@/features/ResetPasswordContainer";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 

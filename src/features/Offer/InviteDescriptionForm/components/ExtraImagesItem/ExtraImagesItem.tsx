@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import ImageInput from "@/components/ImageInput/ImageInput";
+import ImageInput from "@/shared/ui/ImageInput/ImageInput";
 
 import styles from "./ExtraImagesItem.module.scss";
 import ExtraImagesItemBackground from "./ExtraImagesItemBackground/ExtraImagesItemBackground";

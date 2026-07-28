@@ -2,7 +2,7 @@ import cn from "classnames";
 import React, { FC } from "react";
 import { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 

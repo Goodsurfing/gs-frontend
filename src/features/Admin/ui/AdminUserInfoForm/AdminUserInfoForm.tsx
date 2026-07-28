@@ -8,7 +8,7 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/redux";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
-import ProfileInput from "@/components/ProfileInput/ProfileInput";
+import ProfileInput from "@/shared/ui/ProfileInput/ProfileInput";
 import { getVolunteerPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import {

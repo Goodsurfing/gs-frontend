@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import cn from "classnames";
-import SelectField from "@/components/SelectField/SelectField";
+import SelectField from "@/shared/ui/SelectField/SelectField";
 
 import { DonationSort, useSortDonations } from "@/entities/Donation";
 import styles from "./SelectSort.module.scss";

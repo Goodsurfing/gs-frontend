@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/shared/hooks/redux";
 import { userActions } from "@/entities/User";
 
 import styles from "./AuthByEmailForm.module.scss";
-import InputField from "@/components/InputField/InputField";
+import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
 import Button from "@/shared/ui/Button/Button";
 
 import { AuthByEmailHelp } from "../AuthByEmailHelp/AuthByEmailHelp";
@@ -74,7 +74,7 @@ export const AuthByEmailForm = memo(({
                 control={control}
                 name="email"
                 render={({ field }) => (
-                    <InputField
+                    <AuthInputField
                         onChange={(e) => field.onChange(e)}
                         value={field.value || ""}
                         type="email"
@@ -86,7 +86,7 @@ export const AuthByEmailForm = memo(({
                 control={control}
                 name="password"
                 render={({ field }) => (
-                    <InputField
+                    <AuthInputField
                         onChange={(e) => field.onChange(e)}
                         value={field.value || ""}
                         type="password"

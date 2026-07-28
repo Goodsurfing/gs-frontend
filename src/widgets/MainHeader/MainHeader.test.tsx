@@ -23,7 +23,7 @@ vi.mock("@/entities/Admin", () => ({
     useGetBannerMarketingQuery: () => ({ data: bannerDataMock }),
 }));
 
-vi.mock("@/components/LocaleLink/LocaleLink", () => ({
+vi.mock("@/shared/ui/LocaleLink/LocaleLink", () => ({
     default: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
 }));
 

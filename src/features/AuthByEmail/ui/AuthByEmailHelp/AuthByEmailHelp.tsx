@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { getResetPasswordPageUrl } from "@/shared/config/routes/AppUrls";
-import Checkbox from "@/components/Checkbox/Checkbox";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import Checkbox from "@/shared/ui/Checkbox/Checkbox";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import styles from "./AuthByEmailHelp.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";

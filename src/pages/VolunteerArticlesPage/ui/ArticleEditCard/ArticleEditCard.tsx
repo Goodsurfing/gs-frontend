@@ -5,7 +5,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ReactSVG } from "react-svg";
-import Popup from "@/components/Popup/Popup";
+import Popup from "@/shared/ui/Popup/Popup";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 

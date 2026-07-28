@@ -6,7 +6,7 @@ import cn from "classnames";
 import { useTranslation } from "react-i18next";
 import styles from "./LanguagesFilter.module.scss";
 import Arrow from "@/shared/ui/Arrow/Arrow";
-import Popup from "@/components/Popup/Popup";
+import Popup from "@/shared/ui/Popup/Popup";
 import { BluePoint } from "@/widgets/OffersMap/ui/BluePoint/BluePoint";
 import { LanguagesGroup } from "../LanguagesGroup/LanguagesGroup";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
