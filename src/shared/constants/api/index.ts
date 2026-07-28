@@ -1,7 +1,7 @@
 // In dev (`npm start`) the SPA must hit the Vite dev-server (which proxies
 // to staging) so CORS/IAP doesn't kick in. We use the running page origin
 // (typically http://localhost:3000) — NOT an empty string — because several
-// RTK Query endpoints inject API_BASE_URL_V3 directly into `url:` while
+// RTK Query endpoints inject API_BASE_URL_ABSOLUTE directly into `url:` while
 // using `baseQuery` with baseUrl=API_BASE_URL. Both now point at /api/v1/,
 // but RTK still needs the injected one to be an absolute URL: when both are
 // relative, RTK naively concatenates them into nonsense like
@@ -15,7 +15,7 @@ const API_ORIGIN = import.meta.env.DEV && typeof window !== "undefined"
 export const BASE_URL = API_ORIGIN;
 export const BASE_URI = "/api/v1/";
 export const API_BASE_URL = `${API_ORIGIN}/api/v1/`;
-export const API_BASE_URL_V3 = `${API_ORIGIN}/api/v1/`;
+export const API_BASE_URL_ABSOLUTE = `${API_ORIGIN}/api/v1/`;
 export const BASE_VK_URI = `${API_ORIGIN}/api/vk/`;
 export const API_ADMIN_BASE_URL = `${API_ORIGIN}/admin/v1/`;
 export const API_ORGANIZATIONS_BASE_URL = `${API_ORIGIN}/api/organizations/`;

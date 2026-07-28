@@ -2,7 +2,7 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import qs from "qs";
 import { RootState } from "@/store/store";
 
-import { API_ADMIN_BASE_URL, API_BASE_URL, API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_ADMIN_BASE_URL, API_BASE_URL, API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { TOKEN_LOCALSTORAGE_KEY } from "@/shared/constants/localstorage";
 
 export const baseQuery = fetchBaseQuery({
@@ -46,7 +46,7 @@ export const baseQueryAcceptJson = fetchBaseQuery({
 });
 
 export const baseQueryV3 = fetchBaseQuery({
-    baseUrl: API_BASE_URL_V3,
+    baseUrl: API_BASE_URL_ABSOLUTE,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
         const state = getState() as RootState;

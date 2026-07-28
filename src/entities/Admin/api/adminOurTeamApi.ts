@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import {
     CreateAdminOurTeam,
     GetAdminOurTeam,
@@ -15,7 +15,7 @@ export const adminOurTeamApi = createApi({
     endpoints: (build) => ({
         getOurTeamList: build.query<GetOurTeamResponse, GetOurTeamParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}our-team/list`,
+                url: `${API_BASE_URL_ABSOLUTE}our-team/list`,
                 method: "GET",
                 params,
             }),

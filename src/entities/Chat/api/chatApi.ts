@@ -10,7 +10,7 @@ import {
 } from "@/entities/Application";
 import { CreateMessageResponse, CreateMessageType } from "../model/types/messages";
 import { PaginationParams } from "@/types/api/pagination";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 
 interface MessagesRequest {
     chatId: string;
@@ -117,7 +117,7 @@ export const chatApi = createApi({
         getMyHostApplications: build.query<
         GetHostFormApplicationResponse, GetHostApplicationsParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}application/list-of-organization`,
+                url: `${API_BASE_URL_ABSOLUTE}application/list-of-organization`,
                 method: "GET",
                 params,
             }),
@@ -126,7 +126,7 @@ export const chatApi = createApi({
         getMyVolunteerApplications: build.query<GetVolunteerFormApplicationResponse,
         PaginationParams>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}application/list-of-volunteer`,
+                url: `${API_BASE_URL_ABSOLUTE}application/list-of-volunteer`,
                 method: "GET",
                 params,
             }),

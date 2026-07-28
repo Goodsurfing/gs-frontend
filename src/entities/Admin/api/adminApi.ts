@@ -69,7 +69,7 @@ import { Achievement, GetAchievement, GetAchievementRequest } from "@/types/achi
 import {
     Food, GetFood, GetFoodRequest, GetHouse, GetTransfer, House, Transfer,
 } from "@/shared/data/conditions";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { UpdateOfferImageGallery, UpdateOfferStatusRequest, UpdateOfferStatusResponse } from "@/entities/Offer";
 
 export const adminApi = createApi({
@@ -126,7 +126,7 @@ export const adminApi = createApi({
         }),
         getPublicSkills: build.query<Skill[], GetPublicSkillRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}skill/list`,
+                url: `${API_BASE_URL_ABSOLUTE}skill/list`,
                 method: "GET",
                 params,
             }),
@@ -195,7 +195,7 @@ export const adminApi = createApi({
         getPublicAchievements: build.query<Achievement[],
         GetAchievementRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}achievement/list`,
+                url: `${API_BASE_URL_ABSOLUTE}achievement/list`,
                 method: "GET",
                 params,
             }),
@@ -265,7 +265,7 @@ export const adminApi = createApi({
         getPublicTransfers: build.query<Transfer[],
         GetAdminTransferRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}transfer/list`,
+                url: `${API_BASE_URL_ABSOLUTE}transfer/list`,
                 method: "GET",
                 params,
             }),
@@ -335,7 +335,7 @@ export const adminApi = createApi({
         getPublicHouses: build.query<House[],
         GetHouseRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}house/list`,
+                url: `${API_BASE_URL_ABSOLUTE}house/list`,
                 method: "GET",
                 params,
             }),
@@ -405,7 +405,7 @@ export const adminApi = createApi({
         getPublicFoods: build.query<Food[],
         GetFoodRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}food/list`,
+                url: `${API_BASE_URL_ABSOLUTE}food/list`,
                 method: "GET",
                 params,
             }),
@@ -681,7 +681,7 @@ export const adminApi = createApi({
         getPublicCategoriesVacancy: build.query<CategoryCountVacancy[],
         GetCategoryRequest>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}category/list`,
+                url: `${API_BASE_URL_ABSOLUTE}category/list`,
                 method: "GET",
                 params,
             }),
@@ -821,7 +821,7 @@ export const adminApi = createApi({
         // Ambassadors
         getAmbassadors: build.query<GetAmbassadorsResponse, GetAmbassadorsParams>({
             query: () => ({
-                url: `${API_BASE_URL_V3}leader/list`,
+                url: `${API_BASE_URL_ABSOLUTE}leader/list`,
                 method: "GET",
             }),
             providesTags: ["ambassadors"],
@@ -870,7 +870,7 @@ export const adminApi = createApi({
         // About project
         getAbouProjectPageInfo: build.query<GetAboutProjectInfo, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}about-project/element`,
+                url: `${API_BASE_URL_ABSOLUTE}about-project/element`,
                 method: "GET",
             }),
             providesTags: ["about"],

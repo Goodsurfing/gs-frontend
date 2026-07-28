@@ -5,7 +5,7 @@ import {
     UpdateProfileVideoGallery,
 } from "../model/types/profile";
 import { baseQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { UpdateVolunteer } from "@/entities/Volunteer";
 
 interface ChangePasswordRequest {
@@ -51,21 +51,21 @@ export const profileApi = createApi({
     endpoints: (build) => ({
         getProfileInfo: build.query<Profile, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}profile`,
+                url: `${API_BASE_URL_ABSOLUTE}profile`,
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         getProfileInfoById: build.query<ProfileById, string>({
             query: (userId) => ({
-                url: `${API_BASE_URL_V3}profile/${userId}`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/${userId}`,
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         updateProfileInfo: build.mutation<void, UpdateProfile>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}profile`,
+                url: `${API_BASE_URL_ABSOLUTE}profile`,
                 method: "PATCH",
                 body,
             }),
@@ -73,7 +73,7 @@ export const profileApi = createApi({
         }),
         updateVolunteer: build.mutation<void, UpdateVolunteer>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}volunteer`,
+                url: `${API_BASE_URL_ABSOLUTE}volunteer`,
                 method: "PATCH",
                 body,
             }),
@@ -81,7 +81,7 @@ export const profileApi = createApi({
         }),
         updateProfileVideoGallery: build.mutation<void, UpdateProfileVideoGallery>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}profile/video-gallery`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/video-gallery`,
                 method: "PATCH",
                 body,
             }),
@@ -89,7 +89,7 @@ export const profileApi = createApi({
         }),
         updateProfileImageGallery: build.mutation<void, UpdateProfileImageGallery>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}profile/image-gallery`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/image-gallery`,
                 method: "PATCH",
                 body,
             }),
@@ -97,7 +97,7 @@ export const profileApi = createApi({
         }),
         updateProfileCertificates: build.mutation<void, UpdateProfileCertificates>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}volunteer/certificate`,
+                url: `${API_BASE_URL_ABSOLUTE}volunteer/certificate`,
                 method: "PATCH",
                 body,
             }),
@@ -105,7 +105,7 @@ export const profileApi = createApi({
         }),
         updateProfilePreferences: build.mutation<void, UpdateProfilePreferences>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}profile/favorite-category`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/favorite-category`,
                 method: "PATCH",
                 body,
             }),
@@ -122,7 +122,7 @@ export const profileApi = createApi({
         changePasswordWithoutOldPassword: build.mutation<void,
         ChangePasswordWithoutOldPasswordRequest>({
             query: (body) => ({
-                url: `${API_BASE_URL_V3}profile/password/change`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/password/change`,
                 method: "POST",
                 body,
             }),
@@ -130,7 +130,7 @@ export const profileApi = createApi({
         }),
         toggleActiveProfile: build.mutation<void, ToggleActiveProfileRequest>({
             query: ({ body }) => ({
-                url: `${API_BASE_URL_V3}profile/toggle-active`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/toggle-active`,
                 method: "POST",
                 body,
             }),
@@ -138,7 +138,7 @@ export const profileApi = createApi({
         }),
         deleteProfile: build.mutation<void, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}profile/delete`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/delete`,
                 method: "DELETE",
             }),
             invalidatesTags: ["profile"],
@@ -159,14 +159,14 @@ export const profileApi = createApi({
         }),
         getProfileOccupancy: build.query<ProfileOccupancyResponse, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}profile/occupancy`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/occupancy`,
                 method: "GET",
             }),
             providesTags: ["profile"],
         }),
         getProfilePasswordIsChange: build.query<ProfilePasswordIsChangeResponse, void>({
             query: () => ({
-                url: `${API_BASE_URL_V3}profile/password/is-change`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/password/is-change`,
                 method: "GET",
             }),
             providesTags: ["profile"],
