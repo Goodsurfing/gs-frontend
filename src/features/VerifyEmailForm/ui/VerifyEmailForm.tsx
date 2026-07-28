@@ -8,7 +8,7 @@ import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface"
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
 import styles from "./VerifyEmailForm.module.scss";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { useAuth } from "@/routes/model/guards/AuthProvider";
 // import Input from "@/shared/ui/Input/Input";
 
@@ -51,7 +51,7 @@ export const VerifyEmailForm = () => {
 
         setIsLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL_V3}send-email`, {
+            const response = await fetch(`${API_BASE_URL_ABSOLUTE}send-email`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

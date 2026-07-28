@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import { rest } from "msw";
 import { renderWithProviders } from "@/test-utils";
 import { server } from "@/mocks/server";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { Categories } from "./Categories";
 
 vi.mock("@/app/providers/LocaleProvider", () => ({
@@ -15,7 +15,7 @@ vi.mock("@/app/providers/LocaleProvider", () => ({
 }));
 
 const mockCategories = () => server.use(
-    rest.get(`*${API_BASE_URL_V3}category/list`, (req, res, ctx) => res(ctx.status(200), ctx.json([
+    rest.get(`*${API_BASE_URL_ABSOLUTE}category/list`, (req, res, ctx) => res(ctx.status(200), ctx.json([
         { id: 10, name: "Археология", color: "#fff" },
         { id: 8, name: "Спорт", color: "#fff" },
     ]))),

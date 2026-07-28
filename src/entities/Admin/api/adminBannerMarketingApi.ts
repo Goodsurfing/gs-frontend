@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseAdminQueryAcceptJson } from "@/shared/api/baseQuery/baseQuery";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import {
     BannerMarketingElement, CreateAdminBannerMarketing, GetAdminBannerMarketingListParams,
     GetAdminBannerMarketingListResponse, GetAdminMarketingBanner, GetBannerMarketingParams,
@@ -15,7 +15,7 @@ export const adminBannerMarketingApi = createApi({
         getBannerMarketing: build.query<BannerMarketingElement,
         GetBannerMarketingParams>({
             query: ({ type }) => ({
-                url: `${API_BASE_URL_V3}marketing-banner/element/${type}`,
+                url: `${API_BASE_URL_ABSOLUTE}marketing-banner/element/${type}`,
                 method: "GET",
             }),
             providesTags: ["banner"],

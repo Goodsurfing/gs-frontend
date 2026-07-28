@@ -14,7 +14,7 @@ import {
 } from "../model/types/offer";
 import { GalleryItem } from "@/types/media";
 import { OfferStatus } from "../model/types/offerStatus";
-import { API_BASE_URL_V3 } from "@/shared/constants/api";
+import { API_BASE_URL_ABSOLUTE } from "@/shared/constants/api";
 import { UpdateOfferWhatToDoParams } from "../model/types/offerWhatToDo";
 import { UpdateOfferConditionsParams } from "../model/types/offerConditions";
 import { UpdateOfferDescriptionParams } from "../model/types/offerDescription";
@@ -81,7 +81,7 @@ export const offerApi = createApi({
         }),
         updateOfferImageGallery: build.mutation<void, UpdateOfferImageGallery>({
             query: ({ offerId, body }) => ({
-                url: `${API_BASE_URL_V3}vacancy/image-gallery/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/image-gallery/${offerId}`,
                 method: "PATCH",
                 body,
             }),
@@ -89,7 +89,7 @@ export const offerApi = createApi({
         }),
         updateOfferDescription: build.mutation<void, UpdateOfferDescriptionParams>({
             query: ({ offerId, body }) => ({
-                url: `${API_BASE_URL_V3}vacancy/description/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/description/${offerId}`,
                 method: "PATCH",
                 body,
             }),
@@ -97,7 +97,7 @@ export const offerApi = createApi({
         }),
         updateOfferWhatToDo: build.mutation<void, UpdateOfferWhatToDoParams>({
             query: ({ offerId, body }) => ({
-                url: `${API_BASE_URL_V3}vacancy/what-to-do/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/what-to-do/${offerId}`,
                 method: "PATCH",
                 body,
             }),
@@ -105,7 +105,7 @@ export const offerApi = createApi({
         }),
         updateOfferConditions: build.mutation<void, UpdateOfferConditionsParams>({
             query: ({ offerId, body }) => ({
-                url: `${API_BASE_URL_V3}vacancy/condition/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/condition/${offerId}`,
                 method: "PATCH",
                 body,
             }),
@@ -114,7 +114,7 @@ export const offerApi = createApi({
         updateOfferStatus: build.mutation<UpdateOfferStatusResponse, UpdateOfferStatusRequest>({
             query: (data) => ({
                 // url: `/vacancies/${data.id}/status`,
-                url: `${API_BASE_URL_V3}vacancy/toggle-status/${data.id}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/toggle-status/${data.id}`,
                 method: "PATCH",
                 headers: {
                     // "Content-Type": "application/merge-patch+json",
@@ -125,14 +125,14 @@ export const offerApi = createApi({
         }),
         deleteOffer: build.mutation<CreateOfferResponse, string>({
             query: (offerId) => ({
-                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/${offerId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["offer"],
         }),
         getOfferById: build.query<Offer, string>({
             query: (offerId) => ({
-                url: `${API_BASE_URL_V3}vacancy/${offerId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/${offerId}`,
                 method: "GET",
             }),
             providesTags: ["offer"],
@@ -140,7 +140,7 @@ export const offerApi = createApi({
         getOfferParticipantListByOfferId: build.query<GetOfferParticipantListByOfferId,
         PaginationIdParams>({
             query: ({ id, limit, page }) => ({
-                url: `${API_BASE_URL_V3}profile/vacancy-participant/list/${id}`,
+                url: `${API_BASE_URL_ABSOLUTE}profile/vacancy-participant/list/${id}`,
                 method: "GET",
                 params: { vacancyId: id, limit, page },
             }),
@@ -148,7 +148,7 @@ export const offerApi = createApi({
         }),
         getOffers: build.query<GetOffersResponse, Partial<GetOffersFilters> | undefined>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}vacancy/list`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/list`,
                 method: "GET",
                 params,
             }),
@@ -156,7 +156,7 @@ export const offerApi = createApi({
         }),
         getAllOffersMap: build.query<OfferMap[], Partial<GetAllOffersMapFilters> | undefined>({
             query: (params) => ({
-                url: `${API_BASE_URL_V3}vacancy/for-map/list`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/for-map/list`,
                 method: "GET",
                 params,
             }),
@@ -164,7 +164,7 @@ export const offerApi = createApi({
         }),
         getHostOffersById: build.query<GetHostOffersResponse, Partial<GetHostOffersFilters>>({
             query: ({ organizationId, limit, page }) => ({
-                url: `${API_BASE_URL_V3}vacancy/list/${organizationId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/list/${organizationId}`,
                 method: "GET",
                 params: { limit, page, sort: OfferSort.UpdatedDesc },
             }),
@@ -174,7 +174,7 @@ export const offerApi = createApi({
             query: ({
                 organizationId, limit, page, statuses,
             }) => ({
-                url: `${API_BASE_URL_V3}vacancy/list/${organizationId}`,
+                url: `${API_BASE_URL_ABSOLUTE}vacancy/list/${organizationId}`,
                 method: "GET",
                 params: { limit, page, statuses },
             }),
