@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import SignLayout from "@/shared/ui/SignLayout/SignLayout";
 import SignTitle from "@/shared/ui/SignTitle/SignTitle";
 
-import ResetPasswordThirdStep from "@/containers/ResetPasswordContainer/ResetPasswordThirdStep/ResetPasswordThirdStep";
+import { ResetPasswordThirdStep } from "@/features/ResetPasswordContainer";
 
 import styles from "./ResetPasswordVerifyPage.module.scss";
 import { useLocale } from "@/app/providers/LocaleProvider";

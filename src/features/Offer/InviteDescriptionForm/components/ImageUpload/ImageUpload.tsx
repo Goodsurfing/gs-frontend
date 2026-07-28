@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ImageInput from "@/components/ImageInput/ImageInput";
+import ImageInput from "@/shared/ui/ImageInput/ImageInput";
 
 import ImageUploadBackground from "./ImageUploadBackground/ImageUploadBackground";
 import uploadFile from "@/shared/hooks/files/useUploadFile";

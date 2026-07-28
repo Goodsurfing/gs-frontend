@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { MouseEventHandler, PropsWithChildren, memo } from "react";
 
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import styles from "./ButtonLink.module.scss";
 

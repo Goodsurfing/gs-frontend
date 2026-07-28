@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from "react";
 
 import cn from "classnames";
 import { ChangeLanguage } from "@/widgets/ChangeLanguage";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import logoIcon from "@/shared/assets/icons/logo-black.svg";
 import styles from "./EmptyHeader.module.scss";

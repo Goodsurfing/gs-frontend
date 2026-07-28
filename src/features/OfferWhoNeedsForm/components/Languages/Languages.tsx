@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
-import SelectField from "@/components/SelectField/SelectField";
+import SelectField from "@/shared/ui/SelectField/SelectField";
 import { IOptionLanguage, IOptionLevelLanguage } from "@/types/select";
 
 import { useAllLangs, useLangsLevels } from "@/shared/data/languages";

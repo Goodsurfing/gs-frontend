@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 
 import { useTranslation } from "react-i18next";
-import { reviewsData } from "@/containers/ReviewsContainer/Reviews.data";
+import { reviewsData } from "@/widgets/ReviewsContainer";
 import { ReviewSlide } from "../ReviewSlide/ReviewSlide";
 import styles from "./Review.module.scss";
 

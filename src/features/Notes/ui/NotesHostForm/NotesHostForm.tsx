@@ -16,7 +16,7 @@ import {
     HintType,
     ToastAlert,
 } from "@/shared/ui/HintPopup/HintPopup.interface";
-import SelectField from "@/components/SelectField/SelectField";
+import SelectField from "@/shared/ui/SelectField/SelectField";
 
 import { ReviewFields } from "../../model/types/notes";
 import { MiniLoader } from "@/shared/ui/MiniLoader/MiniLoader";

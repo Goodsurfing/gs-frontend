@@ -3,7 +3,7 @@ import React, {
     FC, useEffect, useRef, useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import LocaleLink from "@/components/LocaleLink/LocaleLink";
+import LocaleLink from "@/shared/ui/LocaleLink/LocaleLink";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 

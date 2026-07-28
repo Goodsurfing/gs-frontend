@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { memo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import ProfileInput from "@/components/ProfileInput/ProfileInput";
+import ProfileInput from "@/shared/ui/ProfileInput/ProfileInput";
 
 import { useLocale } from "@/app/providers/LocaleProvider";
 

@@ -2,7 +2,7 @@ import cn from "classnames";
 import { Box } from "@mui/material";
 import { memo, useCallback } from "react";
 
-import DatePickerCalendar from "@/components/DatePickerCalendar/DatePickerCalendar";
+import DatePickerCalendar from "@/shared/ui/DatePickerCalendar/DatePickerCalendar";
 
 import styles from "./DateInputs.module.scss";
 

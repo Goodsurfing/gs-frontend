@@ -6,10 +6,10 @@ import { getAdminUsersPageUrl } from "@/shared/config/routes/AppUrls";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import { HintType } from "@/shared/ui/HintPopup/HintPopup.interface";
 import { LoginAdminFields } from "@/types/api/auth/login.interface";
-import InputField from "@/components/InputField/InputField";
+import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
 import Button from "@/shared/ui/Button/Button";
 import styles from "./AdminAuth.module.scss";
-import Checkbox from "@/components/Checkbox/Checkbox";
+import Checkbox from "@/shared/ui/Checkbox/Checkbox";
 import { authApi } from "@/store/api/authApi";
 import { useAppDispatch } from "@/shared/hooks/redux";
 import { userActions } from "@/entities/User";
@@ -80,7 +80,7 @@ export const AdminAuth = () => {
                     control={control}
                     name="email"
                     render={({ field }) => (
-                        <InputField
+                        <AuthInputField
                             onChange={(e) => field.onChange(e)}
                             value={field.value || ""}
                             type="email"
@@ -93,7 +93,7 @@ export const AdminAuth = () => {
                     control={control}
                     name="password"
                     render={({ field }) => (
-                        <InputField
+                        <AuthInputField
                             onChange={(e) => field.onChange(e)}
                             value={field.value || ""}
                             type="password"

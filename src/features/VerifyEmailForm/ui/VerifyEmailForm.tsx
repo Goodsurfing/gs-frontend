@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
     Controller, SubmitHandler, useForm, useWatch,
 } from "react-hook-form";
-import InputField from "@/components/InputField/InputField";
+import AuthInputField from "@/shared/ui/AuthInputField/AuthInputField";
 import { HintType, ToastAlert } from "@/shared/ui/HintPopup/HintPopup.interface";
 import HintPopup from "@/shared/ui/HintPopup/HintPopup";
 import Button from "@/shared/ui/Button/Button";
@@ -141,7 +141,7 @@ export const VerifyEmailForm = () => {
                 name="email"
                 defaultValue=""
                 render={({ field }) => (
-                    <InputField
+                    <AuthInputField
                         onChange={(e) => field.onChange(e)}
                         value={field.value}
                         type="email"

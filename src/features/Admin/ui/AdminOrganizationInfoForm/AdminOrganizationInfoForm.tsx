@@ -15,7 +15,7 @@ import {
     AdminOrganization, adminOrganizationAdapter, adminOrganizationApiAdapter,
     useGetOrganizationByIdQuery, useUpdateAdminOrganizationMutation,
 } from "@/entities/Admin";
-import ProfileInput from "@/components/ProfileInput/ProfileInput";
+import ProfileInput from "@/shared/ui/ProfileInput/ProfileInput";
 import uploadFile from "@/shared/hooks/files/useUploadFile";
 import { getHostPersonalPageUrl } from "@/shared/config/routes/AppUrls";
 import { useLocale } from "@/app/providers/LocaleProvider";

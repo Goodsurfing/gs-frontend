@@ -4,7 +4,7 @@ import React, {
 import { IconButton } from "@mui/material";
 import cn from "classnames";
 import { ReactSVG } from "react-svg";
-import Popup from "@/components/Popup/Popup";
+import Popup from "@/shared/ui/Popup/Popup";
 
 import threeDotsIcon from "@/shared/assets/icons/three-dots.svg";
 import { useOnClickOutside } from "@/shared/hooks/useOnClickOutside";
